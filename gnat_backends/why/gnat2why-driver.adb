@@ -68,17 +68,16 @@ package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why back-end
 
-   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id);
+   procedure Translate_List_Of_Decls
+      (File : W_File_Id;
+       Decls : List_Of_Nodes.List);
    --  Take a list of Ada declarations and translate them to Why declarations
 
-   procedure Translate_Context (File : W_File_Id; L : List_Id);
+   procedure Translate_Context (File : W_File_Id; L : String_Lists.List);
    --  Translate the context of an Ada unit into Why includes
 
-   procedure Translate_CUnit (GNAT_Root : Node_Id);
+   procedure Translate_CUnit (Pack : Why_Package);
    --  Translate an Ada unit into Why declarations
-
-   procedure Translate_Package (File : W_File_Id; N : Node_Id);
-   --  Translate the declarations of a package into Why declarations
 
    -----------------
    -- GNAT_To_Why --
@@ -262,20 +261,14 @@ package body Gnat2Why.Driver is
    -- Translate_Context --
    -----------------------
 
-   procedure Translate_Context (File : W_File_Id; L : List_Id) is
-      Cur : Node_Id;
+   procedure Translate_Context (File : W_File_Id; L : String_Lists.List) is
+      use String_Lists;
+      Cur : Cursor := First (L);
    begin
-      Cur := First (L);
-      while Present (Cur) loop
-         case Nkind (Cur) is
-            when N_With_Clause =>
-               New_Include_Declaration
-                 (File,
-                  New_Identifier
-                     (Get_Name_String (Chars (Name (Cur))) & ".mlw"));
-            when others =>
-               null;  --  ??? raise Program_Error when cases completed
-         end case;
+      while Has_Element (Cur) loop
+         New_Include_Declaration
+           (File,
+            New_Identifier (Element (Cur) & ".mlw"));
          Next (Cur);
       end loop;
    end Translate_Context;
@@ -284,32 +277,32 @@ package body Gnat2Why.Driver is
    -- Translate_CUnit --
    ---------------------
 
-   procedure Translate_CUnit (GNAT_Root : Node_Id)
+   procedure Translate_CUnit (Pack : Why_Package)
    is
       File      : constant W_File_Id := New_File;
-      N         : constant Node_Id   := Unit (GNAT_Root);
-      Unit_Name : constant String :=
-         Name_String (Chars (Defining_Unit_Name (Specification (N))));
+      Unit_Name : constant String := Pack.WP_Name.all;
 
+      use List_Of_Nodes;
    begin
       Current_Why_Output_File := File;
 
-      if Nkind (GNAT_Root) = N_Compilation_Unit then
+      Translate_Context (File, Pack.WP_Context);
+      case Pack.WP_Kind is
+         when WPK_Subprogram =>
+            Why_Decl_Of_Ada_Subprogram
+               (File,
+                Element (First (Pack.WP_Decls)));
 
-         Translate_Context (File, Context_Items (GNAT_Root));
+         when WPK_Package =>
+            Translate_List_Of_Decls (File, Pack.WP_Decls);
+      end case;
 
-         if Nkind (N) = N_Subprogram_Body then
-            Why_Decl_Of_Ada_Subprogram (File, N);
-         else
-            Translate_Package (File, N);
-         end if;
-         Open_Current_File (Unit_Name & ".mlw");
-         Sprint_Why_Node (+File, Current_File);
-         Close_Current_File;
+      Open_Current_File (Unit_Name & ".mlw");
+      Sprint_Why_Node (+File, Current_File);
+      Close_Current_File;
 
-         if Print_Generated_Code then
-            wpg (+File);
-         end if;
+      if Print_Generated_Code then
+         wpg (+File);
       end if;
    end Translate_CUnit;
 
@@ -317,12 +310,16 @@ package body Gnat2Why.Driver is
    -- Translate_List_Of_Decls --
    -----------------------------
 
-   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id)
+   procedure Translate_List_Of_Decls
+      (File : W_File_Id;
+       Decls : List_Of_Nodes.List)
    is
-      Decl  : Node_Id;
+      use List_Of_Nodes;
+      Decl : Node_Id;
+      Cur  : Cursor := First (Decls);
    begin
-      Decl := First (Decls);
-      while Present (Decl) loop
+      while Has_Element (Cur) loop
+         Decl := Element (Cur);
          case Nkind (Decl) is
             when N_Full_Type_Declaration =>
                Why_Type_Decl_of_Full_Type_Decl
@@ -360,34 +357,9 @@ package body Gnat2Why.Driver is
                raise Not_Implemented;
          end case;
 
-         Next (Decl);
+         Next (Cur);
       end loop;
    end Translate_List_Of_Decls;
-
-   -----------------------
-   -- Translate_Package --
-   -----------------------
-
-   procedure Translate_Package (File : W_File_Id; N : Node_Id) is
-   begin
-      case Nkind (N) is
-         when N_Package_Body =>
-            --  First translate the spec of the package, if any
-            Translate_List_Of_Decls
-              (File,
-               Visible_Declarations
-                 (Parent (Corresponding_Spec (N))));
-            Translate_List_Of_Decls
-              (File,
-               Declarations (N));
-         when N_Package_Declaration =>
-            Translate_List_Of_Decls
-              (File,
-               Visible_Declarations (Specification (N)));
-         when others =>
-            raise Not_Implemented;
-      end case;
-   end Translate_Package;
 
    --------------------------------
    -- Translate_Standard_Package --
@@ -419,7 +391,7 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      Translate_Package (File, Filter_Standard_Package);
+      Translate_List_Of_Decls (File, Filter_Standard_Package);
 
       Add_Standard_Type (Standard_Integer_8);
       Add_Standard_Type (Standard_Integer_16);

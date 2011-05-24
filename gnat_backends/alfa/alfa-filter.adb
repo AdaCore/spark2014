@@ -23,43 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util; use AA_Util;
-with Atree;   use Atree;
+with Atree;        use Atree;
 with Lib;
 with Lib.Xref;
-with Namet;   use Namet;
-with Nlists;  use Nlists;
-with Nmake;   use Nmake;
-with Sem_Util; use Sem_Util;
-with Sinfo;   use Sinfo;
-with Stand;   use Stand;
-with Tbuild;  use Tbuild;
+with Namet;        use Namet;
+with Nlists;       use Nlists;
+with Nmake;        use Nmake;
+with Sem_Util;     use Sem_Util;
+with Sinfo;        use Sinfo;
+with Stand;        use Stand;
 
 with ALFA.Common;     use ALFA.Common;
 with ALFA.Definition; use ALFA.Definition;
 
 package body ALFA.Filter is
 
-   Standard_Why_Package      : Node_Id := Empty;
+   Standard_Why_Package      : List_Of_Nodes.List :=
+      List_Of_Nodes.Empty_List;
    Standard_Why_Package_Name : constant String := "_standard";
 
    -----------------------
    -- Local Subprograms --
    -----------------------
-
-   procedure Make_Compilation_Unit_From_Decl
-     (Decl    : Node_Id;
-      Context : List_Id);
-   --  Create a compilation unit for unit Decl and store it in
-   --  ALFA_Compilation_Units.
-
-   function Make_Package_Spec_From_Decls
-     (Decls : List_Id;
-      Name  : String) return Node_Id;
-   --  Create a package spec called Name with Decls as visible declarations
-
-   function Node_List_From_List_Of_Nodes (Nlist : List) return List_Id;
-   --  Transform a standard list of nodes into a GNAT list
 
    procedure Traverse_Subtree
      (N       : Node_Id;
@@ -71,12 +56,47 @@ package body ALFA.Filter is
    -----------------------------
 
    procedure Filter_Compilation_Unit (N : Node_Id) is
-      Types_Vars_Spec_List : List;
-      Types_Vars_Body_List : List;
-      Subp_Spec_List       : List;
+      Prefix                 : constant String :=
+         File_Name_Without_Suffix (Sloc (N));
+      Types_Vars_Spec_Suffix : constant String := "__types_vars_spec";
+      Types_Vars_Body_Suffix : constant String := "__types_vars_body";
+      Subp_Spec_Suffix       : constant String := "__subp_spec";
+      Main_Suffix            : constant String := "__package";
+      Types_Vars_Spec_Name   : constant String :=
+         Prefix & Types_Vars_Spec_Suffix;
+      Types_Vars_Body_Name   : constant String :=
+         Prefix & Types_Vars_Body_Suffix;
+      Subp_Spec_Name         : constant String := Prefix & Subp_Spec_Suffix;
+      Main_Name              : constant String := Prefix & Main_Suffix;
 
-      Subp_Body_List : List;
-      --  All subprogram definitions should end up in this list, as it
+      function Make_Empty_Why_Pack (S : String) return Why_Package;
+      --  Build an empty Why_Package with the given name
+
+      -------------------------
+      -- Make_Empty_Why_Pack --
+      -------------------------
+
+      function Make_Empty_Why_Pack (S : String) return Why_Package
+      is
+      begin
+         return
+           (WP_Kind    => WPK_Package,
+            WP_Name    => new String'(S),
+            WP_Context => String_Lists.Empty_List,
+            WP_Decls   => List_Of_Nodes.Empty_List);
+      end Make_Empty_Why_Pack;
+
+      Types_Vars_Spec_Pack   : Why_Package :=
+         Make_Empty_Why_Pack (Types_Vars_Spec_Name);
+      Types_Vars_Body_Pack   : Why_Package :=
+         Make_Empty_Why_Pack (Types_Vars_Body_Name);
+      Subp_Spec_Pack         : Why_Package :=
+         Make_Empty_Why_Pack (Subp_Spec_Name);
+
+      Subp_Body_Pack         : Why_Package :=
+         Make_Empty_Why_Pack (Main_Name);
+
+      --  All subprogram definitions should end up in this package, as it
       --  corresponds to the only Why file which is not included by other Why
       --  files, so that we will not redo the same proof more than once. In
       --  particular, subprogram bodies for expression functions, which may be
@@ -84,9 +104,9 @@ package body ALFA.Filter is
 
       procedure Bucket_Dispatch
         (N          : Node_Id;
-         Types_Vars : in out List;
-         Subp_Spec  : in out List;
-         Subp_Body  : in out List);
+         Types_Vars : in out List_Of_Nodes.List;
+         Subp_Spec  : in out List_Of_Nodes.List;
+         Subp_Body  : in out List_Of_Nodes.List);
       --  If the Node belongs to the ALFA language, put it in one of the
       --  corresponding buckets (types or variables, subprograms) in argument.
       --  Also, introduce explicit type declarations for anonymous types.
@@ -105,9 +125,9 @@ package body ALFA.Filter is
 
       procedure Bucket_Dispatch
         (N          : Node_Id;
-         Types_Vars : in out List;
-         Subp_Spec  : in out List;
-         Subp_Body  : in out List)
+         Types_Vars : in out List_Of_Nodes.List;
+         Subp_Spec  : in out List_Of_Nodes.List;
+         Subp_Body  : in out List_Of_Nodes.List)
       is
       begin
          case Nkind (N) is
@@ -214,9 +234,9 @@ package body ALFA.Filter is
       procedure Dispatch_Spec (N : Node_Id) is
       begin
          Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Spec_List,
-                          Subp_Spec  => Subp_Spec_List,
-                          Subp_Body  => Subp_Body_List);
+                          Types_Vars => Types_Vars_Spec_Pack.WP_Decls,
+                          Subp_Spec  => Subp_Spec_Pack.WP_Decls,
+                          Subp_Body  => Subp_Body_Pack.WP_Decls);
       end Dispatch_Spec;
 
       -------------------
@@ -226,13 +246,24 @@ package body ALFA.Filter is
       procedure Dispatch_Body (N : Node_Id) is
       begin
          Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Body_List,
-                          Subp_Spec  => Subp_Body_List,
-                          Subp_Body  => Subp_Body_List);
+                          Types_Vars => Types_Vars_Body_Pack.WP_Decls,
+                          Subp_Spec  => Subp_Body_Pack.WP_Decls,
+                          Subp_Body  => Subp_Body_Pack.WP_Decls);
       end Dispatch_Body;
 
       Spec_Unit : Node_Id := Empty;
       Body_Unit : Node_Id := Empty;
+
+      procedure Add_With_Clause (P : out Why_Package; Name : String);
+
+      ---------------------
+      -- Add_With_Clause --
+      ---------------------
+
+      procedure Add_With_Clause (P : out Why_Package; Name : String) is
+      begin
+         P.WP_Context.Append (Name);
+      end Add_With_Clause;
 
    --  Start of processing for Filter_Compilation_Unit
 
@@ -281,225 +312,154 @@ package body ALFA.Filter is
                         and then Nkind (Right) /= N_Subprogram_Declaration);
             end "<";
 
-            package Put_Spec_First is new Generic_Sorting ("<");
+            package Put_Spec_First is new List_Of_Nodes.Generic_Sorting ("<");
 
          begin
-            Put_Spec_First.Sort (Subp_Body_List);
+            Put_Spec_First.Sort (Subp_Body_Pack.WP_Decls);
          end;
       end if;
 
-      declare
-         Types_Vars_Spec_P       : Node_Id;
-         Types_Vars_Body_P       : Node_Id;
-         Subp_Spec_P             : Node_Id;
-         Subp_Body_P             : Node_Id;
-         Context_Types_Vars_Spec : constant List_Id := New_List;
-         Context_Types_Vars_Body : constant List_Id := New_List;
-         Context_Subp_Spec       : constant List_Id := New_List;
-         Context_Subp_Body       : constant List_Id := New_List;
-         Types_Vars_Spec_Suffix  : constant String := "__types_vars_spec";
-         Types_Vars_Body_Suffix  : constant String := "__types_vars_body";
-         Subp_Spec_Suffix        : constant String := "__subp_spec";
-         Main_Suffix             : constant String := "__package";
+      --  Take into account dependencies
+      --  Add standard package only to types_vars for spec
+      Add_With_Clause (Types_Vars_Spec_Pack, Standard_Why_Package_Name);
+      --  Add "vertical" dependencies for a single package
+      Add_With_Clause (Types_Vars_Body_Pack, Types_Vars_Spec_Name);
+      Add_With_Clause (Subp_Spec_Pack, Types_Vars_Body_Name);
+      Add_With_Clause (Subp_Body_Pack, Subp_Spec_Name);
 
-         procedure Add_Package_Decl (L : List_Id; N : Node_Id);
-         procedure Add_Package_Decl (L : List_Id; Name : String);
-
-         ----------------------
-         -- Add_Package_Decl --
-         ----------------------
-
-         procedure Add_Package_Decl (L : List_Id; N : Node_Id)
-         is
+      --  for each with clause in the package spec, add horizontal
+      --  dependencies between spec packages
+      if Present (Spec_Unit) then
+         declare
+            Cursor : Node_Id := First (Context_Items (Spec_Unit));
          begin
-            Append (Make_With_Clause
-                    (No_Location, Defining_Unit_Name (Specification (N))),
-                    L);
-         end Add_Package_Decl;
-
-         procedure Add_Package_Decl (L : List_Id; Name : String)
-         is
-         begin
-            Append (
-               Make_With_Clause
-                  (No_Location,
-                   Make_Identifier (No_Location, New_Name_Id (Name))),
-               L);
-         end Add_Package_Decl;
-
-         Prefix           : constant String :=
-            File_Name_Without_Suffix (Sloc (N));
-         Standard_Dummy_P : constant Node_Id :=
-            Make_Package_Spec_From_Decls
-               (Name => "_standard",
-                Decls => Nlists.Empty_List);
-      begin
-         Types_Vars_Spec_P :=
-           Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Spec_List),
-              Name  => Prefix & Types_Vars_Spec_Suffix);
-         Types_Vars_Body_P :=
-           Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Body_List),
-              Name  => Prefix & Types_Vars_Body_Suffix);
-         Subp_Spec_P :=
-           Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Subp_Spec_List),
-              Name  => Prefix & Subp_Spec_Suffix);
-         Subp_Body_P :=
-           Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Subp_Body_List),
-              Name  => Prefix & Main_Suffix);
-
-         --  Take into account dependencies
-         --  Add standard package only to types_vars for spec
-         Add_Package_Decl (Context_Types_Vars_Spec, Standard_Dummy_P);
-         --  Add "vertical" dependencies for a single package
-         Add_Package_Decl (Context_Types_Vars_Body, Types_Vars_Spec_P);
-         Add_Package_Decl (Context_Subp_Spec, Types_Vars_Body_P);
-         Add_Package_Decl (Context_Subp_Body, Subp_Spec_P);
-
-         --  for each with clause in the package spec, add horizontal
-         --  dependencies between spec packages
-         if Present (Spec_Unit) then
-            declare
-               Cursor : Node_Id := First (Context_Items (Spec_Unit));
-            begin
-               while Present (Cursor) loop
-                  case Nkind (Cursor) is
-                     when N_With_Clause =>
-                        if not Implicit_With (Cursor)
-                          and then
-                            not Is_From_Standard_Library
-                              (Sloc (Library_Unit (Cursor)))
-                        then
-                           declare
-                              Pkg_Name : constant String :=
-                                           File_Name_Without_Suffix
-                                             (Sloc (Library_Unit (Cursor)));
-                           begin
-                              Add_Package_Decl
-                                (Context_Types_Vars_Spec,
-                                 Pkg_Name &
-                                    Types_Vars_Spec_Suffix);
-                              Add_Package_Decl
-                                (Context_Subp_Spec,
-                                 Pkg_Name & Subp_Spec_Suffix);
-                           end;
-                        end if;
-
-                     when others =>
-                        null;
-                  end case;
-                  Next (Cursor);
-               end loop;
-            end;
-         end if;
-
-         --  Add diagonal dependencies for spec -> body dependencies
-         if Present (Body_Unit) then
-            declare
-               Cursor : Node_Id := First (Context_Items (Body_Unit));
-            begin
-               while Present (Cursor) loop
-                  case Nkind (Cursor) is
-                     when N_With_Clause =>
+            while Present (Cursor) loop
+               case Nkind (Cursor) is
+                  when N_With_Clause =>
+                     if not Implicit_With (Cursor)
+                       and then
+                         not Is_From_Standard_Library
+                           (Sloc (Library_Unit (Cursor)))
+                     then
                         declare
                            Pkg_Name : constant String :=
                                         File_Name_Without_Suffix
                                           (Sloc (Library_Unit (Cursor)));
                         begin
-                           if not Implicit_With (Cursor)
-                             and then
-                               not Is_From_Standard_Library
-                                 (Sloc (Library_Unit (Cursor)))
-                           then
-                              Add_Package_Decl
-                                (Context_Types_Vars_Body,
-                                 Pkg_Name & Types_Vars_Spec_Suffix);
-                              Add_Package_Decl
-                                (Context_Subp_Spec,
-                                 Pkg_Name & Types_Vars_Body_Suffix);
-                              Add_Package_Decl
-                                (Context_Subp_Body,
-                                 Pkg_Name & Subp_Spec_Suffix);
-                           end if;
+                           Add_With_Clause
+                              (Types_Vars_Spec_Pack,
+                               Pkg_Name & Types_Vars_Spec_Suffix);
+                           Add_With_Clause
+                              (Subp_Spec_Pack,
+                               Pkg_Name & Subp_Spec_Suffix);
                         end;
+                     end if;
 
-                     when others =>
-                        null;
-
-                  end case;
-                  Next (Cursor);
-               end loop;
-            end;
-         end if;
-
-         --  If the current package is a child package, add the implicit with
-         --  clause from the child spec to the parent spec
-         declare
-            Def_Unit_Name : Node_Id := Empty;
-         begin
-            case Nkind (Unit (N)) is
-               when N_Package_Declaration =>
-                  Def_Unit_Name :=
-                     Defining_Unit_Name (Specification (Unit (N)));
-
-               when N_Package_Body =>
-                  Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
-
-               when others =>
-                  null;
-            end case;
-
-            if Present (Def_Unit_Name) and then
-               Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
-                  Add_Package_Decl
-                     (Context_Types_Vars_Spec,
-                      Get_Name_String (Chars (Name (Def_Unit_Name))) &
-                        Types_Vars_Spec_Suffix);
-            end if;
+                  when others =>
+                     null;
+               end case;
+               Next (Cursor);
+            end loop;
          end;
+      end if;
 
-         Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Spec_P,
-                                          Context => Context_Types_Vars_Spec);
-         Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Body_P,
-                                          Context => Context_Types_Vars_Body);
-         Make_Compilation_Unit_From_Decl (Decl    => Subp_Spec_P,
-                                          Context => Context_Subp_Spec);
-         Make_Compilation_Unit_From_Decl (Decl    => Subp_Body_P,
-                                          Context => Context_Subp_Body);
+      --  Add diagonal dependencies for spec -> body dependencies
+      if Present (Body_Unit) then
+         declare
+            Cursor : Node_Id := First (Context_Items (Body_Unit));
+         begin
+            while Present (Cursor) loop
+               case Nkind (Cursor) is
+                  when N_With_Clause =>
+                     declare
+                        Pkg_Name : constant String :=
+                                     File_Name_Without_Suffix
+                                       (Sloc (Library_Unit (Cursor)));
+                     begin
+                        if not Implicit_With (Cursor)
+                          and then
+                            not Is_From_Standard_Library
+                              (Sloc (Library_Unit (Cursor)))
+                        then
+                           Add_With_Clause
+                             (Types_Vars_Body_Pack,
+                              Pkg_Name & Types_Vars_Spec_Suffix);
+                           Add_With_Clause
+                             (Subp_Spec_Pack,
+                              Pkg_Name & Types_Vars_Body_Suffix);
+                           Add_With_Clause
+                             (Subp_Body_Pack,
+                              Pkg_Name & Subp_Spec_Suffix);
+                        end if;
+                     end;
+
+                  when others =>
+                     null;
+
+               end case;
+               Next (Cursor);
+            end loop;
+         end;
+      end if;
+
+      --  If the current package is a child package, add the implicit with
+      --  clause from the child spec to the parent spec
+      declare
+         Def_Unit_Name : Node_Id := Empty;
+      begin
+         case Nkind (Unit (N)) is
+            when N_Package_Declaration =>
+               Def_Unit_Name :=
+                  Defining_Unit_Name (Specification (Unit (N)));
+
+            when N_Package_Body =>
+               Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
+
+            when others =>
+               null;
+         end case;
+
+         if Present (Def_Unit_Name) and then
+            Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
+               Add_With_Clause
+                  (Types_Vars_Spec_Pack,
+                   Get_Name_String (Chars (Name (Def_Unit_Name))) &
+                     Types_Vars_Spec_Suffix);
+         end if;
       end;
+
+      ALFA_Compilation_Units.Append (Types_Vars_Spec_Pack);
+      ALFA_Compilation_Units.Append (Types_Vars_Body_Pack);
+      ALFA_Compilation_Units.Append (Subp_Spec_Pack);
+      ALFA_Compilation_Units.Append (Subp_Body_Pack);
    end Filter_Compilation_Unit;
 
    -----------------------------
    -- Filter_Standard_Package --
    -----------------------------
 
-   function Filter_Standard_Package return Node_Id is
+   function Filter_Standard_Package return List_Of_Nodes.List is
+      use List_Of_Nodes;
    begin
-      if Standard_Why_Package = Empty then
+      if Is_Empty (Standard_Why_Package) then
          declare
-            Decls_In_ALFA : constant List_Id := New_List;
-            Decl          : Node_Id;
+            Decl          : Node_Id :=
+               First (Visible_Declarations (
+                 Specification (Standard_Package_Node)));
          begin
-            Decl := First (Visible_Declarations
-                           (Specification
-                            (Standard_Package_Node)));
-
             while Present (Decl) loop
                case Nkind (Decl) is
                   when N_Full_Type_Declaration
                     | N_Subtype_Declaration =>
                      if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
-                        Append (New_Copy (Decl), Decls_In_ALFA);
+                        Standard_Why_Package.Append (Decl);
                      end if;
 
                   when N_Object_Declaration =>
                      if Object_Is_In_ALFA
                        (Unique (Defining_Entity (Decl)))
                      then
-                        Append (New_Copy (Decl), Decls_In_ALFA);
+                        Standard_Why_Package.Append (Decl);
                      end if;
 
                   when others =>
@@ -509,73 +469,11 @@ package body ALFA.Filter is
                Next (Decl);
             end loop;
 
-            Standard_Why_Package :=
-              Make_Package_Spec_From_Decls (Decls_In_ALFA,
-                                            Standard_Why_Package_Name);
          end;
       end if;
 
       return Standard_Why_Package;
    end Filter_Standard_Package;
-
-   -------------------------------------
-   -- Make_Compilation_Unit_From_Decl --
-   -------------------------------------
-
-   procedure Make_Compilation_Unit_From_Decl
-     (Decl    : Node_Id;
-      Context : List_Id) is
-   begin
-      ALFA_Compilation_Units.Append (
-        Make_Compilation_Unit (No_Location,
-          Context_Items   => Context,
-          Private_Present => False,
-          Unit            => Decl,
-          Aux_Decls_Node  =>
-            Make_Compilation_Unit_Aux (No_Location)));
-   end Make_Compilation_Unit_From_Decl;
-
-   ----------------------------------
-   -- Make_Package_Spec_From_Decls --
-   ----------------------------------
-
-   function Make_Package_Spec_From_Decls
-     (Decls : List_Id;
-      Name  : String) return Node_Id
-   is
-      Ent     : Entity_Id;
-      End_Lab : Node_Id;
-
-   begin
-      Ent :=
-        Make_Defining_Identifier (No_Location,
-          Chars => New_Name_Id (Name));
-      End_Lab := New_Occurrence_Of (Ent, No_Location);
-
-      return
-        Make_Package_Declaration (No_Location,
-          Specification =>
-            Make_Package_Specification (No_Location,
-              Defining_Unit_Name   => Ent,
-              Visible_Declarations => Decls,
-              End_Label            => End_Lab));
-   end Make_Package_Spec_From_Decls;
-
-   ----------------------------------
-   -- Node_List_From_List_Of_Nodes --
-   ----------------------------------
-
-   function Node_List_From_List_Of_Nodes (Nlist : List) return List_Id is
-      L : List_Id;
-
-   begin
-      L := New_List;
-      for N of Nlist loop
-         Append (New_Copy (N), L);
-      end loop;
-
-      return L;
-   end Node_List_From_List_Of_Nodes;
 
    ----------------------
    -- Traverse_Subtree --
