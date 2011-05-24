@@ -73,6 +73,9 @@ package Xkind_Tables is
    function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the mixed case name of the given node kind
 
+   function Default_Kind return Why_Node_Kind;
+   function Default_Kind return Wide_String;
+
    function Multiplicity_Suffix
      (Multiplicity : Id_Multiplicity)
      return Wide_String;

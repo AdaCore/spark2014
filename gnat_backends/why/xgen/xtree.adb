@@ -29,6 +29,7 @@ with Xkind_Ids;             use Xkind_Ids;
 with Xkind_Checks;          use Xkind_Checks;
 with Xkind_Conversions;     use Xkind_Conversions;
 with Xtree_Load;            use Xtree_Load;
+with Xtree_Decls;           use Xtree_Decls;
 with Xtree_Builders;        use Xtree_Builders;
 with Xtree_Accessors;       use Xtree_Accessors;
 with Xtree_Mutators;        use Xtree_Mutators;
@@ -45,16 +46,22 @@ begin
    Load_Sinfo;
    Load_Atree;
 
-   --  Production of packages from the kind/class lists
+   --  Production of packages for node kinds/classes/types
 
    Add ("Declare_Node_Kinds", Print_Node_Kinds'Access);
    Add ("Declare_Node_Classes", Print_Node_Classes'Access);
+   Add ("Declare_Node_Type", Print_Node_Type'Access);
+
+   Process ("why-new_sinfo.ads");
+   Process ("why-new_atree.ads");
+
+   --  Production of packages from the kind/class lists
+
    Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
    Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
    Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
    Add ("Declare_Derived_Ids", Print_Derived_Types'Access);
 
-   Process ("why-new_sinfo.ads");
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");
    Process ("why-opaque_ids.ads");
