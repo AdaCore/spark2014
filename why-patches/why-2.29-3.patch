@@ -1,13 +1,128 @@
-diff --git src/pretty.ml src/pretty.ml
-index fa7f846..d345c38 100644
---- src/pretty.ml
-+++ src/pretty.ml
-@@ -47,7 +47,7 @@ let push_decl ?(ergo=false) d =
-   if ergo
-   then Encoding.push ~encode_preds:false ~encode_funs:false d
-   else Encoding.push ~encode_preds:false ~encode_funs:false
--    ~encode_inductive:false ~encode_algtype:false d
-+    ~encode_inductive:false ~encode_algtype:true d
+diff --git src/main.ml src/main.ml
+index 7153240..99413f9 100644
+--- src/main.ml
++++ src/main.ml
+@@ -63,8 +63,9 @@ let reset () =
+     | Isabelle -> Isabelle.reset ()
+     | Hol4 -> Hol4.reset ()
+     | SmtLib ->  ()
+-    | Harvey | Simplify | Zenon | Z3 | CVCLite  | Gappa 
+-    | Ergo | Why | MultiWhy | Why3 | Dispatcher | WhyProject -> ()
++    | Harvey | Simplify | Zenon | Z3 | CVCLite  | Gappa
++    | Ergo | Why | MultiWhy | MultiAltergo | Why3 | Dispatcher | WhyProject ->
++          ()
  
- let iter = Encoding.iter
+ let add_loc = function
+   | Dtype (loc, s, _)
+@@ -101,7 +102,7 @@ let push_decl _vloc d =
+ 			-> Pretty.push_or_output_decl *)
+ 	  | Why | WhyProject -> Pretty.push_decl ~ergo:false
+           | Why3 -> Why3.push_decl
+-	  | Ergo -> Pretty.push_decl ~ergo:true
++	  | Ergo | MultiAltergo -> Pretty.push_decl ~ergo:true
+ 	  | Dispatcher -> 
+ (*
+ 	      (fun d ->
+@@ -164,8 +165,9 @@ let push_parameter id _v tv = match prover () with
+   | Coq _ -> 
+       if valid then Coq.push_parameter id tv
+   | Pvs | HolLight | Isabelle | Hol4 | Mizar
+-  | Harvey | Simplify | Zenon | Z3 | SmtLib | Gappa 
+-  | CVCLite | Ergo | Why | MultiWhy | Dispatcher | WhyProject | Why3 -> 
++  | Harvey | Simplify | Zenon | Z3 | SmtLib | Gappa
++  | CVCLite | Ergo | Why | MultiWhy | MultiAltergo
++  | Dispatcher | WhyProject | Why3 ->
+       ()
+ 
+ let output is_last fwe =
+@@ -198,7 +200,7 @@ let output is_last fwe =
+     | Ergo -> Pretty.output_file ~ergo:true (fwe ^ "_why.why")  
+     | Why -> Pretty.output_file ~ergo:false (fwe ^ "_why.why") 
+     | Why3 -> Why3.output_file fwe
+-    | MultiWhy -> Pretty.output_files fwe
++    | MultiWhy | MultiAltergo -> Pretty.output_files fwe
+     | WhyProject -> ignore(Pretty.output_project fwe)
+   end
+ 
+@@ -218,7 +220,7 @@ let encode q =
+     | Hol4 -> Hol4.push_decl d
+     | Gappa -> Gappa.push_decl d  
+     | Why | MultiWhy | WhyProject -> Pretty.push_decl d
+-    | Ergo -> Pretty.push_decl ~ergo:true d
++    | Ergo | MultiAltergo -> Pretty.push_decl ~ergo:true d
+     | Dispatcher -> Dispatcher.push_decl d      
+     | Harvey -> Harvey.push_decl d
+     | Simplify -> Simplify.push_decl d
+@@ -678,8 +680,8 @@ let deal_channel parsef cin =
+   if not parse_only then List.iter interp_decl p
+ 
+ let single_file () = match prover () with
+-  | Simplify | Harvey | Zenon | Z3 | CVCLite | Gappa | Dispatcher 
+-  | SmtLib | Ergo | Why | MultiWhy | WhyProject | Why3 -> true
++  | Simplify | Harvey | Zenon | Z3 | CVCLite | Gappa | Dispatcher
++  | SmtLib | Ergo | Why | MultiWhy | MultiAltergo | WhyProject | Why3 -> true
+   | Coq _ | Pvs | Mizar | Hol4 | HolLight | Isabelle -> false
+ 
+ let deal_file is_last f =
+diff --git src/options.ml src/options.ml
+index bd10ca4..bcd8c0b 100644
+--- src/options.ml
++++ src/options.ml
+@@ -141,7 +141,7 @@ let coq_version =
+ type prover =
+   | Coq of coq_version | Pvs | HolLight | Mizar | Harvey | Simplify | CVCLite
+   | SmtLib | Isabelle | Hol4 | Gappa | Zenon | Z3
+-  | Ergo | Why | MultiWhy | Why3 | Dispatcher | WhyProject
++  | Ergo | Why | MultiWhy | MultiAltergo | Why3 | Dispatcher | WhyProject
+ 
+ let prover_ = ref (Coq coq_version)
+ 
+@@ -240,7 +240,8 @@ Typing/Annotations/VCG options:
+   --locs f           reads source locations from file f
+   --default-locs     reads source locations from file basename.loc
+   --delete-old-vcs   delete files that originate from a previous call to Why on
+-                     the same file; active only when option --multi-why is given
++                     the same file; active only when option --multi-why or
++                     --multi-altergo is given
+   --phantom <name>   declare <name> as a phantom type
+ 
+ VC transformation options:
+@@ -298,6 +299,7 @@ Prover selection:
+   --why       selects the Why pretty-printer
+   --why3       selects the Why3 pretty-printer
+   --multi-why selects the Why pretty-printer, with one file per goal
++  --multi-altergo selects the Alt-Ergo pretty-printer, with one file per goal
+   --project   selects the Why project format, with one file per goal
+ 
+ Coq-specific options:
+@@ -389,6 +391,8 @@ let files =
+     | ("-why" | "--why") :: args -> prover_ := Why; parse args
+     | ("-why3" | "--why3") :: args -> prover_ := Why3; parse args
+     | ("-multi-why" | "--multi-why") :: args -> prover_ := MultiWhy; parse args
++    | ("-multi-altergo" | "--multi-altergo") :: args ->
++          prover_ := MultiAltergo; parse args
+     | ("-project" | "--project") :: args -> prover_ := WhyProject; parse args
+     | ("-gappa" | "--gappa") :: args -> prover_ := Gappa; parse args
+     | ("-show-time" | "--show-time") :: args -> show_time_ := true; parse args
+@@ -633,7 +637,7 @@ let wp_only = !wp_only_
+ let prover (* ?(ignore_gui=false) *) () =
+   if (* not ignore_gui &&*) !gui then Dispatcher else !prover_
+ let delete_old_vcs =
+-   !delete_old_vcs && prover () = MultiWhy
++   !delete_old_vcs && (let p = prover () in p = MultiWhy || p = MultiAltergo)
+ let valid = !valid_
+ let coq_tactic = !coq_tactic_
+ let coq_preamble = match !coq_preamble_ with
+diff --git src/options.mli src/options.mli
+index 4e675b0..c0e71c2 100644
+--- src/options.mli
++++ src/options.mli
+@@ -130,7 +130,7 @@ type coq_version = V7 | V8 | V81
+ type prover =
+   | Coq of coq_version | Pvs | HolLight | Mizar | Harvey | Simplify | CVCLite
+   | SmtLib | Isabelle | Hol4 | Gappa | Zenon | Z3
+-  | Ergo | Why | MultiWhy | Why3 | Dispatcher | WhyProject
++  | Ergo | Why | MultiWhy | MultiAltergo | Why3 | Dispatcher | WhyProject
+ 
+ val prover : (* ?ignore_gui:bool  -> *) unit -> prover
  
