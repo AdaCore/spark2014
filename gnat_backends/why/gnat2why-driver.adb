@@ -57,6 +57,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Conversions;       use Why.Conversions;
+with Why.Inter;             use Why.Inter;
 with Why.Types;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
@@ -307,11 +308,8 @@ package body Gnat2Why.Driver is
        Decls : List_Of_Nodes.List)
    is
       use List_Of_Nodes;
-      Decl : Node_Id;
-      Cur  : Cursor := First (Decls);
    begin
-      while Has_Element (Cur) loop
-         Decl := Element (Cur);
+      for Decl of Decls loop
          case Nkind (Decl) is
             when N_Full_Type_Declaration =>
                Why_Type_Decl_of_Full_Type_Decl
@@ -349,7 +347,6 @@ package body Gnat2Why.Driver is
                raise Not_Implemented;
          end case;
 
-         Next (Cur);
       end loop;
    end Translate_List_Of_Decls;
 

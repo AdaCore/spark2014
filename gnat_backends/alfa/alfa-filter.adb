@@ -62,38 +62,16 @@ package body ALFA.Filter is
       Types_Vars_Body_Suffix : constant String := "__types_vars_body";
       Subp_Spec_Suffix       : constant String := "__subp_spec";
       Main_Suffix            : constant String := "__package";
-      Types_Vars_Spec_Name   : constant String :=
-         Prefix & Types_Vars_Spec_Suffix;
-      Types_Vars_Body_Name   : constant String :=
-         Prefix & Types_Vars_Body_Suffix;
-      Subp_Spec_Name         : constant String := Prefix & Subp_Spec_Suffix;
-      Main_Name              : constant String := Prefix & Main_Suffix;
 
-      function Make_Empty_Why_Pack (S : String) return Why_Package;
-      --  Build an empty Why_Package with the given name
+      Types_Vars_Spec : Why_Package :=
+         Make_Empty_Why_Pack (Prefix & Types_Vars_Spec_Suffix);
+      Types_Vars_Body : Why_Package :=
+         Make_Empty_Why_Pack (Prefix & Types_Vars_Body_Suffix);
+      Subp_Spec       : Why_Package :=
+         Make_Empty_Why_Pack (Prefix & Subp_Spec_Suffix);
 
-      -------------------------
-      -- Make_Empty_Why_Pack --
-      -------------------------
-
-      function Make_Empty_Why_Pack (S : String) return Why_Package
-      is
-      begin
-         return
-           (WP_Name    => new String'(S),
-            WP_Context => String_Lists.Empty_List,
-            WP_Decls   => List_Of_Nodes.Empty_List);
-      end Make_Empty_Why_Pack;
-
-      Types_Vars_Spec_Pack   : Why_Package :=
-         Make_Empty_Why_Pack (Types_Vars_Spec_Name);
-      Types_Vars_Body_Pack   : Why_Package :=
-         Make_Empty_Why_Pack (Types_Vars_Body_Name);
-      Subp_Spec_Pack         : Why_Package :=
-         Make_Empty_Why_Pack (Subp_Spec_Name);
-
-      Subp_Body_Pack         : Why_Package :=
-         Make_Empty_Why_Pack (Main_Name);
+      Subp_Body       : Why_Package :=
+         Make_Empty_Why_Pack (Prefix & Main_Suffix);
 
       --  All subprogram definitions should end up in this package, as it
       --  corresponds to the only Why file which is not included by other Why
@@ -233,9 +211,9 @@ package body ALFA.Filter is
       procedure Dispatch_Spec (N : Node_Id) is
       begin
          Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Spec_Pack.WP_Decls,
-                          Subp_Spec  => Subp_Spec_Pack.WP_Decls,
-                          Subp_Body  => Subp_Body_Pack.WP_Decls);
+                          Types_Vars => Types_Vars_Spec.WP_Decls,
+                          Subp_Spec  => Subp_Spec.WP_Decls,
+                          Subp_Body  => Subp_Body.WP_Decls);
       end Dispatch_Spec;
 
       -------------------
@@ -245,24 +223,13 @@ package body ALFA.Filter is
       procedure Dispatch_Body (N : Node_Id) is
       begin
          Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Body_Pack.WP_Decls,
-                          Subp_Spec  => Subp_Body_Pack.WP_Decls,
-                          Subp_Body  => Subp_Body_Pack.WP_Decls);
+                          Types_Vars => Types_Vars_Body.WP_Decls,
+                          Subp_Spec  => Subp_Body.WP_Decls,
+                          Subp_Body  => Subp_Body.WP_Decls);
       end Dispatch_Body;
 
       Spec_Unit : Node_Id := Empty;
       Body_Unit : Node_Id := Empty;
-
-      procedure Add_With_Clause (P : out Why_Package; Name : String);
-
-      ---------------------
-      -- Add_With_Clause --
-      ---------------------
-
-      procedure Add_With_Clause (P : out Why_Package; Name : String) is
-      begin
-         P.WP_Context.Append (Name);
-      end Add_With_Clause;
 
    --  Start of processing for Filter_Compilation_Unit
 
@@ -314,17 +281,17 @@ package body ALFA.Filter is
             package Put_Spec_First is new List_Of_Nodes.Generic_Sorting ("<");
 
          begin
-            Put_Spec_First.Sort (Subp_Body_Pack.WP_Decls);
+            Put_Spec_First.Sort (Subp_Body.WP_Decls);
          end;
       end if;
 
       --  Take into account dependencies
       --  Add standard package only to types_vars for spec
-      Add_With_Clause (Types_Vars_Spec_Pack, Standard_Why_Package_Name);
+      Add_With_Clause (Types_Vars_Spec, Standard_Why_Package_Name);
       --  Add "vertical" dependencies for a single package
-      Add_With_Clause (Types_Vars_Body_Pack, Types_Vars_Spec_Name);
-      Add_With_Clause (Subp_Spec_Pack, Types_Vars_Body_Name);
-      Add_With_Clause (Subp_Body_Pack, Subp_Spec_Name);
+      Add_With_Clause (Types_Vars_Body, Types_Vars_Spec);
+      Add_With_Clause (Subp_Spec, Types_Vars_Body);
+      Add_With_Clause (Subp_Body, Subp_Spec);
 
       --  for each with clause in the package spec, add horizontal
       --  dependencies between spec packages
@@ -342,14 +309,14 @@ package body ALFA.Filter is
                      then
                         declare
                            Pkg_Name : constant String :=
-                                        File_Name_Without_Suffix
-                                          (Sloc (Library_Unit (Cursor)));
+                               File_Name_Without_Suffix
+                                 (Sloc (Library_Unit (Cursor)));
                         begin
                            Add_With_Clause
-                              (Types_Vars_Spec_Pack,
+                              (Types_Vars_Spec,
                                Pkg_Name & Types_Vars_Spec_Suffix);
                            Add_With_Clause
-                              (Subp_Spec_Pack,
+                              (Subp_Spec,
                                Pkg_Name & Subp_Spec_Suffix);
                         end;
                      end if;
@@ -381,13 +348,13 @@ package body ALFA.Filter is
                               (Sloc (Library_Unit (Cursor)))
                         then
                            Add_With_Clause
-                             (Types_Vars_Body_Pack,
+                             (Types_Vars_Body,
                               Pkg_Name & Types_Vars_Spec_Suffix);
                            Add_With_Clause
-                             (Subp_Spec_Pack,
+                             (Subp_Spec,
                               Pkg_Name & Types_Vars_Body_Suffix);
                            Add_With_Clause
-                             (Subp_Body_Pack,
+                             (Subp_Body,
                               Pkg_Name & Subp_Spec_Suffix);
                         end if;
                      end;
@@ -421,16 +388,16 @@ package body ALFA.Filter is
          if Present (Def_Unit_Name) and then
             Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
                Add_With_Clause
-                  (Types_Vars_Spec_Pack,
+                  (Types_Vars_Spec,
                    Get_Name_String (Chars (Name (Def_Unit_Name))) &
                      Types_Vars_Spec_Suffix);
          end if;
       end;
 
-      ALFA_Compilation_Units.Append (Types_Vars_Spec_Pack);
-      ALFA_Compilation_Units.Append (Types_Vars_Body_Pack);
-      ALFA_Compilation_Units.Append (Subp_Spec_Pack);
-      ALFA_Compilation_Units.Append (Subp_Body_Pack);
+      ALFA_Compilation_Units.Append (Types_Vars_Spec);
+      ALFA_Compilation_Units.Append (Types_Vars_Body);
+      ALFA_Compilation_Units.Append (Subp_Spec);
+      ALFA_Compilation_Units.Append (Subp_Body);
    end Filter_Compilation_Unit;
 
    -----------------------------

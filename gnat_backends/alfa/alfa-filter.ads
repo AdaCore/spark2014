@@ -23,25 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;                     use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
-with String_Utils; use String_Utils;
+with Why.Inter;                          use Why.Inter;
 
 package ALFA.Filter is
-
-   package List_Of_Nodes is new Doubly_Linked_Lists (Node_Id);
-   --  Standard list of nodes. It is better to use these, as a Node_Id can be
-   --  in any number of these lists, while it can be only in one List_Id.
-
-   type Why_Package_Kind is (WPK_Subprogram, WPK_Package);
-   type Why_Package is
-      record
-         WP_Name    : access String;
-         WP_Context : String_Lists.List;
-         WP_Decls   : List_Of_Nodes.List;
-      end record;
-
-   package List_Of_Why_Packs is new Doubly_Linked_Lists (Why_Package);
 
    ALFA_Compilation_Units : List_Of_Why_Packs.List;
 
