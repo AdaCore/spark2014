@@ -287,15 +287,7 @@ package body Gnat2Why.Driver is
       Current_Why_Output_File := File;
 
       Translate_Context (File, Pack.WP_Context);
-      case Pack.WP_Kind is
-         when WPK_Subprogram =>
-            Why_Decl_Of_Ada_Subprogram
-               (File,
-                Element (First (Pack.WP_Decls)));
-
-         when WPK_Package =>
-            Translate_List_Of_Decls (File, Pack.WP_Decls);
-      end case;
+      Translate_List_Of_Decls (File, Pack.WP_Decls);
 
       Open_Current_File (Unit_Name & ".mlw");
       Sprint_Why_Node (+File, Current_File);

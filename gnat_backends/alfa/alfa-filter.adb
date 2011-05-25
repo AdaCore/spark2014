@@ -80,8 +80,7 @@ package body ALFA.Filter is
       is
       begin
          return
-           (WP_Kind    => WPK_Package,
-            WP_Name    => new String'(S),
+           (WP_Name    => new String'(S),
             WP_Context => String_Lists.Empty_List,
             WP_Decls   => List_Of_Nodes.Empty_List);
       end Make_Empty_Why_Pack;

@@ -36,7 +36,6 @@ package ALFA.Filter is
    type Why_Package_Kind is (WPK_Subprogram, WPK_Package);
    type Why_Package is
       record
-         WP_Kind    : Why_Package_Kind;
          WP_Name    : access String;
          WP_Context : String_Lists.List;
          WP_Decls   : List_Of_Nodes.List;
