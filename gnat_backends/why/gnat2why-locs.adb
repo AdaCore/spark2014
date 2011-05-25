@@ -29,7 +29,6 @@ with Namet;                use Namet;
 with Sinput;               use Sinput;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Conversions;      use Why.Conversions;
 
 with String_Utils;         use String_Utils;
@@ -102,7 +101,7 @@ package body Gnat2Why.Locs is
       I    : constant W_Identifier_Id := L.Label_Ident;
       N    : constant Node_Id := Get_Ada_Node (+I);
       Loc  : constant Source_Ptr := Sloc (N);
-      Name : constant String := Get_Name_String (Get_Node (+I).Symbol);
+      Name : constant String := Get_Name_String (Identifier_Get_Symbol (I));
 
       --  beginning of processing for Print_Located_Label;
    begin
@@ -149,7 +148,7 @@ package body Gnat2Why.Locs is
             Cur_Elt : constant W_Identifier_Id :=
                Element (Position).Label_Ident;
          begin
-            P (O, Get_Name_String (Get_Node (+Cur_Elt).Symbol));
+            P (O, Get_Name_String (Identifier_Get_Symbol (Cur_Elt)));
             NL (O);
             Next (Position);
          end;
