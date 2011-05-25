@@ -157,15 +157,8 @@ package body ALFA.Filter is
                   end if;
                end;
 
-            when N_Full_Type_Declaration =>
-               if Type_Is_In_ALFA (Unique (Defining_Entity (N))) then
-                  Types_Vars.Append (N);
-               end if;
-
-            when N_Subtype_Declaration =>
-               if Type_Is_In_ALFA (Unique (Defining_Entity (N))) then
-                  Types_Vars.Append (N);
-               end if;
+            when N_Full_Type_Declaration | N_Subtype_Declaration =>
+               Types_Vars.Append (N);
 
             when N_Object_Declaration =>
                --  Local variables introduced by the compiler should remain

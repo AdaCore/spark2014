@@ -39,6 +39,7 @@ with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
@@ -312,16 +313,28 @@ package body Gnat2Why.Driver is
       for Decl of Decls loop
          case Nkind (Decl) is
             when N_Full_Type_Declaration =>
-               Why_Type_Decl_of_Full_Type_Decl
-                  (File,
-                   Defining_Identifier (Decl),
-                   Type_Definition (Decl));
+               if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+                  Why_Type_Decl_of_Full_Type_Decl
+                    (File,
+                     Defining_Identifier (Decl),
+                     Type_Definition (Decl));
+               else
+                  New_Abstract_Type
+                    (File,
+                     Unique_Name (Defining_Identifier (Decl)));
+               end if;
 
             when N_Subtype_Declaration =>
-               Why_Type_Decl_of_Subtype_Decl
-                  (File,
-                   Defining_Identifier (Decl),
-                   Subtype_Indication (Decl));
+               if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+                  Why_Type_Decl_of_Subtype_Decl
+                     (File,
+                      Defining_Identifier (Decl),
+                      Subtype_Indication (Decl));
+               else
+                  New_Abstract_Type
+                    (File,
+                     Unique_Name (Defining_Identifier (Decl)));
+               end if;
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
