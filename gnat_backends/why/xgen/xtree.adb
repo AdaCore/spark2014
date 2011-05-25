@@ -23,12 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Xkind_Load;            use Xkind_Load;
 with Xkind_Decls;           use Xkind_Decls;
 with Xkind_Ids;             use Xkind_Ids;
 with Xkind_Checks;          use Xkind_Checks;
 with Xkind_Conversions;     use Xkind_Conversions;
-with Xtree_Load;            use Xtree_Load;
+with Xtree_Sinfo;           use Xtree_Sinfo;
 with Xtree_Decls;           use Xtree_Decls;
 with Xtree_Builders;        use Xtree_Builders;
 with Xtree_Accessors;       use Xtree_Accessors;
@@ -43,9 +42,7 @@ procedure Xtree is
    --  builders, accessors/mutators, recursive traversal...
 
 begin
-   Load_Sinfo;
-   Load_Atree;
-
+   Build_AST;
    --  Production of xtree_sinfo.adb
    --  ??? To be cleaned up eventually
 
@@ -60,8 +57,8 @@ begin
    Add ("Declare_Node_Classes", Print_Node_Classes'Access);
    Add ("Declare_Node_Type", Print_Node_Type'Access);
 
-   Process ("why-new_sinfo.ads");
-   Process ("why-new_atree.ads");
+   Process ("why-sinfo.ads");
+   Process ("why-atree.ads");
 
    --  Production of packages from the kind/class lists
 

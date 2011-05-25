@@ -38,6 +38,8 @@ package body Xtree_Sinfo is
 
       --  AST
 
+      New_Common_Field ("Ada_Node", "Node_Id");
+
       _@Load_Fields@_
    end Build_AST;
 

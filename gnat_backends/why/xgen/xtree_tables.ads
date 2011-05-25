@@ -134,6 +134,10 @@ package Xtree_Tables is
    --  and Special_Field_None is there is no corresponding special field
    --  kind.
 
+   function Special_Field_Type
+     (Kind : Valid_Special_Field_Kind) return Wide_String;
+   --  Type name of the given special field kind
+
    ------------------
    -- Variant Part --
    ------------------
@@ -147,6 +151,8 @@ package Xtree_Tables is
    ----------------
    -- Operations --
    ----------------
+
+   procedure Register_Special_Fields;
 
    procedure New_Common_Field
      (Field_Name : Wide_String;

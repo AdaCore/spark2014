@@ -498,9 +498,39 @@ package body Xtree_Tables is
       Field_Kind   : Wide_String;
       Multiplicity : Id_Multiplicity) is
    begin
-      New_Field (Why_Tree_Info (Kind), True, Field_Name,
+      New_Field (Kind, Field_Name,
                  Id_Subtype (Field_Kind, Opaque, Multiplicity));
    end New_Field;
+
+   -----------------------------
+   -- Register_Special_Fields --
+   -----------------------------
+
+   procedure Register_Special_Fields is
+   begin
+      for Kind in Valid_Special_Field_Kind'Range loop
+         New_Field (Common_Fields,
+                    False,
+                    To_String (Kind),
+                    Special_Field_Type (Kind));
+      end loop;
+   end Register_Special_Fields;
+
+   ------------------------
+   -- Special_Field_Type --
+   ------------------------
+
+   function Special_Field_Type
+     (Kind : Valid_Special_Field_Kind) return Wide_String is
+   begin
+      case Kind is
+         when Special_Field_Link =>
+            return "Why_Node_Set";
+
+         when Special_Field_Checked =>
+            return "Boolean";
+      end case;
+   end Special_Field_Type;
 
    ---------------------------
    -- To_Special_Field_Kind --

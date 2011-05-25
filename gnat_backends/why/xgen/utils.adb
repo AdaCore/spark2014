@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,20 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Wide_Fixed;     use Ada.Strings.Wide_Fixed;
-with Asis.Text;                  use Asis.Text;
-with Ada.Strings;                use Ada.Strings;
-
 package body Utils is
-
-   ---------
-   -- Img --
-   ---------
-
-   function Img (Element : Asis.Element) return Wide_String is
-   begin
-      return Trim (Asis.Text.Element_Image (Element), Both);
-   end Img;
 
    ------------------
    -- Strip_Prefix --
