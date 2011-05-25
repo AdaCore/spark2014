@@ -168,12 +168,16 @@ package body ALFA.Definition is
    --    . a subprogram spec (even when treating the subprogram body)
    --    . a variable (when treating initializing expression)
    --    . a type (when treating a type declaration)
-   --    . null (for a logical scope)
 
-   type Scope_Record is record
-      Entity     : Unique_Entity_Id;
-      Is_Body    : Boolean;  --  True when treating a package/subprogram body
-      Is_Logic   : Boolean;  --  True for assertions, pre- and postconditions
+   --  Is_Logic is True for assertions, pre- and postconditions
+   type Scope_Record (Is_Logic : Boolean := False) is record
+      case Is_Logic is
+         when False =>
+            Entity  : Unique_Entity_Id;
+            Is_Body : Boolean;  --  True for a package/subprogram body
+         when True =>
+            null;
+      end case;
    end record;
 
    First_Scope_Index : constant := 0;
@@ -188,10 +192,6 @@ package body ALFA.Definition is
 
    function Current_Scope return Scope_Record;
    --  Return the top-most scope that is not null
-
-   function Previous_Scope return Scope_Record;
-   --  Return the top-most scope that is not null after skipping the current
-   --  scope.
 
    function In_Logic_Scope return Boolean is
      (for some S in First_Scope_Index .. Scope_Stack.Last =>
@@ -273,6 +273,12 @@ package body ALFA.Definition is
       with procedure Mark_Body_Violations (E : Unique_Entity_Id) is <>;
       with procedure Mark_Spec_Violations (E : Unique_Entity_Id) is <>;
    procedure Mark_Violations (Scop : Scope_Record);
+   --  Helper procedure called in Mark_Non_ALFA
+
+   generic
+      with procedure Mark_Body_Violations (E : Unique_Entity_Id) is <>;
+      with procedure Mark_Spec_Violations (E : Unique_Entity_Id) is <>;
+   procedure Mark_Violations_For_All_Scopes;
    --  Helper procedure called in Mark_Non_ALFA
 
    --  Special treatment for marking some kinds of nodes
@@ -418,19 +424,7 @@ package body ALFA.Definition is
    -------------------
 
    function Current_Scope return Scope_Record is
-      Idx : Int := Scope_Stack.Last;
-
-   begin
-      while Idx /= First_Scope_Index - 1
-        and then No (+Scope_Stack.Table (Idx).Entity)
-      loop
-         Idx := Idx - 1;
-      end loop;
-
-      pragma Assert (Idx /= First_Scope_Index - 1);
-
-      return Scope_Stack.Table (Idx);
-   end Current_Scope;
+     (Scope_Stack.Table (Scope_Stack.Last));
 
    -------------------------------------
    -- Formal_Proof_Currently_Disabled --
@@ -459,15 +453,17 @@ package body ALFA.Definition is
    function Formal_Proof_Currently_Forced return Boolean is
    begin
       for Idx in reverse Scope_Stack.First .. Scope_Stack.Last loop
-         declare
-            E : constant Unique_Entity_Id := Scope_Stack.Table (Idx).Entity;
-         begin
-            if Formal_Proof_On.Contains (+E) then
-               return True;
-            elsif Formal_Proof_Off.Contains (+E) then
-               return False;
-            end if;
-         end;
+         if not Scope_Stack.Table (Idx).Is_Logic then
+            declare
+               E : constant Unique_Entity_Id := Scope_Stack.Table (Idx).Entity;
+            begin
+               if Formal_Proof_On.Contains (+E) then
+                  return True;
+               elsif Formal_Proof_Off.Contains (+E) then
+                  return False;
+               end if;
+            end;
+         end if;
       end loop;
       return False;
    end Formal_Proof_Currently_Forced;
@@ -1260,7 +1256,7 @@ package body ALFA.Definition is
          Spec_Violations (V).Include (+E);
       end Mark_Spec_Violations;
 
-      procedure Mark_Scope is new Mark_Violations;
+      procedure Mark_All_Scopes is new Mark_Violations_For_All_Scopes;
 
    begin
       --  If formal proof is forced and node N is not compiler-generated, then
@@ -1273,10 +1269,7 @@ package body ALFA.Definition is
          Error_Msg_F (Complete_Error_Msg (Msg, V), N);
       end if;
 
-      Mark_Scope (Current_Scope);
-      if Ekind (+Current_Scope.Entity) in Type_Kind then
-         Mark_Scope (Previous_Scope);
-      end if;
+      Mark_All_Scopes;
    end Mark_Non_ALFA;
 
    procedure Mark_Non_ALFA
@@ -1297,7 +1290,7 @@ package body ALFA.Definition is
          Inherit_Violations (Spec_Violations, From => From, To => E);
       end Mark_Spec_Violations;
 
-      procedure Mark_Scope is new Mark_Violations;
+      procedure Mark_All_Scopes is new Mark_Violations_For_All_Scopes;
 
    begin
       --  If formal proof is forced and node N is not compiler-generated, then
@@ -1331,10 +1324,7 @@ package body ALFA.Definition is
          end if;
       end if;
 
-      Mark_Scope (Current_Scope);
-      if Ekind (+Current_Scope.Entity) in Type_Kind then
-         Mark_Scope (Previous_Scope);
-      end if;
+      Mark_All_Scopes;
    end Mark_Non_ALFA;
 
    -------------------------------
@@ -2101,9 +2091,14 @@ package body ALFA.Definition is
    ---------------------
 
    procedure Mark_Violations (Scop : Scope_Record) is
-      Ent : constant Unique_Entity_Id := Scop.Entity;
+      Ent : Unique_Entity_Id;
 
    begin
+      if Scop.Is_Logic then
+         return;
+      end if;
+
+      Ent := Scop.Entity;
       case Ekind (+Ent) is
 
          --  Detect violation in initialization of package-level object
@@ -2145,6 +2140,18 @@ package body ALFA.Definition is
       end case;
    end Mark_Violations;
 
+   ------------------------------------
+   -- Mark_Violations_For_All_Scopes --
+   ------------------------------------
+
+   procedure Mark_Violations_For_All_Scopes is
+      procedure Mark_Scope is new Mark_Violations;
+   begin
+      for S in First_Scope_Index .. Scope_Stack.Last loop
+         Mark_Scope (Scope_Stack.Table (S));
+      end loop;
+   end Mark_Violations_For_All_Scopes;
+
    ----------------------
    -- Mark_With_Clause --
    ----------------------
@@ -2181,33 +2188,6 @@ package body ALFA.Definition is
       Scope_Stack.Decrement_Last;
    end Pop_Scope;
 
-   --------------------
-   -- Previous_Scope --
-   --------------------
-
-   function Previous_Scope return Scope_Record is
-      Idx : Int := Scope_Stack.Last;
-
-   begin
-      while Idx /= -1
-        and then No (+Scope_Stack.Table (Idx).Entity)
-      loop
-         Idx := Idx - 1;
-      end loop;
-
-      Idx := Idx - 1;
-
-      while Idx /= -1
-        and then No (+Scope_Stack.Table (Idx).Entity)
-      loop
-         Idx := Idx - 1;
-      end loop;
-
-      pragma Assert (Idx /= -1);
-
-      return Scope_Stack.Table (Idx);
-   end Previous_Scope;
-
    ----------------------
    -- Push_Logic_Scope --
    ----------------------
@@ -2215,10 +2195,7 @@ package body ALFA.Definition is
    procedure Push_Logic_Scope is
    begin
       Scope_Stack.Increment_Last;
-      Scope_Stack.Table (Scope_Stack.Last) :=
-        Scope_Record'(Entity     => Unique_Entity_Id (Empty),
-                      Is_Body    => False,
-                      Is_Logic   => True);
+      Scope_Stack.Table (Scope_Stack.Last) := Scope_Record'(Is_Logic => True);
    end Push_Logic_Scope;
 
    ----------------
