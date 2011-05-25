@@ -24,8 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Types;         use Types;
-with Why.Gen.Types; use Why.Gen.Types;
 with Why.Ids;       use Why.Ids;
+with Why.Inter;     use Why.Inter;
 
 package Gnat2Why.Subprograms is
 

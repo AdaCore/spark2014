@@ -58,4 +58,19 @@ package Why.Inter is
    procedure Add_With_Clause (P : out Why_Package; Other : Why_Package);
    --  Add a package name to the context of a Why package.
 
+   type Why_Type_Enum is (Why_Int, Why_Abstract);
+   type Why_Type (Kind : Why_Type_Enum := Why_Int) is
+      record
+         case Kind is
+            when Why_Int =>
+               null;
+            when Why_Abstract =>
+               Wh_Abstract : Node_Id;
+         end case;
+      end record;
+   --  The type of Why types, as used by the translation process; A type in
+   --  Why is either the builtin "int" type or a node that corresponds to a
+   --  N_Defining_Identifier of an Ada type
+
+   Why_Int_Type : constant Why_Type (Why_Int) := (Kind => Why_Int);
 end Why.Inter;
