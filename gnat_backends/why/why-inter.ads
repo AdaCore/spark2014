@@ -73,4 +73,6 @@ package Why.Inter is
    --  N_Defining_Identifier of an Ada type
 
    Why_Int_Type : constant Why_Type (Why_Int) := (Kind => Why_Int);
+
+   function Why_Abstract (N : Node_Id) return Why_Type;
 end Why.Inter;

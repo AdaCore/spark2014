@@ -52,4 +52,14 @@ package body Why.Inter is
          WP_Decls   => List_Of_Nodes.Empty_List);
    end Make_Empty_Why_Pack;
 
+   ------------------
+   -- Why_Abstract --
+   ------------------
+
+   function Why_Abstract (N : Node_Id) return Why_Type
+   is
+   begin
+      return (Kind => Why_Abstract, Wh_Abstract => N);
+   end Why_Abstract;
+
 end Why.Inter;

@@ -765,7 +765,7 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type
    is
    begin
-      return (Why_Abstract, Type_Of_Node (N));
+      return Why_Abstract (Type_Of_Node (N));
    end Type_Of_Node;
 
    --------------------------------
@@ -1290,7 +1290,7 @@ package body Gnat2Why.Subprograms is
       --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
       case Ekind (Etype (Enum)) is
          when E_Enumeration_Subtype =>
-            Current_Type := (Why_Abstract, Etype (Entity (Enum)));
+            Current_Type := Why_Abstract (Etype (Entity (Enum)));
 
          when others =>
             null;
@@ -1332,7 +1332,7 @@ package body Gnat2Why.Subprograms is
                     Def      => New_Integer_Constant
                                   (Ada_Node => Expr,
                                    Value    => Intval (Expr)));
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
 
          when N_Identifier | N_Expanded_Name =>
             --  Deal with identifiers:
@@ -1366,7 +1366,7 @@ package body Gnat2Why.Subprograms is
                         T := New_Prog_Identifier (Ada_Node => Expr, Def => Id);
                      end if;
                      if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                        Current_Type := (Kind => Why_Int);
+                        Current_Type := Why_Int_Type;
                      end if;
 
                end case;
@@ -1396,7 +1396,7 @@ package body Gnat2Why.Subprograms is
                   (Ada_Node => Expr,
                    Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
                    Operand  => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
             T :=
@@ -1405,7 +1405,7 @@ package body Gnat2Why.Subprograms is
                   Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
                   Left     => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
                   Right    => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
             Overflow_Check_Needed := True;
 
          when N_Op_Divide =>
@@ -1417,7 +1417,7 @@ package body Gnat2Why.Subprograms is
                      (1 => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
                       2 => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr))),
                   Reason   => VC_Division_By_Zero);
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
             Overflow_Check_Needed := True;
 
          when N_Op_Ge .. N_Op_Ne =>
@@ -1575,8 +1575,8 @@ package body Gnat2Why.Subprograms is
                                 Name       => Op_Name,
                                 Progs => (1 => Why_Expr_Of_Ada_Expr (Var)));
                            Current_Type :=
-                             (Why_Abstract,
-                                Etype (First (Subtype_Marks (Type_Definition
+                             Why_Abstract
+                               (Etype (First (Subtype_Marks (Type_Definition
                                 (Parent (Etype (Var)))))));
                         end;
                      else
@@ -1595,7 +1595,7 @@ package body Gnat2Why.Subprograms is
                                     New_Integer_Constant
                                        (Ada_Node => Expr,
                                         Value => Expr_Value (Val)));
-                           Current_Type := (Kind => Why_Int);
+                           Current_Type := Why_Int_Type;
                         end;
                      end if;
 
@@ -1636,7 +1636,7 @@ package body Gnat2Why.Subprograms is
                     Def      => New_Integer_Constant
                                   (Ada_Node => Expr,
                                    Value    => Char_Literal_Value (Expr)));
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
 
          when others =>
             raise Not_Implemented;
@@ -1645,9 +1645,9 @@ package body Gnat2Why.Subprograms is
       declare
          Base_Type : constant Why_Type :=
             (if Overflow_Check_Needed then
-               (Why_Abstract, Etype (Etype (Expr)))
+               Why_Abstract (Etype (Etype (Expr)))
             else
-               (Kind => Why_Int));
+               Why_Int_Type);
       begin
          return
            Insert_Conversion
@@ -1673,7 +1673,7 @@ package body Gnat2Why.Subprograms is
    function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
    is
    begin
-      return Why_Expr_Of_Ada_Expr (Expr, (Kind => Why_Int));
+      return Why_Expr_Of_Ada_Expr (Expr, Why_Int_Type);
    end Int_Expr_Of_Ada_Expr;
 
    ---------------------------
@@ -1682,7 +1682,7 @@ package body Gnat2Why.Subprograms is
 
    function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
    begin
-      return Why_Term_Of_Ada_Expr (Expr, (Why_Abstract, Standard_Boolean));
+      return Why_Term_Of_Ada_Expr (Expr, Why_Abstract (Standard_Boolean));
    end Bool_Term_Of_Ada_Expr;
 
    --------------------------
@@ -1692,7 +1692,7 @@ package body Gnat2Why.Subprograms is
    function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
    is
    begin
-      return Why_Term_Of_Ada_Expr (Expr, (Kind => Why_Int));
+      return Why_Term_Of_Ada_Expr (Expr, Why_Int_Type);
    end Int_Term_Of_Ada_Expr;
 
    --------------------------
@@ -2322,7 +2322,7 @@ package body Gnat2Why.Subprograms is
          when N_Integer_Literal =>
             T :=
               New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
-            Current_Type := (Kind => Why_Int);
+            Current_Type := Why_Int_Type;
 
          when N_Identifier | N_Expanded_Name =>
             --  The corresponding Why type of the identifier may be of
@@ -2339,7 +2339,7 @@ package body Gnat2Why.Subprograms is
                     Name     => Why_Ident_Of_Ada_Ident (Expr));
             end if;
             if Ekind (Entity (Expr)) = E_Loop_Parameter then
-               Current_Type := (Kind => Why_Int);
+               Current_Type := Why_Int_Type;
             end if;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
@@ -2453,7 +2453,7 @@ package body Gnat2Why.Subprograms is
                            --  of the array index, but this is incorrect for
                            --  superflat arrays
                            Current_Type :=
-                              (Why_Abstract,
+                              Why_Abstract (
                                  Etype (First (Subtype_Marks (Type_Definition
                                  (Parent (Etype (Var)))))));
                         end;
@@ -2471,7 +2471,7 @@ package body Gnat2Why.Subprograms is
                               New_Integer_Constant
                                  (Ada_Node => Expr,
                                   Value => Expr_Value (Val));
-                           Current_Type := (Kind => Why_Int);
+                           Current_Type := Why_Int_Type;
                         end;
                      end if;
 
