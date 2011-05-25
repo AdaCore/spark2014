@@ -58,11 +58,11 @@ package body Why.Gen.Terms is
             Insert_Conversion_Term
                (Ada_Node => Ada_Node,
                 To       => To,
-                From     => (Kind => Why_Int),
+                From     => Why_Int_Type,
                 Why_Term =>
                   Insert_Conversion_Term
                     (Ada_Node => Ada_Node,
-                     To       => (Kind => Why_Int),
+                     To       => Why_Int_Type,
                      From     => From,
                      Why_Term => Why_Term));
       end if;

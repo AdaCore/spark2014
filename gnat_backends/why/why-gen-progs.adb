@@ -109,7 +109,7 @@ package body Why.Gen.Progs is
       return
         New_Prog_Call
           (Ada_Node => Ada_Node,
-           Name     => Conversion_Name (From => From, To => (Kind => Why_Int)),
+           Name     => Conversion_Name (From => From, To => Why_Int_Type),
            Progs    => (1 => Why_Expr));
    end Convert_To_Int;
 
@@ -129,7 +129,7 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Name     =>
             To_Program_Space
-              (Conversion_Name (From => (Kind => Why_Int), To => To)),
+              (Conversion_Name (From => Why_Int_Type, To => To)),
            Progs    => (1 => Why_Expr),
            Reason   => Reason);
    end Convert_From_Int;
@@ -143,7 +143,7 @@ package body Why.Gen.Progs is
        To                    : Why_Type;
        From                  : Why_Type;
        Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := (Kind => Why_Int)) return W_Prog_Id
+       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id
    is
    begin
       if Base_Type.Kind = Why_Int and then To = From then
@@ -176,11 +176,11 @@ package body Why.Gen.Progs is
             Insert_Conversion
                (Ada_Node => Ada_Node,
                 To       => To,
-                From     => (Kind => Why_Int),
+                From     => Why_Int_Type,
                 Why_Expr =>
                   Insert_Conversion
                     (Ada_Node => Ada_Node,
-                     To       => (Kind => Why_Int),
+                     To       => Why_Int_Type,
                      From     => From,
                      Why_Expr => Why_Expr));
       end if;

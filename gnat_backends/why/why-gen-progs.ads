@@ -45,7 +45,7 @@ package Why.Gen.Progs is
        To                    : Why_Type;
        From                  : Why_Type;
        Why_Expr              : W_Prog_Id;
-       Base_Type             : Why_Type := (Kind => Why_Int))
+       Base_Type              : Why_Type := Why_Int_Type)
        return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
