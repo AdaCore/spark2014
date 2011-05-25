@@ -68,11 +68,11 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          P (O, "Symbol: ");
          Relative_Indent (O, 1);
-         PL (O, Img (Get_Node (Node).Symbol));
+         PL (O, Img (Get_Node (Node).K1_Symbol));
          Relative_Indent (O, -1);
          P (O, "Entity: ");
          Relative_Indent (O, 1);
-         PL (O, Img (Get_Node (Node).Entity));
+         PL (O, Img (Get_Node (Node).K1_Entity));
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -278,7 +278,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AT_Name);
+            Get_Node (Node).K7_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -319,7 +319,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GFT_Name);
+            Get_Node (Node).K8_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -360,13 +360,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).GATC_Type_Chain);
+            Get_Node (Node).K9_Type_Chain);
          Relative_Indent (O, -1);
          P (O, "Name: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GATC_Name);
+            Get_Node (Node).K9_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -407,7 +407,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AT_Component_Type);
+            Get_Node (Node).K10_Component_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -448,7 +448,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RT_Aliased_Type);
+            Get_Node (Node).K11_Aliased_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -485,48 +485,48 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if not Is_Empty (Get_Node (Node).CS_Binders) then
+         if not Is_Empty (Get_Node (Node).K12_Binders) then
             P (O, "Binders: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).CS_Binders);
+               Get_Node (Node).K12_Binders);
             Relative_Indent (O, -1);
          end if;
-         if Get_Node (Node).CS_Precondition /= Why_Empty then
+         if Get_Node (Node).K12_Precondition /= Why_Empty then
             P (O, "Precondition: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).CS_Precondition);
+               Get_Node (Node).K12_Precondition);
             Relative_Indent (O, -1);
          end if;
-         if Get_Node (Node).CS_Result_Name /= Why_Empty then
+         if Get_Node (Node).K12_Result_Name /= Why_Empty then
             P (O, "Result_Name: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).CS_Result_Name);
+               Get_Node (Node).K12_Result_Name);
             Relative_Indent (O, -1);
          end if;
          P (O, "Return_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CS_Return_Type);
+            Get_Node (Node).K12_Return_Type);
          Relative_Indent (O, -1);
          P (O, "Effects: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CS_Effects);
+            Get_Node (Node).K12_Effects);
          Relative_Indent (O, -1);
-         if Get_Node (Node).CS_Postcondition /= Why_Empty then
+         if Get_Node (Node).K12_Postcondition /= Why_Empty then
             P (O, "Postcondition: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).CS_Postcondition);
+               Get_Node (Node).K12_Postcondition);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -566,7 +566,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          P (O, "Value: ");
          Relative_Indent (O, 1);
-         PL (O, Img (Get_Node (Node).IC_Value));
+         PL (O, Img (Get_Node (Node).K13_Value));
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -605,7 +605,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          P (O, "Value: ");
          Relative_Indent (O, 1);
-         PL (O, Img (Get_Node (Node).RC_Value));
+         PL (O, Img (Get_Node (Node).K14_Value));
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -745,19 +745,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AO_Left);
+            Get_Node (Node).K18_Left);
          Relative_Indent (O, -1);
          P (O, "Op: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AO_Op);
+            Get_Node (Node).K18_Op);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AO_Right);
+            Get_Node (Node).K18_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -798,7 +798,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).NT_Operand);
+            Get_Node (Node).K19_Operand);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -839,14 +839,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).TIL_Name);
+            Get_Node (Node).K20_Name);
          Relative_Indent (O, -1);
-         if Get_Node (Node).TIL_Label /= Why_Empty then
+         if Get_Node (Node).K20_Label /= Why_Empty then
             P (O, "Label: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).TIL_Label);
+               Get_Node (Node).K20_Label);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -888,13 +888,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).O_Name);
+            Get_Node (Node).K21_Name);
          Relative_Indent (O, -1);
          P (O, "Parameters: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).O_Parameters);
+            Get_Node (Node).K21_Parameters);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -935,13 +935,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).NT_Name);
+            Get_Node (Node).K22_Name);
          Relative_Indent (O, -1);
          P (O, "Term: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).NT_Term);
+            Get_Node (Node).K22_Term);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -982,19 +982,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CT_Condition);
+            Get_Node (Node).K23_Condition);
          Relative_Indent (O, -1);
          P (O, "Then_Part: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CT_Then_Part);
+            Get_Node (Node).K23_Then_Part);
          Relative_Indent (O, -1);
          P (O, "Else_Part: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CT_Else_Part);
+            Get_Node (Node).K23_Else_Part);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1035,13 +1035,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).MT_Term);
+            Get_Node (Node).K24_Term);
          Relative_Indent (O, -1);
          P (O, "Branches: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).MT_Branches);
+            Get_Node (Node).K24_Branches);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1082,19 +1082,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BT_Name);
+            Get_Node (Node).K25_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BT_Def);
+            Get_Node (Node).K25_Def);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BT_Context);
+            Get_Node (Node).K25_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1135,7 +1135,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BT_Term);
+            Get_Node (Node).K26_Term);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1407,7 +1407,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PID_Name);
+            Get_Node (Node).K34_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1448,13 +1448,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PIN_Name);
+            Get_Node (Node).K35_Name);
          Relative_Indent (O, -1);
          P (O, "Parameters: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).PIN_Parameters);
+            Get_Node (Node).K35_Parameters);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1495,34 +1495,34 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RT_Left);
+            Get_Node (Node).K36_Left);
          Relative_Indent (O, -1);
          P (O, "Op: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RT_Op);
+            Get_Node (Node).K36_Op);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RT_Right);
+            Get_Node (Node).K36_Right);
          Relative_Indent (O, -1);
-         if Get_Node (Node).RT_Op2 /= Why_Empty then
+         if Get_Node (Node).K36_Op2 /= Why_Empty then
             P (O, "Op2: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).RT_Op2);
+               Get_Node (Node).K36_Op2);
             Relative_Indent (O, -1);
          end if;
-         if Get_Node (Node).RT_Right2 /= Why_Empty then
+         if Get_Node (Node).K36_Right2 /= Why_Empty then
             P (O, "Right2: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).RT_Right2);
+               Get_Node (Node).K36_Right2);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -1564,13 +1564,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Left);
+            Get_Node (Node).K37_Left);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Right);
+            Get_Node (Node).K37_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1611,13 +1611,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Left);
+            Get_Node (Node).K38_Left);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Right);
+            Get_Node (Node).K38_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1658,13 +1658,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Left);
+            Get_Node (Node).K39_Left);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Right);
+            Get_Node (Node).K39_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1705,13 +1705,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Left);
+            Get_Node (Node).K40_Left);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ITOC_Right);
+            Get_Node (Node).K40_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1752,7 +1752,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).N_Operand);
+            Get_Node (Node).K41_Operand);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1793,19 +1793,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CPD_Condition);
+            Get_Node (Node).K42_Condition);
          Relative_Indent (O, -1);
          P (O, "Then_Part: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CPD_Then_Part);
+            Get_Node (Node).K42_Then_Part);
          Relative_Indent (O, -1);
          P (O, "Else_Part: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CPD_Else_Part);
+            Get_Node (Node).K42_Else_Part);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1846,19 +1846,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPD_Name);
+            Get_Node (Node).K43_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPD_Def);
+            Get_Node (Node).K43_Def);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPD_Context);
+            Get_Node (Node).K43_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1899,27 +1899,27 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).UQ_Variables);
+            Get_Node (Node).K44_Variables);
          Relative_Indent (O, -1);
          P (O, "Var_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).UQ_Var_Type);
+            Get_Node (Node).K44_Var_Type);
          Relative_Indent (O, -1);
-         if Get_Node (Node).UQ_Triggers /= Why_Empty then
+         if Get_Node (Node).K44_Triggers /= Why_Empty then
             P (O, "Triggers: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).UQ_Triggers);
+               Get_Node (Node).K44_Triggers);
             Relative_Indent (O, -1);
          end if;
          P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).UQ_Pred);
+            Get_Node (Node).K44_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -1960,19 +1960,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).EQ_Variables);
+            Get_Node (Node).K45_Variables);
          Relative_Indent (O, -1);
          P (O, "Var_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).EQ_Var_Type);
+            Get_Node (Node).K45_Var_Type);
          Relative_Indent (O, -1);
          P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).EQ_Pred);
+            Get_Node (Node).K45_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2013,13 +2013,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).NP_Name);
+            Get_Node (Node).K46_Name);
          Relative_Indent (O, -1);
          P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).NP_Pred);
+            Get_Node (Node).K46_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2060,7 +2060,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PP_Pred);
+            Get_Node (Node).K47_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2101,14 +2101,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PAT_Constr);
+            Get_Node (Node).K48_Constr);
          Relative_Indent (O, -1);
-         if not Is_Empty (Get_Node (Node).PAT_Args) then
+         if not Is_Empty (Get_Node (Node).K48_Args) then
             P (O, "Args: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).PAT_Args);
+               Get_Node (Node).K48_Args);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -2150,13 +2150,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).MC_Pattern);
+            Get_Node (Node).K49_Pattern);
          Relative_Indent (O, -1);
          P (O, "Term: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).MC_Term);
+            Get_Node (Node).K49_Term);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2197,7 +2197,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).TRS_Triggers);
+            Get_Node (Node).K50_Triggers);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2238,7 +2238,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).TRI_Terms);
+            Get_Node (Node).K51_Terms);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2473,34 +2473,34 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if Get_Node (Node).T_External /= Why_Empty then
+         if Get_Node (Node).K58_External /= Why_Empty then
             P (O, "External: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).T_External);
+               Get_Node (Node).K58_External);
             Relative_Indent (O, -1);
          end if;
-         if not Is_Empty (Get_Node (Node).T_Type_Parameters) then
+         if not Is_Empty (Get_Node (Node).K58_Type_Parameters) then
             P (O, "Type_Parameters: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).T_Type_Parameters);
+               Get_Node (Node).K58_Type_Parameters);
             Relative_Indent (O, -1);
          end if;
          P (O, "Name: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).T_Name);
+            Get_Node (Node).K58_Name);
          Relative_Indent (O, -1);
-         if Get_Node (Node).T_Definition /= Why_Empty then
+         if Get_Node (Node).K58_Definition /= Why_Empty then
             P (O, "Definition: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).T_Definition);
+               Get_Node (Node).K58_Definition);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -2538,25 +2538,25 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if Get_Node (Node).L_External /= Why_Empty then
+         if Get_Node (Node).K59_External /= Why_Empty then
             P (O, "External: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).L_External);
+               Get_Node (Node).K59_External);
             Relative_Indent (O, -1);
          end if;
          P (O, "Names: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).L_Names);
+            Get_Node (Node).K59_Names);
          Relative_Indent (O, -1);
          P (O, "Logic_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).L_Logic_Type);
+            Get_Node (Node).K59_Logic_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2597,25 +2597,25 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).F_Name);
+            Get_Node (Node).K60_Name);
          Relative_Indent (O, -1);
          P (O, "Binders: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).F_Binders);
+            Get_Node (Node).K60_Binders);
          Relative_Indent (O, -1);
          P (O, "Return_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).F_Return_Type);
+            Get_Node (Node).K60_Return_Type);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).F_Def);
+            Get_Node (Node).K60_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2656,19 +2656,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).P_Name);
+            Get_Node (Node).K61_Name);
          Relative_Indent (O, -1);
          P (O, "Binders: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).P_Binders);
+            Get_Node (Node).K61_Binders);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).P_Def);
+            Get_Node (Node).K61_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2709,19 +2709,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).I_Name);
+            Get_Node (Node).K62_Name);
          Relative_Indent (O, -1);
          P (O, "Logic_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).I_Logic_Type);
+            Get_Node (Node).K62_Logic_Type);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).I_Def);
+            Get_Node (Node).K62_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2762,13 +2762,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AX_Name);
+            Get_Node (Node).K63_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AX_Def);
+            Get_Node (Node).K63_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2809,13 +2809,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).G_Name);
+            Get_Node (Node).K64_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).G_Def);
+            Get_Node (Node).K64_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2885,19 +2885,19 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if not Is_Empty (Get_Node (Node).LT_Arg_Types) then
+         if not Is_Empty (Get_Node (Node).K66_Arg_Types) then
             P (O, "Arg_Types: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).LT_Arg_Types);
+               Get_Node (Node).K66_Arg_Types);
             Relative_Indent (O, -1);
          end if;
          P (O, "Return_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).LT_Return_Type);
+            Get_Node (Node).K66_Return_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2938,13 +2938,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).LB_Name);
+            Get_Node (Node).K67_Name);
          Relative_Indent (O, -1);
          P (O, "Param_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).LB_Param_Type);
+            Get_Node (Node).K67_Param_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -2985,13 +2985,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).IC_Name);
+            Get_Node (Node).K68_Name);
          Relative_Indent (O, -1);
          P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).IC_Pred);
+            Get_Node (Node).K68_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3032,7 +3032,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).Tr_Type_Definition);
+            Get_Node (Node).K69_Type_Definition);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3073,7 +3073,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).Adt_Constructors);
+            Get_Node (Node).K70_Constructors);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3114,14 +3114,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).C_Name);
+            Get_Node (Node).K71_Name);
          Relative_Indent (O, -1);
-         if not Is_Empty (Get_Node (Node).C_Arg_List) then
+         if not Is_Empty (Get_Node (Node).K71_Arg_List) then
             P (O, "Arg_List: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).C_Arg_List);
+               Get_Node (Node).K71_Arg_List);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -3159,28 +3159,28 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if not Is_Empty (Get_Node (Node).E_Reads) then
+         if not Is_Empty (Get_Node (Node).K72_Reads) then
             P (O, "Reads: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).E_Reads);
+               Get_Node (Node).K72_Reads);
             Relative_Indent (O, -1);
          end if;
-         if not Is_Empty (Get_Node (Node).E_Writes) then
+         if not Is_Empty (Get_Node (Node).K72_Writes) then
             P (O, "Writes: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).E_Writes);
+               Get_Node (Node).K72_Writes);
             Relative_Indent (O, -1);
          end if;
-         if not Is_Empty (Get_Node (Node).E_Raises) then
+         if not Is_Empty (Get_Node (Node).K72_Raises) then
             P (O, "Raises: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).E_Raises);
+               Get_Node (Node).K72_Raises);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -3222,14 +3222,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).POST_Pred);
+            Get_Node (Node).K73_Pred);
          Relative_Indent (O, -1);
-         if not Is_Empty (Get_Node (Node).POST_Handlers) then
+         if not Is_Empty (Get_Node (Node).K73_Handlers) then
             P (O, "Handlers: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).POST_Handlers);
+               Get_Node (Node).K73_Handlers);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -3271,13 +3271,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).EC_Exn_Case);
+            Get_Node (Node).K74_Exn_Case);
          Relative_Indent (O, -1);
          P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).EC_Pred);
+            Get_Node (Node).K74_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3318,7 +3318,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PC_Def);
+            Get_Node (Node).K75_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3359,7 +3359,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PI_Def);
+            Get_Node (Node).K76_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3400,7 +3400,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AE_Any_Type);
+            Get_Node (Node).K77_Any_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3441,7 +3441,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).D_Ref);
+            Get_Node (Node).K78_Ref);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3482,13 +3482,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).A_Name);
+            Get_Node (Node).K79_Name);
          Relative_Indent (O, -1);
          P (O, "Value: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).A_Value);
+            Get_Node (Node).K79_Value);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3529,13 +3529,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AA_Name);
+            Get_Node (Node).K80_Name);
          Relative_Indent (O, -1);
          P (O, "Index: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AA_Index);
+            Get_Node (Node).K80_Index);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3576,19 +3576,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AU_Name);
+            Get_Node (Node).K81_Name);
          Relative_Indent (O, -1);
          P (O, "Index: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AU_Index);
+            Get_Node (Node).K81_Index);
          Relative_Indent (O, -1);
          P (O, "Value: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AU_Value);
+            Get_Node (Node).K81_Value);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3629,19 +3629,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).IC_Left);
+            Get_Node (Node).K82_Left);
          Relative_Indent (O, -1);
          P (O, "Infix: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).IC_Infix);
+            Get_Node (Node).K82_Infix);
          Relative_Indent (O, -1);
          P (O, "Right: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).IC_Right);
+            Get_Node (Node).K82_Right);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3682,13 +3682,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PC_Prefix);
+            Get_Node (Node).K83_Prefix);
          Relative_Indent (O, -1);
          P (O, "Operand: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PC_Operand);
+            Get_Node (Node).K83_Operand);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3729,19 +3729,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Name);
+            Get_Node (Node).K84_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Def);
+            Get_Node (Node).K84_Def);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Context);
+            Get_Node (Node).K84_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3782,19 +3782,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Name);
+            Get_Node (Node).K85_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Def);
+            Get_Node (Node).K85_Def);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BPG_Context);
+            Get_Node (Node).K85_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3835,20 +3835,20 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CPG_Condition);
+            Get_Node (Node).K86_Condition);
          Relative_Indent (O, -1);
          P (O, "Then_Part: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).CPG_Then_Part);
+            Get_Node (Node).K86_Then_Part);
          Relative_Indent (O, -1);
-         if Get_Node (Node).CPG_Else_Part /= Why_Empty then
+         if Get_Node (Node).K86_Else_Part /= Why_Empty then
             P (O, "Else_Part: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).CPG_Else_Part);
+               Get_Node (Node).K86_Else_Part);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -3890,19 +3890,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).WL_Condition);
+            Get_Node (Node).K87_Condition);
          Relative_Indent (O, -1);
          P (O, "Annotation: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).WL_Annotation);
+            Get_Node (Node).K87_Annotation);
          Relative_Indent (O, -1);
          P (O, "Loop_Content: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).WL_Loop_Content);
+            Get_Node (Node).K87_Loop_Content);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3943,7 +3943,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).SS_Statements);
+            Get_Node (Node).K88_Statements);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3984,13 +3984,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).L_Name);
+            Get_Node (Node).K89_Name);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).L_Def);
+            Get_Node (Node).K89_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4031,13 +4031,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).AS_Preds);
+            Get_Node (Node).K90_Preds);
          Relative_Indent (O, -1);
          P (O, "Prog: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).AS_Prog);
+            Get_Node (Node).K90_Prog);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4078,13 +4078,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PA_Prog);
+            Get_Node (Node).K91_Prog);
          Relative_Indent (O, -1);
          P (O, "Post: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PA_Post);
+            Get_Node (Node).K91_Post);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4125,13 +4125,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PA_Prog);
+            Get_Node (Node).K92_Prog);
          Relative_Indent (O, -1);
          P (O, "Post: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PA_Post);
+            Get_Node (Node).K92_Post);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4172,19 +4172,19 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).FD_Binders);
+            Get_Node (Node).K93_Binders);
          Relative_Indent (O, -1);
          P (O, "Pre: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).FD_Pre);
+            Get_Node (Node).K93_Pre);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).FD_Def);
+            Get_Node (Node).K93_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4225,31 +4225,31 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BF_Name);
+            Get_Node (Node).K94_Name);
          Relative_Indent (O, -1);
          P (O, "Binders: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).BF_Binders);
+            Get_Node (Node).K94_Binders);
          Relative_Indent (O, -1);
          P (O, "Pre: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BF_Pre);
+            Get_Node (Node).K94_Pre);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BF_Def);
+            Get_Node (Node).K94_Def);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BF_Context);
+            Get_Node (Node).K94_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4290,13 +4290,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BR_Recfun);
+            Get_Node (Node).K95_Recfun);
          Relative_Indent (O, -1);
          P (O, "Context: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BR_Context);
+            Get_Node (Node).K95_Context);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4337,13 +4337,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PS_Name);
+            Get_Node (Node).K96_Name);
          Relative_Indent (O, -1);
          P (O, "Progs: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).PS_Progs);
+            Get_Node (Node).K96_Progs);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4384,14 +4384,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RS_Name);
+            Get_Node (Node).K97_Name);
          Relative_Indent (O, -1);
-         if Get_Node (Node).RS_Exn_Type /= Why_Empty then
+         if Get_Node (Node).K97_Exn_Type /= Why_Empty then
             P (O, "Exn_Type: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).RS_Exn_Type);
+               Get_Node (Node).K97_Exn_Type);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -4433,20 +4433,20 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RSWP_Name);
+            Get_Node (Node).K98_Name);
          Relative_Indent (O, -1);
          P (O, "Parameter: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RSWP_Parameter);
+            Get_Node (Node).K98_Parameter);
          Relative_Indent (O, -1);
-         if Get_Node (Node).RSWP_Exn_Type /= Why_Empty then
+         if Get_Node (Node).K98_Exn_Type /= Why_Empty then
             P (O, "Exn_Type: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).RSWP_Exn_Type);
+               Get_Node (Node).K98_Exn_Type);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -4488,13 +4488,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).TB_Prog);
+            Get_Node (Node).K99_Prog);
          Relative_Indent (O, -1);
          P (O, "Handler: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).TB_Handler);
+            Get_Node (Node).K99_Handler);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4531,12 +4531,12 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if Get_Node (Node).UC_Exn_Type /= Why_Empty then
+         if Get_Node (Node).K100_Exn_Type /= Why_Empty then
             P (O, "Exn_Type: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).UC_Exn_Type);
+               Get_Node (Node).K100_Exn_Type);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -4578,7 +4578,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BB_Prog);
+            Get_Node (Node).K101_Prog);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -4619,7 +4619,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).BB_Prog);
+            Get_Node (Node).K102_Prog);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5155,13 +5155,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).B_Names);
+            Get_Node (Node).K118_Names);
          Relative_Indent (O, -1);
          P (O, "Arg_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).B_Arg_Type);
+            Get_Node (Node).K118_Arg_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5202,37 +5202,37 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RF_Name);
+            Get_Node (Node).K119_Name);
          Relative_Indent (O, -1);
          P (O, "Binders: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).RF_Binders);
+            Get_Node (Node).K119_Binders);
          Relative_Indent (O, -1);
          P (O, "Return_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RF_Return_Type);
+            Get_Node (Node).K119_Return_Type);
          Relative_Indent (O, -1);
          P (O, "Variant: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RF_Variant);
+            Get_Node (Node).K119_Variant);
          Relative_Indent (O, -1);
          P (O, "Pre: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RF_Pre);
+            Get_Node (Node).K119_Pre);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).RF_Def);
+            Get_Node (Node).K119_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5269,20 +5269,20 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if Get_Node (Node).LA_Invariant /= Why_Empty then
+         if Get_Node (Node).K120_Invariant /= Why_Empty then
             P (O, "Invariant: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).LA_Invariant);
+               Get_Node (Node).K120_Invariant);
             Relative_Indent (O, -1);
          end if;
-         if Get_Node (Node).LA_Variant /= Why_Empty then
+         if Get_Node (Node).K120_Variant /= Why_Empty then
             P (O, "Variant: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).LA_Variant);
+               Get_Node (Node).K120_Variant);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -5324,14 +5324,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).WA_Def);
+            Get_Node (Node).K121_Def);
          Relative_Indent (O, -1);
-         if Get_Node (Node).WA_For_Id /= Why_Empty then
+         if Get_Node (Node).K121_For_Id /= Why_Empty then
             P (O, "For_Id: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).WA_For_Id);
+               Get_Node (Node).K121_For_Id);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -5373,21 +5373,21 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).H_Name);
+            Get_Node (Node).K122_Name);
          Relative_Indent (O, -1);
-         if Get_Node (Node).H_Parameter /= Why_Empty then
+         if Get_Node (Node).K122_Parameter /= Why_Empty then
             P (O, "Parameter: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).H_Parameter);
+               Get_Node (Node).K122_Parameter);
             Relative_Indent (O, -1);
          end if;
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).H_Def);
+            Get_Node (Node).K122_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5424,12 +5424,12 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if not Is_Empty (Get_Node (Node).F_Declarations) then
+         if not Is_Empty (Get_Node (Node).K123_Declarations) then
             P (O, "Declarations: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).F_Declarations);
+               Get_Node (Node).K123_Declarations);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -5471,27 +5471,27 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GB_Name);
+            Get_Node (Node).K124_Name);
          Relative_Indent (O, -1);
-         if not Is_Empty (Get_Node (Node).GB_Binders) then
+         if not Is_Empty (Get_Node (Node).K124_Binders) then
             P (O, "Binders: ");
             Relative_Indent (O, 1);
             Traverse_List
               (State,
-               Get_Node (Node).GB_Binders);
+               Get_Node (Node).K124_Binders);
             Relative_Indent (O, -1);
          end if;
          P (O, "Pre: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GB_Pre);
+            Get_Node (Node).K124_Pre);
          Relative_Indent (O, -1);
          P (O, "Def: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GB_Def);
+            Get_Node (Node).K124_Def);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5532,7 +5532,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GRB_Name);
+            Get_Node (Node).K125_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5569,25 +5569,25 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         if Get_Node (Node).PD_External /= Why_Empty then
+         if Get_Node (Node).K126_External /= Why_Empty then
             P (O, "External: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).PD_External);
+               Get_Node (Node).K126_External);
             Relative_Indent (O, -1);
          end if;
          P (O, "Names: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).PD_Names);
+            Get_Node (Node).K126_Names);
          Relative_Indent (O, -1);
          P (O, "Parameter_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PD_Parameter_Type);
+            Get_Node (Node).K126_Parameter_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5628,13 +5628,13 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GR_Name);
+            Get_Node (Node).K127_Name);
          Relative_Indent (O, -1);
          P (O, "Parameter_Type: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).GR_Parameter_Type);
+            Get_Node (Node).K127_Parameter_Type);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5675,14 +5675,14 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ED_Name);
+            Get_Node (Node).K128_Name);
          Relative_Indent (O, -1);
-         if Get_Node (Node).ED_Parameter /= Why_Empty then
+         if Get_Node (Node).K128_Parameter /= Why_Empty then
             P (O, "Parameter: ");
             Relative_Indent (O, 1);
             Traverse
               (State,
-               Get_Node (Node).ED_Parameter);
+               Get_Node (Node).K128_Parameter);
             Relative_Indent (O, -1);
          end if;
          Relative_Indent (O, -1);
@@ -5724,7 +5724,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).LD_Decl);
+            Get_Node (Node).K129_Decl);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -5765,7 +5765,7 @@ package body Why.Atree.Treepr is
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).ID_Name);
+            Get_Node (Node).K130_Name);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;

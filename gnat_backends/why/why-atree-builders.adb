@@ -47,9 +47,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.Symbol :=
+      Result.K1_Symbol :=
         Symbol;
-      Result.Entity :=
+      Result.K1_Entity :=
         Entity;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -172,9 +172,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         Name;
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -196,9 +196,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         Name;
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -222,7 +222,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -231,13 +231,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (Type_Chain (J)));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             Type_Chain (J));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         Name;
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -259,9 +259,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Component_Type :=
+      Result.K10_Component_Type :=
         Component_Type;
-      Set_Link (Result.AT_Component_Type, New_Id);
+      Set_Link (Result.K10_Component_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -283,9 +283,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Aliased_Type :=
+      Result.K11_Aliased_Type :=
         Aliased_Type;
-      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Set_Link (Result.K11_Aliased_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -312,7 +312,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CS_Binders := New_List;
+      Result.K12_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -321,25 +321,25 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.CS_Binders,
+           (Result.K12_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.CS_Binders, New_Id);
-      Result.CS_Precondition :=
+      Set_Link (Result.K12_Binders, New_Id);
+      Result.K12_Precondition :=
         Precondition;
-      Set_Link (Result.CS_Precondition, New_Id);
-      Result.CS_Result_Name :=
+      Set_Link (Result.K12_Precondition, New_Id);
+      Result.K12_Result_Name :=
         Result_Name;
-      Set_Link (Result.CS_Result_Name, New_Id);
-      Result.CS_Return_Type :=
+      Set_Link (Result.K12_Result_Name, New_Id);
+      Result.K12_Return_Type :=
         Return_Type;
-      Set_Link (Result.CS_Return_Type, New_Id);
-      Result.CS_Effects :=
+      Set_Link (Result.K12_Return_Type, New_Id);
+      Result.K12_Effects :=
         Effects;
-      Set_Link (Result.CS_Effects, New_Id);
-      Result.CS_Postcondition :=
+      Set_Link (Result.K12_Effects, New_Id);
+      Result.K12_Postcondition :=
         Postcondition;
-      Set_Link (Result.CS_Postcondition, New_Id);
+      Set_Link (Result.K12_Postcondition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -361,7 +361,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Value :=
+      Result.K13_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -384,7 +384,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RC_Value :=
+      Result.K14_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -469,15 +469,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AO_Left :=
+      Result.K18_Left :=
         Left;
-      Set_Link (Result.AO_Left, New_Id);
-      Result.AO_Op :=
+      Set_Link (Result.K18_Left, New_Id);
+      Result.K18_Op :=
         Op;
-      Set_Link (Result.AO_Op, New_Id);
-      Result.AO_Right :=
+      Set_Link (Result.K18_Op, New_Id);
+      Result.K18_Right :=
         Right;
-      Set_Link (Result.AO_Right, New_Id);
+      Set_Link (Result.K18_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -499,9 +499,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Operand :=
+      Result.K19_Operand :=
         Operand;
-      Set_Link (Result.NT_Operand, New_Id);
+      Set_Link (Result.K19_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -524,12 +524,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TIL_Name :=
+      Result.K20_Name :=
         Name;
-      Set_Link (Result.TIL_Name, New_Id);
-      Result.TIL_Label :=
+      Set_Link (Result.K20_Name, New_Id);
+      Result.K20_Label :=
         Label;
-      Set_Link (Result.TIL_Label, New_Id);
+      Set_Link (Result.K20_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -552,11 +552,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.O_Name :=
+      Result.K21_Name :=
         Name;
-      Set_Link (Result.O_Name, New_Id);
+      Set_Link (Result.K21_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.O_Parameters := New_List;
+      Result.K21_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -565,10 +565,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (Parameters (J)));
          Append
-           (Result.O_Parameters,
+           (Result.K21_Parameters,
             Parameters (J));
       end loop;
-      Set_Link (Result.O_Parameters, New_Id);
+      Set_Link (Result.K21_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -591,12 +591,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Name :=
+      Result.K22_Name :=
         Name;
-      Set_Link (Result.NT_Name, New_Id);
-      Result.NT_Term :=
+      Set_Link (Result.K22_Name, New_Id);
+      Result.K22_Term :=
         Term;
-      Set_Link (Result.NT_Term, New_Id);
+      Set_Link (Result.K22_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -620,15 +620,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CT_Condition :=
+      Result.K23_Condition :=
         Condition;
-      Set_Link (Result.CT_Condition, New_Id);
-      Result.CT_Then_Part :=
+      Set_Link (Result.K23_Condition, New_Id);
+      Result.K23_Then_Part :=
         Then_Part;
-      Set_Link (Result.CT_Then_Part, New_Id);
-      Result.CT_Else_Part :=
+      Set_Link (Result.K23_Then_Part, New_Id);
+      Result.K23_Else_Part :=
         Else_Part;
-      Set_Link (Result.CT_Else_Part, New_Id);
+      Set_Link (Result.K23_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -651,11 +651,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.MT_Term :=
+      Result.K24_Term :=
         Term;
-      Set_Link (Result.MT_Term, New_Id);
+      Set_Link (Result.K24_Term, New_Id);
       pragma Assert (Branches'Length > 0);
-      Result.MT_Branches := New_List;
+      Result.K24_Branches := New_List;
       for J in Branches'Range loop
          pragma Assert
            (Match_Case_Id_Kind_Valid
@@ -664,10 +664,10 @@ package body Why.Atree.Builders is
            (Match_Case_Id_Valid
             (Branches (J)));
          Append
-           (Result.MT_Branches,
+           (Result.K24_Branches,
             Branches (J));
       end loop;
-      Set_Link (Result.MT_Branches, New_Id);
+      Set_Link (Result.K24_Branches, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -691,15 +691,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Name :=
+      Result.K25_Name :=
         Name;
-      Set_Link (Result.BT_Name, New_Id);
-      Result.BT_Def :=
+      Set_Link (Result.K25_Name, New_Id);
+      Result.K25_Def :=
         Def;
-      Set_Link (Result.BT_Def, New_Id);
-      Result.BT_Context :=
+      Set_Link (Result.K25_Def, New_Id);
+      Result.K25_Context :=
         Context;
-      Set_Link (Result.BT_Context, New_Id);
+      Set_Link (Result.K25_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -721,9 +721,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Term :=
+      Result.K26_Term :=
         Term;
-      Set_Link (Result.BT_Term, New_Id);
+      Set_Link (Result.K26_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -885,9 +885,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PID_Name :=
+      Result.K34_Name :=
         Name;
-      Set_Link (Result.PID_Name, New_Id);
+      Set_Link (Result.K34_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -910,11 +910,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PIN_Name :=
+      Result.K35_Name :=
         Name;
-      Set_Link (Result.PIN_Name, New_Id);
+      Set_Link (Result.K35_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.PIN_Parameters := New_List;
+      Result.K35_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -923,10 +923,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (Parameters (J)));
          Append
-           (Result.PIN_Parameters,
+           (Result.K35_Parameters,
             Parameters (J));
       end loop;
-      Set_Link (Result.PIN_Parameters, New_Id);
+      Set_Link (Result.K35_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -952,21 +952,21 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Left :=
+      Result.K36_Left :=
         Left;
-      Set_Link (Result.RT_Left, New_Id);
-      Result.RT_Op :=
+      Set_Link (Result.K36_Left, New_Id);
+      Result.K36_Op :=
         Op;
-      Set_Link (Result.RT_Op, New_Id);
-      Result.RT_Right :=
+      Set_Link (Result.K36_Op, New_Id);
+      Result.K36_Right :=
         Right;
-      Set_Link (Result.RT_Right, New_Id);
-      Result.RT_Op2 :=
+      Set_Link (Result.K36_Right, New_Id);
+      Result.K36_Op2 :=
         Op2;
-      Set_Link (Result.RT_Op2, New_Id);
-      Result.RT_Right2 :=
+      Set_Link (Result.K36_Op2, New_Id);
+      Result.K36_Right2 :=
         Right2;
-      Set_Link (Result.RT_Right2, New_Id);
+      Set_Link (Result.K36_Right2, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -989,12 +989,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K37_Left :=
         Left;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K37_Left, New_Id);
+      Result.K37_Right :=
         Right;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K37_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1017,12 +1017,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K38_Left :=
         Left;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K38_Left, New_Id);
+      Result.K38_Right :=
         Right;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K38_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1045,12 +1045,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K39_Left :=
         Left;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K39_Left, New_Id);
+      Result.K39_Right :=
         Right;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K39_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1073,12 +1073,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K40_Left :=
         Left;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K40_Left, New_Id);
+      Result.K40_Right :=
         Right;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K40_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1100,9 +1100,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.N_Operand :=
+      Result.K41_Operand :=
         Operand;
-      Set_Link (Result.N_Operand, New_Id);
+      Set_Link (Result.K41_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1126,15 +1126,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPD_Condition :=
+      Result.K42_Condition :=
         Condition;
-      Set_Link (Result.CPD_Condition, New_Id);
-      Result.CPD_Then_Part :=
+      Set_Link (Result.K42_Condition, New_Id);
+      Result.K42_Then_Part :=
         Then_Part;
-      Set_Link (Result.CPD_Then_Part, New_Id);
-      Result.CPD_Else_Part :=
+      Set_Link (Result.K42_Then_Part, New_Id);
+      Result.K42_Else_Part :=
         Else_Part;
-      Set_Link (Result.CPD_Else_Part, New_Id);
+      Set_Link (Result.K42_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1158,15 +1158,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPD_Name :=
+      Result.K43_Name :=
         Name;
-      Set_Link (Result.BPD_Name, New_Id);
-      Result.BPD_Def :=
+      Set_Link (Result.K43_Name, New_Id);
+      Result.K43_Def :=
         Def;
-      Set_Link (Result.BPD_Def, New_Id);
-      Result.BPD_Context :=
+      Set_Link (Result.K43_Def, New_Id);
+      Result.K43_Context :=
         Context;
-      Set_Link (Result.BPD_Context, New_Id);
+      Set_Link (Result.K43_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1192,7 +1192,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.UQ_Variables := New_List;
+      Result.K44_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -1201,19 +1201,19 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Variables (J)));
          Append
-           (Result.UQ_Variables,
+           (Result.K44_Variables,
             Variables (J));
       end loop;
-      Set_Link (Result.UQ_Variables, New_Id);
-      Result.UQ_Var_Type :=
+      Set_Link (Result.K44_Variables, New_Id);
+      Result.K44_Var_Type :=
         Var_Type;
-      Set_Link (Result.UQ_Var_Type, New_Id);
-      Result.UQ_Triggers :=
+      Set_Link (Result.K44_Var_Type, New_Id);
+      Result.K44_Triggers :=
         Triggers;
-      Set_Link (Result.UQ_Triggers, New_Id);
-      Result.UQ_Pred :=
+      Set_Link (Result.K44_Triggers, New_Id);
+      Result.K44_Pred :=
         Pred;
-      Set_Link (Result.UQ_Pred, New_Id);
+      Set_Link (Result.K44_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1238,7 +1238,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.EQ_Variables := New_List;
+      Result.K45_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -1247,16 +1247,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Variables (J)));
          Append
-           (Result.EQ_Variables,
+           (Result.K45_Variables,
             Variables (J));
       end loop;
-      Set_Link (Result.EQ_Variables, New_Id);
-      Result.EQ_Var_Type :=
+      Set_Link (Result.K45_Variables, New_Id);
+      Result.K45_Var_Type :=
         Var_Type;
-      Set_Link (Result.EQ_Var_Type, New_Id);
-      Result.EQ_Pred :=
+      Set_Link (Result.K45_Var_Type, New_Id);
+      Result.K45_Pred :=
         Pred;
-      Set_Link (Result.EQ_Pred, New_Id);
+      Set_Link (Result.K45_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1279,12 +1279,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NP_Name :=
+      Result.K46_Name :=
         Name;
-      Set_Link (Result.NP_Name, New_Id);
-      Result.NP_Pred :=
+      Set_Link (Result.K46_Name, New_Id);
+      Result.K46_Pred :=
         Pred;
-      Set_Link (Result.NP_Pred, New_Id);
+      Set_Link (Result.K46_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1306,9 +1306,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PP_Pred :=
+      Result.K47_Pred :=
         Pred;
-      Set_Link (Result.PP_Pred, New_Id);
+      Set_Link (Result.K47_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1331,10 +1331,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PAT_Constr :=
+      Result.K48_Constr :=
         Constr;
-      Set_Link (Result.PAT_Constr, New_Id);
-      Result.PAT_Args := New_List;
+      Set_Link (Result.K48_Constr, New_Id);
+      Result.K48_Args := New_List;
       for J in Args'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -1343,10 +1343,10 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Args (J)));
          Append
-           (Result.PAT_Args,
+           (Result.K48_Args,
             Args (J));
       end loop;
-      Set_Link (Result.PAT_Args, New_Id);
+      Set_Link (Result.K48_Args, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1369,12 +1369,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.MC_Pattern :=
+      Result.K49_Pattern :=
         Pattern;
-      Set_Link (Result.MC_Pattern, New_Id);
-      Result.MC_Term :=
+      Set_Link (Result.K49_Pattern, New_Id);
+      Result.K49_Term :=
         Term;
-      Set_Link (Result.MC_Term, New_Id);
+      Set_Link (Result.K49_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1397,7 +1397,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Triggers'Length > 0);
-      Result.TRS_Triggers := New_List;
+      Result.K50_Triggers := New_List;
       for J in Triggers'Range loop
          pragma Assert
            (Trigger_Id_Kind_Valid
@@ -1406,10 +1406,10 @@ package body Why.Atree.Builders is
            (Trigger_Id_Valid
             (Triggers (J)));
          Append
-           (Result.TRS_Triggers,
+           (Result.K50_Triggers,
             Triggers (J));
       end loop;
-      Set_Link (Result.TRS_Triggers, New_Id);
+      Set_Link (Result.K50_Triggers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1432,7 +1432,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Terms'Length > 0);
-      Result.TRI_Terms := New_List;
+      Result.K51_Terms := New_List;
       for J in Terms'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -1441,10 +1441,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (Terms (J)));
          Append
-           (Result.TRI_Terms,
+           (Result.K51_Terms,
             Terms (J));
       end loop;
-      Set_Link (Result.TRI_Terms, New_Id);
+      Set_Link (Result.K51_Terms, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1589,10 +1589,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.T_External :=
+      Result.K58_External :=
         External;
-      Set_Link (Result.T_External, New_Id);
-      Result.T_Type_Parameters := New_List;
+      Set_Link (Result.K58_External, New_Id);
+      Result.K58_Type_Parameters := New_List;
       for J in Type_Parameters'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -1601,16 +1601,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Type_Parameters (J)));
          Append
-           (Result.T_Type_Parameters,
+           (Result.K58_Type_Parameters,
             Type_Parameters (J));
       end loop;
-      Set_Link (Result.T_Type_Parameters, New_Id);
-      Result.T_Name :=
+      Set_Link (Result.K58_Type_Parameters, New_Id);
+      Result.K58_Name :=
         Name;
-      Set_Link (Result.T_Name, New_Id);
-      Result.T_Definition :=
+      Set_Link (Result.K58_Name, New_Id);
+      Result.K58_Definition :=
         Definition;
-      Set_Link (Result.T_Definition, New_Id);
+      Set_Link (Result.K58_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1634,11 +1634,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_External :=
+      Result.K59_External :=
         External;
-      Set_Link (Result.L_External, New_Id);
+      Set_Link (Result.K59_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.L_Names := New_List;
+      Result.K59_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -1647,13 +1647,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Names (J)));
          Append
-           (Result.L_Names,
+           (Result.K59_Names,
             Names (J));
       end loop;
-      Set_Link (Result.L_Names, New_Id);
-      Result.L_Logic_Type :=
+      Set_Link (Result.K59_Names, New_Id);
+      Result.K59_Logic_Type :=
         Logic_Type;
-      Set_Link (Result.L_Logic_Type, New_Id);
+      Set_Link (Result.K59_Logic_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1678,11 +1678,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.F_Name :=
+      Result.K60_Name :=
         Name;
-      Set_Link (Result.F_Name, New_Id);
+      Set_Link (Result.K60_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.F_Binders := New_List;
+      Result.K60_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -1691,16 +1691,16 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.F_Binders,
+           (Result.K60_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.F_Binders, New_Id);
-      Result.F_Return_Type :=
+      Set_Link (Result.K60_Binders, New_Id);
+      Result.K60_Return_Type :=
         Return_Type;
-      Set_Link (Result.F_Return_Type, New_Id);
-      Result.F_Def :=
+      Set_Link (Result.K60_Return_Type, New_Id);
+      Result.K60_Def :=
         Def;
-      Set_Link (Result.F_Def, New_Id);
+      Set_Link (Result.K60_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1724,11 +1724,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.P_Name :=
+      Result.K61_Name :=
         Name;
-      Set_Link (Result.P_Name, New_Id);
+      Set_Link (Result.K61_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.P_Binders := New_List;
+      Result.K61_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -1737,13 +1737,13 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.P_Binders,
+           (Result.K61_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.P_Binders, New_Id);
-      Result.P_Def :=
+      Set_Link (Result.K61_Binders, New_Id);
+      Result.K61_Def :=
         Def;
-      Set_Link (Result.P_Def, New_Id);
+      Set_Link (Result.K61_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1767,14 +1767,14 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.I_Name :=
+      Result.K62_Name :=
         Name;
-      Set_Link (Result.I_Name, New_Id);
-      Result.I_Logic_Type :=
+      Set_Link (Result.K62_Name, New_Id);
+      Result.K62_Logic_Type :=
         Logic_Type;
-      Set_Link (Result.I_Logic_Type, New_Id);
+      Set_Link (Result.K62_Logic_Type, New_Id);
       pragma Assert (Def'Length > 0);
-      Result.I_Def := New_List;
+      Result.K62_Def := New_List;
       for J in Def'Range loop
          pragma Assert
            (Inductive_Case_Id_Kind_Valid
@@ -1783,10 +1783,10 @@ package body Why.Atree.Builders is
            (Inductive_Case_Id_Valid
             (Def (J)));
          Append
-           (Result.I_Def,
+           (Result.K62_Def,
             Def (J));
       end loop;
-      Set_Link (Result.I_Def, New_Id);
+      Set_Link (Result.K62_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1809,12 +1809,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AX_Name :=
+      Result.K63_Name :=
         Name;
-      Set_Link (Result.AX_Name, New_Id);
-      Result.AX_Def :=
+      Set_Link (Result.K63_Name, New_Id);
+      Result.K63_Def :=
         Def;
-      Set_Link (Result.AX_Def, New_Id);
+      Set_Link (Result.K63_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1837,12 +1837,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.G_Name :=
+      Result.K64_Name :=
         Name;
-      Set_Link (Result.G_Name, New_Id);
-      Result.G_Def :=
+      Set_Link (Result.K64_Name, New_Id);
+      Result.K64_Def :=
         Def;
-      Set_Link (Result.G_Def, New_Id);
+      Set_Link (Result.K64_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1885,7 +1885,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LT_Arg_Types := New_List;
+      Result.K66_Arg_Types := New_List;
       for J in Arg_Types'Range loop
          pragma Assert
            (Logic_Arg_Type_Id_Kind_Valid
@@ -1894,13 +1894,13 @@ package body Why.Atree.Builders is
            (Logic_Arg_Type_Id_Valid
             (Arg_Types (J)));
          Append
-           (Result.LT_Arg_Types,
+           (Result.K66_Arg_Types,
             Arg_Types (J));
       end loop;
-      Set_Link (Result.LT_Arg_Types, New_Id);
-      Result.LT_Return_Type :=
+      Set_Link (Result.K66_Arg_Types, New_Id);
+      Result.K66_Return_Type :=
         Return_Type;
-      Set_Link (Result.LT_Return_Type, New_Id);
+      Set_Link (Result.K66_Return_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1923,12 +1923,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LB_Name :=
+      Result.K67_Name :=
         Name;
-      Set_Link (Result.LB_Name, New_Id);
-      Result.LB_Param_Type :=
+      Set_Link (Result.K67_Name, New_Id);
+      Result.K67_Param_Type :=
         Param_Type;
-      Set_Link (Result.LB_Param_Type, New_Id);
+      Set_Link (Result.K67_Param_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1951,12 +1951,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Name :=
+      Result.K68_Name :=
         Name;
-      Set_Link (Result.IC_Name, New_Id);
-      Result.IC_Pred :=
+      Set_Link (Result.K68_Name, New_Id);
+      Result.K68_Pred :=
         Pred;
-      Set_Link (Result.IC_Pred, New_Id);
+      Set_Link (Result.K68_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1978,9 +1978,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.Tr_Type_Definition :=
+      Result.K69_Type_Definition :=
         Type_Definition;
-      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Set_Link (Result.K69_Type_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2003,7 +2003,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Constructors'Length > 0);
-      Result.Adt_Constructors := New_List;
+      Result.K70_Constructors := New_List;
       for J in Constructors'Range loop
          pragma Assert
            (Constr_Decl_Id_Kind_Valid
@@ -2012,10 +2012,10 @@ package body Why.Atree.Builders is
            (Constr_Decl_Id_Valid
             (Constructors (J)));
          Append
-           (Result.Adt_Constructors,
+           (Result.K70_Constructors,
             Constructors (J));
       end loop;
-      Set_Link (Result.Adt_Constructors, New_Id);
+      Set_Link (Result.K70_Constructors, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2038,10 +2038,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.C_Name :=
+      Result.K71_Name :=
         Name;
-      Set_Link (Result.C_Name, New_Id);
-      Result.C_Arg_List := New_List;
+      Set_Link (Result.K71_Name, New_Id);
+      Result.K71_Arg_List := New_List;
       for J in Arg_List'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -2050,10 +2050,10 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (Arg_List (J)));
          Append
-           (Result.C_Arg_List,
+           (Result.K71_Arg_List,
             Arg_List (J));
       end loop;
-      Set_Link (Result.C_Arg_List, New_Id);
+      Set_Link (Result.K71_Arg_List, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2077,7 +2077,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.E_Reads := New_List;
+      Result.K72_Reads := New_List;
       for J in Reads'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -2086,11 +2086,11 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Reads (J)));
          Append
-           (Result.E_Reads,
+           (Result.K72_Reads,
             Reads (J));
       end loop;
-      Set_Link (Result.E_Reads, New_Id);
-      Result.E_Writes := New_List;
+      Set_Link (Result.K72_Reads, New_Id);
+      Result.K72_Writes := New_List;
       for J in Writes'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -2099,11 +2099,11 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Writes (J)));
          Append
-           (Result.E_Writes,
+           (Result.K72_Writes,
             Writes (J));
       end loop;
-      Set_Link (Result.E_Writes, New_Id);
-      Result.E_Raises := New_List;
+      Set_Link (Result.K72_Writes, New_Id);
+      Result.K72_Raises := New_List;
       for J in Raises'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -2112,10 +2112,10 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Raises (J)));
          Append
-           (Result.E_Raises,
+           (Result.K72_Raises,
             Raises (J));
       end loop;
-      Set_Link (Result.E_Raises, New_Id);
+      Set_Link (Result.K72_Raises, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2138,10 +2138,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.POST_Pred :=
+      Result.K73_Pred :=
         Pred;
-      Set_Link (Result.POST_Pred, New_Id);
-      Result.POST_Handlers := New_List;
+      Set_Link (Result.K73_Pred, New_Id);
+      Result.K73_Handlers := New_List;
       for J in Handlers'Range loop
          pragma Assert
            (Exn_Condition_Id_Kind_Valid
@@ -2150,10 +2150,10 @@ package body Why.Atree.Builders is
            (Exn_Condition_Id_Valid
             (Handlers (J)));
          Append
-           (Result.POST_Handlers,
+           (Result.K73_Handlers,
             Handlers (J));
       end loop;
-      Set_Link (Result.POST_Handlers, New_Id);
+      Set_Link (Result.K73_Handlers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2176,12 +2176,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.EC_Exn_Case :=
+      Result.K74_Exn_Case :=
         Exn_Case;
-      Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Pred :=
+      Set_Link (Result.K74_Exn_Case, New_Id);
+      Result.K74_Pred :=
         Pred;
-      Set_Link (Result.EC_Pred, New_Id);
+      Set_Link (Result.K74_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2203,9 +2203,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Def :=
+      Result.K75_Def :=
         Def;
-      Set_Link (Result.PC_Def, New_Id);
+      Set_Link (Result.K75_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2227,9 +2227,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PI_Def :=
+      Result.K76_Def :=
         Def;
-      Set_Link (Result.PI_Def, New_Id);
+      Set_Link (Result.K76_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2251,9 +2251,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AE_Any_Type :=
+      Result.K77_Any_Type :=
         Any_Type;
-      Set_Link (Result.AE_Any_Type, New_Id);
+      Set_Link (Result.K77_Any_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2275,9 +2275,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.D_Ref :=
+      Result.K78_Ref :=
         Ref;
-      Set_Link (Result.D_Ref, New_Id);
+      Set_Link (Result.K78_Ref, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2300,12 +2300,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.A_Name :=
+      Result.K79_Name :=
         Name;
-      Set_Link (Result.A_Name, New_Id);
-      Result.A_Value :=
+      Set_Link (Result.K79_Name, New_Id);
+      Result.K79_Value :=
         Value;
-      Set_Link (Result.A_Value, New_Id);
+      Set_Link (Result.K79_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2328,12 +2328,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AA_Name :=
+      Result.K80_Name :=
         Name;
-      Set_Link (Result.AA_Name, New_Id);
-      Result.AA_Index :=
+      Set_Link (Result.K80_Name, New_Id);
+      Result.K80_Index :=
         Index;
-      Set_Link (Result.AA_Index, New_Id);
+      Set_Link (Result.K80_Index, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2357,15 +2357,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AU_Name :=
+      Result.K81_Name :=
         Name;
-      Set_Link (Result.AU_Name, New_Id);
-      Result.AU_Index :=
+      Set_Link (Result.K81_Name, New_Id);
+      Result.K81_Index :=
         Index;
-      Set_Link (Result.AU_Index, New_Id);
-      Result.AU_Value :=
+      Set_Link (Result.K81_Index, New_Id);
+      Result.K81_Value :=
         Value;
-      Set_Link (Result.AU_Value, New_Id);
+      Set_Link (Result.K81_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2389,15 +2389,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Left :=
+      Result.K82_Left :=
         Left;
-      Set_Link (Result.IC_Left, New_Id);
-      Result.IC_Infix :=
+      Set_Link (Result.K82_Left, New_Id);
+      Result.K82_Infix :=
         Infix;
-      Set_Link (Result.IC_Infix, New_Id);
-      Result.IC_Right :=
+      Set_Link (Result.K82_Infix, New_Id);
+      Result.K82_Right :=
         Right;
-      Set_Link (Result.IC_Right, New_Id);
+      Set_Link (Result.K82_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2420,12 +2420,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Prefix :=
+      Result.K83_Prefix :=
         Prefix;
-      Set_Link (Result.PC_Prefix, New_Id);
-      Result.PC_Operand :=
+      Set_Link (Result.K83_Prefix, New_Id);
+      Result.K83_Operand :=
         Operand;
-      Set_Link (Result.PC_Operand, New_Id);
+      Set_Link (Result.K83_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2449,15 +2449,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K84_Name :=
         Name;
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K84_Name, New_Id);
+      Result.K84_Def :=
         Def;
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K84_Def, New_Id);
+      Result.K84_Context :=
         Context;
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K84_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2481,15 +2481,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K85_Name :=
         Name;
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K85_Name, New_Id);
+      Result.K85_Def :=
         Def;
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K85_Def, New_Id);
+      Result.K85_Context :=
         Context;
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K85_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2513,15 +2513,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPG_Condition :=
+      Result.K86_Condition :=
         Condition;
-      Set_Link (Result.CPG_Condition, New_Id);
-      Result.CPG_Then_Part :=
+      Set_Link (Result.K86_Condition, New_Id);
+      Result.K86_Then_Part :=
         Then_Part;
-      Set_Link (Result.CPG_Then_Part, New_Id);
-      Result.CPG_Else_Part :=
+      Set_Link (Result.K86_Then_Part, New_Id);
+      Result.K86_Else_Part :=
         Else_Part;
-      Set_Link (Result.CPG_Else_Part, New_Id);
+      Set_Link (Result.K86_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2545,15 +2545,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.WL_Condition :=
+      Result.K87_Condition :=
         Condition;
-      Set_Link (Result.WL_Condition, New_Id);
-      Result.WL_Annotation :=
+      Set_Link (Result.K87_Condition, New_Id);
+      Result.K87_Annotation :=
         Annotation;
-      Set_Link (Result.WL_Annotation, New_Id);
-      Result.WL_Loop_Content :=
+      Set_Link (Result.K87_Annotation, New_Id);
+      Result.K87_Loop_Content :=
         Loop_Content;
-      Set_Link (Result.WL_Loop_Content, New_Id);
+      Set_Link (Result.K87_Loop_Content, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2576,7 +2576,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Statements'Length > 0);
-      Result.SS_Statements := New_List;
+      Result.K88_Statements := New_List;
       for J in Statements'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -2585,10 +2585,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (Statements (J)));
          Append
-           (Result.SS_Statements,
+           (Result.K88_Statements,
             Statements (J));
       end loop;
-      Set_Link (Result.SS_Statements, New_Id);
+      Set_Link (Result.K88_Statements, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2611,12 +2611,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_Name :=
+      Result.K89_Name :=
         Name;
-      Set_Link (Result.L_Name, New_Id);
-      Result.L_Def :=
+      Set_Link (Result.K89_Name, New_Id);
+      Result.K89_Def :=
         Def;
-      Set_Link (Result.L_Def, New_Id);
+      Set_Link (Result.K89_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2640,7 +2640,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Preds'Length > 0);
-      Result.AS_Preds := New_List;
+      Result.K90_Preds := New_List;
       for J in Preds'Range loop
          pragma Assert
            (Predicate_Id_Kind_Valid
@@ -2649,13 +2649,13 @@ package body Why.Atree.Builders is
            (Predicate_Id_Valid
             (Preds (J)));
          Append
-           (Result.AS_Preds,
+           (Result.K90_Preds,
             Preds (J));
       end loop;
-      Set_Link (Result.AS_Preds, New_Id);
-      Result.AS_Prog :=
+      Set_Link (Result.K90_Preds, New_Id);
+      Result.K90_Prog :=
         Prog;
-      Set_Link (Result.AS_Prog, New_Id);
+      Set_Link (Result.K90_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2678,12 +2678,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K91_Prog :=
         Prog;
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K91_Prog, New_Id);
+      Result.K91_Post :=
         Post;
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K91_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2706,12 +2706,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K92_Prog :=
         Prog;
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K92_Prog, New_Id);
+      Result.K92_Post :=
         Post;
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K92_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2736,7 +2736,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Binders'Length > 0);
-      Result.FD_Binders := New_List;
+      Result.K93_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -2745,16 +2745,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.FD_Binders,
+           (Result.K93_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.FD_Binders, New_Id);
-      Result.FD_Pre :=
+      Set_Link (Result.K93_Binders, New_Id);
+      Result.K93_Pre :=
         Pre;
-      Set_Link (Result.FD_Pre, New_Id);
-      Result.FD_Def :=
+      Set_Link (Result.K93_Pre, New_Id);
+      Result.K93_Def :=
         Def;
-      Set_Link (Result.FD_Def, New_Id);
+      Set_Link (Result.K93_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2780,11 +2780,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BF_Name :=
+      Result.K94_Name :=
         Name;
-      Set_Link (Result.BF_Name, New_Id);
+      Set_Link (Result.K94_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.BF_Binders := New_List;
+      Result.K94_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -2793,19 +2793,19 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.BF_Binders,
+           (Result.K94_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.BF_Binders, New_Id);
-      Result.BF_Pre :=
+      Set_Link (Result.K94_Binders, New_Id);
+      Result.K94_Pre :=
         Pre;
-      Set_Link (Result.BF_Pre, New_Id);
-      Result.BF_Def :=
+      Set_Link (Result.K94_Pre, New_Id);
+      Result.K94_Def :=
         Def;
-      Set_Link (Result.BF_Def, New_Id);
-      Result.BF_Context :=
+      Set_Link (Result.K94_Def, New_Id);
+      Result.K94_Context :=
         Context;
-      Set_Link (Result.BF_Context, New_Id);
+      Set_Link (Result.K94_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2828,12 +2828,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BR_Recfun :=
+      Result.K95_Recfun :=
         Recfun;
-      Set_Link (Result.BR_Recfun, New_Id);
-      Result.BR_Context :=
+      Set_Link (Result.K95_Recfun, New_Id);
+      Result.K95_Context :=
         Context;
-      Set_Link (Result.BR_Context, New_Id);
+      Set_Link (Result.K95_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2856,11 +2856,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PS_Name :=
+      Result.K96_Name :=
         Name;
-      Set_Link (Result.PS_Name, New_Id);
+      Set_Link (Result.K96_Name, New_Id);
       pragma Assert (Progs'Length > 0);
-      Result.PS_Progs := New_List;
+      Result.K96_Progs := New_List;
       for J in Progs'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -2869,10 +2869,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (Progs (J)));
          Append
-           (Result.PS_Progs,
+           (Result.K96_Progs,
             Progs (J));
       end loop;
-      Set_Link (Result.PS_Progs, New_Id);
+      Set_Link (Result.K96_Progs, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2895,12 +2895,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RS_Name :=
+      Result.K97_Name :=
         Name;
-      Set_Link (Result.RS_Name, New_Id);
-      Result.RS_Exn_Type :=
+      Set_Link (Result.K97_Name, New_Id);
+      Result.K97_Exn_Type :=
         Exn_Type;
-      Set_Link (Result.RS_Exn_Type, New_Id);
+      Set_Link (Result.K97_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2924,15 +2924,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RSWP_Name :=
+      Result.K98_Name :=
         Name;
-      Set_Link (Result.RSWP_Name, New_Id);
-      Result.RSWP_Parameter :=
+      Set_Link (Result.K98_Name, New_Id);
+      Result.K98_Parameter :=
         Parameter;
-      Set_Link (Result.RSWP_Parameter, New_Id);
-      Result.RSWP_Exn_Type :=
+      Set_Link (Result.K98_Parameter, New_Id);
+      Result.K98_Exn_Type :=
         Exn_Type;
-      Set_Link (Result.RSWP_Exn_Type, New_Id);
+      Set_Link (Result.K98_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2955,11 +2955,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TB_Prog :=
+      Result.K99_Prog :=
         Prog;
-      Set_Link (Result.TB_Prog, New_Id);
+      Set_Link (Result.K99_Prog, New_Id);
       pragma Assert (Handler'Length > 0);
-      Result.TB_Handler := New_List;
+      Result.K99_Handler := New_List;
       for J in Handler'Range loop
          pragma Assert
            (Handler_Id_Kind_Valid
@@ -2968,10 +2968,10 @@ package body Why.Atree.Builders is
            (Handler_Id_Valid
             (Handler (J)));
          Append
-           (Result.TB_Handler,
+           (Result.K99_Handler,
             Handler (J));
       end loop;
-      Set_Link (Result.TB_Handler, New_Id);
+      Set_Link (Result.K99_Handler, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2993,9 +2993,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.UC_Exn_Type :=
+      Result.K100_Exn_Type :=
         Exn_Type;
-      Set_Link (Result.UC_Exn_Type, New_Id);
+      Set_Link (Result.K100_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3017,9 +3017,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K101_Prog :=
         Prog;
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K101_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3041,9 +3041,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K102_Prog :=
         Prog;
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K102_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3367,7 +3367,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Names'Length > 0);
-      Result.B_Names := New_List;
+      Result.K118_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -3376,13 +3376,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Names (J)));
          Append
-           (Result.B_Names,
+           (Result.K118_Names,
             Names (J));
       end loop;
-      Set_Link (Result.B_Names, New_Id);
-      Result.B_Arg_Type :=
+      Set_Link (Result.K118_Names, New_Id);
+      Result.K118_Arg_Type :=
         Arg_Type;
-      Set_Link (Result.B_Arg_Type, New_Id);
+      Set_Link (Result.K118_Arg_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3409,11 +3409,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RF_Name :=
+      Result.K119_Name :=
         Name;
-      Set_Link (Result.RF_Name, New_Id);
+      Set_Link (Result.K119_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.RF_Binders := New_List;
+      Result.K119_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -3422,22 +3422,22 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.RF_Binders,
+           (Result.K119_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.RF_Binders, New_Id);
-      Result.RF_Return_Type :=
+      Set_Link (Result.K119_Binders, New_Id);
+      Result.K119_Return_Type :=
         Return_Type;
-      Set_Link (Result.RF_Return_Type, New_Id);
-      Result.RF_Variant :=
+      Set_Link (Result.K119_Return_Type, New_Id);
+      Result.K119_Variant :=
         Variant;
-      Set_Link (Result.RF_Variant, New_Id);
-      Result.RF_Pre :=
+      Set_Link (Result.K119_Variant, New_Id);
+      Result.K119_Pre :=
         Pre;
-      Set_Link (Result.RF_Pre, New_Id);
-      Result.RF_Def :=
+      Set_Link (Result.K119_Pre, New_Id);
+      Result.K119_Def :=
         Def;
-      Set_Link (Result.RF_Def, New_Id);
+      Set_Link (Result.K119_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3460,12 +3460,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LA_Invariant :=
+      Result.K120_Invariant :=
         Invariant;
-      Set_Link (Result.LA_Invariant, New_Id);
-      Result.LA_Variant :=
+      Set_Link (Result.K120_Invariant, New_Id);
+      Result.K120_Variant :=
         Variant;
-      Set_Link (Result.LA_Variant, New_Id);
+      Set_Link (Result.K120_Variant, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3488,12 +3488,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.WA_Def :=
+      Result.K121_Def :=
         Def;
-      Set_Link (Result.WA_Def, New_Id);
-      Result.WA_For_Id :=
+      Set_Link (Result.K121_Def, New_Id);
+      Result.K121_For_Id :=
         For_Id;
-      Set_Link (Result.WA_For_Id, New_Id);
+      Set_Link (Result.K121_For_Id, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3517,15 +3517,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.H_Name :=
+      Result.K122_Name :=
         Name;
-      Set_Link (Result.H_Name, New_Id);
-      Result.H_Parameter :=
+      Set_Link (Result.K122_Name, New_Id);
+      Result.K122_Parameter :=
         Parameter;
-      Set_Link (Result.H_Parameter, New_Id);
-      Result.H_Def :=
+      Set_Link (Result.K122_Parameter, New_Id);
+      Result.K122_Def :=
         Def;
-      Set_Link (Result.H_Def, New_Id);
+      Set_Link (Result.K122_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3547,7 +3547,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.F_Declarations := New_List;
+      Result.K123_Declarations := New_List;
       for J in Declarations'Range loop
          pragma Assert
            (Declaration_Id_Kind_Valid
@@ -3556,10 +3556,10 @@ package body Why.Atree.Builders is
            (Declaration_Id_Valid
             (Declarations (J)));
          Append
-           (Result.F_Declarations,
+           (Result.K123_Declarations,
             Declarations (J));
       end loop;
-      Set_Link (Result.F_Declarations, New_Id);
+      Set_Link (Result.K123_Declarations, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3584,10 +3584,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GB_Name :=
+      Result.K124_Name :=
         Name;
-      Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders := New_List;
+      Set_Link (Result.K124_Name, New_Id);
+      Result.K124_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -3596,16 +3596,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (Binders (J)));
          Append
-           (Result.GB_Binders,
+           (Result.K124_Binders,
             Binders (J));
       end loop;
-      Set_Link (Result.GB_Binders, New_Id);
-      Result.GB_Pre :=
+      Set_Link (Result.K124_Binders, New_Id);
+      Result.K124_Pre :=
         Pre;
-      Set_Link (Result.GB_Pre, New_Id);
-      Result.GB_Def :=
+      Set_Link (Result.K124_Pre, New_Id);
+      Result.K124_Def :=
         Def;
-      Set_Link (Result.GB_Def, New_Id);
+      Set_Link (Result.K124_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3627,9 +3627,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GRB_Name :=
+      Result.K125_Name :=
         Name;
-      Set_Link (Result.GRB_Name, New_Id);
+      Set_Link (Result.K125_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3653,11 +3653,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PD_External :=
+      Result.K126_External :=
         External;
-      Set_Link (Result.PD_External, New_Id);
+      Set_Link (Result.K126_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.PD_Names := New_List;
+      Result.K126_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -3666,13 +3666,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (Names (J)));
          Append
-           (Result.PD_Names,
+           (Result.K126_Names,
             Names (J));
       end loop;
-      Set_Link (Result.PD_Names, New_Id);
-      Result.PD_Parameter_Type :=
+      Set_Link (Result.K126_Names, New_Id);
+      Result.K126_Parameter_Type :=
         Parameter_Type;
-      Set_Link (Result.PD_Parameter_Type, New_Id);
+      Set_Link (Result.K126_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3695,12 +3695,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GR_Name :=
+      Result.K127_Name :=
         Name;
-      Set_Link (Result.GR_Name, New_Id);
-      Result.GR_Parameter_Type :=
+      Set_Link (Result.K127_Name, New_Id);
+      Result.K127_Parameter_Type :=
         Parameter_Type;
-      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Set_Link (Result.K127_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3723,12 +3723,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ED_Name :=
+      Result.K128_Name :=
         Name;
-      Set_Link (Result.ED_Name, New_Id);
-      Result.ED_Parameter :=
+      Set_Link (Result.K128_Name, New_Id);
+      Result.K128_Parameter :=
         Parameter;
-      Set_Link (Result.ED_Parameter, New_Id);
+      Set_Link (Result.K128_Parameter, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3750,9 +3750,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LD_Decl :=
+      Result.K129_Decl :=
         Decl;
-      Set_Link (Result.LD_Decl, New_Id);
+      Set_Link (Result.K129_Decl, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3774,9 +3774,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ID_Name :=
+      Result.K130_Name :=
         Name;
-      Set_Link (Result.ID_Name, New_Id);
+      Set_Link (Result.K130_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3797,9 +3797,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.Symbol :=
+      Result.K1_Symbol :=
         Symbol;
-      Result.Entity :=
+      Result.K1_Entity :=
         Why_Empty;
       Result.Link := Why_Empty;
       Result.Checked := False;
@@ -3915,9 +3915,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AT_Name :=
+      Result.K7_Name :=
         Why_Empty;
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -3937,9 +3937,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         Why_Empty;
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -3959,12 +3959,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.GATC_Type_Chain :=
+      Result.K9_Type_Chain :=
         New_List;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         Why_Empty;
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -3984,9 +3984,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AT_Component_Type :=
+      Result.K10_Component_Type :=
         Why_Empty;
-      Set_Link (Result.AT_Component_Type, New_Id);
+      Set_Link (Result.K10_Component_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4006,9 +4006,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RT_Aliased_Type :=
+      Result.K11_Aliased_Type :=
         Why_Empty;
-      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Set_Link (Result.K11_Aliased_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4028,24 +4028,24 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.CS_Binders :=
+      Result.K12_Binders :=
         New_List;
-      Set_Link (Result.CS_Binders, New_Id);
-      Result.CS_Precondition :=
+      Set_Link (Result.K12_Binders, New_Id);
+      Result.K12_Precondition :=
         Why_Empty;
-      Set_Link (Result.CS_Precondition, New_Id);
-      Result.CS_Result_Name :=
+      Set_Link (Result.K12_Precondition, New_Id);
+      Result.K12_Result_Name :=
         Why_Empty;
-      Set_Link (Result.CS_Result_Name, New_Id);
-      Result.CS_Return_Type :=
+      Set_Link (Result.K12_Result_Name, New_Id);
+      Result.K12_Return_Type :=
         Why_Empty;
-      Set_Link (Result.CS_Return_Type, New_Id);
-      Result.CS_Effects :=
+      Set_Link (Result.K12_Return_Type, New_Id);
+      Result.K12_Effects :=
         Why_Empty;
-      Set_Link (Result.CS_Effects, New_Id);
-      Result.CS_Postcondition :=
+      Set_Link (Result.K12_Effects, New_Id);
+      Result.K12_Postcondition :=
         Why_Empty;
-      Set_Link (Result.CS_Postcondition, New_Id);
+      Set_Link (Result.K12_Postcondition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4066,7 +4066,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.IC_Value :=
+      Result.K13_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := False;
@@ -4088,7 +4088,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RC_Value :=
+      Result.K14_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := False;
@@ -4166,15 +4166,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AO_Left :=
+      Result.K18_Left :=
         Why_Empty;
-      Set_Link (Result.AO_Left, New_Id);
-      Result.AO_Op :=
+      Set_Link (Result.K18_Left, New_Id);
+      Result.K18_Op :=
         Why_Empty;
-      Set_Link (Result.AO_Op, New_Id);
-      Result.AO_Right :=
+      Set_Link (Result.K18_Op, New_Id);
+      Result.K18_Right :=
         Why_Empty;
-      Set_Link (Result.AO_Right, New_Id);
+      Set_Link (Result.K18_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4194,9 +4194,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.NT_Operand :=
+      Result.K19_Operand :=
         Why_Empty;
-      Set_Link (Result.NT_Operand, New_Id);
+      Set_Link (Result.K19_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4216,12 +4216,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.TIL_Name :=
+      Result.K20_Name :=
         Why_Empty;
-      Set_Link (Result.TIL_Name, New_Id);
-      Result.TIL_Label :=
+      Set_Link (Result.K20_Name, New_Id);
+      Result.K20_Label :=
         Why_Empty;
-      Set_Link (Result.TIL_Label, New_Id);
+      Set_Link (Result.K20_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4241,12 +4241,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.O_Name :=
+      Result.K21_Name :=
         Why_Empty;
-      Set_Link (Result.O_Name, New_Id);
-      Result.O_Parameters :=
+      Set_Link (Result.K21_Name, New_Id);
+      Result.K21_Parameters :=
         New_List;
-      Set_Link (Result.O_Parameters, New_Id);
+      Set_Link (Result.K21_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4266,12 +4266,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.NT_Name :=
+      Result.K22_Name :=
         Why_Empty;
-      Set_Link (Result.NT_Name, New_Id);
-      Result.NT_Term :=
+      Set_Link (Result.K22_Name, New_Id);
+      Result.K22_Term :=
         Why_Empty;
-      Set_Link (Result.NT_Term, New_Id);
+      Set_Link (Result.K22_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4291,15 +4291,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.CT_Condition :=
+      Result.K23_Condition :=
         Why_Empty;
-      Set_Link (Result.CT_Condition, New_Id);
-      Result.CT_Then_Part :=
+      Set_Link (Result.K23_Condition, New_Id);
+      Result.K23_Then_Part :=
         Why_Empty;
-      Set_Link (Result.CT_Then_Part, New_Id);
-      Result.CT_Else_Part :=
+      Set_Link (Result.K23_Then_Part, New_Id);
+      Result.K23_Else_Part :=
         Why_Empty;
-      Set_Link (Result.CT_Else_Part, New_Id);
+      Set_Link (Result.K23_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4319,12 +4319,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.MT_Term :=
+      Result.K24_Term :=
         Why_Empty;
-      Set_Link (Result.MT_Term, New_Id);
-      Result.MT_Branches :=
+      Set_Link (Result.K24_Term, New_Id);
+      Result.K24_Branches :=
         New_List;
-      Set_Link (Result.MT_Branches, New_Id);
+      Set_Link (Result.K24_Branches, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4344,15 +4344,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BT_Name :=
+      Result.K25_Name :=
         Why_Empty;
-      Set_Link (Result.BT_Name, New_Id);
-      Result.BT_Def :=
+      Set_Link (Result.K25_Name, New_Id);
+      Result.K25_Def :=
         Why_Empty;
-      Set_Link (Result.BT_Def, New_Id);
-      Result.BT_Context :=
+      Set_Link (Result.K25_Def, New_Id);
+      Result.K25_Context :=
         Why_Empty;
-      Set_Link (Result.BT_Context, New_Id);
+      Set_Link (Result.K25_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4372,9 +4372,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BT_Term :=
+      Result.K26_Term :=
         Why_Empty;
-      Set_Link (Result.BT_Term, New_Id);
+      Set_Link (Result.K26_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4527,9 +4527,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PID_Name :=
+      Result.K34_Name :=
         Why_Empty;
-      Set_Link (Result.PID_Name, New_Id);
+      Set_Link (Result.K34_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4549,12 +4549,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PIN_Name :=
+      Result.K35_Name :=
         Why_Empty;
-      Set_Link (Result.PIN_Name, New_Id);
-      Result.PIN_Parameters :=
+      Set_Link (Result.K35_Name, New_Id);
+      Result.K35_Parameters :=
         New_List;
-      Set_Link (Result.PIN_Parameters, New_Id);
+      Set_Link (Result.K35_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4574,21 +4574,21 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RT_Left :=
+      Result.K36_Left :=
         Why_Empty;
-      Set_Link (Result.RT_Left, New_Id);
-      Result.RT_Op :=
+      Set_Link (Result.K36_Left, New_Id);
+      Result.K36_Op :=
         Why_Empty;
-      Set_Link (Result.RT_Op, New_Id);
-      Result.RT_Right :=
+      Set_Link (Result.K36_Op, New_Id);
+      Result.K36_Right :=
         Why_Empty;
-      Set_Link (Result.RT_Right, New_Id);
-      Result.RT_Op2 :=
+      Set_Link (Result.K36_Right, New_Id);
+      Result.K36_Op2 :=
         Why_Empty;
-      Set_Link (Result.RT_Op2, New_Id);
-      Result.RT_Right2 :=
+      Set_Link (Result.K36_Op2, New_Id);
+      Result.K36_Right2 :=
         Why_Empty;
-      Set_Link (Result.RT_Right2, New_Id);
+      Set_Link (Result.K36_Right2, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4608,12 +4608,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ITOC_Left :=
+      Result.K37_Left :=
         Why_Empty;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K37_Left, New_Id);
+      Result.K37_Right :=
         Why_Empty;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K37_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4633,12 +4633,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ITOC_Left :=
+      Result.K38_Left :=
         Why_Empty;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K38_Left, New_Id);
+      Result.K38_Right :=
         Why_Empty;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K38_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4658,12 +4658,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ITOC_Left :=
+      Result.K39_Left :=
         Why_Empty;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K39_Left, New_Id);
+      Result.K39_Right :=
         Why_Empty;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K39_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4683,12 +4683,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ITOC_Left :=
+      Result.K40_Left :=
         Why_Empty;
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K40_Left, New_Id);
+      Result.K40_Right :=
         Why_Empty;
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K40_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4708,9 +4708,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.N_Operand :=
+      Result.K41_Operand :=
         Why_Empty;
-      Set_Link (Result.N_Operand, New_Id);
+      Set_Link (Result.K41_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4730,15 +4730,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.CPD_Condition :=
+      Result.K42_Condition :=
         Why_Empty;
-      Set_Link (Result.CPD_Condition, New_Id);
-      Result.CPD_Then_Part :=
+      Set_Link (Result.K42_Condition, New_Id);
+      Result.K42_Then_Part :=
         Why_Empty;
-      Set_Link (Result.CPD_Then_Part, New_Id);
-      Result.CPD_Else_Part :=
+      Set_Link (Result.K42_Then_Part, New_Id);
+      Result.K42_Else_Part :=
         Why_Empty;
-      Set_Link (Result.CPD_Else_Part, New_Id);
+      Set_Link (Result.K42_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4758,15 +4758,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BPD_Name :=
+      Result.K43_Name :=
         Why_Empty;
-      Set_Link (Result.BPD_Name, New_Id);
-      Result.BPD_Def :=
+      Set_Link (Result.K43_Name, New_Id);
+      Result.K43_Def :=
         Why_Empty;
-      Set_Link (Result.BPD_Def, New_Id);
-      Result.BPD_Context :=
+      Set_Link (Result.K43_Def, New_Id);
+      Result.K43_Context :=
         Why_Empty;
-      Set_Link (Result.BPD_Context, New_Id);
+      Set_Link (Result.K43_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4786,18 +4786,18 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.UQ_Variables :=
+      Result.K44_Variables :=
         New_List;
-      Set_Link (Result.UQ_Variables, New_Id);
-      Result.UQ_Var_Type :=
+      Set_Link (Result.K44_Variables, New_Id);
+      Result.K44_Var_Type :=
         Why_Empty;
-      Set_Link (Result.UQ_Var_Type, New_Id);
-      Result.UQ_Triggers :=
+      Set_Link (Result.K44_Var_Type, New_Id);
+      Result.K44_Triggers :=
         Why_Empty;
-      Set_Link (Result.UQ_Triggers, New_Id);
-      Result.UQ_Pred :=
+      Set_Link (Result.K44_Triggers, New_Id);
+      Result.K44_Pred :=
         Why_Empty;
-      Set_Link (Result.UQ_Pred, New_Id);
+      Set_Link (Result.K44_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4817,15 +4817,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.EQ_Variables :=
+      Result.K45_Variables :=
         New_List;
-      Set_Link (Result.EQ_Variables, New_Id);
-      Result.EQ_Var_Type :=
+      Set_Link (Result.K45_Variables, New_Id);
+      Result.K45_Var_Type :=
         Why_Empty;
-      Set_Link (Result.EQ_Var_Type, New_Id);
-      Result.EQ_Pred :=
+      Set_Link (Result.K45_Var_Type, New_Id);
+      Result.K45_Pred :=
         Why_Empty;
-      Set_Link (Result.EQ_Pred, New_Id);
+      Set_Link (Result.K45_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4845,12 +4845,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.NP_Name :=
+      Result.K46_Name :=
         Why_Empty;
-      Set_Link (Result.NP_Name, New_Id);
-      Result.NP_Pred :=
+      Set_Link (Result.K46_Name, New_Id);
+      Result.K46_Pred :=
         Why_Empty;
-      Set_Link (Result.NP_Pred, New_Id);
+      Set_Link (Result.K46_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4870,9 +4870,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PP_Pred :=
+      Result.K47_Pred :=
         Why_Empty;
-      Set_Link (Result.PP_Pred, New_Id);
+      Set_Link (Result.K47_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4892,12 +4892,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PAT_Constr :=
+      Result.K48_Constr :=
         Why_Empty;
-      Set_Link (Result.PAT_Constr, New_Id);
-      Result.PAT_Args :=
+      Set_Link (Result.K48_Constr, New_Id);
+      Result.K48_Args :=
         New_List;
-      Set_Link (Result.PAT_Args, New_Id);
+      Set_Link (Result.K48_Args, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4917,12 +4917,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.MC_Pattern :=
+      Result.K49_Pattern :=
         Why_Empty;
-      Set_Link (Result.MC_Pattern, New_Id);
-      Result.MC_Term :=
+      Set_Link (Result.K49_Pattern, New_Id);
+      Result.K49_Term :=
         Why_Empty;
-      Set_Link (Result.MC_Term, New_Id);
+      Set_Link (Result.K49_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4942,9 +4942,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.TRS_Triggers :=
+      Result.K50_Triggers :=
         New_List;
-      Set_Link (Result.TRS_Triggers, New_Id);
+      Set_Link (Result.K50_Triggers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4964,9 +4964,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.TRI_Terms :=
+      Result.K51_Terms :=
         New_List;
-      Set_Link (Result.TRI_Terms, New_Id);
+      Set_Link (Result.K51_Terms, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5100,18 +5100,18 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.T_External :=
+      Result.K58_External :=
         Why_Empty;
-      Set_Link (Result.T_External, New_Id);
-      Result.T_Type_Parameters :=
+      Set_Link (Result.K58_External, New_Id);
+      Result.K58_Type_Parameters :=
         New_List;
-      Set_Link (Result.T_Type_Parameters, New_Id);
-      Result.T_Name :=
+      Set_Link (Result.K58_Type_Parameters, New_Id);
+      Result.K58_Name :=
         Why_Empty;
-      Set_Link (Result.T_Name, New_Id);
-      Result.T_Definition :=
+      Set_Link (Result.K58_Name, New_Id);
+      Result.K58_Definition :=
         Why_Empty;
-      Set_Link (Result.T_Definition, New_Id);
+      Set_Link (Result.K58_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5131,15 +5131,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.L_External :=
+      Result.K59_External :=
         Why_Empty;
-      Set_Link (Result.L_External, New_Id);
-      Result.L_Names :=
+      Set_Link (Result.K59_External, New_Id);
+      Result.K59_Names :=
         New_List;
-      Set_Link (Result.L_Names, New_Id);
-      Result.L_Logic_Type :=
+      Set_Link (Result.K59_Names, New_Id);
+      Result.K59_Logic_Type :=
         Why_Empty;
-      Set_Link (Result.L_Logic_Type, New_Id);
+      Set_Link (Result.K59_Logic_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5159,18 +5159,18 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.F_Name :=
+      Result.K60_Name :=
         Why_Empty;
-      Set_Link (Result.F_Name, New_Id);
-      Result.F_Binders :=
+      Set_Link (Result.K60_Name, New_Id);
+      Result.K60_Binders :=
         New_List;
-      Set_Link (Result.F_Binders, New_Id);
-      Result.F_Return_Type :=
+      Set_Link (Result.K60_Binders, New_Id);
+      Result.K60_Return_Type :=
         Why_Empty;
-      Set_Link (Result.F_Return_Type, New_Id);
-      Result.F_Def :=
+      Set_Link (Result.K60_Return_Type, New_Id);
+      Result.K60_Def :=
         Why_Empty;
-      Set_Link (Result.F_Def, New_Id);
+      Set_Link (Result.K60_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5190,15 +5190,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.P_Name :=
+      Result.K61_Name :=
         Why_Empty;
-      Set_Link (Result.P_Name, New_Id);
-      Result.P_Binders :=
+      Set_Link (Result.K61_Name, New_Id);
+      Result.K61_Binders :=
         New_List;
-      Set_Link (Result.P_Binders, New_Id);
-      Result.P_Def :=
+      Set_Link (Result.K61_Binders, New_Id);
+      Result.K61_Def :=
         Why_Empty;
-      Set_Link (Result.P_Def, New_Id);
+      Set_Link (Result.K61_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5218,15 +5218,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.I_Name :=
+      Result.K62_Name :=
         Why_Empty;
-      Set_Link (Result.I_Name, New_Id);
-      Result.I_Logic_Type :=
+      Set_Link (Result.K62_Name, New_Id);
+      Result.K62_Logic_Type :=
         Why_Empty;
-      Set_Link (Result.I_Logic_Type, New_Id);
-      Result.I_Def :=
+      Set_Link (Result.K62_Logic_Type, New_Id);
+      Result.K62_Def :=
         New_List;
-      Set_Link (Result.I_Def, New_Id);
+      Set_Link (Result.K62_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5246,12 +5246,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AX_Name :=
+      Result.K63_Name :=
         Why_Empty;
-      Set_Link (Result.AX_Name, New_Id);
-      Result.AX_Def :=
+      Set_Link (Result.K63_Name, New_Id);
+      Result.K63_Def :=
         Why_Empty;
-      Set_Link (Result.AX_Def, New_Id);
+      Set_Link (Result.K63_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5271,12 +5271,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.G_Name :=
+      Result.K64_Name :=
         Why_Empty;
-      Set_Link (Result.G_Name, New_Id);
-      Result.G_Def :=
+      Set_Link (Result.K64_Name, New_Id);
+      Result.K64_Def :=
         Why_Empty;
-      Set_Link (Result.G_Def, New_Id);
+      Set_Link (Result.K64_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5315,12 +5315,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.LT_Arg_Types :=
+      Result.K66_Arg_Types :=
         New_List;
-      Set_Link (Result.LT_Arg_Types, New_Id);
-      Result.LT_Return_Type :=
+      Set_Link (Result.K66_Arg_Types, New_Id);
+      Result.K66_Return_Type :=
         Why_Empty;
-      Set_Link (Result.LT_Return_Type, New_Id);
+      Set_Link (Result.K66_Return_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5340,12 +5340,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.LB_Name :=
+      Result.K67_Name :=
         Why_Empty;
-      Set_Link (Result.LB_Name, New_Id);
-      Result.LB_Param_Type :=
+      Set_Link (Result.K67_Name, New_Id);
+      Result.K67_Param_Type :=
         Why_Empty;
-      Set_Link (Result.LB_Param_Type, New_Id);
+      Set_Link (Result.K67_Param_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5365,12 +5365,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.IC_Name :=
+      Result.K68_Name :=
         Why_Empty;
-      Set_Link (Result.IC_Name, New_Id);
-      Result.IC_Pred :=
+      Set_Link (Result.K68_Name, New_Id);
+      Result.K68_Pred :=
         Why_Empty;
-      Set_Link (Result.IC_Pred, New_Id);
+      Set_Link (Result.K68_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5390,9 +5390,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.Tr_Type_Definition :=
+      Result.K69_Type_Definition :=
         Why_Empty;
-      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Set_Link (Result.K69_Type_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5412,9 +5412,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.Adt_Constructors :=
+      Result.K70_Constructors :=
         New_List;
-      Set_Link (Result.Adt_Constructors, New_Id);
+      Set_Link (Result.K70_Constructors, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5434,12 +5434,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.C_Name :=
+      Result.K71_Name :=
         Why_Empty;
-      Set_Link (Result.C_Name, New_Id);
-      Result.C_Arg_List :=
+      Set_Link (Result.K71_Name, New_Id);
+      Result.K71_Arg_List :=
         New_List;
-      Set_Link (Result.C_Arg_List, New_Id);
+      Set_Link (Result.K71_Arg_List, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5459,15 +5459,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.E_Reads :=
+      Result.K72_Reads :=
         New_List;
-      Set_Link (Result.E_Reads, New_Id);
-      Result.E_Writes :=
+      Set_Link (Result.K72_Reads, New_Id);
+      Result.K72_Writes :=
         New_List;
-      Set_Link (Result.E_Writes, New_Id);
-      Result.E_Raises :=
+      Set_Link (Result.K72_Writes, New_Id);
+      Result.K72_Raises :=
         New_List;
-      Set_Link (Result.E_Raises, New_Id);
+      Set_Link (Result.K72_Raises, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5487,12 +5487,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.POST_Pred :=
+      Result.K73_Pred :=
         Why_Empty;
-      Set_Link (Result.POST_Pred, New_Id);
-      Result.POST_Handlers :=
+      Set_Link (Result.K73_Pred, New_Id);
+      Result.K73_Handlers :=
         New_List;
-      Set_Link (Result.POST_Handlers, New_Id);
+      Set_Link (Result.K73_Handlers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5512,12 +5512,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.EC_Exn_Case :=
+      Result.K74_Exn_Case :=
         Why_Empty;
-      Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Pred :=
+      Set_Link (Result.K74_Exn_Case, New_Id);
+      Result.K74_Pred :=
         Why_Empty;
-      Set_Link (Result.EC_Pred, New_Id);
+      Set_Link (Result.K74_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5537,9 +5537,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PC_Def :=
+      Result.K75_Def :=
         Why_Empty;
-      Set_Link (Result.PC_Def, New_Id);
+      Set_Link (Result.K75_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5559,9 +5559,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PI_Def :=
+      Result.K76_Def :=
         Why_Empty;
-      Set_Link (Result.PI_Def, New_Id);
+      Set_Link (Result.K76_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5581,9 +5581,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AE_Any_Type :=
+      Result.K77_Any_Type :=
         Why_Empty;
-      Set_Link (Result.AE_Any_Type, New_Id);
+      Set_Link (Result.K77_Any_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5603,9 +5603,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.D_Ref :=
+      Result.K78_Ref :=
         Why_Empty;
-      Set_Link (Result.D_Ref, New_Id);
+      Set_Link (Result.K78_Ref, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5625,12 +5625,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.A_Name :=
+      Result.K79_Name :=
         Why_Empty;
-      Set_Link (Result.A_Name, New_Id);
-      Result.A_Value :=
+      Set_Link (Result.K79_Name, New_Id);
+      Result.K79_Value :=
         Why_Empty;
-      Set_Link (Result.A_Value, New_Id);
+      Set_Link (Result.K79_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5650,12 +5650,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AA_Name :=
+      Result.K80_Name :=
         Why_Empty;
-      Set_Link (Result.AA_Name, New_Id);
-      Result.AA_Index :=
+      Set_Link (Result.K80_Name, New_Id);
+      Result.K80_Index :=
         Why_Empty;
-      Set_Link (Result.AA_Index, New_Id);
+      Set_Link (Result.K80_Index, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5675,15 +5675,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AU_Name :=
+      Result.K81_Name :=
         Why_Empty;
-      Set_Link (Result.AU_Name, New_Id);
-      Result.AU_Index :=
+      Set_Link (Result.K81_Name, New_Id);
+      Result.K81_Index :=
         Why_Empty;
-      Set_Link (Result.AU_Index, New_Id);
-      Result.AU_Value :=
+      Set_Link (Result.K81_Index, New_Id);
+      Result.K81_Value :=
         Why_Empty;
-      Set_Link (Result.AU_Value, New_Id);
+      Set_Link (Result.K81_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5703,15 +5703,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.IC_Left :=
+      Result.K82_Left :=
         Why_Empty;
-      Set_Link (Result.IC_Left, New_Id);
-      Result.IC_Infix :=
+      Set_Link (Result.K82_Left, New_Id);
+      Result.K82_Infix :=
         Why_Empty;
-      Set_Link (Result.IC_Infix, New_Id);
-      Result.IC_Right :=
+      Set_Link (Result.K82_Infix, New_Id);
+      Result.K82_Right :=
         Why_Empty;
-      Set_Link (Result.IC_Right, New_Id);
+      Set_Link (Result.K82_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5731,12 +5731,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PC_Prefix :=
+      Result.K83_Prefix :=
         Why_Empty;
-      Set_Link (Result.PC_Prefix, New_Id);
-      Result.PC_Operand :=
+      Set_Link (Result.K83_Prefix, New_Id);
+      Result.K83_Operand :=
         Why_Empty;
-      Set_Link (Result.PC_Operand, New_Id);
+      Set_Link (Result.K83_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5756,15 +5756,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BPG_Name :=
+      Result.K84_Name :=
         Why_Empty;
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K84_Name, New_Id);
+      Result.K84_Def :=
         Why_Empty;
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K84_Def, New_Id);
+      Result.K84_Context :=
         Why_Empty;
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K84_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5784,15 +5784,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BPG_Name :=
+      Result.K85_Name :=
         Why_Empty;
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K85_Name, New_Id);
+      Result.K85_Def :=
         Why_Empty;
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K85_Def, New_Id);
+      Result.K85_Context :=
         Why_Empty;
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K85_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5812,15 +5812,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.CPG_Condition :=
+      Result.K86_Condition :=
         Why_Empty;
-      Set_Link (Result.CPG_Condition, New_Id);
-      Result.CPG_Then_Part :=
+      Set_Link (Result.K86_Condition, New_Id);
+      Result.K86_Then_Part :=
         Why_Empty;
-      Set_Link (Result.CPG_Then_Part, New_Id);
-      Result.CPG_Else_Part :=
+      Set_Link (Result.K86_Then_Part, New_Id);
+      Result.K86_Else_Part :=
         Why_Empty;
-      Set_Link (Result.CPG_Else_Part, New_Id);
+      Set_Link (Result.K86_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5840,15 +5840,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.WL_Condition :=
+      Result.K87_Condition :=
         Why_Empty;
-      Set_Link (Result.WL_Condition, New_Id);
-      Result.WL_Annotation :=
+      Set_Link (Result.K87_Condition, New_Id);
+      Result.K87_Annotation :=
         Why_Empty;
-      Set_Link (Result.WL_Annotation, New_Id);
-      Result.WL_Loop_Content :=
+      Set_Link (Result.K87_Annotation, New_Id);
+      Result.K87_Loop_Content :=
         Why_Empty;
-      Set_Link (Result.WL_Loop_Content, New_Id);
+      Set_Link (Result.K87_Loop_Content, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5868,9 +5868,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.SS_Statements :=
+      Result.K88_Statements :=
         New_List;
-      Set_Link (Result.SS_Statements, New_Id);
+      Set_Link (Result.K88_Statements, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5890,12 +5890,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.L_Name :=
+      Result.K89_Name :=
         Why_Empty;
-      Set_Link (Result.L_Name, New_Id);
-      Result.L_Def :=
+      Set_Link (Result.K89_Name, New_Id);
+      Result.K89_Def :=
         Why_Empty;
-      Set_Link (Result.L_Def, New_Id);
+      Set_Link (Result.K89_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5915,12 +5915,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AS_Preds :=
+      Result.K90_Preds :=
         New_List;
-      Set_Link (Result.AS_Preds, New_Id);
-      Result.AS_Prog :=
+      Set_Link (Result.K90_Preds, New_Id);
+      Result.K90_Prog :=
         Why_Empty;
-      Set_Link (Result.AS_Prog, New_Id);
+      Set_Link (Result.K90_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5940,12 +5940,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PA_Prog :=
+      Result.K91_Prog :=
         Why_Empty;
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K91_Prog, New_Id);
+      Result.K91_Post :=
         Why_Empty;
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K91_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5965,12 +5965,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PA_Prog :=
+      Result.K92_Prog :=
         Why_Empty;
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K92_Prog, New_Id);
+      Result.K92_Post :=
         Why_Empty;
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K92_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5990,15 +5990,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.FD_Binders :=
+      Result.K93_Binders :=
         New_List;
-      Set_Link (Result.FD_Binders, New_Id);
-      Result.FD_Pre :=
+      Set_Link (Result.K93_Binders, New_Id);
+      Result.K93_Pre :=
         Why_Empty;
-      Set_Link (Result.FD_Pre, New_Id);
-      Result.FD_Def :=
+      Set_Link (Result.K93_Pre, New_Id);
+      Result.K93_Def :=
         Why_Empty;
-      Set_Link (Result.FD_Def, New_Id);
+      Set_Link (Result.K93_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6018,21 +6018,21 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BF_Name :=
+      Result.K94_Name :=
         Why_Empty;
-      Set_Link (Result.BF_Name, New_Id);
-      Result.BF_Binders :=
+      Set_Link (Result.K94_Name, New_Id);
+      Result.K94_Binders :=
         New_List;
-      Set_Link (Result.BF_Binders, New_Id);
-      Result.BF_Pre :=
+      Set_Link (Result.K94_Binders, New_Id);
+      Result.K94_Pre :=
         Why_Empty;
-      Set_Link (Result.BF_Pre, New_Id);
-      Result.BF_Def :=
+      Set_Link (Result.K94_Pre, New_Id);
+      Result.K94_Def :=
         Why_Empty;
-      Set_Link (Result.BF_Def, New_Id);
-      Result.BF_Context :=
+      Set_Link (Result.K94_Def, New_Id);
+      Result.K94_Context :=
         Why_Empty;
-      Set_Link (Result.BF_Context, New_Id);
+      Set_Link (Result.K94_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6052,12 +6052,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BR_Recfun :=
+      Result.K95_Recfun :=
         Why_Empty;
-      Set_Link (Result.BR_Recfun, New_Id);
-      Result.BR_Context :=
+      Set_Link (Result.K95_Recfun, New_Id);
+      Result.K95_Context :=
         Why_Empty;
-      Set_Link (Result.BR_Context, New_Id);
+      Set_Link (Result.K95_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6077,12 +6077,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PS_Name :=
+      Result.K96_Name :=
         Why_Empty;
-      Set_Link (Result.PS_Name, New_Id);
-      Result.PS_Progs :=
+      Set_Link (Result.K96_Name, New_Id);
+      Result.K96_Progs :=
         New_List;
-      Set_Link (Result.PS_Progs, New_Id);
+      Set_Link (Result.K96_Progs, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6102,12 +6102,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RS_Name :=
+      Result.K97_Name :=
         Why_Empty;
-      Set_Link (Result.RS_Name, New_Id);
-      Result.RS_Exn_Type :=
+      Set_Link (Result.K97_Name, New_Id);
+      Result.K97_Exn_Type :=
         Why_Empty;
-      Set_Link (Result.RS_Exn_Type, New_Id);
+      Set_Link (Result.K97_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6127,15 +6127,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RSWP_Name :=
+      Result.K98_Name :=
         Why_Empty;
-      Set_Link (Result.RSWP_Name, New_Id);
-      Result.RSWP_Parameter :=
+      Set_Link (Result.K98_Name, New_Id);
+      Result.K98_Parameter :=
         Why_Empty;
-      Set_Link (Result.RSWP_Parameter, New_Id);
-      Result.RSWP_Exn_Type :=
+      Set_Link (Result.K98_Parameter, New_Id);
+      Result.K98_Exn_Type :=
         Why_Empty;
-      Set_Link (Result.RSWP_Exn_Type, New_Id);
+      Set_Link (Result.K98_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6155,12 +6155,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.TB_Prog :=
+      Result.K99_Prog :=
         Why_Empty;
-      Set_Link (Result.TB_Prog, New_Id);
-      Result.TB_Handler :=
+      Set_Link (Result.K99_Prog, New_Id);
+      Result.K99_Handler :=
         New_List;
-      Set_Link (Result.TB_Handler, New_Id);
+      Set_Link (Result.K99_Handler, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6180,9 +6180,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.UC_Exn_Type :=
+      Result.K100_Exn_Type :=
         Why_Empty;
-      Set_Link (Result.UC_Exn_Type, New_Id);
+      Set_Link (Result.K100_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6202,9 +6202,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BB_Prog :=
+      Result.K101_Prog :=
         Why_Empty;
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K101_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6224,9 +6224,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.BB_Prog :=
+      Result.K102_Prog :=
         Why_Empty;
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K102_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6531,12 +6531,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.B_Names :=
+      Result.K118_Names :=
         New_List;
-      Set_Link (Result.B_Names, New_Id);
-      Result.B_Arg_Type :=
+      Set_Link (Result.K118_Names, New_Id);
+      Result.K118_Arg_Type :=
         Why_Empty;
-      Set_Link (Result.B_Arg_Type, New_Id);
+      Set_Link (Result.K118_Arg_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6556,24 +6556,24 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.RF_Name :=
+      Result.K119_Name :=
         Why_Empty;
-      Set_Link (Result.RF_Name, New_Id);
-      Result.RF_Binders :=
+      Set_Link (Result.K119_Name, New_Id);
+      Result.K119_Binders :=
         New_List;
-      Set_Link (Result.RF_Binders, New_Id);
-      Result.RF_Return_Type :=
+      Set_Link (Result.K119_Binders, New_Id);
+      Result.K119_Return_Type :=
         Why_Empty;
-      Set_Link (Result.RF_Return_Type, New_Id);
-      Result.RF_Variant :=
+      Set_Link (Result.K119_Return_Type, New_Id);
+      Result.K119_Variant :=
         Why_Empty;
-      Set_Link (Result.RF_Variant, New_Id);
-      Result.RF_Pre :=
+      Set_Link (Result.K119_Variant, New_Id);
+      Result.K119_Pre :=
         Why_Empty;
-      Set_Link (Result.RF_Pre, New_Id);
-      Result.RF_Def :=
+      Set_Link (Result.K119_Pre, New_Id);
+      Result.K119_Def :=
         Why_Empty;
-      Set_Link (Result.RF_Def, New_Id);
+      Set_Link (Result.K119_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6593,12 +6593,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.LA_Invariant :=
+      Result.K120_Invariant :=
         Why_Empty;
-      Set_Link (Result.LA_Invariant, New_Id);
-      Result.LA_Variant :=
+      Set_Link (Result.K120_Invariant, New_Id);
+      Result.K120_Variant :=
         Why_Empty;
-      Set_Link (Result.LA_Variant, New_Id);
+      Set_Link (Result.K120_Variant, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6618,12 +6618,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.WA_Def :=
+      Result.K121_Def :=
         Why_Empty;
-      Set_Link (Result.WA_Def, New_Id);
-      Result.WA_For_Id :=
+      Set_Link (Result.K121_Def, New_Id);
+      Result.K121_For_Id :=
         Why_Empty;
-      Set_Link (Result.WA_For_Id, New_Id);
+      Set_Link (Result.K121_For_Id, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6643,15 +6643,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.H_Name :=
+      Result.K122_Name :=
         Why_Empty;
-      Set_Link (Result.H_Name, New_Id);
-      Result.H_Parameter :=
+      Set_Link (Result.K122_Name, New_Id);
+      Result.K122_Parameter :=
         Why_Empty;
-      Set_Link (Result.H_Parameter, New_Id);
-      Result.H_Def :=
+      Set_Link (Result.K122_Parameter, New_Id);
+      Result.K122_Def :=
         Why_Empty;
-      Set_Link (Result.H_Def, New_Id);
+      Set_Link (Result.K122_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6671,9 +6671,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.F_Declarations :=
+      Result.K123_Declarations :=
         New_List;
-      Set_Link (Result.F_Declarations, New_Id);
+      Set_Link (Result.K123_Declarations, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6693,18 +6693,18 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.GB_Name :=
+      Result.K124_Name :=
         Why_Empty;
-      Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders :=
+      Set_Link (Result.K124_Name, New_Id);
+      Result.K124_Binders :=
         New_List;
-      Set_Link (Result.GB_Binders, New_Id);
-      Result.GB_Pre :=
+      Set_Link (Result.K124_Binders, New_Id);
+      Result.K124_Pre :=
         Why_Empty;
-      Set_Link (Result.GB_Pre, New_Id);
-      Result.GB_Def :=
+      Set_Link (Result.K124_Pre, New_Id);
+      Result.K124_Def :=
         Why_Empty;
-      Set_Link (Result.GB_Def, New_Id);
+      Set_Link (Result.K124_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6724,9 +6724,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.GRB_Name :=
+      Result.K125_Name :=
         Why_Empty;
-      Set_Link (Result.GRB_Name, New_Id);
+      Set_Link (Result.K125_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6746,15 +6746,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PD_External :=
+      Result.K126_External :=
         Why_Empty;
-      Set_Link (Result.PD_External, New_Id);
-      Result.PD_Names :=
+      Set_Link (Result.K126_External, New_Id);
+      Result.K126_Names :=
         New_List;
-      Set_Link (Result.PD_Names, New_Id);
-      Result.PD_Parameter_Type :=
+      Set_Link (Result.K126_Names, New_Id);
+      Result.K126_Parameter_Type :=
         Why_Empty;
-      Set_Link (Result.PD_Parameter_Type, New_Id);
+      Set_Link (Result.K126_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6774,12 +6774,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.GR_Name :=
+      Result.K127_Name :=
         Why_Empty;
-      Set_Link (Result.GR_Name, New_Id);
-      Result.GR_Parameter_Type :=
+      Set_Link (Result.K127_Name, New_Id);
+      Result.K127_Parameter_Type :=
         Why_Empty;
-      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Set_Link (Result.K127_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6799,12 +6799,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ED_Name :=
+      Result.K128_Name :=
         Why_Empty;
-      Set_Link (Result.ED_Name, New_Id);
-      Result.ED_Parameter :=
+      Set_Link (Result.K128_Name, New_Id);
+      Result.K128_Parameter :=
         Why_Empty;
-      Set_Link (Result.ED_Parameter, New_Id);
+      Set_Link (Result.K128_Parameter, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6824,9 +6824,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.LD_Decl :=
+      Result.K129_Decl :=
         Why_Empty;
-      Set_Link (Result.LD_Decl, New_Id);
+      Set_Link (Result.K129_Decl, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6846,9 +6846,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.ID_Name :=
+      Result.K130_Name :=
         Why_Empty;
-      Set_Link (Result.ID_Name, New_Id);
+      Set_Link (Result.K130_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6879,8 +6879,8 @@ package body Why.Atree.Builders is
             Identifier_Get_Entity (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Symbol := Symbol;
-         Result.Entity := Entity;
+         Result.K1_Symbol := Symbol;
+         Result.K1_Entity := Entity;
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7045,10 +7045,10 @@ package body Why.Atree.Builders is
             +Abstract_Type_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AT_Name :=
+         Result.K7_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.AT_Name, New_Id);
+         Set_Link (Result.K7_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7078,10 +7078,10 @@ package body Why.Atree.Builders is
             +Generic_Formal_Type_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.GFT_Name :=
+         Result.K8_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.GFT_Name, New_Id);
+         Set_Link (Result.K8_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7129,13 +7129,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.GATC_Type_Chain := NL;
+            Result.K9_Type_Chain := NL;
          end;
-         Set_Link (Result.GATC_Type_Chain, New_Id);
-         Result.GATC_Name :=
+         Set_Link (Result.K9_Type_Chain, New_Id);
+         Result.K9_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.GATC_Name, New_Id);
+         Set_Link (Result.K9_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7165,10 +7165,10 @@ package body Why.Atree.Builders is
             +Array_Type_Get_Component_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AT_Component_Type :=
+         Result.K10_Component_Type :=
            Duplicate_Primitive_Type
            (Id => Component_Type);
-         Set_Link (Result.AT_Component_Type, New_Id);
+         Set_Link (Result.K10_Component_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7198,10 +7198,10 @@ package body Why.Atree.Builders is
             +Ref_Type_Get_Aliased_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RT_Aliased_Type :=
+         Result.K11_Aliased_Type :=
            Duplicate_Primitive_Type
            (Id => Aliased_Type);
-         Set_Link (Result.RT_Aliased_Type, New_Id);
+         Set_Link (Result.K11_Aliased_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7257,41 +7257,41 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.CS_Binders := NL;
+            Result.K12_Binders := NL;
          end;
-         Set_Link (Result.CS_Binders, New_Id);
+         Set_Link (Result.K12_Binders, New_Id);
          if Precondition = Why_Empty then
-            Result.CS_Precondition := Why_Empty;
+            Result.K12_Precondition := Why_Empty;
          else
-            Result.CS_Precondition :=
+            Result.K12_Precondition :=
               Duplicate_Predicate
               (Id => Precondition);
          end if;
-         Set_Link (Result.CS_Precondition, New_Id);
+         Set_Link (Result.K12_Precondition, New_Id);
          if Result_Name = Why_Empty then
-            Result.CS_Result_Name := Why_Empty;
+            Result.K12_Result_Name := Why_Empty;
          else
-            Result.CS_Result_Name :=
+            Result.K12_Result_Name :=
               Duplicate_Identifier
               (Id => Result_Name);
          end if;
-         Set_Link (Result.CS_Result_Name, New_Id);
-         Result.CS_Return_Type :=
+         Set_Link (Result.K12_Result_Name, New_Id);
+         Result.K12_Return_Type :=
            Duplicate_Primitive_Type
            (Id => Return_Type);
-         Set_Link (Result.CS_Return_Type, New_Id);
-         Result.CS_Effects :=
+         Set_Link (Result.K12_Return_Type, New_Id);
+         Result.K12_Effects :=
            Duplicate_Effects
            (Id => Effects);
-         Set_Link (Result.CS_Effects, New_Id);
+         Set_Link (Result.K12_Effects, New_Id);
          if Postcondition = Why_Empty then
-            Result.CS_Postcondition := Why_Empty;
+            Result.K12_Postcondition := Why_Empty;
          else
-            Result.CS_Postcondition :=
+            Result.K12_Postcondition :=
               Duplicate_Postcondition
               (Id => Postcondition);
          end if;
-         Set_Link (Result.CS_Postcondition, New_Id);
+         Set_Link (Result.K12_Postcondition, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7321,7 +7321,7 @@ package body Why.Atree.Builders is
             Integer_Constant_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.IC_Value := Value;
+         Result.K13_Value := Value;
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7351,7 +7351,7 @@ package body Why.Atree.Builders is
             Real_Constant_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RC_Value := Value;
+         Result.K14_Value := Value;
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7466,18 +7466,18 @@ package body Why.Atree.Builders is
             +Arith_Operation_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AO_Left :=
+         Result.K18_Left :=
            Duplicate_Term
            (Id => Left);
-         Set_Link (Result.AO_Left, New_Id);
-         Result.AO_Op :=
+         Set_Link (Result.K18_Left, New_Id);
+         Result.K18_Op :=
            Duplicate_Arith_Op
            (Id => Op);
-         Set_Link (Result.AO_Op, New_Id);
-         Result.AO_Right :=
+         Set_Link (Result.K18_Op, New_Id);
+         Result.K18_Right :=
            Duplicate_Term
            (Id => Right);
-         Set_Link (Result.AO_Right, New_Id);
+         Set_Link (Result.K18_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7507,10 +7507,10 @@ package body Why.Atree.Builders is
             +Negative_Term_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.NT_Operand :=
+         Result.K19_Operand :=
            Duplicate_Term
            (Id => Operand);
-         Set_Link (Result.NT_Operand, New_Id);
+         Set_Link (Result.K19_Operand, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7542,18 +7542,18 @@ package body Why.Atree.Builders is
             +Term_Identifier_Get_Label (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.TIL_Name :=
+         Result.K20_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.TIL_Name, New_Id);
+         Set_Link (Result.K20_Name, New_Id);
          if Label = Why_Empty then
-            Result.TIL_Label := Why_Empty;
+            Result.K20_Label := Why_Empty;
          else
-            Result.TIL_Label :=
+            Result.K20_Label :=
               Duplicate_Identifier
               (Id => Label);
          end if;
-         Set_Link (Result.TIL_Label, New_Id);
+         Set_Link (Result.K20_Label, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7585,10 +7585,10 @@ package body Why.Atree.Builders is
             +Operation_Get_Parameters (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.O_Name :=
+         Result.K21_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.O_Name, New_Id);
+         Set_Link (Result.K21_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -7605,9 +7605,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.O_Parameters := NL;
+            Result.K21_Parameters := NL;
          end;
-         Set_Link (Result.O_Parameters, New_Id);
+         Set_Link (Result.K21_Parameters, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7639,14 +7639,14 @@ package body Why.Atree.Builders is
             +Named_Term_Get_Term (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.NT_Name :=
+         Result.K22_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.NT_Name, New_Id);
-         Result.NT_Term :=
+         Set_Link (Result.K22_Name, New_Id);
+         Result.K22_Term :=
            Duplicate_Term
            (Id => Term);
-         Set_Link (Result.NT_Term, New_Id);
+         Set_Link (Result.K22_Term, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7680,18 +7680,18 @@ package body Why.Atree.Builders is
             +Conditional_Term_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.CT_Condition :=
+         Result.K23_Condition :=
            Duplicate_Term
            (Id => Condition);
-         Set_Link (Result.CT_Condition, New_Id);
-         Result.CT_Then_Part :=
+         Set_Link (Result.K23_Condition, New_Id);
+         Result.K23_Then_Part :=
            Duplicate_Term
            (Id => Then_Part);
-         Set_Link (Result.CT_Then_Part, New_Id);
-         Result.CT_Else_Part :=
+         Set_Link (Result.K23_Then_Part, New_Id);
+         Result.K23_Else_Part :=
            Duplicate_Term
            (Id => Else_Part);
-         Set_Link (Result.CT_Else_Part, New_Id);
+         Set_Link (Result.K23_Else_Part, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7723,10 +7723,10 @@ package body Why.Atree.Builders is
             +Matching_Term_Get_Branches (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.MT_Term :=
+         Result.K24_Term :=
            Duplicate_Term
            (Id => Term);
-         Set_Link (Result.MT_Term, New_Id);
+         Set_Link (Result.K24_Term, New_Id);
          declare
             use Node_Lists;
 
@@ -7743,9 +7743,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.MT_Branches := NL;
+            Result.K24_Branches := NL;
          end;
-         Set_Link (Result.MT_Branches, New_Id);
+         Set_Link (Result.K24_Branches, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7779,18 +7779,18 @@ package body Why.Atree.Builders is
             +Binding_Term_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BT_Name :=
+         Result.K25_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.BT_Name, New_Id);
-         Result.BT_Def :=
+         Set_Link (Result.K25_Name, New_Id);
+         Result.K25_Def :=
            Duplicate_Term
            (Id => Def);
-         Set_Link (Result.BT_Def, New_Id);
-         Result.BT_Context :=
+         Set_Link (Result.K25_Def, New_Id);
+         Result.K25_Context :=
            Duplicate_Term
            (Id => Context);
-         Set_Link (Result.BT_Context, New_Id);
+         Set_Link (Result.K25_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -7820,10 +7820,10 @@ package body Why.Atree.Builders is
             +Protected_Term_Get_Term (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BT_Term :=
+         Result.K26_Term :=
            Duplicate_Term
            (Id => Term);
-         Set_Link (Result.BT_Term, New_Id);
+         Set_Link (Result.K26_Term, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8042,10 +8042,10 @@ package body Why.Atree.Builders is
             +Predicate_Identifier_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PID_Name :=
+         Result.K34_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.PID_Name, New_Id);
+         Set_Link (Result.K34_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8077,10 +8077,10 @@ package body Why.Atree.Builders is
             +Predicate_Instance_Get_Parameters (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PIN_Name :=
+         Result.K35_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.PIN_Name, New_Id);
+         Set_Link (Result.K35_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -8097,9 +8097,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.PIN_Parameters := NL;
+            Result.K35_Parameters := NL;
          end;
-         Set_Link (Result.PIN_Parameters, New_Id);
+         Set_Link (Result.K35_Parameters, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8137,34 +8137,34 @@ package body Why.Atree.Builders is
             +Related_Terms_Get_Right2 (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RT_Left :=
+         Result.K36_Left :=
            Duplicate_Term
            (Id => Left);
-         Set_Link (Result.RT_Left, New_Id);
-         Result.RT_Op :=
+         Set_Link (Result.K36_Left, New_Id);
+         Result.K36_Op :=
            Duplicate_Relation
            (Id => Op);
-         Set_Link (Result.RT_Op, New_Id);
-         Result.RT_Right :=
+         Set_Link (Result.K36_Op, New_Id);
+         Result.K36_Right :=
            Duplicate_Term
            (Id => Right);
-         Set_Link (Result.RT_Right, New_Id);
+         Set_Link (Result.K36_Right, New_Id);
          if Op2 = Why_Empty then
-            Result.RT_Op2 := Why_Empty;
+            Result.K36_Op2 := Why_Empty;
          else
-            Result.RT_Op2 :=
+            Result.K36_Op2 :=
               Duplicate_Relation
               (Id => Op2);
          end if;
-         Set_Link (Result.RT_Op2, New_Id);
+         Set_Link (Result.K36_Op2, New_Id);
          if Right2 = Why_Empty then
-            Result.RT_Right2 := Why_Empty;
+            Result.K36_Right2 := Why_Empty;
          else
-            Result.RT_Right2 :=
+            Result.K36_Right2 :=
               Duplicate_Term
               (Id => Right2);
          end if;
-         Set_Link (Result.RT_Right2, New_Id);
+         Set_Link (Result.K36_Right2, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8196,14 +8196,14 @@ package body Why.Atree.Builders is
             +Implication_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ITOC_Left :=
+         Result.K37_Left :=
            Duplicate_Predicate
            (Id => Left);
-         Set_Link (Result.ITOC_Left, New_Id);
-         Result.ITOC_Right :=
+         Set_Link (Result.K37_Left, New_Id);
+         Result.K37_Right :=
            Duplicate_Predicate
            (Id => Right);
-         Set_Link (Result.ITOC_Right, New_Id);
+         Set_Link (Result.K37_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8235,14 +8235,14 @@ package body Why.Atree.Builders is
             +Equivalence_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ITOC_Left :=
+         Result.K38_Left :=
            Duplicate_Predicate
            (Id => Left);
-         Set_Link (Result.ITOC_Left, New_Id);
-         Result.ITOC_Right :=
+         Set_Link (Result.K38_Left, New_Id);
+         Result.K38_Right :=
            Duplicate_Predicate
            (Id => Right);
-         Set_Link (Result.ITOC_Right, New_Id);
+         Set_Link (Result.K38_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8274,14 +8274,14 @@ package body Why.Atree.Builders is
             +Disjunction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ITOC_Left :=
+         Result.K39_Left :=
            Duplicate_Predicate
            (Id => Left);
-         Set_Link (Result.ITOC_Left, New_Id);
-         Result.ITOC_Right :=
+         Set_Link (Result.K39_Left, New_Id);
+         Result.K39_Right :=
            Duplicate_Predicate
            (Id => Right);
-         Set_Link (Result.ITOC_Right, New_Id);
+         Set_Link (Result.K39_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8313,14 +8313,14 @@ package body Why.Atree.Builders is
             +Conjunction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ITOC_Left :=
+         Result.K40_Left :=
            Duplicate_Predicate
            (Id => Left);
-         Set_Link (Result.ITOC_Left, New_Id);
-         Result.ITOC_Right :=
+         Set_Link (Result.K40_Left, New_Id);
+         Result.K40_Right :=
            Duplicate_Predicate
            (Id => Right);
-         Set_Link (Result.ITOC_Right, New_Id);
+         Set_Link (Result.K40_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8350,10 +8350,10 @@ package body Why.Atree.Builders is
             +Negation_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.N_Operand :=
+         Result.K41_Operand :=
            Duplicate_Predicate
            (Id => Operand);
-         Set_Link (Result.N_Operand, New_Id);
+         Set_Link (Result.K41_Operand, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8387,18 +8387,18 @@ package body Why.Atree.Builders is
             +Conditional_Pred_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.CPD_Condition :=
+         Result.K42_Condition :=
            Duplicate_Term
            (Id => Condition);
-         Set_Link (Result.CPD_Condition, New_Id);
-         Result.CPD_Then_Part :=
+         Set_Link (Result.K42_Condition, New_Id);
+         Result.K42_Then_Part :=
            Duplicate_Predicate
            (Id => Then_Part);
-         Set_Link (Result.CPD_Then_Part, New_Id);
-         Result.CPD_Else_Part :=
+         Set_Link (Result.K42_Then_Part, New_Id);
+         Result.K42_Else_Part :=
            Duplicate_Predicate
            (Id => Else_Part);
-         Set_Link (Result.CPD_Else_Part, New_Id);
+         Set_Link (Result.K42_Else_Part, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8432,18 +8432,18 @@ package body Why.Atree.Builders is
             +Binding_Pred_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BPD_Name :=
+         Result.K43_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.BPD_Name, New_Id);
-         Result.BPD_Def :=
+         Set_Link (Result.K43_Name, New_Id);
+         Result.K43_Def :=
            Duplicate_Term
            (Id => Def);
-         Set_Link (Result.BPD_Def, New_Id);
-         Result.BPD_Context :=
+         Set_Link (Result.K43_Def, New_Id);
+         Result.K43_Context :=
            Duplicate_Predicate
            (Id => Context);
-         Set_Link (Result.BPD_Context, New_Id);
+         Set_Link (Result.K43_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8495,25 +8495,25 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.UQ_Variables := NL;
+            Result.K44_Variables := NL;
          end;
-         Set_Link (Result.UQ_Variables, New_Id);
-         Result.UQ_Var_Type :=
+         Set_Link (Result.K44_Variables, New_Id);
+         Result.K44_Var_Type :=
            Duplicate_Primitive_Type
            (Id => Var_Type);
-         Set_Link (Result.UQ_Var_Type, New_Id);
+         Set_Link (Result.K44_Var_Type, New_Id);
          if Triggers = Why_Empty then
-            Result.UQ_Triggers := Why_Empty;
+            Result.K44_Triggers := Why_Empty;
          else
-            Result.UQ_Triggers :=
+            Result.K44_Triggers :=
               Duplicate_Triggers
               (Id => Triggers);
          end if;
-         Set_Link (Result.UQ_Triggers, New_Id);
-         Result.UQ_Pred :=
+         Set_Link (Result.K44_Triggers, New_Id);
+         Result.K44_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.UQ_Pred, New_Id);
+         Set_Link (Result.K44_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8563,17 +8563,17 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.EQ_Variables := NL;
+            Result.K45_Variables := NL;
          end;
-         Set_Link (Result.EQ_Variables, New_Id);
-         Result.EQ_Var_Type :=
+         Set_Link (Result.K45_Variables, New_Id);
+         Result.K45_Var_Type :=
            Duplicate_Primitive_Type
            (Id => Var_Type);
-         Set_Link (Result.EQ_Var_Type, New_Id);
-         Result.EQ_Pred :=
+         Set_Link (Result.K45_Var_Type, New_Id);
+         Result.K45_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.EQ_Pred, New_Id);
+         Set_Link (Result.K45_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8605,14 +8605,14 @@ package body Why.Atree.Builders is
             +Named_Predicate_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.NP_Name :=
+         Result.K46_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.NP_Name, New_Id);
-         Result.NP_Pred :=
+         Set_Link (Result.K46_Name, New_Id);
+         Result.K46_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.NP_Pred, New_Id);
+         Set_Link (Result.K46_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8642,10 +8642,10 @@ package body Why.Atree.Builders is
             +Protected_Predicate_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PP_Pred :=
+         Result.K47_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.PP_Pred, New_Id);
+         Set_Link (Result.K47_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8677,10 +8677,10 @@ package body Why.Atree.Builders is
             +Pattern_Get_Args (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PAT_Constr :=
+         Result.K48_Constr :=
            Duplicate_Identifier
            (Id => Constr);
-         Set_Link (Result.PAT_Constr, New_Id);
+         Set_Link (Result.K48_Constr, New_Id);
          declare
             use Node_Lists;
 
@@ -8697,9 +8697,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.PAT_Args := NL;
+            Result.K48_Args := NL;
          end;
-         Set_Link (Result.PAT_Args, New_Id);
+         Set_Link (Result.K48_Args, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8731,14 +8731,14 @@ package body Why.Atree.Builders is
             +Match_Case_Get_Term (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.MC_Pattern :=
+         Result.K49_Pattern :=
            Duplicate_Pattern
            (Id => Pattern);
-         Set_Link (Result.MC_Pattern, New_Id);
-         Result.MC_Term :=
+         Set_Link (Result.K49_Pattern, New_Id);
+         Result.K49_Term :=
            Duplicate_Term
            (Id => Term);
-         Set_Link (Result.MC_Term, New_Id);
+         Set_Link (Result.K49_Term, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8784,9 +8784,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.TRS_Triggers := NL;
+            Result.K50_Triggers := NL;
          end;
-         Set_Link (Result.TRS_Triggers, New_Id);
+         Set_Link (Result.K50_Triggers, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8832,9 +8832,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.TRI_Terms := NL;
+            Result.K51_Terms := NL;
          end;
-         Set_Link (Result.TRI_Terms, New_Id);
+         Set_Link (Result.K51_Terms, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9033,13 +9033,13 @@ package body Why.Atree.Builders is
       begin
          Result.Ada_Node := Ada_Node;
          if External = Why_Empty then
-            Result.T_External := Why_Empty;
+            Result.K58_External := Why_Empty;
          else
-            Result.T_External :=
+            Result.K58_External :=
               Duplicate_External
               (Id => External);
          end if;
-         Set_Link (Result.T_External, New_Id);
+         Set_Link (Result.K58_External, New_Id);
          declare
             use Node_Lists;
 
@@ -9056,21 +9056,21 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.T_Type_Parameters := NL;
+            Result.K58_Type_Parameters := NL;
          end;
-         Set_Link (Result.T_Type_Parameters, New_Id);
-         Result.T_Name :=
+         Set_Link (Result.K58_Type_Parameters, New_Id);
+         Result.K58_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.T_Name, New_Id);
+         Set_Link (Result.K58_Name, New_Id);
          if Definition = Why_Empty then
-            Result.T_Definition := Why_Empty;
+            Result.K58_Definition := Why_Empty;
          else
-            Result.T_Definition :=
+            Result.K58_Definition :=
               Duplicate_Type_Definition
               (Id => Definition);
          end if;
-         Set_Link (Result.T_Definition, New_Id);
+         Set_Link (Result.K58_Definition, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9105,13 +9105,13 @@ package body Why.Atree.Builders is
       begin
          Result.Ada_Node := Ada_Node;
          if External = Why_Empty then
-            Result.L_External := Why_Empty;
+            Result.K59_External := Why_Empty;
          else
-            Result.L_External :=
+            Result.K59_External :=
               Duplicate_External
               (Id => External);
          end if;
-         Set_Link (Result.L_External, New_Id);
+         Set_Link (Result.K59_External, New_Id);
          declare
             use Node_Lists;
 
@@ -9128,13 +9128,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.L_Names := NL;
+            Result.K59_Names := NL;
          end;
-         Set_Link (Result.L_Names, New_Id);
-         Result.L_Logic_Type :=
+         Set_Link (Result.K59_Names, New_Id);
+         Result.K59_Logic_Type :=
            Duplicate_Logic_Type
            (Id => Logic_Type);
-         Set_Link (Result.L_Logic_Type, New_Id);
+         Set_Link (Result.K59_Logic_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9170,10 +9170,10 @@ package body Why.Atree.Builders is
             +Function_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.F_Name :=
+         Result.K60_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.F_Name, New_Id);
+         Set_Link (Result.K60_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -9190,17 +9190,17 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.F_Binders := NL;
+            Result.K60_Binders := NL;
          end;
-         Set_Link (Result.F_Binders, New_Id);
-         Result.F_Return_Type :=
+         Set_Link (Result.K60_Binders, New_Id);
+         Result.K60_Return_Type :=
            Duplicate_Primitive_Type
            (Id => Return_Type);
-         Set_Link (Result.F_Return_Type, New_Id);
-         Result.F_Def :=
+         Set_Link (Result.K60_Return_Type, New_Id);
+         Result.K60_Def :=
            Duplicate_Term
            (Id => Def);
-         Set_Link (Result.F_Def, New_Id);
+         Set_Link (Result.K60_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9234,10 +9234,10 @@ package body Why.Atree.Builders is
             +Predicate_Definition_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.P_Name :=
+         Result.K61_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.P_Name, New_Id);
+         Set_Link (Result.K61_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -9254,13 +9254,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.P_Binders := NL;
+            Result.K61_Binders := NL;
          end;
-         Set_Link (Result.P_Binders, New_Id);
-         Result.P_Def :=
+         Set_Link (Result.K61_Binders, New_Id);
+         Result.K61_Def :=
            Duplicate_Predicate
            (Id => Def);
-         Set_Link (Result.P_Def, New_Id);
+         Set_Link (Result.K61_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9294,14 +9294,14 @@ package body Why.Atree.Builders is
             +Inductive_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.I_Name :=
+         Result.K62_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.I_Name, New_Id);
-         Result.I_Logic_Type :=
+         Set_Link (Result.K62_Name, New_Id);
+         Result.K62_Logic_Type :=
            Duplicate_Logic_Type
            (Id => Logic_Type);
-         Set_Link (Result.I_Logic_Type, New_Id);
+         Set_Link (Result.K62_Logic_Type, New_Id);
          declare
             use Node_Lists;
 
@@ -9318,9 +9318,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.I_Def := NL;
+            Result.K62_Def := NL;
          end;
-         Set_Link (Result.I_Def, New_Id);
+         Set_Link (Result.K62_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9352,14 +9352,14 @@ package body Why.Atree.Builders is
             +Axiom_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AX_Name :=
+         Result.K63_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.AX_Name, New_Id);
-         Result.AX_Def :=
+         Set_Link (Result.K63_Name, New_Id);
+         Result.K63_Def :=
            Duplicate_Predicate
            (Id => Def);
-         Set_Link (Result.AX_Def, New_Id);
+         Set_Link (Result.K63_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9391,14 +9391,14 @@ package body Why.Atree.Builders is
             +Goal_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.G_Name :=
+         Result.K64_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.G_Name, New_Id);
-         Result.G_Def :=
+         Set_Link (Result.K64_Name, New_Id);
+         Result.K64_Def :=
            Duplicate_Predicate
            (Id => Def);
-         Set_Link (Result.G_Def, New_Id);
+         Set_Link (Result.K64_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9473,13 +9473,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.LT_Arg_Types := NL;
+            Result.K66_Arg_Types := NL;
          end;
-         Set_Link (Result.LT_Arg_Types, New_Id);
-         Result.LT_Return_Type :=
+         Set_Link (Result.K66_Arg_Types, New_Id);
+         Result.K66_Return_Type :=
            Duplicate_Logic_Return_Type
            (Id => Return_Type);
-         Set_Link (Result.LT_Return_Type, New_Id);
+         Set_Link (Result.K66_Return_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9511,14 +9511,14 @@ package body Why.Atree.Builders is
             +Logic_Binder_Get_Param_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.LB_Name :=
+         Result.K67_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.LB_Name, New_Id);
-         Result.LB_Param_Type :=
+         Set_Link (Result.K67_Name, New_Id);
+         Result.K67_Param_Type :=
            Duplicate_Primitive_Type
            (Id => Param_Type);
-         Set_Link (Result.LB_Param_Type, New_Id);
+         Set_Link (Result.K67_Param_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9550,14 +9550,14 @@ package body Why.Atree.Builders is
             +Inductive_Case_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.IC_Name :=
+         Result.K68_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.IC_Name, New_Id);
-         Result.IC_Pred :=
+         Set_Link (Result.K68_Name, New_Id);
+         Result.K68_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.IC_Pred, New_Id);
+         Set_Link (Result.K68_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9587,10 +9587,10 @@ package body Why.Atree.Builders is
             +Transparent_Type_Definition_Get_Type_Definition (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Tr_Type_Definition :=
+         Result.K69_Type_Definition :=
            Duplicate_Primitive_Type
            (Id => Type_Definition);
-         Set_Link (Result.Tr_Type_Definition, New_Id);
+         Set_Link (Result.K69_Type_Definition, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9636,9 +9636,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.Adt_Constructors := NL;
+            Result.K70_Constructors := NL;
          end;
-         Set_Link (Result.Adt_Constructors, New_Id);
+         Set_Link (Result.K70_Constructors, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9670,10 +9670,10 @@ package body Why.Atree.Builders is
             +Constr_Decl_Get_Arg_List (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.C_Name :=
+         Result.K71_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.C_Name, New_Id);
+         Set_Link (Result.K71_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -9690,9 +9690,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.C_Arg_List := NL;
+            Result.K71_Arg_List := NL;
          end;
-         Set_Link (Result.C_Arg_List, New_Id);
+         Set_Link (Result.K71_Arg_List, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9742,9 +9742,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.E_Reads := NL;
+            Result.K72_Reads := NL;
          end;
-         Set_Link (Result.E_Reads, New_Id);
+         Set_Link (Result.K72_Reads, New_Id);
          declare
             use Node_Lists;
 
@@ -9761,9 +9761,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.E_Writes := NL;
+            Result.K72_Writes := NL;
          end;
-         Set_Link (Result.E_Writes, New_Id);
+         Set_Link (Result.K72_Writes, New_Id);
          declare
             use Node_Lists;
 
@@ -9780,9 +9780,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.E_Raises := NL;
+            Result.K72_Raises := NL;
          end;
-         Set_Link (Result.E_Raises, New_Id);
+         Set_Link (Result.K72_Raises, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9814,10 +9814,10 @@ package body Why.Atree.Builders is
             +Postcondition_Get_Handlers (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.POST_Pred :=
+         Result.K73_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.POST_Pred, New_Id);
+         Set_Link (Result.K73_Pred, New_Id);
          declare
             use Node_Lists;
 
@@ -9834,9 +9834,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.POST_Handlers := NL;
+            Result.K73_Handlers := NL;
          end;
-         Set_Link (Result.POST_Handlers, New_Id);
+         Set_Link (Result.K73_Handlers, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9868,14 +9868,14 @@ package body Why.Atree.Builders is
             +Exn_Condition_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.EC_Exn_Case :=
+         Result.K74_Exn_Case :=
            Duplicate_Identifier
            (Id => Exn_Case);
-         Set_Link (Result.EC_Exn_Case, New_Id);
-         Result.EC_Pred :=
+         Set_Link (Result.K74_Exn_Case, New_Id);
+         Result.K74_Pred :=
            Duplicate_Predicate
            (Id => Pred);
-         Set_Link (Result.EC_Pred, New_Id);
+         Set_Link (Result.K74_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9905,10 +9905,10 @@ package body Why.Atree.Builders is
             +Prog_Constant_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PC_Def :=
+         Result.K75_Def :=
            Duplicate_Constant
            (Id => Def);
-         Set_Link (Result.PC_Def, New_Id);
+         Set_Link (Result.K75_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9938,10 +9938,10 @@ package body Why.Atree.Builders is
             +Prog_Identifier_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PI_Def :=
+         Result.K76_Def :=
            Duplicate_Identifier
            (Id => Def);
-         Set_Link (Result.PI_Def, New_Id);
+         Set_Link (Result.K76_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9971,10 +9971,10 @@ package body Why.Atree.Builders is
             +Any_Expr_Get_Any_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AE_Any_Type :=
+         Result.K77_Any_Type :=
            Duplicate_Computation_Type
            (Id => Any_Type);
-         Set_Link (Result.AE_Any_Type, New_Id);
+         Set_Link (Result.K77_Any_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10004,10 +10004,10 @@ package body Why.Atree.Builders is
             +Deref_Get_Ref (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.D_Ref :=
+         Result.K78_Ref :=
            Duplicate_Identifier
            (Id => Ref);
-         Set_Link (Result.D_Ref, New_Id);
+         Set_Link (Result.K78_Ref, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10039,14 +10039,14 @@ package body Why.Atree.Builders is
             +Assignment_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.A_Name :=
+         Result.K79_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.A_Name, New_Id);
-         Result.A_Value :=
+         Set_Link (Result.K79_Name, New_Id);
+         Result.K79_Value :=
            Duplicate_Prog
            (Id => Value);
-         Set_Link (Result.A_Value, New_Id);
+         Set_Link (Result.K79_Value, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10078,14 +10078,14 @@ package body Why.Atree.Builders is
             +Array_Access_Get_Index (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AA_Name :=
+         Result.K80_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.AA_Name, New_Id);
-         Result.AA_Index :=
+         Set_Link (Result.K80_Name, New_Id);
+         Result.K80_Index :=
            Duplicate_Prog
            (Id => Index);
-         Set_Link (Result.AA_Index, New_Id);
+         Set_Link (Result.K80_Index, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10119,18 +10119,18 @@ package body Why.Atree.Builders is
             +Array_Update_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.AU_Name :=
+         Result.K81_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.AU_Name, New_Id);
-         Result.AU_Index :=
+         Set_Link (Result.K81_Name, New_Id);
+         Result.K81_Index :=
            Duplicate_Prog
            (Id => Index);
-         Set_Link (Result.AU_Index, New_Id);
-         Result.AU_Value :=
+         Set_Link (Result.K81_Index, New_Id);
+         Result.K81_Value :=
            Duplicate_Prog
            (Id => Value);
-         Set_Link (Result.AU_Value, New_Id);
+         Set_Link (Result.K81_Value, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10164,18 +10164,18 @@ package body Why.Atree.Builders is
             +Infix_Call_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.IC_Left :=
+         Result.K82_Left :=
            Duplicate_Prog
            (Id => Left);
-         Set_Link (Result.IC_Left, New_Id);
-         Result.IC_Infix :=
+         Set_Link (Result.K82_Left, New_Id);
+         Result.K82_Infix :=
            Duplicate_Infix
            (Id => Infix);
-         Set_Link (Result.IC_Infix, New_Id);
-         Result.IC_Right :=
+         Set_Link (Result.K82_Infix, New_Id);
+         Result.K82_Right :=
            Duplicate_Prog
            (Id => Right);
-         Set_Link (Result.IC_Right, New_Id);
+         Set_Link (Result.K82_Right, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10207,14 +10207,14 @@ package body Why.Atree.Builders is
             +Prefix_Call_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PC_Prefix :=
+         Result.K83_Prefix :=
            Duplicate_Prefix
            (Id => Prefix);
-         Set_Link (Result.PC_Prefix, New_Id);
-         Result.PC_Operand :=
+         Set_Link (Result.K83_Prefix, New_Id);
+         Result.K83_Operand :=
            Duplicate_Prog
            (Id => Operand);
-         Set_Link (Result.PC_Operand, New_Id);
+         Set_Link (Result.K83_Operand, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10248,18 +10248,18 @@ package body Why.Atree.Builders is
             +Binding_Prog_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BPG_Name :=
+         Result.K84_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.BPG_Name, New_Id);
-         Result.BPG_Def :=
+         Set_Link (Result.K84_Name, New_Id);
+         Result.K84_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.BPG_Def, New_Id);
-         Result.BPG_Context :=
+         Set_Link (Result.K84_Def, New_Id);
+         Result.K84_Context :=
            Duplicate_Prog
            (Id => Context);
-         Set_Link (Result.BPG_Context, New_Id);
+         Set_Link (Result.K84_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10293,18 +10293,18 @@ package body Why.Atree.Builders is
             +Binding_Ref_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BPG_Name :=
+         Result.K85_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.BPG_Name, New_Id);
-         Result.BPG_Def :=
+         Set_Link (Result.K85_Name, New_Id);
+         Result.K85_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.BPG_Def, New_Id);
-         Result.BPG_Context :=
+         Set_Link (Result.K85_Def, New_Id);
+         Result.K85_Context :=
            Duplicate_Prog
            (Id => Context);
-         Set_Link (Result.BPG_Context, New_Id);
+         Set_Link (Result.K85_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10338,22 +10338,22 @@ package body Why.Atree.Builders is
             +Conditional_Prog_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.CPG_Condition :=
+         Result.K86_Condition :=
            Duplicate_Prog
            (Id => Condition);
-         Set_Link (Result.CPG_Condition, New_Id);
-         Result.CPG_Then_Part :=
+         Set_Link (Result.K86_Condition, New_Id);
+         Result.K86_Then_Part :=
            Duplicate_Prog
            (Id => Then_Part);
-         Set_Link (Result.CPG_Then_Part, New_Id);
+         Set_Link (Result.K86_Then_Part, New_Id);
          if Else_Part = Why_Empty then
-            Result.CPG_Else_Part := Why_Empty;
+            Result.K86_Else_Part := Why_Empty;
          else
-            Result.CPG_Else_Part :=
+            Result.K86_Else_Part :=
               Duplicate_Prog
               (Id => Else_Part);
          end if;
-         Set_Link (Result.CPG_Else_Part, New_Id);
+         Set_Link (Result.K86_Else_Part, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10387,18 +10387,18 @@ package body Why.Atree.Builders is
             +While_Loop_Get_Loop_Content (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.WL_Condition :=
+         Result.K87_Condition :=
            Duplicate_Prog
            (Id => Condition);
-         Set_Link (Result.WL_Condition, New_Id);
-         Result.WL_Annotation :=
+         Set_Link (Result.K87_Condition, New_Id);
+         Result.K87_Annotation :=
            Duplicate_Loop_Annot
            (Id => Annotation);
-         Set_Link (Result.WL_Annotation, New_Id);
-         Result.WL_Loop_Content :=
+         Set_Link (Result.K87_Annotation, New_Id);
+         Result.K87_Loop_Content :=
            Duplicate_Prog
            (Id => Loop_Content);
-         Set_Link (Result.WL_Loop_Content, New_Id);
+         Set_Link (Result.K87_Loop_Content, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10444,9 +10444,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.SS_Statements := NL;
+            Result.K88_Statements := NL;
          end;
-         Set_Link (Result.SS_Statements, New_Id);
+         Set_Link (Result.K88_Statements, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10478,14 +10478,14 @@ package body Why.Atree.Builders is
             +Label_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.L_Name :=
+         Result.K89_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.L_Name, New_Id);
-         Result.L_Def :=
+         Set_Link (Result.K89_Name, New_Id);
+         Result.K89_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.L_Def, New_Id);
+         Set_Link (Result.K89_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10533,13 +10533,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.AS_Preds := NL;
+            Result.K90_Preds := NL;
          end;
-         Set_Link (Result.AS_Preds, New_Id);
-         Result.AS_Prog :=
+         Set_Link (Result.K90_Preds, New_Id);
+         Result.K90_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.AS_Prog, New_Id);
+         Set_Link (Result.K90_Prog, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10571,14 +10571,14 @@ package body Why.Atree.Builders is
             +Post_Assertion_Get_Post (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PA_Prog :=
+         Result.K91_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.PA_Prog, New_Id);
-         Result.PA_Post :=
+         Set_Link (Result.K91_Prog, New_Id);
+         Result.K91_Post :=
            Duplicate_Postcondition
            (Id => Post);
-         Set_Link (Result.PA_Post, New_Id);
+         Set_Link (Result.K91_Post, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10610,14 +10610,14 @@ package body Why.Atree.Builders is
             +Opaque_Assertion_Get_Post (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PA_Prog :=
+         Result.K92_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.PA_Prog, New_Id);
-         Result.PA_Post :=
+         Set_Link (Result.K92_Prog, New_Id);
+         Result.K92_Post :=
            Duplicate_Postcondition
            (Id => Post);
-         Set_Link (Result.PA_Post, New_Id);
+         Set_Link (Result.K92_Post, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10667,17 +10667,17 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.FD_Binders := NL;
+            Result.K93_Binders := NL;
          end;
-         Set_Link (Result.FD_Binders, New_Id);
-         Result.FD_Pre :=
+         Set_Link (Result.K93_Binders, New_Id);
+         Result.K93_Pre :=
            Duplicate_Predicate
            (Id => Pre);
-         Set_Link (Result.FD_Pre, New_Id);
-         Result.FD_Def :=
+         Set_Link (Result.K93_Pre, New_Id);
+         Result.K93_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.FD_Def, New_Id);
+         Set_Link (Result.K93_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10715,10 +10715,10 @@ package body Why.Atree.Builders is
             +Binding_Fun_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BF_Name :=
+         Result.K94_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.BF_Name, New_Id);
+         Set_Link (Result.K94_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -10735,21 +10735,21 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.BF_Binders := NL;
+            Result.K94_Binders := NL;
          end;
-         Set_Link (Result.BF_Binders, New_Id);
-         Result.BF_Pre :=
+         Set_Link (Result.K94_Binders, New_Id);
+         Result.K94_Pre :=
            Duplicate_Predicate
            (Id => Pre);
-         Set_Link (Result.BF_Pre, New_Id);
-         Result.BF_Def :=
+         Set_Link (Result.K94_Pre, New_Id);
+         Result.K94_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.BF_Def, New_Id);
-         Result.BF_Context :=
+         Set_Link (Result.K94_Def, New_Id);
+         Result.K94_Context :=
            Duplicate_Prog
            (Id => Context);
-         Set_Link (Result.BF_Context, New_Id);
+         Set_Link (Result.K94_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10781,14 +10781,14 @@ package body Why.Atree.Builders is
             +Binding_Rec_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BR_Recfun :=
+         Result.K95_Recfun :=
            Duplicate_Recfun
            (Id => Recfun);
-         Set_Link (Result.BR_Recfun, New_Id);
-         Result.BR_Context :=
+         Set_Link (Result.K95_Recfun, New_Id);
+         Result.K95_Context :=
            Duplicate_Prog
            (Id => Context);
-         Set_Link (Result.BR_Context, New_Id);
+         Set_Link (Result.K95_Context, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10820,10 +10820,10 @@ package body Why.Atree.Builders is
             +Prog_Call_Get_Progs (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PS_Name :=
+         Result.K96_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.PS_Name, New_Id);
+         Set_Link (Result.K96_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -10840,9 +10840,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.PS_Progs := NL;
+            Result.K96_Progs := NL;
          end;
-         Set_Link (Result.PS_Progs, New_Id);
+         Set_Link (Result.K96_Progs, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10874,18 +10874,18 @@ package body Why.Atree.Builders is
             +Raise_Statement_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RS_Name :=
+         Result.K97_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.RS_Name, New_Id);
+         Set_Link (Result.K97_Name, New_Id);
          if Exn_Type = Why_Empty then
-            Result.RS_Exn_Type := Why_Empty;
+            Result.K97_Exn_Type := Why_Empty;
          else
-            Result.RS_Exn_Type :=
+            Result.K97_Exn_Type :=
               Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
-         Set_Link (Result.RS_Exn_Type, New_Id);
+         Set_Link (Result.K97_Exn_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10919,22 +10919,22 @@ package body Why.Atree.Builders is
             +Raise_Statement_With_Parameters_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RSWP_Name :=
+         Result.K98_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.RSWP_Name, New_Id);
-         Result.RSWP_Parameter :=
+         Set_Link (Result.K98_Name, New_Id);
+         Result.K98_Parameter :=
            Duplicate_Term
            (Id => Parameter);
-         Set_Link (Result.RSWP_Parameter, New_Id);
+         Set_Link (Result.K98_Parameter, New_Id);
          if Exn_Type = Why_Empty then
-            Result.RSWP_Exn_Type := Why_Empty;
+            Result.K98_Exn_Type := Why_Empty;
          else
-            Result.RSWP_Exn_Type :=
+            Result.K98_Exn_Type :=
               Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
-         Set_Link (Result.RSWP_Exn_Type, New_Id);
+         Set_Link (Result.K98_Exn_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -10966,10 +10966,10 @@ package body Why.Atree.Builders is
             +Try_Block_Get_Handler (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.TB_Prog :=
+         Result.K99_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.TB_Prog, New_Id);
+         Set_Link (Result.K99_Prog, New_Id);
          declare
             use Node_Lists;
 
@@ -10986,9 +10986,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.TB_Handler := NL;
+            Result.K99_Handler := NL;
          end;
-         Set_Link (Result.TB_Handler, New_Id);
+         Set_Link (Result.K99_Handler, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11019,13 +11019,13 @@ package body Why.Atree.Builders is
       begin
          Result.Ada_Node := Ada_Node;
          if Exn_Type = Why_Empty then
-            Result.UC_Exn_Type := Why_Empty;
+            Result.K100_Exn_Type := Why_Empty;
          else
-            Result.UC_Exn_Type :=
+            Result.K100_Exn_Type :=
               Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
-         Set_Link (Result.UC_Exn_Type, New_Id);
+         Set_Link (Result.K100_Exn_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11055,10 +11055,10 @@ package body Why.Atree.Builders is
             +Begin_Block_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BB_Prog :=
+         Result.K101_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.BB_Prog, New_Id);
+         Set_Link (Result.K101_Prog, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11088,10 +11088,10 @@ package body Why.Atree.Builders is
             +Protected_Prog_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.BB_Prog :=
+         Result.K102_Prog :=
            Duplicate_Prog
            (Id => Prog);
-         Set_Link (Result.BB_Prog, New_Id);
+         Set_Link (Result.K102_Prog, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11544,13 +11544,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.B_Names := NL;
+            Result.K118_Names := NL;
          end;
-         Set_Link (Result.B_Names, New_Id);
-         Result.B_Arg_Type :=
+         Set_Link (Result.K118_Names, New_Id);
+         Result.K118_Arg_Type :=
            Duplicate_Simple_Value_Type
            (Id => Arg_Type);
-         Set_Link (Result.B_Arg_Type, New_Id);
+         Set_Link (Result.K118_Arg_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11590,10 +11590,10 @@ package body Why.Atree.Builders is
             +Recfun_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.RF_Name :=
+         Result.K119_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.RF_Name, New_Id);
+         Set_Link (Result.K119_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -11610,25 +11610,25 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.RF_Binders := NL;
+            Result.K119_Binders := NL;
          end;
-         Set_Link (Result.RF_Binders, New_Id);
-         Result.RF_Return_Type :=
+         Set_Link (Result.K119_Binders, New_Id);
+         Result.K119_Return_Type :=
            Duplicate_Prog
            (Id => Return_Type);
-         Set_Link (Result.RF_Return_Type, New_Id);
-         Result.RF_Variant :=
+         Set_Link (Result.K119_Return_Type, New_Id);
+         Result.K119_Variant :=
            Duplicate_Wf_Arg
            (Id => Variant);
-         Set_Link (Result.RF_Variant, New_Id);
-         Result.RF_Pre :=
+         Set_Link (Result.K119_Variant, New_Id);
+         Result.K119_Pre :=
            Duplicate_Predicate
            (Id => Pre);
-         Set_Link (Result.RF_Pre, New_Id);
-         Result.RF_Def :=
+         Set_Link (Result.K119_Pre, New_Id);
+         Result.K119_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.RF_Def, New_Id);
+         Set_Link (Result.K119_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11661,21 +11661,21 @@ package body Why.Atree.Builders is
       begin
          Result.Ada_Node := Ada_Node;
          if Invariant = Why_Empty then
-            Result.LA_Invariant := Why_Empty;
+            Result.K120_Invariant := Why_Empty;
          else
-            Result.LA_Invariant :=
+            Result.K120_Invariant :=
               Duplicate_Predicate
               (Id => Invariant);
          end if;
-         Set_Link (Result.LA_Invariant, New_Id);
+         Set_Link (Result.K120_Invariant, New_Id);
          if Variant = Why_Empty then
-            Result.LA_Variant := Why_Empty;
+            Result.K120_Variant := Why_Empty;
          else
-            Result.LA_Variant :=
+            Result.K120_Variant :=
               Duplicate_Wf_Arg
               (Id => Variant);
          end if;
-         Set_Link (Result.LA_Variant, New_Id);
+         Set_Link (Result.K120_Variant, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11707,18 +11707,18 @@ package body Why.Atree.Builders is
             +Wf_Arg_Get_For_Id (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.WA_Def :=
+         Result.K121_Def :=
            Duplicate_Term
            (Id => Def);
-         Set_Link (Result.WA_Def, New_Id);
+         Set_Link (Result.K121_Def, New_Id);
          if For_Id = Why_Empty then
-            Result.WA_For_Id := Why_Empty;
+            Result.K121_For_Id := Why_Empty;
          else
-            Result.WA_For_Id :=
+            Result.K121_For_Id :=
               Duplicate_Identifier
               (Id => For_Id);
          end if;
-         Set_Link (Result.WA_For_Id, New_Id);
+         Set_Link (Result.K121_For_Id, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11752,22 +11752,22 @@ package body Why.Atree.Builders is
             +Handler_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.H_Name :=
+         Result.K122_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.H_Name, New_Id);
+         Set_Link (Result.K122_Name, New_Id);
          if Parameter = Why_Empty then
-            Result.H_Parameter := Why_Empty;
+            Result.K122_Parameter := Why_Empty;
          else
-            Result.H_Parameter :=
+            Result.K122_Parameter :=
               Duplicate_Prog
               (Id => Parameter);
          end if;
-         Set_Link (Result.H_Parameter, New_Id);
-         Result.H_Def :=
+         Set_Link (Result.K122_Parameter, New_Id);
+         Result.K122_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.H_Def, New_Id);
+         Set_Link (Result.K122_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11813,9 +11813,9 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.F_Declarations := NL;
+            Result.K123_Declarations := NL;
          end;
-         Set_Link (Result.F_Declarations, New_Id);
+         Set_Link (Result.K123_Declarations, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11851,10 +11851,10 @@ package body Why.Atree.Builders is
             +Global_Binding_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.GB_Name :=
+         Result.K124_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.GB_Name, New_Id);
+         Set_Link (Result.K124_Name, New_Id);
          declare
             use Node_Lists;
 
@@ -11871,17 +11871,17 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.GB_Binders := NL;
+            Result.K124_Binders := NL;
          end;
-         Set_Link (Result.GB_Binders, New_Id);
-         Result.GB_Pre :=
+         Set_Link (Result.K124_Binders, New_Id);
+         Result.K124_Pre :=
            Duplicate_Predicate
            (Id => Pre);
-         Set_Link (Result.GB_Pre, New_Id);
-         Result.GB_Def :=
+         Set_Link (Result.K124_Pre, New_Id);
+         Result.K124_Def :=
            Duplicate_Prog
            (Id => Def);
-         Set_Link (Result.GB_Def, New_Id);
+         Set_Link (Result.K124_Def, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11911,10 +11911,10 @@ package body Why.Atree.Builders is
             +Global_Rec_Binding_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.GRB_Name :=
+         Result.K125_Name :=
            Duplicate_Recfun
            (Id => Name);
-         Set_Link (Result.GRB_Name, New_Id);
+         Set_Link (Result.K125_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -11949,13 +11949,13 @@ package body Why.Atree.Builders is
       begin
          Result.Ada_Node := Ada_Node;
          if External = Why_Empty then
-            Result.PD_External := Why_Empty;
+            Result.K126_External := Why_Empty;
          else
-            Result.PD_External :=
+            Result.K126_External :=
               Duplicate_External
               (Id => External);
          end if;
-         Set_Link (Result.PD_External, New_Id);
+         Set_Link (Result.K126_External, New_Id);
          declare
             use Node_Lists;
 
@@ -11972,13 +11972,13 @@ package body Why.Atree.Builders is
                end;
                Position := Next (Position);
             end loop;
-            Result.PD_Names := NL;
+            Result.K126_Names := NL;
          end;
-         Set_Link (Result.PD_Names, New_Id);
-         Result.PD_Parameter_Type :=
+         Set_Link (Result.K126_Names, New_Id);
+         Result.K126_Parameter_Type :=
            Duplicate_Computation_Type
            (Id => Parameter_Type);
-         Set_Link (Result.PD_Parameter_Type, New_Id);
+         Set_Link (Result.K126_Parameter_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -12010,14 +12010,14 @@ package body Why.Atree.Builders is
             +Global_Ref_Declaration_Get_Parameter_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.GR_Name :=
+         Result.K127_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.GR_Name, New_Id);
-         Result.GR_Parameter_Type :=
+         Set_Link (Result.K127_Name, New_Id);
+         Result.K127_Parameter_Type :=
            Duplicate_Primitive_Type
            (Id => Parameter_Type);
-         Set_Link (Result.GR_Parameter_Type, New_Id);
+         Set_Link (Result.K127_Parameter_Type, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -12049,18 +12049,18 @@ package body Why.Atree.Builders is
             +Exception_Declaration_Get_Parameter (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ED_Name :=
+         Result.K128_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.ED_Name, New_Id);
+         Set_Link (Result.K128_Name, New_Id);
          if Parameter = Why_Empty then
-            Result.ED_Parameter := Why_Empty;
+            Result.K128_Parameter := Why_Empty;
          else
-            Result.ED_Parameter :=
+            Result.K128_Parameter :=
               Duplicate_Primitive_Type
               (Id => Parameter);
          end if;
-         Set_Link (Result.ED_Parameter, New_Id);
+         Set_Link (Result.K128_Parameter, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -12090,10 +12090,10 @@ package body Why.Atree.Builders is
             +Logic_Declaration_Get_Decl (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.LD_Decl :=
+         Result.K129_Decl :=
            Duplicate_Logic_Declaration_Class
            (Id => Decl);
-         Set_Link (Result.LD_Decl, New_Id);
+         Set_Link (Result.K129_Decl, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -12123,10 +12123,10 @@ package body Why.Atree.Builders is
             +Include_Declaration_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.ID_Name :=
+         Result.K130_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.ID_Name, New_Id);
+         Set_Link (Result.K130_Name, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -12150,9 +12150,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.Symbol :=
+      Result.K1_Symbol :=
         Symbol;
-      Result.Entity :=
+      Result.K1_Entity :=
         Entity;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -12609,9 +12609,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12633,9 +12633,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12657,9 +12657,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12681,9 +12681,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12705,9 +12705,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Name :=
+      Result.K7_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
+      Set_Link (Result.K7_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12728,9 +12728,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12752,9 +12752,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12776,9 +12776,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12800,9 +12800,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12824,9 +12824,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GFT_Name :=
+      Result.K8_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
+      Set_Link (Result.K8_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12849,7 +12849,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -12858,13 +12858,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12888,7 +12888,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -12897,13 +12897,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12927,7 +12927,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -12936,13 +12936,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -12966,7 +12966,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -12975,13 +12975,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13005,7 +13005,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
+      Result.K9_Type_Chain := New_List;
       for J in Type_Chain'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -13014,13 +13014,13 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
          Append
-           (Result.GATC_Type_Chain,
+           (Result.K9_Type_Chain,
             +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
       end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
+      Set_Link (Result.K9_Type_Chain, New_Id);
+      Result.K9_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
+      Set_Link (Result.K9_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13041,9 +13041,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Component_Type :=
+      Result.K10_Component_Type :=
         +(W_Primitive_Type_Valid_Id (Component_Type));
-      Set_Link (Result.AT_Component_Type, New_Id);
+      Set_Link (Result.K10_Component_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13065,9 +13065,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Component_Type :=
+      Result.K10_Component_Type :=
         +(W_Primitive_Type_Valid_Id (Component_Type));
-      Set_Link (Result.AT_Component_Type, New_Id);
+      Set_Link (Result.K10_Component_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13089,9 +13089,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AT_Component_Type :=
+      Result.K10_Component_Type :=
         +(W_Primitive_Type_Valid_Id (Component_Type));
-      Set_Link (Result.AT_Component_Type, New_Id);
+      Set_Link (Result.K10_Component_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13112,9 +13112,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Aliased_Type :=
+      Result.K11_Aliased_Type :=
         +(W_Primitive_Type_Valid_Id (Aliased_Type));
-      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Set_Link (Result.K11_Aliased_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13136,9 +13136,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Aliased_Type :=
+      Result.K11_Aliased_Type :=
         +(W_Primitive_Type_Valid_Id (Aliased_Type));
-      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Set_Link (Result.K11_Aliased_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13164,7 +13164,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CS_Binders := New_List;
+      Result.K12_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -13173,25 +13173,25 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_OId (Binders (J)))));
          Append
-           (Result.CS_Binders,
+           (Result.K12_Binders,
             +(W_Binder_Valid_OId (Binders (J))));
       end loop;
-      Set_Link (Result.CS_Binders, New_Id);
-      Result.CS_Precondition :=
+      Set_Link (Result.K12_Binders, New_Id);
+      Result.K12_Precondition :=
         +(W_Predicate_Valid_OId (Precondition));
-      Set_Link (Result.CS_Precondition, New_Id);
-      Result.CS_Result_Name :=
+      Set_Link (Result.K12_Precondition, New_Id);
+      Result.K12_Result_Name :=
         +(W_Identifier_Valid_OId (Result_Name));
-      Set_Link (Result.CS_Result_Name, New_Id);
-      Result.CS_Return_Type :=
+      Set_Link (Result.K12_Result_Name, New_Id);
+      Result.K12_Return_Type :=
         +(W_Primitive_Type_Valid_Id (Return_Type));
-      Set_Link (Result.CS_Return_Type, New_Id);
-      Result.CS_Effects :=
+      Set_Link (Result.K12_Return_Type, New_Id);
+      Result.K12_Effects :=
         +(W_Effects_Valid_Id (Effects));
-      Set_Link (Result.CS_Effects, New_Id);
-      Result.CS_Postcondition :=
+      Set_Link (Result.K12_Effects, New_Id);
+      Result.K12_Postcondition :=
         +(W_Postcondition_Valid_OId (Postcondition));
-      Set_Link (Result.CS_Postcondition, New_Id);
+      Set_Link (Result.K12_Postcondition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13212,7 +13212,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Value :=
+      Result.K13_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13235,7 +13235,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Value :=
+      Result.K13_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13258,7 +13258,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Value :=
+      Result.K13_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13280,7 +13280,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RC_Value :=
+      Result.K14_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13303,7 +13303,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RC_Value :=
+      Result.K14_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13326,7 +13326,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RC_Value :=
+      Result.K14_Value :=
         Value;
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -13527,15 +13527,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AO_Left :=
+      Result.K18_Left :=
         +(W_Term_Valid_Id (Left));
-      Set_Link (Result.AO_Left, New_Id);
-      Result.AO_Op :=
+      Set_Link (Result.K18_Left, New_Id);
+      Result.K18_Op :=
         +(W_Arith_Op_Valid_Id (Op));
-      Set_Link (Result.AO_Op, New_Id);
-      Result.AO_Right :=
+      Set_Link (Result.K18_Op, New_Id);
+      Result.K18_Right :=
         +(W_Term_Valid_Id (Right));
-      Set_Link (Result.AO_Right, New_Id);
+      Set_Link (Result.K18_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13559,15 +13559,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AO_Left :=
+      Result.K18_Left :=
         +(W_Term_Valid_Id (Left));
-      Set_Link (Result.AO_Left, New_Id);
-      Result.AO_Op :=
+      Set_Link (Result.K18_Left, New_Id);
+      Result.K18_Op :=
         +(W_Arith_Op_Valid_Id (Op));
-      Set_Link (Result.AO_Op, New_Id);
-      Result.AO_Right :=
+      Set_Link (Result.K18_Op, New_Id);
+      Result.K18_Right :=
         +(W_Term_Valid_Id (Right));
-      Set_Link (Result.AO_Right, New_Id);
+      Set_Link (Result.K18_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13588,9 +13588,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Operand :=
+      Result.K19_Operand :=
         +(W_Term_Valid_Id (Operand));
-      Set_Link (Result.NT_Operand, New_Id);
+      Set_Link (Result.K19_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13612,9 +13612,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Operand :=
+      Result.K19_Operand :=
         +(W_Term_Valid_Id (Operand));
-      Set_Link (Result.NT_Operand, New_Id);
+      Set_Link (Result.K19_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13636,12 +13636,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TIL_Name :=
+      Result.K20_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.TIL_Name, New_Id);
-      Result.TIL_Label :=
+      Set_Link (Result.K20_Name, New_Id);
+      Result.K20_Label :=
         +(W_Identifier_Valid_OId (Label));
-      Set_Link (Result.TIL_Label, New_Id);
+      Set_Link (Result.K20_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13664,12 +13664,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TIL_Name :=
+      Result.K20_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.TIL_Name, New_Id);
-      Result.TIL_Label :=
+      Set_Link (Result.K20_Name, New_Id);
+      Result.K20_Label :=
         +(W_Identifier_Valid_OId (Label));
-      Set_Link (Result.TIL_Label, New_Id);
+      Set_Link (Result.K20_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13691,11 +13691,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.O_Name :=
+      Result.K21_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.O_Name, New_Id);
+      Set_Link (Result.K21_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.O_Parameters := New_List;
+      Result.K21_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -13704,10 +13704,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (+(W_Term_Valid_Id (Parameters (J)))));
          Append
-           (Result.O_Parameters,
+           (Result.K21_Parameters,
             +(W_Term_Valid_Id (Parameters (J))));
       end loop;
-      Set_Link (Result.O_Parameters, New_Id);
+      Set_Link (Result.K21_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13730,11 +13730,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.O_Name :=
+      Result.K21_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.O_Name, New_Id);
+      Set_Link (Result.K21_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.O_Parameters := New_List;
+      Result.K21_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -13743,10 +13743,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (+(W_Term_Valid_Id (Parameters (J)))));
          Append
-           (Result.O_Parameters,
+           (Result.K21_Parameters,
             +(W_Term_Valid_Id (Parameters (J))));
       end loop;
-      Set_Link (Result.O_Parameters, New_Id);
+      Set_Link (Result.K21_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13768,12 +13768,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Name :=
+      Result.K22_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.NT_Name, New_Id);
-      Result.NT_Term :=
+      Set_Link (Result.K22_Name, New_Id);
+      Result.K22_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.NT_Term, New_Id);
+      Set_Link (Result.K22_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13796,12 +13796,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NT_Name :=
+      Result.K22_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.NT_Name, New_Id);
-      Result.NT_Term :=
+      Set_Link (Result.K22_Name, New_Id);
+      Result.K22_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.NT_Term, New_Id);
+      Set_Link (Result.K22_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13824,15 +13824,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CT_Condition :=
+      Result.K23_Condition :=
         +(W_Term_Valid_Id (Condition));
-      Set_Link (Result.CT_Condition, New_Id);
-      Result.CT_Then_Part :=
+      Set_Link (Result.K23_Condition, New_Id);
+      Result.K23_Then_Part :=
         +(W_Term_Valid_Id (Then_Part));
-      Set_Link (Result.CT_Then_Part, New_Id);
-      Result.CT_Else_Part :=
+      Set_Link (Result.K23_Then_Part, New_Id);
+      Result.K23_Else_Part :=
         +(W_Term_Valid_Id (Else_Part));
-      Set_Link (Result.CT_Else_Part, New_Id);
+      Set_Link (Result.K23_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13856,15 +13856,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CT_Condition :=
+      Result.K23_Condition :=
         +(W_Term_Valid_Id (Condition));
-      Set_Link (Result.CT_Condition, New_Id);
-      Result.CT_Then_Part :=
+      Set_Link (Result.K23_Condition, New_Id);
+      Result.K23_Then_Part :=
         +(W_Term_Valid_Id (Then_Part));
-      Set_Link (Result.CT_Then_Part, New_Id);
-      Result.CT_Else_Part :=
+      Set_Link (Result.K23_Then_Part, New_Id);
+      Result.K23_Else_Part :=
         +(W_Term_Valid_Id (Else_Part));
-      Set_Link (Result.CT_Else_Part, New_Id);
+      Set_Link (Result.K23_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13886,11 +13886,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.MT_Term :=
+      Result.K24_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.MT_Term, New_Id);
+      Set_Link (Result.K24_Term, New_Id);
       pragma Assert (Branches'Length > 0);
-      Result.MT_Branches := New_List;
+      Result.K24_Branches := New_List;
       for J in Branches'Range loop
          pragma Assert
            (Match_Case_Id_Kind_Valid
@@ -13899,10 +13899,10 @@ package body Why.Atree.Builders is
            (Match_Case_Id_Valid
             (+(W_Match_Case_Valid_Id (Branches (J)))));
          Append
-           (Result.MT_Branches,
+           (Result.K24_Branches,
             +(W_Match_Case_Valid_Id (Branches (J))));
       end loop;
-      Set_Link (Result.MT_Branches, New_Id);
+      Set_Link (Result.K24_Branches, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13925,11 +13925,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.MT_Term :=
+      Result.K24_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.MT_Term, New_Id);
+      Set_Link (Result.K24_Term, New_Id);
       pragma Assert (Branches'Length > 0);
-      Result.MT_Branches := New_List;
+      Result.K24_Branches := New_List;
       for J in Branches'Range loop
          pragma Assert
            (Match_Case_Id_Kind_Valid
@@ -13938,10 +13938,10 @@ package body Why.Atree.Builders is
            (Match_Case_Id_Valid
             (+(W_Match_Case_Valid_Id (Branches (J)))));
          Append
-           (Result.MT_Branches,
+           (Result.K24_Branches,
             +(W_Match_Case_Valid_Id (Branches (J))));
       end loop;
-      Set_Link (Result.MT_Branches, New_Id);
+      Set_Link (Result.K24_Branches, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13964,15 +13964,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Name :=
+      Result.K25_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BT_Name, New_Id);
-      Result.BT_Def :=
+      Set_Link (Result.K25_Name, New_Id);
+      Result.K25_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.BT_Def, New_Id);
-      Result.BT_Context :=
+      Set_Link (Result.K25_Def, New_Id);
+      Result.K25_Context :=
         +(W_Term_Valid_Id (Context));
-      Set_Link (Result.BT_Context, New_Id);
+      Set_Link (Result.K25_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -13996,15 +13996,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Name :=
+      Result.K25_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BT_Name, New_Id);
-      Result.BT_Def :=
+      Set_Link (Result.K25_Name, New_Id);
+      Result.K25_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.BT_Def, New_Id);
-      Result.BT_Context :=
+      Set_Link (Result.K25_Def, New_Id);
+      Result.K25_Context :=
         +(W_Term_Valid_Id (Context));
-      Set_Link (Result.BT_Context, New_Id);
+      Set_Link (Result.K25_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14025,9 +14025,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Term :=
+      Result.K26_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.BT_Term, New_Id);
+      Set_Link (Result.K26_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14049,9 +14049,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BT_Term :=
+      Result.K26_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.BT_Term, New_Id);
+      Set_Link (Result.K26_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14345,9 +14345,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PID_Name :=
+      Result.K34_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PID_Name, New_Id);
+      Set_Link (Result.K34_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14369,9 +14369,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PID_Name :=
+      Result.K34_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PID_Name, New_Id);
+      Set_Link (Result.K34_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14393,11 +14393,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PIN_Name :=
+      Result.K35_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PIN_Name, New_Id);
+      Set_Link (Result.K35_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.PIN_Parameters := New_List;
+      Result.K35_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -14406,10 +14406,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (+(W_Term_Valid_Id (Parameters (J)))));
          Append
-           (Result.PIN_Parameters,
+           (Result.K35_Parameters,
             +(W_Term_Valid_Id (Parameters (J))));
       end loop;
-      Set_Link (Result.PIN_Parameters, New_Id);
+      Set_Link (Result.K35_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14432,11 +14432,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PIN_Name :=
+      Result.K35_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PIN_Name, New_Id);
+      Set_Link (Result.K35_Name, New_Id);
       pragma Assert (Parameters'Length > 0);
-      Result.PIN_Parameters := New_List;
+      Result.K35_Parameters := New_List;
       for J in Parameters'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -14445,10 +14445,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (+(W_Term_Valid_Id (Parameters (J)))));
          Append
-           (Result.PIN_Parameters,
+           (Result.K35_Parameters,
             +(W_Term_Valid_Id (Parameters (J))));
       end loop;
-      Set_Link (Result.PIN_Parameters, New_Id);
+      Set_Link (Result.K35_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14473,21 +14473,21 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Left :=
+      Result.K36_Left :=
         +(W_Term_Valid_Id (Left));
-      Set_Link (Result.RT_Left, New_Id);
-      Result.RT_Op :=
+      Set_Link (Result.K36_Left, New_Id);
+      Result.K36_Op :=
         +(W_Relation_Valid_Id (Op));
-      Set_Link (Result.RT_Op, New_Id);
-      Result.RT_Right :=
+      Set_Link (Result.K36_Op, New_Id);
+      Result.K36_Right :=
         +(W_Term_Valid_Id (Right));
-      Set_Link (Result.RT_Right, New_Id);
-      Result.RT_Op2 :=
+      Set_Link (Result.K36_Right, New_Id);
+      Result.K36_Op2 :=
         +(W_Relation_Valid_OId (Op2));
-      Set_Link (Result.RT_Op2, New_Id);
-      Result.RT_Right2 :=
+      Set_Link (Result.K36_Op2, New_Id);
+      Result.K36_Right2 :=
         +(W_Term_Valid_OId (Right2));
-      Set_Link (Result.RT_Right2, New_Id);
+      Set_Link (Result.K36_Right2, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14513,21 +14513,21 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RT_Left :=
+      Result.K36_Left :=
         +(W_Term_Valid_Id (Left));
-      Set_Link (Result.RT_Left, New_Id);
-      Result.RT_Op :=
+      Set_Link (Result.K36_Left, New_Id);
+      Result.K36_Op :=
         +(W_Relation_Valid_Id (Op));
-      Set_Link (Result.RT_Op, New_Id);
-      Result.RT_Right :=
+      Set_Link (Result.K36_Op, New_Id);
+      Result.K36_Right :=
         +(W_Term_Valid_Id (Right));
-      Set_Link (Result.RT_Right, New_Id);
-      Result.RT_Op2 :=
+      Set_Link (Result.K36_Right, New_Id);
+      Result.K36_Op2 :=
         +(W_Relation_Valid_OId (Op2));
-      Set_Link (Result.RT_Op2, New_Id);
-      Result.RT_Right2 :=
+      Set_Link (Result.K36_Op2, New_Id);
+      Result.K36_Right2 :=
         +(W_Term_Valid_OId (Right2));
-      Set_Link (Result.RT_Right2, New_Id);
+      Set_Link (Result.K36_Right2, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14549,12 +14549,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K37_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K37_Left, New_Id);
+      Result.K37_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K37_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14577,12 +14577,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K37_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K37_Left, New_Id);
+      Result.K37_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K37_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14604,12 +14604,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K38_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K38_Left, New_Id);
+      Result.K38_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K38_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14632,12 +14632,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K38_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K38_Left, New_Id);
+      Result.K38_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K38_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14659,12 +14659,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K39_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K39_Left, New_Id);
+      Result.K39_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K39_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14687,12 +14687,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K39_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K39_Left, New_Id);
+      Result.K39_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K39_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14714,12 +14714,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K40_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K40_Left, New_Id);
+      Result.K40_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K40_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14742,12 +14742,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ITOC_Left :=
+      Result.K40_Left :=
         +(W_Predicate_Valid_Id (Left));
-      Set_Link (Result.ITOC_Left, New_Id);
-      Result.ITOC_Right :=
+      Set_Link (Result.K40_Left, New_Id);
+      Result.K40_Right :=
         +(W_Predicate_Valid_Id (Right));
-      Set_Link (Result.ITOC_Right, New_Id);
+      Set_Link (Result.K40_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14768,9 +14768,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.N_Operand :=
+      Result.K41_Operand :=
         +(W_Predicate_Valid_Id (Operand));
-      Set_Link (Result.N_Operand, New_Id);
+      Set_Link (Result.K41_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14792,9 +14792,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.N_Operand :=
+      Result.K41_Operand :=
         +(W_Predicate_Valid_Id (Operand));
-      Set_Link (Result.N_Operand, New_Id);
+      Set_Link (Result.K41_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14817,15 +14817,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPD_Condition :=
+      Result.K42_Condition :=
         +(W_Term_Valid_Id (Condition));
-      Set_Link (Result.CPD_Condition, New_Id);
-      Result.CPD_Then_Part :=
+      Set_Link (Result.K42_Condition, New_Id);
+      Result.K42_Then_Part :=
         +(W_Predicate_Valid_Id (Then_Part));
-      Set_Link (Result.CPD_Then_Part, New_Id);
-      Result.CPD_Else_Part :=
+      Set_Link (Result.K42_Then_Part, New_Id);
+      Result.K42_Else_Part :=
         +(W_Predicate_Valid_Id (Else_Part));
-      Set_Link (Result.CPD_Else_Part, New_Id);
+      Set_Link (Result.K42_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14849,15 +14849,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPD_Condition :=
+      Result.K42_Condition :=
         +(W_Term_Valid_Id (Condition));
-      Set_Link (Result.CPD_Condition, New_Id);
-      Result.CPD_Then_Part :=
+      Set_Link (Result.K42_Condition, New_Id);
+      Result.K42_Then_Part :=
         +(W_Predicate_Valid_Id (Then_Part));
-      Set_Link (Result.CPD_Then_Part, New_Id);
-      Result.CPD_Else_Part :=
+      Set_Link (Result.K42_Then_Part, New_Id);
+      Result.K42_Else_Part :=
         +(W_Predicate_Valid_Id (Else_Part));
-      Set_Link (Result.CPD_Else_Part, New_Id);
+      Set_Link (Result.K42_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14880,15 +14880,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPD_Name :=
+      Result.K43_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPD_Name, New_Id);
-      Result.BPD_Def :=
+      Set_Link (Result.K43_Name, New_Id);
+      Result.K43_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.BPD_Def, New_Id);
-      Result.BPD_Context :=
+      Set_Link (Result.K43_Def, New_Id);
+      Result.K43_Context :=
         +(W_Predicate_Valid_Id (Context));
-      Set_Link (Result.BPD_Context, New_Id);
+      Set_Link (Result.K43_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14912,15 +14912,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPD_Name :=
+      Result.K43_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPD_Name, New_Id);
-      Result.BPD_Def :=
+      Set_Link (Result.K43_Name, New_Id);
+      Result.K43_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.BPD_Def, New_Id);
-      Result.BPD_Context :=
+      Set_Link (Result.K43_Def, New_Id);
+      Result.K43_Context :=
         +(W_Predicate_Valid_Id (Context));
-      Set_Link (Result.BPD_Context, New_Id);
+      Set_Link (Result.K43_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14945,7 +14945,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.UQ_Variables := New_List;
+      Result.K44_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -14954,19 +14954,19 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Variables (J)))));
          Append
-           (Result.UQ_Variables,
+           (Result.K44_Variables,
             +(W_Identifier_Valid_Id (Variables (J))));
       end loop;
-      Set_Link (Result.UQ_Variables, New_Id);
-      Result.UQ_Var_Type :=
+      Set_Link (Result.K44_Variables, New_Id);
+      Result.K44_Var_Type :=
         +(W_Primitive_Type_Valid_Id (Var_Type));
-      Set_Link (Result.UQ_Var_Type, New_Id);
-      Result.UQ_Triggers :=
+      Set_Link (Result.K44_Var_Type, New_Id);
+      Result.K44_Triggers :=
         +(W_Triggers_Valid_OId (Triggers));
-      Set_Link (Result.UQ_Triggers, New_Id);
-      Result.UQ_Pred :=
+      Set_Link (Result.K44_Triggers, New_Id);
+      Result.K44_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.UQ_Pred, New_Id);
+      Set_Link (Result.K44_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -14992,7 +14992,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.UQ_Variables := New_List;
+      Result.K44_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15001,19 +15001,19 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Variables (J)))));
          Append
-           (Result.UQ_Variables,
+           (Result.K44_Variables,
             +(W_Identifier_Valid_Id (Variables (J))));
       end loop;
-      Set_Link (Result.UQ_Variables, New_Id);
-      Result.UQ_Var_Type :=
+      Set_Link (Result.K44_Variables, New_Id);
+      Result.K44_Var_Type :=
         +(W_Primitive_Type_Valid_Id (Var_Type));
-      Set_Link (Result.UQ_Var_Type, New_Id);
-      Result.UQ_Triggers :=
+      Set_Link (Result.K44_Var_Type, New_Id);
+      Result.K44_Triggers :=
         +(W_Triggers_Valid_OId (Triggers));
-      Set_Link (Result.UQ_Triggers, New_Id);
-      Result.UQ_Pred :=
+      Set_Link (Result.K44_Triggers, New_Id);
+      Result.K44_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.UQ_Pred, New_Id);
+      Set_Link (Result.K44_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15037,7 +15037,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.EQ_Variables := New_List;
+      Result.K45_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15046,16 +15046,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Variables (J)))));
          Append
-           (Result.EQ_Variables,
+           (Result.K45_Variables,
             +(W_Identifier_Valid_Id (Variables (J))));
       end loop;
-      Set_Link (Result.EQ_Variables, New_Id);
-      Result.EQ_Var_Type :=
+      Set_Link (Result.K45_Variables, New_Id);
+      Result.K45_Var_Type :=
         +(W_Primitive_Type_Valid_Id (Var_Type));
-      Set_Link (Result.EQ_Var_Type, New_Id);
-      Result.EQ_Pred :=
+      Set_Link (Result.K45_Var_Type, New_Id);
+      Result.K45_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.EQ_Pred, New_Id);
+      Set_Link (Result.K45_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15080,7 +15080,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Variables'Length > 0);
-      Result.EQ_Variables := New_List;
+      Result.K45_Variables := New_List;
       for J in Variables'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15089,16 +15089,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Variables (J)))));
          Append
-           (Result.EQ_Variables,
+           (Result.K45_Variables,
             +(W_Identifier_Valid_Id (Variables (J))));
       end loop;
-      Set_Link (Result.EQ_Variables, New_Id);
-      Result.EQ_Var_Type :=
+      Set_Link (Result.K45_Variables, New_Id);
+      Result.K45_Var_Type :=
         +(W_Primitive_Type_Valid_Id (Var_Type));
-      Set_Link (Result.EQ_Var_Type, New_Id);
-      Result.EQ_Pred :=
+      Set_Link (Result.K45_Var_Type, New_Id);
+      Result.K45_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.EQ_Pred, New_Id);
+      Set_Link (Result.K45_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15120,12 +15120,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NP_Name :=
+      Result.K46_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.NP_Name, New_Id);
-      Result.NP_Pred :=
+      Set_Link (Result.K46_Name, New_Id);
+      Result.K46_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.NP_Pred, New_Id);
+      Set_Link (Result.K46_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15148,12 +15148,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.NP_Name :=
+      Result.K46_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.NP_Name, New_Id);
-      Result.NP_Pred :=
+      Set_Link (Result.K46_Name, New_Id);
+      Result.K46_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.NP_Pred, New_Id);
+      Set_Link (Result.K46_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15174,9 +15174,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PP_Pred :=
+      Result.K47_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.PP_Pred, New_Id);
+      Set_Link (Result.K47_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15198,9 +15198,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PP_Pred :=
+      Result.K47_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.PP_Pred, New_Id);
+      Set_Link (Result.K47_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15222,10 +15222,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PAT_Constr :=
+      Result.K48_Constr :=
         +(W_Identifier_Valid_Id (Constr));
-      Set_Link (Result.PAT_Constr, New_Id);
-      Result.PAT_Args := New_List;
+      Set_Link (Result.K48_Constr, New_Id);
+      Result.K48_Args := New_List;
       for J in Args'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15234,10 +15234,10 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Args (J)))));
          Append
-           (Result.PAT_Args,
+           (Result.K48_Args,
             +(W_Identifier_Valid_OId (Args (J))));
       end loop;
-      Set_Link (Result.PAT_Args, New_Id);
+      Set_Link (Result.K48_Args, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15259,12 +15259,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.MC_Pattern :=
+      Result.K49_Pattern :=
         +(W_Pattern_Valid_Id (Pattern));
-      Set_Link (Result.MC_Pattern, New_Id);
-      Result.MC_Term :=
+      Set_Link (Result.K49_Pattern, New_Id);
+      Result.K49_Term :=
         +(W_Term_Valid_Id (Term));
-      Set_Link (Result.MC_Term, New_Id);
+      Set_Link (Result.K49_Term, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15286,7 +15286,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Triggers'Length > 0);
-      Result.TRS_Triggers := New_List;
+      Result.K50_Triggers := New_List;
       for J in Triggers'Range loop
          pragma Assert
            (Trigger_Id_Kind_Valid
@@ -15295,10 +15295,10 @@ package body Why.Atree.Builders is
            (Trigger_Id_Valid
             (+(W_Trigger_Valid_Id (Triggers (J)))));
          Append
-           (Result.TRS_Triggers,
+           (Result.K50_Triggers,
             +(W_Trigger_Valid_Id (Triggers (J))));
       end loop;
-      Set_Link (Result.TRS_Triggers, New_Id);
+      Set_Link (Result.K50_Triggers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15320,7 +15320,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Terms'Length > 0);
-      Result.TRI_Terms := New_List;
+      Result.K51_Terms := New_List;
       for J in Terms'Range loop
          pragma Assert
            (Term_Id_Kind_Valid
@@ -15329,10 +15329,10 @@ package body Why.Atree.Builders is
            (Term_Id_Valid
             (+(W_Term_Valid_Id (Terms (J)))));
          Append
-           (Result.TRI_Terms,
+           (Result.K51_Terms,
             +(W_Term_Valid_Id (Terms (J))));
       end loop;
-      Set_Link (Result.TRI_Terms, New_Id);
+      Set_Link (Result.K51_Terms, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15590,10 +15590,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.T_External :=
+      Result.K58_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.T_External, New_Id);
-      Result.T_Type_Parameters := New_List;
+      Set_Link (Result.K58_External, New_Id);
+      Result.K58_Type_Parameters := New_List;
       for J in Type_Parameters'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15602,16 +15602,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Type_Parameters (J)))));
          Append
-           (Result.T_Type_Parameters,
+           (Result.K58_Type_Parameters,
             +(W_Identifier_Valid_OId (Type_Parameters (J))));
       end loop;
-      Set_Link (Result.T_Type_Parameters, New_Id);
-      Result.T_Name :=
+      Set_Link (Result.K58_Type_Parameters, New_Id);
+      Result.K58_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.T_Name, New_Id);
-      Result.T_Definition :=
+      Set_Link (Result.K58_Name, New_Id);
+      Result.K58_Definition :=
         +(W_Type_Definition_Valid_OId (Definition));
-      Set_Link (Result.T_Definition, New_Id);
+      Set_Link (Result.K58_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15636,10 +15636,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.T_External :=
+      Result.K58_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.T_External, New_Id);
-      Result.T_Type_Parameters := New_List;
+      Set_Link (Result.K58_External, New_Id);
+      Result.K58_Type_Parameters := New_List;
       for J in Type_Parameters'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15648,16 +15648,16 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Type_Parameters (J)))));
          Append
-           (Result.T_Type_Parameters,
+           (Result.K58_Type_Parameters,
             +(W_Identifier_Valid_OId (Type_Parameters (J))));
       end loop;
-      Set_Link (Result.T_Type_Parameters, New_Id);
-      Result.T_Name :=
+      Set_Link (Result.K58_Type_Parameters, New_Id);
+      Result.K58_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.T_Name, New_Id);
-      Result.T_Definition :=
+      Set_Link (Result.K58_Name, New_Id);
+      Result.K58_Definition :=
         +(W_Type_Definition_Valid_OId (Definition));
-      Set_Link (Result.T_Definition, New_Id);
+      Set_Link (Result.K58_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15680,11 +15680,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_External :=
+      Result.K59_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.L_External, New_Id);
+      Set_Link (Result.K59_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.L_Names := New_List;
+      Result.K59_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15693,13 +15693,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Names (J)))));
          Append
-           (Result.L_Names,
+           (Result.K59_Names,
             +(W_Identifier_Valid_Id (Names (J))));
       end loop;
-      Set_Link (Result.L_Names, New_Id);
-      Result.L_Logic_Type :=
+      Set_Link (Result.K59_Names, New_Id);
+      Result.K59_Logic_Type :=
         +(W_Logic_Type_Valid_Id (Logic_Type));
-      Set_Link (Result.L_Logic_Type, New_Id);
+      Set_Link (Result.K59_Logic_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15723,11 +15723,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_External :=
+      Result.K59_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.L_External, New_Id);
+      Set_Link (Result.K59_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.L_Names := New_List;
+      Result.K59_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -15736,13 +15736,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Names (J)))));
          Append
-           (Result.L_Names,
+           (Result.K59_Names,
             +(W_Identifier_Valid_Id (Names (J))));
       end loop;
-      Set_Link (Result.L_Names, New_Id);
-      Result.L_Logic_Type :=
+      Set_Link (Result.K59_Names, New_Id);
+      Result.K59_Logic_Type :=
         +(W_Logic_Type_Valid_Id (Logic_Type));
-      Set_Link (Result.L_Logic_Type, New_Id);
+      Set_Link (Result.K59_Logic_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15766,11 +15766,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.F_Name :=
+      Result.K60_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.F_Name, New_Id);
+      Set_Link (Result.K60_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.F_Binders := New_List;
+      Result.K60_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -15779,16 +15779,16 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (+(W_Logic_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.F_Binders,
+           (Result.K60_Binders,
             +(W_Logic_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.F_Binders, New_Id);
-      Result.F_Return_Type :=
+      Set_Link (Result.K60_Binders, New_Id);
+      Result.K60_Return_Type :=
         +(W_Primitive_Type_Valid_Id (Return_Type));
-      Set_Link (Result.F_Return_Type, New_Id);
-      Result.F_Def :=
+      Set_Link (Result.K60_Return_Type, New_Id);
+      Result.K60_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.F_Def, New_Id);
+      Set_Link (Result.K60_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15813,11 +15813,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.F_Name :=
+      Result.K60_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.F_Name, New_Id);
+      Set_Link (Result.K60_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.F_Binders := New_List;
+      Result.K60_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -15826,16 +15826,16 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (+(W_Logic_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.F_Binders,
+           (Result.K60_Binders,
             +(W_Logic_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.F_Binders, New_Id);
-      Result.F_Return_Type :=
+      Set_Link (Result.K60_Binders, New_Id);
+      Result.K60_Return_Type :=
         +(W_Primitive_Type_Valid_Id (Return_Type));
-      Set_Link (Result.F_Return_Type, New_Id);
-      Result.F_Def :=
+      Set_Link (Result.K60_Return_Type, New_Id);
+      Result.K60_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.F_Def, New_Id);
+      Set_Link (Result.K60_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15858,11 +15858,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.P_Name :=
+      Result.K61_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.P_Name, New_Id);
+      Set_Link (Result.K61_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.P_Binders := New_List;
+      Result.K61_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -15871,13 +15871,13 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (+(W_Logic_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.P_Binders,
+           (Result.K61_Binders,
             +(W_Logic_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.P_Binders, New_Id);
-      Result.P_Def :=
+      Set_Link (Result.K61_Binders, New_Id);
+      Result.K61_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.P_Def, New_Id);
+      Set_Link (Result.K61_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15901,11 +15901,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.P_Name :=
+      Result.K61_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.P_Name, New_Id);
+      Set_Link (Result.K61_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.P_Binders := New_List;
+      Result.K61_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Logic_Binder_Id_Kind_Valid
@@ -15914,13 +15914,13 @@ package body Why.Atree.Builders is
            (Logic_Binder_Id_Valid
             (+(W_Logic_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.P_Binders,
+           (Result.K61_Binders,
             +(W_Logic_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.P_Binders, New_Id);
-      Result.P_Def :=
+      Set_Link (Result.K61_Binders, New_Id);
+      Result.K61_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.P_Def, New_Id);
+      Set_Link (Result.K61_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15943,14 +15943,14 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.I_Name :=
+      Result.K62_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.I_Name, New_Id);
-      Result.I_Logic_Type :=
+      Set_Link (Result.K62_Name, New_Id);
+      Result.K62_Logic_Type :=
         +(W_Logic_Type_Valid_Id (Logic_Type));
-      Set_Link (Result.I_Logic_Type, New_Id);
+      Set_Link (Result.K62_Logic_Type, New_Id);
       pragma Assert (Def'Length > 0);
-      Result.I_Def := New_List;
+      Result.K62_Def := New_List;
       for J in Def'Range loop
          pragma Assert
            (Inductive_Case_Id_Kind_Valid
@@ -15959,10 +15959,10 @@ package body Why.Atree.Builders is
            (Inductive_Case_Id_Valid
             (+(W_Inductive_Case_Valid_Id (Def (J)))));
          Append
-           (Result.I_Def,
+           (Result.K62_Def,
             +(W_Inductive_Case_Valid_Id (Def (J))));
       end loop;
-      Set_Link (Result.I_Def, New_Id);
+      Set_Link (Result.K62_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -15986,14 +15986,14 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.I_Name :=
+      Result.K62_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.I_Name, New_Id);
-      Result.I_Logic_Type :=
+      Set_Link (Result.K62_Name, New_Id);
+      Result.K62_Logic_Type :=
         +(W_Logic_Type_Valid_Id (Logic_Type));
-      Set_Link (Result.I_Logic_Type, New_Id);
+      Set_Link (Result.K62_Logic_Type, New_Id);
       pragma Assert (Def'Length > 0);
-      Result.I_Def := New_List;
+      Result.K62_Def := New_List;
       for J in Def'Range loop
          pragma Assert
            (Inductive_Case_Id_Kind_Valid
@@ -16002,10 +16002,10 @@ package body Why.Atree.Builders is
            (Inductive_Case_Id_Valid
             (+(W_Inductive_Case_Valid_Id (Def (J)))));
          Append
-           (Result.I_Def,
+           (Result.K62_Def,
             +(W_Inductive_Case_Valid_Id (Def (J))));
       end loop;
-      Set_Link (Result.I_Def, New_Id);
+      Set_Link (Result.K62_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16027,12 +16027,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AX_Name :=
+      Result.K63_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AX_Name, New_Id);
-      Result.AX_Def :=
+      Set_Link (Result.K63_Name, New_Id);
+      Result.K63_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.AX_Def, New_Id);
+      Set_Link (Result.K63_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16055,12 +16055,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AX_Name :=
+      Result.K63_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AX_Name, New_Id);
-      Result.AX_Def :=
+      Set_Link (Result.K63_Name, New_Id);
+      Result.K63_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.AX_Def, New_Id);
+      Set_Link (Result.K63_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16082,12 +16082,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.G_Name :=
+      Result.K64_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.G_Name, New_Id);
-      Result.G_Def :=
+      Set_Link (Result.K64_Name, New_Id);
+      Result.K64_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.G_Def, New_Id);
+      Set_Link (Result.K64_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16110,12 +16110,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.G_Name :=
+      Result.K64_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.G_Name, New_Id);
-      Result.G_Def :=
+      Set_Link (Result.K64_Name, New_Id);
+      Result.K64_Def :=
         +(W_Predicate_Valid_Id (Def));
-      Set_Link (Result.G_Def, New_Id);
+      Set_Link (Result.K64_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16156,7 +16156,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LT_Arg_Types := New_List;
+      Result.K66_Arg_Types := New_List;
       for J in Arg_Types'Range loop
          pragma Assert
            (Logic_Arg_Type_Id_Kind_Valid
@@ -16165,13 +16165,13 @@ package body Why.Atree.Builders is
            (Logic_Arg_Type_Id_Valid
             (+(W_Logic_Arg_Type_Valid_OId (Arg_Types (J)))));
          Append
-           (Result.LT_Arg_Types,
+           (Result.K66_Arg_Types,
             +(W_Logic_Arg_Type_Valid_OId (Arg_Types (J))));
       end loop;
-      Set_Link (Result.LT_Arg_Types, New_Id);
-      Result.LT_Return_Type :=
+      Set_Link (Result.K66_Arg_Types, New_Id);
+      Result.K66_Return_Type :=
         +(W_Logic_Return_Type_Valid_Id (Return_Type));
-      Set_Link (Result.LT_Return_Type, New_Id);
+      Set_Link (Result.K66_Return_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16193,12 +16193,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LB_Name :=
+      Result.K67_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.LB_Name, New_Id);
-      Result.LB_Param_Type :=
+      Set_Link (Result.K67_Name, New_Id);
+      Result.K67_Param_Type :=
         +(W_Primitive_Type_Valid_Id (Param_Type));
-      Set_Link (Result.LB_Param_Type, New_Id);
+      Set_Link (Result.K67_Param_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16220,12 +16220,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Name :=
+      Result.K68_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.IC_Name, New_Id);
-      Result.IC_Pred :=
+      Set_Link (Result.K68_Name, New_Id);
+      Result.K68_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.IC_Pred, New_Id);
+      Set_Link (Result.K68_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16246,9 +16246,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.Tr_Type_Definition :=
+      Result.K69_Type_Definition :=
         +(W_Primitive_Type_Valid_Id (Type_Definition));
-      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Set_Link (Result.K69_Type_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16270,9 +16270,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.Tr_Type_Definition :=
+      Result.K69_Type_Definition :=
         +(W_Primitive_Type_Valid_Id (Type_Definition));
-      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Set_Link (Result.K69_Type_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16294,7 +16294,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Constructors'Length > 0);
-      Result.Adt_Constructors := New_List;
+      Result.K70_Constructors := New_List;
       for J in Constructors'Range loop
          pragma Assert
            (Constr_Decl_Id_Kind_Valid
@@ -16303,10 +16303,10 @@ package body Why.Atree.Builders is
            (Constr_Decl_Id_Valid
             (+(W_Constr_Decl_Valid_Id (Constructors (J)))));
          Append
-           (Result.Adt_Constructors,
+           (Result.K70_Constructors,
             +(W_Constr_Decl_Valid_Id (Constructors (J))));
       end loop;
-      Set_Link (Result.Adt_Constructors, New_Id);
+      Set_Link (Result.K70_Constructors, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16329,7 +16329,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Constructors'Length > 0);
-      Result.Adt_Constructors := New_List;
+      Result.K70_Constructors := New_List;
       for J in Constructors'Range loop
          pragma Assert
            (Constr_Decl_Id_Kind_Valid
@@ -16338,10 +16338,10 @@ package body Why.Atree.Builders is
            (Constr_Decl_Id_Valid
             (+(W_Constr_Decl_Valid_Id (Constructors (J)))));
          Append
-           (Result.Adt_Constructors,
+           (Result.K70_Constructors,
             +(W_Constr_Decl_Valid_Id (Constructors (J))));
       end loop;
-      Set_Link (Result.Adt_Constructors, New_Id);
+      Set_Link (Result.K70_Constructors, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16363,10 +16363,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.C_Name :=
+      Result.K71_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.C_Name, New_Id);
-      Result.C_Arg_List := New_List;
+      Set_Link (Result.K71_Name, New_Id);
+      Result.K71_Arg_List := New_List;
       for J in Arg_List'Range loop
          pragma Assert
            (Primitive_Type_Id_Kind_Valid
@@ -16375,10 +16375,10 @@ package body Why.Atree.Builders is
            (Primitive_Type_Id_Valid
             (+(W_Primitive_Type_Valid_OId (Arg_List (J)))));
          Append
-           (Result.C_Arg_List,
+           (Result.K71_Arg_List,
             +(W_Primitive_Type_Valid_OId (Arg_List (J))));
       end loop;
-      Set_Link (Result.C_Arg_List, New_Id);
+      Set_Link (Result.K71_Arg_List, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16401,7 +16401,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.E_Reads := New_List;
+      Result.K72_Reads := New_List;
       for J in Reads'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -16410,11 +16410,11 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Reads (J)))));
          Append
-           (Result.E_Reads,
+           (Result.K72_Reads,
             +(W_Identifier_Valid_OId (Reads (J))));
       end loop;
-      Set_Link (Result.E_Reads, New_Id);
-      Result.E_Writes := New_List;
+      Set_Link (Result.K72_Reads, New_Id);
+      Result.K72_Writes := New_List;
       for J in Writes'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -16423,11 +16423,11 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Writes (J)))));
          Append
-           (Result.E_Writes,
+           (Result.K72_Writes,
             +(W_Identifier_Valid_OId (Writes (J))));
       end loop;
-      Set_Link (Result.E_Writes, New_Id);
-      Result.E_Raises := New_List;
+      Set_Link (Result.K72_Writes, New_Id);
+      Result.K72_Raises := New_List;
       for J in Raises'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -16436,10 +16436,10 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_OId (Raises (J)))));
          Append
-           (Result.E_Raises,
+           (Result.K72_Raises,
             +(W_Identifier_Valid_OId (Raises (J))));
       end loop;
-      Set_Link (Result.E_Raises, New_Id);
+      Set_Link (Result.K72_Raises, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16461,10 +16461,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.POST_Pred :=
+      Result.K73_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.POST_Pred, New_Id);
-      Result.POST_Handlers := New_List;
+      Set_Link (Result.K73_Pred, New_Id);
+      Result.K73_Handlers := New_List;
       for J in Handlers'Range loop
          pragma Assert
            (Exn_Condition_Id_Kind_Valid
@@ -16473,10 +16473,10 @@ package body Why.Atree.Builders is
            (Exn_Condition_Id_Valid
             (+(W_Exn_Condition_Valid_OId (Handlers (J)))));
          Append
-           (Result.POST_Handlers,
+           (Result.K73_Handlers,
             +(W_Exn_Condition_Valid_OId (Handlers (J))));
       end loop;
-      Set_Link (Result.POST_Handlers, New_Id);
+      Set_Link (Result.K73_Handlers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16498,12 +16498,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.EC_Exn_Case :=
+      Result.K74_Exn_Case :=
         +(W_Identifier_Valid_Id (Exn_Case));
-      Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Pred :=
+      Set_Link (Result.K74_Exn_Case, New_Id);
+      Result.K74_Pred :=
         +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.EC_Pred, New_Id);
+      Set_Link (Result.K74_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16524,9 +16524,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Def :=
+      Result.K75_Def :=
         +(W_Constant_Valid_Id (Def));
-      Set_Link (Result.PC_Def, New_Id);
+      Set_Link (Result.K75_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16548,9 +16548,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Def :=
+      Result.K75_Def :=
         +(W_Constant_Valid_Id (Def));
-      Set_Link (Result.PC_Def, New_Id);
+      Set_Link (Result.K75_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16571,9 +16571,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PI_Def :=
+      Result.K76_Def :=
         +(W_Identifier_Valid_Id (Def));
-      Set_Link (Result.PI_Def, New_Id);
+      Set_Link (Result.K76_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16595,9 +16595,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PI_Def :=
+      Result.K76_Def :=
         +(W_Identifier_Valid_Id (Def));
-      Set_Link (Result.PI_Def, New_Id);
+      Set_Link (Result.K76_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16618,9 +16618,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AE_Any_Type :=
+      Result.K77_Any_Type :=
         +(W_Computation_Type_Valid_Id (Any_Type));
-      Set_Link (Result.AE_Any_Type, New_Id);
+      Set_Link (Result.K77_Any_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16642,9 +16642,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AE_Any_Type :=
+      Result.K77_Any_Type :=
         +(W_Computation_Type_Valid_Id (Any_Type));
-      Set_Link (Result.AE_Any_Type, New_Id);
+      Set_Link (Result.K77_Any_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16665,9 +16665,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.D_Ref :=
+      Result.K78_Ref :=
         +(W_Identifier_Valid_Id (Ref));
-      Set_Link (Result.D_Ref, New_Id);
+      Set_Link (Result.K78_Ref, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16689,9 +16689,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.D_Ref :=
+      Result.K78_Ref :=
         +(W_Identifier_Valid_Id (Ref));
-      Set_Link (Result.D_Ref, New_Id);
+      Set_Link (Result.K78_Ref, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16713,12 +16713,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.A_Name :=
+      Result.K79_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.A_Name, New_Id);
-      Result.A_Value :=
+      Set_Link (Result.K79_Name, New_Id);
+      Result.K79_Value :=
         +(W_Prog_Valid_Id (Value));
-      Set_Link (Result.A_Value, New_Id);
+      Set_Link (Result.K79_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16741,12 +16741,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.A_Name :=
+      Result.K79_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.A_Name, New_Id);
-      Result.A_Value :=
+      Set_Link (Result.K79_Name, New_Id);
+      Result.K79_Value :=
         +(W_Prog_Valid_Id (Value));
-      Set_Link (Result.A_Value, New_Id);
+      Set_Link (Result.K79_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16768,12 +16768,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AA_Name :=
+      Result.K80_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AA_Name, New_Id);
-      Result.AA_Index :=
+      Set_Link (Result.K80_Name, New_Id);
+      Result.K80_Index :=
         +(W_Prog_Valid_Id (Index));
-      Set_Link (Result.AA_Index, New_Id);
+      Set_Link (Result.K80_Index, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16796,12 +16796,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AA_Name :=
+      Result.K80_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AA_Name, New_Id);
-      Result.AA_Index :=
+      Set_Link (Result.K80_Name, New_Id);
+      Result.K80_Index :=
         +(W_Prog_Valid_Id (Index));
-      Set_Link (Result.AA_Index, New_Id);
+      Set_Link (Result.K80_Index, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16824,15 +16824,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AU_Name :=
+      Result.K81_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AU_Name, New_Id);
-      Result.AU_Index :=
+      Set_Link (Result.K81_Name, New_Id);
+      Result.K81_Index :=
         +(W_Prog_Valid_Id (Index));
-      Set_Link (Result.AU_Index, New_Id);
-      Result.AU_Value :=
+      Set_Link (Result.K81_Index, New_Id);
+      Result.K81_Value :=
         +(W_Prog_Valid_Id (Value));
-      Set_Link (Result.AU_Value, New_Id);
+      Set_Link (Result.K81_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16856,15 +16856,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.AU_Name :=
+      Result.K81_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AU_Name, New_Id);
-      Result.AU_Index :=
+      Set_Link (Result.K81_Name, New_Id);
+      Result.K81_Index :=
         +(W_Prog_Valid_Id (Index));
-      Set_Link (Result.AU_Index, New_Id);
-      Result.AU_Value :=
+      Set_Link (Result.K81_Index, New_Id);
+      Result.K81_Value :=
         +(W_Prog_Valid_Id (Value));
-      Set_Link (Result.AU_Value, New_Id);
+      Set_Link (Result.K81_Value, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16887,15 +16887,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Left :=
+      Result.K82_Left :=
         +(W_Prog_Valid_Id (Left));
-      Set_Link (Result.IC_Left, New_Id);
-      Result.IC_Infix :=
+      Set_Link (Result.K82_Left, New_Id);
+      Result.K82_Infix :=
         +(W_Infix_Valid_Id (Infix));
-      Set_Link (Result.IC_Infix, New_Id);
-      Result.IC_Right :=
+      Set_Link (Result.K82_Infix, New_Id);
+      Result.K82_Right :=
         +(W_Prog_Valid_Id (Right));
-      Set_Link (Result.IC_Right, New_Id);
+      Set_Link (Result.K82_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16919,15 +16919,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.IC_Left :=
+      Result.K82_Left :=
         +(W_Prog_Valid_Id (Left));
-      Set_Link (Result.IC_Left, New_Id);
-      Result.IC_Infix :=
+      Set_Link (Result.K82_Left, New_Id);
+      Result.K82_Infix :=
         +(W_Infix_Valid_Id (Infix));
-      Set_Link (Result.IC_Infix, New_Id);
-      Result.IC_Right :=
+      Set_Link (Result.K82_Infix, New_Id);
+      Result.K82_Right :=
         +(W_Prog_Valid_Id (Right));
-      Set_Link (Result.IC_Right, New_Id);
+      Set_Link (Result.K82_Right, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16949,12 +16949,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Prefix :=
+      Result.K83_Prefix :=
         +(W_Prefix_Valid_Id (Prefix));
-      Set_Link (Result.PC_Prefix, New_Id);
-      Result.PC_Operand :=
+      Set_Link (Result.K83_Prefix, New_Id);
+      Result.K83_Operand :=
         +(W_Prog_Valid_Id (Operand));
-      Set_Link (Result.PC_Operand, New_Id);
+      Set_Link (Result.K83_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16977,12 +16977,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PC_Prefix :=
+      Result.K83_Prefix :=
         +(W_Prefix_Valid_Id (Prefix));
-      Set_Link (Result.PC_Prefix, New_Id);
-      Result.PC_Operand :=
+      Set_Link (Result.K83_Prefix, New_Id);
+      Result.K83_Operand :=
         +(W_Prog_Valid_Id (Operand));
-      Set_Link (Result.PC_Operand, New_Id);
+      Set_Link (Result.K83_Operand, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17005,15 +17005,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K84_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K84_Name, New_Id);
+      Result.K84_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K84_Def, New_Id);
+      Result.K84_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K84_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17037,15 +17037,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K84_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K84_Name, New_Id);
+      Result.K84_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K84_Def, New_Id);
+      Result.K84_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K84_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17068,15 +17068,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K85_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K85_Name, New_Id);
+      Result.K85_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K85_Def, New_Id);
+      Result.K85_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K85_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17100,15 +17100,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BPG_Name :=
+      Result.K85_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BPG_Name, New_Id);
-      Result.BPG_Def :=
+      Set_Link (Result.K85_Name, New_Id);
+      Result.K85_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BPG_Def, New_Id);
-      Result.BPG_Context :=
+      Set_Link (Result.K85_Def, New_Id);
+      Result.K85_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BPG_Context, New_Id);
+      Set_Link (Result.K85_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17131,15 +17131,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPG_Condition :=
+      Result.K86_Condition :=
         +(W_Prog_Valid_Id (Condition));
-      Set_Link (Result.CPG_Condition, New_Id);
-      Result.CPG_Then_Part :=
+      Set_Link (Result.K86_Condition, New_Id);
+      Result.K86_Then_Part :=
         +(W_Prog_Valid_Id (Then_Part));
-      Set_Link (Result.CPG_Then_Part, New_Id);
-      Result.CPG_Else_Part :=
+      Set_Link (Result.K86_Then_Part, New_Id);
+      Result.K86_Else_Part :=
         +(W_Prog_Valid_OId (Else_Part));
-      Set_Link (Result.CPG_Else_Part, New_Id);
+      Set_Link (Result.K86_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17163,15 +17163,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.CPG_Condition :=
+      Result.K86_Condition :=
         +(W_Prog_Valid_Id (Condition));
-      Set_Link (Result.CPG_Condition, New_Id);
-      Result.CPG_Then_Part :=
+      Set_Link (Result.K86_Condition, New_Id);
+      Result.K86_Then_Part :=
         +(W_Prog_Valid_Id (Then_Part));
-      Set_Link (Result.CPG_Then_Part, New_Id);
-      Result.CPG_Else_Part :=
+      Set_Link (Result.K86_Then_Part, New_Id);
+      Result.K86_Else_Part :=
         +(W_Prog_Valid_OId (Else_Part));
-      Set_Link (Result.CPG_Else_Part, New_Id);
+      Set_Link (Result.K86_Else_Part, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17194,15 +17194,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.WL_Condition :=
+      Result.K87_Condition :=
         +(W_Prog_Valid_Id (Condition));
-      Set_Link (Result.WL_Condition, New_Id);
-      Result.WL_Annotation :=
+      Set_Link (Result.K87_Condition, New_Id);
+      Result.K87_Annotation :=
         +(W_Loop_Annot_Valid_Id (Annotation));
-      Set_Link (Result.WL_Annotation, New_Id);
-      Result.WL_Loop_Content :=
+      Set_Link (Result.K87_Annotation, New_Id);
+      Result.K87_Loop_Content :=
         +(W_Prog_Valid_Id (Loop_Content));
-      Set_Link (Result.WL_Loop_Content, New_Id);
+      Set_Link (Result.K87_Loop_Content, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17226,15 +17226,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.WL_Condition :=
+      Result.K87_Condition :=
         +(W_Prog_Valid_Id (Condition));
-      Set_Link (Result.WL_Condition, New_Id);
-      Result.WL_Annotation :=
+      Set_Link (Result.K87_Condition, New_Id);
+      Result.K87_Annotation :=
         +(W_Loop_Annot_Valid_Id (Annotation));
-      Set_Link (Result.WL_Annotation, New_Id);
-      Result.WL_Loop_Content :=
+      Set_Link (Result.K87_Annotation, New_Id);
+      Result.K87_Loop_Content :=
         +(W_Prog_Valid_Id (Loop_Content));
-      Set_Link (Result.WL_Loop_Content, New_Id);
+      Set_Link (Result.K87_Loop_Content, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17256,7 +17256,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Statements'Length > 0);
-      Result.SS_Statements := New_List;
+      Result.K88_Statements := New_List;
       for J in Statements'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -17265,10 +17265,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (+(W_Prog_Valid_Id (Statements (J)))));
          Append
-           (Result.SS_Statements,
+           (Result.K88_Statements,
             +(W_Prog_Valid_Id (Statements (J))));
       end loop;
-      Set_Link (Result.SS_Statements, New_Id);
+      Set_Link (Result.K88_Statements, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17291,7 +17291,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Statements'Length > 0);
-      Result.SS_Statements := New_List;
+      Result.K88_Statements := New_List;
       for J in Statements'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -17300,10 +17300,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (+(W_Prog_Valid_Id (Statements (J)))));
          Append
-           (Result.SS_Statements,
+           (Result.K88_Statements,
             +(W_Prog_Valid_Id (Statements (J))));
       end loop;
-      Set_Link (Result.SS_Statements, New_Id);
+      Set_Link (Result.K88_Statements, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17325,12 +17325,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_Name :=
+      Result.K89_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.L_Name, New_Id);
-      Result.L_Def :=
+      Set_Link (Result.K89_Name, New_Id);
+      Result.K89_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.L_Def, New_Id);
+      Set_Link (Result.K89_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17353,12 +17353,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.L_Name :=
+      Result.K89_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.L_Name, New_Id);
-      Result.L_Def :=
+      Set_Link (Result.K89_Name, New_Id);
+      Result.K89_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.L_Def, New_Id);
+      Set_Link (Result.K89_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17381,7 +17381,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Preds'Length > 0);
-      Result.AS_Preds := New_List;
+      Result.K90_Preds := New_List;
       for J in Preds'Range loop
          pragma Assert
            (Predicate_Id_Kind_Valid
@@ -17390,13 +17390,13 @@ package body Why.Atree.Builders is
            (Predicate_Id_Valid
             (+(W_Predicate_Valid_Id (Preds (J)))));
          Append
-           (Result.AS_Preds,
+           (Result.K90_Preds,
             +(W_Predicate_Valid_Id (Preds (J))));
       end loop;
-      Set_Link (Result.AS_Preds, New_Id);
-      Result.AS_Prog :=
+      Set_Link (Result.K90_Preds, New_Id);
+      Result.K90_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.AS_Prog, New_Id);
+      Set_Link (Result.K90_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17420,7 +17420,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Preds'Length > 0);
-      Result.AS_Preds := New_List;
+      Result.K90_Preds := New_List;
       for J in Preds'Range loop
          pragma Assert
            (Predicate_Id_Kind_Valid
@@ -17429,13 +17429,13 @@ package body Why.Atree.Builders is
            (Predicate_Id_Valid
             (+(W_Predicate_Valid_Id (Preds (J)))));
          Append
-           (Result.AS_Preds,
+           (Result.K90_Preds,
             +(W_Predicate_Valid_Id (Preds (J))));
       end loop;
-      Set_Link (Result.AS_Preds, New_Id);
-      Result.AS_Prog :=
+      Set_Link (Result.K90_Preds, New_Id);
+      Result.K90_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.AS_Prog, New_Id);
+      Set_Link (Result.K90_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17457,12 +17457,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K91_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K91_Prog, New_Id);
+      Result.K91_Post :=
         +(W_Postcondition_Valid_Id (Post));
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K91_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17485,12 +17485,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K91_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K91_Prog, New_Id);
+      Result.K91_Post :=
         +(W_Postcondition_Valid_Id (Post));
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K91_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17512,12 +17512,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K92_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K92_Prog, New_Id);
+      Result.K92_Post :=
         +(W_Postcondition_Valid_Id (Post));
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K92_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17540,12 +17540,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PA_Prog :=
+      Result.K92_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.PA_Prog, New_Id);
-      Result.PA_Post :=
+      Set_Link (Result.K92_Prog, New_Id);
+      Result.K92_Post :=
         +(W_Postcondition_Valid_Id (Post));
-      Set_Link (Result.PA_Post, New_Id);
+      Set_Link (Result.K92_Post, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17569,7 +17569,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Binders'Length > 0);
-      Result.FD_Binders := New_List;
+      Result.K93_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -17578,16 +17578,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.FD_Binders,
+           (Result.K93_Binders,
             +(W_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.FD_Binders, New_Id);
-      Result.FD_Pre :=
+      Set_Link (Result.K93_Binders, New_Id);
+      Result.K93_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.FD_Pre, New_Id);
-      Result.FD_Def :=
+      Set_Link (Result.K93_Pre, New_Id);
+      Result.K93_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.FD_Def, New_Id);
+      Set_Link (Result.K93_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17612,7 +17612,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Binders'Length > 0);
-      Result.FD_Binders := New_List;
+      Result.K93_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -17621,16 +17621,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.FD_Binders,
+           (Result.K93_Binders,
             +(W_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.FD_Binders, New_Id);
-      Result.FD_Pre :=
+      Set_Link (Result.K93_Binders, New_Id);
+      Result.K93_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.FD_Pre, New_Id);
-      Result.FD_Def :=
+      Set_Link (Result.K93_Pre, New_Id);
+      Result.K93_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.FD_Def, New_Id);
+      Set_Link (Result.K93_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17655,11 +17655,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BF_Name :=
+      Result.K94_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BF_Name, New_Id);
+      Set_Link (Result.K94_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.BF_Binders := New_List;
+      Result.K94_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -17668,19 +17668,19 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.BF_Binders,
+           (Result.K94_Binders,
             +(W_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.BF_Binders, New_Id);
-      Result.BF_Pre :=
+      Set_Link (Result.K94_Binders, New_Id);
+      Result.K94_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.BF_Pre, New_Id);
-      Result.BF_Def :=
+      Set_Link (Result.K94_Pre, New_Id);
+      Result.K94_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BF_Def, New_Id);
-      Result.BF_Context :=
+      Set_Link (Result.K94_Def, New_Id);
+      Result.K94_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BF_Context, New_Id);
+      Set_Link (Result.K94_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17706,11 +17706,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BF_Name :=
+      Result.K94_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.BF_Name, New_Id);
+      Set_Link (Result.K94_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.BF_Binders := New_List;
+      Result.K94_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -17719,19 +17719,19 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.BF_Binders,
+           (Result.K94_Binders,
             +(W_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.BF_Binders, New_Id);
-      Result.BF_Pre :=
+      Set_Link (Result.K94_Binders, New_Id);
+      Result.K94_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.BF_Pre, New_Id);
-      Result.BF_Def :=
+      Set_Link (Result.K94_Pre, New_Id);
+      Result.K94_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.BF_Def, New_Id);
-      Result.BF_Context :=
+      Set_Link (Result.K94_Def, New_Id);
+      Result.K94_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BF_Context, New_Id);
+      Set_Link (Result.K94_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17753,12 +17753,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BR_Recfun :=
+      Result.K95_Recfun :=
         +(W_Recfun_Valid_Id (Recfun));
-      Set_Link (Result.BR_Recfun, New_Id);
-      Result.BR_Context :=
+      Set_Link (Result.K95_Recfun, New_Id);
+      Result.K95_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BR_Context, New_Id);
+      Set_Link (Result.K95_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17781,12 +17781,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BR_Recfun :=
+      Result.K95_Recfun :=
         +(W_Recfun_Valid_Id (Recfun));
-      Set_Link (Result.BR_Recfun, New_Id);
-      Result.BR_Context :=
+      Set_Link (Result.K95_Recfun, New_Id);
+      Result.K95_Context :=
         +(W_Prog_Valid_Id (Context));
-      Set_Link (Result.BR_Context, New_Id);
+      Set_Link (Result.K95_Context, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17808,11 +17808,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PS_Name :=
+      Result.K96_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PS_Name, New_Id);
+      Set_Link (Result.K96_Name, New_Id);
       pragma Assert (Progs'Length > 0);
-      Result.PS_Progs := New_List;
+      Result.K96_Progs := New_List;
       for J in Progs'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -17821,10 +17821,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (+(W_Prog_Valid_Id (Progs (J)))));
          Append
-           (Result.PS_Progs,
+           (Result.K96_Progs,
             +(W_Prog_Valid_Id (Progs (J))));
       end loop;
-      Set_Link (Result.PS_Progs, New_Id);
+      Set_Link (Result.K96_Progs, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17847,11 +17847,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PS_Name :=
+      Result.K96_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.PS_Name, New_Id);
+      Set_Link (Result.K96_Name, New_Id);
       pragma Assert (Progs'Length > 0);
-      Result.PS_Progs := New_List;
+      Result.K96_Progs := New_List;
       for J in Progs'Range loop
          pragma Assert
            (Prog_Id_Kind_Valid
@@ -17860,10 +17860,10 @@ package body Why.Atree.Builders is
            (Prog_Id_Valid
             (+(W_Prog_Valid_Id (Progs (J)))));
          Append
-           (Result.PS_Progs,
+           (Result.K96_Progs,
             +(W_Prog_Valid_Id (Progs (J))));
       end loop;
-      Set_Link (Result.PS_Progs, New_Id);
+      Set_Link (Result.K96_Progs, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17885,12 +17885,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RS_Name :=
+      Result.K97_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.RS_Name, New_Id);
-      Result.RS_Exn_Type :=
+      Set_Link (Result.K97_Name, New_Id);
+      Result.K97_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.RS_Exn_Type, New_Id);
+      Set_Link (Result.K97_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17913,12 +17913,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RS_Name :=
+      Result.K97_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.RS_Name, New_Id);
-      Result.RS_Exn_Type :=
+      Set_Link (Result.K97_Name, New_Id);
+      Result.K97_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.RS_Exn_Type, New_Id);
+      Set_Link (Result.K97_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17941,15 +17941,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RSWP_Name :=
+      Result.K98_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.RSWP_Name, New_Id);
-      Result.RSWP_Parameter :=
+      Set_Link (Result.K98_Name, New_Id);
+      Result.K98_Parameter :=
         +(W_Term_Valid_Id (Parameter));
-      Set_Link (Result.RSWP_Parameter, New_Id);
-      Result.RSWP_Exn_Type :=
+      Set_Link (Result.K98_Parameter, New_Id);
+      Result.K98_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.RSWP_Exn_Type, New_Id);
+      Set_Link (Result.K98_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -17973,15 +17973,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RSWP_Name :=
+      Result.K98_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.RSWP_Name, New_Id);
-      Result.RSWP_Parameter :=
+      Set_Link (Result.K98_Name, New_Id);
+      Result.K98_Parameter :=
         +(W_Term_Valid_Id (Parameter));
-      Set_Link (Result.RSWP_Parameter, New_Id);
-      Result.RSWP_Exn_Type :=
+      Set_Link (Result.K98_Parameter, New_Id);
+      Result.K98_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.RSWP_Exn_Type, New_Id);
+      Set_Link (Result.K98_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18003,11 +18003,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TB_Prog :=
+      Result.K99_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.TB_Prog, New_Id);
+      Set_Link (Result.K99_Prog, New_Id);
       pragma Assert (Handler'Length > 0);
-      Result.TB_Handler := New_List;
+      Result.K99_Handler := New_List;
       for J in Handler'Range loop
          pragma Assert
            (Handler_Id_Kind_Valid
@@ -18016,10 +18016,10 @@ package body Why.Atree.Builders is
            (Handler_Id_Valid
             (+(W_Handler_Valid_Id (Handler (J)))));
          Append
-           (Result.TB_Handler,
+           (Result.K99_Handler,
             +(W_Handler_Valid_Id (Handler (J))));
       end loop;
-      Set_Link (Result.TB_Handler, New_Id);
+      Set_Link (Result.K99_Handler, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18042,11 +18042,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.TB_Prog :=
+      Result.K99_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.TB_Prog, New_Id);
+      Set_Link (Result.K99_Prog, New_Id);
       pragma Assert (Handler'Length > 0);
-      Result.TB_Handler := New_List;
+      Result.K99_Handler := New_List;
       for J in Handler'Range loop
          pragma Assert
            (Handler_Id_Kind_Valid
@@ -18055,10 +18055,10 @@ package body Why.Atree.Builders is
            (Handler_Id_Valid
             (+(W_Handler_Valid_Id (Handler (J)))));
          Append
-           (Result.TB_Handler,
+           (Result.K99_Handler,
             +(W_Handler_Valid_Id (Handler (J))));
       end loop;
-      Set_Link (Result.TB_Handler, New_Id);
+      Set_Link (Result.K99_Handler, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18079,9 +18079,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.UC_Exn_Type :=
+      Result.K100_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.UC_Exn_Type, New_Id);
+      Set_Link (Result.K100_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18103,9 +18103,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.UC_Exn_Type :=
+      Result.K100_Exn_Type :=
         +(W_Simple_Value_Type_Valid_OId (Exn_Type));
-      Set_Link (Result.UC_Exn_Type, New_Id);
+      Set_Link (Result.K100_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18126,9 +18126,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K101_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K101_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18150,9 +18150,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K101_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K101_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18173,9 +18173,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K102_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K102_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18197,9 +18197,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.BB_Prog :=
+      Result.K102_Prog :=
         +(W_Prog_Valid_Id (Prog));
-      Set_Link (Result.BB_Prog, New_Id);
+      Set_Link (Result.K102_Prog, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18807,7 +18807,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       pragma Assert (Names'Length > 0);
-      Result.B_Names := New_List;
+      Result.K118_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -18816,13 +18816,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Names (J)))));
          Append
-           (Result.B_Names,
+           (Result.K118_Names,
             +(W_Identifier_Valid_Id (Names (J))));
       end loop;
-      Set_Link (Result.B_Names, New_Id);
-      Result.B_Arg_Type :=
+      Set_Link (Result.K118_Names, New_Id);
+      Result.K118_Arg_Type :=
         +(W_Simple_Value_Type_Valid_Id (Arg_Type));
-      Set_Link (Result.B_Arg_Type, New_Id);
+      Set_Link (Result.K118_Arg_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18848,11 +18848,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.RF_Name :=
+      Result.K119_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.RF_Name, New_Id);
+      Set_Link (Result.K119_Name, New_Id);
       pragma Assert (Binders'Length > 0);
-      Result.RF_Binders := New_List;
+      Result.K119_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -18861,22 +18861,22 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_Id (Binders (J)))));
          Append
-           (Result.RF_Binders,
+           (Result.K119_Binders,
             +(W_Binder_Valid_Id (Binders (J))));
       end loop;
-      Set_Link (Result.RF_Binders, New_Id);
-      Result.RF_Return_Type :=
+      Set_Link (Result.K119_Binders, New_Id);
+      Result.K119_Return_Type :=
         +(W_Prog_Valid_Id (Return_Type));
-      Set_Link (Result.RF_Return_Type, New_Id);
-      Result.RF_Variant :=
+      Set_Link (Result.K119_Return_Type, New_Id);
+      Result.K119_Variant :=
         +(W_Wf_Arg_Valid_Id (Variant));
-      Set_Link (Result.RF_Variant, New_Id);
-      Result.RF_Pre :=
+      Set_Link (Result.K119_Variant, New_Id);
+      Result.K119_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.RF_Pre, New_Id);
-      Result.RF_Def :=
+      Set_Link (Result.K119_Pre, New_Id);
+      Result.K119_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.RF_Def, New_Id);
+      Set_Link (Result.K119_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18898,12 +18898,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LA_Invariant :=
+      Result.K120_Invariant :=
         +(W_Predicate_Valid_OId (Invariant));
-      Set_Link (Result.LA_Invariant, New_Id);
-      Result.LA_Variant :=
+      Set_Link (Result.K120_Invariant, New_Id);
+      Result.K120_Variant :=
         +(W_Wf_Arg_Valid_OId (Variant));
-      Set_Link (Result.LA_Variant, New_Id);
+      Set_Link (Result.K120_Variant, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18925,12 +18925,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.WA_Def :=
+      Result.K121_Def :=
         +(W_Term_Valid_Id (Def));
-      Set_Link (Result.WA_Def, New_Id);
-      Result.WA_For_Id :=
+      Set_Link (Result.K121_Def, New_Id);
+      Result.K121_For_Id :=
         +(W_Identifier_Valid_OId (For_Id));
-      Set_Link (Result.WA_For_Id, New_Id);
+      Set_Link (Result.K121_For_Id, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18953,15 +18953,15 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.H_Name :=
+      Result.K122_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.H_Name, New_Id);
-      Result.H_Parameter :=
+      Set_Link (Result.K122_Name, New_Id);
+      Result.K122_Parameter :=
         +(W_Prog_Valid_OId (Parameter));
-      Set_Link (Result.H_Parameter, New_Id);
-      Result.H_Def :=
+      Set_Link (Result.K122_Parameter, New_Id);
+      Result.K122_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.H_Def, New_Id);
+      Set_Link (Result.K122_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -18982,7 +18982,7 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.F_Declarations := New_List;
+      Result.K123_Declarations := New_List;
       for J in Declarations'Range loop
          pragma Assert
            (Declaration_Id_Kind_Valid
@@ -18991,10 +18991,10 @@ package body Why.Atree.Builders is
            (Declaration_Id_Valid
             (+(W_Declaration_Valid_OId (Declarations (J)))));
          Append
-           (Result.F_Declarations,
+           (Result.K123_Declarations,
             +(W_Declaration_Valid_OId (Declarations (J))));
       end loop;
-      Set_Link (Result.F_Declarations, New_Id);
+      Set_Link (Result.K123_Declarations, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19018,10 +19018,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GB_Name :=
+      Result.K124_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders := New_List;
+      Set_Link (Result.K124_Name, New_Id);
+      Result.K124_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -19030,16 +19030,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_OId (Binders (J)))));
          Append
-           (Result.GB_Binders,
+           (Result.K124_Binders,
             +(W_Binder_Valid_OId (Binders (J))));
       end loop;
-      Set_Link (Result.GB_Binders, New_Id);
-      Result.GB_Pre :=
+      Set_Link (Result.K124_Binders, New_Id);
+      Result.K124_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.GB_Pre, New_Id);
-      Result.GB_Def :=
+      Set_Link (Result.K124_Pre, New_Id);
+      Result.K124_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.GB_Def, New_Id);
+      Set_Link (Result.K124_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19064,10 +19064,10 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GB_Name :=
+      Result.K124_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders := New_List;
+      Set_Link (Result.K124_Name, New_Id);
+      Result.K124_Binders := New_List;
       for J in Binders'Range loop
          pragma Assert
            (Binder_Id_Kind_Valid
@@ -19076,16 +19076,16 @@ package body Why.Atree.Builders is
            (Binder_Id_Valid
             (+(W_Binder_Valid_OId (Binders (J)))));
          Append
-           (Result.GB_Binders,
+           (Result.K124_Binders,
             +(W_Binder_Valid_OId (Binders (J))));
       end loop;
-      Set_Link (Result.GB_Binders, New_Id);
-      Result.GB_Pre :=
+      Set_Link (Result.K124_Binders, New_Id);
+      Result.K124_Pre :=
         +(W_Predicate_Valid_Id (Pre));
-      Set_Link (Result.GB_Pre, New_Id);
-      Result.GB_Def :=
+      Set_Link (Result.K124_Pre, New_Id);
+      Result.K124_Def :=
         +(W_Prog_Valid_Id (Def));
-      Set_Link (Result.GB_Def, New_Id);
+      Set_Link (Result.K124_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19106,9 +19106,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GRB_Name :=
+      Result.K125_Name :=
         +(W_Recfun_Valid_Id (Name));
-      Set_Link (Result.GRB_Name, New_Id);
+      Set_Link (Result.K125_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19130,9 +19130,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GRB_Name :=
+      Result.K125_Name :=
         +(W_Recfun_Valid_Id (Name));
-      Set_Link (Result.GRB_Name, New_Id);
+      Set_Link (Result.K125_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19155,11 +19155,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PD_External :=
+      Result.K126_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.PD_External, New_Id);
+      Set_Link (Result.K126_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.PD_Names := New_List;
+      Result.K126_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -19168,13 +19168,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Names (J)))));
          Append
-           (Result.PD_Names,
+           (Result.K126_Names,
             +(W_Identifier_Valid_Id (Names (J))));
       end loop;
-      Set_Link (Result.PD_Names, New_Id);
-      Result.PD_Parameter_Type :=
+      Set_Link (Result.K126_Names, New_Id);
+      Result.K126_Parameter_Type :=
         +(W_Computation_Type_Valid_Id (Parameter_Type));
-      Set_Link (Result.PD_Parameter_Type, New_Id);
+      Set_Link (Result.K126_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19198,11 +19198,11 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PD_External :=
+      Result.K126_External :=
         +(W_External_Valid_OId (External));
-      Set_Link (Result.PD_External, New_Id);
+      Set_Link (Result.K126_External, New_Id);
       pragma Assert (Names'Length > 0);
-      Result.PD_Names := New_List;
+      Result.K126_Names := New_List;
       for J in Names'Range loop
          pragma Assert
            (Identifier_Id_Kind_Valid
@@ -19211,13 +19211,13 @@ package body Why.Atree.Builders is
            (Identifier_Id_Valid
             (+(W_Identifier_Valid_Id (Names (J)))));
          Append
-           (Result.PD_Names,
+           (Result.K126_Names,
             +(W_Identifier_Valid_Id (Names (J))));
       end loop;
-      Set_Link (Result.PD_Names, New_Id);
-      Result.PD_Parameter_Type :=
+      Set_Link (Result.K126_Names, New_Id);
+      Result.K126_Parameter_Type :=
         +(W_Computation_Type_Valid_Id (Parameter_Type));
-      Set_Link (Result.PD_Parameter_Type, New_Id);
+      Set_Link (Result.K126_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19239,12 +19239,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GR_Name :=
+      Result.K127_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GR_Name, New_Id);
-      Result.GR_Parameter_Type :=
+      Set_Link (Result.K127_Name, New_Id);
+      Result.K127_Parameter_Type :=
         +(W_Primitive_Type_Valid_Id (Parameter_Type));
-      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Set_Link (Result.K127_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19267,12 +19267,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.GR_Name :=
+      Result.K127_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GR_Name, New_Id);
-      Result.GR_Parameter_Type :=
+      Set_Link (Result.K127_Name, New_Id);
+      Result.K127_Parameter_Type :=
         +(W_Primitive_Type_Valid_Id (Parameter_Type));
-      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Set_Link (Result.K127_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19294,12 +19294,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ED_Name :=
+      Result.K128_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.ED_Name, New_Id);
-      Result.ED_Parameter :=
+      Set_Link (Result.K128_Name, New_Id);
+      Result.K128_Parameter :=
         +(W_Primitive_Type_Valid_OId (Parameter));
-      Set_Link (Result.ED_Parameter, New_Id);
+      Set_Link (Result.K128_Parameter, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19322,12 +19322,12 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ED_Name :=
+      Result.K128_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.ED_Name, New_Id);
-      Result.ED_Parameter :=
+      Set_Link (Result.K128_Name, New_Id);
+      Result.K128_Parameter :=
         +(W_Primitive_Type_Valid_OId (Parameter));
-      Set_Link (Result.ED_Parameter, New_Id);
+      Set_Link (Result.K128_Parameter, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19348,9 +19348,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LD_Decl :=
+      Result.K129_Decl :=
         +(W_Logic_Declaration_Class_Valid_Id (Decl));
-      Set_Link (Result.LD_Decl, New_Id);
+      Set_Link (Result.K129_Decl, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19372,9 +19372,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.LD_Decl :=
+      Result.K129_Decl :=
         +(W_Logic_Declaration_Class_Valid_Id (Decl));
-      Set_Link (Result.LD_Decl, New_Id);
+      Set_Link (Result.K129_Decl, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19395,9 +19395,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ID_Name :=
+      Result.K130_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.ID_Name, New_Id);
+      Set_Link (Result.K130_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -19419,9 +19419,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.ID_Name :=
+      Result.K130_Name :=
         +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.ID_Name, New_Id);
+      Set_Link (Result.K130_Name, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);

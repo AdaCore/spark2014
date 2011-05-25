@@ -8790,7 +8790,7 @@ private
      (Id : W_Abstract_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AT_Name));
+       (Get_Node (Id).K7_Name));
 
    function Abstract_Type_List_Children_Valid
      (Id : W_Abstract_Type_Unchecked_List)
@@ -8814,7 +8814,7 @@ private
      (Id : W_Generic_Formal_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).GFT_Name));
+       (Get_Node (Id).K8_Name));
 
    function Generic_Formal_Type_List_Children_Valid
      (Id : W_Generic_Formal_Type_Unchecked_List)
@@ -8838,10 +8838,10 @@ private
      (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).GATC_Type_Chain)
+       (Get_Node (Id).K9_Type_Chain)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).GATC_Name));
+         (Get_Node (Id).K9_Name));
 
    function Generic_Actual_Type_Chain_List_Children_Valid
      (Id : W_Generic_Actual_Type_Chain_Unchecked_List)
@@ -8865,7 +8865,7 @@ private
      (Id : W_Array_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AT_Component_Type));
+       (Get_Node (Id).K10_Component_Type));
 
    function Array_Type_List_Children_Valid
      (Id : W_Array_Type_Unchecked_List)
@@ -8889,7 +8889,7 @@ private
      (Id : W_Ref_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).RT_Aliased_Type));
+       (Get_Node (Id).K11_Aliased_Type));
 
    function Ref_Type_List_Children_Valid
      (Id : W_Ref_Type_Unchecked_List)
@@ -8913,22 +8913,22 @@ private
      (Id : W_Computation_Type_Unchecked_Id)
      return Boolean is
      (OList_Cache_Valid
-       (Get_Node (Id).CS_Binders)
+       (Get_Node (Id).K12_Binders)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).CS_Precondition)
+         (Get_Node (Id).K12_Precondition)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).CS_Result_Name)
+         (Get_Node (Id).K12_Result_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CS_Return_Type)
+         (Get_Node (Id).K12_Return_Type)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CS_Effects)
+         (Get_Node (Id).K12_Effects)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).CS_Postcondition));
+         (Get_Node (Id).K12_Postcondition));
 
    function Computation_Type_List_Children_Valid
      (Id : W_Computation_Type_Unchecked_List)
@@ -9067,13 +9067,13 @@ private
      (Id : W_Arith_Operation_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AO_Left)
+       (Get_Node (Id).K18_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AO_Op)
+         (Get_Node (Id).K18_Op)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AO_Right));
+         (Get_Node (Id).K18_Right));
 
    function Arith_Operation_List_Children_Valid
      (Id : W_Arith_Operation_Unchecked_List)
@@ -9097,7 +9097,7 @@ private
      (Id : W_Negative_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).NT_Operand));
+       (Get_Node (Id).K19_Operand));
 
    function Negative_Term_List_Children_Valid
      (Id : W_Negative_Term_Unchecked_List)
@@ -9121,10 +9121,10 @@ private
      (Id : W_Term_Identifier_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).TIL_Name)
+       (Get_Node (Id).K20_Name)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).TIL_Label));
+         (Get_Node (Id).K20_Label));
 
    function Term_Identifier_List_Children_Valid
      (Id : W_Term_Identifier_Unchecked_List)
@@ -9148,10 +9148,10 @@ private
      (Id : W_Operation_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).O_Name)
+       (Get_Node (Id).K21_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).O_Parameters));
+         (Get_Node (Id).K21_Parameters));
 
    function Operation_List_Children_Valid
      (Id : W_Operation_Unchecked_List)
@@ -9175,10 +9175,10 @@ private
      (Id : W_Named_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).NT_Name)
+       (Get_Node (Id).K22_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).NT_Term));
+         (Get_Node (Id).K22_Term));
 
    function Named_Term_List_Children_Valid
      (Id : W_Named_Term_Unchecked_List)
@@ -9202,13 +9202,13 @@ private
      (Id : W_Conditional_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).CT_Condition)
+       (Get_Node (Id).K23_Condition)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CT_Then_Part)
+         (Get_Node (Id).K23_Then_Part)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CT_Else_Part));
+         (Get_Node (Id).K23_Else_Part));
 
    function Conditional_Term_List_Children_Valid
      (Id : W_Conditional_Term_Unchecked_List)
@@ -9232,10 +9232,10 @@ private
      (Id : W_Matching_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).MT_Term)
+       (Get_Node (Id).K24_Term)
      and then
        List_Cache_Valid
-         (Get_Node (Id).MT_Branches));
+         (Get_Node (Id).K24_Branches));
 
    function Matching_Term_List_Children_Valid
      (Id : W_Matching_Term_Unchecked_List)
@@ -9259,13 +9259,13 @@ private
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BT_Name)
+       (Get_Node (Id).K25_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BT_Def)
+         (Get_Node (Id).K25_Def)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BT_Context));
+         (Get_Node (Id).K25_Context));
 
    function Binding_Term_List_Children_Valid
      (Id : W_Binding_Term_Unchecked_List)
@@ -9289,7 +9289,7 @@ private
      (Id : W_Protected_Term_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BT_Term));
+       (Get_Node (Id).K26_Term));
 
    function Protected_Term_List_Children_Valid
      (Id : W_Protected_Term_Unchecked_List)
@@ -9474,7 +9474,7 @@ private
      (Id : W_Predicate_Identifier_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PID_Name));
+       (Get_Node (Id).K34_Name));
 
    function Predicate_Identifier_List_Children_Valid
      (Id : W_Predicate_Identifier_Unchecked_List)
@@ -9498,10 +9498,10 @@ private
      (Id : W_Predicate_Instance_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PIN_Name)
+       (Get_Node (Id).K35_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).PIN_Parameters));
+         (Get_Node (Id).K35_Parameters));
 
    function Predicate_Instance_List_Children_Valid
      (Id : W_Predicate_Instance_Unchecked_List)
@@ -9525,19 +9525,19 @@ private
      (Id : W_Related_Terms_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).RT_Left)
+       (Get_Node (Id).K36_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RT_Op)
+         (Get_Node (Id).K36_Op)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RT_Right)
+         (Get_Node (Id).K36_Right)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).RT_Op2)
+         (Get_Node (Id).K36_Op2)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).RT_Right2));
+         (Get_Node (Id).K36_Right2));
 
    function Related_Terms_List_Children_Valid
      (Id : W_Related_Terms_Unchecked_List)
@@ -9561,10 +9561,10 @@ private
      (Id : W_Implication_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ITOC_Left)
+       (Get_Node (Id).K37_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).ITOC_Right));
+         (Get_Node (Id).K37_Right));
 
    function Implication_List_Children_Valid
      (Id : W_Implication_Unchecked_List)
@@ -9588,10 +9588,10 @@ private
      (Id : W_Equivalence_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ITOC_Left)
+       (Get_Node (Id).K38_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).ITOC_Right));
+         (Get_Node (Id).K38_Right));
 
    function Equivalence_List_Children_Valid
      (Id : W_Equivalence_Unchecked_List)
@@ -9615,10 +9615,10 @@ private
      (Id : W_Disjunction_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ITOC_Left)
+       (Get_Node (Id).K39_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).ITOC_Right));
+         (Get_Node (Id).K39_Right));
 
    function Disjunction_List_Children_Valid
      (Id : W_Disjunction_Unchecked_List)
@@ -9642,10 +9642,10 @@ private
      (Id : W_Conjunction_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ITOC_Left)
+       (Get_Node (Id).K40_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).ITOC_Right));
+         (Get_Node (Id).K40_Right));
 
    function Conjunction_List_Children_Valid
      (Id : W_Conjunction_Unchecked_List)
@@ -9669,7 +9669,7 @@ private
      (Id : W_Negation_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).N_Operand));
+       (Get_Node (Id).K41_Operand));
 
    function Negation_List_Children_Valid
      (Id : W_Negation_Unchecked_List)
@@ -9693,13 +9693,13 @@ private
      (Id : W_Conditional_Pred_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).CPD_Condition)
+       (Get_Node (Id).K42_Condition)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CPD_Then_Part)
+         (Get_Node (Id).K42_Then_Part)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CPD_Else_Part));
+         (Get_Node (Id).K42_Else_Part));
 
    function Conditional_Pred_List_Children_Valid
      (Id : W_Conditional_Pred_Unchecked_List)
@@ -9723,13 +9723,13 @@ private
      (Id : W_Binding_Pred_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BPD_Name)
+       (Get_Node (Id).K43_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPD_Def)
+         (Get_Node (Id).K43_Def)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPD_Context));
+         (Get_Node (Id).K43_Context));
 
    function Binding_Pred_List_Children_Valid
      (Id : W_Binding_Pred_Unchecked_List)
@@ -9753,16 +9753,16 @@ private
      (Id : W_Universal_Quantif_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).UQ_Variables)
+       (Get_Node (Id).K44_Variables)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).UQ_Var_Type)
+         (Get_Node (Id).K44_Var_Type)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).UQ_Triggers)
+         (Get_Node (Id).K44_Triggers)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).UQ_Pred));
+         (Get_Node (Id).K44_Pred));
 
    function Universal_Quantif_List_Children_Valid
      (Id : W_Universal_Quantif_Unchecked_List)
@@ -9786,13 +9786,13 @@ private
      (Id : W_Existential_Quantif_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).EQ_Variables)
+       (Get_Node (Id).K45_Variables)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).EQ_Var_Type)
+         (Get_Node (Id).K45_Var_Type)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).EQ_Pred));
+         (Get_Node (Id).K45_Pred));
 
    function Existential_Quantif_List_Children_Valid
      (Id : W_Existential_Quantif_Unchecked_List)
@@ -9816,10 +9816,10 @@ private
      (Id : W_Named_Predicate_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).NP_Name)
+       (Get_Node (Id).K46_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).NP_Pred));
+         (Get_Node (Id).K46_Pred));
 
    function Named_Predicate_List_Children_Valid
      (Id : W_Named_Predicate_Unchecked_List)
@@ -9843,7 +9843,7 @@ private
      (Id : W_Protected_Predicate_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PP_Pred));
+       (Get_Node (Id).K47_Pred));
 
    function Protected_Predicate_List_Children_Valid
      (Id : W_Protected_Predicate_Unchecked_List)
@@ -9867,10 +9867,10 @@ private
      (Id : W_Pattern_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PAT_Constr)
+       (Get_Node (Id).K48_Constr)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).PAT_Args));
+         (Get_Node (Id).K48_Args));
 
    function Pattern_List_Children_Valid
      (Id : W_Pattern_Unchecked_List)
@@ -9894,10 +9894,10 @@ private
      (Id : W_Match_Case_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).MC_Pattern)
+       (Get_Node (Id).K49_Pattern)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).MC_Term));
+         (Get_Node (Id).K49_Term));
 
    function Match_Case_List_Children_Valid
      (Id : W_Match_Case_Unchecked_List)
@@ -9921,7 +9921,7 @@ private
      (Id : W_Triggers_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).TRS_Triggers));
+       (Get_Node (Id).K50_Triggers));
 
    function Triggers_List_Children_Valid
      (Id : W_Triggers_Unchecked_List)
@@ -9945,7 +9945,7 @@ private
      (Id : W_Trigger_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).TRI_Terms));
+       (Get_Node (Id).K51_Terms));
 
    function Trigger_List_Children_Valid
      (Id : W_Trigger_Unchecked_List)
@@ -10107,16 +10107,16 @@ private
      (Id : W_Type_Unchecked_Id)
      return Boolean is
      (OId_Cache_Valid
-       (Get_Node (Id).T_External)
+       (Get_Node (Id).K58_External)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).T_Type_Parameters)
+         (Get_Node (Id).K58_Type_Parameters)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).T_Name)
+         (Get_Node (Id).K58_Name)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).T_Definition));
+         (Get_Node (Id).K58_Definition));
 
    function Type_List_Children_Valid
      (Id : W_Type_Unchecked_List)
@@ -10140,13 +10140,13 @@ private
      (Id : W_Logic_Unchecked_Id)
      return Boolean is
      (OId_Cache_Valid
-       (Get_Node (Id).L_External)
+       (Get_Node (Id).K59_External)
      and then
        List_Cache_Valid
-         (Get_Node (Id).L_Names)
+         (Get_Node (Id).K59_Names)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).L_Logic_Type));
+         (Get_Node (Id).K59_Logic_Type));
 
    function Logic_List_Children_Valid
      (Id : W_Logic_Unchecked_List)
@@ -10170,16 +10170,16 @@ private
      (Id : W_Function_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).F_Name)
+       (Get_Node (Id).K60_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).F_Binders)
+         (Get_Node (Id).K60_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).F_Return_Type)
+         (Get_Node (Id).K60_Return_Type)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).F_Def));
+         (Get_Node (Id).K60_Def));
 
    function Function_List_Children_Valid
      (Id : W_Function_Unchecked_List)
@@ -10203,13 +10203,13 @@ private
      (Id : W_Predicate_Definition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).P_Name)
+       (Get_Node (Id).K61_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).P_Binders)
+         (Get_Node (Id).K61_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).P_Def));
+         (Get_Node (Id).K61_Def));
 
    function Predicate_Definition_List_Children_Valid
      (Id : W_Predicate_Definition_Unchecked_List)
@@ -10233,13 +10233,13 @@ private
      (Id : W_Inductive_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).I_Name)
+       (Get_Node (Id).K62_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).I_Logic_Type)
+         (Get_Node (Id).K62_Logic_Type)
      and then
        List_Cache_Valid
-         (Get_Node (Id).I_Def));
+         (Get_Node (Id).K62_Def));
 
    function Inductive_List_Children_Valid
      (Id : W_Inductive_Unchecked_List)
@@ -10263,10 +10263,10 @@ private
      (Id : W_Axiom_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AX_Name)
+       (Get_Node (Id).K63_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AX_Def));
+         (Get_Node (Id).K63_Def));
 
    function Axiom_List_Children_Valid
      (Id : W_Axiom_Unchecked_List)
@@ -10290,10 +10290,10 @@ private
      (Id : W_Goal_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).G_Name)
+       (Get_Node (Id).K64_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).G_Def));
+         (Get_Node (Id).K64_Def));
 
    function Goal_List_Children_Valid
      (Id : W_Goal_Unchecked_List)
@@ -10340,10 +10340,10 @@ private
      (Id : W_Logic_Type_Unchecked_Id)
      return Boolean is
      (OList_Cache_Valid
-       (Get_Node (Id).LT_Arg_Types)
+       (Get_Node (Id).K66_Arg_Types)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).LT_Return_Type));
+         (Get_Node (Id).K66_Return_Type));
 
    function Logic_Type_List_Children_Valid
      (Id : W_Logic_Type_Unchecked_List)
@@ -10367,10 +10367,10 @@ private
      (Id : W_Logic_Binder_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).LB_Name)
+       (Get_Node (Id).K67_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).LB_Param_Type));
+         (Get_Node (Id).K67_Param_Type));
 
    function Logic_Binder_List_Children_Valid
      (Id : W_Logic_Binder_Unchecked_List)
@@ -10394,10 +10394,10 @@ private
      (Id : W_Inductive_Case_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).IC_Name)
+       (Get_Node (Id).K68_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).IC_Pred));
+         (Get_Node (Id).K68_Pred));
 
    function Inductive_Case_List_Children_Valid
      (Id : W_Inductive_Case_Unchecked_List)
@@ -10421,7 +10421,7 @@ private
      (Id : W_Transparent_Type_Definition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).Tr_Type_Definition));
+       (Get_Node (Id).K69_Type_Definition));
 
    function Transparent_Type_Definition_List_Children_Valid
      (Id : W_Transparent_Type_Definition_Unchecked_List)
@@ -10445,7 +10445,7 @@ private
      (Id : W_Adt_Definition_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).Adt_Constructors));
+       (Get_Node (Id).K70_Constructors));
 
    function Adt_Definition_List_Children_Valid
      (Id : W_Adt_Definition_Unchecked_List)
@@ -10469,10 +10469,10 @@ private
      (Id : W_Constr_Decl_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).C_Name)
+       (Get_Node (Id).K71_Name)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).C_Arg_List));
+         (Get_Node (Id).K71_Arg_List));
 
    function Constr_Decl_List_Children_Valid
      (Id : W_Constr_Decl_Unchecked_List)
@@ -10496,13 +10496,13 @@ private
      (Id : W_Effects_Unchecked_Id)
      return Boolean is
      (OList_Cache_Valid
-       (Get_Node (Id).E_Reads)
+       (Get_Node (Id).K72_Reads)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).E_Writes)
+         (Get_Node (Id).K72_Writes)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).E_Raises));
+         (Get_Node (Id).K72_Raises));
 
    function Effects_List_Children_Valid
      (Id : W_Effects_Unchecked_List)
@@ -10526,10 +10526,10 @@ private
      (Id : W_Postcondition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).POST_Pred)
+       (Get_Node (Id).K73_Pred)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).POST_Handlers));
+         (Get_Node (Id).K73_Handlers));
 
    function Postcondition_List_Children_Valid
      (Id : W_Postcondition_Unchecked_List)
@@ -10553,10 +10553,10 @@ private
      (Id : W_Exn_Condition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).EC_Exn_Case)
+       (Get_Node (Id).K74_Exn_Case)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).EC_Pred));
+         (Get_Node (Id).K74_Pred));
 
    function Exn_Condition_List_Children_Valid
      (Id : W_Exn_Condition_Unchecked_List)
@@ -10580,7 +10580,7 @@ private
      (Id : W_Prog_Constant_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PC_Def));
+       (Get_Node (Id).K75_Def));
 
    function Prog_Constant_List_Children_Valid
      (Id : W_Prog_Constant_Unchecked_List)
@@ -10604,7 +10604,7 @@ private
      (Id : W_Prog_Identifier_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PI_Def));
+       (Get_Node (Id).K76_Def));
 
    function Prog_Identifier_List_Children_Valid
      (Id : W_Prog_Identifier_Unchecked_List)
@@ -10628,7 +10628,7 @@ private
      (Id : W_Any_Expr_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AE_Any_Type));
+       (Get_Node (Id).K77_Any_Type));
 
    function Any_Expr_List_Children_Valid
      (Id : W_Any_Expr_Unchecked_List)
@@ -10652,7 +10652,7 @@ private
      (Id : W_Deref_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).D_Ref));
+       (Get_Node (Id).K78_Ref));
 
    function Deref_List_Children_Valid
      (Id : W_Deref_Unchecked_List)
@@ -10676,10 +10676,10 @@ private
      (Id : W_Assignment_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).A_Name)
+       (Get_Node (Id).K79_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).A_Value));
+         (Get_Node (Id).K79_Value));
 
    function Assignment_List_Children_Valid
      (Id : W_Assignment_Unchecked_List)
@@ -10703,10 +10703,10 @@ private
      (Id : W_Array_Access_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AA_Name)
+       (Get_Node (Id).K80_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AA_Index));
+         (Get_Node (Id).K80_Index));
 
    function Array_Access_List_Children_Valid
      (Id : W_Array_Access_Unchecked_List)
@@ -10730,13 +10730,13 @@ private
      (Id : W_Array_Update_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).AU_Name)
+       (Get_Node (Id).K81_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AU_Index)
+         (Get_Node (Id).K81_Index)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AU_Value));
+         (Get_Node (Id).K81_Value));
 
    function Array_Update_List_Children_Valid
      (Id : W_Array_Update_Unchecked_List)
@@ -10760,13 +10760,13 @@ private
      (Id : W_Infix_Call_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).IC_Left)
+       (Get_Node (Id).K82_Left)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).IC_Infix)
+         (Get_Node (Id).K82_Infix)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).IC_Right));
+         (Get_Node (Id).K82_Right));
 
    function Infix_Call_List_Children_Valid
      (Id : W_Infix_Call_Unchecked_List)
@@ -10790,10 +10790,10 @@ private
      (Id : W_Prefix_Call_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PC_Prefix)
+       (Get_Node (Id).K83_Prefix)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).PC_Operand));
+         (Get_Node (Id).K83_Operand));
 
    function Prefix_Call_List_Children_Valid
      (Id : W_Prefix_Call_Unchecked_List)
@@ -10817,13 +10817,13 @@ private
      (Id : W_Binding_Prog_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BPG_Name)
+       (Get_Node (Id).K84_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPG_Def)
+         (Get_Node (Id).K84_Def)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPG_Context));
+         (Get_Node (Id).K84_Context));
 
    function Binding_Prog_List_Children_Valid
      (Id : W_Binding_Prog_Unchecked_List)
@@ -10847,13 +10847,13 @@ private
      (Id : W_Binding_Ref_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BPG_Name)
+       (Get_Node (Id).K85_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPG_Def)
+         (Get_Node (Id).K85_Def)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BPG_Context));
+         (Get_Node (Id).K85_Context));
 
    function Binding_Ref_List_Children_Valid
      (Id : W_Binding_Ref_Unchecked_List)
@@ -10877,13 +10877,13 @@ private
      (Id : W_Conditional_Prog_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).CPG_Condition)
+       (Get_Node (Id).K86_Condition)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).CPG_Then_Part)
+         (Get_Node (Id).K86_Then_Part)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).CPG_Else_Part));
+         (Get_Node (Id).K86_Else_Part));
 
    function Conditional_Prog_List_Children_Valid
      (Id : W_Conditional_Prog_Unchecked_List)
@@ -10907,13 +10907,13 @@ private
      (Id : W_While_Loop_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).WL_Condition)
+       (Get_Node (Id).K87_Condition)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).WL_Annotation)
+         (Get_Node (Id).K87_Annotation)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).WL_Loop_Content));
+         (Get_Node (Id).K87_Loop_Content));
 
    function While_Loop_List_Children_Valid
      (Id : W_While_Loop_Unchecked_List)
@@ -10937,7 +10937,7 @@ private
      (Id : W_Statement_Sequence_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).SS_Statements));
+       (Get_Node (Id).K88_Statements));
 
    function Statement_Sequence_List_Children_Valid
      (Id : W_Statement_Sequence_Unchecked_List)
@@ -10961,10 +10961,10 @@ private
      (Id : W_Label_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).L_Name)
+       (Get_Node (Id).K89_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).L_Def));
+         (Get_Node (Id).K89_Def));
 
    function Label_List_Children_Valid
      (Id : W_Label_Unchecked_List)
@@ -10988,10 +10988,10 @@ private
      (Id : W_Assert_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).AS_Preds)
+       (Get_Node (Id).K90_Preds)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).AS_Prog));
+         (Get_Node (Id).K90_Prog));
 
    function Assert_List_Children_Valid
      (Id : W_Assert_Unchecked_List)
@@ -11015,10 +11015,10 @@ private
      (Id : W_Post_Assertion_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PA_Prog)
+       (Get_Node (Id).K91_Prog)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).PA_Post));
+         (Get_Node (Id).K91_Post));
 
    function Post_Assertion_List_Children_Valid
      (Id : W_Post_Assertion_Unchecked_List)
@@ -11042,10 +11042,10 @@ private
      (Id : W_Opaque_Assertion_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PA_Prog)
+       (Get_Node (Id).K92_Prog)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).PA_Post));
+         (Get_Node (Id).K92_Post));
 
    function Opaque_Assertion_List_Children_Valid
      (Id : W_Opaque_Assertion_Unchecked_List)
@@ -11069,13 +11069,13 @@ private
      (Id : W_Fun_Def_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).FD_Binders)
+       (Get_Node (Id).K93_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).FD_Pre)
+         (Get_Node (Id).K93_Pre)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).FD_Def));
+         (Get_Node (Id).K93_Def));
 
    function Fun_Def_List_Children_Valid
      (Id : W_Fun_Def_Unchecked_List)
@@ -11099,19 +11099,19 @@ private
      (Id : W_Binding_Fun_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BF_Name)
+       (Get_Node (Id).K94_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).BF_Binders)
+         (Get_Node (Id).K94_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BF_Pre)
+         (Get_Node (Id).K94_Pre)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BF_Def)
+         (Get_Node (Id).K94_Def)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BF_Context));
+         (Get_Node (Id).K94_Context));
 
    function Binding_Fun_List_Children_Valid
      (Id : W_Binding_Fun_Unchecked_List)
@@ -11135,10 +11135,10 @@ private
      (Id : W_Binding_Rec_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BR_Recfun)
+       (Get_Node (Id).K95_Recfun)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).BR_Context));
+         (Get_Node (Id).K95_Context));
 
    function Binding_Rec_List_Children_Valid
      (Id : W_Binding_Rec_Unchecked_List)
@@ -11162,10 +11162,10 @@ private
      (Id : W_Prog_Call_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PS_Name)
+       (Get_Node (Id).K96_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).PS_Progs));
+         (Get_Node (Id).K96_Progs));
 
    function Prog_Call_List_Children_Valid
      (Id : W_Prog_Call_Unchecked_List)
@@ -11189,10 +11189,10 @@ private
      (Id : W_Raise_Statement_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).RS_Name)
+       (Get_Node (Id).K97_Name)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).RS_Exn_Type));
+         (Get_Node (Id).K97_Exn_Type));
 
    function Raise_Statement_List_Children_Valid
      (Id : W_Raise_Statement_Unchecked_List)
@@ -11216,13 +11216,13 @@ private
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).RSWP_Name)
+       (Get_Node (Id).K98_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RSWP_Parameter)
+         (Get_Node (Id).K98_Parameter)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).RSWP_Exn_Type));
+         (Get_Node (Id).K98_Exn_Type));
 
    function Raise_Statement_With_Parameters_List_Children_Valid
      (Id : W_Raise_Statement_With_Parameters_Unchecked_List)
@@ -11246,10 +11246,10 @@ private
      (Id : W_Try_Block_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).TB_Prog)
+       (Get_Node (Id).K99_Prog)
      and then
        List_Cache_Valid
-         (Get_Node (Id).TB_Handler));
+         (Get_Node (Id).K99_Handler));
 
    function Try_Block_List_Children_Valid
      (Id : W_Try_Block_Unchecked_List)
@@ -11273,7 +11273,7 @@ private
      (Id : W_Unreachable_Code_Unchecked_Id)
      return Boolean is
      (OId_Cache_Valid
-       (Get_Node (Id).UC_Exn_Type));
+       (Get_Node (Id).K100_Exn_Type));
 
    function Unreachable_Code_List_Children_Valid
      (Id : W_Unreachable_Code_Unchecked_List)
@@ -11297,7 +11297,7 @@ private
      (Id : W_Begin_Block_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BB_Prog));
+       (Get_Node (Id).K101_Prog));
 
    function Begin_Block_List_Children_Valid
      (Id : W_Begin_Block_Unchecked_List)
@@ -11321,7 +11321,7 @@ private
      (Id : W_Protected_Prog_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).BB_Prog));
+       (Get_Node (Id).K102_Prog));
 
    function Protected_Prog_List_Children_Valid
      (Id : W_Protected_Prog_Unchecked_List)
@@ -11690,10 +11690,10 @@ private
      (Id : W_Binder_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).B_Names)
+       (Get_Node (Id).K118_Names)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).B_Arg_Type));
+         (Get_Node (Id).K118_Arg_Type));
 
    function Binder_List_Children_Valid
      (Id : W_Binder_Unchecked_List)
@@ -11717,22 +11717,22 @@ private
      (Id : W_Recfun_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).RF_Name)
+       (Get_Node (Id).K119_Name)
      and then
        List_Cache_Valid
-         (Get_Node (Id).RF_Binders)
+         (Get_Node (Id).K119_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RF_Return_Type)
+         (Get_Node (Id).K119_Return_Type)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RF_Variant)
+         (Get_Node (Id).K119_Variant)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RF_Pre)
+         (Get_Node (Id).K119_Pre)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).RF_Def));
+         (Get_Node (Id).K119_Def));
 
    function Recfun_List_Children_Valid
      (Id : W_Recfun_Unchecked_List)
@@ -11756,10 +11756,10 @@ private
      (Id : W_Loop_Annot_Unchecked_Id)
      return Boolean is
      (OId_Cache_Valid
-       (Get_Node (Id).LA_Invariant)
+       (Get_Node (Id).K120_Invariant)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).LA_Variant));
+         (Get_Node (Id).K120_Variant));
 
    function Loop_Annot_List_Children_Valid
      (Id : W_Loop_Annot_Unchecked_List)
@@ -11783,10 +11783,10 @@ private
      (Id : W_Wf_Arg_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).WA_Def)
+       (Get_Node (Id).K121_Def)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).WA_For_Id));
+         (Get_Node (Id).K121_For_Id));
 
    function Wf_Arg_List_Children_Valid
      (Id : W_Wf_Arg_Unchecked_List)
@@ -11810,13 +11810,13 @@ private
      (Id : W_Handler_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).H_Name)
+       (Get_Node (Id).K122_Name)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).H_Parameter)
+         (Get_Node (Id).K122_Parameter)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).H_Def));
+         (Get_Node (Id).K122_Def));
 
    function Handler_List_Children_Valid
      (Id : W_Handler_Unchecked_List)
@@ -11840,7 +11840,7 @@ private
      (Id : W_File_Unchecked_Id)
      return Boolean is
      (OList_Cache_Valid
-       (Get_Node (Id).F_Declarations));
+       (Get_Node (Id).K123_Declarations));
 
    function File_List_Children_Valid
      (Id : W_File_Unchecked_List)
@@ -11864,16 +11864,16 @@ private
      (Id : W_Global_Binding_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).GB_Name)
+       (Get_Node (Id).K124_Name)
      and then
        OList_Cache_Valid
-         (Get_Node (Id).GB_Binders)
+         (Get_Node (Id).K124_Binders)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).GB_Pre)
+         (Get_Node (Id).K124_Pre)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).GB_Def));
+         (Get_Node (Id).K124_Def));
 
    function Global_Binding_List_Children_Valid
      (Id : W_Global_Binding_Unchecked_List)
@@ -11897,7 +11897,7 @@ private
      (Id : W_Global_Rec_Binding_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).GRB_Name));
+       (Get_Node (Id).K125_Name));
 
    function Global_Rec_Binding_List_Children_Valid
      (Id : W_Global_Rec_Binding_Unchecked_List)
@@ -11921,13 +11921,13 @@ private
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return Boolean is
      (OId_Cache_Valid
-       (Get_Node (Id).PD_External)
+       (Get_Node (Id).K126_External)
      and then
        List_Cache_Valid
-         (Get_Node (Id).PD_Names)
+         (Get_Node (Id).K126_Names)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).PD_Parameter_Type));
+         (Get_Node (Id).K126_Parameter_Type));
 
    function Parameter_Declaration_List_Children_Valid
      (Id : W_Parameter_Declaration_Unchecked_List)
@@ -11951,10 +11951,10 @@ private
      (Id : W_Global_Ref_Declaration_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).GR_Name)
+       (Get_Node (Id).K127_Name)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).GR_Parameter_Type));
+         (Get_Node (Id).K127_Parameter_Type));
 
    function Global_Ref_Declaration_List_Children_Valid
      (Id : W_Global_Ref_Declaration_Unchecked_List)
@@ -11978,10 +11978,10 @@ private
      (Id : W_Exception_Declaration_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ED_Name)
+       (Get_Node (Id).K128_Name)
      and then
        OId_Cache_Valid
-         (Get_Node (Id).ED_Parameter));
+         (Get_Node (Id).K128_Parameter));
 
    function Exception_Declaration_List_Children_Valid
      (Id : W_Exception_Declaration_Unchecked_List)
@@ -12005,7 +12005,7 @@ private
      (Id : W_Logic_Declaration_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).LD_Decl));
+       (Get_Node (Id).K129_Decl));
 
    function Logic_Declaration_List_Children_Valid
      (Id : W_Logic_Declaration_Unchecked_List)
@@ -12029,7 +12029,7 @@ private
      (Id : W_Include_Declaration_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).ID_Name));
+       (Get_Node (Id).K130_Name));
 
    function Include_Declaration_List_Children_Valid
      (Id : W_Include_Declaration_Unchecked_List)

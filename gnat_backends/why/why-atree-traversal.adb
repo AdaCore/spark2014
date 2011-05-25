@@ -220,7 +220,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AT_Name);
+               Get_Node  (Node).K7_Name);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -250,7 +250,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).GFT_Name);
+               Get_Node  (Node).K8_Name);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -280,10 +280,10 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).GATC_Type_Chain);
+               Get_Node  (Node).K9_Type_Chain);
             Traverse
               (State,
-               Get_Node  (Node).GATC_Name);
+               Get_Node  (Node).K9_Name);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -313,7 +313,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AT_Component_Type);
+               Get_Node  (Node).K10_Component_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -343,7 +343,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).RT_Aliased_Type);
+               Get_Node  (Node).K11_Aliased_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -373,22 +373,22 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).CS_Binders);
+               Get_Node  (Node).K12_Binders);
             Traverse
               (State,
-               Get_Node  (Node).CS_Precondition);
+               Get_Node  (Node).K12_Precondition);
             Traverse
               (State,
-               Get_Node  (Node).CS_Result_Name);
+               Get_Node  (Node).K12_Result_Name);
             Traverse
               (State,
-               Get_Node  (Node).CS_Return_Type);
+               Get_Node  (Node).K12_Return_Type);
             Traverse
               (State,
-               Get_Node  (Node).CS_Effects);
+               Get_Node  (Node).K12_Effects);
             Traverse
               (State,
-               Get_Node  (Node).CS_Postcondition);
+               Get_Node  (Node).K12_Postcondition);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -548,13 +548,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AO_Left);
+               Get_Node  (Node).K18_Left);
             Traverse
               (State,
-               Get_Node  (Node).AO_Op);
+               Get_Node  (Node).K18_Op);
             Traverse
               (State,
-               Get_Node  (Node).AO_Right);
+               Get_Node  (Node).K18_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -584,7 +584,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).NT_Operand);
+               Get_Node  (Node).K19_Operand);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -614,10 +614,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).TIL_Name);
+               Get_Node  (Node).K20_Name);
             Traverse
               (State,
-               Get_Node  (Node).TIL_Label);
+               Get_Node  (Node).K20_Label);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -647,10 +647,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).O_Name);
+               Get_Node  (Node).K21_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).O_Parameters);
+               Get_Node  (Node).K21_Parameters);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -680,10 +680,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).NT_Name);
+               Get_Node  (Node).K22_Name);
             Traverse
               (State,
-               Get_Node  (Node).NT_Term);
+               Get_Node  (Node).K22_Term);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -713,13 +713,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).CT_Condition);
+               Get_Node  (Node).K23_Condition);
             Traverse
               (State,
-               Get_Node  (Node).CT_Then_Part);
+               Get_Node  (Node).K23_Then_Part);
             Traverse
               (State,
-               Get_Node  (Node).CT_Else_Part);
+               Get_Node  (Node).K23_Else_Part);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -749,10 +749,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).MT_Term);
+               Get_Node  (Node).K24_Term);
             Traverse_List
               (State,
-               Get_Node  (Node).MT_Branches);
+               Get_Node  (Node).K24_Branches);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -782,13 +782,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BT_Name);
+               Get_Node  (Node).K25_Name);
             Traverse
               (State,
-               Get_Node  (Node).BT_Def);
+               Get_Node  (Node).K25_Def);
             Traverse
               (State,
-               Get_Node  (Node).BT_Context);
+               Get_Node  (Node).K25_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -818,7 +818,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BT_Term);
+               Get_Node  (Node).K26_Term);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1030,7 +1030,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PID_Name);
+               Get_Node  (Node).K34_Name);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1060,10 +1060,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PIN_Name);
+               Get_Node  (Node).K35_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).PIN_Parameters);
+               Get_Node  (Node).K35_Parameters);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1093,19 +1093,19 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).RT_Left);
+               Get_Node  (Node).K36_Left);
             Traverse
               (State,
-               Get_Node  (Node).RT_Op);
+               Get_Node  (Node).K36_Op);
             Traverse
               (State,
-               Get_Node  (Node).RT_Right);
+               Get_Node  (Node).K36_Right);
             Traverse
               (State,
-               Get_Node  (Node).RT_Op2);
+               Get_Node  (Node).K36_Op2);
             Traverse
               (State,
-               Get_Node  (Node).RT_Right2);
+               Get_Node  (Node).K36_Right2);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1135,10 +1135,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Left);
+               Get_Node  (Node).K37_Left);
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Right);
+               Get_Node  (Node).K37_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1168,10 +1168,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Left);
+               Get_Node  (Node).K38_Left);
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Right);
+               Get_Node  (Node).K38_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1201,10 +1201,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Left);
+               Get_Node  (Node).K39_Left);
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Right);
+               Get_Node  (Node).K39_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1234,10 +1234,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Left);
+               Get_Node  (Node).K40_Left);
             Traverse
               (State,
-               Get_Node  (Node).ITOC_Right);
+               Get_Node  (Node).K40_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1267,7 +1267,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).N_Operand);
+               Get_Node  (Node).K41_Operand);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1297,13 +1297,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).CPD_Condition);
+               Get_Node  (Node).K42_Condition);
             Traverse
               (State,
-               Get_Node  (Node).CPD_Then_Part);
+               Get_Node  (Node).K42_Then_Part);
             Traverse
               (State,
-               Get_Node  (Node).CPD_Else_Part);
+               Get_Node  (Node).K42_Else_Part);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1333,13 +1333,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BPD_Name);
+               Get_Node  (Node).K43_Name);
             Traverse
               (State,
-               Get_Node  (Node).BPD_Def);
+               Get_Node  (Node).K43_Def);
             Traverse
               (State,
-               Get_Node  (Node).BPD_Context);
+               Get_Node  (Node).K43_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1369,16 +1369,16 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).UQ_Variables);
+               Get_Node  (Node).K44_Variables);
             Traverse
               (State,
-               Get_Node  (Node).UQ_Var_Type);
+               Get_Node  (Node).K44_Var_Type);
             Traverse
               (State,
-               Get_Node  (Node).UQ_Triggers);
+               Get_Node  (Node).K44_Triggers);
             Traverse
               (State,
-               Get_Node  (Node).UQ_Pred);
+               Get_Node  (Node).K44_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1408,13 +1408,13 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).EQ_Variables);
+               Get_Node  (Node).K45_Variables);
             Traverse
               (State,
-               Get_Node  (Node).EQ_Var_Type);
+               Get_Node  (Node).K45_Var_Type);
             Traverse
               (State,
-               Get_Node  (Node).EQ_Pred);
+               Get_Node  (Node).K45_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1444,10 +1444,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).NP_Name);
+               Get_Node  (Node).K46_Name);
             Traverse
               (State,
-               Get_Node  (Node).NP_Pred);
+               Get_Node  (Node).K46_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1477,7 +1477,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PP_Pred);
+               Get_Node  (Node).K47_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1507,10 +1507,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PAT_Constr);
+               Get_Node  (Node).K48_Constr);
             Traverse_List
               (State,
-               Get_Node  (Node).PAT_Args);
+               Get_Node  (Node).K48_Args);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1540,10 +1540,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).MC_Pattern);
+               Get_Node  (Node).K49_Pattern);
             Traverse
               (State,
-               Get_Node  (Node).MC_Term);
+               Get_Node  (Node).K49_Term);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1573,7 +1573,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).TRS_Triggers);
+               Get_Node  (Node).K50_Triggers);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1603,7 +1603,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).TRI_Terms);
+               Get_Node  (Node).K51_Terms);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1789,16 +1789,16 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).T_External);
+               Get_Node  (Node).K58_External);
             Traverse_List
               (State,
-               Get_Node  (Node).T_Type_Parameters);
+               Get_Node  (Node).K58_Type_Parameters);
             Traverse
               (State,
-               Get_Node  (Node).T_Name);
+               Get_Node  (Node).K58_Name);
             Traverse
               (State,
-               Get_Node  (Node).T_Definition);
+               Get_Node  (Node).K58_Definition);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1828,13 +1828,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).L_External);
+               Get_Node  (Node).K59_External);
             Traverse_List
               (State,
-               Get_Node  (Node).L_Names);
+               Get_Node  (Node).K59_Names);
             Traverse
               (State,
-               Get_Node  (Node).L_Logic_Type);
+               Get_Node  (Node).K59_Logic_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1864,16 +1864,16 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).F_Name);
+               Get_Node  (Node).K60_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).F_Binders);
+               Get_Node  (Node).K60_Binders);
             Traverse
               (State,
-               Get_Node  (Node).F_Return_Type);
+               Get_Node  (Node).K60_Return_Type);
             Traverse
               (State,
-               Get_Node  (Node).F_Def);
+               Get_Node  (Node).K60_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1903,13 +1903,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).P_Name);
+               Get_Node  (Node).K61_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).P_Binders);
+               Get_Node  (Node).K61_Binders);
             Traverse
               (State,
-               Get_Node  (Node).P_Def);
+               Get_Node  (Node).K61_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1939,13 +1939,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).I_Name);
+               Get_Node  (Node).K62_Name);
             Traverse
               (State,
-               Get_Node  (Node).I_Logic_Type);
+               Get_Node  (Node).K62_Logic_Type);
             Traverse_List
               (State,
-               Get_Node  (Node).I_Def);
+               Get_Node  (Node).K62_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -1975,10 +1975,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AX_Name);
+               Get_Node  (Node).K63_Name);
             Traverse
               (State,
-               Get_Node  (Node).AX_Def);
+               Get_Node  (Node).K63_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2008,10 +2008,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).G_Name);
+               Get_Node  (Node).K64_Name);
             Traverse
               (State,
-               Get_Node  (Node).G_Def);
+               Get_Node  (Node).K64_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2067,10 +2067,10 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).LT_Arg_Types);
+               Get_Node  (Node).K66_Arg_Types);
             Traverse
               (State,
-               Get_Node  (Node).LT_Return_Type);
+               Get_Node  (Node).K66_Return_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2100,10 +2100,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).LB_Name);
+               Get_Node  (Node).K67_Name);
             Traverse
               (State,
-               Get_Node  (Node).LB_Param_Type);
+               Get_Node  (Node).K67_Param_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2133,10 +2133,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).IC_Name);
+               Get_Node  (Node).K68_Name);
             Traverse
               (State,
-               Get_Node  (Node).IC_Pred);
+               Get_Node  (Node).K68_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2166,7 +2166,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).Tr_Type_Definition);
+               Get_Node  (Node).K69_Type_Definition);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2196,7 +2196,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).Adt_Constructors);
+               Get_Node  (Node).K70_Constructors);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2226,10 +2226,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).C_Name);
+               Get_Node  (Node).K71_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).C_Arg_List);
+               Get_Node  (Node).K71_Arg_List);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2259,13 +2259,13 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).E_Reads);
+               Get_Node  (Node).K72_Reads);
             Traverse_List
               (State,
-               Get_Node  (Node).E_Writes);
+               Get_Node  (Node).K72_Writes);
             Traverse_List
               (State,
-               Get_Node  (Node).E_Raises);
+               Get_Node  (Node).K72_Raises);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2295,10 +2295,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).POST_Pred);
+               Get_Node  (Node).K73_Pred);
             Traverse_List
               (State,
-               Get_Node  (Node).POST_Handlers);
+               Get_Node  (Node).K73_Handlers);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2328,10 +2328,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).EC_Exn_Case);
+               Get_Node  (Node).K74_Exn_Case);
             Traverse
               (State,
-               Get_Node  (Node).EC_Pred);
+               Get_Node  (Node).K74_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2361,7 +2361,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PC_Def);
+               Get_Node  (Node).K75_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2391,7 +2391,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PI_Def);
+               Get_Node  (Node).K76_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2421,7 +2421,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AE_Any_Type);
+               Get_Node  (Node).K77_Any_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2451,7 +2451,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).D_Ref);
+               Get_Node  (Node).K78_Ref);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2481,10 +2481,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).A_Name);
+               Get_Node  (Node).K79_Name);
             Traverse
               (State,
-               Get_Node  (Node).A_Value);
+               Get_Node  (Node).K79_Value);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2514,10 +2514,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AA_Name);
+               Get_Node  (Node).K80_Name);
             Traverse
               (State,
-               Get_Node  (Node).AA_Index);
+               Get_Node  (Node).K80_Index);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2547,13 +2547,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).AU_Name);
+               Get_Node  (Node).K81_Name);
             Traverse
               (State,
-               Get_Node  (Node).AU_Index);
+               Get_Node  (Node).K81_Index);
             Traverse
               (State,
-               Get_Node  (Node).AU_Value);
+               Get_Node  (Node).K81_Value);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2583,13 +2583,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).IC_Left);
+               Get_Node  (Node).K82_Left);
             Traverse
               (State,
-               Get_Node  (Node).IC_Infix);
+               Get_Node  (Node).K82_Infix);
             Traverse
               (State,
-               Get_Node  (Node).IC_Right);
+               Get_Node  (Node).K82_Right);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2619,10 +2619,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PC_Prefix);
+               Get_Node  (Node).K83_Prefix);
             Traverse
               (State,
-               Get_Node  (Node).PC_Operand);
+               Get_Node  (Node).K83_Operand);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2652,13 +2652,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BPG_Name);
+               Get_Node  (Node).K84_Name);
             Traverse
               (State,
-               Get_Node  (Node).BPG_Def);
+               Get_Node  (Node).K84_Def);
             Traverse
               (State,
-               Get_Node  (Node).BPG_Context);
+               Get_Node  (Node).K84_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2688,13 +2688,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BPG_Name);
+               Get_Node  (Node).K85_Name);
             Traverse
               (State,
-               Get_Node  (Node).BPG_Def);
+               Get_Node  (Node).K85_Def);
             Traverse
               (State,
-               Get_Node  (Node).BPG_Context);
+               Get_Node  (Node).K85_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2724,13 +2724,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).CPG_Condition);
+               Get_Node  (Node).K86_Condition);
             Traverse
               (State,
-               Get_Node  (Node).CPG_Then_Part);
+               Get_Node  (Node).K86_Then_Part);
             Traverse
               (State,
-               Get_Node  (Node).CPG_Else_Part);
+               Get_Node  (Node).K86_Else_Part);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2760,13 +2760,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).WL_Condition);
+               Get_Node  (Node).K87_Condition);
             Traverse
               (State,
-               Get_Node  (Node).WL_Annotation);
+               Get_Node  (Node).K87_Annotation);
             Traverse
               (State,
-               Get_Node  (Node).WL_Loop_Content);
+               Get_Node  (Node).K87_Loop_Content);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2796,7 +2796,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).SS_Statements);
+               Get_Node  (Node).K88_Statements);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2826,10 +2826,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).L_Name);
+               Get_Node  (Node).K89_Name);
             Traverse
               (State,
-               Get_Node  (Node).L_Def);
+               Get_Node  (Node).K89_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2859,10 +2859,10 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).AS_Preds);
+               Get_Node  (Node).K90_Preds);
             Traverse
               (State,
-               Get_Node  (Node).AS_Prog);
+               Get_Node  (Node).K90_Prog);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2892,10 +2892,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PA_Prog);
+               Get_Node  (Node).K91_Prog);
             Traverse
               (State,
-               Get_Node  (Node).PA_Post);
+               Get_Node  (Node).K91_Post);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2925,10 +2925,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PA_Prog);
+               Get_Node  (Node).K92_Prog);
             Traverse
               (State,
-               Get_Node  (Node).PA_Post);
+               Get_Node  (Node).K92_Post);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2958,13 +2958,13 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).FD_Binders);
+               Get_Node  (Node).K93_Binders);
             Traverse
               (State,
-               Get_Node  (Node).FD_Pre);
+               Get_Node  (Node).K93_Pre);
             Traverse
               (State,
-               Get_Node  (Node).FD_Def);
+               Get_Node  (Node).K93_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2994,19 +2994,19 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BF_Name);
+               Get_Node  (Node).K94_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).BF_Binders);
+               Get_Node  (Node).K94_Binders);
             Traverse
               (State,
-               Get_Node  (Node).BF_Pre);
+               Get_Node  (Node).K94_Pre);
             Traverse
               (State,
-               Get_Node  (Node).BF_Def);
+               Get_Node  (Node).K94_Def);
             Traverse
               (State,
-               Get_Node  (Node).BF_Context);
+               Get_Node  (Node).K94_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3036,10 +3036,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BR_Recfun);
+               Get_Node  (Node).K95_Recfun);
             Traverse
               (State,
-               Get_Node  (Node).BR_Context);
+               Get_Node  (Node).K95_Context);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3069,10 +3069,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PS_Name);
+               Get_Node  (Node).K96_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).PS_Progs);
+               Get_Node  (Node).K96_Progs);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3102,10 +3102,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).RS_Name);
+               Get_Node  (Node).K97_Name);
             Traverse
               (State,
-               Get_Node  (Node).RS_Exn_Type);
+               Get_Node  (Node).K97_Exn_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3135,13 +3135,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).RSWP_Name);
+               Get_Node  (Node).K98_Name);
             Traverse
               (State,
-               Get_Node  (Node).RSWP_Parameter);
+               Get_Node  (Node).K98_Parameter);
             Traverse
               (State,
-               Get_Node  (Node).RSWP_Exn_Type);
+               Get_Node  (Node).K98_Exn_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3171,10 +3171,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).TB_Prog);
+               Get_Node  (Node).K99_Prog);
             Traverse_List
               (State,
-               Get_Node  (Node).TB_Handler);
+               Get_Node  (Node).K99_Handler);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3204,7 +3204,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).UC_Exn_Type);
+               Get_Node  (Node).K100_Exn_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3234,7 +3234,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BB_Prog);
+               Get_Node  (Node).K101_Prog);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3264,7 +3264,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).BB_Prog);
+               Get_Node  (Node).K102_Prog);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3684,10 +3684,10 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).B_Names);
+               Get_Node  (Node).K118_Names);
             Traverse
               (State,
-               Get_Node  (Node).B_Arg_Type);
+               Get_Node  (Node).K118_Arg_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3717,22 +3717,22 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).RF_Name);
+               Get_Node  (Node).K119_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).RF_Binders);
+               Get_Node  (Node).K119_Binders);
             Traverse
               (State,
-               Get_Node  (Node).RF_Return_Type);
+               Get_Node  (Node).K119_Return_Type);
             Traverse
               (State,
-               Get_Node  (Node).RF_Variant);
+               Get_Node  (Node).K119_Variant);
             Traverse
               (State,
-               Get_Node  (Node).RF_Pre);
+               Get_Node  (Node).K119_Pre);
             Traverse
               (State,
-               Get_Node  (Node).RF_Def);
+               Get_Node  (Node).K119_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3762,10 +3762,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).LA_Invariant);
+               Get_Node  (Node).K120_Invariant);
             Traverse
               (State,
-               Get_Node  (Node).LA_Variant);
+               Get_Node  (Node).K120_Variant);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3795,10 +3795,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).WA_Def);
+               Get_Node  (Node).K121_Def);
             Traverse
               (State,
-               Get_Node  (Node).WA_For_Id);
+               Get_Node  (Node).K121_For_Id);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3828,13 +3828,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).H_Name);
+               Get_Node  (Node).K122_Name);
             Traverse
               (State,
-               Get_Node  (Node).H_Parameter);
+               Get_Node  (Node).K122_Parameter);
             Traverse
               (State,
-               Get_Node  (Node).H_Def);
+               Get_Node  (Node).K122_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3864,7 +3864,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).F_Declarations);
+               Get_Node  (Node).K123_Declarations);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3894,16 +3894,16 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).GB_Name);
+               Get_Node  (Node).K124_Name);
             Traverse_List
               (State,
-               Get_Node  (Node).GB_Binders);
+               Get_Node  (Node).K124_Binders);
             Traverse
               (State,
-               Get_Node  (Node).GB_Pre);
+               Get_Node  (Node).K124_Pre);
             Traverse
               (State,
-               Get_Node  (Node).GB_Def);
+               Get_Node  (Node).K124_Def);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3933,7 +3933,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).GRB_Name);
+               Get_Node  (Node).K125_Name);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3963,13 +3963,13 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PD_External);
+               Get_Node  (Node).K126_External);
             Traverse_List
               (State,
-               Get_Node  (Node).PD_Names);
+               Get_Node  (Node).K126_Names);
             Traverse
               (State,
-               Get_Node  (Node).PD_Parameter_Type);
+               Get_Node  (Node).K126_Parameter_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -3999,10 +3999,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).GR_Name);
+               Get_Node  (Node).K127_Name);
             Traverse
               (State,
-               Get_Node  (Node).GR_Parameter_Type);
+               Get_Node  (Node).K127_Parameter_Type);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -4032,10 +4032,10 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ED_Name);
+               Get_Node  (Node).K128_Name);
             Traverse
               (State,
-               Get_Node  (Node).ED_Parameter);
+               Get_Node  (Node).K128_Parameter);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -4065,7 +4065,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).LD_Decl);
+               Get_Node  (Node).K129_Decl);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -4095,7 +4095,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).ID_Name);
+               Get_Node  (Node).K130_Name);
 
             if State.Control = Terminate_Immediately then
                return;
