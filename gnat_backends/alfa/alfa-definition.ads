@@ -25,6 +25,8 @@
 
 with Sem_Util; use Sem_Util;
 
+with Why.Inter; use Why.Inter;
+
 package ALFA.Definition is
 
    type Unique_Entity_Id is new Entity_Id;
@@ -81,5 +83,16 @@ package ALFA.Definition is
    procedure Create_ALFA_Output_File (Filename : String);
    --  Create the file in which to generate output about subprogram in/out of
    --  the ALFA subset.
+
+   type Alfa_Decl is
+     (Alfa_Object,
+      Alfa_Type,
+      Alfa_Subprogram_Spec,
+      Alfa_Subprogram_Body);
+
+   type Alfa_Decls is array (Alfa_Decl) of List_Of_Nodes.List;
+
+   Decls_In_Spec : Alfa_Decls;
+   Decls_In_Body : Alfa_Decls;
 
 end ALFA.Definition;

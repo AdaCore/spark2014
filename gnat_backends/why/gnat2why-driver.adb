@@ -72,8 +72,9 @@ package body Gnat2Why.Driver is
    --   This is the main driver for the Ada-to-Why back-end
 
    procedure Translate_List_Of_Decls
-      (File : W_File_Id;
-       Decls : List_Of_Nodes.List);
+     (File    : W_File_Id;
+      Decls   : List_Of_Nodes.List;
+      As_Spec : Boolean);
    --  Take a list of Ada declarations and translate them to Why declarations
 
    procedure Translate_Context (File : W_File_Id; L : String_Lists.List);
@@ -290,7 +291,8 @@ package body Gnat2Why.Driver is
       Current_Why_Output_File := File;
 
       Translate_Context (File, Pack.WP_Context);
-      Translate_List_Of_Decls (File, Pack.WP_Decls);
+      Translate_List_Of_Decls (File, Pack.WP_Decls_As_Spec, As_Spec => True);
+      Translate_List_Of_Decls (File, Pack.WP_Decls, As_Spec => False);
 
       Open_Current_File (Unit_Name & ".mlw");
       Sprint_Why_Node (+File, Current_File);
@@ -306,8 +308,9 @@ package body Gnat2Why.Driver is
    -----------------------------
 
    procedure Translate_List_Of_Decls
-      (File : W_File_Id;
-       Decls : List_Of_Nodes.List)
+     (File    : W_File_Id;
+      Decls   : List_Of_Nodes.List;
+      As_Spec : Boolean)
    is
       use List_Of_Nodes;
    begin
@@ -339,7 +342,7 @@ package body Gnat2Why.Driver is
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Why_Decl_Of_Ada_Subprogram (File, Decl);
+               Why_Decl_Of_Ada_Subprogram (File, Decl, As_Spec);
 
             when N_Object_Declaration =>
                if not Is_From_Standard_Library (
@@ -397,7 +400,8 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      Translate_List_Of_Decls (File, Filter_Standard_Package);
+      Translate_List_Of_Decls
+        (File, Filter_Standard_Package, As_Spec => False);
 
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere

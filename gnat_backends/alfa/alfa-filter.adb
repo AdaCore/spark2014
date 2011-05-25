@@ -24,17 +24,14 @@
 ------------------------------------------------------------------------------
 
 with Atree;        use Atree;
-with Lib;
-with Lib.Xref;
 with Namet;        use Namet;
 with Nlists;       use Nlists;
-with Nmake;        use Nmake;
 with Sem_Util;     use Sem_Util;
 with Sinfo;        use Sinfo;
 with Stand;        use Stand;
 
-with ALFA.Common;     use ALFA.Common;
 with ALFA.Definition; use ALFA.Definition;
+with ALFA.Common; use ALFA.Common;
 
 package body ALFA.Filter is
 
@@ -79,146 +76,16 @@ package body ALFA.Filter is
       --  particular, subprogram bodies for expression functions, which may be
       --  originally declared in the package spec, should end up here.
 
-      procedure Bucket_Dispatch
-        (N          : Node_Id;
-         Types_Vars : in out List_Of_Nodes.List;
-         Subp_Spec  : in out List_Of_Nodes.List;
-         Subp_Body  : in out List_Of_Nodes.List);
-      --  If the Node belongs to the ALFA language, put it in one of the
-      --  corresponding buckets (types or variables, subprograms) in argument.
-      --  Also, introduce explicit type declarations for anonymous types.
+      function Concat (A, B : List_Of_Nodes.List) return List_Of_Nodes.List;
 
-      procedure Dispatch_Spec (N : Node_Id);
-      --  Dispatch types, vars, subprogram decls to the corresponding buckets
-      --  for specifications.
-
-      procedure Dispatch_Body (N : Node_Id);
-      --  Dispatch types, vars, subprograms to the corresponding buckets
-      --  for bodies.
-
-      ---------------------
-      -- Bucket_Dispatch --
-      ---------------------
-
-      procedure Bucket_Dispatch
-        (N          : Node_Id;
-         Types_Vars : in out List_Of_Nodes.List;
-         Subp_Spec  : in out List_Of_Nodes.List;
-         Subp_Body  : in out List_Of_Nodes.List)
-      is
+      function Concat (A, B : List_Of_Nodes.List) return List_Of_Nodes.List is
+         C : List_Of_Nodes.List := A;
       begin
-         case Nkind (N) is
-            when N_Subprogram_Declaration =>
-               if Spec_Is_In_ALFA (Unique (Defining_Entity (N))) then
-                  Subp_Spec.Append (N);
-               end if;
-
-            --  When seeing a stub, forward to the actual body
-
-            when N_Subprogram_Body =>
-               declare
-                  Id : constant Unique_Entity_Id :=
-                         Unique (Defining_Entity (N));
-
-               begin
-                  --  Create a subprogram declaration if not already present,
-                  --  in order to generate a corresponding forward declaration.
-                  --  Share specification between declaration and body, as
-                  --  creating a specification after frontend analysis is bound
-                  --  to be incomplete. Thus, the "Parent" field of the
-                  --  specification now points only to the spec, not the body.
-
-                  if Acts_As_Spec (N) then
-                     Subp_Spec.Append
-                       (Make_Subprogram_Declaration
-                          (Sloc (N), Specification (N)));
-                  end if;
-
-                  if Body_Is_In_ALFA (Id) then
-                     Subp_Body.Append (N);
-                  end if;
-               end;
-
-            when N_Subprogram_Body_Stub =>
-               declare
-                  Body_N : constant Node_Id := Get_Body_From_Stub (N);
-                  Id     : constant Unique_Entity_Id :=
-                             Unique (Defining_Entity (Body_N));
-
-               begin
-                  if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
-                     Subp_Spec.Append
-                       (Make_Subprogram_Declaration
-                          (Sloc (Body_N), Specification (N)));
-                  end if;
-
-                  if Body_Is_In_ALFA (Id) then
-                     Subp_Body.Append (Body_N);
-                  end if;
-               end;
-
-            when N_Full_Type_Declaration | N_Subtype_Declaration =>
-               Types_Vars.Append (N);
-
-            when N_Object_Declaration =>
-               --  Local variables introduced by the compiler should remain
-               --  local.
-
-               if Comes_From_Source (Original_Node (N))
-                    or else Is_Package_Level_Entity (Defining_Entity (N))
-               then
-                  case Nkind (Object_Definition (N)) is
-                     when N_Identifier | N_Expanded_Name =>
-                        null;
-
-                     when N_Constrained_Array_Definition =>
-                        declare
-                           TyDef : constant Node_Id := Object_Definition (N);
-                        begin
-                           Types_Vars.Append
-                             (Make_Full_Type_Declaration
-                                (Sloc (N),
-                                 New_Copy (Etype (Defining_Identifier (N))),
-                                 Type_Definition => New_Copy (TyDef)));
-                        end;
-
-                     when others =>
-                        null;
-
-                  end case;
-                  Types_Vars.Append (N);
-               end if;
-
-            when others =>
-               null;
-
-         end case;
-
-      end Bucket_Dispatch;
-
-      -------------------
-      -- Dispatch_Spec --
-      -------------------
-
-      procedure Dispatch_Spec (N : Node_Id) is
-      begin
-         Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Spec.WP_Decls,
-                          Subp_Spec  => Subp_Spec.WP_Decls,
-                          Subp_Body  => Subp_Body.WP_Decls);
-      end Dispatch_Spec;
-
-      -------------------
-      -- Dispatch_Body --
-      -------------------
-
-      procedure Dispatch_Body (N : Node_Id) is
-      begin
-         Bucket_Dispatch (N          => N,
-                          Types_Vars => Types_Vars_Body.WP_Decls,
-                          Subp_Spec  => Subp_Body.WP_Decls,
-                          Subp_Body  => Subp_Body.WP_Decls);
-      end Dispatch_Body;
+         for N of B loop
+            C.Append (N);
+         end loop;
+         return C;
+      end Concat;
 
       Spec_Unit : Node_Id := Empty;
       Body_Unit : Node_Id := Empty;
@@ -232,7 +99,8 @@ package body ALFA.Filter is
               Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
             Body_Unit := N;
 
-         when N_Package_Declaration | N_Generic_Package_Declaration =>
+         when N_Package_Declaration         |
+              N_Generic_Package_Declaration =>
             Spec_Unit := N;
 
          when N_Subprogram_Body =>
@@ -246,36 +114,22 @@ package body ALFA.Filter is
             raise Program_Error;
       end case;
 
-      if Present (Spec_Unit) then
-         Lib.Xref.ALFA.Traverse_Compilation_Unit
-           (Spec_Unit, Dispatch_Spec'Unrestricted_Access,
-            Inside_Stubs => True);
-      end if;
+      Types_Vars_Spec.WP_Decls :=
+        Concat
+          (Decls_In_Spec (Alfa_Type),
+           Decls_In_Spec (Alfa_Object));
 
-      if Present (Body_Unit) then
-         Lib.Xref.ALFA.Traverse_Compilation_Unit
-           (Body_Unit, Dispatch_Body'Unrestricted_Access,
-            Inside_Stubs => True);
+      Types_Vars_Body.WP_Decls :=
+        Concat (Decls_In_Body (Alfa_Type),
+                Decls_In_Body (Alfa_Object));
 
-         --  Sort the declarations just listed so that subprogram declarations
-         --  precede subprogram bodies.
+      Subp_Spec.WP_Decls_As_Spec := Decls_In_Spec (Alfa_Subprogram_Spec);
 
-         declare
-            function "<" (Left, Right : Node_Id) return Boolean;
-            --  Ordering in which subprogram specs are first
+      Subp_Body.WP_Decls_As_Spec := Decls_In_Body (Alfa_Subprogram_Spec);
 
-            function "<" (Left, Right : Node_Id) return Boolean is
-            begin
-               return (Nkind (Left) = N_Subprogram_Declaration
-                        and then Nkind (Right) /= N_Subprogram_Declaration);
-            end "<";
-
-            package Put_Spec_First is new List_Of_Nodes.Generic_Sorting ("<");
-
-         begin
-            Put_Spec_First.Sort (Subp_Body.WP_Decls);
-         end;
-      end if;
+      Subp_Body.WP_Decls :=
+        Concat (Decls_In_Spec (Alfa_Subprogram_Body),
+                Decls_In_Body (Alfa_Subprogram_Body));
 
       --  Take into account dependencies
       --  Add standard package only to types_vars for spec

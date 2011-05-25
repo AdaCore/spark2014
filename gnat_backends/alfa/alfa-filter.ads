@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Inter;                          use Why.Inter;
+with Why.Inter; use Why.Inter;
 
 package ALFA.Filter is
 

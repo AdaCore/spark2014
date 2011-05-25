@@ -80,8 +80,9 @@ package Gnat2Why.Subprograms is
    --  The return node is of kind N_Range
 
    procedure Why_Decl_Of_Ada_Subprogram
-     (File : W_File_Id;
-      Node : Node_Id);
+     (File    : W_File_Id;
+      Node    : Node_Id;
+      As_Spec : Boolean);
    --  Generate a Why declaration that corresponds to an Ada subprogram
    --  Node is a N_Subprogram_Body
    --

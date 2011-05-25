@@ -39,9 +39,13 @@ package Why.Inter is
 
    type Why_Package is
       record
-         WP_Name    : access String;
-         WP_Context : String_Lists.List;
-         WP_Decls   : List_Of_Nodes.List;
+         WP_Name          : access String;
+         WP_Context       : String_Lists.List;
+         WP_Decls         : List_Of_Nodes.List;
+         WP_Decls_As_Spec : List_Of_Nodes.List;
+         --  Special list of declarations for subprogram specs *and* subprogram
+         --  bodies which are their own spec. A spec should be generated for
+         --  these, not a body (which is generated or not somewhere else).
       end record;
    --  This type represents a Why package (file), whose list of declarations
    --  is not yet translated. Such a package has a name, a list of packages to

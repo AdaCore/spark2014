@@ -31,6 +31,7 @@ with Alloc;                 use Alloc;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Lib;                   use Lib;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Snames;                use Snames;
@@ -40,8 +41,8 @@ with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Table;
 
-with ALFA.Common;           use ALFA.Common;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
+with ALFA.Common; use ALFA.Common;
 
 package body ALFA.Definition is
 
@@ -115,6 +116,11 @@ package body ALFA.Definition is
    -- ALFA Marks --
    ----------------
 
+   Current_Unit_Is_Main_Body : Boolean;
+   Current_Unit_Is_Main_Spec : Boolean;
+
+   Inside_Expression_With_Actions : Boolean := False;
+
    Standard_In_ALFA : Id_Set.Set;
    --  Entities from package Standard which are in ALFA
 
@@ -155,7 +161,80 @@ package body ALFA.Definition is
 
    function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
 
+   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
+
+   procedure Mark_Object_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean);
+
+   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
+   --  Can be called on subprogram spec, or subprogram body serving as own spec
+
+   procedure Mark_Type_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean);
+
    function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
+
+   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl);
+
+   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
+   begin
+      if Current_Unit_Is_Main_Spec then
+         Decls_In_Spec (Kind).Append (N);
+      elsif Current_Unit_Is_Main_Body then
+         Decls_In_Body (Kind).Append (N);
+      end if;
+   end Filter_In_Alfa;
+
+   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
+   begin
+      Bodies_In_Alfa.Include (+Id);
+      Filter_In_Alfa (N, Alfa_Subprogram_Body);
+   end Mark_Body_In_Alfa;
+
+   procedure Mark_Object_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean) is
+   begin
+      if In_Alfa then
+         Objects_In_Alfa.Include (+Id);
+      end if;
+
+      --  Declarations of objects inside expression with actions are translated
+      --  specially into let-expressions.
+
+      if not Inside_Expression_With_Actions
+
+        --  This is not sufficient currently as some temporaries are
+        --  introduced at statement level. HACK until this is cleaned up.
+
+        and then (Comes_From_Source (Original_Node (N))
+                   or else Is_Package_Level_Entity (+Id))
+      then
+         Filter_In_Alfa (N, Alfa_Object);
+      end if;
+   end Mark_Object_In_Alfa;
+
+   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
+   begin
+      Specs_In_Alfa.Include (+Id);
+      Filter_In_Alfa (N, Alfa_Subprogram_Spec);
+   end Mark_Spec_In_Alfa;
+
+   procedure Mark_Type_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean) is
+   begin
+      if In_Alfa then
+         Types_In_Alfa.Include (+Id);
+      end if;
+      Filter_In_Alfa (N, Alfa_Type);
+   end Mark_Type_In_Alfa;
 
    -----------------
    -- Scope Stack --
@@ -574,8 +653,21 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("explicit dereference", N);
 
          when N_Expression_With_Actions =>
-            Mark_List (Actions (N));
-            Mark (Expression (N));
+            declare
+               Already_In_EWA : constant Boolean :=
+                                  Inside_Expression_With_Actions;
+            begin
+               if not Already_In_EWA then
+                  Inside_Expression_With_Actions := True;
+               end if;
+
+               Mark_List (Actions (N));
+               Mark (Expression (N));
+
+               if not Already_In_EWA then
+                  Inside_Expression_With_Actions := False;
+               end if;
+            end;
 
          when N_Extended_Return_Statement =>
             Mark_Non_ALFA ("extended RETURN", N, V_Implem);
@@ -990,14 +1082,51 @@ package body ALFA.Definition is
    ---------------------------
 
    procedure Mark_Compilation_Unit (N : Node_Id) is
+
+      function Is_Main_Cunit (N : Node_Id) return Boolean is
+        (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
+
+      function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
+        (Present (Corresponding_Body (N))
+          and then Is_Main_Cunit
+            (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
    begin
       --  Separately mark declarations from Standard as in ALFA or not
 
-      if Defining_Entity (N) /= Standard_Standard then
-         Push_Scope (Unique_Entity_Id (Standard_Standard));
-         Mark (N);
-         Pop_Scope (Unique_Entity_Id (Standard_Standard));
+      if Defining_Entity (N) = Standard_Standard then
+         return;
       end if;
+
+      Push_Scope (Unique_Entity_Id (Standard_Standard));
+
+      Current_Unit_Is_Main_Body := False;
+      Current_Unit_Is_Main_Spec := False;
+
+      case Nkind (N) is
+         when N_Package_Body    |
+              N_Subprogram_Body =>
+
+            if Is_Main_Cunit (N) then
+               Current_Unit_Is_Main_Body := True;
+            end if;
+
+         when N_Package_Declaration            |
+              N_Generic_Package_Declaration    |
+              N_Subprogram_Declaration         |
+              N_Generic_Subprogram_Declaration =>
+
+            if Is_Main_Cunit (N)
+              or else Is_Spec_Unit_Of_Main_Unit (N)
+            then
+               Current_Unit_Is_Main_Spec := True;
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      Mark (N);
+      Pop_Scope (Unique_Entity_Id (Standard_Standard));
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -1056,9 +1185,7 @@ package body ALFA.Definition is
 
       --  If type is in Alfa, store this information explicitly
 
-      if Type_Is_Computed_In_ALFA (Id) then
-         Id_Set.Include (Types_In_Alfa, +Id);
-      end if;
+      Mark_Type_In_Alfa (Id, N, In_Alfa => Type_Is_Computed_In_ALFA (Id));
    end Mark_Full_Type_Declaration;
 
    ---------------------------------
@@ -1391,9 +1518,7 @@ package body ALFA.Definition is
 
       --  If object is in Alfa, store this information explicitly
 
-      if Object_Is_Computed_In_ALFA (Id) then
-         Id_Set.Include (Objects_In_Alfa, +Id);
-      end if;
+      Mark_Object_In_Alfa (Id, N, In_Alfa => Object_Is_Computed_In_ALFA (Id));
    end Mark_Object_Declaration;
 
    --------------------------------------
@@ -1686,7 +1811,7 @@ package body ALFA.Definition is
       --  If body is in Alfa, store this information explicitly
 
       if Body_Is_Computed_In_ALFA (Id) then
-         Id_Set.Include (Bodies_In_Alfa, +Id);
+         Mark_Body_In_Alfa (Id, N);
       end if;
 
       --  Postprocessing: indicate in output file if subprogram is in ALFA or
@@ -1780,7 +1905,7 @@ package body ALFA.Definition is
       --  If spec is in Alfa, store this information explicitly
 
       if Spec_Is_Computed_In_ALFA (Id) then
-         Id_Set.Include (Specs_In_Alfa, +Id);
+         Mark_Spec_In_Alfa (Id, N);
       end if;
    end Mark_Subprogram_Declaration;
 
@@ -1847,9 +1972,7 @@ package body ALFA.Definition is
 
       --  If type is in Alfa, store this information explicitly
 
-      if Type_Is_Computed_In_ALFA (Id) then
-         Id_Set.Include (Types_In_Alfa, +Id);
-      end if;
+      Mark_Type_In_Alfa (Id, N, In_Alfa => Type_Is_Computed_In_ALFA (Id));
    end Mark_Subtype_Declaration;
 
    -----------------------------
