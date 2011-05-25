@@ -164,9 +164,8 @@ package body ALFA.Filter is
                --  Local variables introduced by the compiler should remain
                --  local.
 
-               if (Comes_From_Source (Original_Node (N))
-                    or else Is_Package_Level_Entity (Defining_Entity (N)))
-                 and then Object_Is_In_ALFA (Unique (Defining_Entity (N)))
+               if Comes_From_Source (Original_Node (N))
+                    or else Is_Package_Level_Entity (Defining_Entity (N))
                then
                   case Nkind (Object_Definition (N)) is
                      when N_Identifier | N_Expanded_Name =>

@@ -34,6 +34,8 @@ with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Preds;        use Why.Gen.Preds;
 with Why.Conversions;      use Why.Conversions;
 
+with ALFA.Definition;       use ALFA.Definition;
+
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
@@ -102,7 +104,8 @@ package body Gnat2Why.Decls is
              Name        => New_Identifier (Name),
              Args        => (1 .. 0 => <>),
              Return_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
-         if Present (Expression (Decl)) then
+         if Present (Expression (Decl)) and then
+            Object_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
             declare
                Ax_Name : constant String := Name & "__def_axiom";
                Id : constant W_Identifier_Id := New_Identifier (Name);

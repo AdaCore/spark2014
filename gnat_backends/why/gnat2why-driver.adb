@@ -46,6 +46,7 @@ with Stand;                 use Stand;
 with Switch;                use Switch;
 with String_Utils;          use String_Utils;
 
+with ALFA.Common;           use ALFA.Common;
 with ALFA.Definition;       use ALFA.Definition;
 with ALFA.Filter;           use ALFA.Filter;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
@@ -341,7 +342,10 @@ package body Gnat2Why.Driver is
                Why_Decl_Of_Ada_Subprogram (File, Decl);
 
             when N_Object_Declaration =>
-               Why_Decl_Of_Ada_Object_Decl (File, Decl);
+               if not Is_From_Standard_Library (
+                     Sloc (Etype (Defining_Identifier (Decl)))) then
+                  Why_Decl_Of_Ada_Object_Decl (File, Decl);
+               end if;
 
             when N_Itype_Reference =>
                null;  --  Nothing to do
@@ -395,10 +399,19 @@ package body Gnat2Why.Driver is
 
       Translate_List_Of_Decls (File, Filter_Standard_Package);
 
+      --  The following types are not in the tree of the standard package, but
+      --  still are referenced elsewhere
+
       Add_Standard_Type (Standard_Integer_8);
       Add_Standard_Type (Standard_Integer_16);
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
+
+      --  Additionally, the following type does not even have a type
+      --  definition. The type is not in Alfa anyway, so we just generate the
+      --  correct abstract type in Why.
+
+      New_Abstract_Type (File, "standard___renaming_type");
 
       Declare_Boolean_Integer_Comparison (File);
 

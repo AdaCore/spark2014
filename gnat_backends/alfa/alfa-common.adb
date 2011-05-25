@@ -28,14 +28,22 @@ with Sdefault; use Sdefault;
 package body ALFA.Common is
 
    function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean is
-      Dir_Name  : constant String := Include_Dir_Default_Name.all;
-      File_Name : constant String :=
-        Get_Name_String (Full_File_Name (Get_Source_File_Index (Loc)));
    begin
-      return Dir_Name'Length <= File_Name'Length
-        and then
-          File_Name (File_Name'First .. File_Name'First + Dir_Name'Length - 1)
-          = Dir_Name;
+      if Loc = Standard_Location then
+         return False;
+      else
+         declare
+            Dir_Name  : constant String := Include_Dir_Default_Name.all;
+            File_Name : constant String :=
+               Get_Name_String (Full_File_Name (Get_Source_File_Index (Loc)));
+         begin
+            return Dir_Name'Length <= File_Name'Length
+              and then
+                File_Name
+                  (File_Name'First .. File_Name'First + Dir_Name'Length - 1)
+                = Dir_Name;
+         end;
+      end if;
    end Is_From_Standard_Library;
 
 end ALFA.Common;
