@@ -179,9 +179,21 @@ package body ALFA.Frame_Conditions is
 
       procedure Display_One_Set (Set : Name_Set.Set) is
       begin
-         for Ent of Set loop
-            Put ("  "); Display_Entity (Ent); Put_Line ("");
-         end loop;
+--  Workaround for K526-008
+
+--           for Ent of Set loop
+--              Put ("  "); Display_Entity (Ent); Put_Line ("");
+--           end loop;
+
+         declare
+            C : Name_Set.Cursor;
+         begin
+            C := Set.First;
+            while C /= Name_Set.No_Element loop
+               Put ("  "); Display_Entity (Element (C)); Put_Line ("");
+               Next (C);
+            end loop;
+         end;
       end Display_One_Set;
 
    --  Start of processing for Display_Maps
@@ -555,9 +567,21 @@ package body ALFA.Frame_Conditions is
 
          Called_Subp := Calls.Element (Subp);
 
-         for S of Called_Subp loop
-            Propagate_On_Call (Caller => Subp, Callee => S);
-         end loop;
+--  Workaround for K526-008
+
+--           for S of Called_Subp loop
+--              Propagate_On_Call (Caller => Subp, Callee => S);
+--           end loop;
+
+         declare
+            C : Name_Set.Cursor;
+         begin
+            C := Called_Subp.First;
+            while C /= Name_Set.No_Element loop
+               Propagate_On_Call (Caller => Subp, Callee => Element (C));
+               Next (C);
+            end loop;
+         end;
 
          if Num_Reads /= Count_In_Map (Reads, Subp)
            or else Num_Writes /= Count_In_Map (Writes, Subp)
@@ -625,11 +649,24 @@ package body ALFA.Frame_Conditions is
       Set : Name_Set.Set)
    is
    begin
-      for Ent of Set loop
-         if not Map.Contains (Ent) then
-            Map.Insert (Ent, Name_Set.Empty_Set);
-         end if;
-      end loop;
+--  Workaround for K526-008
+--        for Ent of Set loop
+--           if not Map.Contains (Ent) then
+--              Map.Insert (Ent, Name_Set.Empty_Set);
+--           end if;
+--        end loop;
+
+      declare
+         C : Name_Set.Cursor;
+      begin
+         C := Set.First;
+         while C /= Name_Set.No_Element loop
+            if not Map.Contains (Element (C)) then
+               Map.Insert (Element (C), Name_Set.Empty_Set);
+            end if;
+            Next (C);
+         end loop;
+      end;
    end Set_Default_To_Empty;
 
 end ALFA.Frame_Conditions;
