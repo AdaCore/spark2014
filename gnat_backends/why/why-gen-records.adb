@@ -75,14 +75,30 @@ package body Why.Gen.Records is
          return;
       end if;
 
-      for C_Name of C_Names loop
-         Define_Getter_Axiom
-           (File,
-            Name,
-            C_Name,
-            C_Names,
-            Builder);
-      end loop;
+      --  Workaround for K526-008 and K525-019
+
+      --  for C_Name of C_Names loop
+      --   Define_Getter_Axiom
+      --     (File,
+      --      Name,
+      --      C_Name,
+      --      C_Names,
+      --      Builder);
+      --  end loop;
+
+      declare
+         C : Cursor := C_Names.First;
+      begin
+         while C /= No_Element loop
+            Define_Getter_Axiom
+              (File,
+               Name,
+               Element (C),
+               C_Names,
+               Builder);
+            Next (C);
+         end loop;
+      end;
    end Freeze_Ada_Record;
 
    ----------------------------------

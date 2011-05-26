@@ -968,9 +968,22 @@ package body Gnat2Why.Subprograms is
          Read_Names  := Get_Reads (E);
          Write_Names := Get_Writes (E);
 
-         for Name of Write_Names loop
-            Write_All_Names.Include (To_Unbounded_String (Name.all));
-         end loop;
+         --  Workaround for K526-008 and K525-019
+
+         --  for Name of Write_Names loop
+         --     Write_All_Names.Include (To_Unbounded_String (Name.all));
+         --  end loop;
+
+         declare
+            use Name_Set;
+
+            C : Cursor := Write_Names.First;
+         begin
+            while C /= No_Element loop
+               Write_All_Names.Include (To_Unbounded_String (Element (C).all));
+               Next (C);
+            end loop;
+         end;
 
          --  Add all OUT and IN OUT parameters as potential writes
 
@@ -993,13 +1006,42 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-         for Name of Read_Names loop
-            Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
-         end loop;
+         --  Workaround for K526-008 and K525-019
 
-         for Name of Write_All_Names loop
-            Effects_Append_To_Writes (Eff, New_Identifier (To_String (Name)));
-         end loop;
+         --  for Name of Read_Names loop
+         --     Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
+         --  end loop;
+
+         declare
+            use Name_Set;
+
+            C : Cursor := Read_Names.First;
+         begin
+            while C /= No_Element loop
+               Effects_Append_To_Reads (Eff, New_Identifier (Element (C).all));
+               Next (C);
+            end loop;
+         end;
+
+         --  Workaround for K526-008 and K525-019
+
+         --  for Name of Write_All_Names loop
+         --     Effects_Append_To_Writes (Eff,
+         --                               New_Identifier (To_String (Name)));
+         --  end loop;
+
+         declare
+            use UString_Set;
+
+            C : Cursor := Write_All_Names.First;
+         begin
+            while C /= No_Element loop
+               Effects_Append_To_Writes (Eff,
+                                         New_Identifier
+                                           (To_String (Element (C))));
+               Next (C);
+            end loop;
+         end;
 
          return +Eff;
       end Compute_Effects;

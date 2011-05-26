@@ -290,10 +290,22 @@ package body Why.Gen.Names is
       Result : W_Identifier_Array (1 .. Integer (Length (SL)));
       Index  : Positive := 1;
    begin
-      for E of SL loop
-         Result (Index) := New_Identifier (E);
-         Index := Index + 1;
-      end loop;
+      --  Workaround for K526-008 and K525-019
+
+      --  for E of SL loop
+      --     Result (Index) := New_Identifier (E);
+      --     Index := Index + 1;
+      --  end loop;
+
+      declare
+         C : Cursor := SL.First;
+      begin
+         while C /= No_Element loop
+            Result (Index) := New_Identifier (Element (C));
+            Index := Index + 1;
+            Next (C);
+         end loop;
+      end;
       return Result;
    end New_Identifiers;
 
@@ -366,10 +378,23 @@ package body Why.Gen.Names is
       Result : W_Term_Array (1 .. Integer (Length (SL)));
       Index  : Positive := 1;
    begin
-      for E of SL loop
-         Result (Index) := New_Term (E);
-         Index := Index + 1;
-      end loop;
+      --  Workaround for K526-008 and K525-019
+
+      --  for E of SL loop
+      --     Result (Index) := New_Term (E);
+      --     Index := Index + 1;
+      --  end loop;
+
+      declare
+         C : Cursor := SL.First;
+      begin
+         while C /= No_Element loop
+            Result (Index) := New_Term (Element (C));
+            Index := Index + 1;
+            Next (C);
+         end loop;
+      end;
+
       return Result;
    end New_Terms;
 

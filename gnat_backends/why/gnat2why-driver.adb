@@ -223,9 +223,21 @@ package body Gnat2Why.Driver is
 
       Filter_Compilation_Unit (GNAT_Root);
 
-      for CU of ALFA_Compilation_Units loop
-         Translate_CUnit (CU);
-      end loop;
+      --  Workaround for K526-008 and K525-019
+
+      --  for CU of ALFA_Compilation_Units loop
+      --     Translate_CUnit (CU);
+      --  end loop;
+      declare
+         use List_Of_Why_Packs;
+
+         C : Cursor := ALFA_Compilation_Units.First;
+      begin
+         while C /= No_Element loop
+            Translate_CUnit (Element (C));
+            Next (C);
+         end loop;
+      end;
 
       Open_Current_File (Base_Name & "__package.loc");
       Print_Locations_Table (Current_File);
@@ -313,48 +325,55 @@ package body Gnat2Why.Driver is
       As_Spec : Boolean)
    is
       use List_Of_Nodes;
+
+      Cu : Cursor := Decls.First;
    begin
-      for Decl of Decls loop
-         case Nkind (Decl) is
+      --  Workaround for K526-008 and K525-019
+      --  (for Decl of Decls loop...)
+
+      while Cu /= No_Element loop
+         case Nkind (Element (Cu)) is
             when N_Full_Type_Declaration =>
-               if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+               if Type_Is_In_ALFA
+                 (Unique (Defining_Entity (Element (Cu)))) then
                   Why_Type_Decl_of_Full_Type_Decl
                     (File,
-                     Defining_Identifier (Decl),
-                     Type_Definition (Decl));
+                     Defining_Identifier (Element (Cu)),
+                     Type_Definition (Element (Cu)));
                else
                   New_Abstract_Type
                     (File,
-                     Unique_Name (Defining_Identifier (Decl)));
+                     Unique_Name (Defining_Identifier (Element (Cu))));
                end if;
 
             when N_Subtype_Declaration =>
-               if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+               if Type_Is_In_ALFA
+                 (Unique (Defining_Entity (Element (Cu)))) then
                   Why_Type_Decl_of_Subtype_Decl
                      (File,
-                      Defining_Identifier (Decl),
-                      Subtype_Indication (Decl));
+                      Defining_Identifier (Element (Cu)),
+                      Subtype_Indication (Element (Cu)));
                else
                   New_Abstract_Type
                     (File,
-                     Unique_Name (Defining_Identifier (Decl)));
+                     Unique_Name (Defining_Identifier (Element (Cu))));
                end if;
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Why_Decl_Of_Ada_Subprogram (File, Decl, As_Spec);
+               Why_Decl_Of_Ada_Subprogram (File, Element (Cu), As_Spec);
 
             when N_Object_Declaration =>
                if not Is_From_Standard_Library (
-                     Sloc (Etype (Defining_Identifier (Decl)))) then
-                  Why_Decl_Of_Ada_Object_Decl (File, Decl);
+                     Sloc (Etype (Defining_Identifier (Element (Cu))))) then
+                  Why_Decl_Of_Ada_Object_Decl (File, Element (Cu));
                end if;
 
             when N_Itype_Reference =>
                null;  --  Nothing to do
 
             --  The freeze point should be replaced by the declarations and
-            --  and statements listed in Actions (Decl), if present.
+            --  and statements listed in Actions (Element (Cu)), if present.
             when N_Freeze_Entity =>
                null;
 
@@ -367,6 +386,7 @@ package body Gnat2Why.Driver is
                raise Not_Implemented;
          end case;
 
+         Next (Cu);
       end loop;
    end Translate_List_Of_Decls;
 

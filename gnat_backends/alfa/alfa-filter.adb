@@ -81,9 +81,23 @@ package body ALFA.Filter is
       function Concat (A, B : List_Of_Nodes.List) return List_Of_Nodes.List is
          C : List_Of_Nodes.List := A;
       begin
-         for N of B loop
-            C.Append (N);
-         end loop;
+         --  Workaround for K526-008 and K525-019
+
+         --  for N of B loop
+         --     C.Append (N);
+         --  end loop;
+
+         declare
+            use List_Of_Nodes;
+
+            Cu : Cursor := B.First;
+         begin
+            while Cu /= No_Element loop
+               C.Append (Element (Cu));
+               Next (Cu);
+            end loop;
+         end;
+
          return C;
       end Concat;
 
