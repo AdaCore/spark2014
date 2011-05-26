@@ -153,6 +153,11 @@ package body ALFA.Definition is
      (A        : in out Violations;
       To, From : Unique_Entity_Id);
 
+   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
+
+   function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
+      (Standard_In_ALFA.Contains (+Id));
+
    function Body_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
 
    function Object_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
@@ -160,6 +165,18 @@ package body ALFA.Definition is
    function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
 
    function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+
+   function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether the body of subprogram Id is in Alfa
+
+   function Object_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether an object Id is in Alfa
+
+   function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether the spec of subprogram Id is in Alfa
+
+   function Type_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a type Id is in Alfa
 
    procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
 
@@ -175,8 +192,6 @@ package body ALFA.Definition is
      (Id      : Unique_Entity_Id;
       N       : Node_Id;
       In_Alfa : Boolean);
-
-   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
 
    procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl);
 
@@ -215,7 +230,11 @@ package body ALFA.Definition is
         and then (Comes_From_Source (Original_Node (N))
                    or else Is_Package_Level_Entity (+Id))
       then
-         Filter_In_Alfa (N, Alfa_Object);
+         if In_Alfa then
+            Filter_In_Alfa (N, Alfa_Object);
+         else
+            Filter_In_Alfa (N, Non_Alfa_Object);
+         end if;
       end if;
    end Mark_Object_In_Alfa;
 
@@ -232,8 +251,10 @@ package body ALFA.Definition is
    begin
       if In_Alfa then
          Types_In_Alfa.Include (+Id);
+         Filter_In_Alfa (N, Alfa_Type);
+      else
+         Filter_In_Alfa (N, Non_Alfa_Type);
       end if;
-      Filter_In_Alfa (N, Alfa_Type);
    end Mark_Type_In_Alfa;
 
    -----------------

@@ -31,6 +31,7 @@ with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
 with Binderr;
 with Debug;                 use Debug;
+with Einfo;                 use Einfo;
 with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
@@ -39,7 +40,6 @@ with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
@@ -71,6 +71,11 @@ with Gnat2Why.Types;        use Gnat2Why.Types;
 package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why back-end
+
+   procedure Translate_List_Of_Abstract_Decls
+     (File  : W_File_Id;
+      Decls : List_Of_Nodes.List);
+   --  Take a list of entities and translate them to Why abstract entities
 
    procedure Translate_List_Of_Decls
      (File    : W_File_Id;
@@ -304,6 +309,7 @@ package body Gnat2Why.Driver is
       Current_Why_Output_File := File;
 
       Translate_Context (File, Pack.WP_Context);
+      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Decls);
       Translate_List_Of_Decls (File, Pack.WP_Decls_As_Spec, As_Spec => True);
       Translate_List_Of_Decls (File, Pack.WP_Decls, As_Spec => False);
 
@@ -315,6 +321,36 @@ package body Gnat2Why.Driver is
          wpg (+File);
       end if;
    end Translate_CUnit;
+
+   --------------------------------------
+   -- Translate_List_Of_Abstract_Types --
+   --------------------------------------
+
+   procedure Translate_List_Of_Abstract_Decls
+     (File  : W_File_Id;
+      Decls : List_Of_Nodes.List)
+   is
+      use List_Of_Nodes;
+
+   begin
+      for N of Decls loop
+         declare
+            Name : constant String := Full_Name (N);
+         begin
+            case Ekind (N) is
+               when Type_Kind =>
+                  New_Abstract_Type (File, Name);
+               when Object_Kind =>
+                  New_Global_Ref_Declaration
+                    (File     => File,
+                     Name     => New_Identifier (Name),
+                     Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
+               when others =>
+                  raise Program_Error;
+            end case;
+         end;
+      end loop;
+   end Translate_List_Of_Abstract_Decls;
 
    -----------------------------
    -- Translate_List_Of_Decls --
@@ -335,30 +371,16 @@ package body Gnat2Why.Driver is
       while Cu /= No_Element loop
          case Nkind (Element (Cu)) is
             when N_Full_Type_Declaration =>
-               if Type_Is_In_ALFA
-                 (Unique (Defining_Entity (Element (Cu)))) then
-                  Why_Type_Decl_of_Full_Type_Decl
-                    (File,
-                     Defining_Identifier (Element (Cu)),
-                     Type_Definition (Element (Cu)));
-               else
-                  New_Abstract_Type
-                    (File,
-                     Unique_Name (Defining_Identifier (Element (Cu))));
-               end if;
+               Why_Type_Decl_Of_Full_Type_Decl
+                 (File,
+                  Defining_Identifier (Element (Cu)),
+                  Type_Definition (Element (Cu)));
 
             when N_Subtype_Declaration =>
-               if Type_Is_In_ALFA
-                 (Unique (Defining_Entity (Element (Cu)))) then
-                  Why_Type_Decl_of_Subtype_Decl
-                     (File,
-                      Defining_Identifier (Element (Cu)),
-                      Subtype_Indication (Element (Cu)));
-               else
-                  New_Abstract_Type
-                    (File,
-                     Unique_Name (Defining_Identifier (Element (Cu))));
-               end if;
+               Why_Type_Decl_Of_Subtype_Decl
+                 (File,
+                  Defining_Identifier (Element (Cu)),
+                  Subtype_Indication (Element (Cu)));
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
@@ -403,7 +425,7 @@ package body Gnat2Why.Driver is
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Why_Type_Decl_of_Full_Type_Decl
+         Why_Type_Decl_Of_Full_Type_Decl
            (File, T, Type_Definition (Parent (T)));
       end Add_Standard_Type;
 

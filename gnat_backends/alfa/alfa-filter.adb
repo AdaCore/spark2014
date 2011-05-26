@@ -133,9 +133,19 @@ package body ALFA.Filter is
           (Decls_In_Spec (Alfa_Type),
            Decls_In_Spec (Alfa_Object));
 
+      Types_Vars_Spec.WP_Abstract_Decls :=
+        Concat
+          (Decls_In_Spec (Non_Alfa_Type),
+           Decls_In_Spec (Non_Alfa_Object));
+
       Types_Vars_Body.WP_Decls :=
         Concat (Decls_In_Body (Alfa_Type),
                 Decls_In_Body (Alfa_Object));
+
+      Types_Vars_Body.WP_Abstract_Decls :=
+        Concat
+          (Decls_In_Body (Non_Alfa_Type),
+           Decls_In_Body (Non_Alfa_Object));
 
       Subp_Spec.WP_Decls_As_Spec := Decls_In_Spec (Alfa_Subprogram_Spec);
 
@@ -277,12 +287,14 @@ package body ALFA.Filter is
                case Nkind (Decl) is
                   when N_Full_Type_Declaration
                     | N_Subtype_Declaration =>
-                     if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+                     if Standard_Is_In_Alfa
+                       (Unique (Defining_Entity (Decl)))
+                     then
                         Standard_Why_Package.Append (Decl);
                      end if;
 
                   when N_Object_Declaration =>
-                     if Object_Is_In_ALFA
+                     if Standard_Is_In_Alfa
                        (Unique (Defining_Entity (Decl)))
                      then
                         Standard_Why_Package.Append (Decl);

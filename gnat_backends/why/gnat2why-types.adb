@@ -95,7 +95,7 @@ package body Gnat2Why.Types is
    -- Why_Type_Decl_of_Full_Type_Decl --
    -------------------------------------
 
-   procedure Why_Type_Decl_of_Full_Type_Decl
+   procedure Why_Type_Decl_Of_Full_Type_Decl
       (File       : W_File_Id;
        Ident_Node : Node_Id;
        Def_Node   : Node_Id)
@@ -217,7 +217,7 @@ package body Gnat2Why.Types is
 
          when N_Derived_Type_Definition =>
             --  ??? Is this correct?
-            Why_Type_Decl_of_Subtype_Decl
+            Why_Type_Decl_Of_Subtype_Decl
                (File,
                 Ident_Node,
                 Subtype_Indication (Def_Node));
@@ -225,13 +225,13 @@ package body Gnat2Why.Types is
          when others =>
             raise Not_Implemented;
       end case;
-   end Why_Type_Decl_of_Full_Type_Decl;
+   end Why_Type_Decl_Of_Full_Type_Decl;
 
    -----------------------------------
    -- Why_Type_Decl_of_Subtype_Decl --
    -----------------------------------
 
-   procedure Why_Type_Decl_of_Subtype_Decl
+   procedure Why_Type_Decl_Of_Subtype_Decl
       (File       : W_File_Id;
        Ident_Node : Node_Id;
        Sub_Ind    : Node_Id)
