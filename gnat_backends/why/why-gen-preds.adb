@@ -361,15 +361,25 @@ package body Why.Gen.Preds is
       Arg_Ids : constant W_Identifier_Array :=
                   New_Identifiers (Arg_Names);
    begin
-      for N of C_Types loop
-         Foralls (Index) := New_Unchecked_Universal_Quantif;
-         Universal_Quantif_Append_To_Variables
-           (Foralls (Index),
-            Arg_Ids (Index));
-         Universal_Quantif_Set_Var_Type (Foralls (Index),
-                                         +Duplicate_Any_Node (Id => N));
-         Index := Index + 1;
-      end loop;
+      --  Workaround for K526-008 and K525-019
+      --  (for N of C_Types loop...)
+
+      declare
+         C : Node_Lists.Cursor := C_Types.First;
+      begin
+         while C /= Node_Lists.No_Element loop
+            Foralls (Index) := New_Unchecked_Universal_Quantif;
+            Universal_Quantif_Append_To_Variables
+              (Foralls (Index),
+               Arg_Ids (Index));
+            Universal_Quantif_Set_Var_Type
+              (Foralls (Index),
+               +Duplicate_Any_Node (Id => Node_Lists.Element (C)));
+            Index := Index + 1;
+            Node_Lists.Next (C);
+         end loop;
+      end;
+
       return New_Universal_Predicate_Body (Foralls, Pred);
    end New_Universal_Predicate;
 
