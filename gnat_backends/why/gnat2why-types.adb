@@ -265,7 +265,7 @@ package body Gnat2Why.Types is
                Declare_Ada_Constrained_Array
                   (File,
                    Name_Str,
-                   Get_Name_String (Chars (Component_Type (Base))),
+                   Full_Name (Component_Type (Base)),
                    Expr_Value (Low_Bound (Rng)),
                    Expr_Value (High_Bound (Rng)));
             end;
