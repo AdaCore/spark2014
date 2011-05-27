@@ -121,6 +121,8 @@ package body ALFA.Definition is
 
    Inside_Expression_With_Actions : Boolean := False;
 
+   All_Types : Id_Set.Set;
+
    Standard_In_ALFA : Id_Set.Set;
    --  Entities from package Standard which are in ALFA
 
@@ -233,7 +235,7 @@ package body ALFA.Definition is
          if In_Alfa then
             Filter_In_Alfa (N, Alfa_Object);
          else
-            Filter_In_Alfa (N, Non_Alfa_Object);
+            Filter_In_Alfa (+Id, Non_Alfa_Object);
          end if;
       end if;
    end Mark_Object_In_Alfa;
@@ -253,9 +255,22 @@ package body ALFA.Definition is
          Types_In_Alfa.Include (+Id);
          Filter_In_Alfa (N, Alfa_Type);
       else
-         Filter_In_Alfa (N, Non_Alfa_Type);
+         Filter_In_Alfa (+Id, Non_Alfa_Type);
       end if;
    end Mark_Type_In_Alfa;
+
+   procedure Mark_Type_Declaration (Id : Unique_Entity_Id);
+   --  Should be called on every type declaration
+
+   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean;
+
+   procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
+   begin
+      All_Types.Include (+Id);
+   end Mark_Type_Declaration;
+
+   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean is
+     (All_Types.Contains (+Id));
 
    -----------------
    -- Scope Stack --
@@ -478,11 +493,16 @@ package body ALFA.Definition is
       if Scope (+Id) = Standard_Standard then
          return Standard_In_ALFA.Contains (+Id);
 
-      elsif Is_Itype (+Id)
-        and then Type_Is_Computed_In_ALFA (Id)
-        and then Ekind (+Id) in Numeric_Kind
-      then
-         return True;  --  HACK until itypes are properly treated
+      elsif Is_Itype (+Id) then
+         if Itype_Has_Declaration (+Id) then
+            if not Type_Declaration_Marked (+Id) then
+               Mark (Parent (+Id));
+            end if;
+            return (Id_Set.Contains (Types_In_Alfa, +Id));
+         else
+            Mark_Type_In_Alfa (Id, Empty, In_Alfa => False);
+            return False;
+         end if;
 
       else
          return (Id_Set.Contains (Types_In_Alfa, +Id));
@@ -1200,6 +1220,7 @@ package body ALFA.Definition is
       Id  : constant Unique_Entity_Id := Unique (Defining_Identifier (N));
       Def : constant Node_Id          := Type_Definition (N);
    begin
+      Mark_Type_Declaration (Id);
       Push_Scope (Id);
       Mark_Type_Definition (Id, Def);
       Pop_Scope (Id);
@@ -1505,30 +1526,20 @@ package body ALFA.Definition is
 
    procedure Mark_Object_Declaration (N : Node_Id) is
       Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-      Expr : constant Node_Id          := Expression (N);
       Def  : constant Node_Id          := Object_Definition (N);
+      Expr : constant Node_Id          := Expression (N);
+      T    : constant Unique_Entity_Id := Unique (Etype (+Id));
    begin
       --  The object is in ALFA if-and-only-if its type is in ALFA and it is
       --  not aliased.
 
       Push_Scope (Id);
-
-      case Nkind (Def) is
-         when N_Array_Type_Definition |
-              N_Access_Definition     =>
-            Mark_Type_Definition (Unique (Etype (+Id)), Def);
-
-         when N_Identifier         |
-              N_Expanded_Name      |
-              N_Subtype_Indication =>
-            Mark (Def);
-
-         when others =>
-            raise Program_Error;
-      end case;
+      if not Type_Is_In_ALFA (T) then
+         Mark_Non_ALFA ("type", Def, From => T);
+      end if;
 
       if Aliased_Present (N) then
-         Mark_Non_ALFA_Declaration ("ALIASED", N);
+         Mark_Non_ALFA ("ALIASED", N);
       end if;
 
       if Present (Expr) then
@@ -1987,6 +1998,7 @@ package body ALFA.Definition is
    procedure Mark_Subtype_Declaration (N : Node_Id) is
       Id : constant Unique_Entity_Id := Unique (Defining_Entity (N));
    begin
+      Mark_Type_Declaration (Id);
       Push_Scope (Id);
       Mark (Subtype_Indication (N));
       Pop_Scope (Id);

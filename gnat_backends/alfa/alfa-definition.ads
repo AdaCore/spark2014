@@ -77,8 +77,8 @@ package ALFA.Definition is
    type Alfa_Decl is
      (Alfa_Object,
       Alfa_Type,
-      Non_Alfa_Object,
-      Non_Alfa_Type,
+      Non_Alfa_Object,  --  Entities, not declarations
+      Non_Alfa_Type,    --  Entities, not declarations
       Alfa_Subprogram_Spec,
       Alfa_Subprogram_Body);
 
