@@ -1,3 +1,0 @@
-File "", line 6, characters 22-31:
-Unbound type 'character'
-gprbuild: *** compilation phase failedgprbuild --config=/home/kanig/HiLite/hi-lite/install/share/gnatprove/why.cgpr -P why.gpr -c -q failed.
