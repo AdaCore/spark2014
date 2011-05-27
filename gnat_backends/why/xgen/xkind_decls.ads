@@ -35,8 +35,4 @@ package Xkind_Decls is
    procedure Print_Node_Classes (O : in out Output_Record);
    --  Expand the declaration of classes of node kinds
 
-   procedure Print_Load_Classes (O : in out Output_Record);
-   --  Print a sequence of statements that re-build the class table.
-   --  ??? To be cleaned up eventually.
-
 end Xkind_Decls;

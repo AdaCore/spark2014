@@ -43,13 +43,6 @@ procedure Xtree is
 
 begin
    Build_AST;
-   --  Production of xtree_sinfo.adb
-   --  ??? To be cleaned up eventually
-
-   Add ("Load_Classes", Print_Load_Classes'Access);
-   Add ("Load_Fields", Print_Load_Fields'Access);
-
-   Process ("xtree_sinfo_new.adb");
 
    --  Production of packages for node kinds/classes/types
 

@@ -32,8 +32,4 @@ package Xtree_Decls is
    --  Expand the declaration of the type of any node in the syntax
    --  tree --as a record whose discriminant is the node kind.
 
-   procedure Print_Load_Fields (O : in out Output_Record);
-   --  Print a sequence of statements that re-build the field table.
-   --  ??? To be cleaned up eventually.
-
 end Xtree_Decls;

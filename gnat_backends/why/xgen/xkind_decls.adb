@@ -30,19 +30,6 @@ package body Xkind_Decls is
    Kind_Type_Name : constant Wide_String := "Why_Node_Kind";
 
    ------------------------
-   -- Print_Load_Classes --
-   ------------------------
-
-   procedure Print_Load_Classes (O : in out Output_Record) is
-   begin
-      for Class of Classes loop
-         PL (O, "New_Class (""" & Class.Name.all  &  """,");
-         PL (O, "           " & Class.First.all   & ",");
-         PL (O, "           " & Class.Last.all & ");");
-      end loop;
-   end Print_Load_Classes;
-
-   ------------------------
    -- Print_Node_Classes --
    ------------------------
 

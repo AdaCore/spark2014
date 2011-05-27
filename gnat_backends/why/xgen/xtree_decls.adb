@@ -33,34 +33,6 @@ package body Xtree_Decls is
    Node_Type_Name : constant Wide_String := "Why_Node";
    Kind_Name      : constant Wide_String := "Kind";
 
-   -----------------------
-   -- Print_Load_Fields --
-   -----------------------
-
-   procedure Print_Load_Fields (O : in out Output_Record) is
-   begin
-      for Kind in Why_Tree_Info'Range loop
-         if not Why_Tree_Info (Kind).Fields.Is_Empty then
-            Print_Box (O, Mixed_Case_Name (Kind));
-            NL (O);
-
-            for FI of Why_Tree_Info (Kind).Fields loop
-               PL (O, "New_Field (" & Mixed_Case_Name (Kind) & ",");
-               P  (O, "           """ & Param_Name (FI)  & """, ");
-
-               if Is_Why_Id (FI) then
-                  P (O, """" & Field_Kind (FI)  & """, ");
-                  PL (O, Mixed_Case_Name (Multiplicity (FI)) & ");");
-               else
-                  PL (O, """" & Type_Name (FI, Opaque) & """);");
-               end if;
-            end loop;
-
-            NL (O);
-         end if;
-      end loop;
-   end Print_Load_Fields;
-
    ---------------------
    -- Print_Node_Type --
    ---------------------
