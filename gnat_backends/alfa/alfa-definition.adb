@@ -112,16 +112,37 @@ package body ALFA.Definition is
    --  other cases. This is useful to notify the user about ALFA violations in
    --  a scope where formal proof is forced.
 
-   ----------------
-   -- ALFA Marks --
-   ----------------
+   ------------------
+   -- Global State --
+   ------------------
 
    Current_Unit_Is_Main_Body : Boolean;
    Current_Unit_Is_Main_Spec : Boolean;
 
    Inside_Expression_With_Actions : Boolean := False;
+   --  True during the analysis of an expression-with-actions
 
    All_Types : Id_Set.Set;
+   --  Set of all types whose declaration has been analyzed so far
+
+   procedure Mark_Type_Declaration (Id : Unique_Entity_Id);
+   --  Should be called on every type declaration. Add Id to All_Types.
+
+   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether the declaration for Id was analyzed so far
+
+   ----------------
+   -- ALFA Marks --
+   ----------------
+
+   type Violations is array (Violation_Kind) of Id_Set.Set;
+
+   Spec_Violations : Violations;
+   --  Sets of entities which violate ALFA restrictions, per violation kind
+
+   Body_Violations : Violations;
+   --  Sets of subprogram entities whose body violate ALFA restrictions, per
+   --  violation kind.
 
    Standard_In_ALFA : Id_Set.Set;
    --  Entities from package Standard which are in ALFA
@@ -138,14 +159,8 @@ package body ALFA.Definition is
    Objects_In_Alfa  : Id_Set.Set;
    --  Object entities in Alfa
 
-   type Violations is array (Violation_Kind) of Id_Set.Set;
-
-   Spec_Violations : Violations;
-   --  Sets of entities which violate ALFA restrictions, per violation kind
-
-   Body_Violations : Violations;
-   --  Sets of subprogram entities whose body violate ALFA restrictions, per
-   --  violation kind.
+   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
+   --  Safe conversion from unique entity to entity
 
    function Complete_Error_Msg
      (Msg : String;
@@ -155,18 +170,48 @@ package body ALFA.Definition is
      (A        : in out Violations;
       To, From : Unique_Entity_Id);
 
-   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
-
    function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
       (Standard_In_ALFA.Contains (+Id));
 
    function Body_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a violation of Alfa was detected while analyzing the body
+   --  of subprogram Id.
 
    function Object_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a violation of Alfa was detected while analyzing the
+   --  definition of object Id.
 
    function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a violation of Alfa was detected while analyzing the spec
+   --  of subprogram Id.
 
    function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a violation of Alfa was detected while analyzing the
+   --  definition of type Id.
+
+   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl);
+   --  Helper procedure for marking procedures below
+
+   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
+   --  Mark subprogram body Id as being in Alfa
+
+   procedure Mark_Object_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean);
+   --  Mark object Id as being in Alfa if In_Alfa is set, or not being in Alfa
+   --  otherwise.
+
+   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
+   --  Mark subprogram spec Id as being in Alfa. Note that Id can be really
+   --  either a subprogram spec, or a subprogram body serving as its own spec.
+
+   procedure Mark_Type_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean);
+   --  Mark type Id as being in Alfa if In_Alfa is set, or not being in Alfa
+   --  otherwise.
 
    function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the body of subprogram Id is in Alfa
@@ -179,98 +224,6 @@ package body ALFA.Definition is
 
    function Type_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether a type Id is in Alfa
-
-   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
-
-   procedure Mark_Object_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean);
-
-   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
-   --  Can be called on subprogram spec, or subprogram body serving as own spec
-
-   procedure Mark_Type_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean);
-
-   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl);
-
-   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
-   begin
-      if Current_Unit_Is_Main_Spec then
-         Decls_In_Spec (Kind).Append (N);
-      elsif Current_Unit_Is_Main_Body then
-         Decls_In_Body (Kind).Append (N);
-      end if;
-   end Filter_In_Alfa;
-
-   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
-   begin
-      Bodies_In_Alfa.Include (+Id);
-      Filter_In_Alfa (N, Alfa_Subprogram_Body);
-   end Mark_Body_In_Alfa;
-
-   procedure Mark_Object_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean) is
-   begin
-      if In_Alfa then
-         Objects_In_Alfa.Include (+Id);
-      end if;
-
-      --  Declarations of objects inside expression with actions are translated
-      --  specially into let-expressions.
-
-      if not Inside_Expression_With_Actions
-
-        --  This is not sufficient currently as some temporaries are
-        --  introduced at statement level. HACK until this is cleaned up.
-
-        and then (Comes_From_Source (Original_Node (N))
-                   or else Is_Package_Level_Entity (+Id))
-      then
-         if In_Alfa then
-            Filter_In_Alfa (N, Alfa_Object);
-         else
-            Filter_In_Alfa (+Id, Non_Alfa_Object);
-         end if;
-      end if;
-   end Mark_Object_In_Alfa;
-
-   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
-   begin
-      Specs_In_Alfa.Include (+Id);
-      Filter_In_Alfa (N, Alfa_Subprogram_Spec);
-   end Mark_Spec_In_Alfa;
-
-   procedure Mark_Type_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean) is
-   begin
-      if In_Alfa then
-         Types_In_Alfa.Include (+Id);
-         Filter_In_Alfa (N, Alfa_Type);
-      else
-         Filter_In_Alfa (+Id, Non_Alfa_Type);
-      end if;
-   end Mark_Type_In_Alfa;
-
-   procedure Mark_Type_Declaration (Id : Unique_Entity_Id);
-   --  Should be called on every type declaration
-
-   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean;
-
-   procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
-   begin
-      All_Types.Include (+Id);
-   end Mark_Type_Declaration;
-
-   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean is
-     (All_Types.Contains (+Id));
 
    -----------------
    -- Scope Stack --
@@ -428,45 +381,87 @@ package body ALFA.Definition is
    procedure Mark_With_Clause                 (N : Node_Id);
 
    ------------------------------
-   -- Body_Is_Computed_In_ALFA --
+   -- Alfa marking of entities --
    ------------------------------
 
    function Body_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (for all S of Body_Violations => not S.Contains (+Id));
-
-   --------------------------------
-   -- Object_Is_Computed_In_ALFA --
-   --------------------------------
 
    function Object_Is_Computed_In_ALFA
      (Id : Unique_Entity_Id) return Boolean
    is
      (for all S of Spec_Violations => not S.Contains (+Id));
 
-   ------------------------------
-   -- Spec_Is_Computed_In_ALFA --
-   ------------------------------
-
    function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (for all S of Spec_Violations => not S.Contains (+Id));
-
-   ------------------------------
-   -- Type_Is_Computed_In_ALFA --
-   ------------------------------
 
    function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (for all S of Spec_Violations => not S.Contains (+Id));
 
-   ---------------------
-   -- Body_Is_In_ALFA --
-   ---------------------
+   procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
+   begin
+      if Current_Unit_Is_Main_Spec then
+         Decls_In_Spec (Kind).Append (N);
+      elsif Current_Unit_Is_Main_Body then
+         Decls_In_Body (Kind).Append (N);
+      end if;
+   end Filter_In_Alfa;
+
+   procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
+   begin
+      Bodies_In_Alfa.Include (+Id);
+      Filter_In_Alfa (N, Alfa_Subprogram_Body);
+   end Mark_Body_In_Alfa;
+
+   procedure Mark_Object_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean) is
+   begin
+      if In_Alfa then
+         Objects_In_Alfa.Include (+Id);
+      end if;
+
+      --  Declarations of objects inside expression with actions are translated
+      --  specially into let-expressions.
+
+      if not Inside_Expression_With_Actions
+
+        --  This is not sufficient currently as some temporaries are
+        --  introduced at statement level. HACK until this is cleaned up.
+
+        and then (Comes_From_Source (Original_Node (N))
+                   or else Is_Package_Level_Entity (+Id))
+      then
+         if In_Alfa then
+            Filter_In_Alfa (N, Alfa_Object);
+         else
+            Filter_In_Alfa (+Id, Non_Alfa_Object);
+         end if;
+      end if;
+   end Mark_Object_In_Alfa;
+
+   procedure Mark_Spec_In_Alfa (Id : Unique_Entity_Id; N : Node_Id) is
+   begin
+      Specs_In_Alfa.Include (+Id);
+      Filter_In_Alfa (N, Alfa_Subprogram_Spec);
+   end Mark_Spec_In_Alfa;
+
+   procedure Mark_Type_In_Alfa
+     (Id      : Unique_Entity_Id;
+      N       : Node_Id;
+      In_Alfa : Boolean) is
+   begin
+      if In_Alfa then
+         Types_In_Alfa.Include (+Id);
+         Filter_In_Alfa (N, Alfa_Type);
+      else
+         Filter_In_Alfa (+Id, Non_Alfa_Type);
+      end if;
+   end Mark_Type_In_Alfa;
 
    function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (Id_Set.Contains (Bodies_In_Alfa, +Id));
-
-   -----------------------
-   -- Object_Is_In_ALFA --
-   -----------------------
 
    function Object_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
    begin
@@ -477,16 +472,8 @@ package body ALFA.Definition is
       end if;
    end Object_Is_In_ALFA;
 
-   ---------------------
-   -- Spec_Is_In_ALFA --
-   ---------------------
-
    function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (Id_Set.Contains (Specs_In_Alfa, +Id));
-
-   ---------------------
-   -- Type_Is_In_ALFA --
-   ---------------------
 
    function Type_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
    begin
@@ -508,6 +495,14 @@ package body ALFA.Definition is
          return (Id_Set.Contains (Types_In_Alfa, +Id));
       end if;
    end Type_Is_In_ALFA;
+
+   procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
+   begin
+      All_Types.Include (+Id);
+   end Mark_Type_Declaration;
+
+   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean is
+     (All_Types.Contains (+Id));
 
    ----------------------------
    -- Close_ALFA_Output_File --

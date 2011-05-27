@@ -67,12 +67,14 @@ package ALFA.Definition is
    --  Put marks on package Standard
 
    function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-
-   procedure Close_ALFA_Output_File;
+   --  Return whether standard entity Id is in Alfa or not
 
    procedure Create_ALFA_Output_File (Filename : String);
    --  Create the file in which to generate output about subprogram in/out of
    --  the ALFA subset.
+
+   procedure Close_ALFA_Output_File;
+   --  Close the file created by Create_ALFA_Output_File
 
    type Alfa_Decl is
      (Alfa_Object,
