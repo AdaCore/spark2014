@@ -4,10 +4,10 @@ package Subar is
 
    type A is array (One_Ten) of One_Twenty;
 
-   type C is array (Integer range <>) of One_Ten;
-
    -- simple subtype
    subtype B is A;
+
+   type C is array (Integer range <>) of One_Ten;
 
    --  subtype of unconstrained type, without additional bounds
    subtype D is C;
