@@ -31,7 +31,6 @@ with Debug;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
-with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
@@ -2338,18 +2337,6 @@ package body Gnat2Why.Subprograms is
       --  conversion to or from Int
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
-      if Is_Static_Expression (Expr) and then
-         Ekind (Etype (Expr)) in Integer_Kind then
-         T := New_Integer_Constant (Value => Expr_Value (Expr));
-         Current_Type := Why_Int_Type;
-
-         return
-           Insert_Conversion_Term
-             (Ada_Node => Expr,
-              Why_Term => T,
-              From     => Current_Type,
-              To       => Expected_Type);
-      end if;
       case Nkind (Expr) is
          when N_Integer_Literal =>
             T :=
