@@ -1,0 +1,5 @@
+subar.adb:12:14: (info) proved: array bounds check
+subar.adb:12:17: (info) proved: range check
+subar.adb:13:7: (info) proved: proof of precondition
+subar.ads:18:20: (info) proved: array bounds check
+subar.ads:18:28: (info) proved: range check
