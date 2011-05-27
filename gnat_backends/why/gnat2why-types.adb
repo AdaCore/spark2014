@@ -273,7 +273,7 @@ package body Gnat2Why.Types is
          when others =>
             raise Program_Error;
       end case;
-   end Why_Type_Decl_of_Subtype_Decl;
+   end Why_Type_Decl_Of_Subtype_Decl;
 
    -------------------------------
    -- Why_Prog_Type_Of_Ada_Type --
