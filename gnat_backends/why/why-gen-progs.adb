@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
+with Einfo;               use Einfo;
 with Uintp;               use Uintp;
 
 with Gnat2Why.Decls;      use Gnat2Why.Decls;
@@ -51,6 +53,19 @@ package body Why.Gen.Progs is
        Why_Expr : W_Prog_Id) return W_Prog_Id;
    --  Convert the Why expression in argument to "int". It is expected to be
    --  of type "From".
+
+   function Insert_Array_Conversion
+      (Ada_Node : Node_Id := Empty;
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id) return W_Prog_Id;
+
+   function Insert_Integer_Conversion
+      (Ada_Node : Node_Id := Empty;
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id;
+       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id;
 
    function Is_False_Boolean (P : W_Prog_Id) return Boolean;
    --  Check if the given program is the program "false"
@@ -134,6 +149,31 @@ package body Why.Gen.Progs is
            Reason   => Reason);
    end Convert_From_Int;
 
+   -----------------------------
+   -- Insert_Array_Conversion --
+   -----------------------------
+
+   function Insert_Array_Conversion
+      (Ada_Node : Node_Id := Empty;
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id) return W_Prog_Id
+   is
+      Ada_To   : constant Node_Id := To.Wh_Abstract;
+      Ada_From : constant Node_Id := From.Wh_Abstract;
+   begin
+      return
+         New_Prog_Call
+           (Ada_Node => Ada_Node,
+            Name  => Array_Conv_To (Full_Name (Ada_To)),
+            Progs =>
+              (1 =>
+                 New_Prog_Call
+                   (Ada_Node => Ada_Node,
+                    Name  => Array_Conv_From (Full_Name (Ada_From)),
+                    Progs => (1 => Why_Expr))));
+   end Insert_Array_Conversion;
+
    -----------------------
    -- Insert_Conversion --
    -----------------------
@@ -146,10 +186,59 @@ package body Why.Gen.Progs is
        Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id
    is
    begin
+      --  In this particular case, we do nothing
       if Base_Type.Kind = Why_Int and then To = From then
          return Why_Expr;
       end if;
 
+      --  We check the 'To' type, and there are four cases.
+      --    * Why_Int => Integer conversion
+      --    * Ada Integer type => Integer conversion
+      --    * Ada Array type => Array conversion
+      --    * other Ada type kind => failure
+      case To.Kind is
+         when Why_Int =>
+            return
+               Insert_Integer_Conversion
+                  (Ada_Node, To, From, Why_Expr, Base_Type);
+
+         when Why_Abstract =>
+            declare
+               Ada_Type : constant Node_Id := To.Wh_Abstract;
+            begin
+               case Ekind (Ada_Type) is
+                  when Discrete_Kind =>
+                     return
+                        Insert_Integer_Conversion
+                           (Ada_Node, To, From, Why_Expr, Base_Type);
+
+                  when Array_Kind =>
+                     return
+                        Insert_Array_Conversion
+                           (Ada_Node, To, From, Why_Expr);
+
+                  when others =>
+                     raise Not_Implemented;
+
+               end case;
+            end;
+
+      end case;
+
+   end Insert_Conversion;
+
+   -------------------------------
+   -- Insert_Integer_Conversion --
+   -------------------------------
+
+   function Insert_Integer_Conversion
+      (Ada_Node : Node_Id := Empty;
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id;
+       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id
+   is
+   begin
       if To.Kind = Why_Int then
          --  We convert to "int"
          if not (Base_Type.Kind = Why_Int) and then From.Kind = Why_Int then
@@ -173,18 +262,18 @@ package body Why.Gen.Progs is
          return Convert_From_Int (Ada_Node, To, Why_Expr);
       else
          return
-            Insert_Conversion
+            Insert_Integer_Conversion
                (Ada_Node => Ada_Node,
                 To       => To,
                 From     => Why_Int_Type,
                 Why_Expr =>
-                  Insert_Conversion
+                  Insert_Integer_Conversion
                     (Ada_Node => Ada_Node,
                      To       => Why_Int_Type,
                      From     => From,
                      Why_Expr => Why_Expr));
       end if;
-   end Insert_Conversion;
+   end Insert_Integer_Conversion;
 
    ----------------------
    -- Is_False_Boolean --
