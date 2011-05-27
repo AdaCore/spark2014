@@ -98,10 +98,6 @@ package body Gnat2Why.Subprograms is
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
    --  set to (Kind => Why_Int).
 
-   function Is_Unconstrained_Array (N : Node_Id) return Boolean;
-   --  Decide if the given Node represents an unconstrained array or a
-   --  constrained one.
-
    function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
    --  Translate the given Ada expression to a Why term of type "bool".
    --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
@@ -584,31 +580,6 @@ package body Gnat2Why.Subprograms is
                  Left     => T,
                  Right    => Int_Expr_Of_Ada_Expr (High_Bound (N))));
    end Range_Prog;
-
-   ----------------------------
-   -- Is_Unconstrained_Array --
-   ----------------------------
-
-   function Is_Unconstrained_Array (N : Node_Id) return Boolean
-   is
-      Ty : constant Entity_Id := Etype (N);
-   begin
-      case Ekind (Ty) is
-         when E_Array_Type =>
-            case Nkind (Type_Definition (Parent (Ty))) is
-               when N_Unconstrained_Array_Definition =>
-                  return True;
-
-               when others =>
-                  return False;
-
-            end case;
-
-         when others =>
-            return False;
-
-      end case;
-   end Is_Unconstrained_Array;
 
    -----------------------------------
    -- Loop_Entity_Of_Exit_Statement --
@@ -1517,8 +1488,7 @@ package body Gnat2Why.Subprograms is
                    Ar            => Why_Expr_Of_Ada_Expr (Pre),
                    Index         =>
                       Why_Expr_Of_Ada_Expr
-                        (First (Expressions (Expr)), Why_Int_Type),
-                   Unconstrained => Is_Unconstrained_Array (Pre));
+                        (First (Expressions (Expr)), Why_Int_Type));
             end;
 
          when N_Selected_Component =>
@@ -1760,8 +1730,7 @@ package body Gnat2Why.Subprograms is
                           Value     =>
                             Why_Expr_Of_Ada_Expr
                               (Expression (Stmt),
-                               Type_Of_Node (Component_Type (Etype (Pre)))),
-                          Unconstrained => Is_Unconstrained_Array (Pre));
+                               Type_Of_Node (Component_Type (Etype (Pre)))));
                   end;
 
                when others =>

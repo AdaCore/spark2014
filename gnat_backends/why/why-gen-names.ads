@@ -99,6 +99,9 @@ package Why.Gen.Names is
    --  From the name of an array type, return the name of the axiom that
    --  states that 'Length is static.
 
+   function Array_Conv_Idem (Name : String) return W_Identifier_Id;
+   function Array_Conv_Idem_2 (Name : String) return W_Identifier_Id;
+
    function Coerce_Axiom (Name : String) return  W_Identifier_Id;
    function Coerce_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;
    --  From the name of an abstract type, return the name of

@@ -107,7 +107,24 @@ package body Why.Gen.Arrays is
              Name => New_Identifier (Ada_Array));
       Name_Type  : constant W_Logic_Arg_Type_Id :=
          New_Abstract_Type (Name => (New_Identifier (Name)));
+      Ar         : constant W_Term_Id :=
+         New_Term ("a");
+      Ar_Binder  : constant W_Binder_Id :=
+         New_Binder
+            (Names => (1 => New_Identifier ("a")),
+             Arg_Type =>
+               New_Abstract_Type (Name => (New_Identifier (Name))));
+      Ar_Binder_2  : constant W_Binder_Id :=
+         New_Binder
+            (Names => (1 => New_Identifier ("a")),
+             Arg_Type => +Duplicate_Any_Node (Id => +Ar_Type));
    begin
+      --  generate the theory:
+      --  type t
+      --  logic to_ : t -> comp ada_array
+      --  logic from_ : comp ada_array -> t
+      --  axiom 1 : forall x, to_ (from_ (x)) = x
+      --  axiom 2 : forall x, from_ (to_ (x)) = x
       New_Abstract_Type (File, Name);
       New_Logic
          (File,
@@ -119,6 +136,38 @@ package body Why.Gen.Arrays is
           Array_Conv_To (Name),
           Args => (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
           Return_Type => +Duplicate_Any_Node (Id => +Name_Type));
+      New_Axiom
+         (File       => File,
+          Name       => Array_Conv_Idem (Name),
+          Axiom_Body =>
+            New_Forall
+               (Binders => (1 => Ar_Binder),
+                Pred =>
+                  New_Equal
+                     (+Duplicate_Any_Node (Id => +Ar),
+                      New_Operation
+                        (Name       => Array_Conv_To (Name),
+                         Parameters =>
+                           (1 => New_Operation
+                                 (Name => Array_Conv_From (Name),
+                                  Parameters => (1 => Ar)))))));
+      New_Axiom
+         (File       => File,
+          Name       => Array_Conv_Idem_2 (Name),
+          Axiom_Body =>
+            New_Forall
+               (Binders => (1 => Ar_Binder_2),
+                Pred =>
+                  New_Equal
+                     (+Duplicate_Any_Node (Id => +Ar),
+                      New_Operation
+                        (Name       => Array_Conv_From (Name),
+                         Parameters =>
+                           (1 => New_Operation
+                                 (Name => Array_Conv_To (Name),
+                                  Parameters =>
+                                    (1 => +Duplicate_Any_Node
+                                             (Id => +Ar))))))));
    end Declare_Ada_Unconstrained_Array;
 
    --------------------------------

@@ -61,6 +61,8 @@ package body Why.Gen.Names is
    Array_First_Static_Name  : constant String := "static_first";
    Array_Last_Static_Name   : constant String := "static_last";
    Array_Length_Static_Name : constant String := "static_length";
+   Array_Conv_Idemp   : constant String := "conv_idem";
+   Array_Conv_Idemp_2 : constant String := "conv_idem_2";
    Coerce             : constant String := "coerce";
    Boolean_Eq         : constant String := "eq_bool";
    Eq_Pred            : constant String := "eq";
@@ -170,6 +172,14 @@ package body Why.Gen.Names is
       (Array_Length_Static_Name);
    function Array_Length_Static (Name : String) return W_Identifier_Id
       renames Array_Length_Static_Gen;
+
+   function Array_Conv_Idem_Gen is new Generate_Suffix (Array_Conv_Idemp);
+   function Array_Conv_Idem (Name : String) return W_Identifier_Id
+      renames Array_Conv_Idem_Gen;
+
+   function Array_Conv_Idem_2_Gen is new Generate_Suffix (Array_Conv_Idemp_2);
+   function Array_Conv_Idem_2 (Name : String) return W_Identifier_Id
+      renames Array_Conv_Idem_2_Gen;
 
    -------------------------
    -- Bool_Int_Cmp_String --
