@@ -52,9 +52,6 @@ package body Gnat2Why.Types is
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
-   function Type_Of_Array_Index (N : Node_Id) return String;
-   --  Given a type definition for arrays, return the type of the array index.
-
    ------------------------------------------------
    -- Declare_Ada_Abstract_Signed_Int_From_Range --
    ------------------------------------------------
@@ -72,31 +69,6 @@ package body Gnat2Why.Types is
          Expr_Value (Low_Bound (Range_Node)),
          Expr_Value (High_Bound (Range_Node)));
    end Declare_Ada_Abstract_Signed_Int_From_Range;
-
-   -------------------------
-   -- Type_Of_Array_Index --
-   -------------------------
-
-   function Type_Of_Array_Index (N : Node_Id) return String
-   is
-   begin
-      declare
-         Index_List : List_Id;
-      begin
-         case Nkind (N) is
-            when N_Unconstrained_Array_Definition =>
-               Index_List := Subtype_Marks (N);
-
-            when N_Constrained_Array_Definition =>
-               Index_List := Discrete_Subtype_Definitions (N);
-
-            when others =>
-               raise Not_Implemented;
-
-         end case;
-         return Full_Name (Etype (First (Index_List)));
-      end;
-   end Type_Of_Array_Index;
 
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
@@ -171,13 +143,10 @@ package body Gnat2Why.Types is
                      (Entity
                         (Subtype_Indication
                            (Component_Definition (Def_Node))));
-               Index          : constant String :=
-                  Type_Of_Array_Index (Def_Node);
             begin
                Declare_Ada_Unconstrained_Array
                  (File,
                   Name_Str,
-                  Index,
                   Component_Type);
             end;
 
@@ -241,7 +210,6 @@ package body Gnat2Why.Types is
                Declare_Ada_Constrained_Array
                   (File,
                    Name_Str,
-                   "toto",
                    Component_Type,
                    Expr_Value (Low_Bound (Rng)),
                    Expr_Value (High_Bound (Rng)));
@@ -297,7 +265,6 @@ package body Gnat2Why.Types is
                Declare_Ada_Constrained_Array
                   (File,
                    Name_Str,
-                   Get_Name_String (Chars (Etype (First_Index (Ident_Node)))),
                    Get_Name_String (Chars (Component_Type (Base))),
                    Expr_Value (Low_Bound (Rng)),
                    Expr_Value (High_Bound (Rng)));

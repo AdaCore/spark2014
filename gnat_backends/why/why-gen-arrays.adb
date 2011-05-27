@@ -41,7 +41,6 @@ package body Why.Gen.Arrays is
    procedure Declare_Ada_Constrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Index     : String;
       Component : String;
       First     : Uint;
       Last      : Uint)
@@ -54,7 +53,7 @@ package body Why.Gen.Arrays is
              Arg_Type =>
                New_Abstract_Type (Name => (New_Identifier (Name))));
    begin
-      Declare_Ada_Unconstrained_Array (File, Name, Index, Component);
+      Declare_Ada_Unconstrained_Array (File, Name, Component);
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
@@ -98,10 +97,8 @@ package body Why.Gen.Arrays is
    procedure Declare_Ada_Unconstrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Index     : String;
       Component : String)
    is
-      pragma Unreferenced (Index);
       Comp_Type  : constant W_Primitive_Type_Id :=
          New_Abstract_Type (Name => (New_Identifier (Component)));
       Ar_Type    : constant W_Logic_Return_Type_Id :=
@@ -423,11 +420,9 @@ package body Why.Gen.Arrays is
      (Ada_Node      : Node_Id;
       Type_Name     : String;
       Ar            : W_Prog_Id;
-      Index         : W_Prog_Id;
-      Unconstrained : Boolean) return W_Prog_Id
+      Index         : W_Prog_Id) return W_Prog_Id
    is
    begin
-      pragma Unreferenced (Unconstrained);
       return
          New_Located_Call
             (Ada_Node => Ada_Node,
@@ -578,11 +573,9 @@ package body Why.Gen.Arrays is
        Type_Name     : String;
        Ar            : W_Identifier_Id;
        Index         : W_Prog_Id;
-       Value         : W_Prog_Id;
-       Unconstrained : Boolean) return W_Prog_Id
+       Value         : W_Prog_Id) return W_Prog_Id
    is
    begin
-      pragma Unreferenced (Unconstrained);
       return
          New_Assignment
             (Name => +Duplicate_Any_Node (Id => +Ar),

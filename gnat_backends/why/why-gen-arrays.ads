@@ -39,7 +39,6 @@ package Why.Gen.Arrays is
    procedure Declare_Ada_Constrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Index     : String;
       Component : String;
       First     : Uint;
       Last      : Uint);
@@ -50,7 +49,6 @@ package Why.Gen.Arrays is
    procedure Declare_Ada_Unconstrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Index     : String;
       Component : String);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
@@ -63,8 +61,7 @@ package Why.Gen.Arrays is
      (Ada_Node      : Node_Id;
       Type_Name     : String;
       Ar            : W_Prog_Id;
-      Index         : W_Prog_Id;
-      Unconstrained : Boolean) return W_Prog_Id;
+      Index         : W_Prog_Id) return W_Prog_Id;
    --  Generate a Program that corresponds to an array access.
 
    function New_Array_Access_Term
@@ -93,8 +90,7 @@ package Why.Gen.Arrays is
        Type_Name     : String;
        Ar            : W_Identifier_Id;
        Index         : W_Prog_Id;
-       Value         : W_Prog_Id;
-       Unconstrained : Boolean) return W_Prog_Id;
+       Value         : W_Prog_Id) return W_Prog_Id;
    --  Generate an assignment that corresponds to an array update in Why
    --  programs.
 
