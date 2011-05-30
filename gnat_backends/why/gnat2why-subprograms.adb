@@ -753,8 +753,7 @@ package body Gnat2Why.Subprograms is
             Parent (Corresponding_Spec (Node))
          else
             Specification (Node));
-      Name_Str    : constant String  :=
-         Get_Name_String (Chars (Defining_Unit_Name (Spec)));
+      Name_Str    : constant String  := Unique_Name (Defining_Entity (Node));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
