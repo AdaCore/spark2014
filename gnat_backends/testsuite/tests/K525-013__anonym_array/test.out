@@ -1,5 +1,5 @@
+p.adb:5:10: array bounds check failed
 p.adb:5:13: (info) proved: range check
-p.adb:5:7: range check failed
+p.adb:6:10: array bounds check failed
 p.adb:6:13: (info) proved: range check
-p.adb:6:7: range check failed
-p.adb:7:4: proof of assertion failed
+p.adb:7:4: (info) proved: proof of assertion
