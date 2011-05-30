@@ -55,17 +55,17 @@ package Gnat2Why.Types is
 
    procedure Why_Type_Decl_Of_Full_Type_Decl
       (File       : W_File_Id;
-       Ident_Node : Node_Id;
-       Def_Node   : Node_Id);
-   --  Take an Ada full type declaration and transform it into a Why type
-   --  declaration, including conversion functions and axioms.
+       Ident_Node : Node_Id);
+   --  Take an Ada Entity and consider it as a full type declaration.
+   --  Transform it into a Why type declaration, including conversion
+   --  functions and axioms.
 
    procedure Why_Type_Decl_Of_Subtype_Decl
       (File       : W_File_Id;
-       Ident_Node : Node_Id;
-       Sub_Ind    : Node_Id);
-   --  Take an Ada subtype declaration and transform it into a Why type
-   --  declaration, including conversion functions and axioms.
+       Ident_Node : Node_Id);
+   --  Take an Ada Entity and consider it as a subtype declaration. Transform
+   --  it into a Why type declaration, including conversion functions and
+   --  axioms.
 
    function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id;

@@ -27,7 +27,6 @@ with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
-with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
@@ -97,61 +96,69 @@ package body Gnat2Why.Types is
 
    procedure Why_Type_Decl_Of_Full_Type_Decl
       (File       : W_File_Id;
-       Ident_Node : Node_Id;
-       Def_Node   : Node_Id)
+       Ident_Node : Node_Id)
    is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
-      case Nkind (Def_Node) is
-         when N_Enumeration_Type_Definition =>
-            if Ident_Node = Standard_Boolean then
-               null;
-            elsif Ident_Node = Standard_Character or else
-                    Ident_Node = Standard_Wide_Character or else
-                    Ident_Node = Standard_Wide_Wide_Character then
-               Declare_Ada_Abstract_Signed_Int_From_Range
-                 (File,
-                  Name_Str,
-                  Ident_Node);
-            else
-               --  A normal enumeration type
+      if Ident_Node = Standard_Boolean then
+         null;
+      elsif Ident_Node = Standard_Character or else
+              Ident_Node = Standard_Wide_Character or else
+              Ident_Node = Standard_Wide_Wide_Character then
+         Declare_Ada_Abstract_Signed_Int_From_Range
+           (File,
+            Name_Str,
+            Ident_Node);
+      else
+         case Ekind (Ident_Node) is
+            when E_Enumeration_Type =>
                declare
-                  Cursor       : Node_Or_Entity_Id :=
-                                   Nlists.First (Literals (Def_Node));
-                  Constructors : String_Lists.List :=
-                                   String_Lists.Empty_List;
+                  Constructors : String_Lists.List := String_Lists.Empty_List;
+                  Cur_Lit      : Entity_Id         :=
+                     First_Literal (Ident_Node);
                begin
-                  while Nkind (Cursor) /= N_Empty loop
-                     Constructors.Append (
-                       Get_Name_String (Chars (Cursor)));
-                     Cursor := Next (Cursor);
+                  while Present (Cur_Lit) loop
+                     Constructors.Append (Get_Name_String (Chars (Cur_Lit)));
+                     Next_Literal (Cur_Lit);
                   end loop;
                   Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                end;
-            end if;
+            when E_Signed_Integer_Type | E_Signed_Integer_Subtype =>
+               Declare_Ada_Abstract_Signed_Int_From_Range
+                  (File,
+                   Name_Str,
+                   Scalar_Range (Ident_Node));
 
-         when N_Signed_Integer_Type_Definition =>
-            Declare_Ada_Abstract_Signed_Int_From_Range
-              (File,
-               Name_Str,
-               Def_Node);
+            when E_Floating_Point_Type | E_Floating_Point_Subtype =>
+               --  We do nothing here
+               null;
 
-         when N_Unconstrained_Array_Definition =>
-            declare
-               Component_Type : constant String :=
-                  Full_Name
-                     (Entity
-                        (Subtype_Indication
-                           (Component_Definition (Def_Node))));
-            begin
-               Declare_Ada_Unconstrained_Array
-                 (File,
-                  Name_Str,
-                  Component_Type);
-            end;
+            when Array_Kind =>
+               declare
+                  Comp_Type : constant String :=
+                     Full_Name (Component_Type (Ident_Node));
+               begin
+                  if Is_Constrained (Ident_Node) then
+                     declare
+                        Rng            : constant Node_Id :=
+                           Get_Range (First_Index (Ident_Node));
+                     begin
+                        Declare_Ada_Constrained_Array
+                           (File,
+                            Name_Str,
+                            Comp_Type,
+                            Expr_Value (Low_Bound (Rng)),
+                            Expr_Value (High_Bound (Rng)));
+                     end;
+                  else
+                     Declare_Ada_Unconstrained_Array
+                       (File,
+                        Name_Str,
+                        Comp_Type);
+                  end if;
+               end;
 
-         when N_Record_Definition =>
-            if not Null_Present (Def_Node) then
+            when Record_Kind =>
                declare
                   Builder : W_Logic_Type_Id;
                begin
@@ -160,71 +167,31 @@ package body Gnat2Why.Types is
                                                 Builder);
                   declare
                      use String_Lists;
-
-                     Comps   : constant List_Id :=
-                                 Component_Items (Component_List (Def_Node));
-                     Item    : Node_Id := First (Comps);
+                     Field   : Node_Id := First_Entity (Ident_Node);
                      C_Names : List;
                   begin
-                     while Present (Item) loop
+                     while Present (Field) loop
                         declare
-                           C_Ident : constant Node_Id :=
-                                       Defining_Identifier (Item);
-                           C_Name  : constant String :=
-                                       Full_Name (C_Ident);
-                           C_Type  : constant Node_Id :=
-                                       Etype
-                                         (Subtype_Indication
-                                          (Component_Definition (Item)));
+                           C_Name : constant String := Full_Name (Field);
                         begin
                            Add_Component
                              (File,
                               C_Name,
-                              Why_Logic_Type_Of_Ada_Type (C_Type),
+                              Why_Logic_Type_Of_Ada_Type (Etype (Field)),
                               Builder);
                            C_Names.Append (C_Name);
-                           Next (Item);
+                           Next_Entity (Field);
                         end;
                      end loop;
-
                      Freeze_Ada_Record (File, Name_Str, C_Names, Builder);
                   end;
                end;
-            end if;
 
-         when N_Floating_Point_Definition
-            | N_Ordinary_Fixed_Point_Definition
-            =>
-            --  ??? We do nothing here for now
-            null;
-         when N_Constrained_Array_Definition =>
-            declare
-               Component_Type : constant String :=
-                  Full_Name
-                     (Etype
-                        (Subtype_Indication (Component_Definition
-                           (Def_Node))));
-               Rng            : constant Node_Id :=
-                  Get_Range (First_Index (Ident_Node));
-            begin
-               Declare_Ada_Constrained_Array
-                  (File,
-                   Name_Str,
-                   Component_Type,
-                   Expr_Value (Low_Bound (Rng)),
-                   Expr_Value (High_Bound (Rng)));
-            end;
+            when others =>
+               raise Not_Implemented;
+         end case;
+      end if;
 
-         when N_Derived_Type_Definition =>
-            --  ??? Is this correct?
-            Why_Type_Decl_Of_Subtype_Decl
-               (File,
-                Ident_Node,
-                Subtype_Indication (Def_Node));
-
-         when others =>
-            raise Not_Implemented;
-      end case;
    end Why_Type_Decl_Of_Full_Type_Decl;
 
    -----------------------------------
@@ -233,12 +200,10 @@ package body Gnat2Why.Types is
 
    procedure Why_Type_Decl_Of_Subtype_Decl
       (File       : W_File_Id;
-       Ident_Node : Node_Id;
-       Sub_Ind    : Node_Id)
+       Ident_Node : Node_Id)
    is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
-      pragma Unreferenced (Sub_Ind);
       case Ekind (Ident_Node) is
          when Discrete_Kind =>
             --  For any subtype of a discrete type, we generate an "integer"

@@ -383,14 +383,12 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration =>
                Why_Type_Decl_Of_Full_Type_Decl
                  (File,
-                  Defining_Identifier (Element (Cu)),
-                  Type_Definition (Element (Cu)));
+                  Defining_Identifier (Element (Cu)));
 
             when N_Subtype_Declaration =>
                Why_Type_Decl_Of_Subtype_Decl
                  (File,
-                  Defining_Identifier (Element (Cu)),
-                  Subtype_Indication (Element (Cu)));
+                  Defining_Identifier (Element (Cu)));
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
@@ -432,8 +430,7 @@ package body Gnat2Why.Driver is
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Why_Type_Decl_Of_Full_Type_Decl
-           (File, T, Type_Definition (Parent (T)));
+         Why_Type_Decl_Of_Full_Type_Decl (File, T);
       end Add_Standard_Type;
 
    begin
