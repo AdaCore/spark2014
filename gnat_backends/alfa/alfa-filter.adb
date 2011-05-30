@@ -274,12 +274,8 @@ package body ALFA.Filter is
       while Present (Decl) loop
          case Nkind (Decl) is
             when N_Full_Type_Declaration
-               | N_Subtype_Declaration =>
-               if Standard_Is_In_Alfa (Unique (Defining_Entity (Decl))) then
-                  Standard_Why_Package.Append (Decl);
-               end if;
-
-            when N_Object_Declaration =>
+               | N_Subtype_Declaration
+               | N_Object_Declaration =>
                if Standard_Is_In_Alfa (Unique (Defining_Entity (Decl))) then
                   Standard_Why_Package.Append (Decl);
                end if;
