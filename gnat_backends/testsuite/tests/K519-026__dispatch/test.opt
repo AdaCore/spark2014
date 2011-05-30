@@ -1,2 +1,0 @@
-ALL XFAIL depends on K525-013 and possibly disabling expansion of tagged types
-in frontend
