@@ -34,6 +34,9 @@ package ALFA.Filter is
    --  which are appended to Compilation_Units.
 
    function Filter_Standard_Package return List_Of_Nodes.List;
-   --  Return filtered standard package node
+   --  Return declarations of standard package that are in Alfa
+
+   function Filter_Out_Standard_Package return List_Of_Nodes.List;
+   --  Return entities of standard package that are not in Alfa
 
 end ALFA.Filter;

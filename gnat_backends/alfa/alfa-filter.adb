@@ -35,8 +35,6 @@ with ALFA.Common; use ALFA.Common;
 
 package body ALFA.Filter is
 
-   Standard_Why_Package      : List_Of_Nodes.List :=
-      List_Of_Nodes.Empty_List;
    Standard_Why_Package_Name : constant String := "_standard";
 
    -----------------------------
@@ -269,41 +267,63 @@ package body ALFA.Filter is
 
    function Filter_Standard_Package return List_Of_Nodes.List is
       use List_Of_Nodes;
+      Standard_Why_Package : List_Of_Nodes.List;
+      Decl : Node_Id :=
+        First (Visible_Declarations (Specification (Standard_Package_Node)));
    begin
-      if Is_Empty (Standard_Why_Package) then
-         declare
-            Decl          : Node_Id :=
-               First (Visible_Declarations (
-                 Specification (Standard_Package_Node)));
-         begin
-            while Present (Decl) loop
-               case Nkind (Decl) is
-                  when N_Full_Type_Declaration
-                    | N_Subtype_Declaration =>
-                     if Standard_Is_In_Alfa
-                       (Unique (Defining_Entity (Decl)))
-                     then
-                        Standard_Why_Package.Append (Decl);
-                     end if;
+      while Present (Decl) loop
+         case Nkind (Decl) is
+            when N_Full_Type_Declaration
+               | N_Subtype_Declaration =>
+               if Standard_Is_In_Alfa (Unique (Defining_Entity (Decl))) then
+                  Standard_Why_Package.Append (Decl);
+               end if;
 
-                  when N_Object_Declaration =>
-                     if Standard_Is_In_Alfa
-                       (Unique (Defining_Entity (Decl)))
-                     then
-                        Standard_Why_Package.Append (Decl);
-                     end if;
+            when N_Object_Declaration =>
+               if Standard_Is_In_Alfa (Unique (Defining_Entity (Decl))) then
+                  Standard_Why_Package.Append (Decl);
+               end if;
 
-                  when others =>
-                     null;
-               end case;
+            when others =>
+               null;
+         end case;
 
-               Next (Decl);
-            end loop;
-
-         end;
-      end if;
+         Next (Decl);
+      end loop;
 
       return Standard_Why_Package;
    end Filter_Standard_Package;
+
+   ---------------------------------
+   -- Filter_Out_Standard_Package --
+   ---------------------------------
+
+   function Filter_Out_Standard_Package return List_Of_Nodes.List is
+      use List_Of_Nodes;
+      Standard_Why_Package : List_Of_Nodes.List;
+      Decl : Node_Id :=
+        First (Visible_Declarations (Specification (Standard_Package_Node)));
+      E : Entity_Id;
+   begin
+      while Present (Decl) loop
+         case Nkind (Decl) is
+            when N_Full_Type_Declaration |
+                 N_Subtype_Declaration   |
+                 N_Object_Declaration    =>
+
+               E := Defining_Entity (Decl);
+               if not Standard_Is_In_Alfa (Unique (E)) then
+                  Standard_Why_Package.Append (E);
+               end if;
+
+            when others =>
+               null;
+         end case;
+
+         Next (Decl);
+      end loop;
+
+      return Standard_Why_Package;
+   end Filter_Out_Standard_Package;
 
 end ALFA.Filter;

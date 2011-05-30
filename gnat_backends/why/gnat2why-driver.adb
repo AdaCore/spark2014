@@ -451,6 +451,7 @@ package body Gnat2Why.Driver is
 
       Translate_List_Of_Decls
         (File, Filter_Standard_Package, As_Spec => False);
+      Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
 
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere
