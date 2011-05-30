@@ -733,7 +733,9 @@ package body ALFA.Definition is
 --              end if;
 
          when N_Full_Type_Declaration =>
-            Mark_Full_Type_Declaration (N);
+            if not Has_Private_Declaration (Defining_Entity (N)) then
+               Mark_Full_Type_Declaration (N);
+            end if;
 
          when N_Function_Call =>
             Mark_Call (N);
