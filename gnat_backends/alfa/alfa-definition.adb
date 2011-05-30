@@ -1159,6 +1159,10 @@ package body ALFA.Definition is
                Current_Unit_Is_Main_Spec := True;
             end if;
 
+         when N_Package_Renaming_Declaration    |
+              N_Subprogram_Renaming_Declaration =>
+            null;
+
          when others =>
             raise Program_Error;
       end case;

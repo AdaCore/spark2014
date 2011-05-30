@@ -104,8 +104,10 @@ package body ALFA.Filter is
               Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
             Body_Unit := N;
 
-         when N_Package_Declaration         |
-              N_Generic_Package_Declaration =>
+         when N_Package_Declaration             |
+              N_Generic_Package_Declaration     |
+              N_Package_Renaming_Declaration    |
+              N_Subprogram_Renaming_Declaration =>
             Spec_Unit := N;
 
          when N_Subprogram_Body =>
