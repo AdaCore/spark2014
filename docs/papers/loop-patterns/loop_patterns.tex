@@ -779,20 +779,22 @@ that rule \sppar indeed computes the desired strongest postcondition.
 
 %==================================================================================
 \subsection{Loop Predicates Conventions}
-Given the loop program \prog we define the following predicates 
+Given the loop program $L$ we define the following predicates 
 \begin{enumerate}
-\item \initcond{\prog} : describes the vacuously fact that any location $l$ 
+\item \initcond{L} : describes the vacuously fact that any location $l$ 
 (excepting the loop index \idx) occurring in  a loop has $l_0$ as initial value at loop entry.
-\item \framecond{\prog} : describes the variables which are never assigned in the loop.
-\item \preservecond{\prog}{\idx} : describes an inductive invariant at a given index \idx.
+\item \framecond{L} : describes the variables which are never assigned in the loop.
+\item \preservecond{L}{\idx} : describes an inductive invariant such that we have the following relations
 \end{enumerate}
 
+$$\initcond{L} \Rightarrow (\preservecond{L}{\idxinitial} \Rightarrow \framecond{L})$$
+$$(\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \land \preservecond{L}{\idx} \Rightarrow \framecond{L})$$
 %==================================================================================
 \subsection{Value-preserving Expressions}
 
 We define \textit{value-preserving expressions} as those expressions
-such that there is an inductive invariant \preservecond{\prog} such that:
-$$\preservecond{\prog}{\idx} \Rightarrow (e = e_0)$$
+such that there is an inductive invariant \preservecond{L}{\idx} such that:
+$$\preservecond{L}{\idx} \Rightarrow (e = e_0)$$
 % 
 Consequently the \textit{value-preserving expressions} as those expression
 whose value at the program point before group assignments is such that ($e=e_0$) 
@@ -820,9 +822,6 @@ Sufficient conditions for an expression $e$ to be a value-preserving expression
 are the following:
 \begin{enumerate}
 \item $e$ does not refer to scalar variables that are assigned in the loop;
-in this case $$\preservecond{\prog}{\idx} = (e = e_0)$$
-\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
-in this case $$\preservecond{\prog}{\idx} = \framecond{\prog}$$
 \item $e$ may refer to an array variable $A$ that is modified in the loop,
   provided it does so at index \idx or indexes that are known to be greater
   than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
@@ -830,18 +829,20 @@ in this case $$\preservecond{\prog}{\idx} = \framecond{\prog}$$
   can be more complex, and necessitate a special analysis, like in the case of
   array filtering where the array is assigned at index $v$ where $v$ is
   incremented less often than the loop index; in this case 
-$$\preservecond{\prog}{\idx} = \framecond{\prog} \land (\forall j)(\idx \leq j \leq \idxfinal \Rightarrow A[j]=A_0[j])$$
+$$\preservecond{L}{\idx} = \framecond{L} \land (\forall j)(\idx \leq j \leq \idxfinal \Rightarrow A[j]=A_0[j])$$
 \end{enumerate}
+\patternnote
+Consequently, $e$ may refer to (array or scalar) variables that are not modified in the loop.
 
 %==================================================================================
 \subsection{Invariant definitions}
 
 \begin{definition} \emph {(Inductive loop invariant under initialization conditions)}\\
-A formula $\Phi$ is an \textit{inductive invariant under initialization conditions} \initcond{\prog} for the loop 
+A formula $\Phi$ is an \textit{inductive invariant under initialization conditions} \initcond{L} for the loop 
 \hspace{1cm} $L = \KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit \KWdo B ~\KWend$ \\
 \textbf{iff}: 
 \begin{itemize}
-\item $(\idx=\idxinitial \land \initcond{\prog}) \Rightarrow \phi$. 
+\item $(\idx=\idxinitial \land \initcond{L}) \Rightarrow \phi$. 
       That is, $\phi$ holds after executing the initialization;
 \item $\vDash_{par} \{\idxinitial \leq \idx \leq \idxfinal \wedge \neg \gexit \wedge\phi \} \texttt{ B; i=i+1 } \{ \phi \}$ holds. 
       That is, $\phi$ remains true after each execution of $B$ followed by and index increment, 
@@ -866,8 +867,8 @@ We are interested in establishing  the most precise loop invariant \inv for a gi
 
 \begin{definition} \emph {(Most precise invariant under initialization conditions)}\\
 A formula $\phi$ is the \textit{most precise invariant under initialization conditions}, 
-or shortly, \textit{under conditions} \initcond{\prog} for a loop $L$, noted $\phi = M_I(\prog, \initcond{\prog})$, 
-if $\phi$ is an invariant under \initcond{\prog} for $L$, and if, for any other invariant $\psi$ of $L$ 
+or shortly, \textit{under conditions} \initcond{L} for a loop $L$, noted $\phi = M_I(L, \initcond{L})$, 
+if $\phi$ is an invariant under \initcond{L} for $L$, and if, for any other invariant $\psi$ of $L$ 
 under the same conditions, then $\phi \Rightarrow \psi$.
 \end{definition}
 
@@ -907,39 +908,39 @@ noted $\mathrm{Capture}^H(\phi, B_p)$ \textbf{iff}
 \subsection{Stating invariant maximality and pattern capture}
 
 The following theorem states sufficient conditions on an invariant for
-a loop in \prog to be the most precise invariant under a particular
+a loop in $L$ to be the most precise invariant under a particular
 initialization hypothesis. 
 
 \begin{theorem}[Sufficient conditions for invariant maximality]
 \label{lem:precise-inv} 
-Let \prog be the loop \textnormal{$\KWloop  \idx \KWin \idxinitial ..\idxfinal ~
+Let $L$ be the loop \textnormal{$\KWloop  \idx \KWin \idxinitial ..\idxfinal ~
 \KWexit g_{exit}~ \KWdo B ~\KWend$} with $B$ a body loop not writing the index \idx.
-Let $\psi$ be an inductive invariant for $L$ under \initcond{\prog}.
+Let $\psi$ be an inductive invariant for $L$ under \initcond{L}.
 And let $\phi$ be such that : 
 \begin{itemize}
-\item[(a)] $\initcond{\prog} \Rightarrow \phi(\idxinitial)$ 
-\item[(b)] $\spost{B}{\initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)} 
+\item[(a)] $\initcond{L} \Rightarrow \phi(\idxinitial)$ 
+\item[(b)] $\spost{B}{\initcond{L} \land \neg g_{exit} \land \phi(\idxinitial)} 
              \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)$
-\item[(c)] $\spost{B}{\idxinitial < \idx \leq \idxfinal \land  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
+            \framecond{L} \land \preservecond{L}{\idxinitial+1} \land  \phi(\idxinitial+1)$
+\item[(c)] $\spost{B}{\idxinitial < \idx \leq \idxfinal \land  \framecond{L} \land \preservecond{L}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
              \Leftrightarrow \\
-            \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)$
+            \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx+1} \land \phi(\idx+1)$
 \end{itemize}
-\noindent Then, $\phi$ is the most precise inductive invariant for \prog under \initcond{\prog},
+\noindent Then, $\phi$ is the most precise inductive invariant for $L$ under \initcond{L},
 that is:
 \begin{align*}
-(\idx = \idxinitial \land \initcond{\prog} \land \phi(\idx)) \Rightarrow  \psi(\idx)\\
-(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i))
+(\idx = \idxinitial \land \initcond{L} \land \phi(\idx)) \Rightarrow  \psi(\idx)\\
+(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{L} \land \preservecond{L}{\idx} \land \phi(i))
 \Rightarrow \psi(i))  & \quad \quad [\maxinv]
 \end{align*}
 \end{theorem}
 
 \begin{proof}
   \subproof{\textbf{Init case}}
-  By definition, as $\psi$ is an inductive invariant under \initcond{\prog}, the following holds:
-  $$(\idx= \idxinitial \land \initcond{\prog}) \Rightarrow \psi(\idx)$$
+  By definition, as $\psi$ is an inductive invariant under \initcond{L}, the following holds:
+  $$(\idx= \idxinitial \land \initcond{L}) \Rightarrow \psi(\idx)$$
   Obviously we have thus :
-  $$(\idx= \idxinitial \land \initcond{\prog} \land \phi(\idx)) \Rightarrow  \psi(\idx)$$
+  $$(\idx= \idxinitial \land \initcond{L} \land \phi(\idx)) \Rightarrow  \psi(\idx)$$
 
   \subproof{\textbf{Preservation case}} 
   Here the proof proceeds by induction on the loop index \idx.\\
@@ -965,93 +966,107 @@ that is:
   \end{align*}  
 
   \subsubproof{\textbf{Base case}}  
-  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)$$
+  $$\initcond{L} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)$$
   %
   By adding $g_{exit}$ to both side of the formula we get that
   \begin{align*}
-    \initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial) 
+    \initcond{L} \land \neg g_{exit} \land \phi(\idxinitial) 
     \Rightarrow
-    \neg g_{exit} \land \psi(\idxinitial)
+    \neg g_{exit} \land \idx= \idxinitial \land \psi(\idx)
   \end{align*}
   %
   By applying \spmonoton we get that 
   \begin{align*}
-    \spost{\texttt{B}}{ \initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)} 
+    \spost{\texttt{B}}{ \initcond{L} \land \neg g_{exit} \land \phi(\idxinitial)} 
     \Rightarrow
-    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idxinitial)}
+    \spost{\texttt{B}}{\neg g_{exit} \land \idx= \idxinitial \land \psi(\idx)}
   \end{align*}
   %
   By theorem hypothesis $(b)$ we have
   \begin{align*}
-    \spost{\texttt{B}}{\initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)}
+    \spost{\texttt{B}}{\initcond{L} \land \neg g_{exit} \land \phi(\idxinitial)}
     \Leftrightarrow
-    \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land \phi(\idxinitial+1)
+    \framecond{L} \land \preservecond{L}{\idxinitial+1} \land \phi(\idxinitial+1)
   \end{align*}
   %
   So
   \begin{align*}
-     \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)
+     \framecond{L} \land \preservecond{L}{\idxinitial+1} \land  \phi(\idxinitial+1)
     \Rightarrow
-    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idxinitial)} \quad \quad \mathsf{(2)}
+    \spost{\texttt{B}}{\neg g_{exit} \land \idx= \idxinitial \land \psi(\idx)} \quad \quad \mathsf{(2)}
   \end{align*}
   %
-  With $\mathsf{(2)}$ and $\mathsf{(1)}$ for $\idx = \idxinitial \land \idxfinal \geq \idxinitial$ 
-  (notice that the case $\idxfinal < \idxinitial$ is vacuosly true) we get that
+  For $\idx = \idxinitial \land \idxfinal \geq \idxinitial$ (notice that the case $\idxfinal < \idxinitial$ is vacuosly true) we get that 
+  $$\neg g_{exit} \land \idx= \idxinitial \land \psi(\idx) \Rightarrow \idxinitial \leq i \leq \idxfinal \land \neg g_{exit} \land \psi(i)$$
+  By applying \spmonoton we get that
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)
+    \spost{\texttt{B}}{\neg g_{exit} \land \idx= \idxinitial \land \psi(\idx)} 
+    \Rightarrow
+    \spost{\texttt{B}}{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit} \land \psi(i)}
+  \end{align*}
+  and by $\mathsf{(1)}$ and by transition we get that 
+  \begin{align*}
+    \spost{\texttt{B}}{\neg g_{exit} \land \idx= \idxinitial \land \psi(\idx)} 
+    \Rightarrow
+    \psi(\idxinitial+1) \quad \quad \mathsf{(3)}
+  \end{align*} 
+  With $\mathsf{(3)}$ and $\mathsf{(2)}$ for $\idx = \idxinitial \land \idxfinal \geq \idxinitial$ 
+  
+  \begin{align*}
+    \framecond{L} \land \preservecond{L}{\idxinitial+1} \land  \phi(\idxinitial+1)
     \Rightarrow \psi(\idxinitial+1) 
   \end{align*}
 
   \subsubproof{\textbf{Inductive step}}  
   Following is the inductive hypothesis
   $$
-  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
+  \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx} \land \phi(\idx) 
   \Rightarrow 
   \psi(i)
   $$
   %
   which can be rewritten
   $$
-  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
+  \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx} \land \phi(\idx) 
   \Rightarrow 
   \idxinitial < \idx \leq \idxfinal \land \psi(i)
   $$
   %  
   By adding $g_{exit}$ to both side of the formula we get that
   \begin{align*}
-  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(i) 
+  \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx} \land \neg g_{exit} \land \phi(i) 
   \Rightarrow \\
   \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(i)
   \end{align*}
   %
   By applying \spmonoton, we get that
   \begin{align*}
-    \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(i)} 
+    \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx} \land \neg g_{exit} \land \phi(i)} 
     \Rightarrow\\
     \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx)}
   \end{align*}
   %
-  By the theorem hypothesis $c$ we get the following 
+  By the theorem hypothesis $(c)$ we get the following 
   \begin{align*}
-    \spost{B}{\idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
+    \spost{B}{\idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
              \Leftrightarrow  \\
-    \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
+    \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx+1} \land \phi(\idx+1)
   \end{align*}
   %
   So 
   \begin{align*}
-   \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
+   \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx+1} \land \phi(\idx+1)
    \Rightarrow\\
-   \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx)} \quad \mathsf{(3)}
+   \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx)} \quad \mathsf{(4)}
   \end{align*}
   %
-  By $\mathsf{(3)}$ and $\mathsf{(1)}$ we get that
+  By $\mathsf{(4)}$ and $\mathsf{(1)}$ we get that
   \begin{align*}
-    \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
+    \idxinitial < \idx \leq \idxfinal \land \framecond{L} \land \preservecond{L}{\idx+1} \land \phi(\idx+1)
     \Rightarrow \psi(\idx+1)
   \end{align*}  
   Finally
-  $$(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i))
+  $$(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{L} \land \preservecond{L}{\idx} \land \phi(i))
   \Rightarrow \psi(i))$$
 \end{proof}
 
@@ -1138,15 +1153,26 @@ all the value of expression used in the groups of guarded assignments.
 \end{theorem}
 
 \begin{proof}
-  The proof proceeds by induction on the number of iterations \idx.
-
-  \subproof{Proof of loop invariant initalization:}
+  \subproof{Proof of loop invariant initalization}
   When $\idx = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j < \idx$, i.e $\seen{j}{\idx}=\mathit{false}$\\
   then $$\Inv{\idx} = (\forall j) (\seen{j}{\idx} \impl \neg g_0^\at{\idx}) = \mathit{true}$$
   therefore
   $$(\idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land (\idx = \idxinitial))$$
  
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
+  The proof proceeds by induction on the number of iterations \idx.
+
+  \subsubproof{Base case}
+  By \vpp we have $\gexit = g^\at{\idxinitial} = g_0^\at{\idxinitial}$, therefore:
+  \begin{eqnarray*}
+    \spost{\KWskip}{\idx \leq \idxfinal \land \neg g_0^\at{\idxinitial}}
+    &=& \idx \leq \idxfinal \land \neg g_0^\at{\idxinitial}\\
+    &\Leftrightarrow& (\forall j) (\idxinitial \leq j < \idxinitial+1 \impl \neg g_0^\at{j})\\
+    &\Leftrightarrow& (\forall j) (\seen{j}{\idxinitial+1} \impl \neg g_0^\at{j})\\
+    &\Leftrightarrow& \Inv{\idxinitial+1} 
+  \end{eqnarray*}
+
+  \subsubproof{Inductive step}
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
   at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
   the loop body at iteration \idx. 
@@ -1211,10 +1237,10 @@ all the value of expression used in the groups of guarded assignments.
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{L} \equiv (a = a_0)$.
   $$(i = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   and since $\idx$ is exactly equal to $\idxinitial$ then
-  $$\initcond{\prog} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$\initcond{L} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
@@ -1282,13 +1308,13 @@ all the value of expression used in the groups of guarded assignments.
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{L} \equiv (a = a_0)$.
   $$(\idx = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   When $\idx = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j < \idx$ i.e $(\seen{j}{\idx})=\mathit{false}$\\
   So
   $$(\Inv{\idx} \land \idx = \idxinitial)\equiv (a = a_0)$$
   Therefore
-  $$(\initcond{\prog} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$(\initcond{L} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
@@ -1521,7 +1547,7 @@ concern the implicit range $1 \leq r \leq n$.\\
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{L} \equiv (a = a_0)$.
   $$(i = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   and 
   $$(\Inv{\idx} \land \idx = \idxinitial) \Leftrightarrow (i = \idxinitial \land a = a_0)$$
@@ -2645,7 +2671,110 @@ concern the implicit range $1 \leq r \leq n$.\\
 \end{theorem}
 
 \begin{proof}
- TODO
+  \subproof{\textbf{Init Case}} 
+  $$\initcond{L} \equiv (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j])$$\\
+  When $i = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j <i$, i.e $\seen{j}{\idx}=\mathit{false}$\\
+  and $\neg \seen{j}{\idx} \land \inbounds{A}{j} \equiv \inbounds{A}{j}$.\\
+  so 
+  $$(\Inv{\idx} \land \idx = \idxinitial) = (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j])$$\\
+  then 
+  $$\initcond{L} \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+
+  \subproof{\textbf{Preservation case}} 
+  The proof proceeds by induction on the number of iterations \idx.
+
+
+  \subproof{\textbf{Base case}}
+  \begin{eqnarray*}
+    &&\spost{\true \rightarrow A[\idxinitial] := e^\at{\idxinitial}}{\initcond{L}  \land \Inv{\idxinitial}}\\
+    &&\spost{\true \rightarrow A[\idxinitial] := e_0^\at{\idxinitial}}{\initcond{L} \land \Inv{\idxinitial}}\\
+    &&=(\exists A')\left(\begin{array}{ll}
+                         & (\forall j)(\inbounds{A'}{j} \impl A'[j] = A_0[j])\\
+                         \land & A[\idxinitial] = e_0^\at{\idxinitial} \\
+                         \land & (\forall j)( \inbounds{A}{j} \land j \neq \idxinitial) \Rightarrow (A[j] = A'[j]))
+                   \end{array}\right)\\
+  \end{eqnarray*}
+  %
+  $(\forall j)(\inbounds{A}{j} \land j \neq \idxinitial) \Rightarrow (A'[j] = A_0[j])$
+  \begin{eqnarray*}
+    &&=(\exists A')\left(\begin{array}{ll}
+                         & (\forall j)(\inbounds{A'}{j} \impl A'[j] = A_0[j])\\
+                         \land & A[\idxinitial] = e_0^\at{\idxinitial} \\
+                         \land & (\forall j)( \inbounds{A}{j} \land j \neq \idxinitial) \Rightarrow (A[j] = A_0[j]))
+                   \end{array}\right)\\
+  \end{eqnarray*}
+
+  \begin{eqnarray*}
+    &&=\left(\begin{array}{ll}
+            & A[\idxinitial] = e_0^\at{\idxinitial} \\
+            \land & (\forall j)( \inbounds{A}{j} \land j \neq \idxinitial) \Rightarrow (A[j] = A_0[j]))
+        \end{array}\right)\\
+  \end{eqnarray*}
+  %
+  Formating :
+  \begin{eqnarray*}
+    &&\Leftrightarrow \left(\begin{array}{ll}
+                           \land & (\forall j)(\seen{j}{\idxinitial+1}\impl A[j] = e_0^\at{j}) \\
+                           \land & (\forall j)(\neg \seen{j}{initial} \land \inbounds{A}{j}) \Rightarrow (A[j] = A_0[j]))
+                      \end{array}\right) \\
+    &&\Leftrightarrow \Inv{\idxinitial+1}
+  \end{eqnarray*}
+
+  \subproof{\textbf{Inductive Step}}  
+  \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
+  Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
+  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx}
+  through the loop body at iteration \idx.
+  %
+  Notice that \Inv{\idx} does not mention any variables modified in the loop 
+  excepted $a$ and current value of the loop index.
+  \begin{eqnarray*}
+    &\spost{\true \rightarrow A[\idx] := e_0^\at{\idx}}{\Inv{\idx}}&\\
+    &=&\\ 
+    &(\exists A')\left(\begin{array}{cc}
+                         & \Inv{\idx}[A\leftarrow A'] \\
+                         \land & (A[\idx] = e_0^\at{\idx}) \\
+                         \land & (\forall j)( \inbounds{A}{j} \land \neg (j= \idx) \Rightarrow (A[j] = A'[j])
+                   \end{array}\right)&
+  \end{eqnarray*}
+  %
+  By unfolding  $\Inv{\idx}[A\leftarrow A']$ we have :
+  \begin{eqnarray*}
+    (\exists A')\left(\begin{array}{cc}
+         &(\forall j)(\seen{j}{\idx} \impl A'[j] = e_0^\at{j}) \\
+         \land &(\forall j)(\neg \seen{j}{\idx} \land \inbounds{A'}{j} \impl A'[j] = A_0[j])\\
+         \land & (A[\idx] = e_0^\at{\idx}) \\
+         \land & (\forall j)((\inbounds{A}{j} \land j \neq \idx) \Rightarrow (A[j] = A'[j]))
+      \end{array}\right)&
+  \end{eqnarray*}
+  %
+  Let 
+  \begin{eqnarray*}
+    F_1 &&= \left(\begin{array}{ll}
+          &(\forall j)(\seen{j}{\idx} \land g_0^\at{j} \impl A'[j] = e_0^\at{j}) \\
+          \land & g_0^\at{\idx} \Rightarrow (A[\idx] = e_0^\at{\idx}) \\
+    \end{array}\right)\\
+      &&\Leftrightarrow (\forall j)(\seen{j}{\idx+1} \land g_0^\at{j} \impl A[j] = e_0^\at{j}) 
+  \end{eqnarray*}
+  and
+  \begin{eqnarray*}
+    F_2 &&= \left(\begin{array}{ll}
+          & (\forall j)(\neg \seen{j}{\idx} \land \inbounds{A'}{j} \impl A'[j] = A_0[j])\\
+         \land & (\forall j) ((\inbounds{A}{j} \land j \neq \idx) \Rightarrow (A[j] = A'[j])
+    \end{array}\right)\\
+      &&\Leftrightarrow (\forall j)(\neg \seen{j}{\idx+1} \land \inbounds{A}{j} \impl A[j] = A_0[j])
+  \end{eqnarray*}
+  so
+  \begin{eqnarray*}
+    &\spost{\true \rightarrow A[\idx] := e_0^\at{\idx}}{\Inv{\idx}}&\\
+    &=&\\ 
+    &\left(\begin{array}{cc}
+           &(\forall j)(\seen{j}{\idx+1} \impl A[j] = e_0^\at{j}) \\
+           \land& (\forall j)(\neg \seen{j}{\idx+1} \land \inbounds{A}{j} \impl A[j] = A_0[j])
+      \end{array}\right)&
+  \end{eqnarray*}
+  
+%\fi
 \end{proof}
 
 %==================================================================================
@@ -2723,13 +2852,13 @@ concern the implicit range $1 \leq r \leq n$.\\
   In a loop reduced only to this pattern, no variable is modified, excepted
   $A$ and current value of the loop index.\\ 
   At the beginning of the loop
-  $$\initcond{\prog} \equiv (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
+  $$\initcond{L} \equiv (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
   When $i = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j <i$, i.e $\seen{j}{\idx}=\mathit{false}$\\
   and $\neg \seen{j}{\idx} \land \inbounds{A}{j} \equiv \idxinitial \leq j \leq \idxfinal$.\\
   so 
   $$(\Inv{\idx} \land \idx = \idxinitial) = (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
   then 
-  $$(\initcond{\prog} \land i = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$(\initcond{L} \land i = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
