@@ -39,15 +39,6 @@ package body ALFA.Filter is
       List_Of_Nodes.Empty_List;
    Standard_Why_Package_Name : constant String := "_standard";
 
-   -----------------------
-   -- Local Subprograms --
-   -----------------------
-
-   procedure Traverse_Subtree
-     (N       : Node_Id;
-      Process : access procedure (N : Node_Id));
-   --  Traverse the subtree of N and call Process on selected nodes
-
    -----------------------------
    -- Filter_Compilation_Unit --
    -----------------------------
@@ -312,46 +303,5 @@ package body ALFA.Filter is
 
       return Standard_Why_Package;
    end Filter_Standard_Package;
-
-   ----------------------
-   -- Traverse_Subtree --
-   ----------------------
-
-   procedure Traverse_Subtree
-     (N       : Node_Id;
-      Process : access procedure (N : Node_Id))
-   is
-      procedure Traverse_List (L : List_Id);
-      --  Traverse through the list of nodes L
-
-      procedure Traverse_List (L : List_Id) is
-         Cur : Node_Id;
-      begin
-         Cur := First (L);
-         while Present (Cur) loop
-            Traverse_Subtree (Cur, Process);
-            Next (Cur);
-         end loop;
-      end Traverse_List;
-
-   begin
-      Process (N);
-
-      case Nkind (N) is
-         when N_Package_Declaration =>
-            Traverse_List (Visible_Declarations (Specification (N)));
-            Traverse_List (Private_Declarations (Specification (N)));
-
-         when N_Package_Body =>
-            Traverse_Subtree
-              (Parent (Parent (Corresponding_Spec (N))), Process);
-            Traverse_List (Declarations (N));
-
-         when others =>
-            null;
-            --  ??? Later on complete this by raising Program_Error
-            --  for unexpected cases.
-      end case;
-   end Traverse_Subtree;
 
 end ALFA.Filter;
