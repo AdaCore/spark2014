@@ -1135,6 +1135,13 @@ package body ALFA.Definition is
          return;
       end if;
 
+      --  Do not mark entities from the standard library as in Alfa, as they
+      --  currently cannot be translated to Why.
+
+      if Is_From_Standard_Library (Sloc (N)) then
+         return;
+      end if;
+
       Push_Scope (Unique_Entity_Id (Standard_Standard));
 
       Current_Unit_Is_Main_Body := False;
