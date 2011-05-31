@@ -71,6 +71,13 @@ package body Why.Gen.Records is
       C_Types : constant W_Logic_Arg_Type_OList :=
                   Logic_Type_Get_Arg_Types (Builder);
    begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item => New_Logic_Declaration
+         (Decl => New_Logic
+          (Names => (1 => Record_Builder_Name (Name)),
+           Logic_Type => Builder)));
+
       if Is_Empty (+C_Types) then
          return;
       end if;
@@ -115,12 +122,6 @@ package body Why.Gen.Records is
       Builder :=
         New_Logic_Type (Return_Type =>
                           New_Abstract_Type (Name => New_Identifier (Name)));
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item => New_Logic_Declaration
-         (Decl => New_Logic
-          (Names => (1 => Record_Builder_Name (Name)),
-           Logic_Type => Builder)));
    end Start_Ada_Record_Declaration;
 
 end Why.Gen.Records;
