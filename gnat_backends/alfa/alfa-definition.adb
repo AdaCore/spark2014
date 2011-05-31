@@ -912,6 +912,9 @@ package body ALFA.Definition is
          when N_With_Clause =>
             Mark_With_Clause (N);
 
+         when N_String_Literal =>
+            Mark_Non_ALFA ("string literal", N, V_Implem);
+
          --  The following kinds can be safely ignored by marking
 
          when N_Character_Literal               |
@@ -926,7 +929,6 @@ package body ALFA.Definition is
               N_Others_Choice                   |
               N_Package_Renaming_Declaration    |
               N_Real_Literal                    |
-              N_String_Literal                  |
               N_Subprogram_Info                 |
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
@@ -2147,7 +2149,7 @@ package body ALFA.Definition is
                  and then not Has_Static_Array_Bounds (+Id)
                then
                   Mark_Non_ALFA
-                    ("array type with non-static bounds", +Id);
+                    ("array type with non-static bounds", +Id, V_Implem);
                end if;
             end;
 
@@ -2156,17 +2158,18 @@ package body ALFA.Definition is
             --  Enumeration type is in ALFA only if it is not a character type
 
             if Is_Character_Type (+Id) then
-               Mark_Non_ALFA ("character enumeration type", +Id);
+               Mark_Non_ALFA ("character enumeration type", +Id, V_Implem);
             end if;
 
          when Signed_Integer_Kind =>
             if not (Is_Static_Range (Scalar_Range (+Id))) then
-               Mark_Non_ALFA ("integer type with dynamic range", +Id);
+               Mark_Non_ALFA
+                 ("integer type with dynamic range", +Id, V_Implem);
             end if;
 
          when Record_Kind =>
             if Is_Interface (+Id) then
-               Mark_Non_ALFA ("interface", +Id, Id);
+               Mark_Non_ALFA ("interface", +Id, V_Implem);
             else
                declare
                   Field : Node_Id := First_Entity (+Id);
@@ -2184,10 +2187,10 @@ package body ALFA.Definition is
 
          when E_Modular_Integer_Type | E_Modular_Integer_Subtype
             | Real_Kind  =>
-            Mark_Non_ALFA ("type definition", +Id, Id);
+            Mark_Non_ALFA ("type definition", +Id, V_Implem);
 
          when Access_Kind =>
-            Mark_Non_ALFA ("access type", +Id, Id);
+            Mark_Non_ALFA ("access type", +Id);
 
          when others =>
             raise Program_Error;
