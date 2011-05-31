@@ -1,2 +1,2 @@
-anon.adb:4:10: (info) proved: range check
+anon.adb:4:13: (info) proved: array bounds check
 anon.adb:4:16: (info) proved: range check

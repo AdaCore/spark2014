@@ -1,1 +1,1 @@
-ALL XFAIL waiting for K525-015 and possibly disabling expansion of tagged types
+ALL XFAIL Ada.Exceptions.Triggered_By_Abort not defined
