@@ -91,7 +91,7 @@ package body Gnat2Why.Types is
    end  Why_Logic_Type_Of_Ada_Type;
 
    -------------------------------------
-   -- Why_Type_Decl_of_Full_Type_Decl --
+   -- Why_Type_Decl_Of_Full_Type_Decl --
    -------------------------------------
 
    procedure Why_Type_Decl_Of_Full_Type_Decl
@@ -123,7 +123,9 @@ package body Gnat2Why.Types is
                   end loop;
                   Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                end;
-            when E_Signed_Integer_Type | E_Signed_Integer_Subtype =>
+            when E_Signed_Integer_Type
+               | E_Signed_Integer_Subtype
+               | E_Enumeration_Subtype =>
                Declare_Ada_Abstract_Signed_Int_From_Range
                   (File,
                    Name_Str,

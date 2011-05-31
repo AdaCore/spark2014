@@ -49,9 +49,11 @@ package body Why.Inter is
       return
         (WP_Name           => new String'(S),
          WP_Context        => String_Lists.Empty_List,
+         WP_Types          => List_Of_Nodes.Empty_List,
+         WP_Abstract_Types => List_Of_Nodes.Empty_List,
+         WP_Abstract_Obj   => List_Of_Nodes.Empty_List,
          WP_Decls          => List_Of_Nodes.Empty_List,
-         WP_Decls_As_Spec  => List_Of_Nodes.Empty_List,
-         WP_Abstract_Decls => List_Of_Nodes.Empty_List);
+         WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
    end Make_Empty_Why_Pack;
 
    ------------------

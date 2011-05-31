@@ -119,27 +119,17 @@ package body ALFA.Filter is
             raise Program_Error;
       end case;
 
-      Types_Vars_Spec.WP_Decls :=
-        Concat
-          (Decls_In_Spec (Alfa_Type),
-           Decls_In_Spec (Alfa_Object));
+      Types_Vars_Spec.WP_Abstract_Types := Decls_In_Spec (Non_Alfa_Type);
+      Types_Vars_Spec.WP_Types := Decls_In_Spec (Alfa_Type);
+      Types_Vars_Spec.WP_Abstract_Obj := Decls_In_Spec (Non_Alfa_Object);
+      Types_Vars_Spec.WP_Decls := Decls_In_Spec (Alfa_Object);
 
-      Types_Vars_Spec.WP_Abstract_Decls :=
-        Concat
-          (Decls_In_Spec (Non_Alfa_Type),
-           Decls_In_Spec (Non_Alfa_Object));
-
-      Types_Vars_Body.WP_Decls :=
-        Concat (Decls_In_Body (Alfa_Type),
-                Decls_In_Body (Alfa_Object));
-
-      Types_Vars_Body.WP_Abstract_Decls :=
-        Concat
-          (Decls_In_Body (Non_Alfa_Type),
-           Decls_In_Body (Non_Alfa_Object));
+      Types_Vars_Body.WP_Abstract_Types := Decls_In_Body (Non_Alfa_Type);
+      Types_Vars_Body.WP_Types := Decls_In_Body (Alfa_Type);
+      Types_Vars_Body.WP_Abstract_Obj := Decls_In_Body (Non_Alfa_Object);
+      Types_Vars_Body.WP_Decls := Decls_In_Body (Alfa_Object);
 
       Subp_Spec.WP_Decls_As_Spec := Decls_In_Spec (Alfa_Subprogram_Spec);
-
       Subp_Body.WP_Decls_As_Spec := Decls_In_Body (Alfa_Subprogram_Spec);
 
       Subp_Body.WP_Decls :=

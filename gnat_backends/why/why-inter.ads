@@ -42,14 +42,23 @@ package Why.Inter is
          WP_Name           : access String;
          WP_Context        : String_Lists.List;
          WP_Decls          : List_Of_Nodes.List;
+         --  All declarations of the package that in Alfa and that are not
+         --  types.
          WP_Decls_As_Spec  : List_Of_Nodes.List;
          --  Special list of declarations for subprogram specs *and* subprogram
          --  bodies which are their own spec. A spec should be generated for
          --  these, not a body (which is generated or not somewhere else).
-         WP_Abstract_Decls : List_Of_Nodes.List;
-         --  Special list for declarations that should be declared as abstract
-         --  entities in Why (type or object), so that variables of non-Alfa
-         --  types can still be declared and appear in effects.
+         WP_Types          : List_Of_Nodes.List;
+         --  List of type declarations that are in Alfa. They are translated
+         --  to Why entirely.
+         WP_Abstract_Types : List_Of_Nodes.List;
+         --  Special list for types that are not in Alfa, but for which we
+         --  still generate abstract type declarations in Why.
+         WP_Abstract_Obj : List_Of_Nodes.List;
+         --  Special list for objects that are not in Alfa (either because of
+         --  their type, or because of their initialization expression), but
+         --  for which we still generate a parameter. This parameter may be
+         --  used in frame conditions.
       end record;
    --  This type represents a Why package (file), whose list of declarations
    --  is not yet translated. Such a package has a name, a list of packages to

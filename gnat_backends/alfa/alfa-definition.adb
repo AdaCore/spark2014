@@ -128,8 +128,19 @@ package body ALFA.Definition is
    procedure Mark_Type_Declaration (Id : Unique_Entity_Id);
    --  Should be called on every type declaration. Add Id to All_Types.
 
-   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean;
+   function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the declaration for Id was analyzed so far
+
+   function Is_Main_Cunit (N : Node_Id) return Boolean is
+     (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
+
+   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
+     (Present (Corresponding_Body (N))
+       and then Is_Main_Cunit
+         (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
+
+   function Is_In_Standard_Package (N : Node_Id) return Boolean is
+      (Sloc (N) = Standard_Location);
 
    ----------------
    -- ALFA Marks --
@@ -208,7 +219,6 @@ package body ALFA.Definition is
 
    procedure Mark_Type_In_Alfa
      (Id      : Unique_Entity_Id;
-      N       : Node_Id;
       In_Alfa : Boolean);
    --  Mark type Id as being in Alfa if In_Alfa is set, or not being in Alfa
    --  otherwise.
@@ -351,12 +361,14 @@ package body ALFA.Definition is
 
    --  Special treatment for marking some kinds of nodes
 
+   procedure Mark_Type_Entity                 (Id : Unique_Entity_Id);
+   --  Types are special, we represent them by entities.
+
    procedure Mark_Attribute_Reference         (N : Node_Id);
    procedure Mark_Binary_Op                   (N : Node_Id);
    procedure Mark_Call                        (N : Node_Id);
    procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Conditional_Expression      (N : Node_Id);
-   procedure Mark_Full_Type_Declaration       (N : Node_Id);
    procedure Mark_Function_Specification      (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
@@ -372,11 +384,9 @@ package body ALFA.Definition is
    procedure Mark_Subprogram_Body             (N : Node_Id);
    procedure Mark_Subprogram_Declaration      (N : Node_Id);
    procedure Mark_Subprogram_Specification    (N : Node_Id);
-   procedure Mark_Subtype_Declaration         (N : Node_Id);
    procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Type_Conversion             (N : Node_Id);
-   procedure Mark_Type_Definition             (Id : Unique_Entity_Id;
-                                               N  : Node_Id);
+   procedure Mark_Type_Definition             (Id : Unique_Entity_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
    procedure Mark_With_Clause                 (N : Node_Id);
 
@@ -449,14 +459,18 @@ package body ALFA.Definition is
 
    procedure Mark_Type_In_Alfa
      (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean) is
+      In_Alfa : Boolean)
+   is
+      Alfa_Status : constant Alfa_Decl :=
+         (if In_Alfa then Alfa_Type else Non_Alfa_Type);
    begin
       if In_Alfa then
          Types_In_Alfa.Include (+Id);
-         Filter_In_Alfa (N, Alfa_Type);
-      else
-         Filter_In_Alfa (+Id, Non_Alfa_Type);
+      end if;
+      if not (Type_Entity_Marked (+Id))
+         and then not (Is_In_Standard_Package (+Id))
+         and then not (Is_From_Standard_Library (Sloc (+Id))) then
+         Filter_In_Alfa (+Id, Alfa_Status);
       end if;
    end Mark_Type_In_Alfa;
 
@@ -479,21 +493,13 @@ package body ALFA.Definition is
    begin
       if Scope (+Id) = Standard_Standard then
          return Standard_In_ALFA.Contains (+Id);
-
-      elsif Is_Itype (+Id) then
-         if Itype_Has_Declaration (+Id) then
-            if not Type_Declaration_Marked (+Id) then
-               Mark (Parent (+Id));
-            end if;
-            return (Id_Set.Contains (Types_In_Alfa, +Id));
-         else
-            Mark_Type_In_Alfa (Id, Empty, In_Alfa => False);
-            return False;
-         end if;
-
-      else
-         return (Id_Set.Contains (Types_In_Alfa, +Id));
       end if;
+
+      if Is_Itype (+Id) and then not (Type_Entity_Marked (+Id)) then
+         Mark (+Id);
+      end if;
+
+      return (Id_Set.Contains (Types_In_Alfa, +Id));
    end Type_Is_In_ALFA;
 
    procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
@@ -501,7 +507,7 @@ package body ALFA.Definition is
       All_Types.Include (+Id);
    end Mark_Type_Declaration;
 
-   function Type_Declaration_Marked (Id : Unique_Entity_Id) return Boolean is
+   function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean is
      (All_Types.Contains (+Id));
 
    ----------------------------
@@ -620,6 +626,13 @@ package body ALFA.Definition is
       --  Dispatch on node kind
 
       case Nkind (N) is
+         when N_Defining_Identifier =>
+            --  We represent types by their entity, instead of
+            --  their declaration. Type identifiers be the only entities we
+            --  come across.
+            pragma Assert (Is_Type (N));
+            Mark_Type_Entity (Unique (N));
+
          when N_Abstract_Subprogram_Declaration =>
             Mark_Non_ALFA ("abstract subprogram", N, V_Tagged);
 
@@ -733,9 +746,7 @@ package body ALFA.Definition is
 --              end if;
 
          when N_Full_Type_Declaration =>
-            if not Has_Private_Declaration (Defining_Entity (N)) then
-               Mark_Full_Type_Declaration (N);
-            end if;
+            Mark (Defining_Identifier (N));
 
          when N_Function_Call =>
             Mark_Call (N);
@@ -873,10 +884,7 @@ package body ALFA.Definition is
             Mark_Subprogram_Declaration (N);
 
          when N_Subtype_Declaration =>
-            Mark_Subtype_Declaration (N);
-
-         when N_Subtype_Indication =>
-            Mark_Subtype_Indication (N);
+            Mark (Defining_Identifier (N));
 
          when N_Type_Conversion =>
             Mark_Type_Conversion (N);
@@ -899,8 +907,7 @@ package body ALFA.Definition is
 
          when N_Private_Extension_Declaration   |
               N_Private_Type_Declaration        =>
-            Mark_Full_Type_Declaration
-              (Parent (Full_View (Defining_Identifier (N))));
+            Mark (Defining_Identifier (N));
 
          when N_With_Clause =>
             Mark_With_Clause (N);
@@ -1121,13 +1128,6 @@ package body ALFA.Definition is
 
    procedure Mark_Compilation_Unit (N : Node_Id) is
 
-      function Is_Main_Cunit (N : Node_Id) return Boolean is
-        (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
-
-      function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
-        (Present (Corresponding_Body (N))
-          and then Is_Main_Cunit
-            (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
    begin
       --  Separately mark declarations from Standard as in ALFA or not
 
@@ -1220,24 +1220,6 @@ package body ALFA.Definition is
       end if;
    end Mark_Conditional_Expression;
 
-   --------------------------------
-   -- Mark_Full_Type_Declaration --
-   --------------------------------
-
-   procedure Mark_Full_Type_Declaration (N : Node_Id) is
-      Id  : constant Unique_Entity_Id := Unique (Defining_Identifier (N));
-      Def : constant Node_Id          := Type_Definition (N);
-   begin
-      Mark_Type_Declaration (Id);
-      Push_Scope (Id);
-      Mark_Type_Definition (Id, Def);
-      Pop_Scope (Id);
-
-      --  If type is in Alfa, store this information explicitly
-
-      Mark_Type_In_Alfa (Id, N, In_Alfa => Type_Is_Computed_In_ALFA (Id));
-   end Mark_Full_Type_Declaration;
-
    ---------------------------------
    -- Mark_Function_Specification --
    ---------------------------------
@@ -1326,6 +1308,23 @@ package body ALFA.Definition is
          end case;
       end if;
    end Mark_Identifier_Or_Expanded_Name;
+
+   ----------------------
+   -- Mark_Type_Entity --
+   ----------------------
+
+   procedure Mark_Type_Entity (Id : Unique_Entity_Id)
+   is
+   begin
+      Push_Scope (Id);
+      Mark_Type_Definition (Id);
+      Pop_Scope (Id);
+
+      --  If type is in Alfa, store this information explicitly
+
+      Mark_Type_In_Alfa (Id, In_Alfa => Type_Is_Computed_In_ALFA (Id));
+      Mark_Type_Declaration (Id);
+   end Mark_Type_Entity;
 
    -----------------------
    -- Mark_If_Statement --
@@ -1999,23 +1998,6 @@ package body ALFA.Definition is
       end if;
    end Mark_Subprogram_Specification;
 
-   ------------------------------
-   -- Mark_Subtype_Declaration --
-   ------------------------------
-
-   procedure Mark_Subtype_Declaration (N : Node_Id) is
-      Id : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-   begin
-      Mark_Type_Declaration (Id);
-      Push_Scope (Id);
-      Mark (Subtype_Indication (N));
-      Pop_Scope (Id);
-
-      --  If type is in Alfa, store this information explicitly
-
-      Mark_Type_In_Alfa (Id, N, In_Alfa => Type_Is_Computed_In_ALFA (Id));
-   end Mark_Subtype_Declaration;
-
    -----------------------------
    -- Mark_Subtype_Indication --
    -----------------------------
@@ -2121,33 +2103,26 @@ package body ALFA.Definition is
    -- Mark_Type_Definition --
    --------------------------
 
-   procedure Mark_Type_Definition (Id : Unique_Entity_Id; N : Node_Id) is
+   procedure Mark_Type_Definition (Id : Unique_Entity_Id) is
    begin
       if Is_Tagged_Type (+Id) then
-         Mark_Non_ALFA ("tagged type", N, V_Tagged);
+         Mark_Non_ALFA ("tagged type", +Id);
       end if;
 
-      case Nkind (N) is
-         when N_Array_Type_Definition =>
+      case Ekind (+Id) is
+         when Array_Kind =>
             declare
-               Component_Def : constant Node_Id := Component_Definition (N);
-               Component_Typ : constant Node_Id :=
-                                 Subtype_Indication (Component_Def);
-               Index         : Node_Id;
+               Component_Typ : constant Node_Id := Component_Type (+Id);
+               Index         : Node_Id := First_Index (+Id);
 
             begin
-               if Nkind (N) = N_Constrained_Array_Definition then
-                  Index := First (Discrete_Subtype_Definitions (N));
-               else
-                  Index := First (Subtype_Marks (N));
-               end if;
 
                --  Check that all index types are in ALFA
 
                while Present (Index) loop
                   if not Type_Is_In_ALFA (Unique (Etype (Index))) then
                      Mark_Non_ALFA
-                       ("index type", N, From => Unique (Etype (Index)));
+                       ("index type", +Id, From => Unique (Etype (Index)));
                   end if;
                   Next_Index (Index);
                end loop;
@@ -2155,71 +2130,64 @@ package body ALFA.Definition is
                --  Access definition for component type is not in ALFA
 
                if No (Component_Typ) then
-                  Mark_Non_ALFA ("access type", N);
+                  Mark_Non_ALFA ("access type", +Id);
                end if;
 
                --  Check that component type is in ALFA
 
-               if not Type_Is_In_ALFA (Unique (Etype (Component_Typ))) then
+               if not Type_Is_In_ALFA (Unique (Component_Typ)) then
                   Mark_Non_ALFA
-                    ("component type", N,
-                     From => Unique (Etype (Component_Typ)));
+                    ("component type", +Id,
+                     From => Unique (Component_Typ));
                end if;
 
                --  Check that array bounds are static
 
-               if Nkind (N) = N_Constrained_Array_Definition
+               if Is_Constrained (+Id)
                  and then not Has_Static_Array_Bounds (+Id)
                then
                   Mark_Non_ALFA
-                    ("array type with non-static bounds", N, V_Implem);
+                    ("array type with non-static bounds", +Id);
                end if;
             end;
 
-         when N_Enumeration_Type_Definition =>
+         when Enumeration_Kind =>
+
             --  Enumeration type is in ALFA only if it is not a character type
 
             if Is_Character_Type (+Id) then
-               Mark_Non_ALFA ("character enumeration type", N);
+               Mark_Non_ALFA ("character enumeration type", +Id);
             end if;
 
-         when N_Signed_Integer_Type_Definition =>
-            null;
+         when Signed_Integer_Kind =>
+            if not (Is_Static_Range (Scalar_Range (+Id))) then
+               Mark_Non_ALFA ("integer type with dynamic range", +Id);
+            end if;
 
-         when N_Derived_Type_Definition =>
-            if Is_Array_Type (+Id) then
-               Mark_Non_ALFA ("array derived type", N, V_Implem);
-            elsif Present (Interface_List (N)) then
-               Mark_Non_ALFA ("interface", N);
-            elsif Present (Record_Extension_Part (N)) then
-               Mark_Non_ALFA ("record extension", N, V_Implem);
+         when Record_Kind =>
+            if Is_Interface (+Id) then
+               Mark_Non_ALFA ("interface", +Id, Id);
             else
-               Mark (Subtype_Indication (N));
+               declare
+                  Field : Node_Id := First_Entity (+Id);
+               begin
+                  Push_Scope (Id);
+
+                  while Present (Field) loop
+                     Mark (Etype (Field));
+                     Next_Entity (Field);
+                  end loop;
+
+                  Pop_Scope (Id);
+               end;
             end if;
 
-         when N_Record_Definition =>
-            if Present (Interface_List (N)) then
-               Mark_Non_ALFA ("interface", N);
-            elsif Present (Component_List (N))
-              and then not Null_Present (Component_List (N))
-            then
-               if Present (Variant_Part (Component_List (N))) then
-                  Mark_Non_ALFA ("variant", N, V_Implem);
-               else
-                  Mark_List (Component_Items (Component_List (N)));
-               end if;
-            end if;
+         when E_Modular_Integer_Type | E_Modular_Integer_Subtype
+            | Real_Kind  =>
+            Mark_Non_ALFA ("type definition", +Id, Id);
 
-         when N_Modular_Type_Definition |
-              N_Floating_Point_Definition |
-              N_Decimal_Fixed_Point_Definition |
-              N_Ordinary_Fixed_Point_Definition =>
-            Mark_Non_ALFA ("type definition", N, V_Implem);
-
-         when N_Access_To_Subprogram_Definition |
-              N_Access_To_Object_Definition     |
-              N_Access_Definition               =>
-            Mark_Non_ALFA ("access type", N);
+         when Access_Kind =>
+            Mark_Non_ALFA ("access type", +Id, Id);
 
          when others =>
             raise Program_Error;

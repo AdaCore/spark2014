@@ -309,7 +309,9 @@ package body Gnat2Why.Driver is
       Current_Why_Output_File := File;
 
       Translate_Context (File, Pack.WP_Context);
-      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Decls);
+      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Types);
+      Translate_List_Of_Decls (File, Pack.WP_Types, As_Spec => False);
+      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Obj);
       Translate_List_Of_Decls (File, Pack.WP_Decls_As_Spec, As_Spec => True);
       Translate_List_Of_Decls (File, Pack.WP_Decls, As_Spec => False);
 
@@ -380,15 +382,13 @@ package body Gnat2Why.Driver is
 
       while Cu /= No_Element loop
          case Nkind (Element (Cu)) is
-            when N_Full_Type_Declaration =>
-               Why_Type_Decl_Of_Full_Type_Decl
-                 (File,
-                  Defining_Identifier (Element (Cu)));
-
-            when N_Subtype_Declaration =>
-               Why_Type_Decl_Of_Subtype_Decl
-                 (File,
-                  Defining_Identifier (Element (Cu)));
+            when N_Defining_Identifier =>
+               --  This is a type declaration
+               if Is_First_Subtype (Element (Cu)) then
+                  Why_Type_Decl_Of_Full_Type_Decl (File, Element (Cu));
+               else
+                  Why_Type_Decl_Of_Subtype_Decl (File, Element (Cu));
+               end if;
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
@@ -409,6 +409,18 @@ package body Gnat2Why.Driver is
             when N_Pragma | N_Package_Declaration | N_Exception_Declaration
                | N_Exception_Renaming_Declaration =>
                null;
+
+            --  ??? intermediate code to ease transformation
+            --  To be removed
+
+            when N_Full_Type_Declaration =>
+               Why_Type_Decl_Of_Full_Type_Decl
+                  (File,
+                   Defining_Identifier (Element (Cu)));
+            when N_Subtype_Declaration =>
+               Why_Type_Decl_Of_Subtype_Decl
+                  (File,
+                   Defining_Identifier (Element (Cu)));
 
             when others =>
                raise Not_Implemented;
@@ -449,9 +461,9 @@ package body Gnat2Why.Driver is
 
       Declare_Generic_Array_Type (File);
 
+      Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
         (File, Filter_Standard_Package, As_Spec => False);
-      Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
 
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere
