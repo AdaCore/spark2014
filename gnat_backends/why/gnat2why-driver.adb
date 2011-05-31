@@ -334,9 +334,13 @@ package body Gnat2Why.Driver is
    is
       use List_Of_Nodes;
 
+      Cu : Cursor := Decls.First;
    begin
-      for N of Decls loop
+      --  Workaround for K526-008 and K525-019
+      --  (for N of Decls loop...)
+      while Cu /= No_Element loop
          declare
+            N    : constant Node_Id := Element (Cu);
             Name : constant String := Full_Name (N);
          begin
             case Ekind (N) is
@@ -361,6 +365,7 @@ package body Gnat2Why.Driver is
                   raise Program_Error;
             end case;
          end;
+         Next (Cu);
       end loop;
    end Translate_List_Of_Abstract_Decls;
 
