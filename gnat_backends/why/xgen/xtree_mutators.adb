@@ -372,14 +372,10 @@ package body Xtree_Mutators is
       begin
          if not Is_List (FI) then
             Print_Setter_Specification (O, Kind, FI, IK);
-
-            if Is_Why_Id (FI) then
-               PL (O, " with");
-               Relative_Indent (O, 2);
-               Print_Mutator_Precondition (O, FI);
-               Relative_Indent (O, -2);
-            end if;
-
+            PL (O, " with");
+            Relative_Indent (O, 2);
+            Print_Mutator_Precondition (O, FI);
+            Relative_Indent (O, -2);
             PL (O, ";");
          else
             for List_Op in List_Op_Kind'Range loop
@@ -429,8 +425,12 @@ package body Xtree_Mutators is
              (if Is_List (FI) then Element_Param
               else Param_Name (FI));
    begin
+      P (O, "Pre => (Is_Root (+" & Node_Id_Param & ")");
       if Is_Why_Id (FI) then
-         P (O, "Pre => (Is_Root (+" & PN  & "))");
+         NL (O);
+         P (O, "        and then Is_Root (+" & PN  & "))");
+      else
+         P (O, ")");
       end if;
    end Print_Mutator_Precondition;
 
