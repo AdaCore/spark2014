@@ -170,9 +170,7 @@ package body Why.Gen.Axioms is
                                            Parameters =>
                                              (1 => New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
-                            New_Operation (Name =>
-                                             +Duplicate_Any_Node
-                                               (Id => +Conversion),
+                            New_Operation (Name => Conversion,
                                            Parameters =>
                                              (1 => New_Term (Y_S)));
       Formula           : constant W_Predicate_Id :=

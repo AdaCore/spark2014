@@ -353,14 +353,13 @@ package body Why.Gen.Progs is
       Incr_Stmt : constant W_Prog_Id :=
          New_Assignment
             (Ada_Node => Ada_Node,
-             Name     => +Duplicate_Any_Node (Id => +Loop_Index),
+             Name     => Loop_Index,
              Value    => Addition);
       Loop_Cond : constant W_Prog_Id  :=
          New_Infix_Call
            (Ada_Node => Ada_Node,
             Infix    => New_Op_Le_Prog,
-            Left     =>
-              +Duplicate_Any_Node (Id => +Index_Deref),
+            Left     => Index_Deref,
             Right    => New_Prog_Identifier (Def => High));
       Loop_Content : constant W_Prog_Id :=
          New_Statement_Sequence
@@ -375,23 +374,23 @@ package body Why.Gen.Progs is
                   Op     => New_Rel_Le,
                   Right  =>
                     New_Term_Identifier
-                      (Name => +Duplicate_Any_Node (Id => +Loop_Index)),
+                      (Name => Loop_Index),
                   Op2    => New_Rel_Le,
                   Right2 =>
                      New_Arith_Operation
                         (Op => New_Op_Add,
                          Left =>
                            New_Term_Identifier
-                              (Name => +Duplicate_Any_Node (Id => +High)),
+                              (Name => High),
                          Right =>
                            New_Integer_Constant (Value => Uint_1))));
    begin
       return
         New_Binding_Ref
            (Ada_Node => Ada_Node,
-            Name     => +Duplicate_Any_Node (Id => +Loop_Index),
+            Name     => Loop_Index,
             Def      =>
-               New_Prog_Identifier (Def => +Duplicate_Any_Node (Id => +Low)),
+               New_Prog_Identifier (Def => Low),
             Context  =>
               New_While_Loop
                 (Ada_Node     => Ada_Node,

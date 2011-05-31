@@ -60,8 +60,8 @@ package body Why.Gen.Decl is
          begin
             while Has_Element (Cur) loop
                Handle_Binder
-                  (Name  => +Duplicate_Any_Node (Id => Element (Cur)),
-                   Ty    => +Duplicate_Any_Node (Id => +Arg_Ty));
+                  (Name  => +Element (Cur),
+                   Ty    => Arg_Ty);
                if Rev then
                   Node_Lists.Previous (Cur);
                else

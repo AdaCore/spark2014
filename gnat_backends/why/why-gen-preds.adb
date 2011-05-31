@@ -83,8 +83,7 @@ package body Why.Gen.Preds is
                                Parameters => (1 => New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
-                              (Name =>
-                                 +Duplicate_Any_Node (Id => +Conversion),
+                              (Name => Conversion,
                                Parameters => (1 => New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
@@ -203,7 +202,7 @@ package body Why.Gen.Preds is
                    Left     =>
                      New_Negation
                         (Ada_Node => Ada_Node,
-                         Operand  => +Duplicate_Predicate (Id => +Condition)),
+                         Operand  => Condition),
                    Right    => Else_Part));
    end New_Conditional_Prop;
 
@@ -411,8 +410,7 @@ package body Why.Gen.Preds is
               (Foralls (Index),
                Arg_Ids (Index));
             Universal_Quantif_Set_Var_Type
-              (Foralls (Index),
-               +Duplicate_Any_Node (Id => Node_Lists.Element (C)));
+              (Foralls (Index), +Node_Lists.Element (C));
             Index := Index + 1;
             Node_Lists.Next (C);
          end loop;

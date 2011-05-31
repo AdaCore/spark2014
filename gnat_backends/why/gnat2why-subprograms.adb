@@ -576,7 +576,7 @@ package body Gnat2Why.Subprograms is
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
                  Left     => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                 Right    => +Duplicate_Any_Node (Id => +T)),
+                 Right    => T),
              Right =>
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
@@ -1213,7 +1213,7 @@ package body Gnat2Why.Subprograms is
                                       (Expression (Orig_Node))));
                Ax_Body    : W_Predicate_Id :=
                               New_Implication
-                                (Left  => +Duplicate_Any_Node (Id => +Pre),
+                                (Left  => Pre,
                                  Right => Equality);
 
                Arg : Node_Id := First (Ada_Binders);
@@ -1278,8 +1278,7 @@ package body Gnat2Why.Subprograms is
                                   Right =>
                                     Why_Term_Of_Ada_Expr
                                       (Expression (Orig_Node))))
-                            else
-                            +Duplicate_Any_Node (Id => +Post));
+                            else Post);
          begin
             New_Parameter
               (File        => File,
@@ -1557,7 +1556,7 @@ package body Gnat2Why.Subprograms is
                Range_Cond :=
                   Range_Prog
                     (Get_Range (Range_Expr),
-                     New_Deref (Ref => +Duplicate_Any_Node (Id => +Index)));
+                     New_Deref (Ref => Index));
                return
                   Sequence
                      (New_Binding_Ref
@@ -1931,7 +1930,7 @@ package body Gnat2Why.Subprograms is
                             Condition    =>
                               Range_Prog
                                 (Loop_Range,
-                                 +Duplicate_Any_Node (Id => +Index_Deref)),
+                                 Index_Deref),
                             Loop_Name    => Loop_Name,
                             Invariant    => Enriched_Inv,
                             Inv_Node     => Inv_Node);
@@ -2276,14 +2275,14 @@ package body Gnat2Why.Subprograms is
                   return
                      New_Universal_Quantif
                         (Ada_Node  => Expr,
-                         Variables => (1 => +Duplicate_Any_Node (Id => +I)),
+                         Variables => (1 => I),
                          Var_Type  => New_Type_Int,
                          Pred      => Quant_Body);
                else
                   return
                      New_Existential_Quantif
                         (Ada_Node  => Expr,
-                         Variables => (1 => +Duplicate_Any_Node (Id => +I)),
+                         Variables => (1 => I),
                          Var_Type  => New_Type_Int,
                          Pred      => Quant_Body);
                end if;
@@ -2570,7 +2569,7 @@ package body Gnat2Why.Subprograms is
           (Loop_Body,
             New_Conditional_Prog
                (Condition =>
-                  New_Prog_Notb (+Duplicate_Any_Node (Id => +Condition)),
+                  New_Prog_Notb (Condition),
                 Then_Part =>
                   New_Raise_Statement (Name => New_Identifier (Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=

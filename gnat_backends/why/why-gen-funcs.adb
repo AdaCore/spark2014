@@ -53,12 +53,11 @@ package body Why.Gen.Funcs is
         (File        => File,
          Name        => Name,
          Binders     => Binders,
-         Return_Type => W_Logic_Return_Type_Id (Return_Type));
+         Return_Type => +Return_Type);
 
       if Final_Post = Why_Empty then
          declare
-            Logic_Name : constant W_Identifier_Id :=
-                           +Duplicate_Any_Node (Id => +Name);
+            Logic_Name : constant W_Identifier_Id := Name;
          begin
             Final_Post := New_Related_Terms
               (Left  => New_Call_To_Logic (Logic_Name, Binders),
@@ -71,7 +70,7 @@ package body Why.Gen.Funcs is
          (File        => File,
           Name        => Program_Space_Name,
           Binders     => Binders,
-          Return_Type => +Duplicate_Any_Node (Id => +Return_Type),
+          Return_Type => +Return_Type,
           Pre         => Pre,
           Post        => Final_Post,
           Effects     => New_Effects);

@@ -101,11 +101,11 @@ package body Why.Gen.Arrays is
    is
       Comp_Type  : constant W_Primitive_Type_Id :=
          New_Abstract_Type (Name => (New_Identifier (Component)));
-      Ar_Type    : constant W_Logic_Return_Type_Id :=
+      Ar_Type    : constant W_Primitive_Type_Id :=
          New_Generic_Actual_Type_Chain
             (Type_Chain => (1 => Comp_Type),
              Name => New_Identifier (Ada_Array));
-      Name_Type  : constant W_Logic_Arg_Type_Id :=
+      Name_Type  : constant W_Primitive_Type_Id :=
          New_Abstract_Type (Name => (New_Identifier (Name)));
       Ar         : constant W_Term_Id :=
          New_Term ("a");
@@ -117,7 +117,7 @@ package body Why.Gen.Arrays is
       Ar_Binder_2  : constant W_Binder_Id :=
          New_Binder
             (Names => (1 => New_Identifier ("a")),
-             Arg_Type => +Duplicate_Any_Node (Id => +Ar_Type));
+             Arg_Type => +Ar_Type);
    begin
       --  generate the theory:
       --  type t
@@ -129,13 +129,13 @@ package body Why.Gen.Arrays is
       New_Logic
          (File,
           Array_Conv_From (Name),
-          Args => (1 => Name_Type),
-          Return_Type => Ar_Type);
+          Args => (1 => +Name_Type),
+          Return_Type => +Ar_Type);
       New_Logic
          (File,
           Array_Conv_To (Name),
-          Args => (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
-          Return_Type => +Duplicate_Any_Node (Id => +Name_Type));
+          Args => (1 => +Ar_Type),
+          Return_Type => +Name_Type);
       New_Axiom
          (File       => File,
           Name       => Array_Conv_Idem (Name),
@@ -144,7 +144,7 @@ package body Why.Gen.Arrays is
                (Binders => (1 => Ar_Binder),
                 Pred =>
                   New_Equal
-                     (+Duplicate_Any_Node (Id => +Ar),
+                     (Ar,
                       New_Operation
                         (Name       => Array_Conv_To (Name),
                          Parameters =>
@@ -159,15 +159,14 @@ package body Why.Gen.Arrays is
                (Binders => (1 => Ar_Binder_2),
                 Pred =>
                   New_Equal
-                     (+Duplicate_Any_Node (Id => +Ar),
+                     (Ar,
                       New_Operation
                         (Name       => Array_Conv_From (Name),
                          Parameters =>
                            (1 => New_Operation
                                  (Name => Array_Conv_To (Name),
                                   Parameters =>
-                                    (1 => +Duplicate_Any_Node
-                                             (Id => +Ar))))))));
+                                    (1 => Ar)))))));
    end Declare_Ada_Unconstrained_Array;
 
    --------------------------------
@@ -202,33 +201,33 @@ package body Why.Gen.Arrays is
          Array_Access_Name (Ada_Array),
          Args =>
             (1 => New_Type_Int,
-             2 => +Duplicate_Any_Node (Id => +Ar_Type)),
-         Return_Type => +Duplicate_Any_Node (Id => +A));
+             2 => +Ar_Type),
+         Return_Type => +A);
       New_Logic
         (File,
          Array_Update_Name (Ada_Array),
          Args =>
             (1 => New_Type_Int,
-             2 => +Duplicate_Any_Node (Id => +Ar_Type),
-             3 => +Duplicate_Any_Node (Id => +A)),
-         Return_Type => +Duplicate_Any_Node (Id => +Ar_Type));
+             2 => +Ar_Type,
+             3 => +A),
+         Return_Type => +Ar_Type);
       New_Logic
         (File,
          Array_Length_Name (Ada_Array),
          Args =>
-            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+            (1 => +Ar_Type),
          Return_Type => New_Type_Int);
       New_Logic
         (File,
          Array_First_Name (Ada_Array),
          Args =>
-            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+            (1 => +Ar_Type),
          Return_Type => New_Type_Int);
       New_Logic
         (File,
          Array_Last_Name (Ada_Array),
          Args =>
-            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+            (1 => +Ar_Type),
          Return_Type => New_Type_Int);
 
       --  Declare the axioms:
@@ -244,7 +243,7 @@ package body Why.Gen.Arrays is
          Ar_Binder  : constant W_Binder_Id :=
             New_Binder
                (Names => (1 => New_Identifier ("a")),
-                Arg_Type => +Duplicate_Any_Node (Id => +Ar_Type));
+                Arg_Type => +Ar_Type);
          Index_Binder : constant W_Binder_Id :=
             New_Binder
                (Names => (1 => New_Identifier ("i")),
@@ -252,7 +251,7 @@ package body Why.Gen.Arrays is
          Component_Binder  : constant W_Binder_Id :=
             New_Binder
                (Names => (1 => New_Identifier ("v")),
-                Arg_Type => +Duplicate_Any_Node (Id => +A));
+                Arg_Type => +A);
          Index_Diff_Binder  : constant W_Binder_Id :=
             New_Binder
                (Names => (1 => New_Identifier ("j")),
@@ -282,24 +281,24 @@ package body Why.Gen.Arrays is
              (Name => Array_Access_Name (Ada_Array),
               Parameters =>
                (1 => Index_Diff,
-                2 => +Duplicate_Any_Node (Id => +Upd_Term)));
+                2 => Upd_Term));
          Normal_Length : constant W_Term_Id :=
             --  'last - 'first + 1
             New_Arith_Operation
                (Left =>
                   New_Arith_Operation
-                     (Left => +Duplicate_Any_Node (Id => +Last_Term),
+                     (Left => Last_Term,
                       Op => New_Op_Substract,
-                      Right => +Duplicate_Any_Node (Id => +First_Term)),
+                      Right => First_Term),
                 Op => New_Op_Add,
                 Right => New_Integer_Constant (Value => Uint_1));
          Enclosing : constant W_Predicate_Id :=
             New_Related_Terms
-               (Left   => +Duplicate_Any_Node (Id => +First_Term),
+               (Left   => First_Term,
                 Op     => New_Rel_Le,
-                Right  => +Duplicate_Any_Node (Id => +Index),
+                Right  => Index,
                 Op2    => New_Rel_Le,
-                Right2 => +Duplicate_Any_Node (Id => +Last_Term));
+                Right2 => Last_Term);
       begin
          New_Parameter
            (File,
@@ -307,8 +306,7 @@ package body Why.Gen.Arrays is
             Binders     =>
                (1 => Index_Binder,
                 2 => Ar_Binder),
-            Return_Type =>
-               +Duplicate_Any_Node (Id => +A),
+            Return_Type => A,
             Pre => Enclosing,
             Post =>
                New_Equal
@@ -316,8 +314,8 @@ package body Why.Gen.Arrays is
                    New_Operation
                       (Name => Array_Access_Name (Ada_Array),
                        Parameters =>
-                        (1 => +Duplicate_Any_Node (Id => +Index),
-                         2 => +Duplicate_Any_Node (Id => +Ar)))));
+                        (1 => Index,
+                         2 => Ar))));
          New_Parameter
            (File,
             To_Program_Space (Array_Update_Name (Ada_Array)),
@@ -325,17 +323,17 @@ package body Why.Gen.Arrays is
                (1 => Index_Binder,
                 2 => Ar_Binder,
                 3 => Component_Binder),
-            Return_Type => +Duplicate_Any_Node (Id => +Ar_Type),
-            Pre => +Duplicate_Any_Node (Id => +Enclosing),
+            Return_Type => Ar_Type,
+            Pre => Enclosing,
             Post =>
                New_Equal
                   (New_Result_Term,
                    New_Operation
                       (Name => Array_Update_Name (Ada_Array),
                        Parameters =>
-                         (1 => +Duplicate_Any_Node (Id => +Index),
-                          2 => +Duplicate_Any_Node (Id => +Ar),
-                          3 => +Duplicate_Any_Node (Id => +Component)))));
+                         (1 => Index,
+                          2 => Ar,
+                          3 => Component))));
 
          New_Axiom
             (File => File,
@@ -349,7 +347,7 @@ package body Why.Gen.Arrays is
                    Pred =>
                      New_Equal
                         (Acc_Upd_Term_Eq,
-                         +Duplicate_Any_Node (Id => +Component))));
+                         Component)));
          New_Axiom
             (File => File,
              Name => Array_Accupd_Neq_Axiom (Ada_Array),
@@ -364,18 +362,16 @@ package body Why.Gen.Arrays is
                      New_Implication
                         (Left  =>
                            New_NEqual
-                             (+Duplicate_Any_Node (Id => +Index),
-                              +Duplicate_Any_Node (Id => +Index_Diff)),
+                             (Index,
+                              Index_Diff),
                          Right =>
                            New_Equal
                               (Acc_Upd_Term_Neq,
                                New_Operation
                                   (Name => Array_Access_Name (Ada_Array),
                                    Parameters =>
-                                    (1 =>
-                                       +Duplicate_Any_Node (Id => +Index_Diff),
-                                     2 =>
-                                       +Duplicate_Any_Node (Id => +Ar)))))));
+                                    (1 => Index_Diff,
+                                     2 => Ar))))));
          New_Axiom
            (File => File,
             Name => Array_First_Update (Ada_Array),
@@ -391,7 +387,7 @@ package body Why.Gen.Arrays is
                        New_Operation
                          (Name => Array_First_Name (Ada_Array),
                           Parameters =>
-                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+                            (1 => Upd_Term)))));
          New_Axiom
            (File => File,
             Name => Array_Last_Update (Ada_Array),
@@ -407,7 +403,7 @@ package body Why.Gen.Arrays is
                        New_Operation
                          (Name => Array_Last_Name (Ada_Array),
                           Parameters =>
-                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+                            (1 => Upd_Term)))));
          New_Axiom
            (File => File,
             Name => Array_Length_Update (Ada_Array),
@@ -423,7 +419,7 @@ package body Why.Gen.Arrays is
                        New_Operation
                          (Name => Array_Length_Name (Ada_Array),
                           Parameters =>
-                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+                            (1 => Upd_Term)))));
          New_Axiom
            (File => File,
             Name => Array_Length_Non_Zero (Ada_Array),
@@ -434,12 +430,12 @@ package body Why.Gen.Arrays is
                     New_Implication
                       (Left  =>
                          New_Related_Terms
-                           (Left  => +Duplicate_Any_Node (Id => +Last_Term),
-                            Right => +Duplicate_Any_Node (Id => +First_Term),
+                           (Left  => Last_Term,
+                            Right => First_Term,
                             Op    => New_Rel_Ge),
                        Right =>
                          New_Equal
-                           (Left  => +Duplicate_Any_Node (Id => +Length_Term),
+                           (Left  => Length_Term,
                             Right => Normal_Length))));
          New_Axiom
            (File => File,
@@ -451,12 +447,12 @@ package body Why.Gen.Arrays is
                    New_Implication
                      (Left  =>
                         New_Related_Terms
-                          (Left  => +Duplicate_Any_Node (Id => +Last_Term),
-                           Right => +Duplicate_Any_Node (Id => +First_Term),
+                          (Left  => Last_Term,
+                           Right => First_Term,
                            Op    => New_Rel_Lt),
                       Right =>
                         New_Equal
-                          (Left  => +Duplicate_Any_Node (Id => +Length_Term),
+                          (Left  => Length_Term,
                            Right => New_Integer_Constant (Value => Uint_0)))));
       end;
    end Declare_Generic_Array_Type;
@@ -627,7 +623,7 @@ package body Why.Gen.Arrays is
    begin
       return
          New_Assignment
-            (Name => +Duplicate_Any_Node (Id => +Ar),
+            (Name => Ar,
              Value =>
                New_Prog_Call
                  (Name => Array_Conv_To (Type_Name),

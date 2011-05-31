@@ -49,11 +49,10 @@ package body Why.Gen.Records is
       New_Logic
          (File        => File,
           Name        => Record_Getter_Name (C_Name),
-          Args        => (1 => +Duplicate_Any_Node (Id => +R_Type)),
-          Return_Type =>       +C_Type);
+          Args        => (1 => +R_Type),
+          Return_Type => +C_Type);
       Logic_Type_Append_To_Arg_Types
-         (Builder,
-          +Duplicate_Any_Node (Id => +C_Type));
+         (Builder, +C_Type);
    end Add_Component;
 
    -----------------------

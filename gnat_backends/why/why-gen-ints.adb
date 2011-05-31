@@ -162,9 +162,7 @@ package body Why.Gen.Ints is
                    Op    => New_Rel_Symbol (Rel_Symbol),
                    Right => New_Term (Y_S));
             False_Pred : constant W_Predicate_Id :=
-                           New_Negation (Operand =>
-                                           +Duplicate_Any_Node (Id =>
-                                                                  +True_Pred));
+                           New_Negation (Operand => True_Pred);
             Axiom_Body : constant W_Predicate_Id :=
               New_Universal_Quantif
                 (Variables =>

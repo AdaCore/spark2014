@@ -25,7 +25,6 @@
 
 with Namet; use Namet;
 
-with Why.Conversions;         use Why.Conversions;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
@@ -528,7 +527,7 @@ package body Why.Gen.Names is
      (Name : W_Identifier_Id)
      return W_Term_Id is
    begin
-      return New_Term_Identifier (Name => +Duplicate_Any_Node (Id => +Name));
+      return New_Term_Identifier (Name => Name);
    end To_Term_Identifier;
 
    -------------------
