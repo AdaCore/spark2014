@@ -51,17 +51,6 @@ package body Xtree_Builders is
    --  Ditto, but with a return type that is different from the
    --  default one.
 
-   procedure Print_Builder_Precondition
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind);
-   --  Print builder precondition for the given node kind.
-   --  Note that this precondition can be replaced nicely
-   --  replaced by a subtype predicate on ids; when subtype
-   --  predicates are supported by GNAT, it will be a good time
-   --  to do the substitution.
-
    procedure Print_Builder_Body
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
@@ -206,10 +195,6 @@ package body Xtree_Builders is
    is
    begin
       Print_Builder_Specification (O, Kind, IK, BK, Return_Type);
-      PL (O, " with");
-      Relative_Indent (O, 2);
-      Print_Builder_Precondition (O, Kind, IK, BK);
-      Relative_Indent (O, -2);
       PL (O, ";");
    end Print_Builder_Declaration;
 
@@ -605,67 +590,6 @@ package body Xtree_Builders is
       P (O, "return " & Return_Type);
       Relative_Indent (O, -2);
    end Print_Builder_Specification;
-
-   --------------------------------
-   -- Print_Builder_Precondition --
-   --------------------------------
-
-   procedure Print_Builder_Precondition
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind)
-   is
-      use Node_Lists;
-
-      Variant_Part  : constant Why_Node_Info :=
-                        Why_Tree_Info (Kind);
-
-      procedure Print_Parameter_Precondition (Position : Cursor);
-
-      ----------------------------------
-      -- Print_Parameter_Precondition --
-      ----------------------------------
-
-      procedure Print_Parameter_Precondition (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-         PN : constant Wide_String := Param_Name (FI);
-      begin
-         if Previous (Position) = No_Element then
-            Relative_Indent (O, 1);
-         end if;
-
-         if Is_Why_Id (FI) and then not Is_List (FI) then
-            P (O, "Is_Root (+" & PN & ")");
-         else
-            P (O, "True");
-         end if;
-
-         if Next (Position) /= No_Element then
-            NL (O);
-            P (O, "and then ");
-         else
-            Relative_Indent (O, -1);
-         end if;
-      end Print_Parameter_Precondition;
-
-   --  Start of processing for Print_Builder_Precondition
-
-   begin
-      if Has_Variant_Part (Kind)
-        and then IK /= Unchecked
-        and then BK = Builder_Children
-      then
-         PL (O, "Pre =>");
-         Relative_Indent (O, 2);
-         P (O, "(");
-         Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
-         P (O, ")");
-         Relative_Indent (O, -2);
-      else
-         P (O, "Pre => True");
-      end if;
-   end Print_Builder_Precondition;
 
    -------------------------------------
    -- Print_Class_Copy_Builder_Bodies --

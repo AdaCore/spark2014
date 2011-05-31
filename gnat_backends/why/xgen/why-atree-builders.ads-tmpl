@@ -26,8 +26,6 @@
 
 with Why.Ids;              use Why.Ids;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
-with Why.Atree.Properties; use Why.Atree.Properties;
-with Why.Conversions;      use Why.Conversions;
 
 package Why.Atree.Builders is
    --  This package provides a set of unchecked builders, generated

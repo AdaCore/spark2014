@@ -67,9 +67,7 @@ package body Xtree_Mutators is
    pragma Precondition (not Is_List (FI));
    --  Print setter specification for the given node child
 
-   procedure Print_Mutator_Precondition
-     (O    : in out Output_Record;
-      FI   : Field_Info);
+   procedure Print_Mutator_Precondition (O : in out Output_Record);
    --  Print mutator precondition for the given node child.
    --  Note that this precondition can be replaced nicely
    --  replaced by a subtype predicate on ids; when subtype
@@ -374,7 +372,7 @@ package body Xtree_Mutators is
             Print_Setter_Specification (O, Kind, FI, IK);
             PL (O, " with");
             Relative_Indent (O, 2);
-            Print_Mutator_Precondition (O, FI);
+            Print_Mutator_Precondition (O);
             Relative_Indent (O, -2);
             PL (O, ";");
          else
@@ -382,7 +380,7 @@ package body Xtree_Mutators is
                Print_List_Op_Specification (O, Kind, FI, IK, List_Op);
                PL (O, " with");
                Relative_Indent (O, 2);
-               Print_Mutator_Precondition (O, FI);
+               Print_Mutator_Precondition (O);
                Relative_Indent (O, -2);
                PL (O, ";");
 
@@ -417,21 +415,9 @@ package body Xtree_Mutators is
    -- Print_Mutator_Precondition --
    --------------------------------
 
-   procedure Print_Mutator_Precondition
-     (O    : in out Output_Record;
-      FI   : Field_Info)
-   is
-      PN : constant Wide_String :=
-             (if Is_List (FI) then Element_Param
-              else Param_Name (FI));
+   procedure Print_Mutator_Precondition (O : in out Output_Record) is
    begin
-      P (O, "Pre => (Is_Root (+" & Node_Id_Param & ")");
-      if Is_Why_Id (FI) then
-         NL (O);
-         P (O, "        and then Is_Root (+" & PN  & "))");
-      else
-         P (O, ")");
-      end if;
+      P (O, "Pre => (Is_Root (+" & Node_Id_Param & "))");
    end Print_Mutator_Precondition;
 
    ---------------------------------
