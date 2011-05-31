@@ -81,6 +81,9 @@ package body ALFA.Frame_Conditions is
    --  Make sure each element in Set has an entry in Map. If not already
    --  present, add one which maps the element to the empty set.
 
+   function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
+   --  Return whether Ent is the special variable "HEAP"
+
    ----------------
    -- Add_To_Map --
    ----------------
@@ -233,6 +236,13 @@ package body ALFA.Frame_Conditions is
    begin
       return Writes.Element (E_Name) - Defines.Element (E_Name);
    end Get_Writes;
+
+   ----------------------
+   -- Is_Heap_Variable --
+   ----------------------
+
+   function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
+      (Ent.all = ALFA.Name_Of_Heap_Variable);
 
    ---------------
    -- Load_ALFA --
@@ -446,7 +456,9 @@ package body ALFA.Frame_Conditions is
 
                      --  Register the definition on first occurence
 
-                     if Current_Entity /= Ref_Entity then
+                     if Current_Entity /= Ref_Entity
+                       and then not Is_Heap_Variable (Ref_Entity)
+                     then
                         Add_To_Map (Defines, Def_Scope_Ent, Ref_Entity);
                      end if;
 

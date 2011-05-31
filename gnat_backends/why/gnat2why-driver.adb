@@ -46,6 +46,7 @@ with Stand;                 use Stand;
 with Switch;                use Switch;
 with String_Utils;          use String_Utils;
 
+with ALFA;
 with ALFA.Common;           use ALFA.Common;
 with ALFA.Definition;       use ALFA.Definition;
 with ALFA.Filter;           use ALFA.Filter;
@@ -477,6 +478,16 @@ package body Gnat2Why.Driver is
       Add_Standard_Type (Standard_Integer_16);
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
+
+      --  The special "HEAP" variable is defined specially
+
+      New_Abstract_Type (File, "standard___heap_type");
+
+      New_Global_Ref_Declaration
+        (File     => File,
+         Name     => New_Identifier (ALFA.Name_Of_Heap_Variable),
+         Obj_Type =>
+           New_Abstract_Type (Empty, New_Identifier ("standard___heap_type")));
 
       --  Additionally, the following type does not even have a type
       --  definition. The type is not in Alfa anyway, so we just generate the
