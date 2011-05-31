@@ -53,6 +53,9 @@ procedure Gnatprove is
    All_VCs      : aliased Boolean;
    --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
    --  gnat2why
+   Alfa_Report  : aliased Boolean;
+   --  True if --alfa-report switch is present. Pass option "-gnatd.K" to
+   --  gnat2why
    Parallel     : aliased Integer;
    --  The number of parallel processes.
    Timeout      : aliased Integer;
@@ -305,6 +308,12 @@ procedure Gnatprove is
                      Help => "Print messages for all generated VCs");
 
       Define_Switch
+        (Config,
+         Alfa_Report'Access,
+         Long_Switch => "--alfa-report",
+         Help => "Disable VC generation, only generate Alfa information");
+
+      Define_Switch
          (Config, Timeout'Access,
           Long_Switch => "--timeout=",
           Help => "Set the timeout for Alt-ergo in seconds (default is 10)");
@@ -396,9 +405,14 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-U");
-      if not All_VCs then
+      if Alfa_Report or else not All_VCs then
          Args.Append ("-cargs:Ada");
-         Args.Append ("-gnatd.G");
+         if not All_VCs then
+            Args.Append ("-gnatd.G");
+         end if;
+         if Alfa_Report then
+            Args.Append ("-gnatd.K");
+         end if;
       end if;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
    end Translate_To_Why;
@@ -425,6 +439,10 @@ begin
    Compute_ALI_Information (Project_File.all);
 
    Translate_To_Why (Project_File.all);
+
+   if Alfa_Report then
+      GNAT.OS_Lib.OS_Exit (0);
+   end if;
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
 

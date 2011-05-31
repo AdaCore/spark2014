@@ -221,7 +221,7 @@ package body Gnat2Why.Driver is
       Mark_All_Compilation_Units;
       Close_ALFA_Output_File;
 
-      if Compilation_Errors then
+      if Compilation_Errors or else Debug_Flag_Dot_KK then
          return;
       end if;
 
