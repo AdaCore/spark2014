@@ -1576,7 +1576,6 @@ package body ALFA.Definition is
    -----------------------
 
    procedure Mark_Package_Body (N : Node_Id) is
-      HSS : constant Node_Id   := Handled_Statement_Sequence (N);
       Id  : constant Unique_Entity_Id := Unique (Defining_Entity (N));
 
    begin
@@ -1593,9 +1592,6 @@ package body ALFA.Definition is
 
       Push_Scope (Id);
       Mark_List (Declarations (N));
-      if Present (HSS) then
-         Mark (HSS);
-      end if;
       Pop_Scope (Id);
    end Mark_Package_Body;
 
