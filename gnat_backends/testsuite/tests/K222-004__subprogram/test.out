@@ -1,3 +1,4 @@
+sub.adb:3:07: annotation is placed after violation of Alfa
 sub.adb:4:11: type is not in Alfa
 sub.adb:6:07: object is not in Alfa
 sub.adb:6:12: allocator is not in Alfa
