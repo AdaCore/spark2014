@@ -431,7 +431,8 @@ begin
    --  works in the object directory, this means that we only support a
    --  single object directory.
    --  Here we check that this is the case, and fail gracefully if not.
-   if Object_Path (Proj_Type, Recursive => True)'Length > 1 then
+   if not Alfa_Report
+      and then Object_Path (Proj_Type, Recursive => True)'Length > 1 then
       Abort_With_Message
          ("There is more than one object directory, aborting.");
    end if;
