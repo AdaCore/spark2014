@@ -34,6 +34,7 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
@@ -116,7 +117,10 @@ package body Why.Gen.Enums is
       Name         : String;
       Constructors : String_Lists.List)
    is
-      Len : constant Count_Type := String_Lists.Length (Constructors);
+      Len      : constant Count_Type := String_Lists.Length (Constructors);
+      My_Type  : constant W_Logic_Return_Type_Id :=
+         New_Abstract_Type (Name => New_Identifier (Name));
+      Max_Uint : constant Uint := UI_From_Int (Int (Len));
    begin
       pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
@@ -124,13 +128,35 @@ package body Why.Gen.Enums is
          (File        => File,
           Name        => New_Conversion_From_Int (Name),
           Args        => (1 => New_Type_Int),
-          Return_Type => New_Abstract_Type (Name => New_Identifier (Name)));
+          Return_Type => My_Type);
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Range_Predicate
         (File,
          Name,
          First => Uint_1,
-         Last => UI_From_Int (Int (Len)));
+         Last => Max_Uint);
+      New_Parameter
+         (File => File,
+          Name => To_Program_Space (New_Conversion_From_Int (Name)),
+          Binders =>
+            (1 =>
+               New_Binder
+                 (Names    => (1 => New_Identifier ("x")),
+                  Arg_Type => New_Type_Int)),
+          Return_Type => +Duplicate_Any_Node (Id => +My_Type),
+          Pre =>
+            New_Related_Terms
+               (Left   => New_Integer_Constant (Value => Uint_1),
+                Op     => New_Rel_Le,
+                Right  => New_Term ("x"),
+                Op2    => New_Rel_Le,
+                Right2 => New_Integer_Constant (Value => Max_Uint)),
+          Post =>
+            New_Equal
+               (New_Result_Term,
+                New_Operation
+                  (Name       => New_Conversion_From_Int (Name),
+                   Parameters => (1 => New_Term ("x")))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
