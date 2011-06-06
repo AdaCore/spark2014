@@ -26,4 +26,11 @@ package body Sub is
    begin
       null;
    end P;
+
+   procedure P (X : Dir) is
+      Y : Ext_Dir := X;
+      Z : Dir := Y;
+   begin
+      null;
+   end P;
 end Sub;

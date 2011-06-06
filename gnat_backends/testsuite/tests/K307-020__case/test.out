@@ -4,5 +4,5 @@ casing.adb:19:32: (info) proved: range check
 casing.adb:20:32: (info) proved: range check
 casing.adb:7:27: (info) proved: range check
 casing.adb:8:27: (info) proved: range check
-casing.ads:17:20: proof of postcondition failed
+casing.ads:17:20: (info) proved: proof of postcondition
 casing.ads:6:20: proof of postcondition failed
