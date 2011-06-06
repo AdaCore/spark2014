@@ -668,7 +668,9 @@ package body ALFA.Definition is
             Mark_List (Alternatives (N));
 
          when N_Case_Expression_Alternative =>
-            pragma Assert (No (Actions (N)));
+            if Present (Actions (N)) then
+               Mark_Non_ALFA ("expression with action", N, V_Implem);
+            end if;
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
@@ -853,7 +855,9 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("reference", N);
 
          when N_Short_Circuit =>
-            pragma Assert (No (Actions (N)));
+            if Present (Actions (N)) then
+               Mark_Non_ALFA ("expression with action", N, V_Implem);
+            end if;
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
 
@@ -1209,8 +1213,11 @@ package body ALFA.Definition is
       Else_Expr : Node_Id;
 
    begin
-      pragma Assert (No (Then_Actions (N)));
-      pragma Assert (No (Else_Actions (N)));
+      if Present (Then_Actions (N))
+        or else Present (Else_Actions (N))
+      then
+         Mark_Non_ALFA ("expression with action", N, V_Implem);
+      end if;
 
       Else_Expr := Next (Then_Expr);
 
@@ -1347,7 +1354,11 @@ package body ALFA.Definition is
             while Present (Part) loop
                Mark (Condition (Part));
                Mark_List (Then_Statements (Part));
-               pragma Assert (No (Condition_Actions (Part)));
+
+               if Present (Condition_Actions (Part)) then
+                  Mark_Non_ALFA ("expression with action", N, V_Implem);
+               end if;
+
                Next (Part);
             end loop;
          end;
@@ -1364,7 +1375,9 @@ package body ALFA.Definition is
 
    procedure Mark_Iteration_Scheme (N : Node_Id) is
    begin
-      pragma Assert (No (Condition_Actions (N)));
+      if Present (Condition_Actions (N)) then
+         Mark_Non_ALFA ("expression with action", N, V_Implem);
+      end if;
 
       if Present (Condition (N)) then
          Mark (Condition (N));
