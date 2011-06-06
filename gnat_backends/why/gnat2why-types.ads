@@ -60,6 +60,13 @@ package Gnat2Why.Types is
    --  Transform it into a Why type declaration, including conversion
    --  functions and axioms.
 
+   procedure Why_Type_Decl_Of_Full_Type_Decl
+      (File       : W_File_Id;
+       Name_Str   : String;
+       Ident_Node : Node_Id);
+   --  Similar to the previous function, but use Name_Str as name of the type,
+   --  regardless of the name of the Entity.
+
    procedure Why_Type_Decl_Of_Subtype_Decl
       (File       : W_File_Id;
        Ident_Node : Node_Id);

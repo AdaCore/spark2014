@@ -96,9 +96,8 @@ package body Gnat2Why.Types is
 
    procedure Why_Type_Decl_Of_Full_Type_Decl
       (File       : W_File_Id;
-       Ident_Node : Node_Id)
-   is
-      Name_Str : constant String := Full_Name (Ident_Node);
+       Name_Str   : String;
+       Ident_Node : Node_Id) is
    begin
       if Ident_Node = Standard_Boolean then
          null;
@@ -189,11 +188,33 @@ package body Gnat2Why.Types is
                   end;
                end;
 
+            when E_Private_Type =>
+
+               --  This can happen when we have a private type which is
+               --  derived from a private type. Simply search for the
+               --  underlying type and continue.
+               --  See also the comment in Alfa.Definition, for the
+               --  corresponding case.
+
+               Why_Type_Decl_Of_Full_Type_Decl
+                 (File,
+                  Name_Str,
+                  Underlying_Type (Ident_Node));
+
             when others =>
                raise Not_Implemented;
          end case;
       end if;
 
+   end Why_Type_Decl_Of_Full_Type_Decl;
+
+   procedure Why_Type_Decl_Of_Full_Type_Decl
+      (File       : W_File_Id;
+       Ident_Node : Node_Id)
+   is
+      Name_Str : constant String := Full_Name (Ident_Node);
+   begin
+      Why_Type_Decl_Of_Full_Type_Decl (File, Name_Str, Ident_Node);
    end Why_Type_Decl_Of_Full_Type_Decl;
 
    -----------------------------------

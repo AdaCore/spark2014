@@ -2188,6 +2188,19 @@ package body ALFA.Definition is
          when Access_Kind =>
             Mark_Non_ALFA ("access type", +Id);
 
+         when E_Private_Type =>
+
+            --  In simple cases, the unique entity of a private type is the
+            --  entity with the completing declaration. If the completing
+            --  declaration is a derived type or subtype of another private
+            --  type, this is not the case, and only in such situations we
+            --  should fall in this branch.
+            --  See also gnat/einfo.ads, Full_View and Underlying_Full_View.
+            --  The private type we consider is in Alfa if the underlying type
+            --  is in Alfa.
+
+            Mark (Underlying_Type (+Id));
+
          when others =>
             raise Program_Error;
       end case;
