@@ -1,1 +1,0 @@
-ALL XFAIL Ada.Exceptions.Triggered_By_Abort not defined
