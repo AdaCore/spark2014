@@ -1,9 +1,11 @@
 sub.adb:16:20: (info) proved: range check
 sub.adb:18:20: range check failed
 sub.adb:23:18: (info) proved: range check
-sub.adb:25:18: (info) proved: range check
+sub.adb:24:22: (info) proved: range check
+sub.adb:25:18: range check failed
+sub.adb:31:22: (info) proved: range check
+sub.adb:32:18: (info) proved: range check
 sub.adb:6:20: (info) proved: range check
 sub.adb:8:20: range check failed
 sub.ads:12:11: (info) proved: proof of postcondition
 sub.ads:8:11: proof of postcondition failed
-
