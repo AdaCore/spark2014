@@ -1607,7 +1607,9 @@ package body ALFA.Definition is
       --  in which case Is_Rewrite_Insertion return True. Currently do not
       --  analyze generic package instantiations.
 
-      if Is_Rewrite_Insertion (N) then
+      if Is_Rewrite_Insertion (N)
+        or else Nkind (Original_Node (N)) = N_Package_Instantiation
+      then
          Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
          return;
       end if;
