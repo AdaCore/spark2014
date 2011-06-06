@@ -2175,7 +2175,9 @@ package body ALFA.Definition is
                   Push_Scope (Id);
 
                   while Present (Field) loop
-                     Mark (Etype (Field));
+                     if Ekind (Field) in Object_Kind then
+                        Mark (Etype (Field));
+                     end if;
                      Next_Entity (Field);
                   end loop;
 

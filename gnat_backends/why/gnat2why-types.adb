@@ -172,17 +172,19 @@ package body Gnat2Why.Types is
                      C_Names : List;
                   begin
                      while Present (Field) loop
-                        declare
-                           C_Name : constant String := Full_Name (Field);
-                        begin
-                           Add_Component
-                             (File,
-                              C_Name,
-                              Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                              Builder);
-                           C_Names.Append (C_Name);
+                        if Ekind (Field) in Object_Kind then
+                           declare
+                              C_Name : constant String := Full_Name (Field);
+                           begin
+                              Add_Component
+                                (File,
+                                 C_Name,
+                                 Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                                 Builder);
+                              C_Names.Append (C_Name);
+                           end;
                            Next_Entity (Field);
-                        end;
+                        end if;
                      end loop;
                      Freeze_Ada_Record (File, Name_Str, C_Names, Builder);
                   end;
