@@ -865,7 +865,6 @@ package body ALFA.Definition is
             Mark_Simple_Return_Statement (N);
 
          when N_Selected_Component =>
-            --  ??? Check that selector and prefix are really in ALFA
             Mark (Prefix (N));
             Mark (Selector_Name (N));
 
@@ -1384,23 +1383,17 @@ package body ALFA.Definition is
 
       elsif Present (Loop_Parameter_Specification (N)) then
          declare
---              LP : constant Node_Id   := Loop_Parameter_Specification (N);
---              Id : constant Entity_Id := Defining_Identifier (LP);
+            LP : constant Node_Id   := Loop_Parameter_Specification (N);
+            Id : constant Entity_Id := Defining_Identifier (LP);
 
          begin
             --  The entity for iterating over a loop is always in ALFA if its
             --  type is in ALFA.
 
-            --  ??? This assumes that the type is previously declared, which
-            --  should be inserted automatically by the front-end if not in
-            --  user code, see K421-020.
-
-            --  Currently no previous declaration. Assume type in Alfa.
-
---              if not Type_Is_In_ALFA (Unique (Etype (Id))) then
---                 Mark_Non_ALFA_Declaration
---                   ("type of loop index", LP, From => Unique (Etype (Id)));
---              end if;
+            if not Type_Is_In_ALFA (Unique (Etype (Id))) then
+               Mark_Non_ALFA_Declaration
+                 ("type of loop index", LP, From => Unique (Etype (Id)));
+            end if;
             null;
          end;
 
