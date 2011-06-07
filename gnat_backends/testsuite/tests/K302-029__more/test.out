@@ -1,10 +1,10 @@
--pack__p0__p3 pack.adb:4
-+pack__p0__p0_ok pack.adb:10
--pack__p0 pack.adb:3
-+pack__p1__p4 pack.adb:19
-+pack__p1__p1_ok pack.adb:25
--pack__p1 pack.adb:18
--pack__p2__B_2__p5 pack.adb:38 (not implemented)
-+pack__p2__B_2__p2_ok pack.adb:47
--pack__p2 pack.adb:35 (block statement)
+-+ pack__p0__p3 pack.adb:4 (not in roadmap)
+++ pack__p0__p0_ok pack.adb:10
+-+ pack__p0 pack.ads:13 (not in roadmap)
+++ pack__p1__p4 pack.adb:19
+++ pack__p1__p1_ok pack.adb:25
+-- pack__p1 pack.ads:15 (not in roadmap)
+*+ pack__p2__B_2__p5 pack.adb:38 [not yet implemented]
+++ pack__p2__B_2__p2_ok pack.adb:47
+*+ pack__p2 pack.ads:17 [block statement, not yet implemented]
 
