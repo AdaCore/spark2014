@@ -95,6 +95,11 @@ procedure Gnatprove is
    procedure Compute_VCs (Proj : Project_Tree);
    --  Compute Verification conditions using Why, driven by gprbuild.
 
+   procedure Generate_Alfa_Report
+      (Proj_Type : Project_Type;
+       Obj_Path : File_Array);
+   --  Generate the Alfa report.
+
    procedure Generate_Project_File
       (Filename : String;
        Project_Name : String;
@@ -190,6 +195,34 @@ procedure Gnatprove is
       end if;
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args);
    end Compute_VCs;
+
+   --------------------------
+   -- Generate_Alfa_Report --
+   --------------------------
+
+   procedure Generate_Alfa_Report
+      (Proj_Type : Project_Type;
+       Obj_Path : File_Array)
+   is
+      use Ada.Text_IO;
+      Obj_Dir_File : Ada.Text_IO.File_Type;
+      Obj_Dir_Fn   : constant String :=
+         Ada.Directories.Compose
+            (Proj_Type.Object_Dir.Display_Full_Name,
+             "gnatprove.alfad");
+      Success      : aliased Boolean;
+   begin
+      Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
+      for Index in Obj_Path'Range loop
+         Put_Line (Obj_Dir_File, Obj_Path (Index).Display_Full_Name);
+      end loop;
+      Close (Obj_Dir_File);
+      Call_Exit_On_Failure
+        (Command   => "alfa_report",
+         Arguments => (1 => new String'(Obj_Dir_Fn)),
+         Verbose   => Verbose);
+      Delete_File (Obj_Dir_Fn, Success);
+   end Generate_Alfa_Report;
 
    ---------------------------
    -- Generate_Project_File --
@@ -427,32 +460,36 @@ begin
      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
       Proj_Env);
    Proj_Type := Root_Project (Tree);
-   --  ??? Why version 2 only reads files in the current directory. As Why
-   --  works in the object directory, this means that we only support a
-   --  single object directory.
-   --  Here we check that this is the case, and fail gracefully if not.
-   if not Alfa_Report
-      and then Object_Path (Proj_Type, Recursive => True)'Length > 1 then
-      Abort_With_Message
-         ("There is more than one object directory, aborting.");
-   end if;
 
-   Compute_ALI_Information (Project_File.all);
+   declare
+      Obj_Path : constant File_Array :=
+         Object_Path (Proj_Type, Recursive => True);
+   begin
 
-   Translate_To_Why (Project_File.all);
+      --  ??? Why version 2 only reads files in the current directory. As Why
+      --  works in the object directory, this means that we only support a
+      --  single object directory.
+      --  Here we check that this is the case, and fail gracefully if not.
 
-   if Alfa_Report then
-      GNAT.OS_Lib.OS_Exit (0);
-   end if;
+      if not Alfa_Report and then Obj_Path'Length > 1 then
+         Abort_With_Message
+            ("There is more than one object directory, aborting.");
+      end if;
+
+      Compute_ALI_Information (Project_File.all);
+
+      Translate_To_Why (Project_File.all);
+
+      if Alfa_Report then
+         Generate_Alfa_Report (Proj_Type, Obj_Path);
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
+   end;
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-
    Make_Standard_Package (Tree);
-
    Compute_VCs (Tree);
-
    Prove_VCs (Tree);
-
    Report_VCs;
 exception
    when Invalid_Project =>

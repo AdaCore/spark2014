@@ -44,4 +44,9 @@ package Call is
       Arguments : String_Lists.List;
       Verbose   : Boolean := False);
 
+   generic
+      with procedure Handle_Line (Line : String);
+   procedure For_Line_In_File
+      (File : String);
+   --  Do something for each line of a file.
 end Call;

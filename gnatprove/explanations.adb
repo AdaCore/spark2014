@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.IO_Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Maps;
 with Ada.Text_IO;
 
+with Call;              use Call;
 with String_Utils;      use String_Utils;
 
 package body Explanations is
@@ -45,42 +45,55 @@ package body Explanations is
 
    function Get_VC_Explanation (Expl_File : String) return Explanation
    is
-      use Ada.Text_IO;
-      File : File_Type;
       Expl : Explanation;
 
       Char_Set : constant Ada.Strings.Maps.Character_Set :=
          Ada.Strings.Maps.To_Set (""" ");
+
+      procedure Handle_Line (Line : String);
+      --  Handle a single line of the explanation file.
+
+      function Extract (Line : String; Start : Integer) return String;
+      --  Extract the substring that starts at Start, and trim quotes and
+      --  spaces.
+
+      -----------------
+      -- Extract --
+      -----------------
+
+      function Extract (Line : String; Start : Integer) return String
+      is
+         First_Index : constant Integer := Line'First + Start - 1;
+      begin
+         return Trim (Line (First_Index .. Line'Last), Char_Set, Char_Set);
+      end Extract;
+
+      -----------------
+      -- Handle_Line --
+      -----------------
+
+      procedure Handle_Line (Line : String) is
+      begin
+         if Starts_With (Line, "file") then
+            Expl.EX_Filename := new String'(Extract (Line, 7));
+         elsif Starts_With (Line, "line") then
+            Expl.EX_Line := new String'(Extract (Line, 7));
+         elsif Starts_With (Line, "begin") then
+            Expl.EX_Col := new String'(Extract (Line, 8));
+         elsif Starts_With (Line, "kind") then
+            Expl.EX_Kind := Interpret_Why_VC_Kind (Extract (Line, 7));
+         elsif Starts_With (Line, "text") then
+            Expl.EX_Kind := VC_Kind'Value (Extract (Line, 7));
+         end if;
+      end Handle_Line;
+
+      procedure Iterate_Lines is new For_Line_In_File (Handle_Line);
+
+      --  beginning of processing for Get_VC_Explanation
+
    begin
-      Open (File, In_File, Expl_File);
-      while True loop
-         declare
-            S : constant String := Get_Line (File);
-         begin
-            if Starts_With (S, "file") then
-               Expl.EX_Filename :=
-                  new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
-            elsif Starts_With (S, "line") then
-               Expl.EX_Line :=
-                  new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
-            elsif Starts_With (S, "begin") then
-               Expl.EX_Col :=
-                  new String'(Trim (S (8 .. S'Last), Char_Set, Char_Set));
-            elsif Starts_With (S, "kind") then
-               Expl.EX_Kind :=
-                  Interpret_Why_VC_Kind
-                    (Trim (S (7 .. S'Last), Char_Set, Char_Set));
-            elsif Starts_With (S, "text") then
-               Expl.EX_Kind :=
-                 VC_Kind'Value (Trim (S (7 .. S'Last), Char_Set, Char_Set));
-            end if;
-         end;
-      end loop;
-      Close (File);
+      Iterate_Lines (Expl_File);
       return Expl;
-   exception
-      when Ada.IO_Exceptions.End_Error =>
-         return Expl;
    end Get_VC_Explanation;
 
    ---------------------------

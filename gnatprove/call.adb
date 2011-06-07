@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with GNAT.Expect;       use GNAT.Expect;
 
@@ -141,4 +142,27 @@ package body Call is
          Argument_List_Of_String_List (Arguments),
          Verbose);
    end Call_Exit_On_Failure;
+
+   ----------------------
+   -- For_Line_In_File --
+   ----------------------
+
+   procedure For_Line_In_File (File : String)
+   is
+      use Ada.Text_IO;
+      File_Handle : File_Type;
+   begin
+      Open (File_Handle, In_File, File);
+      while True loop
+         declare
+            Line : constant String := Get_Line (File_Handle);
+         begin
+            Handle_Line (Line);
+         end;
+      end loop;
+   exception
+      when Ada.IO_Exceptions.End_Error =>
+         Close (File_Handle);
+   end For_Line_In_File;
+
 end Call;
