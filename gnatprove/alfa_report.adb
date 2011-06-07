@@ -77,6 +77,9 @@ procedure Alfa_Report is
    procedure Handle_Alfa_Line (Line : String)
    is
    begin
+      if Line'Length = 0 then
+         return;
+      end if;
       Total_Cnt := Total_Cnt + 1;
       if Line (Line'First) = '+' then
          Alfa_Cnt := Alfa_Cnt + 1;
@@ -173,10 +176,10 @@ procedure Alfa_Report is
    --  begin processing for Alfa_Report;
 
 begin
+   if Ada.Command_Line.Argument_Count = 0 then
+      Abort_With_Message ("No source directory file given, aborting");
+   end if;
    Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
    Iterate_Source_Dirs (Source_Directories_File.all);
    Print_Report;
-exception
-      when Constraint_Error =>
-         Abort_With_Message ("No source directory file given, aborting");
 end Alfa_Report;
