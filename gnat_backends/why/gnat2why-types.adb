@@ -183,8 +183,9 @@ package body Gnat2Why.Types is
                                  Builder);
                               C_Names.Append (C_Name);
                            end;
-                           Next_Entity (Field);
                         end if;
+
+                        Next_Entity (Field);
                      end loop;
                      Freeze_Ada_Record (File, Name_Str, C_Names, Builder);
                   end;
