@@ -1,8 +1,8 @@
-constr.adb:5:24: (info) proved: proof of loop invariant initalization
-constr.adb:5:24: (info) proved: proof of loop invariant preservation
-constr.adb:6:16: (info) proved: array bounds check
-constr.adb:6:19: (info) proved: array bounds check
-constr.adb:6:24: range check failed
-constr.ads:5:20: (info) proved: array bounds check
-constr.ads:5:27: (info) proved: range check
-constr.ads:6:26: proof of postcondition failed
+constr.adb:5:24: (info) loop invariant initalization proved
+constr.adb:5:24: (info) loop invariant preservation proved
+constr.adb:6:16: (info) array bounds check proved
+constr.adb:6:19: (info) array bounds check proved
+constr.adb:6:24: range check not proved
+constr.ads:5:20: (info) array bounds check proved
+constr.ads:5:27: (info) range check proved
+constr.ads:6:26: postcondition not proved

@@ -1,8 +1,8 @@
-casing.adb:17:27: (info) proved: range check
-casing.adb:18:27: (info) proved: range check
-casing.adb:19:32: (info) proved: range check
-casing.adb:20:32: (info) proved: range check
-casing.adb:7:27: (info) proved: range check
-casing.adb:8:27: (info) proved: range check
-casing.ads:17:20: (info) proved: proof of postcondition
-casing.ads:6:20: proof of postcondition failed
+casing.adb:17:27: (info) range check proved
+casing.adb:18:27: (info) range check proved
+casing.adb:19:32: (info) range check proved
+casing.adb:20:32: (info) range check proved
+casing.adb:7:27: (info) range check proved
+casing.adb:8:27: (info) range check proved
+casing.ads:17:20: (info) postcondition proved
+casing.ads:6:20: postcondition not proved

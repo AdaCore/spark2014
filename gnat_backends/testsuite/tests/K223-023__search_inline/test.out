@@ -1,6 +1,6 @@
-search.adb:10:20: (info) proved: range check
-search.adb:4:24: (info) proved: range check
-search.adb:7:10: (info) proved: proof of loop invariant initalization
-search.adb:7:10: (info) proved: proof of loop invariant preservation
-search.adb:9:13: (info) proved: array bounds check
-search.ads:9:13: proof of postcondition failed
+search.adb:10:20: (info) range check proved
+search.adb:4:24: (info) range check proved
+search.adb:7:10: (info) loop invariant initalization proved
+search.adb:7:10: (info) loop invariant preservation proved
+search.adb:9:13: (info) array bounds check proved
+search.ads:9:13: postcondition not proved

@@ -1,3 +1,3 @@
-pack.adb:7:22: (info) proved: range check
-tctouch.adb:8:22: range check failed
-tctouch.adb:9:25: array bounds check failed
+pack.adb:7:22: (info) range check proved
+tctouch.adb:8:22: range check not proved
+tctouch.adb:9:25: array bounds check not proved

@@ -1,8 +1,8 @@
-nested.adb:10:15: (info) proved: range check
-nested.adb:12:13: (info) proved: proof of loop invariant initalization
-nested.adb:12:13: proof of loop invariant preservation failed
-nested.adb:13:20: (info) proved: range check
-nested.adb:4:22: (info) proved: range check
-nested.adb:9:10: (info) proved: proof of loop invariant initalization
-nested.adb:9:10: (info) proved: proof of loop invariant preservation
-nested.ads:4:35: (info) proved: proof of postcondition
+nested.adb:10:15: (info) range check proved
+nested.adb:12:13: (info) loop invariant initalization proved
+nested.adb:12:13: loop invariant preservation not proved
+nested.adb:13:20: (info) range check proved
+nested.adb:4:22: (info) range check proved
+nested.adb:9:10: (info) loop invariant initalization proved
+nested.adb:9:10: (info) loop invariant preservation proved
+nested.ads:4:35: (info) postcondition proved

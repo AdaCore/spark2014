@@ -1,4 +1,4 @@
-main.adb:13:19: (info) proved: proof of postcondition
-main.adb:21:22: (info) proved: proof of postcondition
-main.adb:31:4: proof of assertion failed
-main.adb:5:19: (info) proved: proof of postcondition
+main.adb:13:19: (info) postcondition proved
+main.adb:21:22: (info) postcondition proved
+main.adb:31:4: assertion not proved
+main.adb:5:19: (info) postcondition proved

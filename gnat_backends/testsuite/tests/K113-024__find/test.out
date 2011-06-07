@@ -1,6 +1,6 @@
-find.adb:3:24: (info) proved: range check
-find.adb:6:10: (info) proved: proof of loop invariant initalization
-find.adb:6:10: (info) proved: proof of loop invariant preservation
-find.adb:7:13: (info) proved: array bounds check
-find.adb:8:20: (info) proved: range check
-find.ads:5:11: (info) proved: proof of postcondition
+find.adb:3:24: (info) range check proved
+find.adb:6:10: (info) loop invariant initalization proved
+find.adb:6:10: (info) loop invariant preservation proved
+find.adb:7:13: (info) array bounds check proved
+find.adb:8:20: (info) range check proved
+find.ads:5:11: (info) postcondition proved

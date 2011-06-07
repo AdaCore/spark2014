@@ -1,11 +1,11 @@
-s.adb:20:9: (info) proved: proof of loop invariant initalization
-s.adb:20:9: (info) proved: proof of loop invariant preservation
-s.adb:25:22: (info) proved: array bounds check
-s.adb:25:25: (info) proved: array bounds check
-s.adb:26:21: (info) proved: array bounds check
-s.adb:26:24: (info) proved: range check
-s.adb:6:9: (info) proved: proof of loop invariant initalization
-s.adb:6:9: (info) proved: proof of loop invariant preservation
-s.adb:9:12: (info) proved: array bounds check
-s.ads:12:14: (info) proved: proof of postcondition
-s.ads:8:14: (info) proved: proof of postcondition
+s.adb:20:9: (info) loop invariant initalization proved
+s.adb:20:9: (info) loop invariant preservation proved
+s.adb:25:22: (info) array bounds check proved
+s.adb:25:25: (info) array bounds check proved
+s.adb:26:21: (info) array bounds check proved
+s.adb:26:24: (info) range check proved
+s.adb:6:9: (info) loop invariant initalization proved
+s.adb:6:9: (info) loop invariant preservation proved
+s.adb:9:12: (info) array bounds check proved
+s.ads:12:14: (info) postcondition proved
+s.ads:8:14: (info) postcondition proved

@@ -1,6 +1,6 @@
-forall.adb:6:14: (info) proved: array bounds check
-forall.ads:5:45: (info) proved: range check
-forall.ads:5:45: division by zero failed
-forall.ads:5:46: (info) proved: array bounds check
-forall.ads:5:53: (info) proved: range check
-forall.ads:6:36: proof of postcondition failed
+forall.adb:6:14: (info) array bounds check proved
+forall.ads:5:45: (info) range check proved
+forall.ads:5:45: division by zero not proved
+forall.ads:5:46: (info) array bounds check proved
+forall.ads:5:53: (info) range check proved
+forall.ads:6:36: postcondition not proved

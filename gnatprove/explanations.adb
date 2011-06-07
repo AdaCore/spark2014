@@ -119,15 +119,15 @@ package body Explanations is
       Put (X.EX_Col.all);
       Put (":");
       if Proved then
-         Put (" (info) proved: ");
+         Put (" (info) ");
       else
          Put (" ");
       end if;
       Print_VC_Msg (X.EX_Kind);
       if Proved then
-         Put_Line ("");
+         Put_Line (" proved");
       else
-         Put_Line (" failed");
+         Put_Line (" not proved");
       end if;
    end Print_Error_Msg;
 
@@ -156,22 +156,22 @@ package body Explanations is
             Put ("division by zero");
 
          when VC_Precondition =>
-            Put ("proof of precondition");
+            Put ("precondition");
 
          when VC_Postcondition =>
-            Put ("proof of postcondition");
+            Put ("postcondition");
 
          when VC_Loop_Invariant =>
-            Put ("proof of loop invariant");
+            Put ("loop invariant");
 
          when VC_Loop_Invariant_Init =>
-            Put ("proof of loop invariant initalization");
+            Put ("loop invariant initalization");
 
          when VC_Loop_Invariant_Preserv =>
-            Put ("proof of loop invariant preservation");
+            Put ("loop invariant preservation");
 
          when VC_Assert =>
-            Put ("proof of assertion");
+            Put ("assertion");
       end case;
    end Print_VC_Msg;
 

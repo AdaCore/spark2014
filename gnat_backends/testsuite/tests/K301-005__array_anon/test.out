@@ -1,2 +1,2 @@
-named.adb:4:15: (info) proved: range check
-named.ads:5:28: (info) proved: proof of postcondition
+named.adb:4:15: (info) range check proved
+named.ads:5:28: (info) postcondition proved

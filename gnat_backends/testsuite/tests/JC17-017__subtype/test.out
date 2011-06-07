@@ -1,10 +1,10 @@
-p.adb:16:34: (info) proved: overflow check
-p.adb:16:34: overflow check failed
-p.adb:16:38: (info) proved: proof of loop invariant initalization
-p.adb:16:38: (info) proved: proof of loop invariant preservation
-p.adb:17:28: range check failed
-p.adb:33:37: (info) proved: overflow check
-p.adb:33:37: overflow check failed
-p.adb:33:41: (info) proved: proof of loop invariant initalization
-p.adb:33:41: (info) proved: proof of loop invariant preservation
-p.adb:34:25: range check failed
+p.adb:16:34: (info) overflow check proved
+p.adb:16:34: overflow check not proved
+p.adb:16:38: (info) loop invariant initalization proved
+p.adb:16:38: (info) loop invariant preservation proved
+p.adb:17:28: range check not proved
+p.adb:33:37: (info) overflow check proved
+p.adb:33:37: overflow check not proved
+p.adb:33:41: (info) loop invariant initalization proved
+p.adb:33:41: (info) loop invariant preservation proved
+p.adb:34:25: range check not proved

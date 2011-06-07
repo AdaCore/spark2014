@@ -1,4 +1,4 @@
-sat.adb:6:12: (info) proved: overflow check
-sat.adb:7:19: range check failed
-sat.adb:9:17: (info) proved: range check
-sat.ads:7:56: proof of postcondition failed
+sat.adb:6:12: (info) overflow check proved
+sat.adb:7:19: range check not proved
+sat.adb:9:17: (info) range check proved
+sat.ads:7:56: postcondition not proved

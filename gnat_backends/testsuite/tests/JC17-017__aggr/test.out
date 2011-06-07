@@ -1,5 +1,5 @@
-p.adb:40:40: (info) proved: range check
-p.adb:47:40: (info) proved: range check
+p.adb:40:40: (info) range check proved
+p.adb:47:40: (info) range check proved
 -p__proc p.adb:3 (not implemented)
 -p__proc2 p.adb:9 (not implemented)
 -p__proc3 p.adb:15 (not implemented)

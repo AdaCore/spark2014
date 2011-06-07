@@ -1,6 +1,6 @@
-max.adb:3:25: (info) proved: array bounds check
-max.adb:6:10: (info) proved: proof of loop invariant initalization
-max.adb:6:10: (info) proved: proof of loop invariant preservation
-max.adb:7:13: (info) proved: array bounds check
-max.adb:8:21: (info) proved: array bounds check
-max.ads:4:26: (info) proved: proof of postcondition
+max.adb:3:25: (info) array bounds check proved
+max.adb:6:10: (info) loop invariant initalization proved
+max.adb:6:10: (info) loop invariant preservation proved
+max.adb:7:13: (info) array bounds check proved
+max.adb:8:21: (info) array bounds check proved
+max.ads:4:26: (info) postcondition proved

@@ -1,3 +1,3 @@
-inner_use.adb:5:15: (info) proved: range check
-inner_use.adb:7:15: (info) proved: range check
-inner_use.ads:6:16: (info) proved: proof of postcondition
+inner_use.adb:5:15: (info) range check proved
+inner_use.adb:7:15: (info) range check proved
+inner_use.ads:6:16: (info) postcondition proved

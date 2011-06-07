@@ -1,4 +1,4 @@
-pack.adb:16:7: proof of assertion failed
-pack.adb:6:7: proof of assertion failed
-pack.ads:13:25: proof of postcondition failed
-pack.ads:9:25: proof of postcondition failed
+pack.adb:16:7: assertion not proved
+pack.adb:6:7: assertion not proved
+pack.ads:13:25: postcondition not proved
+pack.ads:9:25: postcondition not proved

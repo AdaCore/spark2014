@@ -1,4 +1,4 @@
-base-annex.adb:4:16: (info) proved: range check
-base.adb:6:19: (info) proved: proof of precondition
-base.adb:6:25: (info) proved: range check
-base.ads:3:24: (info) proved: range check
+base-annex.adb:4:16: (info) range check proved
+base.adb:6:19: (info) precondition proved
+base.adb:6:25: (info) range check proved
+base.ads:3:24: (info) range check proved
