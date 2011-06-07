@@ -40,24 +40,40 @@ package ALFA.Definition is
    function Unique (E : Entity_Id) return Unique_Entity_Id is
       (Unique_Entity_Id (Unique_Entity (E)));
 
-   type Violation_Kind is (V_Implem,           --  not yet implemented
+   type Violation_Kind is (
 
-                           V_Slice,            --  array slice
-                           V_Container,        --  formal containers
-                           V_Discr,            --  discriminant record
-                           V_Dispatch,         --  dispatching
-                           V_Block_Statement,  --  block declare statement
-                           V_Generic,          --  generics
-                           V_Impure_Function,  --  impure functions
-                           V_Standard_Lib,     --  standard library
-                           V_Tagged,           --  tagged type
+      --  NYI: Not Yet Implemented
+      --  These constructs should be supported in Alfa one day
 
-                           V_Tasking,          --  tasks and protected objects
-                           V_Other);           --  other violations of ALFA
+      NYI_Block_Statement,  --  block declare statement
+      NYI_Container,        --  formal containers
+      NYI_Discr,            --  discriminant record
+      NYI_Dispatch,         --  dispatching
+      NYI_Generic,          --  generics
+      NYI_Impure_Function,  --  impure functions
+      NYI_Slice,            --  array slice
+      NYI_Standard_Lib,     --  standard library
+      NYI_Tagged,           --  tagged type
+      NYI_XXX,              --  all other cases
 
-   subtype V_Design is Violation_Kind range V_Slice .. V_Other;
+      --  NIR: Not In Roadmap
+      --  These constructs are not in Alfa in the foreseeable future
 
-   subtype V_Extensions is Violation_Kind range V_Slice .. V_Tagged;
+      NIR_Tasking,          --  tasks and protected objects
+      NIR_XXX);             --  all other cases
+
+   subtype Not_Yet_Implemented is
+     Violation_Kind range NYI_Block_Statement .. NYI_XXX;
+   subtype Known_Not_Yet_Implemented is Not_Yet_Implemented range
+     Not_Yet_Implemented'First ..
+       Not_Yet_Implemented'Val
+         (Not_Yet_Implemented'Pos (Not_Yet_Implemented'Last) - 1);
+   subtype Not_In_Roadmap is
+     Violation_Kind range NIR_Tasking .. NIR_XXX;
+   subtype Known_Not_In_Roadmap is Not_In_Roadmap range
+     Not_In_Roadmap'First ..
+       Not_In_Roadmap'Val
+         (Not_In_Roadmap'Pos (Not_In_Roadmap'Last) - 1);
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all
