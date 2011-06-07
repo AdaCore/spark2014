@@ -240,7 +240,38 @@ package body ALFA.Definition is
    --  Return whether a type Id is in Alfa
 
    procedure Generate_Output_In_Out_Alfa (Id : Unique_Entity_Id);
-   --  Produce a line in output file for subprogram Id
+   --  Produce a line in output file for subprogram Id, following syntax:
+   --
+   --    cd name location opt_list_NIR opt_list_NYI
+   --
+   --  where
+   --
+   --    c and d are characters which denote respectively whether the body and
+   --    spec of subprogram Id are:
+   --      + in Alfa
+   --      - not in Alfa roadmap
+   --      * not yet implemented in Alfa
+   --
+   --    name is the name of subprogram Id
+   --    location is the location (file:line) of subprogram Id
+   --
+   --    opt_list_NIR and opt_list_NYI are optional lists of violations of Alfa
+   --    for not-in-roadmap constructs (NIR) or not-yet-implemented constructs
+   --    (NYI). opt_list_NIR is enclosed in parentheses. opt_list_NYI is
+   --    enclosed in brackets. Both are comma-separated lists.
+   --
+   --  examples:
+   --
+   --  -+ pack__f f.adb:3 (tasking)
+   --  Subprogram Pack.F has its spec in Alfa, and its body not in Alfa, due to
+   --  the use of tasking.
+   --
+   --  ++ pack__g f.adb:78
+   --  Subprogram Pack.G is in Alfa
+   --
+   --  ** pack__h f.adb:3 [slice, not yet implemented]
+   --  Subprogram Pack.H has both its spec and body not implemented in Alfa,
+   --  due to the use of slices, plus some other not precised constructs.
 
    -----------------
    -- Scope Stack --
