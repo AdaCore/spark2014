@@ -59,6 +59,7 @@ package ALFA.Definition is
       --  NIR: Not In Roadmap
       --  These constructs are not in Alfa in the foreseeable future
 
+      NIR_Access,           --  access types
       NIR_Tasking,          --  tasks and protected objects
       NIR_XXX);             --  all other cases
 
@@ -69,7 +70,7 @@ package ALFA.Definition is
        Not_Yet_Implemented'Val
          (Not_Yet_Implemented'Pos (Not_Yet_Implemented'Last) - 1);
    subtype Not_In_Roadmap is
-     Violation_Kind range NIR_Tasking .. NIR_XXX;
+     Violation_Kind range NIR_Access .. NIR_XXX;
    subtype Known_Not_In_Roadmap is Not_In_Roadmap range
      Not_In_Roadmap'First ..
        Not_In_Roadmap'Val

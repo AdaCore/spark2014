@@ -95,6 +95,7 @@ package body ALFA.Definition is
       NYI_Tagged          => To_Unbounded_String ("tagged type"),
       NYI_XXX             => To_Unbounded_String ("not yet implemented"),
 
+      NIR_Access          => To_Unbounded_String ("access"),
       NIR_Tasking         => To_Unbounded_String ("tasking"),
       NIR_XXX             => To_Unbounded_String ("not in roadmap"));
 
@@ -876,7 +877,7 @@ package body ALFA.Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            Mark_Non_ALFA ("explicit dereference", N);
+            Mark_Non_ALFA ("explicit dereference", N, NIR_Access);
 
          when N_Expression_With_Actions =>
             declare
@@ -1372,7 +1373,7 @@ package body ALFA.Definition is
       end if;
 
       if Present (Access_Definition (Def)) then
-         Mark_Non_ALFA ("access type", Def);
+         Mark_Non_ALFA ("access type", Def, NIR_Access);
       else
          Mark_Subtype_Indication (Subtype_Indication (Def));
       end if;
@@ -2258,7 +2259,7 @@ package body ALFA.Definition is
                --  Access definition for component type is not in ALFA
 
                if No (Component_Typ) then
-                  Mark_Non_ALFA ("access type", +Id);
+                  Mark_Non_ALFA ("access type", +Id, NIR_Access);
                end if;
 
                --  Check that component type is in ALFA
@@ -2326,7 +2327,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("type definition", +Id, NYI_XXX);
 
          when Access_Kind =>
-            Mark_Non_ALFA ("access type", +Id);
+            Mark_Non_ALFA ("access type", +Id, NIR_Access);
 
          when E_Private_Type =>
 
