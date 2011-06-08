@@ -53,26 +53,19 @@ package Gnat2Why.Types is
    --   for integer types. We then declare an abstract type for arrays, and
    --   access/update functions with axioms.
 
-   procedure Why_Type_Decl_Of_Full_Type_Decl
+   procedure Why_Type_Decl_Of_Entity
       (File       : W_File_Id;
        Ident_Node : Node_Id);
    --  Take an Ada Entity and consider it as a full type declaration.
    --  Transform it into a Why type declaration, including conversion
    --  functions and axioms.
 
-   procedure Why_Type_Decl_Of_Full_Type_Decl
+   procedure Why_Type_Decl_Of_Entity
       (File       : W_File_Id;
        Name_Str   : String;
        Ident_Node : Node_Id);
    --  Similar to the previous function, but use Name_Str as name of the type,
    --  regardless of the name of the Entity.
-
-   procedure Why_Type_Decl_Of_Subtype_Decl
-      (File       : W_File_Id;
-       Ident_Node : Node_Id);
-   --  Take an Ada Entity and consider it as a subtype declaration. Transform
-   --  it into a Why type declaration, including conversion functions and
-   --  axioms.
 
    function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id;

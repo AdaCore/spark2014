@@ -90,11 +90,11 @@ package body Gnat2Why.Types is
       return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
    end  Why_Logic_Type_Of_Ada_Type;
 
-   -------------------------------------
-   -- Why_Type_Decl_Of_Full_Type_Decl --
-   -------------------------------------
+   -----------------------------
+   -- Why_Type_Decl_Of_Entity --
+   -----------------------------
 
-   procedure Why_Type_Decl_Of_Full_Type_Decl
+   procedure Why_Type_Decl_Of_Entity
       (File       : W_File_Id;
        Name_Str   : String;
        Ident_Node : Node_Id) is
@@ -199,7 +199,7 @@ package body Gnat2Why.Types is
                --  See also the comment in Alfa.Definition, for the
                --  corresponding case.
 
-               Why_Type_Decl_Of_Full_Type_Decl
+               Why_Type_Decl_Of_Entity
                  (File,
                   Name_Str,
                   Underlying_Type (Ident_Node));
@@ -209,62 +209,16 @@ package body Gnat2Why.Types is
          end case;
       end if;
 
-   end Why_Type_Decl_Of_Full_Type_Decl;
+   end Why_Type_Decl_Of_Entity;
 
-   procedure Why_Type_Decl_Of_Full_Type_Decl
+   procedure Why_Type_Decl_Of_Entity
       (File       : W_File_Id;
        Ident_Node : Node_Id)
    is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
-      Why_Type_Decl_Of_Full_Type_Decl (File, Name_Str, Ident_Node);
-   end Why_Type_Decl_Of_Full_Type_Decl;
-
-   -----------------------------------
-   -- Why_Type_Decl_of_Subtype_Decl --
-   -----------------------------------
-
-   procedure Why_Type_Decl_Of_Subtype_Decl
-      (File       : W_File_Id;
-       Ident_Node : Node_Id)
-   is
-      Name_Str : constant String := Full_Name (Ident_Node);
-   begin
-      case Ekind (Ident_Node) is
-         when Discrete_Kind =>
-            --  For any subtype of a discrete type, we generate an "integer"
-            --  type in Why. This is also true for enumeration types; we
-            --  actually do not express that the subtype is an enumeration
-            --  type, we simply state that it is in a given range.
-            Declare_Ada_Abstract_Signed_Int_From_Range
-              (File,
-               Name_Str,
-               Ident_Node);
-
-         when Array_Kind =>
-            declare
-               Base : Node_Id := Ident_Node;
-               Rng  : constant Node_Id :=
-                  Get_Range (First_Index (Ident_Node));
-            begin
-               while Etype (Base) /= Base loop
-                  Base := Etype (Base);
-               end loop;
-               --  We need to
-               --    * find the Index type
-               --    * find the component type
-               Declare_Ada_Constrained_Array
-                  (File,
-                   Name_Str,
-                   Full_Name (Component_Type (Base)),
-                   Expr_Value (Low_Bound (Rng)),
-                   Expr_Value (High_Bound (Rng)));
-            end;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Why_Type_Decl_Of_Subtype_Decl;
+      Why_Type_Decl_Of_Entity (File, Name_Str, Ident_Node);
+   end Why_Type_Decl_Of_Entity;
 
    -------------------------------
    -- Why_Prog_Type_Of_Ada_Type --

@@ -390,11 +390,7 @@ package body Gnat2Why.Driver is
          case Nkind (Element (Cu)) is
             when N_Defining_Identifier =>
                --  This is a type declaration
-               if Is_First_Subtype (Element (Cu)) then
-                  Why_Type_Decl_Of_Full_Type_Decl (File, Element (Cu));
-               else
-                  Why_Type_Decl_Of_Subtype_Decl (File, Element (Cu));
-               end if;
+               Why_Type_Decl_Of_Entity (File, Element (Cu));
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
@@ -420,11 +416,11 @@ package body Gnat2Why.Driver is
             --  To be removed
 
             when N_Full_Type_Declaration =>
-               Why_Type_Decl_Of_Full_Type_Decl
+               Why_Type_Decl_Of_Entity
                   (File,
                    Defining_Identifier (Element (Cu)));
             when N_Subtype_Declaration =>
-               Why_Type_Decl_Of_Subtype_Decl
+               Why_Type_Decl_Of_Entity
                   (File,
                    Defining_Identifier (Element (Cu)));
 
@@ -448,7 +444,7 @@ package body Gnat2Why.Driver is
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Why_Type_Decl_Of_Full_Type_Decl (File, T);
+         Why_Type_Decl_Of_Entity (File, T);
       end Add_Standard_Type;
 
    begin
