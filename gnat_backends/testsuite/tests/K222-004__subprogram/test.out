@@ -4,7 +4,7 @@ sub.adb:6:07: object is not in Alfa
 sub.adb:6:12: allocator is not in Alfa
 sub.adb:7:07: explicit dereference is not in Alfa
 sub.adb:8:14: explicit dereference is not in Alfa
-sub.adb:14:07: block statement is not yet implemented in Alfa (block statement)
+sub.adb:14:07: block statement is not yet implemented in Alfa
 sub.adb:15:14: type is not in Alfa
 sub.adb:17:10: object is not in Alfa
 sub.adb:17:15: allocator is not in Alfa
