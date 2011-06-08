@@ -917,9 +917,6 @@ package body ALFA.Definition is
 --                 Mark_List (Actions (N));
 --              end if;
 
-         when N_Full_Type_Declaration =>
-            Mark (Defining_Identifier (N));
-
          when N_Function_Call =>
             Mark_Call (N);
 
@@ -1056,9 +1053,6 @@ package body ALFA.Definition is
          when N_Subprogram_Declaration =>
             Mark_Subprogram_Declaration (N);
 
-         when N_Subtype_Declaration =>
-            Mark (Defining_Identifier (N));
-
          when N_Type_Conversion =>
             Mark_Type_Conversion (N);
 
@@ -1078,8 +1072,12 @@ package body ALFA.Definition is
          when N_Variant_Part =>
             Mark_Non_ALFA ("variant part", N, NYI_Discr);
 
-         when N_Private_Extension_Declaration   |
-              N_Private_Type_Declaration        =>
+         when N_Full_Type_Declaration         |
+              N_Subtype_Declaration           |
+              N_Private_Extension_Declaration |
+              N_Private_Type_Declaration      |
+              N_Protected_Type_Declaration    |
+              N_Task_Type_Declaration         =>
             Mark (Defining_Identifier (N));
 
          when N_With_Clause =>
@@ -1087,6 +1085,24 @@ package body ALFA.Definition is
 
          when N_String_Literal =>
             Mark_Non_ALFA ("string literal", N, NYI_XXX);
+
+         when N_Abort_Statement            |
+              N_Accept_Statement           |
+              N_Asynchronous_Select        |
+              N_Conditional_Entry_Call     |
+              N_Delay_Relative_Statement   |
+              N_Delay_Until_Statement      |
+              N_Entry_Body                 |
+              N_Entry_Call_Statement       |
+              N_Entry_Declaration          |
+              N_Protected_Body             |
+              N_Requeue_Statement          |
+              N_Selective_Accept           |
+              N_Single_Task_Declaration    |
+              N_Task_Body                  |
+              N_Task_Body_Stub             |
+              N_Timed_Entry_Call           =>
+            Mark_Non_ALFA ("tasking", N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -1113,27 +1129,6 @@ package body ALFA.Definition is
          when N_Expression_Function |
               N_Subunit             =>
             raise Program_Error;
-
-         when N_Protected_Type_Declaration =>
-            Mark_Non_ALFA_Declaration ("protected type", N, NIR_Tasking);
-
-         when N_Abort_Statement            |
-              N_Accept_Statement           |
-              N_Asynchronous_Select        |
-              N_Conditional_Entry_Call     |
-              N_Delay_Relative_Statement   |
-              N_Delay_Until_Statement      |
-              N_Entry_Body                 |
-              N_Entry_Call_Statement       |
-              N_Entry_Declaration          |
-              N_Protected_Body             |
-              N_Requeue_Statement          |
-              N_Selective_Accept           |
-              N_Single_Task_Declaration    |
-              N_Task_Body                  |
-              N_Task_Type_Declaration      |
-              N_Timed_Entry_Call           =>
-            Mark_Non_ALFA ("tasking", N);
 
          --  Mark should not be called on other kinds
 
@@ -2322,6 +2317,9 @@ package body ALFA.Definition is
 
          when Access_Kind =>
             Mark_Non_ALFA ("access type", +Id, NIR_Access);
+
+         when Concurrent_Kind =>
+            Mark_Non_ALFA ("tasking", +Id, NIR_Tasking);
 
          when E_Private_Type =>
 
