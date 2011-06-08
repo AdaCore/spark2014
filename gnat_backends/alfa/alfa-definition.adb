@@ -2300,7 +2300,8 @@ package body ALFA.Definition is
          when Record_Kind =>
             if Is_Interface (+Id) then
                Mark_Non_ALFA ("interface", +Id, NYI_XXX);
-            else
+
+            elsif Ekind (+Id) = E_Record_Type then
                declare
                   Field : Node_Id := First_Entity (+Id);
                begin
@@ -2315,6 +2316,9 @@ package body ALFA.Definition is
 
                   Pop_Scope (Id);
                end;
+
+            else
+               Mark_Non_ALFA ("type definition", +Id, NYI_XXX);
             end if;
 
          when E_Modular_Integer_Type | E_Modular_Integer_Subtype
