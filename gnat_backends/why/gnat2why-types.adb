@@ -159,7 +159,7 @@ package body Gnat2Why.Types is
                   end if;
                end;
 
-            when Record_Kind =>
+            when E_Record_Type =>
                declare
                   Builder : W_Logic_Type_Id;
                begin
@@ -191,7 +191,7 @@ package body Gnat2Why.Types is
                   end;
                end;
 
-            when E_Private_Type =>
+            when Private_Kind =>
 
                --  This can happen when we have a private type which is
                --  derived from a private type. Simply search for the

@@ -2287,11 +2287,11 @@ package body ALFA.Definition is
                  ("integer type with dynamic range", +Id, NYI_XXX);
             end if;
 
-         when Record_Kind =>
+         when E_Record_Type =>
             if Is_Interface (+Id) then
                Mark_Non_ALFA ("interface", +Id, NYI_XXX);
 
-            elsif Ekind (+Id) = E_Record_Type then
+            else
                declare
                   Field : Node_Id := First_Entity (+Id);
                begin
@@ -2306,10 +2306,12 @@ package body ALFA.Definition is
 
                   Pop_Scope (Id);
                end;
-
-            else
-               Mark_Non_ALFA ("type definition", +Id, NYI_XXX);
             end if;
+
+         when E_Class_Wide_Type    |
+              E_Class_Wide_Subtype |
+              E_Record_Subtype     =>
+            Mark_Non_ALFA ("type definition", +Id, NYI_XXX);
 
          when E_Modular_Integer_Type | E_Modular_Integer_Subtype
             | Real_Kind  =>
@@ -2321,7 +2323,7 @@ package body ALFA.Definition is
          when Concurrent_Kind =>
             Mark_Non_ALFA ("tasking", +Id, NIR_Tasking);
 
-         when E_Private_Type =>
+         when Private_Kind =>
 
             --  In simple cases, the unique entity of a private type is the
             --  entity with the completing declaration. If the completing
