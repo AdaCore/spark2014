@@ -567,16 +567,10 @@ package body ALFA.Definition is
       V   : Violation_Kind) return String is
    begin
       case V is
-         when NYI_XXX =>
-            return Msg & " is not yet implemented in Alfa";
-
-         when NIR_XXX =>
+         when Not_In_Roadmap =>
             return Msg & " is not in Alfa";
-
-         when Known_Not_Yet_Implemented |
-              Known_Not_In_Roadmap      =>
-            return Msg & " is not yet implemented in Alfa ("
-              & To_String (Violation_Msg (V)) & ")";
+         when Not_Yet_Implemented =>
+            return Msg & " is not yet implemented in Alfa";
       end case;
    end Complete_Error_Msg;
 
