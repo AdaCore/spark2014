@@ -166,21 +166,25 @@ As an example, consider the following code::
 
 On this code, GNATprove outputs the following information in file p.alfa::
 
-    -p__set p.adb:2
-    -p__p0__get p.adb:10
-    +p__p0__p1 p.adb:15
-    +p__p0 p.adb:7
+    -+ p__set p.adb:2 (access)
+    -+ p__p0__get p.adb:10 (access)
+    ++ p__p0__p1 p.adb:15
+    -+ p__p0 p.ads:3 (access)
 
-The first character denotes whether the subprogram is fully in Alfa (+) or not
-(-).  The name that follows is a unique name for the subprogram. The location
-of the subprogram is given next with its file and line. Subprograms not fully
-in Alfa may be followed by a set of features not yet implemented in
-parentheses, whose implementation would make the subprogram in Alfa.
+The first character denotes whether the subprogram body is fully in Alfa (+),
+not in Alfa (-) or not yet implemented in Alfa (*). The second character
+follows the same categories for the subprogram spec. The name that follows is a
+unique name for the subprogram. The location of the subprogram is given next
+with its file and line. Subprograms not in Alfa may be followed by a set of
+features used that make it not Alfa, given in parentheses. Subprograms not in
+Alfa or not yet implemented in Alfa may be followed by a set of features not
+yet implemented, given in brackets, whose implementation would make the
+subprogram in Alfa.
 
 In the example above, P.Set and P.P0.Get are both partially in Alfa only
 because their bodies both contain pointer dereferences. P.P0.P1 is fully in
-Alfa. Since P.Set is partially in Alfa and P.P0.P1 is fully in Alfa, P.P0 is
-fully in Alfa. 
+Alfa. Since P.Set is partially in Alfa and defined as a local subprogram of
+P.P0, P.P0 is partially in Alfa.
 
 The purpose of the additional information on features not yet implemented is to
 allow users to experiment and see which features are more beneficial in their
