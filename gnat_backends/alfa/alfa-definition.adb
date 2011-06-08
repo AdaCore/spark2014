@@ -2283,6 +2283,10 @@ package body ALFA.Definition is
 
             --  Enumeration type is in ALFA only if it is not a character type
 
+            if not (Is_Static_Range (Scalar_Range (+Id))) then
+               Mark_Non_ALFA
+                 ("enumeration type with dynamic range", +Id, NYI_XXX);
+            end if;
             if Is_Character_Type (+Id) then
                Mark_Non_ALFA ("character enumeration type", +Id, NYI_XXX);
             end if;
