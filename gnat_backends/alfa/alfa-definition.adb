@@ -91,6 +91,7 @@ package body Alfa.Definition is
       NYI_Attribute        => To_Unbounded_String ("attribute"),
       NYI_Block_Statement  => To_Unbounded_String ("block statement"),
       NYI_Concatenation    => To_Unbounded_String ("concatenation"),
+      NYI_Conversion       => To_Unbounded_String ("conversion"),
       NYI_Container        => To_Unbounded_String ("container"),
       NYI_Discriminant     => To_Unbounded_String ("discriminant"),
       NYI_Dispatch         => To_Unbounded_String ("dispatch"),
@@ -102,7 +103,9 @@ package body Alfa.Definition is
       NYI_Modular          => To_Unbounded_String ("modular"),
       NYI_Non_Static_Range => To_Unbounded_String ("non static range"),
       NYI_Old_Attribute    => To_Unbounded_String ("'Old attribute"),
+      NYI_Pragma           => To_Unbounded_String ("pragma"),
       NYI_Qualification    => To_Unbounded_String ("qualification"),
+      NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
       NYI_Standard_Lib     => To_Unbounded_String ("standard library"),
       NYI_String_Literal   => To_Unbounded_String ("string literal"),
@@ -110,7 +113,13 @@ package body Alfa.Definition is
       NYI_XXX              => To_Unbounded_String ("not yet implemented"),
 
       NIR_Access           => To_Unbounded_String ("access"),
+      NIR_Ambiguous_Expr   => To_Unbounded_String ("ambiguous expr"),
+      NIR_Dealloc          => To_Unbounded_String ("deallocation"),
+      NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
+      NIR_Exception        => To_Unbounded_String ("exception"),
+      NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
+      NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
       NIR_XXX              => To_Unbounded_String ("not in roadmap"));
 
    ------------------------------------------------
@@ -357,7 +366,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind := NIR_XXX;
+      V      : Violation_Kind;
       Silent : Boolean        := False);
    --  Mark the current subprogram containing node N (if any) as not being in
    --  Alfa. If the corresponding scope is a spec, then mark the subprogram
@@ -387,7 +396,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa_Declaration
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind := NIR_XXX;
+      V      : Violation_Kind;
       Silent : Boolean        := False);
    --  Mark the declaration N as not being in Alfa, as well as the enclosing
    --  subprogram if any. If Silent is True, then never issue an error message,
@@ -824,20 +833,20 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("aggregate", N, NYI_Aggregate);
 
          when N_Allocator =>
-            Mark_Non_Alfa ("allocator", N);
+            Mark_Non_Alfa ("allocator", N, NIR_Dynamic_Alloc);
 
          when N_Assignment_Statement =>
             Mark (Name (N));
             Mark (Expression (N));
 
          when N_At_Clause =>
-            Mark_Non_Alfa ("at clause", N);
+            Mark_Non_Alfa ("at clause", N, NIR_XXX);
 
          when N_Attribute_Reference =>
             Mark_Attribute_Reference (N);
 
          when N_Attribute_Definition_Clause   =>
-            Mark_Non_Alfa ("attribute definition clause", N);
+            Mark_Non_Alfa ("attribute definition clause", N, NIR_XXX);
 
          when N_Binary_Op =>
             Mark_Binary_Op (N);
@@ -862,7 +871,7 @@ package body Alfa.Definition is
             Mark_List (Statements (N));
 
          when N_Code_Statement =>
-            Mark_Non_Alfa ("code statement", N);
+            Mark_Non_Alfa ("code statement", N, NIR_XXX);
 
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
@@ -871,11 +880,12 @@ package body Alfa.Definition is
             Mark_Conditional_Expression (N);
 
          when N_Enumeration_Representation_Clause =>
-            Mark_Non_Alfa ("enumeration representation clause", N);
+            Mark_Non_Alfa
+              ("enumeration representation clause", N, NYI_Rep_Clause);
 
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
-            Mark_Non_Alfa_Declaration ("exception", N);
+            Mark_Non_Alfa_Declaration ("exception", N, NIR_Exception);
 
          when N_Exit_Statement =>
             if Present (Condition (N)) then
@@ -919,7 +929,7 @@ package body Alfa.Definition is
               ("formal generic parameter", N, NYI_Generic);
 
          when N_Free_Statement =>
-            Mark_Non_Alfa ("free statement", N);
+            Mark_Non_Alfa ("free statement", N, NIR_Dealloc);
 
          when N_Freeze_Entity =>
             null;
@@ -946,7 +956,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("generic declaration", N, NYI_Generic);
 
          when N_Goto_Statement =>
-            Mark_Non_Alfa ("goto statement", N);
+            Mark_Non_Alfa ("goto statement", N, NIR_XXX);
 
          when N_Handled_Sequence_Of_Statements =>
             Mark_Handled_Statements (N);
@@ -978,7 +988,7 @@ package body Alfa.Definition is
             Mark_List (Statements (N));
 
          when N_Null =>
-            Mark_Non_Alfa ("null", N);
+            Mark_Non_Alfa ("null", N, NIR_Access);
 
          when N_Object_Declaration =>
             Mark_Object_Declaration (N);
@@ -1024,17 +1034,17 @@ package body Alfa.Definition is
 
          when N_Raise_Statement |
               N_Raise_xxx_Error =>
-            Mark_Non_Alfa ("raise statement", N);
+            Mark_Non_Alfa ("raise statement", N, NIR_Exception);
 
          when N_Range =>
             Mark (Low_Bound (N));
             Mark (High_Bound (N));
 
          when N_Record_Representation_Clause =>
-            Mark_Non_Alfa ("record representation clause", N);
+            Mark_Non_Alfa ("record representation clause", N, NYI_Rep_Clause);
 
          when N_Reference =>
-            Mark_Non_Alfa ("reference", N);
+            Mark_Non_Alfa ("reference", N, NIR_Access);
 
          when N_Short_Circuit =>
             if Present (Actions (N)) then
@@ -1073,17 +1083,18 @@ package body Alfa.Definition is
             Mark_Type_Conversion (N);
 
          when N_Unchecked_Expression =>
-            Mark_Non_Alfa ("unchecked expression", N);
+            Mark_Non_Alfa ("unchecked expression", N, NYI_XXX);
 
          when N_Unchecked_Type_Conversion =>
             if Comes_From_Source (N) then
-               Mark_Non_Alfa ("unchecked type conversion", N);
+               Mark_Non_Alfa
+                 ("unchecked type conversion", N, NIR_Unchecked_Conv);
             else
                Mark (Expression (N));
             end if;
 
          when N_Validate_Unchecked_Conversion =>
-            Mark_Non_Alfa ("unchecked conversion", N);
+            Mark_Non_Alfa ("unchecked conversion", N, NIR_Unchecked_Conv);
 
          when N_Variant_Part =>
             Mark_Non_Alfa ("variant part", N, NYI_Discriminant);
@@ -1118,7 +1129,7 @@ package body Alfa.Definition is
               N_Task_Body                  |
               N_Task_Body_Stub             |
               N_Timed_Entry_Call           =>
-            Mark_Non_Alfa ("tasking", N);
+            Mark_Non_Alfa ("tasking", N, NIR_Tasking);
 
          --  The following kinds can be safely ignored by marking
 
@@ -1202,17 +1213,17 @@ package body Alfa.Definition is
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
             if Is_Boolean_Type (Left_T) then
                Mark_Non_Alfa
-                 ("ordering operator on boolean type", N);
+                 ("ordering operator on boolean type", N, NYI_Arith_Operation);
 
             elsif Is_Array_Type (Left_T) then
                Mark_Non_Alfa
-                 ("ordering operator on array type", N);
+                 ("ordering operator on array type", N, NYI_XXX);
             end if;
 
          when N_Op_Eq | N_Op_Ne =>
             if Is_Array_Type (Left_T) then
                Mark_Non_Alfa
-                 ("equality operator on array type", N);
+                 ("equality operator on array type", N, NYI_XXX);
             end if;
 
          when N_Op_And | N_Op_Or =>
@@ -1220,7 +1231,7 @@ package body Alfa.Definition is
               and then Nkind (N) in N_Binary_Op
             then
                Mark_Non_Alfa
-                 ("binary operator on array type", N);
+                 ("binary operator on array type", N, NYI_XXX);
             end if;
 
          --  Do not allow arithmetic operations which could be reordered by the
@@ -1233,7 +1244,7 @@ package body Alfa.Definition is
             then
                Mark_Non_Alfa
                  ("possible re-ordering due to missing parentheses",
-                  Left_Opnd (N));
+                  Left_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
             if Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
@@ -1241,7 +1252,7 @@ package body Alfa.Definition is
             then
                Mark_Non_Alfa
                  ("possible re-ordering due to missing parentheses",
-                  Right_Opnd (N));
+                  Right_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
          when N_Op_Multiply | N_Op_Divide | N_Op_Rem | N_Op_Mod =>
@@ -1250,7 +1261,7 @@ package body Alfa.Definition is
             then
                Mark_Non_Alfa
                  ("possible re-ordering due to missing parentheses",
-                  Left_Opnd (N));
+                  Left_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
             if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
@@ -1258,7 +1269,7 @@ package body Alfa.Definition is
             then
                Mark_Non_Alfa
                  ("possible re-ordering due to missing parentheses",
-                  Right_Opnd (N));
+                  Right_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
          when N_Op_Expon |
@@ -1289,7 +1300,7 @@ package body Alfa.Definition is
       --  not in Alfa.
 
       if not Is_Entity_Name (Nam) then
-         Mark_Non_Alfa ("call", N);
+         Mark_Non_Alfa ("call", N, NIR_Indirect_Call);
 
       elsif not Spec_Is_In_Alfa (Unique (Entity (Nam))) then
          Mark_Non_Alfa ("subprogram called", N, From => Unique (Entity (Nam)));
@@ -1375,7 +1386,7 @@ package body Alfa.Definition is
 
    begin
       if Aliased_Present (Def) then
-         Mark_Non_Alfa_Declaration ("ALIASED", N);
+         Mark_Non_Alfa_Declaration ("ALIASED", N, NIR_Access);
       end if;
 
       if Present (Access_Definition (Def)) then
@@ -1459,7 +1470,7 @@ package body Alfa.Definition is
 
    begin
       if Present (Handlers) then
-         Mark_Non_Alfa ("handler", First (Handlers));
+         Mark_Non_Alfa ("handler", First (Handlers), NIR_Exception);
       end if;
 
       Mark_List (Statements (N));
@@ -1596,7 +1607,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind := NIR_XXX;
+      V      : Violation_Kind;
       Silent : Boolean        := False)
    is
       procedure Mark_Body_Violations (E : Unique_Entity_Id);
@@ -1693,7 +1704,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa_Declaration
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind := NIR_XXX;
+      V      : Violation_Kind;
       Silent : Boolean        := False) is
    begin
       Spec_Violations (V).Include (Unique_Defining_Entity (N));
@@ -1729,7 +1740,7 @@ package body Alfa.Definition is
       end if;
 
       if Aliased_Present (N) then
-         Mark_Non_Alfa ("ALIASED", N);
+         Mark_Non_Alfa ("ALIASED", N, NIR_Access);
       end if;
 
       if Present (Expr) then
@@ -1960,7 +1971,7 @@ package body Alfa.Definition is
             end if;
 
          when others =>
-            Mark_Non_Alfa ("pragma", N);
+            Mark_Non_Alfa ("pragma", N, NYI_Pragma);
       end case;
    end Mark_Pragma;
 
@@ -2230,7 +2241,7 @@ package body Alfa.Definition is
                and then Is_Scalar_Type (Etype (N)))
       then
          Mark_Non_Alfa
-           ("type conversion not between scalar types", N);
+           ("type conversion not between scalar types", N, NYI_Conversion);
       end if;
 
       Mark (Expr);
@@ -2243,7 +2254,7 @@ package body Alfa.Definition is
    procedure Mark_Type_Definition (Id : Unique_Entity_Id) is
    begin
       if Is_Tagged_Type (+Id) then
-         Mark_Non_Alfa ("tagged type", +Id);
+         Mark_Non_Alfa ("tagged type", +Id, NYI_Tagged);
       end if;
 
       case Ekind (+Id) is
@@ -2376,7 +2387,8 @@ package body Alfa.Definition is
       case N_Unary_Op'(Nkind (N)) is
          when N_Op_Not =>
             if Is_Array_Type (T) then
-               Mark_Non_Alfa ("not operator on array type", N);
+               Mark_Non_Alfa
+                 ("not operator on array type", N, NYI_Arith_Operation);
             end if;
 
          when N_Op_Abs =>

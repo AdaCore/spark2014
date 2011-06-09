@@ -51,6 +51,7 @@ package Alfa.Definition is
       NYI_Attribute,        --  attribute
       NYI_Block_Statement,  --  block declare statement
       NYI_Concatenation,    --  concatenation
+      NYI_Conversion,       --  conversion
       NYI_Container,        --  formal containers
       NYI_Discriminant,     --  discriminant record
       NYI_Dispatch,         --  dispatching
@@ -62,7 +63,9 @@ package Alfa.Definition is
       NYI_Modular,          --  modular type and subtype
       NYI_Non_Static_Range, --  non static range in type
       NYI_Old_Attribute,    --  'Old attribute
+      NYI_Pragma,           --  pragma
       NYI_Qualification,    --  qualification
+      NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
       NYI_Standard_Lib,     --  standard library
       NYI_String_Literal,   --  string literal
@@ -73,7 +76,13 @@ package Alfa.Definition is
       --  These constructs are not in Alfa in the foreseeable future
 
       NIR_Access,           --  access types
+      NIR_Ambiguous_Expr,   --  ambiguous expr
+      NIR_Dealloc,          --  deallocation
+      NIR_Dynamic_Alloc,    --  dynamic allocation
+      NIR_Exception,        --  exception
+      NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
+      NIR_Unchecked_Conv,   --  unchecked conversion
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is
