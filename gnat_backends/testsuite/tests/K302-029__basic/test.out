@@ -3,5 +3,5 @@
 *+ pack__p2 pack.ads:10 [block statement]
 -+ pack__p3 pack.ads:11 (access)
 ++ pack__p4 pack.ads:12
-*+ pack__p5 pack.ads:13 [not yet implemented]
+*+ pack__p5 pack.ads:13 [aggregate]
 

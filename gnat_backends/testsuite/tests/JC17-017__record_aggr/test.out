@@ -1,14 +1,13 @@
 p.adb:43:40: (info) range check proved
 p.adb:50:40: (info) range check proved
-*+ p__proc p.ads:2 [not yet implemented]
-*+ p__proc2 p.adb:12 [not yet implemented]
-*+ p__proc3 p.adb:18 [not yet implemented]
-*+ p__proc4 p.adb:24 [not yet implemented]
-*+ p__proc5 p.adb:30 [not yet implemented]
-*+ p__proc6 p.adb:36 [not yet implemented]
+*+ p__proc p.ads:2 [aggregate]
+*+ p__proc2 p.adb:12 [qualification]
+*+ p__proc3 p.adb:18 [qualification]
+*+ p__proc4 p.adb:24 [aggregate]
+*+ p__proc5 p.adb:30 [aggregate]
+*+ p__proc6 p.adb:36 [aggregate]
 ++ p__proc7__zero p.adb:43
-*+ p__proc7 p.adb:42 [not yet implemented]
+*+ p__proc7 p.adb:42 [aggregate]
 ++ p__proc8__zero p.adb:50
-*+ p__proc8 p.adb:49 [not yet implemented]
-
+*+ p__proc8 p.adb:49 [aggregate]
 
