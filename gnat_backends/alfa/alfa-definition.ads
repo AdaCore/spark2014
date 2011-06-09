@@ -45,14 +45,27 @@ package Alfa.Definition is
       --  NYI: Not Yet Implemented
       --  These constructs should be supported in Alfa one day
 
+      NYI_Aggregate,        --  aggregate
+      NYI_Arith_Operation,  --  arithmetic operation
+      NYI_Array_Subtype,    --  array subtype
+      NYI_Attribute,        --  attribute
       NYI_Block_Statement,  --  block declare statement
+      NYI_Concatenation,    --  concatenation
       NYI_Container,        --  formal containers
-      NYI_Discr,            --  discriminant record
+      NYI_Discriminant,     --  discriminant record
       NYI_Dispatch,         --  dispatching
+      NYI_Expr_With_Action, --  expression with action
+      NYI_Float,            --  float
       NYI_Generic,          --  generics
       NYI_Impure_Function,  --  impure functions
+      NYI_Logic_Function,   --  logic functions
+      NYI_Modular,          --  modular type and subtype
+      NYI_Non_Static_Range, --  non static range in type
+      NYI_Old_Attribute,    --  'Old attribute
+      NYI_Qualification,    --  qualification
       NYI_Slice,            --  array slice
       NYI_Standard_Lib,     --  standard library
+      NYI_String_Literal,   --  string literal
       NYI_Tagged,           --  tagged type
       NYI_XXX,              --  all other cases
 
@@ -64,7 +77,7 @@ package Alfa.Definition is
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is
-     Violation_Kind range NYI_Block_Statement .. NYI_XXX;
+     Violation_Kind range NYI_Aggregate .. NYI_XXX;
    subtype Known_Not_Yet_Implemented is Not_Yet_Implemented range
      Not_Yet_Implemented'First ..
        Not_Yet_Implemented'Val
