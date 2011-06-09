@@ -117,10 +117,18 @@ procedure Alfa_Report is
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
            (Action => Local_Handle_Alfa_File);
 
+      Save_Dir : constant String := Ada.Directories.Current_Directory;
+
       --  beginning of processing for Handle_Source_Dir;
 
    begin
-      Iterate (Path => Ada.Directories.Compose (Dir, "*.alfa"));
+      Ada.Directories.Set_Directory (Dir);
+      Iterate (Path => "*.alfa");
+      Ada.Directories.Set_Directory (Save_Dir);
+   exception
+      when others =>
+         Ada.Directories.Set_Directory (Save_Dir);
+         raise;
    end Handle_Source_Dir;
 
    ------------------
