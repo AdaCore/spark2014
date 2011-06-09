@@ -223,6 +223,10 @@ package body Alfa.Frame_Conditions is
                  Make_Entity_Name (Name'Unrestricted_Access);
    begin
       return Reads.Element (E_Name) - Defines.Element (E_Name);
+   exception
+      when Constraint_Error =>
+         raise Constraint_Error with
+           ("missing effects for subprogram " & Name);
    end Get_Reads;
 
    ----------------
@@ -235,6 +239,10 @@ package body Alfa.Frame_Conditions is
                  Make_Entity_Name (Name'Unrestricted_Access);
    begin
       return Writes.Element (E_Name) - Defines.Element (E_Name);
+   exception
+      when Constraint_Error =>
+         raise Constraint_Error with
+           ("missing effects for subprogram " & Name);
    end Get_Writes;
 
    ----------------------
@@ -559,6 +567,11 @@ package body Alfa.Frame_Conditions is
            (Reads.Find (Caller), Union_With_Reads'Access);
          Writes.Update_Element
            (Writes.Find (Caller), Union_With_Writes'Access);
+      exception
+         when Constraint_Error =>
+            raise Constraint_Error with
+              ("missing effects for subprogram " & Callee.all &
+                  " or subprogram " & Caller.all);
       end Propagate_On_Call;
 
       -----------------------
@@ -600,6 +613,10 @@ package body Alfa.Frame_Conditions is
          then
             Updated := True;
          end if;
+      exception
+         when Constraint_Error =>
+            raise Constraint_Error with
+              ("missing effects for subprogram " & Subp.all);
       end Update_Subprogram;
 
       Work_Set : Name_Set.Set;
@@ -647,6 +664,10 @@ package body Alfa.Frame_Conditions is
             if Updated then
                Work_Set.Union (Callers.Element (Cur_Subp));
             end if;
+         exception
+            when Constraint_Error =>
+               raise Constraint_Error with
+                 ("missing effects for subprogram " & Cur_Subp.all);
          end;
       end loop;
 
