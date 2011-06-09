@@ -11,7 +11,7 @@ import shutil
 import json
 
 max_steps = 500
-parallel_procs = 2
+parallel_procs = 1
 #  Change directory
 
 TEST = sys.modules['__main__']
