@@ -238,10 +238,15 @@ package body Alfa.Filter is
 
          if Present (Def_Unit_Name) and then
             Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
+            declare
+               Target_Name : constant String :=
+                  Get_Name_String (Chars (Name (Def_Unit_Name)));
+            begin
                Add_With_Clause
-                  (Types_Vars_Spec,
-                   Get_Name_String (Chars (Name (Def_Unit_Name))) &
-                     Types_Vars_Spec_Suffix);
+                  (Types_Vars_Spec, Target_Name & Types_Vars_Spec_Suffix);
+               Add_With_Clause
+                  (Subp_Spec, Target_Name & Subp_Spec_Suffix);
+            end;
          end if;
       end;
 
