@@ -26,10 +26,10 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                use Ada.Text_IO;
 
-with Get_ALFA;
+with Get_Alfa;
 with Sem_Util;                   use Sem_Util;
 
-package body ALFA.Frame_Conditions is
+package body Alfa.Frame_Conditions is
 
    -----------------
    -- Local Types --
@@ -242,13 +242,13 @@ package body ALFA.Frame_Conditions is
    ----------------------
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
-      (Ent.all = ALFA.Name_Of_Heap_Variable);
+      (Ent.all = Alfa.Name_Of_Heap_Variable);
 
    ---------------
-   -- Load_ALFA --
+   -- Load_Alfa --
    ---------------
 
-   procedure Load_ALFA (ALI_Filename : String) is
+   procedure Load_Alfa (ALI_Filename : String) is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
@@ -307,16 +307,16 @@ package body ALFA.Frame_Conditions is
          C := Getc;
       end Skipc;
 
-      procedure Get_ALFA_From_ALI is new Get_ALFA;
+      procedure Get_Alfa_From_ALI is new Get_Alfa;
 
-   --  Start of processing for Load_ALFA
+   --  Start of processing for Load_Alfa
 
    begin
       Open (ALI_File, In_File, ALI_Filename);
 
       Scan_ALI : loop
          if End_Of_File (ALI_File) then
-            --  No ALFA information in this ALI
+            --  No Alfa information in this ALI
 
             Close (ALI_File);
             return;
@@ -334,12 +334,12 @@ package body ALFA.Frame_Conditions is
 
       Index := 1;
 
-      Get_ALFA_From_ALI;
+      Get_Alfa_From_ALI;
       Close (ALI_File);
 
-      --  Walk low-level ALFA tables for this unit and populate high-level maps
+      --  Walk low-level Alfa tables for this unit and populate high-level maps
 
-      Walk_ALFA_Tables : declare
+      Walk_Alfa_Tables : declare
 
          type Scope_Name is record
             File_Num  : Nat;
@@ -371,7 +371,7 @@ package body ALFA.Frame_Conditions is
          Scope_Specs    : Scope_Spec.Map;
          Current_Entity : Entity_Name;
 
-      --  Start of processing for Walk_ALFA_Tables
+      --  Start of processing for Walk_Alfa_Tables
 
       begin
          --  Fill Scope_Entities : build entity representatives for all scopes
@@ -380,12 +380,12 @@ package body ALFA.Frame_Conditions is
          --  Fill Scope_Specs : build a correspondance table between body and
          --  spec scope for the same entity.
 
-         for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
-            for S in ALFA_File_Table.Table (F).From_Scope
-              .. ALFA_File_Table.Table (F).To_Scope
+         for F in Alfa_File_Table.First .. Alfa_File_Table.Last loop
+            for S in Alfa_File_Table.Table (F).From_Scope
+              .. Alfa_File_Table.Table (F).To_Scope
             loop
                declare
-                  Srec : ALFA_Scope_Record renames ALFA_Scope_Table.Table (S);
+                  Srec : Alfa_Scope_Record renames Alfa_Scope_Table.Table (S);
                   Sco  : constant Scope_Name :=
                            Scope_Name'(File_Num  => Srec.File_Num,
                                       Scope_Num => Srec.Scope_Num);
@@ -413,17 +413,17 @@ package body ALFA.Frame_Conditions is
          --  Fill in high-level tables from xrefs
 
          Current_Entity := Null_Entity_Name;
-         for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
-            for S in ALFA_File_Table.Table (F).From_Scope
-              .. ALFA_File_Table.Table (F).To_Scope
+         for F in Alfa_File_Table.First .. Alfa_File_Table.Last loop
+            for S in Alfa_File_Table.Table (F).From_Scope
+              .. Alfa_File_Table.Table (F).To_Scope
             loop
-               for X in ALFA_Scope_Table.Table (S).From_Xref
-                 .. ALFA_Scope_Table.Table (S).To_Xref
+               for X in Alfa_Scope_Table.Table (S).From_Xref
+                 .. Alfa_Scope_Table.Table (S).To_Xref
                loop
                   Do_One_Xref : declare
-                     Srec : ALFA_Scope_Record renames
-                              ALFA_Scope_Table.Table (S);
-                     Xref : ALFA_Xref_Record renames ALFA_Xref_Table.Table (X);
+                     Srec : Alfa_Scope_Record renames
+                              Alfa_Scope_Table.Table (S);
+                     Xref : Alfa_Xref_Record renames Alfa_Xref_Table.Table (X);
 
                      Ref_Entity : constant Entity_Name :=
                                     Make_Entity_Name (Xref.Entity_Name);
@@ -481,8 +481,8 @@ package body ALFA.Frame_Conditions is
                end loop;
             end loop;
          end loop;
-      end Walk_ALFA_Tables;
-   end Load_ALFA;
+      end Walk_Alfa_Tables;
+   end Load_Alfa;
 
    ----------------------
    -- Make_Entity_Name --
@@ -681,4 +681,4 @@ package body ALFA.Frame_Conditions is
       end;
    end Set_Default_To_Empty;
 
-end ALFA.Frame_Conditions;
+end Alfa.Frame_Conditions;

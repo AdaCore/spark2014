@@ -23,6 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-procedure ALFA.Compute_Frame_Conditions;
---  Compute the frame condition for all subprograms, based on ALFA information
+procedure Alfa.Compute_Frame_Conditions;
+--  Compute the frame condition for all subprograms, based on Alfa information
 --  in ALI files given in input.

@@ -25,9 +25,9 @@
 
 with Why.Inter; use Why.Inter;
 
-package ALFA.Filter is
+package Alfa.Filter is
 
-   ALFA_Compilation_Units : List_Of_Why_Packs.List;
+   Alfa_Compilation_Units : List_Of_Why_Packs.List;
 
    procedure Filter_Compilation_Unit (N : Node_Id);
    --  Filter declarations in compilation unit N and generate compilation units
@@ -39,4 +39,4 @@ package ALFA.Filter is
    function Filter_Out_Standard_Package return List_Of_Nodes.List;
    --  Return entities of standard package that are not in Alfa
 
-end ALFA.Filter;
+end Alfa.Filter;

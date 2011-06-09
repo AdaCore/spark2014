@@ -27,7 +27,7 @@ with Sem_Util; use Sem_Util;
 
 with Why.Inter; use Why.Inter;
 
-package ALFA.Definition is
+package Alfa.Definition is
 
    type Unique_Entity_Id is new Entity_Id;
    --  Type of unique entities shared between different views, in contrast to
@@ -86,12 +86,12 @@ package ALFA.Definition is
    function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether standard entity Id is in Alfa or not
 
-   procedure Create_ALFA_Output_File (Filename : String);
+   procedure Create_Alfa_Output_File (Filename : String);
    --  Create the file in which to generate output about subprogram in/out of
-   --  the ALFA subset.
+   --  the Alfa subset.
 
-   procedure Close_ALFA_Output_File;
-   --  Close the file created by Create_ALFA_Output_File
+   procedure Close_Alfa_Output_File;
+   --  Close the file created by Create_Alfa_Output_File
 
    type Alfa_Decl is
      (Alfa_Object,
@@ -106,4 +106,4 @@ package ALFA.Definition is
    Decls_In_Spec : Alfa_Decls;
    Decls_In_Body : Alfa_Decls;
 
-end ALFA.Definition;
+end Alfa.Definition;

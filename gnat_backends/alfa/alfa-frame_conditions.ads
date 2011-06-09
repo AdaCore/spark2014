@@ -27,7 +27,7 @@ with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;
 
-package ALFA.Frame_Conditions is
+package Alfa.Frame_Conditions is
 
    type Entity_Name is new String_Ptr;
    --  Unique name representing an entity
@@ -64,11 +64,11 @@ package ALFA.Frame_Conditions is
      (not Get_Writes (E).Is_Empty);
    --  Return True if subprogram E writes to global variables
 
-   procedure Load_ALFA (ALI_Filename : String);
+   procedure Load_Alfa (ALI_Filename : String);
    --  Extract xref information from an ALI file
 
    procedure Propagate_Through_Call_Graph;
    --  Propagate reads and writes through the call-graph defined by calls and
    --  callers.
 
-end ALFA.Frame_Conditions;
+end Alfa.Frame_Conditions;

@@ -35,7 +35,7 @@ package Why is
 
    Not_Alfa        : exception;
    --  Use this exception for cases that are outside the subset defined by
-   --  ALFA
+   --  Alfa
 
    Unexpected_Node  : exception;
    --  Use this exception for cases that are not expected at this place in the

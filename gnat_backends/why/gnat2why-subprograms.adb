@@ -25,7 +25,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with ALFA;               use ALFA;
+with Alfa;               use Alfa;
 with Atree;              use Atree;
 with Debug;
 with Einfo;              use Einfo;
@@ -38,8 +38,8 @@ with Stand;              use Stand;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
-with ALFA.Common;           use ALFA.Common;
-with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
+with Alfa.Common;           use Alfa.Common;
+with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Sinfo;             use Why.Sinfo;

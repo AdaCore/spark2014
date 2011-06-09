@@ -46,11 +46,11 @@ with Stand;                 use Stand;
 with Switch;                use Switch;
 with String_Utils;          use String_Utils;
 
-with ALFA;
-with ALFA.Common;           use ALFA.Common;
-with ALFA.Definition;       use ALFA.Definition;
-with ALFA.Filter;           use ALFA.Filter;
-with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
+with Alfa;
+with Alfa.Common;           use Alfa.Common;
+with Alfa.Definition;       use Alfa.Definition;
+with Alfa.Filter;           use Alfa.Filter;
+with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Atree.Builders;    use Why.Atree.Builders;
@@ -118,7 +118,7 @@ package body Gnat2Why.Driver is
 
       --  Authorize warnings now, since regular compiler warnings should
       --  already have been issued, e.g. to generate warnings related to
-      --  misuse of ALFA specific pragmas.
+      --  misuse of Alfa specific pragmas.
 
       Warning_Mode := Normal;
 
@@ -135,8 +135,8 @@ package body Gnat2Why.Driver is
 
       --  Compute the frame condition. This starts with identifying ALI
       --  files for the current unit and all dependent (with'ed) units.
-      --  Then ALFA information is loaded from all these files. Finally the
-      --  local ALFA information is propagated to get the frame condition.
+      --  Then Alfa information is loaded from all these files. Finally the
+      --  local Alfa information is propagated to get the frame condition.
 
       Initialize_ALI;
       Initialize_ALI_Source;
@@ -160,10 +160,10 @@ package body Gnat2Why.Driver is
          raise Unrecoverable_Error;
       end if;
 
-      --  Load ALFA information from ALIs for all dependent units
+      --  Load Alfa information from ALIs for all dependent units
 
       for Index in ALIs.First .. ALIs.Last loop
-         Load_ALFA (Name_String (Name_Id
+         Load_Alfa (Name_String (Name_Id
            (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
       end loop;
 
@@ -200,7 +200,7 @@ package body Gnat2Why.Driver is
       NL (Current_File);
       Close_Current_File;
 
-      --  Compute the frame condition from raw ALFA information
+      --  Compute the frame condition from raw Alfa information
 
 --        Put_Line ("");
 --        Put_Line ("## Before propagation ##");
@@ -213,14 +213,14 @@ package body Gnat2Why.Driver is
 --        Put_Line ("## After propagation ##");
 --        Put_Line ("");
 --        Display_Maps;
-      --  Mark all compilation units with "in ALFA / not in ALFA" marks, in
+      --  Mark all compilation units with "in Alfa / not in Alfa" marks, in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
-      Create_ALFA_Output_File (Base_Name & ".alfa");
+      Create_Alfa_Output_File (Base_Name & ".alfa");
       Mark_All_Compilation_Units;
-      Close_ALFA_Output_File;
+      Close_Alfa_Output_File;
 
       if Compilation_Errors or else Debug_Flag_Dot_KK then
          return;
@@ -232,13 +232,13 @@ package body Gnat2Why.Driver is
 
       --  Workaround for K526-008 and K525-019
 
-      --  for CU of ALFA_Compilation_Units loop
+      --  for CU of Alfa_Compilation_Units loop
       --     Translate_CUnit (CU);
       --  end loop;
       declare
          use List_Of_Why_Packs;
 
-         C : Cursor := ALFA_Compilation_Units.First;
+         C : Cursor := Alfa_Compilation_Units.First;
       begin
          while C /= No_Element loop
             Translate_CUnit (Element (C));
@@ -452,7 +452,7 @@ package body Gnat2Why.Driver is
 
       --  Authorize warnings now, since regular compiler warnings should
       --  already have been issued, e.g. to generate warnings related to
-      --  misuse of ALFA specific pragmas.
+      --  misuse of Alfa specific pragmas.
 
       Warning_Mode := Normal;
 
@@ -481,7 +481,7 @@ package body Gnat2Why.Driver is
 
       New_Global_Ref_Declaration
         (File     => File,
-         Name     => New_Identifier (ALFA.Name_Of_Heap_Variable),
+         Name     => New_Identifier (Alfa.Name_Of_Heap_Variable),
          Obj_Type =>
            New_Abstract_Type (Empty, New_Identifier ("standard___heap_type")));
 

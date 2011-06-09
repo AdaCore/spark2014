@@ -35,7 +35,7 @@ with Namet; use Namet;
 with Sinfo; use Sinfo;
 with Sinput; use Sinput;
 
-package ALFA.Common is
+package Alfa.Common is
 
    Name_GNATprove : constant String := "gnatprove";
 
@@ -67,4 +67,4 @@ package ALFA.Common is
 
    function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean;
 
-end ALFA.Common;
+end Alfa.Common;

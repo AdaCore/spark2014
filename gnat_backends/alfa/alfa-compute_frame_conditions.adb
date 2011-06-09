@@ -25,9 +25,9 @@
 
 with Ada.Command_Line;      use Ada.Command_Line;
 with Ada.Text_IO;           use Ada.Text_IO;
-with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
+with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
-procedure ALFA.Compute_Frame_Conditions is
+procedure Alfa.Compute_Frame_Conditions is
 
    Stop : exception;
    --  Terminate execution
@@ -39,7 +39,7 @@ begin
    end if;
 
    for J in 1 .. Argument_Count loop
-      Load_ALFA (Argument (J));
+      Load_Alfa (Argument (J));
    end loop;
 
    Put_Line ("");
@@ -53,4 +53,4 @@ begin
    Put_Line ("## After propagation ##");
    Put_Line ("");
    Display_Maps;
-end ALFA.Compute_Frame_Conditions;
+end Alfa.Compute_Frame_Conditions;

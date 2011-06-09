@@ -25,7 +25,7 @@
 
 with Sdefault; use Sdefault;
 
-package body ALFA.Common is
+package body Alfa.Common is
 
    function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean is
    begin
@@ -46,4 +46,4 @@ package body ALFA.Common is
       end if;
    end Is_From_Standard_Library;
 
-end ALFA.Common;
+end Alfa.Common;

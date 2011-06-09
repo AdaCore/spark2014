@@ -30,10 +30,10 @@ with Sem_Util;     use Sem_Util;
 with Sinfo;        use Sinfo;
 with Stand;        use Stand;
 
-with ALFA.Definition; use ALFA.Definition;
-with ALFA.Common; use ALFA.Common;
+with Alfa.Definition; use Alfa.Definition;
+with Alfa.Common; use Alfa.Common;
 
-package body ALFA.Filter is
+package body Alfa.Filter is
 
    Standard_Why_Package_Name : constant String := "_standard";
 
@@ -245,10 +245,10 @@ package body ALFA.Filter is
          end if;
       end;
 
-      ALFA_Compilation_Units.Append (Types_Vars_Spec);
-      ALFA_Compilation_Units.Append (Types_Vars_Body);
-      ALFA_Compilation_Units.Append (Subp_Spec);
-      ALFA_Compilation_Units.Append (Subp_Body);
+      Alfa_Compilation_Units.Append (Types_Vars_Spec);
+      Alfa_Compilation_Units.Append (Types_Vars_Body);
+      Alfa_Compilation_Units.Append (Subp_Spec);
+      Alfa_Compilation_Units.Append (Subp_Body);
    end Filter_Compilation_Unit;
 
    -----------------------------
@@ -312,4 +312,4 @@ package body ALFA.Filter is
       return Standard_Why_Package;
    end Filter_Out_Standard_Package;
 
-end ALFA.Filter;
+end Alfa.Filter;
