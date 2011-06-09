@@ -96,27 +96,30 @@ package body Gnat2Why.Decls is
 
       else
          --  otherwise we can generate a "logic", with a defining axiom if
-         --  necessary.
+         --  necessary and possible.
          New_Logic
             (File        => File,
              Name        => New_Identifier (Name),
              Args        => (1 .. 0 => <>),
              Return_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
-         if Present (Expression (Decl)) then
-            declare
-               Ax_Name : constant String := Name & "__def_axiom";
-               Id : constant W_Identifier_Id := New_Identifier (Name);
-            begin
-               New_Axiom
-                  (File       => File,
-                   Name       => New_Identifier (Ax_Name),
-                   Axiom_Body =>
-                     New_Equal
-                        (Left  => New_Term_Identifier (Name => Id),
-                         Right =>
-                           Why_Term_Of_Ada_Expr (Expression (Decl))));
-            end;
-         end if;
+         declare
+            Expr : constant Node_Id := Expression (Decl);
+         begin
+            if Present (Expr) and then Is_Static_Expression (Expr) then
+               declare
+                  Ax_Name : constant String := Name & "__def_axiom";
+                  Id : constant W_Identifier_Id := New_Identifier (Name);
+               begin
+                  New_Axiom
+                     (File       => File,
+                      Name       => New_Identifier (Ax_Name),
+                      Axiom_Body =>
+                        New_Equal
+                           (Left  => New_Term_Identifier (Name => Id),
+                            Right => Why_Term_Of_Ada_Expr (Expr)));
+               end;
+            end if;
+         end;
       end if;
 
    end Why_Decl_Of_Ada_Object_Decl;
