@@ -1,0 +1,1 @@
+ALL XFAIL effects on a variable whose type is in std lib
