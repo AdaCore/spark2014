@@ -156,6 +156,9 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type;
    --  Get the name of the type of an Ada node, as a Why Type
 
+   function Unit_Param return W_Binder_Id;
+   --  return a dummy binder for a single argument of type unit
+   --
    function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
       return W_Prog_Id;
    --  Translate an Ada enumeration literal to Why. There are a number of
@@ -423,7 +426,7 @@ package body Gnat2Why.Subprograms is
       Len    : constant Nat := List_Length (Params);
    begin
       if Len = 0 then
-         return (1 .. 0 => <>);
+         return (1 => New_Void_Literal);
       end if;
       declare
          Why_Args : W_Term_Array :=
@@ -738,6 +741,18 @@ package body Gnat2Why.Subprograms is
       return Why_Abstract (Type_Of_Node (N));
    end Type_Of_Node;
 
+   ----------------
+   -- Unit_Param --
+   ----------------
+
+   function Unit_Param return W_Binder_Id is
+   begin
+      return
+         New_Binder
+           (Names => (1 => New_Identifier ("__void_param")),
+            Arg_Type => New_Type_Unit);
+   end Unit_Param;
+
    --------------------------------
    -- Why_Decl_Of_Ada_Subprogram --
    --------------------------------
@@ -1026,6 +1041,9 @@ package body Gnat2Why.Subprograms is
          Arg    : Node_Id := First (Ada_Binders);
          Cnt    : Integer := 1;
       begin
+         if Arg_Length = 0 then
+            return (1 => New_Type_Unit);
+         end if;
          while Present (Arg) loop
             Result (Cnt) :=
                +Why_Logic_Type_Of_Ada_Obj (Defining_Identifier (Arg));
@@ -1136,13 +1154,8 @@ package body Gnat2Why.Subprograms is
 
       Func_Binders : constant W_Binder_Array := Compute_Binders;
       Ext_Binders  : constant W_Binder_Array :=
-         (if Arg_Length = 0 then
-            (1 =>
-               New_Binder
-                 (Names => (1 => New_Identifier ("__void_param")),
-                  Arg_Type => New_Type_Unit))
-          else
-            Func_Binders);
+         (if Arg_Length = 0 then (1 => Unit_Param)
+          else Func_Binders);
       Dummy_Node : Node_Id;
       Pre          : constant W_Predicate_Id :=
          Compute_Spec_Pred (Name_Precondition, Dummy_Node);

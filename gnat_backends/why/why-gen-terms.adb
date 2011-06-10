@@ -144,7 +144,10 @@ package body Why.Gen.Terms is
 
    begin
       if Binders'Length = 0 then
-         return New_Term_Identifier (Name => Name);
+         return
+            New_Operation
+              (Name => Name,
+               Parameters => (1 => New_Void_Literal));
       else
          Build_Call (Binders);
          return New_Operation (Name => Name, Parameters => Ar);
