@@ -1235,7 +1235,7 @@ package body Gnat2Why.Subprograms is
             New_Global_Binding
               (File    => File,
                Name    => New_Definition_Name (Name_Str),
-               Binders => Ext_Binders,
+               Binders => (1 => Unit_Param),
                Pre     => Pre,
                Post    =>
                  New_Located_Predicate

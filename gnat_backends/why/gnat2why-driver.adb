@@ -337,30 +337,39 @@ package body Gnat2Why.Driver is
       --  (for N of Decls loop...)
       while Cu /= No_Element loop
          declare
-            N    : constant Node_Id := Element (Cu);
-            Name : constant String := Full_Name (N);
+            N    : Node_Id := Element (Cu);
          begin
-            case Ekind (N) is
-               when Type_Kind =>
-                  New_Abstract_Type (File, Name);
+            --  if the node is not a type, get the corresponding entity
 
-               when Object_Kind =>
+            if Nkind (N) /= N_Defining_Identifier then
+               N := Defining_Identifier (N);
+            end if;
+            declare
+               Name : constant String := Full_Name (N);
+            begin
+               case Ekind (N) is
+                  when Type_Kind =>
+                     New_Abstract_Type (File, Name);
 
-                  --  Currently, do not generate a declaration for objects
-                  --  whose type is defined in the standard library, as such a
-                  --  type is not yet translated to Why. If such an object
-                  --  appears in an effect, Why will reject the generated file.
+                  when Object_Kind =>
 
-                  if not Is_From_Standard_Library (Sloc (Etype (N))) then
-                     New_Global_Ref_Declaration
-                       (File     => File,
-                        Name     => New_Identifier (Name),
-                        Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
-                  end if;
+                     --  Currently, do not generate a declaration for objects
+                     --  whose type is defined in the standard library, as
+                     --  such a type is not yet translated to Why. If such an
+                     --  object appears in an effect, Why will reject the
+                     --  generated file.
 
-               when others =>
-                  raise Program_Error;
-            end case;
+                     if not Is_From_Standard_Library (Sloc (Etype (N))) then
+                        New_Global_Ref_Declaration
+                          (File     => File,
+                           Name     => New_Identifier (Name),
+                           Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
+                     end if;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end;
          end;
          Next (Cu);
       end loop;

@@ -2095,12 +2095,37 @@ package body Alfa.Definition is
       HSS : constant Node_Id          := Handled_Statement_Sequence (N);
 
    begin
+
+      if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body) then
+         return;
+      end if;
+
       --  Currently do not analyze generic bodies
 
       if Ekind (+Id) in Generic_Subprogram_Kind then
          Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
+
+      --  Even if the subprogram we consider is not in Alfa, we still need to
+      --  generate object declarations for its parameters; This is necessary
+      --  to support local subprograms which use these parameters, which may
+      --  be in Alfa.
+
+      declare
+         Param : Entity_Id := First_Entity (+Id);
+      begin
+         while Present (Param) loop
+            if Nkind (Parent (Param)) = N_Parameter_Specification then
+               if Type_Is_In_Alfa (Unique (Etype (Param))) then
+                  Decls_In_Body (Alfa_Object).Append (Parent (Param));
+               else
+                  Decls_In_Body (Non_Alfa_Type).Append (Parent (Param));
+               end if;
+            end if;
+            Next_Entity (Param);
+         end loop;
+      end;
 
       --  Inherit violations from spec to body
 
