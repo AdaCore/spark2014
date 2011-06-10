@@ -1123,6 +1123,7 @@ package body Alfa.Definition is
               N_Entry_Call_Statement       |
               N_Entry_Declaration          |
               N_Protected_Body             |
+              N_Protected_Body_Stub        |
               N_Requeue_Statement          |
               N_Selective_Accept           |
               N_Single_Task_Declaration    |
@@ -1159,7 +1160,79 @@ package body Alfa.Definition is
 
          --  Mark should not be called on other kinds
 
-         when others =>
+         when N_Unused_At_Start |
+              N_Component_Clause |
+              N_Mod_Clause |
+              N_Empty |
+              N_Pragma_Argument_Association |
+              N_Error |
+              N_Defining_Character_Literal |
+              N_Defining_Operator_Symbol |
+              N_Subtype_Indication |
+              N_Loop_Parameter_Specification |
+              N_Function_Specification |
+              N_Procedure_Specification |
+              N_Access_Function_Definition | --  ???
+              N_Access_Procedure_Definition | --  ???
+              N_Constrained_Array_Definition  | --  ???
+              N_Unconstrained_Array_Definition  | --  ???
+              N_Accept_Alternative |
+              N_Delay_Alternative |
+              N_Elsif_Part |
+              N_Entry_Body_Formal_Part |
+              N_Iteration_Scheme |
+              N_Terminate_Alternative |
+              N_Push_Pop_xxx_Label |
+              N_SCIL_Dispatch_Table_Tag_Init |
+              N_SCIL_Dispatching_Call |
+              N_SCIL_Membership_Test |
+              N_Abortable_Part |
+              N_Access_Definition |
+              N_Access_To_Object_Definition |
+              N_Aspect_Specification |
+              N_Compilation_Unit |
+              N_Compilation_Unit_Aux |
+              N_Component_Association |
+              N_Component_Definition |
+              N_Component_List |
+              N_Contract |
+              N_Derived_Type_Definition |
+              N_Decimal_Fixed_Point_Definition |
+              N_Defining_Program_Unit_Name |
+              N_Delta_Constraint |
+              N_Designator |
+              N_Digits_Constraint |
+              N_Discriminant_Association |
+              N_Discriminant_Specification |
+              N_Enumeration_Type_Definition |
+              N_Entry_Call_Alternative |
+              N_Entry_Index_Specification |
+              N_Exception_Handler |
+              N_Floating_Point_Definition |
+              N_Formal_Decimal_Fixed_Point_Definition |
+              N_Formal_Derived_Type_Definition |
+              N_Formal_Discrete_Type_Definition |
+              N_Formal_Floating_Point_Definition |
+              N_Formal_Modular_Type_Definition |
+              N_Formal_Ordinary_Fixed_Point_Definition |
+              N_Formal_Private_Type_Definition |
+              N_Formal_Incomplete_Type_Definition |
+              N_Formal_Signed_Integer_Type_Definition |
+              N_Generic_Association |
+              N_Index_Or_Discriminant_Constraint |
+              N_Modular_Type_Definition |
+              N_Ordinary_Fixed_Point_Definition |
+              N_Parameter_Specification |
+              N_Protected_Definition |
+              N_Range_Constraint |
+              N_Real_Range_Specification |
+              N_Record_Definition |
+              N_Signed_Integer_Type_Definition |
+              N_Single_Protected_Declaration |
+              N_Task_Definition |
+              N_Triggering_Alternative |
+              N_Variant |
+              N_Unused_At_End =>
             raise Program_Error;
       end case;
    end Mark;
@@ -1365,8 +1438,11 @@ package body Alfa.Definition is
                Current_Unit_Is_Main_Spec := True;
             end if;
 
-         when N_Package_Renaming_Declaration    |
-              N_Subprogram_Renaming_Declaration =>
+         when N_Package_Renaming_Declaration           |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
             null;
 
          when others =>

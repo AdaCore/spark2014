@@ -102,10 +102,22 @@ package body Alfa.Filter is
               Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
             Body_Unit := N;
 
-         when N_Package_Declaration             |
-              N_Generic_Package_Declaration     |
-              N_Package_Renaming_Declaration    |
-              N_Subprogram_Renaming_Declaration =>
+         --  gnat2why should be called on a compilable unit, which excludes
+         --  calling it directy on a separate or the spec unit which has a
+         --  corresponding body unit. The following cases correspond to spec
+         --  units for which there is no body. The case of a [generic]
+         --  subprogram declaration is when the subprogram is imported.
+
+         when N_Package_Declaration                    |
+              N_Package_Renaming_Declaration           |
+              N_Generic_Package_Declaration            |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Declaration                 |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Subprogram_Declaration         |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
+
             Spec_Unit := N;
 
          when N_Subprogram_Body =>
