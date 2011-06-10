@@ -82,17 +82,17 @@ package body Gnat2Why.Decls is
 
    procedure Why_Decl_Of_Ada_Object_Decl
      (File : W_File_Id;
-      Decl : Node_Id)
+      Id  : Entity_Id;
+      Def  : Node_Id := Empty)
    is
-      Obj_Id : constant Node_Id := Defining_Identifier (Decl);
-      Name   : constant String := Full_Name (Obj_Id);
+      Name   : constant String := Full_Name (Id);
    begin
       --  If the object is mutable, we generate a global ref
-      if Is_Mutable (Obj_Id) then
+      if Is_Mutable (Id) then
          New_Global_Ref_Declaration
             (File     => File,
              Name     => New_Identifier (Name),
-             Obj_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
+             Obj_Type => +Why_Logic_Type_Of_Ada_Obj (Id));
 
       else
          --  otherwise we can generate a "logic", with a defining axiom if
@@ -101,25 +101,21 @@ package body Gnat2Why.Decls is
             (File        => File,
              Name        => New_Identifier (Name),
              Args        => (1 .. 0 => <>),
-             Return_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
-         declare
-            Expr : constant Node_Id := Expression (Decl);
-         begin
-            if Present (Expr) and then Is_Static_Expression (Expr) then
-               declare
-                  Ax_Name : constant String := Name & "__def_axiom";
-                  Id : constant W_Identifier_Id := New_Identifier (Name);
-               begin
-                  New_Axiom
-                     (File       => File,
-                      Name       => New_Identifier (Ax_Name),
-                      Axiom_Body =>
-                        New_Equal
-                           (Left  => New_Term_Identifier (Name => Id),
-                            Right => Why_Term_Of_Ada_Expr (Expr)));
-               end;
-            end if;
-         end;
+             Return_Type => +Why_Logic_Type_Of_Ada_Obj (Id));
+         if Present (Def) and then Is_Static_Expression (Def) then
+            declare
+               Ax_Name : constant String := Name & "__def_axiom";
+               Id : constant W_Identifier_Id := New_Identifier (Name);
+            begin
+               New_Axiom
+                  (File       => File,
+                   Name       => New_Identifier (Ax_Name),
+                   Axiom_Body =>
+                     New_Equal
+                        (Left  => New_Term_Identifier (Name => Id),
+                         Right => Why_Term_Of_Ada_Expr (Def)));
+            end;
+         end if;
       end if;
 
    end Why_Decl_Of_Ada_Object_Decl;

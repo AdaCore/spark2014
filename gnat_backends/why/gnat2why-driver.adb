@@ -393,7 +393,15 @@ package body Gnat2Why.Driver is
                Why_Decl_Of_Ada_Subprogram (File, Element (Cu), As_Spec);
 
             when N_Object_Declaration =>
-               Why_Decl_Of_Ada_Object_Decl (File, Element (Cu));
+               Why_Decl_Of_Ada_Object_Decl
+                 (File,
+                  Defining_Identifier (Element (Cu)),
+                  Expression (Element (Cu)));
+
+            when N_Parameter_Specification =>
+               Why_Decl_Of_Ada_Object_Decl
+                 (File,
+                  Defining_Identifier (Element (Cu)));
 
             when N_Itype_Reference =>
                null;  --  Nothing to do
@@ -411,11 +419,7 @@ package body Gnat2Why.Driver is
             --  ??? intermediate code to ease transformation
             --  To be removed
 
-            when N_Full_Type_Declaration =>
-               Why_Type_Decl_Of_Entity
-                  (File,
-                   Defining_Identifier (Element (Cu)));
-            when N_Subtype_Declaration =>
+            when N_Full_Type_Declaration | N_Subtype_Declaration =>
                Why_Type_Decl_Of_Entity
                   (File,
                    Defining_Identifier (Element (Cu)));
