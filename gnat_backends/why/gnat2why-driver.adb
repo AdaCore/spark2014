@@ -41,7 +41,6 @@ with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
 with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Switch;                use Switch;
 with String_Utils;          use String_Utils;
@@ -100,10 +99,7 @@ package body Gnat2Why.Driver is
       Main_Lib_Id   : ALI_Id;
 
       N          : constant Node_Id := Unit (GNAT_Root);
-      FName      : constant String :=
-         Get_Name_String (File_Name (Get_Source_File_Index (Sloc (N))));
-      Base_Name : constant String :=
-         File_Name_Without_Suffix (FName);
+      Base_Name : constant String := File_Name_Without_Suffix (Sloc (N));
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with

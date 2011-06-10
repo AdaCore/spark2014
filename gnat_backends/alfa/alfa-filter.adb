@@ -23,15 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;        use Atree;
-with Namet;        use Namet;
-with Nlists;       use Nlists;
-with Sem_Util;     use Sem_Util;
-with Sinfo;        use Sinfo;
-with Stand;        use Stand;
+with Atree;           use Atree;
+with Nlists;          use Nlists;
+with Sem_Util;        use Sem_Util;
+with Sinfo;           use Sinfo;
+with Stand;           use Stand;
 
 with Alfa.Definition; use Alfa.Definition;
-with Alfa.Common; use Alfa.Common;
+with Alfa.Common;     use Alfa.Common;
 
 package body Alfa.Filter is
 
@@ -252,7 +251,8 @@ package body Alfa.Filter is
             Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
             declare
                Target_Name : constant String :=
-                  Get_Name_String (Chars (Name (Def_Unit_Name)));
+                  File_Name_Without_Suffix
+                    (Sloc (Entity (Name (Def_Unit_Name))));
             begin
                Add_With_Clause
                   (Types_Vars_Spec, Target_Name & Types_Vars_Spec_Suffix);
