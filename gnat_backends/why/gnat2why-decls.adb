@@ -28,11 +28,13 @@ with Einfo;                use Einfo;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Stand;                use Stand;
+
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Preds;        use Why.Gen.Preds;
-with Why.Conversions;      use Why.Conversions;
+with Why.Inter;            use Why.Inter;
 
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
@@ -105,15 +107,16 @@ package body Gnat2Why.Decls is
          if Present (Def) and then Is_Static_Expression (Def) then
             declare
                Ax_Name : constant String := Name & "__def_axiom";
-               Id : constant W_Identifier_Id := New_Identifier (Name);
+               Ident : constant W_Identifier_Id := New_Identifier (Name);
             begin
                New_Axiom
                   (File       => File,
                    Name       => New_Identifier (Ax_Name),
                    Axiom_Body =>
                      New_Equal
-                        (Left  => New_Term_Identifier (Name => Id),
-                         Right => Why_Term_Of_Ada_Expr (Def)));
+                        (Left  => New_Term_Identifier (Name => Ident),
+                         Right => Why_Term_Of_Ada_Expr (Def,
+                           Why_Abstract (Etype (Id)))));
             end;
          end if;
       end if;
