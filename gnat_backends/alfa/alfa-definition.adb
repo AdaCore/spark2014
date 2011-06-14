@@ -107,7 +107,6 @@ package body Alfa.Definition is
       NYI_Qualification    => To_Unbounded_String ("qualification"),
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
-      NYI_Standard_Lib     => To_Unbounded_String ("standard library"),
       NYI_String_Literal   => To_Unbounded_String ("string literal"),
       NYI_Tagged           => To_Unbounded_String ("tagged type"),
       NYI_XXX              => To_Unbounded_String ("not yet implemented"),
@@ -450,7 +449,6 @@ package body Alfa.Definition is
    procedure Mark_Type_Conversion             (N : Node_Id);
    procedure Mark_Type_Definition             (Id : Unique_Entity_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
-   procedure Mark_With_Clause                 (N : Node_Id);
 
    ------------------------------
    -- Alfa marking of entities --
@@ -525,13 +523,15 @@ package body Alfa.Definition is
    is
       Alfa_Status : constant Alfa_Decl :=
          (if In_Alfa then Alfa_Type else Non_Alfa_Type);
+
    begin
       if In_Alfa then
          Types_In_Alfa.Include (+Id);
       end if;
-      if not (Type_Entity_Marked (+Id))
-         and then not (Is_In_Standard_Package (+Id))
-         and then not (Is_From_Standard_Library (Sloc (+Id))) then
+
+      if not Type_Entity_Marked (+Id)
+        and then not Is_In_Standard_Package (+Id)
+      then
          Filter_In_Alfa (+Id, Alfa_Status);
       end if;
    end Mark_Type_In_Alfa;
@@ -557,7 +557,10 @@ package body Alfa.Definition is
          return Standard_In_Alfa.Contains (+Id);
       end if;
 
-      if Is_Itype (+Id) and then not (Type_Entity_Marked (+Id)) then
+      --  Type might not have been marked yet, in case it is an Itype or a
+      --  class-wide type.
+
+      if not Type_Entity_Marked (+Id) then
          Mark (+Id);
       end if;
 
@@ -1107,9 +1110,6 @@ package body Alfa.Definition is
               N_Task_Type_Declaration         =>
             Mark (Defining_Identifier (N));
 
-         when N_With_Clause =>
-            Mark_With_Clause (N);
-
          when N_String_Literal =>
             Mark_Non_Alfa ("string literal", N, NYI_String_Literal);
 
@@ -1149,6 +1149,7 @@ package body Alfa.Definition is
               N_Subprogram_Info                 |
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
+              N_With_Clause                     |
               N_Use_Type_Clause                 =>
             null;
 
@@ -1404,13 +1405,6 @@ package body Alfa.Definition is
       --  Separately mark declarations from Standard as in Alfa or not
 
       if Defining_Entity (N) = Standard_Standard then
-         return;
-      end if;
-
-      --  Do not mark entities from the standard library as in Alfa, as they
-      --  currently cannot be translated to Why.
-
-      if Is_From_Standard_Library (Sloc (N)) then
          return;
       end if;
 
@@ -1806,7 +1800,21 @@ package body Alfa.Definition is
       Def  : constant Node_Id          := Object_Definition (N);
       Expr : constant Node_Id          := Expression (N);
       T    : constant Unique_Entity_Id := Unique (Etype (+Id));
+
    begin
+      --  Ignore exact value of deferred constants, so that these can be
+      --  used for a parametrized proof. This is detected here by noting that
+      --  the object is already explicitly in or out of Alfa. Not adding the
+      --  declaration to the set of Alfa declarations is also crucial to avoid
+      --  a redundant declaration in Why.
+
+      if Object_Is_In_Alfa (Id)
+        or else not Object_Is_Computed_In_Alfa (Id)
+      then
+         Mark (Expr);
+         return;
+      end if;
+
       --  The object is in Alfa if-and-only-if its type is in Alfa and it is
       --  not aliased.
 
@@ -2207,11 +2215,6 @@ package body Alfa.Definition is
       Formal     : Entity_Id;
 
    begin
-      if Is_From_Standard_Library (Sloc (N)) then
-         Mark_Non_Alfa_Declaration
-           ("standard library", Parent (N), NYI_Standard_Lib);
-         return;
-      end if;
 
       if Ekind (Id) = E_Function then
          Mark_Function_Specification (N);
@@ -2567,20 +2570,6 @@ package body Alfa.Definition is
          Mark_Scope (Scope_Stack.Table (S));
       end loop;
    end Mark_Violations_For_All_Scopes;
-
-   ----------------------
-   -- Mark_With_Clause --
-   ----------------------
-
-   procedure Mark_With_Clause (N : Node_Id) is
-   begin
-      if Implicit_With (N) then
-         Mark_Non_Alfa
-           ("implicit WITH of standard library", N, NYI_Standard_Lib);
-      elsif Is_From_Standard_Library (Sloc (Library_Unit (N))) then
-         Mark_Non_Alfa ("WITH of standard library", N, NYI_Standard_Lib);
-      end if;
-   end Mark_With_Clause;
 
    ---------------------
    -- Pop_Logic_Scope --

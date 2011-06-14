@@ -1,0 +1,168 @@
+# This is the Unix/NT makefile used to build an alternate GNAT run-time.
+# Note that no files in the original GNAT library directory will be
+# modified by this procedure
+#
+# This Makefile requires Gnu make.
+# Here is how to use this Makefile
+#
+# 1. Create a new directory (say adalib)
+#    e.g.  $ mkdir adalib
+#          $ cd adalib
+#
+# 2. Copy this Makefile from the standard Adalib directory, e.g.
+#    $ cp /usr/local/gnat/lib/gcc/<target>/<version>/adalib/Makefile.adalib .
+#
+# 3. If needed (e.g for pragma Normalize_Scalars), create a gnat.adc
+#    containing the configuration pragmas you want to use to build the library
+#    e.g. $ echo pragma Normalize_Scalars; > gnat.adc
+#    Note that this step is usually not needed, and most pragmas are not
+#    relevant to the GNAT run time.
+#
+# 4. Determine the values of the following MACROS
+#      ROOT   (location of GNAT installation, e.g /usr/local/gnat)
+#    and optionnally
+#      CFLAGS (back end compilation flags such as -g -O2)
+#      ADAFLAGS (front end compilation flags such as -gnatpgn)
+#                *beware* the minimum value for this MACRO is -gnatpg 
+#                for proper compilation of the GNAT library
+# 5a. If you are using a native compiler, use for example:
+#     $ make -f Makefile.adalib ROOT=/usr/local/gnat CFLAGS="-g -O0"
+#
+# 5b. If you are using a cross compiler, you need to define two additional
+#     MACROS:
+#       CC    (name of the cross compiler)
+#       AR    (name of the cross ar)
+#     e.g:
+#     $ make -f Makefile.adalib ROOT=/opt/gnu/gnat \
+#         CFLAGS="-O2 -g -I/usr/wind/target/h" CC=powerpc-wrs-vxworks-gcc \
+#         AR=arppc
+#
+# 6. put this new library on your Object PATH where you want to use it
+# in place of the original one. This can be achieved for instance by
+# updating the value of the environment variable ADA_OBJECTS_PATH
+
+PWD_COMMAND=$${PWDCMD-pwd}
+CC = gcc
+AR = ar
+
+ifeq ($(strip $(filter-out %sh,$(SHELL))),)
+   GNAT_ROOT = $(shell cd $(ROOT);${PWD_COMMAND})/
+else
+   GNAT_ROOT = $(ROOT)/
+endif
+
+target = $(shell $(CC) -dumpmachine)
+version = $(shell $(CC) -dumpversion)
+ADA_INCLUDE_PATH = $(GNAT_ROOT)lib/gcc/$(target)/$(version)/adainclude
+GCC_INCLUDE_PATH = $(GNAT_ROOT)lib/gcc/$(target)/$(version)/gcc-include
+ADA_OBJECTS_PATH = $(GNAT_ROOT)lib/gcc/$(target)/$(version)/adalib
+
+vpath %.adb $(ADA_INCLUDE_PATH)
+vpath %.ads $(ADA_INCLUDE_PATH)
+vpath %.c $(ADA_INCLUDE_PATH)
+vpath %.h $(ADA_INCLUDE_PATH)
+
+CFLAGS = -O2
+GNATLIBCFLAGS = -DIN_RTS=1 -DIN_GCC=1 -fexceptions
+ADAFLAGS = -gnatpgn
+ALL_ADAFLAGS = $(CFLAGS) $(ADAFLAGS) -I. 
+FORCE_DEBUG_ADAFLAGS = -g
+NO_SIBLING_ADAFLAGS=-fno-optimize-sibling-calls
+NO_REORDER_ADAFLAGS=-fno-toplevel-reorder
+INCLUDES = -I$(ADA_INCLUDE_PATH) -I$(GCC_INCLUDE_PATH)/include   \
+-I$(GCC_INCLUDE_PATH)/gcc/config -I$(GCC_INCLUDE_PATH)/gcc       \
+-I$(GCC_INCLUDE_PATH)/gcc/ada    -I$(GCC_INCLUDE_PATH)
+
+# Say how to compile Ada programs.
+.SUFFIXES: .ada .adb .ads
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(GNATLIBCFLAGS) $(INCLUDES) $<
+.adb.o:
+	$(CC) -c $(ALL_ADAFLAGS) $<
+.ads.o:
+	$(CC) -c $(ALL_ADAFLAGS) $<
+
+GNAT_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnat.a))
+GNAT_ALIS:=$(GNAT_OBJS:.o=.ali)
+GNAT_ALIS:=$(filter-out adadecode.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out adaint.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out argv.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out cio.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out cstreams.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out ctrl_c.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out errno.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out exit.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out env.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out raise.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out sysdep.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out aux-io.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out init.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out initialize.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out locales.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out seh_init.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out cal.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out arit64.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out final.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out tracebak.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out expect.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out mkdir.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out socket.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out targext.ali,$(GNAT_ALIS))
+GNAT_ALIS:=$(filter-out raise-gcc.ali,$(GNAT_ALIS))
+GNAT_WHYPACK:=$(GNAT_ALIS:.ali=__package.mlw)
+GNARL_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnarl.a))
+OBJS := $(GNAT_OBJS) $(GNARL_OBJS)
+
+
+all: $(GNAT_ALIS) $(GNAT_WHYPACK)
+
+%__package.mlw: %.adb $(GNAT_ALIS)
+	gnat2why -gnatd.F -gnatd.G -gnatpg $<
+
+%__package.mlw: %.ads $(GNAT_ALIS)
+	gnat2why -gnatd.F -gnatd.G -gnatpg $<
+
+%.ali: %.adb
+	$(CC) -c -gnatc -gnatpg -gnatd.F $<
+
+%.ali: %.ads
+	$(CC) -c -gnatc -gnatpg -gnatd.F $<
+
+
+libgnat.a: $(GNAT_OBJS)
+	$(AR) r libgnat.a $(GNAT_OBJS)
+
+libgnarl.a: $(GNARL_OBJS)
+	$(AR) r libgnarl.a $(GNARL_OBJS)
+
+# Special flags - see gcc-interface/Makefile.in for the template
+
+s-traceb.o: s-traceb.adb s-traceb.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) \
+	      $(NO_SIBLING_ADAFLAGS) $(ADA_INCLUDES) $<
+
+s-tasdeb.o: s-tasdeb.adb  s-tasdeb.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
+
+s-vaflop.o: s-vaflop.adb s-vaflop.ads
+	$(CC) -c -O $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
+
+a-except.o: a-except.adb a-except.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) \
+	      $(NO_REORDER_ADAFLAGS) -O1 -fno-inline $<
+
+s-excdeb.o: s-excdeb.adb s-excdeb.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) -O0 $<
+
+s-assert.o: s-assert.adb s-assert.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
+
+a-tags.o: a-tags.adb a-tags.ads
+	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
+
+tracebak.o: tracebak.c tb-alvms.c tb-alvxw.c tb-gcc.c
+	$(CC) -c $(CFLAGS) $(GNATLIBCFLAGS) \
+	      $(ALL_CPPFLAGS) $(INCLUDES) -fno-omit-frame-pointer $<
+
+.PHONY: delete_objects

@@ -352,19 +352,10 @@ package body Gnat2Why.Driver is
                      New_Abstract_Type (File, Name);
 
                   when Object_Kind =>
-
-                     --  Currently, do not generate a declaration for objects
-                     --  whose type is defined in the standard library, as
-                     --  such a type is not yet translated to Why. If such an
-                     --  object appears in an effect, Why will reject the
-                     --  generated file.
-
-                     if not Is_From_Standard_Library (Sloc (Etype (N))) then
-                        New_Global_Ref_Declaration
-                          (File     => File,
-                           Name     => New_Identifier (Name),
-                           Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
-                     end if;
+                     New_Global_Ref_Declaration
+                       (File     => File,
+                        Name     => New_Identifier (Name),
+                        Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
 
                   when others =>
                      raise Program_Error;

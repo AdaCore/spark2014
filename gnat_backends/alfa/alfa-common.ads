@@ -65,6 +65,4 @@ package Alfa.Common is
       (File_Name_Without_Suffix
          (Get_Name_String (File_Name (Get_Source_File_Index (Loc)))));
 
-   function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean;
-
 end Alfa.Common;

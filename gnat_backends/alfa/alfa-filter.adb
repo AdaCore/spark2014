@@ -164,24 +164,18 @@ package body Alfa.Filter is
             while Present (Cursor) loop
                case Nkind (Cursor) is
                   when N_With_Clause =>
-                     if not Implicit_With (Cursor)
-                       and then
-                         not Is_From_Standard_Library
-                           (Sloc (Library_Unit (Cursor)))
-                     then
-                        declare
-                           Pkg_Name : constant String :=
-                               File_Name_Without_Suffix
-                                 (Sloc (Library_Unit (Cursor)));
-                        begin
-                           Add_With_Clause
-                              (Types_Vars_Spec,
-                               Pkg_Name & Types_Vars_Spec_Suffix);
-                           Add_With_Clause
-                              (Subp_Spec,
-                               Pkg_Name & Subp_Spec_Suffix);
-                        end;
-                     end if;
+                     declare
+                        Pkg_Name : constant String :=
+                                     File_Name_Without_Suffix
+                                       (Sloc (Library_Unit (Cursor)));
+                     begin
+                        Add_With_Clause
+                          (Types_Vars_Spec,
+                           Pkg_Name & Types_Vars_Spec_Suffix);
+                        Add_With_Clause
+                          (Subp_Spec,
+                           Pkg_Name & Subp_Spec_Suffix);
+                     end;
 
                   when others =>
                      null;
@@ -204,21 +198,15 @@ package body Alfa.Filter is
                                      File_Name_Without_Suffix
                                        (Sloc (Library_Unit (Cursor)));
                      begin
-                        if not Implicit_With (Cursor)
-                          and then
-                            not Is_From_Standard_Library
-                              (Sloc (Library_Unit (Cursor)))
-                        then
-                           Add_With_Clause
-                             (Types_Vars_Body,
-                              Pkg_Name & Types_Vars_Spec_Suffix);
-                           Add_With_Clause
-                             (Subp_Spec,
-                              Pkg_Name & Types_Vars_Body_Suffix);
-                           Add_With_Clause
-                             (Subp_Body,
-                              Pkg_Name & Subp_Spec_Suffix);
-                        end if;
+                        Add_With_Clause
+                          (Types_Vars_Body,
+                           Pkg_Name & Types_Vars_Spec_Suffix);
+                        Add_With_Clause
+                          (Subp_Spec,
+                           Pkg_Name & Types_Vars_Body_Suffix);
+                        Add_With_Clause
+                          (Subp_Body,
+                           Pkg_Name & Subp_Spec_Suffix);
                      end;
 
                   when others =>

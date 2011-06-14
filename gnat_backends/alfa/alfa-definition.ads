@@ -67,7 +67,6 @@ package Alfa.Definition is
       NYI_Qualification,    --  qualification
       NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
-      NYI_Standard_Lib,     --  standard library
       NYI_String_Literal,   --  string literal
       NYI_Tagged,           --  tagged type
       NYI_XXX,              --  all other cases

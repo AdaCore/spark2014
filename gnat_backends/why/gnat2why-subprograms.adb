@@ -765,11 +765,16 @@ package body Gnat2Why.Subprograms is
       Spec        : constant Node_Id :=
          (if Nkind (Node) = N_Subprogram_Body and then
             Present (Corresponding_Spec (Node)) then
-            Parent (Corresponding_Spec (Node))
+               (if Nkind (Parent (Corresponding_Spec (Node))) =
+                    N_Defining_Program_Unit_Name
+                then
+                  Parent (Parent (Corresponding_Spec (Node)))
+                else
+                  Parent (Corresponding_Spec (Node)))
          else
             Specification (Node));
       Name_Str    : constant String  :=
-         Get_Name_String (Chars (Defining_Unit_Name (Spec)));
+         Get_Name_String (Chars (Defining_Entity (Spec)));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
@@ -1068,7 +1073,7 @@ package body Gnat2Why.Subprograms is
 
       begin
          if Nkind (Node) = N_Subprogram_Declaration then
-            Corr_Spec := Defining_Unit_Name (Spec);
+            Corr_Spec := Defining_Entity (Spec);
          else
             Corr_Spec := Corresponding_Spec (Node);
          end if;
@@ -2323,6 +2328,12 @@ package body Gnat2Why.Subprograms is
          when N_Integer_Literal =>
             T :=
               New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
+            Current_Type := Why_Int_Type;
+
+         when N_Character_Literal =>
+            T :=
+              New_Integer_Constant (Ada_Node => Expr,
+                                    Value    => Char_Literal_Value (Expr));
             Current_Type := Why_Int_Type;
 
          when N_Identifier | N_Expanded_Name =>

@@ -1,10 +1,12 @@
-.PHONY: clean doc gnat1why gnat2why gnatprove
+.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
 
 DOC=install/share/doc/gnatprove
+TMP=stdlib_tmp
+GNAT_ROOT=/usr/gnat
 
 all: gnat2why gnatprove
 
-all-nightly: gnat1why gnatprove
+all-nightly: gnat1why gnatprove stdlib install-stdlib
 
 doc:
 	$(MAKE) -C docs/ug latexpdf
@@ -21,6 +23,16 @@ gnat2why:
 
 gnatprove:
 	$(MAKE) -C gnatprove
+
+stdlib:
+	rm -rf $(TMP)
+	mkdir -p $(TMP)
+	cp Makefile.libprove $(TMP)
+	$(MAKE) -C $(TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
+
+install-stdlib:
+	cp $(TMP)/*.ali $(TMP)/*__types_vars_spec.mlw \
+           $(TMP)/*__types_vars_body.mlw $(TMP)/*__subp_spec.mlw $(WHYLIB)
 
 clean:
 	$(MAKE) -C gnat_backends/why clean
