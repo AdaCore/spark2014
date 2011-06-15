@@ -1,8 +1,9 @@
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
 
+ADAINCLUDE=$(shell gnatls -v | grep adainclude)
+GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
 TMP=stdlib_tmp
-GNAT_ROOT=/usr/gnat
 
 all: gnat2why gnatprove
 
