@@ -29,7 +29,8 @@ stdlib:
 	rm -rf $(TMP)
 	mkdir -p $(TMP)
 	cp Makefile.libprove $(TMP)
-	$(MAKE) -C $(TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
+	$(MAKE) -C $(TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
+           GNAT2WHY=../install/bin/gnat2why
 
 install-stdlib:
 	cp $(TMP)/*.ali $(TMP)/*__types_vars_spec.mlw \

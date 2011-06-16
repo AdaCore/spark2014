@@ -42,6 +42,7 @@
 # updating the value of the environment variable ADA_OBJECTS_PATH
 
 PWD_COMMAND=$${PWDCMD-pwd}
+GNAT2WHY = gnat2why
 CC = gcc
 AR = ar
 
@@ -118,10 +119,10 @@ OBJS := $(GNAT_OBJS) $(GNARL_OBJS)
 all: $(GNAT_ALIS) $(GNAT_WHYPACK)
 
 %__package.mlw: %.adb $(GNAT_ALIS)
-	gnat2why -gnatd.F -gnatd.G -gnatpg $<
+	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg $<
 
 %__package.mlw: %.ads $(GNAT_ALIS)
-	gnat2why -gnatd.F -gnatd.G -gnatpg $<
+	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg $<
 
 %.ali: %.adb
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<
