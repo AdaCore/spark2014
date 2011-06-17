@@ -1,5 +1,8 @@
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
 
+# default for WHYLIB, should not be used
+WHYLIB=/usr/local/bin/why
+
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
