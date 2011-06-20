@@ -26,6 +26,9 @@
 #
 #    This will copy the files generated in the previous step to the directory
 #    of the Why library.
+#
+# 4) Put the directory install/bin in your path:
+#	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
 

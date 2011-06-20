@@ -28,6 +28,18 @@ yourself, by downloading the source package and using the commands
       make
       make install
 
+Flexdll (windows only)
+=======
+
+  This one is needed to compile why under Windows.
+
+   1) Download the file
+      http://alain.frisch.fr/flexdll/flexdll-bin-0.26.zip
+   2)unzip flexdll-bin-0.26.zip in a flexdll/ directory (no need to compile that one, we
+      use the existing binary)
+   3) add it to the PATH
+
+
 Why
 ===
 
@@ -36,18 +48,20 @@ source.  You need to download the Why source package from
       http://why.lri.fr/
 After extracting the compressed archive, the following steps are necessary:
 
-  1) Apply the patches that correspond to your version of Why, in the correct
-     order:
-      (in the extracted directory)
-      patch -p0 < why-2.29-1.patch
-      patch -p0 < why-2.29-2.patch
-      ...
-  2) Apply the usual steps
-       ./configure
-       make
-       make install
+   0) (Windows) Make sure to have Flexdll installed in your PATH, see above
 
-  3) Set the environment variable WHYLIB to this value:
-     export WHYLIB=`why --where`
+   1) Apply the patches that correspond to your version of Why, in the correct
+      order:
+       (in the extracted directory)
+       patch -p0 < why-2.29-1.patch
+       patch -p0 < why-2.29-2.patch
+       ...
+   2) Apply the usual steps
+        ./configure
+        make
+        make install
+
+   3) Set the environment variable WHYLIB to this value:
+      export WHYLIB=`why --where`
 
 
