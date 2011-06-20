@@ -1,7 +1,36 @@
+# This Makefile is used to build gnat2why and gnatprove, and to install these
+# tools.
+#
+# To build gnat2why, you need a working GNAT compiler and a symbolic link in
+# gnat_backends/gnat_src that points to the GNAT sources.
+#
+# To build gnatprove, you additionnally need an installation of the gnatcoll
+# library.
+#
+# For gnatprove to work, you also need working installations of Why and
+# Alt-Ergo. The directory why-patches contains a README file with information
+# on how to install those.
+#
+# The necessary steps to correctly install gnat2why/gnatprove are
+#
+# 1) make
+#
+#    This will build gnatprove and gnat2why
+#
+# 2) make stdlib
+#
+#    This will apply gnat2why to the standard library of GNAT to obtain
+#    precompiled Why files
+#
+# 3) make install-stdlib WHYLIB=$WHYLIB
+#
+#    This will copy the files generated in the previous step to the directory
+#    of the Why library.
+
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
 
 # default for WHYLIB, should not be used
-WHYLIB=/usr/local/bin/why
+WHYLIB=/usr/local/lib/why
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')

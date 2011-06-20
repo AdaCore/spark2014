@@ -1,0 +1,36 @@
+This file describes the installation process for Why and Alt-Ergo, both needed
+for gnatprove to work.
+
+Alt-Ergo
+=============
+
+You need to download Alt-Ergo from
+      http://alt-ergo.lri.fr/
+After extracting the compressed archive, the commands
+      ./configure
+      make
+      make install
+should be enough.
+
+Why
+=========
+
+You need to download Why from
+      http://why.lri.fr/
+After extracting the compressed archive, the following steps are necessary:
+
+  1) Apply the patches that correspond to your version of Why, in the correct
+     order:
+      (in the extracted directory)
+      patch -p0 < why-2.29-1.patch
+      patch -p0 < why-2.29-2.patch
+      ...
+  2) Apply the usual steps
+       ./configure
+       make
+       make install
+
+  3) Set the environment variable WHYLIB to this value:
+     export WHYLIB=`why --where`
+
+
