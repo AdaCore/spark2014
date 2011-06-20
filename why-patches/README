@@ -1,21 +1,38 @@
 This file describes the installation process for Why and Alt-Ergo, both needed
 for gnatprove to work.
 
-Alt-Ergo
-=============
+At least Why must be compiled from source, so you need an ocaml installation,
+to be downloaded from here:
+   http://caml.inria.fr/download.en.html
+and the ocamlgraph library.
 
-You need to download Alt-Ergo from
-      http://alt-ergo.lri.fr/
-After extracting the compressed archive, the commands
+Ocamlgraph
+==========
+
+This library is necessary to compile both Alt-Ergo and Why. It is simplest to
+compile it from source. Download the source archive from
+      http://ocamlgraph.lri.fr/
+extract the source and do
       ./configure
       make
       make install
-should be enough.
+
+Alt-Ergo
+========
+
+The website of Alt-Ergo is
+      http://alt-ergo.lri.fr/
+You may either use the binary for your architecture, or compile Alt-Ergo
+yourself, by downloading the source package and using the commands
+      ./configure
+      make
+      make install
 
 Why
-=========
+===
 
-You need to download Why from
+Why needs to be compiled from source because we apply patches to the Why
+source.  You need to download the Why source package from
       http://why.lri.fr/
 After extracting the compressed archive, the following steps are necessary:
 
