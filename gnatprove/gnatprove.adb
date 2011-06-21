@@ -67,15 +67,15 @@ procedure Gnatprove is
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    WHYLIB       : constant String := "WHYLIB";
-   Exec_Loc     : constant String := Executable_Location;
-   Why_Lib_Dir  : constant String :=
-      Ada.Directories.Compose
-         (Ada.Directories.Compose (Exec_Loc, "lib"),
-          "why");
+   Prefix       : constant String := Executable_Location;
+   Lib_Dir      : constant String := Ada.Directories.Compose (Prefix, "lib");
+   Why_Lib_Dir  : constant String := Ada.Directories.Compose (Lib_Dir, "why");
    Gpr_Cnf_Dir  : constant String :=
       Ada.Directories.Compose
-        (Ada.Directories.Compose (Exec_Loc, "share"),
+        (Ada.Directories.Compose (Prefix, "share"),
          "gnatprove");
+   Stdlib_ALI_Dir   : constant String :=
+      Ada.Directories.Compose (Lib_Dir, "gnatprove");
    Gpr_Ada_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
    Gpr_Why_Cnf_File : constant String :=
@@ -438,14 +438,14 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-U");
-      if Alfa_Report or else not All_VCs then
-         Args.Append ("-cargs:Ada");
-         if not All_VCs then
-            Args.Append ("-gnatd.G");
-         end if;
-         if Alfa_Report then
-            Args.Append ("-gnatd.K");
-         end if;
+      Args.Append ("-cargs:Ada");
+      Args.Append ("-I");
+      Args.Append (Stdlib_ALI_Dir);
+      if not All_VCs then
+         Args.Append ("-gnatd.G");
+      end if;
+      if Alfa_Report then
+         Args.Append ("-gnatd.K");
       end if;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
    end Translate_To_Why;
