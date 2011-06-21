@@ -168,13 +168,18 @@ procedure Alfa_Report is
    begin
       Put (Handle, Label);
       Put (Handle, ":");
-      Put (Handle,
-           Integer'Image (Integer (Float (Cnt) / Float (Total) * 100.0)));
-      Put (Handle, "% (");
-      Put (Handle, Integer'Image (Cnt));
-      Put (Handle, "/");
-      Put (Handle, Integer'Image (Total));
-      Put_Line (Handle, ")");
+      if Total = 0 then
+         pragma Assert (Cnt = 0);
+         Put_Line (Handle, "0% (0/0)");
+      else
+         Put (Handle,
+              Integer'Image (Integer (Float (Cnt) / Float (Total) * 100.0)));
+         Put (Handle, "% (");
+         Put (Handle, Integer'Image (Cnt));
+         Put (Handle, "/");
+         Put (Handle, Integer'Image (Total));
+         Put_Line (Handle, ")");
+      end if;
    end Print_Statistics;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
