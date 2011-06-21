@@ -49,4 +49,7 @@ package Call is
    procedure For_Line_In_File
       (File : String);
    --  Do something for each line of a file.
+
+   procedure Cat (File : String);
+   --  Print the file to stdout
 end Call;

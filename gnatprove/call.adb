@@ -165,4 +165,26 @@ package body Call is
          Close (File_Handle);
    end For_Line_In_File;
 
+   ---------
+   -- Cat --
+   ---------
+
+   procedure Cat (File : String) is
+      procedure Print_Line (Line : String);
+      --  Print a single line to stdout
+
+      ----------------
+      -- Print_Line --
+      ----------------
+      procedure Print_Line (Line : String)
+      is
+      begin
+         Ada.Text_IO.Put_Line (Line);
+      end Print_Line;
+
+      procedure My_Cat is new For_Line_In_File (Print_Line);
+   begin
+      My_Cat (File);
+   end Cat;
+
 end Call;

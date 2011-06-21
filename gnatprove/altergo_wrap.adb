@@ -54,12 +54,12 @@ procedure Altergo_Wrap is
    --  Call Altergo on the VC that corresponds to the file
    --  'Item'; take into account the context file.
 
-   procedure Cat
+   procedure Concat
       (Files   : Argument_List;
        Target  : String;
        Success : out Boolean;
        Verbose : Boolean := False);
-   --  Cat all the Files together into the Target.
+   --  Concat all the Files together into the Target.
 
    function Context_File (VC_Name : String) return String;
    --  Given the base name of a VC, compute the name of its context file
@@ -134,7 +134,7 @@ procedure Altergo_Wrap is
          Base_Of_VC & "__vc.why";
    begin
       Delete_File (Target, Success);
-      Cat (Files =>
+      Concat (Files =>
             (1 => new String'(Context_File (Base_Of_VC)),
              2 => new String'(Item)),
            Target => Target,
@@ -144,11 +144,11 @@ procedure Altergo_Wrap is
       Delete_File (Target, Success);
    end Call_AltErgo_On_Vc;
 
-   ---------
-   -- Cat --
-   ---------
+   ------------
+   -- Concat --
+   ------------
 
-   procedure Cat
+   procedure Concat
      (Files   : Argument_List;
       Target  : String;
       Success : out Boolean;
@@ -175,7 +175,7 @@ procedure Altergo_Wrap is
             Preserve => None);
          exit when not Success;
       end loop;
-   end Cat;
+   end Concat;
 
    ------------------
    -- Context_File --

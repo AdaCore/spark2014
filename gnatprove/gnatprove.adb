@@ -82,6 +82,7 @@ procedure Gnatprove is
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
    Gpr_Altergo_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
+   Alfa_Report_File : constant String := "gnatprove.out";
 
    procedure Call_Gprbuild
       (Project_File  : String;
@@ -222,6 +223,9 @@ procedure Gnatprove is
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
       Delete_File (Obj_Dir_Fn, Success);
+      if Alfa_Report then
+         Cat (Alfa_Report_File);
+      end if;
    end Generate_Alfa_Report;
 
    ---------------------------
@@ -480,8 +484,8 @@ begin
 
       Translate_To_Why (Project_File.all);
 
+      Generate_Alfa_Report (Proj_Type, Obj_Path);
       if Alfa_Report then
-         Generate_Alfa_Report (Proj_Type, Obj_Path);
          GNAT.OS_Lib.OS_Exit (0);
       end if;
    end;
