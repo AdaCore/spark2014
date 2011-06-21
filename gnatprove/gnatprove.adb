@@ -454,11 +454,13 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
    end Translate_To_Why;
 
+   GNAT_Version : GNAT.Strings.String_Access;
    --  begin processing for Gnatprove
 
 begin
    Read_Command_Line;
    Initialize (Proj_Env);
+   Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
    Set_Object_Subdir (Proj_Env.all, Subdir_Name);
    Tree.Load
      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
@@ -498,5 +500,5 @@ begin
 exception
    when Invalid_Project =>
       Abort_With_Message
-         ("Error: could not find project file: " & Project_File.all);
+         ("Error while loading project file: " & Project_File.all);
 end Gnatprove;
