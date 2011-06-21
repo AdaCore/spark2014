@@ -35,6 +35,7 @@ WHYLIB=/usr/local/lib/why
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
+LIB=install/share/lib/gnatprove
 STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
@@ -66,8 +67,12 @@ stdlib:
            GNAT2WHY=../install/bin/gnat2why
 
 install-stdlib:
-	cp $(STDLIB_TMP)/*.ali $(STDLIB_TMP)/*__types_vars_spec.mlw \
-           $(STDLIB_TMP)/*__types_vars_body.mlw $(STDLIB_TMP)/*__subp_spec.mlw $(WHYLIB)/why
+	mkdir -p $(LIB)
+	cp $(STDLIB_TMP)/*.ali $(LIB)
+	cp $(STDLIB_TMP)/*__types_vars_spec.mlw \
+           $(STDLIB_TMP)/*__types_vars_body.mlw \
+	   $(STDLIB_TMP)/*__subp_spec.mlw \
+	   $(WHYLIB)/why
 
 clean:
 	$(MAKE) -C gnat_backends/why clean
