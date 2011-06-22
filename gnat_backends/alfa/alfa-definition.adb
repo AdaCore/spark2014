@@ -119,7 +119,7 @@ package body Alfa.Definition is
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
-      NIR_XXX              => To_Unbounded_String ("not in roadmap"));
+      NIR_XXX              => To_Unbounded_String ("unsupported construct"));
 
    ------------------------------------------------
    -- Pragma Annotate (GNATprove, Force/Disable) --
@@ -843,13 +843,13 @@ package body Alfa.Definition is
             Mark (Expression (N));
 
          when N_At_Clause =>
-            Mark_Non_Alfa ("at clause", N, NIR_XXX);
+            Mark_Non_Alfa ("at clause", N, NYI_Rep_Clause);
 
          when N_Attribute_Reference =>
             Mark_Attribute_Reference (N);
 
          when N_Attribute_Definition_Clause   =>
-            Mark_Non_Alfa ("attribute definition clause", N, NIR_XXX);
+            Mark_Non_Alfa ("attribute definition clause", N, NYI_Rep_Clause);
 
          when N_Binary_Op =>
             Mark_Binary_Op (N);
@@ -1400,6 +1400,8 @@ package body Alfa.Definition is
    ---------------------------
 
    procedure Mark_Compilation_Unit (N : Node_Id) is
+      CU        : constant Node_Id := Parent (N);
+      Context_N : Node_Id;
 
    begin
       --  Separately mark declarations from Standard as in Alfa or not
@@ -1442,6 +1444,12 @@ package body Alfa.Definition is
          when others =>
             raise Program_Error;
       end case;
+
+      Context_N := First (Context_Items (CU));
+      while Present (Context_N) loop
+         Mark (Context_N);
+         Next (Context_N);
+      end loop;
 
       Mark (N);
       Pop_Scope (Unique_Entity_Id (Standard_Standard));
