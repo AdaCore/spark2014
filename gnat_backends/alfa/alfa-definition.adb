@@ -29,6 +29,7 @@ with Ada.Text_IO;           use Ada.Text_IO;
 with AA_Util;               use AA_Util;
 with Alloc;                 use Alloc;
 with Atree;                 use Atree;
+with Debug;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
 with Lib;                   use Lib;
@@ -139,6 +140,12 @@ package body Alfa.Definition is
    --  other cases. This is useful to notify the user about Alfa violations in
    --  a scope where formal proof is forced.
 
+   function Force_Alfa return Boolean is
+      (Debug.Debug_Flag_Dot_EE or else Formal_Proof_Currently_Forced);
+   --  Return whether Alfa rules should be enforced in the current scope,
+   --  either because option -gnatd.E was passed to gnat2why, or because the
+   --  current scope is forcing formal proof.
+
    ------------------
    -- Global State --
    ------------------
@@ -203,6 +210,8 @@ package body Alfa.Definition is
    function Complete_Error_Msg
      (Msg : String;
       V   : Violation_Kind) return String;
+   --  Generate an error message for Not_In_Roadmap violations, and a warning
+   --  message for Not_Yet_Implemented violations.
 
    procedure Inherit_Violations
      (A        : in out Violations;
@@ -596,7 +605,7 @@ package body Alfa.Definition is
          when Not_In_Roadmap =>
             return Msg & " is not in Alfa";
          when Not_Yet_Implemented =>
-            return Msg & " is not yet implemented in Alfa";
+            return "!" & Msg & " is not yet implemented in Alfa";
       end case;
    end Complete_Error_Msg;
 
@@ -1707,7 +1716,7 @@ package body Alfa.Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Formal_Proof_Currently_Forced
+      if Force_Alfa
         and then not Silent
         and then Comes_From_Source (N)
       then
@@ -1741,7 +1750,7 @@ package body Alfa.Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Formal_Proof_Currently_Forced
+      if Force_Alfa
         and then Comes_From_Source (N)
       then
          if Scope (+From) = Standard_Standard

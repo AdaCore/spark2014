@@ -57,7 +57,11 @@ procedure Gnatprove is
    --  True if --no-proof switch is present. Do not call Alt-Ergo.
    Alfa_Report  : aliased Boolean;
    --  True if --alfa-report switch is present. Pass option "-gnatd.K" to
-   --  gnat2why
+   --  gnat2why.
+   Force_Alfa   : aliased Boolean;
+   --  True if --force-alfa switch is present. Issue errors on constructs not
+   --  in Alfa, and warnings on constructs not yet implemented in GNATprove.
+   --  Pass option "-gnatd.E" to gnat2why.
    Parallel     : aliased Integer;
    --  The number of parallel processes.
    Timeout      : aliased Integer;
@@ -354,6 +358,13 @@ procedure Gnatprove is
 
       Define_Switch
         (Config,
+         Force_Alfa'Access,
+         Long_Switch => "--force-alfa",
+         Help => "Output errors on non-Alfa constructs, "
+           & "and warnings on unimplemented ones");
+
+      Define_Switch
+        (Config,
          No_Proof'Access,
          Long_Switch => "--no-proof",
          Help => "Disable proof of VCs, only generate VCs");
@@ -458,6 +469,9 @@ procedure Gnatprove is
       end if;
       if Alfa_Report then
          Args.Append ("-gnatd.K");
+      end if;
+      if Force_Alfa then
+         Args.Append ("-gnatd.E");
       end if;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
    end Translate_To_Why;
