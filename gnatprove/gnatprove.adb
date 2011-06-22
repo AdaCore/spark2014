@@ -53,6 +53,8 @@ procedure Gnatprove is
    All_VCs      : aliased Boolean;
    --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
    --  gnat2why
+   No_Proof     : aliased Boolean;
+   --  True if --no-proof switch is present. Do not call Alt-Ergo.
    Alfa_Report  : aliased Boolean;
    --  True if --alfa-report switch is present. Pass option "-gnatd.K" to
    --  gnat2why
@@ -60,7 +62,7 @@ procedure Gnatprove is
    --  The number of parallel processes.
    Timeout      : aliased Integer;
    Steps        : aliased Integer;
-   --  The Timeout and Step for Alt-ergo
+   --  The Timeout and Step for Alt-Ergo
 
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
@@ -348,17 +350,23 @@ procedure Gnatprove is
         (Config,
          Alfa_Report'Access,
          Long_Switch => "--alfa-report",
-         Help => "Disable VC generation, only generate Alfa information");
+         Help => "Disable generation of VCs, only output Alfa information");
+
+      Define_Switch
+        (Config,
+         No_Proof'Access,
+         Long_Switch => "--no-proof",
+         Help => "Disable proof of VCs, only generate VCs");
 
       Define_Switch
          (Config, Timeout'Access,
           Long_Switch => "--timeout=",
-          Help => "Set the timeout for Alt-ergo in seconds (default is 10)");
+          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
 
       Define_Switch
          (Config, Steps'Access,
           Long_Switch => "--steps=",
-          Help => "Set the maximum number of proof steps for Alt-ergo");
+          Help => "Set the maximum number of proof steps for Alt-Ergo");
 
       Define_Switch
          (Config, Parallel'Access,
@@ -495,8 +503,11 @@ begin
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
    Make_Standard_Package (Tree);
    Compute_VCs (Tree);
-   Prove_VCs (Tree);
-   Report_VCs;
+
+   if not No_Proof then
+      Prove_VCs (Tree);
+      Report_VCs;
+   end if;
 exception
    when Invalid_Project =>
       Abort_With_Message
