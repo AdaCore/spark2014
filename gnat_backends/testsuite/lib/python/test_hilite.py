@@ -30,6 +30,9 @@ def run_testsuite(test_driver):
     options = __parse_options()
     env = Env()
 
+    if options.quick_run:
+      os.environ["quick"] = "true"
+
     test_list = [t for t in filter_list('tests/*', options.run_test)
                  if os.path.isdir(t)]
 
@@ -63,7 +66,6 @@ def filter_list(pattern, run_test=""):
     else:
         return [test for test in test_list if run_test in test]
 
-
 def __parse_options():
     """Parse command lines options"""
     m = Main(add_targets_options=False)
@@ -71,6 +73,8 @@ def __parse_options():
     add_run_test_options(m)
     m.add_option("--diffs", dest="view_diffs", action="store_true",
                  default=False, help="show diffs on stdout")
+    m.add_option("--quick", dest="quick_run", action="store_true",
+                 default=False, help="perform a quick run (no proofs)")
     m.parse_args()
 
     if m.args:

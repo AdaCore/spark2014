@@ -21,14 +21,20 @@ os.chdir(TESTDIR)
 
 from gnatpython.ex import Run
 
-def cat(filename):
+def quick_mode():
+    return "quick" in os.environ and os.environ["quick"] == "true"
+
+def cat(filename, force_in_quick_mode=False):
     """Dump the content of a file on stdout
 
     PARAMETERS
       filename: name of the file to print on stdout
     """
-    with open(filename, 'r') as f:
-        print f.read()
+    # do nothing in quick mode, as output is faked
+    if not quick_mode or force_in_quick_mode:
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                print f.read()
 
 def concat(file1, file2, out):
    """Concatenate two files
@@ -120,6 +126,9 @@ def gnat2why(src, opt=None):
     process = Run(cmd)
     if process.status:
         print process.out
+    elif quick_mode:
+        if os.path.exists("test.out"):
+            cat("test.out", True)
 
 def why(src, opt=None):
     """Invoke why
@@ -165,10 +174,15 @@ def gnatprove(opt=["-P", "test.gpr"]):
     opt: options to give to gnatprove
     """
     cmd = ["gnatprove"]
+    if quick_mode():
+      cmd += ["--no-proof"]
     cmd += to_list(opt)
     process = Run(cmd)
     if process.status:
         print process.out
+    elif quick_mode:
+        if os.path.exists("test.out"):
+            cat("test.out", True)
     else:
         strlist = str.splitlines(process.out)
         strlist.sort()
