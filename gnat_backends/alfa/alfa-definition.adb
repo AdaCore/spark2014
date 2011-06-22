@@ -122,30 +122,6 @@ package body Alfa.Definition is
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
       NIR_XXX              => To_Unbounded_String ("unsupported construct"));
 
-   ------------------------------------------------
-   -- Pragma Annotate (GNATprove, Force/Disable) --
-   ------------------------------------------------
-
-   Formal_Proof_On  : Id_Set.Set;
-   Formal_Proof_Off : Id_Set.Set;
-
-   function Formal_Proof_Currently_Disabled return Boolean;
-   --  Determine the most top-level scope to have formal proof forced or
-   --  disabled, and return True if formal proof is disabled. Return False in
-   --  all other cases.
-
-   function Formal_Proof_Currently_Forced return Boolean;
-   --  Determine the most top-level scope to have formal proof forced or
-   --  disabled, and return True if formal proof is forced. Return False in all
-   --  other cases. This is useful to notify the user about Alfa violations in
-   --  a scope where formal proof is forced.
-
-   function Force_Alfa return Boolean is
-      (Debug.Debug_Flag_Dot_EE or else Formal_Proof_Currently_Forced);
-   --  Return whether Alfa rules should be enforced in the current scope,
-   --  either because option -gnatd.E was passed to gnat2why, or because the
-   --  current scope is forcing formal proof.
-
    ------------------
    -- Global State --
    ------------------
@@ -175,6 +151,38 @@ package body Alfa.Definition is
 
    function Is_In_Standard_Package (N : Node_Id) return Boolean is
       (Sloc (N) = Standard_Location);
+
+   function In_Main_Unit_Body (N : Node_Id) return Boolean;
+   function In_Main_Unit_Spec (N : Node_Id) return Boolean;
+
+   ------------------------------------------------
+   -- Pragma Annotate (GNATprove, Force/Disable) --
+   ------------------------------------------------
+
+   Formal_Proof_On  : Id_Set.Set;
+   Formal_Proof_Off : Id_Set.Set;
+
+   function Formal_Proof_Currently_Disabled return Boolean;
+   --  Determine the most top-level scope to have formal proof forced or
+   --  disabled, and return True if formal proof is disabled. Return False in
+   --  all other cases.
+
+   function Formal_Proof_Currently_Forced return Boolean;
+   --  Determine the most top-level scope to have formal proof forced or
+   --  disabled, and return True if formal proof is forced. Return False in all
+   --  other cases. This is useful to notify the user about Alfa violations in
+   --  a scope where formal proof is forced.
+
+   function Force_Alfa (N : Node_Id) return Boolean is
+     ((Debug.Debug_Flag_Dot_EE
+        and then (In_Main_Unit_Spec (N)
+                   or else In_Main_Unit_Body (N)))
+       or else
+         Formal_Proof_Currently_Forced);
+   --  Return whether Alfa rules should be enforced in the current scope,
+   --  either because option -gnatd.E was passed to gnat2why (which only
+   --  applies to user source code), or because the current scope is forcing
+   --  formal proof.
 
    ----------------
    -- Alfa Marks --
@@ -793,6 +801,89 @@ package body Alfa.Definition is
          Put_Line (Output_File, C1 & C2 & ' ' & Location & Suffix);
       end if;
    end Generate_Output_In_Out_Alfa;
+
+   -----------------------
+   -- In_Main_Unit_Body --
+   -----------------------
+
+   function In_Main_Unit_Body (N : Node_Id) return Boolean is
+      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      Root : Node_Id;
+
+   begin
+      if No (CU) then
+         return False;
+      end if;
+
+      Root := Unit (CU);
+
+      case Nkind (Root) is
+         when N_Package_Body    |
+              N_Subprogram_Body =>
+
+            return Is_Main_Cunit (Root);
+
+         when N_Package_Declaration            |
+              N_Generic_Package_Declaration    |
+              N_Subprogram_Declaration         |
+              N_Generic_Subprogram_Declaration =>
+
+            return False;
+
+         when N_Package_Renaming_Declaration           |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
+
+            return False;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end In_Main_Unit_Body;
+
+   -----------------------
+   -- In_Main_Unit_Spec --
+   -----------------------
+
+   function In_Main_Unit_Spec (N : Node_Id) return Boolean is
+      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      Root : Node_Id;
+
+   begin
+      if No (CU) then
+         return False;
+      end if;
+
+      Root := Unit (CU);
+
+      case Nkind (Root) is
+         when N_Package_Body    |
+              N_Subprogram_Body =>
+
+            return False;
+
+         when N_Package_Declaration            |
+              N_Generic_Package_Declaration    |
+              N_Subprogram_Declaration         |
+              N_Generic_Subprogram_Declaration =>
+
+            return Is_Main_Cunit (Root)
+              or else Is_Spec_Unit_Of_Main_Unit (Root);
+
+         when N_Package_Renaming_Declaration           |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
+
+            return False;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end In_Main_Unit_Spec;
 
    ------------------------
    -- Inherit_Violations --
@@ -1421,38 +1512,8 @@ package body Alfa.Definition is
 
       Push_Scope (Unique_Entity_Id (Standard_Standard));
 
-      Current_Unit_Is_Main_Body := False;
-      Current_Unit_Is_Main_Spec := False;
-
-      case Nkind (N) is
-         when N_Package_Body    |
-              N_Subprogram_Body =>
-
-            if Is_Main_Cunit (N) then
-               Current_Unit_Is_Main_Body := True;
-            end if;
-
-         when N_Package_Declaration            |
-              N_Generic_Package_Declaration    |
-              N_Subprogram_Declaration         |
-              N_Generic_Subprogram_Declaration =>
-
-            if Is_Main_Cunit (N)
-              or else Is_Spec_Unit_Of_Main_Unit (N)
-            then
-               Current_Unit_Is_Main_Spec := True;
-            end if;
-
-         when N_Package_Renaming_Declaration           |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Subprogram_Renaming_Declaration        |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Procedure_Renaming_Declaration =>
-            null;
-
-         when others =>
-            raise Program_Error;
-      end case;
+      Current_Unit_Is_Main_Body := In_Main_Unit_Body (N);
+      Current_Unit_Is_Main_Spec := In_Main_Unit_Spec (N);
 
       Context_N := First (Context_Items (CU));
       while Present (Context_N) loop
@@ -1716,7 +1777,7 @@ package body Alfa.Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Force_Alfa
+      if Force_Alfa (N)
         and then not Silent
         and then Comes_From_Source (N)
       then
@@ -1750,7 +1811,7 @@ package body Alfa.Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Force_Alfa
+      if Force_Alfa (N)
         and then Comes_From_Source (N)
       then
          if Scope (+From) = Standard_Standard
