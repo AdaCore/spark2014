@@ -26,6 +26,8 @@
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Text_IO;
+with Ada.Strings.Fixed;
+
 with Call;                                use Call;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;                         use GNAT.OS_Lib;
@@ -51,10 +53,10 @@ procedure Alfa_Report is
    --  Print the final Alfa report
 
    procedure Print_Statistics
-         (Handle : Ada.Text_IO.File_Type;
-          Label  : String;
-          Cnt    : Integer;
-          Total  : Integer);
+     (Handle : Ada.Text_IO.File_Type;
+      Label  : String;
+      Cnt    : Integer;
+      Total  : Integer);
    --  Print a line of the form:
    --    label:  X% (Cnt / Total)
    --  where X is the ration Cnt / Total expressed in percent.
@@ -138,20 +140,18 @@ procedure Alfa_Report is
    procedure Print_Report
    is
       use Ada.Text_IO;
-      Handle           : File_Type;
+      Handle : File_Type;
    begin
       Create (Handle, Out_File, Output_File_Name);
-      Print_Statistics (Handle, "Subprograms in Alfa", Alfa_Cnt, Total_Cnt);
-      Print_Statistics
-        (Handle,
-         "Subprograms not yet in Alfa",
-         Not_Yet_Alfa_Cnt,
-         Total_Cnt);
-      Print_Statistics
-        (Handle,
-         "Subprograms not in Alfa",
-         Total_Cnt - Alfa_Cnt - Not_Yet_Alfa_Cnt,
-         Total_Cnt);
+      Print_Statistics (Handle, "Subprograms in Alfa        ",
+                        Alfa_Cnt,
+                        Total_Cnt);
+      Print_Statistics (Handle, "Subprograms not yet in Alfa",
+                        Not_Yet_Alfa_Cnt,
+                        Total_Cnt);
+      Print_Statistics (Handle, "Subprograms not in Alfa    ",
+                        Total_Cnt - Alfa_Cnt - Not_Yet_Alfa_Cnt,
+                        Total_Cnt);
    end Print_Report;
 
    ----------------------
@@ -159,27 +159,79 @@ procedure Alfa_Report is
    ----------------------
 
    procedure Print_Statistics
-         (Handle : Ada.Text_IO.File_Type;
-          Label  : String;
-          Cnt    : Integer;
-          Total  : Integer)
+     (Handle : Ada.Text_IO.File_Type;
+      Label  : String;
+      Cnt    : Integer;
+      Total  : Integer)
    is
       use Ada.Text_IO;
+
+      function Integer_Image (X : Integer) return String;
+      --  Return image of integer X without leading whitespace
+
+      function Integer_Image (X : Integer) return String is
+      begin
+         return Ada.Strings.Fixed.Trim (Integer'Image (X), Ada.Strings.Left);
+      end Integer_Image;
+
+      function Integer_Image_Padded
+        (X    : Integer;
+         Size : Natural) return String;
+      --  Return image of integer X with enough leading whitespace to pad the
+      --  result up to Size characters.
+
+      function Integer_Image_Padded
+        (X    : Integer;
+         Size : Natural) return String
+      is
+         Img : constant String := Integer_Image (X);
+      begin
+         if Img'Last >= Size then
+            return Img;
+         else
+            declare
+               Pad : constant String (1 .. Size - Img'Last) :=
+                 (others => Ada.Strings.Space);
+            begin
+               return Pad & Img;
+            end;
+         end if;
+      end Integer_Image_Padded;
+
+      subtype Percentage is Integer range 0 .. 100;
+
+      function Percentage_Image (X : Percentage) return String;
+      --  Return image of percentage with
+      --    - no leading whitespace for X = 100
+      --    - one leading whitespace for 10 <= X <= 99
+      --    - two leading whitespaces for 0 <= X <= 9
+      --  In order to properly align values.
+
+      function Percentage_Image (X : Percentage) return String is
+      begin
+         return Integer_Image_Padded (X, 3);
+      end Percentage_Image;
+
+      Percent          : Percentage;
+      Total_Characters : constant Natural := Integer_Image (Total)'Last;
+
    begin
       Put (Handle, Label);
-      Put (Handle, ":");
+      Put (Handle, ": ");
+
       if Total = 0 then
          pragma Assert (Cnt = 0);
-         Put_Line (Handle, "0% (0/0)");
+         Percent := 0;
       else
-         Put (Handle,
-              Integer'Image (Integer (Float (Cnt) / Float (Total) * 100.0)));
-         Put (Handle, "% (");
-         Put (Handle, Integer'Image (Cnt));
-         Put (Handle, "/");
-         Put (Handle, Integer'Image (Total));
-         Put_Line (Handle, ")");
+         Percent := Integer (Float (Cnt) / Float (Total) * 100.0);
       end if;
+
+      Put (Handle, Percentage_Image (Percent));
+      Put (Handle, "% (");
+      Put (Handle, Integer_Image_Padded (Cnt, Total_Characters));
+      Put (Handle, "/");
+      Put (Handle, Integer_Image (Total));
+      Put_Line (Handle, ")");
    end Print_Statistics;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
