@@ -31,7 +31,7 @@ def cat(filename, force_in_quick_mode=False):
       filename: name of the file to print on stdout
     """
     # do nothing in quick mode, as output is faked
-    if not quick_mode or force_in_quick_mode:
+    if not quick_mode() or force_in_quick_mode:
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 print f.read()
@@ -126,7 +126,7 @@ def gnat2why(src, opt=None):
     process = Run(cmd)
     if process.status:
         print process.out
-    elif quick_mode:
+    elif quick_mode():
         if os.path.exists("test.out"):
             cat("test.out", True)
 
@@ -180,7 +180,7 @@ def gnatprove(opt=["-P", "test.gpr"]):
     process = Run(cmd)
     if process.status:
         print process.out
-    elif quick_mode:
+    elif quick_mode():
         if os.path.exists("test.out"):
             cat("test.out", True)
     else:
