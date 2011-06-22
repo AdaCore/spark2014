@@ -1,0 +1,122 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNATPROVE COMPONENTS                          --
+--                                                                          --
+--                         C O N F I G U R A T I O N                        --
+--                                                                          --
+--                                 B o d y                                  --
+--                                                                          --
+--                       Copyright (C) 2010-2011, AdaCore                   --
+--                                                                          --
+-- gnatprove is  free  software;  you can redistribute it and/or modify it  --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software Foundation;  either version  2,  or  (at your option) any later --
+-- version. gnatprove is distributed in the hope that it will  be  useful,  --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-  --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License  for more details. You  should  have  received a copy of the GNU --
+-- General Public License  distributed with GNAT; see file COPYING. If not, --
+-- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
+-- Boston,                                                                  --
+--                                                                          --
+-- gnatprove is maintained by AdaCore (http://www.adacore.com)               --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.OS_Lib;
+
+with Call;              use Call;
+
+package body Configuration is
+
+   procedure Read_Command_Line;
+
+   ----------
+   -- Init --
+   ----------
+
+   procedure Init (Tree : out Project_Tree)
+   is
+      Proj_Env  : Project_Environment_Access;
+      GNAT_Version : GNAT.Strings.String_Access;
+   begin
+      Read_Command_Line;
+      Initialize (Proj_Env);
+      Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
+      Set_Object_Subdir (Proj_Env.all, Subdir_Name);
+      Tree.Load
+        (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+         Proj_Env);
+   end Init;
+
+   -----------------------
+   -- Read_Command_Line --
+   -----------------------
+
+   procedure Read_Command_Line
+   is
+      Config : Command_Line_Configuration;
+   begin
+      --  Install command line config
+
+      Define_Switch (Config, Verbose'Access,
+                     "-v", Long_Switch => "--verbose",
+                     Help => "Output extra verbose information");
+
+      Define_Switch (Config, All_VCs'Access,
+                     Long_Switch => "--all-vcs",
+                     Help => "Activate generation of VCs for subprograms");
+
+      Define_Switch (Config, Report'Access,
+                     Long_Switch => "--report",
+                     Help => "Print messages for all generated VCs");
+
+      Define_Switch
+        (Config,
+         Alfa_Report'Access,
+         Long_Switch => "--alfa-report",
+         Help => "Disable generation of VCs, only output Alfa information");
+
+      Define_Switch
+        (Config,
+         Force_Alfa'Access,
+         Long_Switch => "--force-alfa",
+         Help => "Output errors on non-Alfa constructs, "
+           & "and warnings on unimplemented ones");
+
+      Define_Switch
+        (Config,
+         No_Proof'Access,
+         Long_Switch => "--no-proof",
+         Help => "Disable proof of VCs, only generate VCs");
+
+      Define_Switch
+         (Config, Timeout'Access,
+          Long_Switch => "--timeout=",
+          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
+
+      Define_Switch
+         (Config, Steps'Access,
+          Long_Switch => "--steps=",
+          Help => "Set the maximum number of proof steps for Alt-Ergo");
+
+      Define_Switch
+         (Config, Parallel'Access,
+          Long_Switch => "-j:",
+          Help => "Set the number of parallel processes (default is 1)");
+
+      Define_Switch (Config, Project_File'Access,
+                     "-P:",
+                     Help => "The name of the project file");
+
+      Getopt (Config);
+      if Project_File.all = "" then
+         Abort_With_Message ("No project file given, aborting.");
+      end if;
+   exception
+      when Invalid_Switch | Exit_From_Command_Line =>
+         GNAT.OS_Lib.OS_Exit (1);
+   end Read_Command_Line;
+
+end Configuration;

@@ -31,14 +31,13 @@ with Call;              use Call;
 with Explanations;      use Explanations;
 with String_Utils;      use String_Utils;
 
-with GNAT.Command_Line; use GNAT.Command_Line;
-with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with GNAT.Strings;
 with GNAT.Directory_Operations.Iteration;
+with GNAT.OS_Lib;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
-with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
+
+with Configuration;     use Configuration;
 
 with Ada.Text_IO;
 
@@ -46,53 +45,7 @@ procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why, GS_AltErgo);
 
-   --  Variables for command line parsing
-   Config       : Command_Line_Configuration;
-   Verbose      : aliased Boolean;
-   --  True if -v switch is present. All executed commands are printed.
-   Report       : aliased Boolean;
-   --  True if --report switch is present. A message is printed for all VCs.
-   All_VCs      : aliased Boolean;
-   --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
-   --  gnat2why
-   No_Proof     : aliased Boolean;
-   --  True if --no-proof switch is present. Do not call Alt-Ergo.
-   Alfa_Report  : aliased Boolean;
-   --  True if --alfa-report switch is present. Pass option "-gnatd.K" to
-   --  gnat2why.
-   Force_Alfa   : aliased Boolean;
-   --  True if --force-alfa switch is present. Issue errors on constructs not
-   --  in Alfa, and warnings on constructs not yet implemented in GNATprove.
-   --  Pass option "-gnatd.E" to gnat2why.
-   Parallel     : aliased Integer;
-   --  The number of parallel processes.
-   Timeout      : aliased Integer;
-   Steps        : aliased Integer;
-   --  The Timeout and Step for Alt-Ergo
-
-   Project_File : aliased GNAT.Strings.String_Access;
-   --  The project file name, given with option -P
-
    Skip_Rest    : Boolean := False;
-   Subdir_Name  : constant Filesystem_String := "gnatprove";
-   WHYLIB       : constant String := "WHYLIB";
-   Prefix       : constant String := Executable_Location;
-   Lib_Dir      : constant String := Ada.Directories.Compose (Prefix, "lib");
-   Why_Lib_Dir  : constant String := Ada.Directories.Compose (Lib_Dir, "why");
-   Gpr_Cnf_Dir  : constant String :=
-      Ada.Directories.Compose
-        (Ada.Directories.Compose (Prefix, "share"),
-         "gnatprove");
-   Stdlib_ALI_Dir   : constant String :=
-      Ada.Directories.Compose (Lib_Dir, "gnatprove");
-   Gpr_Ada_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
-   Gpr_Why_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
-   Gpr_Altergo_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
-   Alfa_Report_File : constant String := "gnatprove.out";
-
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
@@ -147,9 +100,6 @@ procedure Gnatprove is
       (Project_File : String;
        Status : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
-
-   procedure Read_Command_Line;
-   --  Parse command line and set up configuration.
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
@@ -285,7 +235,7 @@ procedure Gnatprove is
         (Command   => "alfa_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
-      Delete_File (Obj_Dir_Fn, Success);
+      GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
       if Alfa_Report then
          Cat (Alfa_Report_File);
       end if;
@@ -385,74 +335,6 @@ procedure Gnatprove is
 
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
-   Proj_Env  : Project_Environment_Access;
-
-   -----------------------
-   -- Read_Command_Line --
-   -----------------------
-
-   procedure Read_Command_Line is
-   begin
-      --  Install command line config
-
-      Define_Switch (Config, Verbose'Access,
-                     "-v", Long_Switch => "--verbose",
-                     Help => "Output extra verbose information");
-
-      Define_Switch (Config, All_VCs'Access,
-                     Long_Switch => "--all-vcs",
-                     Help => "Activate generation of VCs for subprograms");
-
-      Define_Switch (Config, Report'Access,
-                     Long_Switch => "--report",
-                     Help => "Print messages for all generated VCs");
-
-      Define_Switch
-        (Config,
-         Alfa_Report'Access,
-         Long_Switch => "--alfa-report",
-         Help => "Disable generation of VCs, only output Alfa information");
-
-      Define_Switch
-        (Config,
-         Force_Alfa'Access,
-         Long_Switch => "--force-alfa",
-         Help => "Output errors on non-Alfa constructs, "
-           & "and warnings on unimplemented ones");
-
-      Define_Switch
-        (Config,
-         No_Proof'Access,
-         Long_Switch => "--no-proof",
-         Help => "Disable proof of VCs, only generate VCs");
-
-      Define_Switch
-         (Config, Timeout'Access,
-          Long_Switch => "--timeout=",
-          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
-
-      Define_Switch
-         (Config, Steps'Access,
-          Long_Switch => "--steps=",
-          Help => "Set the maximum number of proof steps for Alt-Ergo");
-
-      Define_Switch
-         (Config, Parallel'Access,
-          Long_Switch => "-j:",
-          Help => "Set the number of parallel processes (default is 1)");
-
-      Define_Switch (Config, Project_File'Access,
-                     "-P:",
-                     Help => "The name of the project file");
-
-      Getopt (Config);
-      if Project_File.all = "" then
-         Abort_With_Message ("No project file given, aborting.");
-      end if;
-   exception
-      when Invalid_Switch | Exit_From_Command_Line =>
-         GNAT.OS_Lib.OS_Exit (1);
-   end Read_Command_Line;
 
    ----------------
    -- Report_VCs --
@@ -557,17 +439,10 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
    end Translate_To_Why;
 
-   GNAT_Version : GNAT.Strings.String_Access;
    --  begin processing for Gnatprove
 
 begin
-   Read_Command_Line;
-   Initialize (Proj_Env);
-   Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
-   Set_Object_Subdir (Proj_Env.all, Subdir_Name);
-   Tree.Load
-     (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
-      Proj_Env);
+   Init (Tree);
    Proj_Type := Root_Project (Tree);
 
    declare
