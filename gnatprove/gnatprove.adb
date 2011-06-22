@@ -178,9 +178,9 @@ procedure Gnatprove is
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
-                       4 => new String'("-U"),
-                       5 => new String'("-gnatc"),      --  only generate ALI
-                       6 => new String'("-gnatd.F")),   --  ALFA section in ALI
+                       5 => new String'("-U"),
+                       6 => new String'("-gnatc"),      --  only generate ALI
+                       7 => new String'("-gnatd.F")),   --  ALFA section in ALI
          Verbose   => Verbose);
    end Compute_ALI_Information;
 
@@ -461,6 +461,7 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-U");
+      Args.Append ("-k");
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
