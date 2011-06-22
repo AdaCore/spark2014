@@ -27,6 +27,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                use Ada.Text_IO;
 
 with Get_Alfa;
+with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
 
 package body Alfa.Frame_Conditions is
@@ -327,7 +328,11 @@ package body Alfa.Frame_Conditions is
             --  No Alfa information in this ALI
 
             Close (ALI_File);
-            return;
+            Write_Str ("error:" & ALI_Filename &
+                         " does not contain Alfa section");
+            Write_Eol;
+
+            raise Terminate_Program;
          end if;
 
          Get_Line (ALI_File, Line, Last);

@@ -38,6 +38,7 @@ with Nlists;                use Nlists;
 with Opt;                   use Opt;
 with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
+with Output;                use Output;
 with Outputs;               use Outputs;
 with Sem;
 with Sinfo;                 use Sinfo;
@@ -98,7 +99,7 @@ package body Gnat2Why.Driver is
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
 
-      N          : constant Node_Id := Unit (GNAT_Root);
+      N         : constant Node_Id := Unit (GNAT_Root);
       Base_Name : constant String := File_Name_Without_Suffix (Sloc (N));
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
@@ -140,6 +141,17 @@ package body Gnat2Why.Driver is
       --  Fill in table ALIs with all dependent units
 
       Read_Library_Info (Main_Lib_File, Text);
+
+      if Text = null then
+         --  No such ALI file
+
+         Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
+                      " does not exist");
+         Write_Eol;
+
+         raise Terminate_Program;
+      end if;
+
       Main_Lib_Id := Scan_ALI
         (F                => Main_Lib_File,
          T                => Text,
@@ -245,6 +257,9 @@ package body Gnat2Why.Driver is
       Open_Current_File (Base_Name & "__package.loc");
       Print_Locations_Table (Current_File);
       Close_Current_File;
+
+   exception
+      when Terminate_Program => null;
    end GNAT_To_Why;
 
    ------------------------
