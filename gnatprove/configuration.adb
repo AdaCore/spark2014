@@ -73,6 +73,13 @@ package body Configuration is
                      Help => "Print messages for all generated VCs");
 
       Define_Switch
+         (Config,
+          Force'Access,
+          "-f",
+          Long_Switch => "--force",
+          Help => "Force recompilation / proving of all units and all VCs");
+
+      Define_Switch
         (Config,
          Alfa_Report'Access,
          Long_Switch => "--alfa-report",

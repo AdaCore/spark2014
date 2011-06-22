@@ -40,6 +40,8 @@ package Configuration is
    All_VCs      : aliased Boolean;
    --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
    --  gnat2why
+   Force        : aliased Boolean;
+   --  True if -f or --force is present. Recompile / reprove all units
    No_Proof     : aliased Boolean;
    --  True if --no-proof switch is present. Do not call Alt-Ergo.
    Alfa_Report  : aliased Boolean;

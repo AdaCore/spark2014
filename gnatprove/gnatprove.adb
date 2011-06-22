@@ -122,6 +122,9 @@ procedure Gnatprove is
       if Parallel > 1 then
          Compiler_Args.Prepend ("-j" & Int_Image (Parallel));
       end if;
+      if Force then
+         Compiler_Args.Prepend ("-f");
+      end if;
       Compiler_Args.Prepend ("-c");
       Compiler_Args.Prepend (Project_File);
       Compiler_Args.Prepend ("-P");
@@ -140,16 +143,22 @@ procedure Gnatprove is
 
    procedure Compute_ALI_Information
       (Project_File : String;
-       Status : out Integer) is
+       Status : out Integer)
+   is
+      Args          : String_Lists.List := String_Lists.Empty_List;
    begin
+      Args.Append ("-P");
+      Args.Append (Project_File);
+      Args.Append ("--subdirs=" & String (Subdir_Name));
+      Args.Append ("-U");
+      Args.Append ("-gnatc");       --  only generate ALI
+      Args.Append ("-gnatd.F");     --  ALFA section in ALI
+      if Force then
+         Args.Append ("-f");
+      end if;
       Call_With_Status
         (Command   => "gnatmake",
-         Arguments => (1 => new String'("-P"),
-                       2 => new String'(Project_File),
-                       3 => new String'("--subdirs=" & String (Subdir_Name)),
-                       4 => new String'("-U"),
-                       5 => new String'("-gnatc"),      --  only generate ALI
-                       6 => new String'("-gnatd.F")),   --  ALFA section in ALI
+         Arguments => Args,
          Status    => Status,
          Verbose   => Verbose);
    end Compute_ALI_Information;
