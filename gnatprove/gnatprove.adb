@@ -44,6 +44,8 @@ with Ada.Text_IO;
 
 procedure Gnatprove is
 
+   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why, GS_AltErgo);
+
    --  Variables for command line parsing
    Config       : Command_Line_Configuration;
    Verbose      : aliased Boolean;
@@ -71,6 +73,7 @@ procedure Gnatprove is
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
 
+   Skip_Rest    : Boolean := False;
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    WHYLIB       : constant String := "WHYLIB";
    Prefix       : constant String := Executable_Location;
@@ -93,14 +96,22 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
-       Compiler_Args : in out String_Lists.List);
+       Compiler_Args : in out String_Lists.List;
+       Status        : out Integer);
    --  Call gprbuild with the given arguments
 
-   procedure Compute_ALI_Information (Project_File : String);
+   procedure Compute_ALI_Information
+      (Project_File : String;
+       Status : out Integer);
    --  Compute ALI information for all source units, using gnatmake.
 
-   procedure Compute_VCs (Proj : Project_Tree);
+   procedure Compute_VCs (Proj : Project_Tree; Status : out Integer);
    --  Compute Verification conditions using Why, driven by gprbuild.
+
+   procedure Execute_Step
+      (Step         : Gnatprove_Step;
+       Project_File : String;
+       Proj         : Project_Tree);
 
    procedure Generate_Alfa_Report
       (Proj_Type : Project_Type;
@@ -126,17 +137,21 @@ procedure Gnatprove is
    procedure Make_Standard_Package (Proj : Project_Tree);
    --  Produce the file "_standard.mlw".
 
-   procedure Prove_VCs (Proj : Project_Tree);
+   procedure Prove_VCs (Proj : Project_Tree; Status : out Integer);
    --  Prove the VCs.
 
    procedure Report_VCs;
    --  Print error/info messages on VCs.
 
-   procedure Translate_To_Why (Project_File : String);
+   procedure Translate_To_Why
+      (Project_File : String;
+       Status : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
 
    procedure Read_Command_Line;
    --  Parse command line and set up configuration.
+
+   function Text_Of_Step (Step : Gnatprove_Step) return String;
 
    -------------------
    -- Call_Gprbuild --
@@ -145,7 +160,8 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
-       Compiler_Args : in out String_Lists.List)
+       Compiler_Args : in out String_Lists.List;
+       Status        : out Integer)
    is
    begin
       if Verbose then
@@ -161,9 +177,10 @@ procedure Gnatprove is
       Compiler_Args.Prepend ("-P");
       Compiler_Args.Prepend ("--config=" & Config_File);
 
-      Call_Exit_On_Failure
+      Call_With_Status
         (Command   => "gprbuild",
          Arguments => Compiler_Args,
+         Status    => Status,
          Verbose   => Verbose);
    end Call_Gprbuild;
 
@@ -171,16 +188,19 @@ procedure Gnatprove is
    -- Compute_ALI_Information --
    -----------------------------
 
-   procedure Compute_ALI_Information (Project_File : String) is
+   procedure Compute_ALI_Information
+      (Project_File : String;
+       Status : out Integer) is
    begin
-      Call_Exit_On_Failure
+      Call_With_Status
         (Command   => "gnatmake",
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
-                       5 => new String'("-U"),
-                       6 => new String'("-gnatc"),      --  only generate ALI
-                       7 => new String'("-gnatd.F")),   --  ALFA section in ALI
+                       4 => new String'("-U"),
+                       5 => new String'("-gnatc"),      --  only generate ALI
+                       6 => new String'("-gnatd.F")),   --  ALFA section in ALI
+         Status    => Status,
          Verbose   => Verbose);
    end Compute_ALI_Information;
 
@@ -188,7 +208,9 @@ procedure Gnatprove is
    -- Compute_VCs --
    -----------------
 
-   procedure Compute_VCs (Proj : Project_Tree)
+   procedure Compute_VCs
+      (Proj : Project_Tree;
+       Status : out Integer)
    is
       Proj_Type     : constant Project_Type := Proj.Root_Project;
       Why_Proj_File : constant String :=
@@ -200,8 +222,43 @@ procedure Gnatprove is
       if not Ada.Environment_Variables.Exists (WHYLIB) then
          Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
       end if;
-      Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args);
+      Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
    end Compute_VCs;
+
+   procedure Execute_Step
+      (Step         : Gnatprove_Step;
+       Project_File : String;
+       Proj         : Project_Tree)
+   is
+      use Ada.Text_IO;
+      Status : Integer;
+   begin
+      if Skip_Rest then
+         Put (Standard_Error, "gnatprove: skipped ");
+         Put_Line (Standard_Error, Text_Of_Step (Step));
+         return;
+      end if;
+      case Step is
+         when GS_ALI =>
+            Compute_ALI_Information (Project_File, Status);
+
+         when GS_Gnat2Why =>
+            Translate_To_Why (Project_File, Status);
+
+         when GS_Why =>
+            Compute_VCs (Proj, Status);
+
+         when GS_AltErgo =>
+            Prove_VCs (Proj, Status);
+            Report_VCs;
+
+      end case;
+      if Status /= 0 then
+         Skip_Rest := True;
+         Put (Standard_Error, "gnatprove: error during ");
+         Put_Line (Standard_Error, Text_Of_Step (Step));
+      end if;
+   end Execute_Step;
 
    --------------------------
    -- Generate_Alfa_Report --
@@ -304,7 +361,7 @@ procedure Gnatprove is
    -- Prove_VCs --
    ---------------
 
-   procedure Prove_VCs (Proj : Project_Tree)
+   procedure Prove_VCs (Proj : Project_Tree; Status : out Integer)
    is
       use String_Lists;
       Proj_Type         : constant Project_Type := Proj.Root_Project;
@@ -323,7 +380,7 @@ procedure Gnatprove is
          Args.Prepend ("-cargs:AltErgo");
       end if;
 
-      Call_Gprbuild (Altergo_Proj_File, Gpr_Altergo_Cnf_File, Args);
+      Call_Gprbuild (Altergo_Proj_File, Gpr_Altergo_Cnf_File, Args, Status);
    end Prove_VCs;
 
    Tree      : Project_Tree;
@@ -450,14 +507,37 @@ procedure Gnatprove is
       Iterate (Path => "*package_po*.why");
    end Report_VCs;
 
+   ------------------
+   -- Text_Of_Step --
+   ------------------
+
+   function Text_Of_Step (Step : Gnatprove_Step) return String
+   is
+   begin
+      case Step is
+         when GS_ALI =>
+            return "frame condition computation";
+
+         when GS_Gnat2Why =>
+            return "translation to intermediate language";
+
+         when GS_Why =>
+            return "generation of VCs";
+         when GS_AltErgo =>
+            return "proof of VCs";
+      end case;
+   end Text_Of_Step;
+
    ----------------------
    -- Translate_To_Why --
    ----------------------
 
-   procedure Translate_To_Why (Project_File : String)
+   procedure Translate_To_Why
+      (Project_File : String;
+       Status : out Integer)
    is
       use String_Lists;
-      Args : String_Lists.List := Empty_List;
+      Args   : String_Lists.List := Empty_List;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-U");
@@ -474,7 +554,7 @@ procedure Gnatprove is
       if Force_Alfa then
          Args.Append ("-gnatd.E");
       end if;
-      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
+      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
    end Translate_To_Why;
 
    GNAT_Version : GNAT.Strings.String_Access;
@@ -505,9 +585,9 @@ begin
             ("There is more than one object directory, aborting.");
       end if;
 
-      Compute_ALI_Information (Project_File.all);
+      Execute_Step (GS_ALI, Project_File.all, Tree);
 
-      Translate_To_Why (Project_File.all);
+      Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
       Generate_Alfa_Report (Proj_Type, Obj_Path);
       if Alfa_Report then
@@ -517,11 +597,11 @@ begin
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
    Make_Standard_Package (Tree);
-   Compute_VCs (Tree);
+
+   Execute_Step (GS_Why, Project_File.all, Tree);
 
    if not No_Proof then
-      Prove_VCs (Tree);
-      Report_VCs;
+      Execute_Step (GS_AltErgo, Project_File.all, Tree);
    end if;
 exception
    when Invalid_Project =>

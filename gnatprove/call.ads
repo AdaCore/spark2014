@@ -44,6 +44,18 @@ package Call is
       Arguments : String_Lists.List;
       Verbose   : Boolean := False);
 
+   procedure Call_With_Status
+     (Command   : String;
+      Arguments : Argument_List;
+      Status    : out Integer;
+      Verbose   : Boolean := False);
+
+   procedure Call_With_Status
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Status    : out Integer;
+      Verbose   : Boolean := False);
+
    generic
       with procedure Handle_Line (Line : String);
    procedure For_Line_In_File

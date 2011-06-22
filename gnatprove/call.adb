@@ -33,6 +33,14 @@ package body Call is
       return Argument_List;
    --  Convert a String List into an Argument List
 
+   procedure Free_Argument_List (L : Argument_List);
+   --  free all strings in an argument list
+
+   procedure Print_Command_Line
+      (Command : String;
+       Arguments : Argument_List);
+   --  print the command line for debug purposes
+
    ------------------------
    -- Abort_With_Message --
    ------------------------
@@ -63,6 +71,74 @@ package body Call is
       return Arguments;
    end Argument_List_Of_String_List;
 
+   ------------------------
+   -- Print_Command_Line --
+   ------------------------
+
+   procedure Print_Command_Line
+      (Command : String;
+       Arguments : Argument_List)
+   is
+   begin
+      Ada.Text_IO.Put (Command);
+
+      for Index in Arguments'Range loop
+         declare
+            S : constant String_Access := Arguments (Index);
+         begin
+            Ada.Text_IO.Put (" ");
+            Ada.Text_IO.Put (S.all);
+         end;
+      end loop;
+   end Print_Command_Line;
+
+   ----------------------
+   -- Call_With_Status --
+   ----------------------
+
+   procedure Call_With_Status
+     (Command   : String;
+      Arguments : Argument_List;
+      Status    : out Integer;
+      Verbose   : Boolean := False)
+   is
+      Local_Status : aliased Integer;
+   begin
+      if Verbose then
+         Print_Command_Line (Command, Arguments);
+         Ada.Text_IO.Put_Line ("");
+      end if;
+      declare
+         S : constant String :=
+            GNAT.Expect.Get_Command_Output
+              (Command   => Command,
+               Arguments => Arguments,
+               Input     => "",
+               Status    => Local_Status'Access,
+               Err_To_Out => True);
+      begin
+         if Verbose or else Local_Status /= 0 then
+            Ada.Text_IO.Put_Line (S);
+         end if;
+         Free_Argument_List (Arguments);
+      end;
+      Status := Local_Status;
+   end Call_With_Status;
+
+   procedure Call_With_Status
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Status    : out Integer;
+      Verbose   : Boolean := False)
+   is
+   begin
+      Call_With_Status
+        (Command,
+         Argument_List_Of_String_List (Arguments),
+         Status,
+         Verbose);
+   end Call_With_Status;
+
    --------------------------
    -- Call_Exit_On_Failure --
    --------------------------
@@ -74,30 +150,9 @@ package body Call is
    is
       Status : aliased Integer;
 
-      procedure Print_Command_Line;
-      --  print the command line for debug purposes
-
-      ------------------------
-      -- Print_Command_Line --
-      ------------------------
-
-      procedure Print_Command_Line is
-      begin
-         Ada.Text_IO.Put (Command);
-
-         for Index in Arguments'Range loop
-            declare
-               S : constant String_Access := Arguments (Index);
-            begin
-               Ada.Text_IO.Put (" ");
-               Ada.Text_IO.Put (S.all);
-            end;
-         end loop;
-      end Print_Command_Line;
-
    begin
       if Verbose then
-         Print_Command_Line;
+         Print_Command_Line (Command, Arguments);
          Ada.Text_IO.Put_Line ("");
       end if;
 
@@ -113,7 +168,7 @@ package body Call is
          if Verbose or else Status /= 0 then
             Ada.Text_IO.Put (S);
             if Status /= 0 then
-               Print_Command_Line;
+               Print_Command_Line (Command, Arguments);
                Ada.Text_IO.Put_Line (" failed.");
                GNAT.OS_Lib.OS_Exit (1);
             else
@@ -121,13 +176,8 @@ package body Call is
             end if;
          end if;
 
-         for Index in Arguments'Range loop
-            declare
-               S : String_Access := Arguments (Index);
-            begin
-               Free (S);
-            end;
-         end loop;
+         Free_Argument_List (Arguments);
+
       end;
    end Call_Exit_On_Failure;
 
@@ -142,6 +192,28 @@ package body Call is
          Argument_List_Of_String_List (Arguments),
          Verbose);
    end Call_Exit_On_Failure;
+
+   ---------
+   -- Cat --
+   ---------
+
+   procedure Cat (File : String) is
+      procedure Print_Line (Line : String);
+      --  Print a single line to stdout
+
+      ----------------
+      -- Print_Line --
+      ----------------
+      procedure Print_Line (Line : String)
+      is
+      begin
+         Ada.Text_IO.Put_Line (Line);
+      end Print_Line;
+
+      procedure My_Cat is new For_Line_In_File (Print_Line);
+   begin
+      My_Cat (File);
+   end Cat;
 
    ----------------------
    -- For_Line_In_File --
@@ -165,26 +237,16 @@ package body Call is
          Close (File_Handle);
    end For_Line_In_File;
 
-   ---------
-   -- Cat --
-   ---------
-
-   procedure Cat (File : String) is
-      procedure Print_Line (Line : String);
-      --  Print a single line to stdout
-
-      ----------------
-      -- Print_Line --
-      ----------------
-      procedure Print_Line (Line : String)
-      is
-      begin
-         Ada.Text_IO.Put_Line (Line);
-      end Print_Line;
-
-      procedure My_Cat is new For_Line_In_File (Print_Line);
+   procedure Free_Argument_List (L : Argument_List)
+   is
    begin
-      My_Cat (File);
-   end Cat;
+      for Index in L'Range loop
+         declare
+            S : String_Access := L (Index);
+         begin
+            Free (S);
+         end;
+      end loop;
+   end Free_Argument_List;
 
 end Call;
