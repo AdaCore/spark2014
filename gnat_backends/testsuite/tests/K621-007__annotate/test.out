@@ -1,3 +1,7 @@
+compilation of p.adb failed
+gnatprove: error during translation to intermediate language
+gnatprove: skipped generation of VCs
+gnatprove: skipped proof of VCs
+gprbuild: *** compilation phase failed
 p.adb:5:07: explicit dereference is not in Alfa
 p.ads:2:09: access type is not in Alfa
-<error message here: TDB by Johannes>
