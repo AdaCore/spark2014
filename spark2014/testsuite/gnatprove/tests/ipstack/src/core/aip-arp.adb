@@ -130,7 +130,7 @@ is
       Cur  := List;
       while Cur /= AEID and then Cur /= No_ARP_Entry loop
          Prev := Cur;
-         Cur := ARP_Table (AEID).Next;
+         Cur := ARP_Table (Cur).Next;
       end loop;
 
       if Cur /= No_ARP_Entry then
