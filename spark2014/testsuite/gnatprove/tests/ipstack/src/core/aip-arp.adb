@@ -128,7 +128,7 @@ is
    begin
       Prev := No_ARP_Entry;
       Cur  := List;
-      while Cur /= AEID loop
+      while Cur /= AEID and then Cur /= No_ARP_Entry loop
          Prev := Cur;
          Cur := ARP_Table (AEID).Next;
       end loop;
