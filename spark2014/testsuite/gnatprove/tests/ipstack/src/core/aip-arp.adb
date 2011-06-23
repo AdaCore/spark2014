@@ -24,6 +24,8 @@ is
    function Get_MAC_Address (Nid : NIF.Netif_Id) return AIP.Ethernet_Address is
       Nid_LL_Address        : AIP.Ethernet_Address;
       Nid_LL_Address_Length : AIP.LL_Address_Range;
+      --# accept F,10,Nid_LL_Address_Length,"Used in assertion only";
+      --# accept F,33,Nid_LL_Address_Length,"Used in assertion only";
    begin
       NIF.Get_LL_Address (Nid, Nid_LL_Address, Nid_LL_Address_Length);
       pragma Assert (Nid_LL_Address_Length = Nid_LL_Address'Last);
@@ -54,7 +56,9 @@ is
          EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
          EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
 
+         --# accept F,10,Err,"Ignore error from link output";
          NIF.Link_Output (Nid, Buf, Err);
+         --# end accept;
       end if;
    end Send_Packet;
 
@@ -376,7 +380,9 @@ is
                      ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
                      ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
+                     --# accept F,10,Err,"Ignore error from link output";
                      NIF.Link_Output (Nid, Buf, Err);
+                     --# end accept;
 
                   end if;
 

@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -92,12 +92,15 @@ is
 
    is
       pragma Unreferenced (Netif);
+      --# accept F,30,Netif,"Unreferenced formal";
       Ihdr, Uhdr, PUhdr : System.Address;
 
       PUH_Buf  : Buffers.Buffer_Id;
       Err      : AIP.Err_T;
       PCB      : PCBs.PCB_Id := PCBs.NOPCB;
       Wildcard : Natural;
+      --# accept F,33,Wildcard,"Value discarded";
+      --# accept F,10,Wildcard,"Value discarded";
    begin
       --  Latch address of IP header and retrieve a UDP view of the incoming
       --  datagram.

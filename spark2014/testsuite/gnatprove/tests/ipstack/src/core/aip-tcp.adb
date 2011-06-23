@@ -397,8 +397,7 @@ is
    --  procedure TCP_Send_Segment
    --    (Tbuf       : Buffers.Buffer_Id;
    --     IPCB       : PCBs.IP_PCB;
-   --     TPCB       : TCP_PCB;
-   --     Retransmit : Boolean);
+   --     TPCB       : TCP_PCB);
    --  Helper for TCP_Output. Send segment held in Tbuf over IP for PCB.
 
    --  procedure Retransmit_Timeout (PCB : PCBs.PCB_Id);
@@ -424,6 +423,10 @@ is
    begin
       Saved_Payload := Buffers.Buffer_Payload (Buf);
       Thdr := Buffers.Packet_Info (Buf);
+
+      --# accept F,33,Err,"Assume no errors in this routine";
+      --# accept F,10,Err,"Assume no errors in this routine";
+
       Buffers.Buffer_Set_Payload (Buf, Thdr, Err);
       pragma Assert (AIP.No (Err));
 
@@ -469,8 +472,7 @@ is
    procedure TCP_Send_Segment
      (Tbuf       : Buffers.Buffer_Id;
       IPCB       : PCBs.IP_PCB;
-      TPCB       : in out TCP_PCB;
-      Retransmit : Boolean)
+      TPCB       : in out TCP_PCB)
    --# global in out IP.State, Buffers.State; in TCP_Ticks;
    is
       PThdr, Thdr : System.Address;
@@ -478,6 +480,7 @@ is
 
       Src_IP, Dst_IP : IPaddrs.IPaddr;
       Err : AIP.ERR_T;
+      --# accept F,33,Err,"Assume no errors in this routine";
    begin
       Src_IP := IPCB.Local_IP;
       Dst_IP := IPCB.Remote_IP;
@@ -493,6 +496,8 @@ is
 
       Thdr := Buffers.Packet_Info (Tbuf);
       pragma Assert (Thdr /= System.Null_Address);
+
+      --# accept F,10,Err,"Assume no error in this routine";
 
       Buffers.Buffer_Set_Payload (Tbuf, Thdr, Err);
       pragma Assert (AIP.No (Err));
@@ -644,13 +649,14 @@ is
          TCP_Send_Segment
            (Tbuf       => Seg,
             IPCB       => IPCBs (PCB),
-            TPCB       => TPCBs (PCB),
-            Retransmit => False);
+            TPCB       => TPCBs (PCB));
 
          --  Remove packet from the Send_Queue and bump SND_NXT
 
+         --# accept F,10,Seg,"Value discarded";
          Buffers.Remove_Packet
            (Buffers.Transport, TPCBs (PCB).Send_Queue, Seg);
+         --# end accept;
 
          TPCBs (PCB).SND_NXT := TPCBs (PCB).SND_NXT + Seg_Len;
 
@@ -683,8 +689,7 @@ is
          TCP_Send_Segment
            (Tbuf       => Seg,
             IPCB       => IPCBs (PCB),
-            TPCB       => TPCBs (PCB),
-            Retransmit => False);
+            TPCB       => TPCBs (PCB));
 
          Buffers.Buffer_Blind_Free (Seg);
       end if;
@@ -1028,11 +1033,12 @@ is
          TCPH.Set_TCPH_Seq_Num (Thdr, Seq_Num);
 
          Buffers.Set_Packet_Info (Buf, Thdr);
+         --# accept F,10,TPCB,"Transient control block";
          TCP_Send_Segment
            (Tbuf       => Buf,
             IPCB       => IPCB,
-            TPCB       => TPCB,
-            Retransmit => False);
+            TPCB       => TPCB);
+         --# end accept;
          Buffers.Buffer_Blind_Free (Buf);
          Err := AIP.NOERR;
       end if;
@@ -1149,7 +1155,7 @@ is
             end if;
 
          when Listen =>
-            null;
+            Err := AIP.NOERR;
 
          when others =>
             Err := AIP.ERR_ISCONN;
@@ -1239,6 +1245,7 @@ is
    --# global in out Buffers.State;
    is
       Err : AIP.Err_T;
+      --# accept F,33,Err,"Assume no errors in this routine";
    begin
       --  Allocate one data buffer to hold user data + protocol headers,
       --  memorize the TCP header location and copy data at payload addr
@@ -1250,9 +1257,13 @@ is
          Buf    => Tbuf);
 
       if Tbuf /= Buffers.NOBUF then
+         --# accept F,10,Err,"Assume no errors here";
          Buffers.Buffer_Header (Tbuf, TCPH.TCP_Header_Size / 8, Err);
+         pragma Assert (AIP.No (Err));
          Buffers.Set_Packet_Info (Tbuf, Buffers.Buffer_Payload (Tbuf));
          Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Header_Size / 8, Err);
+         pragma Assert (AIP.No (Err));
+         --# end accept;
 
          if Len > 0 then
             Conversions.Memcpy
@@ -1445,45 +1456,29 @@ is
             Ptr := Conversions.Ofs (Ptr, Integer (Dlen));
             NSS := NSS + AIP.M32_T (Dlen);
 
-            --  SYN and FIN are each part of the sequence, numbering-wise.  We
-            --  should never have both set at the same time here.
-
-            if Syn or else Fin then
-               NSS := NSS + 1;
-            end if;
-
             exit when Left = 0;
          end loop;
 
-         --  If we have had any kind of trouble so far, release what we got and
-         --  bail out. Otherwise proceed further.
+         --  SYN and FIN are each part of the sequence, numbering-wise.  We
+         --  should never have both set at the same time here.
 
-         if AIP.Any (Err) then
+         if Syn or else Fin then
+            NSS := NSS + 1;
+         end if;
 
-            while not Buffers.Empty (SegQ) loop
-               Buffers.Remove_Packet
-                 (Layer => Buffers.Transport,
-                  Queue => SegQ,
-                  Buf   => Tbuf);
-               Buffers.Buffer_Blind_Free (Tbuf);
-            end loop;
+         --  Update next sequence number for stream
 
-         else
-            --  Update next sequence number for stream
+         TPCBs (PCB).NSS := NSS;
 
-            TPCBs (PCB).NSS := NSS;
+         --  Push the temporary queue on the Send_Queue for later processing
+         --  by TCP_Output.
 
-            --  Push the temporary queue on the Send_Queue for later processing
-            --  by TCP_Output.
-
-            if not Buffers.Empty (SegQ) then
-               Buffers.Append_Packet
-                 (Layer => Buffers.Transport,
-                  Buf   => Buffers.Head_Packet (SegQ),
-                  Queue => TPCBs (PCB).Send_Queue);
-               TCP_Output (PCB => PCB, Ack_Now => False);
-            end if;
-
+         if not Buffers.Empty (SegQ) then
+            Buffers.Append_Packet
+              (Layer => Buffers.Transport,
+               Buf   => Buffers.Head_Packet (SegQ),
+               Queue => TPCBs (PCB).Send_Queue);
+            TCP_Output (PCB => PCB, Ack_Now => False);
          end if;
       end if;
    end TCP_Enqueue;
@@ -1699,6 +1694,8 @@ is
       Thdr   : System.Address;
       Len    : AIP.M32_T;
       Err    : AIP.Err_T;
+      pragma Unreferenced (Err);
+      --# accept F,33,Err,"Value discarded";
 
       CWND_Increment : AIP.M32_T;
    begin
@@ -1765,6 +1762,7 @@ is
             --  Note: For a segment carrying a FIN, we do not signal it sent
             --  if the ack covers all of the data but not the FIN flag.
 
+            --# accept F,10,Err,"Discard error from user code";
             TCP_Event
               (Ev   => TCP_Event_T'(Kind => TCP_EVENT_SENT,
                                     Len  =>
@@ -1778,6 +1776,7 @@ is
                PCB  => PCB,
                Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT),
                Err  => Err);
+            --# end accept;
 
             if TCPH.TCPH_Fin (Thdr) = 1 then
                case TPCBs (PCB).State is
@@ -1802,11 +1801,13 @@ is
 
                      --  Ack retransmitted FIN
 
+                     --# accept F,10,Err,"Discard error from output routine";
                      TCP_Send_Control
                        (PCB => PCB,
                         Syn => False,
                         Fin => False,
                         Err => Err);
+                     --# end accept;
 
                      --  Restart 2MSL timeout
 
@@ -1822,8 +1823,10 @@ is
             --  Note: the following call leaves Packet unchanged (but removes
             --  it from the head of Unack_Queue).
 
+            --# accept F,10,Packet,"Value discarded";
             Buffers.Remove_Packet
               (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
+            --# end accept;
          end loop;
 
          --  If nothing remains on the Unack_Queue, stop retransmit timer,
@@ -1952,8 +1955,8 @@ is
    ---------------
 
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State,
-   --#               TCP_Ticks, IPCBs, TPCBs, All_PCBs;
+   --# global in out Buffers.State, IP.State, IPCBs, TPCBs, All_PCBs;
+   --#        in TCP_Ticks;
    is
 
       Flush : Boolean := False;
@@ -2030,6 +2033,8 @@ is
    is
       Err : AIP.Err_T;
       pragma Unreferenced (Err);
+      --# accept F,33,Err,"Value discarded";
+      --# accept F,10,Err,"Value discarded";
    begin
       --  Send RST
 
@@ -2121,10 +2126,13 @@ is
       --------------
 
       procedure Teardown (Callback : Boolean)
-      --# global in out Buffers.State, Discard, IPCBs, TPCBs, All_PCBs;
+      --# global in out Buffers.State, IPCBs, TPCBs, All_PCBs;
       --#        in PCB;
+      --#        out Discard;
       is
          Err : AIP.Err_T;
+         --# accept F,33,Err,"Value discarded";
+         --# accept F,10,Err,"Value discarded";
       begin
          if Callback then
             TCP_Event
@@ -2150,6 +2158,7 @@ is
 
    begin
       pragma Assert (PCB /= PCBs.NOPCB);
+      Err := AIP.NOERR;
 
       case TPCBs (PCB).State is
          when Listen =>
@@ -2422,12 +2431,14 @@ is
                   when Established | Fin_Wait_1 | Fin_Wait_2 =>
                      Process_Ack (PCB, Seg);
 
+                     --# accept F,10,"Not implemented yet";
                      if TPCBs (PCB).State = Fin_Wait_2
                        and then Buffers.Empty (TPCBs (PCB).Unack_Queue)
                      then
                         --  Ack user CLOSE but do not free PCB???
                         null; --  TBD???
                      end if;
+                     --# end accept;
 
                      --  6. Check URG bit
 
@@ -2554,6 +2565,7 @@ is
    --#        in IP.FIB, Boot_Time, TCP_Ticks;
    is
       pragma Unreferenced (Netif);
+      --# accept F,30,Netif,"Unreferenced formal";
 
       Seg : Segment;
 
@@ -2700,6 +2712,8 @@ is
          Option_Offset := TCPH.TCP_Header_Size / 8;
          while Option_Offset < Data_Offset and then not Malformed_Options loop
             Get_Option_Byte (Option_Kind);
+
+            --# accept F,41,"Loop processes each byte of option";
             case Option_Kind is
                when TCPH.TCP_Option_End | TCPH.TCP_Option_NOP =>
                   --  End of option list, No operation
@@ -2779,6 +2793,7 @@ is
                   Ack := False;
                end if;
 
+               --# accept F,10,Err,"Ignore error from output routine";
                TCP_Send_Rst
                  (Src_IP   => IPH.IPH_Dst_Address (Seg.Ihdr),
                   Src_Port => TCPH.TCPH_Dst_Port  (Seg.Thdr),
@@ -2788,12 +2803,15 @@ is
                   Seq_Num  => Seq_Num,
                   Ack_Num  => Ack_Num,
                   Err      => Err);
+               --# end accept;
             end if;
 
          else
             --  Over to actual TCP FSM
 
+            --# accept F,10,Err,"Ignore error from upper layer";
             TCP_Receive (PCB, Seg, Err);
+            --# end accept;
          end if;
       end if;
    end TCP_Input;
@@ -2879,22 +2897,26 @@ is
       Buf := Buffers.NOBUF;
       if QBuf /= Buffers.NOBUF then
          TCP_Seg_Len (QBuf, QLen);
+         pragma Assert (QLen > 0);
+         --  If QLen was 0 we'd have a segment containing no data on the send
+         --  queue.
 
-         if QLen > 0 then
-            QThdr := Buffers.Packet_Info (Qbuf);
+         QThdr := Buffers.Packet_Info (Qbuf);
+         Probe_Fin := TCPH.TCPH_Fin (QThdr) = 1 and then QLen = 1;
 
-            Probe_Fin := TCPH.TCPH_Fin (QThdr) = 1 and then QLen = 1;
-
-            Buffers.Buffer_Alloc
-              (Offset => Inet.HLEN_To (Inet.IP_LAYER),
-               Size   => TCPH.TCP_Header_Size / 8
-                           + 1 - AIP.U16_T (Boolean_To_Flag (Probe_Fin)),
-               Kind   => Buffers.LINK_BUF,
-               Buf    => Buf);
-         end if;
+         Buffers.Buffer_Alloc
+           (Offset => Inet.HLEN_To (Inet.IP_LAYER),
+            Size   => TCPH.TCP_Header_Size / 8
+                        + 1 - AIP.U16_T (Boolean_To_Flag (Probe_Fin)),
+            Kind   => Buffers.LINK_BUF,
+            Buf    => Buf);
       end if;
 
       if Buf /= Buffers.NOBUF then
+         --# accept F,501,Probe_Fin,"Always set when Buf /= Buffers.NOBUF";
+         --# accept F,504,Probe_Fin,"Always set when Buf /= Buffers.NOBUF";
+         --# accept F,504,QThdr,"Always set when Buf /= Buffers.NOBUF";
+
          Thdr := Buffers.Buffer_Payload (Buf);
          Buffers.Set_Packet_Info (Buf, Thdr);
 
@@ -2921,8 +2943,7 @@ is
          TCP_Send_Segment
            (Tbuf       => Buf,
             IPCB       => IPCBs (PCB),
-            TPCB       => TPCBs (PCB),
-            Retransmit => False);
+            TPCB       => TPCBs (PCB));
       end if;
    end Send_Window_Probe;
 
@@ -3042,6 +3063,8 @@ is
          end if;
 
          if Remove_PCB then
+            --# accept F,10,Err,"Ignore error";
+            --# accept F,33,Err,"Ignore error";
             TCP_Event
               (Ev   => TCP_Event_T'(Kind => TCP_EVENT_ABORT,
                                     Len  => 0,

@@ -183,7 +183,9 @@ is
          --  case of multicast???
             Local := True;
 
+         --# accept F,22,"Static config value";
          elsif Config.Enable_Forwarding then
+         --# end accept;
             Local := False;
 
          else
@@ -198,7 +200,9 @@ is
 
       if AIP.No (Err) then
          if Local then
+            --# accept F,10,Err,"Discard error from upper layer";
             Dispatch_Upper (IPH.IPH_Protocol (Ihdr), Buf, Netif, Err);
+            --# end accept;
          else
             IP_Forward (Buf, Netif);
          end if;
