@@ -257,9 +257,6 @@ package body Gnat2Why.Driver is
       Open_Current_File (Base_Name & "__package.loc");
       Print_Locations_Table (Current_File);
       Close_Current_File;
-
-   exception
-      when Terminate_Program => null;
    end GNAT_To_Why;
 
    ------------------------

@@ -38,7 +38,7 @@ WHYLIB=/usr/local/lib/why
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
-LIB=install/share/lib/gnatprove
+LIB=install/lib/gnatprove
 STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
