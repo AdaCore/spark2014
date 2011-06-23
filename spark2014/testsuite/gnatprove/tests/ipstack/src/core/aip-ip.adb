@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -69,6 +69,7 @@ is
 
    procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
       pragma Unreferenced (Netif);
+      --# hide IP_Forward;
    begin
       --  ??? TBD
 

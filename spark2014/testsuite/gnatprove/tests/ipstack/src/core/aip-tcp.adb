@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with System;
@@ -578,7 +578,7 @@ is
    ----------------
 
    procedure TCP_Output (PCB : PCBs.PCB_Id; Ack_Now : Boolean)
-   --# global in out TCP_Ticks, IPCBs, TPCBs, IP.State, Buffers.State;
+   --# global in out IPCBs, TPCBs, IP.State, Buffers.State; in TCP_Ticks;
    is
       Seg     : Buffers.Buffer_Id;
       Seg_Len : AIP.M32_T;
@@ -697,7 +697,7 @@ is
    procedure Deliver_Segment
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id)
-   --# global in out TCP_Ticks, TPCBs, IPCBs, IP.State, Buffers.State;
+   --# global in out TPCBs, IPCBs, IP.State, Buffers.State; in TCP_Ticks;
    is
       Saved_Payload : System.Address;
       D_Buf : Buffers.Buffer_Id;
@@ -999,6 +999,7 @@ is
       TPCB.Next_Hop_Netif := Next_Hop_Netif;
 
       Err := AIP.NOERR;
+      Buf := Buffers.NOBUF;
       if TPCB.Next_Hop_Netif = NIF.IF_NOID then
          Err := AIP.ERR_RTE;
 
@@ -1098,7 +1099,7 @@ is
    procedure TCP_Force_Bind
      (PCB : PCBs.PCB_Id;
       Err : out AIP.Err_T)
-   --# global in out IPCBs, TPCBs, All_PCBs;
+   --# global in out IPCBs, All_PCBs; in TPCBs;
    is
    begin
       if IPCBs (PCB).Local_Port = PCBs.NOPORT then
@@ -1338,7 +1339,7 @@ is
       Syn     : Boolean;
       Fin     : Boolean;
       Err     : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State, IP.State; in IPCBs, TCP_Ticks;
+   --# global in out TPCBs, IPCBs, Buffers.State, IP.State; in TCP_Ticks;
    is
       Left : AIP.M32_T;
       Ptr  : System.Address;
@@ -1496,7 +1497,7 @@ is
       Syn : Boolean;
       Fin : Boolean;
       Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, IPCBs, TPCBs; in TCP_Ticks;
    is
    begin
       TCP_Enqueue (PCB     => PCB,
@@ -1511,21 +1512,21 @@ is
    end TCP_Send_Control;
 
    procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs; in TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => False, Fin => True, Err => Err);
    end TCP_Fin;
 
    procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs; in TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => True, Fin => False, Err => Err);
    end TCP_Syn;
 
    procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs; in TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => False, Fin => False, Err => Err);
@@ -1540,7 +1541,7 @@ is
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T;
       Err         : out AIP.Err_T)
-   --# global in out Boot_Time, IPCBs, TPCBs; in IP.FIB;
+   --# global in out IPCBs, TPCBs; in Boot_Time, IP.FIB;
    is
       Next_Hop_IP    : IPaddrs.IPaddr;
       Next_Hop_Netif : NIF.Netif_Id;
@@ -1601,8 +1602,8 @@ is
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T)
    --# global in out Buffers.State, IP.State,
-   --#               IPCBs, TPCBs, TCP_Ticks, All_PCBs;
-   --#        in IP.FIB, Boot_Time;
+   --#               IPCBs, TPCBs, All_PCBs;
+   --#        in IP.FIB, Boot_Time, TCP_Ticks;
    is
    begin
       --  Check that we're in proper state for this operation and make sure the
@@ -1662,7 +1663,7 @@ is
       Copy  : Boolean;
       Push  : Boolean;
       Err   : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs; in TCP_Ticks;
    is
    begin
       case TPCBs (PCB).State is
@@ -2068,8 +2069,8 @@ is
      (PCB : PCBs.PCB_Id;
       Seg : Segment;
       Err : out AIP.Err_T)
-   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
-   --#        in IP.FIB, Boot_Time, TCP_Ticks, All_PCBs;
+   --# global in out All_PCBs, TPCBs, IPCBs, IP.State, Buffers.State;
+   --#        in IP.FIB, Boot_Time, TCP_Ticks;
    is
       New_PCB : PCBs.PCB_Id;
 
@@ -2549,8 +2550,8 @@ is
    ---------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
-   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
-   --#        in IP.FIB, Boot_Time, TCP_Ticks, All_PCBs;
+   --# global in out All_PCBs, TPCBs, IPCBs, IP.State, Buffers.State;
+   --#        in IP.FIB, Boot_Time, TCP_Ticks;
    is
       pragma Unreferenced (Netif);
 
@@ -2561,7 +2562,7 @@ is
       PTH_Buf : Buffers.Buffer_Id;
       Err : AIP.Err_T;
 
-      PCB : PCBs.PCB_Id := PCBs.NOPCB;
+      PCB : PCBs.PCB_Id;
       --  PCB of the current segment
 
       Tlen : AIP.U16_T;
@@ -2802,8 +2803,8 @@ is
    --------------------
 
    procedure TCP_Fast_Timer
-   --# global in out Buffers.State, TPCBs, IP.State;
-   --#        in TCP_Ticks, IPCBs, All_PCBs;
+   --# global in out Buffers.State, TPCBs, IPCBs, IP.State;
+   --#        in TCP_Ticks, All_PCBs;
    is
       PCB : PCBs.PCB_Id;
    begin
@@ -2816,9 +2817,6 @@ is
          end if;
          PCB := IPCBs (PCB).Link;
       end loop;
-
-      --  Generated stub: replace with real body!
-      null;
    end TCP_Fast_Timer;
 
    ------------------------
@@ -2826,8 +2824,8 @@ is
    ------------------------
 
    procedure Retransmit_Timeout (PCB : PCBs.PCB_Id)
-   --# global in out Buffers.State, IP.State, TPCBs;
-   --#        in IPCBs, TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs;
+   --#        in TCP_Ticks;
    is
    begin
       --  Bump retransmit count, reset timer
@@ -2858,7 +2856,7 @@ is
    -----------------------
 
    procedure Send_Window_Probe (PCB : PCBs.PCB_Id)
-   --# global in out Buffers.State, IP.State; in TCP_Ticks, IPCBs, TPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in TCP_Ticks, IPCBs;
    is
       --  First queued segment
 

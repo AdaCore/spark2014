@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 --  Callback oriented low level access to the TCP services. At this point,
@@ -276,7 +276,7 @@ is
    -----------------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State, IP.FIB, State, IP.State;
+   --# global in out Buffers.State, State, IP.State; in IP.FIB;
    --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
    --  to the appropriate user callback. Buf is then free'd.
 
@@ -315,7 +315,7 @@ private
       Seq_Num  : AIP.M32_T;
       Ack_Num  : AIP.M32_T;
       Err      : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State; in IP.FIB, State;
+   --# global in out IP.State, Buffers.State; in IP.FIB, State;
    --  Send a TCP RST segment
 
    procedure TCP_Send_Control

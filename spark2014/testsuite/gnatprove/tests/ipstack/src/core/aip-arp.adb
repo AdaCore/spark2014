@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.ARPH;
@@ -166,6 +166,7 @@ is
    begin
       --  First look for address in active list
 
+      Last_Active_Id := No_ARP_Entry;
       Id := ARP_Active_List;
       Scan_ARP_Entries : while Id /= No_ARP_Entry loop
          if ARP_Table (Id).Dst_IP_Address = Addr then
@@ -304,7 +305,9 @@ is
       -- Netif_MAC --
       ---------------
 
-      function Netif_MAC return AIP.Ethernet_Address is
+      function Netif_MAC return AIP.Ethernet_Address
+         --# global in Netif_MAC_Addr_Ptr;
+      is
          --# hide Netif_MAC;
          Result : Ethernet_Address;
          for Result'Address use Netif_MAC_Addr_Ptr;
@@ -339,7 +342,7 @@ is
          Err := AIP.ERR_USE;
       end if;
 
-      if AIP.No (ERR) then
+      if AIP.No (Err) then
          Local := Ifa /= IPaddrs.IP_ADDR_ANY
                     and then Ifa = ARPH.ARPH_Dst_Ip_Address (Ahdr);
 
@@ -352,41 +355,42 @@ is
             IP_Address  => ARPH.ARPH_Src_IP_Address (Ahdr),
             Allocate    => Local,
             Err         => Err);
-      end if;
 
-      if AIP.No (Err) then
-         case ARPH.ARPH_Operation (Ahdr) is
-            when ARPH.ARP_Op_Request =>
-               if Local then
-                  --  Send ARP reply, reusing original buffer
+         if AIP.No (Err) then
+            case ARPH.ARPH_Operation (Ahdr) is
+               when ARPH.ARP_Op_Request =>
+                  if Local then
+                     --  Send ARP reply, reusing original buffer
 
-                  EtherH.Set_EtherH_Dst_MAC_Address (Ehdr,
-                    EtherH.EtherH_Src_MAC_Address (Ehdr));
-                  EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Netif_MAC);
+                     EtherH.Set_EtherH_Dst_MAC_Address (Ehdr,
+                       EtherH.EtherH_Src_MAC_Address (Ehdr));
+                     EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Netif_MAC);
 
-                  ARPH.Set_ARPH_Operation (Ahdr, ARPH.ARP_Op_Reply);
+                     ARPH.Set_ARPH_Operation (Ahdr, ARPH.ARP_Op_Reply);
 
-                  ARPH.Set_ARPH_Dst_Eth_Address (Ahdr,
-                    ARPH.ARPH_Src_Eth_Address (Ahdr));
-                  ARPH.Set_ARPH_Dst_IP_Address (Ahdr,
-                    ARPH.ARPH_Src_IP_Address  (Ahdr));
+                     ARPH.Set_ARPH_Dst_Eth_Address (Ahdr,
+                       ARPH.ARPH_Src_Eth_Address (Ahdr));
+                     ARPH.Set_ARPH_Dst_IP_Address (Ahdr,
+                       ARPH.ARPH_Src_IP_Address  (Ahdr));
 
-                  ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
-                  ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
+                     ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
+                     ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
-                  NIF.Link_Output (Nid, Buf, Err);
-               end if;
+                     NIF.Link_Output (Nid, Buf, Err);
 
-            when ARPH.ARP_Op_Reply =>
-               --  We updated the cache already, nothing more to do
+                  end if;
 
-               null;
+               when ARPH.ARP_Op_Reply =>
+                  --  We updated the cache already, nothing more to do
 
-            when others =>
-               --  Invalid ARP operation, discard
+                  null;
 
-               null;
-         end case;
+               when others =>
+                  --  Invalid ARP operation, discard
+
+                  null;
+            end case;
+         end if;
       end if;
 
       --  Free received packet
@@ -431,11 +435,9 @@ is
 
                --  If last attempt is old enough (also case of a newly
                --  created incomplete entry), send out ARP request.
-               --  Condition to be refined???
+               --  Should we do that always, or conditionalize???
 
-               if True then
-                  Send_Request (Nid, Dst_Address);
-               end if;
+               Send_Request (Nid, Dst_Address);
          end case;
       else
          --  Unable to find or allocate ARP entry, discard packet
@@ -499,6 +501,7 @@ is
       Buf   : Buffers.Buffer_Id)
    is
       pragma Unreferenced (Nid, Buf);
+      --# hide IP_Input;
    begin
       --  TBD???
       null;
