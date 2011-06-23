@@ -84,8 +84,9 @@ INCLUDES = -I$(ADA_INCLUDE_PATH) -I$(GCC_INCLUDE_PATH)/include   \
 .ads.o:
 	$(CC) -c $(ALL_ADAFLAGS) $<
 
+SPECIAL_OBJS:=s-oscons.o s-gearop.o
 GNAT_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnat.a))
-GNAT_ALIS:=$(GNAT_OBJS:.o=.ali)
+GNAT_ALIS:=$(GNAT_OBJS:.o=.ali) $(SPECIAL_OBJS:.o=.ali)
 GNAT_ALIS:=$(filter-out adadecode.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out adaint.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out argv.ali,$(GNAT_ALIS))
