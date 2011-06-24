@@ -35,22 +35,17 @@ package Configuration is
    Verbose      : aliased Boolean;
    --  True if -v switch is present. All executed commands are printed.
 
-   Report       : aliased Boolean;
-   --  True if --report switch is present. A message is printed for all VCs.
-   All_VCs      : aliased Boolean;
-   --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
-   --  gnat2why
-   Force        : aliased Boolean;
-   --  True if -f or --force is present. Recompile / reprove all units
+   Force      : aliased Boolean;
+   Report      : aliased Boolean;
+   --  True if -f is present. Force recompilation of all units
+   type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
+
+   Mode         : GP_Mode := GPM_Detect;
+   Mode_Input   : aliased GNAT.Strings.String_Access;
+   --  The mode of gnatprove, and the input variable for command line parsing
+   --  set by option --mode=
    No_Proof     : aliased Boolean;
    --  True if --no-proof switch is present. Do not call Alt-Ergo.
-   Alfa_Report  : aliased Boolean;
-   --  True if --alfa-report switch is present. Pass option "-gnatd.K" to
-   --  gnat2why.
-   Force_Alfa   : aliased Boolean;
-   --  True if --force-alfa switch is present. Issue errors on constructs not
-   --  in Alfa, and warnings on constructs not yet implemented in GNATprove.
-   --  Pass option "-gnatd.E" to gnat2why.
    Parallel     : aliased Integer;
    --  The number of parallel processes. Specified with -j.
    Timeout      : aliased Integer;

@@ -189,17 +189,17 @@ def gnatprove(opt=["-P", "test.gpr"]):
         for line in strlist:
             print line
 
-def prove(opt=[],steps=max_steps):
+def prove(opt=[],steps=max_steps, mode="check"):
     """Call gnatprove with standard options"""
     opt += ["--report", "-P", "test.gpr"]
     opt += ["--steps=%d"%(steps)]
+    opt += ["--mode=%s"%(mode)]
     opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
 def prove_all(opt=[],steps=max_steps):
     """Call gnatprove with standard options to prove all VCs"""
-    opt += ["--all-vcs"]
-    prove(opt,steps)
+    prove(opt,steps, "prove")
 
 def to_list(arg):
     """Convert to list

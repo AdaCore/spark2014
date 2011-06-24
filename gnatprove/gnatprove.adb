@@ -227,7 +227,6 @@ procedure Gnatprove is
       (Proj_Type : Project_Type;
        Obj_Path : File_Array)
    is
-      use Ada.Text_IO;
       Obj_Dir_File : Ada.Text_IO.File_Type;
       Obj_Dir_Fn   : constant String :=
          Ada.Directories.Compose
@@ -235,17 +234,19 @@ procedure Gnatprove is
              "gnatprove.alfad");
       Success      : aliased Boolean;
    begin
-      Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
+      Ada.Text_IO.Create (Obj_Dir_File, Ada.Text_IO.Out_File, Obj_Dir_Fn);
       for Index in Obj_Path'Range loop
-         Put_Line (Obj_Dir_File, Obj_Path (Index).Display_Full_Name);
+         Ada.Text_IO.Put_Line
+            (Obj_Dir_File,
+             Obj_Path (Index).Display_Full_Name);
       end loop;
-      Close (Obj_Dir_File);
+      Ada.Text_IO.Close (Obj_Dir_File);
       Call_Exit_On_Failure
         (Command   => "alfa_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
       GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
-      if Alfa_Report then
+      if Mode = GPM_Detect then
          Cat (Alfa_Report_File);
       end if;
    end Generate_Alfa_Report;
@@ -436,13 +437,13 @@ procedure Gnatprove is
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
-      if not All_VCs then
+      if Mode /= GPM_Prove then
          Args.Append ("-gnatd.G");
       end if;
-      if Alfa_Report then
+      if Mode = GPM_Detect then
          Args.Append ("-gnatd.K");
       end if;
-      if Force_Alfa then
+      if Mode = GPM_Force then
          Args.Append ("-gnatd.E");
       end if;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
@@ -464,7 +465,7 @@ begin
       --  single object directory.
       --  Here we check that this is the case, and fail gracefully if not.
 
-      if not Alfa_Report and then Obj_Path'Length > 1 then
+      if not (Mode = GPM_Detect) and then Obj_Path'Length > 1 then
          Abort_With_Message
             ("There is more than one object directory, aborting.");
       end if;
@@ -474,7 +475,7 @@ begin
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
       Generate_Alfa_Report (Proj_Type, Obj_Path);
-      if Alfa_Report then
+      if Mode = GPM_Detect then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
    end;

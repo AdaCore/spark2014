@@ -64,13 +64,14 @@ package body Configuration is
                      "-v", Long_Switch => "--verbose",
                      Help => "Output extra verbose information");
 
-      Define_Switch (Config, All_VCs'Access,
-                     Long_Switch => "--all-vcs",
-                     Help => "Activate generation of VCs for subprograms");
-
       Define_Switch (Config, Report'Access,
                      Long_Switch => "--report",
                      Help => "Print messages for all generated VCs");
+
+      Define_Switch (Config, Mode_Input'Access,
+                     Long_Switch => "--mode=",
+                     Help =>
+                       "Set the mode of GNATprove (Detect | Force | Check)");
 
       Define_Switch
          (Config,
@@ -78,19 +79,6 @@ package body Configuration is
           "-f",
           Long_Switch => "--force",
           Help => "Force recompilation / proving of all units and all VCs");
-
-      Define_Switch
-        (Config,
-         Alfa_Report'Access,
-         Long_Switch => "--alfa-report",
-         Help => "Disable generation of VCs, only output Alfa information");
-
-      Define_Switch
-        (Config,
-         Force_Alfa'Access,
-         Long_Switch => "--force-alfa",
-         Help => "Output errors on non-Alfa constructs, "
-           & "and warnings on unimplemented ones");
 
       Define_Switch
         (Config,
@@ -118,6 +106,17 @@ package body Configuration is
                      Help => "The name of the project file");
 
       Getopt (Config);
+      if Mode_Input.all = "detect" then
+         Mode := GPM_Detect;
+      elsif Mode_Input.all = "force" then
+         Mode := GPM_Force;
+      elsif Mode_Input.all = "check" then
+         Mode := GPM_Check;
+      elsif Mode_Input.all = "prove" then
+         Mode := GPM_Prove;
+      else
+         raise Invalid_Switch;
+      end if;
       if Project_File.all = "" then
          Abort_With_Message ("No project file given, aborting.");
       end if;
