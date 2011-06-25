@@ -1,0 +1,15 @@
+project Stacks is
+
+   for Main use ("main.adb");
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnat12", "-gnato", "-gnata");
+   end Compiler;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-s");
+   end Builder;
+
+end Stacks;
+
