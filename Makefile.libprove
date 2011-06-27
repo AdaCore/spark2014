@@ -86,6 +86,7 @@ INCLUDES = -I$(ADA_INCLUDE_PATH) -I$(GCC_INCLUDE_PATH)/include   \
 
 SPECIAL_OBJS:=s-oscons.o s-gearop.o
 GNAT_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnat.a))
+GNARL_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnarl.a))
 GNAT_ALIS:=$(GNAT_OBJS:.o=.ali) $(SPECIAL_OBJS:.o=.ali)
 GNAT_ALIS:=$(filter-out adadecode.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out adaint.ali,$(GNAT_ALIS))
@@ -112,17 +113,19 @@ GNAT_ALIS:=$(filter-out mkdir.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out socket.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out targext.ali,$(GNAT_ALIS))
 GNAT_ALIS:=$(filter-out raise-gcc.ali,$(GNAT_ALIS))
-GNAT_WHYPACK:=$(GNAT_ALIS:.ali=__package.mlw)
 GNARL_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnarl.a))
-OBJS := $(GNAT_OBJS) $(GNARL_OBJS)
+GNARL_ALIS:=$(GNARL_OBJS:.o=.ali)
+GNARL_WHYPACK:=$(GNARL_ALIS:.ali=__package.mlw)
+GNAT_WHYPACK:=$(GNAT_ALIS:.ali=__package.mlw)
+ALL_ALIS:= $(GNAT_ALIS) $(GNARL_ALIS)
+ALL_WHYPACK:= $(GNAT_WHYPACK) $(GNARL_WHYPACK)
 
+all: $(ALL_ALIS) $(ALL_WHYPACK)
 
-all: $(GNAT_ALIS) $(GNAT_WHYPACK)
-
-%__package.mlw: %.adb $(GNAT_ALIS)
+%__package.mlw: %.adb $(ALL_ALIS)
 	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg -I. $<
 
-%__package.mlw: %.ads $(GNAT_ALIS)
+%__package.mlw: %.ads $(ALL_ALIS)
 	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg -I. $<
 
 %.ali: %.adb
@@ -130,41 +133,3 @@ all: $(GNAT_ALIS) $(GNAT_WHYPACK)
 
 %.ali: %.ads
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<
-
-
-libgnat.a: $(GNAT_OBJS)
-	$(AR) r libgnat.a $(GNAT_OBJS)
-
-libgnarl.a: $(GNARL_OBJS)
-	$(AR) r libgnarl.a $(GNARL_OBJS)
-
-# Special flags - see gcc-interface/Makefile.in for the template
-
-s-traceb.o: s-traceb.adb s-traceb.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) \
-	      $(NO_SIBLING_ADAFLAGS) $(ADA_INCLUDES) $<
-
-s-tasdeb.o: s-tasdeb.adb  s-tasdeb.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
-
-s-vaflop.o: s-vaflop.adb s-vaflop.ads
-	$(CC) -c -O $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
-
-a-except.o: a-except.adb a-except.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) \
-	      $(NO_REORDER_ADAFLAGS) -O1 -fno-inline $<
-
-s-excdeb.o: s-excdeb.adb s-excdeb.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) -O0 $<
-
-s-assert.o: s-assert.adb s-assert.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
-
-a-tags.o: a-tags.adb a-tags.ads
-	$(CC) -c $(ALL_ADAFLAGS) $(FORCE_DEBUG_ADAFLAGS) $<
-
-tracebak.o: tracebak.c tb-alvms.c tb-alvxw.c tb-gcc.c
-	$(CC) -c $(CFLAGS) $(GNATLIBCFLAGS) \
-	      $(ALL_CPPFLAGS) $(INCLUDES) -fno-omit-frame-pointer $<
-
-.PHONY: delete_objects
