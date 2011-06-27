@@ -43,7 +43,9 @@ STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
 
-all-nightly: gnat1why gnatprove stdlib install-stdlib
+all-nightly: gnat1why gnatprove
+
+nightly-stdlib: stdlib install-stdlib
 
 doc:
 	$(MAKE) -C docs/ug latexpdf
@@ -66,8 +68,7 @@ stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
 	cp Makefile.libprove $(STDLIB_TMP)
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
-           GNAT2WHY=../install/bin/gnat2why
+	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
 
 install-stdlib:
 	mkdir -p $(LIB)
