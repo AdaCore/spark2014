@@ -276,8 +276,14 @@ package body Alfa.Definition is
    function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the spec of subprogram Id is in Alfa
 
-   function Type_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether a type Id is in Alfa
+   function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean;
+   --  Return whether a type Ent is in Alfa. Contrary to other .._Is_In_Alfa
+   --  functions, it takes an entity rather than a unique entity. Indeed,
+   --  private types are always in Alfa, even when the corresponding full type
+   --  is not in Alfa. This corresponds to cases where a client of the package,
+   --  which has only view over the private declaration, may still be in Alfa,
+   --  while an operation in the package over non-Alfa fields may not be in
+   --  Alfa.
 
    procedure Generate_Output_In_Out_Alfa (Id : Unique_Entity_Id);
    --  Produce a line in output file for subprogram Id, following syntax:
@@ -568,8 +574,16 @@ package body Alfa.Definition is
    function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
      (Id_Set.Contains (Specs_In_Alfa, +Id));
 
-   function Type_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
+   function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean is
+      Id : constant Unique_Entity_Id := Unique (Ent);
+
    begin
+      if Ekind (Ent) in Private_Kind
+        and then Ekind (Ent) not in Record_Kind
+      then
+         return True;
+      end if;
+
       if Scope (+Id) = Standard_Standard then
          return Standard_In_Alfa.Contains (+Id);
       end if;
@@ -581,7 +595,7 @@ package body Alfa.Definition is
          Mark (+Id);
       end if;
 
-      return (Id_Set.Contains (Types_In_Alfa, +Id));
+      return Id_Set.Contains (Types_In_Alfa, +Id);
    end Type_Is_In_Alfa;
 
    procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
@@ -1643,7 +1657,7 @@ package body Alfa.Definition is
                end if;
 
             when Type_Kind =>
-               if not Type_Is_In_Alfa (E) then
+               if not Type_Is_In_Alfa (Entity (N)) then
                   Mark_Non_Alfa ("type", N, From => Unique (Entity (N)));
                end if;
 
@@ -1877,7 +1891,7 @@ package body Alfa.Definition is
       Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
       Def  : constant Node_Id          := Object_Definition (N);
       Expr : constant Node_Id          := Expression (N);
-      T    : constant Unique_Entity_Id := Unique (Etype (+Id));
+      T    : constant Entity_Id        := Etype (+Id);
 
    begin
       --  Ignore exact value of deferred constants, so that these can be
@@ -1898,7 +1912,7 @@ package body Alfa.Definition is
 
       Push_Scope (Id);
       if not Type_Is_In_Alfa (T) then
-         Mark_Non_Alfa ("type", Def, From => T);
+         Mark_Non_Alfa ("type", Def, From => Unique (T));
       end if;
 
       if Aliased_Present (N) then
@@ -2203,7 +2217,7 @@ package body Alfa.Definition is
       begin
          while Present (Param) loop
             if Nkind (Parent (Param)) = N_Parameter_Specification then
-               if Type_Is_In_Alfa (Unique (Etype (Param))) then
+               if Type_Is_In_Alfa (Etype (Param)) then
                   Decls_In_Body (Alfa_Object).Append (Parent (Param));
                else
                   Decls_In_Body (Non_Alfa_Type).Append (Parent (Param));
@@ -2305,7 +2319,7 @@ package body Alfa.Definition is
 
             --  The parameter is in Alfa if-and-only-if its type is in Alfa
 
-            if not Type_Is_In_Alfa (Unique (Etype (Formal))) then
+            if not Type_Is_In_Alfa (Etype (Formal)) then
                Mark_Non_Alfa_Declaration
                  ("type of formal", Param_Spec,
                   From => Unique (Etype (Formal)));
@@ -2319,7 +2333,7 @@ package body Alfa.Definition is
       --  subprogram is not in Alfa.
 
       if Nkind (N) = N_Function_Specification
-        and then not Type_Is_In_Alfa (Unique (Etype (Id)))
+        and then not Type_Is_In_Alfa (Etype (Id))
       then
          Mark_Non_Alfa
            ("return type", Result_Definition (N),
@@ -2332,21 +2346,21 @@ package body Alfa.Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T       : Unique_Entity_Id;
+      T       : Entity_Id;
       Cstr    : Node_Id;
 
    begin
       if Nkind (N) = N_Subtype_Indication then
-         T := Unique (Etype (Subtype_Mark (N)));
+         T := Etype (Subtype_Mark (N));
       else
-         T := Unique (Etype (N));
+         T := Etype (N);
       end if;
 
       --  Check that the base type is in Alfa
 
       if not Type_Is_In_Alfa (T) then
-         Mark_Non_Alfa ("base type", N, From => T);
-      elsif Is_Array_Type (+T) then
+         Mark_Non_Alfa ("base type", N, From => Unique (T));
+      elsif Is_Array_Type (T) then
          Mark_Non_Alfa ("array subtype", N, NYI_Array_Subtype);
       end if;
 
@@ -2367,7 +2381,7 @@ package body Alfa.Definition is
 
                      case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if not Type_Is_In_Alfa (Unique (Entity (Cstr))) then
+                        if not Type_Is_In_Alfa (Entity (Cstr)) then
                            Mark_Non_Alfa
                              ("index type", N, From => Unique (Entity (Cstr)));
                         end if;
@@ -2450,7 +2464,7 @@ package body Alfa.Definition is
                --  Check that all index types are in Alfa
 
                while Present (Index) loop
-                  if not Type_Is_In_Alfa (Unique (Etype (Index))) then
+                  if not Type_Is_In_Alfa (Etype (Index)) then
                      Mark_Non_Alfa
                        ("index type", +Id, From => Unique (Etype (Index)));
                   end if;
@@ -2465,7 +2479,7 @@ package body Alfa.Definition is
 
                --  Check that component type is in Alfa
 
-               if not Type_Is_In_Alfa (Unique (Component_Typ)) then
+               if not Type_Is_In_Alfa (Component_Typ) then
                   Mark_Non_Alfa
                     ("component type", +Id,
                      From => Unique (Component_Typ));
