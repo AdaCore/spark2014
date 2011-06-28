@@ -45,6 +45,8 @@ with Table;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Alfa.Common; use Alfa.Common;
 
+with Alfa_Violations; use all type Alfa_Violations.Vkind;
+
 package body Alfa.Definition is
 
    Output_File : Ada.Text_IO.File_Type;
@@ -83,44 +85,6 @@ package body Alfa.Definition is
       S_Wide_Wide_String    => False,
 
       S_Duration            => False);
-
-   Violation_Msg : constant array (Violation_Kind) of Unbounded_String :=
-     (
-      NYI_Aggregate        => To_Unbounded_String ("aggregate"),
-      NYI_Arith_Operation  => To_Unbounded_String ("arithmetic operation"),
-      NYI_Array_Subtype    => To_Unbounded_String ("array subtype"),
-      NYI_Attribute        => To_Unbounded_String ("attribute"),
-      NYI_Block_Statement  => To_Unbounded_String ("block statement"),
-      NYI_Concatenation    => To_Unbounded_String ("concatenation"),
-      NYI_Conversion       => To_Unbounded_String ("conversion"),
-      NYI_Container        => To_Unbounded_String ("container"),
-      NYI_Discriminant     => To_Unbounded_String ("discriminant"),
-      NYI_Dispatch         => To_Unbounded_String ("dispatch"),
-      NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),
-      NYI_Float            => To_Unbounded_String ("float"),
-      NYI_Generic          => To_Unbounded_String ("generic"),
-      NYI_Impure_Function  => To_Unbounded_String ("impure function"),
-      NYI_Logic_Function   => To_Unbounded_String ("logic function"),
-      NYI_Modular          => To_Unbounded_String ("modular"),
-      NYI_Non_Static_Range => To_Unbounded_String ("non static range"),
-      NYI_Old_Attribute    => To_Unbounded_String ("'Old attribute"),
-      NYI_Pragma           => To_Unbounded_String ("pragma"),
-      NYI_Qualification    => To_Unbounded_String ("qualification"),
-      NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
-      NYI_Slice            => To_Unbounded_String ("slice"),
-      NYI_String_Literal   => To_Unbounded_String ("string literal"),
-      NYI_Tagged           => To_Unbounded_String ("tagged type"),
-      NYI_XXX              => To_Unbounded_String ("not yet implemented"),
-
-      NIR_Access           => To_Unbounded_String ("access"),
-      NIR_Ambiguous_Expr   => To_Unbounded_String ("ambiguous expr"),
-      NIR_Dealloc          => To_Unbounded_String ("deallocation"),
-      NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
-      NIR_Exception        => To_Unbounded_String ("exception"),
-      NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
-      NIR_Tasking          => To_Unbounded_String ("tasking"),
-      NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
-      NIR_XXX              => To_Unbounded_String ("unsupported construct"));
 
    ------------------
    -- Global State --
@@ -188,7 +152,7 @@ package body Alfa.Definition is
    -- Alfa Marks --
    ----------------
 
-   type Violations is array (Violation_Kind) of Id_Set.Set;
+   type Violations is array (Alfa_Violations.Vkind) of Id_Set.Set;
 
    Spec_Violations : Violations;
    --  Sets of entities which violate Alfa restrictions, per violation kind
@@ -217,7 +181,7 @@ package body Alfa.Definition is
 
    function Complete_Error_Msg
      (Msg : String;
-      V   : Violation_Kind) return String;
+      V   : Alfa_Violations.Vkind) return String;
    --  Generate an error message for Not_In_Roadmap violations, and a warning
    --  message for Not_Yet_Implemented violations.
 
@@ -388,7 +352,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind;
+      V      : Alfa_Violations.Vkind;
       Silent : Boolean        := False);
    --  Mark the current subprogram containing node N (if any) as not being in
    --  Alfa. If the corresponding scope is a spec, then mark the subprogram
@@ -412,13 +376,13 @@ package body Alfa.Definition is
      (Msg  : String;
       N    : Node_Id;
       From : Unique_Entity_Id);
-   --  Similar to Mark_Non_Alfa taking a Violation_Kind as parameter, except
-   --  here violations are inherited from entity From.
+   --  Similar to Mark_Non_Alfa taking a Alfa_Violations.Vkind as parameter,
+   --  except here violations are inherited from entity From.
 
    procedure Mark_Non_Alfa_Declaration
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind;
+      V      : Alfa_Violations.Vkind;
       Silent : Boolean        := False);
    --  Mark the declaration N as not being in Alfa, as well as the enclosing
    --  subprogram if any. If Silent is True, then never issue an error message,
@@ -428,7 +392,7 @@ package body Alfa.Definition is
      (Msg  : String;
       N    : Node_Id;
       From : Unique_Entity_Id);
-   --  Similar to Mark_Non_Alfa_Declaration taking a Violation_Kind as
+   --  Similar to Mark_Non_Alfa_Declaration taking a Alfa_Violations.Vkind as
    --  parameter, except here violations are inherited from entity From.
 
    generic
@@ -621,12 +585,12 @@ package body Alfa.Definition is
 
    function Complete_Error_Msg
      (Msg : String;
-      V   : Violation_Kind) return String is
+      V   : Alfa_Violations.Vkind) return String is
    begin
       case V is
-         when Not_In_Roadmap =>
+         when Alfa_Violations.Not_In_Roadmap =>
             return Msg & " is not in Alfa";
-         when Not_Yet_Implemented =>
+         when Alfa_Violations.Not_Yet_Implemented =>
             return "!" & Msg & " is not yet implemented in Alfa";
       end case;
    end Complete_Error_Msg;
@@ -706,15 +670,15 @@ package body Alfa.Definition is
       ----------------------
 
       function Has_Violation
-        (V : Violation_Kind;
+        (V : Alfa_Violations.Vkind;
          E : Unique_Entity_Id) return Boolean
       is
         (Body_Violations (V).Contains (+E));
 
       function Get_Violation_Msg
-        (V : Violation_Kind) return Unbounded_String
+        (V : Alfa_Violations.Vkind) return Unbounded_String
       is
-        (Violation_Msg (V));
+        (Alfa_Violations.Violation_Msg (V));
 
       function Location return String is
         (Name_String (Chars (+Id)) & ' ' & Build_Location_String (Sloc (+Id)));
@@ -753,10 +717,11 @@ package body Alfa.Definition is
       --------------------------------------
 
       function Collect_NYI_Msg_Violations is
-        new Collect_Msg_Violations (Not_Yet_Implemented, '[', ']');
+        new Collect_Msg_Violations
+          (Alfa_Violations.Not_Yet_Implemented, '[', ']');
 
       function Collect_NIR_Msg_Violations is
-        new Collect_Msg_Violations (Not_In_Roadmap, '(', ')');
+        new Collect_Msg_Violations (Alfa_Violations.Not_In_Roadmap, '(', ')');
 
       ------------
       -- Suffix --
@@ -796,7 +761,7 @@ package body Alfa.Definition is
       if Comes_From_Source (+Id) then
          if Body_Is_In_Alfa (Id) then
             C1 := '+';
-         elsif (for some V in Not_In_Roadmap =>
+         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
                    Body_Violations (V).Contains (+Id)) then
             C1 := '-';
          else
@@ -805,7 +770,7 @@ package body Alfa.Definition is
 
          if Spec_Is_In_Alfa (Id) then
             C2 := '+';
-         elsif (for some V in Not_In_Roadmap =>
+         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
                    Spec_Violations (V).Contains (+Id)) then
             C2 := '-';
          else
@@ -916,7 +881,7 @@ package body Alfa.Definition is
          --  In the first case, inherit the reason for not being in Alfa.
 
          if (for some S of Spec_Violations => S.Contains (+From)) then
-            for V in Violation_Kind loop
+            for V in Alfa_Violations.Vkind loop
                if Spec_Violations (V).Contains (+From) then
                   A (V).Include (+To);
                end if;
@@ -1769,7 +1734,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind;
+      V      : Alfa_Violations.Vkind;
       Silent : Boolean        := False)
    is
       procedure Mark_Body_Violations (E : Unique_Entity_Id);
@@ -1833,19 +1798,19 @@ package body Alfa.Definition is
          then
             Error_Msg_F (Complete_Error_Msg (Msg, NIR_XXX), N);
 
-         elsif (for some V in Not_In_Roadmap =>
+         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
                   Spec_Violations (V).Contains (+From))
          then
-            for V in Not_In_Roadmap loop
+            for V in Alfa_Violations.Not_In_Roadmap loop
                if Spec_Violations (V).Contains (+From) then
                   Error_Msg_F (Complete_Error_Msg (Msg, V), N);
                end if;
             end loop;
 
-         elsif (for some V in Not_Yet_Implemented =>
+         elsif (for some V in Alfa_Violations.Not_Yet_Implemented =>
                   Spec_Violations (V).Contains (+From))
          then
-            for V in Not_Yet_Implemented loop
+            for V in Alfa_Violations.Not_Yet_Implemented loop
                if Spec_Violations (V).Contains (+From) then
                   Error_Msg_F (Complete_Error_Msg (Msg, V), N);
                end if;
@@ -1866,7 +1831,7 @@ package body Alfa.Definition is
    procedure Mark_Non_Alfa_Declaration
      (Msg    : String;
       N      : Node_Id;
-      V      : Violation_Kind;
+      V      : Alfa_Violations.Vkind;
       Silent : Boolean        := False) is
    begin
       Spec_Violations (V).Include (Unique_Defining_Entity (N));
