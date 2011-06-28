@@ -106,7 +106,7 @@ package body Configuration is
                      Help => "The name of the project file");
 
       Getopt (Config);
-      if Mode_Input.all = "detect" then
+      if Mode_Input.all = "detect" or else Mode_Input.all = "" then
          Mode := GPM_Detect;
       elsif Mode_Input.all = "force" then
          Mode := GPM_Force;
