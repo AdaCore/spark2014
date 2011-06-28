@@ -229,7 +229,7 @@ procedure Alfa_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate (Path => "*.alfa");
+      Iterate (Path => '*' & Configuration.Alfa_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>
@@ -301,33 +301,35 @@ procedure Alfa_Report is
            File_Not_Alfa_Cnt.Element (File_Names (F2));
       end Greater_Not_Alfa_Count;
 
-         ----------------------
-         -- Print_File_Count --
-         ----------------------
+      ----------------------
+      -- Print_File_Count --
+      ----------------------
 
-         procedure Print_File_Count
-           (M, M_Complement : Filename_Map.Map; R : File_Ranking)
-         is
-            use Filename_Map;
-         begin
-            for J in R'Range loop
-               declare
-                  F_Name  : constant Unbounded_String := File_Names (R (J));
-                  F_Cnt   : constant Natural := M.Element (F_Name);
-                  Lab     : constant String := ' ' & To_String (F_Name);
-                  Tot_Cnt : constant Natural :=
-                              F_Cnt + M_Complement.Element (F_Name);
-               begin
-                  if F_Cnt > 0 then
-                     Print_Statistics (Handle,
-                                       Lab,
-                                       Label_Length,
-                                       F_Cnt,
-                                       Tot_Cnt);
-                  end if;
-               end;
-            end loop;
-         end Print_File_Count;
+      procedure Print_File_Count
+        (M, M_Complement : Filename_Map.Map; R : File_Ranking)
+      is
+         use Filename_Map;
+      begin
+         for J in R'Range loop
+            declare
+               F_Name  : constant Unbounded_String := File_Names (R (J));
+               F_Cnt   : constant Natural := M.Element (F_Name);
+               Lab     : constant String :=
+                           ' ' & GNAT.Directory_Operations.Base_Name
+                             (To_String (F_Name), Configuration.Alfa_Suffix);
+               Tot_Cnt : constant Natural :=
+                           F_Cnt + M_Complement.Element (F_Name);
+            begin
+               if F_Cnt > 0 then
+                  Print_Statistics (Handle,
+                                    Lab,
+                                    Label_Length,
+                                    F_Cnt,
+                                    Tot_Cnt);
+               end if;
+            end;
+         end loop;
+      end Print_File_Count;
 
       ----------------------
       -- Print_Violations --

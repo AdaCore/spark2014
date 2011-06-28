@@ -90,6 +90,9 @@ package Configuration is
    Alfa_Report_File : constant String := "gnatprove.out";
    --  The name of the file in which the Alfa report is generated
 
+   Alfa_Suffix    : constant String := ".alfa";
+   --  Suffix for raw Alfa information files
+
    procedure Init (Tree : out Project_Tree);
    --  Initialize the project tree.
 
