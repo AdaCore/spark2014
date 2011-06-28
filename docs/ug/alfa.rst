@@ -283,7 +283,7 @@ Project Statistics
 ------------------
 
 Based on the generated :ref:`summary file` for each source unit, GNATprove
-generates global project statistics in file ``statistics.txt``. The statistics
+generates global project statistics in file ``gnatprove.out``. The statistics
 detail:
 
 * what percentage and number of subprograms are in Alfa

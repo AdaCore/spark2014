@@ -45,7 +45,7 @@ error messages for unproved VCs, and information messages for proved VCs.
 GNATprove generates files of interest to users in sub-directories called
 "gnatprove" of object directories for the project:
 
- * ``statistics.txt`` contains the :ref:`project statistics`
+ * ``gnatprove.out`` contains the :ref:`project statistics`
  * ``<name>.alfa`` is the :ref:`summary file` for the package called ``<name>``
 
 Integration in GPS
