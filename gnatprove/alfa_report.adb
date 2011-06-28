@@ -388,16 +388,16 @@ procedure Alfa_Report is
       --  global statistics
 
       Create (Handle, Out_File, Configuration.Alfa_Report_File);
-      Print_Statistics (Handle, "Subprograms in Alfa       ", Label_Length,
+      Print_Statistics (Handle, "Subprograms in Alfa", Label_Length,
                         Already_Alfa_Cnt + Not_Yet_Alfa_Cnt,
                         Total_Cnt);
-      Print_Statistics (Handle, "  ... already implemented ", Label_Length,
+      Print_Statistics (Handle, "  ... already supported", Label_Length,
                         Already_Alfa_Cnt,
                         Total_Cnt);
-      Print_Statistics (Handle, "  ... not yet implemented ", Label_Length,
+      Print_Statistics (Handle, "  ... not yet supported", Label_Length,
                         Not_Yet_Alfa_Cnt,
                         Total_Cnt);
-      Print_Statistics (Handle, "Subprograms not in Alfa   ", Label_Length,
+      Print_Statistics (Handle, "Subprograms not in Alfa", Label_Length,
                         Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt,
                         Total_Cnt);
 
