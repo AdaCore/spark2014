@@ -36,7 +36,6 @@ package Configuration is
    --  True if -v switch is present. All executed commands are printed.
 
    Force      : aliased Boolean;
-   Report      : aliased Boolean;
    --  True if -f is present. Force recompilation of all units
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
 
@@ -44,6 +43,10 @@ package Configuration is
    Mode_Input   : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
+   Report_Input   : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --report=
+   Report      : aliased Boolean;
+   --  True is --report=all is present. Give messages even for proved VCs
    No_Proof     : aliased Boolean;
    --  True if --no-proof switch is present. Do not call Alt-Ergo.
    Parallel     : aliased Integer;

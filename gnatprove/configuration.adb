@@ -64,14 +64,14 @@ package body Configuration is
                      "-v", Long_Switch => "--verbose",
                      Help => "Output extra verbose information");
 
-      Define_Switch (Config, Report'Access,
-                     Long_Switch => "--report",
-                     Help => "Print messages for all generated VCs");
-
       Define_Switch (Config, Mode_Input'Access,
                      Long_Switch => "--mode=",
                      Help =>
-                       "Set the mode of GNATprove (Detect | Force | Check)");
+                       "Set the mode of GNATprove (detect | force | check)");
+
+      Define_Switch (Config, Report_Input'Access,
+                     Long_Switch => "--report=",
+                     Help => "Set the report mode of GNATprove (all | fail)");
 
       Define_Switch
          (Config,
@@ -115,7 +115,15 @@ package body Configuration is
       elsif Mode_Input.all = "prove" then
          Mode := GPM_Prove;
       else
-         raise Invalid_Switch;
+         Abort_With_Message ("mode should be one of (detect | force | check)");
+      end if;
+
+      if Report_Input.all = "fail" or else Report_Input.all = "" then
+         Report := False;
+      elsif Report_Input.all = "all" then
+         Report := True;
+      else
+         Abort_With_Message ("report should be one of (all | fail)");
       end if;
       if Project_File.all = "" then
          Abort_With_Message ("No project file given, aborting.");
