@@ -23,13 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;             use Ada.Containers;
+with Ada.Containers.Hashed_Maps;
+with Ada.Strings.Hash;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Characters.Handling;             use Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Directories;
 with Ada.Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;               use Ada.Strings.Unbounded;
 
 with Call;                                use Call;
 with GNAT.Directory_Operations.Iteration;
@@ -42,13 +45,27 @@ with Configuration;
 procedure Alfa_Report is
 
    Total_Cnt        : Natural := 0;
-   Alfa_Cnt         : Natural := 0;
+   Already_Alfa_Cnt : Natural := 0;
    Not_Yet_Alfa_Cnt : Natural := 0;
 
    Label_Length : constant := 26;
 
    type Violation_Count is array (Alfa_Violations.Vkind) of Natural;
    Violation_Cnt : Violation_Count := (others => 0);
+
+   function Filename_Hash (N : Unbounded_String) return Hash_Type is
+      (Ada.Strings.Hash (To_String (N)));
+
+   package Filename_Map is new Hashed_Maps
+     (Key_Type        => Unbounded_String,
+      Element_Type    => Natural,
+      Hash            => Filename_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Total_Files       : Natural := 0;
+   File_Alfa_Cnt     : Filename_Map.Map;
+   File_Not_Alfa_Cnt : Filename_Map.Map;
 
    procedure Handle_Alfa_File (Fn : String);
    --  Parse and extract all information from a single Alfa file.
@@ -79,8 +96,21 @@ procedure Alfa_Report is
    procedure Handle_Alfa_File (Fn : String)
    is
       procedure Iterate_Alfa_Lines is new For_Line_In_File (Handle_Alfa_Line);
+
+      Cur_Alfa_Cnt : constant Natural := Already_Alfa_Cnt + Not_Yet_Alfa_Cnt;
+
    begin
       Iterate_Alfa_Lines (Fn);
+
+      --  Update counts for files
+
+      Total_Files := Total_Files + 1;
+      File_Alfa_Cnt.Insert
+        (To_Unbounded_String (Fn),
+         Already_Alfa_Cnt + Not_Yet_Alfa_Cnt - Cur_Alfa_Cnt);
+      File_Not_Alfa_Cnt.Insert
+        (To_Unbounded_String (Fn),
+         Total_Cnt - Already_Alfa_Cnt + Not_Yet_Alfa_Cnt);
    end Handle_Alfa_File;
 
    ----------------------
@@ -137,13 +167,17 @@ procedure Alfa_Report is
          return;
       end if;
 
+      --  Update global counts
+
       Cur := Line'First;
       Total_Cnt := Total_Cnt + 1;
       if Line (Cur) = '+' then
-         Alfa_Cnt := Alfa_Cnt + 1;
+         Already_Alfa_Cnt := Already_Alfa_Cnt + 1;
       elsif Line (Cur) = '*' then
          Not_Yet_Alfa_Cnt := Not_Yet_Alfa_Cnt + 1;
       end if;
+
+      --  Update counts for violations
 
       while Cur <= Line'Last loop
          case Line (Cur) is
@@ -216,24 +250,88 @@ procedure Alfa_Report is
         array (Alfa_Violations.Vkind range <>) of Alfa_Violations.Vkind;
       Violation_Rank : Violation_Ranking (Alfa_Violations.Vkind);
 
+      File_Names : array (1 .. Total_Files) of Unbounded_String;
+      type File_Ranking is array (Positive range <>) of Positive;
+      File_Alfa_Rank     : File_Ranking (1 .. Total_Files);
+      File_Not_Alfa_Rank : File_Ranking (1 .. Total_Files);
+
+      -----------------------
+      -- Local Subprograms --
+      -----------------------
+
       function Greater_Count (V1, V2 : Alfa_Violations.Vkind) return Boolean;
+
+      function Greater_Alfa_Count (F1, F2 : Positive) return Boolean;
+      function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean;
+
+      procedure Print_File_Count
+        (M, M_Complement : Filename_Map.Map; R : File_Ranking);
+
+      generic
+         with function Violation_Filter
+           (V : Alfa_Violations.Vkind) return Boolean;
+      procedure Print_Violations;
+
+      -------------------
+      -- Greater_Count --
+      -------------------
 
       function Greater_Count (V1, V2 : Alfa_Violations.Vkind) return Boolean is
       begin
          return Violation_Cnt (V1) > Violation_Cnt (V2);
       end Greater_Count;
 
-      procedure Sort_Violations is new
-        Ada.Containers.Generic_Array_Sort
-          (Index_Type   => Alfa_Violations.Vkind,
-           Element_Type => Alfa_Violations.Vkind,
-           Array_Type   => Violation_Ranking,
-           "<"          => Greater_Count);
+      ------------------------
+      -- Greater_Alfa_Count --
+      ------------------------
 
-      generic
-         with function Violation_Filter
-           (V : Alfa_Violations.Vkind) return Boolean;
-      procedure Print_Violations;
+      function Greater_Alfa_Count (F1, F2 : Positive) return Boolean is
+      begin
+         return File_Alfa_Cnt.Element (File_Names (F1)) >
+           File_Alfa_Cnt.Element (File_Names (F2));
+      end Greater_Alfa_Count;
+
+      ----------------------------
+      -- Greater_Not_Alfa_Count --
+      ----------------------------
+
+      function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean is
+      begin
+         return File_Alfa_Cnt.Element (File_Names (F1)) >
+           File_Not_Alfa_Cnt.Element (File_Names (F2));
+      end Greater_Not_Alfa_Count;
+
+         ----------------------
+         -- Print_File_Count --
+         ----------------------
+
+         procedure Print_File_Count
+           (M, M_Complement : Filename_Map.Map; R : File_Ranking)
+         is
+            use Filename_Map;
+         begin
+            for J in R'Range loop
+               declare
+                  F_Name  : constant Unbounded_String := File_Names (R (J));
+                  F_Cnt   : constant Natural := M.Element (F_Name);
+                  Lab     : constant String := ' ' & To_String (F_Name);
+                  Tot_Cnt : constant Natural :=
+                              F_Cnt + M_Complement.Element (F_Name);
+               begin
+                  if F_Cnt > 0 then
+                     Print_Statistics (Handle,
+                                       Lab,
+                                       Label_Length,
+                                       F_Cnt,
+                                       Tot_Cnt);
+                  end if;
+               end;
+            end loop;
+         end Print_File_Count;
+
+      ----------------------
+      -- Print_Violations --
+      ----------------------
 
       procedure Print_Violations is
       begin
@@ -257,6 +355,27 @@ procedure Alfa_Report is
          end loop;
       end Print_Violations;
 
+      procedure Sort_Violations is new
+        Ada.Containers.Generic_Array_Sort
+          (Index_Type   => Alfa_Violations.Vkind,
+           Element_Type => Alfa_Violations.Vkind,
+           Array_Type   => Violation_Ranking,
+           "<"          => Greater_Count);
+
+      procedure Sort_Files_Alfa is new
+        Ada.Containers.Generic_Array_Sort
+          (Index_Type   => Positive,
+           Element_Type => Positive,
+           Array_Type   => File_Ranking,
+           "<"          => Greater_Alfa_Count);
+
+      procedure Sort_Files_Not_Alfa is new
+        Ada.Containers.Generic_Array_Sort
+          (Index_Type   => Positive,
+           Element_Type => Positive,
+           Array_Type   => File_Ranking,
+           "<"          => Greater_Not_Alfa_Count);
+
       procedure Print_NYI_Violations is new
         Print_Violations (Alfa_Violations.Is_Not_Yet_Implemented);
 
@@ -264,19 +383,23 @@ procedure Alfa_Report is
         Print_Violations (Alfa_Violations.Is_Not_In_Roadmap);
 
    begin
+      --  global statistics
+
       Create (Handle, Out_File, Configuration.Alfa_Report_File);
       Print_Statistics (Handle, "Subprograms in Alfa       ", Label_Length,
-                        Alfa_Cnt + Not_Yet_Alfa_Cnt,
+                        Already_Alfa_Cnt + Not_Yet_Alfa_Cnt,
                         Total_Cnt);
       Print_Statistics (Handle, "  ... already implemented ", Label_Length,
-                        Alfa_Cnt,
+                        Already_Alfa_Cnt,
                         Total_Cnt);
       Print_Statistics (Handle, "  ... not yet implemented ", Label_Length,
                         Not_Yet_Alfa_Cnt,
                         Total_Cnt);
       Print_Statistics (Handle, "Subprograms not in Alfa   ", Label_Length,
-                        Total_Cnt - Alfa_Cnt - Not_Yet_Alfa_Cnt,
+                        Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt,
                         Total_Cnt);
+
+      --  statistics per violations
 
       for J in Alfa_Violations.Vkind loop
          Violation_Rank (J) := J;
@@ -294,6 +417,33 @@ procedure Alfa_Report is
                   " (possibly more than one reason):");
       Print_NIR_Violations;
 
+      --  statistics per file
+
+      declare
+         use Filename_Map;
+         C : Cursor;
+      begin
+         C := File_Alfa_Cnt.First;
+         for J in 1 .. Total_Files loop
+            File_Names (J)         := Key (C);
+            File_Alfa_Rank (J)     := J;
+            File_Not_Alfa_Rank (J) := J;
+            Next (C);
+         end loop;
+      end;
+
+      Sort_Files_Alfa (File_Alfa_Rank);
+      Sort_Files_Not_Alfa (File_Not_Alfa_Rank);
+
+      New_Line (Handle);
+      Put_Line (Handle,
+                "Units with the largest number of subprograms in Alfa:");
+      Print_File_Count (File_Alfa_Cnt, File_Not_Alfa_Cnt, File_Alfa_Rank);
+
+      New_Line (Handle);
+      Put_Line (Handle,
+                "Units with the largest number of subprograms not in Alfa:");
+      Print_File_Count (File_Not_Alfa_Cnt, File_Alfa_Cnt, File_Not_Alfa_Rank);
    end Print_Report;
 
    ----------------------

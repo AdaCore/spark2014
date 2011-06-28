@@ -134,9 +134,6 @@ package Alfa_Violations is
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
       NIR_XXX              => To_Unbounded_String ("unsupported construct"));
 
-   function Name_Equal (Left, Right : Unbounded_String) return Boolean is
-      (To_String (Left) = To_String (Right));
-
    function Name_Hash (N : Unbounded_String) return Hash_Type is
       (Ada.Strings.Hash (To_String (N)));
 
@@ -147,8 +144,6 @@ package Alfa_Violations is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   use Name_Map;
-
-   Violation_From_Msg : Map;
+   Violation_From_Msg : Name_Map.Map;
 
 end Alfa_Violations;
