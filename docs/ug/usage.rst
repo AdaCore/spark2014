@@ -10,15 +10,43 @@ Command-line Usage
 
 GNATprove is executed with the following command line::
 
-      gnatprove -P <project_file>.gpr
+   gnatprove -P <project_file>.gpr
 
 GNATprove accepts the following options::
 
-      --alfa-report    Disable generation of VCs, only output Alfa information
-      --report         Print messages for all generated VCs
-      --force-alfa     Output errors on non-Alfa constructs, and warnings on
-                       unimplemented ones
+   --mode=       Main mode
+       detect      Detect and output Alfa information (default)
+       force       Output errors for violations of Alfa (warn unimplemented)
+       check       Check validity of contracts
 
+   --report=     Control reporting
+       fail        Report failures to prove VCs (default)
+       all         Report all results of proving VCs
+
+..   prove       Prove subprogram contracts and absence of run-time errors
+
+Although reporting is only triggered in mode ``check``, all combinations of
+options are allowed.
+
+Output
+------
+
+In mode ``detect``, GNATprove prints on the standard output the :ref:`project statistics`.
+
+In mode ``force``, GNATprove prints on the standard output error messages for
+violations of Alfa, and warning messages for unimplemented features. 
+
+In mode ``check`` and report ``fail``, GNATprove prints on the standard output
+error messages for unproved VCs.
+
+In mode ``check`` and report ``all``, GNATprove prints on the standard output
+error messages for unproved VCs, and information messages for proved VCs.
+
+GNATprove generates files of interest to users in sub-directories called
+"gnatprove" of object directories for the project:
+
+ * ``statistics.txt`` contains the :ref:`project statistics`
+ * ``<name>.alfa`` is the :ref:`summary file` for the package called ``<name>``
 
 Integration in GPS
 ------------------
@@ -33,8 +61,7 @@ The current version is not integrated with GNATbench.
 Current Limitations
 -------------------
 
-If the option --alfa-report is not given, the current version has the following
-limitations:
+In mode ``check``, the current version has the following limitations:
 
    * It only accepts projects with a single object directory; it will stop
      with an error message if run on projects with more than one object

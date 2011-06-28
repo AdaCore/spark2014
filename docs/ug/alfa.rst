@@ -107,28 +107,56 @@ does not have to annotate the code to provide this information. However, the
 user can review the results of this automatic detection, and require that some
 subprograms are fully in Alfa (leading to an error if not).
 
+.. _summary file:
+
 Summary File
 ^^^^^^^^^^^^
 
-The information of which subprograms are fully in Alfa and which are not is
-stored in a file with extension .alfa for review by the user. For those
-subprograms not fully in Alfa, it also records in the same file whether:
+The information of which subprograms are fully in Alfa and which are not, as
+well as whether the features used in subprograms are alread implemented or not,
+is stored in a file with extension .alfa for review by the user, and to produce
+global :ref:`project statistics`.
 
-* the subprogram uses constructs not in Alfa (e.g. access types);
-* the subprogram uses constructs in Alfa but not yet implemented.
+GNATprove details which features not in Alfa are used (using parentheses):
 
-In the second case, GNATprove also outputs when possible more precise
-information on the features that should be implemented so that this subprogram
-is fully in Alfa:
+* access: access types and dereferences;
+* ambiguous expr: ambiguous expression;
+* deallocation: unchecked deallocation;
+* dynamic allocation: dynamic allocation;
+* exception: raising and catching exceptions;
+* indirect call: indirect call;
+* tasking: tasking;
+* unchecked conversion: unchecked conversion;
+* unsupported construct: any other unsupported construct.
 
-* slice: array slices;
-* container: formal containers;
-* discriminant: discriminant records;
+GNATprove details which features in Alfa but not yes implemented are used
+[using brackets]:
+
+* aggregate: array or record aggregate;
+* arithmetic operation: arithmetic operation;
+* array subtype: array subtype;
+* attribute: not yet implemented attribute;
+* block statement: block declare statement;
+* concatenation: array concatenation;
+* conversion: type conversion;
+* container: formal container;
+* discriminant: discriminant record;
 * dispatch: dispatching;
-* block statement: block declare statements;
-* generic: generics;
-* impure function: functions which write to global variables.
-* tagged: tagged types
+* expression with action: expression with action;
+* float: float;
+* generic: generic;
+* impure function: functions which write to variables other than parameters;
+* logic function: call to regular function (not an expression function) in annotation;
+* modular: modular integer type;
+* non static range: non static range in type;
+* 'Old attribute: 'Old attribute applied to something else than object name;
+* pragma: not yet implemented pragma;
+* qualification: type qualification;
+* representation clause: representation clause;
+* slice: array slice;
+* string literal: string literal;
+* tagged type: tagged type;
+* not yet implemented: any other not yet implemented construct.
 
 As an example, consider the following code::
 
@@ -193,10 +221,15 @@ context, in order to prioritize efficiently their implementation.
 User-specified Compliance
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The user may require that some subprograms are in Alfa by inserting a specific
-pragma ``Annotate`` in the body of the subprogram. He may also insert this
-pragma in a package declaration (spec or body) to require that all subprogram
-declarations in this package are in Alfa.
+The user may require that the project only contains code in Alfa, by using
+option ``--mode=force``. Any violation of Alfa is then reported as an error,
+and any construct in Alfa not yet implemented is reported as a warning.
+
+For a finer-grain control, the user may require that some subprograms are in
+Alfa by inserting a specific pragma ``Annotate`` in the body of the
+subprogram. He may also insert this pragma inside or before a package
+declaration (spec or body) to require that all subprogram declarations in this
+package are in Alfa.
 
 On the following example::
 
@@ -243,6 +276,21 @@ The error messages distinguish constructs not in Alfa (like a pointer
 dereference) from constructs not yet implemented. Notice that no error is given
 for the dereference in P.P0.Get, as another pragma Annotate in that subprogram
 specifies that formal proof should not be done on this subprogram.
+
+.. _project statistics:
+
+Project Statistics
+------------------
+
+Based on the generated :ref:`summary file` for each source unit, GNATprove
+generates global project statistics in file ``statistics.txt``. The statistics
+detail:
+
+* what percentage and number of subprograms are in Alfa
+* what percentage and number of subprograms are not yet implemented in Alfa
+* what are the main reasons for subprograms not to be in Alfa
+* what are the main reasons for subprograms not to be yet implemented in Alfa
+* units with the largest/smallest percentage and number of subprograms in Alfa
 
 A Non-ambiguous Subset of Ada
 -----------------------------

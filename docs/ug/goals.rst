@@ -8,12 +8,12 @@ different high-level properties of the code, annotations and their combination.
 Completeness of Preconditions
 -----------------------------
 
-This is currently the only verification activity available with GNATprove. It
-consists in verifying that preconditions of subprograms can never raise a
-run-time error, whatever the calling context. In order to get such a good
-property on the preconditions he writes, the user should in general guard all
-expressions which may raise a ``Constraint_Error`` in Ada, such as array
-accesses and arithmetic operations.
+This is currently the only verification activity available with GNATprove, in
+mode ``check``. It consists in verifying that preconditions of subprograms can
+never raise a run-time error, whatever the calling context. In order to get
+such a good property on the preconditions he writes, the user should in general
+guard all expressions which may raise a ``Constraint_Error`` in Ada, such as
+array accesses and arithmetic operations.
 
 These guards may take the form desired by the user. In particular, no guard is
 necessary if the operation cannot raise a run-time error, e.g. due to the
@@ -67,7 +67,7 @@ which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
-Functional Behavior *(In Progress)*
+Functional Verification *(In Progress)*
 -------------------------------------
 
 GNATprove generates VCs to prove that all subprograms called in the code of a
@@ -79,8 +79,96 @@ which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
-Absence of Unintended Functionality *(Not Yet Implemented)*
--------------------------------------------------------------
+Consistency Checks *(Not Yet Implemented)*
+------------------------------------------
+
+Like code, contracts are written by a human and thus can contain errors.
+GNATprove helps detecting inconsistencies in contracts by implementing specific
+checks for the following cases: redundant annotations, inconsistent
+annotations, unimplementable contracts, incomplete contracts. These checks
+do not detect all problematic cases, only some of them, much like detection of
+dead code by static analysis.
+
+Redundant Annotations *(Not Yet Implemented)*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A logical annotation (precondition, postcondition, assertion) should always be
+non-redundant, that is, no part of the annotation should be trivially true or
+false in the context of the complete annotation. Consider the following
+specification::
+
+   procedure Q (X, Y : in out Integer) with 
+     Pre  => X > 0 and X > 0;
+
+Here, the programmer mistyped ``X`` for ``Y``, which makes the precondition
+redundant. At worst, the annotation may be tautological (always true), which
+makes it much easier to prove, and also completely useless to express anything
+interesting about a subprogram. Consider the following specification::
+
+   function Max (X, Y : Integer) return Integer with 
+     Post => (if X < Y then Max'Result = Y)
+              or (if X >= Y then Max'Result = X);
+
+This postcondition could be read as "if ``X`` is less than ``Y``, then function
+``Max`` returns ``Y``, or in the other case where ``X`` is greater or equal to
+``Y``, ``Max`` returns ``X``". The problem is that this postcondition is always
+true, whatever function ``Max`` returns. To see it, consider the abstract form
+of the postcondition
+  
+  (if A then B) or (if (not A) then C)
+
+It can be rewritten as
+
+  ((not A) or B) or (A or C)
+
+which is the same as
+
+  A or (not A) or B or C
+
+which is always true! The programmer used ``or`` where he should have used
+``and`` in the postcondition. GNATprove will detect such (partially or
+completely) redundant annotations and issue a warning to the programmer.
+
+Inconsistent Annotations *(Not Yet Implemented)*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A logical annotation (precondition, postcondition, assertion) should always be
+consistent, that is, is should not be always false. Consider the following
+specification::
+
+   procedure P (X, Y : in out Integer) with 
+     Pre  => X <= 0 and X > 0;
+
+Here, the programmer mistyped ``X`` for ``Y``, which makes the precondition
+inconsistent. While inconsistent assertions and postconditions lead to
+unprovable VCs when proving the subprogram, inconsistent preconditions can only
+be detected this way when proving the caller. It is much better to detect such
+cases earlier when proving the subprogram, as a *precondition* that is always
+false makes the corresponding subprogram trivially *correct*, because under
+this false hypothesis, everything can be proved. GNATprove will detect such
+inconsistent annotations and issue an error to the programmer.
+
+Unimplementable Contracts *(Not Yet Implemented)*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A contract should express in its precondition all restrictions under which a
+subprogram can possibly (maybe not always) deliver a proper service. This means
+that, given an input respecting the precondition, there should be a possible
+output respecting the postcondition. If this is not the case, then the
+subprogram is unimplementable. Consider the following specification::
+
+   procedure Compute (X : in Integer; Y : out Integer) with
+     Post => (if X >= 0 then Y = 1) and (if X <= 0 then Y = -1);
+
+An implementation of ``Compute`` with this contract is unlikely to be
+provable. If it is, that's only because ``Compute`` never returns on input
+``X=0``. Indeed, if ``Compute`` did return on input ``X=0``, it would have to
+satisfy inconsistent requirements that ``Y=1`` and ``Y=-1``. Therefore, the
+precondition should specify here that ``X/=0`` in input. GNATprove will detect
+such unimplementable contracts and issue an error to the programmer.
+
+Incomplete Contracts *(Not Yet Implemented)*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A general concern in safety and security standards is the absence of unintended
 functionality. When verification relies on testing, this is sometimes verified
@@ -109,14 +197,12 @@ incomplete. To illustrate the issue, consider the following procedure sketch::
 Here, the problem is that the contract only states the behavior of the
 procedure when ``X`` is equal to zero, but not what happens when this is
 not the case. This means that the entire ``else`` branch does not
-contribute to establishing the postcondition. This introduces a semantic
-notion of *dead code*: the code in the ``else`` branch is *dead* in the
-sense that outside the procedure ``P``, no other part of the code should
-take advantage of the effects in that branch.
+contribute to establishing the postcondition. 
 
-GNATprove will report this situation, indicating which portion of the code
-is *dead* in this sense. The programmer can then either correct the contract
-to reflect both situations or remove the offending portion of the code.
+GNATprove will report this situation as a warning, indicating which portions of
+the code do not contribute to the subprogram contract. The programmer can then
+either correct the contract to reflect both situations, remove the offending
+portion of the code, or accept the warning.
 
 Another case of incomplete specifications is illustrated by the following
 simple program::
@@ -135,18 +221,5 @@ In this example, the contract is again incomplete: it only mentions that the
 acceleration is set to zero, but not that the breaks are activated. Said
 otherwise, it only mentions the modification of the ``Accel`` variable,
 but not the one of ``Breaks``. Again, a warning will be issued to the
-programmer, stating that a written variable is not mentioned in the contract,
-so no other part of the program can be aware of its new value, and this is
-probably a bug either in the code or in the contract.
+programmer.
 
-Redundant Specifications *(Not Yet Implemented)*
-------------------------------------------------
-
-A common case of meaningless specifications is the case of trivial or
-redundant assertions. An assertion that is always false or always true is not
-very useful. Worse, a *precondition* that is always false (or
-*inconsistent*) makes the corresponding subprogram trivially *correct*,
-because under this false hypothesis, everything can be proved.  Similarly, a
-postcondition that is always true can be proved correct, but it certainly does
-not express anything interesting about the subprogram. GNATprove will detect
-such undesirable annotations and issue a warning to the programmer.
