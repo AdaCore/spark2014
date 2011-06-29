@@ -51,6 +51,10 @@ package body Alfa.Frame_Conditions is
    -- Local Variables --
    ---------------------
 
+   Propagate_Error_For_Missing_Scope : Boolean := True;
+   --  By default, propagate an error if a scope is missing, unless set to
+   --  False for a degraded mode of operation in which such errors are ignored.
+
    Scopes  : Name_Set.Set;  --  All scope entities
 
    Defines : Name_Map.Map;  --  Entities defined by each scope
@@ -226,8 +230,12 @@ package body Alfa.Frame_Conditions is
       return Reads.Element (E_Name) - Defines.Element (E_Name);
    exception
       when Constraint_Error =>
-         raise Constraint_Error with
-           ("missing effects for subprogram " & Name);
+         if Propagate_Error_For_Missing_Scope then
+            raise Constraint_Error with
+              ("missing effects for subprogram " & Name);
+         else
+            return Name_Set.Empty_Set;
+         end if;
    end Get_Reads;
 
    ----------------
@@ -242,8 +250,12 @@ package body Alfa.Frame_Conditions is
       return Writes.Element (E_Name) - Defines.Element (E_Name);
    exception
       when Constraint_Error =>
-         raise Constraint_Error with
-           ("missing effects for subprogram " & Name);
+         if Propagate_Error_For_Missing_Scope then
+            raise Constraint_Error with
+              ("missing effects for subprogram " & Name);
+         else
+            return Name_Set.Empty_Set;
+         end if;
    end Get_Writes;
 
    ----------------------
@@ -508,7 +520,7 @@ package body Alfa.Frame_Conditions is
    -- Propagate_Through_Call_Graph --
    ----------------------------------
 
-   procedure Propagate_Through_Call_Graph is
+   procedure Propagate_Through_Call_Graph (Ignore_Errors : Boolean) is
 
       procedure Propagate_On_Call (Caller, Callee : Entity_Name);
       --  Update reads and writes of subprogram Caller from Callee
@@ -574,9 +586,11 @@ package body Alfa.Frame_Conditions is
            (Writes.Find (Caller), Union_With_Writes'Access);
       exception
          when Constraint_Error =>
-            raise Constraint_Error with
-              ("missing effects for subprogram " & Callee.all &
-                  " or subprogram " & Caller.all);
+            if Propagate_Error_For_Missing_Scope then
+               raise Constraint_Error with
+                 ("missing effects for subprogram " & Callee.all &
+                     " or subprogram " & Caller.all);
+            end if;
       end Propagate_On_Call;
 
       -----------------------
@@ -620,8 +634,10 @@ package body Alfa.Frame_Conditions is
          end if;
       exception
          when Constraint_Error =>
-            raise Constraint_Error with
-              ("missing effects for subprogram " & Subp.all);
+            if Propagate_Error_For_Missing_Scope then
+               raise Constraint_Error with
+                 ("missing effects for subprogram " & Subp.all);
+            end if;
       end Update_Subprogram;
 
       Work_Set : Name_Set.Set;
@@ -630,6 +646,10 @@ package body Alfa.Frame_Conditions is
    --  Start of processing for Propagate_Through_Call_Graph
 
    begin
+      --  Set error propagation mode for missing scopes
+
+      Propagate_Error_For_Missing_Scope := not Ignore_Errors;
+
       --  Declare missing scopes, which occurs for generic instanciations (see
       --  K523-007) until a proper treatment of generics. We take into account
       --  all subprograms called.
@@ -671,8 +691,10 @@ package body Alfa.Frame_Conditions is
             end if;
          exception
             when Constraint_Error =>
-               raise Constraint_Error with
-                 ("missing effects for subprogram " & Cur_Subp.all);
+               if Propagate_Error_For_Missing_Scope then
+                  raise Constraint_Error with
+                    ("missing effects for subprogram " & Cur_Subp.all);
+               end if;
          end;
       end loop;
 

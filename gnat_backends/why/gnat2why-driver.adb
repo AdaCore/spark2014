@@ -102,6 +102,12 @@ package body Gnat2Why.Driver is
       N         : constant Node_Id := Unit (GNAT_Root);
       Base_Name : constant String := File_Name_Without_Suffix (Sloc (N));
 
+      Detect_Or_Force_Mode : constant Boolean :=
+                               Debug_Flag_Dot_KK or Debug_Flag_Dot_EE;
+      --  Flag is true if gnatprove is called in mode 'detect' or 'force',
+      --  which do not involve translation to Why, so that ALI files need not
+      --  be available for all units, and Alfa detection is only approximate.
+
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
       --  the combination of generics and inlining, as well as child units
@@ -160,12 +166,14 @@ package body Gnat2Why.Driver is
          Ignore_Errors    => Debug_Flag_I,
          Directly_Scanned => True);
       Free (Text);
-      Read_Withed_ALIs (Main_Lib_Id);
+      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => Detect_Or_Force_Mode);
 
       --  Quit if some ALI files are missing
 
-      if Binderr.Errors_Detected > 0 then
-         raise Unrecoverable_Error;
+      if Binderr.Errors_Detected > 0
+        and then not Detect_Or_Force_Mode
+      then
+         raise Terminate_Program;
       end if;
 
       --  Load Alfa information from ALIs for all dependent units
@@ -215,7 +223,7 @@ package body Gnat2Why.Driver is
 --        Put_Line ("");
 --        Display_Maps;
 
-      Propagate_Through_Call_Graph;
+      Propagate_Through_Call_Graph (Ignore_Errors => Detect_Or_Force_Mode);
 
 --        Put_Line ("");
 --        Put_Line ("## After propagation ##");
@@ -342,7 +350,6 @@ package body Gnat2Why.Driver is
       Decls : List_Of_Nodes.List)
    is
       use List_Of_Nodes;
-
       Cu : Cursor := Decls.First;
    begin
       --  Workaround for K526-008 and K525-019

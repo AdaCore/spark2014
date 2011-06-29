@@ -67,8 +67,10 @@ package Alfa.Frame_Conditions is
    procedure Load_Alfa (ALI_Filename : String);
    --  Extract xref information from an ALI file
 
-   procedure Propagate_Through_Call_Graph;
+   procedure Propagate_Through_Call_Graph (Ignore_Errors : Boolean);
    --  Propagate reads and writes through the call-graph defined by calls and
-   --  callers.
+   --  callers. If Ignore_Errors is true, then ignore failures to find some
+   --  scope that should have been present in some ALI file. This mode is used
+   --  in simpler modes of operation that do not lead to translation into Why.
 
 end Alfa.Frame_Conditions;

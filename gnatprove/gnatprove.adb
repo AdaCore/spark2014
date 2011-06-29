@@ -415,6 +415,7 @@ procedure Gnatprove is
 
          when GS_Why =>
             return "generation of VCs";
+
          when GS_AltErgo =>
             return "proof of VCs";
       end case;
