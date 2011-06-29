@@ -80,11 +80,12 @@ procedure Alfa_Report is
    --  Print the final Alfa report
 
    procedure Print_Statistics
-     (Handle    : Ada.Text_IO.File_Type;
-      Label     : String;
-      Label_Len : Natural;
-      Cnt       : Integer;
-      Total     : Integer);
+     (Handle      : Ada.Text_IO.File_Type;
+      Label       : String;
+      Label_Len   : Natural;
+      Cnt         : Integer;
+      Total       : Integer;
+      Cnt_Padding : Boolean);
    --  Print a line of the form:
    --    label:  X% (Cnt / Total)
    --  where X is the ration Cnt / Total expressed in percent.
@@ -321,11 +322,12 @@ procedure Alfa_Report is
                            F_Cnt + M_Complement.Element (F_Name);
             begin
                if F_Cnt > 0 then
-                  Print_Statistics (Handle,
-                                    Lab,
-                                    Label_Length,
-                                    F_Cnt,
-                                    Tot_Cnt);
+                  Print_Statistics (Handle      => Handle,
+                                    Label       => Lab,
+                                    Label_Len   => Label_Length,
+                                    Cnt         => F_Cnt,
+                                    Total       => Tot_Cnt,
+                                    Cnt_Padding => False);
                end if;
             end;
          end loop;
@@ -347,11 +349,12 @@ procedure Alfa_Report is
                if Violation_Filter (V)
                  and then V_Cnt > 0
                then
-                  Print_Statistics (Handle,
-                                    Lab,
-                                    Label_Length,
-                                    V_Cnt,
-                                    Total_Cnt);
+                  Print_Statistics (Handle      => Handle,
+                                    Label       => Lab,
+                                    Label_Len   => Label_Length,
+                                    Cnt         => V_Cnt,
+                                    Total       => Total_Cnt,
+                                    Cnt_Padding => True);
                end if;
             end;
          end loop;
@@ -388,18 +391,31 @@ procedure Alfa_Report is
       --  global statistics
 
       Create (Handle, Out_File, Configuration.Alfa_Report_File);
-      Print_Statistics (Handle, "Subprograms in Alfa", Label_Length,
-                        Already_Alfa_Cnt + Not_Yet_Alfa_Cnt,
-                        Total_Cnt);
-      Print_Statistics (Handle, "  ... already supported", Label_Length,
-                        Already_Alfa_Cnt,
-                        Total_Cnt);
-      Print_Statistics (Handle, "  ... not yet supported", Label_Length,
-                        Not_Yet_Alfa_Cnt,
-                        Total_Cnt);
-      Print_Statistics (Handle, "Subprograms not in Alfa", Label_Length,
-                        Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt,
-                        Total_Cnt);
+      Print_Statistics (Handle      => Handle,
+                        Label       => "Subprograms in Alfa",
+                        Label_Len   => Label_Length,
+                        Cnt         => Already_Alfa_Cnt + Not_Yet_Alfa_Cnt,
+                        Total       => Total_Cnt,
+                        Cnt_Padding => True);
+      Print_Statistics (Handle      => Handle,
+                        Label       => "  ... already supported",
+                        Label_Len   => Label_Length,
+                        Cnt         => Already_Alfa_Cnt,
+                        Total       => Total_Cnt,
+                        Cnt_Padding => True);
+      Print_Statistics (Handle      => Handle,
+                        Label       => "  ... not yet supported",
+                        Label_Len   => Label_Length,
+                        Cnt         => Not_Yet_Alfa_Cnt,
+                        Total       => Total_Cnt,
+                        Cnt_Padding => True);
+      Print_Statistics (Handle      => Handle,
+                        Label       => "Subprograms not in Alfa",
+                        Label_Len   => Label_Length,
+                        Cnt         =>
+                          Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt,
+                        Total       => Total_Cnt,
+                        Cnt_Padding => True);
 
       --  statistics per violations
 
@@ -453,11 +469,12 @@ procedure Alfa_Report is
    ----------------------
 
    procedure Print_Statistics
-     (Handle    : Ada.Text_IO.File_Type;
-      Label     : String;
-      Label_Len : Natural;
-      Cnt       : Integer;
-      Total     : Integer)
+     (Handle      : Ada.Text_IO.File_Type;
+      Label       : String;
+      Label_Len   : Natural;
+      Cnt         : Integer;
+      Total       : Integer;
+      Cnt_Padding : Boolean)
    is
       use Ada.Text_IO;
 
@@ -528,7 +545,13 @@ procedure Alfa_Report is
 
       Put (Handle, Percentage_Image (Percent));
       Put (Handle, "% (");
-      Put (Handle, Integer_Image_Padded (Cnt, Total_Characters));
+
+      if Cnt_Padding then
+         Put (Handle, Integer_Image_Padded (Cnt, Total_Characters));
+      else
+         Put (Handle, Integer_Image (Cnt));
+      end if;
+
       Put (Handle, "/");
       Put (Handle, Integer_Image (Total));
       Put_Line (Handle, ")");
