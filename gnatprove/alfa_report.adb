@@ -511,9 +511,11 @@ procedure Alfa_Report is
       Total_Characters : constant Natural := Integer_Image (Total)'Last;
 
       Fixed_Len_Label  : String (1 .. Label_Len) := (others => ' ');
-
+      Fixed_Len        : constant Natural :=
+                         Natural'Min (Label_Len, Label'Last - Label'First + 1);
    begin
-      Fixed_Len_Label (1 .. Natural'Min (Label_Len, Label'Last)) := Label;
+      Fixed_Len_Label (1 .. Fixed_Len) :=
+        Label (Label'First .. Label'First + Fixed_Len - 1);
       Put (Handle, Fixed_Len_Label);
       Put (Handle, ": ");
 
