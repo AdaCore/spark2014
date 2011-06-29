@@ -233,6 +233,7 @@ procedure Gnatprove is
             (Proj_Type.Object_Dir.Display_Full_Name,
              "gnatprove.alfad");
       Success      : aliased Boolean;
+
    begin
       Ada.Text_IO.Create (Obj_Dir_File, Ada.Text_IO.Out_File, Obj_Dir_Fn);
       for Index in Obj_Path'Range loop
@@ -241,12 +242,18 @@ procedure Gnatprove is
              Obj_Path (Index).Display_Full_Name);
       end loop;
       Ada.Text_IO.Close (Obj_Dir_File);
+
       Call_Exit_On_Failure
         (Command   => "alfa_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
-      GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
-      if Mode = GPM_Detect then
+      if not Debug then
+         GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
+      end if;
+
+      if Mode = GPM_Detect
+        and then not Quiet
+      then
          Cat (Alfa_Report_File);
       end if;
    end Generate_Alfa_Report;

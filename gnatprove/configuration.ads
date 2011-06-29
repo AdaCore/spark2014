@@ -19,7 +19,7 @@
 -- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
 -- Boston,                                                                  --
 --                                                                          --
--- gnatprove is maintained by AdaCore (http://www.adacore.com)               --
+-- gnatprove is maintained by AdaCore (http://www.adacore.com)              --
 --                                                                          --
 ------------------------------------------------------------------------------
 
@@ -34,9 +34,13 @@ with GNATCOLL.VFS;      use GNATCOLL.VFS;
 package Configuration is
    Verbose      : aliased Boolean;
    --  True if -v switch is present. All executed commands are printed.
+   Force        : aliased Boolean;
+   --  True if -f is present. Force recompilation of all units.
+   Quiet        : aliased Boolean;
+   --  True if -q is present. Do not print on standard output.
+   Debug        : aliased Boolean;
+   --  True if -d is present. Do not remove temporary files.
 
-   Force      : aliased Boolean;
-   --  True if -f is present. Force recompilation of all units
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
 
    Mode         : GP_Mode := GPM_Detect;

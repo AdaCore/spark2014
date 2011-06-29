@@ -81,6 +81,20 @@ package body Configuration is
           Help => "Force recompilation / proving of all units and all VCs");
 
       Define_Switch
+         (Config,
+          Quiet'Access,
+          "-q",
+          Long_Switch => "--quiet",
+          Help => "Be quiet/terse");
+
+      Define_Switch
+         (Config,
+          Debug'Access,
+          "-d",
+          Long_Switch => "--debug",
+          Help => "Debug mode");
+
+      Define_Switch
         (Config,
          No_Proof'Access,
          Long_Switch => "--no-proof",
