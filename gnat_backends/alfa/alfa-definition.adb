@@ -591,7 +591,7 @@ package body Alfa.Definition is
          when Alfa_Violations.Not_In_Roadmap =>
             return Msg & " is not in Alfa";
          when Alfa_Violations.Not_Yet_Implemented =>
-            return "!" & Msg & " is not yet implemented in Alfa";
+            return Msg & "? is not yet implemented in Alfa";
       end case;
    end Complete_Error_Msg;
 

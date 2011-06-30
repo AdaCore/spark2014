@@ -209,8 +209,8 @@ procedure Gnatprove is
    begin
       if not Quiet then
          Put_Line ("Phase " & Step_Image (Step)
-                   & " (/" & Step_Image (Final_Step)
-                   & "): " & Text_Of_Step (Step) & " ...");
+                   & " of " & Step_Image (Final_Step)
+                   & ": " & Text_Of_Step (Step) & " ...");
       end if;
 
       case Step is
@@ -286,10 +286,12 @@ procedure Gnatprove is
             Put_Line ("**********************************");
             Cat (Alfa_Report_File);
             Put_Line ("**********************************");
+            Put_Line ("Statistics above are logged in " & Alfa_Report_File);
+         else
+            Put_Line ("Statistics logged in " & Alfa_Report_File);
          end if;
 
-         Put_Line ("Statistics are logged in " & Alfa_Report_File);
-         Put_Line ("(based on raw information from gnatprove/*.alfa)");
+         Put_Line ("(detailed info can be found in gnatprove/*.alfa)");
       end if;
    end Generate_Alfa_Report;
 
