@@ -500,7 +500,8 @@ begin
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
       Generate_Alfa_Report (Proj_Type, Obj_Path);
-      if Mode = GPM_Detect then
+
+      if Mode in GP_Alfa_Detection_Mode then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
    end;
