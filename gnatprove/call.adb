@@ -146,6 +146,7 @@ package body Call is
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : Argument_List;
+      Success   : out Boolean;
       Verbose   : Boolean := False)
    is
       Status : aliased Integer;
@@ -176,20 +177,23 @@ package body Call is
             end if;
          end if;
 
-         Free_Argument_List (Arguments);
+         Success := Status = 0;
 
+         Free_Argument_List (Arguments);
       end;
    end Call_Exit_On_Failure;
 
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : String_Lists.List;
+      Success   : out Boolean;
       Verbose   : Boolean := False)
    is
    begin
       Call_Exit_On_Failure
         (Command,
          Argument_List_Of_String_List (Arguments),
+         Success,
          Verbose);
    end Call_Exit_On_Failure;
 

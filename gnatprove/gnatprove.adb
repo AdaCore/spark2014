@@ -45,7 +45,6 @@ procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why, GS_AltErgo);
 
-   Skip_Rest    : Boolean := False;
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
@@ -142,10 +141,10 @@ procedure Gnatprove is
    -----------------------------
 
    procedure Compute_ALI_Information
-      (Project_File : String;
-       Status : out Integer)
+     (Project_File : String;
+      Status       : out Integer)
    is
-      Args          : String_Lists.List := String_Lists.Empty_List;
+      Args : String_Lists.List := String_Lists.Empty_List;
    begin
       Args.Append ("-P");
       Args.Append (Project_File);
@@ -168,8 +167,8 @@ procedure Gnatprove is
    -----------------
 
    procedure Compute_VCs
-      (Proj : Project_Tree;
-       Status : out Integer)
+     (Proj   : Project_Tree;
+      Status : out Integer)
    is
       Proj_Type     : constant Project_Type := Proj.Root_Project;
       Why_Proj_File : constant String :=
@@ -185,18 +184,13 @@ procedure Gnatprove is
    end Compute_VCs;
 
    procedure Execute_Step
-      (Step         : Gnatprove_Step;
-       Project_File : String;
-       Proj         : Project_Tree)
+     (Step         : Gnatprove_Step;
+      Project_File : String;
+      Proj         : Project_Tree)
    is
       use Ada.Text_IO;
       Status : Integer;
    begin
-      if Skip_Rest then
-         Put (Standard_Error, "gnatprove: skipped ");
-         Put_Line (Standard_Error, Text_Of_Step (Step));
-         return;
-      end if;
       case Step is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Status);
@@ -210,12 +204,11 @@ procedure Gnatprove is
          when GS_AltErgo =>
             Prove_VCs (Proj, Status);
             Report_VCs;
-
       end case;
+
       if Status /= 0 then
-         Skip_Rest := True;
-         Put (Standard_Error, "gnatprove: error during ");
-         Put_Line (Standard_Error, Text_Of_Step (Step));
+         Abort_With_Message
+           ("gnatprove: error during " & Text_Of_Step (Step) & ", aborting.");
       end if;
    end Execute_Step;
 
@@ -224,15 +217,15 @@ procedure Gnatprove is
    --------------------------
 
    procedure Generate_Alfa_Report
-      (Proj_Type : Project_Type;
-       Obj_Path : File_Array)
+     (Proj_Type : Project_Type;
+      Obj_Path  : File_Array)
    is
       Obj_Dir_File : Ada.Text_IO.File_Type;
       Obj_Dir_Fn   : constant String :=
          Ada.Directories.Compose
             (Proj_Type.Object_Dir.Display_Full_Name,
              "gnatprove.alfad");
-      Success      : aliased Boolean;
+      Success      : Boolean;
 
    begin
       Ada.Text_IO.Create (Obj_Dir_File, Ada.Text_IO.Out_File, Obj_Dir_Fn);
@@ -246,7 +239,12 @@ procedure Gnatprove is
       Call_Exit_On_Failure
         (Command   => "alfa_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
+         Success   => Success,
          Verbose   => Verbose);
+      if not Success then
+         Abort_With_Message ("Error during report creation, aborting.");
+      end if;
+
       if not Debug then
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
       end if;
@@ -263,9 +261,9 @@ procedure Gnatprove is
    ---------------------------
 
    procedure Generate_Project_File
-      (Filename : String;
-       Project_Name : String;
-       Source_Dir : String)
+     (Filename     : String;
+      Project_Name : String;
+      Source_Dir   : String)
    is
       File : Ada.Text_IO.File_Type;
    begin
@@ -312,8 +310,8 @@ procedure Gnatprove is
    -- Make_Standard_Package --
    ---------------------------
 
-   procedure Make_Standard_Package (Proj : Project_Tree)
-   is
+   procedure Make_Standard_Package (Proj : Project_Tree) is
+      Success : Boolean;
    begin
       pragma Unreferenced (Proj);
       Call_Exit_On_Failure
@@ -321,7 +319,11 @@ procedure Gnatprove is
          Arguments =>
             (1 => new String'("-gnatd.H"),
              2 => new String'(Gpr_Ada_Cnf_File)),
+         Success   => Success,
          Verbose   => Verbose);
+      if not Success then
+         Abort_With_Message ("Error on standard package, aborting.");
+      end if;
    end Make_Standard_Package;
 
    ---------------
@@ -357,8 +359,7 @@ procedure Gnatprove is
    -- Report_VCs --
    ----------------
 
-   procedure Report_VCs
-   is
+   procedure Report_VCs is
 
       procedure Report_VC
         (Item    : String;
@@ -410,8 +411,7 @@ procedure Gnatprove is
    -- Text_Of_Step --
    ------------------
 
-   function Text_Of_Step (Step : Gnatprove_Step) return String
-   is
+   function Text_Of_Step (Step : Gnatprove_Step) return String is
    begin
       case Step is
          when GS_ALI =>
