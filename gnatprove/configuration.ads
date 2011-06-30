@@ -42,6 +42,7 @@ package Configuration is
    --  True if -d is present. Do not remove temporary files.
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
+   subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    Mode         : GP_Mode := GPM_Detect;
    Mode_Input   : aliased GNAT.Strings.String_Access;

@@ -152,9 +152,17 @@ procedure Gnatprove is
       Args.Append ("-U");
       Args.Append ("-gnatc");       --  only generate ALI
       Args.Append ("-gnatd.F");     --  ALFA section in ALI
+
       if Force then
          Args.Append ("-f");
       end if;
+
+      --  Keep going after a compilation error in 'detect' and 'force' modes
+
+      if Mode in GP_Alfa_Detection_Mode then
+         Args.Append ("-k");
+      end if;
+
       Call_With_Status
         (Command   => "gnatmake",
          Arguments => Args,
@@ -188,15 +196,24 @@ procedure Gnatprove is
       Project_File : String;
       Proj         : Project_Tree)
    is
-      use Ada.Text_IO;
       Status : Integer;
    begin
       case Step is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Status);
+            if Status /= 0
+              and then Mode in GP_Alfa_Detection_Mode
+            then
+               Status := 0;
+            end if;
 
          when GS_Gnat2Why =>
             Translate_To_Why (Project_File, Status);
+            if Status /= 0
+              and then Mode in GP_Alfa_Detection_Mode
+            then
+               Status := 0;
+            end if;
 
          when GS_Why =>
             Compute_VCs (Proj, Status);
