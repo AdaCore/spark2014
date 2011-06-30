@@ -207,9 +207,11 @@ procedure Gnatprove is
       Status : Integer;
 
    begin
-      Put_Line ("Phase " & Step_Image (Step)
-                & " (/" & Step_Image (Final_Step)
-                & "): " & Text_Of_Step (Step) & " ...");
+      if not Quiet then
+         Put_Line ("Phase " & Step_Image (Step)
+                   & " (/" & Step_Image (Final_Step)
+                   & "): " & Text_Of_Step (Step) & " ...");
+      end if;
 
       case Step is
          when GS_ALI =>
@@ -280,11 +282,11 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         Put_Line ("**********************************");
          if MMode = GPM_Detect then
+            Put_Line ("**********************************");
             Cat (Alfa_Report_File);
+            Put_Line ("**********************************");
          end if;
-         Put_Line ("**********************************");
 
          Put_Line ("Statistics are logged in " & Alfa_Report_File);
          Put_Line ("(based on raw information from gnatprove/*.alfa)");
