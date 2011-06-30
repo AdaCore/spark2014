@@ -64,7 +64,7 @@ package body Configuration is
                      "-v", Long_Switch => "--verbose",
                      Help => "Output extra verbose information");
 
-      Define_Switch (Config, Mode_Input'Access,
+      Define_Switch (Config, MMode_Input'Access,
                      Long_Switch => "--mode=",
                      Help =>
                        "Set the mode of GNATprove (detect | force | check)");
@@ -120,14 +120,14 @@ package body Configuration is
                      Help => "The name of the project file");
 
       Getopt (Config);
-      if Mode_Input.all = "detect" or else Mode_Input.all = "" then
-         Mode := GPM_Detect;
-      elsif Mode_Input.all = "force" then
-         Mode := GPM_Force;
-      elsif Mode_Input.all = "check" then
-         Mode := GPM_Check;
-      elsif Mode_Input.all = "prove" then
-         Mode := GPM_Prove;
+      if MMode_Input.all = "detect" or else MMode_Input.all = "" then
+         MMode := GPM_Detect;
+      elsif MMode_Input.all = "force" then
+         MMode := GPM_Force;
+      elsif MMode_Input.all = "check" then
+         MMode := GPM_Check;
+      elsif MMode_Input.all = "prove" then
+         MMode := GPM_Prove;
       else
          Abort_With_Message ("mode should be one of (detect | force | check)");
       end if;

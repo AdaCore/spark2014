@@ -44,8 +44,8 @@ package Configuration is
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
-   Mode         : GP_Mode := GPM_Detect;
-   Mode_Input   : aliased GNAT.Strings.String_Access;
+   MMode        : GP_Mode := GPM_Detect;
+   MMode_Input  : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
    Report_Input   : aliased GNAT.Strings.String_Access;

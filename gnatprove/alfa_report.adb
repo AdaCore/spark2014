@@ -266,7 +266,9 @@ procedure Alfa_Report is
       function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean;
 
       procedure Print_File_Count
-        (M, M_Complement : Filename_Map.Map; R : File_Ranking);
+        (M            : Filename_Map.Map;
+         M_Complement : Filename_Map.Map;
+         R            : File_Ranking);
 
       generic
          with function Violation_Filter
@@ -307,9 +309,13 @@ procedure Alfa_Report is
       ----------------------
 
       procedure Print_File_Count
-        (M, M_Complement : Filename_Map.Map; R : File_Ranking)
+        (M            : Filename_Map.Map;
+         M_Complement : Filename_Map.Map;
+         R            : File_Ranking)
       is
          use Filename_Map;
+         Num_Printed : Natural := 0;
+
       begin
          for J in R'Range loop
             declare
@@ -322,6 +328,7 @@ procedure Alfa_Report is
                            F_Cnt + M_Complement.Element (F_Name);
             begin
                if F_Cnt > 0 then
+                  Num_Printed := Num_Printed + 1;
                   Print_Statistics (Handle      => Handle,
                                     Label       => Lab,
                                     Label_Len   => Label_Length,
@@ -331,6 +338,10 @@ procedure Alfa_Report is
                end if;
             end;
          end loop;
+
+         if Num_Printed = 0 then
+            Put_Line (Handle, " (none)");
+         end if;
       end Print_File_Count;
 
       ----------------------
@@ -338,6 +349,8 @@ procedure Alfa_Report is
       ----------------------
 
       procedure Print_Violations is
+         Num_Printed : Natural := 0;
+
       begin
          for J in Alfa_Violations.Vkind loop
             declare
@@ -349,6 +362,7 @@ procedure Alfa_Report is
                if Violation_Filter (V)
                  and then V_Cnt > 0
                then
+                  Num_Printed := Num_Printed + 1;
                   Print_Statistics (Handle      => Handle,
                                     Label       => Lab,
                                     Label_Len   => Label_Length,
@@ -358,6 +372,10 @@ procedure Alfa_Report is
                end if;
             end;
          end loop;
+
+         if Num_Printed = 0 then
+            Put_Line (Handle, " (none)");
+         end if;
       end Print_Violations;
 
       procedure Sort_Violations is new
@@ -456,12 +474,16 @@ procedure Alfa_Report is
       New_Line (Handle);
       Put_Line (Handle,
                 "Units with the largest number of subprograms in Alfa:");
-      Print_File_Count (File_Alfa_Cnt, File_Not_Alfa_Cnt, File_Alfa_Rank);
+      Print_File_Count (M            => File_Alfa_Cnt,
+                        M_Complement => File_Not_Alfa_Cnt,
+                        R            => File_Alfa_Rank);
 
       New_Line (Handle);
       Put_Line (Handle,
                 "Units with the largest number of subprograms not in Alfa:");
-      Print_File_Count (File_Not_Alfa_Cnt, File_Alfa_Cnt, File_Not_Alfa_Rank);
+      Print_File_Count (M            => File_Not_Alfa_Cnt,
+                        M_Complement => File_Alfa_Cnt,
+                        R            => File_Not_Alfa_Rank);
    end Print_Report;
 
    ----------------------

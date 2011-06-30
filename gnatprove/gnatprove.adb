@@ -39,11 +39,19 @@ with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
 with Configuration;     use Configuration;
 
-with Ada.Text_IO;
+with Ada.Text_IO;       use Ada.Text_IO;
 
 procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why, GS_AltErgo);
+
+   function Step_Image (S : Gnatprove_Step) return String is
+      (Int_Image (Gnatprove_Step'Pos (S) + 1));
+
+   function Final_Step return Gnatprove_Step is
+     (case MMode is
+       when GPM_Detect | GPM_Force => GS_Gnat2Why,
+       when GPM_Check | GPM_Prove => GS_AltErgo);
 
    procedure Call_Gprbuild
       (Project_File  : String;
@@ -159,7 +167,7 @@ procedure Gnatprove is
 
       --  Keep going after a compilation error in 'detect' and 'force' modes
 
-      if Mode in GP_Alfa_Detection_Mode then
+      if MMode in GP_Alfa_Detection_Mode then
          Args.Append ("-k");
       end if;
 
@@ -197,12 +205,17 @@ procedure Gnatprove is
       Proj         : Project_Tree)
    is
       Status : Integer;
+
    begin
+      Put_Line ("Phase " & Step_Image (Step)
+                & " (/" & Step_Image (Final_Step)
+                & "): " & Text_Of_Step (Step) & " ...");
+
       case Step is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Status);
             if Status /= 0
-              and then Mode in GP_Alfa_Detection_Mode
+              and then MMode in GP_Alfa_Detection_Mode
             then
                Status := 0;
             end if;
@@ -210,7 +223,7 @@ procedure Gnatprove is
          when GS_Gnat2Why =>
             Translate_To_Why (Project_File, Status);
             if Status /= 0
-              and then Mode in GP_Alfa_Detection_Mode
+              and then MMode in GP_Alfa_Detection_Mode
             then
                Status := 0;
             end if;
@@ -237,7 +250,7 @@ procedure Gnatprove is
      (Proj_Type : Project_Type;
       Obj_Path  : File_Array)
    is
-      Obj_Dir_File : Ada.Text_IO.File_Type;
+      Obj_Dir_File : File_Type;
       Obj_Dir_Fn   : constant String :=
          Ada.Directories.Compose
             (Proj_Type.Object_Dir.Display_Full_Name,
@@ -245,13 +258,13 @@ procedure Gnatprove is
       Success      : Boolean;
 
    begin
-      Ada.Text_IO.Create (Obj_Dir_File, Ada.Text_IO.Out_File, Obj_Dir_Fn);
+      Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
       for Index in Obj_Path'Range loop
-         Ada.Text_IO.Put_Line
+         Put_Line
             (Obj_Dir_File,
              Obj_Path (Index).Display_Full_Name);
       end loop;
-      Ada.Text_IO.Close (Obj_Dir_File);
+      Close (Obj_Dir_File);
 
       Call_Exit_On_Failure
         (Command   => "alfa_report",
@@ -266,10 +279,15 @@ procedure Gnatprove is
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
       end if;
 
-      if Mode = GPM_Detect
-        and then not Quiet
-      then
-         Cat (Alfa_Report_File);
+      if not Quiet then
+         Put_Line ("**********************************");
+         if MMode = GPM_Detect then
+            Cat (Alfa_Report_File);
+         end if;
+         Put_Line ("**********************************");
+
+         Put_Line ("Statistics are logged in " & Alfa_Report_File);
+         Put_Line ("(based on raw information from gnatprove/*.alfa)");
       end if;
    end Generate_Alfa_Report;
 
@@ -282,19 +300,19 @@ procedure Gnatprove is
       Project_Name : String;
       Source_Dir   : String)
    is
-      File : Ada.Text_IO.File_Type;
+      File : File_Type;
    begin
-      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Filename);
-      Ada.Text_IO.Put (File, "project ");
-      Ada.Text_IO.Put (File, Project_Name);
-      Ada.Text_IO.Put_Line (File, " is");
-      Ada.Text_IO.Put (File, "for Source_Dirs use (""");
-      Ada.Text_IO.Put (File, Source_Dir);
-      Ada.Text_IO.Put_Line (File, """);");
-      Ada.Text_IO.Put (File, "end ");
-      Ada.Text_IO.Put (File, Project_Name);
-      Ada.Text_IO.Put_Line (File, ";");
-      Ada.Text_IO.Close (File);
+      Create (File, Out_File, Filename);
+      Put (File, "project ");
+      Put (File, Project_Name);
+      Put_Line (File, " is");
+      Put (File, "for Source_Dirs use (""");
+      Put (File, Source_Dir);
+      Put_Line (File, """);");
+      Put (File, "end ");
+      Put (File, Project_Name);
+      Put_Line (File, ";");
+      Close (File);
    end Generate_Project_File;
 
    -------------------------------
@@ -396,20 +414,19 @@ procedure Gnatprove is
             Ada.Directories.Base_Name (Item);
          Rgo_Name : constant String := Base_Name & ".rgo";
          Xpl_Name : constant String := Base_Name & ".xpl";
-         Rgo_File : Ada.Text_IO.File_Type;
+         Rgo_File : File_Type;
          Proved : Boolean;
       begin
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
 
-         Ada.Text_IO.Open (Rgo_File, Ada.Text_IO.In_File, Rgo_Name);
-         if Ada.Strings.Fixed.Index
-              (Ada.Text_IO.Get_Line (Rgo_File), "Valid") > 0 then
+         Open (Rgo_File, In_File, Rgo_Name);
+         if Ada.Strings.Fixed.Index (Get_Line (Rgo_File), "Valid") > 0 then
             Proved := True;
          else
             Proved := False;
          end if;
-         Ada.Text_IO.Close (Rgo_File);
+         Close (Rgo_File);
 
          if not Proved or else Report then
             Print_Error_Msg (Get_VC_Explanation (Xpl_Name), Proved);
@@ -462,13 +479,13 @@ procedure Gnatprove is
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
-      if Mode /= GPM_Prove then
+      if MMode /= GPM_Prove then
          Args.Append ("-gnatd.G");
       end if;
-      if Mode = GPM_Detect then
+      if MMode = GPM_Detect then
          Args.Append ("-gnatd.K");
       end if;
-      if Mode = GPM_Force then
+      if MMode = GPM_Force then
          Args.Append ("-gnatd.E");
       end if;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
@@ -490,7 +507,7 @@ begin
       --  single object directory.
       --  Here we check that this is the case, and fail gracefully if not.
 
-      if not (Mode = GPM_Detect) and then Obj_Path'Length > 1 then
+      if not (MMode = GPM_Detect) and then Obj_Path'Length > 1 then
          Abort_With_Message
             ("There is more than one object directory, aborting.");
       end if;
@@ -501,7 +518,7 @@ begin
 
       Generate_Alfa_Report (Proj_Type, Obj_Path);
 
-      if Mode in GP_Alfa_Detection_Mode then
+      if MMode in GP_Alfa_Detection_Mode then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
    end;
