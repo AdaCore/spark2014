@@ -57,6 +57,7 @@ gnat1why:
 	$(MAKE) -C gnat_backends/why gnat1 gnat2why
 
 gnat2why:
+	$(MAKE) -C gnat_backends/why/xgen
 	$(MAKE) -C gnat_backends/why
 
 gnatprove:
