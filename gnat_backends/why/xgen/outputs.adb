@@ -27,6 +27,24 @@ with Ada.Characters.Conversions; use Ada.Characters.Conversions;
 
 package body Outputs is
 
+   procedure New_Line (F : File_Type);
+   procedure Put (F : File_Type; S : Wide_String);
+   --  Local version of New_Line and Put ensures Unix style line endings
+
+   procedure New_Line (F : File_Type) is
+   begin
+      Character'Write (Stream (F), ASCII.LF);
+   end New_Line;
+
+   procedure Put (F : File_Type; S : Wide_String) is
+   begin
+      if Is_String (S) then
+         String'Write (Stream (F), To_String (S));
+      else
+         Wide_String'Write (Stream (F), S);
+      end if;
+   end Put;
+
    procedure I  (O : in out Output_Record);
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
@@ -76,8 +94,7 @@ package body Outputs is
 
    procedure NL (O : in out Output_Record) is
    begin
-      --  Ensure Unix style ending
-      Put (O.File, To_Wide_String (String'(1 => ASCII.LF)));
+      New_Line (O.File);
       O.New_Line := True;
    end NL;
 
@@ -110,8 +127,7 @@ package body Outputs is
    begin
       I (O);
       Put (O.File, S);
-      --  Ensure Unix style ending
-      Put (O.File, To_Wide_String (String'(1 => ASCII.LF)));
+      New_Line (O.File);
       O.New_Line := True;
    end PL;
 

@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
+with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 
 package Outputs is
    --  This package provides some utilities to output indented text
