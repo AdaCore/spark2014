@@ -1,8 +1,4 @@
+compilation of p.adb failed
+gprbuild: *** compilation phase failed
 p.adb:5:07: explicit dereference is not in Alfa
 p.ads:2:09: access type is not in Alfa
-
-   compilation of p.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-
