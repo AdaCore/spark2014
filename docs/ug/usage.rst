@@ -42,11 +42,11 @@ error messages for unproved VCs.
 In mode ``check`` and report ``all``, GNATprove prints on the standard output
 error messages for unproved VCs, and information messages for proved VCs.
 
-GNATprove generates files of interest to users in sub-directories called
-"gnatprove" of object directories for the project:
+GNATprove always generates :ref:`project statistics` in file ``gnatprove.out``.
 
- * ``gnatprove.out`` contains the :ref:`project statistics`
- * ``<name>.alfa`` is the :ref:`summary file` for the package called ``<name>``
+For each unit ``<name>``, GNATprove generates a :ref:`summary file`
+``<name>.alfa`` in the sub-directory ``gnatprove`` of the corresponding 
+object directory.
 
 Integration in GPS
 ------------------
@@ -70,5 +70,9 @@ In mode ``check``, the current version has the following limitations:
      do not compile (such as alternate bodies) to names that do not constitute
      a valid Ada file name, for example using "__".
 
-Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is not
-supported. Instead, use ``for Local_Configuration_Pragmas use "pragmas.adc";``.
+Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is
+not supported. Instead, use ``for Local_Configuration_Pragmas use
+"pragmas.adc";``.
+
+Defining multiple units in the same file is not supported. Instead, define each
+unit in a separate file.

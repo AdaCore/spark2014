@@ -117,7 +117,7 @@ well as whether the features used in subprograms are alread implemented or not,
 is stored in a file with extension .alfa for review by the user, and to produce
 global :ref:`project statistics`.
 
-GNATprove details which features not in Alfa are used (using parentheses):
+GNATprove outputs which features not in Alfa are used (using parentheses):
 
 * access: access types and dereferences;
 * ambiguous expr: ambiguous expression;
@@ -129,7 +129,7 @@ GNATprove details which features not in Alfa are used (using parentheses):
 * unchecked conversion: unchecked conversion;
 * unsupported construct: any other unsupported construct.
 
-GNATprove details which features in Alfa but not yes implemented are used
+GNATprove outputs which features in Alfa but not yes implemented are used
 [using brackets]:
 
 * aggregate: array or record aggregate;
@@ -284,13 +284,14 @@ Project Statistics
 
 Based on the generated :ref:`summary file` for each source unit, GNATprove
 generates global project statistics in file ``gnatprove.out``. The statistics
-detail:
+describe:
 
 * what percentage and number of subprograms are in Alfa
-* what percentage and number of subprograms are not yet implemented in Alfa
+* what percentage and number of Alfa subprograms are not yet supported
 * what are the main reasons for subprograms not to be in Alfa
-* what are the main reasons for subprograms not to be yet implemented in Alfa
-* units with the largest/smallest percentage and number of subprograms in Alfa
+* what are the main reasons for subprograms not to be yet supported in Alfa
+* units with the largest number of subprograms in Alfa
+* units with the largest number of subprograms not in Alfa
 
 A Non-ambiguous Subset of Ada
 -----------------------------
@@ -416,8 +417,8 @@ they are not currently in Alfa. Note that this does not apply to procedures
 from the standard library. It will require a pre-analysis of the standard
 library to define proper contracts.
 
-Loop Invariants
-^^^^^^^^^^^^^^^
+Loop Invariants *(Not Yet Implemented)*
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order for GNATprove to prove formally the properties of interest on
 subprograms with loops, the user should annotate these loops with loop
