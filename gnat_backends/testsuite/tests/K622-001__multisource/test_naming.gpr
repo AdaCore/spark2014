@@ -1,0 +1,12 @@
+project Test_Naming is
+
+   for Source_Files use ();
+
+   package Naming is
+      for Body ("b") use "c.ada" at 4;
+      for Spec ("b") use "c.ada" at 3;
+      for Body ("a") use "c.ada" at 2;
+      for Spec ("a") use "c.ada" at 1;
+   end Naming;
+
+end Test_Naming;
