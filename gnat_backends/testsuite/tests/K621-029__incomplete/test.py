@@ -1,4 +1,4 @@
 from test_support import *
 
-prove(mode="detect")
+gnatprove(opt=["-P", "test.gpr", "--mode=detect"])
 
