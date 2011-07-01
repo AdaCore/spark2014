@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Conversions; use Ada.Characters.Conversions;
+
 package body Outputs is
 
    procedure I  (O : in out Output_Record);
@@ -74,7 +76,8 @@ package body Outputs is
 
    procedure NL (O : in out Output_Record) is
    begin
-      New_Line (O.File);
+      --  Ensure Unix style ending
+      Put (O.File, To_Wide_String (String'(1 => ASCII.LF)));
       O.New_Line := True;
    end NL;
 
@@ -106,7 +109,9 @@ package body Outputs is
    procedure PL (O : in out Output_Record; S : Wide_String) is
    begin
       I (O);
-      Put_Line (O.File, S);
+      Put (O.File, S);
+      --  Ensure Unix style ending
+      Put (O.File, To_Wide_String (String'(1 => ASCII.LF)));
       O.New_Line := True;
    end PL;
 
