@@ -39,11 +39,12 @@ ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
 LIB=install/lib/gnatprove
+EXAMPLES=install/share/examples/gnatprove
 STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
 
-all-nightly: gnat1why gnatprove local-stdlib install-stdlib
+all-nightly: gnat1why gnatprove local-stdlib install-stdlib install-examples
 
 doc:
 	$(MAKE) -C docs/ug latexpdf
@@ -83,6 +84,10 @@ install-stdlib:
            $(STDLIB_TMP)/*__types_vars_body.mlw \
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
 	   $(WHYLIB)/why
+
+install-examples:
+	mkdir -p $(EXAMPLES)
+	cp -r dist-examples/* $(EXAMPLES)
 
 clean:
 	$(MAKE) -C gnat_backends/why clean
