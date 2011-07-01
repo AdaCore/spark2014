@@ -90,6 +90,7 @@ install-examples:
 	cp -r dist-examples/* $(EXAMPLES)
 
 clean:
+	$(MAKE) -C gnat_backends/why/xgen clean
 	$(MAKE) -C gnat_backends/why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean

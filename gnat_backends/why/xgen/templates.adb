@@ -107,7 +107,7 @@ package body Templates is
    begin
       Open_Output (O, Filename);
       Open (Input, In_File, Filename & "-tmpl");
-      while not End_Of_File (Input) loop
+      loop
          declare
             Line : constant String := Get_Line (Input);
          begin
@@ -136,7 +136,12 @@ package body Templates is
                   end if;
                end;
             else
-               PL (O, To_Wide_String (Line));
+               if End_Of_File (Input) then
+                  P (O, To_Wide_String (Line));
+                  exit;
+               else
+                  PL (O, To_Wide_String (Line));
+               end if;
             end if;
          end;
       end loop;
