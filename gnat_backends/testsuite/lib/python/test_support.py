@@ -191,7 +191,7 @@ def gnatprove(opt=["-P", "test.gpr"]):
 
 def prove(opt=[],steps=max_steps, mode="check"):
     """Call gnatprove with standard options"""
-    opt += ["--report=all", "-P", "test.gpr"]
+    opt += ["--report=all", "-P", "test.gpr", "--quiet"]
     opt += ["--steps=%d"%(steps)]
     opt += ["--mode=%s"%(mode)]
     opt += ["-j%d"%(parallel_procs)]
