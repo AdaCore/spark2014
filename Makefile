@@ -55,6 +55,7 @@ doc:
 	$(MAKE) -C docs/ug clean
 
 gnat1why:
+	$(MAKE) -C gnat_backends/why/xgen
 	$(MAKE) -C gnat_backends/why gnat1 gnat2why
 
 gnat2why:
