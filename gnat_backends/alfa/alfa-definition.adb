@@ -2488,13 +2488,21 @@ package body Alfa.Definition is
             else
                declare
                   Field : Node_Id := First_Entity (+Id);
+                  Typ   : Entity_Id;
+
                begin
                   Push_Scope (Id);
 
                   while Present (Field) loop
-                     if Ekind (Field) in Object_Kind then
-                        Mark (Etype (Field));
+                     Typ := Etype (Field);
+
+                     if Ekind (Field) in Object_Kind
+                       and then not Type_Is_In_Alfa (Typ)
+                     then
+                        Mark_Non_Alfa
+                          ("component type", Typ, From => Unique (Typ));
                      end if;
+
                      Next_Entity (Field);
                   end loop;
 
