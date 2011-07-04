@@ -30,8 +30,6 @@ with Call;              use Call;
 
 package body Configuration is
 
-   procedure Read_Command_Line;
-
    ----------
    -- Init --
    ----------
@@ -41,7 +39,6 @@ package body Configuration is
       Proj_Env  : Project_Environment_Access;
       GNAT_Version : GNAT.Strings.String_Access;
    begin
-      Read_Command_Line;
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, Subdir_Name);
@@ -56,7 +53,8 @@ package body Configuration is
 
    procedure Read_Command_Line
    is
-      Config : Command_Line_Configuration;
+      Config           : Command_Line_Configuration;
+      Argument_Present : Boolean := False;
    begin
       --  Install command line config
 
@@ -139,9 +137,41 @@ package body Configuration is
       else
          Abort_With_Message ("report should be one of (all | fail)");
       end if;
-      if Project_File.all = "" then
-         Abort_With_Message ("No project file given, aborting.");
+
+      --  Read the command line arguments in Arg_List and set Argument_Present
+      --  to True if there are any
+
+      loop
+         declare
+            Arg : constant String :=
+               Get_Argument (Do_Expansion => True);
+         begin
+            exit when Arg'Length = 0;
+            Argument_Present := True;
+            File_List.Append (Arg);
+         end;
+      end loop;
+
+      --  Detect the call mode of GNATprove and check for compatibility with
+      --  feature mode
+
+      if Argument_Present then
+         if not (MMode in GP_Alfa_Detection_Mode) then
+            Abort_With_Message ("mode should be one of (detect | force)");
+         end if;
+         if Project_File.all = "" then
+            Call_Mode := GPC_Only_Files;
+         else
+            Call_Mode := GPC_Project_Files;
+         end if;
+      else
+         if Project_File.all = "" then
+            Abort_With_Message ("No project and no source file given.");
+         else
+            Call_Mode := GPC_Project;
+         end if;
       end if;
+
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);

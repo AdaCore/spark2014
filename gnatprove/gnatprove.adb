@@ -48,6 +48,10 @@ procedure Gnatprove is
    function Step_Image (S : Gnatprove_Step) return String is
       (Int_Image (Gnatprove_Step'Pos (S) + 1));
 
+   procedure Simple_Detection_Step;
+   --  When no project file is given, but simple files, run gnat2why and
+   --  nothing else
+
    function Final_Step return Gnatprove_Step is
      (case MMode is
        when GPM_Detect | GPM_Force => GS_Gnat2Why,
@@ -446,6 +450,38 @@ procedure Gnatprove is
       Iterate (Path => "*package_po*.why");
    end Report_VCs;
 
+   ---------------------------
+   -- Simple_Detection_Step --
+   ---------------------------
+
+   procedure Simple_Detection_Step
+   is
+      use String_Lists;
+      Cur    : Cursor := First (File_List);
+      Args   : List := Empty_List;
+      Status : Integer;
+   begin
+      Ch_Dir_Create_If_Needed (String (Subdir_Name));
+      Args.Append ("-I");
+      Args.Append (Stdlib_ALI_Dir);
+      if MMode /= GPM_Prove then
+         Args.Append ("-gnatd.G");
+      end if;
+      if MMode = GPM_Detect then
+         Args.Append ("-gnatd.K");
+      end if;
+      if MMode = GPM_Force then
+         Args.Append ("-gnatd.E");
+      end if;
+      while Has_Element (Cur) loop
+         Args.Append ("../" & Element (Cur));
+         Call_With_Status ("gnat2why", Args, Status, Verbose);
+         Args.Delete_Last;
+         Next (Cur);
+      end loop;
+      GNAT.Directory_Operations.Change_Dir ("..");
+   end Simple_Detection_Step;
+
    ------------------
    -- Text_Of_Step --
    ------------------
@@ -485,8 +521,20 @@ procedure Gnatprove is
       Args   : String_Lists.List := Empty_List;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
-      Args.Append ("-U");
       Args.Append ("-k");
+      if Call_Mode = GPC_Project_Files then
+         declare
+            Cur : Cursor := First (File_List);
+         begin
+            Args.Append ("-u");
+            while Has_Element (Cur) loop
+               Args.Append (Element (Cur));
+               Next (Cur);
+            end loop;
+         end;
+      else
+         Args.Append ("-U");
+      end if;
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
@@ -505,7 +553,14 @@ procedure Gnatprove is
    --  begin processing for Gnatprove
 
 begin
+   Read_Command_Line;
+   if Call_Mode = GPC_Only_Files then
+      Simple_Detection_Step;
+      GNAT.OS_Lib.OS_Exit (0);
+   end if;
+
    Init (Tree);
+
    Proj_Type := Root_Project (Tree);
 
    declare
@@ -523,7 +578,9 @@ begin
             ("There is more than one object directory, aborting.");
       end if;
 
-      Execute_Step (GS_ALI, Project_File.all, Tree);
+      if not (Call_Mode = GPC_Project_Files) then
+         Execute_Step (GS_ALI, Project_File.all, Tree);
+      end if;
 
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 

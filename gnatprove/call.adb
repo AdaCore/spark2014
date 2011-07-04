@@ -26,6 +26,7 @@
 with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with GNAT.Expect;       use GNAT.Expect;
+with GNAT.Directory_Operations;
 
 package body Call is
 
@@ -243,6 +244,20 @@ package body Call is
       My_Cat (File);
    end Cat;
 
+   -----------------------------
+   -- Ch_Dir_Create_If_Needed --
+   -----------------------------
+
+   procedure Ch_Dir_Create_If_Needed (Dir : String) is
+      use GNAT.Directory_Operations;
+   begin
+      Change_Dir (Dir);
+   exception
+      when Directory_Error =>
+         Make_Dir (Dir);
+         Change_Dir (Dir);
+   end Ch_Dir_Create_If_Needed;
+
    ----------------------
    -- For_Line_In_File --
    ----------------------
@@ -264,6 +279,10 @@ package body Call is
       when Ada.IO_Exceptions.End_Error =>
          Close (File_Handle);
    end For_Line_In_File;
+
+   ------------------------
+   -- Free_Argument_List --
+   ------------------------
 
    procedure Free_Argument_List (L : Argument_List)
    is

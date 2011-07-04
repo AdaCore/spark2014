@@ -30,6 +30,7 @@ with GNAT.Strings;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
+with String_Utils;      use String_Utils;
 
 package Configuration is
 
@@ -49,9 +50,37 @@ package Configuration is
    --  True if -d is present. Do not remove temporary files.
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
+   --  The four feature modes of GNATprove:
+   --  * GPM_Detect : Alfa Detection only
+   --  * GPM_Force : Alfa Detection only, output errors for violations of Alfa
+   --  * GPM_Check : Check validity of contracts, no proof of subprogram bodies
+   --  * GPM_Prove : Check validity of contracts, proof of subprogram bodies
+   --  Current restrictions:
+   --    Mode GPM_Prove is undocumented (ie should not appear in help/error
+   --    messages)
+
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
+   type GP_Call_Mode is (GPC_Project, GPC_Only_Files, GPC_Project_Files);
+   --  GNATprove has three different call modes:
+   --    * GPC_Project - The project file mode: In this mode, GNATprove uses
+   --      the provided project file to determine what to compile
+   --    * GPC_OnlyFiles - The files only mode: In this mode, GNATprove does
+   --      not read any project file, and simply compiles the files that have
+   --      been given on the command line
+   --    * GPC_Project_Files - The files with project mode: In this mode,
+   --      GNATprove compiles the files that have been given on the command
+   --      line, but also uses the project file to extract information such as
+   --      compilation arguments, object directories etc.
+   --
+   --  Current restrictions:
+   --    * In GPC_Project mode, GNATprove will attempt to treat all
+   --      source files that belong to the project defined by the project file
+   --    * In GPC_OnlyFiles and GPC_Project_Files call mode, only the feature
+   --    modes GPM_Detect and GPM_Force are available
+
    MMode        : GP_Mode := GPM_Detect;
+   Call_Mode    : GP_Call_Mode;
    MMode_Input  : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
@@ -70,6 +99,8 @@ package Configuration is
    --  The number of steps to try to prove each VC. Specified with --steps=.
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
+   File_List    : String_Lists.List;
+   --  The list of files to be compiled
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
@@ -107,5 +138,7 @@ package Configuration is
 
    procedure Init (Tree : out Project_Tree);
    --  Initialize the project tree.
+
+   procedure Read_Command_Line;
 
 end Configuration;
