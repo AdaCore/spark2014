@@ -68,9 +68,11 @@ package Alfa_Violations is
 
       NIR_Access,           --  access types
       NIR_Ambiguous_Expr,   --  ambiguous expr
+      NIR_Assembly_Lang,    --  assembly language
       NIR_Dealloc,          --  deallocation
       NIR_Dynamic_Alloc,    --  dynamic allocation
       NIR_Exception,        --  exception
+      NIR_Goto,             --  goto
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
@@ -126,9 +128,11 @@ package Alfa_Violations is
 
       NIR_Access           => To_Unbounded_String ("access"),
       NIR_Ambiguous_Expr   => To_Unbounded_String ("ambiguous expr"),
+      NIR_Assembly_Lang    => To_Unbounded_String ("assembly language"),
       NIR_Dealloc          => To_Unbounded_String ("deallocation"),
       NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
       NIR_Exception        => To_Unbounded_String ("exception"),
+      NIR_Goto             => To_Unbounded_String ("goto"),
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),

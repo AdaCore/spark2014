@@ -953,7 +953,7 @@ package body Alfa.Definition is
             Mark_List (Statements (N));
 
          when N_Code_Statement =>
-            Mark_Non_Alfa ("code statement", N, NIR_XXX);
+            Mark_Non_Alfa ("code statement", N, NIR_Assembly_Lang);
 
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
@@ -1038,7 +1038,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("generic declaration", N, NYI_Generic);
 
          when N_Goto_Statement =>
-            Mark_Non_Alfa ("goto statement", N, NIR_XXX);
+            Mark_Non_Alfa ("goto statement", N, NIR_Goto);
 
          when N_Handled_Sequence_Of_Statements =>
             Mark_Handled_Statements (N);

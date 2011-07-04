@@ -121,9 +121,11 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 
 * access: access types and dereferences;
 * ambiguous expr: ambiguous expression;
+* assembly language: assembly language;
 * deallocation: unchecked deallocation;
 * dynamic allocation: dynamic allocation;
 * exception: raising and catching exceptions;
+* goto: goto;
 * indirect call: indirect call;
 * tasking: tasking;
 * unchecked conversion: unchecked conversion;
