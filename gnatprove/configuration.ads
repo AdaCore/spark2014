@@ -32,6 +32,13 @@ with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
 package Configuration is
+
+   Max_Non_Blank_Lines : constant := 6;
+   --  Maximum number of consecutive non blank lines on standard output
+
+   Label_Length : constant := 26;
+   --  Maximum length of label in report. Other characters are discarded.
+
    Verbose      : aliased Boolean;
    --  True if -v switch is present. All executed commands are printed.
    Force        : aliased Boolean;

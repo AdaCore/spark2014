@@ -284,7 +284,8 @@ procedure Gnatprove is
       if not Quiet then
          if MMode = GPM_Detect then
             Put_Line ("**********************************");
-            Cat (Alfa_Report_File);
+            Cat (File                  => Alfa_Report_File,
+                 Cut_Non_Blank_Line_At => Max_Non_Blank_Lines);
             Put_Line ("**********************************");
             Put_Line ("Statistics above are logged in " & Alfa_Report_File);
          else
@@ -456,7 +457,13 @@ procedure Gnatprove is
             return "frame condition computation";
 
          when GS_Gnat2Why =>
-            return "translation to intermediate language";
+            if MMode = GPM_Detect
+              or else MMode = GPM_Force
+            then
+               return "detection of Alfa subprograms";
+            else
+               return "translation to intermediate language";
+            end if;
 
          when GS_Why =>
             return "generation of VCs";

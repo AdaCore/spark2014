@@ -201,17 +201,41 @@ package body Call is
    -- Cat --
    ---------
 
-   procedure Cat (File : String) is
+   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0) is
+
+      Count_Non_Blank_Lines : Natural := 0;
+      First_Line_Skipped    : Boolean := False;
+
       procedure Print_Line (Line : String);
-      --  Print a single line to stdout
+      --  Print a single line to stdout. Skip the line if not blank and count
+      --  of non-blank lines exceeds the positive value (if non-zero) of
+      --  Cut_Non_Blank_Line_At. Instead, prints a line suggesting
+      --  continuation "(...)".
 
       ----------------
       -- Print_Line --
       ----------------
-      procedure Print_Line (Line : String)
-      is
+
+      procedure Print_Line (Line : String) is
       begin
-         Ada.Text_IO.Put_Line (Line);
+         if Is_Blank (Line) then
+            First_Line_Skipped := False;
+            Count_Non_Blank_Lines := 0;
+            Ada.Text_IO.Put_Line (Line);
+
+         elsif Cut_Non_Blank_Line_At > 0
+           and then Count_Non_Blank_Lines > Cut_Non_Blank_Line_At
+         then
+            if not First_Line_Skipped then
+               First_Line_Skipped := True;
+               Ada.Text_IO.Put_Line ("(...)");
+            end if;
+
+         else
+            First_Line_Skipped := False;
+            Count_Non_Blank_Lines := Count_Non_Blank_Lines + 1;
+            Ada.Text_IO.Put_Line (Line);
+         end if;
       end Print_Line;
 
       procedure My_Cat is new For_Line_In_File (Print_Line);

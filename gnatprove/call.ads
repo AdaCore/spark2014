@@ -64,6 +64,6 @@ package Call is
       (File : String);
    --  Do something for each line of a file.
 
-   procedure Cat (File : String);
+   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0);
    --  Print the file to stdout
 end Call;

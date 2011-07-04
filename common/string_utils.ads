@@ -32,10 +32,16 @@ package String_Utils is
    function Ends_With (Str, Suffix : String) return Boolean;
    --  return True when Str ends with Suffix
 
-   function Starts_With (Str, Prefix : String) return Boolean;
-   --  Check if Str starts with Prefix
-
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.
+
+   function Is_Blank (C : Character) return Boolean;
+   --  Determines if C is a blank (space or tab)
+
+   function Is_Blank (S : String) return Boolean;
+   --  Determines if S has only blank characters (space or tab)
+
+   function Starts_With (Str, Prefix : String) return Boolean;
+   --  Check if Str starts with Prefix
 
 end String_Utils;

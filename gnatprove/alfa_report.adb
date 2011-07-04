@@ -23,32 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;             use Ada.Containers;
+with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Ada.Characters.Handling;             use Ada.Characters.Handling;
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Directories;
 with Ada.Text_IO;
 with Ada.Strings.Fixed;
 
-with Call;                                use Call;
+with Call;                    use Call;
 with GNAT.Directory_Operations.Iteration;
-with GNAT.OS_Lib;                         use GNAT.OS_Lib;
+with GNAT.OS_Lib;             use GNAT.OS_Lib;
 
 with Alfa_Violations;
 
-with Configuration;
+with Configuration;           use Configuration;
 
 procedure Alfa_Report is
 
    Total_Cnt        : Natural := 0;
    Already_Alfa_Cnt : Natural := 0;
    Not_Yet_Alfa_Cnt : Natural := 0;
-
-   Label_Length : constant := 26;
 
    type Violation_Count is array (Alfa_Violations.Vkind) of Natural;
    Violation_Cnt : Violation_Count := (others => 0);
@@ -446,12 +444,12 @@ procedure Alfa_Report is
       New_Line (Handle);
       Put_Line (Handle, "Subprograms not in Alfa due to" &
                   " (possibly more than one reason):");
-      Print_NYI_Violations;
+      Print_NIR_Violations;
 
       New_Line (Handle);
       Put_Line (Handle, "Subprograms not yet supported due to" &
                   " (possibly more than one reason):");
-      Print_NIR_Violations;
+      Print_NYI_Violations;
 
       --  statistics per file
 

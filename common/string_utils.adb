@@ -57,6 +57,20 @@ package body String_Utils is
       end if;
    end Int_Image;
 
+   --------------
+   -- Is_Blank --
+   --------------
+
+   function Is_Blank (C : Character) return Boolean is
+   begin
+      return C = ' ' or else C = ASCII.HT;
+   end Is_Blank;
+
+   function Is_Blank (S : String) return Boolean is
+   begin
+      return (for all J in S'Range => Is_Blank (S (J)));
+   end Is_Blank;
+
    -----------------
    -- Starts_With --
    -----------------
