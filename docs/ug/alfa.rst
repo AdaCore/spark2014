@@ -4,50 +4,61 @@ Definition of Alfa
 Rationale
 ---------
 
-Alfa is a subset of Ada 2012, augmented with GNAT-specific extensions. The most
-prominent features (contracts, test-cases) are also available in other Ada
-modes (83, 95, 2005) through GNAT pragmas. Alfa is meant to facilitate the
-expression of behavioral properties on Ada programs, so that these properties
-can be verified either by testing or by formal proof or by a combination
-thereof. Compared to the existing SPARK annotated subset of Ada, Alfa is much
-less constraining, but it does not allow specifying and verifying
-data-and-control coupling properties.
+Alfa is intended to be the largest possible subset of Ada amenable to automatic
+proving. In the context of Ada 2012, aspects are natural means of expressing
+important features such as subprogram contracts or test cases definitions so if
+no other constraints exist, Alfa is best described as a subset of Ada 2012. That
+being said, nothing in Ada 2012 is mandatory and for legacy applications, Alfa
+happens to also offer a subset of other Ada versions (83, 95, 2005). Specific
+GNAT pragmas can be used to replace the important features mentioned earlier.
+
+Alfa is meant to facilitate the expression of functional properties on Ada
+programs, so that these properties can be verified either by testing or by
+formal proof or by a combination thereof. Compared to the existing SPARK
+annotated subset of Ada, Alfa is less constraining, but it does not
+allow specifying and verifying data-and-control coupling properties. In
+the absence of functional property definitions, the parts of an Ada program
+that are in the Alfa subset can still be proven free of runtime errors.
 
 Alfa is supported in the tools GNATtest and GNATprove, aiming respectively at
 unit testing and unit proof of Ada subprograms. Annotations that specify the
-behavior of the program can be executed during a run of the program, either
-during development or tests, and a failure to match the expected behavior
-results then in an error being reported through the exception mechanism. The
-tool GNATtest automates the generation of a test harness and the verification
-that a user-provided test procedure implements a specified formal test-case.
-The same annotations can be analyzed statically with GNATprove to show that the
-program is free from run-time errors and that it follows its expected
-behavior. A crucial feature of GNATprove is that it interprets annotations
+functional behavior of the program can be executed, or not, during a run of the
+program, and a failure to match the expected behavior results then in an error
+being reported at run time through the exception mechanism. The tool GNATtest
+automates the generation of a test harness and the verification that a
+user-provided test procedure implements a specified formal test-case. The same
+annotations can be analyzed statically with GNATprove to show that the program
+is free from run-time errors and that it follows its expected behavior. A
+crucial feature of GNATprove is that it interprets annotations
 exactly like they are interpreted at run-time during tests. In particular,
 their executable semantics includes the verification of run-time checks, which
 can be verified statically with GNATprove.  GNATprove can perform additional
 verifications on the specification of the expected behavior itself, and its
-correspondance to the code.
+correspondence to the code.
 
 Currently, Alfa is only concerned with sequential execution of subprograms. A
 future version of Alfa could include support of tasking with restrictions
 similar to the ones found in Ravenscar or RavenSPARK. The main features from
 Ada absent from Alfa are: exceptions, pointers (access types), controlled types
 and interfaces. Each of these features has the potential to make automatic
-formal verification impossible, hence their rejection. Note that, in many
-cases, ad-hoc data structures based on pointers can be replaced by the use of
-standard Ada containers (vectors, lists, sets, maps, etc.) Although standard
-containers are not in Alfa, we have defined a slightly modified version of
-these targeted at formal verification. These formal containers are implemented
-in the GNAT standard library. These alternative containers are typical of the
-tradeoffs implicit in Alfa: favor automatic formal verification as much as
-possible, at the cost of minor adaptations to the code.
+
+.. comment: (cyrille) I don't understand why interface are in this category.
+
+formal verification very difficult, hence their rejection. Note that, in many
+cases, ad-hoc data structures based on pointers can be replaced by the use
+of standard Ada containers (vectors, lists, sets, maps, etc.) Although the
+implementation of standard containers is not in Alfa, we have defined a
+slightly modified version of these targeted at formal verification. These formal
+containers are implemented in the GNAT standard library. These alternative
+containers are typical of the tradeoffs implicit in Alfa: favor automatic formal
+verification as much as possible, at the cost of minor adaptations to the code.
 
 Alfa is still evolving, so that features not yet supported could be so in the
 future. However, the definition and evolution of Alfa should respect the
 following principles:
 
 1. Annotations are read-only
+.. comment: (cyrille) don't you mean "Annotations are free of side effects"
 
 No writes to global variables are allowed in annotations (contracts,
 assertions, etc.). The possibility of run-time errors in annotations should be
@@ -86,7 +97,7 @@ its contract must be in Alfa. For a subprogram implementation to be in Alfa,
 its specification must be in Alfa, all local declarations must be in Alfa
 (types, variables, subprograms, etc.), all expressions and statements mentioned
 in its body must be in Alfa, and finally all calls in its body must be to
-subprograms partially in Alfa.
+subprograms at least partially in Alfa.
 
 A consequence of this definition is that a subprogram fully in Alfa can only
 call subprograms that are themselves partially or fully in Alfa. A subprogram
@@ -97,6 +108,8 @@ Most formal verification activities performed with GNATprove address
 subprograms that are fully in Alfa. Some activities, which apply to the
 contract of the subprogram only, also address subprograms that are partially in
 Alfa.
+
+.comment: don't we need something about "alfa friendlyness" here?
 
 Automatic Detection of Subprograms in Alfa
 ------------------------------------------
@@ -113,7 +126,7 @@ Summary File
 ^^^^^^^^^^^^
 
 The information of which subprograms are fully in Alfa and which are not, as
-well as whether the features used in subprograms are alread implemented or not,
+well as whether the features used in subprograms are already implemented or not,
 is stored in a file with extension .alfa for review by the user, and to produce
 global :ref:`project statistics`.
 
@@ -130,6 +143,8 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 * tasking: tasking;
 * unchecked conversion: unchecked conversion;
 * unsupported construct: any other unsupported construct.
+
+.. comment: we need a list of other unsupported constructs.
 
 GNATprove outputs which features in Alfa but not yet implemented are used
 [using brackets]:
@@ -211,10 +226,11 @@ Alfa or not yet implemented in Alfa may be followed by a set of features not
 yet implemented, given in brackets, whose implementation would make the
 subprogram in Alfa.
 
-In the example above, P.Set and P.P0.Get are both partially in Alfa only
-because their bodies both contain pointer dereferences. P.P0.P1 is fully in
-Alfa. Since P.Set is partially in Alfa and defined as a local subprogram of
-P.P0, P.P0 is partially in Alfa.
+In the example above, P.Set (unique name: p__set) and P.P0.Get (unique name:
+p__p0__get) are both partially in Alfa because their body both contain pointer
+dereferences. P.P0.P1 (unique name: p__p0__p1) is fully in Alfa. Since P.Set is
+partially in Alfa and defined as a local subprogram of P.P0, P.P0 is partially
+in Alfa.
 
 The purpose of the additional information on features not yet implemented is to
 allow users to experiment and see which features are more beneficial in their
@@ -360,6 +376,9 @@ This other type should have a base type ranging from -10 to 9::
 The bounds of standard scalar types are defined by the GNAT compiler for every
 host/target architecture.
 
+..comment: not clear what a user can make of this section.
+This is not under his control.
+
 No Compiler Permissions
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -368,14 +387,15 @@ correct result for a computation instead of raising a run-time error. In Alfa,
 we reject all such permissions and interpret all computations with the
 strictest meaning.
 
-Pure Specifications
--------------------
+Pure Contract Specifications
+----------------------------
 
-Specifications should have a pure logical meaning and no visible effect on the
-computation, aside from possibly raising an exception at run-time when
-ill-defined (run-time error) or invalid (assertion violation). This is
-guaranteed in Alfa by the restriction that functions should not perform writes
-to global variables.
+Contract specifications and other assertions should have a pure logical meaning
+and no visible effect on the computation, aside from possibly raising an
+exception at run-time when ill-defined (run-time error) or invalid (assertion
+violation). This is guaranteed in Alfa by the restriction that functions should
+not perform writes to global variables since a function call is the only possible
+way of generating side effects within an expression.
 
 Current Definition of Alfa
 --------------------------
@@ -383,13 +403,13 @@ Current Definition of Alfa
 As indicated before, tasking is excluded from Alfa, as well as exceptions,
 pointers (access types), controlled types and interfaces. Features of Ada for
 object-oriented programming and generic programming are included in Alfa:
-tagged types, dispatching, generics. Compared to SPARK, restrictions in Alfa do
+tagged types, dispatching, generics. Restrictions in Alfa do
 not target increase in readability, so use-clause, overloading and renamings
-are allowed for example. Also compared to SPARK, restrictions in Alfa do not
+are allowed for example. Also restrictions in Alfa do not
 constrain control flow, so arbitrary exits from loops and returns in
-subprograms are allowed. Note that these restrictions can be detected with a
-coding style checker like GNATcheck. The following sections go into more
-details about what is or not in Alfa.
+subprograms are allowed. Note that, if desired, these restrictions can be
+detected with a coding style checker like GNATcheck. The following sections
+go into more details about what is or not in Alfa.
 
 Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -428,13 +448,13 @@ invariants. A loop invariant gives information on the state at entry to the
 loop at each iteration. Loop invariants in Alfa consist in the conjunction of
 all assertions that appear at the beginning of the loop body. Loop invariants
 may have to be precise enough to prove the property of interest. For example,
-in order to prove the postcondition of function ``Contains`` below, one has to 
+in order to prove the postcondition of function ``Contains`` below, one has to
 write a precise loop invariant such as the one given below::
 
   function Contains (Table : IntArray; Value : Integer) return Boolean with
-    Post => (if Contains'Result then 
+    Post => (if Contains'Result then
                (for some J in Table'Range => Table (J) = Value)
-	     else 
+	     else
                (for all J in Table'Range => Table (J) /= Value));
 
   function Contains (Table : IntArray; Value : Integer) return Boolean is
@@ -464,7 +484,7 @@ function ``Move`` below, one has to write a loop invariant referring to
   begin
      for Index in Dest'Range loop
         pragma Assert ((for all J in Dest'First .. Index - 1 =>
-                         Dest (J) = Src'Loop_Entry (J)) and 
+                         Dest (J) = Src'Loop_Entry (J)) and
 		       (for all J in Index .. Dest'Last =>
                          Src (J) = Src'Loop_Entry (J)));
 
@@ -486,7 +506,7 @@ reached at execution. As an example, consider the following expression::
 This quantified expression will never raise a run-time error, because the
 test is already false for the first value of the range, ``I = 1``, and the
 execution will stop, with the result value ``False``. However, GNATprove
-requires the expression to be run-timer error free over the entire range,
+requires the expression to be run-time error free over the entire range,
 including ``I = 3``, so there will be an unproved VC for this case.
 
 
