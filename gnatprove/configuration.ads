@@ -52,9 +52,10 @@ package Configuration is
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
    --  The four feature modes of GNATprove:
    --  * GPM_Detect : Alfa Detection only
-   --  * GPM_Force : Alfa Detection only, output errors for violations of Alfa
-   --  * GPM_Check : Check validity of contracts, no proof of subprogram bodies
-   --  * GPM_Prove : Check validity of contracts, proof of subprogram bodies
+   --  * GPM_Force  : Alfa Detection only, output errors for violations of Alfa
+   --  * GPM_Check  : Check consistency of contracts, no proof of subprogram
+   --                 bodies
+   --  * GPM_Prove  : Check validity of contracts, proof of subprogram bodies
    --  Current restrictions:
    --    Mode GPM_Prove is undocumented (ie should not appear in help/error
    --    messages)
