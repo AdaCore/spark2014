@@ -75,7 +75,6 @@ package body Configuration is
          (Config,
           Force'Access,
           "-f",
-          Long_Switch => "--force",
           Help => "Force recompilation / proving of all units and all VCs");
 
       Define_Switch
