@@ -106,7 +106,7 @@ subprograms that are fully in Alfa. Some activities, which apply to the
 contract of the subprogram only, also address subprograms that are partially in
 Alfa.
 
-.. comment: don't we need something about "alfa friendlyness" here?
+..comment: don't we need something about "alfa friendlyness" here?
 
 Automatic Detection of Subprograms in Alfa
 ------------------------------------------
@@ -170,7 +170,9 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * tagged type: tagged type;
 * not yet implemented: any other not yet implemented construct.
 
-As an example, consider the following code::
+As an example, consider the following code:
+
+.. code-block:: ada
 
     package P is
        X : access Boolean;
@@ -244,7 +246,9 @@ subprogram. He may also insert this pragma inside or before a package
 declaration (spec or body) to require that all subprogram declarations in this
 package are in Alfa.
 
-On the following example::
+On the following example:
+
+.. code-block:: ada
 
     package P is
        pragma Annotate (gnatprove, Force);
@@ -369,7 +373,7 @@ This other type should have a base type ranging from -10 to 9::
     type T is -10 .. 1;
 
 The bounds of standard scalar types are defined by the GNAT compiler for every
-host/target architecture. 
+host/target architecture.
 
 .. comment: not clear what a user can make of this section.
    This is not under his control.
@@ -417,7 +421,9 @@ introduced in Ada 2012, allows defining functions whose implementation simply
 returns an expression. For such expression functions to be called in
 annotations in Alfa, they must not have contracts and only call other
 expression functions with the same qualities, and no recursion is allowed
-between them::
+between them:
+
+.. code-block:: ada
 
     function Even (X : Integer) return Boolean is (X mod 2 = 0);
 
@@ -444,7 +450,9 @@ loop at each iteration. Loop invariants in Alfa consist in the conjunction of
 all assertions that appear at the beginning of the loop body. Loop invariants
 may have to be precise enough to prove the property of interest. For example,
 in order to prove the postcondition of function ``Contains`` below, one has to
-write a precise loop invariant such as the one given below::
+write a precise loop invariant such as the one given below:
+
+.. code-block:: ada
 
   function Contains (Table : IntArray; Value : Integer) return Boolean with
     Post => (if Contains'Result then
@@ -470,7 +478,9 @@ When the loop involves modifying a variable, it may be necessary to refer to
 the value of the variable at loop entry. This can be done using the GNAT
 attribute ``'Loop_Entry``. For example, in order to prove the postcondition of
 function ``Move`` below, one has to write a loop invariant referring to
-``Src'Loop_Entry`` such as the one given below::
+``Src'Loop_Entry`` such as the one given below:
+
+.. code-block:: ada
 
   procedure Move (Dest, Src : out IntArray) with
     Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
@@ -494,7 +504,9 @@ Quantified Expressions
 Ada 2012 quantified expressions are a special case with respect to run-time
 errors: the enclosed expression must be run-time error free over the *entire
 range* of the quantification, not only at points that would actually be
-reached at execution. As an example, consider the following expression::
+reached at execution. As an example, consider the following expression:
+
+.. code-block:: ada
 
     (for all I in 1 .. 10 => 1 / (I - 3) > 0)
 

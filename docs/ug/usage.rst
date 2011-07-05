@@ -25,22 +25,24 @@ GNATprove accepts the following options::
 
 ..   prove       Prove subprogram contracts and absence of run-time errors
 
-In modes ``detect`` and ``force``, GNATprove does not read the ALI files to
+In modes ``detect`` and ``force``, GNATprove does not
 compute an accurate set of global variables read and written in each
-subprogram. Hence, its detection of subprograms in Alfa may be slightly more
-optimistic than the reality. When generating VCs, on the contrary, the
+subprogram. Hence, its detection of subprograms in Alfa might be slightly more
+optimistic than the reality. When using mode ``check`` on the contrary, the
 detection is accurate.
 
-Although reporting is only triggered in mode ``check``, all combinations of
+Although --report has only some effect in mode ``check``, all combinations of
 options are allowed.
 
 Output
 ------
 
-In mode ``detect``, GNATprove prints on the standard output the :ref:`project statistics`.
+In mode ``detect``, GNATprove prints only the :ref:`project statistics` on
+the standard output. All other detection information is to be found in the
+``<name>.alfa`` files mentioned below.
 
 In mode ``force``, GNATprove prints on the standard output error messages for
-violations of Alfa, and warning messages for unimplemented features. 
+Alfa subset violations, and warning messages for unimplemented features.
 
 In mode ``check`` and report ``fail``, GNATprove prints on the standard output
 error messages for unproved VCs.
@@ -51,21 +53,25 @@ error messages for unproved VCs, and information messages for proved VCs.
 GNATprove always generates :ref:`project statistics` in file ``gnatprove.out``.
 
 For each unit ``<name>``, GNATprove generates a :ref:`summary file`
-``<name>.alfa`` in the sub-directory ``gnatprove`` of the corresponding 
+``<name>.alfa`` in the sub-directory ``gnatprove`` of the corresponding
 object directory.
 
 Integration in GPS
 ------------------
 
-The current version is not integrated with GPS.
+Although there is currently no specific support for ``gnatprove`` in GPS, it is
+already possible to take advantage of GPS error/warnings browsing as if the
+``gnatprove`` errors and warning were coming from a compiler. For this, you
+simply need to load the project you would like to examine in GPS and launch the
+``gnatprove`` command from the ``Build --> Project --> Custom Build`` menu.
 
 Integration in GNATbench
 ------------------------
 
 The current version is not integrated with GNATbench.
 
-Current Limitations
--------------------
+Known Limitations
+-----------------
 
 In mode ``check``, the current version has the following limitations:
 
