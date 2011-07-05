@@ -1,2 +1,5 @@
-stacks.ads:5:23: warning: type of formal is not yet implemented in Alfa
-stacks.ads:9:09: warning: tagged type is not yet implemented in Alfa
+(detailed info can be found in gnatprove/*.alfa)
+Phase 1 of 2: frame condition computation ...
+Phase 2 of 2: detection of Alfa subprograms ...
+Statistics logged in gnatprove.out
+
