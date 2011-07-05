@@ -261,7 +261,17 @@ procedure Gnatprove is
          Ada.Directories.Compose
             (Proj_Type.Object_Dir.Display_Full_Name,
              "gnatprove.alfad");
-      Success      : Boolean;
+
+      Alfa_Files_Wildcard : constant String :=
+         Ada.Directories.Compose
+           (Containing_Directory => Proj_Type.Object_Dir.Display_Full_Name,
+            Name                 => "*",
+            Extension            => "alfa");
+      --  Alfa files for the current project. Other Alfa files are present in
+      --  object directories of sub-projects, although we do not mention them
+      --  in the message below.
+
+      Success : Boolean;
 
    begin
       Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
@@ -296,7 +306,8 @@ procedure Gnatprove is
             Put_Line ("Statistics logged in " & Alfa_Report_File);
          end if;
 
-         Put_Line ("(detailed info can be found in gnatprove/*.alfa)");
+         Put_Line
+            ("(detailed info can be found in " & Alfa_Files_Wildcard & ")");
       end if;
    end Generate_Alfa_Report;
 
