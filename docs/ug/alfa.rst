@@ -131,7 +131,7 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 * unchecked conversion: unchecked conversion;
 * unsupported construct: any other unsupported construct.
 
-GNATprove outputs which features in Alfa but not yes implemented are used
+GNATprove outputs which features in Alfa but not yet implemented are used
 [using brackets]:
 
 * aggregate: array or record aggregate;
