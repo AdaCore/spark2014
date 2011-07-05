@@ -25,6 +25,12 @@ GNATprove accepts the following options::
 
 ..   prove       Prove subprogram contracts and absence of run-time errors
 
+In modes ``detect`` and ``force``, GNATprove does not read the ALI files to
+compute an accurate set of global variables read and written in each
+subprogram. Hence, its detection of subprograms in Alfa may be slightly more
+optimistic than the reality. When generating VCs, on the contrary, the
+detection is accurate.
+
 Although reporting is only triggered in mode ``check``, all combinations of
 options are allowed.
 

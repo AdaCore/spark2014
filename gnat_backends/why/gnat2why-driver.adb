@@ -136,99 +136,103 @@ package body Gnat2Why.Driver is
          Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
       end if;
 
-      --  Compute the frame condition. This starts with identifying ALI
-      --  files for the current unit and all dependent (with'ed) units.
-      --  Then Alfa information is loaded from all these files. Finally the
-      --  local Alfa information is propagated to get the frame condition.
+      if Detect_Or_Force_Mode then
+         Alfa.Frame_Conditions.Set_Ignore_Errors (True);
 
-      Initialize_ALI;
-      Initialize_ALI_Source;
+      else
+         --  Compute the frame condition. This starts with identifying ALI
+         --  files for the current unit and all dependent (with'ed) units.
+         --  Then Alfa information is loaded from all these files. Finally the
+         --  local Alfa information is propagated to get the frame condition.
 
-      --  Fill in table ALIs with all dependent units
+         Initialize_ALI;
+         Initialize_ALI_Source;
 
-      Read_Library_Info (Main_Lib_File, Text);
+         --  Fill in table ALIs with all dependent units
 
-      if Text = null then
-         --  No such ALI file
+         Read_Library_Info (Main_Lib_File, Text);
 
-         Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
-                      " does not exist");
-         Write_Eol;
+         if Text = null then
+            --  No such ALI file
 
-         raise Terminate_Program;
-      end if;
+            Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
+                         " does not exist");
+            Write_Eol;
 
-      Main_Lib_Id := Scan_ALI
-        (F                => Main_Lib_File,
-         T                => Text,
-         Ignore_ED        => False,
-         Err              => False,
-         Ignore_Errors    => Debug_Flag_I,
-         Directly_Scanned => True);
-      Free (Text);
-      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => Detect_Or_Force_Mode);
+            raise Terminate_Program;
+         end if;
 
-      --  Quit if some ALI files are missing
+         Main_Lib_Id := Scan_ALI
+           (F                => Main_Lib_File,
+            T                => Text,
+            Ignore_ED        => False,
+            Err              => False,
+            Ignore_Errors    => Debug_Flag_I,
+            Directly_Scanned => True);
+         Free (Text);
+         Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => False);
 
-      if Binderr.Errors_Detected > 0
-        and then not Detect_Or_Force_Mode
-      then
-         raise Terminate_Program;
-      end if;
+         --  Quit if some ALI files are missing
 
-      --  Load Alfa information from ALIs for all dependent units
+         if Binderr.Errors_Detected > 0 then
+            raise Terminate_Program;
+         end if;
 
-      for Index in ALIs.First .. ALIs.Last loop
-         Load_Alfa (Name_String (Name_Id
-           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
-      end loop;
+         --  Load Alfa information from ALIs for all dependent units
 
-      --  Write Dependency file
-      Open_Current_File (Base_Name & ".d");
-      P (Current_File, Base_Name & "__package.mlw: ");
-      for Index in ALIs.First .. ALIs.Last loop
-         P (Current_File, " ");
-         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
-      end loop;
-      --  Write dependencies to all other units
-      declare
-         AR : constant ALIs_Record := ALIs.Table (Main_Lib_Id);
-      begin
-         for Id in AR.First_Sdep .. AR.Last_Sdep loop
-            declare
-               S : constant Sdep_Record := Sdep.Table (Id);
-            begin
-               if not S.Dummy_Entry then
-                  declare
-                     Name : constant String :=
-                        Get_Name_String (Full_Source_Name ((S.Sfile)));
-                  begin
-                     if not Ends_With (Name, "system.ads") then
-                        P (Current_File, " ");
-                        P (Current_File, Name);
-                     end if;
-                  end;
-               end if;
-            end;
+         for Index in ALIs.First .. ALIs.Last loop
+            Load_Alfa (Name_String (Name_Id
+              (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
          end loop;
-      end;
 
-      NL (Current_File);
-      Close_Current_File;
+         --  Write Dependency file
+         Open_Current_File (Base_Name & ".d");
+         P (Current_File, Base_Name & "__package.mlw: ");
+         for Index in ALIs.First .. ALIs.Last loop
+            P (Current_File, " ");
+            P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
+         end loop;
+         --  Write dependencies to all other units
+         declare
+            AR : constant ALIs_Record := ALIs.Table (Main_Lib_Id);
+         begin
+            for Id in AR.First_Sdep .. AR.Last_Sdep loop
+               declare
+                  S : constant Sdep_Record := Sdep.Table (Id);
+               begin
+                  if not S.Dummy_Entry then
+                     declare
+                        Name : constant String :=
+                                Get_Name_String (Full_Source_Name ((S.Sfile)));
+                     begin
+                        if not Ends_With (Name, "system.ads") then
+                           P (Current_File, " ");
+                           P (Current_File, Name);
+                        end if;
+                     end;
+                  end if;
+               end;
+            end loop;
+         end;
 
-      --  Compute the frame condition from raw Alfa information
+         NL (Current_File);
+         Close_Current_File;
 
---        Put_Line ("");
---        Put_Line ("## Before propagation ##");
---        Put_Line ("");
---        Display_Maps;
+         --  Compute the frame condition from raw Alfa information
 
-      Propagate_Through_Call_Graph (Ignore_Errors => Detect_Or_Force_Mode);
+         --        Put_Line ("");
+         --        Put_Line ("## Before propagation ##");
+         --        Put_Line ("");
+         --        Display_Maps;
 
---        Put_Line ("");
---        Put_Line ("## After propagation ##");
---        Put_Line ("");
---        Display_Maps;
+         Propagate_Through_Call_Graph (Ignore_Errors => False);
+
+         --        Put_Line ("");
+         --        Put_Line ("## After propagation ##");
+         --        Put_Line ("");
+         --        Display_Maps;
+      end if;
+
       --  Mark all compilation units with "in Alfa / not in Alfa" marks, in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always

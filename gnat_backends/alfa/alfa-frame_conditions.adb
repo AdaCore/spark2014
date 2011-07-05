@@ -729,4 +729,13 @@ package body Alfa.Frame_Conditions is
       end;
    end Set_Default_To_Empty;
 
+   -----------------------
+   -- Set_Ignore_Errors --
+   -----------------------
+
+   procedure Set_Ignore_Errors (Ignore_Errors : Boolean) is
+   begin
+      Propagate_Error_For_Missing_Scope := not Ignore_Errors;
+   end Set_Ignore_Errors;
+
 end Alfa.Frame_Conditions;
