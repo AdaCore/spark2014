@@ -129,6 +129,7 @@ procedure Gnatprove is
          Compiler_Args.Prepend ("-v");
       else
          Compiler_Args.Prepend ("-q");
+         Compiler_Args.Prepend ("-ws");
       end if;
       if Parallel > 1 then
          Compiler_Args.Prepend ("-j" & Int_Image (Parallel));
@@ -167,6 +168,10 @@ procedure Gnatprove is
 
       if Force then
          Args.Append ("-f");
+      end if;
+
+      if not Verbose then
+         Args.Append ("-q");
       end if;
 
       --  Keep going after a compilation error in 'detect' and 'force' modes

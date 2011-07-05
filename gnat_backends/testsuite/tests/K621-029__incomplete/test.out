@@ -19,7 +19,5 @@ Units with the largest number of subprograms in Alfa:
 Units with the largest number of subprograms not in Alfa:
 cannot generate code for file x.ads (package spec)
 cannot generate code for file x.ads (package spec)
-gcc -c -gnat12 -gnatc -gnatd.F -I- -gnatA x.ads
-gcc -c -gnat12 -gnatc -gnatd.F -I- -gnatA y.adb
 gnatmake: "x.ads" compilation error
 gprbuild: *** compilation phase failed

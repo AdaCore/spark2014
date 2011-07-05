@@ -1,0 +1,41 @@
+diff --git src/ltyping.ml src/ltyping.ml
+index d6c837d..dd91e06 100644
+--- src/ltyping.ml
++++ src/ltyping.ml
+@@ -526,13 +526,10 @@ let check_effect loc env e =
+ 
+ (* warns if a ref occuring in a predicate is not mentioned in the effect,
+    and adds it as read to the effect *)
+-let warn_refs loc env p =
++let warn_refs _ env p =
+   Idset.fold
+     (fun id ef ->
+        if not (Effect.is_read ef id) then begin
+-	 wprintf loc "mutable %a is not declared in effect; added as read\n"
+-	   Ident.print id;
+-	 if werror then exit 1;
+ 	 Effect.add_read id ef
+        end else
+ 	 ef)
+diff --git src/pretty.ml src/pretty.ml
+index fa7f846..62f7603 100644
+--- src/pretty.ml
++++ src/pretty.ml
+@@ -325,7 +325,6 @@ let output_file ~ergo f =
+ *)
+ 
+ let output_files f =
+-  eprintf "Starting Multi-Why output with basename %s@." f;
+   let po = ref 0 in
+   print_in_file
+     (fun ctxfmt ->
+@@ -340,8 +339,7 @@ let output_files f =
+ 		  print_in_file (fun fmt -> print_trace fmt id ((*loc,*)expl)) ftr
+ 	    | d -> 
+ 		decl ctxfmt d))
+-    (f ^ "_ctx.why");
+-  eprintf "Multi-Why output done@."
++    (f ^ "_ctx.why")
+   
+ let push_or_output_decl = 
+   let po = ref 0 in 

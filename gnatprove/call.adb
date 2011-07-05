@@ -118,9 +118,7 @@ package body Call is
                Status    => Local_Status'Access,
                Err_To_Out => True);
       begin
-         if Verbose or else Local_Status /= 0 then
-            Ada.Text_IO.Put_Line (S);
-         end if;
+         Ada.Text_IO.Put_Line (S);
          Free_Argument_List (Arguments);
       end;
       Status := Local_Status;
@@ -167,15 +165,13 @@ package body Call is
                Status    => Status'Access,
                Err_To_Out => True);
       begin
-         if Verbose or else Status /= 0 then
-            Ada.Text_IO.Put (S);
-            if Status /= 0 then
-               Print_Command_Line (Command, Arguments);
-               Ada.Text_IO.Put_Line (" failed.");
-               GNAT.OS_Lib.OS_Exit (1);
-            else
-               Ada.Text_IO.Put_Line ("");
-            end if;
+         Ada.Text_IO.Put (S);
+         if Status /= 0 then
+            Print_Command_Line (Command, Arguments);
+            Ada.Text_IO.Put_Line (" failed.");
+            GNAT.OS_Lib.OS_Exit (1);
+         else
+            Ada.Text_IO.Put_Line ("");
          end if;
 
          Success := Status = 0;
