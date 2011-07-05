@@ -6,11 +6,12 @@ Rationale
 
 Alfa is intended to be the largest possible subset of Ada amenable to automatic
 proving. In the context of Ada 2012, aspects are natural means of expressing
-important features such as subprogram contracts or test cases definitions so if
-no other constraints exist, Alfa is best described as a subset of Ada 2012. That
-being said, nothing in Ada 2012 is mandatory and for legacy applications, Alfa
-happens to also offer a subset of other Ada versions (83, 95, 2005). Specific
-GNAT pragmas can be used to replace the important features mentioned earlier.
+important features such as subprogram contracts or test case definitions, so in
+that context, Alfa is best described as a subset of Ada 2012. That being said,
+nothing from Ada 2012 is essential for Alfa, and in particular for legacy
+applications, Alfa can be described as a subset of other Ada versions (83, 95,
+2005). Specific GNAT pragmas can be used to replace the important features
+mentioned earlier.
 
 Alfa is meant to facilitate the expression of functional properties on Ada
 programs, so that these properties can be verified either by testing or by
@@ -18,7 +19,7 @@ formal proof or by a combination thereof. Compared to the existing SPARK
 annotated subset of Ada, Alfa is less constraining, but it does not
 allow specifying and verifying data-and-control coupling properties. In
 the absence of functional property definitions, the parts of an Ada program
-that are in the Alfa subset can still be proven free of runtime errors.
+that are in the Alfa subset can still be proven free of run-time errors.
 
 Alfa is supported in the tools GNATtest and GNATprove, aiming respectively at
 unit testing and unit proof of Ada subprograms. Annotations that specify the
@@ -30,7 +31,7 @@ user-provided test procedure implements a specified formal test-case. The same
 annotations can be analyzed statically with GNATprove to show that the program
 is free from run-time errors and that it follows its expected behavior. A
 crucial feature of GNATprove is that it interprets annotations
-exactly like they are interpreted at run-time during tests. In particular,
+exactly like they are interpreted at run time during tests. In particular,
 their executable semantics includes the verification of run-time checks, which
 can be verified statically with GNATprove.  GNATprove can perform additional
 verifications on the specification of the expected behavior itself, and its
@@ -39,11 +40,8 @@ correspondence to the code.
 Currently, Alfa is only concerned with sequential execution of subprograms. A
 future version of Alfa could include support of tasking with restrictions
 similar to the ones found in Ravenscar or RavenSPARK. The main features from
-Ada absent from Alfa are: exceptions, pointers (access types), controlled types
-and interfaces. Each of these features has the potential to make automatic
-
-.. comment: (cyrille) I don't understand why interface are in this category.
-
+Ada absent from Alfa are: exceptions, pointers (access types) and controlled
+types. Each of these features has the potential to make automatic
 formal verification very difficult, hence their rejection. Note that, in many
 cases, ad-hoc data structures based on pointers can be replaced by the use
 of standard Ada containers (vectors, lists, sets, maps, etc.) Although the
@@ -57,8 +55,7 @@ Alfa is still evolving, so that features not yet supported could be so in the
 future. However, the definition and evolution of Alfa should respect the
 following principles:
 
-1. Annotations are read-only
-.. comment: (cyrille) don't you mean "Annotations are free of side effects"
+1. Annotations are free of side effects
 
 No writes to global variables are allowed in annotations (contracts,
 assertions, etc.). The possibility of run-time errors in annotations should be
@@ -109,7 +106,7 @@ subprograms that are fully in Alfa. Some activities, which apply to the
 contract of the subprogram only, also address subprograms that are partially in
 Alfa.
 
-.comment: don't we need something about "alfa friendlyness" here?
+.. comment: don't we need something about "alfa friendlyness" here?
 
 Automatic Detection of Subprograms in Alfa
 ------------------------------------------
@@ -143,8 +140,6 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 * tasking: tasking;
 * unchecked conversion: unchecked conversion;
 * unsupported construct: any other unsupported construct.
-
-.. comment: we need a list of other unsupported constructs.
 
 GNATprove outputs which features in Alfa but not yet implemented are used
 [using brackets]:
@@ -374,10 +369,10 @@ This other type should have a base type ranging from -10 to 9::
     type T is -10 .. 1;
 
 The bounds of standard scalar types are defined by the GNAT compiler for every
-host/target architecture.
+host/target architecture. 
 
-..comment: not clear what a user can make of this section.
-This is not under his control.
+.. comment: not clear what a user can make of this section.
+   This is not under his control.
 
 No Compiler Permissions
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -392,10 +387,10 @@ Pure Contract Specifications
 
 Contract specifications and other assertions should have a pure logical meaning
 and no visible effect on the computation, aside from possibly raising an
-exception at run-time when ill-defined (run-time error) or invalid (assertion
+exception at run time when ill-defined (run-time error) or invalid (assertion
 violation). This is guaranteed in Alfa by the restriction that functions should
-not perform writes to global variables since a function call is the only possible
-way of generating side effects within an expression.
+not perform writes to global variables since a function call is the only
+possible way of generating side effects within an expression.
 
 Current Definition of Alfa
 --------------------------
