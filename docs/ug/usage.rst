@@ -17,7 +17,7 @@ GNATprove accepts the following options::
    --mode=       Main mode
        detect      Detect and output Alfa information (default)
        force       Output errors for violations of Alfa (warn unimplemented)
-       check       Check validity of contracts
+       check       Check consistency of contracts
 
    --report=     Control reporting
        fail        Report failures to prove VCs (default)
