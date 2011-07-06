@@ -94,7 +94,7 @@ multiplication:
 
        return Before_Tax - (Before_Tax * Rate) / 100;
 
-Then, GNATprove's output shows that the subprogram is supported:
+Then, GNATprove's output shows that the subprogram is supported::
 
     Subprograms in Alfa       : 100% (1/1)
       ... already supported   : 100% (1/1)
