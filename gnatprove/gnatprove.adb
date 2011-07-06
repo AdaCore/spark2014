@@ -40,6 +40,7 @@ with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with Configuration;     use Configuration;
 
 with Ada.Text_IO;       use Ada.Text_IO;
+with System.OS_Lib;
 
 procedure Gnatprove is
 
@@ -267,11 +268,28 @@ procedure Gnatprove is
             (Proj_Type.Object_Dir.Display_Full_Name,
              "gnatprove.alfad");
 
+      function Append_To_Dir_Name (Dirname, Filename : String) return String;
+
+      ------------------------
+      -- Append_To_Dir_Name --
+      ------------------------
+
+      function Append_To_Dir_Name (Dirname, Filename : String) return String is
+         use System.OS_Lib;
+      begin
+         if Dirname = "" then
+            return Filename;
+         elsif Dirname (Dirname'Last) = Directory_Separator then
+            return Dirname & Filename;
+         else
+            return Dirname & Directory_Separator & Filename;
+         end if;
+      end Append_To_Dir_Name;
+
       Alfa_Files_Wildcard : constant String :=
-         Ada.Directories.Compose
-           (Containing_Directory => Proj_Type.Object_Dir.Display_Full_Name,
-            Name                 => "*",
-            Extension            => "alfa");
+         Append_To_Dir_Name
+           (Dirname  => Proj_Type.Object_Dir.Display_Full_Name,
+            Filename => "*.alfa");
       --  Alfa files for the current project. Other Alfa files are present in
       --  object directories of sub-projects, although we do not mention them
       --  in the message below.
