@@ -40,6 +40,22 @@ package body Configuration is
    is
       Proj_Env  : Project_Environment_Access;
       GNAT_Version : GNAT.Strings.String_Access;
+
+      function Is_File_Of_Project (S : String) return Boolean;
+
+      ------------------------
+      -- Is_File_Of_Project --
+      ------------------------
+
+      function Is_File_Of_Project (S : String) return Boolean
+      is
+      begin
+         return No_Project /=
+                Info
+                  (Tree,
+                   GNATCOLL.VFS.Create (Filesystem_String (S))).Project;
+      end Is_File_Of_Project;
+
    begin
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
@@ -47,6 +63,27 @@ package body Configuration is
       Tree.Load
         (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
          Proj_Env);
+
+      --  Check if the files given on the command line are part of the project
+
+      if Call_Mode = GPC_Project_Files then
+         declare
+            use String_Lists;
+            Cur : Cursor := First (File_List);
+         begin
+            while Has_Element (Cur) loop
+               declare
+                  S : constant String := Element (Cur);
+               begin
+                  if not (Is_File_Of_Project (S)) then
+                     Abort_With_Message ("not a file of this project: " & S);
+                  end if;
+                  Next (Cur);
+               end;
+            end loop;
+         end;
+      end if;
+
    end Init;
 
    -----------------------
