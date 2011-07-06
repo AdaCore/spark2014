@@ -886,6 +886,13 @@ package body Alfa.Definition is
                   A (V).Include (+To);
                end if;
             end loop;
+
+         --  If From is from a generic instantiation, then mark the violation
+         --  as being the current lack of support for generics.
+
+         elsif Instantiation_Depth (Sloc (+From)) > 0 then
+            A (NYI_Generic).Include (+To);
+
          else
             A (NIR_XXX).Include (+To);
          end if;
@@ -1815,6 +1822,12 @@ package body Alfa.Definition is
                   Error_Msg_F (Complete_Error_Msg (Msg, V), N);
                end if;
             end loop;
+
+         --  If From is from a generic instantiation, then mark the violation
+         --  as being the current lack of support for generics.
+
+         elsif Instantiation_Depth (Sloc (+From)) > 0 then
+            Error_Msg_F (Complete_Error_Msg (Msg, NYI_Generic), N);
 
          else
             Error_Msg_F (Complete_Error_Msg (Msg, NIR_XXX), N);
