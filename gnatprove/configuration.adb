@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO;
+
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.OS_Lib;
 
@@ -173,6 +175,11 @@ package body Configuration is
 
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
+         GNAT.OS_Lib.OS_Exit (1);
+      when Invalid_Parameter =>
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "No parameter given to switch -" & Full_Switch);
          GNAT.OS_Lib.OS_Exit (1);
    end Read_Command_Line;
 
