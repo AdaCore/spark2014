@@ -48,7 +48,9 @@ package Configuration is
    --  True if -q is present. Do not print on standard output.
    Debug        : aliased Boolean;
    --  True if -d is present. Do not remove temporary files.
-
+   Only_Given   : aliased Boolean;
+   --  True if -u is present. Only compile/prove given files
+   --
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
    --  The four feature modes of GNATprove:
    --  * GPM_Detect : Alfa Detection only
@@ -79,6 +81,9 @@ package Configuration is
    --      source files that belong to the project defined by the project file
    --    * In GPC_OnlyFiles and GPC_Project_Files call mode, only the feature
    --    modes GPM_Detect and GPM_Force are available
+
+   subtype GP_Files_Given is
+      GP_Call_Mode range GPC_Only_Files .. GPC_Project_Files;
 
    MMode        : GP_Mode := GPM_Detect;
    Call_Mode    : GP_Call_Mode;

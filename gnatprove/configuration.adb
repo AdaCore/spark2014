@@ -118,6 +118,12 @@ package body Configuration is
 
       Define_Switch
          (Config,
+          Only_Given'Access,
+          "-u",
+          Help => "Unique compilation - only compile/prove the given files");
+
+      Define_Switch
+         (Config,
           Quiet'Access,
           "-q",
           Long_Switch => "--quiet",
@@ -231,6 +237,12 @@ package body Configuration is
                Next (Cur);
             end loop;
          end;
+      end if;
+
+      if Call_Mode in GP_Files_Given and then not Only_Given then
+         Abort_With_Message
+            ("Proving files with dependencies is unsupported - " &
+             "pass option '-u' to compile/prove only the given files");
       end if;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
