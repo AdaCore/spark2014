@@ -210,6 +210,28 @@ package body Configuration is
          end if;
       end if;
 
+      --  If files are given on command line (mode GPC_Only_Files or
+      --  GPC_Project_Files), we need to check if they exist. When the mode is
+      --  GPC_Project_Files, this is done when charging the project.
+      --  Otherwise, we do it here.
+
+      if Call_Mode = GPC_Only_Files then
+         declare
+            use String_Lists;
+            Cur : Cursor := First (File_List);
+         begin
+            while Has_Element (Cur) loop
+               declare
+                  S : constant String := Element (Cur);
+               begin
+                  if not (Ada.Directories.Exists (S)) then
+                     Abort_With_Message ("file does not exist: " & S);
+                  end if;
+               end;
+               Next (Cur);
+            end loop;
+         end;
+      end if;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
