@@ -49,11 +49,10 @@ package body Configuration is
 
       function Is_File_Of_Project (S : String) return Boolean
       is
+         F : constant Virtual_File :=
+            GNATCOLL.VFS.Create_From_Base (Filesystem_String (S));
       begin
-         return No_Project /=
-                Info
-                  (Tree,
-                   GNATCOLL.VFS.Create (Filesystem_String (S))).Project;
+         return (Info (Tree, F).Project /= No_Project);
       end Is_File_Of_Project;
 
    begin
