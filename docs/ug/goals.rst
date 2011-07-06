@@ -5,6 +5,8 @@ GNATprove generates Verification Conditions (VCs) whose proof ensures that some
 property holds on the source program. Such VCs can be generated to ensure
 different high-level properties of the code, annotations and their combination.
 
+.. _completeness of preconditions:
+
 Completeness of Preconditions
 -----------------------------
 
