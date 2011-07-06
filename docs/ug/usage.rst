@@ -10,7 +10,7 @@ Command-line Usage
 
 GNATprove is executed with the following command line::
 
-   gnatprove -P <project_file>.gpr
+   gnatprove -P <project_file>.gpr <optional_list_of_files>
 
 GNATprove accepts the following options::
 
@@ -23,6 +23,8 @@ GNATprove accepts the following options::
        fail        Report failures to prove VCs (default)
        all         Report all results of proving VCs
 
+   -u            Unique compilation, only consider the given files
+
 ..   prove       Prove subprogram contracts and absence of run-time errors
 
 In modes ``detect`` and ``force``, GNATprove does not
@@ -33,6 +35,10 @@ detection is accurate.
 
 Although --report has only some effect in mode ``check``, all combinations of
 options are allowed.
+
+When given a list of files, GNATprove will consider this list of files and all
+its dependencies correctly. With option ``-u``, the dependencies are not
+considered, only the given files themselves.
 
 Output
 ------
@@ -88,3 +94,6 @@ not supported. Instead, use ``for Local_Configuration_Pragmas use
 
 Defining multiple units in the same file is not supported. Instead, define each
 unit in a separate file.
+
+Specifying files explicitly when calling GNATprove is only supported in
+combination with switch ``-u``, and only in modes ``detect`` and ``force``.
