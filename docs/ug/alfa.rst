@@ -106,7 +106,7 @@ subprograms that are fully in Alfa. Some activities, which apply to the
 contract of the subprogram only, also address subprograms that are partially in
 Alfa.
 
-..comment: don't we need something about "alfa friendlyness" here?
+.. comment: don't we need something about "alfa friendlyness" here?
 
 Automatic Detection of Subprograms in Alfa
 ------------------------------------------

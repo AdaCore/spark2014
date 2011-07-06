@@ -2,8 +2,9 @@ Verification Goals
 ==================
 
 GNATprove generates Verification Conditions (VCs) whose proof ensures that some
-property holds on the source program. Such VCs can be generated to ensure
-different high-level properties of the code, annotations and their combination.
+property holds on the source program. Such VCs are generated for functional
+properties expressed as annotations but also to ensure different high-level
+properties of the code described in the subsequent sections.
 
 .. _completeness of preconditions:
 
@@ -13,14 +14,16 @@ Completeness of Preconditions
 This is currently the only verification activity available with GNATprove, in
 mode ``check``. It consists in verifying that preconditions of subprograms can
 never raise a run-time error, whatever the calling context. In order to get
-such a good property on the preconditions he writes, the user should in general
+such a good property on the preconditions, the user should in general
 guard all expressions which may raise a ``Constraint_Error`` in Ada, such as
 array accesses and arithmetic operations.
 
 These guards may take the form desired by the user. In particular, no guard is
 necessary if the operation cannot raise a run-time error, e.g. due to the
 ranges of variables involved. As an example, consider the following subprogram
-specifications::
+specifications:
+
+.. code-block:: ada
 
    procedure Not_Guarded (X, Y : Integer) with
      Pre => X / Y > 0;
@@ -64,17 +67,12 @@ not contain violations of the following checks:
 * array bound check
 * division by zero check
 
-In order to prove such VCs, the user may have to write loop invariants, for
-which specific VCs are generated, to prove that the loop invariant is initially
-valid (*loop invariant initiation*) and that it is preserved through the loop
-(*loop invariant preservation*).
-
 Functional Verification *(In Progress)*
 -------------------------------------
 
 GNATprove generates VCs to prove that all subprograms called in the code of a
-subprogram analyzed have their precondition satisfied at the point of call, and
-that the postcondition of the subprogram analyzed is satisfied.
+subprogram analyzed have their precondition satisfied at the point of call. It
+also VCs to prove that the postcondition of the subprogram analyzed is satisfied.
 
 In order to prove such VCs, the user may have to write loop invariants, for
 which specific VCs are generated, to prove that the loop invariant is initially
@@ -99,7 +97,9 @@ non-redundant, that is, no part of the annotation should be trivially true or
 false in the context of the complete annotation. Consider the following
 specification::
 
-   procedure Q (X, Y : in out Integer) with 
+.. code-block:: ada
+
+   procedure Q (X, Y : in out Integer) with
      Pre  => X > 0 and X > 0;
 
 Here, the programmer mistyped ``X`` for ``Y``, which makes the precondition
@@ -107,7 +107,9 @@ redundant. At worst, the annotation may be tautological (always true), which
 makes it much easier to prove, and also completely useless to express anything
 interesting about a subprogram. Consider the following specification::
 
-   function Max (X, Y : Integer) return Integer with 
+.. code-block:: ada
+
+   function Max (X, Y : Integer) return Integer with
      Post => (if X < Y then Max'Result = Y)
               or (if X >= Y then Max'Result = X);
 
@@ -116,7 +118,7 @@ This postcondition could be read as "if ``X`` is less than ``Y``, then function
 ``Y``, ``Max`` returns ``X``". The problem is that this postcondition is always
 true, whatever function ``Max`` returns. To see it, consider the abstract form
 of the postcondition
-  
+
   (if A then B) or (if (not A) then C)
 
 It can be rewritten as
@@ -138,7 +140,9 @@ A logical annotation (precondition, postcondition, assertion) should always be
 consistent, that is, is should not be always false. Consider the following
 specification::
 
-   procedure P (X, Y : in out Integer) with 
+.. code-block:: ada
+
+   procedure P (X, Y : in out Integer) with
      Pre  => X <= 0 and X > 0;
 
 Here, the programmer mistyped ``X`` for ``Y``, which makes the precondition
@@ -158,6 +162,8 @@ subprogram can possibly (maybe not always) deliver a proper service. This means
 that, given an input respecting the precondition, there should be a possible
 output respecting the postcondition. If this is not the case, then the
 subprogram is unimplementable. Consider the following specification::
+
+.. code-block:: ada
 
    procedure Compute (X : in Integer; Y : out Integer) with
      Post => (if X >= 0 then Y = 1) and (if X <= 0 then Y = -1);
@@ -183,6 +189,8 @@ an abstraction of the subprogram's behavior. But if some code is useless to
 establish the subprogram's postcondition, the contract is either wrong or
 incomplete. To illustrate the issue, consider the following procedure sketch::
 
+.. code-block:: ada
+
    procedure P (X : Integer) with
      Pre => (...),
      Post => (if X = 0 then ...);
@@ -199,7 +207,7 @@ incomplete. To illustrate the issue, consider the following procedure sketch::
 Here, the problem is that the contract only states the behavior of the
 procedure when ``X`` is equal to zero, but not what happens when this is
 not the case. This means that the entire ``else`` branch does not
-contribute to establishing the postcondition. 
+contribute to establishing the postcondition.
 
 GNATprove will report this situation as a warning, indicating which portions of
 the code do not contribute to the subprogram contract. The programmer can then
@@ -208,6 +216,8 @@ portion of the code, or accept the warning.
 
 Another case of incomplete specifications is illustrated by the following
 simple program::
+
+.. code-block:: ada
 
    procedure Full_Stop with
      Pre  => (...),
