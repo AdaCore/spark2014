@@ -343,6 +343,9 @@ package body Alfa.Definition is
    -- Local Subprograms --
    -----------------------
 
+   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
+   --  Compute the instantiation Depth of Id
+
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code as in Alfa / not in Alfa
 
@@ -890,7 +893,7 @@ package body Alfa.Definition is
          --  If From is from a generic instantiation, then mark the violation
          --  as being the current lack of support for generics.
 
-         elsif Instantiation_Depth (Sloc (+From)) > 0 then
+         elsif Safe_Instantiation_Depth (From) > 0 then
             A (NYI_Generic).Include (+To);
 
          else
@@ -1826,7 +1829,7 @@ package body Alfa.Definition is
          --  If From is from a generic instantiation, then mark the violation
          --  as being the current lack of support for generics.
 
-         elsif Instantiation_Depth (Sloc (+From)) > 0 then
+         elsif Safe_Instantiation_Depth (From) > 0 then
             Error_Msg_F (Complete_Error_Msg (Msg, NYI_Generic), N);
 
          else
@@ -2695,6 +2698,21 @@ package body Alfa.Definition is
                       Is_Body    => Is_Body,
                       Is_Logic   => False);
    end Push_Scope;
+
+   ------------------------------
+   -- Safe_Instantiation_Depth --
+   ------------------------------
+
+   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int
+   is
+      S : constant Source_Ptr := Sloc (+Id);
+   begin
+      if S /= Standard_ASCII_Location then
+         return Instantiation_Depth (S);
+      else
+         return 0;
+      end if;
+   end Safe_Instantiation_Depth;
 
    -----------------------------
    -- Create_Alfa_Output_File --
