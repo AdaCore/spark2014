@@ -79,8 +79,8 @@ procedure Gnatprove is
        Proj         : Project_Tree);
 
    procedure Generate_Alfa_Report
-      (Proj_Type : Project_Type;
-       Obj_Path : File_Array);
+     (Obj_Dir : String;
+      Obj_Path  : File_Array);
    --  Generate the Alfa report.
 
    procedure Generate_Project_File
@@ -259,13 +259,13 @@ procedure Gnatprove is
    --------------------------
 
    procedure Generate_Alfa_Report
-     (Proj_Type : Project_Type;
+     (Obj_Dir : String;
       Obj_Path  : File_Array)
    is
       Obj_Dir_File : File_Type;
       Obj_Dir_Fn   : constant String :=
          Ada.Directories.Compose
-            (Proj_Type.Object_Dir.Display_Full_Name,
+            (Obj_Dir,
              "gnatprove.alfad");
 
       function Append_To_Dir_Name (Dirname, Filename : String) return String;
@@ -288,7 +288,7 @@ procedure Gnatprove is
 
       Alfa_Files_Wildcard : constant String :=
          Append_To_Dir_Name
-           (Dirname  => Proj_Type.Object_Dir.Display_Full_Name,
+           (Dirname  => Obj_Dir,
             Filename => "*.alfa");
       --  Alfa files for the current project. Other Alfa files are present in
       --  object directories of sub-projects, although we do not mention them
@@ -496,6 +496,7 @@ procedure Gnatprove is
       Status : Integer;
    begin
       Ch_Dir_Create_If_Needed (String (Subdir_Name));
+      Args.Append ("-gnatd.F");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
       if MMode /= GPM_Prove then
@@ -514,6 +515,9 @@ procedure Gnatprove is
          Next (Cur);
       end loop;
       GNAT.Directory_Operations.Change_Dir ("..");
+      Generate_Alfa_Report
+         (String (Subdir_Name),
+          (1 => Create_From_Base (Subdir_Name)));
    end Simple_Detection_Step;
 
    ------------------
@@ -618,7 +622,7 @@ begin
 
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
-      Generate_Alfa_Report (Proj_Type, Obj_Path);
+      Generate_Alfa_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
 
       if MMode in GP_Alfa_Detection_Mode then
          GNAT.OS_Lib.OS_Exit (0);
