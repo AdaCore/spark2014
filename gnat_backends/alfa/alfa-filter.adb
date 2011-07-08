@@ -25,6 +25,7 @@
 
 with Atree;           use Atree;
 with Nlists;          use Nlists;
+with Sem;
 with Sem_Util;        use Sem_Util;
 with Sinfo;           use Sinfo;
 with Stand;           use Stand;
@@ -188,7 +189,39 @@ package body Alfa.Filter is
       --  Add diagonal dependencies for spec -> body dependencies
       if Present (Body_Unit) then
          declare
+            procedure With_Compilation_Unit (N : Node_Id);
+            --  Add dependency between Why file for declarations of subprogram
+            --  specs and all the files declaring variables in spec/body of
+            --  units with'ed directly or indirectly by the current unit.
+
+            ---------------------------
+            -- With_Compilation_Unit --
+            ---------------------------
+
+            procedure With_Compilation_Unit (N : Node_Id) is
+            begin
+               --  Standard is already included indirectly
+
+               if Defining_Entity (N) = Standard_Standard then
+                  return;
+               end if;
+
+               declare
+                  CU       : constant Node_Id := Parent (N);
+                  Pkg_Name : constant String :=
+                               File_Name_Without_Suffix (Sloc (CU));
+               begin
+                  Add_With_Clause
+                    (Subp_Spec,
+                     Pkg_Name & Types_Vars_Body_Suffix);
+               end;
+            end With_Compilation_Unit;
+
+            procedure With_All_Compilation_Units is new Sem.Walk_Library_Items
+              (Action => With_Compilation_Unit);
+
             Cursor : Node_Id := First (Context_Items (Body_Unit));
+
          begin
             while Present (Cursor) loop
                case Nkind (Cursor) is
@@ -202,9 +235,6 @@ package body Alfa.Filter is
                           (Types_Vars_Body,
                            Pkg_Name & Types_Vars_Spec_Suffix);
                         Add_With_Clause
-                          (Subp_Spec,
-                           Pkg_Name & Types_Vars_Body_Suffix);
-                        Add_With_Clause
                           (Subp_Body,
                            Pkg_Name & Subp_Spec_Suffix);
                      end;
@@ -215,6 +245,8 @@ package body Alfa.Filter is
                end case;
                Next (Cursor);
             end loop;
+
+            With_All_Compilation_Units;
          end;
       end if;
 
