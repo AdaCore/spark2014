@@ -118,7 +118,7 @@ package body Call is
                Status    => Local_Status'Access,
                Err_To_Out => True);
       begin
-         Ada.Text_IO.Put_Line (S);
+         Ada.Text_IO.Put (S);
          Free_Argument_List (Arguments);
       end;
       Status := Local_Status;

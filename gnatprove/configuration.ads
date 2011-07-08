@@ -105,8 +105,13 @@ package Configuration is
    --  The number of steps to try to prove each VC. Specified with --steps=.
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
+   Argument_Present : Boolean := False;
+   --  Set to True when there is at least one file argument
    File_List    : String_Lists.List;
    --  The list of files to be compiled
+
+   Cargs_List   : String_Lists.List;
+   --  The options to be passed to the compilers
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place

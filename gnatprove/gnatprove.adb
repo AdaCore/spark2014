@@ -158,7 +158,9 @@ procedure Gnatprove is
      (Project_File : String;
       Status       : out Integer)
    is
-      Args : String_Lists.List := String_Lists.Empty_List;
+      use String_Lists;
+      Args : List := Empty_List;
+      Cur  : Cursor := First (Cargs_List);
    begin
       Args.Append ("-P");
       Args.Append (Project_File);
@@ -174,6 +176,11 @@ procedure Gnatprove is
       if not Verbose then
          Args.Append ("-q");
       end if;
+
+      while Has_Element (Cur) loop
+         Args.Append (Element (Cur));
+         Next (Cur);
+      end loop;
 
       --  Keep going after a compilation error in 'detect' and 'force' modes
 
@@ -491,9 +498,10 @@ procedure Gnatprove is
    procedure Simple_Detection_Step
    is
       use String_Lists;
-      Cur    : Cursor := First (File_List);
-      Args   : List := Empty_List;
-      Status : Integer;
+      Cur      : Cursor := First (File_List);
+      Carg_Cur : Cursor := First (Cargs_List);
+      Args     : List := Empty_List;
+      Status   : Integer;
    begin
       Ch_Dir_Create_If_Needed (String (Subdir_Name));
       Args.Append ("-gnatd.F");
@@ -508,6 +516,10 @@ procedure Gnatprove is
       if MMode = GPM_Force then
          Args.Append ("-gnatd.E");
       end if;
+      while Has_Element (Carg_Cur) loop
+         Args.Append (Element (Carg_Cur));
+         Next (Carg_Cur);
+      end loop;
       while Has_Element (Cur) loop
          Args.Append ("../" & Element (Cur));
          Call_With_Status ("gnat2why", Args, Status, Verbose);
@@ -556,6 +568,7 @@ procedure Gnatprove is
        Status : out Integer)
    is
       use String_Lists;
+      Cur    : Cursor := First (Cargs_List);
       Args   : String_Lists.List := Empty_List;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
@@ -585,6 +598,10 @@ procedure Gnatprove is
       if MMode = GPM_Force then
          Args.Append ("-gnatd.E");
       end if;
+      while Has_Element (Cur) loop
+         Args.Append (Element (Cur));
+         Next (Cur);
+      end loop;
       Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
    end Translate_To_Why;
 

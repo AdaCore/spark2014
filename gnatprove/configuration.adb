@@ -32,6 +32,44 @@ with Call;              use Call;
 
 package body Configuration is
 
+   procedure Handle_Switch
+     (Switch    : String;
+      Parameter : String;
+      Section   : String);
+   --  Deal with all switches that are not automatic. In gnatprove, all
+   --  recognized switches are automatic, so this procedure should only be
+   --  called for unknown switches and for switches in section -cargs
+
+   -------------------
+   -- Handle_Switch --
+   -------------------
+
+   procedure Handle_Switch
+     (Switch    : String;
+      Parameter : String;
+      Section   : String)
+   is
+   begin
+      if Section = "cargs" then
+         Cargs_List.Append (Switch & Separator & Parameter);
+      elsif Switch (Switch'First) /= '-' then
+
+         --  We assume that the "switch" is actually an argument and put it in
+         --  the file list
+
+         Argument_Present := True;
+         File_List.Append (Switch);
+      else
+
+         --  ??? We should fail with an error message and an Invalid_Switch
+         --  exception, but see TN K707-002
+
+         null;
+
+      end if;
+
+   end Handle_Switch;
+
    ----------
    -- Init --
    ----------
@@ -92,7 +130,6 @@ package body Configuration is
    procedure Read_Command_Line
    is
       Config           : Command_Line_Configuration;
-      Argument_Present : Boolean := False;
    begin
       --  Install command line config
 
@@ -160,7 +197,12 @@ package body Configuration is
                      "-P:",
                      Help => "The name of the project file");
 
-      Getopt (Config);
+      Define_Switch (Config, "*");
+
+      Define_Section (Config, "cargs");
+      Define_Switch (Config, "*", Section => "cargs");
+
+      Getopt (Config, Callback => Handle_Switch'Access);
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
       elsif MMode_Input.all = "force" then
@@ -180,20 +222,6 @@ package body Configuration is
       else
          Abort_With_Message ("report should be one of (all | fail)");
       end if;
-
-      --  Read the command line arguments in Arg_List and set Argument_Present
-      --  to True if there are any
-
-      loop
-         declare
-            Arg : constant String :=
-               Get_Argument (Do_Expansion => True);
-         begin
-            exit when Arg'Length = 0;
-            Argument_Present := True;
-            File_List.Append (Arg);
-         end;
-      end loop;
 
       --  Detect the call mode of GNATprove and check for compatibility with
       --  feature mode
