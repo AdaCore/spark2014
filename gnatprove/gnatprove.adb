@@ -143,6 +143,10 @@ procedure Gnatprove is
       Compiler_Args.Prepend ("-P");
       Compiler_Args.Prepend ("--config=" & Config_File);
 
+      if Debug then
+         Compiler_Args.Prepend ("-dn");
+      end if;
+
       Call_With_Status
         (Command   => "gprbuild",
          Arguments => Compiler_Args,
