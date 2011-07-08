@@ -47,7 +47,7 @@ begin
    Put_Line ("");
    Display_Maps;
 
-   Propagate_Through_Call_Graph;
+   Propagate_Through_Call_Graph (Ignore_Errors => False);
 
    Put_Line ("");
    Put_Line ("## After propagation ##");

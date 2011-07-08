@@ -192,6 +192,10 @@ package body Alfa.Definition is
    function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
       (Standard_In_Alfa.Contains (+Id));
 
+   function In_Standard_Scope (Id : Unique_Entity_Id) return Boolean is
+      (Scope (+Id) = Standard_Standard
+        or else Scope (+Id) = Standard_ASCII);
+
    function Body_Is_Computed_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether a violation of Alfa was detected while analyzing the body
    --  of subprogram Id.
@@ -531,7 +535,7 @@ package body Alfa.Definition is
 
    function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
    begin
-      if Scope (+Id) = Standard_Standard then
+      if In_Standard_Scope (Id) then
          return Standard_In_Alfa.Contains (+Id);
       else
          return (Id_Set.Contains (Objects_In_Alfa, +Id));
@@ -551,7 +555,7 @@ package body Alfa.Definition is
          return True;
       end if;
 
-      if Scope (+Id) = Standard_Standard then
+      if In_Standard_Scope (Id) then
          return Standard_In_Alfa.Contains (+Id);
       end if;
 
@@ -876,7 +880,7 @@ package body Alfa.Definition is
       To, From : Unique_Entity_Id)
    is
    begin
-      if Scope (+From) = Standard_Standard then
+      if In_Standard_Scope (From) then
          A (NIR_XXX).Include (+To);
       else
          --  Either entity From was explicitly marked as not in Alfa, or it
@@ -893,7 +897,9 @@ package body Alfa.Definition is
          --  If From is from a generic instantiation, then mark the violation
          --  as being the current lack of support for generics.
 
-         elsif Safe_Instantiation_Depth (From) > 0 then
+         elsif Is_Generic_Instance (+From)
+           or else Safe_Instantiation_Depth (From) > 0
+         then
             A (NYI_Generic).Include (+To);
 
          else
@@ -1339,7 +1345,10 @@ package body Alfa.Definition is
 
    begin
       case Attr_Id is
-         when Attribute_Result =>
+         when Attribute_Result |
+              Attribute_First  |
+              Attribute_Last   |
+              Attribute_Length =>
             null;
 
          when Attribute_Old =>
@@ -1348,11 +1357,9 @@ package body Alfa.Definition is
                               NYI_Old_Attribute);
             end if;
 
-         when Attribute_First | Attribute_Last | Attribute_Length =>
-            Mark (Prefix (N));
-
          when others =>
             Mark_Non_Alfa ("attribute", N, NYI_Attribute);
+            return;
       end case;
 
       Mark (P);
@@ -1638,12 +1645,31 @@ package body Alfa.Definition is
 
             --  Subprogram name appears for example in Sub'Result
 
-            when E_Enumeration_Literal |
-                 Subprogram_Kind       =>
+            when E_Void                  |
+                 Named_Kind              |
+                 E_Enumeration_Literal   |
+                 Subprogram_Kind         |
+                 E_Block                 |
+                 Generic_Subprogram_Kind |
+                 E_Generic_Package       |
+                 E_Label                 |
+                 E_Loop                  |
+                 E_Return_Statement      |
+                 E_Package               |
+                 E_Package_Body          |
+                 E_Subprogram_Body       =>
                null;
 
-            when others =>
-               Mark_Non_Alfa ("entity", N, From => Unique (Entity (N)));
+            when E_Exception =>
+               Mark_Non_Alfa ("exception", N, NIR_Exception);
+
+            when E_Entry                 |
+                 E_Entry_Family          |
+                 E_Entry_Index_Parameter |
+                 E_Protected_Object      |
+                 E_Protected_Body        |
+                 E_Task_Body             =>
+               Mark_Non_Alfa ("tasking", N, NIR_Tasking);
          end case;
       end if;
    end Mark_Identifier_Or_Expanded_Name;
@@ -1803,7 +1829,7 @@ package body Alfa.Definition is
       if Force_Alfa (N)
         and then Comes_From_Source (N)
       then
-         if Scope (+From) = Standard_Standard
+         if In_Standard_Scope (From)
            or else Spec_Violations (NIR_XXX).Contains (+From)
          then
             Error_Msg_F (Complete_Error_Msg (Msg, NIR_XXX), N);
@@ -1829,7 +1855,9 @@ package body Alfa.Definition is
          --  If From is from a generic instantiation, then mark the violation
          --  as being the current lack of support for generics.
 
-         elsif Safe_Instantiation_Depth (From) > 0 then
+         elsif Is_Generic_Instance (+From)
+           or else Safe_Instantiation_Depth (From) > 0
+         then
             Error_Msg_F (Complete_Error_Msg (Msg, NYI_Generic), N);
 
          else
@@ -2154,6 +2182,10 @@ package body Alfa.Definition is
             Standard_In_Alfa.Insert (Standard_Entity (S));
             Standard_In_Alfa.Include (Etype (Standard_Entity (S)));
          end if;
+      end loop;
+
+      for S in S_ASCII_Names loop
+         Standard_In_Alfa.Insert (Standard_Entity (S));
       end loop;
 
       Standard_In_Alfa.Insert (Standard_False);
