@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 pragma Ada_2005;
@@ -69,7 +69,7 @@ procedure Tranxgen is
 
       Subfields : Subfield_Vectors.Vector;
       --  Subfields (always at least one). The ranges First_Bit ..
-      --  First_Bit + Length- 1 of successive subfields are contiguous within
+      --  First_Bit + Length - 1 of successive subfields are contiguous within
       --  the message, and the sum of the lengths of these ranges is Length.
    end record;
 
@@ -891,7 +891,7 @@ procedure Tranxgen is
       --  Call Process_<element>
 
       procedure Prelude (U : in out Unit);
-      --  Output standard text at the top of evert unit
+      --  Output standard text at the top of every unit
 
       -------------
       -- Prelude --
