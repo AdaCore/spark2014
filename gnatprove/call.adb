@@ -119,7 +119,9 @@ package body Call is
                Err_To_Out => True);
       begin
          Ada.Text_IO.Put (S);
-         if S'Length > 0 and then (not (S (S'Last) = ASCII.LF)) then
+         if S'Length > 0
+           and then S (S'Last) /= ASCII.LF
+         then
             Ada.Text_IO.New_Line;
          end if;
          Free_Argument_List (Arguments);
