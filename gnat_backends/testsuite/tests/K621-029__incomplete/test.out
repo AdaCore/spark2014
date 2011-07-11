@@ -5,11 +5,9 @@ compilation of x.ads failed
 (none)
 (none)
 y                        : 100% (1/1)
-(detailed info can be found in gnatprove/*.alfa)
 **********************************
 **********************************
 Phase 1 of 2: frame condition computation ...
-Phase 2 of 2: detection of Alfa subprograms ...
 Statistics above are logged in gnatprove.out
 Subprograms in Alfa       : 100% (1/1)
 Subprograms not in Alfa   :   0% (0/1)
@@ -19,5 +17,4 @@ Units with the largest number of subprograms in Alfa:
 Units with the largest number of subprograms not in Alfa:
 cannot generate code for file x.ads (package spec)
 cannot generate code for file x.ads (package spec)
-gnatmake: "x.ads" compilation error
 gprbuild: *** compilation phase failed

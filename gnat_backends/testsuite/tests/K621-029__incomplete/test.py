@@ -1,4 +1,5 @@
 from test_support import *
 
-gnatprove(opt=["-P", "test.gpr", "--mode=detect"])
+out = gnatprove_(opt=["-P", "test.gpr", "--mode=detect"])
+grep(".*(detailed|compilation error).*", out,invert=True)
 

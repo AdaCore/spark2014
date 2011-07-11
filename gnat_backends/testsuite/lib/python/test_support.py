@@ -167,8 +167,8 @@ def altergo(src, opt=None, verbose=True):
                 print "Failure"
     return status
 
-def gnatprove(opt=["-P", "test.gpr"]):
-    """Invoke gnatprove
+def gnatprove_(opt=["-P", "test.gpr"]):
+    """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
     opt: options to give to gnatprove
@@ -180,14 +180,25 @@ def gnatprove(opt=["-P", "test.gpr"]):
     process = Run(cmd)
     if process.status:
         print process.out
+        return []
     elif quick_mode():
         if os.path.exists("test.out"):
             cat("test.out", True)
+        return []
     else:
         strlist = str.splitlines(process.out)
         strlist.sort()
-        for line in strlist:
-            print line
+        return strlist
+
+def gnatprove(opt=["-P", "test.gpr"]):
+    """Invoke gnatprove
+
+    PARAMETERS
+    opt: options to give to gnatprove
+    """
+    out = gnatprove_(opt)
+    for line in out:
+        print line
 
 def prove(opt=[],steps=max_steps, mode="check"):
     """Call gnatprove with standard options"""
@@ -214,4 +225,17 @@ def to_list(arg):
         return arg
     else:
         return [arg]
+
+def grep(regex, strlist, invert=False):
+    """Filter a string list by a regex
+
+    PARAMETERS
+    regex: a string encoding a regular expression, using python regex syntax
+    strlist: a list of strings
+    """
+    p = re.compile(regex)
+    for line in strlist:
+        m = re.match(p, line)
+        if (invert and not m) or (not invert and m):
+            print line
 
