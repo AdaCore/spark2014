@@ -5,3 +5,4 @@ gnat_backends/testsuite/tests/*/*/* no-precommit-check
 dist-examples/* no-precommit-check
 dist-examples/*/* no-precommit-check
 dist-examples/*/*/* no-precommit-check
+examples/*/* no-precommit-check
