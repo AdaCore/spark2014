@@ -107,7 +107,7 @@ package body Call is
    begin
       if Verbose then
          Print_Command_Line (Command, Arguments);
-         Ada.Text_IO.Put_Line ("");
+         Ada.Text_IO.New_Line;
       end if;
       declare
          S : constant String :=
@@ -119,6 +119,9 @@ package body Call is
                Err_To_Out => True);
       begin
          Ada.Text_IO.Put (S);
+         if S'Length > 0 and then (not (S (S'Last) = ASCII.LF)) then
+            Ada.Text_IO.New_Line;
+         end if;
          Free_Argument_List (Arguments);
       end;
       Status := Local_Status;
@@ -153,7 +156,7 @@ package body Call is
    begin
       if Verbose then
          Print_Command_Line (Command, Arguments);
-         Ada.Text_IO.Put_Line ("");
+         Ada.Text_IO.New_Line;
       end if;
 
       declare
@@ -171,7 +174,7 @@ package body Call is
             Ada.Text_IO.Put_Line (" failed.");
             GNAT.OS_Lib.OS_Exit (1);
          else
-            Ada.Text_IO.Put_Line ("");
+            Ada.Text_IO.New_Line;
          end if;
 
          Success := Status = 0;

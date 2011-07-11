@@ -8,6 +8,7 @@ y                        : 100% (1/1)
 **********************************
 **********************************
 Phase 1 of 2: frame condition computation ...
+Phase 2 of 2: detection of Alfa subprograms ...
 Statistics above are logged in gnatprove.out
 Subprograms in Alfa       : 100% (1/1)
 Subprograms not in Alfa   :   0% (0/1)
