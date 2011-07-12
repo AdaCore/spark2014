@@ -94,7 +94,7 @@ package Xtree_Sinfo is
       W_Computation_Type,
 
       --  <computation_type>
-      --    [ <binders> ] ->
+      --      <binder>* ->
       --       '{' [ <precondition> ] '}'
       --       [ 'returns' <identifier> ':' ] <simple_value_type> <effects>
       --       '{' [ <postcondition> ] '}'
@@ -156,7 +156,7 @@ package Xtree_Sinfo is
 
       W_Matching_Term,
       --  <matching_term> ::=
-      --    'match' <term> 'with' matchcase [ matchcase ]* 'end'
+      --    'match' <term> 'with' <matchcase>+ 'end'
 
       W_Binding_Term,
       --  <logic_binding> ::= 'let' <identifier> '=' <term> 'in' <term>
@@ -323,18 +323,18 @@ package Xtree_Sinfo is
 
       W_Logic,
       --  <logic> ::=
-      --  [ <external> ] 'logic' <identifier> [',' <identifier>]*
+      --  [ <external> ] 'logic' <identifier> (',' <identifier>)*
       --               ':' <logic_type>
 
       W_Function,
       --  <function> ::=
-      --  'function' <identifier> '(' <logic_binder> [',' <logic_binder>]* ')'
+      --  'function' <identifier> '(' <logic_binder> (',' <logic_binder>)* ')'
       --                          ':' <primitive_type>
       --  '=' <term>
 
       W_Predicate_Definition,
       --  <predicate_Definition> ::=
-      --  'predicate' <identifier> '(' <logic_binder> [',' <logic_binder>]* ')'
+      --  'predicate' <identifier> '(' <logic_binder> (',' <logic_binder>)* ')'
       --  '=' <predicate>
 
       W_Inductive,
@@ -374,12 +374,12 @@ package Xtree_Sinfo is
 
       W_Adt_Definition,
       --  <adt_definition> ::=
-      --    <constructor_declaration> [ constructor_declaration ]*
+      --    <constructor_declaration>+
 
       W_Constr_Decl,
       --    <constructor_declaration> ::=
       --    '|' identifier
-      --          [ '(' <primitive_type> [',' <primitive_type>]* ')' ]
+      --          [ '(' <primitive_type> (',' <primitive_type>)* ')' ]
 
       -------------------
       -- Program space --
@@ -389,9 +389,8 @@ package Xtree_Sinfo is
       ---------------
 
       --  <simple_value_type> ::= <primitive_type>
-      --                          | <ref_type>
       --                          | <array_type>
-      --                          | <protected_value_type>
+      --                          | <ref_type>
 
       W_Effects,
       --  <effects> ::= [ 'reads' <identifier> (',' <identifier>)* ]
@@ -491,11 +490,11 @@ package Xtree_Sinfo is
       --  <opaque_assertion> ::= <prog> '{{' <postcondition> '}}'
 
       W_Fun_Def,
-      --  <fun_def> ::= 'fun' <binders> '->' '{' <precondition> '}' <prog>
+      --  <fun_def> ::= 'fun' <binder>+ '->' '{' <precondition> '}' <prog>
 
       W_Binding_Fun,
       --  <binding_fun> ::=
-      --  'let' <identifier> <binders> '='
+      --  'let' <identifier> <binder>+ '='
       --    '{' <precondition> '}' <prog> 'in' <prog>
 
       W_Binding_Rec,
@@ -587,10 +586,21 @@ package Xtree_Sinfo is
 
       W_Binder,
       --  <binder> ::=
-      --     '(' <identifier> [',' <identifier>]+ ':' <simple_value_type> ')'
+      --     '(' <identifier> (',' <identifier>)* ':' <simple_value_type> ')'
+      --
+      --  As as special exception, these have the following format in the
+      --  context of a computation_type:
+      --
+      --  <binder> ::=
+      --     <identifier> ':' <simple_value_type>
+      --       ('->' <identifier> ':' <simple_value_type>)*
+      --
+      --  In the case of multiple identifiers with the same value in a binder,
+      --  one binder is generated per identifier. e.g. in the context of
+      --  a computation_type, "x1, x2 : T" becomes "x1 : T -> x2 : T".
 
       W_Recfun,
-      --  <recfun> ::= <identifier> <binders> ':' <simple_value_type>
+      --  <recfun> ::= <identifier> <binder>+ ':' <simple_value_type>
       --     '{' 'variant' <wf_arg> '}' = '{' <precondition> '}' <prog>
 
       W_Loop_Annot,
@@ -617,7 +627,7 @@ package Xtree_Sinfo is
 
       W_Global_Binding,
       --  <global_binding> ::=
-      --    'let' <identifier> [ <binders> ] '=' '{' <precondition> '}' <prog>
+      --    'let' <identifier> <binder>* '=' '{' <precondition> '}' <prog>
 
       W_Global_Rec_Binding,
       --  <global_rec_binding> ::= 'let' 'rec' <recfun>
