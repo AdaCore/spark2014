@@ -24,7 +24,7 @@
 
 package Hilitevsn is
 
-   Hilite_Static_Version_String : constant String := "0.1";
+   Hilite_Static_Version_String : constant String := "0.1w";
    --  Static string identifying this version, that can be used as an argument
    --  to e.g. pragma Ident.
    --
