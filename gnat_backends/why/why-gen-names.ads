@@ -210,9 +210,6 @@ package Why.Gen.Names is
      return W_Identifier_Id;
    --  From the name of a record type, return the name of its builder.
 
-   procedure Set_Name (Id : W_Identifier_Id; Name : String);
-   --  Change the name of the given identifier
-
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.

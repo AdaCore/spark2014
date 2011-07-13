@@ -27,7 +27,6 @@ with Namet; use Namet;
 
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Gen.Names;           use Why.Gen.Names;
 
 package body Why.Gen.Names is
@@ -495,17 +494,6 @@ package body Why.Gen.Names is
       return Record_Getter_Name
         (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Record_Getter_Name;
-
-   --------------
-   -- Set_Name --
-   --------------
-
-   procedure Set_Name (Id : W_Identifier_Id; Name : String) is
-   begin
-      Name_Len := 0;
-      Add_Str_To_Name_Buffer (Name);
-      Identifier_Set_Symbol (Id, Name_Find);
-   end Set_Name;
 
    ----------------------
    -- To_Program_Space --
