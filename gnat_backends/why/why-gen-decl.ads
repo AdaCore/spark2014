@@ -114,4 +114,9 @@ package Why.Gen.Decl is
        Name      : W_Identifier_Id;
        Parameter : W_Primitive_Type_Id);
 
+   procedure Emit
+      (File : W_File_Id;
+       Decl : W_Logic_Declaration_Class_Id);
+   --  Emit logic declaration in file
+
 end Why.Gen.Decl;

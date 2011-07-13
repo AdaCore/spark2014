@@ -31,6 +31,22 @@ with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Decl is
 
+   ----------
+   -- Emit --
+   ----------
+
+   procedure Emit
+      (File : W_File_Id;
+       Decl : W_Logic_Declaration_Class_Id)
+   is
+      Item : constant W_Declaration_Id :=
+               New_Logic_Declaration (Decl => Decl);
+   begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item => Item);
+   end Emit;
+
    -----------------------
    -- Iter_Binder_Array --
    -----------------------
@@ -92,19 +108,17 @@ package body Why.Gen.Decl is
    procedure New_Abstract_Type (File : W_File_Id; Name : String)
    is
    begin
-      File_Append_To_Declarations
+      Emit
         (File,
-         New_Logic_Declaration
-           (Decl => New_Type (Name => New_Identifier (Name))));
+         New_Type (Name => New_Identifier (Name)));
    end New_Abstract_Type;
 
    procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id)
    is
    begin
-      File_Append_To_Declarations
+      Emit
         (File,
-         New_Logic_Declaration
-           (Decl => New_Type (Name => Name)));
+         New_Type (Name => Name));
    end New_Abstract_Type;
 
    procedure New_Abstract_Type
@@ -119,17 +133,17 @@ package body Why.Gen.Decl is
          New_Abstract_Type (File, Name);
          return;
       end if;
+
       for I in 1 .. Args loop
          Type_Ar (I) := New_Identifier ((1 => C));
          C := Character'Succ (C);
       end loop;
-      File_Append_To_Declarations
-         (File,
-            New_Logic_Declaration
-              (Decl =>
-                  New_Type
-                     (Name            => Name,
-                      Type_Parameters => Type_Ar)));
+
+      Emit
+       (File,
+        New_Type
+          (Name            => Name,
+           Type_Parameters => Type_Ar));
    end New_Abstract_Type;
 
    ------------------------
@@ -142,14 +156,12 @@ package body Why.Gen.Decl is
       Constructors : W_Constr_Decl_Array)
    is
    begin
-      File_Append_To_Declarations
-         (File,
-          New_Logic_Declaration
-            (Decl =>
-               New_Type
-                 (Name => Name,
-                  Definition =>
-                     New_Adt_Definition (Constructors => Constructors))));
+      Emit
+       (File,
+        New_Type
+          (Name => Name,
+           Definition =>
+             New_Adt_Definition (Constructors => Constructors)));
    end New_Adt_Definition;
 
    ---------------
@@ -162,10 +174,9 @@ package body Why.Gen.Decl is
        Axiom_Body : W_Predicate_Id)
    is
    begin
-      File_Append_To_Declarations
+      Emit
         (File,
-         New_Logic_Declaration
-            (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
+         New_Axiom (Name => Name, Def => Axiom_Body));
    end New_Axiom;
 
    -------------------
@@ -252,16 +263,14 @@ package body Why.Gen.Decl is
       Return_Type : W_Logic_Return_Type_Id)
    is
    begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item =>
-           New_Logic_Declaration (Decl =>
-              New_Logic
-                (Names => (1 => Name),
-                 Logic_Type =>
-                   New_Logic_Type
-                     (Arg_Types   => Args,
-                      Return_Type => Return_Type))));
+      Emit
+        (File,
+         New_Logic
+           (Names => (1 => Name),
+            Logic_Type =>
+              New_Logic_Type
+                (Arg_Types   => Args,
+                 Return_Type => Return_Type)));
    end New_Logic;
 
    procedure New_Logic
@@ -299,6 +308,7 @@ package body Why.Gen.Decl is
           Args => Ar,
           Return_Type => Return_Type);
    end New_Logic;
+
    -------------------
    -- New_Parameter --
    -------------------
@@ -338,15 +348,11 @@ package body Why.Gen.Decl is
       Def      : W_Predicate_Id)
    is
    begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item =>
-           New_Logic_Declaration
-             (Decl =>
-               New_Predicate_Definition
-                 (Name    => Name,
-                  Binders => Binders,
-                  Def     => Def)));
+      Emit (File,
+            New_Predicate_Definition
+              (Name    => Name,
+               Binders => Binders,
+               Def     => Def));
    end New_Predicate_Definition;
 
 end Why.Gen.Decl;
