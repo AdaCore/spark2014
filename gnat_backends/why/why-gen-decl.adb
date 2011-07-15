@@ -47,6 +47,15 @@ package body Why.Gen.Decl is
          New_Item => Item);
    end Emit;
 
+   procedure Emit
+     (File : W_File_Id;
+      Decl : W_Declaration_Id) is
+   begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item => +Decl);
+   end Emit;
+
    -----------------------
    -- Iter_Binder_Array --
    -----------------------

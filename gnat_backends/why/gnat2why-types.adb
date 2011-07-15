@@ -238,10 +238,15 @@ package body Gnat2Why.Types is
       end if;
    end  Why_Prog_Type_Of_Ada_Type;
 
-   function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
-      return W_Simple_Value_Type_Id
+   function Why_Prog_Type_Of_Ada_Obj
+     (N            : Node_Id;
+      Is_Primitive : Boolean := False)
+     return W_Simple_Value_Type_Id
    is
+      Mutable : constant Boolean :=
+                  not Is_Primitive and then Is_Mutable (N);
    begin
-      return Why_Prog_Type_Of_Ada_Type (Etype (N), Is_Mutable (N));
-   end  Why_Prog_Type_Of_Ada_Type;
+      return Why_Prog_Type_Of_Ada_Type (Etype (N), Mutable);
+   end  Why_Prog_Type_Of_Ada_Obj;
+
 end Gnat2Why.Types;

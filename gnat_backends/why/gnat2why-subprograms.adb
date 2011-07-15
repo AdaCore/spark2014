@@ -48,6 +48,7 @@ with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
+with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
@@ -156,7 +157,7 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type;
    --  Get the name of the type of an Ada node, as a Why Type
 
-   function Unit_Param return W_Binder_Id;
+   function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
    --
    function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
@@ -745,12 +746,13 @@ package body Gnat2Why.Subprograms is
    -- Unit_Param --
    ----------------
 
-   function Unit_Param return W_Binder_Id is
+   function Unit_Param return Binder_Type is
    begin
       return
-         New_Binder
-           (Names => (1 => New_Identifier ("__void_param")),
-            Arg_Type => New_Type_Unit);
+        (B_Name   => New_Identifier ("__void_param"),
+         B_Type   => New_Type_Unit,
+         Modifier => None,
+         Ada_Node => Empty);
    end Unit_Param;
 
    --------------------------------
@@ -778,7 +780,7 @@ package body Gnat2Why.Subprograms is
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
-      function Compute_Binders return W_Binder_Array;
+      function Compute_Binders return Binder_Array;
       --  Compute the arguments of the generated Why function;
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments.
@@ -821,11 +823,11 @@ package body Gnat2Why.Subprograms is
       -- Compute_Binders --
       ---------------------
 
-      function Compute_Binders return W_Binder_Array
+      function Compute_Binders return Binder_Array
       is
          Cur_Binder : Node_Id := First (Ada_Binders);
          Cnt        : Integer := 1;
-         Result     : W_Binder_Array :=
+         Result     : Binder_Array :=
             (1 .. Integer (Arg_Length) => <>);
       begin
          while Present (Cur_Binder) loop
@@ -836,10 +838,10 @@ package body Gnat2Why.Subprograms is
                   Why_Ident_Of_Ada_Ident (Id);
             begin
                Result (Cnt) :=
-                 New_Binder
-                   (Ada_Node => Cur_Binder,
-                    Names    => (1 => Name),
-                    Arg_Type => +Why_Prog_Type_Of_Ada_Type (Id));
+                 (Ada_Node => Cur_Binder,
+                  B_Name   => Name,
+                  Modifier => (if Is_Mutable (Id) then Ref_Modifier else None),
+                  B_Type => +Why_Prog_Type_Of_Ada_Obj (Id, True));
                Next (Cur_Binder);
                Cnt := Cnt + 1;
             end;
@@ -1157,8 +1159,8 @@ package body Gnat2Why.Subprograms is
          return Node;
       end Is_Syntactic_Expr_Function;
 
-      Func_Binders : constant W_Binder_Array := Compute_Binders;
-      Ext_Binders  : constant W_Binder_Array :=
+      Func_Binders : constant Binder_Array := Compute_Binders;
+      Ext_Binders  : constant Binder_Array :=
          (if Arg_Length = 0 then (1 => Unit_Param)
           else Func_Binders);
       Dummy_Node : Node_Id;
@@ -1181,11 +1183,12 @@ package body Gnat2Why.Subprograms is
       if Nkind (Node) = N_Subprogram_Body
         and then not As_Spec
       then
-         New_Global_Binding
-           (File    => File,
-            Name    => New_Pre_Check_Name (Name_Str),
-            Binders => Ext_Binders,
-            Def     => Compute_Spec_Prog (Name_Precondition, Dummy_Node));
+         Emit (File,
+               New_Global_Binding
+                 (Name    => New_Pre_Check_Name (Name_Str),
+                  Binders => Ext_Binders,
+                  Def     =>
+                    Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
 
          if Is_Expr_Func then
             --  generate axiom of the form
@@ -1237,21 +1240,22 @@ package body Gnat2Why.Subprograms is
             end;
          end if;
          if not Debug.Debug_Flag_Dot_GG then
-            New_Global_Binding
-              (File    => File,
-               Name    => New_Definition_Name (Name_Str),
-               Binders => (1 => Unit_Param),
-               Pre     => Pre,
-               Post    =>
-                 New_Located_Predicate
-                   (Loc_Node,
-                    Post,
-                    VC_Postcondition),
-               Def     =>
-                 Compute_Context
-                   (Why_Expr_Of_Ada_Stmts
+            Emit
+              (File,
+               New_Global_Binding
+                 (Name    => New_Definition_Name (Name_Str),
+                  Binders => (1 => Unit_Param),
+                  Pre     => Pre,
+                  Post    =>
+                    New_Located_Predicate
+                      (Loc_Node,
+                       Post,
+                       VC_Postcondition),
+                  Def     =>
+                    Compute_Context
+                      (Why_Expr_Of_Ada_Stmts
                         (Statements
-                             (Handled_Statement_Sequence (Node)))));
+                          (Handled_Statement_Sequence (Node))))));
          end if;
 
       else
@@ -1280,14 +1284,15 @@ package body Gnat2Why.Subprograms is
                                       (Expression (Orig_Node))))
                             else Post);
          begin
-            New_Parameter
-              (File        => File,
-               Name        => New_Identifier (Name_Str),
-               Binders     => Ext_Binders,
-               Effects     => Effects,
-               Return_Type => Ret_Type,
-               Pre         => Pre,
-               Post        => Param_Post);
+            Emit
+              (File,
+               New_Parameter
+                 (Name        => New_Identifier (Name_Str),
+                  Binders     => Ext_Binders,
+                  Return_Type => Ret_Type,
+                  Effects     => Effects,
+                  Pre         => Pre,
+                  Post        => Param_Post));
 
             if Is_Expr_Func then
                New_Logic
