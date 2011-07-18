@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;      use Why.Conversions;
+with Why.Conversions; use Why.Conversions;
+with Why.Gen.Names;   use Why.Gen.Names;
+with Why.Gen.Decl;    use Why.Gen.Decl;
 
 package body Why.Gen.Binders is
 
@@ -49,14 +51,92 @@ package body Why.Gen.Binders is
    ---------------------------------
 
    procedure Emit_Top_Level_Declarations
-     (File     : W_File_Id;
-      Ada_Node : Node_Id := Empty;
-      Name     : String;
-      Binders  : Binder_Array;
-      Result   : Binder_Type;
-      Spec     : in out Declaration_Spec_Array) is
+     (File        : W_File_Id;
+      Ada_Node    : Node_Id := Empty;
+      Name        : String;
+      Binders     : Binder_Array;
+      Return_Type : W_Primitive_Type_Id;
+      Spec        : in out Declaration_Spec_Array) is
    begin
-      raise Not_Implemented;
+      for S in Spec'Range loop
+         case Spec (S).Kind is
+            when W_Logic =>
+               if Spec (S).Name = Why_Empty then
+                  Spec (S).Name := Logic_Func_Name (Name);
+               end if;
+
+               Emit
+                 (File,
+                  New_Logic
+                    (Ada_Node    => Ada_Node,
+                     Name        => Spec (S).Name,
+                     Binders     => Binders,
+                     Return_Type => Return_Type));
+
+            when W_Function =>
+               if Spec (S).Name = Why_Empty then
+                  Spec (S).Name := Logic_Func_Name (Name);
+               end if;
+
+               Emit
+                 (File,
+                  New_Function
+                    (Ada_Node    => Ada_Node,
+                     Name        => Spec (S).Name,
+                     Binders     => Binders,
+                     Return_Type => Return_Type,
+                     Def         => Spec (S).Term));
+
+            when W_Predicate_Definition =>
+               if Spec (S).Name = Why_Empty then
+                  Spec (S).Name := Logic_Func_Name (Name);
+               end if;
+
+               Emit
+                 (File,
+                  New_Predicate_Definition
+                    (Ada_Node    => Ada_Node,
+                     Name        => Spec (S).Name,
+                     Binders     => Binders,
+                     Def         => Spec (S).Pred));
+
+            when W_Global_Binding =>
+               if Spec (S).Name = Why_Empty then
+                  Spec (S).Name := New_Definition_Name (Name);
+               end if;
+
+               Emit
+                 (File,
+                  New_Global_Binding
+                    (Ada_Node    => Ada_Node,
+                     Name        => Spec (S).Name,
+                     Binders     => Binders,
+                     Pre         => Spec (S).Pre,
+                     Def         => Spec (S).Prog,
+                     Post        => Spec (S).Post));
+
+            when W_Parameter_Declaration =>
+               if Spec (S).Name = Why_Empty then
+                  Spec (S).Name := New_Identifier (Name);
+               end if;
+
+               Emit
+                 (File,
+                  New_Parameter
+                    (Ada_Node    => Ada_Node,
+                     Name        => Spec (S).Name,
+                     Binders     => Binders,
+                     Return_Type => Return_Type,
+                     Pre         => Spec (S).Pre,
+                     Effects     => Spec (S).Effects,
+                     Post        => Spec (S).Post));
+
+            when others =>
+               --  Invalid
+               pragma Assert (False);
+               null;
+         end case;
+      end loop;
    end Emit_Top_Level_Declarations;
 
    -----------------

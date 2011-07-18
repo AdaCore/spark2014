@@ -154,11 +154,11 @@ package Why.Gen.Binders is
      of Declaration_Spec;
 
    procedure Emit_Top_Level_Declarations
-     (File     : W_File_Id;
-      Ada_Node : Node_Id := Empty;
-      Name     : String;
-      Binders  : Binder_Array;
-      Result   : Binder_Type;
-      Spec     : in out Declaration_Spec_Array);
+     (File        : W_File_Id;
+      Ada_Node    : Node_Id := Empty;
+      Name        : String;
+      Binders     : Binder_Array;
+      Return_Type : W_Primitive_Type_Id;
+      Spec        : in out Declaration_Spec_Array);
 
 end Why.Gen.Binders;
