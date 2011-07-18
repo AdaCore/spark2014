@@ -1287,7 +1287,7 @@ package body Gnat2Why.Subprograms is
             Emit
               (File,
                New_Parameter
-                 (Name        => New_Identifier (Name_Str),
+                 (Name        => Program_Func_Name (Name_Str),
                   Binders     => Ext_Binders,
                   Return_Type => Ret_Type,
                   Effects     => Effects,
@@ -1523,7 +1523,8 @@ package body Gnat2Why.Subprograms is
          when N_Function_Call =>
             T :=
               New_Located_Call
-                 (Name     => Why_Ident_Of_Ada_Ident (Name (Expr)),
+                 (Name     =>
+                    To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Expr))),
                   Progs    => Compute_Call_Args (Expr),
                   Ada_Node => Expr,
                   Reason   => VC_Precondition);
@@ -1789,7 +1790,8 @@ package body Gnat2Why.Subprograms is
             return
                New_Located_Call
                   (Ada_Node => Stmt,
-                   Name     => Why_Ident_Of_Ada_Ident (Name (Stmt)),
+                   Name     =>
+                     To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
                    Progs    => Compute_Call_Args (Stmt),
                    Reason   => VC_Precondition);
 

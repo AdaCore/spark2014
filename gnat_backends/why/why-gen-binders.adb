@@ -117,7 +117,7 @@ package body Why.Gen.Binders is
 
             when W_Parameter_Declaration =>
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := New_Identifier (Name);
+                  Spec (S).Name := Program_Func_Name (Name);
                end if;
 
                Emit

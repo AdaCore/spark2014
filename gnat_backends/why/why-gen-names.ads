@@ -185,6 +185,10 @@ package Why.Gen.Names is
    function New_Terms (SL : String_Lists.List) return W_Term_Array;
    --  Return an array of term identifiers
 
+   function Program_Func_Name (Name : String) return W_Identifier_Id;
+   --  Create a new identifier for the program version of a
+   --  subprogram.
+
    function Range_Pred_Name (Name : String) return W_Identifier_Id;
    function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;
    --  From the name of an abstract type, return the name of

@@ -37,6 +37,11 @@ package body Why.Gen.Names is
    --  Generic for name generation functions, depending on the suffix.
 
    generic
+      Suffix : String;
+   function Generate_Prog_Suffix (Name : String) return W_Identifier_Id;
+   --  Same as Generate_Suffix, but for subprograms in program space
+
+   generic
       Prefix : String;
    function Generate_Prefix (Name : String) return W_Identifier_Id;
    --  Generic for name generation functions, depending on the prefix.
@@ -70,7 +75,6 @@ package body Why.Gen.Names is
    Of_Int             : constant String := "of_int";
    Int_Of             : constant String := "to_int";
    Definition         : constant String := "def";
-   Logic_Def          : constant String := "logic";
    Logic_Def_Axiom    : constant String := "logic_def_axiom";
    Pre_Check          : constant String := "pre_check";
    Range_Name         : constant String := "range";
@@ -96,6 +100,16 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Name & "___" & Suffix);
    end Generate_Suffix;
+
+   --------------------------
+   -- Generate_Prog_Suffix --
+   --------------------------
+
+   function Generate_Prog_Suffix (Name : String) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (Name & "___" & Suffix & "_");
+   end Generate_Prog_Suffix;
 
    function Bool_Int_Cmp_String (Rel : W_Relation) return String;
    --  Return the name of a boolean integer comparison operator
@@ -219,7 +233,7 @@ package body Why.Gen.Names is
    -- Eq_Param_Name --
    ------------------
 
-   function Eq_Param_Gen is new Generate_Suffix (Boolean_Eq);
+   function Eq_Param_Gen is new Generate_Prog_Suffix (Boolean_Eq);
    function Eq_Param_Name (Name : String) return W_Identifier_Id
       renames Eq_Param_Gen;
 
@@ -282,9 +296,8 @@ package body Why.Gen.Names is
    function New_Definition_Name (Name : String) return W_Identifier_Id
       renames Definition_Gen;
 
-   function Logic_Def_Gen is new Generate_Prefix (Logic_Def);
    function Logic_Func_Name (Name : String) return W_Identifier_Id
-      renames Logic_Def_Gen;
+      renames New_Identifier;
 
    function Logic_Def_Axiom_Gen is new Generate_Suffix (Logic_Def_Axiom);
    function Logic_Func_Axiom (Name : String) return W_Identifier_Id
@@ -433,6 +446,16 @@ package body Why.Gen.Names is
 
       return Result;
    end New_Terms;
+
+   -----------------------
+   -- Program_Func_Name --
+   -----------------------
+
+   function Program_Func_Name (Name : String) return W_Identifier_Id is
+      Suffix : constant String := "_";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Program_Func_Name;
 
    -----------------
    -- Range_Axiom --
