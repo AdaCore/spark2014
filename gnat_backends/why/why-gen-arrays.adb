@@ -109,11 +109,8 @@ package body Why.Gen.Arrays is
          New_Abstract_Type (Name => (New_Identifier (Name)));
       Ar         : constant W_Term_Id :=
          New_Term ("a");
-      Ar_Binder  : constant W_Binder_Id :=
-         New_Binder
-            (Names => (1 => New_Identifier ("a")),
-             Arg_Type =>
-               New_Abstract_Type (Name => (New_Identifier (Name))));
+      Arb        : constant W_Term_Id :=
+         New_Term ("b");
       Ar_Binder_2  : constant W_Binder_Id :=
          New_Binder
             (Names => (1 => New_Identifier ("a")),
@@ -124,7 +121,7 @@ package body Why.Gen.Arrays is
       --  logic to_ : t -> comp ada_array
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
-      --  axiom 2 : forall x, from_ (to_ (x)) = x
+      --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
       New_Abstract_Type (File, Name);
       New_Logic
          (File,
@@ -140,17 +137,25 @@ package body Why.Gen.Arrays is
          (File       => File,
           Name       => Array_Conv_Idem (Name),
           Axiom_Body =>
-            New_Forall
-               (Binders => (1 => Ar_Binder),
-                Pred =>
-                  New_Equal
-                     (Ar,
-                      New_Operation
-                        (Name       => Array_Conv_To (Name),
-                         Parameters =>
-                           (1 => New_Operation
-                                 (Name => Array_Conv_From (Name),
-                                  Parameters => (1 => Ar)))))));
+            New_Universal_Quantif
+              (Var_Type  => New_Abstract_Type (Name =>
+                                                 (New_Identifier (Name))),
+               Variables => (1 => New_Identifier ("a")),
+               Triggers  => New_Triggers (
+                 Triggers => (1 =>
+                                New_Trigger (
+                                  Terms => (1 => New_Operation
+                                            (Name => Array_Conv_From (Name),
+                                             Parameters => (1 => Ar)))))),
+               Pred      =>
+                 New_Equal
+                   (Ar,
+                    New_Operation
+                      (Name       => Array_Conv_To (Name),
+                       Parameters =>
+                         (1 => New_Operation
+                            (Name => Array_Conv_From (Name),
+                             Parameters => (1 => Ar)))))));
       New_Axiom
          (File       => File,
           Name       => Array_Conv_Idem_2 (Name),
@@ -158,15 +163,29 @@ package body Why.Gen.Arrays is
             New_Forall
                (Binders => (1 => Ar_Binder_2),
                 Pred =>
-                  New_Equal
-                     (Ar,
-                      New_Operation
-                        (Name       => Array_Conv_From (Name),
-                         Parameters =>
-                           (1 => New_Operation
+                  New_Universal_Quantif
+                    (Var_Type  => +Ar_Type,
+                     Variables => (1 => New_Identifier ("b")),
+                     Triggers  => New_Triggers (
+                       Triggers =>
+                         (1 =>
+                            New_Trigger (
+                              Terms => (1 => New_Operation
+                                        (Name => Array_Conv_To (Name),
+                                         Parameters => (1 => Ar)),
+                                        2 => New_Operation
+                                          (Name => Array_Conv_To (Name),
+                                           Parameters => (1 => Arb)))))),
+                     Pred      =>
+                       New_Implication
+                         (Left  => New_Equal
+                              (New_Operation
+                                   (Name => Array_Conv_To (Name),
+                                    Parameters => (1 => Ar)),
+                               New_Operation
                                  (Name => Array_Conv_To (Name),
-                                  Parameters =>
-                                    (1 => Ar)))))));
+                                  Parameters => (1 => Arb))),
+                          Right => New_Equal (Ar, Arb)))));
    end Declare_Ada_Unconstrained_Array;
 
    --------------------------------
@@ -260,6 +279,10 @@ package body Why.Gen.Arrays is
            New_Operation
              (Name => Array_Update_Name (Ada_Array),
               Parameters => (1 => Index, 2 => Ar, 3 => Component));
+         Get_Term : constant W_Term_Id :=
+           New_Operation
+             (Name => Array_Access_Name (Ada_Array),
+              Parameters => (1 => Index_Diff, 2 => Ar));
          First_Term : constant W_Term_Id :=
            New_Operation
              (Name => Array_First_Name (Ada_Array),
@@ -342,12 +365,20 @@ package body Why.Gen.Arrays is
                New_Forall
                   (Binders =>
                      (1 => Ar_Binder,
-                      2 => Index_Binder,
-                      3 => Component_Binder),
+                      2 => Index_Binder),
                    Pred =>
-                     New_Equal
-                        (Acc_Upd_Term_Eq,
-                         Component)));
+                     New_Universal_Quantif
+                       (Variables => (1 => New_Identifier ("v")),
+                        Var_Type  => +A,
+                        Triggers  =>
+                          New_Triggers (
+                            Triggers => (1 =>
+                                           New_Trigger (
+                                             Terms => (1 => Upd_Term)))),
+                        Pred      =>
+                          New_Equal
+                            (Acc_Upd_Term_Eq,
+                             Component))));
          New_Axiom
             (File => File,
              Name => Array_Accupd_Neq_Axiom (Ada_Array),
@@ -356,9 +387,20 @@ package body Why.Gen.Arrays is
                   (Binders =>
                      (1 => Ar_Binder,
                       2 => Index_Binder,
-                      3 => Index_Diff_Binder,
-                      4 => Component_Binder),
+                      3 => Index_Diff_Binder),
                    Pred =>
+                     New_Universal_Quantif
+                       (Variables => (1 => New_Identifier ("v")),
+                        Var_Type  => +A,
+                        Triggers  =>
+                          New_Triggers (
+                            Triggers =>
+                              (1 => New_Trigger (Terms =>
+                                                   (1 => Acc_Upd_Term_Neq)),
+                               2 => New_Trigger (Terms =>
+                                                   (1 => Upd_Term,
+                                                    2 => Get_Term)))),
+                        Pred      =>
                      New_Implication
                         (Left  =>
                            New_NEqual
@@ -366,12 +408,7 @@ package body Why.Gen.Arrays is
                               Index_Diff),
                          Right =>
                            New_Equal
-                              (Acc_Upd_Term_Neq,
-                               New_Operation
-                                  (Name => Array_Access_Name (Ada_Array),
-                                   Parameters =>
-                                    (1 => Index_Diff,
-                                     2 => Ar))))));
+                              (Acc_Upd_Term_Neq, Get_Term)))));
          New_Axiom
            (File => File,
             Name => Array_First_Update (Ada_Array),

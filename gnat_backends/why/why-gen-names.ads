@@ -29,7 +29,7 @@ with Why.Sinfo;    use Why.Sinfo;
 
 package Why.Gen.Names is
 
-   Ada_Array          : constant String := "__ada_array";
+   Ada_Array          : constant String := "t__ada_array";
 
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
