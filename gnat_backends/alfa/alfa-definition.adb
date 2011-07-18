@@ -2565,9 +2565,11 @@ package body Alfa.Definition is
          when E_Record_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
 
-         when E_Modular_Integer_Type | E_Modular_Integer_Subtype
-            | Real_Kind  =>
+         when E_Modular_Integer_Type | E_Modular_Integer_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Modular);
+
+         when Real_Kind =>
+            Mark_Non_Alfa ("type definition", +Id, NYI_Float);
 
          when Access_Kind =>
             Mark_Non_Alfa ("access type", +Id, NIR_Access);
