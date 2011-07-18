@@ -73,7 +73,8 @@ package body Why.Gen.Axioms is
                                   Triggers  => New_Triggers (
                                     Triggers =>
                                       (1 => New_Trigger (
-                                         Terms => (1 => In_Range_t)),
+                                         Terms => (1 => In_Range_t,
+                                                   2 => X_To_Type_Op)),
                                        2 => New_Trigger (
                                          Terms => (1 =>
                                                      Back_To_Base_Type_Op)))),

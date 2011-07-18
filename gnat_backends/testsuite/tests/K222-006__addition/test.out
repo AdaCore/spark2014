@@ -1,2 +1,2 @@
 add.adb:5:16: range check not proved
-add.ads:4:43: (info) postcondition proved
+add.ads:4:43: postcondition not proved
