@@ -125,8 +125,8 @@ package Why.Gen.Binders is
         --  Name of the entity to declare. If not specified, a defaut is
         --  given following the defaut naming convention.
 
-        Pre  : W_Predicate_Id := New_True_Literal_Pred;
-        Post : W_Predicate_Id := New_True_Literal_Pred;
+        Pre  : W_Predicate_OId := Why_Empty;
+        Post : W_Predicate_OId := Why_Empty;
 
         case Kind is
            when W_Logic =>
@@ -156,7 +156,7 @@ package Why.Gen.Binders is
    procedure Emit_Top_Level_Declarations
      (File        : W_File_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : String;
+      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Spec        : in out Declaration_Spec_Array);

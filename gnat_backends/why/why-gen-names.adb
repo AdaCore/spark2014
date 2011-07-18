@@ -296,8 +296,22 @@ package body Why.Gen.Names is
    function New_Definition_Name (Name : String) return W_Identifier_Id
       renames Definition_Gen;
 
+   function New_Definition_Name
+     (Name : W_Identifier_Id)
+     return W_Identifier_Id is
+   begin
+      return New_Definition_Name
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end New_Definition_Name;
+
    function Logic_Func_Name (Name : String) return W_Identifier_Id
       renames New_Identifier;
+
+   function Logic_Func_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Logic_Func_Name
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Logic_Func_Name;
 
    function Logic_Def_Axiom_Gen is new Generate_Suffix (Logic_Def_Axiom);
    function Logic_Func_Axiom (Name : String) return W_Identifier_Id
@@ -455,6 +469,14 @@ package body Why.Gen.Names is
       Suffix : constant String := "_";
    begin
       return New_Identifier (Name & Suffix);
+   end Program_Func_Name;
+
+   function Program_Func_Name
+     (Name : W_Identifier_Id)
+     return W_Identifier_Id is
+   begin
+      return Program_Func_Name
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Program_Func_Name;
 
    -----------------

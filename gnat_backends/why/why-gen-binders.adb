@@ -26,6 +26,7 @@
 with Why.Conversions; use Why.Conversions;
 with Why.Gen.Names;   use Why.Gen.Names;
 with Why.Gen.Decl;    use Why.Gen.Decl;
+with Why.Gen.Terms;   use Why.Gen.Terms;
 
 package body Why.Gen.Binders is
 
@@ -53,14 +54,17 @@ package body Why.Gen.Binders is
    procedure Emit_Top_Level_Declarations
      (File        : W_File_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : String;
+      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
-      Spec        : in out Declaration_Spec_Array) is
+      Spec        : in out Declaration_Spec_Array)
+   is
+      Logic_Def_Emitted : Boolean := False;
    begin
       for S in Spec'Range loop
          case Spec (S).Kind is
             when W_Logic =>
+               pragma Assert (not Logic_Def_Emitted);
                if Spec (S).Name = Why_Empty then
                   Spec (S).Name := Logic_Func_Name (Name);
                end if;
@@ -72,8 +76,10 @@ package body Why.Gen.Binders is
                      Name        => Spec (S).Name,
                      Binders     => Binders,
                      Return_Type => Return_Type));
+               Logic_Def_Emitted := True;
 
             when W_Function =>
+               pragma Assert (not Logic_Def_Emitted);
                if Spec (S).Name = Why_Empty then
                   Spec (S).Name := Logic_Func_Name (Name);
                end if;
@@ -86,6 +92,7 @@ package body Why.Gen.Binders is
                      Binders     => Binders,
                      Return_Type => Return_Type,
                      Def         => Spec (S).Term));
+               Logic_Def_Emitted := True;
 
             when W_Predicate_Definition =>
                if Spec (S).Name = Why_Empty then
@@ -105,6 +112,14 @@ package body Why.Gen.Binders is
                   Spec (S).Name := New_Definition_Name (Name);
                end if;
 
+               if Spec (S).Pre = Why_Empty then
+                  Spec (S).Pre := New_True_Literal_Pred;
+               end if;
+
+               if Spec (S).Post = Why_Empty then
+                  Spec (S).Post := New_True_Literal_Pred;
+               end if;
+
                Emit
                  (File,
                   New_Global_Binding
@@ -118,6 +133,23 @@ package body Why.Gen.Binders is
             when W_Parameter_Declaration =>
                if Spec (S).Name = Why_Empty then
                   Spec (S).Name := Program_Func_Name (Name);
+               end if;
+
+               if Spec (S).Pre = Why_Empty then
+                  Spec (S).Pre := New_True_Literal_Pred;
+               end if;
+
+               if Spec (S).Post = Why_Empty then
+                  if Logic_Def_Emitted then
+                     Spec (S).Post := New_Related_Terms
+                       (Left  => New_Call_To_Logic
+                                   (Name => Spec (S).Name,
+                                    Binders => Binders),
+                        Op    => New_Rel_Eq,
+                        Right => New_Result_Term);
+                  else
+                     Spec (S).Post := New_True_Literal_Pred;
+                  end if;
                end if;
 
                Emit

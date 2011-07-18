@@ -138,10 +138,14 @@ package Why.Gen.Names is
    --  The name of the abstract type is given in parameter.
 
    function New_Definition_Name (Name : String) return W_Identifier_Id;
+   function New_Definition_Name
+     (Name : W_Identifier_Id)
+     return W_Identifier_Id;
    --  Create a new identifier for the "definition only" version of a
    --  subprogram, which is not meant to be called.
 
    function Logic_Func_Name (Name : String) return W_Identifier_Id;
+   function Logic_Func_Name (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for the logic version of a
    --  subprogram, which is used in annotations.
 
@@ -186,6 +190,7 @@ package Why.Gen.Names is
    --  Return an array of term identifiers
 
    function Program_Func_Name (Name : String) return W_Identifier_Id;
+   function Program_Func_Name (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for the program version of a
    --  subprogram.
 

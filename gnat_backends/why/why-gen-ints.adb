@@ -31,6 +31,7 @@ with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Ints is
@@ -111,16 +112,24 @@ package body Why.Gen.Ints is
                          New_Related_Terms (Left  => +Int_Result,
                                             Op    => New_Rel_Eq,
                                             Right => New_Term (Arg_S));
+         Spec        : Declaration_Spec_Array :=
+                         (1 => (Kind => W_Logic,
+                                others => <>),
+                          2 => (Kind => W_Parameter_Declaration,
+                                Pre  => Range_Check,
+                                Post => Post,
+                                others => <>));
+
       begin
-         Declare_Logic_And_Parameters
-           (File,
-            New_Conversion_From_Int (Name),
-              (1 => New_Binder
-                      (Names    => (1 => New_Identifier (Arg_S)),
-                       Arg_Type => New_Type_Int)),
-            +Return_Type,
-            Range_Check,
-            Post);
+         Emit_Top_Level_Declarations
+           (File => File,
+            Name => New_Conversion_From_Int (Name),
+            Binders =>
+              (1 => (B_Name => New_Identifier (Arg_S),
+                     B_Type => New_Type_Int,
+                     others => <>)),
+            Return_Type => +Return_Type,
+            Spec => Spec);
          Define_Eq_Predicate (File, Name);
          Define_Range_Axiom (File,
                              New_Identifier (Name),
