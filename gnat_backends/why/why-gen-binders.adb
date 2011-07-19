@@ -27,6 +27,7 @@ with Why.Conversions; use Why.Conversions;
 with Why.Gen.Names;   use Why.Gen.Names;
 with Why.Gen.Decl;    use Why.Gen.Decl;
 with Why.Gen.Terms;   use Why.Gen.Terms;
+with Why.Gen.Preds;   use Why.Gen.Preds;
 
 package body Why.Gen.Binders is
 
@@ -78,8 +79,20 @@ package body Why.Gen.Binders is
                      Return_Type => Return_Type));
                Logic_Def_Emitted := True;
 
+               if Spec (S).Term /= Why_Empty then
+                  Emit
+                    (File,
+                     New_Defining_Axiom
+                       (Ada_Node => Ada_Node,
+                        Name     => Spec (S).Name,
+                        Binders  => Binders,
+                        Pre      => Spec (S).Pre,
+                        Def      => Spec (S).Term));
+               end if;
+
             when W_Function =>
                pragma Assert (not Logic_Def_Emitted);
+               pragma Assert (Spec (S).Term /= Why_Empty);
                if Spec (S).Name = Why_Empty then
                   Spec (S).Name := Logic_Func_Name (Name);
                end if;
@@ -170,6 +183,93 @@ package body Why.Gen.Binders is
          end case;
       end loop;
    end Emit_Top_Level_Declarations;
+
+   -----------------------
+   -- New_Guarded_Axiom --
+   -----------------------
+
+   function New_Guarded_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_OId := Why_Empty;
+      Def      : W_Predicate_Id)
+     return W_Logic_Declaration_Class_Id
+   is
+      Ax_Body  : constant W_Predicate_Id :=
+                   (if Pre = Why_Empty then
+                      Def
+                    else
+                      New_Implication
+                        (Left  => Pre,
+                         Right => Def));
+   begin
+      return New_Axiom
+        (Ada_Node => Ada_Node,
+         Name     => Name,
+         Def      =>
+           New_Universal_Quantif
+             (Binders => Binders,
+              Pred    => Ax_Body));
+   end New_Guarded_Axiom;
+
+   ------------------------
+   -- New_Defining_Axiom --
+   ------------------------
+
+   function New_Defining_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_OId := Why_Empty;
+      Def      : W_Term_Id)
+     return W_Logic_Declaration_Class_Id
+   is
+      Left     : constant W_Term_Id :=
+                   New_Call_To_Logic
+                     (Name    => Name,
+                      Binders => Binders);
+      Equality : constant W_Predicate_Id :=
+                   New_Equal
+                     (Left  => Left,
+                      Right => Def);
+   begin
+      return New_Guarded_Axiom
+        (Ada_Node => Ada_Node,
+         Name     => Logic_Func_Axiom (Name),
+         Binders  => Binders,
+         Pre      => Pre,
+         Def      => Equality);
+   end New_Defining_Axiom;
+
+   -----------------------------
+   -- New_Defining_Bool_Axiom --
+   -----------------------------
+
+   function New_Defining_Bool_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_Id := Why_Empty;
+      Def      : W_Predicate_Id)
+     return W_Logic_Declaration_Class_Id
+   is
+      Left     : constant W_Term_Id :=
+                   New_Call_To_Logic
+                     (Name    => Name,
+                      Binders => Binders);
+      Equality : constant W_Predicate_Id :=
+                   New_Equal_Bool
+                     (Left  => Left,
+                      Right => Def);
+   begin
+      return New_Guarded_Axiom
+        (Ada_Node => Ada_Node,
+         Name     => Logic_Func_Axiom (Name),
+         Binders  => Binders,
+         Pre      => Pre,
+         Def      => Equality);
+   end New_Defining_Bool_Axiom;
 
    -----------------
    -- New_Binders --

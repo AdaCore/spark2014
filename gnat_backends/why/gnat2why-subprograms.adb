@@ -1191,54 +1191,27 @@ package body Gnat2Why.Subprograms is
                     Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
 
          if Is_Expr_Func then
-            --  generate axiom of the form
-            --    forall x1 ... xn.
-            --       (pre -> logic__f (x1 .. xn)) = expr
-            declare
-               Is_Boolean : constant Boolean :=
-                              Etype (Defining_Entity (Spec)) =
-                              Standard_Boolean;
-               Left       : constant W_Term_Id :=
-                              New_Call_To_Logic
-                                (Name    => Logic_Func_Name (Name_Str),
-                                 Binders => Func_Binders);
-               Equality   : constant W_Predicate_Id :=
-                              (if Is_Boolean then
-                               New_Equal_Bool
-                                 (Left,
-                                  Why_Predicate_Of_Ada_Expr
-                                    (Expression (Orig_Node)))
-                               else
-                               New_Equal
-                                 (Left  => Left,
-                                  Right =>
-                                    Why_Term_Of_Ada_Expr
-                                      (Expression (Orig_Node))));
-               Ax_Body    : W_Predicate_Id :=
-                              New_Implication
-                                (Left  => Pre,
-                                 Right => Equality);
-
-               Arg : Node_Id := First (Ada_Binders);
-            begin
-               while Present (Arg) loop
-                  Ax_Body :=
-                    New_Universal_Quantif
-                      (Variables  =>
-                           (1 => New_Identifier
-                                (Full_Name (Defining_Identifier (Arg)))),
-                       Var_Type   =>
-                         Why_Logic_Type_Of_Ada_Obj
-                           (Defining_Identifier (Arg)),
-                       Pred       => Ax_Body);
-                  Next (Arg);
-               end loop;
-               New_Axiom
-                 (File       => File,
-                  Name       => Logic_Func_Axiom (Name_Str),
-                  Axiom_Body => Ax_Body);
-            end;
+            if Etype (Defining_Entity (Spec)) = Standard_Boolean then
+               Emit
+                 (File,
+                  New_Defining_Bool_Axiom
+                    (Name    => Logic_Func_Name (Name_Str),
+                     Binders => Func_Binders,
+                     Pre     => Pre,
+                     Def     => Why_Predicate_Of_Ada_Expr
+                                  (Expression (Orig_Node))));
+            else
+               Emit
+                 (File,
+                  New_Defining_Axiom
+                    (Name    => Logic_Func_Name (Name_Str),
+                     Binders => Func_Binders,
+                     Pre     => Pre,
+                     Def     => Why_Term_Of_Ada_Expr
+                                  (Expression (Orig_Node))));
+            end if;
          end if;
+
          if not Debug.Debug_Flag_Dot_GG then
             Emit
               (File,

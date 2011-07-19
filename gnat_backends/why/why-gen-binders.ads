@@ -111,6 +111,42 @@ package Why.Gen.Binders is
       Post        : W_Predicate_Id := New_True_Literal_Pred)
      return W_Declaration_Id;
 
+   function New_Guarded_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_OId := Why_Empty;
+      Def      : W_Predicate_Id)
+     return W_Logic_Declaration_Class_Id;
+   --  generate an axiom of the form:
+   --
+   --   axiom <name>:
+   --    forall x1 ... xn.
+   --       pre -> <def>
+
+   function New_Defining_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_OId := Why_Empty;
+      Def      : W_Term_Id)
+     return W_Logic_Declaration_Class_Id;
+   --  generate an axiom of the form:
+   --
+   --   axiom <name>___def:
+   --    forall x1 ... xn.
+   --       pre -> (<name> (x1 .. xn) = <def>)
+
+   function New_Defining_Bool_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Predicate_Id := Why_Empty;
+      Def      : W_Predicate_Id)
+     return W_Logic_Declaration_Class_Id;
+   --  Same as new_defining_axiom, but for functions returning booleans.
+   --  (for those, predicates are generated instead of logics).
+
    subtype W_Binded_Declaration is Why_Node_Kind
      with Predicate => (W_Binded_Declaration in W_Unused_At_Start
                         | W_Logic
@@ -129,11 +165,8 @@ package Why.Gen.Binders is
         Post : W_Predicate_OId := Why_Empty;
 
         case Kind is
-           when W_Logic =>
-              null;
-
-           when W_Function =>
-              Term : W_Term_Id;
+           when W_Logic | W_Function =>
+              Term : W_Term_OId := Why_Empty;
 
            when W_Predicate_Definition =>
               Pred : W_Predicate_Id;

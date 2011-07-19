@@ -150,6 +150,7 @@ package Why.Gen.Names is
    --  subprogram, which is used in annotations.
 
    function Logic_Func_Axiom (Name : String) return W_Identifier_Id;
+   function Logic_Func_Axiom (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new name for the axiom that states equivalence of
    --  a subprogram and its logic definition.
 

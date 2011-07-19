@@ -317,6 +317,12 @@ package body Why.Gen.Names is
    function Logic_Func_Axiom (Name : String) return W_Identifier_Id
       renames Logic_Def_Axiom_Gen;
 
+   function Logic_Func_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Logic_Func_Axiom
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Logic_Func_Axiom;
+
    function Pre_Check_Gen is new Generate_Prefix (Pre_Check);
    function New_Pre_Check_Name (Name : String) return W_Identifier_Id
       renames Pre_Check_Gen;
