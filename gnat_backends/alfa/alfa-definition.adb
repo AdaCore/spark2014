@@ -919,8 +919,8 @@ package body Alfa.Definition is
       case Nkind (N) is
          when N_Defining_Identifier =>
             --  We represent types by their entity, instead of
-            --  their declaration. Type identifiers be the only entities we
-            --  come across.
+            --  their declaration. Type identifiers should be the only
+            --  entities we come across.
             pragma Assert (Is_Type (N));
             Mark_Type_Entity (Unique (N));
 
