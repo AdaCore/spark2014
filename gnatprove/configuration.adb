@@ -60,11 +60,7 @@ package body Configuration is
          Argument_Present := True;
          File_List.Append (Switch);
       else
-
-         --  ??? We should fail with an error message and an Invalid_Switch
-         --  exception, but see TN K707-002
-
-         null;
+         raise Invalid_Switch;
 
       end if;
 
@@ -202,7 +198,7 @@ package body Configuration is
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
-      Getopt (Config, Callback => Handle_Switch'Access);
+      Getopt (Config, Callback => Handle_Switch'Access, Concatenate => False);
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
       elsif MMode_Input.all = "force" then
