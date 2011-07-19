@@ -67,7 +67,7 @@ package body Why.Gen.Binders is
             when W_Logic =>
                pragma Assert (not Logic_Def_Emitted);
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := Logic_Func_Name (Name);
+                  Spec (S).Name := Logic_Func_Name.Id (Name);
                end if;
 
                Emit
@@ -94,7 +94,7 @@ package body Why.Gen.Binders is
                pragma Assert (not Logic_Def_Emitted);
                pragma Assert (Spec (S).Term /= Why_Empty);
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := Logic_Func_Name (Name);
+                  Spec (S).Name := Logic_Func_Name.Id (Name);
                end if;
 
                Emit
@@ -109,7 +109,7 @@ package body Why.Gen.Binders is
 
             when W_Predicate_Definition =>
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := Logic_Func_Name (Name);
+                  Spec (S).Name := Logic_Func_Name.Id (Name);
                end if;
 
                Emit
@@ -122,7 +122,7 @@ package body Why.Gen.Binders is
 
             when W_Global_Binding =>
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := New_Definition_Name (Name);
+                  Spec (S).Name := New_Definition_Name.Id (Name);
                end if;
 
                if Spec (S).Pre = Why_Empty then
@@ -145,7 +145,7 @@ package body Why.Gen.Binders is
 
             when W_Parameter_Declaration =>
                if Spec (S).Name = Why_Empty then
-                  Spec (S).Name := Program_Func_Name (Name);
+                  Spec (S).Name := Program_Func_Name.Id (Name);
                end if;
 
                if Spec (S).Pre = Why_Empty then
@@ -236,7 +236,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => Logic_Func_Axiom (Name),
+         Name     => Logic_Func_Axiom.Id (Name),
          Binders  => Binders,
          Pre      => Pre,
          Def      => Equality);
@@ -265,7 +265,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => Logic_Func_Axiom (Name),
+         Name     => Logic_Func_Axiom.Id (Name),
          Binders  => Binders,
          Pre      => Pre,
          Def      => Equality);

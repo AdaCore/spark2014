@@ -96,14 +96,14 @@ package body Why.Gen.Progs is
                   raise Program_Error;
                when Why_Abstract =>
                   return
-                     New_Conversion_From_Int
+                     New_Conversion_From_Int.Id
                        (Full_Name (To.Wh_Abstract));
             end case;
          when Why_Abstract =>
             case To.Kind is
                when Why_Int =>
                   return
-                    New_Conversion_To_Int (Full_Name (From.Wh_Abstract));
+                    New_Conversion_To_Int.Id (Full_Name (From.Wh_Abstract));
                when Why_Abstract =>
                   raise Program_Error
                      with "Conversion between arbitrary types attempted";
@@ -165,12 +165,12 @@ package body Why.Gen.Progs is
       return
          New_Prog_Call
            (Ada_Node => Ada_Node,
-            Name  => Array_Conv_To (Full_Name (Ada_To)),
+            Name  => Array_Conv_To.Id (Full_Name (Ada_To)),
             Progs =>
               (1 =>
                  New_Prog_Call
                    (Ada_Node => Ada_Node,
-                    Name  => Array_Conv_From (Full_Name (Ada_From)),
+                    Name  => Array_Conv_From.Id (Full_Name (Ada_From)),
                     Progs => (1 => Why_Expr))));
    end Insert_Array_Conversion;
 

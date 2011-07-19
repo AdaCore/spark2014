@@ -87,7 +87,7 @@ package body Why.Gen.Ints is
       --  to int:
       New_Logic
          (File        => File,
-          Name        => New_Conversion_To_Int (Name),
+          Name        => New_Conversion_To_Int.Id (Name),
           Args        =>
             (1 => New_Abstract_Type (Name => New_Identifier (Name))),
           Return_Type => New_Type_Int);
@@ -99,13 +99,13 @@ package body Why.Gen.Ints is
          --  precondition: { <name>___in_range (n) }
          Range_Check : constant W_Predicate_Id :=
                          New_Predicate_Instance (Name =>
-                                                   Range_Pred_Name (Name),
+                                                   Range_Pred_Name.Id (Name),
                                                  Parameters =>
                                                    (1 => New_Term (Arg_S)));
          --  postcondition: { <name>___of_integer (result) = n }
          Int_Result  : constant W_Operation_Id :=
                          New_Operation (Name =>
-                                          New_Conversion_To_Int (Name),
+                                          New_Conversion_To_Int.Id (Name),
                                         Parameters =>
                                           (1 => New_Result_Term));
          Post        : constant W_Predicate_Id :=
@@ -123,7 +123,7 @@ package body Why.Gen.Ints is
       begin
          Emit_Top_Level_Declarations
            (File => File,
-            Name => New_Conversion_From_Int (Name),
+            Name => New_Conversion_From_Int.Id (Name),
             Binders =>
               (1 => (B_Name => New_Identifier (Arg_S),
                      B_Type => New_Type_Int,
@@ -133,15 +133,15 @@ package body Why.Gen.Ints is
          Define_Eq_Predicate (File, Name);
          Define_Range_Axiom (File,
                              New_Identifier (Name),
-                             New_Conversion_To_Int (Name));
+                             New_Conversion_To_Int.Id (Name));
          Define_Coerce_Axiom (File,
                               New_Identifier (Name),
                               New_Type_Int,
-                              New_Conversion_From_Int (Name),
-                              New_Conversion_To_Int (Name));
+                              New_Conversion_From_Int.Id (Name),
+                              New_Conversion_To_Int.Id (Name));
          Define_Unicity_Axiom (File,
                                New_Identifier (Name),
-                               New_Conversion_To_Int (Name));
+                               New_Conversion_To_Int.Id (Name));
       end;
       New_Boolean_Equality_Parameter (File, Name);
    end Define_Signed_Int_Conversions;

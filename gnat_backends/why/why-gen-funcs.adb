@@ -96,7 +96,7 @@ package body Why.Gen.Funcs is
    begin
       New_Parameter
         (File => File,
-         Name => Eq_Param_Name (Type_Name),
+         Name => Eq_Param_Name.Id (Type_Name),
          Binders =>
             (1 =>
                New_Binder

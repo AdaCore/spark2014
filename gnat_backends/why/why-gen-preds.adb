@@ -62,7 +62,7 @@ package body Why.Gen.Preds is
       Y_S               : constant String := "y";
 
       --  predicate eq___<name> (x : <name>, y : <name>) = [...]
-      Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name (Name);
+      Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name.Id (Name);
       X_Binder          : constant W_Logic_Binder_Id :=
                             New_Logic_Binder
                             (Name       => New_Identifier (X_S),
@@ -76,7 +76,7 @@ package body Why.Gen.Preds is
 
       --  integer_of___<name> (x) = integer_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
-                            New_Conversion_To_Int (Name);
+                            New_Conversion_To_Int.Id (Name);
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name       => Conversion,
@@ -111,7 +111,7 @@ package body Why.Gen.Preds is
       Last_S     : constant String := "last";
 
       --  predicate <name>___in_range (x : int) = [...]
-      Pred_Name  : constant W_Identifier_Id := Range_Pred_Name (Name);
+      Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
       Binder     : constant W_Logic_Binder_Id :=
                      New_Logic_Binder (Name       => New_Identifier (Arg_S),
                                        Param_Type => New_Type_Int);

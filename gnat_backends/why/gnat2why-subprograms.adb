@@ -1185,7 +1185,7 @@ package body Gnat2Why.Subprograms is
       then
          Emit (File,
                New_Global_Binding
-                 (Name    => New_Pre_Check_Name (Name_Str),
+                 (Name    => New_Pre_Check_Name.Id (Name_Str),
                   Binders => Ext_Binders,
                   Def     =>
                     Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
@@ -1195,7 +1195,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Defining_Bool_Axiom
-                    (Name    => Logic_Func_Name (Name_Str),
+                    (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Func_Binders,
                      Pre     => Pre,
                      Def     => Why_Predicate_Of_Ada_Expr
@@ -1204,7 +1204,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Defining_Axiom
-                    (Name    => Logic_Func_Name (Name_Str),
+                    (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Func_Binders,
                      Pre     => Pre,
                      Def     => Why_Term_Of_Ada_Expr
@@ -1216,7 +1216,7 @@ package body Gnat2Why.Subprograms is
             Emit
               (File,
                New_Global_Binding
-                 (Name    => New_Definition_Name (Name_Str),
+                 (Name    => New_Definition_Name.Id (Name_Str),
                   Binders => (1 => Unit_Param),
                   Pre     => Pre,
                   Post    =>
@@ -1260,7 +1260,7 @@ package body Gnat2Why.Subprograms is
             Emit
               (File,
                New_Parameter
-                 (Name        => Program_Func_Name (Name_Str),
+                 (Name        => Program_Func_Name.Id (Name_Str),
                   Binders     => Ext_Binders,
                   Return_Type => Ret_Type,
                   Effects     => Effects,
@@ -1270,7 +1270,7 @@ package body Gnat2Why.Subprograms is
             if Is_Expr_Func then
                New_Logic
                  (File        => File,
-                  Name        => Logic_Func_Name (Name_Str),
+                  Name        => Logic_Func_Name.Id (Name_Str),
                   Args        => Compute_Logic_Args,
                   Return_Type =>
                   +Why_Logic_Type_Of_Ada_Type
@@ -1392,7 +1392,7 @@ package body Gnat2Why.Subprograms is
                return
                  New_Prog_Call
                    (Ada_Node => Expr,
-                    Name     => Eq_Param_Name (Type_Of_Node (Left)),
+                    Name     => Eq_Param_Name.Id (Type_Of_Node (Left)),
                     Progs    =>
                       (1 => Why_Expr_Of_Ada_Expr (Left),
                        2 => Why_Expr_Of_Ada_Expr
@@ -1489,7 +1489,7 @@ package body Gnat2Why.Subprograms is
          when N_Selected_Component =>
             T :=
               New_Prog_Call
-                (Name => Record_Getter_Name
+                (Name => Record_Getter_Name.Id
                  (Full_Name (Entity (Selector_Name (Expr)))),
                  Progs => (1 => Why_Expr_Of_Ada_Expr (Prefix (Expr))));
 
@@ -2503,15 +2503,17 @@ package body Gnat2Why.Subprograms is
          when N_Selected_Component =>
             T :=
               New_Operation
-                (Name => Record_Getter_Name
+                (Name => Record_Getter_Name.Id
                  (Full_Name (Entity (Selector_Name (Expr)))),
                  Parameters => (1 => Why_Term_Of_Ada_Expr (Prefix (Expr))));
 
          when N_Function_Call =>
             T :=
               New_Operation
-                 (Name => Logic_Func_Name (Full_Name (Entity (Name (Expr)))),
-                  Parameters => Compute_Term_Args (Expr));
+                 (Name =>
+                    Logic_Func_Name.Id (Full_Name (Entity (Name (Expr)))),
+                  Parameters =>
+                    Compute_Term_Args (Expr));
 
          when N_Expression_With_Actions =>
 

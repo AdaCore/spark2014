@@ -91,7 +91,7 @@ package body Why.Gen.Enums is
       declare
          Func : constant W_Function_Id :=
                   New_Function
-                    (Name        => New_Conversion_To_Int (Name),
+                    (Name        => New_Conversion_To_Int.Id (Name),
                      Return_Type => New_Type_Int,
                      Binders     =>
                        (1 =>
@@ -126,7 +126,7 @@ package body Why.Gen.Enums is
       New_Enum_Type_Declaration (File, Name, Constructors);
       New_Logic
          (File        => File,
-          Name        => New_Conversion_From_Int (Name),
+          Name        => New_Conversion_From_Int.Id (Name),
           Args        => (1 => New_Type_Int),
           Return_Type => My_Type);
       Define_Enum_To_Int_Function (File, Name, Constructors);
@@ -137,7 +137,7 @@ package body Why.Gen.Enums is
          Last => Max_Uint);
       New_Parameter
          (File => File,
-          Name => To_Program_Space (New_Conversion_From_Int (Name)),
+          Name => To_Program_Space (New_Conversion_From_Int.Id (Name)),
           Binders =>
             (1 =>
                New_Binder
@@ -155,14 +155,14 @@ package body Why.Gen.Enums is
             New_Equal
                (New_Result_Term,
                 New_Operation
-                  (Name       => New_Conversion_From_Int (Name),
+                  (Name       => New_Conversion_From_Int.Id (Name),
                    Parameters => (1 => New_Term ("x")))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
          New_Type_Int,
-         New_Conversion_From_Int (Name),
-         New_Conversion_To_Int (Name));
+         New_Conversion_From_Int.Id (Name),
+         New_Conversion_To_Int.Id (Name));
       New_Boolean_Equality_Parameter (File, Name);
    end Declare_Ada_Enum_Type;
 

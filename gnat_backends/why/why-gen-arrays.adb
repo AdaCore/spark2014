@@ -59,7 +59,7 @@ package body Why.Gen.Arrays is
 
       New_Axiom
         (File => File,
-         Name => Array_First_Static (Name),
+         Name => Array_First_Static.Id (Name),
          Axiom_Body =>
             New_Forall
                (Binders => (1 => Ar_Binder),
@@ -69,7 +69,7 @@ package body Why.Gen.Arrays is
                       New_Integer_Constant (Value => First))));
       New_Axiom
         (File => File,
-         Name => Array_Last_Static (Name),
+         Name => Array_Last_Static.Id (Name),
          Axiom_Body =>
             New_Forall
                (Binders => (1 => Ar_Binder),
@@ -79,7 +79,7 @@ package body Why.Gen.Arrays is
                       New_Integer_Constant (Value => Last))));
       New_Axiom
         (File => File,
-         Name => Array_Length_Static (Name),
+         Name => Array_Length_Static.Id (Name),
          Axiom_Body =>
             New_Forall
                (Binders => (1 => Ar_Binder),
@@ -125,17 +125,17 @@ package body Why.Gen.Arrays is
       New_Abstract_Type (File, Name);
       New_Logic
          (File,
-          Array_Conv_From (Name),
+          Array_Conv_From.Id (Name),
           Args => (1 => +Name_Type),
           Return_Type => +Ar_Type);
       New_Logic
          (File,
-          Array_Conv_To (Name),
+          Array_Conv_To.Id (Name),
           Args => (1 => +Ar_Type),
           Return_Type => +Name_Type);
       New_Axiom
          (File       => File,
-          Name       => Array_Conv_Idem (Name),
+          Name       => Array_Conv_Idem.Id (Name),
           Axiom_Body =>
             New_Universal_Quantif
               (Var_Type  => New_Abstract_Type (Name =>
@@ -145,20 +145,20 @@ package body Why.Gen.Arrays is
                  Triggers => (1 =>
                                 New_Trigger (
                                   Terms => (1 => New_Operation
-                                            (Name => Array_Conv_From (Name),
+                                            (Name => Array_Conv_From.Id (Name),
                                              Parameters => (1 => Ar)))))),
                Pred      =>
                  New_Equal
                    (Ar,
                     New_Operation
-                      (Name       => Array_Conv_To (Name),
+                      (Name       => Array_Conv_To.Id (Name),
                        Parameters =>
                          (1 => New_Operation
-                            (Name => Array_Conv_From (Name),
+                            (Name => Array_Conv_From.Id (Name),
                              Parameters => (1 => Ar)))))));
       New_Axiom
          (File       => File,
-          Name       => Array_Conv_Idem_2 (Name),
+          Name       => Array_Conv_Idem_2.Id (Name),
           Axiom_Body =>
             New_Forall
                (Binders => (1 => Ar_Binder_2),
@@ -171,19 +171,19 @@ package body Why.Gen.Arrays is
                          (1 =>
                             New_Trigger (
                               Terms => (1 => New_Operation
-                                        (Name => Array_Conv_To (Name),
+                                        (Name => Array_Conv_To.Id (Name),
                                          Parameters => (1 => Ar)),
                                         2 => New_Operation
-                                          (Name => Array_Conv_To (Name),
+                                          (Name => Array_Conv_To.Id (Name),
                                            Parameters => (1 => Arb)))))),
                      Pred      =>
                        New_Implication
                          (Left  => New_Equal
                               (New_Operation
-                                   (Name => Array_Conv_To (Name),
+                                   (Name => Array_Conv_To.Id (Name),
                                     Parameters => (1 => Ar)),
                                New_Operation
-                                 (Name => Array_Conv_To (Name),
+                                 (Name => Array_Conv_To.Id (Name),
                                   Parameters => (1 => Arb))),
                           Right => New_Equal (Ar, Arb)))));
    end Declare_Ada_Unconstrained_Array;
@@ -217,14 +217,14 @@ package body Why.Gen.Arrays is
       New_Abstract_Type (File, New_Identifier (Ada_Array), 1);
       New_Logic
         (File,
-         Array_Access_Name (Ada_Array),
+         Array_Access_Name.Id (Ada_Array),
          Args =>
             (1 => New_Type_Int,
              2 => +Ar_Type),
          Return_Type => +A);
       New_Logic
         (File,
-         Array_Update_Name (Ada_Array),
+         Array_Update_Name.Id (Ada_Array),
          Args =>
             (1 => New_Type_Int,
              2 => +Ar_Type,
@@ -232,19 +232,19 @@ package body Why.Gen.Arrays is
          Return_Type => +Ar_Type);
       New_Logic
         (File,
-         Array_Length_Name (Ada_Array),
+         Array_Length_Name.Id (Ada_Array),
          Args =>
             (1 => +Ar_Type),
          Return_Type => New_Type_Int);
       New_Logic
         (File,
-         Array_First_Name (Ada_Array),
+         Array_First_Name.Id (Ada_Array),
          Args =>
             (1 => +Ar_Type),
          Return_Type => New_Type_Int);
       New_Logic
         (File,
-         Array_Last_Name (Ada_Array),
+         Array_Last_Name.Id (Ada_Array),
          Args =>
             (1 => +Ar_Type),
          Return_Type => New_Type_Int);
@@ -277,31 +277,31 @@ package body Why.Gen.Arrays is
                 Arg_Type => New_Type_Int);
          Upd_Term   : constant W_Term_Id :=
            New_Operation
-             (Name => Array_Update_Name (Ada_Array),
+             (Name => Array_Update_Name.Id (Ada_Array),
               Parameters => (1 => Index, 2 => Ar, 3 => Component));
          Get_Term : constant W_Term_Id :=
            New_Operation
-             (Name => Array_Access_Name (Ada_Array),
+             (Name => Array_Access_Name.Id (Ada_Array),
               Parameters => (1 => Index_Diff, 2 => Ar));
          First_Term : constant W_Term_Id :=
            New_Operation
-             (Name => Array_First_Name (Ada_Array),
+             (Name => Array_First_Name.Id (Ada_Array),
               Parameters => (1 => Ar));
          Last_Term : constant W_Term_Id :=
            New_Operation
-             (Name => Array_Last_Name (Ada_Array),
+             (Name => Array_Last_Name.Id (Ada_Array),
               Parameters => (1 => Ar));
          Length_Term : constant W_Term_Id :=
            New_Operation
-             (Name => Array_Length_Name (Ada_Array),
+             (Name => Array_Length_Name.Id (Ada_Array),
               Parameters => (1 => Ar));
          Acc_Upd_Term_Eq : constant W_Term_Id :=
             New_Operation
-             (Name => Array_Access_Name (Ada_Array),
+             (Name => Array_Access_Name.Id (Ada_Array),
               Parameters => (1 => Index, 2 => Upd_Term));
          Acc_Upd_Term_Neq : constant W_Term_Id :=
             New_Operation
-             (Name => Array_Access_Name (Ada_Array),
+             (Name => Array_Access_Name.Id (Ada_Array),
               Parameters =>
                (1 => Index_Diff,
                 2 => Upd_Term));
@@ -325,7 +325,7 @@ package body Why.Gen.Arrays is
       begin
          New_Parameter
            (File,
-            To_Program_Space (Array_Access_Name (Ada_Array)),
+            To_Program_Space (Array_Access_Name.Id (Ada_Array)),
             Binders     =>
                (1 => Index_Binder,
                 2 => Ar_Binder),
@@ -335,13 +335,13 @@ package body Why.Gen.Arrays is
                New_Equal
                   (New_Result_Term,
                    New_Operation
-                      (Name => Array_Access_Name (Ada_Array),
+                      (Name => Array_Access_Name.Id (Ada_Array),
                        Parameters =>
                         (1 => Index,
                          2 => Ar))));
          New_Parameter
            (File,
-            To_Program_Space (Array_Update_Name (Ada_Array)),
+            To_Program_Space (Array_Update_Name.Id (Ada_Array)),
             Binders     =>
                (1 => Index_Binder,
                 2 => Ar_Binder,
@@ -352,7 +352,7 @@ package body Why.Gen.Arrays is
                New_Equal
                   (New_Result_Term,
                    New_Operation
-                      (Name => Array_Update_Name (Ada_Array),
+                      (Name => Array_Update_Name.Id (Ada_Array),
                        Parameters =>
                          (1 => Index,
                           2 => Ar,
@@ -360,7 +360,7 @@ package body Why.Gen.Arrays is
 
          New_Axiom
             (File => File,
-             Name => Array_Accupd_Eq_Axiom (Ada_Array),
+             Name => Array_Accupd_Eq_Axiom.Id (Ada_Array),
              Axiom_Body =>
                New_Forall
                   (Binders =>
@@ -381,7 +381,7 @@ package body Why.Gen.Arrays is
                              Component))));
          New_Axiom
             (File => File,
-             Name => Array_Accupd_Neq_Axiom (Ada_Array),
+             Name => Array_Accupd_Neq_Axiom.Id (Ada_Array),
              Axiom_Body =>
                New_Forall
                   (Binders =>
@@ -411,7 +411,7 @@ package body Why.Gen.Arrays is
                               (Acc_Upd_Term_Neq, Get_Term)))));
          New_Axiom
            (File => File,
-            Name => Array_First_Update (Ada_Array),
+            Name => Array_First_Update.Id (Ada_Array),
             Axiom_Body =>
               New_Forall
                  (Binders =>
@@ -422,12 +422,12 @@ package body Why.Gen.Arrays is
                     New_Equal
                       (First_Term,
                        New_Operation
-                         (Name => Array_First_Name (Ada_Array),
+                         (Name => Array_First_Name.Id (Ada_Array),
                           Parameters =>
                             (1 => Upd_Term)))));
          New_Axiom
            (File => File,
-            Name => Array_Last_Update (Ada_Array),
+            Name => Array_Last_Update.Id (Ada_Array),
             Axiom_Body =>
               New_Forall
                  (Binders =>
@@ -438,12 +438,12 @@ package body Why.Gen.Arrays is
                     New_Equal
                       (Last_Term,
                        New_Operation
-                         (Name => Array_Last_Name (Ada_Array),
+                         (Name => Array_Last_Name.Id (Ada_Array),
                           Parameters =>
                             (1 => Upd_Term)))));
          New_Axiom
            (File => File,
-            Name => Array_Length_Update (Ada_Array),
+            Name => Array_Length_Update.Id (Ada_Array),
             Axiom_Body =>
               New_Forall
                  (Binders =>
@@ -454,12 +454,12 @@ package body Why.Gen.Arrays is
                     New_Equal
                       (Length_Term,
                        New_Operation
-                         (Name => Array_Length_Name (Ada_Array),
+                         (Name => Array_Length_Name.Id (Ada_Array),
                           Parameters =>
                             (1 => Upd_Term)))));
          New_Axiom
            (File => File,
-            Name => Array_Length_Non_Zero (Ada_Array),
+            Name => Array_Length_Non_Zero.Id (Ada_Array),
             Axiom_Body =>
               New_Forall
                 (Binders => (1 => Ar_Binder),
@@ -476,7 +476,7 @@ package body Why.Gen.Arrays is
                             Right => Normal_Length))));
          New_Axiom
            (File => File,
-            Name => Array_Length_Zero (Ada_Array),
+            Name => Array_Length_Zero.Id (Ada_Array),
             Axiom_Body =>
               New_Forall
                 (Binders => (1 => Ar_Binder),
@@ -509,12 +509,12 @@ package body Why.Gen.Arrays is
          New_Located_Call
             (Ada_Node => Ada_Node,
              Reason   => VC_Array_Bounds_Check,
-             Name     => To_Program_Space (Array_Access_Name (Ada_Array)),
+             Name     => To_Program_Space (Array_Access_Name.Id (Ada_Array)),
              Progs    =>
                (1 => Index,
                 2 =>
                   New_Prog_Call
-                     (Name  => Array_Conv_From (Type_Name),
+                     (Name  => Array_Conv_From.Id (Type_Name),
                       Progs => (1 => Ar))));
    end New_Array_Access_Prog;
 
@@ -529,12 +529,12 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Access_Name (Ada_Array),
+          (Name => Array_Access_Name.Id (Ada_Array),
            Parameters =>
             (1 => Index,
              2 =>
                New_Operation
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Parameters => (1 => Ar))));
    end New_Array_Access_Term;
 
@@ -548,11 +548,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Prog_Call
-          (Name => Array_First_Name (Ada_Array),
+          (Name => Array_First_Name.Id (Ada_Array),
            Progs =>
             (1 =>
                New_Prog_Call
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Progs => (1 => Ar))));
    end New_Array_First_Prog;
 
@@ -566,11 +566,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_First_Name (Ada_Array),
+          (Name => Array_First_Name.Id (Ada_Array),
            Parameters =>
             (1 =>
                New_Operation
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Parameters => (1 => Ar))));
    end New_Array_First_Term;
 
@@ -584,11 +584,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Prog_Call
-          (Name => Array_Last_Name (Ada_Array),
+          (Name => Array_Last_Name.Id (Ada_Array),
            Progs =>
             (1 =>
                New_Prog_Call
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Progs => (1 => Ar))));
    end New_Array_Last_Prog;
 
@@ -602,11 +602,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Last_Name (Ada_Array),
+          (Name => Array_Last_Name.Id (Ada_Array),
            Parameters =>
             (1 =>
                New_Operation
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Parameters => (1 => Ar))));
    end New_Array_Last_Term;
 
@@ -620,11 +620,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Prog_Call
-          (Name => Array_Length_Name (Ada_Array),
+          (Name => Array_Length_Name.Id (Ada_Array),
            Progs =>
             (1 =>
                New_Prog_Call
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Progs => (1 => Ar))));
    end New_Array_Length_Prog;
 
@@ -638,11 +638,11 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Length_Name (Ada_Array),
+          (Name => Array_Length_Name.Id (Ada_Array),
            Parameters =>
             (1 =>
                New_Operation
-                  (Name => Array_Conv_From (Type_Name),
+                  (Name => Array_Conv_From.Id (Type_Name),
                    Parameters => (1 => Ar))));
    end New_Array_Length_Term;
 
@@ -663,18 +663,19 @@ package body Why.Gen.Arrays is
             (Name => Ar,
              Value =>
                New_Prog_Call
-                 (Name => Array_Conv_To (Type_Name),
+                 (Name => Array_Conv_To.Id (Type_Name),
                   Progs =>
                      (1 =>
                         New_Located_Call
                           (Ada_Node => Ada_Node,
                            Reason   => VC_Array_Bounds_Check,
                            Name     =>
-                              To_Program_Space (Array_Update_Name (Ada_Array)),
+                              To_Program_Space
+                                (Array_Update_Name.Id (Ada_Array)),
                            Progs    =>
                               (1 => Index,
                                2 => New_Prog_Call
-                                      (Name => Array_Conv_From (Type_Name),
+                                      (Name => Array_Conv_From.Id (Type_Name),
                                        Progs => (1 => New_Deref (Ref => Ar))),
                                3 => Value)))));
    end New_Array_Update_Prog;
@@ -692,16 +693,16 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Conv_To (Type_Name),
+          (Name => Array_Conv_To.Id (Type_Name),
            Parameters =>
             (1 =>
                New_Operation
-                 (Name => Array_Update_Name (Ada_Array),
+                 (Name => Array_Update_Name.Id (Ada_Array),
                   Parameters =>
                     (1 => Index,
                      2 =>
                         New_Operation
-                           (Name => Array_Conv_From (Type_Name),
+                           (Name => Array_Conv_From.Id (Type_Name),
                             Parameters => (1 => Ar)),
                      3 => Value))));
    end New_Array_Update_Term;

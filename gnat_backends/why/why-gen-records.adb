@@ -48,7 +48,7 @@ package body Why.Gen.Records is
    begin
       New_Logic
          (File        => File,
-          Name        => Record_Getter_Name (C_Name),
+          Name        => Record_Getter_Name.Id (C_Name),
           Args        => (1 => +R_Type),
           Return_Type => +C_Type);
       Logic_Type_Append_To_Arg_Types
@@ -74,7 +74,7 @@ package body Why.Gen.Records is
         (Id => File,
          New_Item => New_Logic_Declaration
          (Decl => New_Logic
-          (Names => (1 => Record_Builder_Name (Name)),
+          (Names => (1 => Record_Builder_Name.Id (Name)),
            Logic_Type => Builder)));
 
       if Is_Empty (+C_Types) then

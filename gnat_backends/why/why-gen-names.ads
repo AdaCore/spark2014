@@ -27,95 +27,11 @@ with String_Utils; use String_Utils;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
+with Why.Gen.Name_Gen;
+
 package Why.Gen.Names is
-
-   Ada_Array          : constant String := "t__ada_array";
-
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
-
-   function Array_Access_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its access function.
-   --
-   function Array_First_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its "first"
-   --  function.
-
-   function Array_First_Update (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "first" is constant
-
-   function Array_Last_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its "last" function.
-
-   function Array_Last_Update (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "last" is constant
-
-   function Array_Length_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its "length"
-   --  function.
-
-   function Array_Length_Non_Zero (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  defines the properties when Length is positive.
-
-   function Array_Length_Update (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "length" is constant
-
-   function Array_Length_Zero (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  defines the properties when Length Zero.
-
-   function Array_Update_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its update function
-
-   function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom of
-   --  access/update equality
-
-   function Array_Accupd_Neq_Axiom (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom of
-   --  access/update with disequality
-
-   function Array_Conv_To (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the conversion from
-   --  Ada__Array.
-
-   function Array_Conv_From (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the conversion to
-   --  Ada__Array.
-
-   function Array_First_Static (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'First is static.
-
-   function Array_Last_Static (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'Last is static.
-
-   function Array_Length_Static (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'Length is static.
-
-   function Array_Conv_Idem (Name : String) return W_Identifier_Id;
-   function Array_Conv_Idem_2 (Name : String) return W_Identifier_Id;
-
-   function Coerce_Axiom (Name : String) return  W_Identifier_Id;
-   function Coerce_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its coerce axiom.
-
-   function Eq_Param_Name (Name : String) return W_Identifier_Id;
-   function Eq_Param_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its equality parameter.
-
-   function Eq_Pred_Name (Name : String) return W_Identifier_Id;
-   function Eq_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its equality predicate.
 
    function New_Bool_Int_Axiom (Rel : W_Relation) return W_Identifier_Id;
    --  Return the name of the boolean comparison axiom for Why ints that
@@ -128,31 +44,6 @@ package Why.Gen.Names is
    function New_Conversion_Axiom (From : String; To : String)
       return W_Identifier_Id;
    --  Create a new identifier for a conversion between to abstract types
-
-   function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for a conversion from an abstract type
-   --  to int. The name of the abstract type is given in parameter.
-
-   function New_Conversion_From_Int (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for a conversion from int to an abstract type.
-   --  The name of the abstract type is given in parameter.
-
-   function New_Definition_Name (Name : String) return W_Identifier_Id;
-   function New_Definition_Name
-     (Name : W_Identifier_Id)
-     return W_Identifier_Id;
-   --  Create a new identifier for the "definition only" version of a
-   --  subprogram, which is not meant to be called.
-
-   function Logic_Func_Name (Name : String) return W_Identifier_Id;
-   function Logic_Func_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for the logic version of a
-   --  subprogram, which is used in annotations.
-
-   function Logic_Func_Axiom (Name : String) return W_Identifier_Id;
-   function Logic_Func_Axiom (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new name for the axiom that states equivalence of
-   --  a subprogram and its logic definition.
 
    function New_Exit_Identifier return W_Identifier_Id;
    --  Return an new identifier for the exception "Exit".
@@ -168,17 +59,13 @@ package Why.Gen.Names is
    function New_Integer_Division return W_Identifier_Id;
    --  Return an identifier that corresponds to integer division in Why
 
-   function New_Pre_Check_Name (Name : String) return W_Identifier_Id;
-   --  Return an identifier for the subprogram that checks whether a
-   --  precondition is properly guarded
+   function New_Result_Exc_Identifier return W_Identifier_Id;
+   --  Return a new identifier for the exception used for returning from a
+   --  subprogram.
 
    function New_Result_Identifier return W_Identifier_Id;
    --  Return a new identifier for a function result as it
    --  would be used into a postcondition.
-
-   function New_Result_Exc_Identifier return W_Identifier_Id;
-   --  Return a new identifier for the exception used for returning from a
-   --  subprogram.
 
    function New_Result_Temp_Identifier return W_Identifier_Id;
    --  Return a new identifier for the temporary used to store a function's
@@ -190,36 +77,6 @@ package Why.Gen.Names is
    function New_Terms (SL : String_Lists.List) return W_Term_Array;
    --  Return an array of term identifiers
 
-   function Program_Func_Name (Name : String) return W_Identifier_Id;
-   function Program_Func_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for the program version of a
-   --  subprogram.
-
-   function Range_Pred_Name (Name : String) return W_Identifier_Id;
-   function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its range predicate.
-
-   function Range_Axiom (Name : String) return  W_Identifier_Id;
-   function Range_Axiom (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its range axiom.
-
-   function Record_Getter_Name (Name : String) return W_Identifier_Id;
-   function Record_Getter_Name (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  From the full name of a record component, return the getter for
-   --  this component.
-
-   function Record_Getter_Axiom (Name : String) return W_Identifier_Id;
-   --  From the full name of a record component, return the name of
-   --  its getter axiom.
-
-   function Record_Builder_Name (Name : String) return W_Identifier_Id;
-   function Record_Builder_Name
-     (Name : W_Identifier_Id)
-     return W_Identifier_Id;
-   --  From the name of a record type, return the name of its builder.
-
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
@@ -229,8 +86,170 @@ package Why.Gen.Names is
      return W_Term_Id;
    --  Create a label identifier from Name. Name is duplicated.
 
-   function Unicity_Axiom (Name : String) return  W_Identifier_Id;
-   function Unicity_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;
+   Ada_Array                : constant String := "t__ada_array";
+   Array_Access             : constant String := "access";
+   Array_First              : constant String := "first";
+   Array_First_Upd          : constant String := "first_update";
+   Array_Last               : constant String := "last";
+   Array_Last_Upd           : constant String := "last_update";
+   Array_Length             : constant String := "length";
+   Array_Len_Nzero          : constant String := "length_non_zero";
+   Array_Len_Upd            : constant String := "length_update";
+   Array_Len_Zero           : constant String := "length_zero";
+   Array_Update             : constant String := "update";
+   Array_Accupd_Eq          : constant String := "accupd_eq";
+   Array_Accupd_Neq         : constant String := "accupd_neq";
+   Array_Convert_From       : constant String := "to_ada_array";
+   Array_Convert_To         : constant String := "of_ada_array";
+   Array_First_Static_Name  : constant String := "static_first";
+   Array_Last_Static_Name   : constant String := "static_last";
+   Array_Length_Static_Name : constant String := "static_length";
+   Array_Conv_Idemp         : constant String := "conv_idem";
+   Array_Conv_Idemp_2       : constant String := "conv_idem_2";
+   Coerce                   : constant String := "coerce";
+   Boolean_Eq               : constant String := "eq_bool";
+   Eq_Pred                  : constant String := "eq";
+   Record_Get               : constant String := "get";
+   Record_Get_Axiom         : constant String := "getter";
+   Record_Make              : constant String := "make";
+   Of_Int                   : constant String := "of_int";
+   Int_Of                   : constant String := "to_int";
+   Definition               : constant String := "def";
+   Logic_Def_Axiom          : constant String := "logic_def_axiom";
+   Pre_Check                : constant String := "pre_check";
+   Range_Name               : constant String := "range";
+   In_Range                 : constant String := "in_range";
+   Unicity                  : constant String := "unicity";
+
+   package Array_Access_Name is new Name_Gen ("", Array_Access);
+   --  From the name of an array type, return the name of its access function.
+
+   package Array_Accupd_Eq_Axiom is new Name_Gen ("", Array_Accupd_Eq);
+   --  From the name of an array type, return the name of the axiom of
+   --  access/update equality
+
+   package Array_Accupd_Neq_Axiom is new Name_Gen ("", Array_Accupd_Neq);
+   --  From the name of an array type, return the name of the axiom of
+   --  access/update with disequality
+
+   package Array_Conv_To is new Name_Gen ("", Array_Convert_To);
+   --  From the name of an array type, return the name of the conversion from
+   --  Ada__Array.
+
+   package Array_Conv_From is new Name_Gen ("", Array_Convert_From);
+   --  From the name of an array type, return the name of the conversion to
+   --  Ada__Array.
+
+   package Array_Conv_Idem is new Name_Gen ("", Array_Conv_Idemp);
+
+   package Array_Conv_Idem_2 is new Name_Gen ("", Array_Conv_Idemp_2);
+
+   package Array_First_Name is new Name_Gen ("", Array_First);
+   --  From the name of an array type, return the name of its "first"
+   --  function.
+
+   package Array_First_Update is new Name_Gen ("", Array_First_Upd);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "first" is constant
+
+   package Array_Last_Name is new Name_Gen ("", Array_Last);
+   --  From the name of an array type, return the name of its "last" function.
+
+   package Array_Last_Update is new Name_Gen ("", Array_Last_Upd);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "last" is constant
+
+   package Array_Length_Name is new Name_Gen ("", Array_Length);
+   --  From the name of an array type, return the name of its "length"
+   --  function.
+
+   package Array_Length_Non_Zero is new Name_Gen ("", Array_Len_Nzero);
+   --  From the name of an array type, return the name of the axiom that
+   --  defines the properties when Length is positive.
+
+   package Array_Length_Update is new Name_Gen ("", Array_Len_Upd);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "length" is constant
+
+   package Array_Length_Zero is new Name_Gen ("", Array_Len_Zero);
+   --  From the name of an array type, return the name of the axiom that
+   --  defines the properties when Length Zero.
+
+   package Array_Update_Name is new Name_Gen ("", Array_Update);
+   --  From the name of an array type, return the name of its update function
+
+   package Array_First_Static is new Name_Gen ("", Array_First_Static_Name);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'First is static.
+
+   package Array_Last_Static is new Name_Gen ("", Array_Last_Static_Name);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'Last is static.
+
+   package Array_Length_Static is new Name_Gen ("", Array_Length_Static_Name);
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'Length is static.
+
+   package Coerce_Axiom is new Name_Gen ("", Coerce);
+   --  From the name of an abstract type, return the name of
+   --  its coerce axiom.
+
+   package Eq_Param_Name is new Name_Gen ("", "___" & Boolean_Eq & "_", "");
+   --  From the name of an abstract type, return the name of
+   --  its equality parameter.
+
+   package Eq_Pred_Name is new Name_Gen ("", Eq_Pred);
+   --  From the name of an abstract type, return the name of
+   --  its equality predicate.
+
+   package New_Conversion_To_Int is new Name_Gen ("", Int_Of);
+   --  Create a new identifier for a conversion from an abstract type
+   --  to int. The name of the abstract type is given in parameter.
+
+   package New_Conversion_From_Int is new Name_Gen ("", Of_Int);
+   --  Create a new identifier for a conversion from int to an abstract type.
+   --  The name of the abstract type is given in parameter.
+
+   package New_Definition_Name is new Name_Gen ("", Definition);
+   --  Create a new identifier for the "definition only" version of a
+   --  subprogram, which is not meant to be called.
+
+   package Logic_Func_Name is new Name_Gen ("", "", "");
+   --  Create a new identifier for the logic version of a
+   --  subprogram, which is used in annotations.
+
+   package Logic_Func_Axiom is new Name_Gen ("", Logic_Def_Axiom);
+   --  Create a new name for the axiom that states equivalence of
+   --  a subprogram and its logic definition.
+
+   package New_Pre_Check_Name is new Name_Gen (Pre_Check, "");
+   --  Return an identifier for the subprogram that checks whether a
+   --  precondition is properly guarded
+
+   package Program_Func_Name is new Name_Gen ("", "_", "");
+   --  Create a new identifier for the program version of a
+   --  subprogram.
+
+   package Range_Axiom is new Name_Gen ("", Range_Name);
+   --  From the name of an abstract type, return the name of
+   --  its range axiom.
+
+   package Range_Pred_Name is new Name_Gen ("", In_Range);
+   --  From the name of an abstract type, return the name of
+   --  its range predicate.
+
+   package Record_Builder_Name is new Name_Gen (Record_Make, "");
+   --  From the name of a record type, return the name of its builder.
+
+   package Record_Getter_Axiom is new Name_Gen ("", Record_Get_Axiom);
+   --  From the full name of a record component, return the name of
+   --  its getter axiom.
+
+   package Record_Getter_Name is new Name_Gen (Record_Get, "");
+   --  From the full name of a record component, return the getter for
+   --  this component.
+
+   package Unicity_Axiom is new Name_Gen ("", Unicity);
    --  From the name of an abstract type, return the name of
    --  its unicity axiom.
 
