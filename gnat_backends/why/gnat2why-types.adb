@@ -174,7 +174,9 @@ package body Gnat2Why.Types is
                      while Present (Field) loop
                         if Ekind (Field) in Object_Kind then
                            declare
-                              C_Name : constant String := Full_Name (Field);
+                              C_Name : constant String :=
+                                 Name_Str & "__" &
+                                    Get_Name_String (Chars (Field));
                            begin
                               Add_Component
                                 (File,
