@@ -140,8 +140,4 @@ package Why.Gen.Preds is
    --   forall Nn : tn.
    --    <Pred>
 
-   function New_Forall
-      (Binders : W_Binder_Array;
-       Pred     : W_Predicate_Id)
-      return W_Predicate_Id;
 end Why.Gen.Preds;
