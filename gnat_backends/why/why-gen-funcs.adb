@@ -29,6 +29,7 @@ with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Gen.Binders;     use Why.Gen.Binders;
 
 package body Why.Gen.Funcs is
 
@@ -40,28 +41,33 @@ package body Why.Gen.Funcs is
       (File          : W_File_Id;
        Type_Name     : String)
    is
-      Arg_S : constant String := "n";
-      Arg_T : constant String := "m";
-      Post  : constant W_Predicate_Id :=
-         New_Conditional_Pred
-           (Condition => New_Result_Term,
-            Then_Part =>
-              New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
-            Else_Part =>
-              New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+      Arg_S   : constant String := "n";
+      Arg_T   : constant String := "m";
+      Post    : constant W_Predicate_Id :=
+                  New_Conditional_Pred
+                    (Condition => New_Result_Term,
+                     Then_Part =>
+                       New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
+                     Else_Part =>
+                       New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+      Arg_Type : constant W_Primitive_Type_Id :=
+                   New_Abstract_Type (Name => New_Identifier (Type_Name));
    begin
-      New_Parameter
-        (File => File,
-         Name => Eq_Param_Name.Id (Type_Name),
-         Binders =>
-            (1 =>
-               New_Binder
-                  (Names => (1 => New_Identifier (Arg_S),
-                             2 => New_Identifier (Arg_T)),
-                   Arg_Type =>
-                     New_Abstract_Type (Name => New_Identifier (Type_Name)))),
-         Return_Type => New_Type_Bool,
-         Post        => Post);
+      Emit
+        (File,
+         New_Parameter
+           (Name => Eq_Param_Name.Id (Type_Name),
+            Binders =>
+              (1 =>
+                (B_Name => New_Identifier (Arg_S),
+                 B_Type => Arg_Type,
+                 others => <>),
+               2 =>
+                 (B_Name => New_Identifier (Arg_T),
+                  B_Type => Arg_Type,
+                  others => <>)),
+            Return_Type => New_Type_Bool,
+            Post        => Post));
    end New_Boolean_Equality_Parameter;
 
 end Why.Gen.Funcs;

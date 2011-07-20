@@ -36,6 +36,7 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
@@ -135,14 +136,15 @@ package body Why.Gen.Enums is
          Name,
          First => Uint_1,
          Last => Max_Uint);
-      New_Parameter
-         (File => File,
-          Name => To_Program_Space (New_Conversion_From_Int.Id (Name)),
+      Emit
+        (File,
+         New_Parameter
+         (Name => To_Program_Space (New_Conversion_From_Int.Id (Name)),
           Binders =>
             (1 =>
-               New_Binder
-                 (Names    => (1 => New_Identifier ("x")),
-                  Arg_Type => New_Type_Int)),
+               (B_Name => New_Identifier ("x"),
+                B_Type => New_Type_Int,
+                others => <>)),
           Return_Type => +My_Type,
           Pre =>
             New_Related_Terms
@@ -156,7 +158,7 @@ package body Why.Gen.Enums is
                (New_Result_Term,
                 New_Operation
                   (Name       => New_Conversion_From_Int.Id (Name),
-                   Parameters => (1 => New_Term ("x")))));
+                   Parameters => (1 => New_Term ("x"))))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
