@@ -1469,7 +1469,9 @@ package body Alfa.Definition is
       --  operation or the subprogram called is not in Alfa, then the call is
       --  not in Alfa.
 
-      if not Is_Entity_Name (Nam) then
+      if not Is_Entity_Name (Nam)
+        or else No (Entity (Nam))
+      then
          Mark_Non_Alfa ("call", N, NIR_Indirect_Call);
 
       elsif not Spec_Is_In_Alfa (Unique (Entity (Nam))) then
