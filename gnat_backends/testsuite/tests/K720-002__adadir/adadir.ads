@@ -1,7 +1,7 @@
 with Ada.Finalization;
 
 package Adadir is
-   type Search_Type is limited private;
+   type Search_Type is private;
 
 private
 
