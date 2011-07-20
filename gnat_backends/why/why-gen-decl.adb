@@ -25,6 +25,7 @@
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -292,34 +293,6 @@ package body Why.Gen.Decl is
           Args => Ar,
           Return_Type => Return_Type);
    end New_Logic;
-
-   -------------------
-   -- New_Parameter --
-   -------------------
-
-   procedure New_Parameter
-      (File        : W_File_Id;
-       Name        : W_Identifier_Id;
-       Binders     : W_Binder_Array;
-       Return_Type : W_Primitive_Type_Id;
-       Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Predicate_Id := New_True_Literal_Pred;
-       Post        : W_Predicate_Id := New_True_Literal_Pred)
-   is
-   begin
-      File_Append_To_Declarations
-        (Id       => File,
-         New_Item =>
-           New_Parameter_Declaration
-            (Names => (1 => Name),
-             Parameter_Type =>
-                New_Computation_Type
-                  (Binders => Binders,
-                   Precondition  => Pre,
-                   Postcondition => New_Postcondition (Pred => Post),
-                   Effects       => Effects,
-                   Return_Type   => Return_Type)));
-   end New_Parameter;
 
    ------------------------------
    -- New_Predicate_Definition --

@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;   use Types;
-with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Decl is
@@ -85,15 +84,6 @@ package Why.Gen.Decl is
       Name        : W_Identifier_Id;
       Binders     : W_Binder_Array;
       Return_Type : W_Logic_Return_Type_Id);
-
-   procedure New_Parameter
-      (File        : W_File_Id;
-       Name        : W_Identifier_Id;
-       Binders     : W_Binder_Array;
-       Return_Type : W_Primitive_Type_Id;
-       Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Predicate_Id := New_True_Literal_Pred;
-       Post        : W_Predicate_Id := New_True_Literal_Pred);
 
    procedure New_Predicate_Definition
      (File     : W_File_Id;
