@@ -1769,11 +1769,42 @@ package body Gnat2Why.Subprograms is
                    Reason   => VC_Precondition);
 
          when N_If_Statement =>
-            return
-              New_Simpl_Conditional_Prog
-                (Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt)),
-                 Then_Part => Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
-                 Else_Part => Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt)));
+            declare
+               Tail    : W_Prog_Id :=
+                  Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt));
+            begin
+               if Present (Elsif_Parts (Stmt)) then
+                  declare
+                     Cur     : Node_Id := Last (Elsif_Parts (Stmt));
+                  begin
+
+                     --  Beginning from the tail that consists of the
+                     --  translation of the Else part, possibly a no-op,
+                     --  translate the list of elsif parts into a chain of
+                     --  if-then-else Why expressions.
+
+                     while Present (Cur) loop
+                        Tail :=
+                          New_Simpl_Conditional_Prog
+                            (Condition =>
+                               Why_Expr_Of_Ada_Expr (Condition (Cur)),
+                             Then_Part =>
+                               Why_Expr_Of_Ada_Stmts (Then_Statements (Cur)),
+                             Else_Part => Tail);
+                        Prev (Cur);
+                     end loop;
+                  end;
+               end if;
+
+               --  Finish by putting the main if-then-else on top.
+
+               return
+                 New_Simpl_Conditional_Prog
+                   (Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+                    Then_Part =>
+                      Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
+                    Else_Part => Tail);
+            end;
 
          when N_Raise_xxx_Error =>
             raise Not_Implemented;
