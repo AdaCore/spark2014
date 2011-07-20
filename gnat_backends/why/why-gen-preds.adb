@@ -32,6 +32,7 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Consts;      use Why.Gen.Consts;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Binders;     use Why.Gen.Binders;
 
 package body Why.Gen.Preds is
 
@@ -63,16 +64,16 @@ package body Why.Gen.Preds is
 
       --  predicate eq___<name> (x : <name>, y : <name>) = [...]
       Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name.Id (Name);
-      X_Binder          : constant W_Logic_Binder_Id :=
-                            New_Logic_Binder
-                            (Name       => New_Identifier (X_S),
-                             Param_Type => New_Abstract_Type
-                             (Name => New_Identifier (Name)));
-      Y_Binder          : constant W_Logic_Binder_Id :=
-                            New_Logic_Binder
-                            (Name       => New_Identifier (Y_S),
-                             Param_Type => New_Abstract_Type
-                             (Name => New_Identifier (Name)));
+      X_Binder          : constant Binder_Type :=
+                            (B_Name => New_Identifier (X_S),
+                             B_Type => New_Abstract_Type
+                                         (Name => New_Identifier (Name)),
+                             others => <>);
+      Y_Binder          : constant Binder_Type :=
+                            (B_Name => New_Identifier (Y_S),
+                             B_Type => New_Abstract_Type
+                                         (Name => New_Identifier (Name)),
+                             others => <>);
 
       --  integer_of___<name> (x) = integer_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
@@ -87,12 +88,13 @@ package body Why.Gen.Preds is
                                Parameters => (1 => New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
-      New_Predicate_Definition
-         (File    => File,
-          Name    => Pred_Name,
-          Binders => (1 => X_Binder, 2 => Y_Binder),
-          Def     =>
-            New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op));
+      Emit
+        (File,
+         Binders.New_Predicate_Definition
+           (Name    => Pred_Name,
+            Binders => (1 => X_Binder, 2 => Y_Binder),
+            Def     =>
+              New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op)));
    end Define_Eq_Predicate;
 
    ----------------------------
@@ -112,9 +114,10 @@ package body Why.Gen.Preds is
 
       --  predicate <name>___in_range (x : int) = [...]
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
-      Binder     : constant W_Logic_Binder_Id :=
-                     New_Logic_Binder (Name       => New_Identifier (Arg_S),
-                                       Param_Type => New_Type_Int);
+      Binder     : constant Binder_Type :=
+                     (B_Name => New_Identifier (Arg_S),
+                      B_Type => New_Type_Int,
+                      others => <>);
 
       --  first <= x <= last
       Context    : constant W_Predicate_Id :=
@@ -136,11 +139,12 @@ package body Why.Gen.Preds is
                         Def     => New_Constant (First),
                         Context => Decl_Last);
    begin
-      New_Predicate_Definition
-         (File    => File,
-          Name    => Pred_Name,
-          Binders => (1 => Binder),
-          Def     => Decl_First);
+      Emit
+        (File,
+         Binders.New_Predicate_Definition
+           (Name    => Pred_Name,
+            Binders => (1 => Binder),
+            Def     => Decl_First));
    end Define_Range_Predicate;
 
    --------------------
