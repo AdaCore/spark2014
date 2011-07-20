@@ -23,11 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;     use Why.Conversions;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Decl is
@@ -56,60 +53,6 @@ package body Why.Gen.Decl is
         (Id => File,
          New_Item => +Decl);
    end Emit;
-
-   -----------------------
-   -- Iter_Binder_Array --
-   -----------------------
-
-   procedure Iter_Binder_Array
-      (Binders : W_Binder_Array;
-       Rev : Boolean := False)
-   is
-      procedure Inner_Loop (Index : Integer);
-      --  Extracting the inner loop to avoid duplication
-
-      ----------------
-      -- Inner_Loop --
-      ----------------
-
-      procedure Inner_Loop (Index : Integer) is
-         use Node_Lists;
-
-         Cur_Binder : constant W_Binder_Id := Binders (Index);
-         Arg_Ty     : constant W_Simple_Value_Type_Id :=
-            Binder_Get_Arg_Type (Cur_Binder);
-         Names      : constant Node_Lists.List :=
-            Get_List (+Binder_Get_Names (Cur_Binder));
-         Cur        : Node_Lists.Cursor :=
-            (if Rev then Last (Names) else First (Names));
-      begin
-         begin
-            while Has_Element (Cur) loop
-               Handle_Binder
-                  (Name  => +Element (Cur),
-                   Ty    => Arg_Ty);
-               if Rev then
-                  Node_Lists.Previous (Cur);
-               else
-                  Node_Lists.Next (Cur);
-               end if;
-            end loop;
-         end;
-      end Inner_Loop;
-
-      --  beginning of processing for Iter_Binder_Array
-
-   begin
-      if Rev then
-         for Index in reverse Binders'Range loop
-            Inner_Loop (Index);
-         end loop;
-      else
-         for Index in Binders'Range loop
-            Inner_Loop (Index);
-         end loop;
-      end if;
-   end Iter_Binder_Array;
 
    -----------------------
    -- New_Abstract_Type --
@@ -257,59 +200,5 @@ package body Why.Gen.Decl is
                 (Arg_Types   => Args,
                  Return_Type => Return_Type)));
    end New_Logic;
-
-   procedure New_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binder_Array;
-      Return_Type : W_Logic_Return_Type_Id)
-   is
-      Ar  : W_Logic_Arg_Type_Array := (1 .. Binders'Length => <>);
-      Cnt : Integer := 1;
-
-      procedure Handle_Binder
-         (Name : W_Identifier_Id;
-          Ty   : W_Simple_Value_Type_Id);
-
-      -------------------
-      -- Handle_Binder --
-      -------------------
-
-      procedure Handle_Binder
-         (Name : W_Identifier_Id;
-          Ty   : W_Simple_Value_Type_Id) is
-      begin
-         pragma Unreferenced (Name);
-         Ar (Cnt) := +Ty;
-         Cnt := Cnt + 1;
-      end Handle_Binder;
-
-      procedure Iter_Binders is new Iter_Binder_Array (Handle_Binder);
-   begin
-      Iter_Binders (Binders);
-      New_Logic
-         (File => File,
-          Name => Name,
-          Args => Ar,
-          Return_Type => Return_Type);
-   end New_Logic;
-
-   ------------------------------
-   -- New_Predicate_Definition --
-   ------------------------------
-
-   procedure New_Predicate_Definition
-     (File     : W_File_Id;
-      Name     : W_Identifier_Id;
-      Binders  : W_Logic_Binder_Array;
-      Def      : W_Predicate_Id)
-   is
-   begin
-      Emit (File,
-            New_Predicate_Definition
-              (Name    => Name,
-               Binders => Binders,
-               Def     => Def));
-   end New_Predicate_Definition;
 
 end Why.Gen.Decl;

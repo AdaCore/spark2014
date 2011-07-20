@@ -29,14 +29,6 @@ with Why.Ids; use Why.Ids;
 package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
    --  toplevel declarations.
-   --
-   generic
-      with procedure Handle_Binder
-         (Name : W_Identifier_Id;
-          Ty   : W_Simple_Value_Type_Id);
-   procedure Iter_Binder_Array
-      (Binders : W_Binder_Array;
-       Rev : Boolean := False);
 
    --  Overloaded procedures with a W_File_Id Argument add the built
    --  declaration to that context instead of returning it
@@ -78,18 +70,6 @@ package Why.Gen.Decl is
       Name        : W_Identifier_Id;
       Args        : W_Logic_Arg_Type_Array;
       Return_Type : W_Logic_Return_Type_Id);
-
-   procedure New_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binder_Array;
-      Return_Type : W_Logic_Return_Type_Id);
-
-   procedure New_Predicate_Definition
-     (File     : W_File_Id;
-      Name     : W_Identifier_Id;
-      Binders  : W_Logic_Binder_Array;
-      Def      : W_Predicate_Id);
 
    procedure New_Exception
       (File      : W_File_Id;

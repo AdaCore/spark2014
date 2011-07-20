@@ -27,7 +27,6 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 
 package body Why.Gen.Terms is
@@ -108,51 +107,6 @@ package body Why.Gen.Terms is
             Parameters => (1 => Left, 2 => Right));
 
    end New_Boolean_Cmp;
-
-   -----------------------
-   -- New_Call_To_Logic --
-   -----------------------
-
-   function New_Call_To_Logic
-     (Name   : W_Identifier_Id;
-      Binders : W_Binder_Array)
-     return W_Term_Id
-   is
-      Ar  : W_Term_Array := (1 .. Binders'Length => <>);
-      Cnt : Integer := 1;
-
-      procedure Append_Arg
-         (Name : W_Identifier_Id;
-          Ty : W_Simple_Value_Type_Id);
-
-      ----------------
-      -- Append_Arg --
-      ----------------
-
-      procedure Append_Arg
-         (Name : W_Identifier_Id;
-          Ty : W_Simple_Value_Type_Id) is
-      begin
-         pragma Unreferenced (Ty);
-         Ar (Cnt) := New_Term_Identifier (Name => Name);
-         Cnt := Cnt + 1;
-      end Append_Arg;
-
-      procedure Build_Call is new Iter_Binder_Array (Append_Arg);
-
-   --  Start of processing for New_Call_To_Logic
-
-   begin
-      if Binders'Length = 0 then
-         return
-            New_Operation
-              (Name => Name,
-               Parameters => (1 => New_Void_Literal));
-      else
-         Build_Call (Binders);
-         return New_Operation (Name => Name, Parameters => Ar);
-      end if;
-   end New_Call_To_Logic;
 
    -------------
    -- New_Ifb --

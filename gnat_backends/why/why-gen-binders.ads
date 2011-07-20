@@ -67,6 +67,14 @@ package Why.Gen.Binders is
       Name     : W_Identifier_Id;
       Binders  : Binder_Array)
      return W_Term_Id;
+   --  Create a call to an operation in the logical space with parameters
+   --  taken from Binders. Typically, from:
+   --
+   --     (x1 : type1) (x2 : type2)
+   --
+   --  ...it produces:
+   --
+   --     operation_name (x1, x2)
 
    --  Top-level entities
 
