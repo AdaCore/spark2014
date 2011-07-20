@@ -62,14 +62,6 @@ package Why.Gen.Decl is
        Axiom_Body : W_Predicate_Id);
    --  Declare an axiom with the given name and the given body.
 
-   procedure New_Global_Binding
-      (File    : W_File_Id;
-       Name    : W_Identifier_Id;
-       Binders : W_Binder_Array;
-       Pre     : W_Predicate_Id := New_True_Literal_Pred;
-       Def     : W_Prog_Id;
-       Post    : W_Predicate_Id := New_True_Literal_Pred);
-
    procedure New_Global_Ref_Declaration
       (File     : W_File_Id;
        Name     : W_Identifier_Id;

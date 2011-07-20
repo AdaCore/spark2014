@@ -203,31 +203,6 @@ package body Why.Gen.Decl is
           New_Exception_Declaration (Name => Name, Parameter => Parameter));
    end New_Exception;
 
-   ------------------------
-   -- New_Global_Binding --
-   ------------------------
-
-   procedure New_Global_Binding
-      (File    : W_File_Id;
-       Name    : W_Identifier_Id;
-       Binders : W_Binder_Array;
-       Pre     : W_Predicate_Id := New_True_Literal_Pred;
-       Def     : W_Prog_Id;
-       Post    : W_Predicate_Id := New_True_Literal_Pred)
-   is
-   begin
-      File_Append_To_Declarations
-         (File,
-          New_Global_Binding
-          (Name => Name,
-           Pre => Pre,
-           Binders => Binders,
-           Def =>
-             New_Post_Assertion
-               (Prog => Def,
-                Post => New_Postcondition (Pred => Post))));
-   end New_Global_Binding;
-
    --------------------------------
    -- New_Global_Ref_Declaration --
    --------------------------------
