@@ -177,6 +177,25 @@ package Why.Gen.Binders is
            when W_Parameter_Declaration =>
               Effects  : W_Effects_Id := New_Effects;
 
+           --  If no postcondition is given, and if a logic declaration
+           --  is provided, one will be generated that will use this
+           --  logic declaration. e.g. if Name is "my_func" and Binders is:
+           --
+           --     (x1 : type1) -> (x2 : type2)
+           --
+           --  ...then the logic declaration will be:
+           --
+           --     logic my_func : type1, type2 -> type3
+           --
+           --  ...and the generated program-space declaration, with the
+           --  default postcondition will be:
+           --
+           --     parameter my_func_ :
+           --      x1 : type1 -> x2 : type2 ->
+           --     { pre }
+           --      type3
+           --     { my_func (x1, x2) = result }
+
            when others =>
               --  Invalid
               null;

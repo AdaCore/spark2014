@@ -24,42 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;              use Why.Ids;
-with Why.Types;            use Why.Types;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
    --  in the program space and in the logic space.
-
-   procedure Declare_Logic_And_Parameters
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
-      Pre         : W_Predicate_OId := Why_Empty;
-      Post        : W_Predicate_OId := Why_Empty);
-   --  Create a logic declaration and it corresponding declaration in
-   --  the program space (safe and default) and append it to File. Name
-   --  is the name of the logic function declaration, Binders is the
-   --  spec of the default program declaration; all params will be merged
-   --  as is into the resulting syntax tree.
-   --
-   --  If no postcondition is given, one will be generated that will use the
-   --  logic function. e.g. if Name is "my_func" and Binders is:
-   --
-   --     (x1 : type1) -> (x2 : type2)
-   --
-   --  ...then the logic declaration will be:
-   --
-   --     logic my_func : type1, type2 -> type3
-   --
-   --  ...and the generated program-space declaration, with the default
-   --  postcondition will be:
-   --
-   --     parameter my_func_ :
-   --      x1 : type1 -> x2 : type2 ->
-   --     { some_precondition }
-   --      type3
-   --     { my_func (x1, x2) = result }
 
    procedure New_Boolean_Equality_Parameter
       (File          : W_File_Id;

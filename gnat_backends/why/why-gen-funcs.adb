@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 
 with Why.Gen.Decl;        use Why.Gen.Decl;
@@ -32,49 +31,6 @@ with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Terms;       use Why.Gen.Terms;
 
 package body Why.Gen.Funcs is
-
-   ----------------------------------
-   -- Declare_Logic_And_Parameters --
-   ----------------------------------
-
-   procedure Declare_Logic_And_Parameters
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
-      Pre         : W_Predicate_OId := Why_Empty;
-      Post        : W_Predicate_OId := Why_Empty)
-   is
-      Program_Space_Name : constant W_Identifier_Id :=
-                             To_Program_Space (Name);
-      Final_Post         : W_Predicate_OId := Post;
-   begin
-      New_Logic
-        (File        => File,
-         Name        => Name,
-         Binders     => Binders,
-         Return_Type => +Return_Type);
-
-      if Final_Post = Why_Empty then
-         declare
-            Logic_Name : constant W_Identifier_Id := Name;
-         begin
-            Final_Post := New_Related_Terms
-              (Left  => New_Call_To_Logic (Logic_Name, Binders),
-               Op    => New_Rel_Eq,
-               Right => New_Result_Term);
-         end;
-      end if;
-
-      New_Parameter
-         (File        => File,
-          Name        => Program_Space_Name,
-          Binders     => Binders,
-          Return_Type => +Return_Type,
-          Pre         => Pre,
-          Post        => Final_Post,
-          Effects     => New_Effects);
-   end Declare_Logic_And_Parameters;
 
    ------------------------------------
    -- New_Boolean_Equality_Parameter --
@@ -100,10 +56,10 @@ package body Why.Gen.Funcs is
          Binders =>
             (1 =>
                New_Binder
-                  (Names => (1 => +New_Identifier (Arg_S),
-                             2 => +New_Identifier (Arg_T)),
+                  (Names => (1 => New_Identifier (Arg_S),
+                             2 => New_Identifier (Arg_T)),
                    Arg_Type =>
-                     New_Abstract_Type (Name => +New_Identifier (Type_Name)))),
+                     New_Abstract_Type (Name => New_Identifier (Type_Name)))),
          Return_Type => New_Type_Bool,
          Post        => Post);
    end New_Boolean_Equality_Parameter;
