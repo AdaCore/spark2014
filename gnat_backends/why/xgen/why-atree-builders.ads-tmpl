@@ -37,8 +37,4 @@ package Why.Atree.Builders is
 
    _@Declare_Unchecked_Builders@_
 
-   _@Declare_Copy_Builders@_
-
-   _@Declare_Class_Copy_Builders@_
-
 end Why.Atree.Builders;

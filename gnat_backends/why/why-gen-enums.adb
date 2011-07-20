@@ -143,7 +143,7 @@ package body Why.Gen.Enums is
                New_Binder
                  (Names    => (1 => New_Identifier ("x")),
                   Arg_Type => New_Type_Int)),
-          Return_Type => +Duplicate_Any_Node (Id => +My_Type),
+          Return_Type => +My_Type,
           Pre =>
             New_Related_Terms
                (Left   => New_Integer_Constant (Value => Uint_1),

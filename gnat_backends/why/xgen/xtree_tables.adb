@@ -58,21 +58,14 @@ package body Xtree_Tables is
 
    function Builder_Name
      (Prefix : Wide_String;
-      IK     : Id_Kind := Regular;
-      BK     : Builder_Kind := Builder_Children)
+      IK     : Id_Kind := Regular)
      return Wide_String is
    begin
-      case BK is
-         when Builder_Children =>
-            if IK = Unchecked then
-               return "New_Unchecked_" & Strip_Prefix (Prefix);
-            else
-               return "New_" & Strip_Prefix (Prefix);
-            end if;
-
-         when Builder_Copy =>
-            return "Duplicate_" & Strip_Prefix (Prefix);
-      end case;
+      if IK = Unchecked then
+         return "New_Unchecked_" & Strip_Prefix (Prefix);
+      else
+         return "New_" & Strip_Prefix (Prefix);
+      end if;
    end Builder_Name;
 
    ------------------
@@ -81,11 +74,10 @@ package body Xtree_Tables is
 
    function Builder_Name
      (Kind : Why_Node_Kind;
-      IK   : Id_Kind := Regular;
-      BK   : Builder_Kind := Builder_Children)
+      IK   : Id_Kind := Regular)
      return Wide_String is
    begin
-      return Builder_Name (Mixed_Case_Name (Kind), IK, BK);
+      return Builder_Name (Mixed_Case_Name (Kind), IK);
    end Builder_Name;
 
    ------------------------

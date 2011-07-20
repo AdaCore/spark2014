@@ -235,10 +235,6 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the mutator name for the given field of the given node kind
 
-   type Builder_Kind is (Builder_Children, Builder_Copy);
-   --  Type of builder. Builder_Children for building a node from its
-   --  chilbren; Builder_Copy for building a node by duplicating a subtree.
-
    type Builder_Context is (In_Builder_Spec, In_Builder_Body);
    --  Context in which we are emitting a construct. This is mainly use
    --  for lists in builder, where they can be represented either by a
@@ -247,15 +243,13 @@ package Xtree_Tables is
 
    function Builder_Name
      (Kind : Why_Node_Kind;
-      IK   : Id_Kind := Regular;
-      BK   : Builder_Kind := Builder_Children)
+      IK   : Id_Kind := Regular)
      return Wide_String;
    --  Return the builder name for the given node kind
 
    function Builder_Name
      (Prefix : Wide_String;
-      IK     : Id_Kind := Regular;
-      BK     : Builder_Kind := Builder_Children)
+      IK     : Id_Kind := Regular)
      return Wide_String;
 
    function Builder_Param_Type
