@@ -52,13 +52,6 @@ package Why.Gen.Preds is
    --  Generate the definition of the equality predicate for an integer type.
    --  This predicate is True when conversions to int are equal.
 
-   function New_Binding_Pred
-     (Name  : String;
-      Value : Uint)
-     return W_Binding_Pred_Unchecked_Id;
-   --  Create a new binding for a predicate; the context is left empty.
-   --  e.g. let <name> = <value> in <empty>
-
    function New_Conditional_Prop
       (Ada_Node : Node_Id := Empty;
        Condition : W_Predicate_Id;
@@ -101,14 +94,6 @@ package Why.Gen.Preds is
    --  [...]
    --  let <my_chain_n_name> = <my_chain_n_value> in
    --     <empty>
-
-   function New_Predicate_Body
-     (Bindings : Binding_Pred_Chain;
-      Context  : W_Predicate_Id)
-     return W_Predicate_Id with
-     Pre => (Is_Root (+Context));
-   --  Create a predicate by linking together the bindings and
-   --  associating the context to them.
 
    function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
       return W_Predicate_Id;

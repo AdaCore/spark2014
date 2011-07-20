@@ -30,6 +30,6 @@ package Why.Gen.Consts is
    --  This package provides ways to manipulate constant literals (ints
    --  and floats).
 
-   function New_Constant (Value : Uint) return W_Integer_Constant_Id;
+   function New_Constant (Value : Uint) return W_Term_Id;
 
 end Why.Gen.Consts;

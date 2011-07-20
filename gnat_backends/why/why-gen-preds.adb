@@ -116,13 +116,6 @@ package body Why.Gen.Preds is
                      New_Logic_Binder (Name       => New_Identifier (Arg_S),
                                        Param_Type => New_Type_Int);
 
-      --  let first = <first> in
-      --  let last  = <last>  in [...]
-      Decl_First : constant W_Binding_Pred_Unchecked_Id :=
-                     New_Binding_Pred (First_S, First);
-      Decl_Last  : constant W_Binding_Pred_Unchecked_Id :=
-                     New_Binding_Pred (Last_S, Last);
-
       --  first <= x <= last
       Context    : constant W_Predicate_Id :=
                      New_Related_Terms (Left   => New_Term (First_S),
@@ -130,14 +123,24 @@ package body Why.Gen.Preds is
                                         Right  => New_Term (Arg_S),
                                         Op2    => New_Rel_Le,
                                         Right2 => New_Term (Last_S));
-      Pred_Body  : constant W_Predicate_Id :=
-                     New_Predicate_Body ((Decl_First, Decl_Last), Context);
+      --  let first = <first> in
+      --  let last  = <last>  in [...]
+      Decl_Last  : constant W_Predicate_Id :=
+                     New_Binding_Pred
+                       (Name    => New_Identifier (Last_S),
+                        Def     => New_Constant (Last),
+                        Context => Context);
+      Decl_First : constant W_Predicate_Id :=
+                     New_Binding_Pred
+                       (Name    => New_Identifier (First_S),
+                        Def     => New_Constant (First),
+                        Context => Decl_Last);
    begin
       New_Predicate_Definition
          (File    => File,
           Name    => Pred_Name,
           Binders => (1 => Binder),
-          Def     => Pred_Body);
+          Def     => Decl_First);
    end Define_Range_Predicate;
 
    --------------------
@@ -159,23 +162,6 @@ package body Why.Gen.Preds is
 
       return Chain (Chain'First);
    end Finalize_Chain;
-
-   ----------------------
-   -- New_Binding_Pred --
-   ----------------------
-
-   function New_Binding_Pred
-     (Name  : String;
-      Value : Uint)
-     return W_Binding_Pred_Unchecked_Id
-   is
-      Result : constant W_Binding_Pred_Unchecked_Id :=
-                 New_Unchecked_Binding_Pred;
-   begin
-      Binding_Pred_Set_Name (Result, +New_Identifier (Name));
-      Binding_Pred_Set_Def (Result, +New_Constant (Value));
-      return Result;
-   end New_Binding_Pred;
 
    --------------------------
    -- New_Conditional_Prop --
@@ -310,38 +296,6 @@ package body Why.Gen.Preds is
           Right => Right,
           Op => New_Rel_Ne);
    end New_NEqual;
-
-   ------------------------
-   -- New_Predicate_Body --
-   ------------------------
-
-   function New_Predicate_Body
-     (Bindings : Binding_Pred_Chain;
-      Context  : W_Predicate_Id)
-     return W_Predicate_Id
-   is
-      procedure Set_Context
-        (Root, Element : W_Predicate_Unchecked_Id);
-
-      function Finalize_Binding_Chain is
-        new Finalize_Chain
-        (Element_Type => W_Predicate_Unchecked_Id,
-         Chain_Type   => Binding_Pred_Chain,
-         Chain_Set    => Set_Context);
-
-      -----------------
-      -- Set_Context --
-      -----------------
-
-      procedure Set_Context
-        (Root, Element : W_Predicate_Unchecked_Id) is
-      begin
-         Binding_Pred_Set_Context (Root, +Element);
-      end Set_Context;
-
-   begin
-      return +Finalize_Binding_Chain (Bindings, +Context);
-   end New_Predicate_Body;
 
    --------------------
    -- New_Rel_Symbol --

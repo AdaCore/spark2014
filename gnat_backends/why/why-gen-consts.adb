@@ -31,7 +31,7 @@ package body Why.Gen.Consts is
    -- New_Constant --
    ------------------
 
-   function New_Constant (Value : Uint) return W_Integer_Constant_Id is
+   function New_Constant (Value : Uint) return W_Term_Id is
    begin
       return New_Integer_Constant (Value => Value);
    end New_Constant;
