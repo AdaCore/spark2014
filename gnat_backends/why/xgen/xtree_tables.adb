@@ -232,6 +232,15 @@ package body Xtree_Tables is
       return FI.Is_List;
    end Is_List;
 
+   ----------------
+   -- Is_Mutable --
+   ----------------
+
+   function Is_Mutable (Kind : Why_Node_Kind) return Boolean is
+   begin
+      return Why_Tree_Info (Kind).Is_Mutable;
+   end Is_Mutable;
+
    ---------------
    -- Is_Why_Id --
    ---------------
@@ -515,6 +524,15 @@ package body Xtree_Tables is
                     Special_Field_Type (Kind));
       end loop;
    end Register_Special_Fields;
+
+   -----------------
+   -- Set_Mutable --
+   -----------------
+
+   procedure Set_Mutable (Kind : Why_Node_Kind) is
+   begin
+      Why_Tree_Info (Kind).Is_Mutable := True;
+   end Set_Mutable;
 
    ------------------------
    -- Special_Field_Type --

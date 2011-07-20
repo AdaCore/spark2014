@@ -165,52 +165,19 @@ package body Xtree_Mutators is
    --------------------------
 
    procedure Print_Mutator_Bodies  (O : in out Output_Record) is
-      use Node_Lists;
-
-      procedure Print_Common_Field_Mutator (Position : Cursor);
-      --  Print mutator body for common field whose descriptor
-      --  is at Position.
-
-      --------------------------------
-      -- Print_Common_Field_Mutator --
-      --------------------------------
-
-      procedure Print_Common_Field_Mutator (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-         MN : constant Wide_String := Mutator_Name (W_Unused_At_Start, FI);
-      begin
-         Print_Box (O, MN);
-         NL (O);
-
-         Print_Mutator_Specification
-           (O           => O,
-            Name        => MN,
-            Param_Type  => "Why_Node_Id",
-            Field_Param => Param_Name (FI),
-            Field_Type  => Type_Name (FI, Regular));
-         NL (O);
-         PL (O, "is");
-         Print_Setter_Implementation (O, W_Unused_At_Start, FI);
-         PL (O, "end " & MN & ";");
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
-      end Print_Common_Field_Mutator;
-
-   --  Start of Processing for Print_Mutator_Bodies
-
+      First : Boolean := True;
    begin
-      Common_Fields.Fields.Iterate (Print_Common_Field_Mutator'Access);
-      NL (O);
-
       for J in Valid_Kind'Range loop
-         if Has_Variant_Part (J) then
-            Print_Mutator_Kind_Bodies (O, J);
-
-            if J /= Why_Tree_Info'Last then
+         if Is_Mutable (J)
+           and then Has_Variant_Part (J)
+         then
+            if First then
+               First := False;
+            else
                NL (O);
             end if;
+
+            Print_Mutator_Kind_Bodies (O, J);
          end if;
       end loop;
    end Print_Mutator_Bodies;
@@ -221,45 +188,19 @@ package body Xtree_Mutators is
 
    procedure Print_Mutator_Declarations  (O : in out Output_Record)
    is
-      use Node_Lists;
-
-      procedure Print_Common_Field_Mutator (Position : Cursor);
-      --  Print mutator declaration for common field whose descriptor
-      --  is at Position.
-
-      --------------------------------
-      -- Print_Common_Field_Mutator --
-      --------------------------------
-
-      procedure Print_Common_Field_Mutator (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-      begin
-         Print_Mutator_Specification
-           (O           => O,
-            Name        => Mutator_Name (W_Unused_At_Start, FI),
-            Param_Type  => "Why_Node_Id",
-            Field_Param => Param_Name (FI),
-            Field_Type  => Type_Name (FI, Regular));
-         PL (O, ";");
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
-      end Print_Common_Field_Mutator;
-
-   --  Start of Processing for Print_Mutator_Declarations
-
+      First : Boolean := True;
    begin
-      Common_Fields.Fields.Iterate (Print_Common_Field_Mutator'Access);
-      NL (O);
-
       for J in Valid_Kind'Range loop
-         if Has_Variant_Part (J) then
-            Print_Mutator_Kind_Declarations (O, J);
-
-            if J /= Why_Tree_Info'Last then
+         if Has_Variant_Part (J)
+           and then Is_Mutable (J)
+         then
+            if First then
+               First := False;
+            else
                NL (O);
             end if;
+
+            Print_Mutator_Kind_Declarations (O, J);
          end if;
       end loop;
    end Print_Mutator_Declarations;

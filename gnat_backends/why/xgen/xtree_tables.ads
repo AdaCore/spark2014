@@ -85,6 +85,9 @@ package Xtree_Tables is
       Variant_Range_Last    : Why_Node_Kind;
       --  Same as Variant_Range_First, but for the last value of the range
 
+      Is_Mutable            : Boolean := False;
+      --  True if the nodes of this kind can be modified
+
       Fields                : Node_Lists.List;
       --  List of structural information for fields
    end record;
@@ -98,6 +101,7 @@ package Xtree_Tables is
    Common_Fields : Why_Node_Info := (0,
                                      Why_Node_Kind'First,
                                      Why_Node_Kind'Last,
+                                     False,
                                      Node_Lists.Empty_List);
    --------------------
    -- Special Fields --
@@ -175,6 +179,12 @@ package Xtree_Tables is
       Field_Name : Wide_String;
       Field_Type : Wide_String);
    --  Add new field info to the node info
+
+   procedure Set_Mutable (Kind : Why_Node_Kind);
+   --  Specify that the nodes of the given node kind are not constant
+
+   function Is_Mutable (Kind : Why_Node_Kind) return Boolean;
+   --  Return whether the nodes of the given node kind are mutable
 
    function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean;
    --  True if a node of this kind has a variant part (i.e. is not

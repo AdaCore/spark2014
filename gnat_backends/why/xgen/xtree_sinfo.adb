@@ -225,6 +225,7 @@ package body Xtree_Sinfo is
       -- W_Matching_Term --
       ---------------------
 
+      Set_Mutable (W_Matching_Term);
       New_Field (W_Matching_Term,
                  "Term", "W_Term", Id_One);
       New_Field (W_Matching_Term,
@@ -348,6 +349,7 @@ package body Xtree_Sinfo is
       -- W_Universal_Quantif --
       -------------------------
 
+      Set_Mutable (W_Universal_Quantif);
       New_Field (W_Universal_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Universal_Quantif,
@@ -497,6 +499,7 @@ package body Xtree_Sinfo is
       -- W_Logic_Type --
       ------------------
 
+      Set_Mutable (W_Logic_Type);
       New_Field (W_Logic_Type,
                  "Arg_Types", "W_Logic_Arg_Type", Id_Set);
       New_Field (W_Logic_Type,
@@ -547,6 +550,7 @@ package body Xtree_Sinfo is
       -- W_Effects --
       ---------------
 
+      Set_Mutable (W_Effects);
       New_Field (W_Effects,
                  "Reads", "W_Identifier", Id_Set);
       New_Field (W_Effects,
@@ -697,6 +701,7 @@ package body Xtree_Sinfo is
       -- W_Statement_Sequence --
       --------------------------
 
+      Set_Mutable (W_Statement_Sequence);
       New_Field (W_Statement_Sequence,
                  "Statements", "W_Prog", Id_Some);
 
@@ -889,6 +894,7 @@ package body Xtree_Sinfo is
       -- W_File --
       ------------
 
+      Set_Mutable (W_File);
       New_Field (W_File,
                  "Declarations", "W_Declaration", Id_Set);
 
