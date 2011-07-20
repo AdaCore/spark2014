@@ -1600,10 +1600,12 @@ package body Gnat2Why.Subprograms is
             begin
                T :=
                   New_Conditional_Prog
-                     (Ada_Node => Expr,
+                     (Ada_Node  => Expr,
                       Condition => Why_Expr_Of_Ada_Expr (Cond),
-                      Then_Part => Why_Expr_Of_Ada_Expr (Then_Part),
-                      Else_Part => Why_Expr_Of_Ada_Expr (Else_Part));
+                      Then_Part =>
+                        Why_Expr_Of_Ada_Expr (Then_Part, Expected_Type),
+                      Else_Part =>
+                        Why_Expr_Of_Ada_Expr (Else_Part, Expected_Type));
             end;
 
          when N_Case_Expression =>
