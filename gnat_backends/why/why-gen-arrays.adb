@@ -31,6 +31,7 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Terms;      use Why.Gen.Terms;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 
 package body Why.Gen.Arrays is
 
@@ -46,48 +47,45 @@ package body Why.Gen.Arrays is
       Last      : Uint)
    is
       Ar         : constant W_Term_Id :=
-         New_Term ("a");
-      Ar_Binder  : constant W_Binder_Id :=
-         New_Binder
-            (Names => (1 => New_Identifier ("a")),
-             Arg_Type =>
-               New_Abstract_Type (Name => (New_Identifier (Name))));
+                     New_Term ("a");
+      Ar_Binder  : constant Binder_Type :=
+                     (B_Name => New_Identifier ("a"),
+                      B_Type =>
+                        New_Abstract_Type (Name => (New_Identifier (Name))),
+                      others => <>);
    begin
       Declare_Ada_Unconstrained_Array (File, Name, Component);
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
-      New_Axiom
-        (File => File,
-         Name => Array_First_Static.Id (Name),
-         Axiom_Body =>
-            New_Forall
-               (Binders => (1 => Ar_Binder),
-                Pred =>
-                  New_Equal
-                     (New_Array_First_Term (Name, Ar),
-                      New_Integer_Constant (Value => First))));
-      New_Axiom
-        (File => File,
-         Name => Array_Last_Static.Id (Name),
-         Axiom_Body =>
-            New_Forall
-               (Binders => (1 => Ar_Binder),
-                Pred =>
-                  New_Equal
-                     (New_Array_Last_Term (Name, Ar),
-                      New_Integer_Constant (Value => Last))));
-      New_Axiom
-        (File => File,
-         Name => Array_Length_Static.Id (Name),
-         Axiom_Body =>
-            New_Forall
-               (Binders => (1 => Ar_Binder),
-                Pred =>
-                  New_Equal
-                     (New_Array_Length_Term (Name, Ar),
-                      New_Integer_Constant
-                         (Value => UI_Add (UI_Sub (Last, First), 1)))));
+      Emit
+        (File,
+         New_Guarded_Axiom
+           (Name => Array_First_Static.Id (Name),
+            Binders => (1 => Ar_Binder),
+            Def =>
+              New_Equal
+                (New_Array_First_Term (Name, Ar),
+                 New_Integer_Constant (Value => First))));
+      Emit
+        (File,
+         New_Guarded_Axiom
+           (Name => Array_Last_Static.Id (Name),
+            Binders => (1 => Ar_Binder),
+            Def =>
+              New_Equal
+                (New_Array_Last_Term (Name, Ar),
+                 New_Integer_Constant (Value => Last))));
+      Emit
+        (File,
+         New_Guarded_Axiom
+           (Name => Array_Length_Static.Id (Name),
+            Binders => (1 => Ar_Binder),
+            Def =>
+              New_Equal
+                (New_Array_Length_Term (Name, Ar),
+                 New_Integer_Constant
+                   (Value => UI_Add (UI_Sub (Last, First), 1)))));
    end Declare_Ada_Constrained_Array;
 
    -------------------------------------
@@ -111,10 +109,10 @@ package body Why.Gen.Arrays is
          New_Term ("a");
       Arb        : constant W_Term_Id :=
          New_Term ("b");
-      Ar_Binder_2  : constant W_Binder_Id :=
-         New_Binder
-            (Names => (1 => New_Identifier ("a")),
-             Arg_Type => +Ar_Type);
+      Ar_Binder_2 : constant Binder_Type :=
+                      (B_Name => New_Identifier ("a"),
+                       B_Type => Ar_Type,
+                       others => <>);
    begin
       --  generate the theory:
       --  type t
@@ -128,11 +126,12 @@ package body Why.Gen.Arrays is
           Array_Conv_From.Id (Name),
           Args => (1 => +Name_Type),
           Return_Type => +Ar_Type);
-      New_Logic
-         (File,
-          Array_Conv_To.Id (Name),
-          Args => (1 => +Ar_Type),
-          Return_Type => +Name_Type);
+      Emit
+        (File,
+         New_Logic
+           (Name => Array_Conv_To.Id (Name),
+            Binders => (1 => Ar_Binder_2),
+            Return_Type => Name_Type));
       New_Axiom
          (File       => File,
           Name       => Array_Conv_Idem.Id (Name),
@@ -156,36 +155,35 @@ package body Why.Gen.Arrays is
                          (1 => New_Operation
                             (Name => Array_Conv_From.Id (Name),
                              Parameters => (1 => Ar)))))));
-      New_Axiom
-         (File       => File,
-          Name       => Array_Conv_Idem_2.Id (Name),
-          Axiom_Body =>
-            New_Forall
-               (Binders => (1 => Ar_Binder_2),
-                Pred =>
-                  New_Universal_Quantif
-                    (Var_Type  => +Ar_Type,
-                     Variables => (1 => New_Identifier ("b")),
-                     Triggers  => New_Triggers (
-                       Triggers =>
-                         (1 =>
-                            New_Trigger (
-                              Terms => (1 => New_Operation
-                                        (Name => Array_Conv_To.Id (Name),
-                                         Parameters => (1 => Ar)),
-                                        2 => New_Operation
-                                          (Name => Array_Conv_To.Id (Name),
-                                           Parameters => (1 => Arb)))))),
-                     Pred      =>
-                       New_Implication
-                         (Left  => New_Equal
-                              (New_Operation
-                                   (Name => Array_Conv_To.Id (Name),
-                                    Parameters => (1 => Ar)),
-                               New_Operation
-                                 (Name => Array_Conv_To.Id (Name),
-                                  Parameters => (1 => Arb))),
-                          Right => New_Equal (Ar, Arb)))));
+      Emit
+        (File,
+         New_Guarded_Axiom
+           (Name => Array_Conv_Idem_2.Id (Name),
+            Binders => (1 => Ar_Binder_2),
+            Def =>
+              New_Universal_Quantif
+                (Var_Type  => +Ar_Type,
+                 Variables => (1 => New_Identifier ("b")),
+                 Triggers  => New_Triggers (
+                   Triggers =>
+                     (1 =>
+                        New_Trigger (
+                          Terms => (1 => New_Operation
+                                    (Name => Array_Conv_To.Id (Name),
+                                     Parameters => (1 => Ar)),
+                                    2 => New_Operation
+                                      (Name => Array_Conv_To.Id (Name),
+                                       Parameters => (1 => Arb)))))),
+                 Pred      =>
+                   New_Implication
+                     (Left  => New_Equal
+                          (New_Operation
+                               (Name => Array_Conv_To.Id (Name),
+                                Parameters => (1 => Ar)),
+                           New_Operation
+                             (Name => Array_Conv_To.Id (Name),
+                              Parameters => (1 => Arb))),
+                      Right => New_Equal (Ar, Arb)))));
    end Declare_Ada_Unconstrained_Array;
 
    --------------------------------
@@ -259,22 +257,22 @@ package body Why.Gen.Arrays is
          Index      : constant W_Term_Id := New_Term ("i");
          Index_Diff : constant W_Term_Id := New_Term ("j");
          Component  : constant W_Term_Id := New_Term ("v");
-         Ar_Binder  : constant W_Binder_Id :=
-            New_Binder
-               (Names => (1 => New_Identifier ("a")),
-                Arg_Type => +Ar_Type);
-         Index_Binder : constant W_Binder_Id :=
-            New_Binder
-               (Names => (1 => New_Identifier ("i")),
-                Arg_Type => New_Type_Int);
-         Component_Binder  : constant W_Binder_Id :=
-            New_Binder
-               (Names => (1 => New_Identifier ("v")),
-                Arg_Type => +A);
-         Index_Diff_Binder  : constant W_Binder_Id :=
-            New_Binder
-               (Names => (1 => New_Identifier ("j")),
-                Arg_Type => New_Type_Int);
+         Ar_Binder  : constant Binder_Type :=
+                        (B_Name => New_Identifier ("a"),
+                         B_Type => +Ar_Type,
+                         others => <>);
+         Index_Binder : constant Binder_Type :=
+                          (B_Name => New_Identifier ("i"),
+                           B_Type => New_Type_Int,
+                           others => <>);
+         Component_Binder  : constant Binder_Type :=
+                               (B_Name => New_Identifier ("v"),
+                                B_Type => +A,
+                                others => <>);
+         Index_Diff_Binder  : constant Binder_Type :=
+                                (B_Name => New_Identifier ("j"),
+                                 B_Type => New_Type_Int,
+                                 others => <>);
          Upd_Term   : constant W_Term_Id :=
            New_Operation
              (Name => Array_Update_Name.Id (Ada_Array),
@@ -323,174 +321,177 @@ package body Why.Gen.Arrays is
                 Op2    => New_Rel_Le,
                 Right2 => Last_Term);
       begin
-         New_Parameter
+         Emit
            (File,
-            To_Program_Space (Array_Access_Name.Id (Ada_Array)),
-            Binders     =>
-               (1 => Index_Binder,
-                2 => Ar_Binder),
-            Return_Type => A,
-            Pre => Enclosing,
-            Post =>
-               New_Equal
-                  (New_Result_Term,
-                   New_Operation
+            New_Parameter
+              (Name    => To_Program_Space (Array_Access_Name.Id (Ada_Array)),
+               Binders =>
+                 (1 => Index_Binder,
+                  2 => Ar_Binder),
+               Return_Type => A,
+               Pre => Enclosing,
+               Post =>
+                 New_Equal
+                   (New_Result_Term,
+                    New_Operation
                       (Name => Array_Access_Name.Id (Ada_Array),
                        Parameters =>
-                        (1 => Index,
-                         2 => Ar))));
-         New_Parameter
-           (File,
-            To_Program_Space (Array_Update_Name.Id (Ada_Array)),
-            Binders     =>
-               (1 => Index_Binder,
-                2 => Ar_Binder,
-                3 => Component_Binder),
-            Return_Type => Ar_Type,
-            Pre => Enclosing,
-            Post =>
-               New_Equal
-                  (New_Result_Term,
-                   New_Operation
-                      (Name => Array_Update_Name.Id (Ada_Array),
-                       Parameters =>
                          (1 => Index,
-                          2 => Ar,
-                          3 => Component))));
+                          2 => Ar)))));
+         Emit
+           (File,
+            New_Parameter
+              (Name    => To_Program_Space (Array_Update_Name.Id (Ada_Array)),
+               Binders =>
+                 (1 => Index_Binder,
+                  2 => Ar_Binder,
+                  3 => Component_Binder),
+               Return_Type => Ar_Type,
+               Pre => Enclosing,
+               Post =>
+                 New_Equal
+                    (New_Result_Term,
+                     New_Operation
+                        (Name => Array_Update_Name.Id (Ada_Array),
+                         Parameters =>
+                           (1 => Index,
+                            2 => Ar,
+                            3 => Component)))));
 
-         New_Axiom
-            (File => File,
-             Name => Array_Accupd_Eq_Axiom.Id (Ada_Array),
-             Axiom_Body =>
-               New_Forall
-                  (Binders =>
-                     (1 => Ar_Binder,
-                      2 => Index_Binder),
-                   Pred =>
-                     New_Universal_Quantif
-                       (Variables => (1 => New_Identifier ("v")),
-                        Var_Type  => +A,
-                        Triggers  =>
-                          New_Triggers (
-                            Triggers => (1 =>
-                                           New_Trigger (
-                                             Terms => (1 => Upd_Term)))),
-                        Pred      =>
-                          New_Equal
-                            (Acc_Upd_Term_Eq,
-                             Component))));
-         New_Axiom
-            (File => File,
-             Name => Array_Accupd_Neq_Axiom.Id (Ada_Array),
-             Axiom_Body =>
-               New_Forall
-                  (Binders =>
-                     (1 => Ar_Binder,
-                      2 => Index_Binder,
-                      3 => Index_Diff_Binder),
-                   Pred =>
-                     New_Universal_Quantif
-                       (Variables => (1 => New_Identifier ("v")),
-                        Var_Type  => +A,
-                        Triggers  =>
-                          New_Triggers (
-                            Triggers =>
-                              (1 => New_Trigger (Terms =>
-                                                   (1 => Acc_Upd_Term_Neq)),
-                               2 => New_Trigger (Terms =>
-                                                   (1 => Upd_Term,
-                                                    2 => Get_Term)))),
-                        Pred      =>
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Accupd_Eq_Axiom.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder,
+                  2 => Index_Binder),
+               Def =>
+                 New_Universal_Quantif
+                   (Variables => (1 => New_Identifier ("v")),
+                    Var_Type  => +A,
+                    Triggers  =>
+                      New_Triggers (
+                        Triggers => (1 =>
+                                       New_Trigger (
+                                         Terms => (1 => Upd_Term)))),
+                    Pred      =>
+                      New_Equal
+                        (Acc_Upd_Term_Eq,
+                         Component))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Accupd_Neq_Axiom.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder,
+                  2 => Index_Binder,
+                  3 => Index_Diff_Binder),
+               Def =>
+                 New_Universal_Quantif
+                   (Variables => (1 => New_Identifier ("v")),
+                    Var_Type  => +A,
+                    Triggers  =>
+                      New_Triggers
+                        (Triggers =>
+                          (1 => New_Trigger
+                            (Terms => (1 => Acc_Upd_Term_Neq)),
+                           2 => New_Trigger
+                             (Terms => (1 => Upd_Term, 2 => Get_Term)))),
+                   Pred      =>
                      New_Implication
-                        (Left  =>
-                           New_NEqual
-                             (Index,
-                              Index_Diff),
+                       (Left  =>
+                          New_NEqual
+                            (Index,
+                             Index_Diff),
+                        Right =>
+                          New_Equal
+                            (Acc_Upd_Term_Neq, Get_Term)))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_First_Update.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder,
+                  2 => Index_Binder,
+                  3 => Component_Binder),
+               Def =>
+                 New_Equal
+                   (First_Term,
+                    New_Operation
+                      (Name => Array_First_Name.Id (Ada_Array),
+                       Parameters =>
+                         (1 => Upd_Term)))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Last_Update.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder,
+                  2 => Index_Binder,
+                  3 => Component_Binder),
+               Def =>
+                 New_Equal
+                   (Last_Term,
+                    New_Operation
+                      (Name => Array_Last_Name.Id (Ada_Array),
+                       Parameters =>
+                         (1 => Upd_Term)))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Length_Update.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder,
+                  2 => Index_Binder,
+                  3 => Component_Binder),
+               Def =>
+                 New_Equal
+                   (Length_Term,
+                    New_Operation
+                      (Name => Array_Length_Name.Id (Ada_Array),
+                       Parameters => (1 => Upd_Term)))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Length_Non_Zero.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder),
+               Def =>
+                 New_Implication
+                   (Left  =>
+                      New_Related_Terms
+                        (Left  => Last_Term,
+                         Right => First_Term,
+                         Op    => New_Rel_Ge),
+                    Right =>
+                      New_Equal
+                        (Left  => Length_Term,
+                         Right => Normal_Length))));
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name =>
+                 Array_Length_Zero.Id (Ada_Array),
+               Binders =>
+                 (1 => Ar_Binder),
+               Def =>
+                 New_Implication
+                   (Left  =>
+                      New_Related_Terms
+                        (Left  => Last_Term,
+                         Right => First_Term,
+                         Op    => New_Rel_Lt),
+                    Right =>
+                      New_Equal
+                        (Left  => Length_Term,
                          Right =>
-                           New_Equal
-                              (Acc_Upd_Term_Neq, Get_Term)))));
-         New_Axiom
-           (File => File,
-            Name => Array_First_Update.Id (Ada_Array),
-            Axiom_Body =>
-              New_Forall
-                 (Binders =>
-                    (1 => Ar_Binder,
-                     2 => Index_Binder,
-                     3 => Component_Binder),
-                  Pred =>
-                    New_Equal
-                      (First_Term,
-                       New_Operation
-                         (Name => Array_First_Name.Id (Ada_Array),
-                          Parameters =>
-                            (1 => Upd_Term)))));
-         New_Axiom
-           (File => File,
-            Name => Array_Last_Update.Id (Ada_Array),
-            Axiom_Body =>
-              New_Forall
-                 (Binders =>
-                    (1 => Ar_Binder,
-                     2 => Index_Binder,
-                     3 => Component_Binder),
-                  Pred =>
-                    New_Equal
-                      (Last_Term,
-                       New_Operation
-                         (Name => Array_Last_Name.Id (Ada_Array),
-                          Parameters =>
-                            (1 => Upd_Term)))));
-         New_Axiom
-           (File => File,
-            Name => Array_Length_Update.Id (Ada_Array),
-            Axiom_Body =>
-              New_Forall
-                 (Binders =>
-                    (1 => Ar_Binder,
-                     2 => Index_Binder,
-                     3 => Component_Binder),
-                  Pred =>
-                    New_Equal
-                      (Length_Term,
-                       New_Operation
-                         (Name => Array_Length_Name.Id (Ada_Array),
-                          Parameters =>
-                            (1 => Upd_Term)))));
-         New_Axiom
-           (File => File,
-            Name => Array_Length_Non_Zero.Id (Ada_Array),
-            Axiom_Body =>
-              New_Forall
-                (Binders => (1 => Ar_Binder),
-                 Pred    =>
-                    New_Implication
-                      (Left  =>
-                         New_Related_Terms
-                           (Left  => Last_Term,
-                            Right => First_Term,
-                            Op    => New_Rel_Ge),
-                       Right =>
-                         New_Equal
-                           (Left  => Length_Term,
-                            Right => Normal_Length))));
-         New_Axiom
-           (File => File,
-            Name => Array_Length_Zero.Id (Ada_Array),
-            Axiom_Body =>
-              New_Forall
-                (Binders => (1 => Ar_Binder),
-                 Pred    =>
-                   New_Implication
-                     (Left  =>
-                        New_Related_Terms
-                          (Left  => Last_Term,
-                           Right => First_Term,
-                           Op    => New_Rel_Lt),
-                      Right =>
-                        New_Equal
-                          (Left  => Length_Term,
-                           Right => New_Integer_Constant (Value => Uint_0)))));
+                           New_Integer_Constant (Value => Uint_0)))));
       end;
    end Declare_Generic_Array_Type;
 
