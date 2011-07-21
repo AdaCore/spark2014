@@ -136,7 +136,6 @@ check: $(ALL_WHYPACK:__package.mlw=.check)
 %.ali: %.ads
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<
 
-%.check: %__package.mlw
+%.check: %__package.mlw $(ALL_WHYPACK)
 	why --type-only $<
 	touch $@
-
