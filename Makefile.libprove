@@ -122,6 +122,8 @@ ALL_WHYPACK:= $(GNAT_WHYPACK) $(GNARL_WHYPACK)
 
 all: $(ALL_ALIS) $(ALL_WHYPACK)
 
+check: $(ALL_WHYPACK:__package.mlw=.check)
+
 %__package.mlw: %.adb $(ALL_ALIS)
 	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg -I. $<
 
@@ -133,3 +135,8 @@ all: $(ALL_ALIS) $(ALL_WHYPACK)
 
 %.ali: %.ads
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<
+
+%.check: %__package.mlw
+	why --type-only $<
+	touch $@
+
