@@ -514,6 +514,24 @@ package body Gnat2Why.Driver is
 
       New_Abstract_Type (File, "standard___renaming_type");
 
+      --  We also need to define the ASCII entities
+
+      declare
+         Cur : Node_Id := First_Entity (Standard_ASCII);
+      begin
+         while Present (Cur) loop
+            New_Logic
+               (File => File,
+                Name => New_Identifier (Name => Full_Name (Cur)),
+                Args => (1 .. 0 => <>),
+                Return_Type =>
+                  New_Abstract_Type (Name =>
+                     New_Identifier (Name =>
+                        Full_Name (Standard_Character))));
+            Next_Entity (Cur);
+         end loop;
+      end;
+
       Declare_Boolean_Integer_Comparison (File);
 
       New_Logic
