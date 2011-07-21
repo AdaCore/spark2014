@@ -109,7 +109,7 @@ procedure Alfa_Report is
          Already_Alfa_Cnt + Not_Yet_Alfa_Cnt - Cur_Alfa_Cnt);
       File_Not_Alfa_Cnt.Insert
         (To_Unbounded_String (Fn),
-         Total_Cnt - Already_Alfa_Cnt + Not_Yet_Alfa_Cnt);
+         Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt);
    end Handle_Alfa_File;
 
    ----------------------
@@ -298,7 +298,7 @@ procedure Alfa_Report is
 
       function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean is
       begin
-         return File_Alfa_Cnt.Element (File_Names (F1)) >
+         return File_Not_Alfa_Cnt.Element (File_Names (F1)) >
            File_Not_Alfa_Cnt.Element (File_Names (F2));
       end Greater_Not_Alfa_Count;
 
