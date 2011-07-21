@@ -84,6 +84,7 @@ install-stdlib:
 	cp $(STDLIB_TMP)/*__types_vars_spec.mlw \
            $(STDLIB_TMP)/*__types_vars_body.mlw \
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
+	   $(STDLIB_TMP)/_standard.mlw \
 	   $(WHYLIB)/why
 
 install-examples:

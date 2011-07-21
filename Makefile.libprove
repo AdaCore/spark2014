@@ -119,8 +119,10 @@ GNARL_WHYPACK:=$(GNARL_ALIS:.ali=__package.mlw)
 GNAT_WHYPACK:=$(GNAT_ALIS:.ali=__package.mlw)
 ALL_ALIS:= $(GNAT_ALIS) $(GNARL_ALIS)
 ALL_WHYPACK:= $(GNAT_WHYPACK) $(GNARL_WHYPACK)
+WHY_STANDARD:= _standard.mlw
+DUMMYFILE:= dummyfile
 
-all: $(ALL_ALIS) $(ALL_WHYPACK)
+all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
 
 check: $(ALL_WHYPACK:__package.mlw=.check)
 
@@ -136,6 +138,11 @@ check: $(ALL_WHYPACK:__package.mlw=.check)
 %.ali: %.ads
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<
 
-%.check: %__package.mlw $(ALL_WHYPACK)
+$(WHY_STANDARD):
+	touch $(DUMMYFILE)
+	$(GNAT2WHY) -gnatd.H $(DUMMYFILE)
+	rm $(DUMMYFILE)
+
+%.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
 	why --type-only $<
 	touch $@

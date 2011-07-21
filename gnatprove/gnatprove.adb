@@ -99,9 +99,6 @@ procedure Gnatprove is
    --  Generate project file with the given source dir. Write the file to disk
    --  and return the file name.
 
-   procedure Make_Standard_Package (Proj : Project_Tree);
-   --  Produce the file "_standard.mlw".
-
    procedure Prove_VCs (Proj : Project_Tree; Status : out Integer);
    --  Prove the VCs.
 
@@ -395,26 +392,6 @@ procedure Gnatprove is
       return Altergo_Filename;
    end Generate_Altergo_Project_File;
 
-   ---------------------------
-   -- Make_Standard_Package --
-   ---------------------------
-
-   procedure Make_Standard_Package (Proj : Project_Tree) is
-      Success : Boolean;
-   begin
-      pragma Unreferenced (Proj);
-      Call_Exit_On_Failure
-        (Command   => "gnat2why",
-         Arguments =>
-            (1 => new String'("-gnatd.H"),
-             2 => new String'(Gpr_Ada_Cnf_File)),
-         Success   => Success,
-         Verbose   => Verbose);
-      if not Success then
-         Abort_With_Message ("Error on standard package, aborting.");
-      end if;
-   end Make_Standard_Package;
-
    ---------------
    -- Prove_VCs --
    ---------------
@@ -651,7 +628,6 @@ begin
    end;
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-   Make_Standard_Package (Tree);
 
    Execute_Step (GS_Why, Project_File.all, Tree);
 
