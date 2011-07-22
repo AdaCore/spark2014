@@ -2535,6 +2535,9 @@ package body Alfa.Definition is
             if Is_Interface (+Id) then
                Mark_Non_Alfa ("interface", +Id, NYI_XXX);
 
+            elsif Has_Discriminants (+Id) then
+               Mark_Non_Alfa ("discriminant", +Id, NYI_Discriminant);
+
             else
                declare
                   Field : Node_Id := First_Entity (+Id);
