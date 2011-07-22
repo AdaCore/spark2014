@@ -1,0 +1,64 @@
+type 'a t__ada_array
+
+logic t__ada_array___access :
+ int, 'a t__ada_array -> 'a
+
+logic t__ada_array___update :
+ int, 'a t__ada_array, 'a -> 'a t__ada_array
+
+logic t__ada_array___length :
+ 'a t__ada_array -> int
+
+logic t__ada_array___first :
+ 'a t__ada_array -> int
+
+logic t__ada_array___last :
+ 'a t__ada_array -> int
+
+parameter t__ada_array___access_ :
+ i : int -> a : 'a t__ada_array -> { t__ada_array___first (a) <= i <= t__ada_array___last (a) }'a
+ { result = t__ada_array___access (i, a) }
+
+parameter t__ada_array___update_ :
+ i : int -> a : 'a t__ada_array -> v : 'a -> { t__ada_array___first (a) <= i <= t__ada_array___last (a) }'a t__ada_array
+ { result = t__ada_array___update (i, a, v) }
+
+axiom t__ada_array___accupd_eq :
+ (forall a : 'a t__ada_array.
+ (forall i : int.
+ (forall v : 'a [t__ada_array___update (i, a, v)].
+  t__ada_array___access (i, t__ada_array___update (i, a, v)) = v)))
+
+axiom t__ada_array___accupd_neq :
+ (forall a : 'a t__ada_array.
+ (forall i : int.
+ (forall j : int.
+ (forall v : 'a [t__ada_array___access (j, t__ada_array___update (i, a, v)) | t__ada_array___update (i, a, v), t__ada_array___access (j, a)].
+  ( i <> j -> t__ada_array___access (j, t__ada_array___update (i, a, v)) = t__ada_array___access (j, a) )))))
+
+axiom t__ada_array___first_update :
+ (forall a : 'a t__ada_array.
+ (forall i : int.
+ (forall v : 'a.
+  t__ada_array___first (a) = t__ada_array___first (t__ada_array___update (i, a, v)))))
+
+axiom t__ada_array___last_update :
+ (forall a : 'a t__ada_array.
+ (forall i : int.
+ (forall v : 'a.
+  t__ada_array___last (a) = t__ada_array___last (t__ada_array___update (i, a, v)))))
+
+axiom t__ada_array___length_update :
+ (forall a : 'a t__ada_array.
+ (forall i : int.
+ (forall v : 'a.
+  t__ada_array___length (a) = t__ada_array___length (t__ada_array___update (i, a, v)))))
+
+axiom t__ada_array___length_non_zero :
+ (forall a : 'a t__ada_array.
+  ( t__ada_array___last (a) >= t__ada_array___first (a) -> t__ada_array___length (a) = ( ( t__ada_array___last (a) - t__ada_array___first (a) ) + 1 ) ))
+
+axiom t__ada_array___length_zero :
+ (forall a : 'a t__ada_array.
+  ( t__ada_array___last (a) < t__ada_array___first (a) -> t__ada_array___length (a) = 0 ))
+

@@ -56,7 +56,6 @@ with Why;                   use Why;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
-with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
@@ -489,8 +488,6 @@ package body Gnat2Why.Driver is
       New_Include_Declaration
         (File => File,
          Name => New_Identifier ("_gnatprove_standard.why"));
-
-      Declare_Generic_Array_Type (File);
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
