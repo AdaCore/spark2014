@@ -54,9 +54,6 @@ package Why.Gen.Arrays is
    --  of the form
    --  type A is Array (basetype range <>) of Component
 
-   procedure Declare_Generic_Array_Type (File : W_File_Id);
-   --  Introduce the generic Array Type that represents Ada arrays
-
    function New_Array_Access_Prog
      (Ada_Node      : Node_Id;
       Type_Name     : String;
