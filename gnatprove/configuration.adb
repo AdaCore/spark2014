@@ -25,6 +25,8 @@
 
 with Ada.Text_IO;
 
+with Hilitevsn; use Hilitevsn;
+
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.OS_Lib;
 
@@ -125,48 +127,32 @@ package body Configuration is
 
    procedure Read_Command_Line
    is
-      Config           : Command_Line_Configuration;
+      Config : Command_Line_Configuration;
    begin
       --  Install command line config
-
-      Define_Switch (Config, Verbose'Access,
-                     "-v", Long_Switch => "--verbose",
-                     Help => "Output extra verbose information");
-
-      Define_Switch (Config, MMode_Input'Access,
-                     Long_Switch => "--mode=",
-                     Help =>
-                       "Set the mode of GNATprove (detect | force | check)");
-
-      Define_Switch (Config, Report_Input'Access,
-                     Long_Switch => "--report=",
-                     Help => "Set the report mode of GNATprove (all | fail)");
-
-      Define_Switch
-         (Config,
-          Force'Access,
-          "-f",
-          Help => "Force recompilation / proving of all units and all VCs");
-
-      Define_Switch
-         (Config,
-          Only_Given'Access,
-          "-u",
-          Help => "Unique compilation - only compile/prove the given files");
-
-      Define_Switch
-         (Config,
-          Quiet'Access,
-          "-q",
-          Long_Switch => "--quiet",
-          Help => "Be quiet/terse");
 
       Define_Switch
          (Config,
           Debug'Access,
-          "-d",
-          Long_Switch => "--debug",
+          "-d", Long_Switch => "--debug",
           Help => "Debug mode");
+
+      Define_Switch
+        (Config,
+         Force'Access,
+         "-f",
+         Help => "Force recompilation / proving of all units and all VCs");
+
+      Define_Switch
+         (Config, Parallel'Access,
+          Long_Switch => "-j:",
+          Help => "Set the number of parallel processes (default is 1)");
+
+      Define_Switch
+        (Config,
+         MMode_Input'Access,
+         Long_Switch => "--mode=",
+         Help => "Set the mode of GNATprove (detect | force | check)");
 
       Define_Switch
         (Config,
@@ -175,9 +161,21 @@ package body Configuration is
          Help => "Disable proof of VCs, only generate VCs");
 
       Define_Switch
-         (Config, Timeout'Access,
-          Long_Switch => "--timeout=",
-          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
+        (Config, Project_File'Access,
+         "-P:",
+         Help => "The name of the project file");
+
+      Define_Switch
+         (Config,
+          Quiet'Access,
+          "-q", Long_Switch => "--quiet",
+          Help => "Be quiet/terse");
+
+      Define_Switch
+        (Config,
+         Report_Input'Access,
+         Long_Switch => "--report=",
+         Help => "Set the report mode of GNATprove (all | fail)");
 
       Define_Switch
          (Config, Steps'Access,
@@ -185,13 +183,27 @@ package body Configuration is
           Help => "Set the maximum number of proof steps for Alt-Ergo");
 
       Define_Switch
-         (Config, Parallel'Access,
-          Long_Switch => "-j:",
-          Help => "Set the number of parallel processes (default is 1)");
+         (Config, Timeout'Access,
+          Long_Switch => "--timeout=",
+          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
 
-      Define_Switch (Config, Project_File'Access,
-                     "-P:",
-                     Help => "The name of the project file");
+      Define_Switch
+         (Config,
+          Only_Given'Access,
+          "-u",
+          Help => "Unique compilation - only compile/prove the given files");
+
+      Define_Switch
+        (Config,
+         Verbose'Access,
+         "-v", Long_Switch => "--verbose",
+         Help => "Output extra verbose information");
+
+      Define_Switch
+        (Config,
+         Version'Access,
+         Long_Switch => "--version",
+         Help => "Output version of the tool");
 
       Define_Switch (Config, "*");
 
@@ -199,6 +211,12 @@ package body Configuration is
       Define_Switch (Config, "*", Section => "cargs");
 
       Getopt (Config, Callback => Handle_Switch'Access, Concatenate => False);
+
+      if Version then
+         Ada.Text_IO.Put_Line (Hilite_Version_String);
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
+
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
       elsif MMode_Input.all = "force" then

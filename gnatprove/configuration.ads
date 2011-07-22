@@ -40,6 +40,8 @@ package Configuration is
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded.
 
+   Version      : aliased Boolean;
+   --  True if --version switch is present. Output current version and exit.
    Verbose      : aliased Boolean;
    --  True if -v switch is present. All executed commands are printed.
    Force        : aliased Boolean;
