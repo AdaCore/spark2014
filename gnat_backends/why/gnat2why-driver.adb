@@ -57,11 +57,9 @@ with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Conversions;       use Why.Conversions;
 with Why.Inter;             use Why.Inter;
-with Why.Types;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Locs;         use Gnat2Why.Locs;
@@ -501,16 +499,6 @@ package body Gnat2Why.Driver is
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
 
-      --  The special "HEAP" variable is defined specially
-
-      New_Abstract_Type (File, "standard___heap_type");
-
-      New_Global_Ref_Declaration
-        (File     => File,
-         Name     => New_Identifier (Alfa.Name_Of_Heap_Variable),
-         Obj_Type =>
-           New_Abstract_Type (Empty, New_Identifier ("standard___heap_type")));
-
       --  Additionally, the following type does not even have a type
       --  definition. The type is not in Alfa anyway, so we just generate the
       --  correct abstract type in Why.
@@ -534,29 +522,6 @@ package body Gnat2Why.Driver is
             Next_Entity (Cur);
          end loop;
       end;
-
-      Declare_Boolean_Integer_Comparison (File);
-
-      New_Logic
-         (File => File,
-          Name => New_Ignore_Name,
-          Args =>
-            (1 => New_Generic_Formal_Type (Name => New_Identifier ("a"))),
-         Return_Type => New_Type_Unit);
-
-      New_Include_Declaration
-        (File => File,
-         Name => New_Identifier ("divisions.why"));
-      New_Include_Declaration
-        (File => File,
-         Name => New_Identifier ("bool.why"));
-
-      --  Declare a global exception for returning from subprograms
-
-      New_Exception
-        (File,
-         New_Result_Exc_Identifier,
-         Why.Types.Why_Empty);
 
       Open_Current_File ("_standard.mlw");
       Sprint_Why_Node (+File, Current_File);

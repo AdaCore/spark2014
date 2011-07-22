@@ -48,10 +48,4 @@ package Why.Gen.Ints is
    --  Same as the previous function, except that the higher and lower
    --  bounds are specified explicitly.
 
-   procedure Declare_Boolean_Integer_Comparison
-     (File : W_File_Id);
-   --  Declare equality and comparison functions for integers, with boolean
-   --  return value, as well as axioms linking them to the corresponding
-   --  predicates
-
 end Why.Gen.Ints;

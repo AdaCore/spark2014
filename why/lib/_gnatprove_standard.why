@@ -62,3 +62,59 @@ axiom t__ada_array___length_zero :
  (forall a : 'a t__ada_array.
   ( t__ada_array___last (a) < t__ada_array___first (a) -> t__ada_array___length (a) = 0 ))
 
+
+(* The special HEAP variable *)
+
+type standard___heap_type
+parameter HEAP : standard___heap_type ref
+
+logic bool_int__eq :
+ int, int -> bool
+
+axiom bool_int__eq_axiom :
+ (forall x, y : int.
+  ( bool_int__eq (x, y) = true -> x = y ) and ( bool_int__eq (x, y) = false -> not x = y ))
+
+logic bool_int__ne :
+ int, int -> bool
+
+axiom bool_int__ne_axiom :
+ (forall x, y : int.
+  ( bool_int__ne (x, y) = true -> x <> y ) and ( bool_int__ne (x, y) = false -> not x <> y ))
+
+logic bool_int__lt :
+ int, int -> bool
+
+axiom bool_int__lt_axiom :
+ (forall x, y : int.
+  ( bool_int__lt (x, y) = true -> x < y ) and ( bool_int__lt (x, y) = false -> not x < y ))
+
+logic bool_int__le :
+ int, int -> bool
+
+axiom bool_int__le_axiom :
+ (forall x, y : int.
+  ( bool_int__le (x, y) = true -> x <= y ) and ( bool_int__le (x, y) = false -> not x <= y ))
+
+logic bool_int__gt :
+ int, int -> bool
+
+axiom bool_int__gt_axiom :
+ (forall x, y : int.
+  ( bool_int__gt (x, y) = true -> x > y ) and ( bool_int__gt (x, y) = false -> not x > y ))
+
+logic bool_int__ge :
+ int, int -> bool
+
+axiom bool_int__ge_axiom :
+ (forall x, y : int.
+  ( bool_int__ge (x, y) = true -> x >= y ) and ( bool_int__ge (x, y) = false -> not x >= y ))
+
+logic ___ignore :
+ 'a -> unit
+
+include "divisions.why"
+
+include "bool.why"
+
+exception _result_exc
