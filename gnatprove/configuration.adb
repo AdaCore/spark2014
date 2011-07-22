@@ -205,7 +205,7 @@ package body Configuration is
          Long_Switch => "--version",
          Help => "Output version of the tool");
 
-      Define_Switch (Config, "*");
+      Define_Switch (Config, "*", Help => "list of source files");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
