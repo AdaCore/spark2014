@@ -50,8 +50,8 @@ After extracting the compressed archive, the following steps are necessary:
 
    0) (Windows) Make sure to have Flexdll installed in your PATH, see above
 
-   1) Apply the patches that correspond to your version of Why, in the correct
-      order:
+   1) Apply the patches in subdir patches/ that correspond to your version of
+      Why, in the correct order:
        (in the extracted directory)
        patch -p0 < why-2.29-1.patch
        patch -p0 < why-2.29-2.patch

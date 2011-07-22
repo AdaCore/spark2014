@@ -484,6 +484,12 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
+      --  Generate the inclusion of the GNATprove Why theory
+
+      New_Include_Declaration
+        (File => File,
+         Name => New_Identifier ("_gnatprove_standard.why"));
+
       Declare_Generic_Array_Type (File);
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
