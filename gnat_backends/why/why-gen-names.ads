@@ -41,35 +41,11 @@ package Why.Gen.Names is
    --  Return the name of the boolean comparison operator for Why ints that
    --  corresponds to the comparison operator in argument.
 
-   function New_Conversion_Axiom (From : String; To : String)
-      return W_Identifier_Id;
-   --  Create a new identifier for a conversion between to abstract types
-
-   function New_Exit_Identifier return W_Identifier_Id;
-   --  Return an new identifier for the exception "Exit".
-
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
    function New_Identifiers (SL : String_Lists.List) return W_Identifier_Array;
    --  Return an array of identifiers
-
-   function New_Ignore_Name return W_Identifier_Id;
-
-   function New_Integer_Division return W_Identifier_Id;
-   --  Return an identifier that corresponds to integer division in Why
-
-   function New_Result_Exc_Identifier return W_Identifier_Id;
-   --  Return a new identifier for the exception used for returning from a
-   --  subprogram.
-
-   function New_Result_Identifier return W_Identifier_Id;
-   --  Return a new identifier for a function result as it
-   --  would be used into a postcondition.
-
-   function New_Result_Temp_Identifier return W_Identifier_Id;
-   --  Return a new identifier for the temporary used to store a function's
-   --  result.
 
    function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name
@@ -121,135 +97,200 @@ package Why.Gen.Names is
    In_Range                 : constant String := "in_range";
    Unicity                  : constant String := "unicity";
 
-   package Array_Access_Name is new Name_Gen ("", Array_Access);
+   package Array_Access_Name is
+     new Name_Gen.Arity_1 ("", Array_Access);
    --  From the name of an array type, return the name of its access function.
 
-   package Array_Accupd_Eq_Axiom is new Name_Gen ("", Array_Accupd_Eq);
+   package Array_Accupd_Eq_Axiom is
+     new Name_Gen.Arity_1 ("", Array_Accupd_Eq);
    --  From the name of an array type, return the name of the axiom of
    --  access/update equality
 
-   package Array_Accupd_Neq_Axiom is new Name_Gen ("", Array_Accupd_Neq);
+   package Array_Accupd_Neq_Axiom is
+     new Name_Gen.Arity_1 ("", Array_Accupd_Neq);
    --  From the name of an array type, return the name of the axiom of
    --  access/update with disequality
 
-   package Array_Conv_To is new Name_Gen ("", Array_Convert_To);
+   package Array_Conv_To is
+     new Name_Gen.Arity_1 ("", Array_Convert_To);
    --  From the name of an array type, return the name of the conversion from
    --  Ada__Array.
 
-   package Array_Conv_From is new Name_Gen ("", Array_Convert_From);
+   package Array_Conv_From is
+     new Name_Gen.Arity_1 ("", Array_Convert_From);
    --  From the name of an array type, return the name of the conversion to
    --  Ada__Array.
 
-   package Array_Conv_Idem is new Name_Gen ("", Array_Conv_Idemp);
+   package Array_Conv_Idem is
+     new Name_Gen.Arity_1 ("", Array_Conv_Idemp);
 
-   package Array_Conv_Idem_2 is new Name_Gen ("", Array_Conv_Idemp_2);
+   package Array_Conv_Idem_2 is
+     new Name_Gen.Arity_1 ("", Array_Conv_Idemp_2);
 
-   package Array_First_Name is new Name_Gen ("", Array_First);
+   package Array_First_Name is
+     new Name_Gen.Arity_1 ("", Array_First);
    --  From the name of an array type, return the name of its "first"
    --  function.
 
-   package Array_First_Update is new Name_Gen ("", Array_First_Upd);
+   package Array_First_Update is
+     new Name_Gen.Arity_1 ("", Array_First_Upd);
    --  From the name of an array type, return the name of the axiom that
    --  states that "first" is constant
 
-   package Array_Last_Name is new Name_Gen ("", Array_Last);
+   package Array_Last_Name is
+     new Name_Gen.Arity_1 ("", Array_Last);
    --  From the name of an array type, return the name of its "last" function.
 
-   package Array_Last_Update is new Name_Gen ("", Array_Last_Upd);
+   package Array_Last_Update is
+     new Name_Gen.Arity_1 ("", Array_Last_Upd);
    --  From the name of an array type, return the name of the axiom that
    --  states that "last" is constant
 
-   package Array_Length_Name is new Name_Gen ("", Array_Length);
+   package Array_Length_Name is
+     new Name_Gen.Arity_1 ("", Array_Length);
    --  From the name of an array type, return the name of its "length"
    --  function.
 
-   package Array_Length_Non_Zero is new Name_Gen ("", Array_Len_Nzero);
+   package Array_Length_Non_Zero is
+     new Name_Gen.Arity_1 ("", Array_Len_Nzero);
    --  From the name of an array type, return the name of the axiom that
    --  defines the properties when Length is positive.
 
-   package Array_Length_Update is new Name_Gen ("", Array_Len_Upd);
+   package Array_Length_Update is
+     new Name_Gen.Arity_1 ("", Array_Len_Upd);
    --  From the name of an array type, return the name of the axiom that
    --  states that "length" is constant
 
-   package Array_Length_Zero is new Name_Gen ("", Array_Len_Zero);
+   package Array_Length_Zero is
+     new Name_Gen.Arity_1 ("", Array_Len_Zero);
    --  From the name of an array type, return the name of the axiom that
    --  defines the properties when Length Zero.
 
-   package Array_Update_Name is new Name_Gen ("", Array_Update);
+   package Array_Update_Name is
+     new Name_Gen.Arity_1 ("", Array_Update);
    --  From the name of an array type, return the name of its update function
 
-   package Array_First_Static is new Name_Gen ("", Array_First_Static_Name);
+   package Array_First_Static is
+     new Name_Gen.Arity_1 ("", Array_First_Static_Name);
    --  From the name of an array type, return the name of the axiom that
    --  states that 'First is static.
 
-   package Array_Last_Static is new Name_Gen ("", Array_Last_Static_Name);
+   package Array_Last_Static is
+     new Name_Gen.Arity_1 ("", Array_Last_Static_Name);
    --  From the name of an array type, return the name of the axiom that
    --  states that 'Last is static.
 
-   package Array_Length_Static is new Name_Gen ("", Array_Length_Static_Name);
+   package Array_Length_Static is
+     new Name_Gen.Arity_1 ("", Array_Length_Static_Name);
    --  From the name of an array type, return the name of the axiom that
    --  states that 'Length is static.
 
-   package Coerce_Axiom is new Name_Gen ("", Coerce);
+   package Coerce_Axiom is
+     new Name_Gen.Arity_1 ("", Coerce);
    --  From the name of an abstract type, return the name of
    --  its coerce axiom.
 
-   package Eq_Param_Name is new Name_Gen ("", "___" & Boolean_Eq & "_", "");
+   package Eq_Param_Name is
+     new Name_Gen.Arity_1 ("", "___" & Boolean_Eq & "_", "");
    --  From the name of an abstract type, return the name of
    --  its equality parameter.
 
-   package Eq_Pred_Name is new Name_Gen ("", Eq_Pred);
+   package Eq_Pred_Name is
+     new Name_Gen.Arity_1 ("", Eq_Pred);
    --  From the name of an abstract type, return the name of
    --  its equality predicate.
 
-   package New_Conversion_To_Int is new Name_Gen ("", Int_Of);
+   package New_Conversion_To_Int is
+     new Name_Gen.Arity_1 ("", Int_Of);
    --  Create a new identifier for a conversion from an abstract type
    --  to int. The name of the abstract type is given in parameter.
 
-   package New_Conversion_From_Int is new Name_Gen ("", Of_Int);
+   package New_Conversion_From_Int is
+     new Name_Gen.Arity_1 ("", Of_Int);
    --  Create a new identifier for a conversion from int to an abstract type.
    --  The name of the abstract type is given in parameter.
 
-   package New_Definition_Name is new Name_Gen ("", Definition);
+   package New_Definition_Name is
+     new Name_Gen.Arity_1 ("", Definition);
    --  Create a new identifier for the "definition only" version of a
    --  subprogram, which is not meant to be called.
 
-   package Logic_Func_Name is new Name_Gen ("", "", "");
+   package New_Exit_Identifier is
+     new Name_Gen.Arity_0 ("Exit");
+   --  Return an new identifier for the exception "Exit".
+
+   package New_Ignore_Name is
+     new Name_Gen.Arity_0 ("___ignore");
+
+   package New_Integer_Division is
+     new Name_Gen.Arity_0 ("computer_div");
+   --  Return an identifier that corresponds to integer division in Why
+
+   package New_Result_Exc_Identifier is
+     new Name_Gen.Arity_0 ("_result_exc");
+   --  Return a new identifier for the exception used for returning from a
+   --  subprogram.
+
+   package New_Result_Identifier is
+     new Name_Gen.Arity_0 ("result");
+   --  Return a new identifier for a function result as it
+   --  would be used into a postcondition.
+
+   package New_Result_Temp_Identifier is
+     new Name_Gen.Arity_0 ("_result");
+   --  Return a new identifier for the temporary used to store a function's
+   --  result.
+
+   package New_Conversion_Axiom is
+     new Name_Gen.Arity_2 ("", "of", "in_range");
+   --  Create a new identifier for a conversion between to abstract types
+
+   package Logic_Func_Name is
+     new Name_Gen.Arity_1 ("", "", "");
    --  Create a new identifier for the logic version of a
    --  subprogram, which is used in annotations.
 
-   package Logic_Func_Axiom is new Name_Gen ("", Logic_Def_Axiom);
+   package Logic_Func_Axiom is
+     new Name_Gen.Arity_1 ("", Logic_Def_Axiom);
    --  Create a new name for the axiom that states equivalence of
    --  a subprogram and its logic definition.
 
-   package New_Pre_Check_Name is new Name_Gen (Pre_Check, "");
+   package New_Pre_Check_Name is
+     new Name_Gen.Arity_1 (Pre_Check, "");
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
-   package Program_Func_Name is new Name_Gen ("", "_", "");
+   package Program_Func_Name is
+     new Name_Gen.Arity_1 ("", "_", "");
    --  Create a new identifier for the program version of a
    --  subprogram.
 
-   package Range_Axiom is new Name_Gen ("", Range_Name);
+   package Range_Axiom is
+     new Name_Gen.Arity_1 ("", Range_Name);
    --  From the name of an abstract type, return the name of
    --  its range axiom.
 
-   package Range_Pred_Name is new Name_Gen ("", In_Range);
+   package Range_Pred_Name is
+     new Name_Gen.Arity_1 ("", In_Range);
    --  From the name of an abstract type, return the name of
    --  its range predicate.
 
-   package Record_Builder_Name is new Name_Gen (Record_Make, "");
+   package Record_Builder_Name is
+     new Name_Gen.Arity_1 (Record_Make, "");
    --  From the name of a record type, return the name of its builder.
 
-   package Record_Getter_Axiom is new Name_Gen ("", Record_Get_Axiom);
+   package Record_Getter_Axiom is
+     new Name_Gen.Arity_1 ("", Record_Get_Axiom);
    --  From the full name of a record component, return the name of
    --  its getter axiom.
 
-   package Record_Getter_Name is new Name_Gen (Record_Get, "");
+   package Record_Getter_Name is
+     new Name_Gen.Arity_1 (Record_Get, "");
    --  From the full name of a record component, return the getter for
    --  this component.
 
-   package Unicity_Axiom is new Name_Gen ("", Unicity);
+   package Unicity_Axiom is
+     new Name_Gen.Arity_1 ("", Unicity);
    --  From the name of an abstract type, return the name of
    --  its unicity axiom.
 

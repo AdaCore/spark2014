@@ -27,37 +27,90 @@ with Namet;        use Namet;
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
 
-generic
-   Prefix    : String;
-   Suffix    : String;
-   Separator : String := "___";
 package Why.Gen.Name_Gen is
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : String)
-     return W_Identifier_Id;
+   generic
+      Name : String;
+   package Arity_0 is
+      function Id
+        (Ada_Node : Node_Id)
+        return W_Identifier_Id;
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : Name_Id)
-     return W_Identifier_Id;
+      function Id return W_Identifier_Id;
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : W_Identifier_Id)
-     return W_Identifier_Id;
+   end Arity_0;
 
-   function Id
-     (Name : String)
-     return W_Identifier_Id;
+   generic
+      Prefix    : String;
+      Suffix    : String;
+      Separator : String := "___";
+   package Arity_1 is
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : String)
+        return W_Identifier_Id;
 
-   function Id
-     (Name : Name_Id)
-     return W_Identifier_Id;
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : Name_Id)
+        return W_Identifier_Id;
 
-   function Id
-     (Name : W_Identifier_Id)
-     return W_Identifier_Id;
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : W_Identifier_Id)
+        return W_Identifier_Id;
+
+      function Id
+        (Name : String)
+        return W_Identifier_Id;
+
+      function Id
+        (Name : Name_Id)
+        return W_Identifier_Id;
+
+      function Id
+        (Name : W_Identifier_Id)
+        return W_Identifier_Id;
+   end Arity_1;
+
+   generic
+      Prefix    : String;
+      Middle    : String;
+      Suffix    : String;
+      Separator : String := "___";
+   package Arity_2 is
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : String;
+         R_Name   : String)
+        return W_Identifier_Id;
+
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : Name_Id;
+         R_Name   : Name_Id)
+        return W_Identifier_Id;
+
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : W_Identifier_Id;
+         R_Name   : W_Identifier_Id)
+        return W_Identifier_Id;
+
+      function Id
+        (L_Name : String;
+         R_Name : String)
+        return W_Identifier_Id;
+
+      function Id
+        (L_Name : Name_Id;
+         R_Name : Name_Id)
+        return W_Identifier_Id;
+
+      function Id
+        (L_Name : W_Identifier_Id;
+         R_Name : W_Identifier_Id)
+        return W_Identifier_Id;
+   end Arity_2;
 
 end Why.Gen.Name_Gen;

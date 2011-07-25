@@ -902,12 +902,12 @@ package body Gnat2Why.Subprograms is
             Raise_Stmt : constant W_Prog_Id :=
                            New_Raise_Statement
                              (Ada_Node => Node,
-                              Name     => New_Result_Exc_Identifier);
+                              Name     => New_Result_Exc_Identifier.Id);
             Result_Var : constant W_Prog_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
                               New_Deref
                                 (Ada_Node => Node,
-                                 Ref      => New_Result_Temp_Identifier)
+                                 Ref      => New_Result_Temp_Identifier.Id)
                             else New_Void);
          begin
             R :=
@@ -916,7 +916,7 @@ package body Gnat2Why.Subprograms is
                  Handler =>
                    (1 =>
                       New_Handler
-                        (Name => New_Result_Exc_Identifier,
+                        (Name => New_Result_Exc_Identifier.Id,
                          Def  => Result_Var)));
          end;
 
@@ -934,7 +934,7 @@ package body Gnat2Why.Subprograms is
                R :=
                  New_Binding_Ref
                    (Ada_Node => Cur_Decl,
-                    Name     => New_Result_Temp_Identifier,
+                    Name     => New_Result_Temp_Identifier.Id,
                     Def      => Rvalue,
                     Context  => R);
             end;
@@ -1423,7 +1423,7 @@ package body Gnat2Why.Subprograms is
             T :=
                New_Located_Call
                  (Ada_Node => Expr,
-                  Name     => To_Program_Space (New_Integer_Division),
+                  Name     => To_Program_Space (New_Integer_Division.Id),
                   Progs    =>
                      (1 => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
                       2 => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr))),
@@ -1746,14 +1746,14 @@ package body Gnat2Why.Subprograms is
                Raise_Stmt : constant W_Prog_Id :=
                               New_Raise_Statement
                                 (Ada_Node => Stmt,
-                                 Name     => New_Result_Exc_Identifier);
+                                 Name     => New_Result_Exc_Identifier.Id);
                Result_Stmt : W_Prog_Id;
             begin
                if Expression (Stmt) /= Empty then
                   Result_Stmt :=
                     New_Assignment
                       (Ada_Node => Stmt,
-                       Name     => New_Result_Temp_Identifier,
+                       Name     => New_Result_Temp_Identifier.Id,
                        Value    => Why_Expr_Of_Ada_Expr (Expression (Stmt)));
                   return Sequence (Result_Stmt, Raise_Stmt);
                else
@@ -2379,7 +2379,7 @@ package body Gnat2Why.Subprograms is
             T :=
                New_Operation
                  (Ada_Node   => Expr,
-                  Name       => New_Integer_Division,
+                  Name       => New_Integer_Division.Id,
                   Parameters =>
                     (1 => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                      2 => Int_Term_Of_Ada_Expr (Right_Opnd (Expr))));

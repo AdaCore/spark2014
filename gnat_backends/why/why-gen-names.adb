@@ -74,27 +74,6 @@ package body Why.Gen.Names is
       return New_Identifier (Bool_Int_Cmp_String (Rel) & "_axiom");
    end New_Bool_Int_Axiom;
 
-   --------------------------
-   -- New_Conversion_Axiom --
-   --------------------------
-
-   function New_Conversion_Axiom (From : String; To : String)
-      return W_Identifier_Id
-   is
-   begin
-      return New_Identifier (To & "__of__" & From & "__in_range");
-   end New_Conversion_Axiom;
-
-   -------------------------
-   -- New_Exit_Identifier --
-   -------------------------
-
-   function New_Exit_Identifier return W_Identifier_Id is
-      Exit_Name : constant String := "Exit";
-   begin
-      return New_Identifier (Exit_Name);
-   end New_Exit_Identifier;
-
    --------------------
    -- New_Identifier --
    --------------------
@@ -135,56 +114,6 @@ package body Why.Gen.Names is
       end;
       return Result;
    end New_Identifiers;
-
-   ---------------------
-   -- New_Ignore_Name --
-   ---------------------
-
-   function New_Ignore_Name return W_Identifier_Id
-   is
-   begin
-      return New_Identifier ("___ignore");
-   end New_Ignore_Name;
-
-   --------------------------
-   -- New_Integer_Division --
-   --------------------------
-
-   function New_Integer_Division return W_Identifier_Id is
-      Name : constant String := "computer_div";
-   begin
-      return New_Identifier (Name);
-   end New_Integer_Division;
-
-   -------------------------------
-   -- New_Result_Exc_Identifier --
-   -------------------------------
-
-   function New_Result_Exc_Identifier return W_Identifier_Id is
-      Result_Name : constant String := "_result_exc";
-   begin
-      return New_Identifier (Result_Name);
-   end New_Result_Exc_Identifier;
-
-   ---------------------------
-   -- New_Result_Identifier --
-   ---------------------------
-
-   function New_Result_Identifier return W_Identifier_Id is
-      Result_Name : constant String := "result";
-   begin
-      return New_Identifier (Result_Name);
-   end New_Result_Identifier;
-
-   --------------------------------
-   -- New_Result_Temp_Identifier --
-   --------------------------------
-
-   function New_Result_Temp_Identifier return W_Identifier_Id is
-      Result_Name : constant String := "_result";
-   begin
-      return New_Identifier (Result_Name);
-   end New_Result_Temp_Identifier;
 
    --------------
    -- New_Term --

@@ -28,90 +28,239 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Gen.Name_Gen is
 
-   --------
-   -- Id --
-   --------
+   -------------
+   -- Arity_0 --
+   -------------
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : String)
-     return W_Identifier_Id
-   is
-      Sep_Prefix : constant String :=
-                     (if Prefix /= "" then
-                        Prefix & Separator
-                      else
-                        "");
-      Sep_Suffix : constant String :=
-                     (if Suffix /= "" then
-                        Separator & Suffix
-                      else
-                        "");
-      Result     : constant String :=
-                     Sep_Prefix & Name & Sep_Suffix;
-   begin
-      Name_Len := 0;
-      Add_Str_To_Name_Buffer (Result);
-      return New_Identifier
-        (Ada_Node => Ada_Node,
-         Symbol   => Name_Find);
-   end Id;
+   package body Arity_0 is
 
-   --------
-   -- Id --
-   --------
+      --------
+      -- Id --
+      --------
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : Name_Id)
-     return W_Identifier_Id is
-   begin
-      return Id (Ada_Node, Get_Name_String (Name));
-   end Id;
+      function Id
+        (Ada_Node : Node_Id)
+        return W_Identifier_Id is
+      begin
+         Name_Len := 0;
+         Add_Str_To_Name_Buffer (Name);
+         return New_Identifier
+           (Ada_Node => Ada_Node,
+            Symbol   => Name_Find);
+      end Id;
 
-   --------
-   -- Id --
-   --------
+      --------
+      -- Id --
+      --------
 
-   function Id
-     (Ada_Node : Node_Id;
-      Name     : W_Identifier_Id)
-     return W_Identifier_Id is
-   begin
-      return Id (Ada_Node, Identifier_Get_Symbol (Name));
-   end Id;
+      function Id return W_Identifier_Id is
+      begin
+         return Id (Empty);
+      end Id;
 
-   --------
-   -- Id --
-   --------
+   end Arity_0;
 
-   function Id
-     (Name : String)
-     return W_Identifier_Id is
-   begin
-      return Id (Empty, Name);
-   end Id;
+   -------------
+   -- Arity_1 --
+   -------------
 
-   --------
-   -- Id --
-   --------
+   package body Arity_1 is
 
-   function Id
-     (Name : Name_Id)
-     return W_Identifier_Id is
-   begin
-      return Id (Empty, Name);
-   end Id;
+      --------
+      -- Id --
+      --------
 
-   --------
-   -- Id --
-   --------
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : String)
+        return W_Identifier_Id
+      is
+         Sep_Prefix : constant String :=
+                        (if Prefix /= "" then
+                           Prefix & Separator
+                         else
+                           "");
+         Sep_Suffix : constant String :=
+                        (if Suffix /= "" then
+                           Separator & Suffix
+                         else
+                           "");
+         Result     : constant String :=
+                        Sep_Prefix & Name & Sep_Suffix;
+      begin
+         Name_Len := 0;
+         Add_Str_To_Name_Buffer (Result);
+         return New_Identifier
+           (Ada_Node => Ada_Node,
+            Symbol   => Name_Find);
+      end Id;
 
-   function Id
-     (Name : W_Identifier_Id)
-     return W_Identifier_Id is
-   begin
-      return Id (Empty, Name);
-   end Id;
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : Name_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Ada_Node, Get_Name_String (Name));
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Ada_Node : Node_Id;
+         Name     : W_Identifier_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Ada_Node, Identifier_Get_Symbol (Name));
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Name : String)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, Name);
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Name : Name_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, Name);
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Name : W_Identifier_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, Name);
+      end Id;
+
+   end Arity_1;
+
+   -------------
+   -- Arity_2 --
+   -------------
+
+   package body Arity_2 is
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : String;
+         R_Name   : String)
+        return W_Identifier_Id
+      is
+         Sep_Prefix : constant String :=
+                        (if Prefix /= "" then
+                           Prefix & Separator
+                         else
+                           "");
+         Sep_Suffix : constant String :=
+                        (if Suffix /= "" then
+                           Separator & Suffix
+                         else
+                           "");
+         Sep_Middle : constant String :=
+                        (if Middle /= "" then
+                           Separator & Middle & Separator
+                         else
+                           Separator);
+         Result     : constant String :=
+                        Sep_Prefix & L_Name & Sep_Middle & R_Name & Sep_Suffix;
+      begin
+         Name_Len := 0;
+         Add_Str_To_Name_Buffer (Result);
+         return New_Identifier
+           (Ada_Node => Ada_Node,
+            Symbol   => Name_Find);
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : Name_Id;
+         R_Name   : Name_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Ada_Node,
+                    Get_Name_String (L_Name),
+                    Get_Name_String (R_Name));
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (Ada_Node : Node_Id;
+         L_Name   : W_Identifier_Id;
+         R_Name   : W_Identifier_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Ada_Node,
+                    Identifier_Get_Symbol (L_Name),
+                    Identifier_Get_Symbol (R_Name));
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (L_Name : String;
+         R_Name : String)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, L_Name, R_Name);
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (L_Name : Name_Id;
+         R_Name : Name_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, L_Name, R_Name);
+      end Id;
+
+      --------
+      -- Id --
+      --------
+
+      function Id
+        (L_Name : W_Identifier_Id;
+         R_Name : W_Identifier_Id)
+        return W_Identifier_Id is
+      begin
+         return Id (Empty, L_Name, R_Name);
+      end Id;
+
+   end Arity_2;
 
 end Why.Gen.Name_Gen;

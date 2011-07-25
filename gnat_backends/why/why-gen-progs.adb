@@ -416,7 +416,7 @@ package body Why.Gen.Progs is
       return
          New_Prog_Call
            (Ada_Node => Ada_Node,
-            Name     => New_Ignore_Name,
+            Name     => New_Ignore_Name.Id,
             Progs    => (1 => Prog));
    end New_Ignore;
 
