@@ -549,12 +549,6 @@ package body Alfa.Definition is
       Id : constant Unique_Entity_Id := Unique (Ent);
 
    begin
-      if Ekind (Ent) in Private_Kind
-        and then Ekind (Ent) not in Record_Kind
-      then
-         return True;
-      end if;
-
       if In_Standard_Scope (Id) then
          return Standard_In_Alfa.Contains (+Id);
       end if;
@@ -564,6 +558,12 @@ package body Alfa.Definition is
 
       if not Type_Entity_Marked (+Id) then
          Mark (+Id);
+      end if;
+
+      if Ekind (Ent) in Private_Kind
+        and then Ekind (Ent) not in Record_Kind
+      then
+         return True;
       end if;
 
       return Id_Set.Contains (Types_In_Alfa, +Id);
