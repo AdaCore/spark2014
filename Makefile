@@ -65,6 +65,22 @@ gnat2why:
 gnatprove:
 	$(MAKE) -C gnatprove
 
+# Translating the standard library for GNATprove
+# ==============================================
+#
+# We need two different targets to build the standard library:
+#   local-stdlib  this target is used by the nightly builds
+#   stdlib:       this target is used by the developers
+# The reason for two different systems is the following: We want to make sure
+# (especially in nightly builds) to use the "right" gnat2why, ie the local one
+# in ../install/bin. We do so by using the -B switch of gnat2why, but this
+# switch is only available in nightly builds.
+# The target "stdlib" does not guarantee to use the correct gnat2why, but it
+# works with both versions of gnat2why (nightly and developer version)
+
+# Developers of GNATprove should always use "make stdlib", while nightly
+# builds should always use "local-stdlib"
+
 local-stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
@@ -77,6 +93,9 @@ stdlib:
 	mkdir -p $(STDLIB_TMP)
 	cp Makefile.libprove $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
+
+# "make stdlib-check" will run why on all Why files of the standard library,
+# to detect problems with the translation to Why
 
 stdlib-check:
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check -k
