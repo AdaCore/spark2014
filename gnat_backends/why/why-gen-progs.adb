@@ -56,16 +56,16 @@ package body Why.Gen.Progs is
 
    function Insert_Array_Conversion
       (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
-       Why_Expr              : W_Prog_Id) return W_Prog_Id;
+       To       : Why_Type;
+       From     : Why_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id;
 
    function Insert_Integer_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
-       Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id;
+      (Ada_Node   : Node_Id := Empty;
+       To         : Why_Type;
+       From       : Why_Type;
+       Why_Expr   : W_Prog_Id;
+       Base_Type  : Why_Type := Why_Int_Type) return W_Prog_Id;
 
    function Is_False_Boolean (P : W_Prog_Id) return Boolean;
    --  Check if the given program is the program "false"
@@ -155,9 +155,9 @@ package body Why.Gen.Progs is
 
    function Insert_Array_Conversion
       (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
-       Why_Expr              : W_Prog_Id) return W_Prog_Id
+       To       : Why_Type;
+       From     : Why_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id
    is
       Ada_To   : constant Node_Id := To.Wh_Abstract;
       Ada_From : constant Node_Id := From.Wh_Abstract;
@@ -179,11 +179,11 @@ package body Why.Gen.Progs is
    -----------------------
 
    function Insert_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
-       Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id
+      (Ada_Node  : Node_Id := Empty;
+       To        : Why_Type;
+       From      : Why_Type;
+       Why_Expr  : W_Prog_Id;
+       Base_Type : Why_Type := Why_Int_Type) return W_Prog_Id
    is
    begin
       --  In this particular case, we do nothing
@@ -232,11 +232,11 @@ package body Why.Gen.Progs is
    -------------------------------
 
    function Insert_Integer_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
-       Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := Why_Int_Type) return W_Prog_Id
+      (Ada_Node  : Node_Id := Empty;
+       To        : Why_Type;
+       From      : Why_Type;
+       Why_Expr  : W_Prog_Id;
+       Base_Type : Why_Type := Why_Int_Type) return W_Prog_Id
    is
    begin
       if To.Kind = Why_Int then

@@ -47,9 +47,9 @@ package body Why.Gen.Scalars is
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
 
-   ---------------------------------
-   -- Declare_Abstract_Signed_Int --
-   ---------------------------------
+   -------------------------------------
+   -- Declare_Ada_Abstract_Signed_Int --
+   -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
      (File : W_File_Id;
