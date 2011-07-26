@@ -54,7 +54,7 @@ package Why.Gen.Preds is
    --  conversions to base type are equal.
 
    function New_Conditional_Prop
-      (Ada_Node : Node_Id := Empty;
+      (Ada_Node  : Node_Id := Empty;
        Condition : W_Predicate_Id;
        Then_Part : W_Predicate_Id;
        Else_Part : W_Predicate_Id) return W_Predicate_Id;
@@ -62,17 +62,17 @@ package Why.Gen.Preds is
    --    (Cond => Then_Part) and (not Cond => Else_Part)
 
    function New_Equal
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left = Right"
 
    function New_NEqual
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left <> Right"
 
    function New_Equal_Bool
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Predicate_Id) return W_Predicate_Id;
    --  Create the formula "Left = true <-> Right".
 
