@@ -57,11 +57,6 @@ package Why.Gen.Names is
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
 
-   function To_Term_Identifier
-     (Name : W_Identifier_Id)
-     return W_Term_Id;
-   --  Create a label identifier from Name. Name is duplicated.
-
    Ada_Array                : constant String := "t__ada_array";
    Array_Access             : constant String := "access";
    Array_First              : constant String := "first";

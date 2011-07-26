@@ -166,15 +166,4 @@ package body Why.Gen.Names is
       return New_Identifier (Img & Suffix);
    end To_Program_Space;
 
-   ------------------------
-   -- To_Term_Identifier --
-   ------------------------
-
-   function To_Term_Identifier
-     (Name : W_Identifier_Id)
-     return W_Term_Id is
-   begin
-      return New_Term_Identifier (Name => Name);
-   end To_Term_Identifier;
-
 end Why.Gen.Names;
