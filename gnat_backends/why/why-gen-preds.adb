@@ -33,6 +33,7 @@ with Why.Gen.Consts;      use Why.Gen.Consts;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Preds is
 

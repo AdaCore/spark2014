@@ -30,6 +30,7 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Axioms;      use Why.Gen.Axioms;
+with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Records is
 

@@ -23,10 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils;         use String_Utils;
-with Why.Ids;              use Why.Ids;
-with Why.Conversions;      use Why.Conversions;
-with Why.Atree.Properties; use Why.Atree.Properties;
+with String_Utils; use String_Utils;
+with Why.Ids;      use Why.Ids;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
@@ -46,8 +44,7 @@ package Why.Gen.Records is
      (File    : W_File_Id;
       C_Name  : String;
       C_Type  : W_Primitive_Type_Id;
-      Builder : W_Logic_Type_Id)
-     with Pre => (Is_Root (+C_Type));
+      Builder : W_Logic_Type_Id);
    --  Add a component to the record type whose name is given in parameter;
    --  and update the builder accordingly (adding a parameter to it).
 

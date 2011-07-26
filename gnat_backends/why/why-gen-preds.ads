@@ -29,10 +29,8 @@ with VC_Kinds;             use VC_Kinds;
 
 with String_Utils;         use String_Utils;
 with Why.Ids;              use Why.Ids;
-with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
-with Why.Atree.Properties; use Why.Atree.Properties;
 
 package Why.Gen.Preds is
 
@@ -114,8 +112,7 @@ package Why.Gen.Preds is
    function New_Universal_Predicate_Body
      (Foralls : Universal_Quantif_Chain;
       Context : W_Predicate_Id)
-     return W_Predicate_Id with
-     Pre => (Is_Root (+Context));
+     return W_Predicate_Id;
    --  Create a predicate by linking together the universal quantifiers and
    --  associating the context to them.
 
