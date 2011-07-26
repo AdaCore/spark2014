@@ -78,6 +78,9 @@ stdlib:
 	cp Makefile.libprove $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
 
+stdlib-check:
+	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check -k
+
 install-stdlib:
 	mkdir -p $(LIB)
 	cp $(STDLIB_TMP)/*.ali $(LIB)
