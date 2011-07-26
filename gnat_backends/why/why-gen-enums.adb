@@ -37,6 +37,7 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
@@ -92,7 +93,7 @@ package body Why.Gen.Enums is
       declare
          Func : constant W_Function_Id :=
                   New_Function
-                    (Name        => New_Conversion_To_Int.Id (Name),
+                    (Name        => Conversion_To.Id (Name, "int"),
                      Return_Type => New_Type_Int,
                      Binders     =>
                        (1 =>
@@ -127,19 +128,20 @@ package body Why.Gen.Enums is
       New_Enum_Type_Declaration (File, Name, Constructors);
       New_Logic
          (File        => File,
-          Name        => New_Conversion_From_Int.Id (Name),
+          Name        => Conversion_From.Id (Name, "int"),
           Args        => (1 => New_Type_Int),
           Return_Type => My_Type);
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Range_Predicate
         (File,
          Name,
-         First => Uint_1,
-         Last => Max_Uint);
+         New_Type_Int,
+         First => New_Constant (Uint_1),
+         Last  => New_Constant (Max_Uint));
       Emit
         (File,
          New_Parameter
-         (Name => To_Program_Space (New_Conversion_From_Int.Id (Name)),
+         (Name => To_Program_Space (Conversion_From.Id (Name, "int")),
           Binders =>
             (1 =>
                (B_Name => New_Identifier ("x"),
@@ -157,14 +159,14 @@ package body Why.Gen.Enums is
             New_Equal
                (New_Result_Term,
                 New_Operation
-                  (Name       => New_Conversion_From_Int.Id (Name),
+                  (Name       => Conversion_From.Id (Name, "int"),
                    Parameters => (1 => New_Term ("x"))))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
          New_Type_Int,
-         New_Conversion_From_Int.Id (Name),
-         New_Conversion_To_Int.Id (Name));
+         Conversion_From.Id (Name, "int"),
+         Conversion_To.Id (Name, "int"));
       New_Boolean_Equality_Parameter (File, Name);
    end Declare_Ada_Enum_Type;
 

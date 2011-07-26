@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;                use Types;
-with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
 
 with String_Utils;         use String_Utils;
@@ -37,18 +36,22 @@ package Why.Gen.Preds is
    --  This package provides facilities to manipulate Why predicates
 
    procedure Define_Range_Predicate
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint);
-   --  Generate the definition of the range predicate for an integer type.
-   --  This predicate is True when the int argument is in range First .. Last.
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : W_Primitive_Type_Id;
+      First     : W_Term_Id;
+      Last      : W_Term_Id);
+   --  Generate the definition of the range predicate for an abstract type
+   --  whose base type is given in parameters. This predicate is True when
+   --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (File : W_File_Id;
-      Name : String);
-   --  Generate the definition of the equality predicate for an integer type.
-   --  This predicate is True when conversions to int are equal.
+     (File           : W_File_Id;
+      Name           : String;
+      Base_Type_Name : String);
+   --  Generate the definition of the equality predicate for an abstract type
+   --  whose base type is given in parameters. This predicate is True when
+   --  conversions to base type are equal.
 
    function New_Conditional_Prop
       (Ada_Node : Node_Id := Empty;

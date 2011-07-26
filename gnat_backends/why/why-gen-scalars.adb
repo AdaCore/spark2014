@@ -2,9 +2,9 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         W H Y - G E N - I N T S                          --
+--                      W H Y - G E N - S C A L A R S                       --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
@@ -32,15 +32,20 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Sinfo;          use Why.Sinfo;
 
-package body Why.Gen.Ints is
+package body Why.Gen.Scalars is
 
-   procedure Define_Signed_Int_Conversions
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint);
+   procedure Define_Scalar_Conversions
+     (File           : W_File_Id;
+      Name           : String;
+      Base_Type      : W_Primitive_Type_Id;
+      Base_Type_Name : String;
+      First          : W_Term_Id;
+      Last           : W_Term_Id);
+   --  Given a type name, assuming that it ranges between First and Last,
+   --  define conversions from this type to base type.
 
    ---------------------------------
    -- Declare_Abstract_Signed_Int --
@@ -66,84 +71,92 @@ package body Why.Gen.Ints is
    is
    begin
       New_Abstract_Type (File, Name);
-      Define_Signed_Int_Conversions (File, Name, First, Last);
+      Define_Scalar_Conversions
+        (File           => File,
+         Name           => Name,
+         Base_Type      => New_Type_Int,
+         Base_Type_Name => "int",
+         First          => New_Constant (First),
+         Last           => New_Constant (Last));
    end Declare_Ada_Abstract_Signed_Int;
 
-   -----------------------------------
-   -- Define_Signed_Int_Conversions --
-   -----------------------------------
+   -------------------------------
+   -- Define_Scalar_Conversions --
+   -------------------------------
 
-   procedure Define_Signed_Int_Conversions
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint)
+   procedure Define_Scalar_Conversions
+     (File           : W_File_Id;
+      Name           : String;
+      Base_Type      : W_Primitive_Type_Id;
+      Base_Type_Name : String;
+      First          : W_Term_Id;
+      Last           : W_Term_Id)
    is
       Arg_S : constant String := "n";
-
    begin
-      Define_Range_Predicate (File, Name, First, Last);
+      Define_Range_Predicate (File, Name, Base_Type, First, Last);
 
-      --  to int:
+      --  to base type:
       New_Logic
          (File        => File,
-          Name        => New_Conversion_To_Int.Id (Name),
+          Name        => Conversion_To.Id (Name, Base_Type_Name),
           Args        =>
             (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-          Return_Type => New_Type_Int);
+          Return_Type => +Base_Type);
 
-      --  from int:
+      --  from base type:
       declare
-         Return_Type : constant W_Logic_Return_Type_Id :=
-                         New_Abstract_Type (Name => New_Identifier (Name));
+         Return_Type  : constant W_Logic_Return_Type_Id :=
+                          New_Abstract_Type (Name => New_Identifier (Name));
          --  precondition: { <name>___in_range (n) }
-         Range_Check : constant W_Predicate_Id :=
-                         New_Predicate_Instance (Name =>
-                                                   Range_Pred_Name.Id (Name),
-                                                 Parameters =>
-                                                   (1 => New_Term (Arg_S)));
-         --  postcondition: { <name>___of_integer (result) = n }
-         Int_Result  : constant W_Operation_Id :=
-                         New_Operation (Name =>
-                                          New_Conversion_To_Int.Id (Name),
-                                        Parameters =>
-                                          (1 => New_Result_Term));
-         Post        : constant W_Predicate_Id :=
-                         New_Related_Terms (Left  => +Int_Result,
-                                            Op    => New_Rel_Eq,
-                                            Right => New_Term (Arg_S));
-         Spec        : Declaration_Spec_Array :=
-                         (1 => (Kind => W_Logic,
-                                others => <>),
-                          2 => (Kind => W_Parameter_Declaration,
-                                Pre  => Range_Check,
-                                Post => Post,
-                                others => <>));
+         Range_Check  : constant W_Predicate_Id :=
+                          New_Predicate_Instance (Name =>
+                                                    Range_Pred_Name.Id (Name),
+                                                  Parameters =>
+                                                    (1 => New_Term (Arg_S)));
+         --  postcondition: { <name>___of_<base_type> (result) = n }
+         Base_Result  : constant W_Operation_Id :=
+                          New_Operation (Name =>
+                                           Conversion_To.Id (Name,
+                                                             Base_Type_Name),
+                                         Parameters =>
+                                           (1 => New_Result_Term));
+         Post         : constant W_Predicate_Id :=
+                          New_Related_Terms (Left  => +Base_Result,
+                                             Op    => New_Rel_Eq,
+                                             Right => New_Term (Arg_S));
+         Spec         : Declaration_Spec_Array :=
+                          (1 => (Kind => W_Logic,
+                                 others => <>),
+                           2 => (Kind => W_Parameter_Declaration,
+                                 Pre  => Range_Check,
+                                 Post => Post,
+                                 others => <>));
 
       begin
          Emit_Top_Level_Declarations
            (File => File,
-            Name => New_Conversion_From_Int.Id (Name),
+            Name => Conversion_From.Id (Name, Base_Type_Name),
             Binders =>
               (1 => (B_Name => New_Identifier (Arg_S),
-                     B_Type => New_Type_Int,
+                     B_Type => Base_Type,
                      others => <>)),
             Return_Type => +Return_Type,
             Spec => Spec);
-         Define_Eq_Predicate (File, Name);
+         Define_Eq_Predicate (File, Name, Base_Type_Name);
          Define_Range_Axiom (File,
                              New_Identifier (Name),
-                             New_Conversion_To_Int.Id (Name));
+                             Conversion_To.Id (Name, Base_Type_Name));
          Define_Coerce_Axiom (File,
                               New_Identifier (Name),
-                              New_Type_Int,
-                              New_Conversion_From_Int.Id (Name),
-                              New_Conversion_To_Int.Id (Name));
+                              Base_Type,
+                              Conversion_From.Id (Name, Base_Type_Name),
+                              Conversion_To.Id (Name, Base_Type_Name));
          Define_Unicity_Axiom (File,
                                New_Identifier (Name),
-                               New_Conversion_To_Int.Id (Name));
+                               Conversion_To.Id (Name, Base_Type_Name));
       end;
       New_Boolean_Equality_Parameter (File, Name);
-   end Define_Signed_Int_Conversions;
+   end Define_Scalar_Conversions;
 
-end Why.Gen.Ints;
+end Why.Gen.Scalars;

@@ -29,7 +29,6 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
-with Why.Gen.Consts;      use Why.Gen.Consts;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -56,8 +55,9 @@ package body Why.Gen.Preds is
    -------------------------
 
    procedure Define_Eq_Predicate
-     (File : W_File_Id;
-      Name : String)
+     (File           : W_File_Id;
+      Name           : String;
+      Base_Type_Name : String)
    is
       --  Identifiers
       X_S               : constant String := "x";
@@ -76,9 +76,9 @@ package body Why.Gen.Preds is
                                          (Name => New_Identifier (Name)),
                              others => <>);
 
-      --  integer_of___<name> (x) = integer_of___<name> (y)
+      --  <base_type>_of___<name> (x) = <base_type>_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
-                            New_Conversion_To_Int.Id (Name);
+                            Conversion_To.Id (Name, Base_Type_Name);
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name       => Conversion,
@@ -103,21 +103,22 @@ package body Why.Gen.Preds is
    ----------------------------
 
    procedure Define_Range_Predicate
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint)
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : W_Primitive_Type_Id;
+      First     : W_Term_Id;
+      Last      : W_Term_Id)
    is
       --  Identifiers
       Arg_S      : constant String := "x";
       First_S    : constant String := "first";
       Last_S     : constant String := "last";
 
-      --  predicate <name>___in_range (x : int) = [...]
+      --  predicate <name>___in_range (x : <base_type>) = [...]
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
       Binder     : constant Binder_Type :=
                      (B_Name => New_Identifier (Arg_S),
-                      B_Type => New_Type_Int,
+                      B_Type => Base_Type,
                       others => <>);
 
       --  first <= x <= last
@@ -132,12 +133,12 @@ package body Why.Gen.Preds is
       Decl_Last  : constant W_Predicate_Id :=
                      New_Binding_Pred
                        (Name    => New_Identifier (Last_S),
-                        Def     => New_Constant (Last),
+                        Def     => Last,
                         Context => Context);
       Decl_First : constant W_Predicate_Id :=
                      New_Binding_Pred
                        (Name    => New_Identifier (First_S),
-                        Def     => New_Constant (First),
+                        Def     => First,
                         Context => Decl_Last);
    begin
       Emit

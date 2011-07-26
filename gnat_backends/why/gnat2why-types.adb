@@ -36,7 +36,7 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Enums;      use Why.Gen.Enums;
-with Why.Gen.Ints;       use Why.Gen.Ints;
+with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         W H Y - G E N - I N T S                          --
+--                      W H Y - G E N - S C A L A R S                       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -27,9 +27,9 @@ with Uintp; use Uintp;
 
 with Why.Ids; use Why.Ids;
 
-package Why.Gen.Ints is
+package Why.Gen.Scalars is
    --  This package provides an interface to generate declarations
-   --  (types, subprograms, axioms) for integer types.
+   --  (types, subprograms, axioms) for scalar types.
 
    procedure Declare_Ada_Abstract_Signed_Int
      (File : W_File_Id;
@@ -48,4 +48,4 @@ package Why.Gen.Ints is
    --  Same as the previous function, except that the higher and lower
    --  bounds are specified explicitly.
 
-end Why.Gen.Ints;
+end Why.Gen.Scalars;

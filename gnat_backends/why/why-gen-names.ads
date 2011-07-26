@@ -185,6 +185,12 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its coerce axiom.
 
+   package Conversion_To is
+     new Name_Gen.Arity_2 ("", "to", "");
+
+   package Conversion_From is
+     new Name_Gen.Arity_2 ("", "from", "");
+
    package Eq_Param_Name is
      new Name_Gen.Arity_1 ("", "___" & Boolean_Eq & "_", "");
    --  From the name of an abstract type, return the name of

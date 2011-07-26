@@ -36,4 +36,9 @@ package body Why.Gen.Consts is
       return New_Integer_Constant (Value => Value);
    end New_Constant;
 
+   function New_Constant (Value : Ureal) return W_Term_Id is
+   begin
+      return New_Real_Constant (Value => Value);
+   end New_Constant;
+
 end Why.Gen.Consts;

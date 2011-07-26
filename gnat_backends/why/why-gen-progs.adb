@@ -96,14 +96,14 @@ package body Why.Gen.Progs is
                   raise Program_Error;
                when Why_Abstract =>
                   return
-                     New_Conversion_From_Int.Id
-                       (Full_Name (To.Wh_Abstract));
+                     Conversion_From.Id
+                       (Full_Name (To.Wh_Abstract), "int");
             end case;
          when Why_Abstract =>
             case To.Kind is
                when Why_Int =>
                   return
-                    New_Conversion_To_Int.Id (Full_Name (From.Wh_Abstract));
+                    Conversion_To.Id (Full_Name (From.Wh_Abstract), "int");
                when Why_Abstract =>
                   raise Program_Error
                      with "Conversion between arbitrary types attempted";

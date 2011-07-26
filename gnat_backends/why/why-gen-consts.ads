@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Uintp;   use Uintp;
+with Urealp;  use Urealp;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Consts is
@@ -31,5 +32,7 @@ package Why.Gen.Consts is
    --  and floats).
 
    function New_Constant (Value : Uint) return W_Term_Id;
+
+   function New_Constant (Value : Ureal) return W_Term_Id;
 
 end Why.Gen.Consts;
