@@ -1,5 +1,21 @@
 package body Renam is
 
+   X : Integer;
+
+   type Rec is record
+      A : Integer;
+   end record;
+
+   R : Rec;
+
+   procedure K is
+      Z : Integer renames X;
+      Y : Integer renames R.A;
+   begin
+      Z := 0;
+      Y := 0;
+   end K;
+
    procedure O (M : out Integer)
    is
       PM : Integer renames M;
