@@ -41,6 +41,10 @@ with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Decls is
 
+   function Is_Local_Lifted (N : Node_Id) return Boolean;
+   --  Given an N_Defining_Identifier, decide if the variable is local or
+   --  global
+
    ---------------
    -- Full_Name --
    ---------------
