@@ -142,7 +142,7 @@ package body Gnat2Why.Types is
                      First_Literal (Ident_Node);
                begin
                   while Present (Cur_Lit) loop
-                     Constructors.Append (Get_Name_String (Chars (Cur_Lit)));
+                     Constructors.Append (Full_Name (Cur_Lit));
                      Next_Literal (Cur_Lit);
                   end loop;
                   Declare_Ada_Enum_Type (File, Name_Str, Constructors);
