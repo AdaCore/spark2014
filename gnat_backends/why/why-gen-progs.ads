@@ -37,7 +37,7 @@ package Why.Gen.Progs is
        To   : Why_Type) return W_Identifier_Id
       with Pre =>
         (not (From = To) and then
-         (From.Kind = Why_Int or else To.Kind = Why_Int));
+         (From.Kind in Why_Scalar_Enum or else To.Kind in Why_Scalar_Enum));
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion

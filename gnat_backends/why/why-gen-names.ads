@@ -26,6 +26,7 @@
 with String_Utils; use String_Utils;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
+with Why.Inter;    use Why.Inter;
 
 with Why.Gen.Name_Gen;
 
@@ -40,6 +41,9 @@ package Why.Gen.Names is
    function New_Bool_Int_Cmp (Rel : W_Relation) return W_Identifier_Id;
    --  Return the name of the boolean comparison operator for Why ints that
    --  corresponds to the comparison operator in argument.
+
+   function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String;
+   --  Return the name of the Why scalar type (e.g. "real" from real)
 
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result

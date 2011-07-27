@@ -46,13 +46,15 @@ package body Why.Gen.Terms is
          return Why_Term;
       end if;
 
-      if To.Kind = Why_Int or else From.Kind = Why_Int then
+      if To.Kind in Why_Scalar_Enum
+        or else From.Kind in Why_Scalar_Enum then
          return
            New_Operation
              (Ada_Node   => Ada_Node,
               Name       => Conversion_Name (From => From, To => To),
               Parameters => (1 => Why_Term));
       else
+         --  ??? What about floats ???
          return
             Insert_Conversion_Term
                (Ada_Node => Ada_Node,

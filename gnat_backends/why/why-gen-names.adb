@@ -166,4 +166,18 @@ package body Why.Gen.Names is
       return New_Identifier (Img & Suffix);
    end To_Program_Space;
 
+   --------------------------
+   -- Why_Scalar_Type_Name --
+   --------------------------
+
+   function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String is
+   begin
+      case Kind is
+         when Why_Int =>
+            return "int";
+         when Why_Real =>
+            return "real";
+      end case;
+   end Why_Scalar_Type_Name;
+
 end Why.Gen.Names;

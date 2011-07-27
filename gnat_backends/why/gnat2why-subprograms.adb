@@ -1348,6 +1348,14 @@ package body Gnat2Why.Subprograms is
                                    Value    => Intval (Expr)));
             Current_Type := Why_Int_Type;
 
+         when N_Real_Literal =>
+            T := New_Prog_Constant
+                   (Ada_Node => Expr,
+                    Def      => New_Real_Constant
+                                  (Ada_Node => Expr,
+                                   Value    => Realval (Expr)));
+            Current_Type := Why_Real_Type;
+
          when N_Identifier | N_Expanded_Name =>
             --  Deal with identifiers:
             --  * Enumeration literals: deal with special cases True and
@@ -2344,6 +2352,11 @@ package body Gnat2Why.Subprograms is
             T :=
               New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
             Current_Type := Why_Int_Type;
+
+         when N_Real_Literal =>
+            T :=
+              New_Real_Constant (Ada_Node => Expr, Value => Realval (Expr));
+            Current_Type := Why_Real_Type;
 
          when N_Character_Literal =>
             T :=
