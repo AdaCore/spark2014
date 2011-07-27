@@ -1,0 +1,1 @@
+ALL XFAIL name clash for two enum literals
