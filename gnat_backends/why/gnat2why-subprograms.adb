@@ -1365,8 +1365,7 @@ package body Gnat2Why.Subprograms is
             --  * global mutable variables are references
             --  * loop parameters are always mutable, and of type int
             declare
-               Id : constant W_Identifier_Id :=
-                  Why_Ident_Of_Ada_Ident (Expr);
+               Id : constant W_Identifier_Id := Why_Ident_Of_Ada_Ident (Expr);
             begin
                case Ekind (Entity (Expr)) is
                   --  First treat special cases
@@ -1376,13 +1375,7 @@ package body Gnat2Why.Subprograms is
                   when others =>
                      --  There is a special case for constants introduced by
                      --  the frontend
-                     if Ekind (Entity (Expr)) = E_Constant and then not
-                        (Comes_From_Source (Original_Node (Entity (Expr))))
-                     then
-                        T := New_Prog_Identifier
-                              (Ada_Node => Expr,
-                               Def      => Id);
-                     elsif Is_Mutable (Entity (Expr)) then
+                     if Is_Mutable (Entity (Expr)) then
                         T := New_Deref (Ada_Node => Expr, Ref => Id);
                      else
                         T := New_Prog_Identifier (Ada_Node => Expr, Def => Id);
@@ -2377,11 +2370,7 @@ package body Gnat2Why.Subprograms is
                   Id : constant W_Identifier_Id :=
                      Why_Ident_Of_Ada_Ident (Expr);
                begin
-                  if Ekind (Entity (Expr)) = E_Constant and then not
-                     (Comes_From_Source (Original_Node (Entity (Expr))))
-                  then
-                     T := New_Term_Identifier (Ada_Node => Expr, Name => Id);
-                  elsif Is_Mutable (Entity (Expr)) then
+                  if Is_Mutable (Entity (Expr)) then
                      T := New_Logic_Deref (Ada_Node => Expr, Ref => Id);
                   else
                      T := New_Term_Identifier (Ada_Node => Expr, Name => Id);
