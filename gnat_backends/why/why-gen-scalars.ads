@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp; use Uintp;
+with Uintp;  use Uintp;
+with Urealp; use Urealp;
 
 with Why.Ids; use Why.Ids;
 
@@ -47,5 +48,15 @@ package Why.Gen.Scalars is
       Last  : Uint);
    --  Same as the previous function, except that the higher and lower
    --  bounds are specified explicitly.
+
+   procedure Declare_Ada_Floating_Point
+     (File  : W_File_Id;
+      Name  : String;
+      First : Ureal;
+      Last  : Ureal);
+   --  Declare the whole theory for a floating point type whose range
+   --  is First .. Last.  This creates an abstract type whose name is
+   --  given in parameter along with a set of axioms and subprograms
+   --  for real conversion.
 
 end Why.Gen.Scalars;

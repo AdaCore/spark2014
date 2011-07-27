@@ -51,6 +51,13 @@ package body Gnat2Why.Types is
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
+   procedure Declare_Ada_Floating_Point_From_Range
+      (File : W_File_Id;
+       Name : String;
+       Rng  : Node_Id);
+   --  Same as Declare_Ada_Floating_Point but extract range information
+   --  from node.
+
    ------------------------------------------------
    -- Declare_Ada_Abstract_Signed_Int_From_Range --
    ------------------------------------------------
@@ -68,6 +75,24 @@ package body Gnat2Why.Types is
          Expr_Value (Low_Bound (Range_Node)),
          Expr_Value (High_Bound (Range_Node)));
    end Declare_Ada_Abstract_Signed_Int_From_Range;
+
+   ------------------------------------------------
+   -- Declare_Ada_Floating_Point_From_Range --
+   ------------------------------------------------
+
+   procedure Declare_Ada_Floating_Point_From_Range
+      (File : W_File_Id;
+       Name : String;
+       Rng  : Node_Id)
+   is
+      Range_Node : constant Node_Id := Get_Range (Rng);
+   begin
+      Declare_Ada_Floating_Point
+        (File,
+         Name,
+         Expr_Value_R (Low_Bound (Range_Node)),
+         Expr_Value_R (High_Bound (Range_Node)));
+   end Declare_Ada_Floating_Point_From_Range;
 
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
@@ -131,8 +156,10 @@ package body Gnat2Why.Types is
                    Scalar_Range (Ident_Node));
 
             when E_Floating_Point_Type | E_Floating_Point_Subtype =>
-               --  We do nothing here
-               null;
+               Declare_Ada_Floating_Point_From_Range
+                  (File,
+                   Name_Str,
+                   Scalar_Range (Ident_Node));
 
             when Array_Kind =>
                declare
