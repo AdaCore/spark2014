@@ -307,8 +307,7 @@ package body Gnat2Why.Driver is
    begin
       while Has_Element (Cur) loop
          New_Include_Declaration
-           (File,
-            New_Identifier (Element (Cur) & ".mlw"));
+           (File, New_Identifier (Element (Cur)));
          Next (Cur);
       end loop;
    end Translate_Context;
@@ -485,7 +484,7 @@ package body Gnat2Why.Driver is
 
       New_Include_Declaration
         (File => File,
-         Name => New_Identifier ("_gnatprove_standard.why"));
+         Name => New_Identifier ("_gnatprove_standard"));
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
