@@ -242,6 +242,13 @@ package body Xtree_Sinfo is
       New_Field (W_Binding_Term,
                  "Context", "W_Term", Id_One);
 
+      -------------------
+      -- W_Logic_Deref --
+      -------------------
+
+      New_Field (W_Logic_Deref,
+                 "Ref", "W_Identifier", Id_One);
+
       ----------------------
       -- W_Protected_Term --
       ----------------------

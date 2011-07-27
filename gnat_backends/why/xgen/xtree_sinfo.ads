@@ -143,6 +143,8 @@ package Xtree_Sinfo is
       --  <negative_term> ::= '-' <term>
 
       W_Term_Identifier,
+      W_Logic_Deref,
+
       --  <term_identifier> ::= <identifier> [ @ [ <identifier> ] ]
 
       W_Operation,

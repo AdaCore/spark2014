@@ -2373,10 +2373,20 @@ package body Gnat2Why.Subprograms is
             elsif Entity (Expr) = Standard_False then
                T := New_False_Literal;
             else
-               T :=
-                 New_Term_Identifier
-                   (Ada_Node => Expr,
-                    Name     => Why_Ident_Of_Ada_Ident (Expr));
+               declare
+                  Id : constant W_Identifier_Id :=
+                     Why_Ident_Of_Ada_Ident (Expr);
+               begin
+                  if Ekind (Entity (Expr)) = E_Constant and then not
+                     (Comes_From_Source (Original_Node (Entity (Expr))))
+                  then
+                     T := New_Term_Identifier (Ada_Node => Expr, Name => Id);
+                  elsif Is_Mutable (Entity (Expr)) then
+                     T := New_Logic_Deref (Ada_Node => Expr, Ref => Id);
+                  else
+                     T := New_Term_Identifier (Ada_Node => Expr, Name => Id);
+                  end if;
+               end;
             end if;
             if Ekind (Entity (Expr)) = E_Loop_Parameter then
                Current_Type := Why_Int_Type;
