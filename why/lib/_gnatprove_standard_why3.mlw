@@ -10,6 +10,7 @@ module Main
   use floating_point.Rounding
   use floating_point.Single
   use floating_point.Double
+  use import module ref.Ref
 
   exception Gnatprove_Exception___result_exc
   
@@ -80,6 +81,8 @@ val t__ada_array___update_ :
        ((t__ada_array___length a : int) = 0)))
   
   type standard___heap_type
+  
+  val __HEAP : ref standard___heap_type
   
   function bool_int__eq int int : Bool.bool
   
