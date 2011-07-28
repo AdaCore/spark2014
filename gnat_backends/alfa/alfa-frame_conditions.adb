@@ -87,7 +87,7 @@ package body Alfa.Frame_Conditions is
    --  present, add one which maps the element to the empty set.
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
-   --  Return whether Ent is the special variable "HEAP"
+   --  Return whether Ent is the special variable "__HEAP"
 
    ----------------
    -- Add_To_Map --
