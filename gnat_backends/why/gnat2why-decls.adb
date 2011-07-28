@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
+
 with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Sem_Util;             use Sem_Util;
@@ -54,7 +56,18 @@ package body Gnat2Why.Decls is
       if N = Standard_Boolean then
          return "bool";
       else
-         return Unique_Name (N);
+         declare
+            S : String := Unique_Name (N);
+         begin
+
+            --  In Why3, enumeration literals need to be upper case. Why2
+            --  doesn't care, so we enforce upper case here
+
+            if Ekind (N) = E_Enumeration_Literal then
+               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
+            end if;
+            return S;
+         end;
       end if;
    end Full_Name;
 
