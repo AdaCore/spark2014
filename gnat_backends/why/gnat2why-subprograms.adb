@@ -165,6 +165,10 @@ package body Gnat2Why.Subprograms is
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
 
+   function Why_Term_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
+      return W_Term_Id;
+   --  Identical to Why_Expr_Of_Ada_Enum, but builds a term
+
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Prog_Id;
@@ -1317,6 +1321,38 @@ package body Gnat2Why.Subprograms is
    end Why_Expr_Of_Ada_Enum;
 
    --------------------------
+   -- Why_Term_Of_Ada_Enum --
+   --------------------------
+
+   function Why_Term_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
+      return W_Term_Id
+   is
+   begin
+      --  Deal with special cases: True/False for boolean values
+      if Entity (Enum) = Standard_True then
+         return New_True_Literal;
+      end if;
+      if Entity (Enum) = Standard_False then
+         return New_False_Literal;
+      end if;
+      --  In the case of a subtype of an enumeration, we need to insert a
+      --  conversion. We do so here by modifying the Current_Type; the
+      --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
+      case Ekind (Etype (Enum)) is
+         when E_Enumeration_Subtype =>
+            Current_Type := Why_Abstract (Etype (Entity (Enum)));
+
+         when others =>
+            null;
+
+      end case;
+
+      return New_Term_Identifier
+         (Ada_Node => Enum,
+          Name => Why_Ident_Of_Ada_Ident (Enum));
+   end Why_Term_Of_Ada_Enum;
+
+   --------------------------
    -- Why_Expr_Of_Ada_Expr --
    --------------------------
 
@@ -2361,25 +2397,27 @@ package body Gnat2Why.Subprograms is
             --  The corresponding Why type of the identifier may be of
             --  reference type; but here we do not care, as Why, in
             --  annotations, happily converts a reference to its base type.
-            if Entity (Expr) = Standard_True then
-               T := New_True_Literal;
-            elsif Entity (Expr) = Standard_False then
-               T := New_False_Literal;
-            else
-               declare
-                  Id : constant W_Identifier_Id :=
-                     Why_Ident_Of_Ada_Ident (Expr);
-               begin
-                  if Is_Mutable (Entity (Expr)) then
-                     T := New_Logic_Deref (Ada_Node => Expr, Ref => Id);
-                  else
-                     T := New_Term_Identifier (Ada_Node => Expr, Name => Id);
-                  end if;
-               end;
-            end if;
-            if Ekind (Entity (Expr)) = E_Loop_Parameter then
-               Current_Type := Why_Int_Type;
-            end if;
+            case Ekind (Entity (Expr)) is
+               when E_Enumeration_Literal =>
+                  T := Why_Term_Of_Ada_Enum (Expr, Current_Type);
+
+               when others =>
+                  declare
+                     Id : constant W_Identifier_Id :=
+                        Why_Ident_Of_Ada_Ident (Expr);
+                  begin
+                     if Is_Mutable (Entity (Expr)) then
+                        T := New_Logic_Deref (Ada_Node => Expr, Ref => Id);
+                     else
+                        T :=
+                           New_Term_Identifier (Ada_Node => Expr, Name => Id);
+                     end if;
+                     if Ekind (Entity (Expr)) = E_Loop_Parameter then
+                        Current_Type := Why_Int_Type;
+                     end if;
+                  end;
+
+            end case;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of type int
