@@ -71,10 +71,10 @@ package body Alfa.Definition is
       S_Natural             => True,
       S_Positive            => True,
 
-      S_Short_Float         => False,
-      S_Float               => False,
-      S_Long_Float          => False,
-      S_Long_Long_Float     => False,
+      S_Short_Float         => True,
+      S_Float               => True,
+      S_Long_Float          => True,
+      S_Long_Long_Float     => True,
 
       S_Character           => True,
       S_Wide_Character      => True,
@@ -2194,6 +2194,7 @@ package body Alfa.Definition is
       Standard_In_Alfa.Insert (Standard_True);
 
       Standard_In_Alfa.Insert (Universal_Integer);
+      Standard_In_Alfa.Insert (Universal_Real);
 
       Standard_In_Alfa.Insert (Standard_Integer_8);
       Standard_In_Alfa.Insert (Standard_Integer_16);
@@ -2426,7 +2427,7 @@ package body Alfa.Definition is
                end if;
 
             when N_Digits_Constraint =>
-               Mark_Non_Alfa ("digits constraint", N, NYI_Float);
+               null;
 
             when N_Delta_Constraint =>
                Mark_Non_Alfa ("delta constraint", N, NYI_Float);
@@ -2573,7 +2574,14 @@ package body Alfa.Definition is
          when E_Modular_Integer_Type | E_Modular_Integer_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Modular);
 
-         when Real_Kind =>
+         when Float_Kind =>
+            if not (Is_Static_Range (Scalar_Range (+Id))) then
+               Mark_Non_Alfa
+                 ("floating point type with dynamic range", +Id,
+                  NYI_Non_Static_Range);
+            end if;
+
+         when Fixed_Point_Kind =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Float);
 
          when Access_Kind =>
