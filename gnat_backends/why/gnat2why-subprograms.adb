@@ -654,12 +654,14 @@ package body Gnat2Why.Subprograms is
    is
    begin
       case Nkind (N) is
-         when N_Identifier | N_Integer_Literal =>
+         when N_Identifier
+           | N_Real_Literal
+           | N_Integer_Literal =>
             return
                New_Prog_Boolean_Cmp
                   (Cmp   => W_Rel_Eq,
                    Left  => E,
-                   Right => Int_Expr_Of_Ada_Expr (N));
+                   Right => Why_Expr_Of_Ada_Expr ((N), Base_Why_Type (N)));
 
          when N_Range =>
             return
@@ -693,12 +695,15 @@ package body Gnat2Why.Subprograms is
    is
    begin
       case Nkind (N) is
-         when N_Identifier | N_Integer_Literal =>
+         when N_Identifier
+           | N_Integer_Literal
+           | N_Real_Literal =>
             return
                New_Boolean_Cmp
                   (Cmp   => W_Rel_Eq,
                    Left  => T,
-                   Right => Int_Term_Of_Ada_Expr (N));
+                   Right => Why_Term_Of_Ada_Expr (N, Base_Why_Type (N)));
+
          when N_Range =>
             return
                New_Andb
@@ -1442,42 +1447,67 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_Minus =>
             --  unary minus
-            T :=
-               New_Prefix_Call
-                  (Ada_Node => Expr,
-                   Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
-                   Operand  => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
-            Current_Type := Why_Int_Type;
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Right);
+               T :=
+                 New_Prefix_Call
+                   (Ada_Node => Expr,
+                    Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
+                    Operand  => Why_Expr_Of_Ada_Expr (Right, Current_Type));
+            end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
-            T :=
-               New_Infix_Call
-                 (Ada_Node => Expr,
-                  Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
-                  Left     => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
-            Current_Type := Why_Int_Type;
-            Overflow_Check_Needed := True;
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Left);
+               T :=
+                 New_Infix_Call
+                   (Ada_Node => Expr,
+                    Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Left     => Why_Expr_Of_Ada_Expr (Left,
+                                                      Current_Type),
+                    Right    => Why_Expr_Of_Ada_Expr (Right,
+                                                      Current_Type));
+               Overflow_Check_Needed := True;
+            end;
 
          when N_Op_Divide =>
-            T :=
-               New_Located_Call
-                 (Ada_Node => Expr,
-                  Name     => To_Program_Space (New_Integer_Division.Id),
-                  Progs    =>
-                     (1 => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                      2 => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr))),
-                  Reason   => VC_Division_By_Zero);
-            Current_Type := Why_Int_Type;
-            Overflow_Check_Needed := True;
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Left);
+               T :=
+                 New_Located_Call
+                   (Ada_Node => Expr,
+                    Name     => To_Program_Space (New_Integer_Division.Id),
+                    Progs    =>
+                      (1 => Why_Expr_Of_Ada_Expr (Left,
+                                                  Current_Type),
+                       2 => Why_Expr_Of_Ada_Expr (Right,
+                                                  Current_Type)),
+                    Reason   => VC_Division_By_Zero);
+               Overflow_Check_Needed := True;
+            end;
 
          when N_Op_Ge .. N_Op_Ne =>
-            return
-              New_Infix_Call
-                (Ada_Node => Expr,
-                 Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
-                 Left     => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right     => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               return
+                 New_Infix_Call
+                   (Ada_Node => Expr,
+                    Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Left     => Why_Expr_Of_Ada_Expr (Left,
+                                                      Base_Why_Type (Left)),
+                    Right    => Why_Expr_Of_Ada_Expr (Right,
+                                                      Base_Why_Type (Right)));
+            end;
 
          when N_Op_Not =>
             return New_Prog_Notb (Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
@@ -2257,13 +2287,21 @@ package body Gnat2Why.Subprograms is
               N_Op_Gt |
               N_Op_Le |
               N_Op_Lt =>
-            --  In Why, the builtin comparison functions expect type "int"
-            return
-              New_Related_Terms
-                (Ada_Node => Expr,
-                 Left     => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Int_Term_Of_Ada_Expr (Right_Opnd (Expr)),
-                 Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
+            --  In Why, the builtin comparison functions expect base scalar
+            --  types
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               return
+                 New_Related_Terms
+                   (Ada_Node => Expr,
+                    Left     => Why_Term_Of_Ada_Expr (Left,
+                                                      Base_Why_Type (Left)),
+                    Right    => Why_Term_Of_Ada_Expr (Right,
+                                                      Base_Why_Type (Right)),
+                    Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
+            end;
 
          when N_Op_Not =>
             return
@@ -2420,29 +2458,51 @@ package body Gnat2Why.Subprograms is
             end case;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
-            --  The arguments of arithmetic functions have to be of type int
-            T :=
-              New_Arith_Operation
-                (Ada_Node => Expr,
-                 Left     => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Int_Term_Of_Ada_Expr (Right_Opnd (Expr)),
-                 Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
-            Current_Type := (Kind =>  Why_Int);
+            --  The arguments of arithmetic functions have to be of base
+            --  scalar types
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Left);
+               T :=
+                 New_Arith_Operation
+                   (Ada_Node => Expr,
+                    Left     => Why_Term_Of_Ada_Expr (Left,
+                                                      Current_Type),
+                    Right    => Why_Term_Of_Ada_Expr (Right,
+                                                      Current_Type),
+                    Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
+            end;
+
          when N_Op_Divide =>
-            T :=
-               New_Operation
-                 (Ada_Node   => Expr,
-                  Name       => New_Integer_Division.Id,
-                  Parameters =>
-                    (1 => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                     2 => Int_Term_Of_Ada_Expr (Right_Opnd (Expr))));
-            Current_Type := (Kind =>  Why_Int);
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Left);
+               T :=
+                 New_Operation
+                   (Ada_Node   => Expr,
+                    Name       => New_Division (Current_Type.Kind),
+                    Parameters =>
+                      (1 => Why_Term_Of_Ada_Expr (Left, Current_Type),
+                       2 => Why_Term_Of_Ada_Expr (Right, Current_Type)));
+            end;
+
          when N_Op_Compare =>
-            return
-               New_Boolean_Cmp
-                  (Cmp   => Get_Kind (+Why_Rel_Of_Ada_Op (Nkind (Expr))),
-                   Left  => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                   Right => Int_Term_Of_Ada_Expr (Right_Opnd (Expr)));
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               return
+                 New_Boolean_Cmp
+                   (Cmp   => Get_Kind (+Why_Rel_Of_Ada_Op (Nkind (Expr))),
+                    Left  => Why_Term_Of_Ada_Expr (Left,
+                                                   Base_Why_Type (Left)),
+                    Right => Why_Term_Of_Ada_Expr (Right,
+                                                   Base_Why_Type (Right)));
+            end;
 
          when N_Op_Not =>
             return

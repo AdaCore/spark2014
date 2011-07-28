@@ -23,6 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sinfo; use Sinfo;
+with Einfo; use Einfo;
+with Atree; use Atree;
+
 package body Why.Inter is
 
    ---------------------
@@ -65,5 +69,35 @@ package body Why.Inter is
    begin
       return (Kind => Why_Abstract, Wh_Abstract => N);
    end Why_Abstract;
+
+   -------------------
+   -- Base_Why_Type --
+   -------------------
+
+   function Base_Why_Type (W : Why_Type) return Why_Type is
+   begin
+      case W.Kind is
+         when Why_Abstract =>
+            return Base_Why_Type (W.Wh_Abstract);
+         when others =>
+            return W;
+      end case;
+   end Base_Why_Type;
+
+   function Base_Why_Type (N : Node_Id) return Why_Type is
+   begin
+      case Ekind (Etype (N)) is
+         when Float_Kind =>
+            return Why_Real_Type;
+
+         when Signed_Integer_Kind | Enumeration_Kind =>
+            --  ??? What about booleans ? We should have
+            --  a special case for them...
+            return Why_Int_Type;
+
+         when others =>
+            raise Not_Implemented;
+      end case;
+   end Base_Why_Type;
 
 end Why.Inter;

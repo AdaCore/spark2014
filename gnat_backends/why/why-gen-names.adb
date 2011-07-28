@@ -74,6 +74,20 @@ package body Why.Gen.Names is
       return New_Identifier (Bool_Int_Cmp_String (Rel) & "_axiom");
    end New_Bool_Int_Axiom;
 
+   ------------------
+   -- New_Division --
+   ------------------
+
+   function New_Division (Kind : Why_Scalar_Enum) return W_Identifier_Id is
+   begin
+      case Kind is
+         when Why_Real =>
+            return New_Real_Division.Id;
+         when Why_Int =>
+            return New_Integer_Division.Id;
+      end case;
+   end New_Division;
+
    --------------------
    -- New_Identifier --
    --------------------

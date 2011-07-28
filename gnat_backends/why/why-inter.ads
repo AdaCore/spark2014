@@ -103,4 +103,8 @@ package Why.Inter is
                   Why_Real => Why_Real_Type);
 
    function Why_Abstract (N : Node_Id) return Why_Type;
+
+   function Base_Why_Type (N : Node_Id) return Why_Type;
+   function Base_Why_Type (W : Why_Type) return Why_Type;
+
 end Why.Inter;

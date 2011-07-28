@@ -117,4 +117,6 @@ include "divisions.why"
 
 include "bool.why"
 
+include "real.why"
+
 exception _result_exc
