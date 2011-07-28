@@ -45,7 +45,10 @@ package body Why.Images is
       return Result (First .. Result'Last);
    end Img;
 
-   function Img (Value : Uint) return String is
+   function Img
+     (Value   : Uint;
+      Is_Real : Boolean := False)
+     return String is
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
@@ -93,9 +96,32 @@ package body Why.Images is
       --  OctalDigit ::=  { 01234567 }
       --
       --  BinaryDigit ::=  { 01 }
-
       UI_Image (Value, Decimal);
-      return UI_Image_Buffer (1 .. UI_Image_Length);
+      declare
+         Result           : String := UI_Image_Buffer (1 .. UI_Image_Length);
+         Is_Approximation : Boolean := False;
+      begin
+         for J in Result'Range loop
+            if Result (J) = 'E' then
+               Result (J) := 'e';
+               Is_Approximation := True;
+            end if;
+         end loop;
+
+         if Is_Real then
+            if Is_Approximation then
+               return Result;
+            else
+               return Result & ".0";
+            end if;
+         else
+            if Is_Approximation then
+               return "int_of_real (" & Result & ")";
+            else
+               return Result;
+            end if;
+         end if;
+      end;
    end Img;
 
    function Img (Value : Ureal) return String is

@@ -432,25 +432,25 @@ package body Why.Atree.Sprint is
       end if;
 
       if Base = 0 then
-         P (O, Img (Num) & ".0");
+         P (O, Img (Num, True));
          P (O, "/");
-         P (O, Img (Den) & ".0");
+         P (O, Img (Den, True));
 
       elsif Base = 10 then
-         P (O, Img (Num));
+         P (O, Img (Num, True));
          P (O, "E-");
          P (O, Img (Den));
 
       else
-         P (O, Img (Num) & ".0");
+         P (O, Img (Num, True));
 
          if UI_To_Int (Den) > 0 then
             P (O, "/");
-            P (O, Img ((UI_Expon (Den, Base))) & ".0");
+            P (O, Img ((UI_Expon (Base, Den)), True));
 
          elsif UI_To_Int (Den) < 0 then
             P (O, "*");
-            P (O, Img ((UI_Expon (UI_Negate (Den), Base))) & ".0");
+            P (O, Img (UI_Expon (Base, UI_Negate (Den)), True));
          end if;
       end if;
    end Real_Constant_Pre_Op;

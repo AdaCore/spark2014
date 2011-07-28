@@ -37,8 +37,12 @@ package Why.Images is
    function Img (Node : Why_Node_Id) return String;
    --  Return an image of a Node Id (with no leading space)
 
-   function Img (Value : Uint) return String;
-   --  Return an image of a Uint using Why syntax
+   function Img
+     (Value   : Uint;
+      Is_Real : Boolean := False)
+     return String;
+   --  Return an image of a Uint using Why syntax. If Is_Real,
+   --  a real image of this Uint is returned.
 
    function Img (Value : Ureal) return String;
    --  Return an image of a Uint using Why syntax
