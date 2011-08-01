@@ -1390,11 +1390,38 @@ package body Gnat2Why.Subprograms is
             Current_Type := Why_Int_Type;
 
          when N_Real_Literal =>
-            T := New_Prog_Constant
-                   (Ada_Node => Expr,
-                    Def      => New_Real_Constant
-                                  (Ada_Node => Expr,
-                                   Value    => Realval (Expr)));
+            if Is_Rewrite_Substitution (Expr) then
+               --  The original is usually much easier to process for alt-ergo
+               --  than the rewritten node; typically, the will be in decimal
+               --  base whereas the expanded node will be of the form
+               --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
+               --  even between two litterals.
+               --  However, it may happen that the original node is not
+               --  in alfa, whereas the rewritten one is: typically,
+               --  if the original node uses exponentiation. So try the
+               --  original node and fall back to the rewritten node if
+               --  failed.
+               begin
+                  T := Why_Expr_Of_Ada_Expr (Original_Node (Expr),
+                                             Why_Real_Type);
+               exception
+                  when Not_Implemented =>
+                     T := New_Prog_Constant
+                            (Ada_Node => Expr,
+                             Def      => New_Real_Constant
+                                           (Ada_Node => Expr,
+                                            Value    => Realval (Expr)));
+
+               end;
+
+            else
+               T := New_Prog_Constant
+                      (Ada_Node => Expr,
+                       Def      => New_Real_Constant
+                                     (Ada_Node => Expr,
+                                      Value    => Realval (Expr)));
+            end if;
+
             Current_Type := Why_Real_Type;
 
          when N_Identifier | N_Expanded_Name =>
@@ -2421,8 +2448,32 @@ package body Gnat2Why.Subprograms is
             Current_Type := Why_Int_Type;
 
          when N_Real_Literal =>
-            T :=
-              New_Real_Constant (Ada_Node => Expr, Value => Realval (Expr));
+            if Is_Rewrite_Substitution (Expr) then
+               --  The original is usually much easier to process for alt-ergo
+               --  than the rewritten node; typically, the will be in decimal
+               --  base whereas the expanded node will be of the form
+               --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
+               --  even between two litterals.
+               --  However, it may happen that the original node is not
+               --  in alfa, whereas the rewritten one is: typically,
+               --  if the original node uses exponentiation. So try the
+               --  original node and fall back to the rewritten node if
+               --  failed.
+               begin
+                  T :=
+                    Why_Term_Of_Ada_Expr (Original_Node (Expr), Why_Real_Type);
+               exception
+                  when Not_Implemented =>
+                     T :=
+                       New_Real_Constant (Ada_Node => Expr,
+                                          Value    => Realval (Expr));
+               end;
+
+            else
+               T :=
+                 New_Real_Constant (Ada_Node => Expr, Value => Realval (Expr));
+            end if;
+
             Current_Type := Why_Real_Type;
 
          when N_Character_Literal =>
@@ -2456,6 +2507,18 @@ package body Gnat2Why.Subprograms is
                   end;
 
             end case;
+
+         when N_Op_Minus =>
+            --  unary minus
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Right);
+               T :=
+                 New_Negative_Term
+                   (Ada_Node => Expr,
+                    Operand  => Why_Term_Of_Ada_Expr (Right, Current_Type));
+            end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of base
