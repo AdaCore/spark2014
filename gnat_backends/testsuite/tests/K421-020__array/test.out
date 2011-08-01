@@ -6,7 +6,7 @@ p.adb:18:13: (info) array bounds check proved
 p.adb:18:16: (info) range check proved
 p.adb:19:13: (info) array bounds check proved
 p.adb:19:16: (info) range check proved
-p.adb:21:35: (info) loop invariant initalization proved
+p.adb:21:35: (info) loop invariant initialization proved
 p.adb:21:35: (info) loop invariant preservation proved
 p.adb:22:16: (info) array bounds check proved
 p.adb:22:19: (info) range check proved

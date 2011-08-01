@@ -1,10 +1,10 @@
-s.adb:20:9: (info) loop invariant initalization proved
+s.adb:20:9: (info) loop invariant initialization proved
 s.adb:20:9: loop invariant preservation not proved
 s.adb:25:22: (info) array bounds check proved
 s.adb:25:25: (info) array bounds check proved
 s.adb:26:21: (info) array bounds check proved
 s.adb:26:24: (info) range check proved
-s.adb:6:9: (info) loop invariant initalization proved
+s.adb:6:9: (info) loop invariant initialization proved
 s.adb:6:9: (info) loop invariant preservation proved
 s.adb:9:12: (info) array bounds check proved
 s.ads:12:14: postcondition not proved

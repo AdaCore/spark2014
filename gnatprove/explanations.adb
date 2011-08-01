@@ -178,7 +178,7 @@ package body Explanations is
             Put ("loop invariant");
 
          when VC_Loop_Invariant_Init =>
-            Put ("loop invariant initalization");
+            Put ("loop invariant initialization");
 
          when VC_Loop_Invariant_Preserv =>
             Put ("loop invariant preservation");

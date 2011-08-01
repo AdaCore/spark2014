@@ -1,4 +1,4 @@
-arraydef.adb:5:24: (info) loop invariant initalization proved
+arraydef.adb:5:24: (info) loop invariant initialization proved
 arraydef.adb:5:24: (info) loop invariant preservation proved
 arraydef.adb:6:16: (info) array bounds check proved
 arraydef.adb:6:19: (info) array bounds check proved

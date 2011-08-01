@@ -1,5 +1,5 @@
 s.adb:12:20: (info) range check proved
-s.adb:14:9: (info) loop invariant initalization proved
+s.adb:14:9: (info) loop invariant initialization proved
 s.adb:14:9: (info) loop invariant preservation proved
 s.adb:15:12: (info) array bounds check proved
 s.adb:20:25: (info) range check proved
