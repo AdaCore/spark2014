@@ -111,6 +111,7 @@ package Xtree_Sinfo is
       --             | <negative_term>
       --             | <identifier>
       --             | <term_identifier>
+      --             | <logic_deref>
       --             | <operation>
       --             | <named_term>
       --             | <conditional_term>
@@ -143,9 +144,10 @@ package Xtree_Sinfo is
       --  <negative_term> ::= '-' <term>
 
       W_Term_Identifier,
-      W_Logic_Deref,
-
       --  <term_identifier> ::= <identifier> [ @ [ <identifier> ] ]
+
+      W_Logic_Deref,
+      --  <logic_deref> ::= ! <identifier>
 
       W_Operation,
       --  <operation> ::= <identifier> '(' <term> (',' <term>)* ')'
