@@ -534,7 +534,7 @@ package body Gnat2Why.Subprograms is
             return N;
          when N_Subtype_Indication =>
             return Range_Expression (Constraint (N));
-         when N_Identifier =>
+         when N_Identifier | N_Expanded_Name =>
             return Get_Range (Entity (N));
          when N_Defining_Identifier =>
             case Ekind (N) is
