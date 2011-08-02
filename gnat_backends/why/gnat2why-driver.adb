@@ -411,7 +411,8 @@ package body Gnat2Why.Driver is
                  N_Subprogram_Declaration =>
                Why_Decl_Of_Ada_Subprogram (File, Element (Cu), As_Spec);
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration
+              | N_Number_Declaration =>
                Why_Decl_Of_Ada_Object_Decl
                  (File,
                   Defining_Identifier (Element (Cu)),
@@ -497,6 +498,8 @@ package body Gnat2Why.Driver is
       Add_Standard_Type (Standard_Integer_16);
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
+      Add_Standard_Type (Universal_Integer);
+      Add_Standard_Type (Universal_Real);
 
       --  Additionally, the following type does not even have a type
       --  definition. The type is not in Alfa anyway, so we just generate the

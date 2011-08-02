@@ -429,6 +429,7 @@ package body Alfa.Definition is
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
    procedure Mark_If_Statement                (N : Node_Id);
    procedure Mark_Iteration_Scheme            (N : Node_Id);
+   procedure Mark_Number_Declaration          (N : Node_Id);
    procedure Mark_Object_Declaration          (N : Node_Id);
    procedure Mark_Object_Renaming_Declaration (N : Node_Id);
    procedure Mark_Package_Body                (N : Node_Id);
@@ -1088,6 +1089,9 @@ package body Alfa.Definition is
          when N_Null =>
             Mark_Non_Alfa ("null", N, NIR_Access);
 
+         when N_Number_Declaration =>
+            Mark_Number_Declaration (N);
+
          when N_Object_Declaration =>
             Mark_Object_Declaration (N);
 
@@ -1236,7 +1240,6 @@ package body Alfa.Definition is
               N_Itype_Reference                 |
               N_Label                           |
               N_Null_Statement                  |
-              N_Number_Declaration              |
               N_Operator_Symbol                 |
               N_Others_Choice                   |
               N_Package_Renaming_Declaration    |
@@ -1893,6 +1896,37 @@ package body Alfa.Definition is
         (Spec_Violations, From => From, To => Unique (Defining_Entity (N)));
       Mark_Non_Alfa (Msg, N, From);
    end Mark_Non_Alfa_Declaration;
+
+   -----------------------------
+   -- Mark_Number_Declaration --
+   -----------------------------
+
+   procedure Mark_Number_Declaration (N : Node_Id) is
+
+      Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
+      Expr : constant Node_Id          := Expression (N);
+      T    : constant Entity_Id        := Etype (+Id);
+
+   begin
+      --  The number declaration is in Alfa if-and-only-if its base type is
+      --  in Alfa and it is not aliased.
+
+      Push_Scope (Id);
+
+      if not Type_Is_In_Alfa (T) then
+         Mark_Non_Alfa ("type", N, From => Unique (T));
+      end if;
+
+      if Present (Expr) then
+         Mark (Expr);
+      end if;
+
+      Pop_Scope (Id);
+
+      --  If decl is in Alfa, store this information explicitly
+
+      Mark_Object_In_Alfa (Id, N, In_Alfa => Object_Is_Computed_In_Alfa (Id));
+   end Mark_Number_Declaration;
 
    -----------------------------
    -- Mark_Object_Declaration --

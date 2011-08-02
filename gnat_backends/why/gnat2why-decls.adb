@@ -90,7 +90,7 @@ package body Gnat2Why.Decls is
    function Is_Mutable (N : Node_Id) return Boolean
    is
       Is_Constant : constant Boolean :=
-         Ekind (N) = E_Constant or else Ekind (N) = E_In_Parameter;
+         Ekind (N) in E_Constant | E_In_Parameter | Named_Kind;
    begin
       return (Is_Local_Lifted (N) or else not Is_Constant);
    end Is_Mutable;
