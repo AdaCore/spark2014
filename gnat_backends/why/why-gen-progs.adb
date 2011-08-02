@@ -95,11 +95,16 @@ package body Why.Gen.Progs is
          when Why_Scalar_Enum =>
             case To.Kind is
                when Why_Scalar_Enum =>
-                  --  either the two objects are of the same type
-                  --  (in which case the conversion is useless) or
-                  --  they are of incompatible types (real and int).
-                  --  In both cases, it is an error.
-                  raise Program_Error;
+                  --  Only the conversion int -> real is OK
+                  if From.Kind = Why_Int and then To.Kind = Why_Real then
+                     return Real_Of_Int.Id;
+                  else
+                     --  either the two objects are of the same type
+                     --  (in which case the conversion is useless) or
+                     --  they are of incompatible types (real -> int).
+                     --  In both cases, it is an error.
+                     raise Program_Error;
+                  end if;
 
                when Why_Abstract =>
                   return

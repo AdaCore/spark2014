@@ -1490,7 +1490,7 @@ package body Gnat2Why.Subprograms is
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
-               Current_Type := Base_Why_Type (Left);
+               Current_Type := Base_Why_Type (Left, Right);
                T :=
                  New_Infix_Call
                    (Ada_Node => Expr,
@@ -1507,7 +1507,7 @@ package body Gnat2Why.Subprograms is
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
-               Current_Type := Base_Why_Type (Left);
+               Current_Type := Base_Why_Type (Left, Right);
                T :=
                  New_Located_Call
                    (Ada_Node => Expr,
@@ -2527,7 +2527,7 @@ package body Gnat2Why.Subprograms is
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
-               Current_Type := Base_Why_Type (Left);
+               Current_Type := Base_Why_Type (Left, Right);
                T :=
                  New_Arith_Operation
                    (Ada_Node => Expr,
@@ -2543,7 +2543,7 @@ package body Gnat2Why.Subprograms is
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
-               Current_Type := Base_Why_Type (Left);
+               Current_Type := Base_Why_Type (Left, Right);
                T :=
                  New_Operation
                    (Ada_Node   => Expr,

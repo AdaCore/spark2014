@@ -208,6 +208,10 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its equality predicate.
 
+   package Real_Of_Int is
+     new Name_Gen.Arity_0 ("real_of_int");
+   --  Return the name of the conversions from int to real
+
    package New_Conversion_To_Int is
      new Name_Gen.Arity_1 ("", Int_Of);
    --  Create a new identifier for a conversion from an abstract type

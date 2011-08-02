@@ -100,4 +100,20 @@ package body Why.Inter is
       end case;
    end Base_Why_Type;
 
+   function Base_Why_Type (Left, Right : Why_Type) return Why_Type is
+      L : constant Why_Type := Base_Why_Type (Left);
+      R : constant Why_Type := Base_Why_Type (Right);
+   begin
+      if L.Kind = Why_Real or else R.Kind = Why_Real then
+         return Why_Real_Type;
+      else
+         return Why_Int_Type;
+      end if;
+   end Base_Why_Type;
+
+   function Base_Why_Type (Left, Right : Node_Id) return Why_Type is
+   begin
+      return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
+   end Base_Why_Type;
+
 end Why.Inter;

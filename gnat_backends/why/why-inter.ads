@@ -107,4 +107,9 @@ package Why.Inter is
    function Base_Why_Type (N : Node_Id) return Why_Type;
    function Base_Why_Type (W : Why_Type) return Why_Type;
 
+   function Base_Why_Type (Left, Right : Why_Type) return Why_Type;
+   function Base_Why_Type (Left, Right : Node_Id) return Why_Type;
+   --  Return the most general base type for Left and Right
+   --  (e.g. real in Left=int and Right=real).
+
 end Why.Inter;
