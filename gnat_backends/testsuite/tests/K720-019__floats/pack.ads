@@ -15,6 +15,6 @@ package Pack is
           Post => (Add'Result = (R1 + R2));
 
    function Associativity_Test return Boolean
-     with Post => (True);
+     with Post => (Associativity_Test'Result = True);
 
 end Pack;
