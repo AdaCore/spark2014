@@ -106,6 +106,8 @@ package Why.Inter is
 
    function Base_Why_Type (N : Node_Id) return Why_Type;
    function Base_Why_Type (W : Why_Type) return Why_Type;
+   --  Return the base type in Why of the given node
+   --  (e.g Why_Real_Type for standard__float).
 
    function Base_Why_Type (Left, Right : Why_Type) return Why_Type;
    function Base_Why_Type (Left, Right : Node_Id) return Why_Type;

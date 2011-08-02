@@ -43,33 +43,6 @@ package body Why.Inter is
       P.WP_Context.Append (Other.WP_Name.all);
    end Add_With_Clause;
 
-   -------------------------
-   -- Make_Empty_Why_Pack --
-   -------------------------
-
-   function Make_Empty_Why_Pack (S : String) return Why_Package
-   is
-   begin
-      return
-        (WP_Name           => new String'(S),
-         WP_Context        => String_Lists.Empty_List,
-         WP_Types          => List_Of_Nodes.Empty_List,
-         WP_Abstract_Types => List_Of_Nodes.Empty_List,
-         WP_Abstract_Obj   => List_Of_Nodes.Empty_List,
-         WP_Decls          => List_Of_Nodes.Empty_List,
-         WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
-   end Make_Empty_Why_Pack;
-
-   ------------------
-   -- Why_Abstract --
-   ------------------
-
-   function Why_Abstract (N : Node_Id) return Why_Type
-   is
-   begin
-      return (Kind => Why_Abstract, Wh_Abstract => N);
-   end Why_Abstract;
-
    -------------------
    -- Base_Why_Type --
    -------------------
@@ -115,5 +88,32 @@ package body Why.Inter is
    begin
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
+
+   -------------------------
+   -- Make_Empty_Why_Pack --
+   -------------------------
+
+   function Make_Empty_Why_Pack (S : String) return Why_Package
+   is
+   begin
+      return
+        (WP_Name           => new String'(S),
+         WP_Context        => String_Lists.Empty_List,
+         WP_Types          => List_Of_Nodes.Empty_List,
+         WP_Abstract_Types => List_Of_Nodes.Empty_List,
+         WP_Abstract_Obj   => List_Of_Nodes.Empty_List,
+         WP_Decls          => List_Of_Nodes.Empty_List,
+         WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
+   end Make_Empty_Why_Pack;
+
+   ------------------
+   -- Why_Abstract --
+   ------------------
+
+   function Why_Abstract (N : Node_Id) return Why_Type
+   is
+   begin
+      return (Kind => Why_Abstract, Wh_Abstract => N);
+   end Why_Abstract;
 
 end Why.Inter;
