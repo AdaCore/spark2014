@@ -29,6 +29,16 @@ with Ada.Strings.Unbounded;
 
 package body Why.Images is
 
+   function Img
+     (Value   : Uint;
+      Is_Real : Boolean := False)
+     return String;
+   --  Return an image of a Uint using Why syntax. If Is_Real,
+   --  a real image of this Uint is returned.
+
+   function Img (Value : Ureal) return String;
+   --  Return an image of a Uint using Why syntax
+
    ---------
    -- Img --
    ---------
@@ -185,5 +195,25 @@ package body Why.Images is
 
       return To_String (Result);
    end Img;
+
+   procedure P (O : Output_Id; Name : Name_Id) is
+   begin
+      P (O, Img (Name));
+   end P;
+
+   procedure P (O : Output_Id; Node : Why_Node_Id) is
+   begin
+      P (O, Img (Node));
+   end P;
+
+   procedure P (O : Output_Id; Value : Uint) is
+   begin
+      P (O, Img (Value));
+   end P;
+
+   procedure P (O : Output_Id; Value : Ureal) is
+   begin
+      P (O, Img (Value));
+   end P;
 
 end Why.Images;

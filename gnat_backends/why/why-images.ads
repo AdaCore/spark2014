@@ -27,24 +27,24 @@ with Namet;     use Namet;
 with Uintp;     use Uintp;
 with Urealp;    use Urealp;
 with Why.Types; use Why.Types;
+with Outputs;   use Outputs;
 
 package Why.Images is
    --  Image functions for the basic entities used in Why's AST.
+   --  These output the string image into O.
+
+   procedure P (O : Output_Id; Name : Name_Id);
+
+   procedure P (O : Output_Id; Node : Why_Node_Id);
+
+   procedure P (O : Output_Id; Value : Uint);
+
+   procedure P (O : Output_Id; Value : Ureal);
 
    function Img (Name : Name_Id) return String;
    --  Return the String content of Name
 
    function Img (Node : Why_Node_Id) return String;
    --  Return an image of a Node Id (with no leading space)
-
-   function Img
-     (Value   : Uint;
-      Is_Real : Boolean := False)
-     return String;
-   --  Return an image of a Uint using Why syntax. If Is_Real,
-   --  a real image of this Uint is returned.
-
-   function Img (Value : Ureal) return String;
-   --  Return an image of a Uint using Why syntax
 
 end Why.Images;

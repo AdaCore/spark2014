@@ -514,7 +514,8 @@ package body Xtree_Traversal is
             end;
 
          else
-            PL (O, "PL (O, Img (" & Field & "));");
+            PL (O, "P (O, " & Field & ");");
+            PL (O, "NL (O);");
          end if;
 
          PL (O, "Relative_Indent (O, -1);");
@@ -529,8 +530,9 @@ package body Xtree_Traversal is
 
    begin
       PL (O, "P (O, """ & Mixed_Case_Name (Kind) & """);");
-      PL (O, "P (O, "" (Node_Id="" & Img (Why_Node_Id ("
-          & Node_Param & ")) & "")"");");
+      PL (O, "P (O, "" (Node_Id="");");
+      PL (O, "P (O, Why_Node_Id (" & Node_Param & "));");
+      PL (O, "P (O, "")"");");
       PL (O, "NL (O);");
       PL (O, "if State.Depth /= 0 then");
       Relative_Indent (O, 3);

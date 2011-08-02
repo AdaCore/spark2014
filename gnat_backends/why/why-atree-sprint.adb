@@ -27,7 +27,6 @@ with Ada.Containers; use Ada.Containers;
 
 with Namet;  use Namet;
 with Uintp;  use Uintp;
-with Urealp; use Urealp;
 
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
@@ -334,58 +333,12 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       Value : constant Uint := Integer_Constant_Get_Value (Node);
    begin
-      --  ??? The Why Reference does not give any detail about
-      --  the syntax of integer constants. We shall suppose that
-      --  it is similar to Ocaml's integer litterals:
-      --
-      --  IntegerLiteral ::=
-      --     [-]  UnprefixedIntegerLiteral
-      --
-      --  UnprefixedIntegerLiteral ::=
-      --      DecimalLiteral
-      --      HexadecimalLiteral
-      --      OctalLiteral
-      --      BinaryLiteral
-      --
-      --  DecimalLiteral ::=
-      --      DecimalLiteral  Digit
-      --      DecimalLiteral  _
-      --      Digit
-      --
-      --  HexadecimalLiteral ::=
-      --      HexadecimalLiteral  HexadecimalDigit
-      --      HexadecimalLiteral  _
-      --      0x  HexadecimalDigit
-      --      0X  HexadecimalDigit
-      --
-      --  OctalLiteral ::=
-      --      OctalLiteral  OctalDigit
-      --      OctalLiteral  _
-      --      0o  OctalDigit
-      --      0O  OctalDigit
-      --
-      --  BinaryLiteral ::=
-      --      BinaryLiteral  BinaryDigit
-      --      BinaryLiteral  _
-      --      0b  BinaryDigit
-      --      0B  BinaryDigit
-      --
-      --  Digit ::=
-      --      DecimalDigit
-      --
-      --  HexadecimalDigit ::=  { 0123456789abcdefABCDEF }
-      --
-      --  DecimalDigit ::=  { 0123456789 }
-      --
-      --  OctalDigit ::=  { 01234567 }
-      --
-      --  BinaryDigit ::=  { 01 }
       if Value < Uint_0 then
          P (O, "( ");
-         P (O, Img (Value));
+         P (O, Value);
          P (O, " )");
       else
-         P (O, Img (Value));
+         P (O, Value);
       end if;
    end Integer_Constant_Pre_Op;
 
@@ -398,61 +351,8 @@ package body Why.Atree.Sprint is
       Node  : W_Real_Constant_Valid_Id)
    is
       pragma Unreferenced (State);
-      UR   : constant Ureal := Real_Constant_Get_Value (Node);
-      Num  : constant Uint := Numerator (UR);
-      Den  : constant Uint := Denominator (UR);
-      Base : constant Nat := Rbase (UR);
    begin
-      --  ??? Same remark as in the case of integer constants:
-      --  I suppose that Why's real constants follows the same syntax
-      --  as Ocaml's floating-point literals:
-      --
-      --      FloatingPointLiteral ::=
-      --        [-]  UnprefixedFloatingPointLiteral
-      --
-      --      UnprefixedFloatingPointLiteral ::=
-      --        DecimalLiteral  FractionalPart  ExponentPart
-      --        DecimalLiteral  FractionalPart
-      --        DecimalLiteral  ExponentPart
-      --
-      --      FractionalPart ::=
-      --        FractionalPart  Digit
-      --        FractionalPart  _
-      --        .
-      --
-      --      ExponentPart ::=
-      --        ExponentLetter  +  DecimalLiteral
-      --        ExponentLetter  -  DecimalLiteral
-      --        ExponentLetter     DecimalLiteral
-      --
-      --       ExponentLetter ::=  { eE }
-
-      if UR_Is_Negative (UR) then
-         P (O, "-");
-      end if;
-
-      if Base = 0 then
-         P (O, Img (Num, True));
-         P (O, "/");
-         P (O, Img (Den, True));
-
-      elsif Base = 10 then
-         P (O, Img (Num, True));
-         P (O, "E-");
-         P (O, Img (Den));
-
-      else
-         P (O, Img (Num, True));
-
-         if UI_To_Int (Den) > 0 then
-            P (O, "/");
-            P (O, Img ((UI_Expon (Base, Den)), True));
-
-         elsif UI_To_Int (Den) < 0 then
-            P (O, "*");
-            P (O, Img (UI_Expon (Base, UI_Negate (Den)), True));
-         end if;
-      end if;
+      P (O, Real_Constant_Get_Value (Node));
    end Real_Constant_Pre_Op;
 
    -------------------------
