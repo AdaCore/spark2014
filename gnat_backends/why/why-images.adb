@@ -25,19 +25,7 @@
 
 with Types; use Types;
 
-with Ada.Strings.Unbounded;
-
 package body Why.Images is
-
-   function Img
-     (Value   : Uint;
-      Is_Real : Boolean := False)
-     return String;
-   --  Return an image of a Uint using Why syntax. If Is_Real,
-   --  a real image of this Uint is returned.
-
-   function Img (Value : Ureal) return String;
-   --  Return an image of a Uint using Why syntax
 
    ---------
    -- Img --
@@ -55,10 +43,25 @@ package body Why.Images is
       return Result (First .. Result'Last);
    end Img;
 
-   function Img
-     (Value   : Uint;
-      Is_Real : Boolean := False)
-     return String is
+   -------
+   -- P --
+   -------
+
+   procedure P (O : Output_Id; Name : Name_Id) is
+   begin
+      P (O, Img (Name));
+   end P;
+
+   procedure P (O : Output_Id; Node : Why_Node_Id) is
+   begin
+      P (O, Img (Node));
+   end P;
+
+   procedure P (O : Output_Id; Value : Uint) is
+      H         : constant array (Int range 0 .. 15) of Character :=
+                    "0123456789ABCDEF";
+      Base      : constant := 10;
+      Abs_Value : Uint;
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
@@ -106,41 +109,30 @@ package body Why.Images is
       --  OctalDigit ::=  { 01234567 }
       --
       --  BinaryDigit ::=  { 01 }
-      UI_Image (Value, Decimal);
-      declare
-         Result           : String := UI_Image_Buffer (1 .. UI_Image_Length);
-         Is_Approximation : Boolean := False;
-      begin
-         for J in Result'Range loop
-            if Result (J) = 'E' then
-               Result (J) := 'e';
-               Is_Approximation := True;
-            end if;
-         end loop;
 
-         if Is_Real then
-            if Is_Approximation then
-               return Result;
-            else
-               return Result & ".0";
-            end if;
-         else
-            if Is_Approximation then
-               return "int_of_real (" & Result & ")";
-            else
-               return Result;
-            end if;
-         end if;
-      end;
-   end Img;
+      if Value = No_Uint then
+         P (O, "?");
+         return;
+      end if;
 
-   function Img (Value : Ureal) return String is
-      use Ada.Strings.Unbounded;
+      if Value < Uint_0 then
+         P (O, "-");
+         Abs_Value := -Value;
+      else
+         Abs_Value := Value;
+      end if;
 
+      if Abs_Value >= Base then
+         P (O, Abs_Value / Base);
+      end if;
+
+      P (O, "" & H (UI_To_Int (Abs_Value rem Base)));
+   end P;
+
+   procedure P (O : Output_Id; Value : Ureal) is
       Num    : constant Uint := Numerator (Value);
       Den    : constant Uint := Denominator (Value);
       Base   : constant Nat := Rbase (Value);
-      Result : Unbounded_String := To_Unbounded_String ("");
    begin
       --  ??? Same remark as in the case of integer constants:
       --  I suppose that Why's real constants follows the same syntax
@@ -167,53 +159,42 @@ package body Why.Images is
       --       ExponentLetter ::=  { eE }
 
       if UR_Is_Negative (Value) then
-         Append (Result, "-");
+         P (O, "-");
       end if;
 
       if Base = 0 then
-         Append (Result, Img (Num));
-         Append (Result, "/");
-         Append (Result, Img (Den));
+         P (O, Num);
+         P (O, ".0");
+         P (O, "/");
+         P (O, Den);
+         P (O, ".0");
 
       elsif Base = 10 then
-         Append (Result, Img (Num));
-         Append (Result, "E-");
-         Append (Result, Img (Den));
+         P (O, Num);
+         P (O, "E");
+
+         if Den > Uint_0 then
+            P (O, "-");
+            P (O, Den);
+         else
+            P (O, -Den);
+         end if;
 
       else
-         Append (Result, Img (Num));
+         P (O, Num);
+         P (O, ".0");
 
-         if UI_To_Int (Den) > 0 then
-            Append (Result, "/");
-            Append (Result, Img ((UI_Expon (Den, Base))));
+         if Den > Uint_0 then
+            P (O, "/");
+            P (O, UI_Expon (Den, Base));
+            P (O, ".0");
 
-         elsif UI_To_Int (Den) < 0 then
-            Append (Result, "*");
-            Append (Result, Img ((UI_Expon (UI_Negate (Den), Base))));
+         else
+            P (O, "*");
+            P (O, UI_Expon (UI_Negate (Den), Base));
+            P (O, ".0");
          end if;
       end if;
-
-      return To_String (Result);
-   end Img;
-
-   procedure P (O : Output_Id; Name : Name_Id) is
-   begin
-      P (O, Img (Name));
-   end P;
-
-   procedure P (O : Output_Id; Node : Why_Node_Id) is
-   begin
-      P (O, Img (Node));
-   end P;
-
-   procedure P (O : Output_Id; Value : Uint) is
-   begin
-      P (O, Img (Value));
-   end P;
-
-   procedure P (O : Output_Id; Value : Ureal) is
-   begin
-      P (O, Img (Value));
    end P;
 
 end Why.Images;
