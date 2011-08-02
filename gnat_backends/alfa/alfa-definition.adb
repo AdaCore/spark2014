@@ -1909,7 +1909,7 @@ package body Alfa.Definition is
 
    begin
       --  The number declaration is in Alfa if-and-only-if its base type is
-      --  in Alfa and it is not aliased.
+      --  in Alfa.
 
       Push_Scope (Id);
 
