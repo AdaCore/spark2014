@@ -398,18 +398,6 @@ private
      (State : in out Printer_State;
       Node  : W_Opaque_Assertion_Valid_Id);
 
-   procedure Fun_Def_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Fun_Def_Valid_Id);
-
-   procedure Binding_Fun_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Fun_Valid_Id);
-
-   procedure Binding_Rec_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Rec_Valid_Id);
-
    procedure Prog_Call_Pre_Op
      (State : in out Printer_State;
       Node  : W_Prog_Call_Valid_Id);
@@ -510,10 +498,6 @@ private
      (State : in out Printer_State;
       Node  : W_Binder_Valid_Id);
 
-   procedure Recfun_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Recfun_Valid_Id);
-
    procedure Loop_Annot_Pre_Op
      (State : in out Printer_State;
       Node  : W_Loop_Annot_Valid_Id);
@@ -533,10 +517,6 @@ private
    procedure Global_Binding_Pre_Op
      (State : in out Printer_State;
       Node  : W_Global_Binding_Valid_Id);
-
-   procedure Global_Rec_Binding_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Global_Rec_Binding_Valid_Id);
 
    procedure Parameter_Declaration_Pre_Op
      (State : in out Printer_State;

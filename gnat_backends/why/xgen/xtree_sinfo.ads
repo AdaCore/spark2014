@@ -493,17 +493,6 @@ package Xtree_Sinfo is
       W_Opaque_Assertion,
       --  <opaque_assertion> ::= <prog> '{{' <postcondition> '}}'
 
-      W_Fun_Def,
-      --  <fun_def> ::= 'fun' <binder>+ '->' '{' <precondition> '}' <prog>
-
-      W_Binding_Fun,
-      --  <binding_fun> ::=
-      --  'let' <identifier> <binder>+ '='
-      --    '{' <precondition> '}' <prog> 'in' <prog>
-
-      W_Binding_Rec,
-      --  <binding_rec> ::= 'let' 'rec' <recfun> [ 'in' <prog> ]
-
       W_Prog_Call,
       --  <prog> <prog>+
 
@@ -603,10 +592,6 @@ package Xtree_Sinfo is
       --  one binder is generated per identifier. e.g. in the context of
       --  a computation_type, "x1, x2 : T" becomes "x1 : T -> x2 : T".
 
-      W_Recfun,
-      --  <recfun> ::= <identifier> <binder>+ ':' <simple_value_type>
-      --     '{' 'variant' <wf_arg> '}' = '{' <precondition> '}' <prog>
-
       W_Loop_Annot,
       --  <loop_annot> ::= '{' [ 'invariant' <assertion> ]
       --                       [ 'variant' <wf_arg> ] '}'
@@ -632,9 +617,6 @@ package Xtree_Sinfo is
       W_Global_Binding,
       --  <global_binding> ::=
       --    'let' <identifier> <binder>* '=' '{' <precondition> '}' <prog>
-
-      W_Global_Rec_Binding,
-      --  <global_rec_binding> ::= 'let' 'rec' <recfun>
 
       W_Parameter_Declaration,
       --  <parameter_declaration> ::=

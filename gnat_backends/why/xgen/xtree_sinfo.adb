@@ -748,41 +748,6 @@ package body Xtree_Sinfo is
       New_Field (W_Opaque_Assertion,
                  "Post", "W_Postcondition", Id_One);
 
-      ---------------
-      -- W_Fun_Def --
-      ---------------
-
-      New_Field (W_Fun_Def,
-                 "Binders", "W_Binder", Id_Some);
-      New_Field (W_Fun_Def,
-                 "Pre", "W_Predicate", Id_One);
-      New_Field (W_Fun_Def,
-                 "Def", "W_Prog", Id_One);
-
-      -------------------
-      -- W_Binding_Fun --
-      -------------------
-
-      New_Field (W_Binding_Fun,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Binding_Fun,
-                 "Binders", "W_Binder", Id_Some);
-      New_Field (W_Binding_Fun,
-                 "Pre", "W_Predicate", Id_One);
-      New_Field (W_Binding_Fun,
-                 "Def", "W_Prog", Id_One);
-      New_Field (W_Binding_Fun,
-                 "Context", "W_Prog", Id_One);
-
-      -------------------
-      -- W_Binding_Rec --
-      -------------------
-
-      New_Field (W_Binding_Rec,
-                 "Recfun", "W_Recfun", Id_One);
-      New_Field (W_Binding_Rec,
-                 "Context", "W_Prog", Id_One);
-
       -----------------
       -- W_Prog_Call --
       -----------------
@@ -851,23 +816,6 @@ package body Xtree_Sinfo is
       New_Field (W_Binder,
                  "Arg_Type", "W_Simple_Value_Type", Id_One);
 
-      --------------
-      -- W_Recfun --
-      --------------
-
-      New_Field (W_Recfun,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Recfun,
-                 "Binders", "W_Binder", Id_Some);
-      New_Field (W_Recfun,
-                 "Return_Type", "W_Prog", Id_One);
-      New_Field (W_Recfun,
-                 "Variant", "W_Wf_Arg", Id_One);
-      New_Field (W_Recfun,
-                 "Pre", "W_Predicate", Id_One);
-      New_Field (W_Recfun,
-                 "Def", "W_Prog", Id_One);
-
       ------------------
       -- W_Loop_Annot --
       ------------------
@@ -917,13 +865,6 @@ package body Xtree_Sinfo is
                  "Pre", "W_Predicate", Id_One);
       New_Field (W_Global_Binding,
                  "Def", "W_Prog", Id_One);
-
-      --------------------------
-      -- W_Global_Rec_Binding --
-      --------------------------
-
-      New_Field (W_Global_Rec_Binding,
-                 "Name", "W_Recfun", Id_One);
 
       -----------------------------
       -- W_Parameter_Declaration --
