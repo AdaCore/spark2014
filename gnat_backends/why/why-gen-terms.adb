@@ -54,16 +54,15 @@ package body Why.Gen.Terms is
               Name       => Conversion_Name (From => From, To => To),
               Parameters => (1 => Why_Term));
       else
-         --  ??? What about floats ???
          return
             Insert_Conversion_Term
                (Ada_Node => Ada_Node,
                 To       => To,
-                From     => Why_Int_Type,
+                From     => Base_Why_Type (From),
                 Why_Term =>
                   Insert_Conversion_Term
                     (Ada_Node => Ada_Node,
-                     To       => Why_Int_Type,
+                     To       => Base_Why_Type (To),
                      From     => From,
                      Why_Term => Why_Term));
       end if;
