@@ -187,7 +187,9 @@ package body Gnat2Why.Driver is
          P (Current_File, Base_Name & "__package.mlw: ");
          for Index in ALIs.First .. ALIs.Last loop
             P (Current_File, " ");
-            P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
+            P (Current_File,
+                (Name_String (Name_Id (Full_Lib_File_Name
+                   (ALIs.Table (Index).Afile)))));
          end loop;
          --  Write dependencies to all other units
          declare
@@ -200,7 +202,7 @@ package body Gnat2Why.Driver is
                   if not S.Dummy_Entry then
                      declare
                         Name : constant String :=
-                                Get_Name_String (Full_Source_Name ((S.Sfile)));
+                                Get_Name_String (Full_Source_Name (S.Sfile));
                      begin
                         if not Ends_With (Name, "system.ads") then
                            P (Current_File, " ");
