@@ -360,28 +360,21 @@ package body Gnat2Why.Driver is
          declare
             N    : Node_Id := Element (Cu);
          begin
-            --  if the node is not a type, get the corresponding entity
+            --  if the node is not an entity, get the corresponding entity
 
             if Nkind (N) /= N_Defining_Identifier then
                N := Defining_Identifier (N);
             end if;
-            declare
-               Name : constant String := Full_Name (N);
-            begin
-               case Ekind (N) is
-                  when Type_Kind =>
-                     New_Abstract_Type (File, Name);
+            case Ekind (N) is
+               when Type_Kind =>
+                  New_Abstract_Type (File, Full_Name (N));
 
-                  when Object_Kind =>
-                     New_Global_Ref_Declaration
-                       (File     => File,
-                        Name     => New_Identifier (Name),
-                        Obj_Type => +Why_Logic_Type_Of_Ada_Obj (N));
+               when Object_Kind | Named_Kind =>
+                  Why_Decl_Of_Ada_Object_Decl (File, N);
 
-                  when others =>
-                     raise Program_Error;
-               end case;
-            end;
+               when others =>
+                  raise Program_Error;
+            end case;
          end;
          Next (Cu);
       end loop;

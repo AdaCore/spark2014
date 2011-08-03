@@ -2684,7 +2684,7 @@ package body Alfa.Definition is
 
          --  Detect violation in initialization of package-level object
 
-         when Object_Kind =>
+         when Object_Kind | Named_Kind =>
             if Scop.Is_Body then
                Mark_Body_Violations (Ent);
             else
