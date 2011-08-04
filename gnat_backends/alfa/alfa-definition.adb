@@ -435,6 +435,7 @@ package body Alfa.Definition is
    procedure Mark_Package_Body                (N : Node_Id);
    procedure Mark_Package_Declaration         (N : Node_Id);
    procedure Mark_Package_Specification       (N : Node_Id);
+   procedure Mark_Package_Instantiation       (N : Node_Id);
    procedure Mark_Pragma                      (N : Node_Id);
    procedure Mark_Simple_Return_Statement     (N : Node_Id);
    procedure Mark_Subprogram_Body             (N : Node_Id);
@@ -1111,6 +1112,11 @@ package body Alfa.Definition is
             Mark_Package_Declaration (N);
 
          when N_Package_Instantiation =>
+
+            --  We mark the scope as non-alfa, but we get the visible
+            --  variables that have been declared there
+
+            Mark_Package_Instantiation (N);
             Mark_Non_Alfa ("package instantiation", N, NYI_Generic);
 
          when N_Package_Specification =>
@@ -2031,6 +2037,23 @@ package body Alfa.Definition is
       Mark (Specification (N));
       Pop_Scope (Id);
    end Mark_Package_Declaration;
+
+   --------------------------------
+   -- Mark_Package_Instantiation --
+   --------------------------------
+
+   procedure Mark_Package_Instantiation (N : Node_Id) is
+      Vis_Decls  : constant List_Id :=
+         Visible_Declarations (Specification (Instance_Spec (N)));
+      Cur        : Node_Id := First (Vis_Decls);
+   begin
+      while Present (Cur) loop
+         if Nkind (Cur) = N_Object_Declaration then
+            Mark (Cur);
+         end if;
+         Next (Cur);
+      end loop;
+   end Mark_Package_Instantiation;
 
    --------------------------------
    -- Mark_Package_Specification --
