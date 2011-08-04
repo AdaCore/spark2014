@@ -1,21 +1,52 @@
 procedure A is
 begin
 
-   Test_Block:
+   Local_Constant:
    declare
-
-      TC_Max_Loop_Count        : constant Natural := 1000;
-
-      procedure Check_Discrete_Values is
+      TC_Max_Loop_Count        : constant Integer := 1000;
+      function Test return Boolean is
       begin
-         for i in 1..TC_Max_Loop_Count loop
-            null;
-         end loop;
-      end Check_Discrete_Values;
+         return (TC_Max_Loop_Count = 10);
+      end Test;
    begin
-
       null;
+   end Local_Constant;
 
-   end Test_Block;
+   Named_Constant:
+   declare
+      TC_Max_Loop_Count        : constant := 1000;
+      function Test return Boolean is
+      begin
+         return (TC_Max_Loop_Count = 10);
+      end Test;
+   begin
+      null;
+   end Named_Constant;
+
+   for I in 1..10 loop
+      Loop_Param:
+      declare
+         function Test return Boolean is
+         begin
+            return (I = 10);
+         end Test;
+      begin
+         null;
+      end Loop_Param;
+   end loop;
+
+   In_Param:
+   declare
+      procedure Outer (X : in Integer) is
+         function Test return Boolean is
+         begin
+            return (X = 10);
+         end Test;
+      begin
+         null;
+      end Outer;
+   begin
+      null;
+   end In_Param;
 
 end A;
