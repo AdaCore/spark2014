@@ -446,6 +446,8 @@ package body Alfa.Definition is
    procedure Mark_Type_Definition             (Id : Unique_Entity_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
+   procedure Mark_Object_Declarations_In_List (L : List_Id);
+
    ------------------------------
    -- Alfa marking of entities --
    ------------------------------
@@ -1982,6 +1984,21 @@ package body Alfa.Definition is
    end Mark_Object_Declaration;
 
    --------------------------------------
+   -- Mark_Object_Declarations_In_List --
+   --------------------------------------
+
+   procedure Mark_Object_Declarations_In_List (L : List_Id) is
+      Cur : Node_Id := First (L);
+   begin
+      while Present (Cur) loop
+         if Nkind (Cur) = N_Object_Declaration then
+            Mark (Cur);
+         end if;
+         Next (Cur);
+      end loop;
+   end Mark_Object_Declarations_In_List;
+
+   --------------------------------------
    -- Mark_Object_Renaming_Declaration --
    --------------------------------------
 
@@ -2024,11 +2041,15 @@ package body Alfa.Definition is
    begin
       --  Rewriting of a package should only occur for a package instantiation,
       --  in which case Is_Rewrite_Insertion return True. Currently do not
-      --  analyze generic package instantiations.
+      --  analyze generic package instantiations. However, we still mark the
+      --  object declarations inside the generic, as we do for
+      --  N_Package_Instantiations.
 
       if Is_Rewrite_Insertion (N)
         or else Nkind (Original_Node (N)) = N_Package_Instantiation
       then
+         Mark_Object_Declarations_In_List
+            (Visible_Declarations (Specification (N)));
          Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
@@ -2045,14 +2066,8 @@ package body Alfa.Definition is
    procedure Mark_Package_Instantiation (N : Node_Id) is
       Vis_Decls  : constant List_Id :=
          Visible_Declarations (Specification (Instance_Spec (N)));
-      Cur        : Node_Id := First (Vis_Decls);
    begin
-      while Present (Cur) loop
-         if Nkind (Cur) = N_Object_Declaration then
-            Mark (Cur);
-         end if;
-         Next (Cur);
-      end loop;
+      Mark_Object_Declarations_In_List (Vis_Decls);
    end Mark_Package_Instantiation;
 
    --------------------------------
