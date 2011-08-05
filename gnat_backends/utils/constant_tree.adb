@@ -48,10 +48,12 @@ package body Constant_Tree is
 
       procedure Init_Ancestors (From : Node_Type) is
       begin
-         --  * a child with no children has no ancestors; as its ancestor
-         --  set has been initialized to the empty set, keep it as it is;
-         --  * otherwise, the ancestors of a node is the union of the
-         --  ancestors of its children with the set of children ;
+         --  * a node with no children has (a fortiori) no descendants;
+         --  as its descendant set has been initialized to the empty
+         --  set, keep it as it is;
+         --
+         --  * otherwise, the descendant set of a node is the union of the
+         --  descendants of its children with the set of children;
          --  so initialize its children, then do the merge.
 
          for Child in Node_Type loop
@@ -84,6 +86,8 @@ package body Constant_Tree is
          Left  : Node_Type;
          Right : Node_Type)
         return Node_Type;
+      --  Assuming that From is a common ancestor of Left and Right,
+      --  compute the LCA starting from From.
 
       -----------------
       -- LCA_Subtree --
