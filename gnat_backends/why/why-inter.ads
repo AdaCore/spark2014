@@ -129,8 +129,8 @@ package Why.Inter is
    --  (e.g. real in Left=int and Right=real).
 
    function Up (WT : Why_Type) return Why_Type;
-   --  Return if WT is the highest base type, return WT; otherwise,
-   --  return the smallest base type BT such that WT < BT.
+   --  If WT is the highest base type, return WT; otherwise, return the
+   --  smallest base type BT such that WT < BT.
 
    function Up (From, To : Why_Type) return Why_Type;
    --  Same as unary Up, except that it stops when To is reached;

@@ -229,9 +229,9 @@ package body Why.Inter is
       return (Kind => Why_Abstract, Wh_Abstract => N);
    end Why_Abstract;
 
-   ------------------
+   ----------------
    -- Move_Child --
-   ------------------
+   ----------------
 
    procedure Move_Child (Parent : Ext_Why_Base; Child : Ext_Why_Base) is
       Old_Parent : constant Ext_Why_Base := T (Child).Parent;
@@ -240,6 +240,10 @@ package body Why.Inter is
       T (Child).Parent := Parent;
       T (Parent).Is_Parent_Of (Child) := True;
    end Move_Child;
+
+   --------------------
+   -- Init_Ancestors --
+   --------------------
 
    procedure Init_Ancestors is
 
