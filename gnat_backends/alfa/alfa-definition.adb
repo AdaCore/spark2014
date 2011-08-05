@@ -1953,8 +1953,8 @@ package body Alfa.Definition is
       --  declaration to the set of Alfa declarations is also crucial to avoid
       --  a redundant declaration in Why.
 
-      if Object_Is_In_Alfa (Id)
-        or else not Object_Is_Computed_In_Alfa (Id)
+      if Present (Expr) and then
+         (Object_Is_In_Alfa (Id) or else not Object_Is_Computed_In_Alfa (Id))
       then
          Mark (Expr);
          return;
