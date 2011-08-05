@@ -75,13 +75,26 @@ package Why.Inter is
    procedure Add_With_Clause (P : out Why_Package; Other : Why_Package);
    --  Add a package name to the context of a Why package.
 
-   type Why_Type_Enum is (Why_Int, Why_Real, Why_Abstract);
+   type Extended_Why_Type_Enum is
+     (Why_Null_Type,
+      Why_Int,
+      Why_Real,
+      Why_Fixed_Point, --  Represented as int, but converts differently to real
+      Why_Abstract);
+
+   subtype Why_Type_Enum is
+     Extended_Why_Type_Enum range Why_Int .. Why_Abstract;
+   subtype Ext_Why_Base is
+     Extended_Why_Type_Enum range Why_Null_Type .. Why_Fixed_Point;
+   subtype Why_Scalar_Enum is
+     Ext_Why_Base range Why_Int .. Why_Fixed_Point;
+   subtype Why_Numeric_Enum is
+     Ext_Why_Base range Why_Int .. Why_Fixed_Point;
+
    type Why_Type (Kind : Why_Type_Enum := Why_Int) is
       record
          case Kind is
-            when Why_Int =>
-               null;
-            when Why_Real =>
+            when Why_Scalar_Enum =>
                null;
             when Why_Abstract =>
                Wh_Abstract : Node_Id;
@@ -91,16 +104,17 @@ package Why.Inter is
    --  Why is either the builtin "int"/"real" type or a node that corresponds
    --  to a N_Defining_Identifier of an Ada type
 
-   subtype Why_Scalar_Enum is Why_Type_Enum range Why_Int .. Why_Real;
-
-   Why_Int_Type  : constant Why_Type (Why_Int) := (Kind => Why_Int);
-   Why_Real_Type : constant Why_Type (Why_Real) := (Kind => Why_Real);
+   Why_Int_Type         : constant Why_Type (Why_Int) := (Kind => Why_Int);
+   Why_Real_Type        : constant Why_Type (Why_Real) := (Kind => Why_Real);
+   Why_Fixed_Point_Type : constant Why_Type (Why_Fixed_Point)
+                            := (Kind => Why_Fixed_Point);
 
    type Why_Scalar_Type_Array is array (Why_Scalar_Enum) of Why_Type;
 
    Why_Types : constant Why_Scalar_Type_Array :=
-                 (Why_Int  => Why_Int_Type,
-                  Why_Real => Why_Real_Type);
+                 (Why_Int         => Why_Int_Type,
+                  Why_Real        => Why_Real_Type,
+                  Why_Fixed_Point => Why_Fixed_Point_Type);
 
    function Why_Abstract (N : Node_Id) return Why_Type;
 
@@ -113,5 +127,17 @@ package Why.Inter is
    function Base_Why_Type (Left, Right : Node_Id) return Why_Type;
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
+
+   function Up (WT : Why_Type) return Why_Type;
+   --  Return if WT is the highest base type, return WT; otherwise,
+   --  return the smallest base type BT such that WT < BT.
+
+   function Up (From, To : Why_Type) return Why_Type;
+   --  Same as unary Up, except that it stops when To is reached;
+   --  i.e. if From = To then To is returned.
+
+   function  LCA (Left, Right : Why_Type) return Why_Type;
+   --  Return the lowest common ancestor in base type hierarchy,
+   --  i.e. the smallest base type B such that Left <= B and right <= B.
 
 end Why.Inter;

@@ -45,7 +45,7 @@ package Why.Gen.Names is
    function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String;
    --  Return the name of the Why scalar type (e.g. "real" from real)
 
-   function New_Division (Kind : Why_Scalar_Enum) return W_Identifier_Id;
+   function New_Division (Kind : Why_Numeric_Enum) return W_Identifier_Id;
    --  Return the name of the division for the give kind
 
    function New_Identifier (Name : String) return W_Identifier_Id;

@@ -41,31 +41,57 @@ package body Why.Gen.Terms is
        From     : Why_Type;
        Why_Term : W_Term_Id) return W_Term_Id
    is
+      Base : constant Why_Type := LCA (To, From);
+
+      function Insert_Single_Conversion
+        (To       : Why_Type;
+         From     : Why_Type;
+         Why_Term : W_Term_Id) return W_Term_Id;
+      --  Assuming that there is at most one step between To and From in the
+      --  type hierarchy (i.e. that it exists a conversion from From
+      --  to To; a counterexample would be two abstract types whose base
+      --  types differ), insert the corresponding conversion.
+
+      function Insert_Single_Conversion
+        (To       : Why_Type;
+         From     : Why_Type;
+         Why_Term : W_Term_Id) return W_Term_Id is
+      begin
+         if From = To then
+            return Why_Term;
+         else
+            return
+              New_Operation
+              (Ada_Node   => Ada_Node,
+               Name       => Conversion_Name (From => From, To => To),
+               Parameters => (1 => Why_Term));
+         end if;
+      end Insert_Single_Conversion;
+
    begin
       if To = From then
          return Why_Term;
       end if;
 
-      if To.Kind in Why_Scalar_Enum
-        or else From.Kind in Why_Scalar_Enum then
+      declare
+         Up_From : constant Why_Type := Up (From, Base);
+         Up_To   : constant Why_Type := Up (To, Base);
+      begin
          return
-           New_Operation
-             (Ada_Node   => Ada_Node,
-              Name       => Conversion_Name (From => From, To => To),
-              Parameters => (1 => Why_Term));
-      else
-         return
-            Insert_Conversion_Term
-               (Ada_Node => Ada_Node,
-                To       => To,
-                From     => Base_Why_Type (From),
-                Why_Term =>
-                  Insert_Conversion_Term
-                    (Ada_Node => Ada_Node,
-                     To       => Base_Why_Type (To),
-                     From     => From,
-                     Why_Term => Why_Term));
-      end if;
+           Insert_Single_Conversion
+             (To   => To,
+              From => Up_To,
+              Why_Term =>
+                Insert_Conversion_Term
+                  (Ada_Node => Ada_Node,
+                   To       => Up_To,
+                   From     => Up_From,
+                   Why_Term =>
+                     Insert_Single_Conversion
+                       (To   => Up_From,
+                        From => From,
+                        Why_Term => Why_Term)));
+      end;
    end Insert_Conversion_Term;
 
    --------------

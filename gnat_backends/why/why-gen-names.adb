@@ -78,13 +78,15 @@ package body Why.Gen.Names is
    -- New_Division --
    ------------------
 
-   function New_Division (Kind : Why_Scalar_Enum) return W_Identifier_Id is
+   function New_Division (Kind : Why_Numeric_Enum) return W_Identifier_Id is
    begin
       case Kind is
          when Why_Real =>
             return New_Real_Division.Id;
          when Why_Int =>
             return New_Integer_Division.Id;
+         when Why_Fixed_Point =>
+            raise Not_Implemented;
       end case;
    end New_Division;
 
@@ -191,6 +193,8 @@ package body Why.Gen.Names is
             return "int";
          when Why_Real =>
             return "real";
+         when Why_Fixed_Point =>
+            return "int";
       end case;
    end Why_Scalar_Type_Name;
 
