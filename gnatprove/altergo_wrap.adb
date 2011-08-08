@@ -48,22 +48,6 @@ procedure Altergo_Wrap is
    --  Timeout in seconds. If the return value is "True", the VC has been
    --  proven, otherwise some error (timeout etc) was detected.
 
-   procedure Call_AltErgo_On_Vc
-     (Item    : String;
-      Verbose : Boolean := False);
-   --  Call Altergo on the VC that corresponds to the file
-   --  'Item'; take into account the context file.
-
-   procedure Concat
-      (Files   : Argument_List;
-       Target  : String;
-       Success : out Boolean;
-       Verbose : Boolean := False);
-   --  Concat all the Files together into the Target.
-
-   function Context_File (VC_Name : String) return String;
-   --  Given the base name of a VC, compute the name of its context file
-
    function Read_Command_Line return String;
    --  Read Command Line and initialize variables; return the first argument
    --  and assume that it is a filename.
@@ -119,80 +103,6 @@ procedure Altergo_Wrap is
       Free (Command);
    end Call_AltErgo_On_File;
 
-   ------------------------
-   -- Call_AltErgo_On_Vc --
-   ------------------------
-
-   procedure Call_AltErgo_On_Vc
-     (Item    : String;
-      Verbose : Boolean := False)
-   is
-      Success    : aliased Boolean;
-      Base_Of_VC : constant String :=
-         Ada.Directories.Base_Name (Item);
-      Target : constant String :=
-         Base_Of_VC & "__vc.why";
-   begin
-      Delete_File (Target, Success);
-      Concat (Files =>
-            (1 => new String'(Context_File (Base_Of_VC)),
-             2 => new String'(Item)),
-           Target => Target,
-           Success => Success,
-           Verbose => Verbose);
-      Call_AltErgo_On_File (Target, Base_Of_VC & ".rgo", Verbose);
-      Delete_File (Target, Success);
-   end Call_AltErgo_On_Vc;
-
-   ------------
-   -- Concat --
-   ------------
-
-   procedure Concat
-     (Files   : Argument_List;
-      Target  : String;
-      Success : out Boolean;
-      Verbose : Boolean := False) is
-   begin
-      if Verbose then
-         Ada.Text_IO.Put ("cat ");
-
-         for Index in Files'Range loop
-            Ada.Text_IO.Put (Files (Index).all);
-            Ada.Text_IO.Put (" ");
-         end loop;
-
-         Ada.Text_IO.Put ("> ");
-         Ada.Text_IO.Put_Line (Target);
-      end if;
-
-      for Index in Files'Range loop
-         Copy_File
-           (Name     => Files (Index).all,
-            Pathname => Target,
-            Success  => Success,
-            Mode     => Append,
-            Preserve => None);
-         exit when not Success;
-      end loop;
-   end Concat;
-
-   ------------------
-   -- Context_File --
-   ------------------
-
-   function Context_File (VC_Name : String) return String is
-      Cnt : Integer := VC_Name'Last;
-   begin
-      --  The VC names are of the form
-      --    <base_name>_po<number>
-      --   We first skip the numbers and then go back three more chars
-      while VC_Name (Cnt) in '0' .. '9' loop
-         Cnt := Cnt - 1;
-      end loop;
-      return (VC_Name (VC_Name'First .. Cnt - 3) & "_ctx.why");
-   end Context_File;
-
    -----------------------
    -- Read_Command_Line --
    -----------------------
@@ -234,10 +144,13 @@ procedure Altergo_Wrap is
    --  begin processing for Altergo_Wrap
 
    File_Argument : constant String := Read_Command_Line;
+   Base_Of_VC    : constant String :=
+      Ada.Directories.Base_Name (File_Argument);
+   Result_File   : constant String := Base_Of_VC & ".rgo";
 begin
    if Ends_With (File_Argument, "_ctx.why") then
       --  exit silently when given a context file
       GNAT.OS_Lib.OS_Exit (0);
    end if;
-   Call_AltErgo_On_Vc (File_Argument, Verbose);
+   Call_AltErgo_On_File (File_Argument, Result_File, Verbose);
 end Altergo_Wrap;
