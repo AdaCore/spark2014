@@ -43,4 +43,21 @@ package body Renam is
       null;
    end P;
 
+   generic
+        X : in out Integer;
+   package Q is
+        Rx : Integer renames X;
+   end Q;
+
+   Z : Integer;
+
+   package RN is new Q (Z);
+
+   procedure U is
+   begin
+      Z := RN.Rx;
+   end U;
+
+
+
 end Renam;
