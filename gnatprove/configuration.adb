@@ -42,6 +42,47 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs
 
+   Usage_Message : constant String :=
+      "gnatprove switches [files] [-cargs switches]";
+
+   Help_Message : constant String :=
+"files is one or more file names, must be used with option -u" &
+ASCII.LF &
+"-cargs switches are passed to gcc" &
+ASCII.LF &
+ASCII.LF &
+"gnatprove basic switches:" & ASCII.LF &
+" -f                Force recompilation/proving of all units and all VCs" &
+ASCII.LF &
+" -jnnn             Use nnn parallel processes (default: 1)" &
+ASCII.LF &
+"     --mode=m      Set the mode of GNATprove (m=detect*,force,check)" &
+ASCII.LF &
+" -Pproj            Use GNAT project file proj" &
+ASCII.LF &
+" -q, --quiet       Be quiet/terse" &
+ASCII.LF &
+"     --report=r    Set the report mode of GNATprove (r=all,fail*)" &
+ASCII.LF &
+" -u                Unique compilation, only compile/prove the given files" &
+ASCII.LF &
+" -v, --verbose     Output extra verbose information" &
+ASCII.LF &
+"     --version     Output version of the tool" &
+ASCII.LF &
+" -h, --help        Display this usage information" &
+ASCII.LF &
+ASCII.LF &
+"gnatprove advanced switches:" &
+ASCII.LF &
+" -d, --debug       Debug mode" &
+ASCII.LF &
+"     --no-proof    Disable proof of VCs, only generate VCs" &
+ASCII.LF &
+"     --steps=nnn   Set the maximum number of proof steps to nnn for Alt-Ergo"&
+ASCII.LF &
+"     --timeout=s   Set the timeout for Alt-Ergo in seconds (default: 10)";
+
    -------------------
    -- Handle_Switch --
    -------------------
@@ -130,6 +171,11 @@ package body Configuration is
       Config : Command_Line_Configuration;
    begin
       --  Install command line config
+
+      Set_Usage
+        (Config,
+         Usage     => Usage_Message,
+         Help_Msg  => Help_Message);
 
       Define_Switch
          (Config,
