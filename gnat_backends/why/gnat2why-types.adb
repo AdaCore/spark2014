@@ -28,6 +28,7 @@ with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Sem_Eval;           use Sem_Eval;
+with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 with String_Utils;       use String_Utils;
@@ -100,7 +101,7 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Obj (N : Node_Id)
       return W_Primitive_Type_Id is
-      Ty : constant Node_Id := Etype (N);
+      Ty : constant Entity_Id := Unique_Entity (Etype (N));
    begin
       return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
    end  Why_Logic_Type_Of_Ada_Obj;
@@ -111,8 +112,9 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Type (Ty : Node_Id)
       return W_Primitive_Type_Id is
+      T : constant Entity_Id := Unique_Entity (Ty);
    begin
-      return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
+      return New_Abstract_Type (T, New_Identifier (Full_Name (T)));
    end  Why_Logic_Type_Of_Ada_Type;
 
    -----------------------------
