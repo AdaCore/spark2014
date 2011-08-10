@@ -186,17 +186,13 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
-      Start_from : Node_Id := Empty;
-      Inner_Expr : W_Prog_Id := New_Void)
+      Start_From : Node_Id := Empty)
      return W_Prog_Id;
    --  Translate a list of Ada statements into a single Why expression.
    --  An empty list is translated to "void".
-   --  The parameter Start_from indicates a node in the list from which the
+   --  The parameter Start_From indicates a node in the list from which the
    --  translation process is to be started. All nodes before and including
-   --  Start_from are ignored.
-   --  The parameter Inner_Expr represents an expression that is put at the
-   --  very inner end of the statement list, in the scope of all object
-   --  declarations.
+   --  Start_From are ignored.
 
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
@@ -1595,10 +1591,9 @@ package body Gnat2Why.Subprograms is
 
          when N_Expression_With_Actions =>
             return
-               Why_Expr_Of_Ada_Stmts
-                  (Actions (Expr),
-                   Inner_Expr =>
-                     Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
+               Sequence
+                 (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
+                  Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
 
          when N_Quantified_Expression =>
             --  We are interested in the checks for the entire range, and
@@ -1948,7 +1943,7 @@ package body Gnat2Why.Subprograms is
                Loop_Content :=
                   Why_Expr_Of_Ada_Stmts
                     (Stmts      => Loop_Body,
-                     Start_from => Split_Node);
+                     Start_From => Split_Node);
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop. Generate
                   --  condition "true".
@@ -2121,49 +2116,17 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
-      Start_from : Node_Id := Empty;
-      Inner_Expr : W_Prog_Id := New_Void)
+      Start_From : Node_Id := Empty)
      return W_Prog_Id
    is
-      Result          : W_Prog_Id := Inner_Expr;
-      Cur_Stmt        : Node_Or_Entity_Id;
+      Result          : W_Prog_Id := New_Void;
+      Cur_Stmt        : Node_Or_Entity_Id :=
+         (if Present (Start_From) then Next (Start_From) else First (Stmts));
    begin
-      --  Traverse the list of statements backwards, chaining the current
-      --  statement in front of the already treated statements.
-      --
-      --  The reason to do it backwards is because statements can contain
-      --  object declarations, such as:
-      --    X : Integer := ...;
-      --    <rest of statements>
-      --  where x is visible in the rest of the list. In Why, this is
-      --  translated as
-      --    let x = ... in
-      --      <rest of statements>
-      --
-      --  Therefore we go backwards, to have the <rest of statements> already
-      --  translated.
-      --
-      --  The variable Result contains the already translated part.
-      if List_Length (Stmts) = 0 then
-         --  We return the default value
-         return Result;
-      end if;
-
-      Cur_Stmt := Nlists.Last (Stmts);
-
-      while Cur_Stmt /= Start_from and then Nkind (Cur_Stmt) /= N_Empty loop
-         case Nkind (Cur_Stmt) is
-            when N_Null_Statement =>
-               null;
-
-            when others =>
-               --  For all other statements, we call Why_Expr_Of_Ada_Stmt
-               --  to obtain a stmt, and build a statement sequence
-               Result := Sequence (Why_Expr_Of_Ada_Stmt (Cur_Stmt), Result);
-         end case;
-         Cur_Stmt := Prev (Cur_Stmt);
+      while Present (Cur_Stmt) loop
+         Result := Sequence (Result, Why_Expr_Of_Ada_Stmt (Cur_Stmt));
+         Next (Cur_Stmt);
       end loop;
-
       return Result;
    end Why_Expr_Of_Ada_Stmts;
 
