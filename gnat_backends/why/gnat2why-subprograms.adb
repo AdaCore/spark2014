@@ -66,6 +66,9 @@ package body Gnat2Why.Subprograms is
    Result_String : constant String := "___result";
    --  The internal name for the result of an expression
 
+   function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id;
+   --  Generate an assignment from an object declaration
+
    function Case_Expr_Of_Ada_Node (N : Node_Id) return W_Prog_Id;
    --  Build Case expression of Ada Node.
 
@@ -223,6 +226,22 @@ package body Gnat2Why.Subprograms is
    --      end loop
    --    with <loop_name> -> void
    --  end if
+
+   function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id
+   is
+      Lvalue : constant Node_Id := Defining_Identifier (N);
+      Rexpr  : constant Node_Id := Expression (N);
+   begin
+      if Present (Rexpr) then
+         return
+            New_Assignment
+              (N,
+               New_Identifier (Full_Name (Lvalue)),
+               Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue)));
+      else
+         return New_Void (N);
+      end if;
+   end Assignment_of_Obj_Decl;
 
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
@@ -873,32 +892,7 @@ package body Gnat2Why.Subprograms is
          while Nkind (Cur_Decl) /= N_Empty loop
             case Nkind (Cur_Decl) is
                when N_Object_Declaration =>
-                  declare
-                     Lvalue    : constant Node_Id :=
-                        Defining_Identifier (Cur_Decl);
-                     Rexpr     : constant Node_Id := Expression (Cur_Decl);
-                     Ident     : constant W_Identifier_Id :=
-                        New_Identifier (Full_Name (Lvalue));
-                     Rvalue    : constant W_Prog_Id :=
-                        (if Present (Rexpr) then
-                           Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue))
-                        else
-                           New_Simpl_Any_Expr
-                              (New_Abstract_Type
-                                 (Name =>
-                                    New_Identifier (Type_Of_Node (Lvalue)))));
-                  begin
-                     if Comes_From_Source (Original_Node (Cur_Decl)) then
-                        if Present (Rexpr) then
-                           R :=
-                             Sequence
-                               (New_Assignment (Cur_Decl, Ident, Rvalue),
-                                R);
-                        end if;
-                     else
-                        R := New_Binding_Ref (Cur_Decl, Ident, Rvalue, R);
-                     end if;
-                  end;
+                  R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
 
                when others =>
                   null;
@@ -1909,8 +1903,7 @@ package body Gnat2Why.Subprograms is
             raise Not_Implemented;
 
          when N_Object_Declaration =>
-            --  This has been dealt with at a higher level
-            raise Program_Error;
+            return Assignment_of_Obj_Decl (Stmt);
 
          when N_Loop_Statement =>
             --  We have to take into consideration
@@ -2162,47 +2155,6 @@ package body Gnat2Why.Subprograms is
          case Nkind (Cur_Stmt) is
             when N_Null_Statement =>
                null;
-
-            when N_Object_Declaration =>
-               --  Source objects should be defined at a global level
-
-               if not Comes_From_Source (Original_Node (Cur_Stmt)) then
-                  declare
-                     Id       : constant Node_Id :=
-                        Defining_Identifier (Cur_Stmt);
-                     W_Id     : constant W_Identifier_Id :=
-                        New_Identifier (Full_Name (Id));
-                     Exp_Type : constant Why_Type :=
-                        Type_Of_Node (Object_Definition (Cur_Stmt));
-                     Def : constant W_Prog_Id :=
-                        (if Present (Expression (Cur_Stmt)) then
-                           Why_Expr_Of_Ada_Expr
-                              (Expression (Cur_Stmt),
-                               Exp_Type)
-                        else
-                           New_Simpl_Any_Expr
-                              (New_Abstract_Type
-                                 (Name =>
-                                    New_Identifier
-                                    (Type_Of_Node
-                                       (Object_Definition (Cur_Stmt))))));
-                  begin
-                     case Ekind (Id) is
-                        when E_Constant =>
-                           Result := New_Binding_Prog
-                             (Ada_Node => Cur_Stmt,
-                              Name     => W_Id,
-                              Def      => Def,
-                              Context  => Result);
-                        when others =>
-                           Result := New_Binding_Ref
-                             (Ada_Node => Cur_Stmt,
-                              Name     => W_Id,
-                              Def      => Def,
-                              Context  => Result);
-                     end case;
-                  end;
-               end if;
 
             when others =>
                --  For all other statements, we call Why_Expr_Of_Ada_Stmt

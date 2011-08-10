@@ -489,22 +489,10 @@ package body Alfa.Definition is
          Objects_In_Alfa.Include (+Id);
       end if;
 
-      --  Declarations of objects inside expression with actions are translated
-      --  specially into let-expressions.
-
-      if not Inside_Expression_With_Actions
-
-        --  This is not sufficient currently as some temporaries are
-        --  introduced at statement level. HACK until this is cleaned up.
-
-        and then (Comes_From_Source (Original_Node (N))
-                   or else Is_Package_Level_Entity (+Id))
-      then
-         if In_Alfa then
-            Filter_In_Alfa (N, Alfa_Object);
-         else
-            Filter_In_Alfa (+Id, Non_Alfa_Object);
-         end if;
+      if In_Alfa then
+         Filter_In_Alfa (N, Alfa_Object);
+      else
+         Filter_In_Alfa (+Id, Non_Alfa_Object);
       end if;
    end Mark_Object_In_Alfa;
 
