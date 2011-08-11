@@ -36,8 +36,6 @@ with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Preds;        use Why.Gen.Preds;
-with Why.Inter;            use Why.Inter;
-
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
@@ -132,8 +130,8 @@ package body Gnat2Why.Decls is
                    Axiom_Body =>
                      New_Equal
                         (Left  => New_Term_Identifier (Name => Ident),
-                         Right => Why_Term_Of_Ada_Expr (Def,
-                           Why_Abstract (Etype (Id)))));
+                         Right =>
+                           Why_Term_Of_Ada_Expr (Def, Type_Of_Node (Id))));
             end;
          end if;
       end if;

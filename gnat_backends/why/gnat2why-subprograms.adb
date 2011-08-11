@@ -150,16 +150,6 @@ package body Gnat2Why.Subprograms is
    --  Discrete_Choice, build a term that expresses that T belongs to the
    --  range expressed by N.
 
-   function Type_Of_Node (N : Node_Id) return String;
-   --  Get the name of the type of an Ada node, as a string
-
-   function Type_Of_Node (N : Node_Id) return Entity_Id;
-   --  Get the name of the type of an Ada node, as a Node_Id of Kind
-   --  N_Defining_Identifier
-
-   function Type_Of_Node (N : Node_Id) return Why_Type;
-   --  Get the name of the type of an Ada node, as a Why Type
-
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
    --
