@@ -215,15 +215,61 @@ package body Gnat2Why.Subprograms is
 
    function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id
    is
-      Lvalue : constant Node_Id := Defining_Identifier (N);
-      Rexpr  : constant Node_Id := Expression (N);
+      Lvalue   : constant Entity_Id := Defining_Identifier (N);
+      Rexpr    : constant Node_Id := Expression (N);
    begin
+
+      --  In our Why translation, all objects are declared at top-level.
+      --  Object declarations in Ada inside Subprograms are therefore
+      --  translated to assignments to initialize these objects.
+      --  We can only generate an assignment when the Lvalue is mutable; if it
+      --  is not, there are two cases. If the expression is static, we already
+      --  have generated an axiom upon declaration of the object, and we are
+      --  done. If it is not, we replace the assignment by an assumption of
+      --  the following form:
+
+      --  let var_name__assume = <rexpr> in
+      --    assume (var_name = var_name_assume);
+
       if Present (Rexpr) then
-         return
-            New_Assignment
-              (N,
-               New_Identifier (Full_Name (Lvalue)),
-               Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue)));
+         declare
+            Why_Expr : constant W_Prog_Id :=
+               Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue));
+            L_Name   : constant String := Full_Name (Lvalue);
+            L_Id     : constant W_Identifier_Id := New_Identifier (L_Name);
+         begin
+            if Is_Mutable (Lvalue) then
+               return New_Assignment (N, L_Id, Why_Expr);
+
+            elsif Is_Static_Expression (Rexpr) then
+
+               --  We generate an ignore statement, to obtain all the checks
+               --  ??? Is this necessary? after all, we would get a compiler
+               --  warning anyway
+
+               return New_Ignore (Prog => Why_Expr);
+            else
+
+               declare
+                  Tmp_Var : constant W_Identifier_Id :=
+                     Assume_Name.Id (L_Name);
+                  Eq      : constant W_Predicate_Id :=
+                              New_Equal
+                                 (New_Term_Identifier (Name => Tmp_Var),
+                                  New_Term_Identifier (Name => L_Id));
+               begin
+                  return
+                     New_Binding_Prog
+                       (Ada_Node => N,
+                        Name     => Tmp_Var,
+                        Def      => Why_Expr,
+                        Context  =>
+                           New_Assume_Statement
+                              (Ada_Node => N,
+                               Pred     => Eq));
+               end;
+            end if;
+         end;
       else
          return New_Void (N);
       end if;

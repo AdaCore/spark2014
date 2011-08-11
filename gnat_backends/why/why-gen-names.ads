@@ -84,6 +84,7 @@ package Why.Gen.Names is
    Array_Length_Static_Name : constant String := "static_length";
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";
+   Assume                   : constant String := "assume";
    Coerce                   : constant String := "coerce";
    Boolean_Eq               : constant String := "eq_bool";
    Eq_Pred                  : constant String := "eq";
@@ -314,4 +315,6 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its unicity axiom.
 
+   package Assume_Name is
+      new Name_Gen.Arity_1 ("", Assume);
 end Why.Gen.Names;

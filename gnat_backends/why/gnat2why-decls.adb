@@ -41,10 +41,6 @@ with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Decls is
 
-   function Is_Local_Lifted (N : Node_Id) return Boolean;
-   --  Given an N_Defining_Identifier, decide if the variable is local or
-   --  global
-
    ---------------
    -- Full_Name --
    ---------------
@@ -69,28 +65,26 @@ package body Gnat2Why.Decls is
       end if;
    end Full_Name;
 
-   ---------------------
-   -- Is_Local_Lifted --
-   ---------------------
-
-   function Is_Local_Lifted (N : Node_Id) return Boolean
-   is
-   begin
-      return
-         (Ekind (Scope (N)) in Subprogram_Kind and then
-          not (Ekind (N) in E_Out_Parameter .. E_In_Parameter));
-   end Is_Local_Lifted;
-
    ----------------
    -- Is_Mutable --
    ----------------
 
    function Is_Mutable (N : Node_Id) return Boolean
    is
-      Is_Constant : constant Boolean :=
-         Ekind (N) in E_Constant | E_In_Parameter | Named_Kind;
    begin
-      return (Is_Local_Lifted (N) or else not Is_Constant);
+
+      --  A variable is translated as mutable in Why if it is not constant on
+      --  the Ada side, or if it is a loop parameter.
+
+      if Ekind (N) = E_Loop_Parameter then
+         return True;
+      elsif Is_Constant_Object (N) then
+         return False;
+      elsif Ekind (N) in Named_Kind then
+         return False;
+      else
+         return True;
+      end if;
    end Is_Mutable;
 
    ---------------------------------
