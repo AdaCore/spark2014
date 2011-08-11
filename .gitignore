@@ -20,3 +20,4 @@ GNAT-*
 gnat_src
 gnat_backends/testsuite/out
 install/bin
+stdlib_tmp
