@@ -212,6 +212,10 @@ package Why.Gen.Names is
      new Name_Gen.Arity_0 ("real_of_int");
    --  Return the name of the conversions from int to real
 
+   package Int_Of_Bool is
+     new Name_Gen.Arity_0 ("int_of_bool");
+   --  Return the name of the conversions from int to real
+
    package New_Conversion_To_Int is
      new Name_Gen.Arity_1 ("", Int_Of);
    --  Create a new identifier for a conversion from an abstract type

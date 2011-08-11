@@ -153,7 +153,7 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
 
-   function Type_Of_Node (N : Node_Id) return Node_Id;
+   function Type_Of_Node (N : Node_Id) return Entity_Id;
    --  Get the name of the type of an Ada node, as a Node_Id of Kind
    --  N_Defining_Identifier
 
@@ -745,7 +745,7 @@ package body Gnat2Why.Subprograms is
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return Node_Id
+   function Type_Of_Node (N : Node_Id) return Entity_Id
    is
    begin
       if Nkind (N) in N_Entity
@@ -759,14 +759,24 @@ package body Gnat2Why.Subprograms is
 
    function Type_Of_Node (N : Node_Id) return String
    is
+      E : constant Entity_Id := Type_Of_Node (N);
    begin
-      return Full_Name (Type_Of_Node (N));
+      if E = Standard_Boolean then
+         return Why_Scalar_Type_Name (Why_Bool);
+      else
+         return Full_Name (E);
+      end if;
    end Type_Of_Node;
 
    function Type_Of_Node (N : Node_Id) return Why_Type
    is
+      E : constant Entity_Id := Type_Of_Node (N);
    begin
-      return Why_Abstract (Type_Of_Node (N));
+      if E = Standard_Boolean then
+         return Why_Bool_Type;
+      else
+         return Why_Abstract (E);
+      end if;
    end Type_Of_Node;
 
    ----------------
@@ -1293,9 +1303,11 @@ package body Gnat2Why.Subprograms is
    begin
       --  Deal with special cases: True/False for boolean values
       if Entity (Enum) = Standard_True then
+         Current_Type := (Kind => Why_Bool);
          return New_True_Literal_Prog;
       end if;
       if Entity (Enum) = Standard_False then
+         Current_Type := (Kind => Why_Bool);
          return New_Prog_Constant (Def => New_False_Literal);
       end if;
       --  In the case of a subtype of an enumeration, we need to insert a
@@ -1325,9 +1337,11 @@ package body Gnat2Why.Subprograms is
    begin
       --  Deal with special cases: True/False for boolean values
       if Entity (Enum) = Standard_True then
+         Current_Type := Why_Bool_Type;
          return New_True_Literal;
       end if;
       if Entity (Enum) = Standard_False then
+         Current_Type := Why_Bool_Type;
          return New_False_Literal;
       end if;
       --  In the case of a subtype of an enumeration, we need to insert a
@@ -1756,7 +1770,7 @@ package body Gnat2Why.Subprograms is
 
    function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
    begin
-      return Why_Term_Of_Ada_Expr (Expr, Why_Abstract (Standard_Boolean));
+      return Why_Term_Of_Ada_Expr (Expr, Why_Bool_Type);
    end Bool_Term_Of_Ada_Expr;
 
    --------------------------

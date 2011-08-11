@@ -165,6 +165,7 @@ package body Why.Inter is
 
 begin
    Type_Hierarchy.Move_Child (Why_Null_Type, Why_Real);
+   Type_Hierarchy.Move_Child (Why_Int, Why_Bool);
    Type_Hierarchy.Move_Child (Why_Real, Why_Int);
    Type_Hierarchy.Move_Child (Why_Real, Why_Fixed_Point);
    Type_Hierarchy.Freeze;

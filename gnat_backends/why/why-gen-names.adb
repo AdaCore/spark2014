@@ -189,6 +189,8 @@ package body Why.Gen.Names is
    function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String is
    begin
       case Kind is
+         when Why_Bool =>
+            return "bool";
          when Why_Int =>
             return "int";
          when Why_Real =>

@@ -77,17 +77,18 @@ package Why.Inter is
 
    type Extended_Why_Type_Enum is
      (Why_Null_Type,
+      Why_Bool,
       Why_Int,
       Why_Real,
       Why_Fixed_Point, --  Represented as int, but converts differently to real
       Why_Abstract);
 
    subtype Why_Type_Enum is
-     Extended_Why_Type_Enum range Why_Int .. Why_Abstract;
+     Extended_Why_Type_Enum range Why_Bool .. Why_Abstract;
    subtype Ext_Why_Base is
      Extended_Why_Type_Enum range Why_Null_Type .. Why_Fixed_Point;
    subtype Why_Scalar_Enum is
-     Ext_Why_Base range Why_Int .. Why_Fixed_Point;
+     Ext_Why_Base range Why_Bool .. Why_Fixed_Point;
    subtype Why_Numeric_Enum is
      Ext_Why_Base range Why_Int .. Why_Fixed_Point;
 
@@ -104,6 +105,7 @@ package Why.Inter is
    --  Why is either the builtin "int"/"real" type or a node that corresponds
    --  to a N_Defining_Identifier of an Ada type
 
+   Why_Bool_Type        : constant Why_Type (Why_Bool) := (Kind => Why_Bool);
    Why_Int_Type         : constant Why_Type (Why_Int) := (Kind => Why_Int);
    Why_Real_Type        : constant Why_Type (Why_Real) := (Kind => Why_Real);
    Why_Fixed_Point_Type : constant Why_Type (Why_Fixed_Point)
@@ -112,7 +114,8 @@ package Why.Inter is
    type Why_Scalar_Type_Array is array (Why_Scalar_Enum) of Why_Type;
 
    Why_Types : constant Why_Scalar_Type_Array :=
-                 (Why_Int         => Why_Int_Type,
+                 (Why_Bool        => Why_Bool_Type,
+                  Why_Int         => Why_Int_Type,
                   Why_Real        => Why_Real_Type,
                   Why_Fixed_Point => Why_Fixed_Point_Type);
 
