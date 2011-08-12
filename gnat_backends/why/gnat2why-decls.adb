@@ -23,47 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;
-
 with Atree;                use Atree;
 with Einfo;                use Einfo;
-with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
-with Stand;                use Stand;
 
+with Why.Types;            use Why.Types;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Inter;            use Why.Inter;
 with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Preds;        use Why.Gen.Preds;
+with Why.Gen.Binders;      use Why.Gen.Binders;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Decls is
-
-   ---------------
-   -- Full_Name --
-   ---------------
-
-   function Full_Name (N : Node_Id) return String is
-   begin
-      if N = Standard_Boolean then
-         return "bool";
-      else
-         declare
-            S : String := Unique_Name (N);
-         begin
-
-            --  In Why3, enumeration literals need to be upper case. Why2
-            --  doesn't care, so we enforce upper case here
-
-            if Ekind (N) = E_Enumeration_Literal then
-               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
-            end if;
-            return S;
-         end;
-      end if;
-   end Full_Name;
 
    ----------------
    -- Is_Mutable --
@@ -97,37 +71,47 @@ package body Gnat2Why.Decls is
       Def  : Node_Id := Empty)
    is
       Name   : constant String := Full_Name (Id);
+
+      function Term_Definition return W_Term_Id;
+      --  If possible, return a term equivalent to Def. Otherwise,
+      --  return Why_Empty.
+
+      ---------------------
+      -- Term_Definition --
+      ---------------------
+
+      function Term_Definition return W_Term_Id is
+      begin
+         if Present (Def) and then Is_Static_Expression (Def) then
+            return Why_Term_Of_Ada_Expr (Def, Type_Of_Node (Id));
+         else
+            return Why_Empty;
+         end if;
+      end Term_Definition;
+
    begin
       --  If the object is mutable, we generate a global ref
       if Is_Mutable (Id) then
-         New_Global_Ref_Declaration
-            (File     => File,
-             Name     => New_Identifier (Name),
-             Obj_Type => +Why_Logic_Type_Of_Ada_Obj (Id));
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Name     => New_Identifier (Name),
+               Ref_Type => +Why_Logic_Type_Of_Ada_Obj (Id)));
 
       else
          --  otherwise we can generate a "logic", with a defining axiom if
          --  necessary and possible.
-         New_Logic
-            (File        => File,
-             Name        => New_Identifier (Name),
-             Args        => (1 .. 0 => <>),
-             Return_Type => +Why_Logic_Type_Of_Ada_Obj (Id));
-         if Present (Def) and then Is_Static_Expression (Def) then
-            declare
-               Ax_Name : constant String := Name & "__def_axiom";
-               Ident : constant W_Identifier_Id := New_Identifier (Name);
-            begin
-               New_Axiom
-                  (File       => File,
-                   Name       => New_Identifier (Ax_Name),
-                   Axiom_Body =>
-                     New_Equal
-                        (Left  => New_Term_Identifier (Name => Ident),
-                         Right =>
-                           Why_Term_Of_Ada_Expr (Def, Type_Of_Node (Id))));
-            end;
-         end if;
+         Emit_Top_Level_Declarations
+           (File        => File,
+            Name        => New_Identifier (Name),
+            Binders     => (1 .. 0 => <>),
+            Return_Type => Why_Logic_Type_Of_Ada_Obj (Id),
+            Spec        =>
+              (1 =>
+                 (Kind   => W_Function_Decl,
+                  Domain => EW_Term,
+                  Def    => Term_Definition,
+                  others => <>)));
       end if;
 
    end Why_Decl_Of_Ada_Object_Decl;

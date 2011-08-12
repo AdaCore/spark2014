@@ -23,13 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders;  use Why.Atree.Builders;
-
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Preds;       use Why.Gen.Preds;
-with Why.Gen.Terms;       use Why.Gen.Terms;
-with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Conversions;    use Why.Conversions;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Terms;      use Why.Gen.Terms;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 
 package body Why.Gen.Funcs is
 
@@ -44,29 +45,32 @@ package body Why.Gen.Funcs is
       Arg_S   : constant String := "n";
       Arg_T   : constant String := "m";
       Post    : constant W_Predicate_Id :=
-                  New_Conditional_Pred
-                    (Condition => New_Result_Term,
+                  New_Conditional
+                    (Domain    => EW_Pred,
+                     Condition => +New_Result_Term,
                      Then_Part =>
-                       New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
+                       +New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
                      Else_Part =>
-                       New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+                       +New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
       Arg_Type : constant W_Primitive_Type_Id :=
-                   New_Abstract_Type (Name => New_Identifier (Type_Name));
+                   New_Abstract_Type (Name => New_Identifier (EW_Term,
+                                                              Type_Name));
    begin
       Emit
         (File,
-         New_Parameter
-           (Name => Eq_Param_Name.Id (Type_Name),
-            Binders =>
+         New_Function_Decl
+           (Domain      => EW_Prog,
+            Name        => Eq_Param_Name.Id (Type_Name),
+            Binders     =>
               (1 =>
-                (B_Name => New_Identifier (Arg_S),
-                 B_Type => Arg_Type,
-                 others => <>),
+                 (B_Name => New_Identifier (Arg_S),
+                  B_Type => Arg_Type,
+                  others => <>),
                2 =>
                  (B_Name => New_Identifier (Arg_T),
                   B_Type => Arg_Type,
                   others => <>)),
-            Return_Type => New_Type_Bool,
+            Return_Type => New_Base_Type (Base_Type => EW_Bool),
             Post        => Post));
    end New_Boolean_Equality_Parameter;
 

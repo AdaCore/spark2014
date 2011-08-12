@@ -28,7 +28,7 @@ with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Ids;            use Why.Ids;
 with Why.Inter;          use Why.Inter;
-with Why.Classes;        use Why.Classes;
+with Why.Sinfo;          use Why.Sinfo;
 
 package Why.Gen.Progs is
 
@@ -56,7 +56,8 @@ package Why.Gen.Progs is
    function New_Assume_Statement
       (Ada_Node    : Node_Id;
        Pred        : W_Predicate_Id;
-       Return_Type : W_Primitive_Type_Id := New_Type_Unit)
+       Return_Type : W_Primitive_Type_Id :=
+                       New_Base_Type (Base_Type => EW_Unit))
        return W_Prog_Id;
    --  Generate an assumption statement. There is no such thing in Why2, so it
    --  is encoded as follows:
@@ -89,7 +90,7 @@ package Why.Gen.Progs is
    function New_Located_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
-       Progs    : W_Prog_Array;
+       Progs    : W_Expr_Array;
        Reason   : VC_Kind) return W_Prog_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
@@ -99,11 +100,13 @@ package Why.Gen.Progs is
    function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean conjunction as program.
 
-   function New_Prog_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Prog_Id)
-      return W_Prog_Id;
+   function New_Prog_Boolean_Cmp
+     (Cmp         : EW_Relation;
+      Left, Right : W_Prog_Id)
+     return W_Prog_Id;
    --  Build a boolean comparison for programs of "int" type.
 
-   function New_Prog_Notb (Left : W_Prog_Id) return W_Prog_Id;
+   function New_Prog_Notb (Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean negation as a program.
 
    function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
@@ -125,11 +128,12 @@ package Why.Gen.Progs is
       return W_Prog_Id;
    --  Return the program consisting of the boolean constant "true".
 
-   function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
-   --  The program "void"
-   --
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.
+
+   function New_Result
+     (T : W_Simple_Value_Type_Id)
+     return W_Binder_Id;
 
 end Why.Gen.Progs;

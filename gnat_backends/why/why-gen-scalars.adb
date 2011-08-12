@@ -70,11 +70,11 @@ package body Why.Gen.Scalars is
       Last  : Uint)
    is
    begin
-      New_Abstract_Type (File, Name);
+      Emit (File, New_Type (Name));
       Define_Scalar_Conversions
         (File           => File,
          Name           => Name,
-         Base_Type      => New_Type_Int,
+         Base_Type      => New_Base_Type (Base_Type => EW_Int),
          Base_Type_Name => "int",
          First          => New_Constant (First),
          Last           => New_Constant (Last));
@@ -90,11 +90,11 @@ package body Why.Gen.Scalars is
       First : Ureal;
       Last  : Ureal) is
    begin
-      New_Abstract_Type (File, Name);
+      Emit (File, New_Type (Name));
       Define_Scalar_Conversions
         (File           => File,
          Name           => Name,
-         Base_Type      => New_Type_Real,
+         Base_Type      => New_Base_Type (Base_Type => EW_Real),
          Base_Type_Name => "real",
          First          => New_Constant (First),
          Last           => New_Constant (Last));
@@ -117,40 +117,51 @@ package body Why.Gen.Scalars is
       Define_Range_Predicate (File, Name, Base_Type, First, Last);
 
       --  to base type:
-      New_Logic
-         (File        => File,
-          Name        => Conversion_To.Id (Name, Base_Type_Name),
-          Args        =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-          Return_Type => +Base_Type);
+      Emit
+        (File,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Conversion_To.Id (Name, Base_Type_Name),
+            Binders        =>
+              New_Binders
+                ((1 => New_Abstract_Type
+                         (Name => New_Identifier (Name)))),
+            Return_Type => +Base_Type));
 
       --  from base type:
       declare
-         Return_Type  : constant W_Logic_Return_Type_Id :=
-                          New_Abstract_Type (Name => New_Identifier (Name));
+         Return_Type  : constant W_Primitive_Type_Id :=
+                          New_Abstract_Type (Name => New_Identifier (EW_Term,
+                                                                     Name));
          --  precondition: { <name>___in_range (n) }
          Range_Check  : constant W_Predicate_Id :=
-                          New_Predicate_Instance (Name =>
-                                                    Range_Pred_Name.Id (Name),
-                                                  Parameters =>
-                                                    (1 => New_Term (Arg_S)));
+                          New_Call
+                            (Domain => EW_Pred,
+                             Name   => Range_Pred_Name.Id (Name),
+                             Args   => (1 => +New_Term (Arg_S)));
          --  postcondition: { <name>___of_<base_type> (result) = n }
-         Base_Result  : constant W_Operation_Id :=
-                          New_Operation (Name =>
-                                           Conversion_To.Id (Name,
-                                                             Base_Type_Name),
-                                         Parameters =>
-                                           (1 => New_Result_Term));
+         Base_Result  : constant W_Term_Id :=
+                          New_Call
+                            (Domain => EW_Term,
+                             Name   =>
+                               Conversion_To.Id (Name,
+                                                 Base_Type_Name),
+                             Args   =>
+                               (1 => +New_Result_Term));
          Post         : constant W_Predicate_Id :=
-                          New_Related_Terms (Left  => +Base_Result,
-                                             Op    => New_Rel_Eq,
-                                             Right => New_Term (Arg_S));
-         Spec         : Declaration_Spec_Array :=
-                          (1 => (Kind => W_Logic,
+                          New_Relation
+                            (Domain => EW_Pred,
+                             Left   => +Base_Result,
+                             Op     => EW_Eq,
+                             Right  => +New_Term (Arg_S));
+         Spec         : constant Declaration_Spec_Array :=
+                          (1 => (Kind   => W_Function_Decl,
+                                 Domain => EW_Term,
                                  others => <>),
-                           2 => (Kind => W_Parameter_Declaration,
-                                 Pre  => Range_Check,
-                                 Post => Post,
+                           2 => (Kind   => W_Function_Decl,
+                                 Domain => EW_Prog,
+                                 Pre    => Range_Check,
+                                 Post   => Post,
                                  others => <>));
 
       begin
@@ -161,7 +172,7 @@ package body Why.Gen.Scalars is
               (1 => (B_Name => New_Identifier (Arg_S),
                      B_Type => Base_Type,
                      others => <>)),
-            Return_Type => +Return_Type,
+            Return_Type => Return_Type,
             Spec => Spec);
          Define_Eq_Predicate (File, Name, Base_Type_Name);
          Define_Range_Axiom (File,

@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils; use String_Utils;
-with Why.Ids;      use Why.Ids;
+with Why.Ids;         use Why.Ids;
+with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
@@ -71,9 +71,8 @@ package Why.Gen.Axioms is
    procedure Define_Getter_Axiom
      (File      : W_File_Id;
       Type_Name : String;
-      C_Name    : String;
-      C_Names   : String_Lists.List;
-      Builder   : W_Logic_Type_Id);
+      C_Name    : W_Identifier_Id;
+      Binders   : Binder_Array);
    --  Define a record getter axiom: its asserts that for a record of type t,
    --  built with a function make___t, get__t_a returns field a.
    --  The axiom is of the form:

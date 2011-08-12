@@ -53,11 +53,13 @@ with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
+with Why.Sinfo;             use Why.Sinfo;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Conversions;       use Why.Conversions;
 with Why.Inter;             use Why.Inter;
 
@@ -308,8 +310,10 @@ package body Gnat2Why.Driver is
       Cur : Cursor := First (L);
    begin
       while Has_Element (Cur) loop
-         New_Include_Declaration
-           (File, New_Identifier (Element (Cur)));
+         Emit
+           (File,
+            New_Include_Declaration
+             (Name => New_Identifier (Element (Cur))));
          Next (Cur);
       end loop;
    end Translate_Context;
@@ -367,7 +371,7 @@ package body Gnat2Why.Driver is
             end if;
             case Ekind (N) is
                when Type_Kind =>
-                  New_Abstract_Type (File, Full_Name (N));
+                  Emit (File, New_Type (Full_Name (N)));
 
                when Object_Kind | Named_Kind =>
                   Why_Decl_Of_Ada_Object_Decl (File, N);
@@ -478,9 +482,10 @@ package body Gnat2Why.Driver is
 
       --  Generate the inclusion of the GNATprove Why theory
 
-      New_Include_Declaration
-        (File => File,
-         Name => New_Identifier ("_gnatprove_standard"));
+      Emit
+        (File,
+         New_Include_Declaration
+           (Name => New_Identifier ("_gnatprove_standard")));
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
@@ -500,7 +505,7 @@ package body Gnat2Why.Driver is
       --  definition. The type is not in Alfa anyway, so we just generate the
       --  correct abstract type in Why.
 
-      New_Abstract_Type (File, "standard___renaming_type");
+      Emit (File, New_Type ("standard___renaming_type"));
 
       --  We also need to define the ASCII entities
 
@@ -508,14 +513,20 @@ package body Gnat2Why.Driver is
          Cur : Node_Id := First_Entity (Standard_ASCII);
       begin
          while Present (Cur) loop
-            New_Logic
-               (File => File,
-                Name => New_Identifier (Name => Full_Name (Cur)),
-                Args => (1 .. 0 => <>),
-                Return_Type =>
-                  New_Abstract_Type (Name =>
-                     New_Identifier (Name =>
-                        Full_Name (Standard_Character))));
+            Emit
+              (File,
+               New_Function_Decl
+                 (Domain => EW_Term,
+                  Name   =>
+                    New_Identifier (Name => Full_Name (Cur)),
+                  Binders =>
+                    (1 .. 0 => <>),
+                  Return_Type =>
+                    New_Abstract_Type
+                      (Name =>
+                         New_Identifier
+                           (Name =>
+                              Full_Name (Standard_Character)))));
             Next_Entity (Cur);
          end loop;
       end;

@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -43,37 +45,44 @@ package body Why.Gen.Axioms is
    is
       Arg_S                : constant String := "x";
       X_To_Type_Op         : constant W_Term_Id :=
-                               New_Operation
-                                 (Name       => From_Base_Type,
-                                  Parameters => (1 => New_Term (Arg_S)));
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   => From_Base_Type,
+                                  Args   => (1 => +New_Term (Arg_S)));
       Back_To_Base_Type_Op : constant W_Term_Id :=
-                               New_Operation
-                                 (Name       => To_Base_Type,
-                                  Parameters => (1 => X_To_Type_Op));
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   => To_Base_Type,
+                                  Args   => (1 => +X_To_Type_Op));
       In_Range             : constant W_Predicate_Id :=
-                               New_Predicate_Instance
-                                  (Name =>
-                                     Range_Pred_Name.Id (Type_Name),
-                                   Parameters =>
-                                     (1 => New_Term (Arg_S)));
+                               New_Call
+                                 (Domain => EW_Pred,
+                                  Name   =>
+                                    Range_Pred_Name.Id (Type_Name),
+                                  Args   =>
+                                    (1 => +New_Term (Arg_S)));
       In_Range_t          : constant W_Term_Id :=
-                               New_Operation
-                                  (Name =>
-                                     Range_Pred_Name.Id (Type_Name),
-                                   Parameters =>
-                                     (1 => New_Term (Arg_S)));
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   =>
+                                    Range_Pred_Name.Id (Type_Name),
+                                  Args   =>
+                                    (1 => +New_Term (Arg_S)));
       Formula              : constant W_Predicate_Id :=
-                               New_Implication
-                                 (Left  => In_Range,
-                                  Right =>
-                                    New_Related_Terms
-                                      (Left  => Back_To_Base_Type_Op,
-                                       Op    => New_Rel_Eq,
-                                       Right => New_Term (Arg_S)));
+                               New_Connection
+                                 (Domain => EW_Pred,
+                                  Op     => EW_Imply,
+                                  Left   => +In_Range,
+                                  Right  =>
+                                    New_Relation
+                                      (Left  => +Back_To_Base_Type_Op,
+                                       Op    => EW_Eq,
+                                       Right => New_Prog (Arg_S)));
       Quantif_On_X         : constant W_Predicate_Id :=
                                New_Universal_Quantif
                                  (Var_Type  => Base_Type,
-                                  Variables => (1 => New_Identifier (Arg_S)),
+                                  Variables => (1 => New_Identifier (EW_Term,
+                                                                     Arg_S)),
                                   Triggers  => New_Triggers (
                                     Triggers =>
                                       (1 => New_Trigger (
@@ -84,10 +93,11 @@ package body Why.Gen.Axioms is
                                                      Back_To_Base_Type_Op)))),
                                   Pred      => Formula);
    begin
-      New_Axiom
-        (File       => File,
-         Name       => Coerce_Axiom.Id (Type_Name),
-         Axiom_Body => Quantif_On_X);
+      Emit
+        (File,
+         New_Axiom
+           (Name => Coerce_Axiom.Id (Type_Name),
+            Def  => Quantif_On_X));
    end Define_Coerce_Axiom;
 
    -------------------------
@@ -97,32 +107,32 @@ package body Why.Gen.Axioms is
    procedure Define_Getter_Axiom
      (File      : W_File_Id;
       Type_Name : String;
-      C_Name    : String;
-      C_Names   : String_Lists.List;
-      Builder   : W_Logic_Type_Id)
+      C_Name    : W_Identifier_Id;
+      Binders   : Binder_Array)
    is
-      use String_Lists;
-
       Call_To_Builder : constant W_Term_Id :=
-                          New_Operation
-                            (Name       => Record_Builder_Name.Id (Type_Name),
-                             Parameters => New_Terms (C_Names));
+                          New_Call
+                            (Domain  => EW_Term,
+                             Name    => Record_Builder_Name.Id (Type_Name),
+                             Binders => Binders);
       Call_To_Getter  : constant W_Term_Id :=
-                          New_Operation
-                           (Name       => Record_Getter_Name.Id (C_Name),
-                            Parameters => (1 => Call_To_Builder));
+                          New_Call
+                           (Domain => EW_Term,
+                            Name   => Record_Getter_Name.Id (C_Name),
+                            Args   => (1 => +Call_To_Builder));
       Context         : constant W_Predicate_Id :=
                           New_Equal (Call_To_Getter,
-                                     New_Term (C_Name));
+                                     +C_Name);
       UPB             : constant W_Predicate_Id :=
-                          New_Universal_Predicate (C_Names,
-                                                   Builder,
-                                                   Context);
+                          New_Universal_Quantif
+                            (Binders => Binders,
+                             Pred    => Context);
    begin
-      New_Axiom
-        (File       => File,
-         Name       => Record_Getter_Axiom.Id (C_Name),
-         Axiom_Body => UPB);
+      Emit
+        (File,
+         New_Axiom
+           (Name => Record_Getter_Axiom.Id (C_Name),
+            Def  => UPB));
    end Define_Getter_Axiom;
 
    ------------------------
@@ -136,13 +146,15 @@ package body Why.Gen.Axioms is
    is
       Arg_S              : constant String := "x";
       Call_To_Conversion : constant W_Term_Id :=
-                             New_Operation
-                               (Name       => Conversion,
-                                Parameters => (1 => New_Term (Arg_S)));
+                             New_Call
+                               (Domain => EW_Term,
+                                Name   => Conversion,
+                                Args   => (1 => +New_Term (Arg_S)));
       Formula            : constant W_Predicate_Id :=
-                             New_Predicate_Instance
-                               (Name       => Range_Pred_Name.Id (Type_Name),
-                                Parameters => (1 => Call_To_Conversion));
+                             New_Call
+                               (Domain => EW_Pred,
+                                Name   => Range_Pred_Name.Id (Type_Name),
+                                Args   => (1 => +Call_To_Conversion));
       Quantif_On_X       : constant W_Predicate_Id :=
                              New_Universal_Quantif
                                (Var_Type =>
@@ -152,10 +164,11 @@ package body Why.Gen.Axioms is
                                 Pred =>
                                   Formula);
    begin
-      New_Axiom
-        (File       => File,
-         Name       => Range_Axiom.Id (Type_Name),
-         Axiom_Body => Quantif_On_X);
+      Emit
+        (File,
+         New_Axiom
+           (Name => Range_Axiom.Id (Type_Name),
+            Def  => Quantif_On_X));
    end Define_Range_Axiom;
 
    --------------------------
@@ -170,25 +183,31 @@ package body Why.Gen.Axioms is
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
       X_To_Base_Type_Op : constant W_Term_Id :=
-                            New_Operation (Name =>
-                                             Conversion,
-                                           Parameters =>
-                                             (1 => New_Term (X_S)));
+                            New_Call
+                              (Domain => EW_Term,
+                               Name   => Conversion,
+                               Args   => (1 => +New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
-                            New_Operation (Name => Conversion,
-                                           Parameters =>
-                                             (1 => New_Term (Y_S)));
+                            New_Call
+                              (Domain => EW_Term,
+                               Name   => Conversion,
+                               Args   => (1 => +New_Term (Y_S)));
       Formula           : constant W_Predicate_Id :=
-                            New_Implication
-                              (Left =>
-                                 New_Related_Terms
-                                   (Left  => X_To_Base_Type_Op,
-                                    Op    => New_Rel_Eq,
-                                    Right => Y_To_Base_Type_Op),
+                            New_Connection
+                              (Domain => EW_Pred,
+                               Op     => EW_Imply,
+                               Left   =>
+                                 New_Relation
+                                   (Domain => EW_Pred,
+                                    Left   => +X_To_Base_Type_Op,
+                                    Op     => EW_Eq,
+                                    Right  => +Y_To_Base_Type_Op),
                                Right =>
-                                 New_Related_Terms (Left  => New_Term (X_S),
-                                                    Op    => New_Rel_Eq,
-                                                    Right => New_Term (Y_S)));
+                                 New_Relation
+                                   (Domain => EW_Pred,
+                                    Left   => +New_Term (X_S),
+                                    Op     => EW_Eq,
+                                    Right  => +New_Term (Y_S)));
       Quantif_On_XY     : constant W_Predicate_Id :=
                             New_Universal_Quantif
                               (Var_Type =>
@@ -199,10 +218,11 @@ package body Why.Gen.Axioms is
                                Pred =>
                                  Formula);
    begin
-      New_Axiom
-        (File       => File,
-         Name       => Unicity_Axiom.Id (Type_Name),
-         Axiom_Body => Quantif_On_XY);
+      Emit
+        (File,
+         New_Axiom
+           (Name => Unicity_Axiom.Id (Type_Name),
+            Def  => Quantif_On_XY));
    end Define_Unicity_Axiom;
 
 end Why.Gen.Axioms;

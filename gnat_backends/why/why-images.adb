@@ -33,7 +33,11 @@ package body Why.Images is
 
    function Img (Name : Name_Id) return String is
    begin
-      return Get_Name_String (Name);
+      if Name = No_Name then
+         return "[no name]";
+      else
+         return Get_Name_String (Name);
+      end if;
    end Img;
 
    function Img (Node : Why_Node_Id) return String is
@@ -55,6 +59,11 @@ package body Why.Images is
    procedure P (O : Output_Id; Node : Why_Node_Id) is
    begin
       P (O, Img (Node));
+   end P;
+
+   procedure P (O : Output_Id; Value : Boolean) is
+   begin
+      P (O, Boolean'Image (Value));
    end P;
 
    procedure P (O : Output_Id; Value : Uint) is
@@ -195,6 +204,141 @@ package body Why.Images is
             P (O, ".0");
          end if;
       end if;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Base_Type) is
+   begin
+      case Value is
+         when EW_Unit =>
+            P (O, "unit");
+         when EW_Prop =>
+            P (O, "prop");
+         when EW_Real =>
+            P (O, "real");
+         when EW_Int =>
+            P (O, "int");
+         when EW_Bool =>
+            P (O, "bool");
+      end case;
+   end P;
+
+   procedure P
+     (O      : Output_Id;
+      Value  : EW_Literal;
+      Domain : EW_Domain := EW_Prog)
+   is
+   begin
+      case Value is
+         when EW_True =>
+            if Is_Why3 and then Domain = EW_Prog then
+               P (O, "True");
+            else
+               P (O, "true");
+            end if;
+         when EW_False =>
+            if Is_Why3 and then Domain = EW_Prog then
+               P (O, "False");
+            else
+               P (O, "false");
+            end if;
+      end case;
+   end P;
+
+   procedure P
+     (O       : Output_Id;
+      Value   : EW_Binary_Op;
+      Op_Type : EW_Scalar := EW_Int) is
+   begin
+      case Value is
+         when EW_Add =>
+            P (O, "+");
+         when EW_Substract =>
+            P (O, "-");
+         when EW_Multiply =>
+            P (O, "*");
+         when EW_Divide =>
+            P (O, "/");
+         when EW_Mod =>
+            P (O, "%");
+      end case;
+
+      if Is_Why3 and then Op_Type = EW_Real then
+         P (O, ".");
+      end if;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Relation) is
+   begin
+      case Value is
+         when EW_None =>
+            pragma Assert (False);
+            null;
+         when EW_Eq =>
+            P (O, "=");
+         when EW_Ne =>
+            P (O, "<>");
+         when EW_Lt =>
+            P (O, "<");
+         when EW_Le =>
+            P (O, "<=");
+         when EW_Gt =>
+            P (O, ">");
+         when EW_Ge =>
+            P (O, ">=");
+      end case;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Connector) is
+   begin
+      case Value is
+         when EW_Or_Else =>
+            P (O, "||");
+
+         when EW_And_Then =>
+            P (O, "&&");
+
+         when EW_Imply =>
+            P (O, "->");
+
+         when EW_Equivalent =>
+            P (O, "<->");
+
+         when EW_Or =>
+            if Is_Why3 then
+               P (O, "\/");
+            else
+               P (O, "or");
+            end if;
+
+         when EW_And =>
+            if Is_Why3 then
+               P (O, "/\");
+            else
+               P (O, "and");
+            end if;
+      end case;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Unary_Op) is
+   begin
+      case Value is
+         when EW_Minus =>
+            P (O, "-");
+         when EW_Deref =>
+            P (O, "!");
+      end case;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Domain) is
+   begin
+      case Value is
+         when EW_Term =>
+            P (O, "[term]");
+         when EW_Pred =>
+            P (O, "[predicate]");
+         when EW_Prog =>
+            P (O, "[program]");
+      end case;
    end P;
 
 end Why.Images;

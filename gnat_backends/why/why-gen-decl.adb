@@ -34,18 +34,6 @@ package body Why.Gen.Decl is
    ----------
 
    procedure Emit
-      (File : W_File_Id;
-       Decl : W_Logic_Declaration_Class_Id)
-   is
-      Item : constant W_Declaration_Id :=
-               New_Logic_Declaration (Decl => Decl);
-   begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item => Item);
-   end Emit;
-
-   procedure Emit
      (File : W_File_Id;
       Decl : W_Declaration_Id) is
    begin
@@ -54,37 +42,25 @@ package body Why.Gen.Decl is
          New_Item => +Decl);
    end Emit;
 
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
+   --------------
+   -- New_Type --
+   --------------
 
-   procedure New_Abstract_Type (File : W_File_Id; Name : String)
-   is
+   function New_Type (Name : String) return W_Declaration_Id is
    begin
-      Emit
-        (File,
-         New_Type (Name => New_Identifier (Name)));
-   end New_Abstract_Type;
+      return New_Type (Name => New_Identifier (Name));
+   end New_Type;
 
-   procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id)
+   function New_Type
+     (Name : W_Identifier_Id;
+      Args : Natural)
+     return W_Declaration_Id
    is
-   begin
-      Emit
-        (File,
-         New_Type (Name => Name));
-   end New_Abstract_Type;
-
-   procedure New_Abstract_Type
-      (File : W_File_Id;
-       Name : W_Identifier_Id;
-       Args : Natural)
-   is
-      C : Character := 'a';
+      C       : Character := 'a';
       Type_Ar : W_Identifier_Array := (1 .. Args => <>);
    begin
       if Args = 0 then
-         New_Abstract_Type (File, Name);
-         return;
+         return New_Type (Name => Name);
       end if;
 
       for I in 1 .. Args loop
@@ -92,113 +68,26 @@ package body Why.Gen.Decl is
          C := Character'Succ (C);
       end loop;
 
-      Emit
-       (File,
+      return
         New_Type
-          (Name            => Name,
-           Type_Parameters => Type_Ar));
-   end New_Abstract_Type;
+          (Name => Name,
+           Args => Type_Ar);
+   end New_Type;
 
    ------------------------
    -- New_Adt_Definition --
    ------------------------
 
-   procedure New_Adt_Definition
-     (File : W_File_Id;
-      Name : W_Identifier_Id;
+   function New_Adt_Definition
+     (Name         : W_Identifier_Id;
       Constructors : W_Constr_Decl_Array)
-   is
+     return W_Declaration_Id is
    begin
-      Emit
-       (File,
+      return
         New_Type
           (Name => Name,
            Definition =>
-             New_Adt_Definition (Constructors => Constructors)));
+             New_Adt_Definition (Constructors => Constructors));
    end New_Adt_Definition;
-
-   ---------------
-   -- New_Axiom --
-   ---------------
-
-   procedure New_Axiom
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Axiom_Body : W_Predicate_Id)
-   is
-   begin
-      Emit
-        (File,
-         New_Axiom (Name => Name, Def => Axiom_Body));
-   end New_Axiom;
-
-   -------------------
-   -- New_Exception --
-   -------------------
-
-   procedure New_Exception
-      (File      : W_File_Id;
-       Name      : W_Identifier_Id;
-       Parameter : W_Primitive_Type_Id)
-   is
-   begin
-      File_Append_To_Declarations
-         (File,
-          New_Exception_Declaration (Name => Name, Parameter => Parameter));
-   end New_Exception;
-
-   --------------------------------
-   -- New_Global_Ref_Declaration --
-   --------------------------------
-
-   procedure New_Global_Ref_Declaration
-      (File     : W_File_Id;
-       Name     : W_Identifier_Id;
-       Obj_Type : W_Primitive_Type_Id) is
-   begin
-      File_Append_To_Declarations
-         (File,
-            New_Global_Ref_Declaration
-               (Name => Name, Parameter_Type => Obj_Type));
-   end New_Global_Ref_Declaration;
-
-   -----------------------------
-   -- New_Include_Declaration --
-   -----------------------------
-
-   procedure New_Include_Declaration
-     (File : W_File_Id;
-      Name : W_Identifier_Id;
-      Ada_Node : Node_Id := Empty)
-   is
-   begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item =>
-           New_Include_Declaration
-             (Ada_Node => Ada_Node,
-              Name     => Name));
-   end New_Include_Declaration;
-
-   ---------------
-   -- New_Logic --
-   ---------------
-
-   procedure New_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Args        : W_Logic_Arg_Type_Array;
-      Return_Type : W_Logic_Return_Type_Id)
-   is
-   begin
-      Emit
-        (File,
-         New_Logic
-           (Names => (1 => Name),
-            Logic_Type =>
-              New_Logic_Type
-                (Arg_Types   => Args,
-                 Return_Type => Return_Type)));
-   end New_Logic;
 
 end Why.Gen.Decl;

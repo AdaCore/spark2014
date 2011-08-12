@@ -48,18 +48,22 @@ package body Why.Gen.Types is
       Cnt     : Integer range 0 .. Integer (Len) := 0;
    begin
       if Len = 0 then
-         New_Abstract_Type (File, Name);
+         Emit (File, New_Type (Name));
+
       else
          while Has_Element (Cursor) loop
             Cnt := Cnt + 1;
             Constrs (Cnt) :=
-              New_Constr_Decl (Name => New_Identifier (Element (Cursor)));
+              New_Constr_Decl
+                (Name => New_Identifier (Element (Cursor)));
             Next (Cursor);
          end loop;
-         New_Adt_Definition
-           (File       => File,
-            Name       => New_Identifier (Name),
-            Constructors => Constrs);
+
+         Emit
+           (File,
+            New_Adt_Definition
+              (Name         => New_Identifier (Name),
+               Constructors => Constrs));
       end if;
    end New_Enum_Type_Declaration;
 

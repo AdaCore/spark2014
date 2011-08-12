@@ -83,11 +83,11 @@ package Why.Gen.Arrays is
    --  Generate a Term that corresponds to Ar'Length.
 
    function New_Array_Update_Prog
-      (Ada_Node      : Node_Id;
-       Type_Name     : String;
-       Ar            : W_Identifier_Id;
-       Index         : W_Prog_Id;
-       Value         : W_Prog_Id) return W_Prog_Id;
+      (Ada_Node  : Node_Id;
+       Type_Name : String;
+       Ar        : W_Identifier_Id;
+       Index     : W_Prog_Id;
+       Value     : W_Prog_Id) return W_Prog_Id;
    --  Generate an assignment that corresponds to an array update in Why
    --  programs.
 

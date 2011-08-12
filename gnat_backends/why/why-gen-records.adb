@@ -23,105 +23,53 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Axioms;      use Why.Gen.Axioms;
-with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Records is
 
-   -------------------
-   -- Add_Component --
-   -------------------
+   -----------------------
+   -- Define_Ada_Record --
+   -----------------------
 
-   procedure Add_Component
+   procedure Define_Ada_Record
      (File    : W_File_Id;
-      C_Name  : String;
-      C_Type  : W_Primitive_Type_Id;
-      Builder : W_Logic_Type_Id)
+      Name    : String;
+      Binders : Binder_Array)
    is
       R_Type : constant W_Primitive_Type_Id :=
-                 +Logic_Type_Get_Return_Type (Builder);
+                 New_Abstract_Type (Name => New_Identifier (Name));
    begin
-      New_Logic
-         (File        => File,
-          Name        => Record_Getter_Name.Id (C_Name),
-          Args        => (1 => +R_Type),
-          Return_Type => +C_Type);
-      Logic_Type_Append_To_Arg_Types
-         (Builder, +C_Type);
-   end Add_Component;
+      Emit (File, New_Type (Name));
 
-   -----------------------
-   -- Freeze_Ada_Record --
-   -----------------------
+      for J in Binders'Range loop
+         Emit
+           (File,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => Record_Getter_Name.Id (Binders (J).B_Name),
+               Binders     => New_Binders ((1 => R_Type)),
+               Return_Type => Binders (J).B_Type));
+      end loop;
 
-   procedure Freeze_Ada_Record
-     (File    : W_File_Id;
-      Name    : String;
-      C_Names : String_Lists.List;
-      Builder : W_Logic_Type_Id)
-   is
-      use String_Lists;
+      Emit
+        (File,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Record_Builder_Name.Id (Name),
+            Binders     => Binders,
+            Return_Type => R_Type));
 
-      C_Types : constant W_Logic_Arg_Type_OList :=
-                  Logic_Type_Get_Arg_Types (Builder);
-   begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item => New_Logic_Declaration
-         (Decl => New_Logic
-          (Names => (1 => Record_Builder_Name.Id (Name)),
-           Logic_Type => Builder)));
-
-      if Is_Empty (+C_Types) then
-         return;
-      end if;
-
-      --  Workaround for K526-008 and K525-019
-
-      --  for C_Name of C_Names loop
-      --   Define_Getter_Axiom
-      --     (File,
-      --      Name,
-      --      C_Name,
-      --      C_Names,
-      --      Builder);
-      --  end loop;
-
-      declare
-         C : Cursor := C_Names.First;
-      begin
-         while C /= No_Element loop
-            Define_Getter_Axiom
-              (File,
-               Name,
-               Element (C),
-               C_Names,
-               Builder);
-            Next (C);
-         end loop;
-      end;
-   end Freeze_Ada_Record;
-
-   ----------------------------------
-   -- Start_Ada_Record_Declaration --
-   ----------------------------------
-
-   procedure Start_Ada_Record_Declaration
-     (File    : W_File_Id;
-      Name    : String;
-      Builder : out W_Logic_Type_Id)
-   is
-   begin
-      New_Abstract_Type (File, Name);
-      Builder :=
-        New_Logic_Type (Return_Type =>
-                          New_Abstract_Type (Name => New_Identifier (Name)));
-   end Start_Ada_Record_Declaration;
+      for J in Binders'Range loop
+         Define_Getter_Axiom
+           (File,
+            Name,
+            Binders (J).B_Name,
+            Binders);
+      end loop;
+   end Define_Ada_Record;
 
 end Why.Gen.Records;

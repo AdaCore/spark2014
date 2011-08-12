@@ -34,6 +34,9 @@ package body Xtree_Tables is
    function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Helper functions for the corresponding homonyms
 
+   function Special_Field_Default
+     (Kind : Valid_Special_Field_Kind) return Wide_String;
+
    -------------------
    -- Accessor_Name --
    -------------------
@@ -109,15 +112,8 @@ package body Xtree_Tables is
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String is
-      TN : constant Wide_String := Type_Name (FI, Regular);
    begin
-      if TN = "Why_Node_Id" then
-         return "Why_Empty";
-      elsif TN = "Node_Id" then
-         return "Empty";
-      elsif TN = "Why_Node_Set" then
-         return "Why_Empty";
-      elsif Is_List (FI)
+      if Is_List (FI)
         and then (IK = Unchecked or else Maybe_Null (FI))
       then
          if Context = In_Builder_Body then
@@ -129,7 +125,7 @@ package body Xtree_Tables is
         and then (IK = Unchecked or else Maybe_Null (FI)) then
          return "Why_Empty";
       else
-         return "";
+         return FI.Default.all;
       end if;
    end Default_Value;
 
@@ -341,11 +337,13 @@ package body Xtree_Tables is
      (NI         : in out Why_Node_Info;
       In_Variant : Boolean;
       Field_Name : Wide_String;
-      Field_Type : Wide_String)
+      Field_Type : Wide_String;
+      Default    : Wide_String)
    is
       FI           : Field_Info :=
                        (Field_Name     => new Wide_String'(Field_Name),
                         Field_Type     => new Wide_String'(Field_Type),
+                        Default        => new Wide_String'(Default),
                         Id_Type        => null,
                         In_Variant     => In_Variant,
                         Is_Why_Id      => False,
@@ -472,9 +470,10 @@ package body Xtree_Tables is
 
    procedure New_Common_Field
      (Field_Name : Wide_String;
-      Field_Type : Wide_String) is
+      Field_Type : Wide_String;
+      Default    : Wide_String := "") is
    begin
-      New_Field (Common_Fields, False, Field_Name, Field_Type);
+      New_Field (Common_Fields, False, Field_Name, Field_Type, Default);
    end New_Common_Field;
 
    ---------------
@@ -484,13 +483,18 @@ package body Xtree_Tables is
    procedure New_Field
      (Kind       : Why_Node_Kind;
       Field_Name : Wide_String;
-      Field_Type : Wide_String)
+      Field_Type : Wide_String;
+      Default    : Wide_String := "")
    is
       Prefix : Wide_String :=
                  Integer'Wide_Image (Why_Node_Kind'Pos (Kind)) & "_";
    begin
       Prefix (1) := 'K';
-      New_Field (Why_Tree_Info (Kind), True, Prefix & Field_Name, Field_Type);
+      New_Field (Why_Tree_Info (Kind),
+                 True,
+                 Prefix & Field_Name,
+                 Field_Type,
+                 Default);
    end New_Field;
 
    procedure New_Field
@@ -499,8 +503,13 @@ package body Xtree_Tables is
       Field_Kind   : Wide_String;
       Multiplicity : Id_Multiplicity) is
    begin
-      New_Field (Kind, Field_Name,
-                 Id_Subtype (Field_Kind, Opaque, Multiplicity));
+      New_Field (Kind,
+                 Field_Name,
+                 Id_Subtype (Field_Kind, Opaque, Multiplicity),
+                 (case Multiplicity is
+                    when Id_Lone => "Why_Empty",
+                    when Id_Set  => "New_List",
+                    when others  => ""));
    end New_Field;
 
    -----------------------------
@@ -513,7 +522,8 @@ package body Xtree_Tables is
          New_Field (Common_Fields,
                     False,
                     To_String (Kind),
-                    Special_Field_Type (Kind));
+                    Special_Field_Type (Kind),
+                    Special_Field_Default (Kind));
       end loop;
    end Register_Special_Fields;
 
@@ -525,6 +535,22 @@ package body Xtree_Tables is
    begin
       Why_Tree_Info (Kind).Is_Mutable := True;
    end Set_Mutable;
+
+   ---------------------------
+   -- Special_Field_Default --
+   ---------------------------
+
+   function Special_Field_Default
+     (Kind : Valid_Special_Field_Kind) return Wide_String is
+   begin
+      case Kind is
+         when Special_Field_Link =>
+            return "Why_Empty";
+
+         when Special_Field_Checked =>
+            return "False";
+      end case;
+   end Special_Field_Default;
 
    ------------------------
    -- Special_Field_Type --

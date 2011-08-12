@@ -50,6 +50,10 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
+   function New_Binders
+     (Anonymous_Binders : W_Primitive_Type_Array)
+     return Binder_Array;
+
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
@@ -62,12 +66,13 @@ package Why.Gen.Binders is
       Pred     : W_Predicate_Id)
      return W_Predicate_Id;
 
-   function New_Call_To_Logic
+   function New_Call
      (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array)
      return W_Term_Id;
-   --  Create a call to an operation in the logical space with parameters
+   --  Create a call to an operation in the given domain with parameters
    --  taken from Binders. Typically, from:
    --
    --     (x1 : type1) (x2 : type2)
@@ -78,45 +83,26 @@ package Why.Gen.Binders is
 
    --  Top-level entities
 
-   function New_Logic
+   function New_Function_Decl
      (Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
-      Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id)
-     return W_Logic_Declaration_Class_Id;
-
-   function New_Function
-     (Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
-      Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
-      Def         : W_Term_Id)
-     return W_Logic_Declaration_Class_Id;
-
-   function New_Predicate_Definition
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id;
-      Binders  : Binder_Array;
-      Def      : W_Predicate_Id)
-     return W_Logic_Declaration_Class_Id;
-
-   function New_Global_Binding
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id;
-      Binders  : Binder_Array;
-      Pre      : W_Predicate_Id := New_True_Literal_Pred;
-      Def      : W_Prog_Id;
-      Post     : W_Predicate_Id := New_True_Literal_Pred)
-     return W_Declaration_Id;
-
-   function New_Parameter
-     (Ada_Node    : Node_Id := Empty;
+      Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Predicate_Id := New_True_Literal_Pred;
-      Post        : W_Predicate_Id := New_True_Literal_Pred)
+      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
+      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+     return W_Declaration_Id;
+
+   function New_Function_Def
+     (Ada_Node    : Node_Id := Empty;
+      Domain      : EW_Domain;
+      Name        : W_Identifier_Id;
+      Binders     : Binder_Array;
+      Return_Type : W_Primitive_Type_OId := Why_Empty;
+      Def         : W_Expr_Id;
+      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
+      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
    function New_Guarded_Axiom
@@ -125,7 +111,7 @@ package Why.Gen.Binders is
       Binders  : Binder_Array;
       Pre      : W_Predicate_OId := Why_Empty;
       Def      : W_Predicate_Id)
-     return W_Logic_Declaration_Class_Id;
+     return W_Declaration_Id;
    --  generate an axiom of the form:
    --
    --   axiom <name>:
@@ -138,7 +124,7 @@ package Why.Gen.Binders is
       Binders  : Binder_Array;
       Pre      : W_Predicate_OId := Why_Empty;
       Def      : W_Term_Id)
-     return W_Logic_Declaration_Class_Id;
+     return W_Declaration_Id;
    --  generate an axiom of the form:
    --
    --   axiom <name>___def:
@@ -151,67 +137,81 @@ package Why.Gen.Binders is
       Binders  : Binder_Array;
       Pre      : W_Predicate_Id := Why_Empty;
       Def      : W_Predicate_Id)
-     return W_Logic_Declaration_Class_Id;
+     return W_Declaration_Id;
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).
 
-   subtype W_Binded_Declaration is Why_Node_Kind
-     with Predicate => (W_Binded_Declaration in W_Unused_At_Start
-                        | W_Logic
-                        | W_Function
-                        | W_Predicate_Definition
-                        | W_Parameter_Declaration
-                        | W_Global_Binding);
+   subtype W_Binded_Declaration is Why_Node_Kind range
+     W_Function_Decl ..
+     W_Function_Def;
 
-   type Declaration_Spec (Kind : W_Binded_Declaration := W_Unused_At_Start) is
+   type Declaration_Spec
+     (Kind   : W_Binded_Declaration := W_Function_Def;
+      Domain : EW_Domain            := EW_Prog) is
      record
         Name : W_Identifier_OId := Why_Empty;
         --  Name of the entity to declare. If not specified, a defaut is
         --  given following the defaut naming convention.
 
         Pre  : W_Predicate_OId := Why_Empty;
+
         Post : W_Predicate_OId := Why_Empty;
+        --  If no postcondition is given, and if a logic declaration
+        --  is provided, one will be generated that will use this
+        --  logic declaration. e.g. if Name is "my_func" and Binders is:
+        --
+        --     (x1 : type1) -> (x2 : type2)
+        --
+        --  ...then the logic declaration will be:
+        --
+        --     logic my_func : type1, type2 -> type3
+        --
+        --  ...and the generated program-space declaration, with the
+        --  default postcondition will be:
+        --
+        --     parameter my_func_ :
+        --      x1 : type1 -> x2 : type2 ->
+        --     { pre }
+        --      type3
+        --     { my_func (x1, x2) = result }
 
         case Kind is
-           when W_Logic | W_Function =>
-              Term : W_Term_OId := Why_Empty;
+           when W_Function_Def =>
+              case Domain is
+                 when EW_Prog =>
+                    Prog : W_Prog_Id;
 
-           when W_Predicate_Definition =>
-              Pred : W_Predicate_Id;
+                 when EW_Term =>
+                    Term : W_Term_Id;
 
-           when W_Global_Binding =>
-              Prog : W_Prog_Id;
+                 when EW_Pred =>
+                    Pred : W_Predicate_Id;
+              end case;
 
-           when W_Parameter_Declaration =>
-              Effects  : W_Effects_Id := New_Effects;
+           when W_Function_Decl =>
+              case Domain is
+                 when EW_Prog =>
+                    Effects   : W_Effects_Id := New_Effects;
 
-           --  If no postcondition is given, and if a logic declaration
-           --  is provided, one will be generated that will use this
-           --  logic declaration. e.g. if Name is "my_func" and Binders is:
-           --
-           --     (x1 : type1) -> (x2 : type2)
-           --
-           --  ...then the logic declaration will be:
-           --
-           --     logic my_func : type1, type2 -> type3
-           --
-           --  ...and the generated program-space declaration, with the
-           --  default postcondition will be:
-           --
-           --     parameter my_func_ :
-           --      x1 : type1 -> x2 : type2 ->
-           --     { pre }
-           --      type3
-           --     { my_func (x1, x2) = result }
+                 when EW_Term =>
+                    Def : W_Term_OId := Why_Empty;
 
-           when others =>
-              --  Invalid
-              null;
+                 when EW_Pred =>
+                    null;
+              end case;
         end case;
      end record;
 
    type Declaration_Spec_Array is array (Positive range <>)
      of Declaration_Spec;
+
+   procedure Set_Top_Level_Declarations
+     (File        : W_File_Id;
+      Ada_Node    : Node_Id := Empty;
+      Name        : W_Identifier_Id;
+      Binders     : Binder_Array;
+      Return_Type : W_Primitive_Type_Id;
+      Spec        : in out Declaration_Spec_Array);
 
    procedure Emit_Top_Level_Declarations
      (File        : W_File_Id;
@@ -219,6 +219,6 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
-      Spec        : in out Declaration_Spec_Array);
+      Spec        : Declaration_Spec_Array);
 
 end Why.Gen.Binders;

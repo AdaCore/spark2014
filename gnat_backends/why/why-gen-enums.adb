@@ -26,6 +26,7 @@
 with Ada.Containers;     use Ada.Containers;
 with Uintp;              use Uintp;
 with Types;              use Types;
+with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
@@ -70,19 +71,20 @@ package body Why.Gen.Enums is
       use String_Lists;
 
       Arg_Name : constant String := "x";
-      Match    : constant W_Matching_Term_Unchecked_Id :=
-                   New_Unchecked_Matching_Term;
+      Match    : constant W_Match_Unchecked_Id :=
+                   New_Unchecked_Match;
       Cur      : Cursor := First (Constructors);
       Cnt      : Uint := Uint_1;
    begin
-      Matching_Term_Set_Term (Match, New_Term (Arg_Name));
+      Match_Set_Term (Match, New_Term (Arg_Name));
       while Has_Element (Cur) loop
          declare
             Result : constant W_Term_Id := New_Integer_Constant (Value => Cnt);
             Pat    : constant W_Pattern_Id :=
-                       New_Pattern (Constr => New_Identifier (Element (Cur)));
+                       New_Pattern
+                         (Constr => New_Identifier (Element (Cur)));
          begin
-            Matching_Term_Append_To_Branches
+            Match_Append_To_Branches
               (Match,
                New_Match_Case (Pattern => Pat, Term => Result));
             Cur := Next (Cur);
@@ -91,22 +93,24 @@ package body Why.Gen.Enums is
       end loop;
 
       declare
-         Func : constant W_Function_Id :=
-                  New_Function
-                    (Name        => Conversion_To.Id (Name, "int"),
-                     Return_Type => New_Type_Int,
+         Func : constant W_Declaration_Id :=
+                  New_Function_Def
+                    (Domain      => EW_Term,
+                     Name        => Conversion_To.Id (Name, "int"),
+                     Return_Type => New_Base_Type (Base_Type => EW_Int),
                      Binders     =>
                        (1 =>
-                          New_Logic_Binder
-                            (Name => New_Identifier (Arg_Name),
-                             Param_Type =>
-                               New_Abstract_Type
-                                 (Name => New_Identifier (Name)))),
+                          (B_Name =>
+                             New_Identifier
+                               (Domain => EW_Term,
+                                Name   => Arg_Name),
+                           B_Type =>
+                             New_Abstract_Type
+                               (Name => New_Identifier (Name)),
+                           others => <>)),
                      Def         => +Match);
       begin
-         File_Append_To_Declarations
-           (File,
-            New_Logic_Declaration (Decl => +Func));
+         Emit (File, Func);
       end;
    end Define_Enum_To_Int_Function;
 
@@ -120,51 +124,63 @@ package body Why.Gen.Enums is
       Constructors : String_Lists.List)
    is
       Len      : constant Count_Type := String_Lists.Length (Constructors);
-      My_Type  : constant W_Logic_Return_Type_Id :=
-         New_Abstract_Type (Name => New_Identifier (Name));
+      My_Type  : constant W_Primitive_Type_Id :=
+                   New_Abstract_Type
+                     (Domain => EW_Term,
+                      Name   => New_Identifier (Name));
       Max_Uint : constant Uint := UI_From_Int (Int (Len));
    begin
       pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
-      New_Logic
-         (File        => File,
-          Name        => Conversion_From.Id (Name, "int"),
-          Args        => (1 => New_Type_Int),
-          Return_Type => My_Type);
+      Emit
+        (File,
+         Binders.New_Function_Decl
+           (Domain      => EW_Term,
+            Name        =>
+              Conversion_From.Id (Name, "int"),
+            Binders     =>
+              New_Binders ((1 => New_Base_Type (Base_Type => EW_Int))),
+            Return_Type => My_Type));
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Range_Predicate
         (File,
          Name,
-         New_Type_Int,
+         New_Base_Type (Base_Type => EW_Int),
          First => New_Constant (Uint_1),
          Last  => New_Constant (Max_Uint));
       Emit
         (File,
-         New_Parameter
-         (Name => To_Program_Space (Conversion_From.Id (Name, "int")),
-          Binders =>
-            (1 =>
-               (B_Name => New_Identifier ("x"),
-                B_Type => New_Type_Int,
-                others => <>)),
-          Return_Type => +My_Type,
-          Pre =>
-            New_Related_Terms
-               (Left   => New_Integer_Constant (Value => Uint_1),
-                Op     => New_Rel_Le,
-                Right  => New_Term ("x"),
-                Op2    => New_Rel_Le,
-                Right2 => New_Integer_Constant (Value => Max_Uint)),
-          Post =>
-            New_Equal
-               (New_Result_Term,
-                New_Operation
-                  (Name       => Conversion_From.Id (Name, "int"),
-                   Parameters => (1 => New_Term ("x"))))));
+         New_Function_Decl
+           (Domain      => EW_Prog,
+            Name        => To_Program_Space (Conversion_From.Id (Name, "int")),
+            Binders     =>
+              (1 =>
+                 (B_Name => New_Identifier ("x"),
+                  B_Type => New_Base_Type (Base_Type => EW_Int),
+                  others => <>)),
+            Return_Type => My_Type,
+            Pre         =>
+              New_Relation
+                (Domain => EW_Pred,
+                 Left   => New_Integer_Constant (Value => Uint_1),
+                 Op     => EW_Le,
+                 Right  => +New_Term ("x"),
+                 Op2    => EW_Le,
+                 Right2 => New_Integer_Constant (Value => Max_Uint)),
+            Post        =>
+              New_Relation
+                (Domain => EW_Pred,
+                 Op     => EW_Eq,
+                 Left   => +New_Result_Term,
+                 Right  =>
+                   New_Call
+                     (Domain => EW_Term,
+                      Name   => Conversion_From.Id (Name, "int"),
+                      Args   => (1 => +New_Term ("x"))))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
-         New_Type_Int,
+         New_Base_Type (Base_Type => EW_Int),
          Conversion_From.Id (Name, "int"),
          Conversion_To.Id (Name, "int"));
       New_Boolean_Equality_Parameter (File, Name);

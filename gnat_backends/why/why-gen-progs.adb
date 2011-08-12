@@ -27,10 +27,8 @@ with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Uintp;               use Uintp;
 
-with Gnat2Why.Decls;      use Gnat2Why.Decls;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 
-with Why.Sinfo;           use Why.Sinfo;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -143,11 +141,11 @@ package body Why.Gen.Progs is
        Why_Expr : W_Prog_Id) return W_Prog_Id is
    begin
       return
-        New_Prog_Call
-          (Ada_Node => Ada_Node,
-           Name     => Conversion_Name (From => From,
-                                        To => Why_Types (To)),
-           Progs    => (1 => Why_Expr));
+        New_Call
+        (Ada_Node => Ada_Node,
+         Name     => Conversion_Name (From => From,
+                                      To => Why_Types (To)),
+         Args     => (1 => +Why_Expr));
    end Convert_To_Scalar;
 
    -------------------------
@@ -168,7 +166,7 @@ package body Why.Gen.Progs is
            Name     =>
             To_Program_Space
               (Conversion_Name (From => Why_Types (From), To => To)),
-           Progs    => (1 => Why_Expr),
+           Progs    => (1 => +Why_Expr),
            Reason   => Reason);
    end Convert_From_Scalar;
 
@@ -186,15 +184,15 @@ package body Why.Gen.Progs is
       Ada_From : constant Node_Id := From.Wh_Abstract;
    begin
       return
-         New_Prog_Call
-           (Ada_Node => Ada_Node,
-            Name  => Array_Conv_To.Id (Full_Name (Ada_To)),
-            Progs =>
-              (1 =>
-                 New_Prog_Call
-                   (Ada_Node => Ada_Node,
-                    Name  => Array_Conv_From.Id (Full_Name (Ada_From)),
-                    Progs => (1 => Why_Expr))));
+        New_Call
+          (Ada_Node => Ada_Node,
+           Name     => Array_Conv_To.Id (Full_Name (Ada_To)),
+           Args     =>
+             (1 =>
+                New_Call
+                  (Ada_Node => Ada_Node,
+                   Name     => Array_Conv_From.Id (Full_Name (Ada_From)),
+                   Args     => (1 => +Why_Expr))));
    end Insert_Array_Conversion;
 
    -----------------------
@@ -321,8 +319,8 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         (Get_Kind (+P) = W_Prog_Constant and then
-          Get_Kind (Prog_Constant_Get_Def (+P)) = W_False_Literal);
+         (Get_Kind (+P) = W_Literal and then
+          Literal_Get_Value (W_Literal_Id (P)) = EW_False);
    end Is_False_Boolean;
 
    ---------------------
@@ -333,8 +331,8 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         (Get_Kind (+P) = W_Prog_Constant and then
-          Get_Kind (Prog_Constant_Get_Def (+P)) = W_True_Literal);
+         (Get_Kind (+P) = W_Literal and then
+          Literal_Get_Value (W_Literal_Id (P)) = EW_True);
    end Is_True_Boolean;
 
    --------------------------
@@ -344,20 +342,20 @@ package body Why.Gen.Progs is
    function New_Assume_Statement
       (Ada_Node    : Node_Id;
        Pred        : W_Predicate_Id;
-       Return_Type : W_Primitive_Type_Id := New_Type_Unit)
-       return W_Prog_Id
+       Return_Type : W_Primitive_Type_Id :=
+                       New_Base_Type (Base_Type => EW_Unit))
+      return W_Prog_Id
    is
    begin
       return
-         New_Any_Expr
-            (Ada_Node => Ada_Node,
-             Any_Type =>
-               New_Computation_Type
-                 (Ada_Node => Ada_Node,
-                  Return_Type => Return_Type,
-                  Effects => New_Effects,
-                  Postcondition =>
-                     New_Postcondition (Ada_Node => Ada_Node, Pred => Pred)));
+        New_Any_Expr
+          (Ada_Node => Ada_Node,
+           Any_Type =>
+             New_Computation_Type
+               (Ada_Node => Ada_Node,
+                Result   => New_Result (+Return_Type),
+                Effects  => New_Effects,
+                Post     => Pred));
    end New_Assume_Statement;
 
    ------------------
@@ -372,74 +370,72 @@ package body Why.Gen.Progs is
       Invariant  : W_Predicate_Id;
       Loop_Body  : W_Prog_Id) return W_Prog_Id
    is
-      Index_Deref : constant W_Prog_Id :=
-         New_Deref
-           (Ada_Node => Ada_Node,
-            Ref      => Loop_Index);
-      Addition : constant W_Prog_Id :=
-         New_Infix_Call
-            (Ada_Node => Ada_Node,
-             Infix    => New_Op_Add_Prog,
-             Left     => Index_Deref,
-             Right    =>
-               New_Prog_Constant
-                 (Ada_Node => Ada_Node,
-                  Def      =>
-                    New_Integer_Constant
-                      (Ada_Node => Ada_Node,
-                      Value     => Uint_1)));
-      Incr_Stmt : constant W_Prog_Id :=
-         New_Assignment
-            (Ada_Node => Ada_Node,
-             Name     => Loop_Index,
-             Value    => Addition);
-      Loop_Cond : constant W_Prog_Id  :=
-         New_Infix_Call
-           (Ada_Node => Ada_Node,
-            Infix    => New_Op_Le_Prog,
-            Left     => Index_Deref,
-            Right    => New_Prog_Identifier (Def => High));
+      Index_Deref  : constant W_Prog_Id :=
+                       New_Unary_Op
+                         (Ada_Node => Ada_Node,
+                          Op       => EW_Deref,
+                          Right    => +Loop_Index);
+      Addition     : constant W_Prog_Id :=
+                       New_Binary_Op
+                         (Ada_Node => Ada_Node,
+                          Op       => EW_Add,
+                          Op_Type  => EW_Int,
+                          Left     => +Index_Deref,
+                          Right    =>
+                            New_Integer_Constant
+                              (Ada_Node => Ada_Node,
+                               Value    => Uint_1));
+      Incr_Stmt    : constant W_Prog_Id :=
+                       New_Assignment
+                         (Ada_Node => Ada_Node,
+                          Name     => Loop_Index,
+                          Value    => Addition);
+      Loop_Cond    : constant W_Prog_Id  :=
+                       New_Relation
+                         (Ada_Node => Ada_Node,
+                          Op       => EW_Le,
+                          Left     => Index_Deref,
+                          Right    => +High);
       Loop_Content : constant W_Prog_Id :=
-         New_Statement_Sequence
-            (Ada_Node   => Ada_Node,
-             Statements => (1 => Loop_Body, 2 => Incr_Stmt));
+                       New_Statement_Sequence
+                         (Ada_Node   => Ada_Node,
+                          Statements => (1 => Loop_Body, 2 => Incr_Stmt));
       Enriched_Inv : constant W_Predicate_Id :=
-         New_Conjunction
-            (Left => Invariant,
-             Right =>
-               New_Related_Terms
-                 (Left   => New_Term_Identifier (Name => Low),
-                  Op     => New_Rel_Le,
-                  Right  =>
-                    New_Term_Identifier
-                      (Name => Loop_Index),
-                  Op2    => New_Rel_Le,
-                  Right2 =>
-                     New_Arith_Operation
-                        (Op => New_Op_Add,
-                         Left =>
-                           New_Term_Identifier
-                              (Name => High),
-                         Right =>
-                           New_Integer_Constant (Value => Uint_1))));
+                       New_Connection
+                         (Domain => EW_Term,
+                          Op     => EW_Or,
+                          Left   => +Invariant,
+                          Right  =>
+                            New_Relation
+                              (Left   => +Low,
+                               Op     => EW_Le,
+                               Right  => +Loop_Index,
+                               Op2    => EW_Le,
+                               Right2 =>
+                                 New_Binary_Op
+                                   (Op      => EW_Add,
+                                    Op_Type => EW_Int,
+                                    Left    => +High,
+                                    Right   =>
+                                      New_Integer_Constant
+                                        (Value => Uint_1))));
    begin
       return
         New_Binding_Ref
-           (Ada_Node => Ada_Node,
-            Name     => Loop_Index,
-            Def      =>
-               New_Prog_Identifier (Def => Low),
-            Context  =>
-              New_While_Loop
+          (Ada_Node => Ada_Node,
+           Name     => Loop_Index,
+           Def      => +Low,
+           Context  =>
+             New_While_Loop
                 (Ada_Node     => Ada_Node,
                  Condition    => Loop_Cond,
                  Annotation   =>
                    New_Loop_Annot
-                      (Invariant =>
+                     (Invariant =>
                         New_Located_Predicate
-                           (Ada_Node => Ada_Node,
-                            Pred     => Enriched_Inv,
-                            Reason   => VC_Loop_Invariant)),
+                          (Ada_Node => Ada_Node,
+                           Pred     => Enriched_Inv,
+                           Reason   => VC_Loop_Invariant)),
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 
@@ -452,10 +448,10 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         New_Prog_Call
-           (Ada_Node => Ada_Node,
-            Name     => New_Ignore_Name.Id,
-            Progs    => (1 => Prog));
+        New_Call
+          (Ada_Node => Ada_Node,
+           Name     => New_Ignore_Name.Id,
+           Args     => (1 => +Prog));
    end New_Ignore;
 
    ------------------------
@@ -468,15 +464,13 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         New_Assert
-           (Ada_Node   => Ada_Node,
-            Preds =>
-              (1 =>
-                New_Located_Predicate
-                  (Ada_Node => Ada_Node,
-                   Pred     => Pred,
-                   Reason   => VC_Assert)),
-            Prog       => New_Void (Ada_Node));
+        New_Assert
+          (Ada_Node => Ada_Node,
+           Pred     =>
+             New_Located_Predicate
+               (Ada_Node => Ada_Node,
+                Pred     => Pred,
+                Reason   => VC_Assert));
    end New_Located_Assert;
 
    ----------------------
@@ -486,7 +480,7 @@ package body Why.Gen.Progs is
    function New_Located_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
-       Progs    : W_Prog_Array;
+       Progs    : W_Expr_Array;
        Reason   : VC_Kind) return W_Prog_Id
    is
    begin
@@ -495,10 +489,10 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Reason   => Reason,
            Prog =>
-             New_Prog_Call
+             New_Call
                (Ada_Node => Ada_Node,
-                Name => Name,
-                Progs => Progs));
+                Name     => Name,
+                Args     => Progs));
    end New_Located_Call;
 
    ----------------------
@@ -531,9 +525,10 @@ package body Why.Gen.Progs is
          return Left;
       else
          return
-            New_Prog_Call
-               (Name => New_Identifier ("bool_and"),
-                Progs => (1 => Left, 2 => Right));
+           New_Call
+             (Domain => EW_Prog,
+              Name   => New_Identifier ("bool_and"),
+              Args   => (1 => +Left, 2 => +Right));
       end if;
    end New_Prog_Andb;
 
@@ -550,10 +545,10 @@ package body Why.Gen.Progs is
          return Left;
       else
          return
-            New_Infix_Call
-              (Infix    => New_Op_And_Then_Prog,
-               Left     => Left,
-               Right    => Right);
+           New_Connection
+             (Op    => EW_And_Then,
+              Left  => +Left,
+              Right => +Right);
       end if;
    end New_Prog_Andb_Then;
 
@@ -561,28 +556,27 @@ package body Why.Gen.Progs is
    -- New_Prog_Boolean_Cmp --
    --------------------------
 
-   function New_Prog_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Prog_Id)
-      return W_Prog_Id
-   is
+   function New_Prog_Boolean_Cmp
+     (Cmp         : EW_Relation;
+      Left, Right : W_Prog_Id)
+     return W_Prog_Id is
    begin
       return
-         New_Prog_Call
-           (Name => New_Bool_Int_Cmp (Cmp),
-            Progs => (1 => Left, 2 => Right));
-
+        New_Call
+          (Name => New_Bool_Int_Cmp (Cmp),
+           Args => (1 => +Left, 2 => +Right));
    end New_Prog_Boolean_Cmp;
 
    -------------------
    -- New_Prog_Notb --
    -------------------
 
-   function New_Prog_Notb (Left : W_Prog_Id) return W_Prog_Id
+   function New_Prog_Notb (Right : W_Prog_Id) return W_Prog_Id
    is
    begin
       return
-        New_Prefix_Call
-          (Prefix   => New_Op_Not_Prog,
-           Operand  => Left);
+        New_Not
+          (Right => +Right);
    end New_Prog_Notb;
 
    ------------------
@@ -598,9 +592,9 @@ package body Why.Gen.Progs is
          return Left;
       else
          return
-            New_Prog_Call
-               (Name => New_Identifier ("bool_or"),
-                Progs => (1 => Left, 2 => Right));
+           New_Call
+             (Name => New_Identifier ("bool_or"),
+              Args => (1 => +Left, 2 => +Right));
       end if;
    end New_Prog_Orb;
 
@@ -617,12 +611,25 @@ package body Why.Gen.Progs is
          return Left;
       else
          return
-            New_Infix_Call
-              (Infix    => New_Op_Or_Else_Prog,
-               Left     => Left,
-               Right    => Right);
+           New_Connection
+             (Op    => EW_Or_Else,
+              Left  => +Left,
+              Right => +Right);
       end if;
    end New_Prog_Orb_Else;
+
+   ----------------
+   -- New_Result --
+   ----------------
+
+   function New_Result
+     (T : W_Simple_Value_Type_Id)
+     return W_Binder_Id is
+   begin
+      return New_Binder
+        (Name     => New_Result_Identifier.Id,
+         Arg_Type => T);
+   end New_Result;
 
    ------------------------
    -- New_Simpl_Any_Expr --
@@ -635,8 +642,8 @@ package body Why.Gen.Progs is
          New_Any_Expr
             (Any_Type =>
                New_Computation_Type
-                  (Return_Type => T,
-                   Effects     => New_Effects));
+                  (Result  => New_Result (+T),
+                   Effects => New_Effects));
    end New_Simpl_Any_Expr;
 
    --------------------------------
@@ -655,10 +662,10 @@ package body Why.Gen.Progs is
          return Else_Part;
       else
          return
-            New_Conditional_Prog
-               (Condition => Condition,
-                Then_Part => Then_Part,
-                Else_Part => Else_Part);
+           New_Conditional
+             (Condition => Condition,
+              Then_Part => +Then_Part,
+              Else_Part => +Else_Part);
       end if;
    end New_Simpl_Conditional_Prog;
 
@@ -670,21 +677,12 @@ package body Why.Gen.Progs is
       return W_Prog_Id
    is
    begin
-      return
-        New_Prog_Constant
-          (Ada_Node => Ada_Node,
-           Def => New_True_Literal);
+      return New_Literal (Ada_Node => Ada_Node, Value => EW_True);
    end New_True_Literal_Prog;
 
    --------------
    -- New_Void --
    --------------
-
-   function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id
-   is
-   begin
-      return New_Prog_Constant (Ada_Node => Ada_Node, Def => New_Void_Literal);
-   end New_Void;
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id
    is
@@ -698,9 +696,7 @@ package body Why.Gen.Progs is
       function Is_Void (N : W_Prog_Id) return Boolean
       is
       begin
-         return
-           (Get_Kind (+N) = W_Prog_Constant and then
-            Get_Kind (Prog_Constant_Get_Def (+N)) = W_Void_Literal);
+         return Get_Kind (+N) = W_Void;
       end Is_Void;
 
       --  begin processing for Sequence

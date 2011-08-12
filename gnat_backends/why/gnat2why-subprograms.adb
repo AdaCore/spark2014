@@ -79,11 +79,11 @@ package body Gnat2Why.Subprograms is
    --  procedure call. The node in argument must have a "Name" field and a
    --  "Parameter_Associations" field.
 
-   function Compute_Call_Args (Call : Node_Id) return W_Prog_Array;
+   function Compute_Call_Args (Call : Node_Id) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
 
-   function Compute_Term_Args (Call : Node_Id) return W_Term_Array;
+   function Compute_Term_Args (Call : Node_Id) return W_Expr_Array;
    --  Same as Compute_Call_Args, but construct terms.
 
    procedure Compute_Invariant
@@ -187,14 +187,11 @@ package body Gnat2Why.Subprograms is
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
 
-   function Why_Prog_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Infix_Id;
+   function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
 
-   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return W_Relation_Id;
+   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return EW_Relation;
    --  Convert an Ada comparison operator to a Why relation symbol
-
-   function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id;
-   --  Convert an Ada binary operator to a Why term symbol
 
    function Wrap_Loop
       (Loop_Body : W_Prog_Id;
@@ -234,12 +231,16 @@ package body Gnat2Why.Subprograms is
       if Present (Rexpr) then
          declare
             Why_Expr : constant W_Prog_Id :=
-               Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue));
+                         Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue));
             L_Name   : constant String := Full_Name (Lvalue);
             L_Id     : constant W_Identifier_Id := New_Identifier (L_Name);
          begin
             if Is_Mutable (Lvalue) then
-               return New_Assignment (N, L_Id, Why_Expr);
+               return New_Assignment
+                 (Ada_Node => N,
+                  Domain   => EW_Prog,
+                  Name     => L_Id,
+                  Value    => Why_Expr);
 
             elsif Is_Static_Expression (Rexpr) then
 
@@ -248,25 +249,24 @@ package body Gnat2Why.Subprograms is
                --  warning anyway
 
                return New_Ignore (Prog => Why_Expr);
-            else
 
+            else
                declare
                   Tmp_Var : constant W_Identifier_Id :=
-                     Assume_Name.Id (L_Name);
+                              Assume_Name.Id (L_Name);
                   Eq      : constant W_Predicate_Id :=
-                              New_Equal
-                                 (New_Term_Identifier (Name => Tmp_Var),
-                                  New_Term_Identifier (Name => L_Id));
+                              New_Equal (+Tmp_Var, +L_Id);
                begin
                   return
-                     New_Binding_Prog
-                       (Ada_Node => N,
-                        Name     => Tmp_Var,
-                        Def      => Why_Expr,
-                        Context  =>
-                           New_Assume_Statement
-                              (Ada_Node => N,
-                               Pred     => Eq));
+                    New_Binding
+                      (Domain   => EW_Prog,
+                       Ada_Node => N,
+                       Name     => Tmp_Var,
+                       Def      => Why_Expr,
+                       Context  =>
+                         +New_Assume_Statement
+                           (Ada_Node => N,
+                            Pred     => Eq));
                end;
             end if;
          end;
@@ -330,11 +330,13 @@ package body Gnat2Why.Subprograms is
       --  beginning of processing for Case_Expr_Of_Ada_Node
    begin
       Cur_Case := Prev (Cur_Case);
-
       while Present (Cur_Case) loop
          declare
             Cur_Choice : Node_Id := First (Discrete_Choices (Cur_Case));
-            C : W_Prog_Id := New_Prog_Constant (Def => New_False_Literal);
+            C          : W_Prog_Id :=
+                           New_Literal
+                             (Domain => EW_Prog,
+                              Value  => EW_False);
          begin
             while Present (Cur_Choice) loop
                C := New_Prog_Orb_Else
@@ -342,6 +344,7 @@ package body Gnat2Why.Subprograms is
                        Prog_Equal_To (Matched_Expr, Cur_Choice));
                Next (Cur_Choice);
             end loop;
+
             declare
                Then_Part : W_Prog_Id;
             begin
@@ -376,12 +379,10 @@ package body Gnat2Why.Subprograms is
 
    procedure Iterate_Call_Arguments (Call : Node_Id)
    is
-      Params : constant List_Id := Parameter_Associations (Call);
-      Cur_Formal : Node_Id :=
-         First_Entity (Entity (Name (Call)));
-      Cur_Actual : Node_Id :=
-         First (Params);
-      In_Named : Boolean := False;
+      Params     : constant List_Id := Parameter_Associations (Call);
+      Cur_Formal : Node_Id := First_Entity (Entity (Name (Call)));
+      Cur_Actual : Node_Id := First (Params);
+      In_Named   : Boolean := False;
    begin
       --  We have to deal with named arguments, but the frontend has
       --  done some work for us. All unnamed arguments come first and
@@ -400,17 +401,21 @@ package body Gnat2Why.Subprograms is
       --  the parent.
       --  We start by updating the Cur_Actual and In_Named variables for
       --  the first parameter.
+
       if Nkind (Cur_Actual) = N_Parameter_Association then
          In_Named := True;
          Cur_Actual := First_Named_Actual (Call);
       end if;
+
       while Present (Cur_Formal) and then Present (Cur_Actual) loop
          Handle_Argument (Cur_Formal, Cur_Actual);
          Cur_Formal := Next_Entity (Cur_Formal);
+
          if In_Named then
             Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
          else
             Next (Cur_Actual);
+
             if Nkind (Cur_Actual) = N_Parameter_Association then
                In_Named := True;
                Cur_Actual := First_Named_Actual (Call);
@@ -423,7 +428,7 @@ package body Gnat2Why.Subprograms is
    -- Compute_Call_Args --
    -----------------------
 
-   function Compute_Call_Args (Call : Node_Id) return W_Prog_Array
+   function Compute_Call_Args (Call : Node_Id) return W_Expr_Array
    is
       Params : constant List_Id := Parameter_Associations (Call);
       Len    : constant Nat := List_Length (Params);
@@ -431,9 +436,9 @@ package body Gnat2Why.Subprograms is
       if Len = 0 then
          return (1 => New_Void (Call));
       end if;
+
       declare
-         Why_Args : W_Prog_Array :=
-            (1 .. Integer (Len) => <>);
+         Why_Args : W_Expr_Array := (1 .. Integer (Len) => <>);
          Cnt      : Positive := 1;
 
          procedure Compute_Arg (Formal, Actual : Node_Id);
@@ -450,22 +455,19 @@ package body Gnat2Why.Subprograms is
                when E_In_Out_Parameter | E_Out_Parameter =>
                   --  Parameters that are "out" must be variables
                   --  They are translated "as is"
-                  Why_Args (Cnt) :=
-                     New_Prog_Identifier
-                        (Ada_Node => Actual,
-                         Def      => Why_Ident_Of_Ada_Ident (Actual));
+                  Why_Args (Cnt) := +Why_Ident_Of_Ada_Ident (Actual);
 
                when others =>
                   --  No special treatment for parameters that are
                   --  not "out"
                   Why_Args (Cnt) :=
-                     Why_Expr_Of_Ada_Expr (Actual, Type_Of_Node (Formal));
+                    +Why_Expr_Of_Ada_Expr (Actual, Type_Of_Node (Formal));
             end case;
             Cnt := Cnt + 1;
          end Compute_Arg;
 
          procedure Iterate_Prog_Call is new
-            Iterate_Call_Arguments (Compute_Arg);
+           Iterate_Call_Arguments (Compute_Arg);
       begin
          Iterate_Prog_Call (Call);
          return Why_Args;
@@ -476,17 +478,17 @@ package body Gnat2Why.Subprograms is
    -- Compute_Term_Args --
    -----------------------
 
-   function Compute_Term_Args (Call : Node_Id) return W_Term_Array
+   function Compute_Term_Args (Call : Node_Id) return W_Expr_Array
    is
       Params : constant List_Id := Parameter_Associations (Call);
       Len    : constant Nat := List_Length (Params);
    begin
       if Len = 0 then
-         return (1 => New_Void_Literal);
+         return (1 => New_Void);
       end if;
+
       declare
-         Why_Args : W_Term_Array :=
-            (1 .. Integer (Len) => <>);
+         Why_Args : W_Expr_Array := (1 .. Integer (Len) => <>);
          Cnt      : Positive := 1;
 
          procedure Compute_Arg (Formal, Actual : Node_Id);
@@ -496,11 +498,10 @@ package body Gnat2Why.Subprograms is
          -- Compute_Arg --
          -----------------
 
-         procedure Compute_Arg (Formal, Actual : Node_Id)
-         is
+         procedure Compute_Arg (Formal, Actual : Node_Id) is
          begin
             Why_Args (Cnt) :=
-               Why_Term_Of_Ada_Expr
+               +Why_Term_Of_Ada_Expr
                   (Actual, Type_Of_Node (Formal));
             Cnt := Cnt + 1;
          end Compute_Arg;
@@ -524,8 +525,9 @@ package body Gnat2Why.Subprograms is
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
    begin
-      Pred := New_True_Literal_Pred;
+      Pred := New_Literal (Value => EW_True);
       Split_Node := Empty;
+
       while Nkind (Cur_Stmt) /= N_Empty loop
          case Nkind (Cur_Stmt) is
             when N_Pragma =>
@@ -537,6 +539,7 @@ package body Gnat2Why.Subprograms is
             when others =>
                exit;
          end case;
+
          Split_Node := Cur_Stmt;
          Nlists.Next (Cur_Stmt);
       end loop;
@@ -559,14 +562,17 @@ package body Gnat2Why.Subprograms is
       if Present (Loop_Parameter_Specification (N)) then
          Spec := Loop_Parameter_Specification (N);
          Range_Expr := Discrete_Subtype_Definition (Spec);
+
       elsif Present (Iterator_Specification (N)) then
          Spec := Iterator_Specification (N);
          Range_Expr := Name (Spec);
+
       else
          --  None of Loop_Parameter_Specification and
          --  Iterator_Specification is present in the node; abort
          raise Program_Error;
       end if;
+
       Index := New_Identifier (Full_Name (Defining_Identifier (Spec)));
    end Extract_From_Quantified_Expression;
 
@@ -574,8 +580,7 @@ package body Gnat2Why.Subprograms is
    -- Get_Range --
    ---------------
 
-   function Get_Range (N : Node_Id) return Node_Id
-   is
+   function Get_Range (N : Node_Id) return Node_Id is
    begin
       case Nkind (N) is
          when N_Range
@@ -583,10 +588,13 @@ package body Gnat2Why.Subprograms is
            | N_Signed_Integer_Type_Definition
            | N_Floating_Point_Definition =>
             return N;
+
          when N_Subtype_Indication =>
             return Range_Expression (Constraint (N));
+
          when N_Identifier | N_Expanded_Name =>
             return Get_Range (Entity (N));
+
          when N_Defining_Identifier =>
             case Ekind (N) is
                when Discrete_Kind =>
@@ -610,53 +618,56 @@ package body Gnat2Why.Subprograms is
    ---------------------
 
    function Range_Predicate (N : Node_Id; T : W_Term_Id) return W_Predicate_Id
-   --  Compute a range predicate from a N_Range node.
    is
    begin
       return
-        New_Related_Terms
-          (Left => Int_Term_Of_Ada_Expr (Low_Bound (N)),
-           Op => New_Rel_Le,
-           Right => T,
-           Op2 => New_Rel_Le,
-           Right2 => Int_Term_Of_Ada_Expr (High_Bound (N)));
+        New_Relation
+          (Domain => EW_Term,
+           Left   => +Int_Term_Of_Ada_Expr (Low_Bound (N)),
+           Op     => EW_Le,
+           Right  => +T,
+           Op2    => EW_Le,
+           Right2 => +Int_Term_Of_Ada_Expr (High_Bound (N)));
    end Range_Predicate;
 
    ----------------
    -- Range_Prog --
    ----------------
 
-   function Range_Prog (N : Node_Id; T : W_Prog_Id) return W_Prog_Id
-   is
+   function Range_Prog (N : Node_Id; T : W_Prog_Id) return W_Prog_Id is
    begin
       return
-         New_Prog_Andb_Then
-            (Left =>
-              New_Infix_Call
-                (Infix    => New_Op_Le_Prog,
-                 Left     => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                 Right    => T),
-             Right =>
-              New_Infix_Call
-                (Infix    => New_Op_Le_Prog,
-                 Left     => T,
-                 Right    => Int_Expr_Of_Ada_Expr (High_Bound (N))));
+        New_Prog_Andb_Then
+          (Left =>
+             New_Relation
+               (Domain => EW_Prog,
+                Op     => EW_Le,
+                Left   => +Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                Right  => +T),
+           Right =>
+             New_Relation
+               (Domain => EW_Prog,
+                Op     => EW_Le,
+                Left   => +T,
+                Right  => +Int_Expr_Of_Ada_Expr (High_Bound (N))));
    end Range_Prog;
 
    -----------------------------------
    -- Loop_Entity_Of_Exit_Statement --
    -----------------------------------
 
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
-   is
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
    begin
       --  If the name is directly in the given node, return that name
+
       if Present (Name (N)) then
          return Entity (Name (N));
+
+      --  Otherwise the exit statement belongs to the innermost loop, so
+      --  simply go upwards (follow parent nodes) until we encounter the
+      --  loop
+
       else
-         --  Otherwise the exit statement belongs to the innermost loop, so
-         --  simply go upwards (follow parent nodes) until we encounter the
-         --  loop
          declare
             Cur_Node : Node_Id := N;
          begin
@@ -672,8 +683,7 @@ package body Gnat2Why.Subprograms is
    -- Predicate_Of_Pragma_Check --
    -------------------------------
 
-   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id
-   is
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id is
    begin
       if Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check then
          declare
@@ -682,16 +692,20 @@ package body Gnat2Why.Subprograms is
          begin
             if Present (Pragma_Argument_Associations (N)) then
                Arg1 := First (Pragma_Argument_Associations (N));
+
                if Present (Arg1) then
                   Arg2 := Next (Arg1);
                end if;
             end if;
+
             if Present (Expression (Arg2)) then
                return Why_Predicate_Of_Ada_Expr (Expression (Arg2));
+
             else
                raise Program_Error;
             end if;
          end;
+
       else
          raise Not_Implemented;
       end if;
@@ -709,28 +723,28 @@ package body Gnat2Why.Subprograms is
            | N_Real_Literal
            | N_Integer_Literal =>
             return
-               New_Prog_Boolean_Cmp
-                  (Cmp   => W_Rel_Eq,
-                   Left  => E,
-                   Right => Why_Expr_Of_Ada_Expr ((N), Base_Why_Type (N)));
+              New_Prog_Boolean_Cmp
+                (Cmp   => EW_Eq,
+                 Left  => E,
+                 Right => Why_Expr_Of_Ada_Expr ((N), Base_Why_Type (N)));
 
          when N_Range =>
             return
-               New_Prog_Andb
-                  (Left  =>
-                     New_Prog_Boolean_Cmp
-                        (Cmp   => W_Rel_Le,
-                         Left  => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                         Right => E),
-                   Right =>
-                     New_Prog_Boolean_Cmp
-                        (Cmp   => W_Rel_Le,
-                         Left  => E,
-                         Right =>
-                           Int_Expr_Of_Ada_Expr (Low_Bound (N))));
+              New_Prog_Andb
+                (Left  =>
+                   New_Prog_Boolean_Cmp
+                     (Cmp   => EW_Le,
+                      Left  => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                      Right => E),
+                 Right =>
+                   New_Prog_Boolean_Cmp
+                     (Cmp   => EW_Le,
+                      Left  => E,
+                      Right =>
+                        Int_Expr_Of_Ada_Expr (Low_Bound (N))));
 
          when N_Others_Choice =>
-            return New_True_Literal_Prog;
+            return New_Literal (Value => EW_True);
 
          when others =>
             raise Not_Implemented;
@@ -750,26 +764,27 @@ package body Gnat2Why.Subprograms is
            | N_Integer_Literal
            | N_Real_Literal =>
             return
-               New_Boolean_Cmp
-                  (Cmp   => W_Rel_Eq,
-                   Left  => T,
-                   Right => Why_Term_Of_Ada_Expr (N, Base_Why_Type (N)));
+              New_Boolean_Cmp
+                (Cmp   => EW_Eq,
+                 Left  => T,
+                 Right => Why_Term_Of_Ada_Expr (N, Base_Why_Type (N)));
 
          when N_Range =>
             return
-               New_Andb
-                  (Left  =>
-                     New_Boolean_Cmp
-                        (Cmp   => W_Rel_Le,
-                         Left  => Int_Term_Of_Ada_Expr (Low_Bound (N)),
-                         Right => T),
-                   Right =>
-                     New_Boolean_Cmp
-                        (Cmp   => W_Rel_Le,
-                         Left  => T,
-                         Right => Int_Term_Of_Ada_Expr (Low_Bound (N))));
+              New_Andb
+                (Left  =>
+                   New_Boolean_Cmp
+                     (Cmp   => EW_Le,
+                      Left  => Int_Term_Of_Ada_Expr (Low_Bound (N)),
+                      Right => T),
+                 Right =>
+                   New_Boolean_Cmp
+                     (Cmp   => EW_Le,
+                      Left  => T,
+                      Right => Int_Term_Of_Ada_Expr (Low_Bound (N))));
+
          when N_Others_Choice =>
-            return New_True_Literal;
+            return New_Literal (Value => EW_True);
 
          when others =>
             raise Not_Implemented;
@@ -781,8 +796,7 @@ package body Gnat2Why.Subprograms is
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return Entity_Id
-   is
+   function Type_Of_Node (N : Node_Id) return Entity_Id is
    begin
       if Nkind (N) in N_Entity
         and then Ekind (N) in Type_Kind
@@ -823,7 +837,7 @@ package body Gnat2Why.Subprograms is
    begin
       return
         (B_Name   => New_Identifier ("__void_param"),
-         B_Type   => New_Type_Unit,
+         B_Type   => New_Base_Type (Base_Type => EW_Unit),
          Modifier => None,
          Ada_Node => Empty);
    end Unit_Param;
@@ -838,18 +852,19 @@ package body Gnat2Why.Subprograms is
       As_Spec : Boolean)
    is
       Spec        : constant Node_Id :=
-         (if Nkind (Node) = N_Subprogram_Body and then
-            Present (Corresponding_Spec (Node)) then
-               (if Nkind (Parent (Corresponding_Spec (Node))) =
-                    N_Defining_Program_Unit_Name
-                then
-                  Parent (Parent (Corresponding_Spec (Node)))
-                else
-                  Parent (Corresponding_Spec (Node)))
-         else
-            Specification (Node));
+                      (if Nkind (Node) = N_Subprogram_Body and then
+                         Present (Corresponding_Spec (Node))
+                       then
+                         (if Nkind (Parent (Corresponding_Spec (Node))) =
+                            N_Defining_Program_Unit_Name
+                          then
+                            Parent (Parent (Corresponding_Spec (Node)))
+                          else
+                            Parent (Corresponding_Spec (Node)))
+                       else
+                         Specification (Node));
       Name_Str    : constant String  :=
-         Get_Name_String (Chars (Defining_Entity (Spec)));
+                      Get_Name_String (Chars (Defining_Entity (Spec)));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
@@ -869,12 +884,9 @@ package body Gnat2Why.Subprograms is
       function Compute_Effects return W_Effects_Id;
       --  Compute the effects of the generated Why function.
 
-      function Compute_Logic_Args return W_Logic_Arg_Type_Array;
-      --  Compute the arguments of the function as an array of logic types.
-
       generic
          type T is private;
-         with function Basic_Value (Ada_Node : Node_Id := Empty) return T;
+         Basic_Value : T;
          with function Mapping (N : Node_Id) return T;
          with function Combine (Left, Right : T) return T;
       function Compute_Spec
@@ -901,19 +913,20 @@ package body Gnat2Why.Subprograms is
          Cur_Binder : Node_Id := First (Ada_Binders);
          Cnt        : Integer := 1;
          Result     : Binder_Array :=
-            (1 .. Integer (Arg_Length) => <>);
+                        (1 .. Integer (Arg_Length) => <>);
       begin
          while Present (Cur_Binder) loop
             declare
                Id   : constant Node_Id :=
-                  Defining_Identifier (Cur_Binder);
+                        Defining_Identifier (Cur_Binder);
                Name : constant W_Identifier_Id :=
-                  Why_Ident_Of_Ada_Ident (Id);
+                        Why_Ident_Of_Ada_Ident (Id);
             begin
                Result (Cnt) :=
                  (Ada_Node => Cur_Binder,
                   B_Name   => Name,
-                  Modifier => (if Is_Mutable (Id) then Ref_Modifier else None),
+                  Modifier =>
+                    (if Is_Mutable (Id) then Ref_Modifier else None),
                   B_Type => +Why_Prog_Type_Of_Ada_Obj (Id, True));
                Next (Cur_Binder);
                Cnt := Cnt + 1;
@@ -948,14 +961,16 @@ package body Gnat2Why.Subprograms is
 
          declare
             Raise_Stmt : constant W_Prog_Id :=
-                           New_Raise_Statement
+                           New_Raise
                              (Ada_Node => Node,
                               Name     => New_Result_Exc_Identifier.Id);
             Result_Var : constant W_Prog_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
-                              New_Deref
-                                (Ada_Node => Node,
-                                 Ref      => New_Result_Temp_Identifier.Id)
+                              New_Unary_Op
+                                (Domain   => EW_Prog,
+                                 Ada_Node => Node,
+                                 Op       => EW_Deref,
+                                 Right    => +New_Result_Temp_Identifier.Id)
                             else New_Void);
          begin
             R :=
@@ -1086,28 +1101,6 @@ package body Gnat2Why.Subprograms is
          return +Eff;
       end Compute_Effects;
 
-      ------------------------
-      -- Compute_Logic_Args --
-      ------------------------
-
-      function Compute_Logic_Args return W_Logic_Arg_Type_Array
-      is
-         Result : W_Logic_Arg_Type_Array := (1 .. Integer (Arg_Length) => <>);
-         Arg    : Node_Id := First (Ada_Binders);
-         Cnt    : Integer := 1;
-      begin
-         if Arg_Length = 0 then
-            return (1 => New_Type_Unit);
-         end if;
-         while Present (Arg) loop
-            Result (Cnt) :=
-               +Why_Logic_Type_Of_Ada_Obj (Defining_Identifier (Arg));
-            Next (Arg);
-            Cnt := Cnt + 1;
-         end loop;
-         return Result;
-      end Compute_Logic_Args;
-
       ------------------
       -- Compute_Spec --
       ------------------
@@ -1137,18 +1130,18 @@ package body Gnat2Why.Subprograms is
             if Pragma_Name (PPCs) = Kind then
                declare
                   Ada_Spec : constant Node_Id :=
-                              Expression (First
-                                          (Pragma_Argument_Associations
-                                           (PPCs)));
+                               Expression
+                                 (First (Pragma_Argument_Associations (PPCs)));
                begin
                   if not Found_Location then
                      Located_Node := Ada_Spec;
                      Found_Location := True;
                   end if;
+
                   Cur_Spec :=
                      Combine
-                       (Left     => Mapping (Ada_Spec),
-                        Right    => Cur_Spec);
+                       (Left  => Mapping (Ada_Spec),
+                        Right => Cur_Spec);
                end;
             end if;
 
@@ -1156,22 +1149,21 @@ package body Gnat2Why.Subprograms is
          end loop;
 
          return Cur_Spec;
-
       end Compute_Spec;
 
       function Compute_Spec_Pred is new
-         Compute_Spec
-            (W_Predicate_Id,
-             New_True_Literal_Pred,
-             Why_Predicate_Of_Ada_Expr,
-             New_Simpl_Conjunction);
+        Compute_Spec
+          (W_Predicate_Id,
+           New_Literal (Value => EW_True),
+           Why_Predicate_Of_Ada_Expr,
+           New_Simpl_Conjunction);
 
       function Compute_Spec_Prog is new
-         Compute_Spec
-            (W_Prog_Id,
-             New_True_Literal_Prog,
-             Why_Expr_Of_Ada_Expr,
-             New_Prog_Andb_Then);
+        Compute_Spec
+          (W_Prog_Id,
+           New_Literal (Value => EW_True),
+           Why_Expr_Of_Ada_Expr,
+           New_Prog_Andb_Then);
 
       --------------------------------
       -- Is_Syntactic_Expr_Function --
@@ -1184,26 +1176,34 @@ package body Gnat2Why.Subprograms is
          --  Usually, it is sufficient to check for the original node of the
          --  function (but for some reason we have to descend to the spec and
          --  move up to another parent).
+
          if Nkind (Tmp_Node) = N_Expression_Function then
             return Tmp_Node;
          end if;
+
+         --  But if we are at the function declaration, it is possible that
+         --  the function definition is given later, using an expression
+         --  function. We check this second possibility here.
+
          if Nkind (Node) = N_Subprogram_Declaration then
-            --  But if we are at the function declaration, it is possible that
-            --  the function definition is given later, using an expression
-            --  function. We check this second possibility here.
             Tmp_Node :=
-               Original_Node (Parent (Parent (Corresponding_Body (Node))));
+              Original_Node (Parent (Parent (Corresponding_Body (Node))));
+
             if Nkind (Tmp_Node) = N_Expression_Function then
                return Tmp_Node;
             end if;
+
+         --  ??? I don't know in which situation we need this case ...
+
          else
-            --  ??? I don't know in which situation we need this case ...
             Tmp_Node :=
                Original_Node (Parent (Parent (Corresponding_Spec (Node))));
+
             if Nkind (Tmp_Node) = N_Expression_Function then
                return Tmp_Node;
             end if;
          end if;
+
          return Node;
       end Is_Syntactic_Expr_Function;
 
@@ -1220,10 +1220,15 @@ package body Gnat2Why.Subprograms is
       Orig_Node : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
       Is_Expr_Func : constant Boolean :=
-         Nkind (Spec) = N_Function_Specification
-         and then Effect_Is_Empty (Effects)
-         and then Orig_Node /= Node
-         and then Get_Kind (+Post) = W_True_Literal_Pred;
+                       Nkind (Spec) = N_Function_Specification
+                         and then
+                       Effect_Is_Empty (Effects)
+                         and then
+                       Orig_Node /= Node
+                         and then
+                       Get_Kind (+Post) = W_Literal
+                         and then
+                       Literal_Get_Value (W_Literal_Id (Post)) = EW_True;
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
@@ -1231,12 +1236,14 @@ package body Gnat2Why.Subprograms is
       if Nkind (Node) = N_Subprogram_Body
         and then not As_Spec
       then
-         Emit (File,
-               New_Global_Binding
-                 (Name    => New_Pre_Check_Name.Id (Name_Str),
-                  Binders => Ext_Binders,
-                  Def     =>
-                    Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
+         Emit
+           (File,
+            New_Function_Def
+              (Domain  => EW_Prog,
+               Name    => New_Pre_Check_Name.Id (Name_Str),
+               Binders => Ext_Binders,
+               Def     =>
+                 +Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
 
          if Is_Expr_Func then
             if Etype (Defining_Entity (Spec)) = Standard_Boolean then
@@ -1244,16 +1251,17 @@ package body Gnat2Why.Subprograms is
                  (File,
                   New_Defining_Bool_Axiom
                     (Name    => Logic_Func_Name.Id (Name_Str),
-                     Binders => Func_Binders,
+                     Binders => Ext_Binders,
                      Pre     => Pre,
                      Def     => Why_Predicate_Of_Ada_Expr
                                   (Expression (Orig_Node))));
+
             else
                Emit
                  (File,
                   New_Defining_Axiom
                     (Name    => Logic_Func_Name.Id (Name_Str),
-                     Binders => Func_Binders,
+                     Binders => Ext_Binders,
                      Pre     => Pre,
                      Def     => Why_Term_Of_Ada_Expr
                                   (Expression (Orig_Node))));
@@ -1263,8 +1271,9 @@ package body Gnat2Why.Subprograms is
          if not Debug.Debug_Flag_Dot_GG then
             Emit
               (File,
-               New_Global_Binding
-                 (Name    => New_Definition_Name.Id (Name_Str),
+               New_Function_Def
+                 (Domain  => EW_Prog,
+                  Name    => New_Definition_Name.Id (Name_Str),
                   Binders => (1 => Unit_Param),
                   Pre     => Pre,
                   Post    =>
@@ -1273,7 +1282,7 @@ package body Gnat2Why.Subprograms is
                        Post,
                        VC_Postcondition),
                   Def     =>
-                    Compute_Context
+                    +Compute_Context
                       (Why_Expr_Of_Ada_Stmts
                         (Statements
                           (Handled_Statement_Sequence (Node))))));
@@ -1283,32 +1292,33 @@ package body Gnat2Why.Subprograms is
          declare
             Ret_Type   : constant W_Primitive_Type_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
-                            +Why_Logic_Type_Of_Ada_Type
-                              (Entity (Result_Definition (Spec)))
+                              +Why_Logic_Type_Of_Ada_Type
+                                (Entity (Result_Definition (Spec)))
                             else
-                            New_Type_Unit);
+                              New_Base_Type (Base_Type => EW_Unit));
             Param_Post : constant W_Predicate_Id :=
                            (if Is_Expr_Func then
                               (if Entity (Result_Definition (Spec)) =
                                               Standard_Boolean
                                then
-                               New_Equal_Bool
-                                 (Left  => New_Result_Term,
-                                  Right =>
-                                    Why_Predicate_Of_Ada_Expr
-                                      (Expression (Orig_Node)))
+                                 New_Equal_Bool
+                                   (Left  => New_Result_Term,
+                                    Right =>
+                                      Why_Predicate_Of_Ada_Expr
+                                        (Expression (Orig_Node)))
                                else
-                               New_Equal
-                                 (Left  => New_Result_Term,
-                                  Right =>
-                                    Why_Term_Of_Ada_Expr
-                                      (Expression (Orig_Node))))
+                                 New_Equal
+                                   (Left  => New_Result_Term,
+                                    Right =>
+                                      Why_Term_Of_Ada_Expr
+                                        (Expression (Orig_Node))))
                             else Post);
          begin
             Emit
               (File,
-               New_Parameter
-                 (Name        => Program_Func_Name.Id (Name_Str),
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => Program_Func_Name.Id (Name_Str),
                   Binders     => Ext_Binders,
                   Return_Type => Ret_Type,
                   Effects     => Effects,
@@ -1316,15 +1326,16 @@ package body Gnat2Why.Subprograms is
                   Post        => Param_Post));
 
             if Is_Expr_Func then
-               New_Logic
-                 (File        => File,
-                  Name        => Logic_Func_Name.Id (Name_Str),
-                  Args        => Compute_Logic_Args,
-                  Return_Type =>
-                  +Why_Logic_Type_Of_Ada_Type
-                    (Etype (Defining_Entity (Spec))));
+               Emit
+                 (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => Logic_Func_Name.Id (Name_Str),
+                     Binders     => Ext_Binders,
+                     Return_Type =>
+                       +Why_Logic_Type_Of_Ada_Type
+                         (Etype (Defining_Entity (Spec)))));
             end if;
-
          end;
       end if;
    end Why_Decl_Of_Ada_Subprogram;
@@ -1333,68 +1344,74 @@ package body Gnat2Why.Subprograms is
    -- Why_Expr_Of_Ada_Enum --
    --------------------------
 
-   function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
-      return W_Prog_Id
-   is
+   function Why_Expr_Of_Ada_Enum
+     (Enum         : Node_Id;
+      Current_Type : out Why_Type)
+     return W_Prog_Id is
    begin
       --  Deal with special cases: True/False for boolean values
+
       if Entity (Enum) = Standard_True then
          Current_Type := (Kind => Why_Bool);
-         return New_True_Literal_Prog;
+         return New_Literal (Value => EW_True);
       end if;
+
       if Entity (Enum) = Standard_False then
          Current_Type := (Kind => Why_Bool);
-         return New_Prog_Constant (Def => New_False_Literal);
+         return New_Literal (Value => EW_False);
       end if;
+
       --  In the case of a subtype of an enumeration, we need to insert a
       --  conversion. We do so here by modifying the Current_Type; the
       --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
+
       case Ekind (Etype (Enum)) is
          when E_Enumeration_Subtype =>
             Current_Type := Why_Abstract (Etype (Entity (Enum)));
 
          when others =>
             null;
-
       end case;
 
-      return New_Prog_Identifier
-         (Ada_Node => Enum,
-          Def => Why_Ident_Of_Ada_Ident (Enum));
+      return +Why_Ident_Of_Ada_Ident (Enum);
    end Why_Expr_Of_Ada_Enum;
 
    --------------------------
    -- Why_Term_Of_Ada_Enum --
    --------------------------
 
-   function Why_Term_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
-      return W_Term_Id
-   is
+   function Why_Term_Of_Ada_Enum
+     (Enum         : Node_Id;
+      Current_Type : out Why_Type)
+     return W_Term_Id is
    begin
+      --  ??? Similar to Why_Expr_Of_Ada_Enum; both may be merged
+
       --  Deal with special cases: True/False for boolean values
+
       if Entity (Enum) = Standard_True then
          Current_Type := Why_Bool_Type;
-         return New_True_Literal;
+         return New_Literal (Value => EW_True);
       end if;
+
       if Entity (Enum) = Standard_False then
          Current_Type := Why_Bool_Type;
-         return New_False_Literal;
+         return New_Literal (Value => EW_False);
       end if;
+
       --  In the case of a subtype of an enumeration, we need to insert a
       --  conversion. We do so here by modifying the Current_Type; the
       --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
+
       case Ekind (Etype (Enum)) is
          when E_Enumeration_Subtype =>
             Current_Type := Why_Abstract (Etype (Entity (Enum)));
 
          when others =>
             null;
-
       end case;
 
-      return New_Term_Identifier
-         (Ada_Node => Enum,
-          Name => Why_Ident_Of_Ada_Ident (Enum));
+      return +Why_Ident_Of_Ada_Ident (Enum);
    end Why_Term_Of_Ada_Enum;
 
    --------------------------
@@ -1422,76 +1439,86 @@ package body Gnat2Why.Subprograms is
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
          when N_Integer_Literal =>
-            T := New_Prog_Constant
-                   (Ada_Node => Expr,
-                    Def      => New_Integer_Constant
-                                  (Ada_Node => Expr,
-                                   Value    => Intval (Expr)));
+            T :=
+              New_Integer_Constant
+                (Domain   => EW_Prog,
+                 Ada_Node => Expr,
+                 Value    => Intval (Expr));
             Current_Type := Why_Int_Type;
 
          when N_Real_Literal =>
+            --  The original is usually much easier to process for alt-ergo
+            --  than the rewritten node; typically, the will be in decimal
+            --  base whereas the expanded node will be of the form
+            --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
+            --  even between two litterals.
+
             if Is_Rewrite_Substitution (Expr) then
-               --  The original is usually much easier to process for alt-ergo
-               --  than the rewritten node; typically, the will be in decimal
-               --  base whereas the expanded node will be of the form
-               --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
-               --  even between two litterals.
-               --  However, it may happen that the original node is not
-               --  in alfa, whereas the rewritten one is: typically,
-               --  if the original node uses exponentiation. So try the
-               --  original node and fall back to the rewritten node if
-               --  failed.
                begin
                   T := Why_Expr_Of_Ada_Expr (Original_Node (Expr),
                                              Why_Real_Type);
+
+               --  It may happen that the original node is not in
+               --  alfa, whereas the rewritten one is: typically,
+               --  if the original node uses exponentiation. So try
+               --  the original node and fall back to the rewritten
+               --  node if failed.
+
                exception
                   when Not_Implemented =>
-                     T := New_Prog_Constant
-                            (Ada_Node => Expr,
-                             Def      => New_Real_Constant
-                                           (Ada_Node => Expr,
-                                            Value    => Realval (Expr)));
-
+                     T :=
+                       New_Real_Constant
+                         (Domain   => EW_Prog,
+                          Ada_Node => Expr,
+                          Value    => Realval (Expr));
                end;
 
             else
-               T := New_Prog_Constant
-                      (Ada_Node => Expr,
-                       Def      => New_Real_Constant
-                                     (Ada_Node => Expr,
-                                      Value    => Realval (Expr)));
+               T :=
+                 New_Real_Constant
+                   (Domain   => EW_Prog,
+                    Ada_Node => Expr,
+                    Value    => Realval (Expr));
             end if;
 
             Current_Type := Why_Real_Type;
 
+         --  Deal with identifiers:
+         --  * Enumeration literals: deal with special cases True and
+         --    False, otherwise such literals are just constants
+         --  * local variables are always references
+         --  * global constants are logics in Why
+         --  * global mutable variables are references
+         --  * loop parameters are always mutable, and of type int
+
          when N_Identifier | N_Expanded_Name =>
-            --  Deal with identifiers:
-            --  * Enumeration literals: deal with special cases True and
-            --    False, otherwise such literals are just constants
-            --  * local variables are always references
-            --  * global constants are logics in Why
-            --  * global mutable variables are references
-            --  * loop parameters are always mutable, and of type int
             declare
                Id : constant W_Identifier_Id := Why_Ident_Of_Ada_Ident (Expr);
             begin
                case Ekind (Entity (Expr)) is
                   --  First treat special cases
+
                   when E_Enumeration_Literal =>
                      T := Why_Expr_Of_Ada_Enum (Expr, Current_Type);
 
+                  --  There is a special case for constants introduced by
+                  --  the frontend
+
                   when others =>
-                     --  There is a special case for constants introduced by
-                     --  the frontend
                      if Is_Mutable (Entity (Expr)) then
-                        T := New_Deref (Ada_Node => Expr, Ref => Id);
+                        T :=
+                          New_Unary_Op
+                            (Ada_Node => Expr,
+                             Domain   => EW_Prog,
+                             Op       => EW_Deref,
+                             Right    => +Id);
                      else
-                        T := New_Prog_Identifier (Ada_Node => Expr, Def => Id);
+                        T := +Id;
                      end if;
+
                      if Ekind (Entity (Expr)) = E_Loop_Parameter then
                         Current_Type := Why_Int_Type;
                      end if;
-
                end case;
             end;
 
@@ -1502,12 +1529,13 @@ package body Gnat2Why.Subprograms is
                Left : constant Node_Id := Left_Opnd (Expr);
             begin
                return
-                 New_Prog_Call
+                 New_Call
                    (Ada_Node => Expr,
+                    Domain   => EW_Prog,
                     Name     => Eq_Param_Name.Id (Type_Of_Node (Left)),
-                    Progs    =>
-                      (1 => Why_Expr_Of_Ada_Expr (Left),
-                       2 => Why_Expr_Of_Ada_Expr
+                    Args     =>
+                      (1 => +Why_Expr_Of_Ada_Expr (Left),
+                       2 => +Why_Expr_Of_Ada_Expr
                               (Right_Opnd (Expr),
                                Type_Of_Node (Left))));
             end;
@@ -1519,10 +1547,11 @@ package body Gnat2Why.Subprograms is
             begin
                Current_Type := Base_Why_Type (Right);
                T :=
-                 New_Prefix_Call
+                 New_Unary_Op
                    (Ada_Node => Expr,
-                    Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
-                    Operand  => Why_Expr_Of_Ada_Expr (Right, Current_Type));
+                    Domain   => EW_Prog,
+                    Op       => EW_Minus,
+                    Right    => +Why_Expr_Of_Ada_Expr (Right, Current_Type));
             end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
@@ -1532,13 +1561,15 @@ package body Gnat2Why.Subprograms is
             begin
                Current_Type := Base_Why_Type (Left, Right);
                T :=
-                 New_Infix_Call
+                 New_Binary_Op
                    (Ada_Node => Expr,
-                    Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
-                    Left     => Why_Expr_Of_Ada_Expr (Left,
-                                                      Current_Type),
-                    Right    => Why_Expr_Of_Ada_Expr (Right,
-                                                      Current_Type));
+                    Domain   => EW_Prog,
+                    Op_Type  => To_EW_Type (Current_Type.Kind),
+                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Left     => +Why_Expr_Of_Ada_Expr (Left,
+                                                       Current_Type),
+                    Right    => +Why_Expr_Of_Ada_Expr (Right,
+                                                       Current_Type));
                Overflow_Check_Needed := True;
             end;
 
@@ -1553,10 +1584,10 @@ package body Gnat2Why.Subprograms is
                    (Ada_Node => Expr,
                     Name     => To_Program_Space (New_Integer_Division.Id),
                     Progs    =>
-                      (1 => Why_Expr_Of_Ada_Expr (Left,
-                                                  Current_Type),
-                       2 => Why_Expr_Of_Ada_Expr (Right,
-                                                  Current_Type)),
+                      (1 => +Why_Expr_Of_Ada_Expr (Left,
+                                                   Current_Type),
+                       2 => +Why_Expr_Of_Ada_Expr (Right,
+                                                   Current_Type)),
                     Reason   => VC_Division_By_Zero);
                Overflow_Check_Needed := True;
             end;
@@ -1567,13 +1598,14 @@ package body Gnat2Why.Subprograms is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                return
-                 New_Infix_Call
+                 New_Relation
                    (Ada_Node => Expr,
-                    Infix    => Why_Prog_Binop_Of_Ada_Op (Nkind (Expr)),
-                    Left     => Why_Expr_Of_Ada_Expr (Left,
-                                                      Base_Why_Type (Left)),
-                    Right    => Why_Expr_Of_Ada_Expr (Right,
-                                                      Base_Why_Type (Right)));
+                    Domain   => EW_Prog,
+                    Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)),
+                    Left     => +Why_Expr_Of_Ada_Expr (Left,
+                                                       Base_Why_Type (Left)),
+                    Right    => +Why_Expr_Of_Ada_Expr (Right,
+                                                       Base_Why_Type (Right)));
             end;
 
          when N_Op_Not =>
@@ -1625,19 +1657,21 @@ package body Gnat2Why.Subprograms is
 
          when N_Selected_Component =>
             T :=
-              New_Prog_Call
-                (Name => Record_Getter_Name.Id
-                 (Full_Name (Entity (Selector_Name (Expr)))),
-                 Progs => (1 => Why_Expr_Of_Ada_Expr (Prefix (Expr))));
+              New_Call
+                (Domain => EW_Prog,
+                 Name   =>
+                   Record_Getter_Name.Id
+                     (Full_Name (Entity (Selector_Name (Expr)))),
+                 Args => (1 => +Why_Expr_Of_Ada_Expr (Prefix (Expr))));
 
          when N_Function_Call =>
             T :=
               New_Located_Call
-                 (Name     =>
-                    To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Expr))),
-                  Progs    => Compute_Call_Args (Expr),
-                  Ada_Node => Expr,
-                  Reason   => VC_Precondition);
+                (Name     =>
+                   To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Expr))),
+                 Progs    => Compute_Call_Args (Expr),
+                 Ada_Node => Expr,
+                 Reason   => VC_Precondition);
 
          when N_Expression_With_Actions =>
             return
@@ -1661,8 +1695,9 @@ package body Gnat2Why.Subprograms is
             --  range given by the quantification.
             declare
                Why_Expr   : constant W_Prog_Id :=
-                  New_Ignore
-                    (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
+                              New_Ignore
+                                (Prog =>
+                                   Why_Expr_Of_Ada_Expr (Condition (Expr)));
                Index      : W_Identifier_Id;
                Range_Expr : Node_Id;
                Range_Cond : W_Prog_Id;
@@ -1671,21 +1706,27 @@ package body Gnat2Why.Subprograms is
                Range_Cond :=
                   Range_Prog
                     (Get_Range (Range_Expr),
-                     New_Deref (Ref => Index));
+                     New_Unary_Op
+                       (Domain => EW_Prog,
+                        Op     => EW_Deref,
+                        Right  => +Index));
                return
-                  Sequence
-                     (New_Binding_Ref
-                       (Name => Index,
-                        Def  => New_Simpl_Any_Expr (New_Type_Int),
-                        Context =>
-                           New_Conditional_Prog
-                              (Condition => Range_Cond,
-                               Then_Part => Why_Expr)),
-                     New_Assume_Statement
-                        (Ada_Node    => Expr,
-                         Return_Type => New_Type_Bool,
-                         Pred        =>
-                           Why_Predicate_Of_Ada_Expr (Expr)));
+                 Sequence
+                   (New_Binding_Ref
+                      (Name => Index,
+                       Def  =>
+                         New_Simpl_Any_Expr
+                           (New_Base_Type (Base_Type => EW_Int)),
+                       Context =>
+                         New_Conditional
+                           (Domain    => EW_Prog,
+                            Condition => Range_Cond,
+                            Then_Part => +Why_Expr)),
+                    New_Assume_Statement
+                      (Ada_Node    => Expr,
+                       Return_Type => New_Base_Type (Base_Type => EW_Bool),
+                       Pred        =>
+                         Why_Predicate_Of_Ada_Expr (Expr)));
             end;
 
          when N_Attribute_Reference =>
@@ -1696,36 +1737,35 @@ package body Gnat2Why.Subprograms is
             begin
                case Attr_Id is
                   when Attribute_Result =>
-                     T :=
-                        New_Prog_Identifier
-                           (Def => New_Identifier (Result_String));
+                     T := +New_Identifier (Result_String);
 
                   when Attribute_Old =>
                      raise Not_Implemented;
 
                   when Attribute_First =>
-                     T := New_Array_First_Prog
-                          (Full_Name (Etype (Var)),
-                           Why_Expr_Of_Ada_Expr (Var));
+                     T :=
+                       New_Array_First_Prog
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var));
                      Current_Type := Why_Int_Type;
 
                   when Attribute_Last =>
-                     T := New_Array_Last_Prog
-                          (Full_Name (Etype (Var)),
-                           Why_Expr_Of_Ada_Expr (Var));
+                     T :=
+                       New_Array_Last_Prog
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var));
                      Current_Type := Why_Int_Type;
 
                   when Attribute_Length =>
-                     T := New_Array_Length_Prog
-                          (Full_Name (Etype (Var)),
-                           Why_Expr_Of_Ada_Expr (Var));
+                     T :=
+                       New_Array_Length_Prog
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var));
                      Current_Type := Why_Int_Type;
 
                when others =>
                   raise Not_Implemented;
-
                end case;
-
             end;
 
          when N_Conditional_Expression =>
@@ -1735,13 +1775,14 @@ package body Gnat2Why.Subprograms is
                Else_Part : constant Node_Id := Next (Then_Part);
             begin
                T :=
-                  New_Conditional_Prog
+                  New_Conditional
                      (Ada_Node  => Expr,
+                      Domain    => EW_Prog,
                       Condition => Why_Expr_Of_Ada_Expr (Cond),
                       Then_Part =>
-                        Why_Expr_Of_Ada_Expr (Then_Part, Expected_Type),
+                        +Why_Expr_Of_Ada_Expr (Then_Part, Expected_Type),
                       Else_Part =>
-                        Why_Expr_Of_Ada_Expr (Else_Part, Expected_Type));
+                        +Why_Expr_Of_Ada_Expr (Else_Part, Expected_Type));
             end;
 
          when N_Case_Expression =>
@@ -1755,17 +1796,18 @@ package body Gnat2Why.Subprograms is
 
          when N_Character_Literal =>
             --  For characters, we use their integer value
-            T := New_Prog_Constant
-                   (Ada_Node => Expr,
-                    Def      => New_Integer_Constant
-                                  (Ada_Node => Expr,
-                                   Value    => Char_Literal_Value (Expr)));
+            T :=
+              New_Integer_Constant
+                (Ada_Node => Expr,
+                 Domain   => EW_Prog,
+                 Value    => Char_Literal_Value (Expr));
             Current_Type := Why_Int_Type;
 
          when others =>
             raise Not_Implemented;
 
       end case;
+
       declare
          Base_Type : constant Why_Type :=
             (if Overflow_Check_Needed then
@@ -1783,9 +1825,7 @@ package body Gnat2Why.Subprograms is
       end;
    end Why_Expr_Of_Ada_Expr;
 
-   function Why_Expr_Of_Ada_Expr (Expr : Node_Id)
-      return W_Prog_Id
-   is
+   function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Expr_Of_Ada_Expr;
@@ -1794,8 +1834,7 @@ package body Gnat2Why.Subprograms is
    -- Int_Expr_Of_Ada_Expr --
    --------------------------
 
-   function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
-   is
+   function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, Why_Int_Type);
    end Int_Expr_Of_Ada_Expr;
@@ -1813,8 +1852,7 @@ package body Gnat2Why.Subprograms is
    -- Int_Term_Of_Ada_Expr --
    --------------------------
 
-   function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
-   is
+   function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
    begin
       return Why_Term_Of_Ada_Expr (Expr, Why_Int_Type);
    end Int_Term_Of_Ada_Expr;
@@ -1823,8 +1861,7 @@ package body Gnat2Why.Subprograms is
    -- Why_Expr_Of_Ada_Stmt --
    --------------------------
 
-   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
-   is
+   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id is
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
@@ -1835,40 +1872,43 @@ package body Gnat2Why.Subprograms is
             declare
                Lvalue : constant Node_Id := Name (Stmt);
             begin
-            --  We need to differentiate the following cases
-            --  * arrays
-            --  * records (TBD)
-            --  * simple variables
+
+               --  We need to differentiate the following cases
+               --  * arrays
+               --  * records (TBD)
+               --  * simple variables
+
                case Nkind (Lvalue) is
-               when N_Identifier =>
-                  return
-                    New_Assignment
-                      (Ada_Node => Stmt,
-                       Name     => Why_Ident_Of_Ada_Ident (Lvalue),
-                       Value    =>
-                          Why_Expr_Of_Ada_Expr
-                            (Expression (Stmt), Type_Of_Node (Lvalue)));
-
-               when N_Indexed_Component =>
-                  declare
-                     Pre : constant Node_Id := Prefix (Lvalue);
-                  begin
+                  when N_Identifier =>
                      return
-                       New_Array_Update_Prog
-                         (Ada_Node  => Stmt,
-                          Type_Name => Type_Of_Node (Pre),
-                          Ar        => Why_Ident_Of_Ada_Ident (Pre),
-                          Index     =>
+                       New_Assignment
+                         (Ada_Node => Stmt,
+                          Name     => Why_Ident_Of_Ada_Ident (Lvalue),
+                          Value    =>
                             Why_Expr_Of_Ada_Expr
-                              (First (Expressions (Lvalue)), Why_Int_Type),
-                          Value     =>
-                            Why_Expr_Of_Ada_Expr
-                              (Expression (Stmt),
-                               Type_Of_Node (Component_Type (Etype (Pre)))));
-                  end;
+                              (Expression (Stmt), Type_Of_Node (Lvalue)));
 
-               when others =>
-                  raise Not_Implemented;
+                  when N_Indexed_Component =>
+                     declare
+                        Pre : constant Node_Id := Prefix (Lvalue);
+                     begin
+                        return
+                          New_Array_Update_Prog
+                            (Ada_Node  => Stmt,
+                             Type_Name => Type_Of_Node (Pre),
+                             Ar        => Why_Ident_Of_Ada_Ident (Pre),
+                             Index     =>
+                               Why_Expr_Of_Ada_Expr
+                                 (First (Expressions (Lvalue)), Why_Int_Type),
+                             Value     =>
+                               Why_Expr_Of_Ada_Expr
+                                 (Expression (Stmt),
+                                  Type_Of_Node
+                                  (Component_Type (Etype (Pre)))));
+                     end;
+
+                  when others =>
+                     raise Not_Implemented;
                end case;
             end;
 
@@ -1879,10 +1919,10 @@ package body Gnat2Why.Subprograms is
 
          when Sinfo.N_Return_Statement =>
             declare
-               Raise_Stmt : constant W_Prog_Id :=
-                              New_Raise_Statement
-                                (Ada_Node => Stmt,
-                                 Name     => New_Result_Exc_Identifier.Id);
+               Raise_Stmt  : constant W_Prog_Id :=
+                               New_Raise
+                                 (Ada_Node => Stmt,
+                                  Name     => New_Result_Exc_Identifier.Id);
                Result_Stmt : W_Prog_Id;
             begin
                if Expression (Stmt) /= Empty then
@@ -1899,21 +1939,21 @@ package body Gnat2Why.Subprograms is
 
          when N_Procedure_Call_Statement =>
             return
-               New_Located_Call
-                  (Ada_Node => Stmt,
-                   Name     =>
-                     To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
-                   Progs    => Compute_Call_Args (Stmt),
-                   Reason   => VC_Precondition);
+              New_Located_Call
+                (Ada_Node => Stmt,
+                 Name     =>
+                   To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
+                 Progs    => Compute_Call_Args (Stmt),
+                 Reason   => VC_Precondition);
 
          when N_If_Statement =>
             declare
-               Tail    : W_Prog_Id :=
-                  Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt));
+               Tail : W_Prog_Id :=
+                        Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt));
             begin
                if Present (Elsif_Parts (Stmt)) then
                   declare
-                     Cur     : Node_Id := Last (Elsif_Parts (Stmt));
+                     Cur : Node_Id := Last (Elsif_Parts (Stmt));
                   begin
 
                      --  Beginning from the tail that consists of the
@@ -1994,6 +2034,7 @@ package body Gnat2Why.Subprograms is
                   Why_Expr_Of_Ada_Stmts
                     (Stmts      => Loop_Body,
                      Start_From => Split_Node);
+
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop. Generate
                   --  condition "true".
@@ -2004,95 +2045,109 @@ package body Gnat2Why.Subprograms is
                          Loop_Name    => Loop_Name,
                          Invariant    => Invariant,
                          Inv_Node     => Split_Node);
-               elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
-                  and then
-                     Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
+
+               elsif
+                 Nkind (Iterator_Specification (Scheme)) = N_Empty
+                   and then
+                 Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
                   --  A while loop
                   declare
                      Enriched_Inv : constant W_Predicate_Id :=
-                        New_Simpl_Conjunction
-                           (Left  => Invariant,
-                            Right =>
-                              Why_Predicate_Of_Ada_Expr (Condition (Scheme)));
+                                      New_Simpl_Conjunction
+                                        (Left  => Invariant,
+                                         Right =>
+                                           Why_Predicate_Of_Ada_Expr
+                                             (Condition (Scheme)));
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
                      Inv_Node : constant Node_Id :=
-                        (if Present (Split_Node) then Split_Node
-                         else Stmt);
+                                  (if Present (Split_Node) then Split_Node
+                                   else Stmt);
                   begin
                      return
-                        Wrap_Loop
-                           (Loop_Body => Loop_Content,
-                            Condition    =>
-                              Why_Expr_Of_Ada_Expr (Condition (Scheme)),
-                            Loop_Name    => Loop_Name,
-                            Invariant    => Enriched_Inv,
-                            Inv_Node     => Inv_Node);
+                       Wrap_Loop
+                       (Loop_Body    => Loop_Content,
+                        Condition    =>
+                          Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                        Loop_Name    => Loop_Name,
+                        Invariant    => Enriched_Inv,
+                        Inv_Node     => Inv_Node);
                   end;
+
                elsif Nkind (Condition (Scheme)) = N_Empty then
                   --  A for loop
                   declare
-                     LParam_Spec : constant Node_Id :=
-                        Loop_Parameter_Specification (Scheme);
-                     Loop_Range : constant Node_Id :=
-                        Get_Range (Discrete_Subtype_Definition (LParam_Spec));
-                     Loop_Index  : constant String :=
-                        Full_Name (Defining_Identifier (LParam_Spec));
-                     Index_Deref : constant W_Prog_Id :=
-                        New_Deref
-                          (Ada_Node => Stmt,
-                           Ref      => New_Identifier (Loop_Index));
-                     Addition : constant W_Prog_Id :=
-                        New_Infix_Call
-                           (Ada_Node => Stmt,
-                            Infix    => New_Op_Add_Prog,
-                            Left     => Index_Deref,
-                            Right    =>
-                              New_Prog_Constant
-                                (Ada_Node => Stmt,
-                                 Def      =>
-                                   New_Integer_Constant
-                                     (Ada_Node => Stmt,
-                                     Value     => Uint_1)));
-                     Incr_Stmt : constant W_Prog_Id :=
-                        New_Assignment
-                           (Ada_Node => Stmt,
-                            Name     => New_Identifier (Loop_Index),
-                            Value    => Addition);
+                     LParam_Spec  : constant Node_Id :=
+                                      Loop_Parameter_Specification (Scheme);
+                     Loop_Range   : constant Node_Id :=
+                                      Get_Range
+                                        (Discrete_Subtype_Definition
+                                           (LParam_Spec));
+                     Loop_Index   : constant String :=
+                                      Full_Name
+                                        (Defining_Identifier
+                                           (LParam_Spec));
+                     Index_Deref  : constant W_Prog_Id :=
+                                      New_Unary_Op
+                                        (Ada_Node => Stmt,
+                                         Domain   => EW_Prog,
+                                         Op       => EW_Deref,
+                                         Right    =>
+                                           +New_Identifier (Loop_Index));
+                     Addition     : constant W_Prog_Id :=
+                                      New_Binary_Op
+                                        (Ada_Node => Stmt,
+                                         Domain   => EW_Prog,
+                                         Op       => EW_Add,
+                                         Op_Type  => EW_Int,
+                                         Left     => +Index_Deref,
+                                         Right    =>
+                                           New_Integer_Constant
+                                             (Ada_Node => Stmt,
+                                              Value     => Uint_1));
+                     Incr_Stmt    : constant W_Prog_Id :=
+                                      New_Assignment
+                                        (Ada_Node => Stmt,
+                                         Name     =>
+                                           New_Identifier (Loop_Index),
+                                         Value    => Addition);
                      Enriched_Inv : constant W_Predicate_Id :=
-                        New_Simpl_Conjunction
-                           (Left  => Invariant,
-                            Right =>
-                              Range_Predicate
-                                 (Loop_Range,
-                                  New_Term (Loop_Index)));
+                                      New_Simpl_Conjunction
+                                        (Left  => Invariant,
+                                         Right =>
+                                           Range_Predicate
+                                             (Loop_Range,
+                                              New_Term (Loop_Index)));
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
-                     Inv_Node : constant Node_Id :=
-                        (if Present (Split_Node) then Split_Node
-                         else Stmt);
-                     Entire_Loop : constant W_Prog_Id :=
-                        Wrap_Loop
-                           (Loop_Body    => Sequence (Loop_Content, Incr_Stmt),
-                            Condition    =>
-                              Range_Prog
-                                (Loop_Range,
-                                 Index_Deref),
-                            Loop_Name    => Loop_Name,
-                            Invariant    => Enriched_Inv,
-                            Inv_Node     => Inv_Node);
-                     Low : constant Node_Id :=
-                        Low_Bound
-                          (Get_Range
-                            (Discrete_Subtype_Definition (LParam_Spec)));
+                     Inv_Node     : constant Node_Id :=
+                                      (if Present (Split_Node) then Split_Node
+                                       else Stmt);
+                     Entire_Loop  : constant W_Prog_Id :=
+                                      Wrap_Loop
+                                        (Loop_Body    =>
+                                           Sequence (Loop_Content, Incr_Stmt),
+                                         Condition    =>
+                                           Range_Prog
+                                             (Loop_Range,
+                                              Index_Deref),
+                                         Loop_Name    => Loop_Name,
+                                         Invariant    => Enriched_Inv,
+                                         Inv_Node     => Inv_Node);
+                     Low           : constant Node_Id :=
+                                       Low_Bound
+                                         (Get_Range
+                                           (Discrete_Subtype_Definition
+                                             (LParam_Spec)));
                   begin
                      return
-                        New_Binding_Ref
-                           (Name    => New_Identifier (Loop_Index),
-                            Def     => Int_Expr_Of_Ada_Expr (Low),
-                            Context => Entire_Loop);
+                       New_Binding_Ref
+                         (Name    => New_Identifier (Loop_Index),
+                          Def     => Int_Expr_Of_Ada_Expr (Low),
+                          Context => Entire_Loop);
                   end;
+
                else
                   --  Some other kind of loop
                   raise Not_Implemented;
@@ -2102,22 +2157,23 @@ package body Gnat2Why.Subprograms is
          when N_Exit_Statement =>
             declare
                Loop_Entity : constant Entity_Id :=
-                  Loop_Entity_Of_Exit_Statement (Stmt);
-               Exc_Name : constant String := Full_Name (Loop_Entity);
-               Raise_Stmt : constant W_Prog_Id :=
-                 New_Raise_Statement
-                   (Ada_Node => Stmt,
-                    Name => New_Identifier (Exc_Name));
+                               Loop_Entity_Of_Exit_Statement (Stmt);
+               Exc_Name    : constant String := Full_Name (Loop_Entity);
+               Raise_Stmt  : constant W_Prog_Id :=
+                               New_Raise
+                                 (Ada_Node => Stmt,
+                                  Name => New_Identifier (Exc_Name));
             begin
                if Nkind (Condition (Stmt)) = N_Empty then
                   return Raise_Stmt;
                else
                   return
-                    New_Conditional_Prog
+                    New_Conditional
                       (Ada_Node  => Stmt,
+                       Domain    => EW_Prog,
                        Condition =>
                           Why_Expr_Of_Ada_Expr (Condition (Stmt)),
-                       Then_Part => Raise_Stmt);
+                       Then_Part => +Raise_Stmt);
                end if;
             end;
 
@@ -2138,8 +2194,8 @@ package body Gnat2Why.Subprograms is
                      --  ignored.
 
                      if Chars (Get_Pragma_Arg (Arg1)) = Name_Precondition
-                       or else
-                         Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
+                          or else
+                        Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
                      then
                         return New_Void (Stmt);
                      else
@@ -2152,7 +2208,6 @@ package body Gnat2Why.Subprograms is
 
                when others =>
                   raise Not_Implemented;
-
             end case;
 
          when others =>
@@ -2171,7 +2226,10 @@ package body Gnat2Why.Subprograms is
    is
       Result          : W_Prog_Id := New_Void;
       Cur_Stmt        : Node_Or_Entity_Id :=
-         (if Present (Start_From) then Next (Start_From) else First (Stmts));
+                          (if Present (Start_From) then
+                             Next (Start_From)
+                           else
+                             First (Stmts));
    begin
       while Present (Cur_Stmt) loop
          Result := Sequence (Result, Why_Expr_Of_Ada_Stmt (Cur_Stmt));
@@ -2193,67 +2251,42 @@ package body Gnat2Why.Subprograms is
       else
          Ent := Entity (Id);
       end if;
+
       return New_Identifier (Full_Name (Ent));
    end Why_Ident_Of_Ada_Ident;
 
-   ------------------------------
-   -- Why_Prog_Binop_Of_Ada_Op --
-   ------------------------------
+   -------------------------
+   -- Why_Binop_Of_Ada_Op --
+   -------------------------
 
-   function Why_Prog_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Infix_Id
-   is
+   function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op is
    begin
       case Op is
-         when N_Op_Add => return New_Op_Add_Prog;
-         when N_Op_Subtract => return New_Op_Substract_Prog;
-         when N_Op_Divide => return New_Op_Divide_Prog;
-         when N_Op_Multiply => return New_Op_Multiply_Prog;
-         when N_Op_Mod => return New_Op_Mod_Prog;
-         when N_Op_Gt => return New_Op_Gt_Prog;
-         when N_Op_Lt => return New_Op_Lt_Prog;
-         when N_Op_Eq => return New_Op_Eq_Prog;
-         when N_Op_Ge => return New_Op_Ge_Prog;
-         when N_Op_Le => return New_Op_Le_Prog;
-         when N_Op_Ne => return New_Op_Ne_Prog;
+         when N_Op_Add      => return EW_Add;
+         when N_Op_Subtract => return EW_Substract;
+         when N_Op_Divide   => return EW_Divide;
+         when N_Op_Multiply => return EW_Multiply;
+         when N_Op_Mod      => return EW_Mod;
          when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
          when others => raise Program_Error;
       end case;
-   end Why_Prog_Binop_Of_Ada_Op;
+   end Why_Binop_Of_Ada_Op;
 
    -----------------------
    -- Why_Rel_Of_Ada_Op --
    -----------------------
 
-   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return W_Relation_Id
-   is
+   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return EW_Relation is
    begin
       case Op is
-         when N_Op_Gt => return New_Rel_Gt;
-         when N_Op_Lt => return New_Rel_Lt;
-         when N_Op_Eq => return New_Rel_Eq;
-         when N_Op_Ge => return New_Rel_Ge;
-         when N_Op_Le => return New_Rel_Le;
-         when N_Op_Ne => return New_Rel_Ne;
+         when N_Op_Gt => return EW_Gt;
+         when N_Op_Lt => return EW_Lt;
+         when N_Op_Eq => return EW_Eq;
+         when N_Op_Ge => return EW_Ge;
+         when N_Op_Le => return EW_Le;
+         when N_Op_Ne => return EW_Ne;
       end case;
    end Why_Rel_Of_Ada_Op;
-
-   ------------------------------
-   -- Why_Term_Binop_Of_Ada_Op --
-   ------------------------------
-
-   function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id
-   is
-   begin
-      case Op is
-         when N_Op_Add => return New_Op_Add;
-         when N_Op_Subtract => return New_Op_Substract;
-         when N_Op_Divide => return New_Op_Divide;
-         when N_Op_Multiply => return New_Op_Multiply;
-         when N_Op_Mod => return New_Op_Modulo;
-         when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
-         when others => raise Program_Error;
-      end case;
-   end Why_Term_Binop_Of_Ada_Op;
 
    -------------------------------
    -- Why_Predicate_Of_Ada_Expr --
@@ -2266,11 +2299,12 @@ package body Gnat2Why.Subprograms is
               N_Op_Ne =>
             --  ??? Select left type as more general type for now
             return
-              New_Related_Terms
+              New_Relation
                 (Ada_Node => Expr,
-                 Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                 Domain   => EW_Term,
+                 Left     => +Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    =>
-                   Why_Term_Of_Ada_Expr
+                   +Why_Term_Of_Ada_Expr
                      (Right_Opnd (Expr),
                       Type_Of_Node (Left_Opnd (Expr))),
                  Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
@@ -2286,20 +2320,21 @@ package body Gnat2Why.Subprograms is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                return
-                 New_Related_Terms
+                 New_Relation
                    (Ada_Node => Expr,
-                    Left     => Why_Term_Of_Ada_Expr (Left,
+                    Domain   => EW_Term,
+                    Left     => +Why_Term_Of_Ada_Expr (Left,
                                                       Base_Why_Type (Left)),
-                    Right    => Why_Term_Of_Ada_Expr (Right,
+                    Right    => +Why_Term_Of_Ada_Expr (Right,
                                                       Base_Why_Type (Right)),
                     Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
             end;
 
          when N_Op_Not =>
             return
-              New_Negation
+              New_Not
                 (Ada_Node => Expr,
-                 Operand  => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
+                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_And | N_And_Then =>
             return
@@ -2309,17 +2344,19 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_Or | N_Or_Else =>
             return
-              New_Disjunction
+              New_Connection
                 (Ada_Node => Expr,
-                 Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
+                 Domain   => EW_Pred,
+                 Op       => EW_Or,
+                 Left     => +Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
+                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_In =>
             if Nkind (Right_Opnd (Expr)) = N_Range then
                return
-                  Range_Predicate
-                     (Right_Opnd (Expr),
-                      Int_Term_Of_Ada_Expr (Left_Opnd (Expr)));
+                 Range_Predicate
+                   (Right_Opnd (Expr),
+                    Int_Term_Of_Ada_Expr (Left_Opnd (Expr)));
             else
                raise Not_Implemented;
             end if;
@@ -2349,24 +2386,28 @@ package body Gnat2Why.Subprograms is
             begin
                Extract_From_Quantified_Expression (Expr, I, Range_Expr);
                Hypothesis :=
-                  Range_Predicate
-                    (Get_Range (Range_Expr),
-                     New_Term_Identifier (Name => I));
+                  Range_Predicate (Get_Range (Range_Expr), +I);
                Quant_Body :=
-                  New_Implication (Left => Hypothesis, Right => Conclusion);
+                  New_Connection
+                   (Domain => EW_Pred,
+                    Op     => EW_Imply,
+                    Left   => +Hypothesis,
+                    Right  => +Conclusion);
+
                if All_Present (Expr) then
                   return
                      New_Universal_Quantif
-                        (Ada_Node  => Expr,
+                        (Domain    => EW_Pred,
+                         Ada_Node  => Expr,
                          Variables => (1 => I),
-                         Var_Type  => New_Type_Int,
+                         Var_Type  => New_Base_Type (Base_Type => EW_Int),
                          Pred      => Quant_Body);
                else
                   return
                      New_Existential_Quantif
                         (Ada_Node  => Expr,
                          Variables => (1 => I),
-                         Var_Type  => New_Type_Int,
+                         Var_Type  => New_Base_Type (Base_Type => EW_Int),
                          Pred      => Quant_Body);
                end if;
             end;
@@ -2377,11 +2418,12 @@ package body Gnat2Why.Subprograms is
 
          when others =>
             return
-              New_Related_Terms
+              New_Relation
                 (Ada_Node => Expr,
-                 Left     => Why_Term_Of_Ada_Expr (Expr),
-                 Right    => New_True_Literal,
-                 Op       => New_Rel_Eq);
+                 Domain   => EW_Term,
+                 Left     => +Why_Term_Of_Ada_Expr (Expr),
+                 Right    => New_Literal (Value => EW_True),
+                 Op       => EW_Eq);
       end case;
    end Why_Predicate_Of_Ada_Expr;
 
@@ -2401,7 +2443,7 @@ package body Gnat2Why.Subprograms is
       --  variable Current_Type to contain the type of the generated term.
       --
       --  ??? TBD: complete this function for the remaining cases
-      T : W_Term_Id;
+      T            : W_Term_Id;
       --  T contains the term that has been constructed before a possible
       --  conversion to or from Int
       Current_Type : Why_Type := Type_Of_Node (Expr);
@@ -2448,9 +2490,11 @@ package body Gnat2Why.Subprograms is
             Current_Type := Why_Int_Type;
 
          when N_Identifier | N_Expanded_Name =>
+
             --  The corresponding Why type of the identifier may be of
             --  reference type; but here we do not care, as Why, in
             --  annotations, happily converts a reference to its base type.
+
             case Ekind (Entity (Expr)) is
                when E_Enumeration_Literal =>
                   T := Why_Term_Of_Ada_Enum (Expr, Current_Type);
@@ -2458,16 +2502,20 @@ package body Gnat2Why.Subprograms is
                when others =>
                   declare
                      Id : constant W_Identifier_Id :=
-                        Why_Ident_Of_Ada_Ident (Expr);
+                            Why_Ident_Of_Ada_Ident (Expr);
                      E  : constant Entity_Id := Entity (Expr);
                   begin
                      Current_Type := Type_Of_Node (E);
 
                      if Is_Mutable (E) then
-                        T := New_Logic_Deref (Ada_Node => Expr, Ref => Id);
-                     else
                         T :=
-                           New_Term_Identifier (Ada_Node => Expr, Name => Id);
+                          New_Unary_Op
+                            (Ada_Node => Expr,
+                             Domain   => EW_Term,
+                             Op       => EW_Deref,
+                             Right    => +Id);
+                     else
+                        T := +Id;
                      end if;
 
                      if Ekind (E) = E_Loop_Parameter then
@@ -2484,9 +2532,11 @@ package body Gnat2Why.Subprograms is
             begin
                Current_Type := Base_Why_Type (Right);
                T :=
-                 New_Negative_Term
+                 New_Unary_Op
                    (Ada_Node => Expr,
-                    Operand  => Why_Term_Of_Ada_Expr (Right, Current_Type));
+                    Domain   => EW_Term,
+                    Op       => EW_Minus,
+                    Right    => Why_Term_Of_Ada_Expr (Right, Current_Type));
             end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
@@ -2498,13 +2548,15 @@ package body Gnat2Why.Subprograms is
             begin
                Current_Type := Base_Why_Type (Left, Right);
                T :=
-                 New_Arith_Operation
+                 New_Binary_Op
                    (Ada_Node => Expr,
-                    Left     => Why_Term_Of_Ada_Expr (Left,
-                                                      Current_Type),
-                    Right    => Why_Term_Of_Ada_Expr (Right,
-                                                      Current_Type),
-                    Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
+                    Domain   => EW_Term,
+                    Left     => +Why_Term_Of_Ada_Expr (Left,
+                                                       Current_Type),
+                    Right    => +Why_Term_Of_Ada_Expr (Right,
+                                                       Current_Type),
+                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Op_Type  => To_EW_Type (Current_Type.Kind));
             end;
 
          when N_Op_Divide =>
@@ -2514,12 +2566,13 @@ package body Gnat2Why.Subprograms is
             begin
                Current_Type := Base_Why_Type (Left, Right);
                T :=
-                 New_Operation
-                   (Ada_Node   => Expr,
-                    Name       => New_Division (Current_Type.Kind),
-                    Parameters =>
-                      (1 => Why_Term_Of_Ada_Expr (Left, Current_Type),
-                       2 => Why_Term_Of_Ada_Expr (Right, Current_Type)));
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => EW_Term,
+                    Name     => New_Division (Current_Type.Kind),
+                    Args     =>
+                      (1 => +Why_Term_Of_Ada_Expr (Left, Current_Type),
+                       2 => +Why_Term_Of_Ada_Expr (Right, Current_Type)));
             end;
 
          when N_Op_Compare =>
@@ -2529,7 +2582,7 @@ package body Gnat2Why.Subprograms is
             begin
                return
                  New_Boolean_Cmp
-                   (Cmp   => Get_Kind (+Why_Rel_Of_Ada_Op (Nkind (Expr))),
+                   (Cmp   => Why_Rel_Of_Ada_Op (Nkind (Expr)),
                     Left  => Why_Term_Of_Ada_Expr (Left,
                                                    Base_Why_Type (Left)),
                     Right => Why_Term_Of_Ada_Expr (Right,
@@ -2538,29 +2591,32 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_Not =>
             return
-              New_Operation
-                (Ada_Node   => Expr,
-                 Name       => New_Identifier ("bool_not"),
-                 Parameters =>
-                   (1 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
+              New_Call
+                (Ada_Node => Expr,
+                 Domain   => EW_Term,
+                 Name     => New_Identifier ("bool_not"),
+                 Args     =>
+                   (1 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
          when N_Op_And | N_And_Then =>
             return
-               New_Operation
+               New_Call
                 (Ada_Node => Expr,
+                 Domain   => EW_Term,
                  Name     => New_Identifier ("bool_and"),
-                 Parameters =>
-                   (1 => Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                    2 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
+                 Args     =>
+                   (1 => +Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                    2 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
          when N_Op_Or | N_Or_Else =>
             return
-               New_Operation
+               New_Call
                 (Ada_Node => Expr,
+                 Domain   => EW_Term,
                  Name     => New_Identifier ("bool_or"),
-                 Parameters =>
-                   (1 => Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                    2 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
+                 Args     =>
+                   (1 => +Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                    2 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
          when N_Type_Conversion =>
             return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
@@ -2598,22 +2654,19 @@ package body Gnat2Why.Subprograms is
                   when Attribute_First =>
                      T := New_Array_First_Term
                             (Full_Name (Etype (Var)),
-                             New_Term_Identifier (Name =>
-                              Why_Ident_Of_Ada_Ident (Var)));
+                             +Why_Ident_Of_Ada_Ident (Var));
                      Current_Type := Why_Int_Type;
 
                   when Attribute_Last =>
                      T := New_Array_Last_Term
                             (Full_Name (Etype (Var)),
-                             New_Term_Identifier (Name =>
-                              Why_Ident_Of_Ada_Ident (Var)));
+                             +Why_Ident_Of_Ada_Ident (Var));
                      Current_Type := Why_Int_Type;
 
                   when Attribute_Length =>
                      T := New_Array_Length_Term
                             (Full_Name (Etype (Var)),
-                             New_Term_Identifier (Name =>
-                              Why_Ident_Of_Ada_Ident (Var)));
+                             +Why_Ident_Of_Ada_Ident (Var));
                      Current_Type := Why_Int_Type;
 
                   when others =>
@@ -2635,7 +2688,7 @@ package body Gnat2Why.Subprograms is
             declare
                Cur_Case     : Node_Id := Last (Alternatives (Expr));
                Matched_Term : constant W_Term_Id :=
-                  Int_Term_Of_Ada_Expr (Expression (Expr));
+                                Int_Term_Of_Ada_Expr (Expression (Expr));
             begin
                pragma Assert (Present (Cur_Case));
                --  We initialize T to an arbitrary value
@@ -2648,7 +2701,7 @@ package body Gnat2Why.Subprograms is
                   declare
                      Cur_Choice : Node_Id :=
                         First (Discrete_Choices (Cur_Case));
-                     C : W_Term_Id := New_False_Literal;
+                     C : W_Term_Id := New_Literal (Value => EW_False);
                   begin
                      while Present (Cur_Choice) loop
                         C := New_Orb
@@ -2680,17 +2733,20 @@ package body Gnat2Why.Subprograms is
 
          when N_Selected_Component =>
             T :=
-              New_Operation
-                (Name => Record_Getter_Name.Id
-                 (Full_Name (Entity (Selector_Name (Expr)))),
-                 Parameters => (1 => Why_Term_Of_Ada_Expr (Prefix (Expr))));
+              New_Call
+                (Domain => EW_Term,
+                 Name   =>
+                   Record_Getter_Name.Id
+                     (Full_Name (Entity (Selector_Name (Expr)))),
+                 Args   => (1 => +Why_Term_Of_Ada_Expr (Prefix (Expr))));
 
          when N_Function_Call =>
             T :=
-              New_Operation
-                 (Name =>
+              New_Call
+                 (Domain => EW_Term,
+                  Name   =>
                     Logic_Func_Name.Id (Full_Name (Entity (Name (Expr)))),
-                  Parameters =>
+                  Args   =>
                     Compute_Term_Args (Expr));
 
          when N_Expression_With_Actions =>
@@ -2725,41 +2781,45 @@ package body Gnat2Why.Subprograms is
       return W_Prog_Id
    is
       Entire_Body : constant W_Prog_Id :=
-        Sequence
-          (Loop_Body,
-            New_Conditional_Prog
-               (Condition =>
-                  New_Prog_Notb (Condition),
-                Then_Part =>
-                  New_Raise_Statement (Name => New_Identifier (Loop_Name))));
+                      Sequence
+                        (Loop_Body,
+                         New_Conditional
+                           (Domain    => EW_Prog,
+                            Condition =>
+                              New_Prog_Notb (Condition),
+                            Then_Part =>
+                              New_Raise
+                                (Name => New_Identifier (Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=
-         New_While_Loop
-            (Condition   => New_True_Literal_Prog,
-             Annotation  =>
-               New_Loop_Annot
-                  (Invariant =>
-                     New_Located_Predicate
-                        (Ada_Node => Inv_Node,
-                         Pred     => Invariant,
-                         Reason   => VC_Loop_Invariant)),
-             Loop_Content => Entire_Body);
+                      New_While_Loop
+                        (Condition   => New_True_Literal_Prog,
+                         Annotation  =>
+                           New_Loop_Annot
+                             (Invariant =>
+                                New_Located_Predicate
+                                  (Ada_Node => Inv_Node,
+                                   Pred     => Invariant,
+                                   Reason   => VC_Loop_Invariant)),
+                         Loop_Content => Entire_Body);
    begin
-      New_Exception
-         (Current_Why_Output_File,
-          New_Identifier (Loop_Name),
-          Why.Types.Why_Empty);
+      Emit
+        (Current_Why_Output_File,
+         New_Exception_Declaration
+           (Name => New_Identifier (Loop_Name),
+            Arg  => Why.Types.Why_Empty));
 
       return
-         New_Conditional_Prog
-           (Condition => Condition,
-            Then_Part =>
-              New_Try_Block
-                (Prog     => Loop_Stmt,
-                 Handler  =>
-                   (1 =>
-                      New_Handler
-                        (Name     => New_Identifier (Loop_Name),
-                         Def      => New_Void))));
+        New_Conditional
+          (Domain    => EW_Prog,
+           Condition => Condition,
+           Then_Part =>
+             New_Try_Block
+               (Prog    => Loop_Stmt,
+                Handler =>
+                  (1 =>
+                     New_Handler
+                       (Name => New_Identifier (Loop_Name),
+                        Def  => New_Void))));
    end Wrap_Loop;
 
 end Gnat2Why.Subprograms;

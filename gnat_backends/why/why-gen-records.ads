@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils; use String_Utils;
-with Why.Ids;      use Why.Ids;
+with Why.Ids;         use Why.Ids;
+with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
@@ -33,29 +33,20 @@ package Why.Gen.Records is
    --  so these are modeled by an abstract type in Why, with one getter
    --  function per field, plus a builder.
 
-   procedure Start_Ada_Record_Declaration
+   procedure Define_Ada_Record
      (File    : W_File_Id;
       Name    : String;
-      Builder : out W_Logic_Type_Id);
+      Binders : Binder_Array);
    --  Create the declaration of a null record; return its builder logic
    --  function, of the form make___<name> : unit -> <name>.
-
-   procedure Add_Component
-     (File    : W_File_Id;
-      C_Name  : String;
-      C_Type  : W_Primitive_Type_Id;
-      Builder : W_Logic_Type_Id);
-   --  Add a component to the record type whose name is given in parameter;
-   --  and update the builder accordingly (adding a parameter to it).
-
-   procedure Freeze_Ada_Record
-     (File    : W_File_Id;
-      Name    : String;
-      C_Names : String_Lists.List;
-      Builder : W_Logic_Type_Id);
-   --  Finalize the definition of an Ada record by generating its axioms;
-   --  one per field, saying that applying a projection on a builder
-   --  returns the appropriate result. e.g.
+   --  Output the definition of an Ada record by generating
+   --  * its builder
+   --    (e.g. make___t (a,b,c) for record type t with three fields);
+   --  * its getters
+   --    (e.g. get___t_a (obj) for field a of record type t);
+   --  its axioms;
+   --    one per field, saying that applying a projection on a builder
+   --    returns the appropriate result. e.g.
    --
    --  axiom make_get___t_a :
    --   forall (a : t1) (b : t2) (c : t3).

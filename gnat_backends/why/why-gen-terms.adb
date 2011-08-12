@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Progs;      use Why.Gen.Progs;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Progs;       use Why.Gen.Progs;
 
 package body Why.Gen.Terms is
 
@@ -62,10 +62,11 @@ package body Why.Gen.Terms is
             return Why_Term;
          else
             return
-              New_Operation
-              (Ada_Node   => Ada_Node,
+              New_Call
+              (Domain     => EW_Term,
+               Ada_Node   => Ada_Node,
                Name       => Conversion_Name (From => From, To => To),
-               Parameters => (1 => Why_Term));
+               Args => (1 => +Why_Term));
          end if;
       end Insert_Single_Conversion;
 
@@ -103,21 +104,29 @@ package body Why.Gen.Terms is
    is
    begin
       case Get_Kind (+Left) is
-         when W_True_Literal =>
-            return Right;
+         when W_Literal =>
+            if Literal_Get_Value (W_Literal_Id (Left)) = EW_True then
+               return Right;
+            else
+               return Left;
+            end if;
 
          when others =>
             case Get_Kind (+Right) is
-               when W_True_Literal =>
-                  return Left;
+               when W_Literal =>
+                  if Literal_Get_Value (W_Literal_Id (Right)) = EW_True then
+                     return Left;
+                  else
+                     return Right;
+                  end if;
 
                when others =>
                   return
-                     New_Operation
-                        (Name       => New_Identifier ("bool_and"),
-                         Parameters => (1 => Left, 2 => Right));
+                    New_Call
+                      (Domain => EW_Term,
+                       Name   => New_Identifier ("bool_and"),
+                       Args   => (1 => +Left, 2 => +Right));
             end case;
-
       end case;
    end New_Andb;
 
@@ -125,15 +134,16 @@ package body Why.Gen.Terms is
    -- New_Boolean_Cmp --
    ---------------------
 
-   function New_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Term_Id)
-      return W_Term_Id
-   is
+   function New_Boolean_Cmp
+     (Cmp         : EW_Relation;
+      Left, Right : W_Term_Id)
+     return W_Term_Id is
    begin
       return
-         New_Operation
-           (Name => New_Bool_Int_Cmp (Cmp),
-            Parameters => (1 => Left, 2 => Right));
-
+        New_Call
+          (Domain => EW_Term,
+           Name   => New_Bool_Int_Cmp (Cmp),
+           Args   => (1 => +Left, 2 => +Right));
    end New_Boolean_Cmp;
 
    -------------
@@ -144,17 +154,19 @@ package body Why.Gen.Terms is
    is
    begin
       case Get_Kind (+Condition) is
-         when W_True_Literal =>
-            return Left;
-
-         when W_False_Literal =>
-            return Right;
+         when W_Literal =>
+            if Literal_Get_Value (W_Literal_Id (Condition)) = EW_True then
+               return Left;
+            else
+               return Right;
+            end if;
 
          when others =>
             return
-               New_Operation
-                  (Name       => New_Identifier ("ite"),
-                   Parameters => (1 => Condition, 2 => Left, 3 => Right));
+              New_Call
+              (Domain => EW_Term,
+               Name   => New_Identifier ("ite"),
+               Args   => (1 => +Condition, 2 => +Left, 3 => +Right));
       end case;
    end New_Ifb;
 
@@ -166,7 +178,7 @@ package body Why.Gen.Terms is
    is
    begin
       return
-         New_Term_Identifier (Name => Ident, Label => New_Identifier (""));
+        +New_Identifier (Name => Ident, Label => "");
    end New_Old_Ident;
 
    --------------
@@ -177,19 +189,28 @@ package body Why.Gen.Terms is
    is
    begin
       case Get_Kind (+Left) is
-         when W_False_Literal =>
-            return Right;
+         when W_Literal =>
+            if Literal_Get_Value (W_Literal_Id (Left)) = EW_False then
+               return Right;
+            else
+               return Left;
+            end if;
 
          when others =>
             case Get_Kind (+Right) is
-               when W_False_Literal =>
-                  return Left;
+               when W_Literal =>
+                  if Literal_Get_Value (W_Literal_Id (Right)) = EW_False then
+                     return Left;
+                  else
+                     return Right;
+                  end if;
 
                when others =>
                   return
-                     New_Operation
-                        (Name       => New_Identifier ("bool_or"),
-                         Parameters => (1 => Left, 2 => Right));
+                     New_Call
+                        (Domain => EW_Term,
+                         Name   => New_Identifier ("bool_or"),
+                         Args   => (1 => +Left, 2 => +Right));
             end case;
 
       end case;
@@ -202,7 +223,7 @@ package body Why.Gen.Terms is
    function New_Result_Term return W_Term_Id
    is
    begin
-      return New_Term_Identifier (Name => New_Result_Identifier.Id);
+      return +New_Result_Identifier.Id;
    end New_Result_Term;
 
 end Why.Gen.Terms;

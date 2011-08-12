@@ -23,63 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;   use Types;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
    --  toplevel declarations.
 
-   --  Overloaded procedures with a W_File_Id Argument add the built
-   --  declaration to that context instead of returning it
-
-   procedure New_Abstract_Type (File : W_File_Id; Name : String);
-   procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id);
-   procedure New_Abstract_Type
-      (File : W_File_Id;
-       Name : W_Identifier_Id;
-       Args : Natural);
+   function New_Type (Name : String) return W_Declaration_Id;
+   function New_Type
+     (Name : W_Identifier_Id;
+      Args : Natural)
+     return W_Declaration_Id;
    --  Declare a new abstract type. If Args is given, declare a polymorphic
    --  abstract type with the given number of arguments.
 
-   procedure New_Adt_Definition
-     (File : W_File_Id;
-      Name : W_Identifier_Id;
-      Constructors : W_Constr_Decl_Array);
-
-   procedure New_Axiom
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Axiom_Body : W_Predicate_Id);
-   --  Declare an axiom with the given name and the given body.
-
-   procedure New_Global_Ref_Declaration
-      (File     : W_File_Id;
-       Name     : W_Identifier_Id;
-       Obj_Type : W_Primitive_Type_Id);
-
-   procedure New_Include_Declaration
-     (File : W_File_Id;
-      Name : W_Identifier_Id;
-      Ada_Node : Node_Id := Empty);
-   --  Include declarations, of the form
-   --    include "name.why"
-
-   procedure New_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Args        : W_Logic_Arg_Type_Array;
-      Return_Type : W_Logic_Return_Type_Id);
-
-   procedure New_Exception
-      (File      : W_File_Id;
-       Name      : W_Identifier_Id;
-       Parameter : W_Primitive_Type_Id);
-
-   procedure Emit
-     (File : W_File_Id;
-      Decl : W_Logic_Declaration_Class_Id);
-   --  Emit logic declaration in file
+   function New_Adt_Definition
+     (Name         : W_Identifier_Id;
+      Constructors : W_Constr_Decl_Array)
+     return W_Declaration_Id;
 
    procedure Emit
      (File : W_File_Id;

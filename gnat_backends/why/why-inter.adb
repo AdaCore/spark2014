@@ -23,9 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
+
 with Sinfo;         use Sinfo;
 with Einfo;         use Einfo;
 with Atree;         use Atree;
+with Sem_Util;      use Sem_Util;
+with Stand;         use Stand;
 with Constant_Tree;
 
 package body Why.Inter is
@@ -97,6 +101,30 @@ package body Why.Inter is
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
+   ---------------
+   -- Full_Name --
+   ---------------
+
+   function Full_Name (N : Node_Id) return String is
+   begin
+      if N = Standard_Boolean then
+         return "bool";
+      else
+         declare
+            S : String := Unique_Name (N);
+         begin
+
+            --  In Why3, enumeration literals need to be upper case. Why2
+            --  doesn't care, so we enforce upper case here
+
+            if Ekind (N) = E_Enumeration_Literal then
+               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
+            end if;
+            return S;
+         end;
+      end if;
+   end Full_Name;
+
    ---------
    -- LCA --
    ---------
@@ -129,6 +157,26 @@ package body Why.Inter is
          WP_Decls          => List_Of_Nodes.Empty_List,
          WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
    end Make_Empty_Why_Pack;
+
+   ----------------
+   -- To_EW_Type --
+   ----------------
+
+   function To_EW_Type (T : Ext_Why_Base) return EW_Base_Type is
+   begin
+      case T is
+         when Why_Null_Type =>
+            return EW_Unit;
+         when Why_Bool =>
+            return EW_Bool;
+         when Why_Int =>
+            return EW_Int;
+         when Why_Real =>
+            return EW_Real;
+         when Why_Fixed_Point =>
+            return EW_Int;
+      end case;
+   end To_EW_Type;
 
    --------
    -- Up --

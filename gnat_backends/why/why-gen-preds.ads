@@ -23,13 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;                use Types;
-with VC_Kinds;             use VC_Kinds;
-
-with String_Utils;         use String_Utils;
-with Why.Ids;              use Why.Ids;
-with Why.Classes;          use Why.Classes;
-with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
+with Types;    use Types;
+with VC_Kinds; use VC_Kinds;
+with Why.Ids;  use Why.Ids;
 
 package Why.Gen.Preds is
 
@@ -82,62 +78,9 @@ package Why.Gen.Preds is
        Reason   : VC_Kind) return W_Predicate_Id;
    --  Build a predicate with a fresh label corresponding to the Ada_Node.
 
-   function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id;
-   --  Return a fresh relation node, given a relation symbol
-
-   type Binding_Pred_Chain is array (Positive range <>)
-     of W_Binding_Pred_Unchecked_Id;
-   --  Array of bindings with an empty context. Those are meant to be
-   --  linked together in a predicate of the form:
-   --
-   --  let <my_chain_1_name> = <my_chain_1_value> in
-   --  let <my_chain_2_name> = <my_chain_2_value> in
-   --  [...]
-   --  let <my_chain_n_name> = <my_chain_n_value> in
-   --     <empty>
-
    function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
       return W_Predicate_Id;
    --  Build a conjunction, but check if we can simplify it  - one of the
    --  arguments may be "true".
-
-   type Universal_Quantif_Chain is array (Positive range <>)
-     of W_Universal_Quantif_Unchecked_Id;
-   --  Array of universal quantifiers with an empty context. Those are meant
-   --  to be linked together in a predicate of the form:
-   --
-   --  forall <my_chain_1_name> : <my_chain_1_type>.
-   --  forall <my_chain_2_name> : <my_chain_2_type>.
-   --  [...]
-   --  forall <my_chain_n_type> : <my_chain_n_type>.
-   --     <empty>
-
-   function New_Universal_Predicate_Body
-     (Foralls : Universal_Quantif_Chain;
-      Context : W_Predicate_Id)
-     return W_Predicate_Id;
-   --  Create a predicate by linking together the universal quantifiers and
-   --  associating the context to them.
-
-   function New_Universal_Predicate
-     (Arg_Names : String_Lists.List;
-      Logic     : W_Logic_Type_Id;
-      Pred      : W_Predicate_Id)
-     return W_Predicate_Id;
-   --  Given a predicate, a logic of the form
-   --
-   --   t1, t2, ..., tn -> t
-   --
-   --  and a list of arg names
-   --
-   --   N1, N2, ..., Nn
-   --
-   --  create an universal quantification of the form:
-   --
-   --   forall N1 : t1.
-   --   forall N2 : t2.
-   --   [...]
-   --   forall Nn : tn.
-   --    <Pred>
 
 end Why.Gen.Preds;

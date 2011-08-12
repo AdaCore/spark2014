@@ -27,6 +27,7 @@ with Namet;     use Namet;
 with Uintp;     use Uintp;
 with Urealp;    use Urealp;
 with Why.Types; use Why.Types;
+with Why.Sinfo; use Why.Sinfo;
 with Outputs;   use Outputs;
 
 package Why.Images is
@@ -40,6 +41,28 @@ package Why.Images is
    procedure P (O : Output_Id; Value : Uint);
 
    procedure P (O : Output_Id; Value : Ureal);
+
+   procedure P (O : Output_Id; Value : Boolean);
+
+   procedure P (O : Output_Id; Value : EW_Base_Type);
+
+   procedure P
+     (O      : Output_Id;
+      Value  : EW_Literal;
+      Domain : EW_Domain := EW_Prog);
+
+   procedure P
+     (O       : Output_Id;
+      Value   : EW_Binary_Op;
+      Op_Type : EW_Scalar := EW_Int);
+
+   procedure P (O : Output_Id; Value : EW_Relation);
+
+   procedure P (O : Output_Id; Value : EW_Connector);
+
+   procedure P (O : Output_Id; Value : EW_Unary_Op);
+
+   procedure P (O : Output_Id; Value : EW_Domain);
 
    function Img (Name : Name_Id) return String;
    --  Return the String content of Name

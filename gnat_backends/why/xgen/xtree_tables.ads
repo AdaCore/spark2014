@@ -49,6 +49,9 @@ package Xtree_Tables is
       Field_Type     : String_Access;
       --  Field type
 
+      Default        : String_Access;
+      --  Default field value ("" if none)
+
       Id_Type        : String_Access;
       --  Checked id subtype, if any
 
@@ -147,7 +150,7 @@ package Xtree_Tables is
    ------------------
 
    subtype Valid_Kind is Why_Node_Kind
-     range W_Identifier .. Why_Node_Kind'Last;
+     range W_Base_Type .. Why_Node_Kind'Last;
 
    Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
    --  Structural info for the variant part of the Why syntax tree
@@ -160,12 +163,14 @@ package Xtree_Tables is
 
    procedure New_Common_Field
      (Field_Name : Wide_String;
-      Field_Type : Wide_String);
+      Field_Type : Wide_String;
+      Default    : Wide_String := "");
 
    procedure New_Field
      (Kind       : Why_Node_Kind;
       Field_Name : Wide_String;
-      Field_Type : Wide_String);
+      Field_Type : Wide_String;
+      Default    : Wide_String := "");
 
    procedure New_Field
      (Kind         : Why_Node_Kind;
@@ -177,7 +182,8 @@ package Xtree_Tables is
      (NI         : in out Why_Node_Info;
       In_Variant : Boolean;
       Field_Name : Wide_String;
-      Field_Type : Wide_String);
+      Field_Type : Wide_String;
+      Default    : Wide_String);
    --  Add new field info to the node info
 
    procedure Set_Mutable (Kind : Why_Node_Kind);

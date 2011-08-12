@@ -23,35 +23,37 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;               use Namet;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Sinfo;           use Why.Sinfo;
+with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Names is
 
-   function Bool_Int_Cmp_String (Rel : W_Relation) return String;
+   function Bool_Int_Cmp_String (Rel : EW_Relation) return String;
    --  Return the name of a boolean integer comparison operator
 
    -------------------------
    -- Bool_Int_Cmp_String --
    -------------------------
 
-   function Bool_Int_Cmp_String (Rel : W_Relation) return String
+   function Bool_Int_Cmp_String (Rel : EW_Relation) return String
    is
    begin
       case Rel is
-         when W_Rel_Eq =>
+         when EW_None =>
+            pragma Assert (False);
+            return "bool_int__always_true";
+         when EW_Eq =>
             return "bool_int__eq";
-         when W_Rel_Ne =>
+         when EW_Ne =>
             return "bool_int__ne";
-         when W_Rel_Lt =>
+         when EW_Lt =>
             return "bool_int__lt";
-         when W_Rel_Le =>
+         when EW_Le =>
             return "bool_int__le";
-         when W_Rel_Gt =>
+         when EW_Gt =>
             return "bool_int__gt";
-         when W_Rel_Ge =>
+         when EW_Ge =>
             return "bool_int__ge";
       end case;
    end Bool_Int_Cmp_String;
@@ -60,16 +62,16 @@ package body Why.Gen.Names is
    -- New_Bool_Int_Cmp --
    ----------------------
 
-   function New_Bool_Int_Cmp (Rel : W_Relation) return W_Identifier_Id is
+   function New_Bool_Int_Cmp (Rel : EW_Relation) return W_Identifier_Id is
    begin
-      return New_Identifier (Bool_Int_Cmp_String (Rel));
+      return New_Identifier (EW_Pred, Bool_Int_Cmp_String (Rel));
    end New_Bool_Int_Cmp;
 
    ------------------------
    -- New_Bool_Int_Axiom --
    ------------------------
 
-   function New_Bool_Int_Axiom (Rel : W_Relation) return W_Identifier_Id is
+   function New_Bool_Int_Axiom (Rel : EW_Relation) return W_Identifier_Id is
    begin
       return New_Identifier (Bool_Int_Cmp_String (Rel) & "_axiom");
    end New_Bool_Int_Axiom;
@@ -96,40 +98,47 @@ package body Why.Gen.Names is
 
    function New_Identifier (Name : String) return W_Identifier_Id is
    begin
-      Name_Len := 0;
-      Add_Str_To_Name_Buffer (Name);
-      return New_Identifier (Symbol => Name_Find);
+      return New_Identifier (EW_Term, Name);
    end New_Identifier;
 
-   ---------------------
-   -- New_Identifiers --
-   ---------------------
-
-   function New_Identifiers
-     (SL : String_Lists.List) return W_Identifier_Array is
-      use String_Utils.String_Lists;
-
-      Result : W_Identifier_Array (1 .. Integer (Length (SL)));
-      Index  : Positive := 1;
+   function New_Identifier
+     (Domain : EW_Domain;
+      Name   : String)
+     return W_Identifier_Id is
    begin
-      --  Workaround for K526-008 and K525-019
+      return New_Identifier (Domain => Domain, Symbol => NID (Name));
+   end New_Identifier;
 
-      --  for E of SL loop
-      --     Result (Index) := New_Identifier (E);
-      --     Index := Index + 1;
-      --  end loop;
+   function New_Identifier
+     (Name   : W_Identifier_Id;
+      Label  : String)
+     return W_Identifier_Id
+   is
+      S : constant Name_Id := Identifier_Get_Symbol (Name);
+      L : constant Name_Id := NID (Label);
+   begin
+      return New_Identifier (Domain => EW_Term, Symbol => S, Label => L);
+   end New_Identifier;
 
-      declare
-         C : Cursor := SL.First;
-      begin
-         while C /= No_Element loop
-            Result (Index) := New_Identifier (Element (C));
-            Index := Index + 1;
-            Next (C);
-         end loop;
-      end;
-      return Result;
-   end New_Identifiers;
+   ---------
+   -- NID --
+   ---------
+
+   function NID (Name : String) return Name_Id is
+   begin
+      Name_Len := 0;
+      Add_Str_To_Name_Buffer (Name);
+      return Name_Find;
+   end NID;
+
+   --------------
+   -- New_Prog --
+   --------------
+
+   function New_Prog (Name : String) return W_Prog_Id is
+   begin
+      return +New_Identifier (EW_Prog, Name);
+   end New_Prog;
 
    --------------
    -- New_Term --
@@ -137,38 +146,8 @@ package body Why.Gen.Names is
 
    function New_Term (Name : String) return W_Term_Id is
    begin
-      return New_Term_Identifier (Name => New_Identifier (Name));
+      return +New_Identifier (Name);
    end New_Term;
-
-   ---------------
-   -- New_Terms --
-   ---------------
-
-   function New_Terms (SL : String_Lists.List) return W_Term_Array is
-      use String_Utils.String_Lists;
-
-      Result : W_Term_Array (1 .. Integer (Length (SL)));
-      Index  : Positive := 1;
-   begin
-      --  Workaround for K526-008 and K525-019
-
-      --  for E of SL loop
-      --     Result (Index) := New_Term (E);
-      --     Index := Index + 1;
-      --  end loop;
-
-      declare
-         C : Cursor := SL.First;
-      begin
-         while C /= No_Element loop
-            Result (Index) := New_Term (Element (C));
-            Index := Index + 1;
-            Next (C);
-         end loop;
-      end;
-
-      return Result;
-   end New_Terms;
 
    ----------------------
    -- To_Program_Space --
@@ -179,7 +158,7 @@ package body Why.Gen.Names is
       N_Id   : constant Name_Id := Identifier_Get_Symbol (Name);
       Img    : constant String := Get_Name_String (N_Id);
    begin
-      return New_Identifier (Img & Suffix);
+      return New_Identifier (EW_Prog, Img & Suffix);
    end To_Program_Space;
 
    --------------------------

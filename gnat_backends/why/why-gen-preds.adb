@@ -27,7 +27,6 @@ with Atree;               use Atree;
 with Why.Sinfo;           use Why.Sinfo;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Decl;        use Why.Gen.Decl;
@@ -36,20 +35,6 @@ with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Preds is
-
-   generic
-      type Element_Type is private;
-      type Chain_Type is array (Positive range <>) of Element_Type;
-
-      with procedure Chain_Set (Root, Element : Element_Type);
-
-   function Finalize_Chain
-     (Chain : Chain_Type;
-      Tail  : Element_Type)
-     return Element_Type;
-   --  Same as New_Predicate_Body and New_Universal_Predicate_Body,
-   --  for any type that can be "chained"; this function is used to factorize
-   --  out the body of these two functions.
 
    -------------------------
    -- Define_Eq_Predicate --
@@ -69,34 +54,39 @@ package body Why.Gen.Preds is
       X_Binder          : constant Binder_Type :=
                             (B_Name => New_Identifier (X_S),
                              B_Type => New_Abstract_Type
-                                         (Name => New_Identifier (Name)),
+                                         (Name => New_Identifier (EW_Term,
+                                                                  Name)),
                              others => <>);
       Y_Binder          : constant Binder_Type :=
                             (B_Name => New_Identifier (Y_S),
                              B_Type => New_Abstract_Type
-                                         (Name => New_Identifier (Name)),
+                                         (Name => New_Identifier (EW_Term,
+                                                                  Name)),
                              others => <>);
 
       --  <base_type>_of___<name> (x) = <base_type>_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
                             Conversion_To.Id (Name, Base_Type_Name);
       X_To_Base_Type_Op : constant W_Term_Id :=
-                            New_Operation
-                              (Name       => Conversion,
-                               Parameters => (1 => New_Term (X_S)));
+                            New_Call
+                              (Domain => EW_Term,
+                               Name   => Conversion,
+                               Args   => (1 => +New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
-                            New_Operation
-                              (Name => Conversion,
-                               Parameters => (1 => New_Term (Y_S)));
+                            New_Call
+                              (Domain => EW_Term,
+                               Name   => Conversion,
+                               Args   => (1 => +New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
       Emit
         (File,
-         Binders.New_Predicate_Definition
+         New_Function_Def
            (Name    => Pred_Name,
+            Domain  => EW_Pred,
             Binders => (1 => X_Binder, 2 => Y_Binder),
             Def     =>
-              New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op)));
+              +New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op)));
    end Define_Eq_Predicate;
 
    ----------------------------
@@ -124,51 +114,34 @@ package body Why.Gen.Preds is
 
       --  first <= x <= last
       Context    : constant W_Predicate_Id :=
-                     New_Related_Terms (Left   => New_Term (First_S),
-                                        Op     => New_Rel_Le,
-                                        Right  => New_Term (Arg_S),
-                                        Op2    => New_Rel_Le,
-                                        Right2 => New_Term (Last_S));
+                     New_Relation (Left   => +New_Term (First_S),
+                                   Op     => EW_Le,
+                                   Right  => +New_Term (Arg_S),
+                                   Op2    => EW_Le,
+                                   Right2 => +New_Term (Last_S));
       --  let first = <first> in
       --  let last  = <last>  in [...]
       Decl_Last  : constant W_Predicate_Id :=
-                     New_Binding_Pred
-                       (Name    => New_Identifier (Last_S),
-                        Def     => Last,
-                        Context => Context);
+                     New_Binding
+                       (Domain  => EW_Pred,
+                        Name    => New_Identifier (Last_S),
+                        Def     => +Last,
+                        Context => +Context);
       Decl_First : constant W_Predicate_Id :=
-                     New_Binding_Pred
-                       (Name    => New_Identifier (First_S),
-                        Def     => First,
-                        Context => Decl_Last);
+                     New_Binding
+                       (Domain  => EW_Pred,
+                        Name    => New_Identifier (First_S),
+                        Def     => +First,
+                        Context => +Decl_Last);
    begin
       Emit
         (File,
-         Binders.New_Predicate_Definition
-           (Name    => Pred_Name,
+         New_Function_Def
+           (Domain  => EW_Pred,
+            Name    => Pred_Name,
             Binders => (1 => Binder),
-            Def     => Decl_First));
+            Def     => +Decl_First));
    end Define_Range_Predicate;
-
-   --------------------
-   -- Finalize_Chain --
-   --------------------
-
-   function Finalize_Chain
-     (Chain : Chain_Type;
-      Tail  : Element_Type)
-     return Element_Type is
-   begin
-      for J in reverse Chain'Range loop
-         if J = Chain'Last then
-            Chain_Set (Chain (J), Tail);
-         else
-            Chain_Set (Chain (J), Chain (J + 1));
-         end if;
-      end loop;
-
-      return Chain (Chain'First);
-   end Finalize_Chain;
 
    --------------------------
    -- New_Conditional_Prop --
@@ -182,21 +155,24 @@ package body Why.Gen.Preds is
    is
    begin
       return
-         New_Conjunction
-            (Ada_Node => Ada_Node,
-             Left     =>
-               New_Implication
-                  (Ada_Node => Ada_Node,
-                   Left     => Condition,
-                   Right    => Then_Part),
-             Right    =>
-               New_Implication
-                  (Ada_Node => Ada_Node,
-                   Left     =>
-                     New_Negation
-                        (Ada_Node => Ada_Node,
-                         Operand  => Condition),
-                   Right    => Else_Part));
+        New_Connection
+          (Ada_Node => Ada_Node,
+           Op       => EW_And,
+           Left     =>
+             New_Connection
+               (Ada_Node => Ada_Node,
+                Op       => EW_Imply,
+                Left     => +Condition,
+                Right    => +Then_Part),
+           Right    =>
+             New_Connection
+               (Ada_Node => Ada_Node,
+                Op       => EW_Imply,
+                Left     =>
+                  New_Not
+                    (Ada_Node => Ada_Node,
+                     Right    => +Condition),
+                Right    => +Else_Part));
    end New_Conditional_Prop;
 
    ---------------
@@ -204,14 +180,14 @@ package body Why.Gen.Preds is
    ---------------
 
    function New_Equal
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id
    is
    begin
-      return New_Related_Terms
-         (Left  => Left,
-          Right => Right,
-          Op => New_Rel_Eq);
+      return New_Relation
+        (Left  => +Left,
+         Right => +Right,
+         Op    => EW_Eq);
    end New_Equal;
 
    --------------------
@@ -224,9 +200,10 @@ package body Why.Gen.Preds is
    is
    begin
       return
-        New_Equivalence
-          (Left  => New_Equal (Left, New_True_Literal),
-           Right => Right);
+        New_Connection
+          (Op    => EW_Equivalent,
+           Left  => +New_Equal (Left, New_Literal (Value => EW_True)),
+           Right => +Right);
    end New_Equal_Bool;
 
    ---------------------------
@@ -240,9 +217,12 @@ package body Why.Gen.Preds is
    is
    begin
       if Present (Ada_Node)
-         and then Get_Kind (+Pred) /= W_True_Literal_Pred then
+         and then
+        not (Get_Kind (+Pred) = W_Literal
+             and then Literal_Get_Value (W_Literal_Id (Pred)) = EW_True)
+      then
          return
-            New_Named_Predicate
+            New_Located_Predicate
               (Ada_Node => Ada_Node,
                Name     => New_Located_Label (Ada_Node, Reason),
                Pred     => Pred);
@@ -256,32 +236,15 @@ package body Why.Gen.Preds is
    ----------------
 
    function New_NEqual
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id
    is
    begin
-      return New_Related_Terms
-         (Left => Left,
-          Right => Right,
-          Op => New_Rel_Ne);
+      return New_Relation
+        (Left  => +Left,
+         Right => +Right,
+         Op    => EW_Ne);
    end New_NEqual;
-
-   --------------------
-   -- New_Rel_Symbol --
-   --------------------
-
-   function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id
-   is
-   begin
-      case Symbol is
-         when W_Rel_Gt => return New_Rel_Gt;
-         when W_Rel_Lt => return New_Rel_Lt;
-         when W_Rel_Eq => return New_Rel_Eq;
-         when W_Rel_Ge => return New_Rel_Ge;
-         when W_Rel_Le => return New_Rel_Le;
-         when W_Rel_Ne => return New_Rel_Ne;
-      end case;
-   end New_Rel_Symbol;
 
    ---------------------------
    -- New_Simpl_Conjunction --
@@ -291,93 +254,26 @@ package body Why.Gen.Preds is
       return W_Predicate_Id
    is
    begin
-      if Get_Kind (+Left) = W_True_Literal_Pred then
-         return Right;
-      elsif Get_Kind (+Right) = W_True_Literal_Pred then
-         return Left;
+      if Get_Kind (+Left) = W_Literal then
+         if Literal_Get_Value (W_Literal_Id (Left)) = EW_True then
+            return Right;
+         else
+            return Left;
+         end if;
+
+      elsif Get_Kind (+Right) = W_Literal then
+         if Literal_Get_Value (W_Literal_Id (Right)) = EW_True then
+            return Left;
+         else
+            return Right;
+         end if;
+
       else
-         return New_Conjunction (Left => Left, Right => Right);
+         return New_Connection
+           (Op    => EW_And,
+            Left  => +Left,
+            Right => +Right);
       end if;
    end New_Simpl_Conjunction;
-
-   -----------------------------
-   -- New_Universal_Predicate --
-   -----------------------------
-
-   function New_Universal_Predicate
-     (Arg_Names : String_Lists.List;
-      Logic     : W_Logic_Type_Id;
-      Pred      : W_Predicate_Id)
-     return W_Predicate_Id
-   is
-      use Node_Lists;
-      use String_Lists;
-
-      C_Types : constant Node_Lists.List :=
-                  Get_List (+Logic_Type_Get_Arg_Types (Logic));
-      Foralls : Universal_Quantif_Chain
-                  (1 .. Integer (Length (C_Types)));
-      Index   : Positive := 1;
-      Arg_Ids : constant W_Identifier_Array :=
-                  New_Identifiers (Arg_Names);
-   begin
-      --  Workaround for K526-008 and K525-019
-      --  (for N of C_Types loop...)
-
-      declare
-         C : Node_Lists.Cursor := C_Types.First;
-      begin
-         while C /= Node_Lists.No_Element loop
-            Foralls (Index) := New_Unchecked_Universal_Quantif;
-            Universal_Quantif_Append_To_Variables
-              (Foralls (Index),
-               Arg_Ids (Index));
-            Universal_Quantif_Set_Var_Type
-              (Foralls (Index), +Node_Lists.Element (C));
-            Index := Index + 1;
-            Node_Lists.Next (C);
-         end loop;
-      end;
-
-      return New_Universal_Predicate_Body (Foralls, Pred);
-   end New_Universal_Predicate;
-
-   ----------------------------------
-   -- New_Universal_Predicate_Body --
-   ----------------------------------
-
-   function New_Universal_Predicate_Body
-     (Foralls : Universal_Quantif_Chain;
-      Context : W_Predicate_Id)
-     return W_Predicate_Id
-   is
-      procedure Set_Pred (Root, Element : W_Universal_Quantif_Unchecked_Id);
-
-      function Finalize_Univ_Chain is
-        new Finalize_Chain
-        (Element_Type => W_Universal_Quantif_Unchecked_Id,
-         Chain_Type   => Universal_Quantif_Chain,
-         Chain_Set    => Set_Pred);
-
-      --------------
-      -- Set_Pred --
-      --------------
-
-      procedure Set_Pred (Root, Element : W_Universal_Quantif_Unchecked_Id) is
-      begin
-         Universal_Quantif_Set_Pred (Root, +Element);
-      end Set_Pred;
-
-   begin
-      Universal_Quantif_Set_Pred (Foralls (Foralls'Last), Context);
-
-      if Foralls'Length = 1 then
-         return +Foralls (Foralls'Last);
-      else
-         return +Finalize_Univ_Chain
-           (Foralls (Foralls'First .. Foralls'Last - 1),
-            Foralls (Foralls'Last));
-      end if;
-   end New_Universal_Predicate_Body;
 
 end Why.Gen.Preds;

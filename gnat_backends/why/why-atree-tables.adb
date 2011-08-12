@@ -111,11 +111,12 @@ package body Why.Atree.Tables is
    procedure Initialize is
       use Node_Tables;
 
-      Empty_Node : constant Why_Node (W_Unused_At_Start)
-                     := (Kind => W_Unused_At_Start,
-                         Ada_Node => Empty,
-                         Link => Why_Empty,
-                         Checked => True);
+      Empty_Node : constant Why_Node (W_Unused_At_Start) :=
+                     (Kind     => W_Unused_At_Start,
+                      Ada_Node => Empty,
+                      Domain   => EW_Prog,
+                      Link     => Why_Empty,
+                      Checked  => True);
    begin
       Append (Node_Table, Empty_Node);
       pragma Assert (To_Index (Last (Node_Table)) = Why_Empty);

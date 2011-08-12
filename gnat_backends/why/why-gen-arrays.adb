@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with VC_Kinds;           use VC_Kinds;
+with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
@@ -50,7 +51,8 @@ package body Why.Gen.Arrays is
       Ar_Binder  : constant Binder_Type :=
                      (B_Name => New_Identifier ("a"),
                       B_Type =>
-                        New_Abstract_Type (Name => (New_Identifier (Name))),
+                        New_Abstract_Type
+                          (Name => (New_Identifier (Name))),
                       others => <>);
    begin
       Declare_Ada_Unconstrained_Array (File, Name, Component);
@@ -97,17 +99,17 @@ package body Why.Gen.Arrays is
       Component : String)
    is
       Comp_Type  : constant W_Primitive_Type_Id :=
-         New_Abstract_Type (Name => (New_Identifier (Component)));
+                     New_Abstract_Type
+                       (Name => (New_Identifier (Component)));
       Ar_Type    : constant W_Primitive_Type_Id :=
-         New_Generic_Actual_Type_Chain
-            (Type_Chain => (1 => Comp_Type),
-             Name => New_Identifier (Ada_Array));
+                     New_Generic_Actual_Type_Chain
+                       (Type_Chain => (1 => Comp_Type),
+                        Name       => New_Identifier (Ada_Array));
       Name_Type  : constant W_Primitive_Type_Id :=
-         New_Abstract_Type (Name => (New_Identifier (Name)));
-      Ar         : constant W_Term_Id :=
-         New_Term ("a");
-      Arb        : constant W_Term_Id :=
-         New_Term ("b");
+                     New_Abstract_Type
+                       (Name => (New_Identifier (Name)));
+      Ar         : constant W_Term_Id := New_Term ("a");
+      Arb        : constant W_Term_Id := New_Term ("b");
       Ar_Binder_2 : constant Binder_Type :=
                       (B_Name => New_Identifier ("a"),
                        B_Type => Ar_Type,
@@ -119,70 +121,96 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      New_Abstract_Type (File, Name);
-      New_Logic
-         (File,
-          Array_Conv_From.Id (Name),
-          Args => (1 => +Name_Type),
-          Return_Type => +Ar_Type);
+      --  ??? why-gen-axioms defines general methods to
+      --  generate these axioms. Presumably not exactly those ones,
+      --  but close enough. This should be factorized out.
+      Emit (File, New_Type (Name));
       Emit
         (File,
-         New_Logic
-           (Name => Array_Conv_To.Id (Name),
-            Binders => (1 => Ar_Binder_2),
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Array_Conv_From.Id (Name),
+            Binders     => New_Binders ((1 => Name_Type)),
+            Return_Type => Ar_Type));
+      Emit
+        (File,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Array_Conv_To.Id (Name),
+            Binders     => (1 => Ar_Binder_2),
             Return_Type => Name_Type));
-      New_Axiom
-         (File       => File,
-          Name       => Array_Conv_Idem.Id (Name),
-          Axiom_Body =>
-            New_Universal_Quantif
-              (Var_Type  => New_Abstract_Type (Name =>
-                                                 (New_Identifier (Name))),
-               Variables => (1 => New_Identifier ("a")),
-               Triggers  => New_Triggers (
-                 Triggers => (1 =>
-                                New_Trigger (
-                                  Terms => (1 => New_Operation
-                                            (Name => Array_Conv_From.Id (Name),
-                                             Parameters => (1 => Ar)))))),
-               Pred      =>
-                 New_Equal
-                   (Ar,
-                    New_Operation
-                      (Name       => Array_Conv_To.Id (Name),
-                       Parameters =>
-                         (1 => New_Operation
-                            (Name => Array_Conv_From.Id (Name),
-                             Parameters => (1 => Ar)))))));
+      Emit
+        (File,
+         New_Axiom
+           (Name => Array_Conv_Idem.Id (Name),
+            Def  =>
+              New_Universal_Quantif
+                (Var_Type  =>
+                   New_Abstract_Type
+                     (Name => (New_Identifier (Name))),
+                 Variables => (1 => New_Identifier ("a")),
+                 Triggers  => New_Triggers
+                   (Triggers =>
+                      (1 =>
+                         New_Trigger
+                           (Terms =>
+                              (1 =>
+                                 New_Call
+                                   (Domain => EW_Term,
+                                    Name   => Array_Conv_From.Id (Name),
+                                    Args   => (1 => +Ar)))))),
+                 Pred      =>
+                   New_Equal
+                     (Ar,
+                      New_Call
+                        (Domain => EW_Term,
+                         Name   => Array_Conv_To.Id (Name),
+                         Args   =>
+                           (1 =>
+                              New_Call
+                                (Domain => EW_Term,
+                                 Name   => Array_Conv_From.Id (Name),
+                                 Args   => (1 => +Ar))))))));
       Emit
         (File,
          New_Guarded_Axiom
-           (Name => Array_Conv_Idem_2.Id (Name),
+           (Name    => Array_Conv_Idem_2.Id (Name),
             Binders => (1 => Ar_Binder_2),
-            Def =>
+            Def     =>
               New_Universal_Quantif
                 (Var_Type  => +Ar_Type,
                  Variables => (1 => New_Identifier ("b")),
-                 Triggers  => New_Triggers (
-                   Triggers =>
-                     (1 =>
-                        New_Trigger (
-                          Terms => (1 => New_Operation
-                                    (Name => Array_Conv_To.Id (Name),
-                                     Parameters => (1 => Ar)),
-                                    2 => New_Operation
-                                      (Name => Array_Conv_To.Id (Name),
-                                       Parameters => (1 => Arb)))))),
+                 Triggers  =>
+                   New_Triggers
+                     (Triggers =>
+                       (1 =>
+                          New_Trigger
+                            (Terms =>
+                               (1 =>
+                                  New_Call
+                                    (Domain => EW_Term,
+                                     Name   => Array_Conv_To.Id (Name),
+                                     Args   => (1 => +Ar)),
+                                2 =>
+                                  New_Call
+                                    (Domain => EW_Term,
+                                     Name   => Array_Conv_To.Id (Name),
+                                     Args   => (1 => +Arb)))))),
                  Pred      =>
-                   New_Implication
-                     (Left  => New_Equal
-                          (New_Operation
-                               (Name => Array_Conv_To.Id (Name),
-                                Parameters => (1 => Ar)),
-                           New_Operation
-                             (Name => Array_Conv_To.Id (Name),
-                              Parameters => (1 => Arb))),
-                      Right => New_Equal (Ar, Arb)))));
+                   New_Connection
+                     (Domain => EW_Pred,
+                      Op     => EW_Imply,
+                      Left   =>
+                        +New_Equal
+                          (New_Call
+                             (Domain => EW_Term,
+                              Name   => Array_Conv_To.Id (Name),
+                              Args   => (1 => +Ar)),
+                           New_Call
+                             (Domain => EW_Term,
+                              Name   => Array_Conv_To.Id (Name),
+                              Args   => (1 => +Arb))),
+                      Right => +New_Equal (Ar, Arb)))));
    end Declare_Ada_Unconstrained_Array;
 
    ---------------------------
@@ -190,10 +218,10 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function New_Array_Access_Prog
-     (Ada_Node      : Node_Id;
-      Type_Name     : String;
-      Ar            : W_Prog_Id;
-      Index         : W_Prog_Id) return W_Prog_Id
+     (Ada_Node  : Node_Id;
+      Type_Name : String;
+      Ar        : W_Prog_Id;
+      Index     : W_Prog_Id) return W_Prog_Id
    is
    begin
       return
@@ -202,11 +230,12 @@ package body Why.Gen.Arrays is
              Reason   => VC_Array_Bounds_Check,
              Name     => To_Program_Space (Array_Access_Name.Id (Ada_Array)),
              Progs    =>
-               (1 => Index,
+               (1 => +Index,
                 2 =>
-                  New_Prog_Call
-                     (Name  => Array_Conv_From.Id (Type_Name),
-                      Progs => (1 => Ar))));
+                  New_Call
+                    (Domain => EW_Prog,
+                     Name   => Array_Conv_From.Id (Type_Name),
+                     Args   => (1 => +Ar))));
    end New_Array_Access_Prog;
 
    ---------------------------
@@ -215,18 +244,20 @@ package body Why.Gen.Arrays is
 
    function New_Array_Access_Term
      (Type_Name : String;
-      Ar : W_Term_Id;
-      Index : W_Term_Id) return W_Term_Id is
+      Ar        : W_Term_Id;
+      Index     : W_Term_Id) return W_Term_Id is
    begin
       return
-        New_Operation
-          (Name => Array_Access_Name.Id (Ada_Array),
-           Parameters =>
-            (1 => Index,
+        New_Call
+          (Domain => EW_Term,
+           Name   => Array_Access_Name.Id (Ada_Array),
+           Args   =>
+            (1 => +Index,
              2 =>
-               New_Operation
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Parameters => (1 => Ar))));
+               New_Call
+                 (Domain => EW_Term,
+                  Name   => Array_Conv_From.Id (Type_Name),
+                  Args   => (1 => +Ar))));
    end New_Array_Access_Term;
 
    --------------------------
@@ -235,16 +266,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_First_Prog
      (Type_Name : String;
-      Ar : W_Prog_Id) return W_Prog_Id is
+      Ar        : W_Prog_Id) return W_Prog_Id is
    begin
       return
-        New_Prog_Call
-          (Name => Array_First_Name.Id (Ada_Array),
-           Progs =>
+        New_Call
+          (Domain => EW_Prog,
+           Name   => Array_First_Name.Id (Ada_Array),
+           Args   =>
             (1 =>
-               New_Prog_Call
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Progs => (1 => Ar))));
+               New_Call
+                 (Domain => EW_Prog,
+                  Name   => Array_Conv_From.Id (Type_Name),
+                  Args   => (1 => +Ar))));
    end New_Array_First_Prog;
 
    ---------------------------
@@ -253,16 +286,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_First_Term
      (Type_Name : String;
-      Ar : W_Term_Id) return W_Term_Id is
+      Ar        : W_Term_Id) return W_Term_Id is
    begin
       return
-        New_Operation
-          (Name => Array_First_Name.Id (Ada_Array),
-           Parameters =>
+        New_Call
+          (Domain => EW_Term,
+           Name   => Array_First_Name.Id (Ada_Array),
+           Args   =>
             (1 =>
-               New_Operation
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Parameters => (1 => Ar))));
+               New_Call
+                 (Domain => EW_Term,
+                  Name   => Array_Conv_From.Id (Type_Name),
+                  Args   => (1 => +Ar))));
    end New_Array_First_Term;
 
    --------------------------
@@ -271,16 +306,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_Last_Prog
      (Type_Name : String;
-      Ar : W_Prog_Id) return W_Prog_Id is
+      Ar        : W_Prog_Id) return W_Prog_Id is
    begin
       return
-        New_Prog_Call
-          (Name => Array_Last_Name.Id (Ada_Array),
-           Progs =>
+        New_Call
+          (Domain => EW_Prog,
+           Name   => Array_Last_Name.Id (Ada_Array),
+           Args   =>
             (1 =>
-               New_Prog_Call
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Progs => (1 => Ar))));
+               New_Call
+                  (Domain => EW_Prog,
+                   Name   => Array_Conv_From.Id (Type_Name),
+                   Args   => (1 => +Ar))));
    end New_Array_Last_Prog;
 
    -------------------------
@@ -289,16 +326,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_Last_Term
      (Type_Name : String;
-      Ar : W_Term_Id) return W_Term_Id is
+      Ar        : W_Term_Id) return W_Term_Id is
    begin
       return
-        New_Operation
-          (Name => Array_Last_Name.Id (Ada_Array),
-           Parameters =>
-            (1 =>
-               New_Operation
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Parameters => (1 => Ar))));
+        New_Call
+          (Domain => EW_Term,
+           Name   => Array_Last_Name.Id (Ada_Array),
+           Args   =>
+             (1 =>
+                New_Call
+                  (Domain => EW_Term,
+                   Name   => Array_Conv_From.Id (Type_Name),
+                   Args   => (1 => +Ar))));
    end New_Array_Last_Term;
 
    --------------------------
@@ -307,16 +346,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_Length_Prog
      (Type_Name : String;
-      Ar : W_Prog_Id) return W_Prog_Id is
+      Ar        : W_Prog_Id) return W_Prog_Id is
    begin
       return
-        New_Prog_Call
-          (Name => Array_Length_Name.Id (Ada_Array),
-           Progs =>
-            (1 =>
-               New_Prog_Call
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Progs => (1 => Ar))));
+        New_Call
+          (Domain => EW_Prog,
+           Name   => Array_Length_Name.Id (Ada_Array),
+           Args   =>
+             (1 =>
+                New_Call
+                  (Domain => EW_Prog,
+                   Name   => Array_Conv_From.Id (Type_Name),
+                   Args   => (1 => +Ar))));
    end New_Array_Length_Prog;
 
    ---------------------------
@@ -325,16 +366,18 @@ package body Why.Gen.Arrays is
 
    function New_Array_Length_Term
      (Type_Name : String;
-      Ar : W_Term_Id) return W_Term_Id is
+      Ar        : W_Term_Id) return W_Term_Id is
    begin
       return
-        New_Operation
-          (Name => Array_Length_Name.Id (Ada_Array),
-           Parameters =>
-            (1 =>
-               New_Operation
-                  (Name => Array_Conv_From.Id (Type_Name),
-                   Parameters => (1 => Ar))));
+        New_Call
+          (Domain => EW_Term,
+           Name   => Array_Length_Name.Id (Ada_Array),
+           Args   =>
+             (1 =>
+                New_Call
+                  (Domain => EW_Term,
+                   Name   => Array_Conv_From.Id (Type_Name),
+                   Args   => (1 => +Ar))));
    end New_Array_Length_Term;
 
    ---------------------------
@@ -342,33 +385,40 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function New_Array_Update_Prog
-      (Ada_Node      : Node_Id;
-       Type_Name     : String;
-       Ar            : W_Identifier_Id;
-       Index         : W_Prog_Id;
-       Value         : W_Prog_Id) return W_Prog_Id
+      (Ada_Node  : Node_Id;
+       Type_Name : String;
+       Ar        : W_Identifier_Id;
+       Index     : W_Prog_Id;
+       Value     : W_Prog_Id) return W_Prog_Id
    is
    begin
       return
-         New_Assignment
-            (Name => Ar,
-             Value =>
-               New_Prog_Call
-                 (Name => Array_Conv_To.Id (Type_Name),
-                  Progs =>
-                     (1 =>
-                        New_Located_Call
-                          (Ada_Node => Ada_Node,
-                           Reason   => VC_Array_Bounds_Check,
-                           Name     =>
-                              To_Program_Space
-                                (Array_Update_Name.Id (Ada_Array)),
-                           Progs    =>
-                              (1 => Index,
-                               2 => New_Prog_Call
-                                      (Name => Array_Conv_From.Id (Type_Name),
-                                       Progs => (1 => New_Deref (Ref => Ar))),
-                               3 => Value)))));
+        New_Assignment
+          (Name  => Ar,
+           Value =>
+             New_Call
+               (Domain => EW_Prog,
+                Name   => Array_Conv_To.Id (Type_Name),
+                Args   =>
+                  (1 =>
+                     +New_Located_Call
+                       (Ada_Node => Ada_Node,
+                        Reason   => VC_Array_Bounds_Check,
+                        Name     =>
+                          To_Program_Space
+                            (Array_Update_Name.Id (Ada_Array)),
+                        Progs    =>
+                          (1 => +Index,
+                           2 => New_Call
+                                  (Domain => EW_Prog,
+                                   Name   => Array_Conv_From.Id (Type_Name),
+                                   Args   =>
+                                     (1 =>
+                                        New_Unary_Op
+                                          (Domain => EW_Prog,
+                                           Op     => EW_Deref,
+                                           Right  => +Ar))),
+                           3 => +Value)))));
    end New_Array_Update_Prog;
 
    ---------------------------
@@ -383,19 +433,22 @@ package body Why.Gen.Arrays is
    is
    begin
       return
-        New_Operation
-          (Name => Array_Conv_To.Id (Type_Name),
-           Parameters =>
-            (1 =>
-               New_Operation
-                 (Name => Array_Update_Name.Id (Ada_Array),
-                  Parameters =>
-                    (1 => Index,
-                     2 =>
-                        New_Operation
-                           (Name => Array_Conv_From.Id (Type_Name),
-                            Parameters => (1 => Ar)),
-                     3 => Value))));
+        New_Call
+          (Domain => EW_Term,
+           Name   => Array_Conv_To.Id (Type_Name),
+           Args   =>
+             (1 =>
+                New_Call
+                  (Domain => EW_Term,
+                   Name   => Array_Update_Name.Id (Ada_Array),
+                   Args   =>
+                     (1 => +Index,
+                      2 =>
+                        New_Call
+                           (Domain => EW_Term,
+                            Name   => Array_Conv_From.Id (Type_Name),
+                            Args   => (1 => +Ar)),
+                     3 => +Value))));
    end New_Array_Update_Term;
 
 end Why.Gen.Arrays;

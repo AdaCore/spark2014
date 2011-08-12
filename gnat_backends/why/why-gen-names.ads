@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils; use String_Utils;
+with Namet;        use Namet;
 with Why.Ids;      use Why.Ids;
-with Why.Classes;  use Why.Classes;
+with Why.Sinfo;    use Why.Sinfo;
 with Why.Inter;    use Why.Inter;
 
 with Why.Gen.Name_Gen;
@@ -34,11 +34,14 @@ package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
-   function New_Bool_Int_Axiom (Rel : W_Relation) return W_Identifier_Id;
+   function NID (Name : String) return Name_Id;
+   --  Return Name_Id for Name
+
+   function New_Bool_Int_Axiom (Rel : EW_Relation) return W_Identifier_Id;
    --  Return the name of the boolean comparison axiom for Why ints that
    --  corresponds to the comparison operator in argument.
 
-   function New_Bool_Int_Cmp (Rel : W_Relation) return W_Identifier_Id;
+   function New_Bool_Int_Cmp (Rel : EW_Relation) return W_Identifier_Id;
    --  Return the name of the boolean comparison operator for Why ints that
    --  corresponds to the comparison operator in argument.
 
@@ -49,16 +52,25 @@ package Why.Gen.Names is
    --  Return the name of the division for the give kind
 
    function New_Identifier (Name : String) return W_Identifier_Id;
+   --  Create a new term identifier for Name and return the result
+
+   function New_Identifier
+     (Domain : EW_Domain;
+      Name   : String)
+     return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
-   function New_Identifiers (SL : String_Lists.List) return W_Identifier_Array;
-   --  Return an array of identifiers
+   function New_Identifier
+     (Name   : W_Identifier_Id;
+      Label  : String)
+     return W_Identifier_Id;
+   --  Same as New_Identifier, adding a label ("Name@Label")
 
    function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name
 
-   function New_Terms (SL : String_Lists.List) return W_Term_Array;
-   --  Return an array of term identifiers
+   function New_Prog (Name : String) return W_Prog_Id;
+   --  Return a prog identified by the given name
 
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given

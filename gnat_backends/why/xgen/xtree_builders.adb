@@ -29,7 +29,7 @@ with Xkind_Tables;  use Xkind_Tables;
 
 package body Xtree_Builders is
 
-   New_Node      : constant Wide_String := "Result";
+   New_Node      : constant Wide_String := "New_Node";
    New_Node_Id   : constant Wide_String := "New_Id";
 
    procedure Print_Builder_Declaration

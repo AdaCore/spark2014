@@ -28,6 +28,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 with String_Utils;                       use String_Utils;
 with Types;                              use Types;
+with Why.Sinfo;                          use Why.Sinfo;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
@@ -131,6 +132,10 @@ package Why.Inter is
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
+   function To_EW_Type (T : Ext_Why_Base) return EW_Base_Type;
+   --  ??? EW_Type and Ext_Why_Base are bound to be merged.
+   --  Provide a conversion function for now.
+
    function Up (WT : Why_Type) return Why_Type;
    --  If WT is the highest base type, return WT; otherwise, return the
    --  smallest base type BT such that WT < BT.
@@ -142,5 +147,8 @@ package Why.Inter is
    function  LCA (Left, Right : Why_Type) return Why_Type;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
+
+   function Full_Name (N : Node_Id) return String;
+   --  Given an N_Defining_Identifier, return its Full Name, as used in Why.
 
 end Why.Inter;

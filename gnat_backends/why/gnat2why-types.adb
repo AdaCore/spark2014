@@ -33,6 +33,7 @@ with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 with String_Utils;       use String_Utils;
 with Why;                use Why;
+with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
@@ -40,22 +41,24 @@ with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
+with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Types is
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-      (File : W_File_Id;
-       Name : String;
-       Rng  : Node_Id);
+     (File : W_File_Id;
+      Name : String;
+      Rng  : Node_Id);
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
    procedure Declare_Ada_Floating_Point_From_Range
-      (File : W_File_Id;
-       Name : String;
-       Rng  : Node_Id);
+     (File : W_File_Id;
+      Name : String;
+      Rng  : Node_Id);
    --  Same as Declare_Ada_Floating_Point but extract range information
    --  from node.
 
@@ -64,9 +67,9 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-      (File : W_File_Id;
-       Name : String;
-       Rng  : Node_Id)
+     (File : W_File_Id;
+      Name : String;
+      Rng  : Node_Id)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
    begin
@@ -82,9 +85,9 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Floating_Point_From_Range
-      (File : W_File_Id;
-       Name : String;
-       Rng  : Node_Id)
+     (File : W_File_Id;
+      Name : String;
+      Rng  : Node_Id)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
    begin
@@ -99,22 +102,26 @@ package body Gnat2Why.Types is
    -- Why_Logic_Type_Of_Ada_Obj --
    -------------------------------
 
-   function Why_Logic_Type_Of_Ada_Obj (N : Node_Id)
-      return W_Primitive_Type_Id is
+   function Why_Logic_Type_Of_Ada_Obj
+     (N : Node_Id)
+     return W_Primitive_Type_Id
+   is
       Ty : constant Entity_Id := Unique_Entity (Etype (N));
    begin
-      return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
+      return New_Abstract_Type (Ty, EW_Term, New_Identifier (Full_Name (Ty)));
    end  Why_Logic_Type_Of_Ada_Obj;
 
    --------------------------------
    -- Why_Logic_Type_Of_Ada_Type --
    --------------------------------
 
-   function Why_Logic_Type_Of_Ada_Type (Ty : Node_Id)
-      return W_Primitive_Type_Id is
+   function Why_Logic_Type_Of_Ada_Type
+     (Ty : Node_Id)
+     return W_Primitive_Type_Id
+   is
       T : constant Entity_Id := Unique_Entity (Ty);
    begin
-      return New_Abstract_Type (T, New_Identifier (Full_Name (T)));
+      return New_Abstract_Type (T, EW_Term, New_Identifier (Full_Name (T)));
    end  Why_Logic_Type_Of_Ada_Type;
 
    -----------------------------
@@ -128,6 +135,7 @@ package body Gnat2Why.Types is
    begin
       if Ident_Node = Standard_Boolean then
          null;
+
       elsif Ident_Node = Standard_Character or else
               Ident_Node = Standard_Wide_Character or else
               Ident_Node = Standard_Wide_Wide_Character then
@@ -135,13 +143,14 @@ package body Gnat2Why.Types is
            (File,
             Name_Str,
             Ident_Node);
+
       else
          case Ekind (Ident_Node) is
             when E_Enumeration_Type =>
                declare
                   Constructors : String_Lists.List := String_Lists.Empty_List;
-                  Cur_Lit      : Entity_Id         :=
-                     First_Literal (Ident_Node);
+                  Cur_Lit      : Entity_Id :=
+                                   First_Literal (Ident_Node);
                begin
                   while Present (Cur_Lit) loop
                      Constructors.Append (Full_Name (Cur_Lit));
@@ -149,37 +158,39 @@ package body Gnat2Why.Types is
                   end loop;
                   Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                end;
+
             when E_Signed_Integer_Type
                | E_Signed_Integer_Subtype
                | E_Enumeration_Subtype =>
                Declare_Ada_Abstract_Signed_Int_From_Range
-                  (File,
-                   Name_Str,
-                   Scalar_Range (Ident_Node));
+                 (File,
+                  Name_Str,
+                  Scalar_Range (Ident_Node));
 
             when E_Floating_Point_Type | E_Floating_Point_Subtype =>
                Declare_Ada_Floating_Point_From_Range
-                  (File,
-                   Name_Str,
-                   Scalar_Range (Ident_Node));
+                 (File,
+                  Name_Str,
+                  Scalar_Range (Ident_Node));
 
             when Array_Kind =>
                declare
                   Comp_Type : constant String :=
-                     Full_Name (Component_Type (Ident_Node));
+                                Full_Name (Component_Type (Ident_Node));
                begin
                   if Is_Constrained (Ident_Node) then
                      declare
-                        Rng            : constant Node_Id :=
-                           Get_Range (First_Index (Ident_Node));
+                        Rng : constant Node_Id :=
+                                Get_Range (First_Index (Ident_Node));
                      begin
                         Declare_Ada_Constrained_Array
-                           (File,
-                            Name_Str,
-                            Comp_Type,
-                            Expr_Value (Low_Bound (Rng)),
-                            Expr_Value (High_Bound (Rng)));
+                          (File,
+                           Name_Str,
+                           Comp_Type,
+                           Expr_Value (Low_Bound (Rng)),
+                           Expr_Value (High_Bound (Rng)));
                      end;
+
                   else
                      Declare_Ada_Unconstrained_Array
                        (File,
@@ -190,35 +201,41 @@ package body Gnat2Why.Types is
 
             when E_Record_Type =>
                declare
-                  Builder : W_Logic_Type_Id;
+                  Number_Of_Fields : Natural := 0;
+                  Field            : Node_Id := First_Entity (Ident_Node);
                begin
-                  Start_Ada_Record_Declaration (File,
-                                                Name_Str,
-                                                Builder);
+                  while Present (Field) loop
+                     if Ekind (Field) in Object_Kind then
+                        Number_Of_Fields := Number_Of_Fields + 1;
+                     end if;
+
+                     Next_Entity (Field);
+                  end loop;
+
                   declare
-                     use String_Lists;
                      Field   : Node_Id := First_Entity (Ident_Node);
-                     C_Names : List;
+                     Binders : Binder_Array (1 .. Number_Of_Fields);
+                     J       : Natural := 0;
                   begin
                      while Present (Field) loop
                         if Ekind (Field) in Object_Kind then
                            declare
                               C_Name : constant String :=
-                                 Name_Str & "__" &
-                                    Get_Name_String (Chars (Field));
+                                         Name_Str & "__" &
+                                         Get_Name_String (Chars (Field));
                            begin
-                              Add_Component
-                                (File,
-                                 C_Name,
-                                 Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                                 Builder);
-                              C_Names.Append (C_Name);
+                              J := J + 1;
+                              Binders (J) :=
+                                (B_Name => New_Identifier (C_Name),
+                                 B_Type =>
+                                   Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                                 others => <>);
                            end;
                         end if;
 
                         Next_Entity (Field);
                      end loop;
-                     Freeze_Ada_Record (File, Name_Str, C_Names, Builder);
+                     Define_Ada_Record (File, Name_Str, Binders);
                   end;
                end;
 
@@ -260,7 +277,7 @@ package body Gnat2Why.Types is
    is
       Name : constant String := Full_Name (Ty);
       Base : constant W_Primitive_Type_Id :=
-            New_Abstract_Type (Ty, New_Identifier (Name));
+               New_Abstract_Type (Ty, EW_Term, New_Identifier (Name));
    begin
       if Is_Mutable then
          return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
