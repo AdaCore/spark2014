@@ -30,6 +30,7 @@ with Uintp;               use Uintp;
 with Gnat2Why.Decls;      use Gnat2Why.Decls;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 
+with Why.Sinfo;           use Why.Sinfo;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;

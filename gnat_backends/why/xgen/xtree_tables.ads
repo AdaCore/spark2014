@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Xtree_Sinfo;    use Xtree_Sinfo;
+with Why.Sinfo;    use Why.Sinfo;
 with Xkind_Tables; use Xkind_Tables;
 
 package Xtree_Tables is

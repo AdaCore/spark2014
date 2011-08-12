@@ -25,7 +25,7 @@
 
 with String_Utils; use String_Utils;
 with Why.Ids;      use Why.Ids;
-with Why.Sinfo;    use Why.Sinfo;
+with Why.Classes;  use Why.Classes;
 with Why.Inter;    use Why.Inter;
 
 with Why.Gen.Name_Gen;

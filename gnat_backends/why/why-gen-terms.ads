@@ -26,7 +26,7 @@
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 with Why.Inter;     use Why.Inter;
-with Why.Sinfo;     use Why.Sinfo;
+with Why.Classes;   use Why.Classes;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms

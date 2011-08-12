@@ -26,7 +26,7 @@
 with Namet;               use Namet;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Sinfo;           use Why.Sinfo;
 
 package body Why.Gen.Names is
 

@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;               use Atree;
+with Why.Sinfo;           use Why.Sinfo;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;

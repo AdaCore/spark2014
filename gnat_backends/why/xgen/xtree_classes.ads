@@ -25,7 +25,7 @@
 
 with Outputs;      use Outputs;
 with Xkind_Tables; use Xkind_Tables;
-with Xtree_Sinfo;    use Xtree_Sinfo;
+with Why.Sinfo;    use Why.Sinfo;
 
 package Xtree_Classes is
 

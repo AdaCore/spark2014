@@ -28,7 +28,7 @@ with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Ids;            use Why.Ids;
 with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
+with Why.Classes;        use Why.Classes;
 
 package Why.Gen.Progs is
 

@@ -18,7 +18,7 @@ xgen/why-opaque_ids.ads
 xgen/why-sinfo.adt
 xgen/why-unchecked_ids.ads
 xgen/why-atree.ads
-xgen/why-sinfo.ads
+xgen/why-classes.ads
 why-atree-accessors.ads
 why-atree-builders.adb
 why-atree-builders.ads
@@ -34,7 +34,7 @@ why-conversions.ads
 why-ids.ads
 why-kind_validity.ads
 why-opaque_ids.ads
-why-sinfo.ads
+why-classes.ads
 why-unchecked_ids.ads
 why-atree-traversal_stub.adb
 why-atree-traversal_stub.ads

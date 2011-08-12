@@ -50,28 +50,4 @@ package body Xkind_Decls is
       end loop;
    end Print_Node_Classes;
 
-   ----------------------
-   -- Print_Node_Kinds --
-   ----------------------
-
-   procedure Print_Node_Kinds (O : in out Output_Record) is
-      First : Boolean := True;
-   begin
-      PL (O, "type " & Kind_Type_Name &" is");
-      PL (O, "  (");
-      Relative_Indent (O, 3);
-
-      for Kind of Kinds loop
-         if First then
-            First := False;
-         else
-            PL (O, ",");
-         end if;
-
-         P (O, Kind.all);
-      end loop;
-      Relative_Indent (O, -3);
-      PL (O, ");");
-   end Print_Node_Kinds;
-
 end Xkind_Decls;

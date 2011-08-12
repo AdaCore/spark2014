@@ -38,7 +38,7 @@ with Xtree_Children_Checks; use Xtree_Children_Checks;
 with Templates;             use Templates;
 
 procedure Xtree is
-   --  ASIS helper that takes Xtree_Sinfo/Why.Atree's syntax tree and generates
+   --  Helper that takes Why.Sinfo/Why.Atree's syntax tree and generates
    --  builders, accessors/mutators, recursive traversal...
 
 begin
@@ -46,11 +46,10 @@ begin
 
    --  Production of packages for node kinds/classes/types
 
-   Add ("Declare_Node_Kinds", Print_Node_Kinds'Access);
    Add ("Declare_Node_Classes", Print_Node_Classes'Access);
    Add ("Declare_Node_Type", Print_Node_Type'Access);
 
-   Process ("why-sinfo.ads");
+   Process ("why-classes.ads");
    Process ("why-atree.ads");
 
    --  Production of packages from the kind/class lists

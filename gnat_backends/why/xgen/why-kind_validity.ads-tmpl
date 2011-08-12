@@ -26,6 +26,7 @@
 
 with Why.Types;        use Why.Types;
 with Why.Sinfo;        use Why.Sinfo;
+with Why.Classes;      use Why.Classes;
 with Why.Opaque_Ids;   use Why.Opaque_Ids;
 with Why.Atree.Tables; use Why.Atree.Tables;
 

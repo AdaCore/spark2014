@@ -26,6 +26,8 @@
 with Ada.Containers.Vectors;
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Why.Classes; use Why.Classes;
+
 package Why.Atree.Tables is
    --  This package allows to allocate new Why nodes and to associate
    --  then with an node Id.

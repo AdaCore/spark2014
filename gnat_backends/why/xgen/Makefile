@@ -1,6 +1,6 @@
 
 GENERATED_FILES= \
- why-sinfo.ads                \
+ why-classes.ads              \
  why-atree.ads                \
  why-atree-accessors.ads      \
  why-atree-builders.ads       \
@@ -73,7 +73,7 @@ why-kind_validity.ads: xtree why-kind_validity.ads-tmpl
 why-opaque_ids.ads: xtree why-opaque_ids.ads-tmpl
 	./xtree
 
-why-sinfo.ads: xtree why-sinfo.ads-tmpl
+why-classes.ads: xtree why-classes.ads-tmpl
 	./xtree
 
 why-unchecked_ids.ads: xtree why-unchecked_ids.ads-tmpl

@@ -28,10 +28,6 @@ with Outputs; use Outputs;
 package Xkind_Decls is
    --  This package provides routines to generate node kinds and classes
 
-   procedure Print_Node_Kinds (O : in out Output_Record);
-   --  Expand the declaration of an enum type whose litterals
-   --  represents the kind of a node in the syntax tree
-
    procedure Print_Node_Classes (O : in out Output_Record);
    --  Expand the declaration of classes of node kinds
 
