@@ -2544,7 +2544,7 @@ package body Gnat2Why.Subprograms is
                  Parameters =>
                    (1 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
-         when N_Op_And =>
+         when N_Op_And | N_And_Then =>
             return
                New_Operation
                 (Ada_Node => Expr,
@@ -2553,7 +2553,7 @@ package body Gnat2Why.Subprograms is
                    (1 => Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                     2 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
-         when N_Op_Or =>
+         when N_Op_Or | N_Or_Else =>
             return
                New_Operation
                 (Ada_Node => Expr,
