@@ -62,8 +62,14 @@ package body Why.Inter is
    end Base_Why_Type;
 
    function Base_Why_Type (N : Node_Id) return Why_Type is
+      Ty : Node_Id := N;
    begin
-      case Ekind (Etype (N)) is
+      if Nkind (N) /= N_Defining_Identifier
+        or else not (Ekind (N) in Type_Kind) then
+         Ty := Etype (N);
+      end if;
+
+      case Ekind (Ty) is
          when Float_Kind =>
             return Why_Real_Type;
 
@@ -72,8 +78,12 @@ package body Why.Inter is
             --  a special case for them...
             return Why_Int_Type;
 
+         when Private_Kind =>
+            return Base_Why_Type (Full_View (Ty));
+
          when others =>
             raise Not_Implemented;
+
       end case;
    end Base_Why_Type;
 
