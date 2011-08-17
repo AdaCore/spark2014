@@ -1,0 +1,8 @@
+project Default is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
+   end Compiler;
+
+end Default;
+
