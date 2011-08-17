@@ -5,6 +5,11 @@ procedure Pack is
       package Apack is
          type    T is array (Integer range <>) of Boolean;
          Ary   : T(1..4) := (True,False,True,False);
+
+         package Bpack is
+            type    Q is array (Integer range <>) of Boolean;
+            Bry   : Q(1..4) := (True,False,True,False);
+         end Bpack;
       end Apack;
    end Genpack;
 
@@ -15,4 +20,8 @@ begin
       null;
    end if;
 
+   if Mypack.Apack.Bpack."/="(Mypack.Apack.Bpack.Bry,(True, False, True, False))
+     then
+      null;
+   end if;
 end Pack;
