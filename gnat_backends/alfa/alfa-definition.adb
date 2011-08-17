@@ -1979,7 +1979,12 @@ package body Alfa.Definition is
       Cur : Node_Id := First (L);
    begin
       while Present (Cur) loop
-         if Nkind (Cur) = N_Object_Declaration then
+
+         --  Pick any node that IS an object declaration or may CONTAIN one
+
+         if Nkind (Cur) = N_Object_Declaration or else
+            Nkind (Cur) = N_Package_Declaration
+         then
             Mark (Cur);
          end if;
          Next (Cur);
