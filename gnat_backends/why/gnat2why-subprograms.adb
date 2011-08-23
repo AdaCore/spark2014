@@ -153,14 +153,13 @@ package body Gnat2Why.Subprograms is
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
    --
-   function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
-      return W_Prog_Id;
+   function Why_Expr_Of_Ada_Enum
+     (Enum         : Node_Id;
+      Current_Type : out Why_Type;
+      Domain       : EW_Domain)
+      return W_Expr_Id;
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
-
-   function Why_Term_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
-      return W_Term_Id;
-   --  Identical to Why_Expr_Of_Ada_Enum, but builds a term
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
@@ -1346,19 +1345,20 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Enum
      (Enum         : Node_Id;
-      Current_Type : out Why_Type)
-     return W_Prog_Id is
+      Current_Type : out Why_Type;
+      Domain       : EW_Domain)
+      return W_Expr_Id is
    begin
       --  Deal with special cases: True/False for boolean values
 
       if Entity (Enum) = Standard_True then
          Current_Type := (Kind => Why_Bool);
-         return New_Literal (Value => EW_True);
+         return New_Literal (Value => EW_True, Domain => Domain);
       end if;
 
       if Entity (Enum) = Standard_False then
          Current_Type := (Kind => Why_Bool);
-         return New_Literal (Value => EW_False);
+         return New_Literal (Value => EW_False, Domain => Domain);
       end if;
 
       --  In the case of a subtype of an enumeration, we need to insert a
@@ -1375,44 +1375,6 @@ package body Gnat2Why.Subprograms is
 
       return +Why_Ident_Of_Ada_Ident (Enum);
    end Why_Expr_Of_Ada_Enum;
-
-   --------------------------
-   -- Why_Term_Of_Ada_Enum --
-   --------------------------
-
-   function Why_Term_Of_Ada_Enum
-     (Enum         : Node_Id;
-      Current_Type : out Why_Type)
-     return W_Term_Id is
-   begin
-      --  ??? Similar to Why_Expr_Of_Ada_Enum; both may be merged
-
-      --  Deal with special cases: True/False for boolean values
-
-      if Entity (Enum) = Standard_True then
-         Current_Type := Why_Bool_Type;
-         return New_Literal (Value => EW_True);
-      end if;
-
-      if Entity (Enum) = Standard_False then
-         Current_Type := Why_Bool_Type;
-         return New_Literal (Value => EW_False);
-      end if;
-
-      --  In the case of a subtype of an enumeration, we need to insert a
-      --  conversion. We do so here by modifying the Current_Type; the
-      --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
-
-      case Ekind (Etype (Enum)) is
-         when E_Enumeration_Subtype =>
-            Current_Type := Why_Abstract (Etype (Entity (Enum)));
-
-         when others =>
-            null;
-      end case;
-
-      return +Why_Ident_Of_Ada_Ident (Enum);
-   end Why_Term_Of_Ada_Enum;
 
    --------------------------
    -- Why_Expr_Of_Ada_Expr --
@@ -1499,7 +1461,7 @@ package body Gnat2Why.Subprograms is
                   --  First treat special cases
 
                   when E_Enumeration_Literal =>
-                     T := Why_Expr_Of_Ada_Enum (Expr, Current_Type);
+                     T := +Why_Expr_Of_Ada_Enum (Expr, Current_Type, EW_Prog);
 
                   --  There is a special case for constants introduced by
                   --  the frontend
@@ -2497,7 +2459,7 @@ package body Gnat2Why.Subprograms is
 
             case Ekind (Entity (Expr)) is
                when E_Enumeration_Literal =>
-                  T := Why_Term_Of_Ada_Enum (Expr, Current_Type);
+                  T := +Why_Expr_Of_Ada_Enum (Expr, Current_Type, EW_Term);
 
                when others =>
                   declare
