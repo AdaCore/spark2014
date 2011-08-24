@@ -130,10 +130,6 @@ private
      (State : in out Printer_State;
       Node  : W_Universal_Quantif_Valid_Id);
 
-   procedure Located_Predicate_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Located_Predicate_Valid_Id);
-
    procedure Existential_Quantif_Pre_Op
      (State : in out Printer_State;
       Node  : W_Existential_Quantif_Valid_Id);

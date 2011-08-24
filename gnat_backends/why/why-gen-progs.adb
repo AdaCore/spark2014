@@ -509,7 +509,8 @@ package body Why.Gen.Progs is
         New_Label
           (Ada_Node => Ada_Node,
            Name     => New_Located_Label (Ada_Node, Reason),
-           Def      => Prog);
+           Def      => +Prog,
+           Domain   => EW_Prog);
    end New_Located_Prog;
 
    -------------------

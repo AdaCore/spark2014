@@ -277,15 +277,6 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Pred", "W_Predicate", Id_One);
 
-      -------------------------
-      -- W_Located_Predicate --
-      -------------------------
-
-      New_Field (W_Located_Predicate,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Located_Predicate,
-                 "Pred", "W_Predicate", Id_One);
-
       -----------
       -- W_Not --
       -----------
@@ -318,6 +309,15 @@ package body Xtree_Sinfo is
                  "Op", "EW_Connector");
       New_Field (W_Connection,
                  "Right", "W_Expr", Id_One);
+
+      -------------
+      -- W_Label --
+      -------------
+
+      New_Field (W_Label,
+                 "Name", "W_Identifier", Id_One);
+      New_Field (W_Label,
+                 "Def", "W_Expr", Id_One);
 
       ------------------
       -- W_Identifier --
@@ -477,15 +477,6 @@ package body Xtree_Sinfo is
       Set_Mutable (W_Statement_Sequence);
       New_Field (W_Statement_Sequence,
                  "Statements", "W_Prog", Id_Some);
-
-      -------------
-      -- W_Label --
-      -------------
-
-      New_Field (W_Label,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Label,
-                 "Def", "W_Prog", Id_One);
 
       --------------
       -- W_Assert --

@@ -84,7 +84,6 @@ package Why.Sinfo is
 
       W_Universal_Quantif,
       W_Existential_Quantif,
-      W_Located_Predicate,
 
       ------------------------
       -- Preds, Progs, Expr --
@@ -93,6 +92,7 @@ package Why.Sinfo is
       W_Not,
       W_Relation,
       W_Connection,
+      W_Label,
 
       -------------------------------
       -- Preds, Terms, Progs, Expr --
@@ -126,7 +126,6 @@ package Why.Sinfo is
       W_Binding_Ref,
       W_While_Loop,
       W_Statement_Sequence,
-      W_Label,
       W_Assert,
       W_Raise,
       W_Try_Block,

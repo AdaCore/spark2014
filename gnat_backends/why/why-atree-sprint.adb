@@ -732,35 +732,6 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Existential_Quantif_Pre_Op;
 
-   ------------------------------
-   -- Located_Predicate_Pre_Op --
-   ------------------------------
-
-   procedure Located_Predicate_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Located_Predicate_Valid_Id)
-   is
-   begin
-      if Is_Why3 then
-         P (O, """");
-      end if;
-
-      Traverse
-        (State,
-         Located_Predicate_Get_Name (Node));
-
-      if Is_Why3 then
-         P (O, """");
-      else
-         P (O, " : ");
-      end if;
-
-      Traverse
-        (State,
-         Located_Predicate_Get_Pred (Node));
-      State.Control := Abandon_Children;
-   end Located_Predicate_Pre_Op;
-
    ----------------
    -- Not_Pre_Op --
    ----------------

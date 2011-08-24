@@ -222,10 +222,11 @@ package body Why.Gen.Preds is
              and then Literal_Get_Value (W_Literal_Id (Pred)) = EW_True)
       then
          return
-            New_Located_Predicate
+            New_Label
               (Ada_Node => Ada_Node,
                Name     => New_Located_Label (Ada_Node, Reason),
-               Pred     => Pred);
+               Def     => +Pred,
+               Domain   => EW_Pred);
       else
          return Pred;
       end if;
