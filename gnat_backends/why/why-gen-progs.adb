@@ -27,8 +27,6 @@ with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Uintp;               use Uintp;
 
-with Gnat2Why.Locs;       use Gnat2Why.Locs;
-
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -74,12 +72,6 @@ package body Why.Gen.Progs is
 
    function Is_True_Boolean (P : W_Prog_Id) return Boolean;
    --  Check if the given program is the program "true"
-
-   function New_Located_Prog
-      (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id;
-       Reason   : VC_Kind) return W_Prog_Id;
-   --  Build a program with a fresh label corresponding to the Ada_Node.
 
    ---------------------
    -- Conversion_Name --
@@ -432,10 +424,11 @@ package body Why.Gen.Progs is
                  Annotation   =>
                    New_Loop_Annot
                      (Invariant =>
-                        New_Located_Predicate
+                        +New_Located_Expr
                           (Ada_Node => Ada_Node,
-                           Pred     => Enriched_Inv,
-                           Reason   => VC_Loop_Invariant)),
+                           Expr     => +Enriched_Inv,
+                           Reason   => VC_Loop_Invariant,
+                           Domain   => EW_Pred)),
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 
@@ -467,10 +460,11 @@ package body Why.Gen.Progs is
         New_Assert
           (Ada_Node => Ada_Node,
            Pred     =>
-             New_Located_Predicate
+             +New_Located_Expr
                (Ada_Node => Ada_Node,
-                Pred     => Pred,
-                Reason   => VC_Assert));
+                Expr     => +Pred,
+                Reason   => VC_Assert,
+                Domain   => EW_Pred));
    end New_Located_Assert;
 
    ----------------------
@@ -485,33 +479,17 @@ package body Why.Gen.Progs is
    is
    begin
       return
-        New_Located_Prog
+        +New_Located_Expr
           (Ada_Node => Ada_Node,
            Reason   => Reason,
-           Prog =>
+           Expr =>
              New_Call
                (Ada_Node => Ada_Node,
                 Name     => Name,
-                Args     => Progs));
+                Args     => Progs,
+                Domain   => EW_Prog),
+           Domain => EW_Prog);
    end New_Located_Call;
-
-   ----------------------
-   -- New_Located_Prog --
-   ----------------------
-
-   function New_Located_Prog
-      (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id;
-       Reason   : VC_Kind) return W_Prog_Id
-   is
-   begin
-      return
-        New_Label
-          (Ada_Node => Ada_Node,
-           Name     => New_Located_Label (Ada_Node, Reason),
-           Def      => +Prog,
-           Domain   => EW_Prog);
-   end New_Located_Prog;
 
    -------------------
    -- New_Prog_Andb --

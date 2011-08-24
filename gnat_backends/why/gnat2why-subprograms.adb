@@ -1276,10 +1276,11 @@ package body Gnat2Why.Subprograms is
                   Binders => (1 => Unit_Param),
                   Pre     => Pre,
                   Post    =>
-                    New_Located_Predicate
+                    +New_Located_Expr
                       (Loc_Node,
-                       Post,
-                       VC_Postcondition),
+                       +Post,
+                       VC_Postcondition,
+                       EW_Pred),
                   Def     =>
                     +Compute_Context
                       (Why_Expr_Of_Ada_Stmts
@@ -2758,10 +2759,11 @@ package body Gnat2Why.Subprograms is
                          Annotation  =>
                            New_Loop_Annot
                              (Invariant =>
-                                New_Located_Predicate
+                                +New_Located_Expr
                                   (Ada_Node => Inv_Node,
-                                   Pred     => Invariant,
-                                   Reason   => VC_Loop_Invariant)),
+                                   Expr     => +Invariant,
+                                   Reason   => VC_Loop_Invariant,
+                                   Domain   => EW_Pred)),
                          Loop_Content => Entire_Body);
    begin
       Emit

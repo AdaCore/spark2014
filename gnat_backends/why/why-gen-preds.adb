@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;               use Atree;
-with Why.Sinfo;           use Why.Sinfo;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -206,31 +205,32 @@ package body Why.Gen.Preds is
            Right => +Right);
    end New_Equal_Bool;
 
-   ---------------------------
-   -- New_Located_Predicate --
-   ---------------------------
+   ----------------------
+   -- New_Located_Expr --
+   ----------------------
 
-   function New_Located_Predicate
+   function New_Located_Expr
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id;
-       Reason   : VC_Kind) return W_Predicate_Id
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
    is
    begin
       if Present (Ada_Node)
          and then
-        not (Get_Kind (+Pred) = W_Literal
-             and then Literal_Get_Value (W_Literal_Id (Pred)) = EW_True)
+        not (Get_Kind (+Expr) = W_Literal
+             and then Literal_Get_Value (W_Literal_Id (Expr)) = EW_True)
       then
          return
             New_Label
               (Ada_Node => Ada_Node,
                Name     => New_Located_Label (Ada_Node, Reason),
-               Def     => +Pred,
-               Domain   => EW_Pred);
+               Def      => Expr,
+               Domain   => Domain);
       else
-         return Pred;
+         return Expr;
       end if;
-   end New_Located_Predicate;
+   end New_Located_Expr;
 
    ----------------
    -- New_NEqual --

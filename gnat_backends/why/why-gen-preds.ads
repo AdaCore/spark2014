@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;    use Types;
-with VC_Kinds; use VC_Kinds;
-with Why.Ids;  use Why.Ids;
+with Types;     use Types;
+with VC_Kinds;  use VC_Kinds;
+with Why.Ids;   use Why.Ids;
+with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Preds is
 
@@ -72,11 +73,11 @@ package Why.Gen.Preds is
       Right : W_Predicate_Id) return W_Predicate_Id;
    --  Create the formula "Left = true <-> Right".
 
-   function New_Located_Predicate
+   function New_Located_Expr
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id;
-       Reason   : VC_Kind) return W_Predicate_Id;
-   --  Build a predicate with a fresh label corresponding to the Ada_Node.
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id;
 
    function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
       return W_Predicate_Id;
