@@ -726,25 +726,27 @@ package body Gnat2Why.Subprograms is
            | N_Real_Literal
            | N_Integer_Literal =>
             return
-              New_Prog_Boolean_Cmp
-                (Cmp   => EW_Eq,
-                 Left  => E,
-                 Right => Why_Expr_Of_Ada_Expr ((N), Base_Why_Type (N)));
+              +New_Boolean_Cmp
+                (Cmp    => EW_Eq,
+                 Left   => +E,
+                 Right  => +Why_Expr_Of_Ada_Expr ((N), Base_Why_Type (N)),
+                 Domain => EW_Prog);
 
          when N_Range =>
             return
               +New_And_Expr
                 (Left  =>
-                   +New_Prog_Boolean_Cmp
-                     (Cmp   => EW_Le,
-                      Left  => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                      Right => E),
+                   New_Boolean_Cmp
+                     (Cmp    => EW_Le,
+                      Left   => +Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                      Right  => +E,
+                      Domain => EW_Prog),
                  Right =>
-                   +New_Prog_Boolean_Cmp
-                     (Cmp   => EW_Le,
-                      Left  => E,
-                      Right =>
-                        Int_Expr_Of_Ada_Expr (Low_Bound (N))),
+                   New_Boolean_Cmp
+                     (Cmp    => EW_Le,
+                      Left   => +E,
+                      Right  => +Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                      Domain => EW_Prog),
                  Domain => EW_Prog);
 
          when N_Others_Choice =>
@@ -768,24 +770,27 @@ package body Gnat2Why.Subprograms is
            | N_Integer_Literal
            | N_Real_Literal =>
             return
-              New_Boolean_Cmp
-                (Cmp   => EW_Eq,
-                 Left  => T,
-                 Right => Why_Term_Of_Ada_Expr (N, Base_Why_Type (N)));
+              +New_Boolean_Cmp
+                (Cmp    => EW_Eq,
+                 Left   => +T,
+                 Right  => +Why_Term_Of_Ada_Expr (N, Base_Why_Type (N)),
+                 Domain => EW_Term);
 
          when N_Range =>
             return
               +New_And_Expr
                 (Left   =>
-                   +New_Boolean_Cmp
-                     (Cmp   => EW_Le,
-                      Left  => Int_Term_Of_Ada_Expr (Low_Bound (N)),
-                      Right => T),
+                   New_Boolean_Cmp
+                     (Cmp    => EW_Le,
+                      Left   => +Int_Term_Of_Ada_Expr (Low_Bound (N)),
+                      Right  => +T,
+                      Domain => EW_Term),
                  Right  =>
-                   +New_Boolean_Cmp
-                     (Cmp   => EW_Le,
-                      Left  => T,
-                      Right => Int_Term_Of_Ada_Expr (Low_Bound (N))),
+                   New_Boolean_Cmp
+                     (Cmp    => EW_Le,
+                      Left   => +T,
+                      Right  => +Int_Term_Of_Ada_Expr (Low_Bound (N)),
+                      Domain => EW_Term),
                  Domain => EW_Term);
 
          when N_Others_Choice =>
@@ -2586,12 +2591,13 @@ package body Gnat2Why.Subprograms is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                return
-                 New_Boolean_Cmp
-                   (Cmp   => Why_Rel_Of_Ada_Op (Nkind (Expr)),
-                    Left  => Why_Term_Of_Ada_Expr (Left,
-                                                   Base_Why_Type (Left)),
-                    Right => Why_Term_Of_Ada_Expr (Right,
-                                                   Base_Why_Type (Right)));
+                 +New_Boolean_Cmp
+                   (Cmp    => Why_Rel_Of_Ada_Op (Nkind (Expr)),
+                    Left   => +Why_Term_Of_Ada_Expr (Left,
+                                                     Base_Why_Type (Left)),
+                    Right  => +Why_Term_Of_Ada_Expr (Right,
+                                                     Base_Why_Type (Right)),
+                    Domain => EW_Term);
             end;
 
          when N_Op_Not =>

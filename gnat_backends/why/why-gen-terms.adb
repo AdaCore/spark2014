@@ -29,6 +29,7 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Sinfo;           use Why.Sinfo;
 
 package body Why.Gen.Terms is
 
@@ -95,22 +96,6 @@ package body Why.Gen.Terms is
                         Why_Term => Why_Term)));
       end;
    end Insert_Conversion_Term;
-
-   ---------------------
-   -- New_Boolean_Cmp --
-   ---------------------
-
-   function New_Boolean_Cmp
-     (Cmp         : EW_Relation;
-      Left, Right : W_Term_Id)
-     return W_Term_Id is
-   begin
-      return
-        New_Call
-          (Domain => EW_Term,
-           Name   => New_Bool_Int_Cmp (Cmp),
-           Args   => (1 => +Left, 2 => +Right));
-   end New_Boolean_Cmp;
 
    -------------
    -- New_Ifb --

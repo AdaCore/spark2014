@@ -102,11 +102,11 @@ package Why.Gen.Progs is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
 
-   function New_Prog_Boolean_Cmp
+   function New_Boolean_Cmp
      (Cmp         : EW_Relation;
-      Left, Right : W_Prog_Id)
-     return W_Prog_Id;
-   --  Build a boolean comparison for programs of "int" type.
+      Left, Right : W_Expr_Id;
+      Domain      : EW_Domain)
+     return W_Expr_Id;
 
    function New_Or_Expr
       (Left, Right : W_Expr_Id;

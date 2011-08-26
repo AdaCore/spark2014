@@ -26,7 +26,6 @@
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 with Why.Inter;     use Why.Inter;
-with Why.Sinfo;     use Why.Sinfo;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
@@ -45,12 +44,6 @@ package Why.Gen.Terms is
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.
-
-   function New_Boolean_Cmp
-     (Cmp         : EW_Relation;
-      Left, Right : W_Term_Id)
-     return W_Term_Id;
-   --  build a boolean comparison for terms of "int" type
 
    function New_Result_Term return W_Term_Id;
    --  return the term containing the ident "result"

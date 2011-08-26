@@ -547,20 +547,22 @@ package body Why.Gen.Progs is
       end if;
    end New_And_Then_Expr;
 
-   --------------------------
-   -- New_Prog_Boolean_Cmp --
-   --------------------------
+   ---------------------
+   -- New_Boolean_Cmp --
+   ---------------------
 
-   function New_Prog_Boolean_Cmp
+   function New_Boolean_Cmp
      (Cmp         : EW_Relation;
-      Left, Right : W_Prog_Id)
-     return W_Prog_Id is
+      Left, Right : W_Expr_Id;
+      Domain      : EW_Domain)
+     return W_Expr_Id is
    begin
       return
         New_Call
-          (Name => New_Bool_Int_Cmp (Cmp),
-           Args => (1 => +Left, 2 => +Right));
-   end New_Prog_Boolean_Cmp;
+          (Name   => New_Bool_Int_Cmp (Cmp),
+           Args   => (1 => +Left, 2 => +Right),
+           Domain => Domain);
+   end New_Boolean_Cmp;
 
    -----------------
    -- New_Or_Expr --
