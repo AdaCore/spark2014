@@ -1601,7 +1601,10 @@ package body Gnat2Why.Subprograms is
             end;
 
          when N_Op_Not =>
-            return New_Prog_Notb (Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+            return
+              New_Not
+                (Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
+                 Domain => EW_Prog);
 
          when N_Op_And =>
             return
@@ -2785,7 +2788,7 @@ package body Gnat2Why.Subprograms is
                          New_Conditional
                            (Domain    => EW_Prog,
                             Condition =>
-                              New_Prog_Notb (Condition),
+                              New_Not (Right => +Condition, Domain => EW_Prog),
                             Then_Part =>
                               New_Raise
                                 (Name => New_Identifier (Loop_Name))));

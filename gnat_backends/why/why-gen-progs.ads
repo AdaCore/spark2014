@@ -108,9 +108,6 @@ package Why.Gen.Progs is
      return W_Prog_Id;
    --  Build a boolean comparison for programs of "int" type.
 
-   function New_Prog_Notb (Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean negation as a program.
-
    function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean disjunction as program.
 

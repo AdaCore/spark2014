@@ -562,18 +562,6 @@ package body Why.Gen.Progs is
            Args => (1 => +Left, 2 => +Right));
    end New_Prog_Boolean_Cmp;
 
-   -------------------
-   -- New_Prog_Notb --
-   -------------------
-
-   function New_Prog_Notb (Right : W_Prog_Id) return W_Prog_Id
-   is
-   begin
-      return
-        New_Not
-          (Right => +Right);
-   end New_Prog_Notb;
-
    ------------------
    -- New_Prog_Orb --
    ------------------
