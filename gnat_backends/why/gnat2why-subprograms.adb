@@ -338,9 +338,10 @@ package body Gnat2Why.Subprograms is
                               Value  => EW_False);
          begin
             while Present (Cur_Choice) loop
-               C := New_Prog_Orb_Else
-                      (C,
-                       Prog_Equal_To (Matched_Expr, Cur_Choice));
+               C := +New_Or_Else_Expr
+                      (+C,
+                       +Prog_Equal_To (Matched_Expr, Cur_Choice),
+                       EW_Prog);
                Next (Cur_Choice);
             end loop;
 
@@ -1615,9 +1616,10 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_Or =>
             return
-               New_Prog_Orb
-                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+               +New_Or_Expr
+                 (Left     => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right    => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
+                  Domain   => EW_Prog);
 
          when N_And_Then =>
             return
@@ -1628,9 +1630,10 @@ package body Gnat2Why.Subprograms is
 
          when N_Or_Else =>
             return
-               New_Prog_Orb_Else
-                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+               +New_Or_Else_Expr
+                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
+                  Domain => EW_Prog);
 
          when N_Type_Conversion =>
             --  Nothing is to do here, because we insert type conversions
@@ -2706,9 +2709,10 @@ package body Gnat2Why.Subprograms is
                      C : W_Term_Id := New_Literal (Value => EW_False);
                   begin
                      while Present (Cur_Choice) loop
-                        C := New_Orb
-                               (C,
-                                Term_Equal_To (Matched_Term, Cur_Choice));
+                        C := +New_Or_Expr
+                               (+C,
+                                +Term_Equal_To (Matched_Term, Cur_Choice),
+                                EW_Term);
                         Next (Cur_Choice);
                      end loop;
                      T :=

@@ -108,11 +108,13 @@ package Why.Gen.Progs is
      return W_Prog_Id;
    --  Build a boolean comparison for programs of "int" type.
 
-   function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean disjunction as program.
+   function New_Or_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
 
-   function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean disjunction as program.
+   function New_Or_Else_Expr
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type.

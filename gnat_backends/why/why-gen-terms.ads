@@ -42,9 +42,6 @@ package Why.Gen.Terms is
    function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id;
    --  Build an identifier with "old" label
 
-   function New_Orb (Left, Right : W_Term_Id) return W_Term_Id;
-   --  Build a boolean disjunction.
-
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.

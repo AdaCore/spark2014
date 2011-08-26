@@ -514,7 +514,7 @@ package body Why.Gen.Progs is
          else
             return
               New_Call
-                (Domain => EW_Prog,
+                (Domain => Domain,
                  Name   => New_Identifier ("bool_and"),
                  Args   => (1 => +Left, 2 => +Right));
          end if;
@@ -540,7 +540,7 @@ package body Why.Gen.Progs is
                  (Op     => EW_And_Then,
                   Left   => Left,
                   Right  => Right,
-                  Domain => EW_Prog);
+                  Domain => Domain);
          else
             return New_And_Expr (Left, Right, Domain);
          end if;
@@ -562,44 +562,59 @@ package body Why.Gen.Progs is
            Args => (1 => +Left, 2 => +Right));
    end New_Prog_Boolean_Cmp;
 
-   ------------------
-   -- New_Prog_Orb --
-   ------------------
+   -----------------
+   -- New_Or_Expr --
+   -----------------
 
-   function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id
-   is
+   function New_Or_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id is
    begin
-      if Is_False_Boolean (+Left) then
+      if Is_False_Boolean (Left) then
          return Right;
-      elsif Is_False_Boolean (+Right) then
+      elsif Is_False_Boolean (Right) then
          return Left;
       else
-         return
-           New_Call
-             (Name => New_Identifier ("bool_or"),
-              Args => (1 => +Left, 2 => +Right));
+         if Domain = EW_Pred then
+            return New_Connection
+              (Op     => EW_Or,
+               Left   => +Left,
+               Right  => +Right,
+               Domain => Domain);
+         else
+            return New_Call
+              (Domain => Domain,
+               Name => New_Identifier ("bool_or"),
+               Args => (1 => +Left, 2 => +Right));
+         end if;
       end if;
-   end New_Prog_Orb;
+   end New_Or_Expr;
 
-   -----------------------
-   -- New_Prog_Orb_Else --
-   -----------------------
+   ----------------------
+   -- New_Or_Else_Expr --
+   ----------------------
 
-   function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id
+   function New_Or_Else_Expr
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id
    is
    begin
-      if Is_False_Boolean (+Left) then
+      if Is_False_Boolean (Left) then
          return Right;
-      elsif Is_False_Boolean (+Right) then
+      elsif Is_False_Boolean (Right) then
          return Left;
       else
-         return
-           New_Connection
-             (Op    => EW_Or_Else,
-              Left  => +Left,
-              Right => +Right);
+         if Domain = EW_Prog then
+            return
+              New_Connection
+                (Op    => EW_Or_Else,
+                 Left  => Left,
+                 Right => Right);
+         else
+            return New_Or_Expr (Left, Right, Domain);
+         end if;
       end if;
-   end New_Prog_Orb_Else;
+   end New_Or_Else_Expr;
 
    ----------------
    -- New_Result --
