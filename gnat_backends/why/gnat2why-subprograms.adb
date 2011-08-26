@@ -1451,6 +1451,44 @@ package body Gnat2Why.Subprograms is
                  Value    => Intval (Expr));
             Current_Type := Why_Int_Type;
 
+         when N_Real_Literal =>
+            --  The original is usually much easier to process for alt-ergo
+            --  than the rewritten node; typically, the will be in decimal
+            --  base whereas the expanded node will be of the form
+            --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
+            --  even between two litterals.
+
+            if Is_Rewrite_Substitution (Expr) then
+               begin
+                  T := Why_Expr_Of_Ada_Expr (Original_Node (Expr),
+                                             Why_Real_Type,
+                                             Domain);
+
+               --  It may happen that the original node is not in
+               --  alfa, whereas the rewritten one is: typically,
+               --  if the original node uses exponentiation. So try
+               --  the original node and fall back to the rewritten
+               --  node if failed.
+
+               exception
+                  when Not_Implemented =>
+                     T :=
+                       New_Real_Constant
+                         (Domain   => Domain,
+                          Ada_Node => Expr,
+                          Value    => Realval (Expr));
+               end;
+
+            else
+               T :=
+                 New_Real_Constant
+                   (Domain   => Domain,
+                    Ada_Node => Expr,
+                    Value    => Realval (Expr));
+            end if;
+
+            Current_Type := Why_Real_Type;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1509,43 +1547,6 @@ package body Gnat2Why.Subprograms is
 
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
-         when N_Real_Literal =>
-            --  The original is usually much easier to process for alt-ergo
-            --  than the rewritten node; typically, the will be in decimal
-            --  base whereas the expanded node will be of the form
-            --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
-            --  even between two litterals.
-
-            if Is_Rewrite_Substitution (Expr) then
-               begin
-                  T := Why_Expr_Of_Ada_Expr (Original_Node (Expr),
-                                             Why_Real_Type);
-
-               --  It may happen that the original node is not in
-               --  alfa, whereas the rewritten one is: typically,
-               --  if the original node uses exponentiation. So try
-               --  the original node and fall back to the rewritten
-               --  node if failed.
-
-               exception
-                  when Not_Implemented =>
-                     T :=
-                       New_Real_Constant
-                         (Domain   => EW_Prog,
-                          Ada_Node => Expr,
-                          Value    => Realval (Expr));
-               end;
-
-            else
-               T :=
-                 New_Real_Constant
-                   (Domain   => EW_Prog,
-                    Ada_Node => Expr,
-                    Value    => Realval (Expr));
-            end if;
-
-            Current_Type := Why_Real_Type;
-
          --  Deal with identifiers:
          --  * Enumeration literals: deal with special cases True and
          --    False, otherwise such literals are just constants
@@ -2525,35 +2526,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Real_Literal =>
-            if Is_Rewrite_Substitution (Expr) then
-               --  The original is usually much easier to process for alt-ergo
-               --  than the rewritten node; typically, the will be in decimal
-               --  base whereas the expanded node will be of the form
-               --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
-               --  even between two litterals.
-               --  However, it may happen that the original node is not
-               --  in alfa, whereas the rewritten one is: typically,
-               --  if the original node uses exponentiation. So try the
-               --  original node and fall back to the rewritten node if
-               --  failed.
-               begin
-                  T :=
-                    Why_Term_Of_Ada_Expr (Original_Node (Expr), Why_Real_Type);
-               exception
-                  when Not_Implemented =>
-                     T :=
-                       New_Real_Constant (Ada_Node => Expr,
-                                          Value    => Realval (Expr));
-               end;
-
-            else
-               T :=
-                 New_Real_Constant (Ada_Node => Expr, Value => Realval (Expr));
-            end if;
-
-            Current_Type := Why_Real_Type;
-
          when N_Character_Literal =>
             T :=
               New_Integer_Constant (Ada_Node => Expr,
