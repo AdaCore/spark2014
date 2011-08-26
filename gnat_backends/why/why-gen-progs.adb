@@ -67,10 +67,10 @@ package body Why.Gen.Progs is
        Why_Expr   : W_Prog_Id;
        Base_Type  : Why_Type) return W_Prog_Id;
 
-   function Is_False_Boolean (P : W_Prog_Id) return Boolean;
+   function Is_False_Boolean (P : W_Expr_Id) return Boolean;
    --  Check if the given program is the program "false"
 
-   function Is_True_Boolean (P : W_Prog_Id) return Boolean;
+   function Is_True_Boolean (P : W_Expr_Id) return Boolean;
    --  Check if the given program is the program "true"
 
    ---------------------
@@ -307,7 +307,7 @@ package body Why.Gen.Progs is
    -- Is_False_Boolean --
    ----------------------
 
-   function Is_False_Boolean (P : W_Prog_Id) return Boolean
+   function Is_False_Boolean (P : W_Expr_Id) return Boolean
    is
    begin
       return
@@ -319,7 +319,7 @@ package body Why.Gen.Progs is
    -- Is_True_Boolean --
    ---------------------
 
-   function Is_True_Boolean (P : W_Prog_Id) return Boolean
+   function Is_True_Boolean (P : W_Expr_Id) return Boolean
    is
    begin
       return
@@ -498,9 +498,9 @@ package body Why.Gen.Progs is
    function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id
    is
    begin
-      if Is_True_Boolean (Left) then
+      if Is_True_Boolean (+Left) then
          return Right;
-      elsif Is_True_Boolean (Right) then
+      elsif Is_True_Boolean (+Right) then
          return Left;
       else
          return
@@ -518,9 +518,9 @@ package body Why.Gen.Progs is
    function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id
    is
    begin
-      if Is_True_Boolean (Left) then
+      if Is_True_Boolean (+Left) then
          return Right;
-      elsif Is_True_Boolean (Right) then
+      elsif Is_True_Boolean (+Right) then
          return Left;
       else
          return
@@ -565,9 +565,9 @@ package body Why.Gen.Progs is
    function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id
    is
    begin
-      if Is_False_Boolean (Left) then
+      if Is_False_Boolean (+Left) then
          return Right;
-      elsif Is_False_Boolean (Right) then
+      elsif Is_False_Boolean (+Right) then
          return Left;
       else
          return
@@ -584,9 +584,9 @@ package body Why.Gen.Progs is
    function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id
    is
    begin
-      if Is_False_Boolean (Left) then
+      if Is_False_Boolean (+Left) then
          return Right;
-      elsif Is_False_Boolean (Right) then
+      elsif Is_False_Boolean (+Right) then
          return Left;
       else
          return
@@ -635,9 +635,9 @@ package body Why.Gen.Progs is
        Else_Part : W_Prog_Id) return W_Prog_Id
    is
    begin
-      if Is_True_Boolean (Condition) then
+      if Is_True_Boolean (+Condition) then
          return Then_Part;
-      elsif Is_False_Boolean (Condition) then
+      elsif Is_False_Boolean (+Condition) then
          return Else_Part;
       else
          return
