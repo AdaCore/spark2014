@@ -361,10 +361,11 @@ package body Gnat2Why.Subprograms is
 
                end  case;
                T :=
-                  New_Simpl_Conditional_Prog
-                     (Condition => C,
-                      Then_Part => Then_Part,
-                      Else_Part => T);
+                  +New_Simpl_Conditional
+                     (Condition => +C,
+                      Then_Part => +Then_Part,
+                      Else_Part => +T,
+                      Domain    => EW_Prog);
             end;
          end;
          Prev (Cur_Case);
@@ -1926,12 +1927,13 @@ package body Gnat2Why.Subprograms is
 
                      while Present (Cur) loop
                         Tail :=
-                          New_Simpl_Conditional_Prog
+                          +New_Simpl_Conditional
                             (Condition =>
-                               Why_Expr_Of_Ada_Expr (Condition (Cur)),
+                               +Why_Expr_Of_Ada_Expr (Condition (Cur)),
                              Then_Part =>
-                               Why_Expr_Of_Ada_Stmts (Then_Statements (Cur)),
-                             Else_Part => Tail);
+                               +Why_Expr_Of_Ada_Stmts (Then_Statements (Cur)),
+                             Else_Part => +Tail,
+                             Domain    => EW_Prog);
                         Prev (Cur);
                      end loop;
                   end;
@@ -1940,11 +1942,12 @@ package body Gnat2Why.Subprograms is
                --  Finish by putting the main if-then-else on top.
 
                return
-                 New_Simpl_Conditional_Prog
-                   (Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+                 +New_Simpl_Conditional
+                   (Condition => +Why_Expr_Of_Ada_Expr (Condition (Stmt)),
                     Then_Part =>
-                      Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
-                    Else_Part => Tail);
+                      +Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
+                    Else_Part => +Tail,
+                    Domain    => EW_Prog);
             end;
 
          when N_Raise_xxx_Error =>

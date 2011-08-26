@@ -625,28 +625,30 @@ package body Why.Gen.Progs is
                    Effects => New_Effects));
    end New_Simpl_Any_Expr;
 
-   --------------------------------
-   -- New_Simpl_Conditional_Prog --
-   --------------------------------
+   ---------------------------
+   -- New_Simpl_Conditional --
+   ---------------------------
 
-   function New_Simpl_Conditional_Prog
-      (Condition : W_Prog_Id;
-       Then_Part : W_Prog_Id;
-       Else_Part : W_Prog_Id) return W_Prog_Id
+   function New_Simpl_Conditional
+      (Condition : W_Expr_Id;
+       Then_Part : W_Expr_Id;
+       Else_Part : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id
    is
    begin
-      if Is_True_Boolean (+Condition) then
+      if Is_True_Boolean (Condition) then
          return Then_Part;
-      elsif Is_False_Boolean (+Condition) then
+      elsif Is_False_Boolean (Condition) then
          return Else_Part;
       else
          return
            New_Conditional
-             (Condition => Condition,
-              Then_Part => +Then_Part,
-              Else_Part => +Else_Part);
+             (Condition => +Condition,
+              Then_Part => Then_Part,
+              Else_Part => Else_Part,
+              Domain    => Domain);
       end if;
-   end New_Simpl_Conditional_Prog;
+   end New_Simpl_Conditional;
 
    --------------
    -- New_Void --

@@ -118,11 +118,12 @@ package Why.Gen.Progs is
    function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type.
 
-   function New_Simpl_Conditional_Prog
-      (Condition : W_Prog_Id;
-       Then_Part : W_Prog_Id;
-       Else_Part : W_Prog_Id) return W_Prog_Id;
-   --  Conditional program, simplify if condition is true/false.
+   function New_Simpl_Conditional
+      (Condition : W_Expr_Id;
+       Then_Part : W_Expr_Id;
+       Else_Part : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
+   --  Conditional, simplify if condition is true/false.
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
