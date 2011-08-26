@@ -2004,7 +2004,7 @@ package body Gnat2Why.Subprograms is
                   return
                      Wrap_Loop
                         (Loop_Body => Loop_Content,
-                         Condition    => New_True_Literal_Prog,
+                         Condition    => New_Literal (Value => EW_True),
                          Loop_Name    => Loop_Name,
                          Invariant    => Invariant,
                          Inv_Node     => Split_Node);
@@ -2755,7 +2755,7 @@ package body Gnat2Why.Subprograms is
                                 (Name => New_Identifier (Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=
                       New_While_Loop
-                        (Condition   => New_True_Literal_Prog,
+                        (Condition   => New_Literal (Value => EW_True),
                          Annotation  =>
                            New_Loop_Annot
                              (Invariant =>

@@ -124,10 +124,6 @@ package Why.Gen.Progs is
        Else_Part : W_Prog_Id) return W_Prog_Id;
    --  Conditional program, simplify if condition is true/false.
 
-   function New_True_Literal_Prog (Ada_Node : Node_Id := Empty)
-      return W_Prog_Id;
-   --  Return the program consisting of the boolean constant "true".
-
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.

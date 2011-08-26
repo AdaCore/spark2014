@@ -648,17 +648,6 @@ package body Why.Gen.Progs is
       end if;
    end New_Simpl_Conditional_Prog;
 
-   ---------------------------
-   -- New_True_Literal_Prog --
-   ---------------------------
-
-   function New_True_Literal_Prog (Ada_Node : Node_Id := Empty)
-      return W_Prog_Id
-   is
-   begin
-      return New_Literal (Ada_Node => Ada_Node, Value => EW_True);
-   end New_True_Literal_Prog;
-
    --------------
    -- New_Void --
    --------------
