@@ -1442,6 +1442,23 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
       Overflow_Check_Needed : constant Boolean := False;
    begin
+
+      --  Expressions that cannot be translated to predicates directly are
+      --  translated to (boolean) terms, and compared to "True"
+
+      if Domain = EW_Pred and then
+         not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
+         | N_Op_Or | N_Or_Else | N_In | N_Conditional_Expression |
+         N_Quantified_Expression) then
+         return
+           New_Relation
+             (Ada_Node => Expr,
+              Domain   => EW_Term,
+              Left     => +Why_Term_Of_Ada_Expr (Expr, Why_Bool_Type),
+              Right    => New_Literal (Value => EW_True),
+              Op       => EW_Eq);
+      end if;
+
       case Nkind (Expr) is
          when N_Integer_Literal =>
             T :=
@@ -1497,6 +1514,42 @@ package body Gnat2Why.Subprograms is
                                     Domain   => Domain);
             Current_Type := Why_Int_Type;
 
+         --  Deal with identifiers:
+         --  * Enumeration literals: deal with special cases True and
+         --    False, otherwise such literals are just constants
+         --  * local variables are always references
+         --  * global constants are logics in Why
+         --  * global mutable variables are references
+         --  * loop parameters are always mutable, and of type int
+
+         when N_Identifier | N_Expanded_Name =>
+            declare
+               Id : constant W_Identifier_Id := Why_Ident_Of_Ada_Ident (Expr);
+            begin
+               case Ekind (Entity (Expr)) is
+                  --  First treat special cases
+
+                  when E_Enumeration_Literal =>
+                     T := Why_Expr_Of_Ada_Enum (Expr, Current_Type, Domain);
+
+                  when others =>
+                     if Is_Mutable (Entity (Expr)) then
+                        T :=
+                          New_Unary_Op
+                            (Ada_Node => Expr,
+                             Domain   => Domain,
+                             Op       => EW_Deref,
+                             Right    => +Id);
+                     else
+                        T := +Id;
+                     end if;
+
+                     if Ekind (Entity (Expr)) = E_Loop_Parameter then
+                        Current_Type := Why_Int_Type;
+                     end if;
+               end case;
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1516,22 +1569,28 @@ package body Gnat2Why.Subprograms is
             else
                Why_Int_Type);
       begin
-         if Domain = EW_Prog then
-            return
-              +Insert_Conversion
-                (Ada_Node              => Expr,
-                 From                  => Current_Type,
-                 To                    => Expected_Type,
-                 Why_Expr              => +T,
-                 Base_Type => Base_Type);
-         else
-            return
-              +Insert_Conversion_Term
-                (Ada_Node => Expr,
-                 Why_Term => +T,
-                 From     => Current_Type,
-                 To       => Expected_Type);
-         end if;
+         case Domain is
+            when EW_Prog =>
+               return
+                 +Insert_Conversion
+                   (Ada_Node              => Expr,
+                    From                  => Current_Type,
+                    To                    => Expected_Type,
+                    Why_Expr              => +T,
+                    Base_Type             => Base_Type);
+
+            when EW_Term =>
+               return
+                 +Insert_Conversion_Term
+                   (Ada_Node => Expr,
+                    Why_Term => +T,
+                    From     => Current_Type,
+                    To       => Expected_Type);
+
+            when EW_Pred =>
+               return T;
+
+         end case;
       end;
    end Why_Expr_Of_Ada_Expr;
 
@@ -1543,57 +1602,7 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
       Overflow_Check_Needed : Boolean := False;
    begin
-      --  Here, we simply analyze the structure of Expr and build the
-      --  corresponding Why expression. When necessary, we update the
-      --  variable Current_Type, which is compared at the very end of this
-      --  function with the argument Expected_Type. If they are different, a
-      --  conversion is inserted.
-      --
-      --  This function translates all arithmetic operations on Ada integer
-      --  types to '+' in Why. This means that conversions must be added. The
-      --  Expected_Type is adjusted accordingly for recursive calls.
-
-      --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
-         --  Deal with identifiers:
-         --  * Enumeration literals: deal with special cases True and
-         --    False, otherwise such literals are just constants
-         --  * local variables are always references
-         --  * global constants are logics in Why
-         --  * global mutable variables are references
-         --  * loop parameters are always mutable, and of type int
-
-         when N_Identifier | N_Expanded_Name =>
-            declare
-               Id : constant W_Identifier_Id := Why_Ident_Of_Ada_Ident (Expr);
-            begin
-               case Ekind (Entity (Expr)) is
-                  --  First treat special cases
-
-                  when E_Enumeration_Literal =>
-                     T := +Why_Expr_Of_Ada_Enum (Expr, Current_Type, EW_Prog);
-
-                  --  There is a special case for constants introduced by
-                  --  the frontend
-
-                  when others =>
-                     if Is_Mutable (Entity (Expr)) then
-                        T :=
-                          New_Unary_Op
-                            (Ada_Node => Expr,
-                             Domain   => EW_Prog,
-                             Op       => EW_Deref,
-                             Right    => +Id);
-                     else
-                        T := +Id;
-                     end if;
-
-                     if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                        Current_Type := Why_Int_Type;
-                     end if;
-               end case;
-            end;
-
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
             --  instead of predicates
@@ -2488,18 +2497,9 @@ package body Gnat2Why.Subprograms is
                end if;
             end;
 
-         when N_Expression_With_Actions =>
-
+         when others =>
             raise Program_Error;
 
-         when others =>
-            return
-              New_Relation
-                (Ada_Node => Expr,
-                 Domain   => EW_Term,
-                 Left     => +Why_Term_Of_Ada_Expr (Expr),
-                 Right    => New_Literal (Value => EW_True),
-                 Op       => EW_Eq);
       end case;
    end Why_Predicate_Of_Ada_Expr_Tmp;
 
@@ -2525,42 +2525,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Identifier | N_Expanded_Name =>
-
-            --  The corresponding Why type of the identifier may be of
-            --  reference type; but here we do not care, as Why, in
-            --  annotations, happily converts a reference to its base type.
-
-            case Ekind (Entity (Expr)) is
-               when E_Enumeration_Literal =>
-                  T := +Why_Expr_Of_Ada_Enum (Expr, Current_Type, EW_Term);
-
-               when others =>
-                  declare
-                     Id : constant W_Identifier_Id :=
-                            Why_Ident_Of_Ada_Ident (Expr);
-                     E  : constant Entity_Id := Entity (Expr);
-                  begin
-                     Current_Type := Type_Of_Node (E);
-
-                     if Is_Mutable (E) then
-                        T :=
-                          New_Unary_Op
-                            (Ada_Node => Expr,
-                             Domain   => EW_Term,
-                             Op       => EW_Deref,
-                             Right    => +Id);
-                     else
-                        T := +Id;
-                     end if;
-
-                     if Ekind (E) = E_Loop_Parameter then
-                        Current_Type := Why_Int_Type;
-                     end if;
-                  end;
-
-            end case;
-
          when N_Op_Minus =>
             --  unary minus
             declare
