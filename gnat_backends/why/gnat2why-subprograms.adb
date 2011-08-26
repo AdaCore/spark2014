@@ -1489,6 +1489,14 @@ package body Gnat2Why.Subprograms is
 
             Current_Type := Why_Real_Type;
 
+         when N_Character_Literal =>
+
+            T :=
+              New_Integer_Constant (Ada_Node => Expr,
+                                    Value    => Char_Literal_Value (Expr),
+                                    Domain   => Domain);
+            Current_Type := Why_Int_Type;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1864,15 +1872,6 @@ package body Gnat2Why.Subprograms is
             pragma Assert (not Comes_From_Source (Expr));
             return
                Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
-
-         when N_Character_Literal =>
-            --  For characters, we use their integer value
-            T :=
-              New_Integer_Constant
-                (Ada_Node => Expr,
-                 Domain   => EW_Prog,
-                 Value    => Char_Literal_Value (Expr));
-            Current_Type := Why_Int_Type;
 
          when others =>
             raise Not_Implemented;
@@ -2526,12 +2525,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Character_Literal =>
-            T :=
-              New_Integer_Constant (Ada_Node => Expr,
-                                    Value    => Char_Literal_Value (Expr));
-            Current_Type := Why_Int_Type;
-
          when N_Identifier | N_Expanded_Name =>
 
             --  The corresponding Why type of the identifier may be of
