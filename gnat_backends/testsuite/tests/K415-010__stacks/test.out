@@ -1,9 +1,7 @@
 stacks.adb:11:18: (info) range check proved
 stacks.adb:5:18: (info) range check proved
 stacks.adb:6:18: (info) array bounds check proved
-stacks.ads:10:92: (info) range check proved
-stacks.ads:12:91: (info) range check proved
 stacks.ads:14:69: (info) array bounds check proved
 stacks.ads:18:31: postcondition not proved
-stacks.ads:22:43: (info) postcondition proved
+stacks.ads:22:43: postcondition not proved
 stacks.ads:8:69: (info) range check proved

@@ -1,6 +1,6 @@
 nested.adb:10:15: (info) range check proved
 nested.adb:12:13: (info) loop invariant initialization proved
-nested.adb:12:13: loop invariant preservation not proved
+nested.adb:12:13: (info) loop invariant preservation proved
 nested.adb:13:20: (info) range check proved
 nested.adb:4:22: (info) range check proved
 nested.adb:9:10: (info) loop invariant initialization proved

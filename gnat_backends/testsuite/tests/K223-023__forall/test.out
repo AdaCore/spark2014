@@ -2,7 +2,5 @@ forall.adb:12:14: (info) array bounds check proved
 forall.adb:6:14: (info) array bounds check proved
 forall.ads:10:37: postcondition not proved
 forall.ads:5:44: (info) array bounds check proved
-forall.ads:5:51: (info) range check proved
 forall.ads:6:37: (info) postcondition proved
 forall.ads:9:45: (info) array bounds check proved
-forall.ads:9:52: (info) range check proved

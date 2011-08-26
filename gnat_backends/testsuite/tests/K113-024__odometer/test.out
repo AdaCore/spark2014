@@ -1,5 +1,5 @@
 odometer.adb:22:20: (info) range check proved
 odometer.adb:22:40: (info) range check proved
 odometer.adb:5:15: (info) range check proved
-odometer.ads:14:56: postcondition not proved
+odometer.ads:14:56: (info) postcondition proved
 odometer.ads:7:26: (info) postcondition proved

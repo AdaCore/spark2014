@@ -15,4 +15,3 @@ base_type.adb:40:17: (info) overflow check proved
 base_type.adb:40:22: (info) range check proved
 base_type.adb:5:17: (info) overflow check proved
 base_type.adb:5:22: (info) range check proved
-base_type.ads:32:22: (info) range check proved
