@@ -532,9 +532,10 @@ package body Gnat2Why.Subprograms is
          case Nkind (Cur_Stmt) is
             when N_Pragma =>
                Pred :=
-                 New_Simpl_Conjunction
-                   (Left => Pred,
-                    Right => Predicate_Of_Pragma_Check (Cur_Stmt));
+                 +New_And_Expr
+                   (Left => +Pred,
+                    Right => +Predicate_Of_Pragma_Check (Cur_Stmt),
+                    Domain => EW_Pred);
 
             when others =>
                exit;
@@ -637,19 +638,20 @@ package body Gnat2Why.Subprograms is
    function Range_Prog (N : Node_Id; T : W_Prog_Id) return W_Prog_Id is
    begin
       return
-        New_Prog_Andb_Then
-          (Left =>
+        +New_And_Then_Expr
+          (Left  =>
              New_Relation
                (Domain => EW_Prog,
                 Op     => EW_Le,
                 Left   => +Int_Expr_Of_Ada_Expr (Low_Bound (N)),
                 Right  => +T),
-           Right =>
+           Right  =>
              New_Relation
                (Domain => EW_Prog,
                 Op     => EW_Le,
                 Left   => +T,
-                Right  => +Int_Expr_Of_Ada_Expr (High_Bound (N))));
+                Right  => +Int_Expr_Of_Ada_Expr (High_Bound (N))),
+           Domain => EW_Prog);
    end Range_Prog;
 
    -----------------------------------
@@ -730,18 +732,19 @@ package body Gnat2Why.Subprograms is
 
          when N_Range =>
             return
-              New_Prog_Andb
+              +New_And_Expr
                 (Left  =>
-                   New_Prog_Boolean_Cmp
+                   +New_Prog_Boolean_Cmp
                      (Cmp   => EW_Le,
                       Left  => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
                       Right => E),
                  Right =>
-                   New_Prog_Boolean_Cmp
+                   +New_Prog_Boolean_Cmp
                      (Cmp   => EW_Le,
                       Left  => E,
                       Right =>
-                        Int_Expr_Of_Ada_Expr (Low_Bound (N))));
+                        Int_Expr_Of_Ada_Expr (Low_Bound (N))),
+                 Domain => EW_Prog);
 
          when N_Others_Choice =>
             return New_Literal (Value => EW_True);
@@ -771,17 +774,18 @@ package body Gnat2Why.Subprograms is
 
          when N_Range =>
             return
-              New_Andb
-                (Left  =>
-                   New_Boolean_Cmp
+              +New_And_Expr
+                (Left   =>
+                   +New_Boolean_Cmp
                      (Cmp   => EW_Le,
                       Left  => Int_Term_Of_Ada_Expr (Low_Bound (N)),
                       Right => T),
-                 Right =>
-                   New_Boolean_Cmp
+                 Right  =>
+                   +New_Boolean_Cmp
                      (Cmp   => EW_Le,
                       Left  => T,
-                      Right => Int_Term_Of_Ada_Expr (Low_Bound (N))));
+                      Right => Int_Term_Of_Ada_Expr (Low_Bound (N))),
+                 Domain => EW_Term);
 
          when N_Others_Choice =>
             return New_Literal (Value => EW_True);
@@ -1151,19 +1155,43 @@ package body Gnat2Why.Subprograms is
          return Cur_Spec;
       end Compute_Spec;
 
+      function New_And_Then_Prog (Left, Right : W_Prog_Id) return W_Prog_Id;
+      --  ??? For transition purposes, to be removed
+
+      function New_And_Pred (Left, Right : W_Predicate_Id) return
+         W_Predicate_Id;
+      --  ??? For transition purposes, to be removed
+
+      ------------------
+      -- New_And_Prog --
+      ------------------
+
+      function New_And_Then_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
+      begin
+         return
+           +New_And_Then_Expr (+Left, +Right, EW_Prog);
+      end New_And_Then_Prog;
+
+      function New_And_Pred (Left, Right : W_Predicate_Id)
+         return W_Predicate_Id is
+      begin
+         return
+           +New_And_Expr (+Left, +Right, EW_Pred);
+      end New_And_Pred;
+
       function Compute_Spec_Pred is new
         Compute_Spec
           (W_Predicate_Id,
            New_Literal (Value => EW_True),
            Why_Predicate_Of_Ada_Expr,
-           New_Simpl_Conjunction);
+           New_And_Pred);
 
       function Compute_Spec_Prog is new
         Compute_Spec
           (W_Prog_Id,
            New_Literal (Value => EW_True),
            Why_Expr_Of_Ada_Expr,
-           New_Prog_Andb_Then);
+           New_And_Then_Prog);
 
       --------------------------------
       -- Is_Syntactic_Expr_Function --
@@ -1577,9 +1605,10 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_And =>
             return
-               New_Prog_Andb
-                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+               +New_And_Expr
+                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
+                  Domain => EW_Prog);
 
          when N_Op_Or =>
             return
@@ -1589,9 +1618,10 @@ package body Gnat2Why.Subprograms is
 
          when N_And_Then =>
             return
-               New_Prog_Andb_Then
-                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+               +New_And_Then_Expr
+                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
+                  Domain => EW_Prog);
 
          when N_Or_Else =>
             return
@@ -2020,11 +2050,12 @@ package body Gnat2Why.Subprograms is
                   --  A while loop
                   declare
                      Enriched_Inv : constant W_Predicate_Id :=
-                                      New_Simpl_Conjunction
-                                        (Left  => Invariant,
-                                         Right =>
-                                           Why_Predicate_Of_Ada_Expr
-                                             (Condition (Scheme)));
+                                      +New_And_Expr
+                                        (Left   => +Invariant,
+                                         Right  =>
+                                           +Why_Predicate_Of_Ada_Expr
+                                             (Condition (Scheme)),
+                                         Domain => EW_Pred);
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
                      Inv_Node : constant Node_Id :=
@@ -2079,12 +2110,13 @@ package body Gnat2Why.Subprograms is
                                            New_Identifier (Loop_Index),
                                          Value    => Addition);
                      Enriched_Inv : constant W_Predicate_Id :=
-                                      New_Simpl_Conjunction
-                                        (Left  => Invariant,
+                                      +New_And_Expr
+                                        (Left  => +Invariant,
                                          Right =>
-                                           Range_Predicate
+                                           +Range_Predicate
                                              (Loop_Range,
-                                              New_Term (Loop_Index)));
+                                              New_Term (Loop_Index)),
+                                         Domain => EW_Pred);
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
                      Inv_Node     : constant Node_Id :=
@@ -2304,9 +2336,10 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_And | N_And_Then =>
             return
-              New_Simpl_Conjunction
-                (Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
+              +New_And_Expr
+                (Left     => +Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
+                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)),
+                 Domain   => EW_Pred);
 
          when N_Op_Or | N_Or_Else =>
             return

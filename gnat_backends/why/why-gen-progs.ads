@@ -94,11 +94,13 @@ package Why.Gen.Progs is
        Reason   : VC_Kind) return W_Prog_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
-   function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean conjunction as program.
+   function New_And_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
 
-   function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean conjunction as program.
+   function New_And_Then_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Prog_Boolean_Cmp
      (Cmp         : EW_Relation;

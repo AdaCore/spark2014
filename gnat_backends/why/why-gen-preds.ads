@@ -79,9 +79,4 @@ package Why.Gen.Preds is
        Reason   : VC_Kind;
        Domain   : EW_Domain) return W_Expr_Id;
 
-   function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
-      return W_Predicate_Id;
-   --  Build a conjunction, but check if we can simplify it  - one of the
-   --  arguments may be "true".
-
 end Why.Gen.Preds;

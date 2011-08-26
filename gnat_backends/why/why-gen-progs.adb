@@ -491,45 +491,61 @@ package body Why.Gen.Progs is
            Domain => EW_Prog);
    end New_Located_Call;
 
-   -------------------
-   -- New_Prog_Andb --
-   -------------------
+   ------------------
+   -- New_And_Expr --
+   ------------------
 
-   function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id
-   is
+   function New_And_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id is
+   begin
+      if Is_True_Boolean (+Left) then
+         return Right;
+
+      elsif Is_True_Boolean (+Right) then
+         return Left;
+
+      else
+         if Domain = EW_Pred then
+            return New_Connection
+              (Op    => EW_And,
+               Left  => +Left,
+               Right => +Right);
+         else
+            return
+              New_Call
+                (Domain => EW_Prog,
+                 Name   => New_Identifier ("bool_and"),
+                 Args   => (1 => +Left, 2 => +Right));
+         end if;
+      end if;
+   end New_And_Expr;
+
+   -----------------------
+   -- New_And_Then_Expr --
+   -----------------------
+
+   function New_And_Then_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id is
    begin
       if Is_True_Boolean (+Left) then
          return Right;
       elsif Is_True_Boolean (+Right) then
          return Left;
       else
-         return
-           New_Call
-             (Domain => EW_Prog,
-              Name   => New_Identifier ("bool_and"),
-              Args   => (1 => +Left, 2 => +Right));
+         if Domain = EW_Prog then
+            return
+               New_Connection
+                 (Op     => EW_And_Then,
+                  Left   => Left,
+                  Right  => Right,
+                  Domain => EW_Prog);
+         else
+            return New_And_Expr (Left, Right, Domain);
+         end if;
       end if;
-   end New_Prog_Andb;
-
-   ------------------------
-   -- New_Prog_Andb_Then --
-   ------------------------
-
-   function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id
-   is
-   begin
-      if Is_True_Boolean (+Left) then
-         return Right;
-      elsif Is_True_Boolean (+Right) then
-         return Left;
-      else
-         return
-           New_Connection
-             (Op    => EW_And_Then,
-              Left  => +Left,
-              Right => +Right);
-      end if;
-   end New_Prog_Andb_Then;
+   end New_And_Then_Expr;
 
    --------------------------
    -- New_Prog_Boolean_Cmp --

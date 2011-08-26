@@ -247,34 +247,4 @@ package body Why.Gen.Preds is
          Op    => EW_Ne);
    end New_NEqual;
 
-   ---------------------------
-   -- New_Simpl_Conjunction --
-   ---------------------------
-
-   function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
-      return W_Predicate_Id
-   is
-   begin
-      if Get_Kind (+Left) = W_Literal then
-         if Literal_Get_Value (W_Literal_Id (Left)) = EW_True then
-            return Right;
-         else
-            return Left;
-         end if;
-
-      elsif Get_Kind (+Right) = W_Literal then
-         if Literal_Get_Value (W_Literal_Id (Right)) = EW_True then
-            return Left;
-         else
-            return Right;
-         end if;
-
-      else
-         return New_Connection
-           (Op    => EW_And,
-            Left  => +Left,
-            Right => +Right);
-      end if;
-   end New_Simpl_Conjunction;
-
 end Why.Gen.Preds;
