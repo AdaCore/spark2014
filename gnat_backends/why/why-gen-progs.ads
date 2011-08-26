@@ -91,7 +91,8 @@ package Why.Gen.Progs is
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
-       Reason   : VC_Kind) return W_Prog_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
    function New_And_Expr

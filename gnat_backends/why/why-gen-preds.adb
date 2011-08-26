@@ -216,10 +216,11 @@ package body Why.Gen.Preds is
        Domain   : EW_Domain) return W_Expr_Id
    is
    begin
-      if Present (Ada_Node)
-         and then
-        not (Get_Kind (+Expr) = W_Literal
-             and then Literal_Get_Value (W_Literal_Id (Expr)) = EW_True)
+      if Domain /= EW_Term
+        and then Present (Ada_Node)
+        and then
+           not (Get_Kind (+Expr) = W_Literal
+                and then Literal_Get_Value (W_Literal_Id (Expr)) = EW_True)
       then
          return
             New_Label

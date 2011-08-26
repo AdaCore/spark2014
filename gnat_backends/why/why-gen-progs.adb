@@ -153,11 +153,12 @@ package body Why.Gen.Progs is
    is
    begin
       return
-        New_Located_Call
+        +New_Located_Call
           (Ada_Node => Ada_Node,
            Name     =>
             To_Program_Space
               (Conversion_Name (From => Why_Types (From), To => To)),
+           Domain   => EW_Prog,
            Progs    => (1 => +Why_Expr),
            Reason   => Reason);
    end Convert_From_Scalar;
@@ -475,20 +476,21 @@ package body Why.Gen.Progs is
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
-       Reason   : VC_Kind) return W_Prog_Id
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
    is
    begin
       return
         +New_Located_Expr
           (Ada_Node => Ada_Node,
            Reason   => Reason,
-           Expr =>
+           Expr     =>
              New_Call
                (Ada_Node => Ada_Node,
                 Name     => Name,
                 Args     => Progs,
-                Domain   => EW_Prog),
-           Domain => EW_Prog);
+                Domain   => Domain),
+           Domain  => Domain);
    end New_Located_Call;
 
    ------------------

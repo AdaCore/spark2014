@@ -1444,7 +1444,7 @@ package body Gnat2Why.Subprograms is
    is
       T            : W_Expr_Id;
       Current_Type : Why_Type := Type_Of_Node (Expr);
-      Overflow_Check_Needed : constant Boolean := False;
+      Overflow_Check_Needed : Boolean := False;
    begin
 
       --  Expressions that cannot be translated to predicates directly are
@@ -1575,6 +1575,73 @@ package body Gnat2Why.Subprograms is
                Current_Type := Why_Bool_Type;
             end;
 
+         when N_Op_Minus =>
+            --  unary minus
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Right);
+               T :=
+                 New_Unary_Op
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Op       => EW_Minus,
+                    Right    =>
+                      +Why_Expr_Of_Ada_Expr (Right, Current_Type, Domain));
+            end;
+
+         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
+            --  The arguments of arithmetic functions have to be of base
+            --  scalar types
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Left, Right);
+               T :=
+                 New_Binary_Op
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Left     => Why_Expr_Of_Ada_Expr (Left,
+                                                      Current_Type,
+                                                      Domain),
+                    Right    => Why_Expr_Of_Ada_Expr (Right,
+                                                      Current_Type,
+                                                      Domain),
+                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Op_Type  => To_EW_Type (Current_Type.Kind));
+               Overflow_Check_Needed := True;
+            end;
+
+         when N_Op_Divide =>
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Name  : W_Identifier_Id;
+            begin
+               Current_Type := Base_Why_Type (Left, Right);
+               --  ??? What about Float division?
+               Name :=
+                  (if Domain = EW_Prog then
+                     To_Program_Space (New_Integer_Division.Id)
+                   else
+                     New_Division (Current_Type.Kind));
+               T :=
+                 New_Located_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     => Name,
+                    Progs    =>
+                      (1 => Why_Expr_Of_Ada_Expr (Left,
+                                                  Current_Type,
+                                                  Domain),
+                       2 => Why_Expr_Of_Ada_Expr (Right,
+                                                  Current_Type,
+                                                  Domain)),
+                    Reason   => VC_Division_By_Zero);
+               Overflow_Check_Needed := True;
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1625,61 +1692,8 @@ package body Gnat2Why.Subprograms is
    is
       T            : W_Prog_Id;
       Current_Type : Why_Type := Type_Of_Node (Expr);
-      Overflow_Check_Needed : Boolean := False;
    begin
       case Nkind (Expr) is
-         when N_Op_Minus =>
-            --  unary minus
-            declare
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Right);
-               T :=
-                 New_Unary_Op
-                   (Ada_Node => Expr,
-                    Domain   => EW_Prog,
-                    Op       => EW_Minus,
-                    Right    => +Why_Expr_Of_Ada_Expr (Right, Current_Type));
-            end;
-
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
-            declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Left, Right);
-               T :=
-                 New_Binary_Op
-                   (Ada_Node => Expr,
-                    Domain   => EW_Prog,
-                    Op_Type  => To_EW_Type (Current_Type.Kind),
-                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
-                    Left     => +Why_Expr_Of_Ada_Expr (Left,
-                                                       Current_Type),
-                    Right    => +Why_Expr_Of_Ada_Expr (Right,
-                                                       Current_Type));
-               Overflow_Check_Needed := True;
-            end;
-
-         when N_Op_Divide =>
-            declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Left, Right);
-               T :=
-                 New_Located_Call
-                   (Ada_Node => Expr,
-                    Name     => To_Program_Space (New_Integer_Division.Id),
-                    Progs    =>
-                      (1 => +Why_Expr_Of_Ada_Expr (Left,
-                                                   Current_Type),
-                       2 => +Why_Expr_Of_Ada_Expr (Right,
-                                                   Current_Type)),
-                    Reason   => VC_Division_By_Zero);
-               Overflow_Check_Needed := True;
-            end;
-
          when N_Op_Not =>
             return
               New_Not
@@ -1745,11 +1759,12 @@ package body Gnat2Why.Subprograms is
 
          when N_Function_Call =>
             T :=
-              New_Located_Call
+              +New_Located_Call
                 (Name     =>
                    To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Expr))),
                  Progs    => Compute_Call_Args (Expr),
                  Ada_Node => Expr,
+                 Domain   => EW_Prog,
                  Reason   => VC_Precondition);
 
          when N_Expression_With_Actions =>
@@ -1878,21 +1893,13 @@ package body Gnat2Why.Subprograms is
 
       end case;
 
-      declare
-         Base_Type : constant Why_Type :=
-            (if Overflow_Check_Needed then
-               Why_Abstract (Etype (Etype (Expr)))
-            else
-               Why_Int_Type);
-      begin
-         return
-           Insert_Conversion
-             (Ada_Node              => Expr,
-              From                  => Current_Type,
-              To                    => Expected_Type,
-              Why_Expr              => T,
-              Base_Type => Base_Type);
-      end;
+      return
+        Insert_Conversion
+          (Ada_Node              => Expr,
+           From                  => Current_Type,
+           To                    => Expected_Type,
+           Why_Expr              => T,
+           Base_Type             => Why_Int_Type);
    end Why_Expr_Of_Ada_Expr_Tmp;
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
@@ -2017,11 +2024,12 @@ package body Gnat2Why.Subprograms is
 
          when N_Procedure_Call_Statement =>
             return
-              New_Located_Call
+              +New_Located_Call
                 (Ada_Node => Stmt,
                  Name     =>
                    To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
                  Progs    => Compute_Call_Args (Stmt),
+                 Domain   => EW_Prog,
                  Reason   => VC_Precondition);
 
          when N_If_Statement =>
@@ -2489,56 +2497,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Op_Minus =>
-            --  unary minus
-            declare
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Right);
-               T :=
-                 New_Unary_Op
-                   (Ada_Node => Expr,
-                    Domain   => EW_Term,
-                    Op       => EW_Minus,
-                    Right    => Why_Term_Of_Ada_Expr (Right, Current_Type));
-            end;
-
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
-            --  The arguments of arithmetic functions have to be of base
-            --  scalar types
-            declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Left, Right);
-               T :=
-                 New_Binary_Op
-                   (Ada_Node => Expr,
-                    Domain   => EW_Term,
-                    Left     => +Why_Term_Of_Ada_Expr (Left,
-                                                       Current_Type),
-                    Right    => +Why_Term_Of_Ada_Expr (Right,
-                                                       Current_Type),
-                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
-                    Op_Type  => To_EW_Type (Current_Type.Kind));
-            end;
-
-         when N_Op_Divide =>
-            declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-            begin
-               Current_Type := Base_Why_Type (Left, Right);
-               T :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => EW_Term,
-                    Name     => New_Division (Current_Type.Kind),
-                    Args     =>
-                      (1 => +Why_Term_Of_Ada_Expr (Left, Current_Type),
-                       2 => +Why_Term_Of_Ada_Expr (Right, Current_Type)));
-            end;
-
          when N_Op_Not =>
             T :=
               New_Call

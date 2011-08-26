@@ -225,10 +225,11 @@ package body Why.Gen.Arrays is
    is
    begin
       return
-         New_Located_Call
+         +New_Located_Call
             (Ada_Node => Ada_Node,
              Reason   => VC_Array_Bounds_Check,
              Name     => To_Program_Space (Array_Access_Name.Id (Ada_Array)),
+             Domain   => EW_Prog,
              Progs    =>
                (1 => +Index,
                 2 =>
@@ -404,6 +405,7 @@ package body Why.Gen.Arrays is
                      +New_Located_Call
                        (Ada_Node => Ada_Node,
                         Reason   => VC_Array_Bounds_Check,
+                        Domain   => EW_Prog,
                         Name     =>
                           To_Program_Space
                             (Array_Update_Name.Id (Ada_Array)),
