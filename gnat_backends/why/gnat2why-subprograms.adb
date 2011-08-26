@@ -97,6 +97,10 @@ package body Gnat2Why.Subprograms is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
+   function Why_Predicate_Of_Ada_Expr_Tmp (Expr : Node_Id)
+      return W_Predicate_Id;
+   --  Translate an Ada Expression to a Why predicate
+
    function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Translate the given Ada expression to a Why expression of type "int".
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
@@ -161,7 +165,7 @@ package body Gnat2Why.Subprograms is
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
 
-   function Why_Expr_Of_Ada_Expr
+   function Why_Expr_Of_Ada_Expr_Tmp
      (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression of the
@@ -169,9 +173,18 @@ package body Gnat2Why.Subprograms is
    --  When VC_Mode is true, allow a translation to Why code that will only
    --  trigger safety VCs, but is not equivalent.
 
+   function Why_Expr_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Prog_Id;
+
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Same as the previous function, but use the type of Expr as the expected
    --  type.
+
+   function Why_Expr_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type;
+      Domain        : EW_Domain) return W_Expr_Id;
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
@@ -185,6 +198,10 @@ package body Gnat2Why.Subprograms is
 
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
+
+   function Why_Term_Of_Ada_Expr_Tmp
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Term_Id;
 
    function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
@@ -1418,6 +1435,24 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
+      Expected_Type : Why_Type;
+      Domain        : EW_Domain) return W_Expr_Id
+   is
+   begin
+      case Domain is
+         when EW_Prog =>
+            return +Why_Expr_Of_Ada_Expr_Tmp (Expr, Expected_Type);
+
+         when EW_Term =>
+            return +Why_Term_Of_Ada_Expr_Tmp (Expr, Expected_Type);
+
+         when EW_Pred =>
+            return +Why_Predicate_Of_Ada_Expr_Tmp (Expr);
+      end case;
+   end Why_Expr_Of_Ada_Expr;
+
+   function Why_Expr_Of_Ada_Expr_Tmp
+     (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Prog_Id
    is
       T            : W_Prog_Id;
@@ -1828,7 +1863,7 @@ package body Gnat2Why.Subprograms is
               Why_Expr              => T,
               Base_Type => Base_Type);
       end;
-   end Why_Expr_Of_Ada_Expr;
+   end Why_Expr_Of_Ada_Expr_Tmp;
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
    begin
@@ -2301,7 +2336,8 @@ package body Gnat2Why.Subprograms is
    -- Why_Predicate_Of_Ada_Expr --
    -------------------------------
 
-   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id is
+   function Why_Predicate_Of_Ada_Expr_Tmp (Expr : Node_Id)
+      return W_Predicate_Id is
    begin
       case Nkind (Expr) is
          when N_Op_Eq |
@@ -2435,13 +2471,13 @@ package body Gnat2Why.Subprograms is
                  Right    => New_Literal (Value => EW_True),
                  Op       => EW_Eq);
       end case;
-   end Why_Predicate_Of_Ada_Expr;
+   end Why_Predicate_Of_Ada_Expr_Tmp;
 
    --------------------------
    -- Why_Term_Of_Ada_Expr --
    --------------------------
 
-   function Why_Term_Of_Ada_Expr
+   function Why_Term_Of_Ada_Expr_Tmp
      (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Term_Id
    is
@@ -2775,7 +2811,7 @@ package body Gnat2Why.Subprograms is
            Why_Term => T,
            From     => Current_Type,
            To       => Expected_Type);
-   end Why_Term_Of_Ada_Expr;
+   end Why_Term_Of_Ada_Expr_Tmp;
 
    function Why_Term_Of_Ada_Expr (Expr : Node_Id)
       return W_Term_Id
@@ -2834,5 +2870,29 @@ package body Gnat2Why.Subprograms is
                        (Name => New_Identifier (Loop_Name),
                         Def  => New_Void))));
    end Wrap_Loop;
+
+   --  ??? To be removed
+
+   function Why_Expr_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Prog_Id
+   is
+   begin
+      return +Why_Expr_Of_Ada_Expr (Expr, Expected_Type, EW_Prog);
+   end Why_Expr_Of_Ada_Expr;
+
+   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id)
+      return W_Predicate_Id is
+   begin
+      return +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Pred);
+   end Why_Predicate_Of_Ada_Expr;
+
+   function Why_Term_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Term_Id
+   is
+   begin
+      return +Why_Expr_Of_Ada_Expr (Expr, Expected_Type, EW_Term);
+   end Why_Term_Of_Ada_Expr;
 
 end Gnat2Why.Subprograms;
