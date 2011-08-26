@@ -1438,17 +1438,55 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Why_Type;
       Domain        : EW_Domain) return W_Expr_Id
    is
+      T            : W_Expr_Id;
+      Current_Type : Why_Type := Type_Of_Node (Expr);
+      Overflow_Check_Needed : constant Boolean := False;
    begin
-      case Domain is
-         when EW_Prog =>
-            return +Why_Expr_Of_Ada_Expr_Tmp (Expr, Expected_Type);
+      case Nkind (Expr) is
+         when N_Integer_Literal =>
+            T :=
+              New_Integer_Constant
+                (Domain   => Domain,
+                 Ada_Node => Expr,
+                 Value    => Intval (Expr));
+            Current_Type := Why_Int_Type;
 
-         when EW_Term =>
-            return +Why_Term_Of_Ada_Expr_Tmp (Expr, Expected_Type);
+         when others =>
+            case Domain is
+               when EW_Prog =>
+                  return +Why_Expr_Of_Ada_Expr_Tmp (Expr, Expected_Type);
 
-         when EW_Pred =>
-            return +Why_Predicate_Of_Ada_Expr_Tmp (Expr);
+               when EW_Term =>
+                  return +Why_Term_Of_Ada_Expr_Tmp (Expr, Expected_Type);
+
+               when EW_Pred =>
+                  return +Why_Predicate_Of_Ada_Expr_Tmp (Expr);
+            end case;
       end case;
+      declare
+         Base_Type : constant Why_Type :=
+            (if Overflow_Check_Needed then
+               Why_Abstract (Etype (Etype (Expr)))
+            else
+               Why_Int_Type);
+      begin
+         if Domain = EW_Prog then
+            return
+              +Insert_Conversion
+                (Ada_Node              => Expr,
+                 From                  => Current_Type,
+                 To                    => Expected_Type,
+                 Why_Expr              => +T,
+                 Base_Type => Base_Type);
+         else
+            return
+              +Insert_Conversion_Term
+                (Ada_Node => Expr,
+                 Why_Term => +T,
+                 From     => Current_Type,
+                 To       => Expected_Type);
+         end if;
+      end;
    end Why_Expr_Of_Ada_Expr;
 
    function Why_Expr_Of_Ada_Expr_Tmp
@@ -1471,14 +1509,6 @@ package body Gnat2Why.Subprograms is
 
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
-         when N_Integer_Literal =>
-            T :=
-              New_Integer_Constant
-                (Domain   => EW_Prog,
-                 Ada_Node => Expr,
-                 Value    => Intval (Expr));
-            Current_Type := Why_Int_Type;
-
          when N_Real_Literal =>
             --  The original is usually much easier to process for alt-ergo
             --  than the rewritten node; typically, the will be in decimal
@@ -2495,11 +2525,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Integer_Literal =>
-            T :=
-              New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
-            Current_Type := Why_Int_Type;
-
          when N_Real_Literal =>
             if Is_Rewrite_Substitution (Expr) then
                --  The original is usually much easier to process for alt-ergo
