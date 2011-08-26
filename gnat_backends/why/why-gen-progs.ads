@@ -102,7 +102,7 @@ package Why.Gen.Progs is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
 
-   function New_Boolean_Cmp
+   function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
       Domain      : EW_Domain)
