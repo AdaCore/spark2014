@@ -1693,6 +1693,24 @@ package body Gnat2Why.Subprograms is
                   Domain => Domain);
             Current_Type := Why_Bool_Type;
 
+         when N_In =>
+            declare
+               Subdomain : constant EW_Domain :=
+                  (if Domain = EW_Pred then EW_Term else Domain);
+            begin
+               if Nkind (Right_Opnd (Expr)) = N_Range then
+                  T :=
+                    Range_Expr
+                      (Right_Opnd (Expr),
+                       Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
+                                             Why_Int_Type,
+                                             Subdomain),
+                       Domain);
+               else
+                  raise Not_Implemented;
+               end if;
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -2397,17 +2415,6 @@ package body Gnat2Why.Subprograms is
       return W_Predicate_Id is
    begin
       case Nkind (Expr) is
-
-         when N_In =>
-            if Nkind (Right_Opnd (Expr)) = N_Range then
-               return
-                 +Range_Expr
-                   (Right_Opnd (Expr),
-                    +Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                    EW_Pred);
-            else
-               raise Not_Implemented;
-            end if;
 
          when N_Conditional_Expression =>
             declare
