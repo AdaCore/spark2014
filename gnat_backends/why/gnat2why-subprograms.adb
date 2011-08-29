@@ -110,8 +110,8 @@ package body Gnat2Why.Subprograms is
    --  Test if the effect in argument is empty.
 
    procedure Extract_From_Quantified_Expression
-      (N          : Node_Id;
-       Index      : out W_Identifier_Id;
+      (N       : Node_Id;
+       Index   : out W_Identifier_Id;
        Range_E : out Node_Id);
    --  Extract the loop index and the range expression node from a
    --  QUANTIFIED_EXPRESSION
@@ -564,8 +564,8 @@ package body Gnat2Why.Subprograms is
    end Effect_Is_Empty;
 
    procedure Extract_From_Quantified_Expression
-      (N          : Node_Id;
-       Index      : out W_Identifier_Id;
+      (N       : Node_Id;
+       Index   : out W_Identifier_Id;
        Range_E : out Node_Id)
    is
       Spec : Node_Id;
@@ -1828,7 +1828,7 @@ package body Gnat2Why.Subprograms is
                                 (Prog =>
                                    Why_Expr_Of_Ada_Expr (Condition (Expr)));
                Index      : W_Identifier_Id;
-               Range_E : Node_Id;
+               Range_E    : Node_Id;
                Range_Cond : W_Prog_Id;
             begin
                Extract_From_Quantified_Expression (Expr, Index, Range_E);
@@ -2435,7 +2435,7 @@ package body Gnat2Why.Subprograms is
                Conclusion : constant W_Predicate_Id :=
                   Why_Predicate_Of_Ada_Expr (Condition (Expr));
                I          : W_Identifier_Id;
-               Range_E : Node_Id;
+               Range_E    : Node_Id;
                Hypothesis : W_Predicate_Id;
                Quant_Body : W_Predicate_Id;
             begin
