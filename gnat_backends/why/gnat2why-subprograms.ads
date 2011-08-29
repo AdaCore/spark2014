@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;         use Atree;
+with Sinfo;         use Sinfo;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 with Why.Inter;     use Why.Inter;
@@ -75,7 +77,10 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   function Get_Range (N : Node_Id) return Node_Id;
+   function Get_Range (N : Node_Id) return Node_Id
+      with Post =>
+         (Present (Low_Bound (Get_Range'Result)) and then
+          Present (High_Bound (Get_Range'Result)));
    --  Get the range of a range constraint or subtype definition.
    --  The return node is of kind N_Range
 
