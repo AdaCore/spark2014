@@ -95,10 +95,6 @@ package body Gnat2Why.Subprograms is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
-   function Why_Predicate_Of_Ada_Expr_Tmp (Expr : Node_Id)
-      return W_Predicate_Id;
-   --  Translate an Ada Expression to a Why predicate
-
    function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Translate the given Ada expression to a Why expression of type "int".
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
@@ -1797,6 +1793,28 @@ package body Gnat2Why.Subprograms is
                raise Not_Implemented;
             end if;
 
+         when N_Conditional_Expression =>
+            declare
+               Cond      : constant Node_Id := First (Expressions (Expr));
+               Then_Part : constant Node_Id := Next (Cond);
+               Else_Part : constant Node_Id := Next (Then_Part);
+               Subdomain : constant EW_Domain :=
+                             (if Domain = EW_Pred then EW_Term else Domain);
+            begin
+               T :=
+                  New_Conditional
+                     (Ada_Node => Expr,
+                      Condition => +Why_Expr_Of_Ada_Expr (Cond,
+                                                          Why_Bool_Type,
+                                                          Subdomain),
+                      Then_Part => Why_Expr_Of_Ada_Expr (Then_Part,
+                                                         Expected_Type,
+                                                         Domain),
+                      Else_Part => Why_Expr_Of_Ada_Expr (Else_Part,
+                                                         Expected_Type,
+                                                         Domain));
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1806,7 +1824,7 @@ package body Gnat2Why.Subprograms is
                   return +Why_Term_Of_Ada_Expr_Tmp (Expr, Expected_Type);
 
                when EW_Pred =>
-                  return +Why_Predicate_Of_Ada_Expr_Tmp (Expr);
+                  raise Not_Implemented;
             end case;
       end case;
       declare
@@ -2439,35 +2457,6 @@ package body Gnat2Why.Subprograms is
          when N_Op_Ne => return EW_Ne;
       end case;
    end Why_Rel_Of_Ada_Op;
-
-   -------------------------------
-   -- Why_Predicate_Of_Ada_Expr --
-   -------------------------------
-
-   function Why_Predicate_Of_Ada_Expr_Tmp (Expr : Node_Id)
-      return W_Predicate_Id is
-   begin
-      case Nkind (Expr) is
-
-         when N_Conditional_Expression =>
-            declare
-               Cond      : constant Node_Id := First (Expressions (Expr));
-               Then_Part : constant Node_Id := Next (Cond);
-               Else_Part : constant Node_Id := Next (Then_Part);
-            begin
-               return
-                  New_Conditional_Prop
-                     (Ada_Node => Expr,
-                      Condition => Why_Predicate_Of_Ada_Expr (Cond),
-                      Then_Part => Why_Predicate_Of_Ada_Expr (Then_Part),
-                      Else_Part => Why_Predicate_Of_Ada_Expr (Else_Part));
-            end;
-
-         when others =>
-            raise Program_Error;
-
-      end case;
-   end Why_Predicate_Of_Ada_Expr_Tmp;
 
    --------------------------
    -- Why_Term_Of_Ada_Expr --

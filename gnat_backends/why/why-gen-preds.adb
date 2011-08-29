@@ -142,38 +142,6 @@ package body Why.Gen.Preds is
             Def     => +Decl_First));
    end Define_Range_Predicate;
 
-   --------------------------
-   -- New_Conditional_Prop --
-   --------------------------
-
-   function New_Conditional_Prop
-      (Ada_Node : Node_Id := Empty;
-       Condition : W_Predicate_Id;
-       Then_Part : W_Predicate_Id;
-       Else_Part : W_Predicate_Id) return W_Predicate_Id
-   is
-   begin
-      return
-        New_Connection
-          (Ada_Node => Ada_Node,
-           Op       => EW_And,
-           Left     =>
-             New_Connection
-               (Ada_Node => Ada_Node,
-                Op       => EW_Imply,
-                Left     => +Condition,
-                Right    => +Then_Part),
-           Right    =>
-             New_Connection
-               (Ada_Node => Ada_Node,
-                Op       => EW_Imply,
-                Left     =>
-                  New_Not
-                    (Ada_Node => Ada_Node,
-                     Right    => +Condition),
-                Right    => +Else_Part));
-   end New_Conditional_Prop;
-
    ---------------
    -- New_Equal --
    ---------------
