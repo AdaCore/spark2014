@@ -1706,6 +1706,97 @@ package body Gnat2Why.Subprograms is
                     Domain);
             end;
 
+         when N_Quantified_Expression =>
+            if Domain = EW_Pred then
+               declare
+                  Conclusion : constant W_Predicate_Id :=
+                     Why_Predicate_Of_Ada_Expr (Condition (Expr));
+                  I          : W_Identifier_Id;
+                  Range_E    : Node_Id;
+                  Hypothesis : W_Predicate_Id;
+                  Quant_Body : W_Predicate_Id;
+               begin
+                  Extract_From_Quantified_Expression (Expr, I, Range_E);
+                  Hypothesis := +Range_Expr (Range_E, +I, EW_Pred);
+                  Quant_Body :=
+                     New_Connection
+                      (Domain => EW_Pred,
+                       Op     => EW_Imply,
+                       Left   => +Hypothesis,
+                       Right  => +Conclusion);
+
+                  if All_Present (Expr) then
+                     return
+                        New_Universal_Quantif
+                           (Domain    => EW_Pred,
+                            Ada_Node  => Expr,
+                            Variables => (1 => I),
+                            Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                            Pred      => Quant_Body);
+                  else
+                     return
+                        New_Existential_Quantif
+                           (Ada_Node  => Expr,
+                            Variables => (1 => I),
+                            Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                            Pred      => Quant_Body);
+                  end if;
+               end;
+            elsif Domain = EW_Prog then
+               --  We are interested in the checks for the entire range, and
+               --  in the return value of the entire expression, but we are
+               --  not interested in the exact order in which things are
+               --  evaluated. We also do not want to translate the expression
+               --  function by a loop. So our scheme is the following:
+               --    for all I in Cond => Expr
+               --
+               --  becomes:
+               --    (let i = ref [ int ] in
+               --       if cond then ignore (expr));
+               --    [ { } bool { result = true -> expr } ]
+               --  The condition is a formula that expresses that i is in the
+               --  range given by the quantification.
+               declare
+                  Why_Expr   : constant W_Prog_Id :=
+                                 New_Ignore
+                                   (Prog =>
+                                      Why_Expr_Of_Ada_Expr (Condition (Expr)));
+                  Index      : W_Identifier_Id;
+                  Range_E    : Node_Id;
+                  Range_Cond : W_Prog_Id;
+               begin
+                  Extract_From_Quantified_Expression (Expr, Index, Range_E);
+                  Range_Cond :=
+                     +Range_Expr
+                       (Range_E,
+                        New_Unary_Op
+                          (Domain => EW_Prog,
+                           Op     => EW_Deref,
+                           Right  => +Index),
+                        EW_Prog);
+                  T :=
+                    +Sequence
+                      (New_Binding_Ref
+                         (Name => Index,
+                          Def  =>
+                            New_Simpl_Any_Expr
+                              (New_Base_Type (Base_Type => EW_Int)),
+                          Context =>
+                            New_Conditional
+                              (Domain    => EW_Prog,
+                               Condition => Range_Cond,
+                               Then_Part => +Why_Expr)),
+                       New_Assume_Statement
+                         (Ada_Node    => Expr,
+                          Return_Type => New_Base_Type (Base_Type => EW_Bool),
+                          Pred        =>
+                            Why_Predicate_Of_Ada_Expr (Expr)));
+                  Current_Type := Why_Bool_Type;
+               end;
+            else
+               raise Not_Implemented;
+            end if;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1802,57 +1893,6 @@ package body Gnat2Why.Subprograms is
                Sequence
                  (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
                   Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
-
-         when N_Quantified_Expression =>
-            --  We are interested in the checks for the entire range, and
-            --  in the return value of the entire expression, but we are
-            --  not interested in the exact order in which things are
-            --  evaluated. We also do not want to translate the expression
-            --  function by a loop. So our scheme is the following:
-            --    for all I in Cond => Expr
-            --
-            --  becomes:
-            --    (let i = ref [ int ] in
-            --       if cond then ignore (expr));
-            --    [ { } bool { result = true -> expr } ]
-            --  The condition is a formula that expresses that i is in the
-            --  range given by the quantification.
-            declare
-               Why_Expr   : constant W_Prog_Id :=
-                              New_Ignore
-                                (Prog =>
-                                   Why_Expr_Of_Ada_Expr (Condition (Expr)));
-               Index      : W_Identifier_Id;
-               Range_E    : Node_Id;
-               Range_Cond : W_Prog_Id;
-            begin
-               Extract_From_Quantified_Expression (Expr, Index, Range_E);
-               Range_Cond :=
-                  +Range_Expr
-                    (Range_E,
-                     New_Unary_Op
-                       (Domain => EW_Prog,
-                        Op     => EW_Deref,
-                        Right  => +Index),
-                     EW_Prog);
-               return
-                 Sequence
-                   (New_Binding_Ref
-                      (Name => Index,
-                       Def  =>
-                         New_Simpl_Any_Expr
-                           (New_Base_Type (Base_Type => EW_Int)),
-                       Context =>
-                         New_Conditional
-                           (Domain    => EW_Prog,
-                            Condition => Range_Cond,
-                            Then_Part => +Why_Expr)),
-                    New_Assume_Statement
-                      (Ada_Node    => Expr,
-                       Return_Type => New_Base_Type (Base_Type => EW_Bool),
-                       Pred        =>
-                         Why_Predicate_Of_Ada_Expr (Expr)));
-            end;
 
          when N_Attribute_Reference =>
             declare
@@ -2421,42 +2461,6 @@ package body Gnat2Why.Subprograms is
                       Condition => Why_Predicate_Of_Ada_Expr (Cond),
                       Then_Part => Why_Predicate_Of_Ada_Expr (Then_Part),
                       Else_Part => Why_Predicate_Of_Ada_Expr (Else_Part));
-            end;
-
-         when N_Quantified_Expression =>
-            declare
-               Conclusion : constant W_Predicate_Id :=
-                  Why_Predicate_Of_Ada_Expr (Condition (Expr));
-               I          : W_Identifier_Id;
-               Range_E    : Node_Id;
-               Hypothesis : W_Predicate_Id;
-               Quant_Body : W_Predicate_Id;
-            begin
-               Extract_From_Quantified_Expression (Expr, I, Range_E);
-               Hypothesis := +Range_Expr (Range_E, +I, EW_Pred);
-               Quant_Body :=
-                  New_Connection
-                   (Domain => EW_Pred,
-                    Op     => EW_Imply,
-                    Left   => +Hypothesis,
-                    Right  => +Conclusion);
-
-               if All_Present (Expr) then
-                  return
-                     New_Universal_Quantif
-                        (Domain    => EW_Pred,
-                         Ada_Node  => Expr,
-                         Variables => (1 => I),
-                         Var_Type  => New_Base_Type (Base_Type => EW_Int),
-                         Pred      => Quant_Body);
-               else
-                  return
-                     New_Existential_Quantif
-                        (Ada_Node  => Expr,
-                         Variables => (1 => I),
-                         Var_Type  => New_Base_Type (Base_Type => EW_Int),
-                         Pred      => Quant_Body);
-               end if;
             end;
 
          when others =>
