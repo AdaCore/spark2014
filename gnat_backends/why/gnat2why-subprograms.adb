@@ -106,11 +106,6 @@ package body Gnat2Why.Subprograms is
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
    --  set to (Kind => Why_Int).
 
-   function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
-   --  Translate the given Ada expression to a Why term of type "bool".
-   --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
-   --  set to New_Type_Bool.
-
    function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
    --  Test if the effect in argument is empty.
 
@@ -1642,6 +1637,75 @@ package body Gnat2Why.Subprograms is
                Overflow_Check_Needed := True;
             end;
 
+         when N_Op_Not =>
+            if Domain = EW_Term then
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     => New_Identifier ("bool_not"),
+                    Args     =>
+                      (1 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain)));
+            else
+               T :=
+                 New_Not
+                   (Right  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                    Current_Type,
+                                                    Domain),
+                    Domain => Domain);
+            end if;
+            Current_Type := Why_Bool_Type;
+
+         when N_Op_And =>
+            T :=
+               New_And_Expr
+                 (Left   => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Right  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Domain => Domain);
+            Current_Type := Why_Bool_Type;
+
+         when N_Op_Or =>
+            T :=
+               New_Or_Expr
+                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
+                                                    Current_Type,
+                                                    Domain),
+                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                    Current_Type,
+                                                    Domain),
+                  Domain   => Domain);
+            Current_Type := Why_Bool_Type;
+
+         when N_And_Then =>
+            T :=
+               New_And_Then_Expr
+                 (Left   => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Right  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Domain => Domain);
+            Current_Type := Why_Bool_Type;
+
+         when N_Or_Else =>
+            T :=
+               New_Or_Else_Expr
+                 (Left   => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Right  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr),
+                                                  Current_Type,
+                                                  Domain),
+                  Domain => Domain);
+            Current_Type := Why_Bool_Type;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1694,40 +1758,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Op_Not =>
-            return
-              New_Not
-                (Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
-                 Domain => EW_Prog);
-
-         when N_Op_And =>
-            return
-               +New_And_Expr
-                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
-                  Domain => EW_Prog);
-
-         when N_Op_Or =>
-            return
-               +New_Or_Expr
-                 (Left     => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right    => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
-                  Domain   => EW_Prog);
-
-         when N_And_Then =>
-            return
-               +New_And_Then_Expr
-                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
-                  Domain => EW_Prog);
-
-         when N_Or_Else =>
-            return
-               +New_Or_Else_Expr
-                 (Left   => +Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                  Right  => +Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)),
-                  Domain => EW_Prog);
-
          when N_Type_Conversion =>
             --  Nothing is to do here, because we insert type conversions
             --  ourselves.
@@ -1915,15 +1945,6 @@ package body Gnat2Why.Subprograms is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, Why_Int_Type);
    end Int_Expr_Of_Ada_Expr;
-
-   ---------------------------
-   -- Bool_Term_Of_Ada_Expr --
-   ---------------------------
-
-   function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
-   begin
-      return Why_Term_Of_Ada_Expr (Expr, Why_Bool_Type);
-   end Bool_Term_Of_Ada_Expr;
 
    --------------------------
    -- Int_Term_Of_Ada_Expr --
@@ -2386,27 +2407,6 @@ package body Gnat2Why.Subprograms is
       return W_Predicate_Id is
    begin
       case Nkind (Expr) is
-         when N_Op_Not =>
-            return
-              New_Not
-                (Ada_Node => Expr,
-                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
-
-         when N_Op_And | N_And_Then =>
-            return
-              +New_And_Expr
-                (Left     => +Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)),
-                 Domain   => EW_Pred);
-
-         when N_Op_Or | N_Or_Else =>
-            return
-              New_Connection
-                (Ada_Node => Expr,
-                 Domain   => EW_Pred,
-                 Op       => EW_Or,
-                 Left     => +Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => +Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_In =>
             if Nkind (Right_Opnd (Expr)) = N_Range then
@@ -2497,39 +2497,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Op_Not =>
-            T :=
-              New_Call
-                (Ada_Node => Expr,
-                 Domain   => EW_Term,
-                 Name     => New_Identifier ("bool_not"),
-                 Args     =>
-                   (1 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
-
-            Current_Type := Why_Bool_Type;
-
-         when N_Op_And | N_And_Then =>
-            T :=
-               New_Call
-                (Ada_Node => Expr,
-                 Domain   => EW_Term,
-                 Name     => New_Identifier ("bool_and"),
-                 Args     =>
-                   (1 => +Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                    2 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
-
-            Current_Type := Why_Bool_Type;
-
-         when N_Op_Or | N_Or_Else =>
-            T :=
-               New_Call
-                (Ada_Node => Expr,
-                 Domain   => EW_Term,
-                 Name     => New_Identifier ("bool_or"),
-                 Args     =>
-                   (1 => +Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                    2 => +Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
-            Current_Type := Why_Bool_Type;
 
          when N_Type_Conversion =>
             return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
