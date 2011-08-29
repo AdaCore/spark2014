@@ -112,7 +112,7 @@ package body Gnat2Why.Subprograms is
    procedure Extract_From_Quantified_Expression
       (N          : Node_Id;
        Index      : out W_Identifier_Id;
-       Range_Expr : out Node_Id);
+       Range_E : out Node_Id);
    --  Extract the loop index and the range expression node from a
    --  QUANTIFIED_EXPRESSION
 
@@ -134,15 +134,12 @@ package body Gnat2Why.Subprograms is
    --  Discrete_Choice, build an expression that expresses that T belongs to
    --  the range expressed by N.
 
-   function Range_Predicate (N : Node_Id; T : W_Term_Id)
-      return W_Predicate_Id;
-   --  Generate a predicate of the form
-   --    low_bound < int_of_type (x) < high_bound
-   --  from an N_Range node.
-
-   function Range_Prog (N : Node_Id; T : W_Prog_Id)
-      return W_Prog_Id;
-   --  Same as Range_Predicate, but for programs.
+   function Range_Expr (N : Node_Id; T : W_Expr_Id; Domain : EW_Domain)
+      return W_Expr_Id
+      with Pre => (Nkind (N) = N_Range);
+   --  Given an N_Range node N and a Why expr T, create an expression
+   --  low <= T <= high
+   --  where "low" and "high" are the lower and higher bounds of N.
 
    function Term_Equal_To (T : W_Term_Id; N : Node_Id) return W_Term_Id;
    --  For a term T of type "int" and a Node that represents a
@@ -569,17 +566,17 @@ package body Gnat2Why.Subprograms is
    procedure Extract_From_Quantified_Expression
       (N          : Node_Id;
        Index      : out W_Identifier_Id;
-       Range_Expr : out Node_Id)
+       Range_E : out Node_Id)
    is
       Spec : Node_Id;
    begin
       if Present (Loop_Parameter_Specification (N)) then
          Spec := Loop_Parameter_Specification (N);
-         Range_Expr := Discrete_Subtype_Definition (Spec);
+         Range_E := Discrete_Subtype_Definition (Spec);
 
       elsif Present (Iterator_Specification (N)) then
          Spec := Iterator_Specification (N);
-         Range_Expr := Name (Spec);
+         Range_E := Name (Spec);
 
       else
          --  None of Loop_Parameter_Specification and
@@ -627,45 +624,35 @@ package body Gnat2Why.Subprograms is
       end case;
    end Get_Range;
 
-   ---------------------
-   -- Range_Predicate --
-   ---------------------
-
-   function Range_Predicate (N : Node_Id; T : W_Term_Id) return W_Predicate_Id
-   is
-   begin
-      return
-        New_Relation
-          (Domain => EW_Term,
-           Left   => +Int_Term_Of_Ada_Expr (Low_Bound (N)),
-           Op     => EW_Le,
-           Right  => +T,
-           Op2    => EW_Le,
-           Right2 => +Int_Term_Of_Ada_Expr (High_Bound (N)));
-   end Range_Predicate;
-
    ----------------
-   -- Range_Prog --
+   -- Range_Expr --
    ----------------
 
-   function Range_Prog (N : Node_Id; T : W_Prog_Id) return W_Prog_Id is
+   function Range_Expr (N : Node_Id; T : W_Expr_Id; Domain : EW_Domain)
+      return W_Expr_Id is
+      Subdomain : constant EW_Domain :=
+         (if Domain = EW_Pred then EW_Term else Domain);
    begin
       return
-        +New_And_Then_Expr
+        New_And_Then_Expr
           (Left  =>
              New_Relation
-               (Domain => EW_Prog,
+               (Domain => Domain,
                 Op     => EW_Le,
-                Left   => +Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                Left   => +Why_Expr_Of_Ada_Expr (Low_Bound (N),
+                                                Why_Int_Type,
+                                                Subdomain),
                 Right  => +T),
            Right  =>
              New_Relation
-               (Domain => EW_Prog,
+               (Domain => Domain,
                 Op     => EW_Le,
                 Left   => +T,
-                Right  => +Int_Expr_Of_Ada_Expr (High_Bound (N))),
-           Domain => EW_Prog);
-   end Range_Prog;
+                Right  => +Why_Expr_Of_Ada_Expr (High_Bound (N),
+                                                Why_Int_Type,
+                                                Subdomain)),
+           Domain => Domain);
+   end Range_Expr;
 
    -----------------------------------
    -- Loop_Entity_Of_Exit_Statement --
@@ -1823,17 +1810,18 @@ package body Gnat2Why.Subprograms is
                                 (Prog =>
                                    Why_Expr_Of_Ada_Expr (Condition (Expr)));
                Index      : W_Identifier_Id;
-               Range_Expr : Node_Id;
+               Range_E : Node_Id;
                Range_Cond : W_Prog_Id;
             begin
-               Extract_From_Quantified_Expression (Expr, Index, Range_Expr);
+               Extract_From_Quantified_Expression (Expr, Index, Range_E);
                Range_Cond :=
-                  Range_Prog
-                    (Get_Range (Range_Expr),
+                  +Range_Expr
+                    (Get_Range (Range_E),
                      New_Unary_Op
                        (Domain => EW_Prog,
                         Op     => EW_Deref,
-                        Right  => +Index));
+                        Right  => +Index),
+                     EW_Prog);
                return
                  Sequence
                    (New_Binding_Ref
@@ -2226,9 +2214,10 @@ package body Gnat2Why.Subprograms is
                                       +New_And_Expr
                                         (Left  => +Invariant,
                                          Right =>
-                                           +Range_Predicate
-                                             (Loop_Range,
-                                              New_Term (Loop_Index)),
+                                           Range_Expr
+                                            (Loop_Range,
+                                             +New_Term (Loop_Index),
+                                             EW_Pred),
                                          Domain => EW_Pred);
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
@@ -2240,9 +2229,10 @@ package body Gnat2Why.Subprograms is
                                         (Loop_Body    =>
                                            Sequence (Loop_Content, Incr_Stmt),
                                          Condition    =>
-                                           Range_Prog
+                                           +Range_Expr
                                              (Loop_Range,
-                                              Index_Deref),
+                                              +Index_Deref,
+                                              EW_Prog),
                                          Loop_Name    => Loop_Name,
                                          Invariant    => Enriched_Inv,
                                          Inv_Node     => Inv_Node);
@@ -2411,9 +2401,10 @@ package body Gnat2Why.Subprograms is
          when N_In =>
             if Nkind (Right_Opnd (Expr)) = N_Range then
                return
-                 Range_Predicate
+                 +Range_Expr
                    (Right_Opnd (Expr),
-                    Int_Term_Of_Ada_Expr (Left_Opnd (Expr)));
+                    +Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                    EW_Pred);
             else
                raise Not_Implemented;
             end if;
@@ -2437,13 +2428,12 @@ package body Gnat2Why.Subprograms is
                Conclusion : constant W_Predicate_Id :=
                   Why_Predicate_Of_Ada_Expr (Condition (Expr));
                I          : W_Identifier_Id;
-               Range_Expr : Node_Id;
+               Range_E : Node_Id;
                Hypothesis : W_Predicate_Id;
                Quant_Body : W_Predicate_Id;
             begin
-               Extract_From_Quantified_Expression (Expr, I, Range_Expr);
-               Hypothesis :=
-                  Range_Predicate (Get_Range (Range_Expr), +I);
+               Extract_From_Quantified_Expression (Expr, I, Range_E);
+               Hypothesis := +Range_Expr (Get_Range (Range_E), +I, EW_Pred);
                Quant_Body :=
                   New_Connection
                    (Domain => EW_Pred,
