@@ -442,10 +442,10 @@ package body Gnat2Why.Subprograms is
             Cnt := Cnt + 1;
          end Compute_Arg;
 
-         procedure Iterate_Prog_Call is new
+         procedure Iterate_Call is new
            Iterate_Call_Arguments (Compute_Arg);
       begin
-         Iterate_Prog_Call (Call);
+         Iterate_Call (Call);
          return Why_Args;
       end;
    end Compute_Call_Args;
