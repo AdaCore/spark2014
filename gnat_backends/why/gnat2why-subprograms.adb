@@ -483,8 +483,8 @@ package body Gnat2Why.Subprograms is
    function Effect_Is_Empty (E : W_Effects_Id) return Boolean is
    begin
       return
-        (Is_Empty (+Effects_Get_Reads (E)) and then
-         Is_Empty (+Effects_Get_Writes (E)));
+        (Is_Empty (+Get_Reads (E)) and then
+         Is_Empty (+Get_Writes (E)));
    end Effect_Is_Empty;
 
    procedure Extract_From_Quantified_Expression
@@ -1114,7 +1114,7 @@ package body Gnat2Why.Subprograms is
                          and then
                        Get_Kind (+Post) = W_Literal
                          and then
-                       Literal_Get_Value (W_Literal_Id (Post)) = EW_True;
+                       Get_Value (+Post) = EW_True;
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 

@@ -116,7 +116,7 @@ package body Why.Gen.Name_Gen is
          Name     : W_Identifier_Id)
         return W_Identifier_Id is
       begin
-         return Id (Ada_Node, Identifier_Get_Symbol (Name));
+         return Id (Ada_Node, Get_Symbol (Name));
       end Id;
 
       --------
@@ -221,8 +221,8 @@ package body Why.Gen.Name_Gen is
         return W_Identifier_Id is
       begin
          return Id (Ada_Node,
-                    Identifier_Get_Symbol (L_Name),
-                    Identifier_Get_Symbol (R_Name));
+                    Get_Symbol (L_Name),
+                    Get_Symbol (R_Name));
       end Id;
 
       --------

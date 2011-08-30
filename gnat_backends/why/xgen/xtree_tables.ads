@@ -216,6 +216,7 @@ package Xtree_Tables is
 
    function Accessor_Name
      (Kind : Why_Node_Kind;
+      IK   : Id_Kind;
       FI   : Field_Info)
      return Wide_String;
    --  Return the accessor name for the given field of the given node kind

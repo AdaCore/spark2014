@@ -313,7 +313,7 @@ package body Why.Gen.Progs is
    begin
       return
          (Get_Kind (+P) = W_Literal and then
-          Literal_Get_Value (W_Literal_Id (P)) = EW_False);
+          Get_Value (+P) = EW_False);
    end Is_False_Boolean;
 
    ---------------------
@@ -325,7 +325,7 @@ package body Why.Gen.Progs is
    begin
       return
          (Get_Kind (+P) = W_Literal and then
-          Literal_Get_Value (W_Literal_Id (P)) = EW_True);
+          Get_Value (+P) = EW_True);
    end Is_True_Boolean;
 
    --------------------------

@@ -101,7 +101,7 @@ package body Xtree_Accessors is
       for FI of Common_Fields.Fields loop
          Print_Accessor_Specification
            (O           => O,
-            Name        => Accessor_Name (W_Unused_At_Start, FI),
+            Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
             Param_Type  => "Why_Node_Id",
             Return_Type => Type_Name (FI, Derived));
          PL (O, " is");
@@ -151,7 +151,7 @@ package body Xtree_Accessors is
       for FI of Common_Fields.Fields loop
          Print_Accessor_Specification
            (O           => O,
-            Name        => Accessor_Name (W_Unused_At_Start, FI),
+            Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
             Param_Type  => "Why_Node_Id",
             Return_Type => Type_Name (FI, Derived));
          PL (O, ";");
@@ -291,7 +291,7 @@ package body Xtree_Accessors is
    begin
       Print_Accessor_Specification
         (O           => O,
-         Name        => Accessor_Name (Kind, FI),
+         Name        => Accessor_Name (Kind, IK, FI),
          Param_Type  => Id_Subtype (Kind, IK),
          Return_Type => Type_Name (FI, IK));
    end Print_Accessor_Specification;

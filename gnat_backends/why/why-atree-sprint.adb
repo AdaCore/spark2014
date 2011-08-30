@@ -257,13 +257,13 @@ package body Why.Atree.Sprint is
       Node  : W_Computation_Type_Valid_Id)
    is
       Binders     : constant W_Binder_OList :=
-                      Computation_Type_Get_Binders (+Node);
+                      Get_Binders (+Node);
       Result      : constant W_Binder_Id :=
-                      Computation_Type_Get_Result (+Node);
+                      Get_Result (+Node);
       Result_Type : constant W_Simple_Value_Type_Id :=
-                      Binder_Get_Arg_Type (Result);
+                      Get_Arg_Type (Result);
       Pre         : constant W_Pred_Id :=
-                      Computation_Type_Get_Pre (+Node);
+                      Get_Pre (+Node);
       Domain      : constant EW_Domain := Get_Domain (+Node);
    begin
       case Domain is
@@ -296,7 +296,7 @@ package body Why.Atree.Sprint is
                   declare
                      Binder   : constant W_Binder_Id := +Element (Position);
                   begin
-                     Traverse (State, +Binder_Get_Arg_Type (Binder));
+                     Traverse (State, +Get_Arg_Type (Binder));
                   end;
                   Next (Position);
 
@@ -327,11 +327,11 @@ package body Why.Atree.Sprint is
       Node  : W_Effects_Valid_Id)
    is
       Reads  : constant W_Identifier_List :=
-                 Effects_Get_Reads (+Node);
+                 Get_Reads (+Node);
       Writes : constant W_Identifier_List :=
-                 Effects_Get_Writes (+Node);
+                 Get_Writes (+Node);
       Raises : constant W_Identifier_List :=
-                 Effects_Get_Raises (+Node);
+                 Get_Raises (+Node);
    begin
       if not Is_Empty (+Reads) then
          P (O, "reads ");
@@ -405,9 +405,9 @@ package body Why.Atree.Sprint is
        Node : W_Constr_Decl_Valid_Id)
    is
       Args : constant W_Primitive_Type_List :=
-               Constr_Decl_Get_Arg_List (+Node);
+               Get_Arg_List (+Node);
       Name : constant W_Identifier_Id :=
-               Constr_Decl_Get_Name (+Node);
+               +Constr_Decl_Get_Name (Node);
    begin
       P (O, "| ");
       Traverse (State, +Name);
@@ -432,7 +432,7 @@ package body Why.Atree.Sprint is
       Node  : W_Triggers_Valid_Id)
    is
       Triggers : constant W_Trigger_List :=
-                   Triggers_Get_Triggers (+Node);
+                   Get_Triggers (+Node);
    begin
       P (O, "[");
       Print_List (State, +Triggers, " | ");
@@ -449,7 +449,7 @@ package body Why.Atree.Sprint is
       Node  : W_Trigger_Valid_Id)
    is
       Terms    : constant W_Term_List :=
-                   Trigger_Get_Terms (+Node);
+                   Get_Terms (+Node);
    begin
       Print_List (State, +Terms);
       State.Control := Abandon_Children;
@@ -463,7 +463,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Pattern_Valid_Id)
    is
-      Args : constant W_Identifier_OList := Pattern_Get_Args (+Node);
+      Args : constant W_Identifier_OList := +Pattern_Get_Args (Node);
    begin
       Traverse (State, Pattern_Get_Constr (Node));
 
@@ -505,7 +505,7 @@ package body Why.Atree.Sprint is
       Node  : W_Postcondition_Valid_Id)
    is
       Handlers : constant W_Exn_Condition_OList :=
-                   Postcondition_Get_Handlers (+Node);
+                   Get_Handlers (+Node);
    begin
       Traverse
         (State,
@@ -550,9 +550,9 @@ package body Why.Atree.Sprint is
       Node  : W_Loop_Annot_Valid_Id)
    is
       Invariant : constant W_Pred_OId :=
-                    Loop_Annot_Get_Invariant (+Node);
+                    Get_Invariant (+Node);
       Variant   : constant W_Wf_Arg_OId :=
-                    Loop_Annot_Get_Variant (+Node);
+                    Get_Variant (+Node);
    begin
       if not Is_Why3 then
          PL (O, "{ ");
@@ -599,7 +599,7 @@ package body Why.Atree.Sprint is
       Node  : W_Wf_Arg_Valid_Id)
    is
       For_Id : constant W_Identifier_OId :=
-                 Wf_Arg_Get_For_Id (+Node);
+                 Get_For_Id (+Node);
    begin
       Traverse
         (State,
@@ -622,7 +622,7 @@ package body Why.Atree.Sprint is
       Node  : W_Handler_Valid_Id)
    is
       Arg : constant W_Prog_OId :=
-              Handler_Get_Arg (+Node);
+              Get_Arg (+Node);
    begin
       Traverse
         (State,
@@ -649,13 +649,13 @@ package body Why.Atree.Sprint is
       Node  : W_Universal_Quantif_Valid_Id)
    is
       Variables       : constant W_Identifier_List :=
-                          Universal_Quantif_Get_Variables (+Node);
+                          +Universal_Quantif_Get_Variables (Node);
       Var_Type        : constant W_Primitive_Type_Id :=
-                          Universal_Quantif_Get_Var_Type (+Node);
+                          +Universal_Quantif_Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId :=
-                          Universal_Quantif_Get_Triggers (+Node);
+                          Get_Triggers (+Node);
       Pred            : constant W_Pred_Id :=
-                          Universal_Quantif_Get_Pred (+Node);
+                          +Universal_Quantif_Get_Pred (Node);
       Forall_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Universal_Quantif;
    begin
@@ -699,11 +699,11 @@ package body Why.Atree.Sprint is
       Node  : W_Existential_Quantif_Valid_Id)
    is
       Variables       : constant W_Identifier_List :=
-                          Existential_Quantif_Get_Variables (+Node);
+                          +Existential_Quantif_Get_Variables (Node);
       Var_Type        : constant W_Primitive_Type_Id :=
-                          Existential_Quantif_Get_Var_Type (+Node);
+                          +Existential_Quantif_Get_Var_Type (Node);
       Pred            : constant W_Pred_Id :=
-                          Existential_Quantif_Get_Pred (+Node);
+                          +Existential_Quantif_Get_Pred (Node);
       Exists_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Existential_Quantif;
    begin
@@ -754,11 +754,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Relation_Valid_Id)
    is
-      Left   : constant W_Prog_Id := Relation_Get_Left (+Node);
+      Left   : constant W_Prog_Id := Get_Left (+Node);
       Op     : constant EW_Relation := Relation_Get_Op (Node);
-      Right  : constant W_Prog_Id := Relation_Get_Right (+Node);
+      Right  : constant W_Prog_Id := Get_Right (+Node);
       Op2    : constant EW_Relation := Relation_Get_Op2 (Node);
-      Right2 : constant W_Prog_OId := Relation_Get_Right2 (+Node);
+      Right2 : constant W_Prog_OId := Get_Right2 (+Node);
    begin
       Traverse (State, +Left);
       P (O, " ");
@@ -846,8 +846,8 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Call_Valid_Id)
    is
-      Name : constant W_Identifier_Id := Call_Get_Name (+Node);
-      Args : constant W_Expr_OList := Call_Get_Args (+Node);
+      Name : constant W_Identifier_Id := +Call_Get_Name (Node);
+      Args : constant W_Expr_OList := +Call_Get_Args (Node);
    begin
       case Get_Domain (Node) is
          when EW_Term | EW_Pred =>
@@ -903,11 +903,11 @@ package body Why.Atree.Sprint is
       Node  : W_Conditional_Valid_Id)
    is
       Condition : constant W_Prog_Id :=
-                    Conditional_Get_Condition (+Node);
+                    +Conditional_Get_Condition (Node);
       Then_Part : constant W_Expr_Id :=
-                    Conditional_Get_Then_Part (+Node);
+                    Get_Then_Part (+Node);
       Else_Part : constant W_Expr_OId :=
-                    Conditional_Get_Else_Part (+Node);
+                    Get_Else_Part (+Node);
       Has_Else  : constant Boolean := Else_Part /= Why_Empty;
       Has_Elsif : constant Boolean :=
                     (Has_Else
@@ -1065,11 +1065,11 @@ package body Why.Atree.Sprint is
       Node  : W_Binding_Valid_Id)
    is
       Name             : constant W_Identifier_Id :=
-                           Binding_Get_Name (+Node);
+                           +Binding_Get_Name (Node);
       Def              : constant W_Prog_Id :=
-                           Binding_Get_Def (+Node);
+                           +Binding_Get_Def (Node);
       Context          : constant W_Expr_Id :=
-                           Binding_Get_Context (+Node);
+                           Get_Context (+Node);
       Binding_Sequence : constant Boolean :=
                            Get_Kind (+Context) = W_Binding;
    begin
@@ -1129,7 +1129,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Any_Expr_Valid_Id)
    is
-      Ty : constant W_Computation_Type_Id := Any_Expr_Get_Any_Type (+Node);
+      Ty : constant W_Computation_Type_Id := Get_Any_Type (+Node);
    begin
       if Is_Why3 then
          P (O, "(any ");
@@ -1196,7 +1196,7 @@ package body Why.Atree.Sprint is
       Node  : W_Binding_Ref_Valid_Id)
    is
       Context          : constant W_Prog_Id :=
-                           Binding_Ref_Get_Context (+Node);
+                           Get_Context (+Node);
       Binding_Sequence : constant Boolean :=
                            Get_Kind (+Context) = W_Binding_Ref;
    begin
@@ -1232,11 +1232,11 @@ package body Why.Atree.Sprint is
       Node  : W_While_Loop_Valid_Id)
    is
       Condition    : constant W_Prog_Id :=
-                       While_Loop_Get_Condition (+Node);
+                       +While_Loop_Get_Condition (Node);
       Annotation   : constant W_Loop_Annot_OId :=
-                       While_Loop_Get_Annotation (+Node);
+                       Get_Annotation (+Node);
       Loop_Content : constant W_Prog_Id :=
-                       While_Loop_Get_Loop_Content (+Node);
+                       Get_Loop_Content (+Node);
    begin
       P (O, "while ");
       Traverse (State, +Condition);
@@ -1339,7 +1339,7 @@ package body Why.Atree.Sprint is
       Node  : W_Raise_Valid_Id)
    is
       Exn_Type : constant W_Simple_Value_Type_OId :=
-                   Raise_Get_Exn_Type (+Node);
+                   +Raise_Get_Exn_Type (Node);
    begin
       if Is_Why3 then
          P (O, "raise Gnatprove_Exception__");
@@ -1406,7 +1406,7 @@ package body Why.Atree.Sprint is
       Node  : W_Unreachable_Code_Valid_Id)
    is
       Exn_Type : constant W_Simple_Value_Type_OId :=
-                   Unreachable_Code_Get_Exn_Type (+Node);
+                   +Unreachable_Code_Get_Exn_Type (Node);
    begin
       P (O, "absurd");
 
@@ -1426,9 +1426,9 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Function_Decl_Valid_Id)
    is
-      Name      : constant W_Identifier_Id := Function_Decl_Get_Name (+Node);
+      Name      : constant W_Identifier_Id := +Function_Decl_Get_Name (Node);
       Func_Type : constant W_Computation_Type_Id :=
-                    Function_Decl_Get_Func_Type (+Node);
+                    Get_Func_Type (+Node);
    begin
       if Function_Decl_Get_External (Node) then
          P (O, "external ");
@@ -1487,23 +1487,23 @@ package body Why.Atree.Sprint is
       Node  : W_Function_Def_Valid_Id)
    is
       Spec        : constant W_Function_Decl_Id :=
-                      Function_Def_Get_Spec (+Node);
+                      Get_Spec (+Node);
       Func_Type   : constant W_Computation_Type_Id :=
-                      Function_Decl_Get_Func_Type (Spec);
+                      Get_Func_Type (Spec);
       Def         : constant W_Expr_Id :=
-                      Function_Def_Get_Def (+Node);
+                      +Function_Def_Get_Def (Node);
       Name        : constant W_Identifier_Id :=
-                      Function_Decl_Get_Name (Spec);
+                      Get_Name (Spec);
       Binders     : constant W_Binder_OList :=
-                      Computation_Type_Get_Binders (Func_Type);
+                      Get_Binders (Func_Type);
       Result      : constant W_Binder_Id :=
-                      Computation_Type_Get_Result (Func_Type);
+                      Get_Result (Func_Type);
       Result_Type : constant W_Simple_Value_Type_OId :=
-                      Binder_Get_Arg_Type (Result);
+                      Get_Arg_Type (Result);
       Pre         : constant W_Pred_OId :=
-                      Computation_Type_Get_Pre (Func_Type);
+                      Get_Pre (Func_Type);
       Post        : constant W_Pred_OId :=
-                      Computation_Type_Get_Post (Func_Type);
+                      Get_Post (Func_Type);
    begin
       case Get_Domain (Node) is
          when EW_Pred =>
@@ -1647,9 +1647,9 @@ package body Why.Atree.Sprint is
                      Get_List (Type_Get_Args (Node));
       Nb_Args    : constant Count_Type := Length (Args);
       Position   : Cursor := First (Args);
-      Name       : constant W_Identifier_Id := Type_Get_Name (+Node);
+      Name       : constant W_Identifier_Id := +Type_Get_Name (Node);
       Definition : constant W_Type_Definition_Id :=
-                   Type_Get_Definition (+Node);
+                     Get_Definition (+Node);
    begin
       if External then
          P (O, "external ");
@@ -1753,7 +1753,7 @@ package body Why.Atree.Sprint is
       Node  : W_Exception_Declaration_Valid_Id)
    is
       Arg : constant W_Primitive_Type_OId :=
-              Exception_Declaration_Get_Arg (+Node);
+              +Exception_Declaration_Get_Arg (Node);
    begin
       if Is_Why3 then
          P (O, "exception Gnatprove_Exception__");

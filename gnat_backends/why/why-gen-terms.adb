@@ -106,7 +106,7 @@ package body Why.Gen.Terms is
    begin
       case Get_Kind (+Condition) is
          when W_Literal =>
-            if Literal_Get_Value (W_Literal_Id (Condition)) = EW_True then
+            if Get_Value (+Condition) = EW_True then
                return Left;
             else
                return Right;

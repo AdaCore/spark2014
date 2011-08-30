@@ -101,7 +101,7 @@ package body Gnat2Why.Locs is
       I    : constant W_Identifier_Id := L.Label_Ident;
       N    : constant Node_Id := Get_Ada_Node (+I);
       Loc  : constant Source_Ptr := Sloc (N);
-      Name : constant String := Get_Name_String (Identifier_Get_Symbol (I));
+      Name : constant String := Get_Name_String (Get_Symbol (I));
 
       --  beginning of processing for Print_Located_Label;
    begin
@@ -146,9 +146,9 @@ package body Gnat2Why.Locs is
       while Position /= No_Element loop
          declare
             Cur_Elt : constant W_Identifier_Id :=
-               Element (Position).Label_Ident;
+                        Element (Position).Label_Ident;
          begin
-            P (O, Get_Name_String (Identifier_Get_Symbol (Cur_Elt)));
+            P (O, Get_Name_String (Get_Symbol (Cur_Elt)));
             NL (O);
             Next (Position);
          end;

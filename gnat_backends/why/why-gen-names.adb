@@ -114,7 +114,7 @@ package body Why.Gen.Names is
       Label  : String)
      return W_Identifier_Id
    is
-      S : constant Name_Id := Identifier_Get_Symbol (Name);
+      S : constant Name_Id := Get_Symbol (Name);
       L : constant Name_Id := NID (Label);
    begin
       return New_Identifier (Domain => EW_Term, Symbol => S, Label => L);
@@ -155,7 +155,7 @@ package body Why.Gen.Names is
 
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id is
       Suffix : constant String := "_";
-      N_Id   : constant Name_Id := Identifier_Get_Symbol (Name);
+      N_Id   : constant Name_Id := Get_Symbol (Name);
       Img    : constant String := Get_Name_String (N_Id);
    begin
       return New_Identifier (EW_Prog, Img & Suffix);

@@ -43,13 +43,18 @@ package body Xtree_Tables is
 
    function Accessor_Name
      (Kind : Why_Node_Kind;
+      IK   : Id_Kind;
       FI   : Field_Info)
      return Wide_String is
    begin
       if FI.In_Variant then
-         return Strip_Prefix (Mixed_Case_Name (Kind))
-           & "_Get_"
-           & Strip_Prefix (FI.Field_Name.all);
+         if IK = Derived then
+            return "Get_" & Strip_Prefix (FI.Field_Name.all);
+         else
+            return Strip_Prefix (Mixed_Case_Name (Kind))
+              & "_Get_"
+              & Strip_Prefix (FI.Field_Name.all);
+         end if;
       else
          return "Get_" & FI.Field_Name.all;
       end if;
