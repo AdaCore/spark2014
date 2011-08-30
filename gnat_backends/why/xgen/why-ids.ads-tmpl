@@ -85,7 +85,7 @@ package Why.Ids is
    --  Opaque ids may only be used in Why.Atree; this package cannot depend
    --  use regular ids without introducing a circular dependancy. Unchecked
    --  ids may be practical for building a node before its fields nodes are
-   --  known.
+   --  known; but they are only available for mutable nodes.
    --
    --  This package only defines regular ids; other ids are in
    --  Why.Unchecked_Ids and Why.Opaque_Ids.

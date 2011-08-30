@@ -460,12 +460,17 @@ package body Xtree_Builders is
    ------------------------------------
 
    procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record) is
+      First : Boolean := True;
    begin
       for J in Valid_Kind'Range loop
-         Print_Builder_Body (O, J, Unchecked);
+         if Is_Mutable (J) then
+            if First then
+               First := False;
+            else
+               NL (O);
+            end if;
 
-         if J /= Why_Tree_Info'Last then
-            NL (O);
+            Print_Builder_Body (O, J, Unchecked);
          end if;
       end loop;
    end Print_Unchecked_Builder_Bodies;
@@ -477,13 +482,18 @@ package body Xtree_Builders is
    procedure Print_Unchecked_Builder_Declarations
      (O  : in out Output_Record)
    is
+      First : Boolean := True;
    begin
       for J in Valid_Kind'Range loop
-         Print_Builder_Declaration (O, J, Unchecked,
-                                    Id_Subtype (J, Unchecked));
+         if Is_Mutable (J) then
+            if First then
+               First := False;
+            else
+               NL (O);
+            end if;
 
-         if J /= Why_Tree_Info'Last then
-            NL (O);
+            Print_Builder_Declaration (O, J, Unchecked,
+                                       Id_Subtype (J, Unchecked));
          end if;
       end loop;
    end Print_Unchecked_Builder_Declarations;
