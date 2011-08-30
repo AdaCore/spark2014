@@ -1,0 +1,31 @@
+-------------------------------------------------------------------------------
+--            HI-LITE BUILD INSTRUCTIONS FOR ADACORE DEVELOPERS              --
+--                                                                           --
+--                            Windows                                        --
+-------------------------------------------------------------------------------
+
+Once you have a working cygwin setup, build instructions on Windows are pretty
+much the same as under Linux, therefore see the file INSTALL. Here we just
+list the differences with that procedure.
+
+0) Setup cygwin
+
+   TBD, list the necessary cygwin packages?
+
+5) Ocaml
+
+   TBD
+
+8) Why
+
+   8.0) Install Flexdll
+
+     This one is needed to compile why under Windows.
+
+      8.0a) Download the file
+         http://alain.frisch.fr/flexdll/flexdll-bin-0.26.zip
+      8.0b)unzip flexdll-bin-0.26.zip in a flexdll/ directory (no need to compile that one, we
+         use the existing binary)
+      8.0c) add it to the PATH
+
+
