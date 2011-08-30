@@ -1546,7 +1546,7 @@ package body Gnat2Why.Subprograms is
          when N_In =>
             declare
                Subdomain : constant EW_Domain :=
-                  (if Domain = EW_Pred then EW_Term else Domain);
+                             (if Domain = EW_Pred then EW_Term else Domain);
             begin
                T :=
                  Range_Expr
@@ -1699,8 +1699,8 @@ package body Gnat2Why.Subprograms is
                Ident : constant W_Identifier_Id :=
                          Why_Ident_Of_Ada_Ident (Name (Expr));
                Name  : constant W_Identifier_Id :=
-                  (if Domain = EW_Prog then To_Program_Space (Ident)
-                   else Logic_Func_Name.Id (Ident));
+                         (if Domain = EW_Prog then To_Program_Space (Ident)
+                          else Logic_Func_Name.Id (Ident));
             begin
                T :=
                  +New_Located_Call
@@ -1910,8 +1910,8 @@ package body Gnat2Why.Subprograms is
                if Expression (Stmt) /= Empty then
                   declare
                      Return_Type : constant Why_Type :=
-                        Type_Of_Node (Etype (Return_Applies_To
-                           (Return_Statement_Entity (Stmt))));
+                                     Type_Of_Node (Etype (Return_Applies_To
+                                       (Return_Statement_Entity (Stmt))));
                   begin
                      Result_Stmt :=
                        New_Assignment
@@ -2036,10 +2036,10 @@ package body Gnat2Why.Subprograms is
                   return
                      Wrap_Loop
                         (Loop_Body => Loop_Content,
-                         Condition    => New_Literal (Value => EW_True),
-                         Loop_Name    => Loop_Name,
-                         Invariant    => Invariant,
-                         Inv_Node     => Split_Node);
+                         Condition => New_Literal (Value => EW_True),
+                         Loop_Name => Loop_Name,
+                         Invariant => Invariant,
+                         Inv_Node  => Split_Node);
 
                elsif
                  Nkind (Iterator_Specification (Scheme)) = N_Empty
