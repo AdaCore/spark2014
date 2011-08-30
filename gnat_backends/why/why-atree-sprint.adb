@@ -1711,8 +1711,7 @@ package body Why.Atree.Sprint is
          PL (O, "use import module ref.Ref");
       end if;
 
-      Print_List (State, +Get_Declarations (Node),
-         "" & ASCII.LF);
+      Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
 
       if Is_Why3 then
          PL (O, "end");
