@@ -52,17 +52,17 @@ package Why.Gen.Preds is
 
    function New_Equal
      (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Predicate_Id;
+      Right : W_Term_Id) return W_Pred_Id;
    --  Create the predicate "Left = Right"
 
    function New_NEqual
      (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Predicate_Id;
+      Right : W_Term_Id) return W_Pred_Id;
    --  Create the predicate "Left <> Right"
 
    function New_Equal_Bool
      (Left  : W_Term_Id;
-      Right : W_Predicate_Id) return W_Predicate_Id;
+      Right : W_Pred_Id) return W_Pred_Id;
    --  Create the formula "Left = true <-> Right".
 
    function New_Located_Expr

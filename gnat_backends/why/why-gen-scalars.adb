@@ -134,7 +134,7 @@ package body Why.Gen.Scalars is
                           New_Abstract_Type (Name => New_Identifier (EW_Term,
                                                                      Name));
          --  precondition: { <name>___in_range (n) }
-         Range_Check  : constant W_Predicate_Id :=
+         Range_Check  : constant W_Pred_Id :=
                           New_Call
                             (Domain => EW_Pred,
                              Name   => Range_Pred_Name.Id (Name),
@@ -148,7 +148,7 @@ package body Why.Gen.Scalars is
                                                  Base_Type_Name),
                              Args   =>
                                (1 => +New_Result_Term));
-         Post         : constant W_Predicate_Id :=
+         Post         : constant W_Pred_Id :=
                           New_Relation
                             (Domain => EW_Pred,
                              Left   => +Base_Result,

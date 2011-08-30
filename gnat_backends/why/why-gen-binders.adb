@@ -38,8 +38,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Computation_Type_Id;
 
    function New_Binders
@@ -102,7 +102,7 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_OId := Why_Empty;
+      Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Term_Id)
      return W_Declaration_Id
    is
@@ -111,7 +111,7 @@ package body Why.Gen.Binders is
                      (Domain  => EW_Term,
                       Name    => Name,
                       Binders => Binders);
-      Equality : constant W_Predicate_Id :=
+      Equality : constant W_Pred_Id :=
                    New_Equal
                      (Left  => Left,
                       Right => Def);
@@ -132,8 +132,8 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_Id := Why_Empty;
-      Def      : W_Predicate_Id)
+      Pre      : W_Pred_Id := Why_Empty;
+      Def      : W_Pred_Id)
      return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
@@ -141,7 +141,7 @@ package body Why.Gen.Binders is
                      (Domain  => EW_Term,
                       Name    => Name,
                       Binders => Binders);
-      Equality : constant W_Predicate_Id :=
+      Equality : constant W_Pred_Id :=
                    New_Equal_Bool
                      (Left  => Left,
                       Right => Def);
@@ -233,8 +233,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Computation_Type_Id is
    begin
       return New_Computation_Type
@@ -254,8 +254,8 @@ package body Why.Gen.Binders is
    function New_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
-      Pred     : W_Predicate_Id)
-     return W_Predicate_Id is
+      Pred     : W_Pred_Id)
+     return W_Pred_Id is
    begin
       if Binders'Length = 0 then
          return Pred;
@@ -305,8 +305,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Declaration_Id is
    begin
       return New_Function_Decl
@@ -334,8 +334,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Declaration_Id
    is
       RT : constant W_Primitive_Type_Id :=
@@ -367,11 +367,11 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_OId := Why_Empty;
-      Def      : W_Predicate_Id)
+      Pre      : W_Pred_OId := Why_Empty;
+      Def      : W_Pred_Id)
      return W_Declaration_Id
    is
-      Ax_Body  : constant W_Predicate_Id :=
+      Ax_Body  : constant W_Pred_Id :=
                    (if Pre = Why_Empty then
                       Def
                     else
@@ -396,8 +396,8 @@ package body Why.Gen.Binders is
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
-      Pred     : W_Predicate_Id)
-     return W_Predicate_Id is
+      Pred     : W_Pred_Id)
+     return W_Pred_Id is
    begin
       if Binders'Length = 0 then
          return Pred;

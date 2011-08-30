@@ -334,7 +334,7 @@ package body Why.Gen.Progs is
 
    function New_Assume_Statement
       (Ada_Node    : Node_Id;
-       Pred        : W_Predicate_Id;
+       Pred        : W_Pred_Id;
        Return_Type : W_Primitive_Type_Id :=
                        New_Base_Type (Base_Type => EW_Unit))
       return W_Prog_Id
@@ -360,7 +360,7 @@ package body Why.Gen.Progs is
       Loop_Index : W_Identifier_Id;
       Low        : W_Identifier_Id;
       High       : W_Identifier_Id;
-      Invariant  : W_Predicate_Id;
+      Invariant  : W_Pred_Id;
       Loop_Body  : W_Prog_Id) return W_Prog_Id
    is
       Index_Deref  : constant W_Prog_Id :=
@@ -393,7 +393,7 @@ package body Why.Gen.Progs is
                        New_Statement_Sequence
                          (Ada_Node   => Ada_Node,
                           Statements => (1 => Loop_Body, 2 => Incr_Stmt));
-      Enriched_Inv : constant W_Predicate_Id :=
+      Enriched_Inv : constant W_Pred_Id :=
                        New_Connection
                          (Domain => EW_Term,
                           Op     => EW_Or,
@@ -454,7 +454,7 @@ package body Why.Gen.Progs is
 
    function New_Located_Assert
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Prog_Id
+       Pred     : W_Pred_Id) return W_Prog_Id
    is
    begin
       return

@@ -86,7 +86,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
-       Pred       : out W_Predicate_Id;
+       Pred       : out W_Pred_Id;
        Split_Node : out Node_Id);
    --  Given a list of statements (a loop body), construct a predicate that
    --  corresponds to the conjunction of all assertions at the beginning of
@@ -119,7 +119,7 @@ package body Gnat2Why.Subprograms is
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 
-   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id;
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id;
    --  Compute a Why predicate from a node of kind Pragma Check. Raise
    --  Not_Implemented if it is not a Pragma Check.
 
@@ -198,7 +198,7 @@ package body Gnat2Why.Subprograms is
       (Loop_Body : W_Prog_Id;
        Condition : W_Prog_Id;
        Loop_Name : String;
-       Invariant : W_Predicate_Id;
+       Invariant : W_Pred_Id;
        Inv_Node  : Node_Id)
       return W_Prog_Id;
    --  Given a loop body and condition, generate the expression
@@ -255,7 +255,7 @@ package body Gnat2Why.Subprograms is
                declare
                   Tmp_Var : constant W_Identifier_Id :=
                               Assume_Name.Id (L_Name);
-                  Eq      : constant W_Predicate_Id :=
+                  Eq      : constant W_Pred_Id :=
                               New_Equal (+Tmp_Var, +L_Id);
                begin
                   return
@@ -523,7 +523,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
-       Pred       : out W_Predicate_Id;
+       Pred       : out W_Pred_Id;
        Split_Node : out Node_Id)
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
@@ -680,7 +680,7 @@ package body Gnat2Why.Subprograms is
    -- Predicate_Of_Pragma_Check --
    -------------------------------
 
-   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id is
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id is
    begin
       if Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check then
          declare
@@ -1162,8 +1162,8 @@ package body Gnat2Why.Subprograms is
       function New_And_Then_Prog (Left, Right : W_Prog_Id) return W_Prog_Id;
       --  ??? For transition purposes, to be removed
 
-      function New_And_Pred (Left, Right : W_Predicate_Id) return
-         W_Predicate_Id;
+      function New_And_Pred (Left, Right : W_Pred_Id) return
+         W_Pred_Id;
       --  ??? For transition purposes, to be removed
 
       ------------------
@@ -1176,8 +1176,8 @@ package body Gnat2Why.Subprograms is
            +New_And_Then_Expr (+Left, +Right, EW_Prog);
       end New_And_Then_Prog;
 
-      function New_And_Pred (Left, Right : W_Predicate_Id)
-         return W_Predicate_Id is
+      function New_And_Pred (Left, Right : W_Pred_Id)
+         return W_Pred_Id is
       begin
          return
            +New_And_Expr (+Left, +Right, EW_Pred);
@@ -1185,7 +1185,7 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec_Pred is new
         Compute_Spec
-          (W_Predicate_Id,
+          (W_Pred_Id,
            New_Literal (Value => EW_True),
            Why_Predicate_Of_Ada_Expr,
            New_And_Pred);
@@ -1244,10 +1244,10 @@ package body Gnat2Why.Subprograms is
          (if Arg_Length = 0 then (1 => Unit_Param)
           else Func_Binders);
       Dummy_Node : Node_Id;
-      Pre          : constant W_Predicate_Id :=
+      Pre          : constant W_Pred_Id :=
          Compute_Spec_Pred (Name_Precondition, Dummy_Node);
       Loc_Node     : Node_Id := Empty;
-      Post         : constant W_Predicate_Id :=
+      Post         : constant W_Pred_Id :=
          Compute_Spec_Pred (Name_Postcondition, Loc_Node);
       Orig_Node : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
@@ -1329,7 +1329,7 @@ package body Gnat2Why.Subprograms is
                                 (Entity (Result_Definition (Spec)))
                             else
                               New_Base_Type (Base_Type => EW_Unit));
-            Param_Post : constant W_Predicate_Id :=
+            Param_Post : constant W_Pred_Id :=
                            (if Is_Expr_Func then
                               (if Entity (Result_Definition (Spec)) =
                                               Standard_Boolean
@@ -1705,12 +1705,12 @@ package body Gnat2Why.Subprograms is
          when N_Quantified_Expression =>
             if Domain = EW_Pred then
                declare
-                  Conclusion : constant W_Predicate_Id :=
+                  Conclusion : constant W_Pred_Id :=
                      Why_Predicate_Of_Ada_Expr (Condition (Expr));
                   I          : W_Identifier_Id;
                   Range_E    : Node_Id;
-                  Hypothesis : W_Predicate_Id;
-                  Quant_Body : W_Predicate_Id;
+                  Hypothesis : W_Pred_Id;
+                  Quant_Body : W_Pred_Id;
                begin
                   Extract_From_Quantified_Expression (Expr, I, Range_E);
                   Hypothesis := +Range_Expr (Range_E, +I, EW_Pred);
@@ -2191,7 +2191,7 @@ package body Gnat2Why.Subprograms is
             declare
                Loop_Body    : constant List_Id := Statements (Stmt);
                Split_Node   : Node_Id;
-               Invariant    : W_Predicate_Id;
+               Invariant    : W_Pred_Id;
                Loop_Content : W_Prog_Id;
                Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
                Loop_Entity  : constant Entity_Id := Entity (Identifier (Stmt));
@@ -2221,7 +2221,7 @@ package body Gnat2Why.Subprograms is
                then
                   --  A while loop
                   declare
-                     Enriched_Inv : constant W_Predicate_Id :=
+                     Enriched_Inv : constant W_Pred_Id :=
                                       +New_And_Expr
                                         (Left   => +Invariant,
                                          Right  =>
@@ -2279,7 +2279,7 @@ package body Gnat2Why.Subprograms is
                                          Name     =>
                                            New_Identifier (Loop_Index),
                                          Value    => Addition);
-                     Enriched_Inv : constant W_Predicate_Id :=
+                     Enriched_Inv : constant W_Pred_Id :=
                                       +New_And_Expr
                                         (Left  => +Invariant,
                                          Right =>
@@ -2636,7 +2636,7 @@ package body Gnat2Why.Subprograms is
       (Loop_Body : W_Prog_Id;
        Condition : W_Prog_Id;
        Loop_Name : String;
-       Invariant : W_Predicate_Id;
+       Invariant : W_Pred_Id;
        Inv_Node  : Node_Id)
       return W_Prog_Id
    is
@@ -2694,7 +2694,7 @@ package body Gnat2Why.Subprograms is
    end Why_Expr_Of_Ada_Expr;
 
    function Why_Predicate_Of_Ada_Expr (Expr : Node_Id)
-      return W_Predicate_Id is
+      return W_Pred_Id is
    begin
       return +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Pred);
    end Why_Predicate_Of_Ada_Expr;

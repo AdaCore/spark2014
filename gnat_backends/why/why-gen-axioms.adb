@@ -54,7 +54,7 @@ package body Why.Gen.Axioms is
                                  (Domain => EW_Term,
                                   Name   => To_Base_Type,
                                   Args   => (1 => +X_To_Type_Op));
-      In_Range             : constant W_Predicate_Id :=
+      In_Range             : constant W_Pred_Id :=
                                New_Call
                                  (Domain => EW_Pred,
                                   Name   =>
@@ -68,7 +68,7 @@ package body Why.Gen.Axioms is
                                     Range_Pred_Name.Id (Type_Name),
                                   Args   =>
                                     (1 => +New_Term (Arg_S)));
-      Formula              : constant W_Predicate_Id :=
+      Formula              : constant W_Pred_Id :=
                                New_Connection
                                  (Domain => EW_Pred,
                                   Op     => EW_Imply,
@@ -78,7 +78,7 @@ package body Why.Gen.Axioms is
                                       (Left  => +Back_To_Base_Type_Op,
                                        Op    => EW_Eq,
                                        Right => New_Prog (Arg_S)));
-      Quantif_On_X         : constant W_Predicate_Id :=
+      Quantif_On_X         : constant W_Pred_Id :=
                                New_Universal_Quantif
                                  (Var_Type  => Base_Type,
                                   Variables => (1 => New_Identifier (EW_Term,
@@ -120,10 +120,10 @@ package body Why.Gen.Axioms is
                            (Domain => EW_Term,
                             Name   => Record_Getter_Name.Id (C_Name),
                             Args   => (1 => +Call_To_Builder));
-      Context         : constant W_Predicate_Id :=
+      Context         : constant W_Pred_Id :=
                           New_Equal (Call_To_Getter,
                                      +C_Name);
-      UPB             : constant W_Predicate_Id :=
+      UPB             : constant W_Pred_Id :=
                           New_Universal_Quantif
                             (Binders => Binders,
                              Pred    => Context);
@@ -150,12 +150,12 @@ package body Why.Gen.Axioms is
                                (Domain => EW_Term,
                                 Name   => Conversion,
                                 Args   => (1 => +New_Term (Arg_S)));
-      Formula            : constant W_Predicate_Id :=
+      Formula            : constant W_Pred_Id :=
                              New_Call
                                (Domain => EW_Pred,
                                 Name   => Range_Pred_Name.Id (Type_Name),
                                 Args   => (1 => +Call_To_Conversion));
-      Quantif_On_X       : constant W_Predicate_Id :=
+      Quantif_On_X       : constant W_Pred_Id :=
                              New_Universal_Quantif
                                (Var_Type =>
                                   New_Abstract_Type (Name => Type_Name),
@@ -192,7 +192,7 @@ package body Why.Gen.Axioms is
                               (Domain => EW_Term,
                                Name   => Conversion,
                                Args   => (1 => +New_Term (Y_S)));
-      Formula           : constant W_Predicate_Id :=
+      Formula           : constant W_Pred_Id :=
                             New_Connection
                               (Domain => EW_Pred,
                                Op     => EW_Imply,
@@ -208,7 +208,7 @@ package body Why.Gen.Axioms is
                                     Left   => +New_Term (X_S),
                                     Op     => EW_Eq,
                                     Right  => +New_Term (Y_S)));
-      Quantif_On_XY     : constant W_Predicate_Id :=
+      Quantif_On_XY     : constant W_Pred_Id :=
                             New_Universal_Quantif
                               (Var_Type =>
                                  New_Abstract_Type (Name => Type_Name),

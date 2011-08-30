@@ -112,7 +112,7 @@ package body Why.Gen.Preds is
                       others => <>);
 
       --  first <= x <= last
-      Context    : constant W_Predicate_Id :=
+      Context    : constant W_Pred_Id :=
                      New_Relation (Left   => +New_Term (First_S),
                                    Op     => EW_Le,
                                    Right  => +New_Term (Arg_S),
@@ -120,13 +120,13 @@ package body Why.Gen.Preds is
                                    Right2 => +New_Term (Last_S));
       --  let first = <first> in
       --  let last  = <last>  in [...]
-      Decl_Last  : constant W_Predicate_Id :=
+      Decl_Last  : constant W_Pred_Id :=
                      New_Binding
                        (Domain  => EW_Pred,
                         Name    => New_Identifier (Last_S),
                         Def     => +Last,
                         Context => +Context);
-      Decl_First : constant W_Predicate_Id :=
+      Decl_First : constant W_Pred_Id :=
                      New_Binding
                        (Domain  => EW_Pred,
                         Name    => New_Identifier (First_S),
@@ -148,7 +148,7 @@ package body Why.Gen.Preds is
 
    function New_Equal
      (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Predicate_Id
+      Right : W_Term_Id) return W_Pred_Id
    is
    begin
       return New_Relation
@@ -163,7 +163,7 @@ package body Why.Gen.Preds is
 
    function New_Equal_Bool
      (Left : W_Term_Id;
-      Right : W_Predicate_Id) return W_Predicate_Id
+      Right : W_Pred_Id) return W_Pred_Id
    is
    begin
       return
@@ -207,7 +207,7 @@ package body Why.Gen.Preds is
 
    function New_NEqual
      (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Predicate_Id
+      Right : W_Term_Id) return W_Pred_Id
    is
    begin
       return New_Relation

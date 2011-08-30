@@ -44,7 +44,7 @@ package body Why.Gen.Funcs is
    is
       Arg_S   : constant String := "n";
       Arg_T   : constant String := "m";
-      Post    : constant W_Predicate_Id :=
+      Post    : constant W_Pred_Id :=
                   New_Conditional
                     (Domain    => EW_Pred,
                      Condition => +New_Result_Term,

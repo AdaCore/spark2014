@@ -262,7 +262,7 @@ package body Why.Atree.Sprint is
                       Computation_Type_Get_Result (+Node);
       Result_Type : constant W_Simple_Value_Type_Id :=
                       Binder_Get_Arg_Type (Result);
-      Pre         : constant W_Predicate_Id :=
+      Pre         : constant W_Pred_Id :=
                       Computation_Type_Get_Pre (+Node);
       Domain      : constant EW_Domain := Get_Domain (+Node);
    begin
@@ -549,7 +549,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Loop_Annot_Valid_Id)
    is
-      Invariant : constant W_Predicate_OId :=
+      Invariant : constant W_Pred_OId :=
                     Loop_Annot_Get_Invariant (+Node);
       Variant   : constant W_Wf_Arg_OId :=
                     Loop_Annot_Get_Variant (+Node);
@@ -654,7 +654,7 @@ package body Why.Atree.Sprint is
                           Universal_Quantif_Get_Var_Type (+Node);
       Triggers        : constant W_Triggers_OId :=
                           Universal_Quantif_Get_Triggers (+Node);
-      Pred            : constant W_Predicate_Id :=
+      Pred            : constant W_Pred_Id :=
                           Universal_Quantif_Get_Pred (+Node);
       Forall_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Universal_Quantif;
@@ -702,7 +702,7 @@ package body Why.Atree.Sprint is
                           Existential_Quantif_Get_Variables (+Node);
       Var_Type        : constant W_Primitive_Type_Id :=
                           Existential_Quantif_Get_Var_Type (+Node);
-      Pred            : constant W_Predicate_Id :=
+      Pred            : constant W_Pred_Id :=
                           Existential_Quantif_Get_Pred (+Node);
       Exists_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Existential_Quantif;
@@ -1500,9 +1500,9 @@ package body Why.Atree.Sprint is
                       Computation_Type_Get_Result (Func_Type);
       Result_Type : constant W_Simple_Value_Type_OId :=
                       Binder_Get_Arg_Type (Result);
-      Pre         : constant W_Predicate_OId :=
+      Pre         : constant W_Pred_OId :=
                       Computation_Type_Get_Pre (Func_Type);
-      Post        : constant W_Predicate_OId :=
+      Post        : constant W_Pred_OId :=
                       Computation_Type_Get_Post (Func_Type);
    begin
       case Get_Domain (Node) is

@@ -57,14 +57,14 @@ package Why.Gen.Binders is
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
-      Pred     : W_Predicate_Id)
-     return W_Predicate_Id;
+      Pred     : W_Pred_Id)
+     return W_Pred_Id;
 
    function New_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
-      Pred     : W_Predicate_Id)
-     return W_Predicate_Id;
+      Pred     : W_Pred_Id)
+     return W_Pred_Id;
 
    function New_Call
      (Ada_Node : Node_Id := Empty;
@@ -90,8 +90,8 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
    function New_Function_Def
@@ -101,16 +101,16 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Pre         : W_Predicate_Id := New_Literal (Value => EW_True);
-      Post        : W_Predicate_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
+      Post        : W_Pred_Id := New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_OId := Why_Empty;
-      Def      : W_Predicate_Id)
+      Pre      : W_Pred_OId := Why_Empty;
+      Def      : W_Pred_Id)
      return W_Declaration_Id;
    --  generate an axiom of the form:
    --
@@ -122,7 +122,7 @@ package Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_OId := Why_Empty;
+      Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Term_Id)
      return W_Declaration_Id;
    --  generate an axiom of the form:
@@ -135,8 +135,8 @@ package Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
-      Pre      : W_Predicate_Id := Why_Empty;
-      Def      : W_Predicate_Id)
+      Pre      : W_Pred_Id := Why_Empty;
+      Def      : W_Pred_Id)
      return W_Declaration_Id;
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).
@@ -153,9 +153,9 @@ package Why.Gen.Binders is
         --  Name of the entity to declare. If not specified, a defaut is
         --  given following the defaut naming convention.
 
-        Pre  : W_Predicate_OId := Why_Empty;
+        Pre  : W_Pred_OId := Why_Empty;
 
-        Post : W_Predicate_OId := Why_Empty;
+        Post : W_Pred_OId := Why_Empty;
         --  If no postcondition is given, and if a logic declaration
         --  is provided, one will be generated that will use this
         --  logic declaration. e.g. if Name is "my_func" and Binders is:
@@ -185,7 +185,7 @@ package Why.Gen.Binders is
                     Term : W_Term_Id;
 
                  when EW_Pred =>
-                    Pred : W_Predicate_Id;
+                    Pred : W_Pred_Id;
               end case;
 
            when W_Function_Decl =>

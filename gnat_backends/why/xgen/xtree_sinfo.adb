@@ -45,7 +45,7 @@ package body Xtree_Sinfo is
       New_Class ("W_Expr",
                  W_Universal_Quantif,
                  W_Unreachable_Code);
-      New_Class ("W_Predicate",
+      New_Class ("W_Pred",
                  W_Universal_Quantif,
                  W_Conditional);
       New_Class ("W_Term",
@@ -126,9 +126,9 @@ package body Xtree_Sinfo is
       New_Field (W_Computation_Type,
                  "Effects", "W_Effects", Id_Lone);
       New_Field (W_Computation_Type,
-                 "Pre", "W_Predicate", Id_Lone);
+                 "Pre", "W_Pred", Id_Lone);
       New_Field (W_Computation_Type,
-                 "Post", "W_Predicate", Id_Lone);
+                 "Post", "W_Pred", Id_Lone);
 
       ---------------
       -- W_Effects --
@@ -211,7 +211,7 @@ package body Xtree_Sinfo is
       ---------------------
 
       New_Field (W_Postcondition,
-                 "Pred", "W_Predicate", Id_One);
+                 "Pred", "W_Pred", Id_One);
       New_Field (W_Postcondition,
                  "Handlers", "W_Exn_Condition", Id_Set);
 
@@ -222,14 +222,14 @@ package body Xtree_Sinfo is
       New_Field (W_Exn_Condition,
                  "Exn_Case", "W_Identifier", Id_One);
       New_Field (W_Exn_Condition,
-                 "Pred", "W_Predicate", Id_One);
+                 "Pred", "W_Pred", Id_One);
 
       ------------------
       -- W_Loop_Annot --
       ------------------
 
       New_Field (W_Loop_Annot,
-                 "Invariant", "W_Predicate", Id_Lone);
+                 "Invariant", "W_Pred", Id_Lone);
       New_Field (W_Loop_Annot,
                  "Variant", "W_Wf_Arg", Id_Lone);
 
@@ -264,7 +264,7 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Triggers", "W_Triggers", Id_Lone);
       New_Field (W_Universal_Quantif,
-                 "Pred", "W_Predicate", Id_One);
+                 "Pred", "W_Pred", Id_One);
 
       ---------------------------
       -- W_Existential_Quantif --
@@ -275,7 +275,7 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Var_Type", "W_Primitive_Type", Id_One);
       New_Field (W_Existential_Quantif,
-                 "Pred", "W_Predicate", Id_One);
+                 "Pred", "W_Pred", Id_One);
 
       -----------
       -- W_Not --
@@ -483,7 +483,7 @@ package body Xtree_Sinfo is
       --------------
 
       New_Field (W_Assert,
-                 "Pred", "W_Predicate", Id_One);
+                 "Pred", "W_Pred", Id_One);
 
       -------------
       -- W_Raise --
@@ -537,7 +537,7 @@ package body Xtree_Sinfo is
       New_Field (W_Axiom,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Axiom,
-                 "Def", "W_Predicate", Id_One);
+                 "Def", "W_Pred", Id_One);
 
       ------------
       -- W_Goal --
@@ -546,7 +546,7 @@ package body Xtree_Sinfo is
       New_Field (W_Goal,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Goal,
-                 "Def", "W_Predicate", Id_One);
+                 "Def", "W_Pred", Id_One);
 
       ------------
       -- W_Type --
