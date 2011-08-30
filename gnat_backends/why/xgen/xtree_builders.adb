@@ -422,6 +422,10 @@ package body Xtree_Builders is
                                                       Derived));
             end if;
          end loop;
+
+         if Kind /= Valid_Kind'Last then
+            NL (O);
+         end if;
       end loop;
    end Print_Class_Wide_Builder_Declarations;
 
@@ -444,6 +448,10 @@ package body Xtree_Builders is
                                    Id_Subtype (Class_Name (CI), Derived));
             end if;
          end loop;
+
+         if Kind /= Valid_Kind'Last then
+            NL (O);
+         end if;
       end loop;
    end Print_Class_Wide_Builder_Bodies;
 
