@@ -48,234 +48,234 @@ private
 
    procedure Base_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Base_Type_Valid_Id);
+      Node  : W_Base_Type_Id);
 
    procedure Generic_Formal_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Generic_Formal_Type_Valid_Id);
+      Node  : W_Generic_Formal_Type_Id);
 
    procedure Generic_Actual_Type_Chain_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Valid_Id);
+      Node  : W_Generic_Actual_Type_Chain_Id);
 
    procedure Array_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Array_Type_Valid_Id);
+      Node  : W_Array_Type_Id);
 
    procedure Array_Type_Post_Op
      (State : in out Printer_State;
-      Node  : W_Array_Type_Valid_Id);
+      Node  : W_Array_Type_Id);
 
    procedure Ref_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Ref_Type_Valid_Id);
+      Node  : W_Ref_Type_Id);
 
    procedure Ref_Type_Post_Op
      (State : in out Printer_State;
-      Node  : W_Ref_Type_Valid_Id);
+      Node  : W_Ref_Type_Id);
 
    procedure Computation_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Computation_Type_Valid_Id);
+      Node  : W_Computation_Type_Id);
 
    procedure Effects_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Effects_Valid_Id);
+      Node  : W_Effects_Id);
 
    procedure Binder_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Binder_Valid_Id);
+      Node  : W_Binder_Id);
 
    procedure Constr_Decl_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Constr_Decl_Valid_Id);
+      Node  : W_Constr_Decl_Id);
 
    procedure Triggers_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Triggers_Valid_Id);
+      Node  : W_Triggers_Id);
 
    procedure Trigger_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Trigger_Valid_Id);
+      Node  : W_Trigger_Id);
 
    procedure Pattern_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Pattern_Valid_Id);
+      Node  : W_Pattern_Id);
 
    procedure Match_Case_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Match_Case_Valid_Id);
+      Node  : W_Match_Case_Id);
 
    procedure Postcondition_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Postcondition_Valid_Id);
+      Node  : W_Postcondition_Id);
 
    procedure Exn_Condition_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Exn_Condition_Valid_Id);
+      Node  : W_Exn_Condition_Id);
 
    procedure Loop_Annot_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Loop_Annot_Valid_Id);
+      Node  : W_Loop_Annot_Id);
 
    procedure Wf_Arg_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Wf_Arg_Valid_Id);
+      Node  : W_Wf_Arg_Id);
 
    procedure Handler_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Handler_Valid_Id);
+      Node  : W_Handler_Id);
 
    procedure Universal_Quantif_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Universal_Quantif_Valid_Id);
+      Node  : W_Universal_Quantif_Id);
 
    procedure Existential_Quantif_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Existential_Quantif_Valid_Id);
+      Node  : W_Existential_Quantif_Id);
 
    procedure Not_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Not_Valid_Id);
+      Node  : W_Not_Id);
 
    procedure Relation_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Relation_Valid_Id);
+      Node  : W_Relation_Id);
 
    procedure Connection_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Connection_Valid_Id);
+      Node  : W_Connection_Id);
 
    procedure Identifier_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Identifier_Valid_Id);
+      Node  : W_Identifier_Id);
 
    procedure Call_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Call_Valid_Id);
+      Node  : W_Call_Id);
 
    procedure Literal_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Literal_Valid_Id);
+      Node  : W_Literal_Id);
 
    procedure Conditional_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Conditional_Valid_Id);
+      Node  : W_Conditional_Id);
 
    procedure Integer_Constant_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Integer_Constant_Valid_Id);
+      Node  : W_Integer_Constant_Id);
 
    procedure Real_Constant_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Real_Constant_Valid_Id);
+      Node  : W_Real_Constant_Id);
 
    procedure Void_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Void_Valid_Id);
+      Node  : W_Void_Id);
 
    procedure Binary_Op_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Binary_Op_Valid_Id);
+      Node  : W_Binary_Op_Id);
 
    procedure Unary_Op_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Unary_Op_Valid_Id);
+      Node  : W_Unary_Op_Id);
 
    procedure Match_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Match_Valid_Id);
+      Node  : W_Match_Id);
 
    procedure Binding_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Binding_Valid_Id);
+      Node  : W_Binding_Id);
 
    procedure Array_Access_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Array_Access_Valid_Id);
+      Node  : W_Array_Access_Id);
 
    procedure Any_Expr_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Any_Expr_Valid_Id);
+      Node  : W_Any_Expr_Id);
 
    procedure Assignment_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Assignment_Valid_Id);
+      Node  : W_Assignment_Id);
 
    procedure Array_Update_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Array_Update_Valid_Id);
+      Node  : W_Array_Update_Id);
 
    procedure Binding_Ref_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Binding_Ref_Valid_Id);
+      Node  : W_Binding_Ref_Id);
 
    procedure While_Loop_Pre_Op
      (State : in out Printer_State;
-      Node  : W_While_Loop_Valid_Id);
+      Node  : W_While_Loop_Id);
 
    procedure Statement_Sequence_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Statement_Sequence_Valid_Id);
+      Node  : W_Statement_Sequence_Id);
 
    procedure Label_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Label_Valid_Id);
+      Node  : W_Label_Id);
 
    procedure Assert_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Assert_Valid_Id);
+      Node  : W_Assert_Id);
 
    procedure Assert_Post_Op
      (State : in out Printer_State;
-      Node  : W_Assert_Valid_Id);
+      Node  : W_Assert_Id);
 
    procedure Raise_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Raise_Valid_Id);
+      Node  : W_Raise_Id);
 
    procedure Try_Block_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Try_Block_Valid_Id);
+      Node  : W_Try_Block_Id);
 
    procedure Unreachable_Code_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Unreachable_Code_Valid_Id);
+      Node  : W_Unreachable_Code_Id);
 
    procedure Function_Decl_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Function_Decl_Valid_Id);
+      Node  : W_Function_Decl_Id);
 
    procedure Function_Def_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Function_Def_Valid_Id);
+      Node  : W_Function_Def_Id);
 
    procedure Axiom_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Axiom_Valid_Id);
+      Node  : W_Axiom_Id);
 
    procedure Goal_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Goal_Valid_Id);
+      Node  : W_Goal_Id);
 
    procedure Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Type_Valid_Id);
+      Node  : W_Type_Id);
 
    procedure Global_Ref_Declaration_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Global_Ref_Declaration_Valid_Id);
+      Node  : W_Global_Ref_Declaration_Id);
 
    procedure Exception_Declaration_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Exception_Declaration_Valid_Id);
+      Node  : W_Exception_Declaration_Id);
 
    procedure Include_Declaration_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Include_Declaration_Valid_Id);
+      Node  : W_Include_Declaration_Id);
 
    procedure File_Pre_Op
      (State : in out Printer_State;
-      Node  : W_File_Valid_Id);
+      Node  : W_File_Id);
 
 end Why.Atree.Sprint;

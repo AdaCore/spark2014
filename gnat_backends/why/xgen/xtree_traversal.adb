@@ -236,7 +236,7 @@ package body Xtree_Traversal is
    begin
       if not In_Stub then
          PL (O, Traversal_Pre_Op (Kind)
-             & " (" & State_Param & ", " & Node_Param & ");");
+             & " (" & State_Param & ", +" & Node_Param & ");");
 
          NL (O);
          Reset_Return_If_Control (O, Abandon_Children);
@@ -254,7 +254,7 @@ package body Xtree_Traversal is
          NL (O);
 
          PL (O, Traversal_Post_Op (Kind)
-             & " (" & State_Param & ", " & Node_Param & ");");
+             & " (" & State_Param & ", +" & Node_Param & ");");
 
          NL (O);
          Reset_If_Control (O, Abandon_Siblings);
@@ -318,7 +318,7 @@ package body Xtree_Traversal is
    begin
       PL (O, "procedure " & Op_Name);
       PL (O, "  (State : in out " & State_Type & ";");
-      P  (O, "   Node  : " & Id_Subtype (Kind) & ")");
+      P  (O, "   Node  : " & Id_Subtype (Kind, Derived) & ")");
    end Print_Traversal_Op_Specification;
 
    ------------------------------------------
@@ -487,7 +487,7 @@ package body Xtree_Traversal is
       procedure Print_Sub_Traversal (Position : Cursor) is
          FI    : constant Field_Info := Element (Position);
          Field : constant Wide_String :=
-                   "Get_Node (" & Node_Param & ")." & Field_Name (FI);
+                   "Get_Node (+" & Node_Param & ")." & Field_Name (FI);
       begin
          if Is_Why_Id (FI) and Maybe_Null (FI) then
             if Is_List (FI) then
@@ -531,7 +531,7 @@ package body Xtree_Traversal is
    begin
       PL (O, "P (O, """ & Mixed_Case_Name (Kind) & """);");
       PL (O, "P (O, "" (Node_Id="");");
-      PL (O, "P (O, Why_Node_Id (" & Node_Param & "));");
+      PL (O, "P (O, +" & Node_Param & ");");
       PL (O, "P (O, "")"");");
       PL (O, "NL (O);");
       PL (O, "if State.Depth /= 0 then");
