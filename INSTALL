@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 --            HI-LITE BUILD INSTRUCTIONS FOR ADACORE DEVELOPERS              --
 --                                                                           --
---                                  Linux                                    --
+--                            Unix / Linux                                   --
 -------------------------------------------------------------------------------
 
-To build Hi-Lite on a Linux machine, you need the following products:
+To build Hi-Lite on a Unix / Linux machine, you need the following products:
 
    - GNAT Pro compiler with sources
    - GNATcoll (gnatlib)
@@ -88,10 +88,6 @@ The final directory structure of all related products is:
       where <Root> denotes a full path and <machine> denotes the machine name
       (Ex: kwai).
 
-      OR
-
-      $ ./configure --prefix=<Root>/local --without-python
-
    4.3) Build gnatlib
 
       $ make
@@ -114,6 +110,8 @@ The final directory structure of all related products is:
 
       $ cd <Root>/hi-lite/ocaml-<XXX>
       $ ./configure -prefix <Root>/local
+
+      where <Root> denotes a full path.
 
    5.4) Build Ocaml
 
@@ -140,6 +138,8 @@ The final directory structure of all related products is:
       $ cd <Root>/hi-lite/ocamlgraph-<XXX>
       $ ./configure --prefix=<Root>/local
 
+      where <Root> denotes a full path.
+
    6.4) Build Ocamlgraph
 
       $ make
@@ -162,6 +162,8 @@ The final directory structure of all related products is:
 
       $ cd <Root>/hi-lite/alt-ego-<XXX>
       $ ./configure --prefix=<Root>/local
+
+      where <Root> denotes a full path.
 
    7.4) Build Alt-Ego
 
@@ -186,11 +188,15 @@ The final directory structure of all related products is:
       $ cd <Root>/hi-lite/why-<XXX>
       $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-1.patch
       $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-2.patch
-      ...
+      . . .
+
+      More patches may follow in the future.
 
    8.4) Configure Why
 
       $ ./configure --prefix=<Root>/local
+
+      where <Root> denotes a full path.
 
    8.5) Build Why
 
