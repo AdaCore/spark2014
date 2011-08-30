@@ -116,7 +116,4 @@ package Gnat2Why.Subprograms is
    function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
-   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Pred_Id;
-   --  Translate an Ada Expression to a Why predicate
-
 end Gnat2Why.Subprograms;

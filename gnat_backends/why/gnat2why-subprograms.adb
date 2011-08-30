@@ -646,7 +646,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             if Present (Expression (Arg2)) then
-               return Why_Predicate_Of_Ada_Expr (Expression (Arg2));
+               return +Why_Expr_Of_Ada_Expr (Expression (Arg2), EW_Pred);
 
             else
                raise Program_Error;
@@ -804,14 +804,10 @@ package body Gnat2Why.Subprograms is
       function Compute_Effects return W_Effects_Id;
       --  Compute the effects of the generated Why function.
 
-      generic
-         type T is private;
-         Basic_Value : T;
-         with function Mapping (N : Node_Id) return T;
-         with function Combine (Left, Right : T) return T;
       function Compute_Spec
-         (Kind       : Name_Id;
-          Located_Node : out Node_Id) return T;
+         (Kind         : Name_Id;
+          Located_Node : out Node_Id;
+          Domain       : EW_Domain) return W_Expr_Id;
       --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
@@ -1026,11 +1022,13 @@ package body Gnat2Why.Subprograms is
       ------------------
 
       function Compute_Spec
-         (Kind       : Name_Id;
-          Located_Node : out Node_Id) return T
+         (Kind         : Name_Id;
+          Located_Node : out Node_Id;
+          Domain       : EW_Domain) return W_Expr_Id
       is
          Corr_Spec      : Node_Id;
-         Cur_Spec       : T := Basic_Value;
+         Cur_Spec       : W_Expr_Id := New_Literal (Value  => EW_True,
+                                                    Domain => Domain);
          Found_Location : Boolean := False;
          PPCs           : Node_Id;
 
@@ -1059,9 +1057,10 @@ package body Gnat2Why.Subprograms is
                   end if;
 
                   Cur_Spec :=
-                     Combine
-                       (Left  => Mapping (Ada_Spec),
-                        Right => Cur_Spec);
+                     New_And_Then_Expr
+                       (Left   => Why_Expr_Of_Ada_Expr (Ada_Spec, Domain),
+                        Right  => Cur_Spec,
+                        Domain => Domain);
                end;
             end if;
 
@@ -1070,44 +1069,6 @@ package body Gnat2Why.Subprograms is
 
          return Cur_Spec;
       end Compute_Spec;
-
-      function New_And_Then_Prog (Left, Right : W_Prog_Id) return W_Prog_Id;
-      --  ??? For transition purposes, to be removed
-
-      function New_And_Pred (Left, Right : W_Pred_Id) return
-         W_Pred_Id;
-      --  ??? For transition purposes, to be removed
-
-      ------------------
-      -- New_And_Prog --
-      ------------------
-
-      function New_And_Then_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
-      begin
-         return
-           +New_And_Then_Expr (+Left, +Right, EW_Prog);
-      end New_And_Then_Prog;
-
-      function New_And_Pred (Left, Right : W_Pred_Id)
-         return W_Pred_Id is
-      begin
-         return
-           +New_And_Expr (+Left, +Right, EW_Pred);
-      end New_And_Pred;
-
-      function Compute_Spec_Pred is new
-        Compute_Spec
-          (W_Pred_Id,
-           New_Literal (Value => EW_True),
-           Why_Predicate_Of_Ada_Expr,
-           New_And_Pred);
-
-      function Compute_Spec_Prog is new
-        Compute_Spec
-          (W_Prog_Id,
-           New_Literal (Value => EW_True),
-           Why_Expr_Of_Ada_Expr,
-           New_And_Then_Prog);
 
       --------------------------------
       -- Is_Syntactic_Expr_Function --
@@ -1157,10 +1118,10 @@ package body Gnat2Why.Subprograms is
                         else Func_Binders);
       Dummy_Node   : Node_Id;
       Pre          : constant W_Pred_Id :=
-                       Compute_Spec_Pred (Name_Precondition, Dummy_Node);
+                       +Compute_Spec (Name_Precondition, Dummy_Node, EW_Pred);
       Loc_Node     : Node_Id := Empty;
       Post         : constant W_Pred_Id :=
-                       Compute_Spec_Pred (Name_Postcondition, Loc_Node);
+                       +Compute_Spec (Name_Postcondition, Loc_Node, EW_Pred);
       Orig_Node    : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
       Is_Expr_Func : constant Boolean :=
@@ -1186,8 +1147,9 @@ package body Gnat2Why.Subprograms is
               (Domain  => EW_Prog,
                Name    => New_Pre_Check_Name.Id (Name_Str),
                Binders => Ext_Binders,
-               Def     =>
-                 +Compute_Spec_Prog (Name_Precondition, Dummy_Node)));
+               Def     => +Compute_Spec (Name_Precondition,
+                                         Dummy_Node,
+                                         EW_Prog)));
 
          if Is_Expr_Func then
             if Etype (Defining_Entity (Spec)) = Standard_Boolean then
@@ -1197,8 +1159,8 @@ package body Gnat2Why.Subprograms is
                     (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Ext_Binders,
                      Pre     => Pre,
-                     Def     => Why_Predicate_Of_Ada_Expr
-                                  (Expression (Orig_Node))));
+                     Def     => +Why_Expr_Of_Ada_Expr (Expression (Orig_Node),
+                                                       EW_Pred)));
 
             else
                Emit
@@ -1249,8 +1211,8 @@ package body Gnat2Why.Subprograms is
                                  New_Equal_Bool
                                    (Left  => New_Result_Term,
                                     Right =>
-                                      Why_Predicate_Of_Ada_Expr
-                                        (Expression (Orig_Node)))
+                                      +Why_Expr_Of_Ada_Expr
+                                        (Expression (Orig_Node), EW_Pred))
                                else
                                  New_Equal
                                    (Left  => New_Result_Term,
@@ -1618,7 +1580,8 @@ package body Gnat2Why.Subprograms is
             if Domain = EW_Pred then
                declare
                   Conclusion : constant W_Pred_Id :=
-                                 Why_Predicate_Of_Ada_Expr (Condition (Expr));
+                                 +Why_Expr_Of_Ada_Expr (Condition (Expr),
+                                                       EW_Pred);
                   I          : W_Identifier_Id;
                   Range_E    : Node_Id;
                   Hypothesis : W_Pred_Id;
@@ -1698,7 +1661,7 @@ package body Gnat2Why.Subprograms is
                          (Ada_Node    => Expr,
                           Return_Type => New_Base_Type (Base_Type => EW_Bool),
                           Pred        =>
-                            Why_Predicate_Of_Ada_Expr (Expr)));
+                            +Why_Expr_Of_Ada_Expr (Expr, EW_Pred)));
                   Current_Type := Why_Bool_Type;
                end;
             else
@@ -2155,8 +2118,8 @@ package body Gnat2Why.Subprograms is
                                       +New_And_Expr
                                         (Left   => +Invariant,
                                          Right  =>
-                                           +Why_Predicate_Of_Ada_Expr
-                                             (Condition (Scheme)),
+                                           Why_Expr_Of_Ada_Expr
+                                             (Condition (Scheme), EW_Pred),
                                          Domain => EW_Pred);
                      --  We have enriched the invariant, so even if there was
                      --  none at the beginning, we need to put a location here.
@@ -2452,10 +2415,5 @@ package body Gnat2Why.Subprograms is
    begin
       return +Why_Expr_Of_Ada_Expr (Expr, Expected_Type, EW_Prog);
    end Why_Expr_Of_Ada_Expr;
-
-   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Pred_Id is
-   begin
-      return +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Pred);
-   end Why_Predicate_Of_Ada_Expr;
 
 end Gnat2Why.Subprograms;
