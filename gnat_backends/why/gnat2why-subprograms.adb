@@ -1846,27 +1846,10 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
          when N_Expression_With_Actions =>
-            return
+            T :=
                Sequence
                  (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
                   Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
-
-         when N_Conditional_Expression =>
-            declare
-               Cond      : constant Node_Id := First (Expressions (Expr));
-               Then_Part : constant Node_Id := Next (Cond);
-               Else_Part : constant Node_Id := Next (Then_Part);
-            begin
-               T :=
-                  New_Conditional
-                     (Ada_Node  => Expr,
-                      Domain    => EW_Prog,
-                      Condition => Why_Expr_Of_Ada_Expr (Cond),
-                      Then_Part =>
-                        +Why_Expr_Of_Ada_Expr (Then_Part, Expected_Type),
-                      Else_Part =>
-                        +Why_Expr_Of_Ada_Expr (Else_Part, Expected_Type));
-            end;
 
          when others =>
             raise Not_Implemented;
