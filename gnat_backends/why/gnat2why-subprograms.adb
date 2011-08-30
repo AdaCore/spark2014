@@ -134,10 +134,6 @@ package body Gnat2Why.Subprograms is
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
 
-   function Why_Expr_Of_Ada_Expr
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id;
-
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
       return W_Expr_Id;
 
@@ -198,7 +194,9 @@ package body Gnat2Why.Subprograms is
       if Present (Rexpr) then
          declare
             Why_Expr : constant W_Prog_Id :=
-                         Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue));
+                         +Why_Expr_Of_Ada_Expr (Rexpr,
+                                                Type_Of_Node (Lvalue),
+                                                EW_Prog);
             L_Name   : constant String := Full_Name (Lvalue);
             L_Id     : constant W_Identifier_Id := New_Identifier (L_Name);
          begin
@@ -1864,8 +1862,10 @@ package body Gnat2Why.Subprograms is
                          (Ada_Node => Stmt,
                           Name     => Why_Ident_Of_Ada_Ident (Lvalue),
                           Value    =>
-                            Why_Expr_Of_Ada_Expr
-                              (Expression (Stmt), Type_Of_Node (Lvalue)));
+                            +Why_Expr_Of_Ada_Expr
+                              (Expression (Stmt),
+                               Type_Of_Node (Lvalue),
+                               EW_Prog));
 
                   when N_Indexed_Component =>
                      declare
@@ -1877,13 +1877,16 @@ package body Gnat2Why.Subprograms is
                              Type_Name => Type_Of_Node (Pre),
                              Ar        => Why_Ident_Of_Ada_Ident (Pre),
                              Index     =>
-                               Why_Expr_Of_Ada_Expr
-                                 (First (Expressions (Lvalue)), Why_Int_Type),
+                               +Why_Expr_Of_Ada_Expr
+                                 (First (Expressions (Lvalue)),
+                                  Why_Int_Type,
+                                  EW_Prog),
                              Value     =>
-                               Why_Expr_Of_Ada_Expr
+                               +Why_Expr_Of_Ada_Expr
                                  (Expression (Stmt),
                                   Type_Of_Node
-                                  (Component_Type (Etype (Pre)))));
+                                    (Component_Type (Etype (Pre))),
+                                  EW_Prog));
                      end;
 
                   when others =>
@@ -1915,8 +1918,9 @@ package body Gnat2Why.Subprograms is
                          (Ada_Node => Stmt,
                           Name     => New_Result_Temp_Identifier.Id,
                           Value    =>
-                            Why_Expr_Of_Ada_Expr (Expression (Stmt),
-                                                  Return_Type));
+                            +Why_Expr_Of_Ada_Expr (Expression (Stmt),
+                                                   Return_Type,
+                                                   EW_Prog));
                      return Sequence (Result_Stmt, Raise_Stmt);
                   end;
                else
@@ -2337,15 +2341,5 @@ package body Gnat2Why.Subprograms is
                        (Name => New_Identifier (Loop_Name),
                         Def  => New_Void))));
    end Wrap_Loop;
-
-   --  ??? To be removed
-
-   function Why_Expr_Of_Ada_Expr
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id
-   is
-   begin
-      return +Why_Expr_Of_Ada_Expr (Expr, Expected_Type, EW_Prog);
-   end Why_Expr_Of_Ada_Expr;
 
 end Gnat2Why.Subprograms;
