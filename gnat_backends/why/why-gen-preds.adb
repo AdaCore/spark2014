@@ -162,7 +162,7 @@ package body Why.Gen.Preds is
    --------------------
 
    function New_Equal_Bool
-     (Left : W_Term_Id;
+     (Left  : W_Term_Id;
       Right : W_Pred_Id) return W_Pred_Id
    is
    begin

@@ -625,7 +625,7 @@ package body Gnat2Why.Subprograms is
       return W_Expr_Id
    is
       Subdomain  : constant EW_Domain :=
-                    (if Domain = EW_Pred then EW_Term else Domain);
+                     (if Domain = EW_Pred then EW_Term else Domain);
       Range_Node : constant Node_Id := Get_Range (N);
    begin
       return
@@ -712,8 +712,7 @@ package body Gnat2Why.Subprograms is
    -- Prog_Equal_To --
    -------------------
 
-   function Prog_Equal_To (E : W_Prog_Id; N : Node_Id) return W_Prog_Id
-   is
+   function Prog_Equal_To (E : W_Prog_Id; N : Node_Id) return W_Prog_Id is
    begin
       case Nkind (N) is
          when N_Identifier
@@ -756,8 +755,7 @@ package body Gnat2Why.Subprograms is
    -- Term_Equal_To --
    -------------------
 
-   function Term_Equal_To (T : W_Term_Id; N : Node_Id) return W_Term_Id
-   is
+   function Term_Equal_To (T : W_Term_Id; N : Node_Id) return W_Term_Id is
    begin
       case Nkind (N) is
          when N_Identifier
@@ -1241,15 +1239,15 @@ package body Gnat2Why.Subprograms is
 
       Func_Binders : constant Binder_Array := Compute_Binders;
       Ext_Binders  : constant Binder_Array :=
-         (if Arg_Length = 0 then (1 => Unit_Param)
-          else Func_Binders);
-      Dummy_Node : Node_Id;
+                       (if Arg_Length = 0 then (1 => Unit_Param)
+                        else Func_Binders);
+      Dummy_Node   : Node_Id;
       Pre          : constant W_Pred_Id :=
-         Compute_Spec_Pred (Name_Precondition, Dummy_Node);
+                       Compute_Spec_Pred (Name_Precondition, Dummy_Node);
       Loc_Node     : Node_Id := Empty;
       Post         : constant W_Pred_Id :=
-         Compute_Spec_Pred (Name_Postcondition, Loc_Node);
-      Orig_Node : constant Node_Id := Is_Syntactic_Expr_Function;
+                       Compute_Spec_Pred (Name_Postcondition, Loc_Node);
+      Orig_Node    : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
       Is_Expr_Func : constant Boolean :=
                        Nkind (Spec) = N_Function_Specification
@@ -1419,8 +1417,8 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Why_Type;
       Domain        : EW_Domain) return W_Expr_Id
    is
-      T            : W_Expr_Id;
-      Current_Type : Why_Type := Type_Of_Node (Expr);
+      T                     : W_Expr_Id;
+      Current_Type          : Why_Type := Type_Of_Node (Expr);
       Overflow_Check_Needed : Boolean := False;
    begin
 
@@ -1537,7 +1535,7 @@ package body Gnat2Why.Subprograms is
                Left      : constant Node_Id := Left_Opnd (Expr);
                Right     : constant Node_Id := Right_Opnd (Expr);
                Subdomain : constant EW_Domain :=
-                  (if Domain = EW_Pred then EW_Term else Domain);
+                             (if Domain = EW_Pred then EW_Term else Domain);
             begin
                T :=
                  New_Comparison
@@ -1706,7 +1704,7 @@ package body Gnat2Why.Subprograms is
             if Domain = EW_Pred then
                declare
                   Conclusion : constant W_Pred_Id :=
-                     Why_Predicate_Of_Ada_Expr (Condition (Expr));
+                                 Why_Predicate_Of_Ada_Expr (Condition (Expr));
                   I          : W_Identifier_Id;
                   Range_E    : Node_Id;
                   Hypothesis : W_Pred_Id;
@@ -2250,7 +2248,8 @@ package body Gnat2Why.Subprograms is
                      LParam_Spec  : constant Node_Id :=
                                       Loop_Parameter_Specification (Scheme);
                      Loop_Range   : constant Node_Id :=
-                                     Discrete_Subtype_Definition (LParam_Spec);
+                                      Discrete_Subtype_Definition
+                                        (LParam_Spec);
                      Loop_Index   : constant String :=
                                       Full_Name
                                         (Defining_Identifier
@@ -2305,11 +2304,11 @@ package body Gnat2Why.Subprograms is
                                          Loop_Name    => Loop_Name,
                                          Invariant    => Enriched_Inv,
                                          Inv_Node     => Inv_Node);
-                     Low           : constant Node_Id :=
-                                       Low_Bound
-                                         (Get_Range
-                                           (Discrete_Subtype_Definition
-                                             (LParam_Spec)));
+                     Low          : constant Node_Id :=
+                                      Low_Bound
+                                        (Get_Range
+                                          (Discrete_Subtype_Definition
+                                            (LParam_Spec)));
                   begin
                      return
                        New_Binding_Ref
@@ -2412,8 +2411,7 @@ package body Gnat2Why.Subprograms is
    -- Why_Ident_Of_Ada_Ident --
    ----------------------------
 
-   function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id
-   is
+   function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id is
       Ent : Entity_Id;
    begin
       if Nkind (Id) = N_Defining_Identifier then
@@ -2625,9 +2623,7 @@ package body Gnat2Why.Subprograms is
            To       => Expected_Type);
    end Why_Term_Of_Ada_Expr_Tmp;
 
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id)
-      return W_Term_Id
-   is
+   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
    begin
       return Why_Term_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Term_Of_Ada_Expr;
@@ -2693,8 +2689,7 @@ package body Gnat2Why.Subprograms is
       return +Why_Expr_Of_Ada_Expr (Expr, Expected_Type, EW_Prog);
    end Why_Expr_Of_Ada_Expr;
 
-   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id)
-      return W_Pred_Id is
+   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Pred_Id is
    begin
       return +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Pred);
    end Why_Predicate_Of_Ada_Expr;
