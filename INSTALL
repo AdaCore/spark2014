@@ -1,0 +1,201 @@
+-------------------------------------------------------------------------------
+--            HI-LITE BUILD INSTRUCTIONS FOR ADACORE DEVELOPERS              --
+--                                                                           --
+--                                  Linux                                    --
+-------------------------------------------------------------------------------
+
+To build Hi-Lite on a Linux machine, you need the following products:
+
+   - GNAT Pro compiler with sources
+   - GNATcoll (gnatlib)
+   - Ocaml
+   - Ocamlgraph
+   - Alt-Ergo
+   - Why
+
+The following instructions explain how to obtain and install these products.
+The final directory structure of all related products is:
+
+   <Root>
+    |
+    +--- local --- bin
+    |
+    +--- gnat
+    |
+    +--- gnatlib
+    |
+    +--- hi-lite
+         |
+         +--- ocaml-XYZ
+         |
+         +--- ocamlgraph-XYZ
+         |
+         +--- alt-ego-XYZ
+         |
+         +--- why-XYZ
+
+1) Create an Open-DO Forge account
+   1.1) Visit the following website
+
+      http://forge.open-do.org
+
+   1.2) Click "new account" in the top right corner. Fill in the appropriate
+      fields and follow the instructions to verify your e-mail address.
+
+   1.3) Click "Projects" in the top left corner and click on "Hi-Lite".
+
+   1.4) Click "Request to join" on the right side of the web page. Follow the
+      instructions and click "Submit". The project admin will add you to the
+      team.
+
+2) Hi-Lite sources
+   2.1) Once a member of the Hi-Lite development team, clone the following
+      repository in directory <Root>
+
+      git clone --recursive git+ssh://<Developer>@scm.forge.open-do.org//scmrepos/git/hi-lite/hi-lite.git
+
+      where <Developer> denotes your Open-DO Forge user name. This step creates
+      directory <Root>/hi-lite.
+
+3) GNAT Pro compiler with sources
+   3.1) Check out
+
+      $ svn co svn+ssh://svn.us.adacore.com/Dev/trunk/gnat
+
+      in directory <Root>. This step creates directory <Root>/gnat.
+
+   3.2) Build the compiler.
+
+      $ cd <Root>/gnat
+      $ make setup
+      $ make all
+
+   3.3) Export the compiler.
+
+      $ export PATH=<Root>/local/bin:$PATH
+
+4) GNATcoll
+   4.1) Check out
+
+      $ svn co svn+ssh://svn.eu.adacore.com/Dev/trunk/gps/gnatlib
+
+      in directory <Root>. This step creates directory <Root>/gnatlib.
+
+   4.2) Configure gnatlib
+
+      $ ./configure --prefix=<Root>/local --with-python=/<machine>.a/gnatmail/gcc-45/install-<machine>/python --disable-shared
+
+      where <Root> denotes a full path and <machine> denotes the machine name
+      (Ex: kwai).
+
+      OR
+
+      $ ./configure --prefix=<Root>/local --without-python
+
+   4.3) Build gnatlib
+
+      $ make
+
+   4.4) Install gnatlib
+
+      $ make install
+
+5) Ocaml
+   5.1) Visit the following website
+
+      http://caml.inria.fr/download.en.html
+
+      and download the "Windows and Unix systems" gzipped tarball.
+
+   5.2) Extract the archive in directory <Root>/hi-lite. This step creates
+      directory <Root>/hi-lite/ocaml-<XXX> where <XXX> is the version number.
+
+   5.3) Configure Ocaml
+
+      $ cd <Root>/hi-lite/ocaml-<XXX>
+      $ ./configure -prefix <Root>/local
+
+   5.4) Build Ocaml
+
+      $ make world
+      $ make opt
+
+   5.5) Install Ocaml
+
+      $ make install
+
+6) Ocamlgraph
+   6.1) Visit the following website
+
+      http://ocamlgraph.lri.fr
+
+      and download the tarball under section "Distribution".
+
+   6.2) Extract the archive in directory <Root>/hi-lite. This step creates
+      directory <Root>/hi-lite/ocamlgraph-<XXX> where <XXX> is the version
+      number.
+
+   6.3) Configure Ocamlgraph
+
+      $ cd <Root>/hi-lite/ocamlgraph-<XXX>
+      $ ./configure --prefix=<Root>/local
+
+   6.4) Build Ocamlgraph
+
+      $ make
+
+   6.5) Install Ocamlgraph
+
+      $ make install
+
+7) Alt-Ego
+   7.1) Visit the following website
+
+      http://alt-ergo.lri.fr/
+
+      and download the tarbal under section "Download", bullet "Source".
+
+   7.2) Extract the archive in directory <Root>/hi-lite. This step creates
+      directory <Root>/hi-lite/alt-ego-<XXX> where <XXX> is the version number.
+
+   7.3) Configure Alt-Ego
+
+      $ cd <Root>/hi-lite/alt-ego-<XXX>
+      $ ./configure --prefix=<Root>/local
+
+   7.4) Build Alt-Ego
+
+      $ make
+
+   7.5) Install Alt-Ego
+
+      $ make install
+
+8) Why
+   8.1) Visit the following website
+
+      http://why.lri.fr/
+
+      and download the tarball under section "Download".
+
+   8.2) Extract the archive in directory <Root>/hi-lite. This step creates
+      directory <Root>/hi-lite/why-<XXX> where <XXX> is the version number.
+
+   8.3) Patch Why
+
+      $ cd <Root>/hi-lite/why-<XXX>
+      $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-1.patch
+      $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-2.patch
+      ...
+
+   8.4) Configure Why
+
+      $ ./configure --prefix=<Root>/local
+
+   8.5) Build Why
+
+      $ make
+
+   8.6) Install Why
+
+      $ make install
