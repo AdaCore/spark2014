@@ -77,12 +77,10 @@ package body Gnat2Why.Subprograms is
    --  procedure call. The node in argument must have a "Name" field and a
    --  "Parameter_Associations" field.
 
-   function Compute_Call_Args (Call : Node_Id) return W_Expr_Array;
+   function Compute_Call_Args (Call : Node_Id; Domain : EW_Domain)
+      return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
-
-   function Compute_Term_Args (Call : Node_Id) return W_Expr_Array;
-   --  Same as Compute_Call_Args, but construct terms.
 
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
@@ -170,6 +168,9 @@ package body Gnat2Why.Subprograms is
      (Expr          : Node_Id;
       Expected_Type : Why_Type;
       Domain        : EW_Domain) return W_Expr_Id;
+
+   function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
+      return W_Expr_Id;
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
@@ -431,12 +432,13 @@ package body Gnat2Why.Subprograms is
    -- Compute_Call_Args --
    -----------------------
 
-   function Compute_Call_Args (Call : Node_Id) return W_Expr_Array
+   function Compute_Call_Args (Call : Node_Id; Domain : EW_Domain)
+      return W_Expr_Array
    is
       Params : constant List_Id := Parameter_Associations (Call);
       Len    : constant Nat := List_Length (Params);
    begin
-      if Len = 0 then
+      if Len = 0 and then Domain = EW_Prog then
          return (1 => New_Void (Call));
       end if;
 
@@ -464,7 +466,9 @@ package body Gnat2Why.Subprograms is
                   --  No special treatment for parameters that are
                   --  not "out"
                   Why_Args (Cnt) :=
-                    +Why_Expr_Of_Ada_Expr (Actual, Type_Of_Node (Formal));
+                    Why_Expr_Of_Ada_Expr (Actual,
+                                          Type_Of_Node (Formal),
+                                          Domain);
             end case;
             Cnt := Cnt + 1;
          end Compute_Arg;
@@ -476,46 +480,6 @@ package body Gnat2Why.Subprograms is
          return Why_Args;
       end;
    end Compute_Call_Args;
-
-   -----------------------
-   -- Compute_Term_Args --
-   -----------------------
-
-   function Compute_Term_Args (Call : Node_Id) return W_Expr_Array
-   is
-      Params : constant List_Id := Parameter_Associations (Call);
-      Len    : constant Nat := List_Length (Params);
-   begin
-      if Len = 0 then
-         return (1 => New_Void);
-      end if;
-
-      declare
-         Why_Args : W_Expr_Array := (1 .. Integer (Len) => <>);
-         Cnt      : Positive := 1;
-
-         procedure Compute_Arg (Formal, Actual : Node_Id);
-         --  Compute a Why term for each parameter
-
-         -----------------
-         -- Compute_Arg --
-         -----------------
-
-         procedure Compute_Arg (Formal, Actual : Node_Id) is
-         begin
-            Why_Args (Cnt) :=
-               +Why_Term_Of_Ada_Expr
-                  (Actual, Type_Of_Node (Formal));
-            Cnt := Cnt + 1;
-         end Compute_Arg;
-
-         procedure Iterate_Term_Call is new
-            Iterate_Call_Arguments (Compute_Arg);
-      begin
-         Iterate_Term_Call (Call);
-         return Why_Args;
-      end;
-   end Compute_Term_Args;
 
    -----------------------
    -- Compute_Invariant --
@@ -1813,6 +1777,61 @@ package body Gnat2Why.Subprograms is
                                                          Domain));
             end;
 
+         when N_Type_Conversion =>
+            return Why_Expr_Of_Ada_Expr (Expression (Expr),
+                                         Expected_Type,
+                                         Domain);
+
+         when N_Unchecked_Type_Conversion =>
+            --  Compiler inserted conversions are trusted
+            pragma Assert (not Comes_From_Source (Expr));
+            return Why_Expr_Of_Ada_Expr (Expression (Expr),
+                                         Expected_Type,
+                                         Domain);
+
+         when N_Selected_Component =>
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   =>
+                   Record_Getter_Name.Id
+                     (Full_Name (Entity (Selector_Name (Expr)))),
+                 Args => (1 => Why_Expr_Of_Ada_Expr (Prefix (Expr),
+                                                     Domain)));
+
+         when N_Function_Call =>
+            declare
+               Ident : constant W_Identifier_Id :=
+                         Why_Ident_Of_Ada_Ident (Name (Expr));
+               Name  : constant W_Identifier_Id :=
+                  (if Domain = EW_Prog then To_Program_Space (Ident)
+                   else Logic_Func_Name.Id (Ident));
+            begin
+               T :=
+                 +New_Located_Call
+                   (Name     => Name,
+                    Progs    => Compute_Call_Args (Expr, Domain),
+                    Ada_Node => Expr,
+                    Domain   => Domain,
+                    Reason   => VC_Precondition);
+            end;
+
+         when N_Indexed_Component =>
+            --  ??? We work with single dimensional arrays for the time being
+            declare
+               Pre : constant Node_Id := Prefix (Expr);
+            begin
+               T :=
+                 New_Array_Access
+                   (Ada_Node  => Expr,
+                    Type_Name => Type_Of_Node (Pre),
+                    Ar        => Why_Expr_Of_Ada_Expr (Pre, Domain),
+                    Index     =>
+                       Why_Expr_Of_Ada_Expr
+                         (First (Expressions (Expr)), Why_Int_Type, Domain),
+                    Domain    => Domain);
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1823,7 +1842,9 @@ package body Gnat2Why.Subprograms is
 
                when EW_Pred =>
                   raise Not_Implemented;
+
             end case;
+
       end case;
       declare
          Base_Type : constant Why_Type :=
@@ -1865,45 +1886,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-         when N_Type_Conversion =>
-            --  Nothing is to do here, because we insert type conversions
-            --  ourselves.
-            return Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
-
-         when N_Indexed_Component =>
-            --  ??? We work with single dimensional arrays for the time being
-            declare
-               Pre : constant Node_Id := Prefix (Expr);
-            begin
-               T :=
-                 New_Array_Access_Prog
-                  (Ada_Node      => Expr,
-                   Type_Name     => Type_Of_Node (Pre),
-                   Ar            => Why_Expr_Of_Ada_Expr (Pre),
-                   Index         =>
-                      Why_Expr_Of_Ada_Expr
-                        (First (Expressions (Expr)), Why_Int_Type));
-            end;
-
-         when N_Selected_Component =>
-            T :=
-              New_Call
-                (Domain => EW_Prog,
-                 Name   =>
-                   Record_Getter_Name.Id
-                     (Full_Name (Entity (Selector_Name (Expr)))),
-                 Args => (1 => +Why_Expr_Of_Ada_Expr (Prefix (Expr))));
-
-         when N_Function_Call =>
-            T :=
-              +New_Located_Call
-                (Name     =>
-                   To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Expr))),
-                 Progs    => Compute_Call_Args (Expr),
-                 Ada_Node => Expr,
-                 Domain   => EW_Prog,
-                 Reason   => VC_Precondition);
-
          when N_Expression_With_Actions =>
             return
                Sequence
@@ -1969,12 +1951,6 @@ package body Gnat2Why.Subprograms is
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node (Expr);
 
-         when N_Unchecked_Type_Conversion =>
-            --  ??? Compiler inserted conversions are trusted
-            pragma Assert (not Comes_From_Source (Expr));
-            return
-               Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
-
          when others =>
             raise Not_Implemented;
 
@@ -1992,6 +1968,12 @@ package body Gnat2Why.Subprograms is
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
+   end Why_Expr_Of_Ada_Expr;
+
+   function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
+      return W_Expr_Id is
+   begin
+      return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr), Domain);
    end Why_Expr_Of_Ada_Expr;
 
    --------------------------
@@ -2106,7 +2088,7 @@ package body Gnat2Why.Subprograms is
                 (Ada_Node => Stmt,
                  Name     =>
                    To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
-                 Progs    => Compute_Call_Args (Stmt),
+                 Progs    => Compute_Call_Args (Stmt, EW_Prog),
                  Domain   => EW_Prog,
                  Reason   => VC_Precondition);
 
@@ -2479,26 +2461,6 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
 
-         when N_Type_Conversion =>
-            return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
-
-         when N_Indexed_Component =>
-            --  ??? We work with single dimensional arrays for the time being
-            T :=
-              New_Array_Access_Term
-               (Type_Name => Type_Of_Node (Prefix (Expr)),
-                Ar        => Why_Term_Of_Ada_Expr (Prefix (Expr)),
-                Index     =>
-                  Why_Term_Of_Ada_Expr
-                    (First (Expressions (Expr)), Why_Int_Type));
-
-         when N_Raise_Constraint_Error =>
-            --  This means the program contains some obvious constraint error
-            --  This should not happen.
-            --  ??? Or maybe it can happen, and we should generate an
-            --  unprovable VC?
-               raise Not_Implemented;
-
          when N_Attribute_Reference =>
             declare
                Aname   : constant Name_Id := Attribute_Name (Expr);
@@ -2584,32 +2546,6 @@ package body Gnat2Why.Subprograms is
                end loop;
                Current_Type := Expected_Type;
             end;
-         when N_Unchecked_Type_Conversion =>
-            --  We do not support unchecked conversion; Sometimes the compiler
-            --  inserts one, in which case it should be OK.
-            if Comes_From_Source (Expr) then
-               raise Not_Alfa;
-            else
-               return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
-            end if;
-
-         when N_Selected_Component =>
-            T :=
-              New_Call
-                (Domain => EW_Term,
-                 Name   =>
-                   Record_Getter_Name.Id
-                     (Full_Name (Entity (Selector_Name (Expr)))),
-                 Args   => (1 => +Why_Term_Of_Ada_Expr (Prefix (Expr))));
-
-         when N_Function_Call =>
-            T :=
-              New_Call
-                 (Domain => EW_Term,
-                  Name   =>
-                    Logic_Func_Name.Id (Full_Name (Entity (Name (Expr)))),
-                  Args   =>
-                    Compute_Term_Args (Expr));
 
          when others =>
             raise Not_Implemented;

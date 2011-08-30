@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with VC_Kinds;           use VC_Kinds;
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
@@ -213,53 +212,35 @@ package body Why.Gen.Arrays is
                       Right => +New_Equal (Ar, Arb)))));
    end Declare_Ada_Unconstrained_Array;
 
-   ---------------------------
-   -- New_Array_Access_Prog --
-   ---------------------------
+   ----------------------
+   -- New_Array_Access --
+   ----------------------
 
-   function New_Array_Access_Prog
-     (Ada_Node  : Node_Id;
-      Type_Name : String;
-      Ar        : W_Prog_Id;
-      Index     : W_Prog_Id) return W_Prog_Id
+   function New_Array_Access
+     (Ada_Node      : Node_Id;
+      Type_Name     : String;
+      Ar            : W_Expr_Id;
+      Index         : W_Expr_Id;
+      Domain        : EW_Domain) return W_Expr_Id
    is
+      Name      : constant W_Identifier_Id := Array_Access_Name.Id (Ada_Array);
+      Used_Name : constant W_Identifier_Id :=
+         (if Domain = EW_Prog then To_Program_Space (Name) else Name);
    begin
       return
          +New_Located_Call
             (Ada_Node => Ada_Node,
              Reason   => VC_Array_Bounds_Check,
-             Name     => To_Program_Space (Array_Access_Name.Id (Ada_Array)),
-             Domain   => EW_Prog,
+             Name     => Used_Name,
+             Domain   => Domain,
              Progs    =>
                (1 => +Index,
                 2 =>
                   New_Call
-                    (Domain => EW_Prog,
+                    (Domain => Domain,
                      Name   => Array_Conv_From.Id (Type_Name),
                      Args   => (1 => +Ar))));
-   end New_Array_Access_Prog;
-
-   ---------------------------
-   -- New_Array_Access_Term --
-   ---------------------------
-
-   function New_Array_Access_Term
-     (Type_Name : String;
-      Ar        : W_Term_Id;
-      Index     : W_Term_Id) return W_Term_Id is
-   begin
-      return
-        New_Call
-          (Domain => EW_Term,
-           Name   => Array_Access_Name.Id (Ada_Array),
-           Args   =>
-            (1 => +Index,
-             2 =>
-               New_Call
-                 (Domain => EW_Term,
-                  Name   => Array_Conv_From.Id (Type_Name),
-                  Args   => (1 => +Ar))));
-   end New_Array_Access_Term;
+   end New_Array_Access;
 
    --------------------------
    -- New_Array_First_Prog --

@@ -25,6 +25,7 @@
 
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
+with Why.Sinfo;    use Why.Sinfo;
 with Uintp;        use Uintp;
 
 package Why.Gen.Arrays is
@@ -54,18 +55,13 @@ package Why.Gen.Arrays is
    --  of the form
    --  type A is Array (basetype range <>) of Component
 
-   function New_Array_Access_Prog
+   function New_Array_Access
      (Ada_Node      : Node_Id;
       Type_Name     : String;
-      Ar            : W_Prog_Id;
-      Index         : W_Prog_Id) return W_Prog_Id;
-   --  Generate a Program that corresponds to an array access.
-
-   function New_Array_Access_Term
-      (Type_Name : String;
-       Ar        : W_Term_Id;
-       Index     : W_Term_Id) return W_Term_Id;
-   --  Generate a Term that corresponds to an array access.
+      Ar            : W_Expr_Id;
+      Index         : W_Expr_Id;
+      Domain        : EW_Domain) return W_Expr_Id;
+   --  Generate an expr that corresponds to an array access.
 
    function New_Array_First_Term
       (Type_Name : String;
