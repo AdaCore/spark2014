@@ -240,4 +240,4 @@ The final directory structure of all related products is:
    11.2) Run
 
       $ cd <Root>/acats
-      $ ./run_acats_test --mode=gnatprove-check
+      $ ./run_acats_test.py --mode=gnatprove-check
