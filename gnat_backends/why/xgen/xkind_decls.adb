@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Sinfo;    use Why.Sinfo;
 with Xkind_Tables; use Xkind_Tables;
 
 package body Xkind_Decls is
@@ -45,8 +46,13 @@ package body Xkind_Decls is
 
          PL (O,
              "subtype " & Class.Name.all & " is " & Kind_Type_Name & " range");
-         PL (O, "  " & Class.First.all &" ..");
-         PL (O, "  " & Class.Last.all & ";");
+
+         PL (O, "    " & Class.First.all & " ..");
+         for Kind in Why_Node_Kind'Succ (Class_First (Class))
+           .. Why_Node_Kind'Pred (Class_Last (Class)) loop
+            PL (O, "--  " & Mixed_Case_Name (Kind));
+         end loop;
+         PL (O, "    " & Class.Last.all & ";");
       end loop;
    end Print_Node_Classes;
 
