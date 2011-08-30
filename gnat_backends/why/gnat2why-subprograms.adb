@@ -134,21 +134,9 @@ package body Gnat2Why.Subprograms is
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
 
-   function Why_Expr_Of_Ada_Expr_Tmp
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id;
-   --  Translate a single Ada expression into a Why expression of the
-   --  Expected_Type.
-   --  When VC_Mode is true, allow a translation to Why code that will only
-   --  trigger safety VCs, but is not equivalent.
-
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Prog_Id;
-
-   function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
-   --  Same as the previous function, but use the type of Expr as the expected
-   --  type.
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
       return W_Expr_Id;
@@ -1626,7 +1614,8 @@ package body Gnat2Why.Subprograms is
                   Why_Expr   : constant W_Prog_Id :=
                                  New_Ignore
                                    (Prog =>
-                                      Why_Expr_Of_Ada_Expr (Condition (Expr)));
+                                      +Why_Expr_Of_Ada_Expr (Condition (Expr),
+                                                             EW_Prog));
                   Index      : W_Identifier_Id;
                   Range_E    : Node_Id;
                   Range_Cond : W_Prog_Id;
@@ -1794,15 +1783,19 @@ package body Gnat2Why.Subprograms is
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node (Expr, Domain);
 
+         when N_Expression_With_Actions =>
+            if not (Domain = EW_Prog) then
+               raise Not_Implemented;
+            end if;
+            T :=
+               +Sequence
+                 (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
+                  +Why_Expr_Of_Ada_Expr (Expression (Expr),
+                                         Expected_Type,
+                                         EW_Prog));
+
          when others =>
-            case Domain is
-               when EW_Prog =>
-                  return +Why_Expr_Of_Ada_Expr_Tmp (Expr, Expected_Type);
-
-               when EW_Term | EW_Pred =>
-                  raise Not_Implemented;
-
-            end case;
+            raise Not_Implemented;
 
       end case;
       declare
@@ -1835,39 +1828,6 @@ package body Gnat2Why.Subprograms is
 
          end case;
       end;
-   end Why_Expr_Of_Ada_Expr;
-
-   function Why_Expr_Of_Ada_Expr_Tmp
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id
-   is
-      T            : W_Prog_Id;
-      Current_Type : constant Why_Type := Type_Of_Node (Expr);
-   begin
-      case Nkind (Expr) is
-         when N_Expression_With_Actions =>
-            T :=
-               Sequence
-                 (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
-                  Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
-
-         when others =>
-            raise Not_Implemented;
-
-      end case;
-
-      return
-        Insert_Conversion
-          (Ada_Node              => Expr,
-           From                  => Current_Type,
-           To                    => Expected_Type,
-           Why_Expr              => T,
-           Base_Type             => Why_Int_Type);
-   end Why_Expr_Of_Ada_Expr_Tmp;
-
-   function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
-   begin
-      return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Expr_Of_Ada_Expr;
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
@@ -1993,7 +1953,7 @@ package body Gnat2Why.Subprograms is
                         Tail :=
                           +New_Simpl_Conditional
                             (Condition =>
-                               +Why_Expr_Of_Ada_Expr (Condition (Cur)),
+                               Why_Expr_Of_Ada_Expr (Condition (Cur), EW_Prog),
                              Then_Part =>
                                +Why_Expr_Of_Ada_Stmts (Then_Statements (Cur)),
                              Else_Part => +Tail,
@@ -2007,7 +1967,8 @@ package body Gnat2Why.Subprograms is
 
                return
                  +New_Simpl_Conditional
-                   (Condition => +Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+                   (Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt),
+                                                       EW_Prog),
                     Then_Part =>
                       +Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
                     Else_Part => +Tail,
@@ -2100,7 +2061,7 @@ package body Gnat2Why.Subprograms is
                        Wrap_Loop
                        (Loop_Body    => Loop_Content,
                         Condition    =>
-                          Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                          +Why_Expr_Of_Ada_Expr (Condition (Scheme), EW_Prog),
                         Loop_Name    => Loop_Name,
                         Invariant    => Enriched_Inv,
                         Inv_Node     => Inv_Node);
@@ -2207,7 +2168,7 @@ package body Gnat2Why.Subprograms is
                       (Ada_Node  => Stmt,
                        Domain    => EW_Prog,
                        Condition =>
-                          Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+                          +Why_Expr_Of_Ada_Expr (Condition (Stmt), EW_Prog),
                        Then_Part => +Raise_Stmt);
                end if;
             end;
