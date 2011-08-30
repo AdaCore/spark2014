@@ -31,6 +31,7 @@ with Why.Types;            use Why.Types;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Inter;            use Why.Inter;
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
@@ -83,7 +84,7 @@ package body Gnat2Why.Decls is
       function Term_Definition return W_Term_Id is
       begin
          if Present (Def) and then Is_Static_Expression (Def) then
-            return Why_Term_Of_Ada_Expr (Def, Type_Of_Node (Id));
+            return +Why_Expr_Of_Ada_Expr (Def, Type_Of_Node (Id), EW_Term);
          else
             return Why_Empty;
          end if;

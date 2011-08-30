@@ -28,6 +28,7 @@ with Sinfo;         use Sinfo;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 with Why.Inter;     use Why.Inter;
+with Why.Sinfo;     use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 
@@ -107,17 +108,15 @@ package Gnat2Why.Subprograms is
    --  * The types of arguments have to be references
    --  * The pre/postconditions need special treatment (TCC)
 
+   function Why_Expr_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type;
+      Domain        : EW_Domain) return W_Expr_Id;
+
    function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
    function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Pred_Id;
    --  Translate an Ada Expression to a Why predicate
-
-   function Why_Term_Of_Ada_Expr
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Term_Id;
-   --  Translate an Ada Expression to a Why Term of the Expected_Type.
-
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
 
 end Gnat2Why.Subprograms;
