@@ -1,5 +1,5 @@
 divide.adb:10:10: (info) loop invariant initialization proved
-divide.adb:10:10: (info) loop invariant preservation proved
+divide.adb:10:10: loop invariant preservation not proved
 divide.adb:11:17: (info) range check proved
 divide.adb:12:17: (info) range check proved
 divide.adb:5:12: (info) range check proved
