@@ -205,3 +205,31 @@ The final directory structure of all related products is:
    8.6) Install Why
 
       $ make install
+
+   8.7) Set the environment variable WHYLIB as follows:
+
+      $ export WHYLIB=`why --where`
+
+9) Build gnat2why and gnatprove
+
+   Detailed information can be found in the main Makefile. The short version
+   is:
+
+   $ make
+   $ make stdlib
+   $ make install-stdlib WHYLIB=$WHYLIB
+   $ export PATH=<Root>/hi-lite/install/bin:$PATH
+
+10) Run the testsuite
+
+   $ cd <Root>/hi-lite/gnat_backends/testsuite
+   $ ./run-tests
+
+   OR
+
+   $ ./run-tests -j n
+   where n is a sufficiently high number, eg. n = 5
+
+11) Run the ACATS testsuite
+
+   TBD
