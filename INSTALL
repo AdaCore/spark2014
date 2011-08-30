@@ -30,7 +30,7 @@ The final directory structure of all related products is:
          |
          +--- ocamlgraph-XYZ
          |
-         +--- alt-ego-XYZ
+         +--- alt-ergo-XYZ
          |
          +--- why-XYZ
 
@@ -148,7 +148,7 @@ The final directory structure of all related products is:
 
       $ make install
 
-7) Alt-Ego
+7) Alt-Ergo
    7.1) Visit the following website
 
       http://alt-ergo.lri.fr/
@@ -156,20 +156,20 @@ The final directory structure of all related products is:
       and download the tarbal under section "Download", bullet "Source".
 
    7.2) Extract the archive in directory <Root>/hi-lite. This step creates
-      directory <Root>/hi-lite/alt-ego-<XXX> where <XXX> is the version number.
+      directory <Root>/hi-lite/alt-ergo-<XXX> where <XXX> is the version number.
 
-   7.3) Configure Alt-Ego
+   7.3) Configure Alt-Ergo
 
-      $ cd <Root>/hi-lite/alt-ego-<XXX>
+      $ cd <Root>/hi-lite/alt-ergo-<XXX>
       $ ./configure --prefix=<Root>/local
 
       where <Root> denotes a full path.
 
-   7.4) Build Alt-Ego
+   7.4) Build Alt-Ergo
 
       $ make
 
-   7.5) Install Alt-Ego
+   7.5) Install Alt-Ergo
 
       $ make install
 
