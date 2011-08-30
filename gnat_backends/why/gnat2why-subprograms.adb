@@ -93,11 +93,6 @@ package body Gnat2Why.Subprograms is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
-   function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
-   --  Translate the given Ada expression to a Why expression of type "int".
-   --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
-   --  set to (Kind => Why_Int).
-
    function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
    --  Test if the effect in argument is empty.
 
@@ -1899,15 +1894,6 @@ package body Gnat2Why.Subprograms is
    end Why_Expr_Of_Ada_Expr;
 
    --------------------------
-   -- Int_Expr_Of_Ada_Expr --
-   --------------------------
-
-   function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id is
-   begin
-      return Why_Expr_Of_Ada_Expr (Expr, Why_Int_Type);
-   end Int_Expr_Of_Ada_Expr;
-
-   --------------------------
    -- Why_Expr_Of_Ada_Stmt --
    --------------------------
 
@@ -2208,7 +2194,9 @@ package body Gnat2Why.Subprograms is
                      return
                        New_Binding_Ref
                          (Name    => New_Identifier (Loop_Index),
-                          Def     => Int_Expr_Of_Ada_Expr (Low),
+                          Def     => +Why_Expr_Of_Ada_Expr (Low,
+                                                            Why_Int_Type,
+                                                            EW_Prog),
                           Context => Entire_Loop);
                   end;
 
