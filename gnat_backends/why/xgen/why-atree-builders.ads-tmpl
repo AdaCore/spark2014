@@ -31,8 +31,6 @@ package Why.Atree.Builders is
    --  This package provides a set of unchecked builders, generated
    --  automatically from Why.Atree.Why_Node using an ASIS tool
 
-   _@Declare_Builders@_
-
    _@Declare_Class_Wide_Builders@_
 
    _@Declare_Unchecked_Builders@_

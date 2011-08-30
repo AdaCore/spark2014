@@ -70,12 +70,10 @@ begin
 
    --  Production of packages for builders, accessors, mutators
 
-   Add ("Declare_Builders", Print_Builder_Declarations'Access);
    Add ("Declare_Class_Wide_Builders",
         Print_Class_Wide_Builder_Declarations'Access);
    Add ("Declare_Unchecked_Builders",
         Print_Unchecked_Builder_Declarations'Access);
-   Add ("Implement_Builders", Print_Builder_Bodies'Access);
    Add ("Implement_Class_Wide_Builders",
         Print_Class_Wide_Builder_Bodies'Access);
    Add ("Implement_Unchecked_Builders",

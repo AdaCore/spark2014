@@ -73,21 +73,6 @@ package body Xtree_Builders is
       Kind : Why_Node_Kind);
    --  Print the local declarations in builder body
 
-   --------------------------
-   -- Print_Builder_Bodies --
-   --------------------------
-
-   procedure Print_Builder_Bodies (O : in out Output_Record) is
-   begin
-      for J in Valid_Kind'Range loop
-         Print_Builder_Body (O, J, Regular);
-
-         if J /= Why_Tree_Info'Last then
-            NL (O);
-         end if;
-      end loop;
-   end Print_Builder_Bodies;
-
    ------------------------
    -- Print_Builder_Body --
    ------------------------
@@ -123,23 +108,6 @@ package body Xtree_Builders is
       Relative_Indent (O, -3);
       PL (O, "end " & BN & ";");
    end Print_Builder_Body;
-
-   --------------------------------
-   -- Print_Builder_Declarations --
-   --------------------------------
-
-   procedure Print_Builder_Declarations
-     (O  : in out Output_Record)
-   is
-   begin
-      for J in Valid_Kind'Range loop
-         Print_Builder_Declaration (O, J, Regular, Id_Subtype (J, Regular));
-
-         if J /= Why_Tree_Info'Last then
-            NL (O);
-         end if;
-      end loop;
-   end Print_Builder_Declarations;
 
    -------------------------------
    -- Print_Builder_Declaration --
