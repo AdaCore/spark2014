@@ -231,5 +231,13 @@ The final directory structure of all related products is:
    where n is a sufficiently high number, eg. n = 5
 
 11) Run the ACATS testsuite on gnatprove
+   11.1) Check out
 
-   TBD
+      $ svn co svn+ssh://svn.us.adacore.com/Dev/trunk/gnatmail/testsuites/acats
+
+      in directory <Root>. This step creates directory <Root>/acats
+
+   11.2) Run
+
+      $ cd <Root>/acats
+      $ ./run_acats_test --mode=gnatprove-check
