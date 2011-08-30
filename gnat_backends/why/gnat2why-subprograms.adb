@@ -438,7 +438,7 @@ package body Gnat2Why.Subprograms is
       Params : constant List_Id := Parameter_Associations (Call);
       Len    : constant Nat := List_Length (Params);
    begin
-      if Len = 0 and then Domain = EW_Prog then
+      if Len = 0 then
          return (1 => New_Void (Call));
       end if;
 
@@ -1832,6 +1832,57 @@ package body Gnat2Why.Subprograms is
                     Domain    => Domain);
             end;
 
+         when N_Attribute_Reference =>
+            declare
+               Aname   : constant Name_Id := Attribute_Name (Expr);
+               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+               Var     : constant Node_Id      := Prefix (Expr);
+            begin
+               case Attr_Id is
+                  when Attribute_Result =>
+                     if Domain = EW_Term then
+                        T := +New_Result_Term;
+                     end if;
+                     if Domain = EW_Prog then
+                        T := +New_Identifier (Result_String);
+                     end if;
+
+                  when Attribute_Old =>
+                     if Domain = EW_Prog then
+                        raise Not_Implemented;
+                     end if;
+
+                     T := +New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));
+
+                  when Attribute_First =>
+                     T :=
+                       New_Array_First
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var, Domain),
+                          Domain);
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Last =>
+                     T :=
+                       New_Array_Last
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var, Domain),
+                          Domain);
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Length =>
+                     T :=
+                       New_Array_Length
+                         (Full_Name (Etype (Var)),
+                          Why_Expr_Of_Ada_Expr (Var, Domain),
+                          Domain);
+                     Current_Type := Why_Int_Type;
+
+               when others =>
+                  raise Not_Implemented;
+               end case;
+            end;
+
          when others =>
             case Domain is
                when EW_Prog =>
@@ -1883,7 +1934,7 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Why_Type) return W_Prog_Id
    is
       T            : W_Prog_Id;
-      Current_Type : Why_Type := Type_Of_Node (Expr);
+      Current_Type : constant Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
          when N_Expression_With_Actions =>
@@ -1891,45 +1942,6 @@ package body Gnat2Why.Subprograms is
                Sequence
                  (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
                   Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
-
-         when N_Attribute_Reference =>
-            declare
-               Aname   : constant Name_Id := Attribute_Name (Expr);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-               Var     : constant Node_Id      := Prefix (Expr);
-            begin
-               case Attr_Id is
-                  when Attribute_Result =>
-                     T := +New_Identifier (Result_String);
-
-                  when Attribute_Old =>
-                     raise Not_Implemented;
-
-                  when Attribute_First =>
-                     T :=
-                       New_Array_First_Prog
-                         (Full_Name (Etype (Var)),
-                          Why_Expr_Of_Ada_Expr (Var));
-                     Current_Type := Why_Int_Type;
-
-                  when Attribute_Last =>
-                     T :=
-                       New_Array_Last_Prog
-                         (Full_Name (Etype (Var)),
-                          Why_Expr_Of_Ada_Expr (Var));
-                     Current_Type := Why_Int_Type;
-
-                  when Attribute_Length =>
-                     T :=
-                       New_Array_Length_Prog
-                         (Full_Name (Etype (Var)),
-                          Why_Expr_Of_Ada_Expr (Var));
-                     Current_Type := Why_Int_Type;
-
-               when others =>
-                  raise Not_Implemented;
-               end case;
-            end;
 
          when N_Conditional_Expression =>
             declare
@@ -2460,43 +2472,6 @@ package body Gnat2Why.Subprograms is
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
-
-         when N_Attribute_Reference =>
-            declare
-               Aname   : constant Name_Id := Attribute_Name (Expr);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-               Var     : constant Node_Id      := Prefix (Expr);
-            begin
-               case Attr_Id is
-                  when Attribute_Result =>
-                     T := New_Result_Term;
-
-                  when Attribute_Old =>
-                     T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));
-
-                  when Attribute_First =>
-                     T := New_Array_First_Term
-                            (Full_Name (Etype (Var)),
-                             +Why_Ident_Of_Ada_Ident (Var));
-                     Current_Type := Why_Int_Type;
-
-                  when Attribute_Last =>
-                     T := New_Array_Last_Term
-                            (Full_Name (Etype (Var)),
-                             +Why_Ident_Of_Ada_Ident (Var));
-                     Current_Type := Why_Int_Type;
-
-                  when Attribute_Length =>
-                     T := New_Array_Length_Term
-                            (Full_Name (Etype (Var)),
-                             +Why_Ident_Of_Ada_Ident (Var));
-                     Current_Type := Why_Int_Type;
-
-                  when others =>
-                     raise Not_Implemented;
-
-               end case;
-            end;
 
          when N_Case_Expression =>
             --  In case expressions, we walk backwards the list of patterns

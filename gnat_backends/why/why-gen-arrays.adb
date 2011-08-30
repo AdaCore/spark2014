@@ -65,7 +65,7 @@ package body Why.Gen.Arrays is
             Binders => (1 => Ar_Binder),
             Def =>
               New_Equal
-                (New_Array_First_Term (Name, Ar),
+                (+New_Array_First (Name, +Ar, EW_Term),
                  New_Integer_Constant (Value => First))));
       Emit
         (File,
@@ -74,7 +74,7 @@ package body Why.Gen.Arrays is
             Binders => (1 => Ar_Binder),
             Def =>
               New_Equal
-                (New_Array_Last_Term (Name, Ar),
+                (+New_Array_Last (Name, +Ar, EW_Term),
                  New_Integer_Constant (Value => Last))));
       Emit
         (File,
@@ -83,7 +83,7 @@ package body Why.Gen.Arrays is
             Binders => (1 => Ar_Binder),
             Def =>
               New_Equal
-                (New_Array_Length_Term (Name, Ar),
+                (+New_Array_Length (Name, +Ar, EW_Term),
                  New_Integer_Constant
                    (Value => UI_Add (UI_Sub (Last, First), 1)))));
    end Declare_Ada_Constrained_Array;
@@ -242,125 +242,69 @@ package body Why.Gen.Arrays is
                      Args   => (1 => +Ar))));
    end New_Array_Access;
 
-   --------------------------
-   -- New_Array_First_Prog --
-   --------------------------
+   ---------------------
+   -- New_Array_First --
+   ---------------------
 
-   function New_Array_First_Prog
-     (Type_Name : String;
-      Ar        : W_Prog_Id) return W_Prog_Id is
+   function New_Array_First
+      (Type_Name : String;
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id
+   is
    begin
       return
         New_Call
-          (Domain => EW_Prog,
+          (Domain => Domain,
            Name   => Array_First_Name.Id (Ada_Array),
            Args   =>
             (1 =>
                New_Call
-                 (Domain => EW_Prog,
+                 (Domain => Domain,
                   Name   => Array_Conv_From.Id (Type_Name),
                   Args   => (1 => +Ar))));
-   end New_Array_First_Prog;
+   end New_Array_First;
 
-   ---------------------------
-   -- New_Array_First_Term --
-   ---------------------------
+   --------------------
+   -- New_Array_Last --
+   --------------------
 
-   function New_Array_First_Term
-     (Type_Name : String;
-      Ar        : W_Term_Id) return W_Term_Id is
+   function New_Array_Last
+      (Type_Name : String;
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id is
    begin
       return
         New_Call
-          (Domain => EW_Term,
-           Name   => Array_First_Name.Id (Ada_Array),
-           Args   =>
-            (1 =>
-               New_Call
-                 (Domain => EW_Term,
-                  Name   => Array_Conv_From.Id (Type_Name),
-                  Args   => (1 => +Ar))));
-   end New_Array_First_Term;
-
-   --------------------------
-   -- New_Array_Last_Prog --
-   --------------------------
-
-   function New_Array_Last_Prog
-     (Type_Name : String;
-      Ar        : W_Prog_Id) return W_Prog_Id is
-   begin
-      return
-        New_Call
-          (Domain => EW_Prog,
+          (Domain => Domain,
            Name   => Array_Last_Name.Id (Ada_Array),
            Args   =>
             (1 =>
                New_Call
-                  (Domain => EW_Prog,
+                  (Domain => Domain,
                    Name   => Array_Conv_From.Id (Type_Name),
                    Args   => (1 => +Ar))));
-   end New_Array_Last_Prog;
+   end New_Array_Last;
 
-   -------------------------
-   -- New_Array_Last_Term --
-   -------------------------
+   ----------------------
+   -- New_Array_Length --
+   ----------------------
 
-   function New_Array_Last_Term
-     (Type_Name : String;
-      Ar        : W_Term_Id) return W_Term_Id is
+   function New_Array_Length
+      (Type_Name : String;
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id is
    begin
       return
         New_Call
-          (Domain => EW_Term,
-           Name   => Array_Last_Name.Id (Ada_Array),
-           Args   =>
-             (1 =>
-                New_Call
-                  (Domain => EW_Term,
-                   Name   => Array_Conv_From.Id (Type_Name),
-                   Args   => (1 => +Ar))));
-   end New_Array_Last_Term;
-
-   --------------------------
-   -- New_Array_Length_Prog --
-   --------------------------
-
-   function New_Array_Length_Prog
-     (Type_Name : String;
-      Ar        : W_Prog_Id) return W_Prog_Id is
-   begin
-      return
-        New_Call
-          (Domain => EW_Prog,
+          (Domain => Domain,
            Name   => Array_Length_Name.Id (Ada_Array),
            Args   =>
              (1 =>
                 New_Call
-                  (Domain => EW_Prog,
+                  (Domain => Domain,
                    Name   => Array_Conv_From.Id (Type_Name),
                    Args   => (1 => +Ar))));
-   end New_Array_Length_Prog;
-
-   ---------------------------
-   -- New_Array_Length_Term --
-   ---------------------------
-
-   function New_Array_Length_Term
-     (Type_Name : String;
-      Ar        : W_Term_Id) return W_Term_Id is
-   begin
-      return
-        New_Call
-          (Domain => EW_Term,
-           Name   => Array_Length_Name.Id (Ada_Array),
-           Args   =>
-             (1 =>
-                New_Call
-                  (Domain => EW_Term,
-                   Name   => Array_Conv_From.Id (Type_Name),
-                   Args   => (1 => +Ar))));
-   end New_Array_Length_Term;
+   end New_Array_Length;
 
    ---------------------------
    -- New_Array_Update_Prog --

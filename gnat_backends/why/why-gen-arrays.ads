@@ -63,20 +63,23 @@ package Why.Gen.Arrays is
       Domain        : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
-   function New_Array_First_Term
+   function New_Array_First
       (Type_Name : String;
-       Ar        : W_Term_Id) return W_Term_Id;
-   --  Generate a Term that corresponds to Ar'First.
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
+   --  Generate an expr that corresponds to Ar'First.
 
-   function New_Array_Last_Term
+   function New_Array_Last
       (Type_Name : String;
-       Ar        : W_Term_Id) return W_Term_Id;
-   --  Generate a Term that corresponds to Ar'Last.
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
+   --  Generate an expr that corresponds to Ar'Last.
 
-   function New_Array_Length_Term
+   function New_Array_Length
       (Type_Name : String;
-       Ar        : W_Term_Id) return W_Term_Id;
-   --  Generate a Term that corresponds to Ar'Length.
+       Ar        : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
+   --  Generate an expr that corresponds to Ar'Length.
 
    function New_Array_Update_Prog
       (Ada_Node  : Node_Id;
@@ -93,20 +96,5 @@ package Why.Gen.Arrays is
        Index     : W_Term_Id;
        Value     : W_Term_Id) return W_Term_Id;
    --  Generate a Program that corresponds to an array update.
-
-   function New_Array_First_Prog
-      (Type_Name : String;
-       Ar        : W_Prog_Id) return W_Prog_Id;
-   --  Generate a Prog that corresponds to Ar'First.
-
-   function New_Array_Last_Prog
-      (Type_Name : String;
-       Ar        : W_Prog_Id) return W_Prog_Id;
-   --  Generate a Prog that corresponds to Ar'Last.
-
-   function New_Array_Length_Prog
-      (Type_Name : String;
-       Ar        : W_Prog_Id) return W_Prog_Id;
-   --  Generate a Prog that corresponds to Ar'Length.
 
 end Why.Gen.Arrays;
