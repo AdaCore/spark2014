@@ -230,6 +230,6 @@ The final directory structure of all related products is:
    $ ./run-tests -j n
    where n is a sufficiently high number, eg. n = 5
 
-11) Run the ACATS testsuite
+11) Run the ACATS testsuite on gnatprove
 
    TBD
