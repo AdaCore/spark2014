@@ -42,19 +42,19 @@ package body Why.Gen.Names is
       case Rel is
          when EW_None =>
             pragma Assert (False);
-            return "bool_int__always_true";
+            return "always_true_int_bool";
          when EW_Eq =>
-            return "bool_int__eq";
+            return "eq_int_bool";
          when EW_Ne =>
-            return "bool_int__ne";
+            return "neq_int_bool";
          when EW_Lt =>
-            return "bool_int__lt";
+            return "lt_int_bool";
          when EW_Le =>
-            return "bool_int__le";
+            return "le_int_bool";
          when EW_Gt =>
-            return "bool_int__gt";
+            return "gt_int_bool";
          when EW_Ge =>
-            return "bool_int__ge";
+            return "ge_int_bool";
       end case;
    end Bool_Int_Cmp_String;
 
