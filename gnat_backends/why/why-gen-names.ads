@@ -37,9 +37,16 @@ package Why.Gen.Names is
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name
 
-   function New_Bool_Int_Cmp (Rel : EW_Relation) return W_Identifier_Id;
-   --  Return the name of the boolean comparison operator for Why ints that
-   --  corresponds to the comparison operator in argument.
+   function EW_Base_Type_Name (Kind : EW_Base_Type) return String;
+   --  Return the Why name of a base type (e.g. "int" for int)
+
+   function New_Bool_Cmp
+     (Rel       : EW_Relation;
+      Arg_Types : EW_Scalar)
+     return W_Identifier_Id;
+   --  Return the name of boolean comparison operators for Why scalars
+   --  in the domain EW_Term (i.e. the name of a logic function returning
+   --  bool).
 
    function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String;
    --  Return the name of the Why scalar type (e.g. "real" from real)

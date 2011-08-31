@@ -29,43 +29,70 @@ with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Names is
 
-   function Bool_Int_Cmp_String (Rel : EW_Relation) return String;
+   function Bool_Cmp_String
+     (Rel       : EW_Relation;
+      Arg_Types : EW_Scalar) return String;
    --  Return the name of a boolean integer comparison operator
 
-   -------------------------
-   -- Bool_Int_Cmp_String --
-   -------------------------
+   --------------------
+   -- EW_Scalar_Name --
+   --------------------
 
-   function Bool_Int_Cmp_String (Rel : EW_Relation) return String
+   function EW_Base_Type_Name (Kind : EW_Base_Type) return String is
+   begin
+      case Kind is
+         when EW_Unit =>
+            return "unit";
+         when EW_Prop =>
+            return "prop";
+         when EW_Real =>
+            return "real";
+         when EW_Int =>
+            return "int";
+         when EW_Bool =>
+            return "bool";
+      end case;
+   end EW_Base_Type_Name;
+
+   ---------------------
+   -- Bool_Cmp_String --
+   ---------------------
+
+   function Bool_Cmp_String
+     (Rel       : EW_Relation;
+      Arg_Types : EW_Scalar) return String
    is
    begin
       case Rel is
          when EW_None =>
             pragma Assert (False);
-            return "always_true_int_bool";
+            return "always_true_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Eq =>
-            return "eq_int_bool";
+            return "eq_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Ne =>
-            return "neq_int_bool";
+            return "neq_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Lt =>
-            return "lt_int_bool";
+            return "lt_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Le =>
-            return "le_int_bool";
+            return "le_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Gt =>
-            return "gt_int_bool";
+            return "gt_" & EW_Base_Type_Name (Arg_Types) & "_bool";
          when EW_Ge =>
-            return "ge_int_bool";
+            return "ge_" & EW_Base_Type_Name (Arg_Types) & "_bool";
       end case;
-   end Bool_Int_Cmp_String;
+   end Bool_Cmp_String;
 
-   ----------------------
-   -- New_Bool_Int_Cmp --
-   ----------------------
+   ------------------
+   -- New_Bool_Cmp --
+   ------------------
 
-   function New_Bool_Int_Cmp (Rel : EW_Relation) return W_Identifier_Id is
+   function New_Bool_Cmp
+     (Rel       : EW_Relation;
+      Arg_Types : EW_Scalar)
+     return W_Identifier_Id is
    begin
-      return New_Identifier (EW_Pred, Bool_Int_Cmp_String (Rel));
-   end New_Bool_Int_Cmp;
+      return New_Identifier (EW_Pred, Bool_Cmp_String (Rel, Arg_Types));
+   end New_Bool_Cmp;
 
    ------------------
    -- New_Division --

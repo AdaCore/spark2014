@@ -643,41 +643,49 @@ package body Gnat2Why.Subprograms is
    -- Equal_To --
    --------------
 
-   function Equal_To (E : W_Expr_Id; N : Node_Id; Domain : EW_Domain)
-      return W_Expr_Id is
+   function Equal_To
+     (E      : W_Expr_Id;
+      N      : Node_Id;
+      Domain : EW_Domain)
+     return W_Expr_Id is
    begin
       case Nkind (N) is
          when N_Identifier
            | N_Real_Literal
            | N_Integer_Literal =>
-            return
-              New_Comparison
-                (Cmp    => EW_Eq,
-                 Left   => E,
-                 Right  => Why_Expr_Of_Ada_Expr (N,
-                                                 Base_Why_Type (N),
-                                                 Domain),
-                 Domain => Domain);
+            declare
+               BT : constant Why_Type := Base_Why_Type (N);
+            begin
+               return
+                 New_Comparison
+                 (Cmp       => EW_Eq,
+                  Left      => E,
+                  Right     => Why_Expr_Of_Ada_Expr (N, BT, Domain),
+                  Arg_Types => To_EW_Type (BT.Kind),
+                  Domain    => Domain);
+            end;
 
          when N_Range =>
             return
               New_And_Expr
                 (Left  =>
                    New_Comparison
-                     (Cmp    => EW_Le,
-                      Left   => Why_Expr_Of_Ada_Expr (Low_Bound (N),
-                                                      Why_Int_Type,
-                                                      Domain),
-                      Right  => E,
-                      Domain => Domain),
+                     (Cmp       => EW_Le,
+                      Left      => Why_Expr_Of_Ada_Expr (Low_Bound (N),
+                                                         Why_Int_Type,
+                                                         Domain),
+                      Arg_Types => EW_Int,
+                      Right     => E,
+                      Domain    => Domain),
                  Right =>
                    New_Comparison
-                     (Cmp    => EW_Le,
-                      Left   => E,
-                      Right  => Why_Expr_Of_Ada_Expr (High_Bound (N),
-                                                      Why_Int_Type,
-                                                      Domain),
-                      Domain => Domain),
+                     (Cmp       => EW_Le,
+                      Left      => E,
+                      Right     => Why_Expr_Of_Ada_Expr (High_Bound (N),
+                                                         Why_Int_Type,
+                                                         Domain),
+                      Arg_Types => EW_Int,
+                      Domain    => Domain),
                  Domain => Domain);
 
          when N_Others_Choice =>
@@ -1391,19 +1399,17 @@ package body Gnat2Why.Subprograms is
             declare
                Left      : constant Node_Id := Left_Opnd (Expr);
                Right     : constant Node_Id := Right_Opnd (Expr);
+               BT        : constant Why_Type := Base_Why_Type (Left, Right);
                Subdomain : constant EW_Domain :=
                              (if Domain = EW_Pred then EW_Term else Domain);
             begin
                T :=
                  New_Comparison
-                   (Cmp    => Why_Rel_Of_Ada_Op (Nkind (Expr)),
-                    Left   => Why_Expr_Of_Ada_Expr (Left,
-                                                    Base_Why_Type (Left),
-                                                    Subdomain),
-                    Right  => Why_Expr_Of_Ada_Expr (Right,
-                                                    Base_Why_Type (Right),
-                                                    Subdomain),
-                    Domain => Domain);
+                   (Cmp       => Why_Rel_Of_Ada_Op (Nkind (Expr)),
+                    Left      => Why_Expr_Of_Ada_Expr (Left, BT, Subdomain),
+                    Right     => Why_Expr_Of_Ada_Expr (Right, BT, Subdomain),
+                    Arg_Types => To_EW_Type (BT.Kind),
+                    Domain    => Domain);
                Current_Type := Why_Bool_Type;
             end;
 

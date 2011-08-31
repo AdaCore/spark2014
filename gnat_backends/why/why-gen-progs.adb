@@ -556,6 +556,7 @@ package body Why.Gen.Progs is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
+      Arg_Types   : EW_Scalar;
       Domain      : EW_Domain)
      return W_Expr_Id is
    begin
@@ -569,7 +570,7 @@ package body Why.Gen.Progs is
       else
          return
            New_Call
-             (Name   => New_Bool_Int_Cmp (Cmp),
+             (Name   => New_Bool_Cmp (Cmp, Arg_Types),
               Args   => (1 => +Left, 2 => +Right),
               Domain => Domain);
       end if;

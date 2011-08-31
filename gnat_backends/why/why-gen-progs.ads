@@ -106,6 +106,7 @@ package Why.Gen.Progs is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
+      Arg_Types   : EW_Scalar;
       Domain      : EW_Domain)
      return W_Expr_Id;
 
