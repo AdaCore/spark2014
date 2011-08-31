@@ -23,12 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;         use Atree;
-with Sinfo;         use Sinfo;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
-with Why.Inter;     use Why.Inter;
-with Why.Sinfo;     use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 
@@ -78,23 +74,6 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   function Get_Range (N : Node_Id) return Node_Id
-      with Post =>
-         (Present (Low_Bound (Get_Range'Result)) and then
-          Present (High_Bound (Get_Range'Result)));
-   --  Get the range of a range constraint or subtype definition.
-   --  The return node is of kind N_Range
-
-   function Type_Of_Node (N : Node_Id) return String;
-   --  Get the name of the type of an Ada node, as a string
-
-   function Type_Of_Node (N : Node_Id) return Entity_Id;
-   --  Get the name of the type of an Ada node, as a Node_Id of Kind
-   --  N_Defining_Identifier
-
-   function Type_Of_Node (N : Node_Id) return Why_Type;
-   --  Get the name of the type of an Ada node, as a Why Type
-
    procedure Why_Decl_Of_Ada_Subprogram
      (File    : W_File_Id;
       Node    : Node_Id;
@@ -107,13 +86,5 @@ package Gnat2Why.Subprograms is
    --    no parameters
    --  * The types of arguments have to be references
    --  * The pre/postconditions need special treatment (TCC)
-
-   function Why_Expr_Of_Ada_Expr
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type;
-      Domain        : EW_Domain) return W_Expr_Id;
-
-   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
-   --  Translate a single Ada statement into a Why expression
 
 end Gnat2Why.Subprograms;

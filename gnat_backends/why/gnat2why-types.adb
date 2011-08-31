@@ -44,7 +44,7 @@ with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Inter;          use Why.Inter;
 
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Gnat2Why.Expr;      use Gnat2Why.Expr;
 
 package body Gnat2Why.Types is
 

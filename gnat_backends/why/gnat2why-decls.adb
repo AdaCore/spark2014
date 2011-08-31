@@ -36,7 +36,7 @@ with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Gnat2Why.Types;       use Gnat2Why.Types;
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Gnat2Why.Expr;        use Gnat2Why.Expr;
 
 package body Gnat2Why.Decls is
 
