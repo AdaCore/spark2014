@@ -248,6 +248,14 @@ The final directory structure of all related products is:
    $ ./run-tests -j n
    where n is a sufficiently high number, eg. n = 5
 
+   OR (for a quicker partial check)
+
+   $ ./run-tests --quick
+
+   OR (for the same partial check, even faster)
+
+   $ ./run-tests --quick -j n
+
 13) Run the ACATS testsuite on gnatprove
    13.1) Check out
 
