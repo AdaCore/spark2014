@@ -37,10 +37,6 @@ package Why.Gen.Names is
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name
 
-   function New_Bool_Int_Axiom (Rel : EW_Relation) return W_Identifier_Id;
-   --  Return the name of the boolean comparison axiom for Why ints that
-   --  corresponds to the comparison operator in argument.
-
    function New_Bool_Int_Cmp (Rel : EW_Relation) return W_Identifier_Id;
    --  Return the name of the boolean comparison operator for Why ints that
    --  corresponds to the comparison operator in argument.

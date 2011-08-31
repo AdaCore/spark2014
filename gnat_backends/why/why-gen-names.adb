@@ -67,15 +67,6 @@ package body Why.Gen.Names is
       return New_Identifier (EW_Pred, Bool_Int_Cmp_String (Rel));
    end New_Bool_Int_Cmp;
 
-   ------------------------
-   -- New_Bool_Int_Axiom --
-   ------------------------
-
-   function New_Bool_Int_Axiom (Rel : EW_Relation) return W_Identifier_Id is
-   begin
-      return New_Identifier (Bool_Int_Cmp_String (Rel) & "_axiom");
-   end New_Bool_Int_Axiom;
-
    ------------------
    -- New_Division --
    ------------------
