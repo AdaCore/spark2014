@@ -88,6 +88,13 @@ The final directory structure of all related products is:
       where <Root> denotes a full path and <machine> denotes the machine name
       (Ex: kwai).
 
+      OR
+      $ ./configure --prefix=<Root>/local --without-python
+
+      Make sure that gnatlib is configured with projects support, which can be
+      seen in the output of the configure command:
+        configure:  Projects: yes
+
    4.3) Build gnatlib
 
       $ make
@@ -220,7 +227,18 @@ The final directory structure of all related products is:
    $ make install-stdlib WHYLIB=$WHYLIB
    $ export PATH=<Root>/hi-lite/install/bin:$PATH
 
-10) Run the testsuite
+10) Install AdaCore python
+
+   Get the version that corresponds to your system:
+
+   svn+ssh://svn.eu.adacore.com/Dev/trunk/binaries/python/2.7/distrib
+
+11) Install gnatpython
+
+   Follow the instructions at:
+   https://www2.adacore.com/internal.auth/gnatpython-docs/introduction.html#installation
+
+12) Run the testsuite
 
    $ cd <Root>/hi-lite/gnat_backends/testsuite
    $ ./run-tests
@@ -230,14 +248,14 @@ The final directory structure of all related products is:
    $ ./run-tests -j n
    where n is a sufficiently high number, eg. n = 5
 
-11) Run the ACATS testsuite on gnatprove
-   11.1) Check out
+13) Run the ACATS testsuite on gnatprove
+   13.1) Check out
 
       $ svn co svn+ssh://svn.us.adacore.com/Dev/trunk/gnatmail/testsuites/acats
 
       in directory <Root>. This step creates directory <Root>/acats
 
-   11.2) Run
+   13.2) Run
 
       $ cd <Root>/acats
       $ ./run_acats_test.py --mode=gnatprove-check
