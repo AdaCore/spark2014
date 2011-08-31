@@ -34,9 +34,9 @@ package body Why.Gen.Names is
       Arg_Types : EW_Scalar) return String;
    --  Return the name of a boolean integer comparison operator
 
-   --------------------
-   -- EW_Scalar_Name --
-   --------------------
+   -----------------------
+   -- EW_Base_Type_Name --
+   -----------------------
 
    function EW_Base_Type_Name (Kind : EW_Base_Type) return String is
    begin
