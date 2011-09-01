@@ -212,6 +212,9 @@ procedure Gnatprove is
       --  Set the environment variable WHYLIB, if necessary, to indicate the
       --  placement for Why
       if not Ada.Environment_Variables.Exists (WHYLIB) then
+         if Verbose then
+            Put_Line ("Setting env var WHYLIB to: " & Why_Lib_Dir);
+         end if;
          Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
       end if;
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
