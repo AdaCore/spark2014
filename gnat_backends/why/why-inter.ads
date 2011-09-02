@@ -26,6 +26,8 @@
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Atree;                              use Atree;
+with Sinfo;                              use Sinfo;
 with String_Utils;                       use String_Utils;
 with Types;                              use Types;
 with Why.Sinfo;                          use Why.Sinfo;
@@ -148,7 +150,8 @@ package Why.Inter is
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
 
-   function Full_Name (N : Node_Id) return String;
+   function Full_Name (N : Entity_Id) return String
+      with Pre => (Nkind (N) = N_Defining_Identifier);
    --  Given an N_Defining_Identifier, return its Full Name, as used in Why.
 
 end Why.Inter;

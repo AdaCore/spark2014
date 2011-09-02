@@ -25,9 +25,7 @@
 
 with Ada.Characters.Handling;
 
-with Sinfo;         use Sinfo;
 with Einfo;         use Einfo;
-with Atree;         use Atree;
 with Sem_Util;      use Sem_Util;
 with Stand;         use Stand;
 with Constant_Tree;
@@ -105,7 +103,7 @@ package body Why.Inter is
    -- Full_Name --
    ---------------
 
-   function Full_Name (N : Node_Id) return String is
+   function Full_Name (N : Entity_Id) return String is
    begin
       if N = Standard_Boolean then
          return "bool";
