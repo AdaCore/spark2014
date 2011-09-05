@@ -41,7 +41,7 @@ package Why is
    --  Use this exception for cases that are not expected at this place in the
    --  Ada AST
 
-   Is_Why3 : constant Boolean := False;
+   Is_Why3 : constant Boolean := True;
    --  Set to True to generate why3 code
 
 end Why;
