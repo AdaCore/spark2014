@@ -1,10 +1,8 @@
 configuration project Why is
    for Default_Language use "Why";
    package Compiler is
-      for Driver ("Why") use "why";
-      for Required_Switches ("Why") use
-         ("--multi-altergo", "--explain", "--fast-wp", "--default-locs", "--delete-old-vcs");
-      for Object_File_Suffix ("Why") use "_ctx.why";
+      for Driver ("Why") use "gnat3why";
+      for Object_File_Suffix ("Why") use "_po1.why";
       for Language_Kind ("Why") use "file_based";
    end Compiler;
 
