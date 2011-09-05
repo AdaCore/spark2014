@@ -1564,17 +1564,17 @@ package body Gnat2Why.Expr is
                      Loop_Range   : constant Node_Id :=
                                       Discrete_Subtype_Definition
                                         (LParam_Spec);
-                     Loop_Index   : constant String :=
-                                      Full_Name
-                                        (Defining_Identifier
-                                           (LParam_Spec));
+                     Loop_Index   : constant W_Identifier_Id :=
+                                      New_Identifier
+                                        (Full_Name
+                                           (Defining_Identifier
+                                             (LParam_Spec)));
                      Index_Deref  : constant W_Prog_Id :=
                                       New_Unary_Op
                                         (Ada_Node => Stmt,
                                          Domain   => EW_Prog,
                                          Op       => EW_Deref,
-                                         Right    =>
-                                           +New_Identifier (Loop_Index));
+                                         Right    => +Loop_Index);
                      Addition     : constant W_Prog_Id :=
                                       New_Binary_Op
                                         (Ada_Node => Stmt,
@@ -1589,8 +1589,7 @@ package body Gnat2Why.Expr is
                      Incr_Stmt    : constant W_Prog_Id :=
                                       New_Assignment
                                         (Ada_Node => Stmt,
-                                         Name     =>
-                                           New_Identifier (Loop_Index),
+                                         Name     => Loop_Index,
                                          Value    => Addition);
                      Enriched_Inv : constant W_Pred_Id :=
                                       +New_And_Expr
@@ -1598,7 +1597,10 @@ package body Gnat2Why.Expr is
                                          Right =>
                                            Range_Expr
                                             (Loop_Range,
-                                             +New_Term (Loop_Index),
+                                             New_Unary_Op
+                                               (Domain   => EW_Term,
+                                               Op       => EW_Deref,
+                                               Right    => +Loop_Index),
                                              EW_Pred),
                                          Domain => EW_Pred);
                      --  We have enriched the invariant, so even if there was
@@ -1626,7 +1628,7 @@ package body Gnat2Why.Expr is
                   begin
                      return
                        New_Binding_Ref
-                         (Name    => New_Identifier (Loop_Index),
+                         (Name    => Loop_Index,
                           Def     => +Why_Expr_Of_Ada_Expr (Low,
                                                             Why_Int_Type,
                                                             EW_Prog),
