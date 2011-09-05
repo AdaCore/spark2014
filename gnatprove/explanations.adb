@@ -83,7 +83,14 @@ package body Explanations is
          elsif Starts_With (Line, "kind") then
             Expl.EX_Kind := Interpret_Why_VC_Kind (Extract (Line, 7));
          elsif Starts_With (Line, "text") then
-            Expl.EX_Kind := VC_Kind'Value (Extract (Line, 7));
+            declare
+               S : constant String := Extract (Line, 7);
+            begin
+               Expl.EX_Kind := VC_Kind'Value (S);
+            exception
+               when Constraint_Error =>
+                  Abort_With_Message ("Could not read VC Kind: " & S);
+            end;
          end if;
       end Handle_Line;
 
@@ -105,16 +112,17 @@ package body Explanations is
    begin
       if S = "Lemma" or else S = "Assert" or else S = "Check" then
          return VC_Assert;
-      elsif S = "Pre" then
+      elsif S = "precondition" then
          return VC_Precondition;
-      elsif S = "Post" then
+      elsif S = "normal postcondition" then
          return VC_Postcondition;
-      elsif S = "LoopInvInit" then
+      elsif S = "loop invariant init" then
          return VC_Loop_Invariant_Init;
-      elsif S = "LoopInvPreserv" then
+      elsif S = "loop invariant preservation" then
          return VC_Loop_Invariant_Preserv;
       else
-         raise Program_Error;
+         Abort_With_Message ("Cannot understand VC explanation: " & S);
+         return VC_Assert;
       end if;
    end Interpret_Why_VC_Kind;
 
