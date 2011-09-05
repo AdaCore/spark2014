@@ -31,6 +31,7 @@ with Why.Sinfo;            use Why.Sinfo;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Names;        use Why.Gen.Names;
 
 with String_Utils;         use String_Utils;
 
@@ -58,6 +59,29 @@ package body Gnat2Why.Locs is
        L : Label);
    --  Print a single entry of a located label
 
+   function Location_Label_Why3 (N : Node_Id; Reason : VC_Kind)
+      return W_Identifier_Id;
+
+   -------------------------
+   -- Location_Label_Why3 --
+   -------------------------
+
+   function Location_Label_Why3 (N : Node_Id; Reason : VC_Kind)
+      return W_Identifier_Id
+   is
+      Loc    : constant Source_Ptr := Sloc (N);
+      File   : constant String :=
+         Get_Name_String (File_Name (Get_Source_File_Index (Loc)));
+      Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
+      Column : constant Column_Number := Get_Column_Number (Loc);
+      Label : constant String :=
+         "#""" & File & """" & Physical_Line_Number'Image (Line) &
+         Column_Number'Image (Column) & " 0# " &
+         """gnatprove:" & VC_Kind'Image (Reason) & """";
+   begin
+      return New_Identifier (Label);
+   end Location_Label_Why3;
+
    -----------------------
    -- New_Located_Label --
    -----------------------
@@ -75,7 +99,7 @@ package body Gnat2Why.Locs is
       L.Label_Reason := Reason;
       Append (Located_Labels, L);
       Counter := Counter + 1;
-      return L.Label_Ident;
+      return Location_Label_Why3 (N, Reason);
    end New_Located_Label;
 
    procedure Print_Located_Label
