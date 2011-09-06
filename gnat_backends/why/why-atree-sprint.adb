@@ -371,17 +371,9 @@ package body Why.Atree.Sprint is
       Node  : W_Binder_Id)
    is
    begin
-      if Is_Why3 then
-         P (O, "(");
-      end if;
-
       Traverse (State, +Get_Name (Node));
       P (O, " : ");
       Traverse (State, +Get_Arg_Type (Node));
-
-      if Is_Why3 then
-         P (O, ")");
-      end if;
 
       State.Control := Abandon_Children;
    end Binder_Pre_Op;
@@ -849,7 +841,7 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
-      P (O, Get_Value (Node));
+      P (O, Get_Value (Node), Get_Domain (+Node));
    end Literal_Pre_Op;
 
    ------------------------
@@ -870,6 +862,9 @@ package body Why.Atree.Sprint is
    begin
       P (O, "if (");
       Traverse (State, +Condition);
+      if Is_Why3 and then Get_Domain (+Node) = EW_Pred then
+         P (O, " = True");
+      end if;
       PL (O, ") then (");
       Relative_Indent (O, 1);
       Traverse (State, +Then_Part);
@@ -1210,17 +1205,11 @@ package body Why.Atree.Sprint is
       Node  : W_Label_Id)
    is
    begin
-      if Is_Why3 then
-         P (O, "( """);
-      else
-         P (O, "( ");
-      end if;
+      P (O, "( ");
 
       Traverse (State, +Get_Name (Node));
 
-      if Is_Why3 then
-         P (O, """ ");
-      else
+      if not Is_Why3 then
          P (O, " : ");
       end if;
 
@@ -1368,7 +1357,25 @@ package body Why.Atree.Sprint is
 
             NL (O);
             Relative_Indent (O, 1);
-            Traverse (State, +Func_Type);
+            if Is_Why3 then
+               declare
+                  Binders     : constant W_Binder_OList :=
+                                  Get_Binders (Func_Type);
+                  Result      : constant W_Binder_Id := Get_Result (Func_Type);
+                  Result_Type : constant W_Simple_Value_Type_Id :=
+                                  Get_Arg_Type (Result);
+               begin
+                  if not Is_Empty (+Binders) then
+                     P (O, " (");
+                     Print_List (State, +Binders, ") (");
+                     P (O, ") ");
+                  end if;
+                  P (O, " :");
+                  Traverse (State, +Result_Type);
+               end;
+            else
+               Traverse (State, +Func_Type);
+            end if;
             Relative_Indent (O, -1);
             NL (O);
 
@@ -1420,9 +1427,9 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             if Is_Why3 then
-               P (O, " ");
-               Print_List (State, +Binders, " ");
-               PL (O, " =");
+               P (O, " (");
+               Print_List (State, +Binders, ") (");
+               PL (O, ") =");
             else
                P (O, " (");
                Print_List (State, +Binders);
@@ -1462,7 +1469,7 @@ package body Why.Atree.Sprint is
             if not Is_Empty (+Binders) then
                P (O, " (");
                Print_List (State, +Binders, ") (");
-               P (O, ")");
+               P (O, ") ");
             end if;
 
             PL (O, " =");

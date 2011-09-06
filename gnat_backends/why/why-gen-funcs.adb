@@ -52,6 +52,8 @@ package body Why.Gen.Funcs is
                        +New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
                      Else_Part =>
                        +New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+      Pre     : constant W_Pred_Id :=
+                  New_Literal (Domain => EW_Pred, Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=
                    New_Abstract_Type (Name => New_Identifier (EW_Term,
                                                               Type_Name));
@@ -71,6 +73,7 @@ package body Why.Gen.Funcs is
                   B_Type => Arg_Type,
                   others => <>)),
             Return_Type => New_Base_Type (Base_Type => EW_Bool),
+            Pre         => Pre,
             Post        => Post));
    end New_Boolean_Equality_Parameter;
 

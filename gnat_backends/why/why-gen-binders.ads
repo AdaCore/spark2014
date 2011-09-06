@@ -90,8 +90,10 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
-      Post        : W_Pred_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id :=
+                      New_Literal (Value => EW_True, Domain => EW_Pred);
+      Post        : W_Pred_Id :=
+                      New_Literal (Value => EW_True, Domain => EW_Pred))
      return W_Declaration_Id;
 
    function New_Function_Def
