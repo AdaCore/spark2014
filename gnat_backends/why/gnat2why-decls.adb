@@ -92,6 +92,7 @@ package body Gnat2Why.Decls is
 
    begin
       --  If the object is mutable, we generate a global ref
+
       if Is_Mutable (Id) then
          Emit
            (File,
@@ -99,9 +100,10 @@ package body Gnat2Why.Decls is
               (Name     => New_Identifier (Name),
                Ref_Type => +Why_Logic_Type_Of_Ada_Obj (Id)));
 
+      --  Otherwise we can generate a "logic", with a defining axiom if
+      --  necessary and possible.
+
       else
-         --  otherwise we can generate a "logic", with a defining axiom if
-         --  necessary and possible.
          Emit_Top_Level_Declarations
            (File        => File,
             Name        => New_Identifier (Name),
@@ -114,6 +116,6 @@ package body Gnat2Why.Decls is
                   Def    => Term_Definition,
                   others => <>)));
       end if;
-
    end Why_Decl_Of_Ada_Object_Decl;
+
 end Gnat2Why.Decls;

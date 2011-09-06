@@ -862,9 +862,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "if (");
       Traverse (State, +Condition);
+
       if Is_Why3 and then Get_Domain (+Node) = EW_Pred then
          P (O, " = True");
       end if;
+
       PL (O, ") then (");
       Relative_Indent (O, 1);
       Traverse (State, +Then_Part);
@@ -1357,6 +1359,7 @@ package body Why.Atree.Sprint is
 
             NL (O);
             Relative_Indent (O, 1);
+
             if Is_Why3 then
                declare
                   Binders     : constant W_Binder_OList :=
@@ -1376,6 +1379,7 @@ package body Why.Atree.Sprint is
             else
                Traverse (State, +Func_Type);
             end if;
+
             Relative_Indent (O, -1);
             NL (O);
 
