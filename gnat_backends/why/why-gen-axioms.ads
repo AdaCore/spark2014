@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;         use Why.Ids;
+with Why.Sinfo;       use Why.Sinfo;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Axioms is
@@ -43,9 +44,7 @@ package Why.Gen.Axioms is
    procedure Define_Coerce_Axiom
      (File           : W_File_Id;
       Type_Name      : W_Identifier_Id;
-      Base_Type      : W_Primitive_Type_Id;
-      From_Base_Type : W_Identifier_Id;
-      To_Base_Type   : W_Identifier_Id);
+      Base_Type      : EW_Scalar);
    --  Define a coerce axiom; it asserts that conversion from the base
    --  primitive type then back to the original type is the identity
    --  (as long as we are in the type range). The axiom is of the
@@ -57,21 +56,21 @@ package Why.Gen.Axioms is
    --     <to_base_type> (<from_base_type> (x)) = x
 
    procedure Define_Unicity_Axiom
-     (File       : W_File_Id;
-      Type_Name  : W_Identifier_Id;
-      Conversion : W_Identifier_Id);
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar);
    --  Define a unicity axiom; it asserts that if two object of the
    --  given type convert to the same object on its base type, then
    --  they are equal. The axiom is of the form:
    --
    --  axiom standard__integer___unicity :
    --   forall x, y : <type_name>.
-   --    <conversion> (x) = <conversion> (y) -> x = y
+   --    <to_base_type> (x) = <to_base_type> (y) -> x = y
 
    procedure Define_Getter_Axiom
      (File      : W_File_Id;
       Type_Name : String;
-      C_Name    : W_Identifier_Id;
+      Position  : Natural;
       Binders   : Binder_Array);
    --  Define a record getter axiom: its asserts that for a record of type t,
    --  built with a function make___t, get__t_a returns field a.

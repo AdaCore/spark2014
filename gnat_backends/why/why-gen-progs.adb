@@ -386,6 +386,7 @@ package body Why.Gen.Progs is
       Loop_Cond    : constant W_Prog_Id  :=
                        New_Relation
                          (Ada_Node => Ada_Node,
+                          Op_Type  => EW_Int,
                           Op       => EW_Le,
                           Left     => Index_Deref,
                           Right    => +High);
@@ -400,11 +401,12 @@ package body Why.Gen.Progs is
                           Left   => +Invariant,
                           Right  =>
                             New_Relation
-                              (Left   => +Low,
-                               Op     => EW_Le,
-                               Right  => +Loop_Index,
-                               Op2    => EW_Le,
-                               Right2 =>
+                              (Op_Type => EW_Int,
+                               Left    => +Low,
+                               Op      => EW_Le,
+                               Right   => +Loop_Index,
+                               Op2     => EW_Le,
+                               Right2  =>
                                  New_Binary_Op
                                    (Op      => EW_Add,
                                     Op_Type => EW_Int,
@@ -563,10 +565,11 @@ package body Why.Gen.Progs is
       if Domain in EW_Pred | EW_Prog then
          return
             New_Relation
-              (Domain   => Domain,
-               Left     => +Left,
-               Right    => +Right,
-               Op       => Cmp);
+              (Domain  => Domain,
+               Op_Type => Arg_Types,
+               Left    => +Left,
+               Right   => +Right,
+               Op      => Cmp);
       else
          return
            New_Call

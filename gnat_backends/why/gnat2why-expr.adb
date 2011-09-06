@@ -183,7 +183,11 @@ package body Gnat2Why.Expr is
                   Tmp_Var : constant W_Identifier_Id :=
                               Assume_Name.Id (L_Name);
                   Eq      : constant W_Pred_Id :=
-                              New_Equal (+Tmp_Var, +L_Id);
+                              New_Relation
+                                (Op      => EW_Eq,
+                                 Op_Type => Get_EW_Type (Lvalue),
+                                 Left    => +Tmp_Var,
+                                 Right   => +L_Id);
                begin
                   return
                     New_Binding
@@ -640,20 +644,22 @@ package body Gnat2Why.Expr is
         New_And_Then_Expr
           (Left  =>
              New_Relation
-               (Domain => Domain,
-                Op     => EW_Le,
-                Left   => +Why_Expr_Of_Ada_Expr (Low_Bound (Range_Node),
-                                                 Why_Int_Type,
-                                                 Subdomain),
-                Right  => +T),
+               (Domain  => Domain,
+                Op_Type => EW_Int,
+                Op      => EW_Le,
+                Left    => +Why_Expr_Of_Ada_Expr (Low_Bound (Range_Node),
+                                                  Why_Int_Type,
+                                                  Subdomain),
+                Right   => +T),
            Right  =>
              New_Relation
-               (Domain => Domain,
-                Op     => EW_Le,
-                Left   => +T,
-                Right  => +Why_Expr_Of_Ada_Expr (High_Bound (Range_Node),
-                                                 Why_Int_Type,
-                                                 Subdomain)),
+               (Domain  => Domain,
+                Op_Type => EW_Int,
+                Op      => EW_Le,
+                Left    => +T,
+                Right   => +Why_Expr_Of_Ada_Expr (High_Bound (Range_Node),
+                                                  Why_Int_Type,
+                                                  Subdomain)),
            Domain => Domain);
    end Range_Expr;
 
@@ -777,6 +783,7 @@ package body Gnat2Why.Expr is
            New_Relation
              (Ada_Node => Expr,
               Domain   => EW_Term,
+              Op_Type  => EW_Bool,
               Left     => +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Term),
               Right    => New_Literal (Value => EW_True),
               Op       => EW_Eq);

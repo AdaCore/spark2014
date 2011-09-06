@@ -28,7 +28,6 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 
@@ -64,28 +63,35 @@ package body Why.Gen.Arrays is
            (Name => Array_First_Static.Id (Name),
             Binders => (1 => Ar_Binder),
             Def =>
-              New_Equal
-                (+New_Array_First (Name, +Ar, EW_Term),
-                 New_Integer_Constant (Value => First))));
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => EW_Int,
+                 Left    => +New_Array_First (Name, +Ar, EW_Term),
+                 Right   => New_Integer_Constant (Value => First))));
       Emit
         (File,
          New_Guarded_Axiom
            (Name => Array_Last_Static.Id (Name),
             Binders => (1 => Ar_Binder),
             Def =>
-              New_Equal
-                (+New_Array_Last (Name, +Ar, EW_Term),
-                 New_Integer_Constant (Value => Last))));
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => EW_Int,
+                 Left    => +New_Array_Last (Name, +Ar, EW_Term),
+                 Right   => New_Integer_Constant (Value => Last))));
       Emit
         (File,
          New_Guarded_Axiom
            (Name => Array_Length_Static.Id (Name),
             Binders => (1 => Ar_Binder),
             Def =>
-              New_Equal
-                (+New_Array_Length (Name, +Ar, EW_Term),
-                 New_Integer_Constant
-                   (Value => UI_Add (UI_Sub (Last, First), 1)))));
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => EW_Int,
+                 Left    => +New_Array_Length (Name, +Ar, EW_Term),
+                 Right   =>
+                   New_Integer_Constant
+                     (Value => UI_Add (UI_Sub (Last, First), 1)))));
    end Declare_Ada_Constrained_Array;
 
    -------------------------------------
@@ -159,17 +165,20 @@ package body Why.Gen.Arrays is
                                     Name   => Array_Conv_From.Id (Name),
                                     Args   => (1 => +Ar)))))),
                  Pred      =>
-                   New_Equal
-                     (Ar,
-                      New_Call
-                        (Domain => EW_Term,
-                         Name   => Array_Conv_To.Id (Name),
-                         Args   =>
-                           (1 =>
-                              New_Call
-                                (Domain => EW_Term,
-                                 Name   => Array_Conv_From.Id (Name),
-                                 Args   => (1 => +Ar))))))));
+                   New_Relation
+                     (Op      => EW_Eq,
+                      Op_Type => EW_Abstract,
+                      Left    => +Ar,
+                      Right   =>
+                        New_Call
+                          (Domain => EW_Term,
+                           Name   => Array_Conv_To.Id (Name),
+                           Args   =>
+                             (1 =>
+                                New_Call
+                                  (Domain => EW_Term,
+                                   Name   => Array_Conv_From.Id (Name),
+                                   Args   => (1 => +Ar))))))));
       Emit
         (File,
          New_Guarded_Axiom
@@ -200,16 +209,25 @@ package body Why.Gen.Arrays is
                      (Domain => EW_Pred,
                       Op     => EW_Imply,
                       Left   =>
-                        +New_Equal
-                          (New_Call
-                             (Domain => EW_Term,
-                              Name   => Array_Conv_To.Id (Name),
-                              Args   => (1 => +Ar)),
-                           New_Call
-                             (Domain => EW_Term,
-                              Name   => Array_Conv_To.Id (Name),
-                              Args   => (1 => +Arb))),
-                      Right => +New_Equal (Ar, Arb)))));
+                        New_Relation
+                          (Op      => EW_Eq,
+                           Op_Type => EW_Abstract,
+                           Left    =>
+                             New_Call
+                               (Domain => EW_Term,
+                                Name   => Array_Conv_To.Id (Name),
+                                Args   => (1 => +Ar)),
+                           Right =>
+                             New_Call
+                               (Domain => EW_Term,
+                                Name   => Array_Conv_To.Id (Name),
+                                Args   => (1 => +Arb))),
+                      Right  =>
+                        New_Relation
+                          (Op      => EW_Eq,
+                           Op_Type => EW_Abstract,
+                           Left    => +Ar,
+                           Right   => +Arb)))));
    end Declare_Ada_Unconstrained_Array;
 
    ----------------------

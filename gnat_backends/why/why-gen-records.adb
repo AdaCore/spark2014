@@ -67,7 +67,7 @@ package body Why.Gen.Records is
          Define_Getter_Axiom
            (File,
             Name,
-            Binders (J).B_Name,
+            J,
             Binders);
       end loop;
    end Define_Ada_Record;

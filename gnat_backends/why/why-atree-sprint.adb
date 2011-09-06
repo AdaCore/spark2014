@@ -716,13 +716,13 @@ package body Why.Atree.Sprint is
    begin
       Traverse (State, +Left);
       P (O, " ");
-      P (O, Op);
+      P (O, Op, Get_Op_Type (Node));
       P (O, " ");
       Traverse (State, +Right);
 
       if Op2 /= EW_None then
          P (O, " ");
-         P (O, Op2);
+         P (O, Op2, Get_Op_Type (Node));
          P (O, " ");
          Traverse (State, +Right2);
       end if;

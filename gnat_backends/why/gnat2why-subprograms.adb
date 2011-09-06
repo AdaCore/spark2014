@@ -490,11 +490,13 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Defining_Axiom
-                    (Name    => Logic_Func_Name.Id (Name_Str),
-                     Binders => Ext_Binders,
-                     Pre     => Pre,
-                     Def     => +Why_Expr_Of_Ada_Expr
-                                  (Expression (Orig_Node), EW_Term)));
+                    (Name        => Logic_Func_Name.Id (Name_Str),
+                     Return_Type => Get_EW_Type (Expression (Orig_Node)),
+                     Binders     => Ext_Binders,
+                     Pre         => Pre,
+                     Def         =>
+                       +Why_Expr_Of_Ada_Expr
+                         (Expression (Orig_Node), EW_Term)));
             end if;
          end if;
 
@@ -538,9 +540,12 @@ package body Gnat2Why.Subprograms is
                                       +Why_Expr_Of_Ada_Expr
                                         (Expression (Orig_Node), EW_Pred))
                                else
-                                 New_Equal
-                                   (Left  => New_Result_Term,
-                                    Right =>
+                                 New_Relation
+                                   (Op      => EW_Eq,
+                                    Op_Type =>
+                                      Get_EW_Type (Expression (Orig_Node)),
+                                    Left    => +New_Result_Term,
+                                    Right   =>
                                       +Why_Expr_Of_Ada_Expr
                                         (Expression (Orig_Node), EW_Term)))
                             else Post);

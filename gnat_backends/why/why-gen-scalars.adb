@@ -40,8 +40,7 @@ package body Why.Gen.Scalars is
    procedure Define_Scalar_Conversions
      (File           : W_File_Id;
       Name           : String;
-      Base_Type      : W_Primitive_Type_Id;
-      Base_Type_Name : String;
+      Base_Type      : EW_Scalar;
       First          : W_Term_Id;
       Last           : W_Term_Id);
    --  Given a type name, assuming that it ranges between First and Last,
@@ -74,8 +73,7 @@ package body Why.Gen.Scalars is
       Define_Scalar_Conversions
         (File           => File,
          Name           => Name,
-         Base_Type      => New_Base_Type (Base_Type => EW_Int),
-         Base_Type_Name => "int",
+         Base_Type      => EW_Int,
          First          => New_Constant (First),
          Last           => New_Constant (Last));
    end Declare_Ada_Abstract_Signed_Int;
@@ -94,8 +92,7 @@ package body Why.Gen.Scalars is
       Define_Scalar_Conversions
         (File           => File,
          Name           => Name,
-         Base_Type      => New_Base_Type (Base_Type => EW_Real),
-         Base_Type_Name => "real",
+         Base_Type      => EW_Real,
          First          => New_Constant (First),
          Last           => New_Constant (Last));
    end Declare_Ada_Floating_Point;
@@ -107,12 +104,14 @@ package body Why.Gen.Scalars is
    procedure Define_Scalar_Conversions
      (File           : W_File_Id;
       Name           : String;
-      Base_Type      : W_Primitive_Type_Id;
-      Base_Type_Name : String;
+      Base_Type      : EW_Scalar;
       First          : W_Term_Id;
       Last           : W_Term_Id)
    is
-      Arg_S : constant String := "n";
+      Arg_S   : constant String := "n";
+      BT      : constant W_Primitive_Type_Id
+                  := New_Base_Type (Base_Type => Base_Type);
+      BT_Name : constant String := EW_Base_Type_Name (Base_Type);
    begin
       Define_Range_Predicate (File, Name, Base_Type, First, Last);
 
@@ -121,12 +120,12 @@ package body Why.Gen.Scalars is
         (File,
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Conversion_To.Id (Name, Base_Type_Name),
+            Name        => Conversion_To.Id (Name, BT_Name),
             Binders        =>
               New_Binders
                 ((1 => New_Abstract_Type
                          (Name => New_Identifier (Name)))),
-            Return_Type => +Base_Type));
+            Return_Type => BT));
 
       --  from base type:
       declare
@@ -145,15 +144,16 @@ package body Why.Gen.Scalars is
                             (Domain => EW_Term,
                              Name   =>
                                Conversion_To.Id (Name,
-                                                 Base_Type_Name),
+                                                 BT_Name),
                              Args   =>
                                (1 => +New_Result_Term));
          Post         : constant W_Pred_Id :=
                           New_Relation
-                            (Domain => EW_Pred,
-                             Left   => +Base_Result,
-                             Op     => EW_Eq,
-                             Right  => +New_Term (Arg_S));
+                            (Domain  => EW_Pred,
+                             Op_Type => Base_Type,
+                             Left    => +Base_Result,
+                             Op      => EW_Eq,
+                             Right   => +New_Term (Arg_S));
          Spec         : constant Declaration_Spec_Array :=
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
@@ -167,25 +167,23 @@ package body Why.Gen.Scalars is
       begin
          Emit_Top_Level_Declarations
            (File => File,
-            Name => Conversion_From.Id (Name, Base_Type_Name),
+            Name => Conversion_From.Id (Name, BT_Name),
             Binders =>
               (1 => (B_Name => New_Identifier (Arg_S),
-                     B_Type => Base_Type,
+                     B_Type => BT,
                      others => <>)),
             Return_Type => Return_Type,
             Spec => Spec);
-         Define_Eq_Predicate (File, Name, Base_Type_Name);
+         Define_Eq_Predicate (File, Name, Base_Type);
          Define_Range_Axiom (File,
                              New_Identifier (Name),
-                             Conversion_To.Id (Name, Base_Type_Name));
+                             Conversion_To.Id (Name, BT_Name));
          Define_Coerce_Axiom (File,
                               New_Identifier (Name),
-                              Base_Type,
-                              Conversion_From.Id (Name, Base_Type_Name),
-                              Conversion_To.Id (Name, Base_Type_Name));
+                              Base_Type);
          Define_Unicity_Axiom (File,
                                New_Identifier (Name),
-                               Conversion_To.Id (Name, Base_Type_Name));
+                               Base_Type);
       end;
       New_Boolean_Equality_Parameter (File, Name);
    end Define_Scalar_Conversions;

@@ -289,6 +289,8 @@ package body Xtree_Sinfo is
       ----------------
 
       New_Field (W_Relation,
+                 "Op_Type", "EW_Not_Null_Type");
+      New_Field (W_Relation,
                  "Left", "W_Prog", Id_One);
       New_Field (W_Relation,
                  "Op", "EW_Relation");

@@ -40,10 +40,12 @@ package body Why.Gen.Preds is
    -------------------------
 
    procedure Define_Eq_Predicate
-     (File           : W_File_Id;
-      Name           : String;
-      Base_Type_Name : String)
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar)
    is
+      Base_Type_Name    : constant String := EW_Base_Type_Name (Base_Type);
+
       --  Identifiers
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
@@ -85,7 +87,11 @@ package body Why.Gen.Preds is
             Domain  => EW_Pred,
             Binders => (1 => X_Binder, 2 => Y_Binder),
             Def     =>
-              +New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op)));
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => Base_Type,
+                 Left    => +X_To_Base_Type_Op,
+                 Right   => +Y_To_Base_Type_Op)));
    end Define_Eq_Predicate;
 
    ----------------------------
@@ -95,10 +101,13 @@ package body Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File      : W_File_Id;
       Name      : String;
-      Base_Type : W_Primitive_Type_Id;
+      Base_Type : EW_Scalar;
       First     : W_Term_Id;
       Last      : W_Term_Id)
    is
+      BT         : constant W_Primitive_Type_Id
+                     := New_Base_Type (Base_Type => Base_Type);
+
       --  Identifiers
       Arg_S      : constant String := "x";
       First_S    : constant String := "first";
@@ -108,16 +117,17 @@ package body Why.Gen.Preds is
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
       Binder     : constant Binder_Type :=
                      (B_Name => New_Identifier (Arg_S),
-                      B_Type => Base_Type,
+                      B_Type => BT,
                       others => <>);
 
       --  first <= x <= last
       Context    : constant W_Pred_Id :=
-                     New_Relation (Left   => +New_Term (First_S),
-                                   Op     => EW_Le,
-                                   Right  => +New_Term (Arg_S),
-                                   Op2    => EW_Le,
-                                   Right2 => +New_Term (Last_S));
+                     New_Relation (Op_Type => Base_Type,
+                                   Left    => +New_Term (First_S),
+                                   Op      => EW_Le,
+                                   Right   => +New_Term (Arg_S),
+                                   Op2     => EW_Le,
+                                   Right2  => +New_Term (Last_S));
       --  let first = <first> in
       --  let last  = <last>  in [...]
       Decl_Last  : constant W_Pred_Id :=
@@ -142,21 +152,6 @@ package body Why.Gen.Preds is
             Def     => +Decl_First));
    end Define_Range_Predicate;
 
-   ---------------
-   -- New_Equal --
-   ---------------
-
-   function New_Equal
-     (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Pred_Id
-   is
-   begin
-      return New_Relation
-        (Left  => +Left,
-         Right => +Right,
-         Op    => EW_Eq);
-   end New_Equal;
-
    --------------------
    -- New_Equal_Bool --
    --------------------
@@ -169,7 +164,12 @@ package body Why.Gen.Preds is
       return
         New_Connection
           (Op    => EW_Equivalent,
-           Left  => +New_Equal (Left, New_Literal (Value => EW_True)),
+           Left  =>
+             New_Relation
+               (Op      => EW_Eq,
+                Op_Type => EW_Bool,
+                Left    => +Left,
+                Right   => New_Literal (Value => EW_True)),
            Right => +Right);
    end New_Equal_Bool;
 
@@ -200,20 +200,5 @@ package body Why.Gen.Preds is
          return Expr;
       end if;
    end New_Located_Expr;
-
-   ----------------
-   -- New_NEqual --
-   ----------------
-
-   function New_NEqual
-     (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Pred_Id
-   is
-   begin
-      return New_Relation
-        (Left  => +Left,
-         Right => +Right,
-         Op    => EW_Ne);
-   end New_NEqual;
 
 end Why.Gen.Preds;

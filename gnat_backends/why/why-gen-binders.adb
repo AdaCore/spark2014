@@ -29,6 +29,7 @@ with Why.Gen.Decl;    use Why.Gen.Decl;
 with Why.Gen.Terms;   use Why.Gen.Terms;
 with Why.Gen.Preds;   use Why.Gen.Preds;
 with Why.Gen.Progs;   use Why.Gen.Progs;
+with Why.Inter;       use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -101,11 +102,12 @@ package body Why.Gen.Binders is
    ------------------------
 
    function New_Defining_Axiom
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id;
-      Binders  : Binder_Array;
-      Pre      : W_Pred_OId := Why_Empty;
-      Def      : W_Term_Id)
+     (Ada_Node    : Node_Id := Empty;
+      Name        : W_Identifier_Id;
+      Binders     : Binder_Array;
+      Return_Type : EW_Type;
+      Pre         : W_Pred_OId := Why_Empty;
+      Def         : W_Term_Id)
      return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
@@ -114,9 +116,11 @@ package body Why.Gen.Binders is
                       Name    => Name,
                       Binders => Binders);
       Equality : constant W_Pred_Id :=
-                   New_Equal
-                     (Left  => Left,
-                      Right => Def);
+                   New_Relation
+                     (Op      => EW_Eq,
+                      Op_Type => Return_Type,
+                      Left    => +Left,
+                      Right   => +Def);
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
@@ -459,11 +463,12 @@ package body Why.Gen.Binders is
                         Emit
                           (File,
                            New_Defining_Axiom
-                             (Ada_Node => Ada_Node,
-                              Name     => Spec (S).Name,
-                              Binders  => Binders,
-                              Pre      => Spec (S).Pre,
-                              Def      => Spec (S).Def));
+                             (Ada_Node    => Ada_Node,
+                              Name        => Spec (S).Name,
+                              Return_Type => Get_EW_Type (Return_Type),
+                              Binders     => Binders,
+                              Pre         => Spec (S).Pre,
+                              Def         => Spec (S).Def));
                      end if;
 
                   when EW_Pred =>
@@ -484,13 +489,15 @@ package body Why.Gen.Binders is
                         if Logic_Def_Emitted then
                            Spec (S).Post :=
                              New_Relation
-                               (Left  =>
+                               (Op_Type =>
+                                  Get_EW_Type (Return_Type),
+                                Left    =>
                                   +New_Call
                                     (Domain  => EW_Term,
                                      Name    => Spec (S).Name,
                                      Binders => Binders),
-                                Op    => EW_Eq,
-                                Right => +New_Result_Term);
+                                Op      => EW_Eq,
+                                Right   => +New_Result_Term);
                         else
                            Spec (S).Post := New_Literal (Value => EW_True);
                         end if;

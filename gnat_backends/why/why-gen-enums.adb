@@ -145,7 +145,7 @@ package body Why.Gen.Enums is
       Define_Range_Predicate
         (File,
          Name,
-         New_Base_Type (Base_Type => EW_Int),
+         EW_Int,
          First => New_Constant (Uint_1),
          Last  => New_Constant (Max_Uint));
       Emit
@@ -161,18 +161,20 @@ package body Why.Gen.Enums is
             Return_Type => My_Type,
             Pre         =>
               New_Relation
-                (Domain => EW_Pred,
-                 Left   => New_Integer_Constant (Value => Uint_1),
-                 Op     => EW_Le,
-                 Right  => +New_Term ("x"),
-                 Op2    => EW_Le,
-                 Right2 => New_Integer_Constant (Value => Max_Uint)),
+                (Domain  => EW_Pred,
+                 Op_Type => EW_Int,
+                 Left    => New_Integer_Constant (Value => Uint_1),
+                 Op      => EW_Le,
+                 Right   => +New_Term ("x"),
+                 Op2     => EW_Le,
+                 Right2  => New_Integer_Constant (Value => Max_Uint)),
             Post        =>
               New_Relation
-                (Domain => EW_Pred,
-                 Op     => EW_Eq,
-                 Left   => +New_Result_Term,
-                 Right  =>
+                (Domain  => EW_Pred,
+                 Op_Type => EW_Int,
+                 Op      => EW_Eq,
+                 Left    => +New_Result_Term,
+                 Right   =>
                    New_Call
                      (Domain => EW_Term,
                       Name   => Conversion_From.Id (Name, "int"),
@@ -180,9 +182,7 @@ package body Why.Gen.Enums is
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),
-         New_Base_Type (Base_Type => EW_Int),
-         Conversion_From.Id (Name, "int"),
-         Conversion_To.Id (Name, "int"));
+         EW_Int);
       New_Boolean_Equality_Parameter (File, Name);
    end Declare_Ada_Enum_Type;
 

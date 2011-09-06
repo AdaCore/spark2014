@@ -155,12 +155,17 @@ package Why.Sinfo is
       EW_Pred,
       EW_Prog);
 
-   type EW_Base_Type is
+   type EW_Type is
      (EW_Unit,
       EW_Prop,
       EW_Real,
       EW_Int,
-      EW_Bool);
+      EW_Bool,
+      EW_Abstract);
+
+   subtype EW_Not_Null_Type is EW_Type range EW_Prop .. EW_Abstract;
+
+   subtype EW_Base_Type is EW_Type range EW_Unit .. EW_Bool;
 
    subtype EW_Scalar is EW_Base_Type range EW_Real .. EW_Int;
 

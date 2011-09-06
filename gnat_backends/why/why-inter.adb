@@ -25,15 +25,20 @@
 
 with Ada.Characters.Handling;
 
-with Einfo;         use Einfo;
-with Sem_Util;      use Sem_Util;
-with Stand;         use Stand;
+with Einfo;               use Einfo;
+with Sem_Util;            use Sem_Util;
+with Stand;               use Stand;
 with Constant_Tree;
+with Why.Conversions;     use Why.Conversions;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Inter is
 
    package Type_Hierarchy is
      new Constant_Tree (Ext_Why_Base, Why_Null_Type);
+
+   function Get_Why_Type_Enum (N : Node_Id) return Extended_Why_Type_Enum;
 
    ---------------------
    -- Add_With_Clause --
@@ -64,28 +69,14 @@ package body Why.Inter is
    end Base_Why_Type;
 
    function Base_Why_Type (N : Node_Id) return Why_Type is
-      Ty : Node_Id := N;
+      E  : constant Extended_Why_Type_Enum := Get_Why_Type_Enum (N);
    begin
-      if Nkind (N) /= N_Defining_Identifier
-        or else not (Ekind (N) in Type_Kind) then
-         Ty := Etype (N);
-      end if;
-
-      case Ekind (Ty) is
-         when Float_Kind =>
-            return Why_Real_Type;
-
-         when Signed_Integer_Kind | Enumeration_Kind =>
-            --  ??? What about booleans ? We should have
-            --  a special case for them...
-            return Why_Int_Type;
-
-         when Private_Kind =>
-            return Base_Why_Type (Full_View (Ty));
-
-         when others =>
+      case E is
+         when Why_Abstract =>
             raise Not_Implemented;
 
+         when others =>
+            return Why_Types (E);
       end case;
    end Base_Why_Type;
 
@@ -122,6 +113,59 @@ package body Why.Inter is
          end;
       end if;
    end Full_Name;
+
+   -----------------
+   -- Get_EW_Type --
+   -----------------
+
+   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type is
+   begin
+      if Get_Kind (+T) = W_Base_Type then
+         return Get_Base_Type (+T);
+      else
+         return EW_Abstract;
+      end if;
+   end Get_EW_Type;
+
+   function Get_EW_Type (T : Node_Id) return EW_Type is
+      E : constant Extended_Why_Type_Enum := Get_Why_Type_Enum (T);
+   begin
+      case E is
+         when Why_Scalar_Enum =>
+            return To_EW_Type (E);
+         when others =>
+            return EW_Abstract;
+      end case;
+   end Get_EW_Type;
+
+   -----------------------
+   -- Get_Why_Type_Enum --
+   -----------------------
+
+   function Get_Why_Type_Enum (N : Node_Id) return Extended_Why_Type_Enum is
+      Ty : Node_Id := N;
+   begin
+      if Nkind (N) /= N_Defining_Identifier
+        or else not (Ekind (N) in Type_Kind) then
+         Ty := Etype (N);
+      end if;
+
+      case Ekind (Ty) is
+         when Float_Kind =>
+            return Why_Real;
+
+         when Signed_Integer_Kind | Enumeration_Kind =>
+            --  ??? What about booleans ? We should have
+            --  a special case for them...
+            return Why_Int;
+
+         when Private_Kind =>
+            return Get_Why_Type_Enum (Full_View (Ty));
+
+         when others =>
+            return Why_Abstract;
+      end case;
+   end Get_Why_Type_Enum;
 
    ---------
    -- LCA --

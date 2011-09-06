@@ -30,7 +30,14 @@ with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;
 with String_Utils;                       use String_Utils;
 with Types;                              use Types;
+pragma Warnings (Off);
+--  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
+--  common ancestor with the current package. So it hides compilation unit
+--  with the same name ("Sinfo"). Maybe we should think of renaming it to
+--  "Why.W_Sinfo".
 with Why.Sinfo;                          use Why.Sinfo;
+pragma Warnings (On);
+with Why.Ids;                            use Why.Ids;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
@@ -137,6 +144,10 @@ package Why.Inter is
    function To_EW_Type (T : Ext_Why_Base) return EW_Base_Type;
    --  ??? EW_Type and Ext_Why_Base are bound to be merged.
    --  Provide a conversion function for now.
+
+   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type;
+   function Get_EW_Type (T : Node_Id) return EW_Type;
+   --  Return the EW_Type of the given entity
 
    function Up (WT : Why_Type) return Why_Type;
    --  If WT is the highest base type, return WT; otherwise, return the

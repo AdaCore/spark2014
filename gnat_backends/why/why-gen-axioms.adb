@@ -23,12 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Axioms is
 
@@ -39,10 +38,17 @@ package body Why.Gen.Axioms is
    procedure Define_Coerce_Axiom
      (File           : W_File_Id;
       Type_Name      : W_Identifier_Id;
-      Base_Type      : W_Primitive_Type_Id;
-      From_Base_Type : W_Identifier_Id;
-      To_Base_Type   : W_Identifier_Id)
+      Base_Type      : EW_Scalar)
    is
+      Base_Type_Name       : constant W_Identifier_Id :=
+                               New_Identifier
+                                 (EW_Base_Type_Name (Base_Type));
+      From_Base_Type       : constant W_Identifier_Id :=
+                               Conversion_From.Id (Type_Name, Base_Type_Name);
+      To_Base_Type         : constant W_Identifier_Id :=
+                               Conversion_To.Id (Type_Name, Base_Type_Name);
+      BT                   : constant W_Primitive_Type_Id
+                               := New_Base_Type (Base_Type => Base_Type);
       Arg_S                : constant String := "x";
       X_To_Type_Op         : constant W_Term_Id :=
                                New_Call
@@ -75,12 +81,13 @@ package body Why.Gen.Axioms is
                                   Left   => +In_Range,
                                   Right  =>
                                     New_Relation
-                                      (Left  => +Back_To_Base_Type_Op,
-                                       Op    => EW_Eq,
-                                       Right => New_Prog (Arg_S)));
+                                      (Op_Type => Base_Type,
+                                       Left    => +Back_To_Base_Type_Op,
+                                       Op      => EW_Eq,
+                                       Right   => New_Prog (Arg_S)));
       Quantif_On_X         : constant W_Pred_Id :=
                                New_Universal_Quantif
-                                 (Var_Type  => Base_Type,
+                                 (Var_Type  => BT,
                                   Variables => (1 => New_Identifier (EW_Term,
                                                                      Arg_S)),
                                   Triggers  => New_Triggers (
@@ -107,7 +114,7 @@ package body Why.Gen.Axioms is
    procedure Define_Getter_Axiom
      (File      : W_File_Id;
       Type_Name : String;
-      C_Name    : W_Identifier_Id;
+      Position  : Natural;
       Binders   : Binder_Array)
    is
       Call_To_Builder : constant W_Term_Id :=
@@ -118,11 +125,17 @@ package body Why.Gen.Axioms is
       Call_To_Getter  : constant W_Term_Id :=
                           New_Call
                            (Domain => EW_Term,
-                            Name   => Record_Getter_Name.Id (C_Name),
+                            Name   =>
+                              Record_Getter_Name.Id
+                                (Binders (Position).B_Name),
                             Args   => (1 => +Call_To_Builder));
       Context         : constant W_Pred_Id :=
-                          New_Equal (Call_To_Getter,
-                                     +C_Name);
+                          New_Relation
+                            (Op      => EW_Eq,
+                             Op_Type =>
+                               Get_EW_Type (Binders (Position).B_Type),
+                             Left    => +Call_To_Getter,
+                             Right   => +Binders (Position).B_Name);
       UPB             : constant W_Pred_Id :=
                           New_Universal_Quantif
                             (Binders => Binders,
@@ -131,7 +144,7 @@ package body Why.Gen.Axioms is
       Emit
         (File,
          New_Axiom
-           (Name => Record_Getter_Axiom.Id (C_Name),
+           (Name => Record_Getter_Axiom.Id (Binders (Position).B_Name),
             Def  => UPB));
    end Define_Getter_Axiom;
 
@@ -176,10 +189,15 @@ package body Why.Gen.Axioms is
    --------------------------
 
    procedure Define_Unicity_Axiom
-     (File       : W_File_Id;
-      Type_Name  : W_Identifier_Id;
-      Conversion : W_Identifier_Id)
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar)
    is
+      BT_Name           : constant W_Identifier_Id :=
+                            New_Identifier
+                              (EW_Base_Type_Name (Base_Type));
+      Conversion        : constant W_Identifier_Id :=
+                            Conversion_To.Id (Type_Name, BT_Name);
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
       X_To_Base_Type_Op : constant W_Term_Id :=
@@ -198,16 +216,18 @@ package body Why.Gen.Axioms is
                                Op     => EW_Imply,
                                Left   =>
                                  New_Relation
-                                   (Domain => EW_Pred,
-                                    Left   => +X_To_Base_Type_Op,
-                                    Op     => EW_Eq,
-                                    Right  => +Y_To_Base_Type_Op),
+                                   (Domain  => EW_Pred,
+                                    Op_Type => Base_Type,
+                                    Left    => +X_To_Base_Type_Op,
+                                    Op      => EW_Eq,
+                                    Right   => +Y_To_Base_Type_Op),
                                Right =>
                                  New_Relation
-                                   (Domain => EW_Pred,
-                                    Left   => +New_Term (X_S),
-                                    Op     => EW_Eq,
-                                    Right  => +New_Term (Y_S)));
+                                   (Domain  => EW_Pred,
+                                    Op_Type => EW_Abstract,
+                                    Left    => +New_Term (X_S),
+                                    Op      => EW_Eq,
+                                    Right   => +New_Term (Y_S)));
       Quantif_On_XY     : constant W_Pred_Id :=
                             New_Universal_Quantif
                               (Var_Type =>

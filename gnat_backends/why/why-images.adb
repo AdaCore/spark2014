@@ -267,7 +267,10 @@ package body Why.Images is
       end if;
    end P;
 
-   procedure P (O : Output_Id; Value : EW_Relation) is
+   procedure P
+     (O       : Output_Id;
+      Value   : EW_Relation;
+      Op_Type : EW_Type := EW_Int) is
    begin
       case Value is
          when EW_None =>
@@ -286,6 +289,10 @@ package body Why.Images is
          when EW_Ge =>
             P (O, ">=");
       end case;
+
+      if Is_Why3 and then Op_Type = EW_Real then
+         P (O, ".");
+      end if;
    end P;
 
    procedure P (O : Output_Id; Value : EW_Connector) is

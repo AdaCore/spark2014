@@ -35,7 +35,7 @@ package Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File      : W_File_Id;
       Name      : String;
-      Base_Type : W_Primitive_Type_Id;
+      Base_Type : EW_Scalar;
       First     : W_Term_Id;
       Last      : W_Term_Id);
    --  Generate the definition of the range predicate for an abstract type
@@ -43,22 +43,12 @@ package Why.Gen.Preds is
    --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (File           : W_File_Id;
-      Name           : String;
-      Base_Type_Name : String);
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type
    --  whose base type is given in parameters. This predicate is True when
    --  conversions to base type are equal.
-
-   function New_Equal
-     (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Pred_Id;
-   --  Create the predicate "Left = Right"
-
-   function New_NEqual
-     (Left  : W_Term_Id;
-      Right : W_Term_Id) return W_Pred_Id;
-   --  Create the predicate "Left <> Right"
 
    function New_Equal_Bool
      (Left  : W_Term_Id;

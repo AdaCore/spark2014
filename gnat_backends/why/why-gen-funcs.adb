@@ -28,7 +28,6 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 
@@ -49,9 +48,17 @@ package body Why.Gen.Funcs is
                     (Domain    => EW_Pred,
                      Condition => +New_Result_Term,
                      Then_Part =>
-                       +New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
+                       New_Relation
+                         (Op      => EW_Eq,
+                          Op_Type => EW_Bool,
+                          Left    => +New_Term (Arg_S),
+                          Right   => +New_Term (Arg_T)),
                      Else_Part =>
-                       +New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+                       New_Relation
+                         (Op      => EW_Ne,
+                          Op_Type => EW_Bool,
+                          Left    => +New_Term (Arg_S),
+                          Right   => +New_Term (Arg_T)));
       Pre     : constant W_Pred_Id :=
                   New_Literal (Domain => EW_Pred, Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=
