@@ -168,7 +168,7 @@ package body Why.Images is
       --       ExponentLetter ::=  { eE }
 
       if UR_Is_Negative (Value) then
-         P (O, "-");
+         P (O, EW_Substract, EW_Real);
       end if;
 
       if Base = 0 then
@@ -199,7 +199,7 @@ package body Why.Images is
             P (O, ".0");
 
          else
-            P (O, "*");
+            P (O, EW_Multiply, EW_Real);
             P (O, UI_Expon (UI_Negate (Den), Base));
             P (O, ".0");
          end if;
