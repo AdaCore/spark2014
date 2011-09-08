@@ -163,15 +163,34 @@ package Why.Sinfo is
       EW_Real,
       EW_Abstract);
 
-   subtype EW_Not_Null_Type is EW_Type range EW_Prop .. EW_Abstract;
+   subtype EW_Not_Null_Type is EW_Type range
+       EW_Prop ..
+   --  EW_Bool
+   --  EW_Int
+   --  EW_Real
+       EW_Abstract;
 
-   subtype EW_Term_Type is EW_Type range EW_Bool .. EW_Abstract;
+   subtype EW_Term_Type is EW_Not_Null_Type range
+       EW_Bool ..
+   --  EW_Int
+   --  EW_Real
+       EW_Abstract;
 
-   subtype EW_Base_Type is EW_Type range EW_Unit .. EW_Real;
+   subtype EW_Base_Type is EW_Type range
+       EW_Unit ..
+   --  EW_Prop
+   --  EW_Bool
+   --  EW_Int
+       EW_Real;
 
-   subtype EW_Scalar is EW_Base_Type range EW_Bool .. EW_Real;
+   subtype EW_Scalar is EW_Base_Type range
+       EW_Bool ..
+   --  EW_Int
+       EW_Real;
 
-   subtype EW_Numeric is EW_Base_Type range EW_Int .. EW_Real;
+   subtype EW_Numeric is EW_Base_Type range
+       EW_Int ..
+       EW_Real;
 
    type EW_Literal is
      (EW_True,
