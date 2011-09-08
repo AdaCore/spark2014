@@ -1732,9 +1732,9 @@ package body Alfa.Definition is
       Mark_List (Statements (N));
    end Mark_Handled_Statements;
 
-   ---------------------
-   -- Mark_Identifier --
-   ---------------------
+   --------------------------------------
+   -- Mark_Identifier_Or_Expanded_Name --
+   --------------------------------------
 
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id) is
       E : Unique_Entity_Id;
