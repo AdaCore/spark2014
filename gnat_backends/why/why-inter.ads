@@ -85,28 +85,12 @@ package Why.Inter is
    procedure Add_With_Clause (P : out Why_Package; Other : Why_Package);
    --  Add a package name to the context of a Why package.
 
-   type Extended_Why_Type_Enum is
-     (Why_Null_Type,
-      Why_Bool,
-      Why_Int,
-      Why_Real,
-      Why_Abstract);
-
-   subtype Why_Type_Enum is
-     Extended_Why_Type_Enum range Why_Bool .. Why_Abstract;
-   subtype Ext_Why_Base is
-     Extended_Why_Type_Enum range Why_Null_Type .. Why_Real;
-   subtype Why_Scalar_Enum is
-     Ext_Why_Base range Why_Bool .. Why_Real;
-   subtype Why_Numeric_Enum is
-     Ext_Why_Base range Why_Int .. Why_Real;
-
-   type Why_Type (Kind : Why_Type_Enum := Why_Int) is
+   type Why_Type (Kind : EW_Term_Type := EW_Int) is
       record
          case Kind is
-            when Why_Scalar_Enum =>
+            when EW_Scalar =>
                null;
-            when Why_Abstract =>
+            when EW_Abstract =>
                Wh_Abstract : Node_Id;
          end case;
       end record;
@@ -114,32 +98,28 @@ package Why.Inter is
    --  Why is either the builtin "int"/"real" type or a node that corresponds
    --  to a N_Defining_Identifier of an Ada type
 
-   Why_Bool_Type        : constant Why_Type (Why_Bool) := (Kind => Why_Bool);
-   Why_Int_Type         : constant Why_Type (Why_Int) := (Kind => Why_Int);
-   Why_Real_Type        : constant Why_Type (Why_Real) := (Kind => Why_Real);
+   EW_Bool_Type : constant Why_Type (EW_Bool) := (Kind => EW_Bool);
+   EW_Int_Type  : constant Why_Type (EW_Int) := (Kind => EW_Int);
+   EW_Real_Type : constant Why_Type (EW_Real) := (Kind => EW_Real);
 
-   type Why_Scalar_Type_Array is array (Why_Scalar_Enum) of Why_Type;
+   type Why_Scalar_Type_Array is array (EW_Scalar) of Why_Type;
 
    Why_Types : constant Why_Scalar_Type_Array :=
-                 (Why_Bool        => Why_Bool_Type,
-                  Why_Int         => Why_Int_Type,
-                  Why_Real        => Why_Real_Type);
+                 (EW_Bool => EW_Bool_Type,
+                  EW_Int  => EW_Int_Type,
+                  EW_Real => EW_Real_Type);
 
-   function Why_Abstract (N : Node_Id) return Why_Type;
+   function EW_Abstract (N : Node_Id) return Why_Type;
 
    function Base_Why_Type (N : Node_Id) return Why_Type;
    function Base_Why_Type (W : Why_Type) return Why_Type;
    --  Return the base type in Why of the given node
-   --  (e.g Why_Real_Type for standard__float).
+   --  (e.g EW_Real_Type for standard__float).
 
    function Base_Why_Type (Left, Right : Why_Type) return Why_Type;
    function Base_Why_Type (Left, Right : Node_Id) return Why_Type;
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
-
-   function To_EW_Type (T : Ext_Why_Base) return EW_Base_Type;
-   --  ??? EW_Type and Ext_Why_Base are bound to be merged.
-   --  Provide a conversion function for now.
 
    function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type;
    function Get_EW_Type (T : Node_Id) return EW_Type;

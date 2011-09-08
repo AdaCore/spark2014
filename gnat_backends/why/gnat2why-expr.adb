@@ -257,7 +257,7 @@ package body Gnat2Why.Expr is
       Cur_Case     : Node_Id := Last (Alternatives (N));
       Matched_Expr : constant W_Expr_Id :=
                        Why_Expr_Of_Ada_Expr (Expression (N),
-                                             Why_Int_Type,
+                                             EW_Int_Type,
                                              Domain);
 
       --  We always take the last branch as the default value
@@ -418,7 +418,7 @@ package body Gnat2Why.Expr is
                  (Cmp       => EW_Eq,
                   Left      => E,
                   Right     => Why_Expr_Of_Ada_Expr (N, BT, Domain),
-                  Arg_Types => To_EW_Type (BT.Kind),
+                  Arg_Types => BT.Kind,
                   Domain    => Domain);
             end;
 
@@ -429,7 +429,7 @@ package body Gnat2Why.Expr is
                    New_Comparison
                      (Cmp       => EW_Le,
                       Left      => Why_Expr_Of_Ada_Expr (Low_Bound (N),
-                                                         Why_Int_Type,
+                                                         EW_Int_Type,
                                                          Domain),
                       Arg_Types => EW_Int,
                       Right     => E,
@@ -439,7 +439,7 @@ package body Gnat2Why.Expr is
                      (Cmp       => EW_Le,
                       Left      => E,
                       Right     => Why_Expr_Of_Ada_Expr (High_Bound (N),
-                                                         Why_Int_Type,
+                                                         EW_Int_Type,
                                                          Domain),
                       Arg_Types => EW_Int,
                       Domain    => Domain),
@@ -648,7 +648,7 @@ package body Gnat2Why.Expr is
                 Op_Type => EW_Int,
                 Op      => EW_Le,
                 Left    => +Why_Expr_Of_Ada_Expr (Low_Bound (Range_Node),
-                                                  Why_Int_Type,
+                                                  EW_Int_Type,
                                                   Subdomain),
                 Right   => +T),
            Right  =>
@@ -658,7 +658,7 @@ package body Gnat2Why.Expr is
                 Op      => EW_Le,
                 Left    => +T,
                 Right   => +Why_Expr_Of_Ada_Expr (High_Bound (Range_Node),
-                                                  Why_Int_Type,
+                                                  EW_Int_Type,
                                                   Subdomain)),
            Domain => Domain);
    end Range_Expr;
@@ -687,7 +687,7 @@ package body Gnat2Why.Expr is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
       if E = Standard_Boolean then
-         return Why_Scalar_Type_Name (Why_Bool);
+         return Why_Scalar_Type_Name (EW_Bool);
       else
          return Full_Name (E);
       end if;
@@ -698,9 +698,9 @@ package body Gnat2Why.Expr is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
       if E = Standard_Boolean then
-         return Why_Bool_Type;
+         return EW_Bool_Type;
       else
-         return Why_Abstract (E);
+         return EW_Abstract (E);
       end if;
    end Type_Of_Node;
 
@@ -734,12 +734,12 @@ package body Gnat2Why.Expr is
       --  Deal with special cases: True/False for boolean values
 
       if Entity (Enum) = Standard_True then
-         Current_Type := (Kind => Why_Bool);
+         Current_Type := (Kind => EW_Bool);
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
 
       if Entity (Enum) = Standard_False then
-         Current_Type := (Kind => Why_Bool);
+         Current_Type := (Kind => EW_Bool);
          return New_Literal (Value => EW_False, Domain => Domain);
       end if;
 
@@ -749,7 +749,7 @@ package body Gnat2Why.Expr is
 
       case Ekind (Etype (Enum)) is
          when E_Enumeration_Subtype =>
-            Current_Type := Why_Abstract (Etype (Entity (Enum)));
+            Current_Type := EW_Abstract (Etype (Entity (Enum)));
 
          when others =>
             null;
@@ -784,7 +784,7 @@ package body Gnat2Why.Expr is
              (Ada_Node => Expr,
               Domain   => EW_Term,
               Op_Type  => EW_Bool,
-              Left     => +Why_Expr_Of_Ada_Expr (Expr, Why_Bool_Type, EW_Term),
+              Left     => +Why_Expr_Of_Ada_Expr (Expr, EW_Bool_Type, EW_Term),
               Right    => New_Literal (Value => EW_True),
               Op       => EW_Eq);
       end if;
@@ -796,7 +796,7 @@ package body Gnat2Why.Expr is
                 (Domain   => Domain,
                  Ada_Node => Expr,
                  Value    => Intval (Expr));
-            Current_Type := Why_Int_Type;
+            Current_Type := EW_Int_Type;
 
          when N_Real_Literal =>
             --  The original is usually much easier to process for alt-ergo
@@ -808,7 +808,7 @@ package body Gnat2Why.Expr is
             if Is_Rewrite_Substitution (Expr) then
                begin
                   T := Why_Expr_Of_Ada_Expr (Original_Node (Expr),
-                                             Why_Real_Type,
+                                             EW_Real_Type,
                                              Domain);
 
                --  It may happen that the original node is not in
@@ -834,7 +834,7 @@ package body Gnat2Why.Expr is
                     Value    => Realval (Expr));
             end if;
 
-            Current_Type := Why_Real_Type;
+            Current_Type := EW_Real_Type;
 
          when N_Character_Literal =>
 
@@ -842,7 +842,7 @@ package body Gnat2Why.Expr is
               New_Integer_Constant (Ada_Node => Expr,
                                     Value    => Char_Literal_Value (Expr),
                                     Domain   => Domain);
-            Current_Type := Why_Int_Type;
+            Current_Type := EW_Int_Type;
 
          --  Deal with identifiers:
          --  * Enumeration literals: deal with special cases True and
@@ -875,7 +875,7 @@ package body Gnat2Why.Expr is
                      end if;
 
                      if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                        Current_Type := Why_Int_Type;
+                        Current_Type := EW_Int_Type;
                      end if;
 
                end case;
@@ -894,9 +894,9 @@ package body Gnat2Why.Expr is
                    (Cmp       => Why_Rel_Of_Ada_Op (Nkind (Expr)),
                     Left      => Why_Expr_Of_Ada_Expr (Left, BT, Subdomain),
                     Right     => Why_Expr_Of_Ada_Expr (Right, BT, Subdomain),
-                    Arg_Types => To_EW_Type (BT.Kind),
+                    Arg_Types => BT.Kind,
                     Domain    => Domain);
-               Current_Type := Why_Bool_Type;
+               Current_Type := EW_Bool_Type;
             end;
 
          when N_Op_Minus =>
@@ -933,7 +933,7 @@ package body Gnat2Why.Expr is
                                                       Current_Type,
                                                       Domain),
                     Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
-                    Op_Type  => To_EW_Type (Current_Type.Kind));
+                    Op_Type  => Current_Type.Kind);
                Overflow_Check_Needed := True;
             end;
 
@@ -985,7 +985,7 @@ package body Gnat2Why.Expr is
                                                     Domain),
                     Domain => Domain);
             end if;
-            Current_Type := Why_Bool_Type;
+            Current_Type := EW_Bool_Type;
 
          when N_Op_And =>
             T :=
@@ -997,7 +997,7 @@ package body Gnat2Why.Expr is
                                                   Current_Type,
                                                   Domain),
                   Domain => Domain);
-            Current_Type := Why_Bool_Type;
+            Current_Type := EW_Bool_Type;
 
          when N_Op_Or =>
             T :=
@@ -1009,7 +1009,7 @@ package body Gnat2Why.Expr is
                                                     Current_Type,
                                                     Domain),
                   Domain   => Domain);
-            Current_Type := Why_Bool_Type;
+            Current_Type := EW_Bool_Type;
 
          when N_And_Then =>
             T :=
@@ -1021,7 +1021,7 @@ package body Gnat2Why.Expr is
                                                   Current_Type,
                                                   Domain),
                   Domain => Domain);
-            Current_Type := Why_Bool_Type;
+            Current_Type := EW_Bool_Type;
 
          when N_Or_Else =>
             T :=
@@ -1033,7 +1033,7 @@ package body Gnat2Why.Expr is
                                                   Current_Type,
                                                   Domain),
                   Domain => Domain);
-            Current_Type := Why_Bool_Type;
+            Current_Type := EW_Bool_Type;
 
          when N_In =>
             declare
@@ -1044,7 +1044,7 @@ package body Gnat2Why.Expr is
                  Range_Expr
                    (Right_Opnd (Expr),
                     Why_Expr_Of_Ada_Expr (Left_Opnd (Expr),
-                                          Why_Int_Type,
+                                          EW_Int_Type,
                                           Subdomain),
                     Domain);
             end;
@@ -1136,7 +1136,7 @@ package body Gnat2Why.Expr is
                           Return_Type => New_Base_Type (Base_Type => EW_Bool),
                           Pred        =>
                             +Why_Expr_Of_Ada_Expr (Expr, EW_Pred)));
-                  Current_Type := Why_Bool_Type;
+                  Current_Type := EW_Bool_Type;
                end;
             else
                raise Not_Implemented;
@@ -1154,7 +1154,7 @@ package body Gnat2Why.Expr is
                   New_Conditional
                      (Ada_Node => Expr,
                       Condition => +Why_Expr_Of_Ada_Expr (Cond,
-                                                          Why_Bool_Type,
+                                                          EW_Bool_Type,
                                                           Subdomain),
                       Then_Part => Why_Expr_Of_Ada_Expr (Then_Part,
                                                          Expected_Type,
@@ -1215,7 +1215,7 @@ package body Gnat2Why.Expr is
                     Ar        => Why_Expr_Of_Ada_Expr (Pre, Domain),
                     Index     =>
                        Why_Expr_Of_Ada_Expr
-                         (First (Expressions (Expr)), Why_Int_Type, Domain),
+                         (First (Expressions (Expr)), EW_Int_Type, Domain),
                     Domain    => Domain);
             end;
 
@@ -1247,7 +1247,7 @@ package body Gnat2Why.Expr is
                          (Full_Name (Etype (Var)),
                           Why_Expr_Of_Ada_Expr (Var, Domain),
                           Domain);
-                     Current_Type := Why_Int_Type;
+                     Current_Type := EW_Int_Type;
 
                   when Attribute_Last =>
                      T :=
@@ -1255,7 +1255,7 @@ package body Gnat2Why.Expr is
                          (Full_Name (Etype (Var)),
                           Why_Expr_Of_Ada_Expr (Var, Domain),
                           Domain);
-                     Current_Type := Why_Int_Type;
+                     Current_Type := EW_Int_Type;
 
                   when Attribute_Length =>
                      T :=
@@ -1263,7 +1263,7 @@ package body Gnat2Why.Expr is
                          (Full_Name (Etype (Var)),
                           Why_Expr_Of_Ada_Expr (Var, Domain),
                           Domain);
-                     Current_Type := Why_Int_Type;
+                     Current_Type := EW_Int_Type;
 
                when others =>
                   raise Not_Implemented;
@@ -1291,9 +1291,9 @@ package body Gnat2Why.Expr is
       declare
          Base_Type : constant Why_Type :=
             (if Overflow_Check_Needed then
-               Why_Abstract (Etype (Etype (Expr)))
+               EW_Abstract (Etype (Etype (Expr)))
             else
-               Why_Int_Type);
+               EW_Int_Type);
       begin
          case Domain is
             when EW_Prog =>
@@ -1371,7 +1371,7 @@ package body Gnat2Why.Expr is
                              Index     =>
                                +Why_Expr_Of_Ada_Expr
                                  (First (Expressions (Lvalue)),
-                                  Why_Int_Type,
+                                  EW_Int_Type,
                                   EW_Prog),
                              Value     =>
                                +Why_Expr_Of_Ada_Expr
@@ -1637,7 +1637,7 @@ package body Gnat2Why.Expr is
                        New_Binding_Ref
                          (Name    => Loop_Index,
                           Def     => +Why_Expr_Of_Ada_Expr (Low,
-                                                            Why_Int_Type,
+                                                            EW_Int_Type,
                                                             EW_Prog),
                           Context => Entire_Loop);
                   end;

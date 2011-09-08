@@ -98,12 +98,12 @@ package body Why.Gen.Names is
    -- New_Division --
    ------------------
 
-   function New_Division (Kind : Why_Numeric_Enum) return W_Identifier_Id is
+   function New_Division (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
-         when Why_Real =>
+         when EW_Real =>
             return New_Real_Division.Id;
-         when Why_Int =>
+         when EW_Int =>
             return New_Integer_Division.Id;
       end case;
    end New_Division;
@@ -181,14 +181,14 @@ package body Why.Gen.Names is
    -- Why_Scalar_Type_Name --
    --------------------------
 
-   function Why_Scalar_Type_Name (Kind : Why_Scalar_Enum) return String is
+   function Why_Scalar_Type_Name (Kind : EW_Scalar) return String is
    begin
       case Kind is
-         when Why_Bool =>
+         when EW_Bool =>
             return "bool";
-         when Why_Int =>
+         when EW_Int =>
             return "int";
-         when Why_Real =>
+         when EW_Real =>
             return "real";
       end case;
    end Why_Scalar_Type_Name;

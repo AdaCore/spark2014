@@ -36,9 +36,9 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 package body Why.Inter is
 
    package Type_Hierarchy is
-     new Constant_Tree (Ext_Why_Base, Why_Null_Type);
+     new Constant_Tree (EW_Base_Type, EW_Unit);
 
-   function Get_Why_Type_Enum (N : Node_Id) return Extended_Why_Type_Enum;
+   function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
    ---------------------
    -- Add_With_Clause --
@@ -61,7 +61,7 @@ package body Why.Inter is
    function Base_Why_Type (W : Why_Type) return Why_Type is
    begin
       case W.Kind is
-         when Why_Abstract =>
+         when EW_Abstract =>
             return Base_Why_Type (W.Wh_Abstract);
          when others =>
             return W;
@@ -69,10 +69,10 @@ package body Why.Inter is
    end Base_Why_Type;
 
    function Base_Why_Type (N : Node_Id) return Why_Type is
-      E  : constant Extended_Why_Type_Enum := Get_Why_Type_Enum (N);
+      E  : constant EW_Type := Get_EW_Term_Type (N);
    begin
       case E is
-         when Why_Abstract =>
+         when EW_Abstract =>
             raise Not_Implemented;
 
          when others =>
@@ -128,21 +128,21 @@ package body Why.Inter is
    end Get_EW_Type;
 
    function Get_EW_Type (T : Node_Id) return EW_Type is
-      E : constant Extended_Why_Type_Enum := Get_Why_Type_Enum (T);
+      E : constant EW_Type := Get_EW_Term_Type (T);
    begin
       case E is
-         when Why_Scalar_Enum =>
-            return To_EW_Type (E);
+         when EW_Scalar =>
+            return E;
          when others =>
             return EW_Abstract;
       end case;
    end Get_EW_Type;
 
-   -----------------------
-   -- Get_Why_Type_Enum --
-   -----------------------
+   ----------------------
+   -- Get_EW_Term_Type --
+   ----------------------
 
-   function Get_Why_Type_Enum (N : Node_Id) return Extended_Why_Type_Enum is
+   function Get_EW_Term_Type (N : Node_Id) return EW_Type is
       Ty : Node_Id := N;
    begin
       if Nkind (N) /= N_Defining_Identifier
@@ -152,20 +152,20 @@ package body Why.Inter is
 
       case Ekind (Ty) is
          when Float_Kind =>
-            return Why_Real;
+            return EW_Real;
 
          when Signed_Integer_Kind | Enumeration_Kind =>
             --  ??? What about booleans ? We should have
             --  a special case for them...
-            return Why_Int;
+            return EW_Int;
 
          when Private_Kind =>
-            return Get_Why_Type_Enum (Full_View (Ty));
+            return Get_EW_Term_Type (Full_View (Ty));
 
          when others =>
-            return Why_Abstract;
+            return EW_Abstract;
       end case;
-   end Get_Why_Type_Enum;
+   end Get_EW_Term_Type;
 
    ---------
    -- LCA --
@@ -200,24 +200,6 @@ package body Why.Inter is
          WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
    end Make_Empty_Why_Pack;
 
-   ----------------
-   -- To_EW_Type --
-   ----------------
-
-   function To_EW_Type (T : Ext_Why_Base) return EW_Base_Type is
-   begin
-      case T is
-         when Why_Null_Type =>
-            return EW_Unit;
-         when Why_Bool =>
-            return EW_Bool;
-         when Why_Int =>
-            return EW_Int;
-         when Why_Real =>
-            return EW_Real;
-      end case;
-   end To_EW_Type;
-
    --------
    -- Up --
    --------
@@ -225,7 +207,7 @@ package body Why.Inter is
    function Up (WT : Why_Type) return Why_Type is
    begin
       case WT.Kind is
-         when Why_Abstract =>
+         when EW_Abstract =>
             return Base_Why_Type (WT);
          when others =>
             return Why_Types (Type_Hierarchy.Up (WT.Kind));
@@ -245,19 +227,19 @@ package body Why.Inter is
       end if;
    end Up;
 
-   ------------------
-   -- Why_Abstract --
-   ------------------
+   -----------------
+   -- EW_Abstract --
+   -----------------
 
-   function Why_Abstract (N : Node_Id) return Why_Type
+   function EW_Abstract (N : Node_Id) return Why_Type
    is
    begin
-      return (Kind => Why_Abstract, Wh_Abstract => N);
-   end Why_Abstract;
+      return (Kind => EW_Abstract, Wh_Abstract => N);
+   end EW_Abstract;
 
 begin
-   Type_Hierarchy.Move_Child (Why_Null_Type, Why_Real);
-   Type_Hierarchy.Move_Child (Why_Int, Why_Bool);
-   Type_Hierarchy.Move_Child (Why_Real, Why_Int);
+   Type_Hierarchy.Move_Child (EW_Unit, EW_Real);
+   Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
+   Type_Hierarchy.Move_Child (EW_Real, EW_Int);
    Type_Hierarchy.Freeze;
 end Why.Inter;

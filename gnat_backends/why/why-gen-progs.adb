@@ -38,7 +38,7 @@ package body Why.Gen.Progs is
 
    function Convert_From_Scalar
       (Ada_Node : Node_Id := Empty;
-       From     : Why_Scalar_Enum;
+       From     : EW_Scalar;
        To       : Why_Type;
        Why_Expr : W_Prog_Id;
        Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id;
@@ -48,7 +48,7 @@ package body Why.Gen.Progs is
    function Convert_To_Scalar
       (Ada_Node : Node_Id := Empty;
        From     : Why_Type;
-       To       : Why_Scalar_Enum;
+       To       : EW_Scalar;
        Why_Expr : W_Prog_Id) return W_Prog_Id;
    --  Convert the Why expression in argument to scalar "int"/"real".
    --  It is expected to be of type "From".
@@ -61,7 +61,7 @@ package body Why.Gen.Progs is
 
    function Insert_Scalar_Conversion
       (Ada_Node   : Node_Id := Empty;
-       Kind       : Why_Scalar_Enum;
+       Kind       : EW_Scalar;
        To         : Why_Type;
        From       : Why_Type;
        Why_Expr   : W_Prog_Id;
@@ -83,15 +83,15 @@ package body Why.Gen.Progs is
    is
    begin
       case From.Kind is
-         when Why_Scalar_Enum =>
+         when EW_Scalar =>
             case To.Kind is
-               when Why_Scalar_Enum =>
+               when EW_Scalar =>
 
                   --  Only certain conversions are OK
 
-                  if From.Kind = Why_Int and then To.Kind = Why_Real then
+                  if From.Kind = EW_Int and then To.Kind = EW_Real then
                      return Real_Of_Int.Id;
-                  elsif From.Kind = Why_Bool and then To.Kind = Why_Int then
+                  elsif From.Kind = EW_Bool and then To.Kind = EW_Int then
                      return Int_Of_Bool.Id;
                   else
 
@@ -103,19 +103,19 @@ package body Why.Gen.Progs is
                      raise Program_Error;
                   end if;
 
-               when Why_Abstract =>
+               when EW_Abstract =>
                   return
                      Conversion_From.Id
                        (Full_Name (To.Wh_Abstract),
                         Why_Scalar_Type_Name (From.Kind));
             end case;
-         when Why_Abstract =>
+         when EW_Abstract =>
             case To.Kind is
-               when Why_Scalar_Enum =>
+               when EW_Scalar =>
                   return
                     Conversion_To.Id (Full_Name (From.Wh_Abstract),
                                       Why_Scalar_Type_Name (To.Kind));
-               when Why_Abstract =>
+               when EW_Abstract =>
                   raise Program_Error
                      with "Conversion between arbitrary types attempted";
             end case;
@@ -129,7 +129,7 @@ package body Why.Gen.Progs is
    function Convert_To_Scalar
       (Ada_Node : Node_Id := Empty;
        From     : Why_Type;
-       To       : Why_Scalar_Enum;
+       To       : EW_Scalar;
        Why_Expr : W_Prog_Id) return W_Prog_Id is
    begin
       return
@@ -146,7 +146,7 @@ package body Why.Gen.Progs is
 
    function Convert_From_Scalar
       (Ada_Node : Node_Id := Empty;
-       From     : Why_Scalar_Enum;
+       From     : EW_Scalar;
        To       : Why_Type;
        Why_Expr : W_Prog_Id;
        Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id
@@ -197,27 +197,27 @@ package body Why.Gen.Progs is
        To        : Why_Type;
        From      : Why_Type;
        Why_Expr  : W_Prog_Id;
-       Base_Type : Why_Type := Why_Int_Type) return W_Prog_Id
+       Base_Type : Why_Type := EW_Int_Type) return W_Prog_Id
    is
    begin
       --  In this particular case, we do nothing
-      if Base_Type.Kind in Why_Scalar_Enum and then To = From then
+      if Base_Type.Kind in EW_Scalar and then To = From then
          return Why_Expr;
       end if;
 
       --  We check the 'To' type, and there are four cases.
-      --    * Why_Int => Integer conversion
-      --    * Why_Real => Real conversion
+      --    * EW_Int => Integer conversion
+      --    * EW_Real => Real conversion
       --    * Ada Integer type => Integer conversion
       --    * Ada Array type => Array conversion
       --    * other Ada type kind => failure
       case To.Kind is
-         when Why_Scalar_Enum =>
+         when EW_Scalar =>
             return
                Insert_Scalar_Conversion
                   (Ada_Node, To.Kind, To, From, Why_Expr, Base_Type);
 
-         when Why_Abstract =>
+         when EW_Abstract =>
             declare
                Ada_Type : constant Node_Id := To.Wh_Abstract;
             begin
@@ -225,13 +225,13 @@ package body Why.Gen.Progs is
                   when Discrete_Kind =>
                      return
                         Insert_Scalar_Conversion
-                           (Ada_Node, Why_Int,
+                           (Ada_Node, EW_Int,
                             To, From, Why_Expr, Base_Type);
 
                   when Float_Kind =>
                      return
                         Insert_Scalar_Conversion
-                           (Ada_Node, Why_Real,
+                           (Ada_Node, EW_Real,
                             To, From, Why_Expr, Base_Type);
 
                   when Array_Kind =>
@@ -255,16 +255,16 @@ package body Why.Gen.Progs is
 
    function Insert_Scalar_Conversion
       (Ada_Node  : Node_Id := Empty;
-       Kind      : Why_Scalar_Enum;
+       Kind      : EW_Scalar;
        To        : Why_Type;
        From      : Why_Type;
        Why_Expr  : W_Prog_Id;
        Base_Type : Why_Type) return W_Prog_Id
    is
    begin
-      if To.Kind in Why_Scalar_Enum then
+      if To.Kind in EW_Scalar then
          --  We convert to "int"
-         if Base_Type.Kind /= Why_Int and then From.Kind = To.Kind then
+         if Base_Type.Kind /= EW_Int and then From.Kind = To.Kind then
             --  If both types are scalar, and we have a Base_Type, insert a
             --  conversion
             return
@@ -283,7 +283,7 @@ package body Why.Gen.Progs is
             return Convert_To_Scalar (Ada_Node, From, To.Kind, Why_Expr);
          end if;
 
-      elsif From.Kind in Why_Scalar_Enum then
+      elsif From.Kind in EW_Scalar then
          return Convert_From_Scalar (Ada_Node, From.Kind, To, Why_Expr);
       else
          return

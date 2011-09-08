@@ -37,7 +37,7 @@ package Why.Gen.Progs is
        To   : Why_Type) return W_Identifier_Id
       with Pre =>
         (not (From = To) and then
-         (From.Kind in Why_Scalar_Enum or else To.Kind in Why_Scalar_Enum));
+         (From.Kind in EW_Scalar or else To.Kind in EW_Scalar));
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion
@@ -45,7 +45,7 @@ package Why.Gen.Progs is
        To                    : Why_Type;
        From                  : Why_Type;
        Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := Why_Int_Type)
+       Base_Type              : Why_Type := EW_Int_Type)
        return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
