@@ -37,6 +37,7 @@ with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -242,15 +243,10 @@ package body Gnat2Why.Types is
             when Private_Kind =>
 
                --  This can happen when we have a private type which is
-               --  derived from a private type. Simply search for the
-               --  underlying type and continue.
-               --  See also the comment in Alfa.Definition, for the
-               --  corresponding case.
+               --  derived from a private type. We just generate an
+               --  abstract type here.
 
-               Why_Type_Decl_Of_Entity
-                 (File,
-                  Name_Str,
-                  Underlying_Type (Ident_Node));
+               Emit (File, New_Type (Name_Str));
 
             when others =>
                raise Not_Implemented;

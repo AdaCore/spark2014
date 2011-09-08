@@ -2654,11 +2654,10 @@ package body Alfa.Definition is
             --  declaration is a derived type or subtype of another private
             --  type, this is not the case, and only in such situations we
             --  should fall in this branch.
-            --  See also gnat/einfo.ads, Full_View and Underlying_Full_View.
-            --  The private type we consider is in Alfa if the underlying type
-            --  is in Alfa.
+            --  As we translate this by private types, this node should always
+            --  be in Alfa.
 
-            Mark (Underlying_Type (+Id));
+            null;
 
          when others =>
             raise Program_Error;
