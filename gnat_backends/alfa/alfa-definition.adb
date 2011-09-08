@@ -1739,7 +1739,7 @@ package body Alfa.Definition is
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id) is
       E : Unique_Entity_Id;
    begin
-      if Is_Entity_Name (N) then
+      if Is_Entity_Name (N) and then Present (Entity (N)) then
          E := Unique (Entity (N));
 
          case Ekind (+E) is
