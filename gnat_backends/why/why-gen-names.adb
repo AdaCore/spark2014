@@ -105,8 +105,6 @@ package body Why.Gen.Names is
             return New_Real_Division.Id;
          when Why_Int =>
             return New_Integer_Division.Id;
-         when Why_Fixed_Point =>
-            raise Not_Implemented;
       end case;
    end New_Division;
 
@@ -192,8 +190,6 @@ package body Why.Gen.Names is
             return "int";
          when Why_Real =>
             return "real";
-         when Why_Fixed_Point =>
-            return "int";
       end case;
    end Why_Scalar_Type_Name;
 

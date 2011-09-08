@@ -90,17 +90,16 @@ package Why.Inter is
       Why_Bool,
       Why_Int,
       Why_Real,
-      Why_Fixed_Point, --  Represented as int, but converts differently to real
       Why_Abstract);
 
    subtype Why_Type_Enum is
      Extended_Why_Type_Enum range Why_Bool .. Why_Abstract;
    subtype Ext_Why_Base is
-     Extended_Why_Type_Enum range Why_Null_Type .. Why_Fixed_Point;
+     Extended_Why_Type_Enum range Why_Null_Type .. Why_Real;
    subtype Why_Scalar_Enum is
-     Ext_Why_Base range Why_Bool .. Why_Fixed_Point;
+     Ext_Why_Base range Why_Bool .. Why_Real;
    subtype Why_Numeric_Enum is
-     Ext_Why_Base range Why_Int .. Why_Fixed_Point;
+     Ext_Why_Base range Why_Int .. Why_Real;
 
    type Why_Type (Kind : Why_Type_Enum := Why_Int) is
       record
@@ -118,16 +117,13 @@ package Why.Inter is
    Why_Bool_Type        : constant Why_Type (Why_Bool) := (Kind => Why_Bool);
    Why_Int_Type         : constant Why_Type (Why_Int) := (Kind => Why_Int);
    Why_Real_Type        : constant Why_Type (Why_Real) := (Kind => Why_Real);
-   Why_Fixed_Point_Type : constant Why_Type (Why_Fixed_Point)
-                            := (Kind => Why_Fixed_Point);
 
    type Why_Scalar_Type_Array is array (Why_Scalar_Enum) of Why_Type;
 
    Why_Types : constant Why_Scalar_Type_Array :=
                  (Why_Bool        => Why_Bool_Type,
                   Why_Int         => Why_Int_Type,
-                  Why_Real        => Why_Real_Type,
-                  Why_Fixed_Point => Why_Fixed_Point_Type);
+                  Why_Real        => Why_Real_Type);
 
    function Why_Abstract (N : Node_Id) return Why_Type;
 
