@@ -782,6 +782,19 @@ package body Gnat2Why.Expr is
       end if;
 
       case Nkind (Expr) is
+         when N_Aggregate =>
+            T :=
+              New_Call
+                (Ada_Node => Expr,
+                 Domain   => Domain,
+                 Name     =>
+                   Record_Builder_Name.Id (Full_Name (Etype (Expr))),
+                 Args     =>
+                   Transform_Component_Associations
+                     (Domain,
+                      Component_Associations (Expr)));
+            Current_Type := EW_Abstract (Etype (Expr));
+
          when N_Integer_Literal =>
             T :=
               New_Integer_Constant
@@ -1487,6 +1500,27 @@ package body Gnat2Why.Expr is
       end loop;
       return Result;
    end Transform_Statements;
+
+   --------------------------------------
+   -- Transform_Component_Associations --
+   --------------------------------------
+
+   function Transform_Component_Associations
+     (Domain : EW_Domain;
+      CA     : List_Id)
+     return W_Expr_Array
+   is
+      Association : Node_Id := Nlists.First (CA);
+      Result      : W_Expr_Array (1 .. Integer (List_Length (CA)));
+      J           : Positive := Result'First;
+   begin
+      while Association /= Empty loop
+         Result (J) := Transform_Expr (Expression (Association), Domain);
+         J := J + 1;
+         Next (Association);
+      end loop;
+      return Result;
+   end Transform_Component_Associations;
 
    ---------------------
    -- Transform_Ident --

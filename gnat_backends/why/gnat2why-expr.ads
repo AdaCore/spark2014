@@ -75,6 +75,11 @@ package Gnat2Why.Expr is
    --  translation process is to be started. All nodes before and including
    --  Start_From are ignored.
 
+   function Transform_Component_Associations
+     (Domain : EW_Domain;
+      CA     : List_Id)
+     return W_Expr_Array;
+
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
 
