@@ -230,7 +230,7 @@ package body Why.Images is
    begin
       case Value is
          when EW_True =>
-            if Is_Why3 and then Domain = EW_Prog then
+            if Is_Why3 and then Domain in EW_Prog | EW_Term then
                P (O, "True");
             else
                P (O, "true");
@@ -290,7 +290,8 @@ package body Why.Images is
             P (O, ">=");
       end case;
 
-      if Is_Why3 and then Op_Type = EW_Real then
+      if Is_Why3 and then Op_Type = EW_Real and then
+         not (Value in EW_Eq .. EW_Ne) then
          P (O, ".");
       end if;
    end P;

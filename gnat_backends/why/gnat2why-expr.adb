@@ -782,10 +782,10 @@ package body Gnat2Why.Expr is
          return
            New_Relation
              (Ada_Node => Expr,
-              Domain   => EW_Term,
+              Domain   => EW_Pred,
               Op_Type  => EW_Bool,
               Left     => +Why_Expr_Of_Ada_Expr (Expr, EW_Bool_Type, EW_Term),
-              Right    => New_Literal (Value => EW_True),
+              Right    => New_Literal (Value => EW_True, Domain => EW_Term),
               Op       => EW_Eq);
       end if;
 
@@ -1148,7 +1148,9 @@ package body Gnat2Why.Expr is
                Then_Part : constant Node_Id := Next (Cond);
                Else_Part : constant Node_Id := Next (Then_Part);
                Subdomain : constant EW_Domain :=
-                             (if Domain = EW_Pred then EW_Term else Domain);
+                             (if Domain = EW_Pred and then not Is_Why3
+                              then EW_Term
+                              else Domain);
             begin
                T :=
                   New_Conditional

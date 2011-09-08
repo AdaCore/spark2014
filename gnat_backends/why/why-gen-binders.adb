@@ -344,8 +344,10 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Pre         : W_Pred_Id := New_Literal (Value => EW_True);
-      Post        : W_Pred_Id := New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id :=
+         New_Literal (Value => EW_True, Domain => EW_Pred);
+      Post        : W_Pred_Id :=
+         New_Literal (Value => EW_True, Domain => EW_Pred))
      return W_Declaration_Id
    is
       RT : constant W_Primitive_Type_Id :=
