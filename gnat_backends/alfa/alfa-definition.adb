@@ -1393,6 +1393,9 @@ package body Alfa.Definition is
             if Is_Array_Type (Left_T) then
                Mark_Non_Alfa
                  ("equality operator on array type", N, NYI_XXX);
+            elsif Is_Record_Type (Left_T) then
+               Mark_Non_Alfa
+                 ("equality operator on record type", N, NYI_XXX);
             end if;
 
          when N_Op_And | N_Op_Or =>
