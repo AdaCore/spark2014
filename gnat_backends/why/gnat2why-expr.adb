@@ -28,6 +28,7 @@ with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Snames;             use Snames;
 with Stand;              use Stand;
+with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
@@ -1206,19 +1207,27 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Indexed_Component =>
-            --  ??? We work with single dimensional arrays for the time being
             declare
-               Pre : constant Node_Id := Prefix (Expr);
+               N      : Integer := 1;
+               Ar     : constant Node_Id := Prefix (Expr);
+               Index  : Node_Id := First (Expressions (Expr));
+               T_Name : constant String := Type_Of_Node (Ar);
             begin
-               T :=
-                 New_Array_Access
-                   (Ada_Node  => Expr,
-                    Type_Name => Type_Of_Node (Pre),
-                    Ar        => Why_Expr_Of_Ada_Expr (Pre, Domain),
-                    Index     =>
-                       Why_Expr_Of_Ada_Expr
-                         (First (Expressions (Expr)), EW_Int_Type, Domain),
-                    Domain    => Domain);
+               T := Why_Expr_Of_Ada_Expr (Ar, Domain);
+               while Present (Index) loop
+                  T :=
+                    New_Array_Access
+                     (Ada_Node => Expr,
+                      Domain   => Domain,
+                      Type_Name =>
+                        (if N = 1 then T_Name
+                         else T_Name & "___" & Int_Image (N)),
+                      Ar        => T,
+                      Index     =>
+                        Why_Expr_Of_Ada_Expr (Index, EW_Int_Type, Domain));
+                  Next (Index);
+                  N := N + 1;
+               end loop;
             end;
 
          when N_Attribute_Reference =>
@@ -1365,22 +1374,26 @@ package body Gnat2Why.Expr is
                      declare
                         Pre : constant Node_Id := Prefix (Lvalue);
                      begin
-                        return
-                          New_Array_Update_Prog
-                            (Ada_Node  => Stmt,
-                             Type_Name => Type_Of_Node (Pre),
-                             Ar        => Why_Ident_Of_Ada_Ident (Pre),
-                             Index     =>
-                               +Why_Expr_Of_Ada_Expr
-                                 (First (Expressions (Lvalue)),
-                                  EW_Int_Type,
-                                  EW_Prog),
-                             Value     =>
-                               +Why_Expr_Of_Ada_Expr
-                                 (Expression (Stmt),
-                                  Type_Of_Node
-                                    (Component_Type (Etype (Pre))),
-                                  EW_Prog));
+                        if Number_Dimensions (Etype (Pre)) > 1 then
+                           raise Not_Implemented;
+                        else
+                           return
+                             New_Array_Update_Prog
+                               (Ada_Node  => Stmt,
+                                Type_Name => Type_Of_Node (Pre),
+                                Ar        => Why_Ident_Of_Ada_Ident (Pre),
+                                Index     =>
+                                  +Why_Expr_Of_Ada_Expr
+                                    (First (Expressions (Lvalue)),
+                                     EW_Int_Type,
+                                     EW_Prog),
+                                Value     =>
+                                  +Why_Expr_Of_Ada_Expr
+                                    (Expression (Stmt),
+                                     Type_Of_Node
+                                       (Component_Type (Etype (Pre))),
+                                     EW_Prog));
+                        end if;
                      end;
 
                   when others =>

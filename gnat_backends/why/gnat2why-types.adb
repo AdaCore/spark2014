@@ -25,6 +25,7 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with GNAT.Strings;       use GNAT.Strings;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Sem_Eval;           use Sem_Eval;
@@ -63,6 +64,10 @@ package body Gnat2Why.Types is
    --  Same as Declare_Ada_Floating_Point but extract range information
    --  from node.
 
+   function Get_List_Of_Index_Ranges (E : Entity_Id) return
+      List_Of_Nodes.List;
+   --  Return the list of nodes that describe the indices of an array
+
    ------------------------------------------------
    -- Declare_Ada_Abstract_Signed_Int_From_Range --
    ------------------------------------------------
@@ -81,9 +86,9 @@ package body Gnat2Why.Types is
          Expr_Value (High_Bound (Range_Node)));
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
-   ------------------------------------------------
+   -------------------------------------------
    -- Declare_Ada_Floating_Point_From_Range --
-   ------------------------------------------------
+   -------------------------------------------
 
    procedure Declare_Ada_Floating_Point_From_Range
      (File : W_File_Id;
@@ -98,6 +103,24 @@ package body Gnat2Why.Types is
          Expr_Value_R (Low_Bound (Range_Node)),
          Expr_Value_R (High_Bound (Range_Node)));
    end Declare_Ada_Floating_Point_From_Range;
+
+   ------------------------------
+   -- Get_List_Of_Index_Ranges --
+   ------------------------------
+
+   function Get_List_Of_Index_Ranges (E : Entity_Id) return
+      List_Of_Nodes.List
+   is
+      use List_Of_Nodes;
+      L : List := Empty_List;
+      N : Node_Id := First_Index (E);
+   begin
+      while Present (N) loop
+         L.Append (N);
+         Next_Index (N);
+      end loop;
+      return L;
+   end Get_List_Of_Index_Ranges;
 
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
@@ -176,28 +199,44 @@ package body Gnat2Why.Types is
 
             when Array_Kind =>
                declare
-                  Comp_Type : constant String :=
-                                Full_Name (Component_Type (Ident_Node));
+                  use List_Of_Nodes;
+                  Comp_Type  : String_Access :=
+                     new String'(Full_Name (Component_Type (Ident_Node)));
+                  Index_List : constant List :=
+                     Get_List_Of_Index_Ranges (Ident_Node);
+                  C          : Cursor := Last (Index_List);
+                  N          : Integer := Integer (Length (Index_List));
                begin
-                  if Is_Constrained (Ident_Node) then
+                  while Has_Element (C) loop
                      declare
-                        Rng : constant Node_Id :=
-                                Get_Range (First_Index (Ident_Node));
+                        Ty_Name : constant String :=
+                           (if N = 1 then Name_Str else Name_Str & "___" &
+                              Int_Image (N));
                      begin
-                        Declare_Ada_Constrained_Array
-                          (File,
-                           Name_Str,
-                           Comp_Type,
-                           Expr_Value (Low_Bound (Rng)),
-                           Expr_Value (High_Bound (Rng)));
+                        if Is_Constrained (Ident_Node) then
+                           declare
+                              Rng            : constant Node_Id :=
+                                 Get_Range (Element (C));
+                           begin
+                              Declare_Ada_Constrained_Array
+                                 (File,
+                                  Ty_Name,
+                                  Comp_Type.all,
+                                  Expr_Value (Low_Bound (Rng)),
+                                  Expr_Value (High_Bound (Rng)));
+                           end;
+                        else
+                           Declare_Ada_Unconstrained_Array
+                             (File,
+                              Ty_Name,
+                              Comp_Type.all);
+                        end if;
+                        N := N - 1;
+                        Previous (C);
+                        Free (Comp_Type);
+                        Comp_Type := new String'(Ty_Name);
                      end;
-
-                  else
-                     Declare_Ada_Unconstrained_Array
-                       (File,
-                        Name_Str,
-                        Comp_Type);
-                  end if;
+                  end loop;
                end;
 
             when E_Record_Type =>
