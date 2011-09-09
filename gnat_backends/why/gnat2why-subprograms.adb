@@ -160,7 +160,7 @@ package body Gnat2Why.Subprograms is
                Id   : constant Node_Id :=
                         Defining_Identifier (Cur_Binder);
                Name : constant W_Identifier_Id :=
-                        Why_Ident_Of_Ada_Ident (Id);
+                        Transform_Ident (Id);
             begin
                Result (Cnt) :=
                  (Ada_Node => Cur_Binder,

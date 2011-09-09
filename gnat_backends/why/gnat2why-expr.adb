@@ -85,10 +85,10 @@ package body Gnat2Why.Expr is
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
-   function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op;
+   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
 
-   function Why_Expr_Of_Ada_Enum
+   function Transform_Enum_Literal
      (Enum         : Node_Id;
       Current_Type : out Why_Type;
       Domain       : EW_Domain)
@@ -96,7 +96,7 @@ package body Gnat2Why.Expr is
    --  Translate an Ada enumeration literal to Why. There are a number of
    --  special cases, so its own function is appropriate.
 
-   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return EW_Relation;
+   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation;
    --  Convert an Ada comparison operator to a Why relation symbol
 
    function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id
@@ -306,7 +306,7 @@ package body Gnat2Why.Expr is
                when E_In_Out_Parameter | E_Out_Parameter =>
                   --  Parameters that are "out" must be variables
                   --  They are translated "as is"
-                  Why_Args (Cnt) := +Why_Ident_Of_Ada_Ident (Actual);
+                  Why_Args (Cnt) := +Transform_Ident (Actual);
 
                when others =>
                   --  No special treatment for parameters that are
@@ -708,11 +708,11 @@ package body Gnat2Why.Expr is
       end if;
    end Type_Of_Node;
 
-   -------------------------
-   -- Why_Binop_Of_Ada_Op --
-   -------------------------
+   ---------------------
+   -- Transform_Binop --
+   ---------------------
 
-   function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op is
+   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op is
    begin
       case Op is
          when N_Op_Add      => return EW_Add;
@@ -723,13 +723,13 @@ package body Gnat2Why.Expr is
          when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
          when others => raise Program_Error;
       end case;
-   end Why_Binop_Of_Ada_Op;
+   end Transform_Binop;
 
-   --------------------------
-   -- Why_Expr_Of_Ada_Enum --
-   --------------------------
+   ----------------------------
+   -- Transform_Enum_Literal --
+   ----------------------------
 
-   function Why_Expr_Of_Ada_Enum
+   function Transform_Enum_Literal
      (Enum         : Node_Id;
       Current_Type : out Why_Type;
       Domain       : EW_Domain)
@@ -759,8 +759,8 @@ package body Gnat2Why.Expr is
             null;
       end case;
 
-      return +Why_Ident_Of_Ada_Ident (Enum);
-   end Why_Expr_Of_Ada_Enum;
+      return +Transform_Ident (Enum);
+   end Transform_Enum_Literal;
 
    --------------------------
    -- Transform_Expr --
@@ -858,13 +858,13 @@ package body Gnat2Why.Expr is
 
          when N_Identifier | N_Expanded_Name =>
             declare
-               Id : constant W_Identifier_Id := Why_Ident_Of_Ada_Ident (Expr);
+               Id : constant W_Identifier_Id := Transform_Ident (Expr);
             begin
                case Ekind (Entity (Expr)) is
                   --  First treat special cases
 
                   when E_Enumeration_Literal =>
-                     T := Why_Expr_Of_Ada_Enum (Expr, Current_Type, Domain);
+                     T := Transform_Enum_Literal (Expr, Current_Type, Domain);
 
                   when others =>
                      if Is_Mutable (Entity (Expr)) then
@@ -895,7 +895,7 @@ package body Gnat2Why.Expr is
             begin
                T :=
                  New_Comparison
-                   (Cmp       => Why_Rel_Of_Ada_Op (Nkind (Expr)),
+                   (Cmp       => Transform_Compare_Op (Nkind (Expr)),
                     Left      => Transform_Expr (Left, BT, Subdomain),
                     Right     => Transform_Expr (Right, BT, Subdomain),
                     Arg_Types => BT.Kind,
@@ -936,7 +936,7 @@ package body Gnat2Why.Expr is
                     Right    => Transform_Expr (Right,
                                                       Current_Type,
                                                       Domain),
-                    Op       => Why_Binop_Of_Ada_Op (Nkind (Expr)),
+                    Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Current_Type.Kind);
                Overflow_Check_Needed := True;
             end;
@@ -1105,7 +1105,7 @@ package body Gnat2Why.Expr is
          when N_Function_Call =>
             declare
                Ident : constant W_Identifier_Id :=
-                         Why_Ident_Of_Ada_Ident (Name (Expr));
+                         Transform_Ident (Name (Expr));
                Name  : constant W_Identifier_Id :=
                          (if Domain = EW_Prog then To_Program_Space (Ident)
                           else Logic_Func_Name.Id (Ident));
@@ -1163,7 +1163,7 @@ package body Gnat2Why.Expr is
                         raise Not_Implemented;
                      end if;
 
-                     T := +New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));
+                     T := +New_Old_Ident (Transform_Ident (Var));
 
                   when Attribute_First =>
                      T :=
@@ -1276,7 +1276,7 @@ package body Gnat2Why.Expr is
                      return
                        New_Assignment
                          (Ada_Node => Stmt,
-                          Name     => Why_Ident_Of_Ada_Ident (Lvalue),
+                          Name     => Transform_Ident (Lvalue),
                           Value    =>
                             +Transform_Expr
                               (Expression (Stmt),
@@ -1294,7 +1294,7 @@ package body Gnat2Why.Expr is
                              New_Array_Update_Prog
                                (Ada_Node  => Stmt,
                                 Type_Name => Type_Of_Node (Pre),
-                                Ar        => Why_Ident_Of_Ada_Ident (Pre),
+                                Ar        => Transform_Ident (Pre),
                                 Index     =>
                                   +Transform_Expr
                                     (First (Expressions (Lvalue)),
@@ -1353,7 +1353,7 @@ package body Gnat2Why.Expr is
               +New_Located_Call
                 (Ada_Node => Stmt,
                  Name     =>
-                   To_Program_Space (Why_Ident_Of_Ada_Ident (Name (Stmt))),
+                   To_Program_Space (Transform_Ident (Name (Stmt))),
                  Progs    => Compute_Call_Args (Stmt, EW_Prog),
                  Domain   => EW_Prog,
                  Reason   => VC_Precondition);
@@ -1473,10 +1473,10 @@ package body Gnat2Why.Expr is
    end Transform_Statements;
 
    ----------------------------
-   -- Why_Ident_Of_Ada_Ident --
+   -- Transform_Ident --
    ----------------------------
 
-   function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id is
+   function Transform_Ident (Id : Node_Id) return W_Identifier_Id is
       Ent : Entity_Id;
    begin
       if Nkind (Id) = N_Defining_Identifier then
@@ -1486,13 +1486,13 @@ package body Gnat2Why.Expr is
       end if;
 
       return New_Identifier (Full_Name (Ent));
-   end Why_Ident_Of_Ada_Ident;
+   end Transform_Ident;
 
-   -----------------------
-   -- Why_Rel_Of_Ada_Op --
-   -----------------------
+   --------------------------
+   -- Transform_Compare_Op --
+   --------------------------
 
-   function Why_Rel_Of_Ada_Op (Op : N_Op_Compare) return EW_Relation is
+   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation is
    begin
       case Op is
          when N_Op_Gt => return EW_Gt;
@@ -1502,6 +1502,6 @@ package body Gnat2Why.Expr is
          when N_Op_Le => return EW_Le;
          when N_Op_Ne => return EW_Ne;
       end case;
-   end Why_Rel_Of_Ada_Op;
+   end Transform_Compare_Op;
 
 end Gnat2Why.Expr;

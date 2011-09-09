@@ -41,7 +41,7 @@ package Gnat2Why.Expr is
    --  low <= T <= high
    --  where "low" and "high" are the lower and higher bounds of N.
 
-   function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
+   function Transform_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
 
    function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id;
