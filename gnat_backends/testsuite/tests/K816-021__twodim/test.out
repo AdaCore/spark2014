@@ -1,0 +1,8 @@
+twodim.adb:8:16: (info) range check proved
+twodim.adb:8:16: division by zero not proved
+twodim.adb:8:19: (info) array bounds check proved
+twodim.adb:8:19: array bounds check not proved
+twodim.adb:8:25: (info) overflow check proved
+twodim.adb:8:29: overflow check not proved
+twodim.ads:11:20: (info) array bounds check proved
+twodim.ads:11:20: (info) array bounds check proved
