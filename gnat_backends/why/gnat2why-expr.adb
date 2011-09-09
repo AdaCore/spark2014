@@ -111,6 +111,9 @@ package body Gnat2Why.Expr is
        Domain       : EW_Domain;
        Current_Type : out Why_Type) return W_Expr_Id;
 
+   function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
+   --  Translate a single Ada statement into a Why expression
+
    function Why_Binop_Of_Ada_Op (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
 
@@ -1353,10 +1356,10 @@ package body Gnat2Why.Expr is
    end Transform_Expr;
 
    --------------------------
-   -- Why_Expr_Of_Ada_Stmt --
+   -- Transform_Statement --
    --------------------------
 
-   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id is
+   function Transform_Statement (Stmt : Node_Id) return W_Prog_Id is
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
@@ -1737,7 +1740,7 @@ package body Gnat2Why.Expr is
          when others =>
             raise Not_Implemented;
       end case;
-   end Why_Expr_Of_Ada_Stmt;
+   end Transform_Statement;
 
    ---------------------------
    -- Why_Expr_Of_Ada_Stmts --
@@ -1756,7 +1759,7 @@ package body Gnat2Why.Expr is
                              First (Stmts));
    begin
       while Present (Cur_Stmt) loop
-         Result := Sequence (Result, Why_Expr_Of_Ada_Stmt (Cur_Stmt));
+         Result := Sequence (Result, Transform_Statement (Cur_Stmt));
          Next (Cur_Stmt);
       end loop;
       return Result;
