@@ -762,9 +762,9 @@ package body Gnat2Why.Expr is
       return +Transform_Ident (Enum);
    end Transform_Enum_Literal;
 
-   --------------------------
+   --------------------
    -- Transform_Expr --
-   --------------------------
+   --------------------
 
    function Transform_Expr
      (Expr          : Node_Id;
@@ -1250,9 +1250,9 @@ package body Gnat2Why.Expr is
       return Transform_Expr (Expr, Type_Of_Node (Expr), Domain);
    end Transform_Expr;
 
-   --------------------------
+   -------------------------
    -- Transform_Statement --
-   --------------------------
+   -------------------------
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id is
    begin
@@ -1472,9 +1472,9 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Statements;
 
-   ----------------------------
+   ---------------------
    -- Transform_Ident --
-   ----------------------------
+   ---------------------
 
    function Transform_Ident (Id : Node_Id) return W_Identifier_Id is
       Ent : Entity_Id;
