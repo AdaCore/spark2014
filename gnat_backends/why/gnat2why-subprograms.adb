@@ -500,7 +500,7 @@ package body Gnat2Why.Subprograms is
             end if;
          end if;
 
-         if not Debug.Debug_Flag_Dot_GG then
+         if Is_Expr_Func or else not Debug.Debug_Flag_Dot_GG then
             Emit
               (File,
                New_Function_Def
