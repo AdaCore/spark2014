@@ -1,0 +1,3 @@
+exprfun.ads:3:55: division by zero not proved
+exprfun.ads:3:55: range check not proved
+
