@@ -46,6 +46,13 @@ package body Why.Gen.Scalars is
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
 
+   procedure Define_Scalar_Attributes
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar;
+      First     : W_Term_Id;
+      Last      : W_Term_Id);
+
    -------------------------------------
    -- Declare_Ada_Abstract_Signed_Int --
    -------------------------------------
@@ -59,6 +66,12 @@ package body Why.Gen.Scalars is
    begin
       Emit (File, New_Type (Name));
       Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int,
+         First     => New_Constant (First),
+         Last      => New_Constant (Last));
+      Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
          Base_Type => EW_Int,
@@ -78,6 +91,12 @@ package body Why.Gen.Scalars is
    begin
       Emit (File, New_Type (Name));
       Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Real,
+         First     => New_Constant (First),
+         Last      => New_Constant (Last));
+      Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
          Base_Type => EW_Real,
@@ -175,5 +194,42 @@ package body Why.Gen.Scalars is
       end;
       New_Boolean_Equality_Parameter (File, Name);
    end Define_Scalar_Conversions;
+
+   ------------------------------
+   -- Define_Scalar_Attributes --
+   ------------------------------
+
+   procedure Define_Scalar_Attributes
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar;
+      First     : W_Term_Id;
+      Last      : W_Term_Id)
+   is
+      type Scalar_Attr is (S_First, S_Last);
+
+      type Attr_Info is record
+         Name  : W_Identifier_Id;
+         Value : W_Term_Id;
+      end record;
+
+      Attr_Values : constant array (Scalar_Attr) of Attr_Info :=
+                      (S_First => (Type_First.Id (Name), First),
+                       S_Last  => (Type_Last.Id (Name), Last));
+   begin
+      for J in Attr_Values'Range loop
+         Emit_Top_Level_Declarations
+           (File        => File,
+            Name        => Attr_Values (J).Name,
+            Binders     => (1 .. 0 => <>),
+            Return_Type => New_Base_Type (Base_Type => Base_Type),
+            Spec        =>
+              (1 =>
+                 (Kind   => W_Function_Decl,
+                  Domain => EW_Term,
+                  Def    => Attr_Values (J).Value,
+                  others => <>)));
+      end loop;
+   end Define_Scalar_Attributes;
 
 end Why.Gen.Scalars;
