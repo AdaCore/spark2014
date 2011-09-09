@@ -33,21 +33,14 @@ package Why.Gen.Scalars is
    --  (types, subprograms, axioms) for scalar types.
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File : W_File_Id;
-      Name : String;
-      Size : Uint);
-   --  Declare the whole theory for a signed int of the given size,
-   --  i.e. whose range is -2 ** (Size - 1) .. 2 ** (Size - 1) -1.
-   --  This creates an abstract type whose name is given in parameter
-   --  along with a set of axioms and subprograms for int conversion.
-
-   procedure Declare_Ada_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
       First : Uint;
       Last  : Uint);
-   --  Same as the previous function, except that the higher and lower
-   --  bounds are specified explicitly.
+   --  Declare the whole theory for a signed int of the given size,
+   --  i.e. whose range is First .. Last. This creates an abstract type
+   --  whose name is given in parameter along with a set of axioms and
+   --  subprograms for int conversion.
 
    procedure Declare_Ada_Floating_Point
      (File  : W_File_Id;

@@ -51,18 +51,6 @@ package body Why.Gen.Scalars is
    -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File : W_File_Id;
-      Name : String;
-      Size : Uint) is
-   begin
-      Declare_Ada_Abstract_Signed_Int
-        (File,
-         Name,
-         -2 ** (Size - 1),
-         2 ** (Size - 1)  - 1);
-   end Declare_Ada_Abstract_Signed_Int;
-
-   procedure Declare_Ada_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
       First : Uint;
