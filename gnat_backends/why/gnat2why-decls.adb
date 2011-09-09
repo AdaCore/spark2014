@@ -72,24 +72,6 @@ package body Gnat2Why.Decls is
       Def  : Node_Id := Empty)
    is
       Name : constant String := Full_Name (Id);
-
-      function Term_Definition return W_Term_Id;
-      --  If possible, return a term equivalent to Def. Otherwise,
-      --  return Why_Empty.
-
-      ---------------------
-      -- Term_Definition --
-      ---------------------
-
-      function Term_Definition return W_Term_Id is
-      begin
-         if Present (Def) and then Is_Static_Expression (Def) then
-            return +Transform_Expr (Def, Type_Of_Node (Id), EW_Term);
-         else
-            return Why_Empty;
-         end if;
-      end Term_Definition;
-
    begin
       --  If the object is mutable, we generate a global ref
 
@@ -113,7 +95,7 @@ package body Gnat2Why.Decls is
               (1 =>
                  (Kind   => W_Function_Decl,
                   Domain => EW_Term,
-                  Def    => Term_Definition,
+                  Def    => Transform_Static_Expr (Def),
                   others => <>)));
       end if;
    end Why_Decl_Of_Ada_Object_Decl;

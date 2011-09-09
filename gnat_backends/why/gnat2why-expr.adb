@@ -1504,4 +1504,17 @@ package body Gnat2Why.Expr is
       end case;
    end Transform_Compare_Op;
 
+   ---------------------------
+   -- Transform_Static_Expr --
+   ---------------------------
+
+   function Transform_Static_Expr (Expr : Node_Id) return W_Term_Id is
+   begin
+      if Present (Expr) and then Is_Static_Expression (Expr) then
+         return +Transform_Expr (Expr, Type_Of_Node (Id), EW_Term);
+      else
+         return Why_Empty;
+      end if;
+   end Transform_Static_Expr;
+
 end Gnat2Why.Expr;
