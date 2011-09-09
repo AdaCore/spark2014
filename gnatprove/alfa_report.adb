@@ -44,9 +44,19 @@ with Configuration;           use Configuration;
 
 procedure Alfa_Report is
 
-   Total_Cnt        : Natural := 0;
-   Already_Alfa_Cnt : Natural := 0;
-   Not_Yet_Alfa_Cnt : Natural := 0;
+   type Alfa_Status is (Supported, Not_Yet, Unsupported);
+   type Alfa_Counts is array (Alfa_Status) of Natural;
+
+   Global_Count : Alfa_Counts := Alfa_Counts'(others => 0);
+
+   function Alfa_Count return Natural is
+     (Global_Count (Supported) + Global_Count (Not_Yet));
+
+   function Not_Alfa_Count return Natural is (Global_Count (Unsupported));
+
+   function Total_Count return Natural is (Alfa_Count + Not_Alfa_Count);
+
+   procedure Incr_Count (S : Alfa_Status);
 
    type Violation_Count is array (Alfa_Violations.Vkind) of Natural;
    Violation_Cnt : Violation_Count := (others => 0);
@@ -96,7 +106,8 @@ procedure Alfa_Report is
    is
       procedure Iterate_Alfa_Lines is new For_Line_In_File (Handle_Alfa_Line);
 
-      Cur_Alfa_Cnt : constant Natural := Already_Alfa_Cnt + Not_Yet_Alfa_Cnt;
+      Cur_Alfa_Cnt     : constant Natural := Alfa_Count;
+      Cur_Not_Alfa_Cnt : constant Natural := Not_Alfa_Count;
 
    begin
       Iterate_Alfa_Lines (Fn);
@@ -105,11 +116,9 @@ procedure Alfa_Report is
 
       Total_Files := Total_Files + 1;
       File_Alfa_Cnt.Insert
-        (To_Unbounded_String (Fn),
-         Already_Alfa_Cnt + Not_Yet_Alfa_Cnt - Cur_Alfa_Cnt);
+        (To_Unbounded_String (Fn), Alfa_Count - Cur_Alfa_Cnt);
       File_Not_Alfa_Cnt.Insert
-        (To_Unbounded_String (Fn),
-         Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt);
+        (To_Unbounded_String (Fn), Not_Alfa_Count - Cur_Not_Alfa_Cnt);
    end Handle_Alfa_File;
 
    ----------------------
@@ -169,11 +178,12 @@ procedure Alfa_Report is
       --  Update global counts
 
       Cur := Line'First;
-      Total_Cnt := Total_Cnt + 1;
       if Line (Cur) = '+' then
-         Already_Alfa_Cnt := Already_Alfa_Cnt + 1;
+         Incr_Count (Supported);
       elsif Line (Cur) = '*' then
-         Not_Yet_Alfa_Cnt := Not_Yet_Alfa_Cnt + 1;
+         Incr_Count (Not_Yet);
+      else
+         Incr_Count (Unsupported);
       end if;
 
       --  Update counts for violations
@@ -235,6 +245,15 @@ procedure Alfa_Report is
          Ada.Directories.Set_Directory (Save_Dir);
          raise;
    end Handle_Source_Dir;
+
+   ----------------
+   -- Incr_Count --
+   ----------------
+
+   procedure Incr_Count (S : Alfa_Status) is
+   begin
+      Global_Count (S) := Global_Count (S) + 1;
+   end Incr_Count;
 
    ------------------
    -- Print_Report --
@@ -365,7 +384,7 @@ procedure Alfa_Report is
                                     Label       => Lab,
                                     Label_Len   => Label_Length,
                                     Cnt         => V_Cnt,
-                                    Total       => Total_Cnt,
+                                    Total       => Total_Count,
                                     Cnt_Padding => True);
                end if;
             end;
@@ -410,27 +429,26 @@ procedure Alfa_Report is
       Print_Statistics (Handle      => Handle,
                         Label       => "Subprograms in Alfa",
                         Label_Len   => Label_Length,
-                        Cnt         => Already_Alfa_Cnt + Not_Yet_Alfa_Cnt,
-                        Total       => Total_Cnt,
+                        Cnt         => Alfa_Count,
+                        Total       => Total_Count,
                         Cnt_Padding => True);
       Print_Statistics (Handle      => Handle,
                         Label       => "  ... already supported",
                         Label_Len   => Label_Length,
-                        Cnt         => Already_Alfa_Cnt,
-                        Total       => Total_Cnt,
+                        Cnt         => Global_Count (Supported),
+                        Total       => Total_Count,
                         Cnt_Padding => True);
       Print_Statistics (Handle      => Handle,
                         Label       => "  ... not yet supported",
                         Label_Len   => Label_Length,
-                        Cnt         => Not_Yet_Alfa_Cnt,
-                        Total       => Total_Cnt,
+                        Cnt         => Global_Count (Not_Yet),
+                        Total       => Total_Count,
                         Cnt_Padding => True);
       Print_Statistics (Handle      => Handle,
                         Label       => "Subprograms not in Alfa",
                         Label_Len   => Label_Length,
-                        Cnt         =>
-                          Total_Cnt - Already_Alfa_Cnt - Not_Yet_Alfa_Cnt,
-                        Total       => Total_Cnt,
+                        Cnt         => Global_Count (Unsupported),
+                        Total       => Total_Count,
                         Cnt_Padding => True);
 
       --  statistics per violations
