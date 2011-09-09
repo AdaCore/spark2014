@@ -209,7 +209,7 @@ package body Gnat2Why.Expr is
 
             when N_Case_Statement_Alternative =>
                --  ??? Maybe we should merge the code for statements?
-               return +Why_Expr_Of_Ada_Stmts (Statements (N));
+               return +Transform_Statements (Statements (N));
 
             when others =>
                raise Unexpected_Node;
@@ -255,7 +255,7 @@ package body Gnat2Why.Expr is
 
                   when N_Case_Statement_Alternative =>
                      Then_Part :=
-                        +Why_Expr_Of_Ada_Stmts (Statements (Cur_Case));
+                        +Transform_Statements (Statements (Cur_Case));
 
                   when others =>
                      raise Unexpected_Node;
@@ -1203,7 +1203,7 @@ package body Gnat2Why.Expr is
             end if;
             T :=
                +Sequence
-                 (Why_Expr_Of_Ada_Stmts (Actions (Expr)),
+                 (Transform_Statements (Actions (Expr)),
                   +Transform_Expr (Expression (Expr),
                                          Expected_Type,
                                          EW_Prog));
@@ -1361,7 +1361,7 @@ package body Gnat2Why.Expr is
          when N_If_Statement =>
             declare
                Tail : W_Prog_Id :=
-                        Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt));
+                        Transform_Statements (Else_Statements (Stmt));
             begin
                if Present (Elsif_Parts (Stmt)) then
                   declare
@@ -1379,7 +1379,7 @@ package body Gnat2Why.Expr is
                             (Condition =>
                                Transform_Expr (Condition (Cur), EW_Prog),
                              Then_Part =>
-                               +Why_Expr_Of_Ada_Stmts (Then_Statements (Cur)),
+                               +Transform_Statements (Then_Statements (Cur)),
                              Else_Part => +Tail,
                              Domain    => EW_Prog);
                         Prev (Cur);
@@ -1394,7 +1394,7 @@ package body Gnat2Why.Expr is
                    (Condition => Transform_Expr (Condition (Stmt),
                                                        EW_Prog),
                     Then_Part =>
-                      +Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
+                      +Transform_Statements (Then_Statements (Stmt)),
                     Else_Part => +Tail,
                     Domain    => EW_Prog);
             end;
@@ -1449,11 +1449,11 @@ package body Gnat2Why.Expr is
       end case;
    end Transform_Statement;
 
-   ---------------------------
-   -- Why_Expr_Of_Ada_Stmts --
-   ---------------------------
+   --------------------------
+   -- Transform_Statements --
+   --------------------------
 
-   function Why_Expr_Of_Ada_Stmts
+   function Transform_Statements
      (Stmts      : List_Id;
       Start_From : Node_Id := Empty)
      return W_Prog_Id
@@ -1470,7 +1470,7 @@ package body Gnat2Why.Expr is
          Next (Cur_Stmt);
       end loop;
       return Result;
-   end Why_Expr_Of_Ada_Stmts;
+   end Transform_Statements;
 
    ----------------------------
    -- Why_Ident_Of_Ada_Ident --

@@ -516,7 +516,7 @@ package body Gnat2Why.Subprograms is
                        EW_Pred),
                   Def     =>
                     +Compute_Context
-                      (Why_Expr_Of_Ada_Stmts
+                      (Transform_Statements
                         (Statements
                           (Handled_Statement_Sequence (Node))))));
          end if;

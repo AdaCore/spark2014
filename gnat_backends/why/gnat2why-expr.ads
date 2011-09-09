@@ -60,7 +60,7 @@ package Gnat2Why.Expr is
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
-   function Why_Expr_Of_Ada_Stmts
+   function Transform_Statements
      (Stmts      : List_Id;
       Start_From : Node_Id := Empty)
      return W_Prog_Id;

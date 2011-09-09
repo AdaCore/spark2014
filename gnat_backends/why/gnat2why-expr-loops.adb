@@ -199,7 +199,7 @@ package body Gnat2Why.Expr.Loops is
       --     declared at the toplevel.
       Compute_Invariant (Loop_Body, Invariant, Split_Node);
       Loop_Content :=
-         Why_Expr_Of_Ada_Stmts
+         Transform_Statements
            (Stmts      => Loop_Body,
             Start_From => Split_Node);
 
