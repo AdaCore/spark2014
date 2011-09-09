@@ -77,10 +77,6 @@ package body Gnat2Why.Expr is
    --  procedure call. The node in argument must have a "Name" field and a
    --  "Parameter_Associations" field.
 
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
-   --  Return the Defining_Identifier of the loop that belongs to an exit
-   --  statement.
-
    function Transform_Quantified_Expression
       (Expr         : Node_Id;
        Domain       : EW_Domain;
@@ -504,33 +500,6 @@ package body Gnat2Why.Expr is
          end if;
       end loop;
    end Iterate_Call_Arguments;
-
-   -----------------------------------
-   -- Loop_Entity_Of_Exit_Statement --
-   -----------------------------------
-
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
-   begin
-      --  If the name is directly in the given node, return that name
-
-      if Present (Name (N)) then
-         return Entity (Name (N));
-
-      --  Otherwise the exit statement belongs to the innermost loop, so
-      --  simply go upwards (follow parent nodes) until we encounter the
-      --  loop
-
-      else
-         declare
-            Cur_Node : Node_Id := N;
-         begin
-            while Nkind (Cur_Node) /= N_Loop_Statement loop
-               Cur_Node := Parent (Cur_Node);
-            end loop;
-            return Entity (Identifier (Cur_Node));
-         end;
-      end if;
-   end Loop_Entity_Of_Exit_Statement;
 
    -------------------------------
    -- Predicate_Of_Pragma_Check --
@@ -1440,27 +1409,7 @@ package body Gnat2Why.Expr is
             return Transform_Loop_Statement (Stmt);
 
          when N_Exit_Statement =>
-            declare
-               Loop_Entity : constant Entity_Id :=
-                               Loop_Entity_Of_Exit_Statement (Stmt);
-               Exc_Name    : constant String := Full_Name (Loop_Entity);
-               Raise_Stmt  : constant W_Prog_Id :=
-                               New_Raise
-                                 (Ada_Node => Stmt,
-                                  Name => New_Identifier (Exc_Name));
-            begin
-               if Nkind (Condition (Stmt)) = N_Empty then
-                  return Raise_Stmt;
-               else
-                  return
-                    New_Conditional
-                      (Ada_Node  => Stmt,
-                       Domain    => EW_Prog,
-                       Condition =>
-                          +Transform_Expr (Condition (Stmt), EW_Prog),
-                       Then_Part => +Raise_Stmt);
-               end if;
-            end;
+            return Transform_Exit_Statement (Stmt);
 
          when N_Case_Statement =>
             return +Case_Expr_Of_Ada_Node (Stmt, EW_Prog);

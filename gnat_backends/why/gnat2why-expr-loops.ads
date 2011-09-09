@@ -25,6 +25,8 @@
 
 package Gnat2Why.Expr.Loops is
 
+   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id;
+
    function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id;
 
 end Gnat2Why.Expr.Loops;

@@ -49,6 +49,10 @@ package body Gnat2Why.Expr.Loops is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
+   --  Return the Defining_Identifier of the loop that belongs to an exit
+   --  statement.
+
    function Wrap_Loop
       (Loop_Body : W_Prog_Id;
        Condition : W_Prog_Id;
@@ -97,6 +101,58 @@ package body Gnat2Why.Expr.Loops is
          Nlists.Next (Cur_Stmt);
       end loop;
    end Compute_Invariant;
+
+   -----------------------------------
+   -- Loop_Entity_Of_Exit_Statement --
+   -----------------------------------
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
+   begin
+      --  If the name is directly in the given node, return that name
+
+      if Present (Name (N)) then
+         return Entity (Name (N));
+
+      --  Otherwise the exit statement belongs to the innermost loop, so
+      --  simply go upwards (follow parent nodes) until we encounter the
+      --  loop
+
+      else
+         declare
+            Cur_Node : Node_Id := N;
+         begin
+            while Nkind (Cur_Node) /= N_Loop_Statement loop
+               Cur_Node := Parent (Cur_Node);
+            end loop;
+            return Entity (Identifier (Cur_Node));
+         end;
+      end if;
+   end Loop_Entity_Of_Exit_Statement;
+
+   ------------------------------
+   -- Transform_Exit_Statement --
+   ------------------------------
+
+   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
+   is
+      Loop_Entity : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
+      Exc_Name    : constant String := Full_Name (Loop_Entity);
+      Raise_Stmt  : constant W_Prog_Id :=
+                      New_Raise
+                        (Ada_Node => Stmt,
+                         Name => New_Identifier (Exc_Name));
+   begin
+      if Nkind (Condition (Stmt)) = N_Empty then
+         return Raise_Stmt;
+      else
+         return
+           New_Conditional
+             (Ada_Node  => Stmt,
+              Domain    => EW_Prog,
+              Condition => +Transform_Expr (Condition (Stmt), EW_Prog),
+              Then_Part => +Raise_Stmt);
+      end if;
+   end Transform_Exit_Statement;
 
    ------------------------------
    -- Transform_Loop_Statement --
