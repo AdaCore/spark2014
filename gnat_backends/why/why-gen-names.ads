@@ -81,14 +81,7 @@ package Why.Gen.Names is
 
    Ada_Array                : constant String := "t__ada_array";
    Array_Access             : constant String := "access";
-   Array_First_Upd          : constant String := "first_update";
-   Array_Last_Upd           : constant String := "last_update";
-   Array_Len_Nzero          : constant String := "length_non_zero";
-   Array_Len_Upd            : constant String := "length_update";
-   Array_Len_Zero           : constant String := "length_zero";
    Array_Update             : constant String := "update";
-   Array_Accupd_Eq          : constant String := "accupd_eq";
-   Array_Accupd_Neq         : constant String := "accupd_neq";
    Array_Convert_From       : constant String := "to_ada_array";
    Array_Convert_To         : constant String := "of_ada_array";
    Array_First_Static_Name  : constant String := "static_first";
@@ -122,16 +115,6 @@ package Why.Gen.Names is
      new Name_Gen.Arity_1 ("", Array_Access);
    --  From the name of an array type, return the name of its access function.
 
-   package Array_Accupd_Eq_Axiom is
-     new Name_Gen.Arity_1 ("", Array_Accupd_Eq);
-   --  From the name of an array type, return the name of the axiom of
-   --  access/update equality
-
-   package Array_Accupd_Neq_Axiom is
-     new Name_Gen.Arity_1 ("", Array_Accupd_Neq);
-   --  From the name of an array type, return the name of the axiom of
-   --  access/update with disequality
-
    package Array_Conv_To is
      new Name_Gen.Arity_1 ("", Array_Convert_To);
    --  From the name of an array type, return the name of the conversion from
@@ -147,31 +130,6 @@ package Why.Gen.Names is
 
    package Array_Conv_Idem_2 is
      new Name_Gen.Arity_1 ("", Array_Conv_Idemp_2);
-
-   package Array_First_Update is
-     new Name_Gen.Arity_1 ("", Array_First_Upd);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "first" is constant
-
-   package Array_Last_Update is
-     new Name_Gen.Arity_1 ("", Array_Last_Upd);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "last" is constant
-
-   package Array_Length_Non_Zero is
-     new Name_Gen.Arity_1 ("", Array_Len_Nzero);
-   --  From the name of an array type, return the name of the axiom that
-   --  defines the properties when Length is positive.
-
-   package Array_Length_Update is
-     new Name_Gen.Arity_1 ("", Array_Len_Upd);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that "length" is constant
-
-   package Array_Length_Zero is
-     new Name_Gen.Arity_1 ("", Array_Len_Zero);
-   --  From the name of an array type, return the name of the axiom that
-   --  defines the properties when Length Zero.
 
    package Array_Update_Name is
      new Name_Gen.Arity_1 ("", Array_Update);
