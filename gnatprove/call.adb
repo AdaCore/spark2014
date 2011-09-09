@@ -139,7 +139,6 @@ package body Call is
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : Argument_List;
-      Success   : out Boolean;
       Verbose   : Boolean := False)
    is
       Status     : Integer;
@@ -155,8 +154,7 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
       Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
-      Success := Status = 0;
-      if not Success then
+      if Status /= 0 then
          Print_Command_Line (Executable.all, Arguments);
          Ada.Text_IO.Put_Line (" failed.");
          GNAT.OS_Lib.OS_Exit (1);
@@ -170,14 +168,12 @@ package body Call is
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : String_Lists.List;
-      Success   : out Boolean;
       Verbose   : Boolean := False)
    is
    begin
       Call_Exit_On_Failure
         (Command,
          Argument_List_Of_String_List (Arguments),
-         Success,
          Verbose);
    end Call_Exit_On_Failure;
 

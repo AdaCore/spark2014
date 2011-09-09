@@ -34,7 +34,6 @@ package Call is
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : String_Lists.List;
-      Success   : out Boolean;
       Verbose   : Boolean := False);
    --  Call the given command using the given argument list.
    --  Free all argument access values
@@ -43,7 +42,6 @@ package Call is
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : Argument_List;
-      Success   : out Boolean;
       Verbose   : Boolean := False);
 
    procedure Call_With_Status

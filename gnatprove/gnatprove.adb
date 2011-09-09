@@ -319,11 +319,7 @@ procedure Gnatprove is
       Call_Exit_On_Failure
         (Command   => "alfa_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
-         Success   => Success,
          Verbose   => Verbose);
-      if not Success then
-         Abort_With_Message ("Error during report creation, aborting.");
-      end if;
 
       if not Debug then
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
