@@ -25,13 +25,10 @@
 
 with Atree;                use Atree;
 with Einfo;                use Einfo;
-with Sinfo;                use Sinfo;
 
-with Why.Types;            use Why.Types;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Inter;            use Why.Inter;
 with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
@@ -95,7 +92,7 @@ package body Gnat2Why.Decls is
               (1 =>
                  (Kind   => W_Function_Decl,
                   Domain => EW_Term,
-                  Def    => Transform_Static_Expr (Def),
+                  Def    => Transform_Static_Expr (Def, Type_Of_Node (Id)),
                   others => <>)));
       end if;
    end Why_Decl_Of_Ada_Object_Decl;

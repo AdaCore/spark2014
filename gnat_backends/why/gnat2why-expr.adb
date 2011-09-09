@@ -33,6 +33,7 @@ with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
 with Why;                   use Why;
+with Why.Types;             use Why.Types;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
@@ -1508,10 +1509,12 @@ package body Gnat2Why.Expr is
    -- Transform_Static_Expr --
    ---------------------------
 
-   function Transform_Static_Expr (Expr : Node_Id) return W_Term_Id is
+   function Transform_Static_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Term_Id is
    begin
       if Present (Expr) and then Is_Static_Expression (Expr) then
-         return +Transform_Expr (Expr, Type_Of_Node (Id), EW_Term);
+         return +Transform_Expr (Expr, Expected_Type, EW_Term);
       else
          return Why_Empty;
       end if;

@@ -60,7 +60,9 @@ package Gnat2Why.Expr is
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
-   function Trasform_Static_Expr (Expr : Node_Id) return W_Term_Id;
+   function Transform_Static_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Term_Id;
    --  If Expr is static, return a term equivalent to Expr. Otherwise,
    --  return Why_Empty.
 
