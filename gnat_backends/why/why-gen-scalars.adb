@@ -38,11 +38,11 @@ with Why.Sinfo;          use Why.Sinfo;
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
-     (File           : W_File_Id;
-      Name           : String;
-      Base_Type      : EW_Scalar;
-      First          : W_Term_Id;
-      Last           : W_Term_Id);
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar;
+      First     : W_Term_Id;
+      Last      : W_Term_Id);
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
 
@@ -59,11 +59,11 @@ package body Why.Gen.Scalars is
    begin
       Emit (File, New_Type (Name));
       Define_Scalar_Conversions
-        (File           => File,
-         Name           => Name,
-         Base_Type      => EW_Int,
-         First          => New_Constant (First),
-         Last           => New_Constant (Last));
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int,
+         First     => New_Constant (First),
+         Last      => New_Constant (Last));
    end Declare_Ada_Abstract_Signed_Int;
 
    --------------------------------
@@ -78,11 +78,11 @@ package body Why.Gen.Scalars is
    begin
       Emit (File, New_Type (Name));
       Define_Scalar_Conversions
-        (File           => File,
-         Name           => Name,
-         Base_Type      => EW_Real,
-         First          => New_Constant (First),
-         Last           => New_Constant (Last));
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Real,
+         First     => New_Constant (First),
+         Last      => New_Constant (Last));
    end Declare_Ada_Floating_Point;
 
    -------------------------------
@@ -90,11 +90,11 @@ package body Why.Gen.Scalars is
    -------------------------------
 
    procedure Define_Scalar_Conversions
-     (File           : W_File_Id;
-      Name           : String;
-      Base_Type      : EW_Scalar;
-      First          : W_Term_Id;
-      Last           : W_Term_Id)
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar;
+      First     : W_Term_Id;
+      Last      : W_Term_Id)
    is
       Arg_S   : constant String := "n";
       BT      : constant W_Primitive_Type_Id
