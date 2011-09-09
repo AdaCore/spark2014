@@ -382,7 +382,7 @@ package body Gnat2Why.Subprograms is
 
                   Cur_Spec :=
                      New_And_Then_Expr
-                       (Left   => Why_Expr_Of_Ada_Expr (Ada_Spec, Domain),
+                       (Left   => Transform_Expr (Ada_Spec, Domain),
                         Right  => Cur_Spec,
                         Domain => Domain);
                end;
@@ -483,7 +483,7 @@ package body Gnat2Why.Subprograms is
                     (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Ext_Binders,
                      Pre     => Pre,
-                     Def     => +Why_Expr_Of_Ada_Expr (Expression (Orig_Node),
+                     Def     => +Transform_Expr (Expression (Orig_Node),
                                                        EW_Pred)));
 
             else
@@ -495,7 +495,7 @@ package body Gnat2Why.Subprograms is
                      Binders     => Ext_Binders,
                      Pre         => Pre,
                      Def         =>
-                       +Why_Expr_Of_Ada_Expr
+                       +Transform_Expr
                          (Expression (Orig_Node), EW_Term)));
             end if;
          end if;
@@ -537,7 +537,7 @@ package body Gnat2Why.Subprograms is
                                  New_Equal_Bool
                                    (Left  => New_Result_Term,
                                     Right =>
-                                      +Why_Expr_Of_Ada_Expr
+                                      +Transform_Expr
                                         (Expression (Orig_Node), EW_Pred))
                                else
                                  New_Relation
@@ -546,7 +546,7 @@ package body Gnat2Why.Subprograms is
                                       Get_EW_Type (Expression (Orig_Node)),
                                     Left    => +New_Result_Term,
                                     Right   =>
-                                      +Why_Expr_Of_Ada_Expr
+                                      +Transform_Expr
                                         (Expression (Orig_Node), EW_Term)))
                             else Post);
          begin

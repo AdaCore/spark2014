@@ -38,7 +38,7 @@ package Gnat2Why.Expr is
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
 
-   function Why_Expr_Of_Ada_Expr
+   function Transform_Expr
      (Expr          : Node_Id;
       Expected_Type : Why_Type;
       Domain        : EW_Domain) return W_Expr_Id;
@@ -46,7 +46,7 @@ package Gnat2Why.Expr is
    --  expression node. The formal "Domain" decides if we return a predicate,
    --  term or program
 
-   function Why_Expr_Of_Ada_Expr (Expr : Node_Id; Domain : EW_Domain)
+   function Transform_Expr (Expr : Node_Id; Domain : EW_Domain)
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 

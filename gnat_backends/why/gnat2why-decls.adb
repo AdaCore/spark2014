@@ -84,7 +84,7 @@ package body Gnat2Why.Decls is
       function Term_Definition return W_Term_Id is
       begin
          if Present (Def) and then Is_Static_Expression (Def) then
-            return +Why_Expr_Of_Ada_Expr (Def, Type_Of_Node (Id), EW_Term);
+            return +Transform_Expr (Def, Type_Of_Node (Id), EW_Term);
          else
             return Why_Empty;
          end if;
