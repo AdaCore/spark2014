@@ -68,10 +68,10 @@ package body Gnat2Why.Decls is
 
    procedure Why_Decl_Of_Ada_Object_Decl
      (File : W_File_Id;
-      Id  : Entity_Id;
+      Id   : Entity_Id;
       Def  : Node_Id := Empty)
    is
-      Name   : constant String := Full_Name (Id);
+      Name : constant String := Full_Name (Id);
 
       function Term_Definition return W_Term_Id;
       --  If possible, return a term equivalent to Def. Otherwise,
