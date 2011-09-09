@@ -75,8 +75,6 @@ private
 
    _@Declare_Children_Checks@_
 
-   pragma Warnings (Off, "formal parameter ""Id"" is not referenced");
-
    _@Implement_Checks@_
 
    function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
@@ -92,7 +90,5 @@ private
      (Is_Empty (Id) or else List_Cache_Valid (Id));
 
    _@Implement_Children_Checks@_
-
-   pragma Warnings (On, "formal parameter ""Id"" is not referenced");
 
 end Why.Atree.Validity;
