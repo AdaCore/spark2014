@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Snames;             use Snames;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
@@ -209,18 +210,21 @@ package body Why.Gen.Scalars is
       type Scalar_Attr is (S_First, S_Last);
 
       type Attr_Info is record
-         Name  : W_Identifier_Id;
-         Value : W_Term_Id;
+         Attr_Id : Attribute_Id;
+         Value   : W_Term_Id;
       end record;
 
       Attr_Values : constant array (Scalar_Attr) of Attr_Info :=
-                      (S_First => (Type_First.Id (Name), First),
-                       S_Last  => (Type_Last.Id (Name), Last));
+                      (S_First => (Attribute_First, First),
+                       S_Last  => (Attribute_Last, Last));
    begin
       for J in Attr_Values'Range loop
          Emit_Top_Level_Declarations
            (File        => File,
-            Name        => Attr_Values (J).Name,
+            Name        =>
+              Attr_Name.Id
+                (Name,
+                 Attribute_Id'Image (Attr_Values (J).Attr_Id)),
             Binders     => (1 .. 0 => <>),
             Return_Type => New_Base_Type (Base_Type => Base_Type),
             Spec        =>

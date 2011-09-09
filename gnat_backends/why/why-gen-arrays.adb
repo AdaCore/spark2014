@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Snames;             use Snames;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -66,7 +67,12 @@ package body Why.Gen.Arrays is
               New_Relation
                 (Op      => EW_Eq,
                  Op_Type => EW_Int,
-                 Left    => +New_Array_First (Name, +Ar, EW_Term),
+                 Left    =>
+                   +New_Array_Attr
+                     (Attr_First,
+                      Name,
+                      +Ar,
+                      EW_Term),
                  Right   => New_Integer_Constant (Value => First))));
       Emit
         (File,
@@ -77,7 +83,12 @@ package body Why.Gen.Arrays is
               New_Relation
                 (Op      => EW_Eq,
                  Op_Type => EW_Int,
-                 Left    => +New_Array_Last (Name, +Ar, EW_Term),
+                 Left    =>
+                   +New_Array_Attr
+                     (Attr_Last,
+                      Name,
+                      +Ar,
+                      EW_Term),
                  Right   => New_Integer_Constant (Value => Last))));
       Emit
         (File,
@@ -88,7 +99,12 @@ package body Why.Gen.Arrays is
               New_Relation
                 (Op      => EW_Eq,
                  Op_Type => EW_Int,
-                 Left    => +New_Array_Length (Name, +Ar, EW_Term),
+                 Left    =>
+                   +New_Array_Attr
+                     (Attr_Length,
+                      Name,
+                      +Ar,
+                      EW_Term),
                  Right   =>
                    New_Integer_Constant
                      (Value => UI_Add (UI_Sub (Last, First), 1)))));
@@ -260,12 +276,13 @@ package body Why.Gen.Arrays is
                      Args   => (1 => +Ar))));
    end New_Array_Access;
 
-   ---------------------
-   -- New_Array_First --
-   ---------------------
+   --------------------
+   -- New_Array_Attr --
+   --------------------
 
-   function New_Array_First
-      (Type_Name : String;
+   function New_Array_Attr
+      (Name      : String;
+       Type_Name : String;
        Ar        : W_Expr_Id;
        Domain    : EW_Domain) return W_Expr_Id
    is
@@ -273,56 +290,14 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   => Array_First_Name.Id (Ada_Array),
+           Name   => Attr_Name.Id (Ada_Array, Name),
            Args   =>
             (1 =>
                New_Call
                  (Domain => Domain,
                   Name   => Array_Conv_From.Id (Type_Name),
                   Args   => (1 => +Ar))));
-   end New_Array_First;
-
-   --------------------
-   -- New_Array_Last --
-   --------------------
-
-   function New_Array_Last
-      (Type_Name : String;
-       Ar        : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id is
-   begin
-      return
-        New_Call
-          (Domain => Domain,
-           Name   => Array_Last_Name.Id (Ada_Array),
-           Args   =>
-            (1 =>
-               New_Call
-                  (Domain => Domain,
-                   Name   => Array_Conv_From.Id (Type_Name),
-                   Args   => (1 => +Ar))));
-   end New_Array_Last;
-
-   ----------------------
-   -- New_Array_Length --
-   ----------------------
-
-   function New_Array_Length
-      (Type_Name : String;
-       Ar        : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id is
-   begin
-      return
-        New_Call
-          (Domain => Domain,
-           Name   => Array_Length_Name.Id (Ada_Array),
-           Args   =>
-             (1 =>
-                New_Call
-                  (Domain => Domain,
-                   Name   => Array_Conv_From.Id (Type_Name),
-                   Args   => (1 => +Ar))));
-   end New_Array_Length;
+   end New_Array_Attr;
 
    ---------------------------
    -- New_Array_Update_Prog --

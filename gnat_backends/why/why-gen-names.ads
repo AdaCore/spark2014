@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Namet;        use Namet;
+with Snames;       use Snames;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
@@ -80,11 +81,8 @@ package Why.Gen.Names is
 
    Ada_Array                : constant String := "t__ada_array";
    Array_Access             : constant String := "access";
-   Array_First              : constant String := "first";
    Array_First_Upd          : constant String := "first_update";
-   Array_Last               : constant String := "last";
    Array_Last_Upd           : constant String := "last_update";
-   Array_Length             : constant String := "length";
    Array_Len_Nzero          : constant String := "length_non_zero";
    Array_Len_Upd            : constant String := "length_update";
    Array_Len_Zero           : constant String := "length_zero";
@@ -113,6 +111,12 @@ package Why.Gen.Names is
    Range_Name               : constant String := "range";
    In_Range                 : constant String := "in_range";
    Unicity                  : constant String := "unicity";
+   Attr_First               : constant String :=
+                                Attribute_Id'Image (Attribute_First);
+   Attr_Last                : constant String :=
+                                Attribute_Id'Image (Attribute_Last);
+   Attr_Length              : constant String :=
+                                Attribute_Id'Image (Attribute_Length);
 
    package Array_Access_Name is
      new Name_Gen.Arity_1 ("", Array_Access);
@@ -144,29 +148,15 @@ package Why.Gen.Names is
    package Array_Conv_Idem_2 is
      new Name_Gen.Arity_1 ("", Array_Conv_Idemp_2);
 
-   package Array_First_Name is
-     new Name_Gen.Arity_1 ("", Array_First);
-   --  From the name of an array type, return the name of its "first"
-   --  function.
-
    package Array_First_Update is
      new Name_Gen.Arity_1 ("", Array_First_Upd);
    --  From the name of an array type, return the name of the axiom that
    --  states that "first" is constant
 
-   package Array_Last_Name is
-     new Name_Gen.Arity_1 ("", Array_Last);
-   --  From the name of an array type, return the name of its "last" function.
-
    package Array_Last_Update is
      new Name_Gen.Arity_1 ("", Array_Last_Upd);
    --  From the name of an array type, return the name of the axiom that
    --  states that "last" is constant
-
-   package Array_Length_Name is
-     new Name_Gen.Arity_1 ("", Array_Length);
-   --  From the name of an array type, return the name of its "length"
-   --  function.
 
    package Array_Length_Non_Zero is
      new Name_Gen.Arity_1 ("", Array_Len_Nzero);
@@ -202,11 +192,8 @@ package Why.Gen.Names is
    --  From the name of an array type, return the name of the axiom that
    --  states that 'Length is static.
 
-   package Type_First is
-      new Name_Gen.Arity_1 ("", "first");
-
-   package Type_Last is
-      new Name_Gen.Arity_1 ("", "last");
+   package Attr_Name is
+     new Name_Gen.Arity_2 ("", "attr", "");
 
    package Coerce_Axiom is
      new Name_Gen.Arity_1 ("", Coerce);

@@ -63,23 +63,12 @@ package Why.Gen.Arrays is
       Domain        : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
-   function New_Array_First
-      (Type_Name : String;
+   function New_Array_Attr
+      (Name      : String;
+       Type_Name : String;
        Ar        : W_Expr_Id;
        Domain    : EW_Domain) return W_Expr_Id;
-   --  Generate an expr that corresponds to Ar'First.
-
-   function New_Array_Last
-      (Type_Name : String;
-       Ar        : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
-   --  Generate an expr that corresponds to Ar'Last.
-
-   function New_Array_Length
-      (Type_Name : String;
-       Ar        : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
-   --  Generate an expr that corresponds to Ar'Length.
+   --  Generate an expr that corresponds to Ar'Name
 
    function New_Array_Update_Prog
       (Ada_Node  : Node_Id;

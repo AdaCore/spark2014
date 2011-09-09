@@ -1166,29 +1166,44 @@ package body Gnat2Why.Expr is
 
                      T := +New_Old_Ident (Transform_Ident (Var));
 
-                  when Attribute_First =>
-                     T :=
-                       New_Array_First
-                         (Full_Name (Etype (Var)),
-                          Transform_Expr (Var, Domain),
-                          Domain);
-                     Current_Type := EW_Int_Type;
+                  when Attribute_First | Attribute_Last | Attribute_Length =>
+                     case Ekind (Etype (Var)) is
+                        when Array_Kind =>
+                           --  ???  Missing support for Array_Type'First
+                           --  ???  Missing support of A'First (N)
+                           T :=
+                             New_Array_Attr
+                               (Attribute_Id'Image (Attr_Id),
+                                Full_Name (Etype (Var)),
+                                Transform_Expr (Var, Domain),
+                                Domain);
+                           Current_Type := EW_Int_Type;
 
-                  when Attribute_Last =>
-                     T :=
-                       New_Array_Last
-                         (Full_Name (Etype (Var)),
-                          Transform_Expr (Var, Domain),
-                          Domain);
-                     Current_Type := EW_Int_Type;
+                        when Enumeration_Kind | Integer_Kind =>
+                           T :=
+                             +Attr_Name.Id
+                               (Full_Name (Etype (Var)),
+                                Attribute_Id'Image (Attr_Id));
+                           Current_Type := EW_Int_Type;
 
-                  when Attribute_Length =>
-                     T :=
-                       New_Array_Length
-                         (Full_Name (Etype (Var)),
-                          Transform_Expr (Var, Domain),
-                          Domain);
-                     Current_Type := EW_Int_Type;
+                        when Fixed_Point_Kind =>
+                           --  ??? What should be done for fixed points
+                           --  is not clear yet.
+                           raise Not_Implemented;
+
+                        when Float_Kind =>
+                           T :=
+                             +Attr_Name.Id
+                               (Full_Name (Etype (Var)),
+                                Attribute_Id'Image (Attr_Id));
+                           Current_Type := EW_Real_Type;
+
+                        when others =>
+                           --  All possible cases should have been handled
+                           --  before this point.
+                           pragma Assert (False);
+                           null;
+                     end case;
 
                when others =>
                   raise Not_Implemented;
