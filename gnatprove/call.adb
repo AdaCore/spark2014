@@ -100,7 +100,8 @@ package body Call is
      (Command   : String;
       Arguments : Argument_List;
       Status    : out Integer;
-      Verbose   : Boolean := False)
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True)
    is
       Executable : String_Access :=
          Locate_Exec_On_Path (Command);
@@ -114,7 +115,9 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
       Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
-      Free_Argument_List (Arguments);
+      if Free_Args then
+         Free_Argument_List (Arguments);
+      end if;
       Free (Executable);
    end Call_With_Status;
 
@@ -142,27 +145,20 @@ package body Call is
       Verbose   : Boolean := False)
    is
       Status     : Integer;
-      Executable : String_Access :=
-         Locate_Exec_On_Path (Command);
    begin
-      if Executable = null then
-         Ada.Text_IO.Put_Line ("Could not find executable " & Command);
-         GNAT.OS_Lib.OS_Exit (1);
-      end if;
-      if Verbose then
-         Print_Command_Line (Executable.all, Arguments);
-         Ada.Text_IO.New_Line;
-      end if;
-      Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
+      Call_With_Status (Command,
+                        Arguments,
+                        Status,
+                        Verbose,
+                        Free_Args => False);
       if Status /= 0 then
-         Print_Command_Line (Executable.all, Arguments);
+         Print_Command_Line (Command, Arguments);
          Ada.Text_IO.Put_Line (" failed.");
          GNAT.OS_Lib.OS_Exit (1);
       else
          Ada.Text_IO.New_Line;
       end if;
       Free_Argument_List (Arguments);
-      Free (Executable);
    end Call_Exit_On_Failure;
 
    procedure Call_Exit_On_Failure

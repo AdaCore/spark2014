@@ -48,7 +48,8 @@ package Call is
      (Command   : String;
       Arguments : Argument_List;
       Status    : out Integer;
-      Verbose   : Boolean := False);
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True);
 
    procedure Call_With_Status
      (Command   : String;
