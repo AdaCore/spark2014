@@ -202,6 +202,12 @@ package Why.Gen.Names is
    --  From the name of an array type, return the name of the axiom that
    --  states that 'Length is static.
 
+   package Type_First is
+      new Name_Gen.Arity_1 ("", "first");
+
+   package Type_Last is
+      new Name_Gen.Arity_1 ("", "last");
+
    package Coerce_Axiom is
      new Name_Gen.Arity_1 ("", Coerce);
    --  From the name of an abstract type, return the name of
