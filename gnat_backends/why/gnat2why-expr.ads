@@ -35,8 +35,18 @@ package Gnat2Why.Expr is
    function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
+   function Range_Expr (N : Node_Id; T : W_Expr_Id; Domain : EW_Domain)
+      return W_Expr_Id;
+   --  Given an N_Range node N and a Why expr T, create an expression
+   --  low <= T <= high
+   --  where "low" and "high" are the lower and higher bounds of N.
+
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
+
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id;
+   --  Compute a Why predicate from a node of kind Pragma Check. Raise
+   --  Not_Implemented if it is not a Pragma Check.
 
    function Transform_Expr
      (Expr          : Node_Id;
