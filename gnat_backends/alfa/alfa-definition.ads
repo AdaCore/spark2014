@@ -57,6 +57,10 @@ package Alfa.Definition is
    procedure Close_Alfa_Output_File;
    --  Close the file created by Create_Alfa_Output_File
 
+   function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
+   --  Given the entity E for a function, determine whether E is an expression
+   --  function that only calls expression functions, directly or indirectly.
+
    type Alfa_Decl is
      (Alfa_Object,
       Alfa_Type,

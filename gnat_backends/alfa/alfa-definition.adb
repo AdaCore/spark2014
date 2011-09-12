@@ -600,6 +600,96 @@ package body Alfa.Definition is
    function Current_Scope return Scope_Record is
      (Scope_Stack.Table (Scope_Stack.Last));
 
+   --------------------------------------
+   -- Expression_Functions_All_The_Way --
+   --------------------------------------
+
+   function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean is
+
+      Only_Expression_Functions : Boolean := True;
+      --  Set to False if a call to something else than an expression
+      --  function is seen.
+
+      Already_Seen : Id_Set.Set;
+      --  Set of functions already seen
+
+      use Id_Set;
+
+      function Mark_Regular_Call (N : Node_Id) return Traverse_Result;
+      --  Basic marking function
+
+      procedure Traverse_Expression_Function (E : Entity_Id);
+      --  Main recursive traversal
+
+      -----------------------
+      -- Mark_Regular_Call --
+      -----------------------
+
+      function Mark_Regular_Call (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind_In (N, N_Function_Call, N_Procedure_Call_Statement) then
+            declare
+               Nam : constant Node_Id := Name (N);
+            begin
+               if not Is_Entity_Name (Nam)
+                 or else No (Entity (Nam))
+               then
+                  Only_Expression_Functions := False;
+               else
+                  Traverse_Expression_Function (Entity (Nam));
+               end if;
+            end;
+         end if;
+         return OK;
+      end Mark_Regular_Call;
+
+      procedure Traverse_And_Mark is new Traverse_Proc (Mark_Regular_Call);
+
+      ----------------------------------
+      -- Traverse_Expression_Function --
+      ----------------------------------
+
+      procedure Traverse_Expression_Function (E : Entity_Id) is
+         Decl      : constant Node_Id := Parent (Parent (E));
+         Body_Decl : Node_Id;
+
+      begin
+         if Nkind (Decl) = N_Subprogram_Body then
+            Body_Decl := Decl;
+         elsif Present (Corresponding_Body (Decl)) then
+            Body_Decl := Parent (Parent (Corresponding_Body (Decl)));
+         else
+            Body_Decl := Empty;
+         end if;
+
+         --  If not possible to follow calls to expression functions further
+         --  because function is declared in another unit, consider it may not
+         --  be an expression function.
+
+         if No (Body_Decl) then
+            Only_Expression_Functions := False;
+
+         elsif Nkind (Original_Node (Decl)) /= N_Expression_Function
+           and then Nkind (Original_Node (Body_Decl)) /= N_Expression_Function
+         then
+            Only_Expression_Functions := False;
+
+         --  Protect against recursion, which cannot introduce more calls
+
+         elsif Contains (Already_Seen, Entity_Id (Unique (E))) then
+            null;
+
+         else
+            Include (Already_Seen, Entity_Id (Unique (E)));
+            Traverse_And_Mark (Parent (Parent (Corresponding_Body (Decl))));
+         end if;
+      end Traverse_Expression_Function;
+
+   begin
+      Traverse_Expression_Function (E);
+      return Only_Expression_Functions;
+   end Expression_Functions_All_The_Way;
+
    -------------------------------------
    -- Formal_Proof_Currently_Disabled --
    -------------------------------------
@@ -1485,10 +1575,8 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("global read in subprogram called in logic", N,
                            NYI_Logic_Function);
 
-         elsif Nkind (Original_Node (Parent (Parent (Entity (Nam)))))
-           /= N_Expression_Function
-         then
-            Mark_Non_Alfa ("regular function called in logic", N,
+         elsif not Expression_Functions_All_The_Way (Entity (Nam)) then
+            Mark_Non_Alfa ("not pure expression function called in logic", N,
                            NYI_Logic_Function);
          end if;
 
