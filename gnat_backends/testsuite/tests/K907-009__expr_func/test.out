@@ -1,3 +1,4 @@
+
 Subprograms in Alfa       : 100% (12/12)
   ... already supported   :  92% (11/12)
   ... not yet supported   :   8% ( 1/12)
@@ -10,7 +11,8 @@ Subprograms not yet supported due to (possibly more than one reason):
  logic function           :   8% ( 1/12)
 
 Units with the largest number of subprograms in Alfa:
- p                        : 100% (12/12)
+ p                        :  86% (12/14)
 
 Units with the largest number of subprograms not in Alfa:
- (none)
+ p                        :  14% (2/14)
+
