@@ -52,7 +52,10 @@ package Why.Gen.Names is
    --  Return the name of the Why scalar type (e.g. "real" from real)
 
    function New_Division (Kind : EW_Numeric) return W_Identifier_Id;
-   --  Return the name of the division for the give kind
+   --  Return the name of the division for the given kind
+
+   function New_Abs (Kind : EW_Numeric) return W_Identifier_Id;
+   --  Return the name of the absolute value operator for the given kind
 
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
@@ -211,6 +214,14 @@ package Why.Gen.Names is
    package New_Real_Division is
      new Name_Gen.Arity_0 ("div_real");
    --  Return an identifier that corresponds to real division in Why
+
+   package New_Integer_Abs is
+     new Name_Gen.Arity_0 ("abs_int");
+   --  Return an identifier that corresponds to integer abs in Why
+
+   package New_Real_Abs is
+     new Name_Gen.Arity_0 ("abs_real");
+   --  Return an identifier that corresponds to real abs in Why
 
    package New_Result_Exc_Identifier is
      new Name_Gen.Arity_0 ("_result_exc");

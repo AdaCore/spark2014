@@ -917,6 +917,23 @@ package body Gnat2Why.Expr is
                     Op       => EW_Minus,
                     Right    =>
                       +Transform_Expr (Right, Current_Type, Domain));
+               Overflow_Check_Needed := True;
+            end;
+
+         when N_Op_Abs =>
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Name  : constant W_Identifier_Id := New_Abs (Current_Type.Kind);
+            begin
+               Current_Type := Base_Why_Type (Right);
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     => Name,
+                    Args    =>
+                       (1 => Transform_Expr (Right, Current_Type, Domain)));
+               Overflow_Check_Needed := True;
             end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>

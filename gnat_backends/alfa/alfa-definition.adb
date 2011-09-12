@@ -2767,10 +2767,7 @@ package body Alfa.Definition is
                  ("not operator on array type", N, NYI_Arith_Operation);
             end if;
 
-         when N_Op_Abs =>
-            Mark_Non_Alfa ("abs operator", N, NYI_Arith_Operation);
-
-         when N_Op_Plus | N_Op_Minus =>
+         when N_Op_Abs | N_Op_Plus | N_Op_Minus =>
             null;
       end case;
 

@@ -82,6 +82,20 @@ package body Why.Gen.Names is
       end case;
    end Bool_Cmp_String;
 
+   -------------
+   -- New_Abs --
+   -------------
+
+   function New_Abs (Kind : EW_Numeric) return W_Identifier_Id is
+   begin
+      case Kind is
+         when EW_Real =>
+            return New_Real_Abs.Id;
+         when EW_Int =>
+            return New_Integer_Abs.Id;
+      end case;
+   end New_Abs;
+
    ------------------
    -- New_Bool_Cmp --
    ------------------
