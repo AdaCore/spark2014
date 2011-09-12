@@ -21,20 +21,20 @@ module Main
   
   function t__ada_array___update int (t__ada_array 'a1) 'a1 : (t__ada_array 'a1)
   
-  function t__ada_array___length (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array 'a1) : int
   
-  function t__ada_array___first (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array 'a1) : int
   
-  function t__ada_array___last (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array 'a1) : int
 
 val t__ada_array___access_ :
  i : int -> a : t__ada_array 'a ->
-{ (t__ada_array___first a) <= i <= (t__ada_array___last a) }'a
+{ (t__ada_array___attr___ATTRIBUTE_FIRST a) <= i <= (t__ada_array___attr___ATTRIBUTE_LAST a) }'a
  { result = t__ada_array___access i a }
 
 val t__ada_array___update_ :
  i : int -> a : t__ada_array 'a -> v : 'a ->
-{ t__ada_array___first (a) <= i <= t__ada_array___last (a) } t__ada_array 'a
+{ t__ada_array___attr___ATTRIBUTE_FIRST (a) <= i <= t__ada_array___attr___ATTRIBUTE_LAST (a) } t__ada_array 'a
  { result = t__ada_array___update i a v }
   
   axiom T__ada_array___accupd_eq:
@@ -57,29 +57,29 @@ val t__ada_array___update_ :
     (forall a:(t__ada_array 'a1).
       (forall i:int.
         (forall v:'a1.
-          ((t__ada_array___first a : int) = (t__ada_array___first (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
+          ((t__ada_array___attr___ATTRIBUTE_FIRST a : int) = (t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
   
   axiom T__ada_array___last_update:
     (forall a:(t__ada_array 'a1).
       (forall i:int.
         (forall v:'a1.
-          ((t__ada_array___last a : int) = (t__ada_array___last (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
+          ((t__ada_array___attr___ATTRIBUTE_LAST a : int) = (t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
   
   axiom T__ada_array___length_update:
     (forall a:(t__ada_array 'a1).
       (forall i:int.
         (forall v:'a1.
-          ((t__ada_array___length a : int) = (t__ada_array___length (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
+          ((t__ada_array___attr___ATTRIBUTE_LENGTH a : int) = (t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array___update i a v : (t__ada_array 'a1)) : int)))))
   
   axiom T__ada_array___length_non_zero:
     (forall a:(t__ada_array 'a1).
-      ((Int.(>=) (t__ada_array___last a : int) (t__ada_array___first a : int)) ->
-       ((t__ada_array___length a : int) = (Int.(+) (Int.(-) (t__ada_array___last a : int) (t__ada_array___first a : int) : int) 1 : int))))
+      ((Int.(>=) (t__ada_array___attr___ATTRIBUTE_LAST a : int) (t__ada_array___attr___ATTRIBUTE_FIRST a : int)) ->
+       ((t__ada_array___attr___ATTRIBUTE_LENGTH a : int) = (Int.(+) (Int.(-) (t__ada_array___attr___ATTRIBUTE_LAST a : int) (t__ada_array___attr___ATTRIBUTE_FIRST a : int) : int) 1 : int))))
   
   axiom T__ada_array___length_zero:
     (forall a:(t__ada_array 'a1).
-      ((Int.(<) (t__ada_array___last a : int) (t__ada_array___first a : int)) ->
-       ((t__ada_array___length a : int) = 0)))
+      ((Int.(<) (t__ada_array___attr___ATTRIBUTE_LAST a : int) (t__ada_array___attr___ATTRIBUTE_FIRST a : int)) ->
+       ((t__ada_array___attr___ATTRIBUTE_LENGTH a : int) = 0)))
   
   type standard___heap_type
   
