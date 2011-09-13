@@ -26,11 +26,13 @@
 with Namet;        use Namet;
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
+with Why.Sinfo;    use Why.Sinfo;
 
 package Why.Gen.Name_Gen is
 
    generic
-      Name : String;
+      Domain : EW_Domain;
+      Name   : String;
    package Arity_0 is
       function Id
         (Ada_Node : Node_Id)
@@ -41,6 +43,7 @@ package Why.Gen.Name_Gen is
    end Arity_0;
 
    generic
+      Domain    : EW_Domain;
       Prefix    : String;
       Suffix    : String;
       Separator : String := "___";
@@ -74,6 +77,7 @@ package Why.Gen.Name_Gen is
    end Arity_1;
 
    generic
+      Domain    : EW_Domain;
       Prefix    : String;
       Middle    : String;
       Suffix    : String;

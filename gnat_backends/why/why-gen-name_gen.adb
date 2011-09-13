@@ -45,7 +45,8 @@ package body Why.Gen.Name_Gen is
          Name_Len := 0;
          Add_Str_To_Name_Buffer (Name);
          return New_Identifier
-           (Ada_Node => Ada_Node,
+           (Domain   => Domain,
+            Ada_Node => Ada_Node,
             Symbol   => Name_Find);
       end Id;
 
@@ -91,7 +92,8 @@ package body Why.Gen.Name_Gen is
          Name_Len := 0;
          Add_Str_To_Name_Buffer (Result);
          return New_Identifier
-           (Ada_Node => Ada_Node,
+           (Domain   => Domain,
+            Ada_Node => Ada_Node,
             Symbol   => Name_Find);
       end Id;
 
@@ -191,7 +193,8 @@ package body Why.Gen.Name_Gen is
          Name_Len := 0;
          Add_Str_To_Name_Buffer (Result);
          return New_Identifier
-           (Ada_Node => Ada_Node,
+           (Domain   => Domain,
+            Ada_Node => Ada_Node,
             Symbol   => Name_Find);
       end Id;
 
