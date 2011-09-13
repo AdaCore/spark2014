@@ -184,6 +184,15 @@ package body Xkind_Tables is
         & Multiplicity_Suffix (Multiplicity);
    end Id_Subtype;
 
+   ---------------
+   -- Is_Domain --
+   ---------------
+
+   function Is_Domain (CI : Class_Info) return Boolean is
+   begin
+      return CI.Father /= null;
+   end Is_Domain;
+
    ----------------
    -- Kind_Check --
    ----------------
@@ -246,12 +255,32 @@ package body Xkind_Tables is
       Last  : Why_Node_Kind)
    is
       CI : constant Class_Info :=
-             (Name  => new Wide_String'(Name),
-              First => new Wide_String'(Mixed_Case_Name (First)),
-              Last  => new Wide_String'(Mixed_Case_Name (Last)));
+             (Name   => new Wide_String'(Name),
+              Father => null,
+              First  => new Wide_String'(Mixed_Case_Name (First)),
+              Last   => new Wide_String'(Mixed_Case_Name (Last)));
    begin
       Classes.Append (CI);
    end New_Class;
+
+   ----------------
+   -- New_Domain --
+   ----------------
+
+   procedure New_Domain
+     (Name   : Wide_String;
+      Father : Wide_String;
+      First  : Why_Node_Kind;
+      Last   : Why_Node_Kind)
+   is
+      CI : constant Class_Info :=
+             (Name   => new Wide_String'(Name),
+              Father => new Wide_String'(Father),
+              First  => new Wide_String'(Mixed_Case_Name (First)),
+              Last   => new Wide_String'(Mixed_Case_Name (Last)));
+   begin
+      Classes.Append (CI);
+   end New_Domain;
 
    --------------------
    -- Register_Kinds --

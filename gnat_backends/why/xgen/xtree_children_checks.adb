@@ -142,7 +142,7 @@ package body Xtree_Children_Checks is
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         Print_Children_Check_Body (S.all, (null, null, null));
+         Print_Children_Check_Body (S.all, (null, null, null, null));
 
          if Position /= Kinds.Last then
             NL (O);

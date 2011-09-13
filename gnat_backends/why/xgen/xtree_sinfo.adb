@@ -33,6 +33,25 @@ package body Xtree_Sinfo is
    begin
       Register_Kinds;
 
+      --  Domains
+
+      New_Class ("W_Expr",
+                 W_Universal_Quantif,
+                 W_Unreachable_Code);
+
+      New_Domain ("W_Pred",
+                  "W_Expr",
+                  W_Universal_Quantif,
+                  W_Conditional);
+      New_Domain ("W_Term",
+                  "W_Expr",
+                  W_Identifier,
+                  W_Array_Access);
+      New_Domain ("W_Prog",
+                  "W_Expr",
+                  W_Not,
+                  W_Unreachable_Code);
+
       --  Classes
 
       New_Class ("W_Primitive_Type",
@@ -41,19 +60,6 @@ package body Xtree_Sinfo is
       New_Class ("W_Simple_Value_Type",
                  W_Base_Type,
                  W_Ref_Type);
-
-      New_Class ("W_Expr",
-                 W_Universal_Quantif,
-                 W_Unreachable_Code);
-      New_Class ("W_Pred",
-                 W_Universal_Quantif,
-                 W_Conditional);
-      New_Class ("W_Term",
-                 W_Identifier,
-                 W_Array_Access);
-      New_Class ("W_Prog",
-                 W_Not,
-                 W_Unreachable_Code);
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,

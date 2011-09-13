@@ -41,17 +41,17 @@ package Xkind_Tables is
    --  by the ASIS traversal.
 
    type Class_Info is record
-      Name  : Wide_String_Access;
-      First : Wide_String_Access;
-      Last  : Wide_String_Access;
+      Name   : Wide_String_Access;
+      Father : Wide_String_Access;
+      First  : Wide_String_Access;
+      Last   : Wide_String_Access;
    end record;
 
    package Class_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Class_Info, "=");
 
    Classes : Class_Lists.List;
-   --  List of node classes; extracted from the syntax tree of Why.Sinfo
-   --  by the ASIS traversal.
+   --  List of node classes
 
    type Id_Kind is (Opaque, Unchecked, Regular, Derived);
    --  Three sort of Ids, as documented in Why.Ids... + Derived.
@@ -76,6 +76,12 @@ package Xkind_Tables is
      (Name  : Wide_String;
       First : Why_Node_Kind;
       Last  : Why_Node_Kind);
+
+   procedure New_Domain
+     (Name   : Wide_String;
+      Father : Wide_String;
+      First  : Why_Node_Kind;
+      Last   : Why_Node_Kind);
 
    function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
    function Mixed_Case_Name (M : Id_Multiplicity) return Wide_String;
@@ -153,5 +159,7 @@ package Xkind_Tables is
    function Class_Last (CI : Class_Info) return Why_Node_Kind;
    --  Given the string representation of a node class, return
    --  <this class>'Last
+
+   function Is_Domain (CI : Class_Info) return Boolean;
 
 end Xkind_Tables;
