@@ -650,10 +650,16 @@ package body Alfa.Definition is
       ----------------------------------
 
       procedure Traverse_Expression_Function (E : Entity_Id) is
-         Decl      : constant Node_Id := Parent (Parent (E));
+         Decl      : Node_Id;
          Body_Decl : Node_Id;
 
       begin
+         if Nkind (Parent (E)) = N_Defining_Program_Unit_Name then
+            Decl := Parent (Parent (Parent (E)));
+         else
+            Decl := Parent (Parent (E));
+         end if;
+
          if Nkind (Decl) = N_Subprogram_Body then
             Body_Decl := Decl;
          elsif Present (Corresponding_Body (Decl)) then
