@@ -155,6 +155,8 @@ package Why.Gen.Names is
 
    package Attr_Name is
      new Name_Gen.Arity_2 (EW_Term, "", "attr", "");
+   --  From the prefix and the attribute, return the name of the corresponding
+   --  logic function in Why.
 
    package Coerce_Axiom is
      new Name_Gen.Arity_1 (EW_Term, "", Coerce);
@@ -163,9 +165,13 @@ package Why.Gen.Names is
 
    package Conversion_To is
      new Name_Gen.Arity_2 (EW_Term, "", "to", "");
+   --  From two type names, return the name of the logic function
+   --  of the conversion from left to right.
 
    package Conversion_From is
      new Name_Gen.Arity_2 (EW_Term, "", "from", "");
+   --  From two type names, return the name of the logic function
+   --  of the conversion to left from right.
 
    package Eq_Param_Name is
      new Name_Gen.Arity_1 (EW_Prog, "", "___" & Boolean_Eq & "_", "");
