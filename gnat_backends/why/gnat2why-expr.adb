@@ -1233,6 +1233,7 @@ package body Gnat2Why.Expr is
             if not (Domain = EW_Prog) then
                raise Not_Implemented;
             end if;
+
             T :=
                +Sequence
                  (Transform_Statements (Actions (Expr)),
@@ -1244,6 +1245,7 @@ package body Gnat2Why.Expr is
             raise Not_Implemented;
 
       end case;
+
       declare
          Base_Type : constant Why_Type :=
             (if Overflow_Check_Needed then
