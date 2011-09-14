@@ -34,9 +34,6 @@ package body Xtree_Tables is
    function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Helper functions for the corresponding homonyms
 
-   function Special_Field_Default
-     (Kind : Valid_Special_Field_Kind) return Wide_String;
-
    -------------------
    -- Accessor_Name --
    -------------------
@@ -47,7 +44,7 @@ package body Xtree_Tables is
       FI   : Field_Info)
      return Wide_String is
    begin
-      if FI.In_Variant then
+      if FI.Field_Kind = Field_Variant then
          if IK = Derived then
             return "Get_" & Strip_Prefix (FI.Field_Name.all);
          else
@@ -102,7 +99,7 @@ package body Xtree_Tables is
       if Context = In_Builder_Spec
         and then Is_List (FI)
       then
-         return Arr_Type (Field_Kind (FI), IK);
+         return Arr_Type (Node_Kind (FI), IK);
       else
          return Type_Name (FI, IK);
       end if;
@@ -159,20 +156,9 @@ package body Xtree_Tables is
    -- Field_Kind --
    ----------------
 
-   function Field_Kind (FI : Field_Info) return Wide_String is
-      Type_With_Visibility_Info : constant Wide_String :=
-                                    Strip_Suffix (FI.Field_Type.all);
-      Visibility_Info           : constant Wide_String :=
-                                    Suffix (Type_With_Visibility_Info);
+   function Field_Kind (FI : Field_Info) return Field_Kind_Type is
    begin
-      if Visibility_Info = "Opaque"
-        or else Visibility_Info = "Unchecked"
-        or else Visibility_Info = "Valid"
-      then
-         return Strip_Suffix (Type_With_Visibility_Info);
-      else
-         return Type_With_Visibility_Info;
-      end if;
+      return FI.Field_Kind;
    end Field_Kind;
 
    ----------------
@@ -206,15 +192,6 @@ package body Xtree_Tables is
    begin
       return Why_Tree_Info (Kind).Fields.Length > 0;
    end Has_Variant_Part;
-
-   ----------------
-   -- In_Variant --
-   ----------------
-
-   function In_Variant (FI : Field_Info) return Boolean is
-   begin
-      return FI.In_Variant;
-   end In_Variant;
 
    -------------
    -- Is_List --
@@ -325,7 +302,7 @@ package body Xtree_Tables is
       FI   : Field_Info)
      return Wide_String is
    begin
-      if FI.In_Variant then
+      if FI.Field_Kind = Field_Variant then
          return Strip_Prefix (Mixed_Case_Name (Kind))
            & "_Set_"
            & Strip_Prefix (FI.Field_Name.all);
@@ -340,7 +317,7 @@ package body Xtree_Tables is
 
    procedure New_Field
      (NI         : in out Why_Node_Info;
-      In_Variant : Boolean;
+      Field_Kind : Field_Kind_Type;
       Field_Name : Wide_String;
       Field_Type : Wide_String;
       Default    : Wide_String)
@@ -350,19 +327,12 @@ package body Xtree_Tables is
                         Field_Type     => new Wide_String'(Field_Type),
                         Default        => new Wide_String'(Default),
                         Id_Type        => null,
-                        In_Variant     => In_Variant,
+                        Field_Kind     => Field_Kind,
                         Is_Why_Id      => False,
                         Is_List        => False,
                         Maybe_Null     => False);
       Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
-      SF           : constant Special_Field_Kind :=
-                       To_Special_Field_Kind (Field_Name);
    begin
-      if SF /= Special_Field_None then
-         Special_Fields (SF) := FI;
-         return;
-      end if;
-
       if Multiplicity = "Id"
         or else Multiplicity = "OId"
         or else Multiplicity = "List"
@@ -400,6 +370,26 @@ package body Xtree_Tables is
                      FI.Field_Name'Length);
    end New_Field;
 
+   ---------------
+   -- Node_Kind --
+   ---------------
+
+   function Node_Kind (FI : Field_Info) return Wide_String is
+      Type_With_Visibility_Info : constant Wide_String :=
+                                    Strip_Suffix (FI.Field_Type.all);
+      Visibility_Info           : constant Wide_String :=
+                                    Suffix (Type_With_Visibility_Info);
+   begin
+      if Visibility_Info = "Opaque"
+        or else Visibility_Info = "Unchecked"
+        or else Visibility_Info = "Valid"
+      then
+         return Strip_Suffix (Type_With_Visibility_Info);
+      else
+         return Type_With_Visibility_Info;
+      end if;
+   end Node_Kind;
+
    ----------------
    -- Param_Name --
    ----------------
@@ -411,7 +401,7 @@ package body Xtree_Tables is
 
    function Param_Name (FI : Field_Info) return Wide_String is
    begin
-      if FI.In_Variant then
+      if FI.Field_Kind = Field_Variant then
          return Param_Name (FI.Field_Name.all);
       else
          return FI.Field_Name.all;
@@ -478,8 +468,20 @@ package body Xtree_Tables is
       Field_Type : Wide_String;
       Default    : Wide_String := "") is
    begin
-      New_Field (Common_Fields, False, Field_Name, Field_Type, Default);
+      New_Field (Common_Fields, Field_Common, Field_Name, Field_Type, Default);
    end New_Common_Field;
+
+   ----------------------
+   -- New_Domain_Field --
+   ----------------------
+
+   procedure New_Domain_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String;
+      Default    : Wide_String := "") is
+   begin
+      New_Field (Common_Fields, Field_Common, Field_Name, Field_Type, Default);
+   end New_Domain_Field;
 
    ---------------
    -- New_Field --
@@ -496,7 +498,7 @@ package body Xtree_Tables is
    begin
       Prefix (1) := 'K';
       New_Field (Why_Tree_Info (Kind),
-                 True,
+                 Field_Variant,
                  Prefix & Field_Name,
                  Field_Type,
                  Default);
@@ -517,20 +519,18 @@ package body Xtree_Tables is
                     when others  => ""));
    end New_Field;
 
-   -----------------------------
-   -- Register_Special_Fields --
-   -----------------------------
+   -----------------------
+   -- New_Special_Field --
+   -----------------------
 
-   procedure Register_Special_Fields is
+   procedure New_Special_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String;
+      Default    : Wide_String := "") is
    begin
-      for Kind in Valid_Special_Field_Kind'Range loop
-         New_Field (Common_Fields,
-                    False,
-                    To_String (Kind),
-                    Special_Field_Type (Kind),
-                    Special_Field_Default (Kind));
-      end loop;
-   end Register_Special_Fields;
+      New_Field (Common_Fields, Field_Special,
+                 Field_Name, Field_Type, Default);
+   end New_Special_Field;
 
    -----------------
    -- Set_Mutable --
@@ -540,67 +540,6 @@ package body Xtree_Tables is
    begin
       Why_Tree_Info (Kind).Is_Mutable := True;
    end Set_Mutable;
-
-   ---------------------------
-   -- Special_Field_Default --
-   ---------------------------
-
-   function Special_Field_Default
-     (Kind : Valid_Special_Field_Kind) return Wide_String is
-   begin
-      case Kind is
-         when Special_Field_Link =>
-            return "Why_Empty";
-
-         when Special_Field_Checked =>
-            return "False";
-      end case;
-   end Special_Field_Default;
-
-   ------------------------
-   -- Special_Field_Type --
-   ------------------------
-
-   function Special_Field_Type
-     (Kind : Valid_Special_Field_Kind) return Wide_String is
-   begin
-      case Kind is
-         when Special_Field_Link =>
-            return "Why_Node_Set";
-
-         when Special_Field_Checked =>
-            return "Boolean";
-      end case;
-   end Special_Field_Type;
-
-   ---------------------------
-   -- To_Special_Field_Kind --
-   ---------------------------
-
-   function To_Special_Field_Kind
-     (Name : Wide_String)
-     return Special_Field_Kind is
-   begin
-      return Special_Field_Kind'Wide_Value (Special_Field_Prefix & Name);
-   exception
-      when Constraint_Error =>
-         return Special_Field_None;
-   end To_Special_Field_Kind;
-
-   ---------------
-   -- To_String --
-   ---------------
-
-   function To_String (Kind : Special_Field_Kind) return Wide_String is
-      Enum_Literal_Name : constant String :=
-                            Special_Field_Kind'Image (Kind);
-      Result            : String :=
-                            Enum_Literal_Name (Special_Field_Prefix'Last + 1
-                                               .. Enum_Literal_Name'Last);
-   begin
-      To_Mixed (Result);
-      return To_Wide_String (Result);
-   end To_String;
 
    -----------------------
    -- Traversal_Post_Op --

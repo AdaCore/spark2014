@@ -99,17 +99,19 @@ package body Xtree_Accessors is
 
    begin
       for FI of Common_Fields.Fields loop
-         Print_Accessor_Specification
-           (O           => O,
-            Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
-            Param_Type  => "Why_Node_Id",
-            Return_Type => Type_Name (FI, Derived));
-         PL (O, " is");
-         Relative_Indent (O, 2);
-         Print_Accessor_Expression (O, FI, Derived);
-         PL (O, ";");
-         Relative_Indent (O, -2);
-         NL (O);
+         if Field_Kind (FI) in Field_Common | Field_Domain then
+            Print_Accessor_Specification
+              (O           => O,
+               Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
+               Param_Type  => "Why_Node_Id",
+               Return_Type => Type_Name (FI, Derived));
+            PL (O, " is");
+            Relative_Indent (O, 2);
+            Print_Accessor_Expression (O, FI, Derived);
+            PL (O, ";");
+            Relative_Indent (O, -2);
+            NL (O);
+         end if;
       end loop;
 
       Print_Accessor_Bodies (Unchecked);
@@ -149,13 +151,15 @@ package body Xtree_Accessors is
 
    begin
       for FI of Common_Fields.Fields loop
-         Print_Accessor_Specification
-           (O           => O,
-            Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
-            Param_Type  => "Why_Node_Id",
-            Return_Type => Type_Name (FI, Derived));
-         PL (O, ";");
-         NL (O);
+         if Field_Kind (FI) in Field_Common | Field_Domain then
+            Print_Accessor_Specification
+              (O           => O,
+               Name        => Accessor_Name (W_Unused_At_Start, Derived, FI),
+               Param_Type  => "Why_Node_Id",
+               Return_Type => Type_Name (FI, Derived));
+            PL (O, ";");
+            NL (O);
+         end if;
       end loop;
 
       Print_Accessor_Declarations (Unchecked);
@@ -186,7 +190,7 @@ package body Xtree_Accessors is
                         Id_Lone));
          begin
             P (O,
-               "(" & Id_Subtype (Field_Kind (FI), IK, M)
+               "(" & Id_Subtype (Node_Kind (FI), IK, M)
                & " (Get_Node (+" & Node_Id_Param & ")."
                & Field_Name (FI) & "))");
          end;

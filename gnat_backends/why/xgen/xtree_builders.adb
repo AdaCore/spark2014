@@ -70,7 +70,8 @@ package body Xtree_Builders is
 
    procedure Print_Builder_Local_Declarations
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind);
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind);
    --  Print the local declarations in builder body
 
    ------------------------
@@ -100,7 +101,7 @@ package body Xtree_Builders is
       NL (O);
       PL (O, "is");
       Relative_Indent (O, 3);
-      Print_Builder_Local_Declarations (O, Kind);
+      Print_Builder_Local_Declarations (O, Kind, IK);
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
@@ -186,7 +187,7 @@ package body Xtree_Builders is
                            Id_Lone);
                begin
                   return "+("
-                    & Id_Subtype (Field_Kind (FI), Regular, M)
+                    & Id_Subtype (Node_Kind (FI), Regular, M)
                     & " (" & S & "))";
                end;
             else
@@ -195,7 +196,7 @@ package body Xtree_Builders is
          end K;
 
       begin
-         if IK = Unchecked then
+         if IK = Unchecked or else Field_Kind (FI) = Field_Special then
             PL (O, New_Node & "." & FN & " :=");
 
             if Has_Default_Value (FI, IK, In_Builder_Body) then
@@ -217,10 +218,10 @@ package body Xtree_Builders is
                PL (O, "for J in " & Param_Name (FI) & "'Range loop");
                Relative_Indent (O, 3);
                PL (O, "pragma Assert");
-               PL (O, "  (" & Kind_Check (Field_Kind (FI), Id_One));
+               PL (O, "  (" & Kind_Check (Node_Kind (FI), Id_One));
                PL (O, "   (" & K (Param_Name (FI)  & " (J)") & "));");
                PL (O, "pragma Assert");
-               PL (O, "  (" & Tree_Check (Field_Kind (FI), Id_One));
+               PL (O, "  (" & Tree_Check (Node_Kind (FI), Id_One));
                PL (O, "   (" & K (Param_Name (FI)  & " (J)") & "));");
                PL (O, List_Op_Name (Op_Append));
                PL (O, "  (" & New_Node & "." & FN & ",");
@@ -245,24 +246,6 @@ package body Xtree_Builders is
    begin
       Common_Fields.Fields.Iterate (Print_Record_Initialization'Access);
       Variant_Part.Fields.Iterate (Print_Record_Initialization'Access);
-
-      for SF in Special_Fields'Range loop
-         case SF is
-            when Special_Field_Checked =>
-               P (O, New_Node & "." & To_String (SF) & " := ");
-
-               if IK = Unchecked then
-                  PL (O, "False;");
-               else
-                  PL (O, "True;");
-               end if;
-
-            when Special_Field_Link =>
-               PL (O, New_Node & "." & To_String (SF) & " := Why_Empty;");
-
-         end case;
-      end loop;
-
       PL (O, "Set_Node (" & New_Node_Id & ", " & New_Node & ");");
       PL (O, "return " & K (New_Node_Id) & ";");
    end Print_Builder_Implementation;
@@ -273,11 +256,19 @@ package body Xtree_Builders is
 
    procedure Print_Builder_Local_Declarations
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind) is
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind) is
    begin
       PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
       PL (O, New_Node_Id & " : constant Why_Node_Id :=");
       PL (O, "  New_Why_Node_Id (" & Mixed_Case_Name (Kind)  & ");");
+      PL (O, Checked_Default_Value & " : constant Boolean :=");
+
+      if IK = Unchecked then
+         PL (O, "  False;");
+      else
+         PL (O, "  True;");
+      end if;
    end Print_Builder_Local_Declarations;
 
    ---------------------------------
@@ -309,6 +300,10 @@ package body Xtree_Builders is
          FI       : constant Field_Info := Element (Position);
          PN       : constant Wide_String := Param_Name (FI);
       begin
+         if Field_Kind (FI) = Field_Special then
+            return;
+         end if;
+
          if IK = Unchecked then
             if Has_Default_Value (FI, IK, In_Builder_Spec) then
                return;
@@ -357,7 +352,6 @@ package body Xtree_Builders is
       Relative_Indent (O, 2);
 
       Common_Fields.Fields.Iterate (Print_Parameter_Specification'Access);
-
       Variant_Part.Fields.Iterate (Print_Parameter_Specification'Access);
 
       if Field_Number > 1 then

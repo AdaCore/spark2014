@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;    use Why.Sinfo;
-with Xtree_Tables; use Xtree_Tables;
-with Xkind_Tables; use Xkind_Tables;
+with Why.Sinfo;      use Why.Sinfo;
+with Xtree_Tables;   use Xtree_Tables;
+with Xkind_Tables;   use Xkind_Tables;
+with Xtree_Builders; use Xtree_Builders;
 
 package body Xtree_Sinfo is
 
@@ -73,9 +74,10 @@ package body Xtree_Sinfo is
 
       --  AST
 
-      Register_Special_Fields;
       New_Common_Field ("Ada_Node", "Node_Id", "Empty");
-      New_Common_Field ("Domain", "EW_Domain", "EW_Prog");
+      New_Domain_Field ("Domain", "EW_Domain", "EW_Prog");
+      New_Special_Field ("Link", "Why_Node_Set", "Why_Empty");
+      New_Special_Field ("Checked", "Boolean", Checked_Default_Value);
 
       -----------------
       -- W_Base_Type --

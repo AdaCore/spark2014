@@ -40,4 +40,10 @@ package Xtree_Builders is
    procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record);
    --  Print builder bodies for unchecked Why nodes
 
+   Checked_Default_Value : constant Wide_String := "Is_Checked";
+   --  Name of the constant used to initialize the field Checked. The
+   --  initialization depends on the kind of constructor that we are
+   --  executing; this dependancy is encapsulated into a local variable
+   --  whose name is Checked_Default_Value.
+
 end Xtree_Builders;

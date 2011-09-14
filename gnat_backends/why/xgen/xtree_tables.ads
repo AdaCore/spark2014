@@ -40,6 +40,20 @@ package Xtree_Tables is
 
    type String_Access is access Wide_String;
 
+   type Field_Kind_Type is
+     (Field_Variant,
+      --  kind-specific field
+
+      Field_Special,
+      --  Special field, updated by internal operations
+
+      Field_Domain,
+      --  Domain field, updated by internal operations
+
+      Field_Common
+      --  Common field, present for any kind
+      );
+
    type Field_Info is record
       --  Structural information about a field of a node
 
@@ -55,9 +69,9 @@ package Xtree_Tables is
       Id_Type        : String_Access;
       --  Checked id subtype, if any
 
-      In_Variant     : Boolean;
-      --  False if this field is shared amongst all kinds, True if
-      --  it is kind-specific.
+      Field_Kind     : Field_Kind_Type;
+      --  Field kind: whether the field is in any node or not,
+      --  whether it is special or regular...
 
       Is_Why_Id      : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_Id
@@ -106,44 +120,6 @@ package Xtree_Tables is
                                      Why_Node_Kind'Last,
                                      False,
                                      Node_Lists.Empty_List);
-   --------------------
-   -- Special Fields --
-   --------------------
-
-   Special_Field_Prefix : constant Wide_String := "Special_Field_";
-   --  String representation of the common prefix of each
-   --  enum literal in Special_Field_Kind.
-
-   type Special_Field_Kind is
-     (Special_Field_None,
-      Special_Field_Link,
-      Special_Field_Checked);
-   --  Lists all special fields. Each literal shall be a
-   --  concatenation of "Special_Field_" with the name of
-   --  the special field in the node record (e.g. Checked).
-   --  The first field (Special_Field_None) is an exception here:
-   --  It does not represent any valid field in the node record,
-   --  but is used to represent a "no match" response in lookups.
-
-   subtype Valid_Special_Field_Kind is Special_Field_Kind range
-     Special_Field_Kind'Succ (Special_Field_Kind'First)
-     .. Special_Field_Kind'Last;
-
-   Special_Fields : array (Valid_Special_Field_Kind) of Field_Info;
-
-   function To_String (Kind : Special_Field_Kind) return Wide_String;
-   --  Name of the special field in the node record
-
-   function To_Special_Field_Kind
-     (Name : Wide_String)
-     return Special_Field_Kind;
-   --  Given a field name, return the corresponding special field kind;
-   --  and Special_Field_None is there is no corresponding special field
-   --  kind.
-
-   function Special_Field_Type
-     (Kind : Valid_Special_Field_Kind) return Wide_String;
-   --  Type name of the given special field kind
 
    ------------------
    -- Variant Part --
@@ -159,9 +135,17 @@ package Xtree_Tables is
    -- Operations --
    ----------------
 
-   procedure Register_Special_Fields;
-
    procedure New_Common_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String;
+      Default    : Wide_String := "");
+
+   procedure New_Domain_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String;
+      Default    : Wide_String := "");
+
+   procedure New_Special_Field
      (Field_Name : Wide_String;
       Field_Type : Wide_String;
       Default    : Wide_String := "");
@@ -180,7 +164,7 @@ package Xtree_Tables is
 
    procedure New_Field
      (NI         : in out Why_Node_Info;
-      In_Variant : Boolean;
+      Field_Kind : Field_Kind_Type;
       Field_Name : Wide_String;
       Field_Type : Wide_String;
       Default    : Wide_String);
@@ -292,9 +276,9 @@ package Xtree_Tables is
    function Field_Name (FI : Field_Info) return Wide_String;
    --  Return the name of this field
 
-   function Field_Kind (FI : Field_Info) return Wide_String;
+   function Node_Kind (FI : Field_Info) return Wide_String;
    pragma Precondition (Is_Why_Id (FI));
-   --  For a node field, return its kind
+   --  For a node field, return its node kind
 
    function Type_Name
      (FI   : Field_Info;
@@ -317,15 +301,16 @@ package Xtree_Tables is
    function Is_List (FI : Field_Info) return Boolean;
    --  True if FI is a subtype of Why_Node_List
 
-   function In_Variant (FI : Field_Info) return Boolean;
-   --  True if this field has been defined in a variant part
-
    function Maybe_Null (FI : Field_Info) return Boolean;
    --  True if this field may be null or empty
 
    function Is_Why_Id  (FI : Field_Info) return Boolean;
    --  True if the type of this field is a subtype of Why_Node_Id
    --  or a subtype of Why_Node_List.
+
+   function Field_Kind (FI : Field_Info) return Field_Kind_Type;
+   --  Return the kind of the field; e.g. whether it is kind-specific
+   --  or shared among nodes, or for internal use only...
 
    function Multiplicity (FI : Field_Info) return Id_Multiplicity;
    pragma Precondition (Is_Why_Id (FI));

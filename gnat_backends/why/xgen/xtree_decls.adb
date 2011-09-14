@@ -60,22 +60,6 @@ package body Xtree_Decls is
          NL (O);
       end loop;
 
-      Print_Box (O, "Special Fields");
-      NL (O);
-
-      PL (O, "--  Fields that have some specific in xtree; any field added");
-      PL (O, "--  here should also be added in xtree_tables. They are meant");
-      PL (O, "--  to be used for flags that records some properties on the");
-      PL (O, "--  syntax tree, and that are updated implicitely by");
-      PL (O, "--  operations on node ids (mutators, accessors, builders,");
-      PL (O, "--  traversals).");
-      NL (O);
-
-      for FI of Special_Fields loop
-         PL (O, Field_Name (FI)  & " : " & Type_Name (FI, Opaque)  & ";");
-         NL (O);
-      end loop;
-
       Print_Box (O, "Variant Part");
       NL (O);
 
