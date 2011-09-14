@@ -199,8 +199,8 @@ package body Xtree_Builders is
          if IK = Unchecked or else Field_Kind (FI) = Field_Special then
             PL (O, New_Node & "." & FN & " :=");
 
-            if Has_Default_Value (FI, IK, In_Builder_Body) then
-               P (O, "  " & Default_Value (FI, IK, In_Builder_Body));
+            if Has_Default_Value (Kind, FI, IK, In_Builder_Body) then
+               P (O, "  " & Default_Value (Kind, FI, IK, In_Builder_Body));
             else
                P (O, "  " & Param_Name (FI));
             end if;
@@ -305,7 +305,7 @@ package body Xtree_Builders is
          end if;
 
          if IK = Unchecked then
-            if Has_Default_Value (FI, IK, In_Builder_Spec) then
+            if Has_Default_Value (Kind, FI, IK, In_Builder_Spec) then
                return;
             end if;
          end if;
@@ -336,9 +336,9 @@ package body Xtree_Builders is
             P (O, Builder_Param_Type (FI, IK, In_Builder_Spec));
          end if;
 
-         if Has_Default_Value (FI, IK, In_Builder_Spec) then
+         if Has_Default_Value (Kind, FI, IK, In_Builder_Spec) then
             P (O, " := ");
-            P (O, Default_Value (FI, IK, In_Builder_Spec));
+            P (O, Default_Value (Kind, FI, IK, In_Builder_Spec));
          end if;
 
          Field_Number := Field_Number + 1;

@@ -150,10 +150,16 @@ package Why.Sinfo is
 
       W_File);
 
-   type EW_Domain is
-     (EW_Term,
+   type EW_ODomain is
+     (EW_Expr,
+      EW_Term,
       EW_Pred,
       EW_Prog);
+
+   subtype EW_Domain is EW_ODomain range
+       EW_Term ..
+   --  EW_Pred
+       EW_Prog;
 
    type EW_Type is
      (EW_Unit,

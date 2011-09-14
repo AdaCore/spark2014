@@ -105,6 +105,10 @@ package Xtree_Tables is
       Is_Mutable            : Boolean := False;
       --  True if the nodes of this kind can be modified
 
+      Domain                : EW_ODomain := EW_Expr;
+      --  Domain of nodes of this kind; EW_Expr if it is not known
+      --  a priori.
+
       Fields                : Node_Lists.List;
       --  List of structural information for fields
    end record;
@@ -119,6 +123,7 @@ package Xtree_Tables is
                                      Why_Node_Kind'First,
                                      Why_Node_Kind'Last,
                                      False,
+                                     EW_Expr,
                                      Node_Lists.Empty_List);
 
    ------------------
@@ -172,6 +177,11 @@ package Xtree_Tables is
 
    procedure Set_Mutable (Kind : Why_Node_Kind);
    --  Specify that the nodes of the given node kind are not constant
+
+   function Get_Domain (Kind : Why_Node_Kind) return EW_ODomain;
+   procedure Set_Domain (Kind : Why_Node_Kind; Domain : EW_ODomain);
+   function Get_Domain (Kind : Why_Node_Kind) return Class_Info;
+   --  Accessor/mutator for domains
 
    function Is_Mutable (Kind : Why_Node_Kind) return Boolean;
    --  Return whether the nodes of the given node kind are mutable
@@ -250,14 +260,16 @@ package Xtree_Tables is
      return Wide_String;
 
    function Has_Default_Value
-     (FI      : Field_Info;
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Boolean;
    --  Return True if the given field has an appropriate default value
 
    function Default_Value
-     (FI      : Field_Info;
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String;

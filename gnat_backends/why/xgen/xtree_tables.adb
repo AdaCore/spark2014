@@ -110,7 +110,8 @@ package body Xtree_Tables is
    -------------------
 
    function Default_Value
-     (FI      : Field_Info;
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String is
@@ -123,9 +124,21 @@ package body Xtree_Tables is
          else
             return "(2 .. 1 => <>)";
          end if;
+
       elsif Is_Why_Id (FI)
         and then (IK = Unchecked or else Maybe_Null (FI)) then
          return "Why_Empty";
+
+      elsif Field_Kind (FI) = Field_Domain then
+         if Get_Domain (Kind) = EW_Expr then
+            --  ??? Should really be "", but this will change the builders
+            --  and calls for a careful transition. Keep it to EW_Prog for
+            --  the time being.
+            return "EW_Prog";
+         else
+            return "E" & Class_Name (Get_Domain (Kind));
+         end if;
+
       else
          return FI.Default.all;
       end if;
@@ -170,17 +183,45 @@ package body Xtree_Tables is
       return FI.Field_Name.all;
    end Field_Name;
 
+   ----------------
+   -- Get_Domain --
+   ----------------
+
+   function Get_Domain (Kind : Why_Node_Kind) return EW_ODomain is
+   begin
+      return Why_Tree_Info (Kind).Domain;
+   end Get_Domain;
+
+   function Get_Domain (Kind : Why_Node_Kind) return Class_Info is
+      use Class_Lists;
+
+      DK : constant EW_ODomain := Get_Domain (Kind);
+      DN : constant Wide_String := Mixed_Case_Name (DK);
+      CN : constant Wide_String :=
+             "W" & DN (DN'First + 2 .. DN'Last);
+   begin
+      for CI of Classes loop
+         if Class_Name (CI) = CN then
+            return CI;
+         end if;
+      end loop;
+
+      pragma Assert (False);
+      return (null, null, null, null);
+   end Get_Domain;
+
    -----------------------
    -- Has_Default_Value --
    -----------------------
 
    function Has_Default_Value
-     (FI      : Field_Info;
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Boolean is
    begin
-      return Default_Value (FI, IK, Context) /= "";
+      return Default_Value (Kind, FI, IK, Context) /= "";
    end Has_Default_Value;
 
    ----------------------
@@ -480,7 +521,7 @@ package body Xtree_Tables is
       Field_Type : Wide_String;
       Default    : Wide_String := "") is
    begin
-      New_Field (Common_Fields, Field_Common, Field_Name, Field_Type, Default);
+      New_Field (Common_Fields, Field_Domain, Field_Name, Field_Type, Default);
    end New_Domain_Field;
 
    ---------------
@@ -540,6 +581,15 @@ package body Xtree_Tables is
    begin
       Why_Tree_Info (Kind).Is_Mutable := True;
    end Set_Mutable;
+
+   ----------------
+   -- Set_Domain --
+   ----------------
+
+   procedure Set_Domain (Kind : Why_Node_Kind; Domain : EW_ODomain) is
+   begin
+      Why_Tree_Info (Kind).Domain := Domain;
+   end Set_Domain;
 
    -----------------------
    -- Traversal_Post_Op --

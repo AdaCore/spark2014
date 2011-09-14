@@ -36,22 +36,23 @@ package body Xtree_Sinfo is
 
       --  Domains
 
-      New_Class ("W_Expr",
-                 W_Universal_Quantif,
-                 W_Unreachable_Code);
-
+      New_Domain ("W_Expr",
+                  "W_Expr",
+                  W_Universal_Quantif,
+                  W_Unreachable_Code);
       New_Domain ("W_Pred",
                   "W_Expr",
                   W_Universal_Quantif,
                   W_Conditional);
       New_Domain ("W_Term",
-                  "W_Expr",
+                  "W_Prog",
                   W_Identifier,
                   W_Array_Access);
       New_Domain ("W_Prog",
                   "W_Expr",
                   W_Not,
                   W_Unreachable_Code);
+      Init_Domains;
 
       --  Classes
 
@@ -85,6 +86,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Base_Type,
                  "Base_Type", "EW_Base_Type");
+      Set_Domain (W_Base_Type, EW_Term);
 
       ---------------------
       -- W_Abstract_Type --
@@ -92,6 +94,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Abstract_Type,
                  "Name", "W_Identifier", Id_One);
+      Set_Domain (W_Abstract_Type, EW_Term);
 
       ---------------------------
       -- W_Generic_Formal_Type --
@@ -99,6 +102,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Generic_Formal_Type,
                  "Name", "W_Identifier", Id_One);
+      Set_Domain (W_Generic_Formal_Type, EW_Term);
 
       ---------------------------------
       -- W_Generic_Actual_Type_Chain --
@@ -108,6 +112,7 @@ package body Xtree_Sinfo is
                  "Type_Chain", "W_Primitive_Type", Id_Some);
       New_Field (W_Generic_Actual_Type_Chain,
                  "Name", "W_Identifier", Id_One);
+      Set_Domain (W_Generic_Actual_Type_Chain, EW_Term);
 
       ------------------
       -- W_Array_Type --
@@ -115,6 +120,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Array_Type,
                  "Component_Type", "W_Primitive_Type", Id_One);
+      Set_Domain (W_Array_Type, EW_Prog);
 
       ----------------
       -- W_Ref_Type --
@@ -122,6 +128,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Ref_Type,
                  "Aliased_Type", "W_Primitive_Type", Id_One);
+      Set_Domain (W_Ref_Type, EW_Prog);
 
       ------------------------
       -- W_Computation_Type --
@@ -149,6 +156,7 @@ package body Xtree_Sinfo is
                  "Writes", "W_Identifier", Id_Set);
       New_Field (W_Effects,
                  "Raises", "W_Identifier", Id_Set);
+      Set_Domain (W_Effects, EW_Prog);
 
       --------------
       -- W_Binder --
@@ -165,6 +173,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Transparent_Type_Definition,
                  "Type_Definition", "W_Primitive_Type", Id_One);
+      Set_Domain (W_Effects, EW_Term);
 
       ----------------------
       -- W_Adt_Definition --
@@ -172,6 +181,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Adt_Definition,
                  "Constructors", "W_Constr_Decl", Id_Some);
+      Set_Domain (W_Effects, EW_Term);
 
       -------------------
       -- W_Constr_Decl --
@@ -181,6 +191,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Constr_Decl,
                  "Arg_List", "W_Primitive_Type", Id_Set);
+      Set_Domain (W_Effects, EW_Term);
 
       ----------------
       -- W_Triggers --
@@ -188,6 +199,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Triggers,
                  "Triggers", "W_Trigger", Id_Some);
+      Set_Domain (W_Triggers, EW_Term);
 
       ---------------
       -- W_Trigger --
@@ -195,6 +207,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Trigger,
                  "Terms", "W_Term", Id_Some);
+      Set_Domain (W_Trigger, EW_Term);
 
       ---------------
       -- W_Pattern --
@@ -204,6 +217,7 @@ package body Xtree_Sinfo is
                  "Constr", "W_Identifier", Id_One);
       New_Field (W_Pattern,
                  "Args", "W_Identifier", Id_Set);
+      Set_Domain (W_Pattern, EW_Term);
 
       ------------------
       -- W_Match_Case --
@@ -213,6 +227,7 @@ package body Xtree_Sinfo is
                  "Pattern", "W_Pattern", Id_One);
       New_Field (W_Match_Case,
                  "Term", "W_Term", Id_One);
+      Set_Domain (W_Match_Case, EW_Term);
 
       ---------------------
       -- W_Postcondition --
@@ -222,6 +237,7 @@ package body Xtree_Sinfo is
                  "Pred", "W_Pred", Id_One);
       New_Field (W_Postcondition,
                  "Handlers", "W_Exn_Condition", Id_Set);
+      Set_Domain (W_Postcondition, EW_Pred);
 
       ---------------------
       -- W_Exn_Condition --
@@ -231,6 +247,7 @@ package body Xtree_Sinfo is
                  "Exn_Case", "W_Identifier", Id_One);
       New_Field (W_Exn_Condition,
                  "Pred", "W_Pred", Id_One);
+      Set_Domain (W_Exn_Condition, EW_Pred);
 
       ------------------
       -- W_Loop_Annot --
@@ -240,6 +257,7 @@ package body Xtree_Sinfo is
                  "Invariant", "W_Pred", Id_Lone);
       New_Field (W_Loop_Annot,
                  "Variant", "W_Wf_Arg", Id_Lone);
+      Set_Domain (W_Loop_Annot, EW_Prog);
 
       --------------
       -- W_Wf_Arg --
@@ -249,6 +267,7 @@ package body Xtree_Sinfo is
                  "Def", "W_Term", Id_One);
       New_Field (W_Wf_Arg,
                  "For_Id", "W_Identifier", Id_Lone);
+      Set_Domain (W_Wf_Arg, EW_Term);
 
       ---------------
       -- W_Handler --
@@ -260,6 +279,7 @@ package body Xtree_Sinfo is
                  "Arg", "W_Prog", Id_Lone);
       New_Field (W_Handler,
                  "Def", "W_Prog", Id_One);
+      Set_Domain (W_Handler, EW_Prog);
 
       -------------------------
       -- W_Universal_Quantif --
@@ -548,6 +568,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Axiom,
                  "Def", "W_Pred", Id_One);
+      Set_Domain (W_Axiom, EW_Term);
 
       ------------
       -- W_Goal --
@@ -557,6 +578,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Goal,
                  "Def", "W_Pred", Id_One);
+      Set_Domain (W_Goal, EW_Term);
 
       ------------
       -- W_Type --
@@ -570,6 +592,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Type,
                  "Definition", "W_Type_Definition", Id_Lone);
+      Set_Domain (W_Type, EW_Term);
 
       ------------------------------
       -- W_Global_Ref_Declaration --
@@ -579,6 +602,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Global_Ref_Declaration,
                  "Ref_Type", "W_Primitive_Type", Id_One);
+      Set_Domain (W_Global_Ref_Declaration, EW_Prog);
 
       -----------------------------
       -- W_Exception_Declaration --
@@ -588,6 +612,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Exception_Declaration,
                  "Arg", "W_Primitive_Type", Id_Lone);
+      Set_Domain (W_Exception_Declaration, EW_Prog);
 
       ---------------------------
       -- W_Include_Declaration --
@@ -595,6 +620,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Include_Declaration,
                  "Name", "W_Identifier", Id_One);
+      Set_Domain (W_Include_Declaration, EW_Term);
 
       ------------
       -- W_File --
@@ -603,7 +629,7 @@ package body Xtree_Sinfo is
       Set_Mutable (W_File);
       New_Field (W_File,
                  "Declarations", "W_Declaration", Id_Set);
-
+      Set_Domain (W_File, EW_Prog);
    end Build_AST;
 
 end Xtree_Sinfo;

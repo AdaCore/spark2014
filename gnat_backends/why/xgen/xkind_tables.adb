@@ -26,6 +26,8 @@
 with Ada.Characters.Conversions; use Ada.Characters.Conversions;
 with GNAT.Case_Util;             use GNAT.Case_Util;
 with Utils;                      use Utils;
+with Xtree_Tables;               use Xtree_Tables;
+with Ada.Wide_Text_IO;           use Ada.Wide_Text_IO;
 
 package body Xkind_Tables is
 
@@ -138,6 +140,52 @@ package body Xkind_Tables is
       return Mixed_Case_Name (Default_Kind);
    end Default_Kind;
 
+   ---------------------
+   -- Display_Domains --
+   ---------------------
+
+   procedure Display_Domains is
+   begin
+      for Kind in Valid_Kind'Range loop
+         Put_Line (Mixed_Case_Name (Kind) & " : "
+                   & EW_ODomain'Wide_Image (Get_Domain (Kind)));
+      end loop;
+   end Display_Domains;
+
+   --------------------
+   -- Freeze_Domains --
+   --------------------
+
+   procedure Init_Domains is
+      Domain_Ambiguity : array (Why_Node_Kind) of Boolean := (others => False);
+   begin
+      for CI of Classes loop
+         if Is_Domain (CI) then
+            declare
+               DK : constant EW_ODomain :=
+                      EW_ODomain'Wide_Value ("E" & Class_Name (CI));
+            begin
+               for Kind in Class_First (CI) .. Class_Last (CI) loop
+                  if Domain_Ambiguity (Kind) then
+                     null;
+
+                  elsif Is_Subclass (CI, Get_Domain (Kind)) then
+                     Set_Domain (Kind, DK);
+
+                  elsif Is_Subclass (Get_Domain (Kind), CI)
+                    or else Get_Domain (Kind) = CI then
+                     null;
+
+                  else
+                     Set_Domain (Kind, EW_Expr);
+                     Domain_Ambiguity (Kind) := True;
+                  end if;
+               end loop;
+            end;
+         end if;
+      end loop;
+   end Init_Domains;
+
    ----------------
    -- Id_Subtype --
    ----------------
@@ -225,6 +273,13 @@ package body Xkind_Tables is
       return To_Wide_String (Name);
    end Mixed_Case_Name;
 
+   function Mixed_Case_Name (D : EW_ODomain) return Wide_String is
+      Name : String := EW_ODomain'Image (D);
+   begin
+      To_Mixed (Name);
+      return To_Wide_String (Name);
+   end Mixed_Case_Name;
+
    -------------------------
    -- Multiplicity_Suffix --
    -------------------------
@@ -281,6 +336,21 @@ package body Xkind_Tables is
    begin
       Classes.Append (CI);
    end New_Domain;
+
+   ------------------
+   -- Is_Subdomain --
+   ------------------
+
+   function Is_Subclass (Inner, Outer : Class_Info) return Boolean is
+      FI : constant Why_Node_Kind := Class_First (Inner);
+      LI : constant Why_Node_Kind := Class_Last (Inner);
+      FO : constant Why_Node_Kind := Class_First (Outer);
+      LO : constant Why_Node_Kind := Class_Last (Outer);
+   begin
+      return FI in  FO .. LO
+        and then LI in FO .. LO
+        and then Class_Name (Inner) /= Class_Name (Outer);
+   end Is_Subclass;
 
    --------------------
    -- Register_Kinds --

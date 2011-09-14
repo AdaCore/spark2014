@@ -141,22 +141,14 @@ package body Xkind_Conversions is
             --  strictly includes it.
 
             for CI2 of Classes loop
-               declare
-                  F2 : constant Why_Node_Kind := Class_First (CI2);
-                  L2 : constant Why_Node_Kind := Class_Last (CI2);
-               begin
-                  if F1 in  F2 .. L2
-                    and then L1 in F2 .. L2
-                    and then Class_Name (CI1) /= Class_Name (CI2)
-                  then
-                     NL (O);
-                     Print_Conversion_Couple
-                       (O,
-                        Id_Subtype (Prefix, Derived, Multiplicity),
-                        Id_Subtype (Class_Name (CI2), Derived, Multiplicity),
-                        E);
-                  end if;
-               end;
+               if Is_Subclass (CI1, CI2) then
+                  NL (O);
+                  Print_Conversion_Couple
+                    (O,
+                     Id_Subtype (Prefix, Derived, Multiplicity),
+                     Id_Subtype (Class_Name (CI2), Derived, Multiplicity),
+                     E);
+               end if;
             end loop;
 
             if Multiplicity /= Id_Set
