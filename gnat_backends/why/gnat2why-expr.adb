@@ -923,14 +923,13 @@ package body Gnat2Why.Expr is
          when N_Op_Abs =>
             declare
                Right : constant Node_Id := Right_Opnd (Expr);
-               Name  : constant W_Identifier_Id := New_Abs (Current_Type.Kind);
             begin
                Current_Type := Base_Why_Type (Right);
                T :=
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
-                    Name     => Name,
+                    Name     => New_Abs (Current_Type.Kind),
                     Args    =>
                        (1 => Transform_Expr (Right, Current_Type, Domain)));
                Overflow_Check_Needed := True;
