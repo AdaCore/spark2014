@@ -174,7 +174,7 @@ package body Why.Images is
       if Base = 0 then
          P (O, Num);
          P (O, ".0");
-         P (O, "/");
+         P (O, EW_Divide, EW_Real);
          P (O, Den);
          P (O, ".0");
 
@@ -183,7 +183,7 @@ package body Why.Images is
          P (O, "E");
 
          if Den > Uint_0 then
-            P (O, "-");
+            P (O, EW_Substract, EW_Real);
             P (O, Den);
          else
             P (O, -Den);
@@ -194,7 +194,7 @@ package body Why.Images is
          P (O, ".0");
 
          if Den > Uint_0 then
-            P (O, "/");
+            P (O, EW_Divide, EW_Real);
             P (O, UI_Expon (Den, Base));
             P (O, ".0");
 
