@@ -1450,9 +1450,9 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             if Is_Why3 then
-               P (O, " ");
-               Print_List (State, +Binders, " ");
-               P (O, " : ");
+               P (O, " (");
+               Print_List (State, +Binders, ") (");
+               P (O, ") : ");
             else
                P (O, " (");
                Print_List (State, +Binders);
