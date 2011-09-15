@@ -236,7 +236,7 @@ package body Why.Images is
                P (O, "true");
             end if;
          when EW_False =>
-            if Is_Why3 and then Domain = EW_Prog then
+            if Is_Why3 and then Domain in EW_Prog | EW_Term then
                P (O, "False");
             else
                P (O, "false");
