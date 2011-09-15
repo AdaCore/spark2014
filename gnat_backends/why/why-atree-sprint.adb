@@ -1690,7 +1690,7 @@ package body Why.Atree.Sprint is
    is
    begin
       if Is_Why3 then
-         P (O, "use export module ");
+         P (O, "use export module """);
       else
          P (O, "include """);
       end if;
@@ -1698,7 +1698,7 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Name (Node));
 
       if Is_Why3 then
-         P (O, ".Main");
+         P (O, """.Main");
       else
          P (O, ".mlw""");
       end if;
