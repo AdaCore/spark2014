@@ -144,5 +144,5 @@ $(WHY_STANDARD):
 	rm $(DUMMYFILE)
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
-	why --type-only $<
+	why3ml --type-only -L . $<
 	touch $@
