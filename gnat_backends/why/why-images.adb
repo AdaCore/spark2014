@@ -183,7 +183,7 @@ package body Why.Images is
          P (O, "E");
 
          if Den > Uint_0 then
-            P (O, EW_Substract, EW_Real);
+            P (O, "-");
             P (O, Den);
          else
             P (O, -Den);
