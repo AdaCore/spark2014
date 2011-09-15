@@ -252,6 +252,9 @@ package Why.Gen.Names is
    --  Create a new name for the axiom that states equivalence of
    --  a subprogram and its logic definition.
 
+   package Mod_Name is
+     new Name_Gen.Arity_0 ("math_mod");
+
    package New_Pre_Check_Name is
      new Name_Gen.Arity_1 (Pre_Check, "");
    --  Return an identifier for the subprogram that checks whether a
