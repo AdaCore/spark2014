@@ -10,7 +10,7 @@ import glob
 import shutil
 import json
 
-max_steps = 500
+max_steps = 600
 parallel_procs = 1
 #  Change directory
 
