@@ -311,6 +311,9 @@ val t__ada_array___update_ :
   
   axiom Ite_false:
     (forall x:'a1. (forall y:'a1. ((ite Bool.False x y : 'a1) = y)))
+
+  function int_of_bool (b : Bool.bool) : int =
+   if b = True then 1 else 0
   
   
 end
