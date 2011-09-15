@@ -924,7 +924,9 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
+      P (O, "(");
       P (O, Get_Value (Node));
+      P (O, ")");
    end Real_Constant_Pre_Op;
 
    -----------------
