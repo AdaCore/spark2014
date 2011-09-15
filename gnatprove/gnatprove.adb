@@ -639,9 +639,6 @@ begin
 
    Execute_Step (GS_Why, Project_File.all, Tree);
 
-   if not No_Proof then
-      Execute_Step (GS_AltErgo, Project_File.all, Tree);
-   end if;
 exception
    when Invalid_Project =>
       Abort_With_Message
