@@ -2676,7 +2676,7 @@ package body Alfa.Definition is
                Mark_Non_Alfa ("character enumeration type", +Id, NYI_XXX);
             end if;
 
-         when Signed_Integer_Kind =>
+         when Integer_Kind =>
             if not (Is_Static_Range (Scalar_Range (+Id))) then
                Mark_Non_Alfa
                  ("integer type with dynamic range", +Id,
@@ -2721,9 +2721,6 @@ package body Alfa.Definition is
 
          when E_Record_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
-
-         when E_Modular_Integer_Type | E_Modular_Integer_Subtype =>
-            Mark_Non_Alfa ("type definition", +Id, NYI_Modular);
 
          when Float_Kind =>
             if not (Is_Static_Range (Scalar_Range (+Id))) then
