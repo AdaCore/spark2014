@@ -424,6 +424,7 @@ package body Gnat2Why.Expr is
          when N_Range
            | N_Real_Range_Specification
            | N_Signed_Integer_Type_Definition
+           | N_Modular_Type_Definition
            | N_Floating_Point_Definition =>
             return N;
 

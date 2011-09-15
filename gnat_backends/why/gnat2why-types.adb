@@ -191,6 +191,12 @@ package body Gnat2Why.Types is
                   Name_Str,
                   Scalar_Range (Ident_Node));
 
+            when Modular_Integer_Kind =>
+               Declare_Ada_Abstract_Modular
+                 (File,
+                  Name_Str,
+                  Modulus (Ident_Node));
+
             when E_Floating_Point_Type | E_Floating_Point_Subtype =>
                Declare_Ada_Floating_Point_From_Range
                  (File,

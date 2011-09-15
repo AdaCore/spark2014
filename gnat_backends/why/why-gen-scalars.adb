@@ -35,6 +35,7 @@ with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
 
@@ -43,7 +44,8 @@ package body Why.Gen.Scalars is
       Name      : String;
       Base_Type : EW_Scalar;
       First     : W_Term_Id;
-      Last      : W_Term_Id);
+      Last      : W_Term_Id;
+      Modulus   : W_Term_OId := Why_Empty);
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
 
@@ -53,6 +55,32 @@ package body Why.Gen.Scalars is
       Base_Type : EW_Scalar;
       First     : W_Term_Id;
       Last      : W_Term_Id);
+
+   ----------------------------------
+   -- Declare_Ada_Abstract_Modular --
+   ----------------------------------
+
+   procedure Declare_Ada_Abstract_Modular
+     (File    : W_File_Id;
+      Name    : String;
+      Modulus : Uint)
+   is
+   begin
+      Emit (File, New_Type (Name));
+      Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int,
+         First     => New_Constant (Uint_0),
+         Last      => New_Constant (Modulus - 1),
+         Modulus   => New_Constant (Modulus));
+      Define_Scalar_Attributes
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int,
+         First     => New_Constant (Uint_0),
+         Last      => New_Constant (Modulus - 1));
+   end Declare_Ada_Abstract_Modular;
 
    -------------------------------------
    -- Declare_Ada_Abstract_Signed_Int --
@@ -114,7 +142,8 @@ package body Why.Gen.Scalars is
       Name      : String;
       Base_Type : EW_Scalar;
       First     : W_Term_Id;
-      Last      : W_Term_Id)
+      Last      : W_Term_Id;
+      Modulus   : W_Term_OId := Why_Empty)
    is
       Arg_S   : constant String := "n";
       BT      : constant W_Primitive_Type_Id
@@ -188,7 +217,8 @@ package body Why.Gen.Scalars is
                              Conversion_To.Id (Name, BT_Name));
          Define_Coerce_Axiom (File,
                               New_Identifier (Name),
-                              Base_Type);
+                              Base_Type,
+                              Modulus);
          Define_Unicity_Axiom (File,
                                New_Identifier (Name),
                                Base_Type);

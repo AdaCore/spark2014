@@ -36,9 +36,10 @@ package body Why.Gen.Axioms is
    -------------------------
 
    procedure Define_Coerce_Axiom
-     (File           : W_File_Id;
-      Type_Name      : W_Identifier_Id;
-      Base_Type      : EW_Scalar)
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar;
+      Modulus   : W_Term_OId := Why_Empty)
    is
       Base_Type_Name       : constant W_Identifier_Id :=
                                New_Identifier
@@ -67,13 +68,23 @@ package body Why.Gen.Axioms is
                                     Range_Pred_Name.Id (Type_Name),
                                   Args   =>
                                     (1 => +New_Term (Arg_S)));
-      In_Range_t          : constant W_Term_Id :=
+      In_Range_t           : constant W_Term_Id :=
                                New_Call
                                  (Domain => EW_Term,
                                   Name   =>
                                     Range_Pred_Name.Id (Type_Name),
                                   Args   =>
                                     (1 => +New_Term (Arg_S)));
+      Normalized_Result    : constant W_Term_Id :=
+                               (if Modulus = Why_Empty then
+                                  New_Term (Arg_S)
+                                else
+                                  New_Call
+                                    (Domain  => EW_Term,
+                                     Name    => Mod_Name.Id,
+                                     Args    =>
+                                       (+New_Term (Arg_S),
+                                        +Modulus)));
       Formula              : constant W_Pred_Id :=
                                New_Connection
                                  (Domain => EW_Pred,
@@ -84,7 +95,7 @@ package body Why.Gen.Axioms is
                                       (Op_Type => Base_Type,
                                        Left    => +Back_To_Base_Type_Op,
                                        Op      => EW_Eq,
-                                       Right   => New_Prog (Arg_S)));
+                                       Right   => +Normalized_Result));
       Quantif_On_X         : constant W_Pred_Id :=
                                New_Universal_Quantif
                                  (Var_Type  => BT,

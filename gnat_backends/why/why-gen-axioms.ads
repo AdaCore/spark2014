@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;         use Why.Ids;
+with Why.Types;       use Why.Types;
 with Why.Sinfo;       use Why.Sinfo;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
@@ -42,9 +43,10 @@ package Why.Gen.Axioms is
    --    <type_name>___in_range (<conversion> (x))
 
    procedure Define_Coerce_Axiom
-     (File           : W_File_Id;
-      Type_Name      : W_Identifier_Id;
-      Base_Type      : EW_Scalar);
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar;
+      Modulus   : W_Term_OId := Why_Empty);
    --  Define a coerce axiom; it asserts that conversion from the base
    --  primitive type then back to the original type is the identity
    --  (as long as we are in the type range). The axiom is of the
@@ -53,7 +55,7 @@ package Why.Gen.Axioms is
    --  axiom <type_name>___coerce :
    --   forall x : <base_type>.
    --    <type_name>___in_range (x) ->
-   --     <to_base_type> (<from_base_type> (x)) = x
+   --     <to_base_type> (<from_base_type> (x)) = x % modulus
 
    procedure Define_Unicity_Axiom
      (File      : W_File_Id;

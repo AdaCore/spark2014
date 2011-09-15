@@ -154,7 +154,7 @@ package body Why.Inter is
          when Float_Kind =>
             return EW_Real;
 
-         when Signed_Integer_Kind | Enumeration_Kind =>
+         when Integer_Kind | Enumeration_Kind =>
             --  ??? What about booleans ? We should have
             --  a special case for them...
             return EW_Int;

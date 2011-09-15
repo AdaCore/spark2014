@@ -42,6 +42,15 @@ package Why.Gen.Scalars is
    --  whose name is given in parameter along with a set of axioms and
    --  subprograms for int conversion.
 
+   procedure Declare_Ada_Abstract_Modular
+     (File    : W_File_Id;
+      Name    : String;
+      Modulus : Uint);
+   --  Declare the whole theory for a unsigned int of the given size,
+   --  i.e. whose range is 0 .. Modulus - 1. This creates an abstract
+   --  type whose name is given in parameter along with a set of axioms and
+   --  subprograms for int conversion.
+
    procedure Declare_Ada_Floating_Point
      (File  : W_File_Id;
       Name  : String;
