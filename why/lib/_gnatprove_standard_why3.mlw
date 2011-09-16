@@ -319,5 +319,10 @@ val t__ada_array___update_ :
   
   val computer_div_ : x:int -> y:int ->
     { y<>0 } int { result = computer_div x y }
+
+
+  use real.FromInt
+
+  function real_of_int (x : int) : real = FromInt.from_int x
 end
 
