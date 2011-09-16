@@ -64,10 +64,9 @@ package body Why.Gen.Terms is
          else
             return
               New_Call
-              (Domain     => EW_Term,
-               Ada_Node   => Ada_Node,
-               Name       => Conversion_Name (From => From, To => To),
-               Args => (1 => +Why_Term));
+                (Ada_Node => Ada_Node,
+                 Name     => Conversion_Name (From => From, To => To),
+                 Args     => (1 => +Why_Term));
          end if;
       end Insert_Single_Conversion;
 
@@ -115,9 +114,8 @@ package body Why.Gen.Terms is
          when others =>
             return
               New_Call
-              (Domain => EW_Term,
-               Name   => New_Identifier ("ite"),
-               Args   => (1 => +Condition, 2 => +Left, 3 => +Right));
+                (Name => New_Identifier ("ite"),
+                 Args => (1 => +Condition, 2 => +Left, 3 => +Right));
       end case;
    end New_Ifb;
 

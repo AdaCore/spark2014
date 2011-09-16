@@ -175,24 +175,21 @@ package body Why.Gen.Scalars is
          Range_Check  : constant W_Pred_OId :=
                           (if Signed then
                              New_Call
-                               (Domain => EW_Pred,
-                                Name   => Range_Pred_Name.Id (Name),
+                               (Name   => Range_Pred_Name.Id (Name),
                                 Args   => (1 => +New_Term (Arg_S)))
                            else
                              Why_Empty);
          --  postcondition: { <name>___of_<base_type> (result) = n }
          Base_Result  : constant W_Term_Id :=
                           New_Call
-                            (Domain => EW_Term,
-                             Name   =>
+                            (Name   =>
                                Conversion_To.Id (Name,
                                                  BT_Name),
                              Args   =>
                                (1 => +New_Result_Term));
          Post         : constant W_Pred_Id :=
                           New_Relation
-                            (Domain  => EW_Pred,
-                             Op_Type => Base_Type,
+                            (Op_Type => Base_Type,
                              Left    => +Base_Result,
                              Op      => EW_Eq,
                              Right   => +New_Term (Arg_S));

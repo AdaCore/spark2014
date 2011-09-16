@@ -148,7 +148,6 @@ package body Gnat2Why.Expr.Loops is
          return
            New_Conditional
              (Ada_Node  => Stmt,
-              Domain    => EW_Prog,
               Condition => +Transform_Expr (Condition (Stmt), EW_Prog),
               Then_Part => +Raise_Stmt);
       end if;
@@ -260,13 +259,11 @@ package body Gnat2Why.Expr.Loops is
             Index_Deref  : constant W_Prog_Id :=
                              New_Unary_Op
                                (Ada_Node => Stmt,
-                                Domain   => EW_Prog,
                                 Op       => EW_Deref,
                                 Right    => +Loop_Index);
             Addition     : constant W_Prog_Id :=
                              New_Binary_Op
                                (Ada_Node => Stmt,
-                                Domain   => EW_Prog,
                                 Op       => EW_Add,
                                 Op_Type  => EW_Int,
                                 Left     => +Index_Deref,
@@ -345,9 +342,8 @@ package body Gnat2Why.Expr.Loops is
                       Sequence
                         (Loop_Body,
                          New_Conditional
-                           (Domain    => EW_Prog,
-                            Condition =>
-                              New_Not (Right => +Condition, Domain => EW_Prog),
+                           (Condition =>
+                              New_Not (Right => +Condition),
                             Then_Part =>
                               New_Raise
                                 (Name => New_Identifier (Loop_Name))));
@@ -372,8 +368,7 @@ package body Gnat2Why.Expr.Loops is
 
       return
         New_Conditional
-          (Domain    => EW_Prog,
-           Condition => Condition,
+          (Condition => Condition,
            Then_Part =>
              New_Try_Block
                (Prog    => Loop_Stmt,

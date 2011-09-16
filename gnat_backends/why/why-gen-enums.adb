@@ -43,6 +43,8 @@ with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
 
+   function P (Id : W_Expr_OId) return W_Prog_OId renames "+";
+
    procedure Define_Enum_To_Int_Function
      (File         : W_File_Id;
       Name         : String;
@@ -161,8 +163,7 @@ package body Why.Gen.Enums is
             Return_Type => My_Type,
             Pre         =>
               New_Relation
-                (Domain  => EW_Pred,
-                 Op_Type => EW_Int,
+                (Op_Type => EW_Int,
                  Left    => New_Integer_Constant (Value => Uint_1),
                  Op      => EW_Le,
                  Right   => +New_Term ("x"),
@@ -170,15 +171,14 @@ package body Why.Gen.Enums is
                  Right2  => New_Integer_Constant (Value => Max_Uint)),
             Post        =>
               New_Relation
-                (Domain  => EW_Pred,
-                 Op_Type => EW_Int,
+                (Op_Type => EW_Int,
                  Op      => EW_Eq,
                  Left    => +New_Result_Term,
                  Right   =>
-                   New_Call
+                   P (New_Call
                      (Domain => EW_Term,
                       Name   => Conversion_From.Id (Name, "int"),
-                      Args   => (1 => +New_Term ("x"))))));
+                      Args   => (1 => +New_Term ("x")))))));
       Define_Coerce_Axiom
         (File,
          New_Identifier (Name),

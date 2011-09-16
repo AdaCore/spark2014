@@ -152,6 +152,41 @@ package body Xkind_Tables is
       end loop;
    end Display_Domains;
 
+   ----------------
+   -- Get_Domain --
+   ----------------
+
+   function Get_Domain (Id_Type : Wide_String) return EW_ODomain is
+      Prefix : constant Wide_String := Strip_Suffix (Id_Type);
+      Kind   : constant Wide_String := Suffix (Prefix);
+      Last   : Natural := Prefix'Last;
+   begin
+      if Kind = "Unchecked"
+        or else Kind = "Valid"
+        or else Kind = "Opaque"
+      then
+         Last := Last - (Kind'Length + 1);
+      end if;
+
+      for CI of Classes loop
+         if Is_Domain (CI) then
+            declare
+               Prefix : constant Wide_String := Class_Name (CI) & "_";
+            begin
+               if Prefix =
+                 Id_Type (Id_Type'First .. Id_Type'First + Prefix'Length - 1)
+               then
+                  return EW_ODomain'Wide_Value ("E" & Class_Name (CI));
+               end if;
+            end;
+         end if;
+      end loop;
+
+      --  Fallback on the most general domain: W_Expr
+
+      return Get_Domain ("W_Expr_Id");
+   end Get_Domain;
+
    --------------------
    -- Freeze_Domains --
    --------------------
@@ -241,6 +276,11 @@ package body Xkind_Tables is
       return CI.Father /= null;
    end Is_Domain;
 
+   function Is_Domain (Id_Type : Wide_String) return Boolean is
+   begin
+      return Get_Domain (Id_Type) /= EW_Expr;
+   end Is_Domain;
+
    ----------------
    -- Kind_Check --
    ----------------
@@ -276,7 +316,7 @@ package body Xkind_Tables is
    function Mixed_Case_Name (D : EW_ODomain) return Wide_String is
       Name : String := EW_ODomain'Image (D);
    begin
-      To_Mixed (Name);
+      To_Mixed (Name (2 .. Name'Last));
       return To_Wide_String (Name);
    end Mixed_Case_Name;
 

@@ -207,6 +207,11 @@ package body Xtree_Builders is
 
             PL (O, ";");
 
+         elsif Field_Kind (FI) = Field_Domain
+           and then Is_Domain (Return_Type) then
+            PL (O, New_Node & "." & FN & " := "
+                & Mixed_Case_Name (Get_Domain (Return_Type)) & ";");
+
          else
             if Is_List (FI) then
                if not Maybe_Null (FI) then
@@ -301,6 +306,11 @@ package body Xtree_Builders is
          PN       : constant Wide_String := Param_Name (FI);
       begin
          if Field_Kind (FI) = Field_Special then
+            return;
+         end if;
+
+         if Field_Kind (FI) = Field_Domain
+           and then Is_Domain (Return_Type) then
             return;
          end if;
 

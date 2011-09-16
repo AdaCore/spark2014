@@ -70,13 +70,11 @@ package body Why.Gen.Preds is
                             Conversion_To.Id (Name, Base_Type_Name);
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
-                              (Domain => EW_Term,
-                               Name   => Conversion,
+                              (Name   => Conversion,
                                Args   => (1 => +New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
-                              (Domain => EW_Term,
-                               Name   => Conversion,
+                              (Name   => Conversion,
                                Args   => (1 => +New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
@@ -132,14 +130,12 @@ package body Why.Gen.Preds is
       --  let last  = <last>  in [...]
       Decl_Last  : constant W_Pred_Id :=
                      New_Binding
-                       (Domain  => EW_Pred,
-                        Name    => New_Identifier (Last_S),
+                       (Name    => New_Identifier (Last_S),
                         Def     => +Last,
                         Context => +Context);
       Decl_First : constant W_Pred_Id :=
                      New_Binding
-                       (Domain  => EW_Pred,
-                        Name    => New_Identifier (First_S),
+                       (Name    => New_Identifier (First_S),
                         Def     => +First,
                         Context => +Decl_Last);
    begin

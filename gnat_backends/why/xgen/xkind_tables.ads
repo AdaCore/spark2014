@@ -170,4 +170,11 @@ package Xkind_Tables is
    function Is_Subclass (Inner, Outer : Class_Info) return Boolean;
    --  Return True in Inner is a strict subclass of Outer
 
+   function Is_Domain (Id_Type : Wide_String) return Boolean;
+   --  Return True if Id_Type is in a domain class (e.g. W_Term_Id
+   --  is in the domain class W_Term, that corresponds to the domain EW_Term).
+
+   function Get_Domain (Id_Type : Wide_String) return EW_ODomain;
+   --  Return the domain of Id_Type
+
 end Xkind_Tables;

@@ -208,8 +208,7 @@ package body Gnat2Why.Subprograms is
             Result_Var : constant W_Prog_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
                               New_Unary_Op
-                                (Domain   => EW_Prog,
-                                 Ada_Node => Node,
+                                (Ada_Node => Node,
                                  Op       => EW_Deref,
                                  Right    => +New_Result_Temp_Identifier.Id)
                             else New_Void);

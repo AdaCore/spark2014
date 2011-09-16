@@ -130,7 +130,6 @@ package body Gnat2Why.Expr is
             if Is_Mutable (Lvalue) then
                return New_Assignment
                  (Ada_Node => N,
-                  Domain   => EW_Prog,
                   Name     => L_Id,
                   Value    => Why_Expr);
 
@@ -155,8 +154,7 @@ package body Gnat2Why.Expr is
                begin
                   return
                     New_Binding
-                      (Domain   => EW_Prog,
-                       Ada_Node => N,
+                      (Ada_Node => N,
                        Name     => Tmp_Var,
                        Def      => Why_Expr,
                        Context  =>
@@ -593,8 +591,7 @@ package body Gnat2Why.Expr is
             Hypothesis := +Range_Expr (Range_E, +Index, EW_Pred);
             Quant_Body :=
                New_Connection
-                (Domain => EW_Pred,
-                 Op     => EW_Imply,
+                (Op     => EW_Imply,
                  Left   => +Hypothesis,
                  Right  => +Conclusion);
 
@@ -655,8 +652,7 @@ package body Gnat2Why.Expr is
                         (New_Base_Type (Base_Type => EW_Int)),
                     Context =>
                       New_Conditional
-                        (Domain    => EW_Prog,
-                         Condition => Range_Cond,
+                        (Condition => Range_Cond,
                          Then_Part => +Why_Expr)),
                  New_Assume_Statement
                    (Ada_Node    => Expr,
@@ -791,7 +787,7 @@ package body Gnat2Why.Expr is
               Domain   => EW_Pred,
               Op_Type  => EW_Bool,
               Left     => +Transform_Expr (Expr, EW_Bool_Type, EW_Term),
-              Right    => New_Literal (Value => EW_True, Domain => EW_Term),
+              Right    => New_Literal (Value => EW_True),
               Op       => EW_Eq);
       end if;
 

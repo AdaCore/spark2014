@@ -40,9 +40,9 @@ package body Why.Gen.Binders is
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Computation_Type_Id;
 
    function New_Binders
@@ -211,16 +211,16 @@ package body Why.Gen.Binders is
       return Result;
    end New_Binders;
 
-   -----------------------
-   -- New_Call_To_Logic --
-   -----------------------
+   --------------
+   -- New_Call --
+   --------------
 
    function New_Call
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array)
-     return W_Term_Id is
+     return W_Expr_Id is
    begin
       return New_Call
         (Ada_Node => Ada_Node,
@@ -240,9 +240,9 @@ package body Why.Gen.Binders is
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Computation_Type_Id is
    begin
       return New_Computation_Type
@@ -314,9 +314,9 @@ package body Why.Gen.Binders is
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Declaration_Id is
    begin
       return New_Function_Decl
@@ -345,9 +345,9 @@ package body Why.Gen.Binders is
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Declaration_Id
    is
       RT : constant W_Primitive_Type_Id :=

@@ -71,7 +71,7 @@ package Why.Gen.Binders is
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array)
-     return W_Term_Id;
+     return W_Expr_Id;
    --  Create a call to an operation in the given domain with parameters
    --  taken from Binders. Typically, from:
    --
@@ -91,9 +91,9 @@ package Why.Gen.Binders is
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
    function New_Function_Def
@@ -104,9 +104,9 @@ package Why.Gen.Binders is
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
       Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred);
+                      New_Literal (Value => EW_True);
       Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True, Domain => EW_Pred))
+                      New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
    function New_Guarded_Axiom

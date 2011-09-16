@@ -396,8 +396,7 @@ package body Why.Gen.Progs is
                           Statements => (1 => Loop_Body, 2 => Incr_Stmt));
       Enriched_Inv : constant W_Pred_Id :=
                        New_Connection
-                         (Domain => EW_Term,
-                          Op     => EW_Or,
+                         (Op     => EW_Or,
                           Left   => +Invariant,
                           Right  =>
                             New_Relation

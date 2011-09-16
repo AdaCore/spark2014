@@ -53,44 +53,38 @@ package body Why.Gen.Axioms is
       Arg_S                : constant String := "x";
       X_To_Type_Op         : constant W_Term_Id :=
                                New_Call
-                                 (Domain => EW_Term,
-                                  Name   => From_Base_Type,
-                                  Args   => (1 => +New_Term (Arg_S)));
+                                 (Name => From_Base_Type,
+                                  Args => (1 => +New_Term (Arg_S)));
       Back_To_Base_Type_Op : constant W_Term_Id :=
                                New_Call
-                                 (Domain => EW_Term,
-                                  Name   => To_Base_Type,
-                                  Args   => (1 => +X_To_Type_Op));
+                                 (Name => To_Base_Type,
+                                  Args => (1 => +X_To_Type_Op));
       In_Range             : constant W_Pred_Id :=
                                New_Call
-                                 (Domain => EW_Pred,
-                                  Name   =>
+                                 (Name =>
                                     Range_Pred_Name.Id (Type_Name),
-                                  Args   =>
+                                  Args =>
                                     (1 => +New_Term (Arg_S)));
       In_Range_t           : constant W_Term_Id :=
                                New_Call
-                                 (Domain => EW_Term,
-                                  Name   =>
+                                 (Name =>
                                     Range_Pred_Name.Id (Type_Name),
-                                  Args   =>
+                                  Args =>
                                     (1 => +New_Term (Arg_S)));
       Normalized_Result    : constant W_Term_Id :=
                                (if Modulus = Why_Empty then
                                   New_Term (Arg_S)
                                 else
                                   New_Call
-                                    (Domain  => EW_Term,
-                                     Name    => Mod_Name.Id,
-                                     Args    =>
+                                    (Name => Mod_Name.Id,
+                                     Args =>
                                        (+New_Term (Arg_S),
                                         +Modulus)));
       Formula              : constant W_Pred_Id :=
                                New_Connection
-                                 (Domain => EW_Pred,
-                                  Op     => EW_Imply,
-                                  Left   => +In_Range,
-                                  Right  =>
+                                 (Op    => EW_Imply,
+                                  Left  => +In_Range,
+                                  Right =>
                                     New_Relation
                                       (Op_Type => Base_Type,
                                        Left    => +Back_To_Base_Type_Op,
@@ -129,17 +123,16 @@ package body Why.Gen.Axioms is
       Binders   : Binder_Array)
    is
       Call_To_Builder : constant W_Term_Id :=
-                          New_Call
+                          +New_Call
                             (Domain  => EW_Term,
                              Name    => Record_Builder_Name.Id (Type_Name),
                              Binders => Binders);
       Call_To_Getter  : constant W_Term_Id :=
                           New_Call
-                           (Domain => EW_Term,
-                            Name   =>
+                           (Name =>
                               Record_Getter_Name.Id
                                 (Binders (Position).B_Name),
-                            Args   => (1 => +Call_To_Builder));
+                            Args => (1 => +Call_To_Builder));
       Context         : constant W_Pred_Id :=
                           New_Relation
                             (Op      => EW_Eq,
@@ -171,14 +164,12 @@ package body Why.Gen.Axioms is
       Arg_S              : constant String := "x";
       Call_To_Conversion : constant W_Term_Id :=
                              New_Call
-                               (Domain => EW_Term,
-                                Name   => Conversion,
-                                Args   => (1 => +New_Term (Arg_S)));
+                               (Name => Conversion,
+                                Args => (1 => +New_Term (Arg_S)));
       Formula            : constant W_Pred_Id :=
                              New_Call
-                               (Domain => EW_Pred,
-                                Name   => Range_Pred_Name.Id (Type_Name),
-                                Args   => (1 => +Call_To_Conversion));
+                               (Name => Range_Pred_Name.Id (Type_Name),
+                                Args => (1 => +Call_To_Conversion));
       Quantif_On_X       : constant W_Pred_Id :=
                              New_Universal_Quantif
                                (Var_Type =>
@@ -213,29 +204,24 @@ package body Why.Gen.Axioms is
       Y_S               : constant String := "y";
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
-                              (Domain => EW_Term,
-                               Name   => Conversion,
-                               Args   => (1 => +New_Term (X_S)));
+                              (Name => Conversion,
+                               Args => (1 => +New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
-                              (Domain => EW_Term,
-                               Name   => Conversion,
-                               Args   => (1 => +New_Term (Y_S)));
+                              (Name => Conversion,
+                               Args => (1 => +New_Term (Y_S)));
       Formula           : constant W_Pred_Id :=
                             New_Connection
-                              (Domain => EW_Pred,
-                               Op     => EW_Imply,
-                               Left   =>
+                              (Op    => EW_Imply,
+                               Left  =>
                                  New_Relation
-                                   (Domain  => EW_Pred,
-                                    Op_Type => Base_Type,
+                                   (Op_Type => Base_Type,
                                     Left    => +X_To_Base_Type_Op,
                                     Op      => EW_Eq,
                                     Right   => +Y_To_Base_Type_Op),
                                Right =>
                                  New_Relation
-                                   (Domain  => EW_Pred,
-                                    Op_Type => EW_Abstract,
+                                   (Op_Type => EW_Abstract,
                                     Left    => +New_Term (X_S),
                                     Op      => EW_Eq,
                                     Right   => +New_Term (Y_S)));

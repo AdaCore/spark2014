@@ -45,8 +45,7 @@ package body Why.Gen.Funcs is
       Arg_T   : constant String := "m";
       Post    : constant W_Pred_Id :=
                   New_Conditional
-                    (Domain    => EW_Pred,
-                     Condition => +New_Result_Term,
+                    (Condition => +New_Result_Term,
                      Then_Part =>
                        New_Relation
                          (Op      => EW_Eq,
@@ -60,7 +59,7 @@ package body Why.Gen.Funcs is
                           Left    => +New_Term (Arg_S),
                           Right   => +New_Term (Arg_T)));
       Pre     : constant W_Pred_Id :=
-                  New_Literal (Domain => EW_Pred, Value => EW_True);
+                  New_Literal (Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=
                    New_Abstract_Type (Name => New_Identifier (EW_Term,
                                                               Type_Name));
