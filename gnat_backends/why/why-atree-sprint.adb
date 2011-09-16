@@ -862,10 +862,10 @@ package body Why.Atree.Sprint is
                     (Has_Else
                      and then Get_Kind (+Else_Part) = W_Conditional);
    begin
-      P (O, "if (");
+      P (O, "(if (");
       Traverse (State, +Condition);
 
-      if Is_Why3 and then Get_Domain (+Node) = EW_Pred then
+      if Is_Why3 and then Get_Domain (+Node) in EW_Pred | EW_Term then
          P (O, " = True");
       end if;
 
@@ -892,6 +892,7 @@ package body Why.Atree.Sprint is
          pragma Assert (Get_Domain (+Node) = EW_Prog);
          P (O, ")");
       end if;
+      P (O, ")");
 
       State.Control := Abandon_Children;
    end Conditional_Pre_Op;
