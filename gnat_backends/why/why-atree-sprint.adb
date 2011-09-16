@@ -694,10 +694,12 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Not_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
+      Pred : constant W_Expr_Id := +Not_Get_Right (+Node);
    begin
-      P (O, "not ");
+      P (O, "not ( ");
+      Traverse (State, +Pred);
+      P (O, " )");
+      State.Control := Abandon_Children;
    end Not_Pre_Op;
 
    ---------------------
