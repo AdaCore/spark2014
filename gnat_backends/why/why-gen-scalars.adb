@@ -54,7 +54,8 @@ package body Why.Gen.Scalars is
       Name      : String;
       Base_Type : EW_Scalar;
       First     : W_Term_Id;
-      Last      : W_Term_Id);
+      Last      : W_Term_Id;
+      Modulus   : W_Term_OId := Why_Empty);
 
    ----------------------------------
    -- Declare_Ada_Abstract_Modular --
@@ -239,9 +240,10 @@ package body Why.Gen.Scalars is
       Name      : String;
       Base_Type : EW_Scalar;
       First     : W_Term_Id;
-      Last      : W_Term_Id)
+      Last      : W_Term_Id;
+      Modulus   : W_Term_OId := Why_Empty)
    is
-      type Scalar_Attr is (S_First, S_Last);
+      type Scalar_Attr is (S_First, S_Last, S_Modulus);
 
       type Attr_Info is record
          Attr_Id : Attribute_Id;
@@ -249,24 +251,27 @@ package body Why.Gen.Scalars is
       end record;
 
       Attr_Values : constant array (Scalar_Attr) of Attr_Info :=
-                      (S_First => (Attribute_First, First),
-                       S_Last  => (Attribute_Last, Last));
+                      (S_First   => (Attribute_First, First),
+                       S_Last    => (Attribute_Last, Last),
+                       S_Modulus => (Attribute_Modulus, Modulus));
    begin
       for J in Attr_Values'Range loop
-         Emit_Top_Level_Declarations
-           (File        => File,
-            Name        =>
-              Attr_Name.Id
-                (Name,
-                 Attribute_Id'Image (Attr_Values (J).Attr_Id)),
-            Binders     => (1 .. 0 => <>),
-            Return_Type => New_Base_Type (Base_Type => Base_Type),
-            Spec        =>
-              (1 =>
-                 (Kind   => W_Function_Decl,
-                  Domain => EW_Term,
-                  Def    => Attr_Values (J).Value,
-                  others => <>)));
+         if Attr_Values (J).Value /= Why_Empty then
+            Emit_Top_Level_Declarations
+              (File        => File,
+               Name        =>
+                 Attr_Name.Id
+                   (Name,
+                    Attribute_Id'Image (Attr_Values (J).Attr_Id)),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => New_Base_Type (Base_Type => Base_Type),
+               Spec        =>
+                 (1 =>
+                    (Kind   => W_Function_Decl,
+                     Domain => EW_Term,
+                     Def    => Attr_Values (J).Value,
+                     others => <>)));
+         end if;
       end loop;
    end Define_Scalar_Attributes;
 
