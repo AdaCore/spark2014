@@ -317,5 +317,7 @@ val t__ada_array___update_ :
   
   function div_real (x : real) (y : real) : real = x /. y
   
+  val computer_div_ : x:int -> y:int ->
+    { y<>0 } int { result = computer_div x y }
 end
 
