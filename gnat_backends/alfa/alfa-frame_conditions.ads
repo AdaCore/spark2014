@@ -23,6 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  Compute the frame condition of all subprograms in the current call-graph,
+--  by propagating reads and writes from callees to callers. Externally,
+--  entities (whether subprograms or variables) are represented as strings,
+--  which may or may not correspond to entities in the AST, as some variables
+--  and subprograms are not visible from the current compilation unit.
+--  Internally, entities are represented as integers, to avoid costly repeated
+--  hashing of strings in computations over sets/maps of entities.
+
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;

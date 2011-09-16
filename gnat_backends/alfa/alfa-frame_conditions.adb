@@ -25,6 +25,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                use Ada.Text_IO;
+with Unchecked_Deallocation;
 
 with Get_Alfa;
 with Output;                     use Output;
@@ -36,16 +37,59 @@ package body Alfa.Frame_Conditions is
    -- Local Types --
    -----------------
 
-   package Name_Map is new Hashed_Maps
+   type Id is mod 2 ** 32;
+   --  Representation of an entity
+
+   function Id_Hash (X : Id) return Hash_Type is (Hash_Type (X));
+
+   package Id_Set is new Hashed_Sets
+     (Element_Type        => Id,
+      Hash                => Id_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+   use Id_Set;
+
+   package Id_Map is new Hashed_Maps
+     (Key_Type        => Id,
+      Element_Type    => Id_Set.Set,
+      Hash            => Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   use Id_Map;
+
+   package Id_To_Name_Map is new Hashed_Maps
+     (Key_Type        => Id,
+      Element_Type    => Entity_Name,
+      Hash            => Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Equal);
+   use Id_To_Name_Map;
+
+   package Name_To_Id_Map is new Hashed_Maps
      (Key_Type        => Entity_Name,
-      Element_Type    => Name_Set.Set,
+      Element_Type    => Id,
       Hash            => Name_Hash,
       Equivalent_Keys => Name_Equal,
-      "="             => Name_Set."=");
-   --  Stores a correspondance between an entity and a set of entities,
-   --  where entities are uniquely represented by their name.
+      "="             => "=");
+   use Name_To_Id_Map;
 
-   use Name_Map;
+   package Value_Map is new Hashed_Maps
+     (Key_Type        => Id,
+      Element_Type    => Integer,
+      Hash            => Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   --  Map used internally in strongly connected component computation. Not to
+   --  be confused with map over ids.
+
+   type SCC is array (Positive range <>) of Id;
+   --  Ordered list of subprograms in a strongly connected component, roughly
+   --  ordered so as to follow call chains for better propagation.
+
+   type SCC_Ptr is access SCC;
+   type SCCs is array (Positive range <>) of SCC_Ptr;
+   --  Ordered list of strongly connected components in call-graph, with the
+   --  "leaf" SCCs coming first.
 
    ---------------------
    -- Local Variables --
@@ -55,54 +99,73 @@ package body Alfa.Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Scopes  : Name_Set.Set;  --  All scope entities
+   Entity_Ids : Name_To_Id_Map.Map;    --  Map name to id
+   Entity_Names : Id_To_Name_Map.Map;  --  Map id to name
 
-   Defines : Name_Map.Map;  --  Entities defined by each scope
-   Writes  : Name_Map.Map;  --  Entities written in each scope
-   Reads   : Name_Map.Map;  --  Entities read in each scope
-   Callers : Name_Map.Map;  --  Callers for each subprogram
-   Calls   : Name_Map.Map;  --  Subprograms called in each subprogram
+   Scopes  : Id_Set.Set;  --  All scope entities
+
+   Defines : Id_Map.Map;  --  Entities defined by each scope
+   Writes  : Id_Map.Map;  --  Entities written in each scope
+   Reads   : Id_Map.Map;  --  Entities read in each scope
+   Callers : Id_Map.Map;  --  Callers for each subprogram
+   Calls   : Id_Map.Map;  --  Subprograms called in each subprogram
+
+   Next_Id : Id := 1;     --  Next available identity
 
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Add_To_Map (Map : in out Name_Map.Map; From, To : Entity_Name);
+   procedure Add_To_Map (Map : in out Id_Map.Map; From, To : Id);
    --  Add the relation From -> To in map Map
 
+   function Compute_Strongly_Connected_Components
+     (Nodes : Id_Set.Set) return SCCs;
+   --  Computation of strongly connected components from Tarjan. Individual
+   --  components are dynamically allocated.
+
    function Count_In_Map
-     (Map : Name_Map.Map;
-      Ent : Entity_Name) return Nat;
+     (Map : Id_Map.Map;
+      Ent : Id) return Nat;
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
+
+   procedure Free_SCCs (X : SCCs);
+   --  Free memory allocated for strongly connected components
+
+   function Id_Of_Entity (E : Entity_Name) return Id;
+   --  Return integer identity for name, and create it if necessary
+
+   function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
+   --  Return whether Ent is the special variable "__HEAP"
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
    --  Build a name for an entity, making sure the name is not empty
 
    procedure Set_Default_To_Empty
-     (Map : in out Name_Map.Map;
-      Set : Name_Set.Set);
+     (Map : in out Id_Map.Map;
+      Set : Id_Set.Set);
    --  Make sure each element in Set has an entry in Map. If not already
    --  present, add one which maps the element to the empty set.
 
-   function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
-   --  Return whether Ent is the special variable "__HEAP"
+   function To_Names (Ids : Id_Set.Set) return Name_Set.Set;
+   --  Convert set of identities to set of names
 
    ----------------
    -- Add_To_Map --
    ----------------
 
-   procedure Add_To_Map (Map : in out Name_Map.Map; From, To : Entity_Name) is
+   procedure Add_To_Map (Map : in out Id_Map.Map; From, To : Id) is
 
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Set.Set);
+      procedure Add_To_Set (Ignored : Id; Set : in out Id_Set.Set);
       --  Add entity representative To to set Set
 
       ----------------
       -- Add_To_Set --
       ----------------
 
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Set.Set)
+      procedure Add_To_Set (Ignored : Id; Set : in out Id_Set.Set)
       is
          pragma Unreferenced (Ignored);
       begin
@@ -116,7 +179,7 @@ package body Alfa.Frame_Conditions is
          Map.Update_Element (Map.Find (From), Add_To_Set'Access);
       else
          declare
-            S : Name_Set.Set;
+            S : Id_Set.Set;
          begin
             S.Include (To);
             Map.Insert (From, S);
@@ -124,17 +187,209 @@ package body Alfa.Frame_Conditions is
       end if;
    end Add_To_Map;
 
+   -------------------------------------------
+   -- Compute_Strongly_Connected_Components --
+   -------------------------------------------
+
+   function Compute_Strongly_Connected_Components
+     (Nodes : Id_Set.Set) return SCCs
+   is
+      subtype Node_Range is Integer range 1 .. Integer (Nodes.Length);
+
+      --  There are at most as many SCCs as nodes (if no recursion at all)
+
+      Cur_SCCs     : SCCs (Node_Range);
+      Cur_SCCs_Num : Natural := 0;
+
+      Indexes  : Value_Map.Map;
+      Lowlinks : Value_Map.Map;
+
+      Index : Natural := 1;
+
+      -----------------------
+      -- Local Subprograms --
+      -----------------------
+
+      procedure Strong_Connect (V : Id);
+      --  Compute SCC for V, possibly generating other reachable SCCs before
+      --  returning.
+
+      --------------------
+      -- Stack of nodes --
+      --------------------
+
+      type Stack_Data is array (Node_Range) of Id;
+      type Stack is record
+         Data    : Stack_Data;
+         Content : Id_Set.Set;
+      end record;
+
+      S : Stack;
+      S_Size : Natural := 0;
+
+      procedure Push (E : Id);
+      function Peer (Lookahead : Natural) return Id;
+      function Pop return Id;
+      function Has (E : Id) return Boolean;
+
+      procedure Push (E : Id) is
+      begin
+         S_Size := S_Size + 1;
+         S.Data (S_Size) := E;
+         S.Content.Include (E);
+      end Push;
+
+      function Pop return Id is
+         E : constant Id := S.Data (S_Size);
+      begin
+         S_Size := S_Size - 1;
+         S.Content.Delete (E);
+         return E;
+      end Pop;
+
+      function Peer (Lookahead : Natural) return Id is
+      begin
+         return S.Data (S_Size - Lookahead);
+      end Peer;
+
+      function Has (E : Id) return Boolean is
+      begin
+         return S.Content.Contains (E);
+      end Has;
+
+      --------------------
+      -- Strong_Connect --
+      --------------------
+
+      procedure Strong_Connect (V : Id) is
+         Called_Subp : Id_Set.Set;
+      begin
+         --  Set the depth index for V to the smallest unused index
+
+         Indexes.Include (V, Index);
+         Lowlinks.Include (V, Index);
+         Index := Index + 1;
+         Push (V);
+
+         --  Consider successors of V
+
+         Called_Subp := Calls.Element (V);
+
+--  Workaround for K526-008
+
+--           for W of Called_Subp loop
+--              ...
+--           end loop;
+
+         declare
+            C : Id_Set.Cursor;
+            W : Id;
+         begin
+            C := Called_Subp.First;
+            while C /= Id_Set.No_Element loop
+               W := Element (C);
+
+               --  Ignore leaf nodes in call-graph as no treatment is needed
+               --  for them.
+
+               if not Nodes.Contains (W) then
+                  null;
+
+               --  Successor W has not yet been visited; recurse on it
+
+               elsif not Indexes.Contains (W) then
+                  Strong_Connect (W);
+                  Lowlinks.Include
+                    (V, Natural'Min
+                       (Lowlinks.Element (V), Lowlinks.Element (W)));
+
+               --  Successor W is in stack S and hence in the current SCC
+
+               elsif Has (W) then
+                  Lowlinks.Include
+                    (V, Natural'Min
+                       (Lowlinks.Element (V), Indexes.Element (W)));
+               end if;
+
+               Next (C);
+            end loop;
+         end;
+
+         --  If V is a root node, pop the stack and generate an SCC
+
+         if Lowlinks.Element (V) = Indexes.Element (V) then
+            declare
+               function Size_Of_Current_SCC return Positive;
+               --  Return the size of the current SCC sitting on the stack
+
+               -------------------------
+               -- Size_Of_Current_SCC --
+               -------------------------
+
+               function Size_Of_Current_SCC return Positive is
+                  Size : Natural := 0;
+               begin
+                  while Peer (Size) /= V loop
+                     Size := Size + 1;
+                  end loop;
+                  return Size + 1;
+               end Size_Of_Current_SCC;
+
+               --  Start a new strongly connected component
+
+               Cur_SCC : constant SCC_Ptr :=
+                           new SCC (1 .. Size_Of_Current_SCC);
+
+            begin
+               for J in Cur_SCC'Range loop
+                  Cur_SCC (J) := Pop;
+               end loop;
+
+               pragma Assert (Cur_SCC (Cur_SCC'Last) = V);
+
+               --  Output the current strongly connected component
+
+               Cur_SCCs_Num := Cur_SCCs_Num + 1;
+               Cur_SCCs (Cur_SCCs_Num) := Cur_SCC;
+            end;
+         end if;
+      end Strong_Connect;
+
+   begin
+--  Workaround for K526-008
+
+--           for V of Nodes loop
+--              if not Indexes.Contains (V) then
+--                 Strong_Connect (V);
+--              end if;
+--           end loop;
+
+      declare
+         C : Id_Set.Cursor;
+      begin
+         C := Nodes.First;
+         while C /= Id_Set.No_Element loop
+            if not Indexes.Contains (Element (C)) then
+               Strong_Connect (Element (C));
+            end if;
+            Next (C);
+         end loop;
+      end;
+
+      return Cur_SCCs (1 .. Cur_SCCs_Num);
+   end Compute_Strongly_Connected_Components;
+
    ------------------
    -- Count_In_Map --
    ------------------
 
    function Count_In_Map
-     (Map : Name_Map.Map;
-      Ent : Entity_Name) return Nat is
+     (Map : Id_Map.Map;
+      Ent : Id) return Nat is
    begin
       if Map.Contains (Ent) then
          declare
-            Set : constant Name_Set.Set := Map.Element (Ent);
+            Set : constant Id_Set.Set := Map.Element (Ent);
          begin
             return Nat (Set.Length);
          end;
@@ -149,35 +404,35 @@ package body Alfa.Frame_Conditions is
 
    procedure Display_Maps is
 
-      procedure Display_Entity (E : Entity_Name);
-      procedure Display_One_Map (Map : Name_Map.Map; Name, Action : String);
-      procedure Display_One_Set (Set : Name_Set.Set);
+      procedure Display_Entity (E : Id);
+      procedure Display_One_Map (Map : Id_Map.Map; Name, Action : String);
+      procedure Display_One_Set (Set : Id_Set.Set);
 
       --------------------
       -- Display_Entity --
       --------------------
 
-      procedure Display_Entity (E : Entity_Name) is
+      procedure Display_Entity (E : Id) is
       begin
-         Put ("entity " & E.all);
+         Put ("entity " & Entity_Names.Element (E).all);
       end Display_Entity;
 
       ---------------------
       -- Display_One_Map --
       ---------------------
 
-      procedure Display_One_Map (Map : Name_Map.Map; Name, Action : String)
+      procedure Display_One_Map (Map : Id_Map.Map; Name, Action : String)
       is
-         Cu : Name_Map.Cursor;
+         Cu : Id_Map.Cursor;
       begin
          Put_Line ("-- " & Name & " --");
 
          Cu := Map.First;
          while Has_Element (Cu) loop
-            Display_Entity (Name_Map.Key (Cu));
+            Display_Entity (Id_Map.Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Name_Map.Element (Cu));
-            Name_Map.Next (Cu);
+            Display_One_Set (Id_Map.Element (Cu));
+            Id_Map.Next (Cu);
          end loop;
       end Display_One_Map;
 
@@ -185,7 +440,7 @@ package body Alfa.Frame_Conditions is
       -- Display_One_Set --
       ---------------------
 
-      procedure Display_One_Set (Set : Name_Set.Set) is
+      procedure Display_One_Set (Set : Id_Set.Set) is
       begin
 --  Workaround for K526-008
 
@@ -194,10 +449,10 @@ package body Alfa.Frame_Conditions is
 --           end loop;
 
          declare
-            C : Name_Set.Cursor;
+            C : Id_Set.Cursor;
          begin
             C := Set.First;
-            while C /= Name_Set.No_Element loop
+            while C /= Id_Set.No_Element loop
                Put ("  "); Display_Entity (Element (C)); Put_Line ("");
                Next (C);
             end loop;
@@ -219,6 +474,20 @@ package body Alfa.Frame_Conditions is
    end Display_Maps;
 
    ---------------
+   -- Free_SCCs --
+   ---------------
+
+   procedure Free_SCCs (X : SCCs) is
+      procedure Free is new Unchecked_Deallocation (SCC, SCC_Ptr);
+      Tmp : SCC_Ptr;
+   begin
+      for J in X'Range loop
+         Tmp := X (J);
+         Free (Tmp);
+      end loop;
+   end Free_SCCs;
+
+   ---------------
    -- Get_Reads --
    ---------------
 
@@ -226,8 +495,10 @@ package body Alfa.Frame_Conditions is
       Name   : aliased constant String := Unique_Name (E);
       E_Name : constant Entity_Name    :=
                  Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id   : Id;
    begin
-      return Reads.Element (E_Name) - Defines.Element (E_Name);
+      E_Id := Entity_Ids (E_Name);
+      return To_Names (Reads.Element (E_Id) - Defines.Element (E_Id));
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -246,8 +517,10 @@ package body Alfa.Frame_Conditions is
       Name   : aliased constant String := Unique_Name (E);
       E_Name : constant Entity_Name    :=
                  Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id   : Id;
    begin
-      return Writes.Element (E_Name) - Defines.Element (E_Name);
+      E_Id := Entity_Ids (E_Name);
+      return To_Names (Writes.Element (E_Id) - Defines.Element (E_Id));
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -257,6 +530,24 @@ package body Alfa.Frame_Conditions is
             return Name_Set.Empty_Set;
          end if;
    end Get_Writes;
+
+   ------------------
+   -- Id_Of_Entity --
+   ------------------
+
+   function Id_Of_Entity (E : Entity_Name) return Id is
+      This_Id : Id;
+   begin
+      if Entity_Ids.Contains (E) then
+         return Entity_Ids.Element (E);
+      else
+         This_Id := Next_Id;
+         Entity_Ids.Include (E, This_Id);
+         Entity_Names.Include (This_Id, E);
+         Next_Id := Next_Id + 1;
+         return This_Id;
+      end if;
+   end Id_Of_Entity;
 
    ----------------------
    -- Is_Heap_Variable --
@@ -422,7 +713,7 @@ package body Alfa.Frame_Conditions is
                   --  Record which entities are scopes, for default
                   --  initializing maps in Propagate_Through_Call_Graph.
 
-                  Scopes.Include (Ent);
+                  Scopes.Include (Id_Of_Entity (Ent));
 
                   --  If present, use the body-to-spec information
 
@@ -484,19 +775,29 @@ package body Alfa.Frame_Conditions is
                      if Current_Entity /= Ref_Entity
                        and then not Is_Heap_Variable (Ref_Entity)
                      then
-                        Add_To_Map (Defines, Def_Scope_Ent, Ref_Entity);
+                        Add_To_Map (Defines,
+                                    Id_Of_Entity (Def_Scope_Ent),
+                                    Id_Of_Entity (Ref_Entity));
                      end if;
 
                      --  Register xref according to type
 
                      case Xref.Rtype is
                         when 'r' =>
-                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Reads,
+                                       Id_Of_Entity (Ref_Scope_Ent),
+                                       Id_Of_Entity (Ref_Entity));
                         when 'm' =>
-                           Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Writes,
+                                       Id_Of_Entity (Ref_Scope_Ent),
+                                       Id_Of_Entity (Ref_Entity));
                         when 's' =>
-                           Add_To_Map (Calls, Ref_Scope_Ent, Ref_Entity);
-                           Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
+                           Add_To_Map (Calls,
+                                       Id_Of_Entity (Ref_Scope_Ent),
+                                       Id_Of_Entity (Ref_Entity));
+                           Add_To_Map (Callers,
+                                       Id_Of_Entity (Ref_Entity),
+                                       Id_Of_Entity (Ref_Scope_Ent));
                         when others =>
                            raise Program_Error;
                      end case;
@@ -522,29 +823,29 @@ package body Alfa.Frame_Conditions is
 
    procedure Propagate_Through_Call_Graph (Ignore_Errors : Boolean) is
 
-      procedure Propagate_On_Call (Caller, Callee : Entity_Name);
+      procedure Propagate_On_Call (Caller, Callee : Id);
       --  Update reads and writes of subprogram Caller from Callee
 
-      procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean);
+      procedure Update_Subprogram (Subp : Id; Updated : out Boolean);
       --  Update reads and writes of subprogram Subp from its callees
 
       -----------------------
       -- Propagate_On_Call --
       -----------------------
 
-      procedure Propagate_On_Call (Caller, Callee : Entity_Name) is
-         Prop_Reads  : Name_Set.Set;
-         Prop_Writes : Name_Set.Set;
+      procedure Propagate_On_Call (Caller, Callee : Id) is
+         Prop_Reads  : Id_Set.Set;
+         Prop_Writes : Id_Set.Set;
 
          procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Set.Set);
+           (Ignored : Id;
+            Set     : in out Id_Set.Set);
          --  In place union of caller's reads with the set propagated from
          --  callee.
 
          procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Set.Set);
+           (Ignored : Id;
+            Set     : in out Id_Set.Set);
          --  In place union of caller's writes with the set propagated from
          --  callee.
 
@@ -553,8 +854,8 @@ package body Alfa.Frame_Conditions is
          ----------------------
 
          procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Set.Set)
+           (Ignored : Id;
+            Set     : in out Id_Set.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -566,8 +867,8 @@ package body Alfa.Frame_Conditions is
          -----------------------
 
          procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Set.Set)
+           (Ignored : Id;
+            Set     : in out Id_Set.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -588,8 +889,10 @@ package body Alfa.Frame_Conditions is
          when Constraint_Error =>
             if Propagate_Error_For_Missing_Scope then
                raise Constraint_Error with
-                 ("missing effects for subprogram " & Callee.all &
-                     " or subprogram " & Caller.all);
+                 ("missing effects for subprogram " &
+                     Entity_Names.Element (Callee).all &
+                     " or subprogram " &
+                     Entity_Names.Element (Caller).all);
             end if;
       end Propagate_On_Call;
 
@@ -597,11 +900,11 @@ package body Alfa.Frame_Conditions is
       -- Update_Subprogram --
       -----------------------
 
-      procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean)
+      procedure Update_Subprogram (Subp : Id; Updated : out Boolean)
       is
          Num_Reads   : Nat;
          Num_Writes  : Nat;
-         Called_Subp : Name_Set.Set;
+         Called_Subp : Id_Set.Set;
 
       begin
          Num_Reads  := Count_In_Map (Reads, Subp);
@@ -618,10 +921,10 @@ package body Alfa.Frame_Conditions is
 --           end loop;
 
          declare
-            C : Name_Set.Cursor;
+            C : Id_Set.Cursor;
          begin
             C := Called_Subp.First;
-            while C /= Name_Set.No_Element loop
+            while C /= Id_Set.No_Element loop
                Propagate_On_Call (Caller => Subp, Callee => Element (C));
                Next (C);
             end loop;
@@ -636,12 +939,13 @@ package body Alfa.Frame_Conditions is
          when Constraint_Error =>
             if Propagate_Error_For_Missing_Scope then
                raise Constraint_Error with
-                 ("missing effects for subprogram " & Subp.all);
+                 ("missing effects for subprogram " &
+                     Entity_Names.Element (Subp).all);
             end if;
       end Update_Subprogram;
 
-      Work_Set : Name_Set.Set;
-      Cu       : Name_Map.Cursor;
+      Cu        : Id_Map.Cursor;
+      Subp_Rest : Id_Set.Set;
 
    --  Start of processing for Propagate_Through_Call_Graph
 
@@ -664,40 +968,44 @@ package body Alfa.Frame_Conditions is
 
       Cu := Calls.First;
       while Has_Element (Cu) loop
-         Work_Set.Insert (Key (Cu));
+         Subp_Rest.Insert (Key (Cu));
          Next (Cu);
       end loop;
 
-      --  Initialize all maps so that each subprogram has an entry in each map
+      declare
+         Cur_SCCs : constant SCCs :=
+                      Compute_Strongly_Connected_Components (Subp_Rest);
 
-      Set_Default_To_Empty (Defines, Scopes);
-      Set_Default_To_Empty (Writes,  Scopes);
-      Set_Default_To_Empty (Reads,   Scopes);
-      Set_Default_To_Empty (Callers, Scopes);
-      Set_Default_To_Empty (Calls,   Scopes);
+      begin
+         --  Initialize all maps so that each subprogram has an entry in each
+         --  map.
 
-      --  Iterate through work-set
+         Set_Default_To_Empty (Defines, Scopes);
+         Set_Default_To_Empty (Writes,  Scopes);
+         Set_Default_To_Empty (Reads,   Scopes);
+         Set_Default_To_Empty (Callers, Scopes);
+         Set_Default_To_Empty (Calls,   Scopes);
 
-      while Has_Element (Work_Set.First) loop
-         declare
-            Cur_Subp : constant Entity_Name := Element (Work_Set.First);
-            Updated  : Boolean;
-         begin
-            Work_Set.Delete (Cur_Subp);
-            Update_Subprogram (Cur_Subp, Updated);
+         --  Iterate on SCCs
 
-            if Updated then
-               Work_Set.Union (Callers.Element (Cur_Subp));
-            end if;
-         exception
-            when Constraint_Error =>
-               if Propagate_Error_For_Missing_Scope then
-                  raise Constraint_Error with
-                    ("missing effects for subprogram " & Cur_Subp.all);
-               end if;
-         end;
-      end loop;
+         for J in Cur_SCCs'Range loop
+            declare
+               Continue : Boolean := True;
+               Updated  : Boolean;
+            begin
+               while Continue loop
+                  Continue := False;
 
+                  for K in Cur_SCCs (J)'Range loop
+                     Update_Subprogram (Cur_SCCs (J) (K), Updated);
+                     Continue := Continue or else Updated;
+                  end loop;
+               end loop;
+            end;
+         end loop;
+
+         Free_SCCs (Cur_SCCs);
+      end;
    end Propagate_Through_Call_Graph;
 
    --------------------------
@@ -705,8 +1013,8 @@ package body Alfa.Frame_Conditions is
    --------------------------
 
    procedure Set_Default_To_Empty
-     (Map : in out Name_Map.Map;
-      Set : Name_Set.Set)
+     (Map : in out Id_Map.Map;
+      Set : Id_Set.Set)
    is
    begin
 --  Workaround for K526-008
@@ -717,12 +1025,12 @@ package body Alfa.Frame_Conditions is
 --        end loop;
 
       declare
-         C : Name_Set.Cursor;
+         C : Id_Set.Cursor;
       begin
          C := Set.First;
-         while C /= Name_Set.No_Element loop
+         while C /= Id_Set.No_Element loop
             if not Map.Contains (Element (C)) then
-               Map.Insert (Element (C), Name_Set.Empty_Set);
+               Map.Insert (Element (C), Id_Set.Empty_Set);
             end if;
             Next (C);
          end loop;
@@ -737,5 +1045,21 @@ package body Alfa.Frame_Conditions is
    begin
       Propagate_Error_For_Missing_Scope := not Ignore_Errors;
    end Set_Ignore_Errors;
+
+   --------------
+   -- To_Names --
+   --------------
+
+   function To_Names (Ids : Id_Set.Set) return Name_Set.Set is
+      Names : Name_Set.Set;
+      C : Id_Set.Cursor;
+   begin
+      C := Ids.First;
+      while C /= Id_Set.No_Element loop
+         Names.Include (Entity_Names.Element (Element (C)));
+         Next (C);
+      end loop;
+      return Names;
+   end To_Names;
 
 end Alfa.Frame_Conditions;
