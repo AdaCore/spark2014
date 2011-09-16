@@ -147,8 +147,8 @@ package body Why.Gen.Scalars is
    is
       Signed  : constant Boolean := Modulus = Why_Empty;
       Arg_S   : constant String := "n";
-      BT      : constant W_Primitive_Type_Id
-                  := New_Base_Type (Base_Type => Base_Type);
+      BT      : constant W_Primitive_Type_Id :=
+                  New_Base_Type (Base_Type => Base_Type);
       BT_Name : constant String := EW_Base_Type_Name (Base_Type);
    begin
       Define_Range_Predicate (File, Name, Base_Type, First, Last);
