@@ -315,6 +315,7 @@ val t__ada_array___update_ :
   function int_of_bool (b : Bool.bool) : int =
    if b = True then 1 else 0
   
+  function div_real (x : real) (y : real) : real = x /. y
   
 end
 
