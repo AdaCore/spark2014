@@ -81,7 +81,7 @@ package body Gnat2Why.Expr.Loops is
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
    begin
-      Pred := New_Literal (Value => EW_True);
+      Pred := New_Literal (Value => EW_True, Domain => EW_Pred);
       Split_Node := Empty;
 
       while Nkind (Cur_Stmt) /= N_Empty loop
