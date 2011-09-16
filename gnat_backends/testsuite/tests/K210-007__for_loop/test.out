@@ -7,5 +7,5 @@ s.adb:26:24: (info) range check proved
 s.adb:6:9: (info) loop invariant initialization proved
 s.adb:6:9: (info) loop invariant preservation proved
 s.adb:9:12: (info) array bounds check proved
-s.ads:12:14: postcondition not proved
+s.ads:12:14: (info) postcondition proved
 s.ads:8:14: (info) postcondition proved

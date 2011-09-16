@@ -1,9 +1,7 @@
-p.adb:16:34: (info) overflow check proved
 p.adb:16:34: overflow check not proved
 p.adb:16:38: (info) loop invariant initialization proved
 p.adb:16:38: (info) loop invariant preservation proved
 p.adb:17:28: range check not proved
-p.adb:33:37: (info) overflow check proved
 p.adb:33:37: overflow check not proved
 p.adb:33:41: (info) loop invariant initialization proved
 p.adb:33:41: (info) loop invariant preservation proved
