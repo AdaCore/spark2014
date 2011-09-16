@@ -145,6 +145,7 @@ package body Why.Gen.Scalars is
       Last      : W_Term_Id;
       Modulus   : W_Term_OId := Why_Empty)
    is
+      Signed  : constant Boolean := Modulus = Why_Empty;
       Arg_S   : constant String := "n";
       BT      : constant W_Primitive_Type_Id
                   := New_Base_Type (Base_Type => Base_Type);
@@ -170,11 +171,14 @@ package body Why.Gen.Scalars is
                           New_Abstract_Type (Name => New_Identifier (EW_Term,
                                                                      Name));
          --  precondition: { <name>___in_range (n) }
-         Range_Check  : constant W_Pred_Id :=
-                          New_Call
-                            (Domain => EW_Pred,
-                             Name   => Range_Pred_Name.Id (Name),
-                             Args   => (1 => +New_Term (Arg_S)));
+         Range_Check  : constant W_Pred_OId :=
+                          (if Signed then
+                             New_Call
+                               (Domain => EW_Pred,
+                                Name   => Range_Pred_Name.Id (Name),
+                                Args   => (1 => +New_Term (Arg_S)))
+                           else
+                             Why_Empty);
          --  postcondition: { <name>___of_<base_type> (result) = n }
          Base_Result  : constant W_Term_Id :=
                           New_Call
