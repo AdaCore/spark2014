@@ -1249,7 +1249,11 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      P (O, " } ; void");
+      if Is_Why3 then
+         P (O, " } ; ()");
+      else
+         P (O, " } ; void");
+      end if;
    end Assert_Post_Op;
 
    ------------------
