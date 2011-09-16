@@ -367,7 +367,8 @@ package body Why.Gen.Progs is
                        New_Unary_Op
                          (Ada_Node => Ada_Node,
                           Op       => EW_Deref,
-                          Right    => +Loop_Index);
+                          Right    => +Loop_Index,
+                          Op_Type  => EW_Int);
       Addition     : constant W_Prog_Id :=
                        New_Binary_Op
                          (Ada_Node => Ada_Node,

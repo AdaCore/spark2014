@@ -982,7 +982,7 @@ package body Why.Atree.Sprint is
       P (O, "( ");
 
       if Is_Why3 or else Op /= EW_Deref or else Domain /= EW_Term then
-         P (O, Op);
+         P (O, Op, Get_Op_Type (Node));
          P (O, " ");
       end if;
 

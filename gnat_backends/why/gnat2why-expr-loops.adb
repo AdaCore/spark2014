@@ -260,7 +260,8 @@ package body Gnat2Why.Expr.Loops is
                              New_Unary_Op
                                (Ada_Node => Stmt,
                                 Op       => EW_Deref,
-                                Right    => +Loop_Index);
+                                Right    => +Loop_Index,
+                                Op_Type  => EW_Int);
             Addition     : constant W_Prog_Id :=
                              New_Binary_Op
                                (Ada_Node => Stmt,
@@ -283,9 +284,10 @@ package body Gnat2Why.Expr.Loops is
                                   Range_Expr
                                    (Loop_Range,
                                     New_Unary_Op
-                                      (Domain   => EW_Term,
-                                      Op       => EW_Deref,
-                                      Right    => +Loop_Index),
+                                      (Domain  => EW_Term,
+                                       Op      => EW_Deref,
+                                       Right   => +Loop_Index,
+                                       Op_Type => EW_Int),
                                     EW_Pred),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was

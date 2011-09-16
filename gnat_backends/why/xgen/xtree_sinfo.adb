@@ -431,6 +431,8 @@ package body Xtree_Sinfo is
                  "Op", "EW_Unary_Op");
       New_Field (W_Unary_Op,
                  "Right", "W_Term", Id_One);
+      New_Field (W_Unary_Op,
+                 "Op_Type", "EW_Scalar");
 
       -------------
       -- W_Match --

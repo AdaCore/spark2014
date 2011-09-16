@@ -217,7 +217,8 @@ package body Gnat2Why.Subprograms is
                               New_Unary_Op
                                 (Ada_Node => Node,
                                  Op       => EW_Deref,
-                                 Right    => +New_Result_Temp_Identifier.Id)
+                                 Right    => +New_Result_Temp_Identifier.Id,
+                                 Op_Type  => EW_Int)
                             else New_Void);
          begin
             R :=

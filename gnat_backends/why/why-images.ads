@@ -63,7 +63,9 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Connector);
 
-   procedure P (O : Output_Id; Value : EW_Unary_Op);
+   procedure P (O       : Output_Id;
+                Value   : EW_Unary_Op;
+                Op_Type : EW_Scalar := EW_Int);
 
    procedure P (O : Output_Id; Value : EW_Domain);
 

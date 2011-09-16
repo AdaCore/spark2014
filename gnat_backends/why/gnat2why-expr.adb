@@ -638,9 +638,10 @@ package body Gnat2Why.Expr is
                +Range_Expr
                  (Range_E,
                   New_Unary_Op
-                    (Domain => EW_Prog,
-                     Op     => EW_Deref,
-                     Right  => +Index),
+                    (Domain  => EW_Prog,
+                     Op      => EW_Deref,
+                     Right   => +Index,
+                     Op_Type => EW_Int),
                   EW_Prog);
             Current_Type := EW_Bool_Type;
             return
@@ -871,7 +872,8 @@ package body Gnat2Why.Expr is
                             (Ada_Node => Expr,
                              Domain   => Domain,
                              Op       => EW_Deref,
-                             Right    => +Id);
+                             Right    => +Id,
+                             Op_Type  => EW_Int);
                      else
                         T := +Id;
                      end if;
@@ -913,7 +915,8 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Op       => EW_Minus,
                     Right    =>
-                      +Transform_Expr (Right, Current_Type, Domain));
+                      +Transform_Expr (Right, Current_Type, Domain),
+                    Op_Type  => Current_Type.Kind);
                Overflow_Check_Needed := True;
             end;
 

@@ -332,9 +332,10 @@ package body Why.Gen.Arrays is
                                    Args   =>
                                      (1 =>
                                         New_Unary_Op
-                                          (Domain => EW_Prog,
-                                           Op     => EW_Deref,
-                                           Right  => +Ar))),
+                                          (Domain  => EW_Prog,
+                                           Op      => EW_Deref,
+                                           Right   => +Ar,
+                                           Op_Type => EW_Int))),
                            3 => +Value)))));
    end New_Array_Update_Prog;
 

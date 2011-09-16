@@ -327,11 +327,13 @@ package body Why.Images is
       end case;
    end P;
 
-   procedure P (O : Output_Id; Value : EW_Unary_Op) is
+   procedure P (O       : Output_Id;
+                Value   : EW_Unary_Op;
+                Op_Type : EW_Scalar := EW_Int) is
    begin
       case Value is
          when EW_Minus =>
-            P (O, "-");
+            P (O, EW_Substract, Op_Type);
          when EW_Deref =>
             P (O, "!");
       end case;
