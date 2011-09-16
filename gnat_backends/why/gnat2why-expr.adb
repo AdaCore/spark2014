@@ -634,19 +634,11 @@ package body Gnat2Why.Expr is
                                                  EW_Prog));
             Range_Cond : W_Prog_Id;
          begin
-            Range_Cond :=
-               +Range_Expr
-                 (Range_E,
-                  New_Unary_Op
-                    (Domain  => EW_Prog,
-                     Op      => EW_Deref,
-                     Right   => +Index,
-                     Op_Type => EW_Int),
-                  EW_Prog);
+            Range_Cond := +Range_Expr (Range_E, +Index, EW_Prog);
             Current_Type := EW_Bool_Type;
             return
               +Sequence
-                (New_Binding_Ref
+                (New_Binding
                    (Name => Index,
                     Def  =>
                       New_Simpl_Any_Expr

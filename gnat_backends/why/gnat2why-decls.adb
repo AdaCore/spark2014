@@ -25,6 +25,7 @@
 
 with Atree;                use Atree;
 with Einfo;                use Einfo;
+with Sinfo;                use Sinfo;
 
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Inter;            use Why.Inter;
@@ -46,10 +47,21 @@ package body Gnat2Why.Decls is
    begin
 
       --  A variable is translated as mutable in Why if it is not constant on
-      --  the Ada side, or if it is a loop parameter.
+      --  the Ada side, or if it is a loop parameter (of an actual loop, not a
+      --  quantified expression.
 
       if Ekind (N) = E_Loop_Parameter then
-         return True;
+         if Present (Parent (N)) and then
+            Nkind (Parent (N)) = N_Loop_Parameter_Specification and then
+            Present (Parent (Parent (N))) and then
+            Nkind (Parent (Parent (N))) = N_Iteration_Scheme and then
+            Present (Parent (Parent (Parent (N)))) and then
+            Nkind (Parent (Parent (Parent (N)))) = N_Quantified_Expression
+         then
+            return False;
+         else
+            return True;
+         end if;
       elsif Is_Constant_Object (N) then
          return False;
       elsif Ekind (N) in Named_Kind then
