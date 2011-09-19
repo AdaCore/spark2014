@@ -1293,13 +1293,27 @@ package body Alfa.Definition is
          when N_Variant_Part =>
             Mark_Non_Alfa ("variant part", N, NYI_Discriminant);
 
+         --  Frontend sometimes declares in package B an Itype for the base
+         --  type of a type T declared in package A. Thus we could get a
+         --  conflict when two such packages B1 and B2 were declaring the same
+         --  type. Now, Itypes serving as base types ar always marked at the
+         --  point of declaration in A, so B1/B2 do not declare it.
+
          when N_Full_Type_Declaration         |
               N_Subtype_Declaration           |
               N_Private_Extension_Declaration |
               N_Private_Type_Declaration      |
               N_Protected_Type_Declaration    |
               N_Task_Type_Declaration         =>
-            Mark (Defining_Identifier (N));
+            declare
+               T  : constant Entity_Id := Defining_Identifier (N);
+               BT : constant Entity_Id := Base_Type (T);
+            begin
+               Mark (T);
+               if Is_Itype (BT) then
+                  Mark (BT);
+               end if;
+            end;
 
          when N_String_Literal =>
             Mark_Non_Alfa ("string literal", N, NYI_String_Literal);
