@@ -84,13 +84,18 @@ package body Xtree_Sinfo is
       -- W_Base_Type --
       -----------------
 
+      --  Important note: when Base_Type = EW_Abstract, the Ada node must be
+      --  specified.
+
       New_Field (W_Base_Type,
-                 "Base_Type", "EW_Base_Type");
+                 "Base_Type", "EW_Type");
       Set_Domain (W_Base_Type, EW_Term);
 
       ---------------------
       -- W_Abstract_Type --
       ---------------------
+
+      --  Deprecated - use W_Base_Type with Base_Type = EW_Abstract instead
 
       New_Field (W_Abstract_Type,
                  "Name", "W_Identifier", Id_One);

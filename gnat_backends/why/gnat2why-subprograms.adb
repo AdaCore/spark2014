@@ -237,10 +237,11 @@ package body Gnat2Why.Subprograms is
             declare
                Rvalue : constant W_Prog_Id :=
                           New_Simpl_Any_Expr
-                            (New_Abstract_Type
-                               (Name =>
-                                  New_Identifier (Type_Of_Node
-                                    (Defining_Entity (Spec)))));
+                            (New_Base_Type
+                               (Base_Type => EW_Abstract,
+                                Ada_Node  =>
+                                  Type_Of_Node
+                                    (Defining_Entity (Spec))));
             begin
                R :=
                  New_Binding_Ref

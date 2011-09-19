@@ -44,7 +44,7 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : Boolean);
 
-   procedure P (O : Output_Id; Value : EW_Base_Type);
+   procedure P (O : Output_Id; Value : EW_Type);
 
    procedure P
      (O      : Output_Id;

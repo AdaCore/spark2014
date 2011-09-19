@@ -28,6 +28,7 @@ with Ada.Containers; use Ada.Containers;
 with Namet;  use Namet;
 with Uintp;  use Uintp;
 
+with Why.Inter;           use Why.Inter;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -109,8 +110,13 @@ package body Why.Atree.Sprint is
       Node  : W_Base_Type_Id)
    is
       pragma Unreferenced (State);
+      Base_Type : constant EW_Type := Get_Base_Type (Node);
    begin
-      P (O, Get_Base_Type (Node));
+      if Base_Type = EW_Abstract then
+         P (O, Full_Name (Get_Ada_Node (+Node)));
+      else
+         P (O, Base_Type);
+      end if;
    end Base_Type_Pre_Op;
 
    --------------------------------

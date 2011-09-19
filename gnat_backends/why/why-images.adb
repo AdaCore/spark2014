@@ -206,7 +206,7 @@ package body Why.Images is
       end if;
    end P;
 
-   procedure P (O : Output_Id; Value : EW_Base_Type) is
+   procedure P (O : Output_Id; Value : EW_Type) is
    begin
       case Value is
          when EW_Unit =>
@@ -219,6 +219,8 @@ package body Why.Images is
             P (O, "int");
          when EW_Bool =>
             P (O, "bool");
+         when EW_Abstract =>
+            P (O, "[from Ada node]");
       end case;
    end P;
 

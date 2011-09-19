@@ -522,11 +522,9 @@ package body Gnat2Why.Driver is
                   Binders =>
                     (1 .. 0 => <>),
                   Return_Type =>
-                    New_Abstract_Type
-                      (Name =>
-                         New_Identifier
-                           (Name =>
-                              Full_Name (Standard_Character)))));
+                    New_Base_Type
+                      (Ada_Node  => Standard_Character,
+                       Base_Type => EW_Abstract)));
             Next_Entity (Cur);
          end loop;
       end;
