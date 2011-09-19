@@ -48,13 +48,15 @@ package body Why.Gen.Funcs is
                     (Condition => +New_Result_Term,
                      Then_Part =>
                        New_Relation
-                         (Op      => EW_Eq,
+                         (Domain  => EW_Pred,
+                          Op      => EW_Eq,
                           Op_Type => EW_Bool,
                           Left    => +New_Term (Arg_S),
                           Right   => +New_Term (Arg_T)),
                      Else_Part =>
                        New_Relation
-                         (Op      => EW_Ne,
+                         (Domain  => EW_Pred,
+                          Op      => EW_Ne,
                           Op_Type => EW_Bool,
                           Left    => +New_Term (Arg_S),
                           Right   => +New_Term (Arg_T)));

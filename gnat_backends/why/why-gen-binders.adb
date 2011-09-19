@@ -204,6 +204,7 @@ package body Why.Gen.Binders is
       for B in Binders'Range loop
          Result (B) := New_Binder
                          (Ada_Node => Binders (B).Ada_Node,
+                          Domain   => Domain,
                           Name     => Binders (B).B_Name,
                           Arg_Type => New_Arg_Type (Binders (B)));
       end loop;

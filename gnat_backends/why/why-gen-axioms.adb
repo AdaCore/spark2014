@@ -86,7 +86,8 @@ package body Why.Gen.Axioms is
                                   Left  => +In_Range,
                                   Right =>
                                     New_Relation
-                                      (Op_Type => Base_Type,
+                                      (Domain  => EW_Pred,
+                                       Op_Type => Base_Type,
                                        Left    => +Back_To_Base_Type_Op,
                                        Op      => EW_Eq,
                                        Right   => +Normalized_Result));
@@ -215,13 +216,15 @@ package body Why.Gen.Axioms is
                               (Op    => EW_Imply,
                                Left  =>
                                  New_Relation
-                                   (Op_Type => Base_Type,
+                                   (Domain  => EW_Pred,
+                                    Op_Type => Base_Type,
                                     Left    => +X_To_Base_Type_Op,
                                     Op      => EW_Eq,
                                     Right   => +Y_To_Base_Type_Op),
                                Right =>
                                  New_Relation
-                                   (Op_Type => EW_Abstract,
+                                   (Domain  => EW_Pred,
+                                    Op_Type => EW_Abstract,
                                     Left    => +New_Term (X_S),
                                     Op      => EW_Eq,
                                     Right   => +New_Term (Y_S)));

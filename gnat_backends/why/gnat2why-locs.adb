@@ -27,6 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Atree;                use Atree;
 with Namet;                use Namet;
 with Sinput;               use Sinput;
+with Why.Sinfo;            use Why.Sinfo;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Conversions;      use Why.Conversions;
@@ -69,7 +70,8 @@ package body Gnat2Why.Locs is
    begin
       Name_Len := 0;
       Add_Str_To_Name_Buffer (Prefix & Int_Image (Counter));
-      L.Label_Ident := New_Identifier (Ada_Node => N, Symbol => Name_Find);
+      L.Label_Ident :=
+        New_Identifier (Ada_Node => N, Domain => EW_Term, Symbol => Name_Find);
       L.Label_Reason := Reason;
       Append (Located_Labels, L);
       Counter := Counter + 1;

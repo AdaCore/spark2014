@@ -131,10 +131,7 @@ package body Xtree_Tables is
 
       elsif Field_Kind (FI) = Field_Domain then
          if Get_Domain (Kind) = EW_Expr then
-            --  ??? Should really be "", but this will change the builders
-            --  and calls for a careful transition. Keep it to EW_Prog for
-            --  the time being.
-            return "EW_Prog";
+            return "";
          else
             return "E" & Class_Name (Get_Domain (Kind));
          end if;

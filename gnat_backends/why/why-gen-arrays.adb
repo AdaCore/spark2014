@@ -224,7 +224,8 @@ package body Why.Gen.Arrays is
                      (Op     => EW_Imply,
                       Left   =>
                         New_Relation
-                          (Op      => EW_Eq,
+                          (Domain  => EW_Pred,
+                           Op      => EW_Eq,
                            Op_Type => EW_Abstract,
                            Left    =>
                              P (New_Call
@@ -238,7 +239,8 @@ package body Why.Gen.Arrays is
                                 Args   => (1 => +Arb)))),
                       Right  =>
                         New_Relation
-                          (Op      => EW_Eq,
+                          (Domain  => EW_Pred,
+                           Op      => EW_Eq,
                            Op_Type => EW_Abstract,
                            Left    => +Ar,
                            Right   => +Arb)))));

@@ -184,6 +184,7 @@ package body Why.Gen.Progs is
              (1 =>
                 New_Call
                   (Ada_Node => Ada_Node,
+                   Domain   => EW_Prog,
                    Name     => Array_Conv_From.Id (Full_Name (Ada_From)),
                    Args     => (1 => +Why_Expr))));
    end Insert_Array_Conversion;
@@ -345,7 +346,8 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Any_Type =>
              New_Computation_Type
-               (Ada_Node => Ada_Node,
+               (Domain   => EW_Prog,
+                Ada_Node => Ada_Node,
                 Result   => New_Result (+Return_Type),
                 Effects  => New_Effects,
                 Post     => Pred));
@@ -401,7 +403,8 @@ package body Why.Gen.Progs is
                           Left   => +Invariant,
                           Right  =>
                             New_Relation
-                              (Op_Type => EW_Int,
+                              (Domain  => EW_Pred,
+                               Op_Type => EW_Int,
                                Left    => +Low,
                                Op      => EW_Le,
                                Right   => +Loop_Index,
@@ -512,9 +515,10 @@ package body Why.Gen.Progs is
       else
          if Domain = EW_Pred then
             return New_Connection
-              (Op    => EW_And,
-               Left  => +Left,
-               Right => +Right);
+              (Domain => Domain,
+               Op     => EW_And,
+               Left   => +Left,
+               Right  => +Right);
          else
             return
               New_Call
@@ -624,9 +628,10 @@ package body Why.Gen.Progs is
          if Domain = EW_Prog then
             return
               New_Connection
-                (Op    => EW_Or_Else,
-                 Left  => Left,
-                 Right => Right);
+                (Domain => Domain,
+                 Op     => EW_Or_Else,
+                 Left   => Left,
+                 Right  => Right);
          else
             return New_Or_Expr (Left, Right, Domain);
          end if;
@@ -642,7 +647,8 @@ package body Why.Gen.Progs is
      return W_Binder_Id is
    begin
       return New_Binder
-        (Name     => New_Result_Identifier.Id,
+        (Domain   => EW_Term,
+         Name     => New_Result_Identifier.Id,
          Arg_Type => T);
    end New_Result;
 
@@ -657,7 +663,8 @@ package body Why.Gen.Progs is
          New_Any_Expr
             (Any_Type =>
                New_Computation_Type
-                  (Result  => New_Result (+T),
+                  (Domain  => EW_Prog,
+                   Result  => New_Result (+T),
                    Effects => New_Effects));
    end New_Simpl_Any_Expr;
 

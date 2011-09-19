@@ -376,7 +376,7 @@ package body Gnat2Why.Expr is
                  Domain => Domain);
 
          when N_Others_Choice =>
-            return New_Literal (Value => EW_True);
+            return New_Literal (Domain => Domain, Value => EW_True);
 
          when others =>
             raise Not_Implemented;
@@ -638,13 +638,14 @@ package body Gnat2Why.Expr is
             return
               +Sequence
                 (New_Binding
-                   (Name => Index,
-                    Def  =>
+                   (Name    => Index,
+                    Def     =>
                       New_Simpl_Any_Expr
                         (New_Base_Type (Base_Type => EW_Int)),
                     Context =>
                       New_Conditional
-                        (Condition => Range_Cond,
+                        (Domain    => EW_Prog,
+                         Condition => Range_Cond,
                          Then_Part => +Why_Expr)),
                  New_Assume_Statement
                    (Ada_Node    => Expr,
@@ -1071,7 +1072,8 @@ package body Gnat2Why.Expr is
             begin
                T :=
                   New_Conditional
-                     (Ada_Node => Expr,
+                     (Ada_Node  => Expr,
+                      Domain    => Domain,
                       Condition => +Transform_Expr (Cond,
                                                     EW_Bool_Type,
                                                     Subdomain),

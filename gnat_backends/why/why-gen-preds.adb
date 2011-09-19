@@ -86,7 +86,8 @@ package body Why.Gen.Preds is
             Binders => (1 => X_Binder, 2 => Y_Binder),
             Def     =>
               New_Relation
-                (Op      => EW_Eq,
+                (Domain  => EW_Pred,
+                 Op      => EW_Eq,
                  Op_Type => Base_Type,
                  Left    => +X_To_Base_Type_Op,
                  Right   => +Y_To_Base_Type_Op)));
@@ -162,7 +163,8 @@ package body Why.Gen.Preds is
           (Op    => EW_Equivalent,
            Left  =>
              New_Relation
-               (Op      => EW_Eq,
+               (Domain  => EW_Prog,
+                Op      => EW_Eq,
                 Op_Type => EW_Bool,
                 Left    => +Left,
                 Right   => New_Literal (Value => EW_True)),
