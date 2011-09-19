@@ -598,8 +598,7 @@ package body Gnat2Why.Expr is
             if All_Present (Expr) then
                return
                   New_Universal_Quantif
-                     (Domain    => EW_Pred,
-                      Ada_Node  => Expr,
+                     (Ada_Node  => Expr,
                       Variables => (1 => Index),
                       Var_Type  => New_Base_Type (Base_Type => EW_Int),
                       Pred      => Quant_Body);
@@ -788,8 +787,7 @@ package body Gnat2Why.Expr is
          when N_Integer_Literal =>
             T :=
               New_Integer_Constant
-                (Domain   => Domain,
-                 Ada_Node => Expr,
+                (Ada_Node => Expr,
                  Value    => Intval (Expr));
             Current_Type := EW_Int_Type;
 
@@ -816,16 +814,14 @@ package body Gnat2Why.Expr is
                   when Not_Implemented =>
                      T :=
                        New_Real_Constant
-                         (Domain   => Domain,
-                          Ada_Node => Expr,
+                         (Ada_Node => Expr,
                           Value    => Realval (Expr));
                end;
 
             else
                T :=
                  New_Real_Constant
-                   (Domain   => Domain,
-                    Ada_Node => Expr,
+                   (Ada_Node => Expr,
                     Value    => Realval (Expr));
             end if;
 
@@ -835,8 +831,7 @@ package body Gnat2Why.Expr is
 
             T :=
               New_Integer_Constant (Ada_Node => Expr,
-                                    Value    => Char_Literal_Value (Expr),
-                                    Domain   => Domain);
+                                    Value    => Char_Literal_Value (Expr));
             Current_Type := EW_Int_Type;
 
          --  Deal with identifiers:
@@ -938,7 +933,6 @@ package body Gnat2Why.Expr is
                T :=
                  New_Binary_Op
                    (Ada_Node => Expr,
-                    Domain   => Domain,
                     Left     => Transform_Expr (Left,
                                                 Current_Type,
                                                 Domain),

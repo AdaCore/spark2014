@@ -128,8 +128,7 @@ package body Why.Gen.Enums is
       Len      : constant Count_Type := String_Lists.Length (Constructors);
       My_Type  : constant W_Primitive_Type_Id :=
                    New_Abstract_Type
-                     (Domain => EW_Term,
-                      Name   => New_Identifier (Name));
+                     (Name => New_Identifier (Name));
       Max_Uint : constant Uint := UI_From_Int (Int (Len));
    begin
       pragma Assert (Len > 0);

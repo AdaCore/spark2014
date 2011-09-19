@@ -34,7 +34,6 @@ with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 with String_Utils;       use String_Utils;
 with Why;                use Why;
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
@@ -132,7 +131,7 @@ package body Gnat2Why.Types is
    is
       Ty : constant Entity_Id := Unique_Entity (Etype (N));
    begin
-      return New_Abstract_Type (Ty, EW_Term, New_Identifier (Full_Name (Ty)));
+      return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
    end  Why_Logic_Type_Of_Ada_Obj;
 
    --------------------------------
@@ -145,7 +144,7 @@ package body Gnat2Why.Types is
    is
       T : constant Entity_Id := Unique_Entity (Ty);
    begin
-      return New_Abstract_Type (T, EW_Term, New_Identifier (Full_Name (T)));
+      return New_Abstract_Type (T, New_Identifier (Full_Name (T)));
    end  Why_Logic_Type_Of_Ada_Type;
 
    -----------------------------
@@ -318,7 +317,7 @@ package body Gnat2Why.Types is
    is
       Name : constant String := Full_Name (Ty);
       Base : constant W_Primitive_Type_Id :=
-               New_Abstract_Type (Ty, EW_Term, New_Identifier (Name));
+               New_Abstract_Type (Ty, New_Identifier (Name));
    begin
       if Is_Mutable then
          return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);

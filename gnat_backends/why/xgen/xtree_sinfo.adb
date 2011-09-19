@@ -434,6 +434,15 @@ package body Xtree_Sinfo is
       New_Field (W_Unary_Op,
                  "Op_Type", "EW_Scalar");
 
+      --  Unary op can be either in domain term, or in domain prog.
+      --  The automatic domain computation assumes that such nodes are
+      --  in the most specific domain: EW_Term. However, unary op includes
+      --  deref, whose printing depends on domain in Why 2.
+      --  So this assumption is wrong here. Override it explicitly.
+      --  ??? deref should really be extracted from unary ops.
+
+      Set_Domain (W_Unary_Op, EW_Expr);
+
       -------------
       -- W_Match --
       -------------
