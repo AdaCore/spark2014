@@ -181,7 +181,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Adt_Definition,
                  "Constructors", "W_Constr_Decl", Id_Some);
-      Set_Domain (W_Effects, EW_Term);
+      Set_Domain (W_Adt_Definition, EW_Term);
 
       -------------------
       -- W_Constr_Decl --
@@ -191,7 +191,7 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Constr_Decl,
                  "Arg_List", "W_Primitive_Type", Id_Set);
-      Set_Domain (W_Effects, EW_Term);
+      Set_Domain (W_Constr_Decl, EW_Term);
 
       ----------------
       -- W_Triggers --
