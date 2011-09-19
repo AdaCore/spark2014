@@ -38,6 +38,7 @@ pragma Warnings (Off);
 with Why.Sinfo;                          use Why.Sinfo;
 pragma Warnings (On);
 with Why.Ids;                            use Why.Ids;
+with Why.Atree.Builders;                 use Why.Atree.Builders;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
@@ -85,39 +86,29 @@ package Why.Inter is
    procedure Add_With_Clause (P : out Why_Package; Other : Why_Package);
    --  Add a package name to the context of a Why package.
 
-   type Why_Type (Kind : EW_Term_Type := EW_Int) is
-      record
-         case Kind is
-            when EW_Scalar =>
-               null;
-            when EW_Abstract =>
-               Wh_Abstract : Node_Id;
-         end case;
-      end record;
-   --  The type of Why types, as used by the translation process; A type in
-   --  Why is either the builtin "int"/"real" type or a node that corresponds
-   --  to a N_Defining_Identifier of an Ada type
+   EW_Bool_Type : constant W_Base_Type_Id :=
+                    New_Base_Type (Base_Type => EW_Bool);
+   EW_Int_Type  : constant W_Base_Type_Id :=
+                    New_Base_Type (Base_Type => EW_Int);
+   EW_Real_Type : constant W_Base_Type_Id :=
+                    New_Base_Type (Base_Type => EW_Real);
 
-   EW_Bool_Type : constant Why_Type (EW_Bool) := (Kind => EW_Bool);
-   EW_Int_Type  : constant Why_Type (EW_Int) := (Kind => EW_Int);
-   EW_Real_Type : constant Why_Type (EW_Real) := (Kind => EW_Real);
-
-   type Why_Scalar_Type_Array is array (EW_Scalar) of Why_Type;
+   type Why_Scalar_Type_Array is array (EW_Scalar) of W_Base_Type_Id;
 
    Why_Types : constant Why_Scalar_Type_Array :=
                  (EW_Bool => EW_Bool_Type,
                   EW_Int  => EW_Int_Type,
                   EW_Real => EW_Real_Type);
 
-   function EW_Abstract (N : Node_Id) return Why_Type;
+   function EW_Abstract (N : Node_Id) return W_Base_Type_Id;
 
-   function Base_Why_Type (N : Node_Id) return Why_Type;
-   function Base_Why_Type (W : Why_Type) return Why_Type;
+   function Base_Why_Type (N : Node_Id) return W_Base_Type_Id;
+   function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id;
    --  Return the base type in Why of the given node
    --  (e.g EW_Real_Type for standard__float).
 
-   function Base_Why_Type (Left, Right : Why_Type) return Why_Type;
-   function Base_Why_Type (Left, Right : Node_Id) return Why_Type;
+   function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
+   function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
@@ -125,20 +116,24 @@ package Why.Inter is
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
-   function Up (WT : Why_Type) return Why_Type;
+   function Up (WT : W_Base_Type_Id) return W_Base_Type_Id;
    --  If WT is the highest base type, return WT; otherwise, return the
    --  smallest base type BT such that WT < BT.
 
-   function Up (From, To : Why_Type) return Why_Type;
+   function Up (From, To : W_Base_Type_Id) return W_Base_Type_Id;
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function  LCA (Left, Right : Why_Type) return Why_Type;
+   function  LCA (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
 
    function Full_Name (N : Entity_Id) return String
       with Pre => (Nkind (N) = N_Defining_Identifier);
    --  Given an N_Defining_Identifier, return its Full Name, as used in Why.
+
+   function Eq (Left, Right : W_Base_Type_Id) return Boolean;
+   --  Extensional equality (i.e. returns True if Left and Right are of
+   --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
 
 end Why.Inter;

@@ -23,29 +23,31 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;              use Types;
-with VC_Kinds;           use VC_Kinds;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Ids;            use Why.Ids;
-with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
+with Types;               use Types;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Ids;             use Why.Ids;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
 
 package Why.Gen.Progs is
 
    function Conversion_Name
-      (From : Why_Type;
-       To   : Why_Type) return W_Identifier_Id
+      (From : W_Base_Type_Id;
+       To   : W_Base_Type_Id) return W_Identifier_Id
       with Pre =>
         (not (From = To) and then
-         (From.Kind in EW_Scalar or else To.Kind in EW_Scalar));
+         (Get_Base_Type (From) in EW_Scalar
+          or else Get_Base_Type (To) in EW_Scalar));
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion
       (Ada_Node : Node_Id := Empty;
-       To                    : Why_Type;
-       From                  : Why_Type;
+       To                    : W_Base_Type_Id;
+       From                  : W_Base_Type_Id;
        Why_Expr              : W_Prog_Id;
-       Base_Type              : Why_Type := EW_Int_Type)
+       Base_Type             : W_Base_Type_Id := EW_Int_Type)
        return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".

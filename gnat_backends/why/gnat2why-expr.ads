@@ -27,7 +27,6 @@ with Atree;         use Atree;
 with Sinfo;         use Sinfo;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
-with Why.Inter;     use Why.Inter;
 with Why.Sinfo;     use Why.Sinfo;
 
 package Gnat2Why.Expr is
@@ -50,7 +49,7 @@ package Gnat2Why.Expr is
 
    function Transform_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type;
+      Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
@@ -62,7 +61,7 @@ package Gnat2Why.Expr is
 
    function Transform_Static_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Term_Id;
+      Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr is static, return a term equivalent to Expr. Otherwise,
    --  return Why_Empty.
 
@@ -83,7 +82,7 @@ package Gnat2Why.Expr is
    --  Get the name of the type of an Ada node, as a Node_Id of Kind
    --  N_Defining_Identifier
 
-   function Type_Of_Node (N : Node_Id) return Why_Type;
+   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id;
    --  Get the name of the type of an Ada node, as a Why Type
 
    function Get_Range (N : Node_Id) return Node_Id

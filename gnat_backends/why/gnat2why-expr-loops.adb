@@ -35,6 +35,7 @@ with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Types;             use Why.Types;
+with Why.Inter;             use Why.Inter;
 
 package body Gnat2Why.Expr.Loops is
 

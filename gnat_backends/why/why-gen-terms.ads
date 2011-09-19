@@ -25,15 +25,14 @@
 
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
-with Why.Inter;     use Why.Inter;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
 
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
+       To       : W_Base_Type_Id;
+       From     : W_Base_Type_Id;
        Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".

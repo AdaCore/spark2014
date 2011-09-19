@@ -30,6 +30,7 @@ with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Progs;       use Why.Gen.Progs;
 with Why.Sinfo;           use Why.Sinfo;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Terms is
 
@@ -39,15 +40,15 @@ package body Why.Gen.Terms is
 
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
+       To       : W_Base_Type_Id;
+       From     : W_Base_Type_Id;
        Why_Term : W_Term_Id) return W_Term_Id
    is
-      Base : constant Why_Type := LCA (To, From);
+      Base : constant W_Base_Type_Id := LCA (To, From);
 
       function Insert_Single_Conversion
-        (To       : Why_Type;
-         From     : Why_Type;
+        (To       : W_Base_Type_Id;
+         From     : W_Base_Type_Id;
          Why_Term : W_Term_Id) return W_Term_Id;
       --  Assuming that there is at most one step between To and From in the
       --  type hierarchy (i.e. that it exists a conversion from From
@@ -55,11 +56,11 @@ package body Why.Gen.Terms is
       --  types differ), insert the corresponding conversion.
 
       function Insert_Single_Conversion
-        (To       : Why_Type;
-         From     : Why_Type;
+        (To       : W_Base_Type_Id;
+         From     : W_Base_Type_Id;
          Why_Term : W_Term_Id) return W_Term_Id is
       begin
-         if From = To then
+         if Eq (From, To) then
             return Why_Term;
          else
             return
@@ -71,13 +72,13 @@ package body Why.Gen.Terms is
       end Insert_Single_Conversion;
 
    begin
-      if To = From then
+      if Eq (To, From) then
          return Why_Term;
       end if;
 
       declare
-         Up_From : constant Why_Type := Up (From, Base);
-         Up_To   : constant Why_Type := Up (To, Base);
+         Up_From : constant W_Base_Type_Id := Up (From, Base);
+         Up_To   : constant W_Base_Type_Id := Up (To, Base);
       begin
          return
            Insert_Single_Conversion

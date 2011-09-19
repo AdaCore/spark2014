@@ -34,7 +34,9 @@ with VC_Kinds;           use VC_Kinds;
 
 with Why;                   use Why;
 with Why.Types;             use Why.Types;
+with Why.Inter;             use Why.Inter;
 with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
@@ -81,7 +83,7 @@ package body Gnat2Why.Expr is
    function Transform_Quantified_Expression
       (Expr         : Node_Id;
        Domain       : EW_Domain;
-       Current_Type : out Why_Type) return W_Expr_Id;
+       Current_Type : out W_Base_Type_Id) return W_Expr_Id;
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
@@ -91,7 +93,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Enum_Literal
      (Enum         : Node_Id;
-      Current_Type : out Why_Type;
+      Current_Type : out W_Base_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id;
    --  Translate an Ada enumeration literal to Why. There are a number of
@@ -341,14 +343,14 @@ package body Gnat2Why.Expr is
            | N_Real_Literal
            | N_Integer_Literal =>
             declare
-               BT : constant Why_Type := Base_Why_Type (N);
+               BT : constant W_Base_Type_Id := Base_Why_Type (N);
             begin
                return
                  New_Comparison
                  (Cmp       => EW_Eq,
                   Left      => E,
                   Right     => Transform_Expr (N, BT, Domain),
-                  Arg_Types => BT.Kind,
+                  Arg_Types => Get_Base_Type (BT),
                   Domain    => Domain);
             end;
 
@@ -574,11 +576,12 @@ package body Gnat2Why.Expr is
    function Transform_Quantified_Expression
       (Expr         : Node_Id;
        Domain       : EW_Domain;
-       Current_Type : out Why_Type) return W_Expr_Id
+       Current_Type : out W_Base_Type_Id) return W_Expr_Id
    is
       Index      : W_Identifier_Id;
       Range_E    : Node_Id;
    begin
+      Current_Type := Type_Of_Node (Expr);
       Extract_From_Quantified_Expression (Expr, Index, Range_E);
       if Domain = EW_Pred then
          declare
@@ -688,7 +691,7 @@ package body Gnat2Why.Expr is
       end if;
    end Type_Of_Node;
 
-   function Type_Of_Node (N : Node_Id) return Why_Type
+   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
    is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
@@ -722,19 +725,19 @@ package body Gnat2Why.Expr is
 
    function Transform_Enum_Literal
      (Enum         : Node_Id;
-      Current_Type : out Why_Type;
+      Current_Type : out W_Base_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id is
    begin
       --  Deal with special cases: True/False for boolean values
 
       if Entity (Enum) = Standard_True then
-         Current_Type := (Kind => EW_Bool);
+         Current_Type := Why_Types (EW_Bool);
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
 
       if Entity (Enum) = Standard_False then
-         Current_Type := (Kind => EW_Bool);
+         Current_Type := Why_Types (EW_Bool);
          return New_Literal (Value => EW_False, Domain => Domain);
       end if;
 
@@ -742,14 +745,7 @@ package body Gnat2Why.Expr is
       --  conversion. We do so here by modifying the Current_Type; the
       --  conversion itself will be inserted by Transform_Expr.
 
-      case Ekind (Etype (Enum)) is
-         when E_Enumeration_Subtype =>
-            Current_Type := EW_Abstract (Etype (Entity (Enum)));
-
-         when others =>
-            null;
-      end case;
-
+      Current_Type := EW_Abstract (Etype (Entity (Enum)));
       return +Transform_Ident (Enum);
    end Transform_Enum_Literal;
 
@@ -759,11 +755,11 @@ package body Gnat2Why.Expr is
 
    function Transform_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type;
+      Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain) return W_Expr_Id
    is
       T                     : W_Expr_Id;
-      Current_Type          : Why_Type := Type_Of_Node (Expr);
+      Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
       Overflow_Check_Needed : Boolean := False;
    begin
 
@@ -877,7 +873,8 @@ package body Gnat2Why.Expr is
             declare
                Left      : constant Node_Id := Left_Opnd (Expr);
                Right     : constant Node_Id := Right_Opnd (Expr);
-               BT        : constant Why_Type := Base_Why_Type (Left, Right);
+               BT        : constant W_Base_Type_Id :=
+                             Base_Why_Type (Left, Right);
                Subdomain : constant EW_Domain :=
                              (if Domain = EW_Pred then EW_Term else Domain);
             begin
@@ -886,7 +883,7 @@ package body Gnat2Why.Expr is
                    (Cmp       => Transform_Compare_Op (Nkind (Expr)),
                     Left      => Transform_Expr (Left, BT, Subdomain),
                     Right     => Transform_Expr (Right, BT, Subdomain),
-                    Arg_Types => BT.Kind,
+                    Arg_Types => Get_Base_Type (BT),
                     Domain    => Domain);
                Current_Type := EW_Bool_Type;
             end;
@@ -904,7 +901,7 @@ package body Gnat2Why.Expr is
                     Op       => EW_Minus,
                     Right    =>
                       +Transform_Expr (Right, Current_Type, Domain),
-                    Op_Type  => Current_Type.Kind);
+                    Op_Type  => Get_Base_Type (Current_Type));
                Overflow_Check_Needed := True;
             end;
 
@@ -917,7 +914,7 @@ package body Gnat2Why.Expr is
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
-                    Name     => New_Abs (Current_Type.Kind),
+                    Name     => New_Abs (Get_Base_Type (Current_Type)),
                     Args    =>
                        (1 => Transform_Expr (Right, Current_Type, Domain)));
                Overflow_Check_Needed := True;
@@ -941,7 +938,7 @@ package body Gnat2Why.Expr is
                                                 Current_Type,
                                                 Domain),
                     Op       => Transform_Binop (Nkind (Expr)),
-                    Op_Type  => Current_Type.Kind);
+                    Op_Type  => Get_Base_Type (Current_Type));
                Overflow_Check_Needed := True;
             end;
 
@@ -957,7 +954,7 @@ package body Gnat2Why.Expr is
                   (if Domain = EW_Prog then
                      To_Program_Space (New_Integer_Division.Id)
                    else
-                     New_Division (Current_Type.Kind));
+                     New_Division (Get_Base_Type (Current_Type)));
                T :=
                  New_Located_Call
                    (Ada_Node => Expr,
@@ -1235,11 +1232,11 @@ package body Gnat2Why.Expr is
       end case;
 
       declare
-         Base_Type : constant Why_Type :=
-            (if Overflow_Check_Needed then
-               EW_Abstract (Etype (Expr))
-            else
-               EW_Int_Type);
+         Base_Type : constant W_Base_Type_Id :=
+                       (if Overflow_Check_Needed then
+                          EW_Abstract (Etype (Expr))
+                        else
+                          EW_Int_Type);
       begin
          case Domain is
             when EW_Prog =>
@@ -1351,7 +1348,7 @@ package body Gnat2Why.Expr is
             begin
                if Expression (Stmt) /= Empty then
                   declare
-                     Return_Type : constant Why_Type :=
+                     Return_Type : constant W_Base_Type_Id :=
                                      Type_Of_Node (Etype (Return_Applies_To
                                        (Return_Statement_Entity (Stmt))));
                   begin
@@ -1532,7 +1529,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Static_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Term_Id is
+      Expected_Type : W_Base_Type_Id) return W_Term_Id is
    begin
       if Present (Expr) and then Is_Static_Expression (Expr) then
          return +Transform_Expr (Expr, Expected_Type, EW_Term);
