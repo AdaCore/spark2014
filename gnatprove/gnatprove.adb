@@ -25,13 +25,10 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings;
-with Ada.Strings.Fixed;
 with Call;              use Call;
-with Explanations;      use Explanations;
 with String_Utils;      use String_Utils;
 
-with GNAT.Directory_Operations.Iteration;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
@@ -44,7 +41,7 @@ with System.OS_Lib;
 
 procedure Gnatprove is
 
-   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why, GS_AltErgo);
+   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why);
 
    function Step_Image (S : Gnatprove_Step) return String is
       (Int_Image (Gnatprove_Step'Pos (S) + 1));
@@ -56,7 +53,7 @@ procedure Gnatprove is
    function Final_Step return Gnatprove_Step is
      (case MMode is
        when GPM_Detect | GPM_Force => GS_Gnat2Why,
-       when GPM_Check | GPM_Prove => GS_AltErgo);
+       when GPM_Check | GPM_Prove => GS_Why);
 
    procedure Call_Gprbuild
       (Project_File  : String;
@@ -93,17 +90,6 @@ procedure Gnatprove is
        return String;
    --  Generate project file with the given source dir. Write the file to disk
    --  and return the file name.
-
-   function Generate_Altergo_Project_File (Source_Dir : String)
-       return String;
-   --  Generate project file with the given source dir. Write the file to disk
-   --  and return the file name.
-
-   procedure Prove_VCs (Proj : Project_Tree; Status : out Integer);
-   --  Prove the VCs.
-
-   procedure Report_VCs;
-   --  Print error/info messages on VCs.
 
    procedure Translate_To_Why
       (Project_File : String;
@@ -257,9 +243,6 @@ procedure Gnatprove is
          when GS_Why =>
             Compute_VCs (Proj, Status);
 
-         when GS_AltErgo =>
-            Prove_VCs (Proj, Status);
-            Report_VCs;
       end case;
 
       if Status /= 0 then
@@ -381,98 +364,8 @@ procedure Gnatprove is
       return Why_File_Name;
    end Generate_Why_Project_File;
 
-   -----------------------------------
-   -- Generate_Altergo_Project_File --
-   -----------------------------------
-
-   function Generate_Altergo_Project_File (Source_Dir : String)
-      return String
-   is
-      Altergo_Filename : constant String := "altergo.gpr";
-   begin
-      Generate_Project_File (Altergo_Filename, "Altergo", Source_Dir);
-      return Altergo_Filename;
-   end Generate_Altergo_Project_File;
-
-   ---------------
-   -- Prove_VCs --
-   ---------------
-
-   procedure Prove_VCs (Proj : Project_Tree; Status : out Integer)
-   is
-      use String_Lists;
-      Proj_Type         : constant Project_Type := Proj.Root_Project;
-      Altergo_Proj_File : constant String :=
-         Generate_Altergo_Project_File
-           (Proj_Type.Object_Dir.Display_Full_Name);
-      Args              : List := Empty_List;
-   begin
-      if Timeout /= 0 then
-         Args.Append ("--timeout=" & Int_Image (Timeout));
-      end if;
-      if Steps /= 0 then
-         Args.Append ("--steps=" & Int_Image (Steps));
-      end if;
-      if Integer (Args.Length) > 0 then
-         Args.Prepend ("-cargs:AltErgo");
-      end if;
-
-      Call_Gprbuild (Altergo_Proj_File, Gpr_Altergo_Cnf_File, Args, Status);
-   end Prove_VCs;
-
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
-
-   ----------------
-   -- Report_VCs --
-   ----------------
-
-   procedure Report_VCs is
-
-      procedure Report_VC
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean);
-      --  Report a single VC
-
-      ---------------
-      -- Report_VC --
-      ---------------
-      procedure Report_VC
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean)
-      is
-         Base_Name : constant String :=
-            Ada.Directories.Base_Name (Item);
-         Rgo_Name : constant String := Base_Name & ".rgo";
-         Xpl_Name : constant String := Base_Name & ".xpl";
-         Rgo_File : File_Type;
-         Proved : Boolean;
-      begin
-         pragma Unreferenced (Index);
-         pragma Unreferenced (Quit);
-
-         Open (Rgo_File, In_File, Rgo_Name);
-         if Ada.Strings.Fixed.Index (Get_Line (Rgo_File), "Valid") > 0 then
-            Proved := True;
-         else
-            Proved := False;
-         end if;
-         Close (Rgo_File);
-
-         if not Proved or else Report then
-            Print_Error_Msg (Get_VC_Explanation (Xpl_Name), Proved);
-         end if;
-      end Report_VC;
-
-      procedure Iterate is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-           (Action => Report_VC);
-
-   begin
-      Iterate (Path => "*package_po*.why");
-   end Report_VCs;
 
    ---------------------------
    -- Simple_Detection_Step --
@@ -538,10 +431,8 @@ procedure Gnatprove is
             end if;
 
          when GS_Why =>
-            return "generation of VCs";
+            return "generation and proof of VCs";
 
-         when GS_AltErgo =>
-            return "proof of VCs";
       end case;
    end Text_Of_Step;
 

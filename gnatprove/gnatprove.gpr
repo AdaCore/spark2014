@@ -7,11 +7,10 @@ project GNATprove is
 
    for Source_Dirs use (".", "..", "../common");
 
-   for Main use ("gnatprove.adb", "altergo_wrap.adb", "alfa_report.adb");
+   for Main use ("gnatprove.adb", "alfa_report.adb");
 
    package Builder is
       for Executable ("gnatprove.adb") use "gnatprove";
-      for Executable ("altergo_wrap.adb") use "altergo_wrap";
       for Executable ("alfa_report.adb") use "alfa_report";
    end Builder;
 
