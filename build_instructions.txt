@@ -180,42 +180,24 @@ The final directory structure of all related products is:
 
       $ make install
 
-8) Why
-   8.1) Visit the following website
+8) Why3
+   8.1) Clone the why3 repository
 
-      http://why.lri.fr/
+      git clone ssh://git.eu.adacore.com/scmrepos/git/why3
 
-      and download the tarball under section "Download".
+   8.4) Configure Why3
 
-   8.2) Extract the archive in directory <Root>/hi-lite. This step creates
-      directory <Root>/hi-lite/why-<XXX> where <XXX> is the version number.
-
-   8.3) Patch Why
-
-      $ cd <Root>/hi-lite/why-<XXX>
-      $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-1.patch
-      $ patch -p0 < <Root>/hi-lite/why/patches/why-2.29-2.patch
-      . . .
-
-      More patches may follow in the future.
-
-   8.4) Configure Why
-
-      $ ./configure --prefix=<Root>/local
+      $ ./configure --prefix=<Root>/hi-lite/install
 
       where <Root> denotes a full path.
 
-   8.5) Build Why
+   8.5) Build Why3
 
       $ make
 
-   8.6) Install Why
+   8.6) Install Why3
 
       $ make install
-
-   8.7) Set the environment variable WHYLIB as follows:
-
-      $ export WHYLIB=`why --where`
 
 9) Build gnat2why and gnatprove
 
@@ -224,7 +206,7 @@ The final directory structure of all related products is:
 
    $ make
    $ make stdlib
-   $ make install-stdlib WHYLIB=$WHYLIB
+   $ make install-stdlib
    $ export PATH=<Root>/hi-lite/install/bin:$PATH
 
 10) Install AdaCore python

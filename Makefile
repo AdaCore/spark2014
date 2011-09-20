@@ -7,7 +7,7 @@
 # To build gnatprove, you additionnally need an installation of the gnatcoll
 # library.
 #
-# For gnatprove to work, you also need working installations of Why and
+# For gnatprove to work, you also need working installations of Why3 and
 # Alt-Ergo. The INSTALL file contains information on how to install those.
 #
 # The necessary steps to correctly install gnat2why/gnatprove are
