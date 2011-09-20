@@ -109,7 +109,6 @@ install-stdlib:
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
 	   $(STDLIB_TMP)/*_standard.mlw \
 	   $(WHYLIB)/why
-	cp why/lib/_gnatprove_standard.mlw $(WHYLIB)/why
 
 install-examples:
 	mkdir -p $(EXAMPLES)
