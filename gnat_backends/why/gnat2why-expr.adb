@@ -1237,7 +1237,7 @@ package body Gnat2Why.Expr is
       declare
          Base_Type : constant Why_Type :=
             (if Overflow_Check_Needed then
-               EW_Abstract (Etype (Etype (Expr)))
+               EW_Abstract (Etype (Expr))
             else
                EW_Int_Type);
       begin
