@@ -25,6 +25,8 @@ GNATprove accepts the following options::
 
    -u            Unique compilation, only consider the given files
 
+   --pedantic    Use a strict interpretation of the Ada standard
+
 ..   prove       Prove subprogram contracts and absence of run-time errors
 
 In modes ``detect`` and ``force``, GNATprove does not
@@ -39,6 +41,11 @@ options are allowed.
 When given a list of files, GNATprove will consider this list of files and all
 its dependencies correctly. With option ``-u``, the dependencies are not
 considered, only the given files themselves.
+
+With option ``--pedantic``, some compiler choices are forced to a worst-case
+interpretation of the Ada standard. For example, ranges for integer base types 
+are reduced to the minumum guaranteed, not to the matching machine 
+integer type as done in practice on all compilers.
 
 Output
 ------

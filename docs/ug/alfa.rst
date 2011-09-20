@@ -356,12 +356,19 @@ More specifically:
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
   binary multiplying operation must be parenthesized.
 
-Known Bounds for Scalar Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Compiler Permissions
+^^^^^^^^^^^^^^^^^^^^
 
-The bounds of base types for user-defined types, which define which
-computations overflow, may vary depending on the compiler and host/target
-architectures. In Alfa, all bounds should be set to their minimum range
+Ada standard defines various ways in which a compiler is allowed to compute a
+correct result for a computation instead of raising a run-time error. In Alfa,
+we adopt by default the choices made by GNAT on the platform, except when 
+option ``--pedantic`` is used, in which case we reject all such permissions 
+and interpret all computations with the strictest meaning.
+
+For example, the bounds of base types for user-defined types, which define 
+which computations overflow, may vary depending on the compiler and host/target
+architectures. With option ``--pedantic``, all bounds should be set to their 
+minimum range
 guaranteed by the Ada standard (worst case). For example, the following type
 should have a base type ranging from -10 to 10 (standard requires a symmetric
 range with a possible extra negative value)::
@@ -372,19 +379,8 @@ This other type should have a base type ranging from -10 to 9::
 
     type T is -10 .. 1;
 
-The bounds of standard scalar types are defined by the GNAT compiler for every
-host/target architecture.
-
-.. comment: not clear what a user can make of this section.
-   This is not under his control.
-
-No Compiler Permissions
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Ada standard defines various ways in which a compiler is allowed to compute a
-correct result for a computation instead of raising a run-time error. In Alfa,
-we reject all such permissions and interpret all computations with the
-strictest meaning.
+The bounds of standard scalar types are still defined by the GNAT compiler 
+for every host/target architecture, even with option ``--pedantic``.
 
 Pure Contract Specifications
 ----------------------------
