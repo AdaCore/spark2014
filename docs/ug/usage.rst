@@ -44,7 +44,7 @@ considered, only the given files themselves.
 
 With option ``--pedantic``, some compiler choices are forced to a worst-case
 interpretation of the Ada standard. For example, ranges for integer base types 
-are reduced to the minumum guaranteed, not to the matching machine 
+are reduced to the minimum guaranteed, not to the matching machine 
 integer type as done in practice on all compilers.
 
 Output
