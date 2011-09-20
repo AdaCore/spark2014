@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Environment_Variables;
 with Call;              use Call;
 with String_Utils;      use String_Utils;
 
@@ -90,6 +89,8 @@ procedure Gnatprove is
        return String;
    --  Generate project file with the given source dir. Write the file to disk
    --  and return the file name.
+
+   procedure Generate_Why3_Conf_File (Gnatprove_Dir : String);
 
    procedure Translate_To_Why
       (Project_File : String;
@@ -198,14 +199,7 @@ procedure Gnatprove is
          Generate_Why_Project_File (Proj_Type.Object_Dir.Display_Full_Name);
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
-      --  Set the environment variable WHYLIB, if necessary, to indicate the
-      --  placement for Why
-      if not Ada.Environment_Variables.Exists (WHYLIB) then
-         if Verbose then
-            Put_Line ("Setting env var WHYLIB to: " & Why_Lib_Dir);
-         end if;
-         Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
-      end if;
+      Generate_Why3_Conf_File (Proj_Type.Object_Dir.Display_Full_Name);
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
    end Compute_VCs;
 
@@ -363,6 +357,55 @@ procedure Gnatprove is
       Generate_Project_File (Why_File_Name, "Why", Source_Dir);
       return Why_File_Name;
    end Generate_Why_Project_File;
+
+   -----------------------------
+   -- Generate_Why3_Conf_File --
+   -----------------------------
+
+   procedure Generate_Why3_Conf_File (Gnatprove_Dir : String)
+   is
+      File : File_Type;
+      Filename : constant String :=
+         Ada.Directories.Compose (Gnatprove_Dir, "why3.conf");
+
+      procedure Put_Loadpath (S : String);
+
+      ------------------
+      -- Put_Loadpath --
+      ------------------
+
+      procedure Put_Loadpath (S : String) is
+      begin
+         Put (File, "loadpath = """);
+         Put (File, S);
+         Put_Line (File, """");
+      end Put_Loadpath;
+
+      --  begin processing for Generate_Why3_Conf_File
+   begin
+      Create (File, Out_File, Filename);
+      Put_Line (File, "[main]");
+      Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "theories"));
+      Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "modules"));
+      Put_Loadpath (Stdlib_Dir);
+      Put_Line (File, "magic = 7");
+      Put_Line (File, "memlimit = 0");
+      Put_Line (File, "running_provers_max = 2");
+      Put_Line (File, "timelimit = 10");
+
+      Put_Line (File, "[prover alt-ergo]");
+      Put_Line (File,
+                "command = ""why3-cpulimit %t %m -s alt-ergo -proof %f""");
+      Put_Line (File,
+                "driver = """ &
+                Ada.Directories.Compose (Why3_Drivers_Dir,
+                                         "alt_ergo_trunk.drv") &
+                """");
+      Put_Line (File, "editor = """"");
+      Put_Line (File, "name = ""Alt-Ergo""");
+      Put_Line (File, "version = ""0.93""");
+      Close (File);
+   end Generate_Why3_Conf_File;
 
    Tree      : Project_Tree;
    Proj_Type : Project_Type;

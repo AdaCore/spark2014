@@ -119,32 +119,45 @@ package Configuration is
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
-   Prefix       : constant String := Executable_Location;
-   --  The prefix directory of the gnatprove installation
-   Lib_Dir      : constant String := Ada.Directories.Compose (Prefix, "lib");
-   --  <prefix>/lib
-   Why_Lib_Dir  : constant String := Ada.Directories.Compose (Lib_Dir, "why");
-   --  <prefix>/lib/why - the default Why library dir
-   Stdlib_ALI_Dir   : constant String :=
+
+   --  Here we set the various paths that are needed during a run of
+   --  gnatprove. The hierarchy looks as follows:
+   --  prefix
+   --  prefix/lib
+   --  prefix/lib/gnatprove   -     ALI files of the stdlib
+   --  prefix/share
+   --  prefix/share/why3      -     files that come with Why3
+   --  prefix/share/gnatprove/config - gprbuild config files
+   --  prefix/share/gnatprove/stdlib - Why3 files of the stdlib
+   --
+   Prefix         : constant String := Executable_Location;
+   Lib_Dir        : constant String :=
+      Ada.Directories.Compose (Prefix, "lib");
+   Stdlib_ALI_Dir : constant String :=
       Ada.Directories.Compose (Lib_Dir, "gnatprove");
-   --  <prefix>/lib/gnatprove, used to store the ALI files of the stdlib
-   Gpr_Cnf_Dir  : constant String :=
-      Ada.Directories.Compose
-        (Ada.Directories.Compose (Prefix, "share"),
-         "gnatprove");
-   --  <prefix>/share/gnatprove, used to store gprbuild configuration files
-   --  used by gnatprove
+   Share_Dir      : constant String :=
+      Ada.Directories.Compose (Prefix, "share");
+   Why3_Dir       : constant String :=
+      Ada.Directories.Compose (Share_Dir, "why3");
+   Gnatprove_Dir  : constant String :=
+      Ada.Directories.Compose (Share_Dir, "gnatprove");
+   Gpr_Cnf_Dir    : constant String :=
+      Ada.Directories.Compose (Gnatprove_Dir, "config");
+
+   Stdlib_Dir     : constant String :=
+      Ada.Directories.Compose (Gnatprove_Dir, "stdlib");
+
+   Why3_Drivers_Dir : constant String :=
+      Ada.Directories.Compose (Why3_Dir, "drivers");
+
+   --  The exact places for the three configuration files used by gnatprove
    Gpr_Ada_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
    Gpr_Altergo_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
-   --  The exact places for the three configuration files used by gnatprove
 
-   WHYLIB       : constant String := "WHYLIB";
-   --  The name of the environment variable which can be used to set the
-   --  library directory of Why
    Alfa_Report_File : constant String := "gnatprove.out";
    --  The name of the file in which the Alfa report is generated
 

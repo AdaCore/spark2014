@@ -21,7 +21,7 @@
 #    This will apply gnat2why to the standard library of GNAT to obtain
 #    precompiled Why files
 #
-# 3) make install-stdlib WHYLIB=$WHYLIB
+# 3) make install-stdlib
 #
 #    This will copy the files generated in the previous step to the directory
 #    of the Why library.
@@ -30,9 +30,6 @@
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
-
-# default for WHYLIB, should not be used
-WHYLIB=/usr/local/lib/why
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
@@ -108,7 +105,7 @@ install-stdlib:
            $(STDLIB_TMP)/*__types_vars_body.mlw \
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
 	   $(STDLIB_TMP)/*_standard.mlw \
-	   $(WHYLIB)/why
+	   install/share/gnatprove/stdlib
 
 install-examples:
 	mkdir -p $(EXAMPLES)
