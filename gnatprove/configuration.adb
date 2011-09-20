@@ -64,6 +64,8 @@ ASCII.LF &
 ASCII.LF &
 "     --report=r    Set the report mode of GNATprove (r=all,fail*)" &
 ASCII.LF &
+"     --strict      Use a strict interpretation of the Ada standard" &
+ASCII.LF &
 " -u                Unique compilation, only compile/prove the given files" &
 ASCII.LF &
 " -v, --verbose     Output extra verbose information" &
@@ -227,6 +229,12 @@ ASCII.LF &
          (Config, Steps'Access,
           Long_Switch => "--steps=",
           Help => "Set the maximum number of proof steps for Alt-Ergo");
+
+      Define_Switch
+        (Config,
+         Strict'Access,
+         Long_Switch => "--strict",
+         Help => "Use a strict interpretation of the Ada standard");
 
       Define_Switch
          (Config, Timeout'Access,

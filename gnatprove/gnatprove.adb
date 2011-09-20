@@ -169,6 +169,9 @@ procedure Gnatprove is
       Args.Append ("-U");
       Args.Append ("-gnatc");       --  only generate ALI
       Args.Append ("-gnatd.F");     --  ALFA section in ALI
+      if Strict then
+         Args.Append ("-gnatd.D");
+      end if;
 
       if Force then
          Args.Append ("-f");
@@ -496,6 +499,9 @@ procedure Gnatprove is
       if MMode = GPM_Force then
          Args.Append ("-gnatd.E");
       end if;
+      if Strict then
+         Args.Append ("-gnatd.D");
+      end if;
       while Has_Element (Carg_Cur) loop
          Args.Append (Element (Carg_Cur));
          Next (Carg_Cur);
@@ -577,6 +583,9 @@ procedure Gnatprove is
       end if;
       if MMode = GPM_Force then
          Args.Append ("-gnatd.E");
+      end if;
+      if Strict then
+         Args.Append ("-gnatd.D");
       end if;
       while Has_Element (Cur) loop
          Args.Append (Element (Cur));
