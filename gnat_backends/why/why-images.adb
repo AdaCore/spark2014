@@ -232,13 +232,13 @@ package body Why.Images is
    begin
       case Value is
          when EW_True =>
-            if Is_Why3 and then Domain in EW_Prog | EW_Term then
+            if Domain in EW_Prog | EW_Term then
                P (O, "True");
             else
                P (O, "true");
             end if;
          when EW_False =>
-            if Is_Why3 and then Domain in EW_Prog | EW_Term then
+            if Domain in EW_Prog | EW_Term then
                P (O, "False");
             else
                P (O, "false");
@@ -264,7 +264,7 @@ package body Why.Images is
             P (O, "%");
       end case;
 
-      if Is_Why3 and then Op_Type = EW_Real then
+      if Op_Type = EW_Real then
          P (O, ".");
       end if;
    end P;
@@ -292,7 +292,7 @@ package body Why.Images is
             P (O, ">=");
       end case;
 
-      if Is_Why3 and then Op_Type = EW_Real and then
+      if Op_Type = EW_Real and then
          not (Value in EW_Eq .. EW_Ne) then
          P (O, ".");
       end if;
@@ -314,18 +314,10 @@ package body Why.Images is
             P (O, "<->");
 
          when EW_Or =>
-            if Is_Why3 then
-               P (O, "\/");
-            else
-               P (O, "or");
-            end if;
+            P (O, "\/");
 
          when EW_And =>
-            if Is_Why3 then
-               P (O, "/\");
-            else
-               P (O, "and");
-            end if;
+            P (O, "/\");
       end case;
    end P;
 

@@ -145,46 +145,30 @@ package body Why.Atree.Sprint is
       Args     : constant List := Get_List (+Get_Type_Chain (Node));
       Nb_Args  : constant Count_Type := Length (Args);
    begin
-      if Is_Why3 then
-         if Nb_Args >= 1 then
-            P (O, "(");
-         end if;
-
-         Traverse (State, +Get_Name (Node));
-
-         if Nb_Args > 1 then
-            P (O, " (");
-         elsif Nb_Args = 1 then
-            P (O, " ");
-         end if;
-
-         Print_List (State, +Get_Type_Chain (Node), " ");
-
-         if Nb_Args > 1 then
-            P (O, ")");
-         end if;
-
-         if Nb_Args >= 1 then
-            P (O, ")");
-         end if;
-
-         State.Control := Abandon_Children;
-
-      else
-         if Nb_Args > 1 then
-            P (O, "(");
-         end if;
-
-         Print_List (State, +Get_Type_Chain (Node));
-         if Nb_Args > 1 then
-            P (O, ") ");
-         elsif Nb_Args = 1 then
-            P (O, " ");
-         end if;
-
-         Traverse (State, +Get_Name (Node));
-         State.Control := Abandon_Children;
+      if Nb_Args >= 1 then
+         P (O, "(");
       end if;
+
+      Traverse (State, +Get_Name (Node));
+
+      if Nb_Args > 1 then
+         P (O, " (");
+      elsif Nb_Args = 1 then
+         P (O, " ");
+      end if;
+
+      Print_List (State, +Get_Type_Chain (Node), " ");
+
+      if Nb_Args > 1 then
+         P (O, ")");
+      end if;
+
+      if Nb_Args >= 1 then
+         P (O, ")");
+      end if;
+
+      State.Control := Abandon_Children;
+
    end Generic_Actual_Type_Chain_Pre_Op;
 
    ------------------------
@@ -198,26 +182,8 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      if Is_Why3 then
-         P (O, "array ");
-      end if;
+      P (O, "array ");
    end Array_Type_Pre_Op;
-
-   ------------------------
-   -- Array_Type_Post_Op --
-   ------------------------
-
-   procedure Array_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Type_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      if not Is_Why3 then
-         P (O, " array");
-      end if;
-   end Array_Type_Post_Op;
 
    ---------------------
    -- Ref_Type_Pre_Op --
@@ -230,26 +196,8 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      if Is_Why3 then
-         P (O, "ref ");
-      end if;
+      P (O, "ref ");
    end Ref_Type_Pre_Op;
-
-   ----------------------
-   -- Ref_Type_Post_Op --
-   ----------------------
-
-   procedure Ref_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      if not Is_Why3 then
-         P (O, " ref");
-      end if;
-   end Ref_Type_Post_Op;
 
    -----------------------------
    -- Computation_Type_Pre_Op --
@@ -331,37 +279,19 @@ package body Why.Atree.Sprint is
    begin
       if not Is_Empty (+Reads) then
          P (O, "reads ");
-
-         if Is_Why3 then
-            Print_List (State, +Reads, " ");
-         else
-            Print_List (State, +Reads);
-         end if;
-
+         Print_List (State, +Reads, " ");
          NL (O);
       end if;
 
       if not Is_Empty (+Writes) then
          P (O, "writes ");
-
-         if Is_Why3 then
-            Print_List (State, +Writes, " ");
-         else
-            Print_List (State, +Writes);
-         end if;
-
+         Print_List (State, +Writes, " ");
          NL (O);
       end if;
 
       if not Is_Empty (+Raises) then
          P (O, "raises ");
-
-         if Is_Why3 then
-            Print_List (State, +Raises, " ");
-         else
-            Print_List (State, +Raises);
-         end if;
-
+         Print_List (State, +Raises, " ");
          NL (O);
       end if;
 
@@ -529,37 +459,20 @@ package body Why.Atree.Sprint is
       Invariant : constant W_Pred_OId := Get_Invariant (Node);
       Variant   : constant W_Wf_Arg_OId := Get_Variant (Node);
    begin
-      if not Is_Why3 then
-         PL (O, "{ ");
-         Relative_Indent (O, 1);
-      end if;
-
       if Invariant /= Why_Empty then
          P (O, "invariant ");
-
-         if Is_Why3 then
-            PL (O, "{ ");
-            Relative_Indent (O, -1);
-         end if;
-
+         PL (O, "{ ");
+         Relative_Indent (O, -1);
          Traverse (State, +Invariant);
          NL (O);
-
-         if Is_Why3 then
-            Relative_Indent (O, -1);
-            P (O, " }");
-         end if;
+         Relative_Indent (O, -1);
+         P (O, " }");
       end if;
 
       if Variant /= Why_Empty then
          P (O, "variant ");
          Traverse (State, +Variant);
          NL (O);
-      end if;
-
-      if not Is_Why3 then
-         Relative_Indent (O, -1);
-         P (O, " }");
       end if;
 
       State.Control := Abandon_Children;
@@ -623,13 +536,7 @@ package body Why.Atree.Sprint is
                           Get_Kind (+Pred) = W_Universal_Quantif;
    begin
       P (O, "(forall ");
-
-      if Is_Why3 then
-         Print_List (State, +Variables, " ");
-      else
-         Print_List (State, +Variables);
-      end if;
-
+      Print_List (State, +Variables, " ");
       P (O, " : ");
       Traverse (State, +Var_Type);
 
@@ -668,12 +575,7 @@ package body Why.Atree.Sprint is
                           Get_Kind (+Pred) = W_Existential_Quantif;
    begin
       P (O, "exists ");
-
-      if Is_Why3 then
-         Print_List (State, +Variables, " ");
-      else
-         Print_List (State, +Variables);
-      end if;
+      Print_List (State, +Variables, " ");
 
       P (O, " : ");
       Traverse (State, +Var_Type);
@@ -769,30 +671,20 @@ package body Why.Atree.Sprint is
       Symbol : constant Name_Id := Get_Symbol (Node);
       Label  : constant Name_Id := Get_Label (Node);
    begin
-      if Is_Why3 then
-         if Label = No_Name then
-            P (O, Symbol);
-
-         elsif Get_Name_String (Label) /= "" then
-            P (O, "(at !");
-            P (O, Symbol);
-            P (O, " ");
-            P (O, Label);
-            P (O, ")");
-
-         else
-            P (O, "(old !");
-            P (O, Symbol);
-            P (O, ")");
-         end if;
-
-      else
+      if Label = No_Name then
          P (O, Symbol);
 
-         if Label /= No_Name then
-            P (O, "@");
-            P (O, Label);
-         end if;
+      elsif Get_Name_String (Label) /= "" then
+         P (O, "(at !");
+         P (O, Symbol);
+         P (O, " ");
+         P (O, Label);
+         P (O, ")");
+
+      else
+         P (O, "(old !");
+         P (O, Symbol);
+         P (O, ")");
       end if;
    end Identifier_Pre_Op;
 
@@ -809,22 +701,11 @@ package body Why.Atree.Sprint is
    begin
       case Get_Domain (+Node) is
          when EW_Term | EW_Pred =>
-            if Is_Why3 then
-               P (O, "(");
-               Traverse (State, +Name);
-               P (O, " ");
-               Print_List (State, +Args, " ");
-               P (O, ")");
-
-            else
-               Traverse (State, +Name);
-
-               if not Is_Empty (+Args) then
-                  P (O, " (");
-                  Print_List (State, +Args);
-                  P (O, ")");
-               end if;
-            end if;
+            P (O, "(");
+            Traverse (State, +Name);
+            P (O, " ");
+            Print_List (State, +Args, " ");
+            P (O, ")");
 
          when EW_Prog =>
             Traverse (State, +Name);
@@ -870,10 +751,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(if (");
       Traverse (State, +Condition);
-
-      if Is_Why3 and then Get_Domain (+Node) in EW_Pred | EW_Term then
-         P (O, " = True");
-      end if;
 
       PL (O, ") then (");
       Relative_Indent (O, 1);
@@ -949,11 +826,7 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      if Is_Why3 then
-         P (O, "()");
-      else
-         P (O, "void");
-      end if;
+      P (O, "()");
    end Void_Pre_Op;
 
    ----------------------
@@ -984,15 +857,10 @@ package body Why.Atree.Sprint is
       Node  : W_Unary_Op_Id)
    is
       Op     : constant EW_Unary_Op := Get_Op (Node);
-      Domain : constant EW_Domain := Get_Domain (+Node);
    begin
       P (O, "( ");
-
-      if Is_Why3 or else Op /= EW_Deref or else Domain /= EW_Term then
-         P (O, Op, Get_Op_Type (Node));
-         P (O, " ");
-      end if;
-
+      P (O, Op, Get_Op_Type (Node));
+      P (O, " ");
       Traverse (State, +Get_Right (Node));
       P (O, " )");
       State.Control := Abandon_Children;
@@ -1036,12 +904,7 @@ package body Why.Atree.Sprint is
       Traverse (State, +Name);
       P (O, " = ");
       Traverse (State, +Def);
-
-      if Is_Why3 then
-         PL (O, " in (");
-      else
-         PL (O, " in");
-      end if;
+      PL (O, " in (");
 
       if not Binding_Sequence then
          Relative_Indent (O, 1);
@@ -1053,9 +916,7 @@ package body Why.Atree.Sprint is
          Relative_Indent (O, -1);
       end if;
 
-      if Is_Why3 then
-         PL (O, ")");
-      end if;
+      PL (O, ")");
 
       State.Control := Abandon_Children;
    end Binding_Pre_Op;
@@ -1086,20 +947,9 @@ package body Why.Atree.Sprint is
    is
       Ty : constant W_Computation_Type_Id := Get_Any_Type (Node);
    begin
-      if Is_Why3 then
-         P (O, "(any ");
-      else
-         P (O, "[ ");
-      end if;
-
+      P (O, "(any ");
       Traverse (State, +Ty);
-
-      if Is_Why3 then
-         P (O, ")");
-      else
-         P (O, " ]");
-      end if;
-
+      P (O, ")");
       State.Control := Abandon_Children;
    end Any_Expr_Pre_Op;
 
@@ -1219,12 +1069,8 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "( ");
-
       Traverse (State, +Get_Name (Node));
-
-      if not Is_Why3 then
-         P (O, " : ");
-      end if;
+      P (O, " ");
 
       Traverse (State, +Get_Def (Node));
       P (O, " )");
@@ -1256,11 +1102,7 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      if Is_Why3 then
-         P (O, " } ; ()");
-      else
-         P (O, " } ; void");
-      end if;
+      P (O, " } ; ()");
    end Assert_Post_Op;
 
    ------------------
@@ -1273,11 +1115,7 @@ package body Why.Atree.Sprint is
    is
       Exn_Type : constant W_Simple_Value_Type_OId := Get_Exn_Type (Node);
    begin
-      if Is_Why3 then
-         P (O, "raise Gnatprove_Exception__");
-      else
-         P (O, "raise ");
-      end if;
+      P (O, "raise Gnatprove_Exception__");
 
       Traverse (State, +Get_Name (Node));
 
@@ -1305,16 +1143,11 @@ package body Why.Atree.Sprint is
       NL (O);
       PL (O, "with ");
       Relative_Indent (O, 1);
-
-      if Is_Why3 then
-         P (O, "Gnatprove_Exception__");
-         Print_List
-           (State,
-            +Get_Handler (Node),
-            ", Gnatprove_Exception__" & ASCII.LF);
-      else
-         Print_List (State, +Get_Handler (Node), "," & ASCII.LF);
-      end if;
+      P (O, "Gnatprove_Exception__");
+      Print_List
+        (State,
+         +Get_Handler (Node),
+         ", Gnatprove_Exception__" & ASCII.LF);
 
       Relative_Indent (O, -1);
       NL (O);
@@ -1360,50 +1193,34 @@ package body Why.Atree.Sprint is
 
       case Get_Domain (+Node) is
          when EW_Term =>
-            if Is_Why3 then
-               P (O, "function ");
-            else
-               P (O, "logic ");
-            end if;
+            P (O, "function ");
 
             Traverse (State, +Name);
-
-            if not Is_Why3 then
-               P (O, " :");
-            end if;
 
             NL (O);
             Relative_Indent (O, 1);
 
-            if Is_Why3 then
-               declare
-                  Binders     : constant W_Binder_OList :=
-                                  Get_Binders (Func_Type);
-                  Result      : constant W_Binder_Id := Get_Result (Func_Type);
-                  Result_Type : constant W_Simple_Value_Type_Id :=
-                                  Get_Arg_Type (Result);
-               begin
-                  if not Is_Empty (+Binders) then
-                     P (O, " (");
-                     Print_List (State, +Binders, ") (");
-                     P (O, ") ");
-                  end if;
-                  P (O, " :");
-                  Traverse (State, +Result_Type);
-               end;
-            else
-               Traverse (State, +Func_Type);
-            end if;
+            declare
+               Binders     : constant W_Binder_OList :=
+                               Get_Binders (Func_Type);
+               Result      : constant W_Binder_Id := Get_Result (Func_Type);
+               Result_Type : constant W_Simple_Value_Type_Id :=
+                               Get_Arg_Type (Result);
+            begin
+               if not Is_Empty (+Binders) then
+                  P (O, " (");
+                  Print_List (State, +Binders, ") (");
+                  P (O, ") ");
+               end if;
+               P (O, " :");
+               Traverse (State, +Result_Type);
+            end;
 
             Relative_Indent (O, -1);
             NL (O);
 
          when EW_Prog =>
-            if Is_Why3 then
-               P (O, "val ");
-            else
-               P (O, "parameter ");
-            end if;
+            P (O, "val ");
 
             Traverse (State, +Name);
             P (O, " :");
@@ -1445,15 +1262,9 @@ package body Why.Atree.Sprint is
             P (O, "predicate ");
             Traverse (State, +Name);
 
-            if Is_Why3 then
-               P (O, " (");
-               Print_List (State, +Binders, ") (");
-               PL (O, ") =");
-            else
-               P (O, " (");
-               Print_List (State, +Binders);
-               PL (O, ") =");
-            end if;
+            P (O, " (");
+            Print_List (State, +Binders, ") (");
+            PL (O, ") =");
 
             Relative_Indent (O, 1);
             Traverse (State, +Def);
@@ -1464,15 +1275,9 @@ package body Why.Atree.Sprint is
             P (O, "function ");
             Traverse (State, +Name);
 
-            if Is_Why3 then
-               P (O, " (");
-               Print_List (State, +Binders, ") (");
-               P (O, ") : ");
-            else
-               P (O, " (");
-               Print_List (State, +Binders);
-               P (O, ") : ");
-            end if;
+            P (O, " (");
+            Print_List (State, +Binders, ") (");
+            P (O, ") : ");
 
             Traverse (State, +Result_Type);
             PL (O, " =");
@@ -1582,21 +1387,14 @@ package body Why.Atree.Sprint is
 
       P (O, "type ");
 
-      if Is_Why3 then
-         Traverse (State, +Name);
+      Traverse (State, +Name);
 
-         if Nb_Args > 1 then
-            P (O, " (");
-         end if;
+      if Nb_Args > 1 then
+         P (O, " (");
+      end if;
 
-         if Nb_Args > 0 then
-            P (O, " ");
-         end if;
-
-      else
-         if Nb_Args > 1 then
-            P (O, "(");
-         end if;
+      if Nb_Args > 0 then
+         P (O, " ");
       end if;
 
       while Position /= No_Element loop
@@ -1617,14 +1415,6 @@ package body Why.Atree.Sprint is
 
       if Nb_Args > 1 then
          P (O, ")");
-      end if;
-
-      if not Is_Why3 then
-         if Nb_Args > 0 then
-            P (O, " ");
-         end if;
-
-         Traverse (State, +Name);
       end if;
 
       if Definition /= Why_Empty then
@@ -1648,23 +1438,10 @@ package body Why.Atree.Sprint is
       Node  : W_Global_Ref_Declaration_Id)
    is
    begin
-      if Is_Why3 then
-         P (O, "val ");
-      else
-         P (O, "parameter ");
-      end if;
-
+      P (O, "val ");
       Traverse (State, +Get_Name (Node));
-      P (O, " : ");
-
-      if Is_Why3 then
-         P (O, " ref ");
-         Traverse (State, +Get_Ref_Type (Node));
-      else
-         Traverse (State, +Get_Ref_Type (Node));
-         P (O, " ref");
-      end if;
-
+      P (O, " : ref ");
+      Traverse (State, +Get_Ref_Type (Node));
       NL (O);
       State.Control := Abandon_Children;
    end Global_Ref_Declaration_Pre_Op;
@@ -1679,12 +1456,7 @@ package body Why.Atree.Sprint is
    is
       Arg : constant W_Primitive_Type_OId := Get_Arg (Node);
    begin
-      if Is_Why3 then
-         P (O, "exception Gnatprove_Exception__");
-      else
-         P (O, "exception ");
-      end if;
-
+      P (O, "exception Gnatprove_Exception__");
       Traverse (State, +Get_Name (Node));
 
       if Arg /= Why_Empty then
@@ -1704,19 +1476,9 @@ package body Why.Atree.Sprint is
       Node  : W_Include_Declaration_Id)
    is
    begin
-      if Is_Why3 then
-         P (O, "use export module """);
-      else
-         P (O, "include """);
-      end if;
-
+      P (O, "use export module """);
       Traverse (State, +Get_Name (Node));
-
-      if Is_Why3 then
-         P (O, """.Main");
-      else
-         P (O, ".mlw""");
-      end if;
+      P (O, """.Main");
 
       NL (O);
       State.Control := Abandon_Children;
@@ -1731,17 +1493,13 @@ package body Why.Atree.Sprint is
       Node  : W_File_Id)
    is
    begin
-      if Is_Why3 then
-         PL (O, "module Main");
-         PL (O, "use import int.Int");
-         PL (O, "use import module ref.Ref");
-      end if;
+      PL (O, "module Main");
+      PL (O, "use import int.Int");
+      PL (O, "use import module ref.Ref");
 
       Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
 
-      if Is_Why3 then
-         PL (O, "end");
-      end if;
+      PL (O, "end");
 
       State.Control := Abandon_Children;
    end File_Pre_Op;

@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Conversions;    use Why.Conversions;
+with Why.Sinfo;          use Why.Sinfo;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -41,25 +41,33 @@ package body Why.Gen.Funcs is
       (File          : W_File_Id;
        Type_Name     : String)
    is
-      Arg_S   : constant String := "n";
-      Arg_T   : constant String := "m";
+      Arg_S    : constant String := "n";
+      Arg_T    : constant String := "m";
+      True_Term : constant W_Term_Id :=
+                  New_Literal (Value => EW_True);
+      Cond     : constant W_Pred_Id :=
+                  New_Relation
+                     (Left    => +New_Result_Term,
+                      Op_Type => EW_Bool,
+                      Right   => +True_Term,
+                      Op      => EW_Eq);
+      Then_Rel : constant W_Pred_Id :=
+                 New_Relation
+                   (Op      => EW_Eq,
+                    Op_Type => EW_Bool,
+                    Left    => +New_Term (Arg_S),
+                    Right   => +New_Term (Arg_T));
+      Else_Rel : constant W_Pred_Id :=
+                 New_Relation
+                   (Op      => EW_Ne,
+                    Op_Type => EW_Bool,
+                    Left    => +New_Term (Arg_S),
+                    Right   => +New_Term (Arg_T));
       Post    : constant W_Pred_Id :=
                   New_Conditional
-                    (Condition => +New_Result_Term,
-                     Then_Part =>
-                       New_Relation
-                         (Domain  => EW_Pred,
-                          Op      => EW_Eq,
-                          Op_Type => EW_Bool,
-                          Left    => +New_Term (Arg_S),
-                          Right   => +New_Term (Arg_T)),
-                     Else_Part =>
-                       New_Relation
-                         (Domain  => EW_Pred,
-                          Op      => EW_Ne,
-                          Op_Type => EW_Bool,
-                          Left    => +New_Term (Arg_S),
-                          Right   => +New_Term (Arg_T)));
+                    (Condition => W_Prog_Id (Cond),
+                     Then_Part => +Then_Rel,
+                     Else_Part => +Else_Rel);
       Pre     : constant W_Pred_Id :=
                   New_Literal (Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=

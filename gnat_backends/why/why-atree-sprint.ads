@@ -62,15 +62,7 @@ private
      (State : in out Printer_State;
       Node  : W_Array_Type_Id);
 
-   procedure Array_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Type_Id);
-
    procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id);
-
-   procedure Ref_Type_Post_Op
      (State : in out Printer_State;
       Node  : W_Ref_Type_Id);
 
