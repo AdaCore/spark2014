@@ -52,7 +52,7 @@ package Configuration is
    --  True if -d is present. Do not remove temporary files.
    Only_Given   : aliased Boolean;
    --  True if -u is present. Only compile/prove given files
-   Strict       : aliased Boolean;
+   Pedantic       : aliased Boolean;
    --  True if --strict switch is present. Stricter interpretation of language.
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
