@@ -34,7 +34,8 @@
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 DOC=install/share/doc/gnatprove
-LIB=install/lib/gnatprove
+ALI_DIR=install/lib/gnatprove
+GNATLIBDIR=install/share/gnatprove/stdlib
 EXAMPLES=install/share/examples/gnatprove
 STDLIB_TMP=stdlib_tmp
 
@@ -99,13 +100,14 @@ stdlib-check:
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check -k
 
 install-stdlib:
-	mkdir -p $(LIB)
-	cp $(STDLIB_TMP)/*.ali $(LIB)
+	mkdir -p $(ALI_DIR)
+	mkdir -p $(GNATLIBDIR)
+	cp $(STDLIB_TMP)/*.ali $(ALI_DIR)
 	cp $(STDLIB_TMP)/*__types_vars_spec.mlw \
            $(STDLIB_TMP)/*__types_vars_body.mlw \
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
 	   $(STDLIB_TMP)/*_standard.mlw \
-	   install/share/gnatprove/stdlib
+	   $(GNATLIBDIR)
 
 install-examples:
 	mkdir -p $(EXAMPLES)
