@@ -367,7 +367,7 @@ package body Gnat2Why.Expr.Loops is
                       Sequence
                         (Loop_Body,
                          New_Conditional
-                           (Condition => Condition,
+                           (Condition => +Condition,
                             Then_Part => +Inv_Check,
                             Else_Part =>
                               New_Raise
@@ -393,7 +393,7 @@ package body Gnat2Why.Expr.Loops is
 
       return
         New_Conditional
-          (Condition => Condition,
+          (Condition => +Condition,
            Then_Part =>
              +Sequence
                (Inv_Check,

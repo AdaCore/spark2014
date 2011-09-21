@@ -189,7 +189,7 @@ package body Gnat2Why.Expr is
                     New_Binding
                       (Ada_Node => N,
                        Name     => Tmp_Var,
-                       Def      => Why_Expr,
+                       Def      => +Why_Expr,
                        Context  =>
                          +New_Assume_Statement
                            (Ada_Node => N,
@@ -1200,7 +1200,7 @@ package body Gnat2Why.Expr is
               Domain   => EW_Pred,
               Op_Type  => EW_Bool,
               Left     => +Transform_Expr (Expr, EW_Bool_Type, EW_Term),
-              Right    => New_Literal (Value => EW_True),
+              Right    => New_Literal (Value => EW_True, Domain => EW_Prog),
               Op       => EW_Eq);
       end if;
 
@@ -1848,12 +1848,12 @@ package body Gnat2Why.Expr is
                 (New_Binding
                    (Name    => Index,
                     Def     =>
-                      New_Simpl_Any_Prog
+                      +New_Simpl_Any_Prog
                         (New_Base_Type (Base_Type => EW_Int)),
                     Context =>
                       New_Conditional
                         (Domain    => EW_Prog,
-                         Condition => Range_Cond,
+                         Condition => +Range_Cond,
                          Then_Part => +Why_Expr)),
                  New_Assume_Statement
                    (Ada_Node    => Expr,

@@ -407,7 +407,7 @@ package body Why.Gen.Progs is
                          (Ada_Node => Ada_Node,
                           Op_Type  => EW_Int,
                           Op       => EW_Le,
-                          Left     => Index_Deref,
+                          Left     => +Index_Deref,
                           Right    => +High);
       Loop_Content : constant W_Prog_Id :=
                        New_Statement_Sequence

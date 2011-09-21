@@ -65,7 +65,7 @@ package body Why.Gen.Funcs is
                     Right   => +New_Term (Arg_T));
       Post    : constant W_Pred_Id :=
                   New_Conditional
-                    (Condition => W_Prog_Id (Cond),
+                    (Condition => +Cond,
                      Then_Part => +Then_Rel,
                      Else_Part => +Else_Rel);
       Pre     : constant W_Pred_Id :=

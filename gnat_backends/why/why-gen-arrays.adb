@@ -33,8 +33,6 @@ with Why.Gen.Binders;    use Why.Gen.Binders;
 
 package body Why.Gen.Arrays is
 
-   function P (Id : W_Expr_OId) return W_Prog_OId renames "+";
-
    -----------------------------------
    -- Declare_Ada_Constrained_Array --
    -----------------------------------
@@ -186,7 +184,7 @@ package body Why.Gen.Arrays is
                       Op_Type => EW_Abstract,
                       Left    => +Ar,
                       Right   =>
-                        P (New_Call
+                        New_Call
                           (Domain => EW_Term,
                            Name   => Array_Conv_To.Id (Name),
                            Args   =>
@@ -194,7 +192,7 @@ package body Why.Gen.Arrays is
                                 New_Call
                                   (Domain => EW_Term,
                                    Name   => Array_Conv_From.Id (Name),
-                                   Args   => (1 => +Ar)))))))));
+                                   Args   => (1 => +Ar))))))));
       Emit
         (File,
          New_Guarded_Axiom
@@ -227,15 +225,15 @@ package body Why.Gen.Arrays is
                            Op      => EW_Eq,
                            Op_Type => EW_Abstract,
                            Left    =>
-                             P (New_Call
+                             New_Call
                                (Domain => EW_Term,
                                 Name   => Array_Conv_To.Id (Name),
-                                Args   => (1 => +Ar))),
+                                Args   => (1 => +Ar)),
                            Right =>
-                             P (New_Call
+                             New_Call
                                (Domain => EW_Term,
                                 Name   => Array_Conv_To.Id (Name),
-                                Args   => (1 => +Arb)))),
+                                Args   => (1 => +Arb))),
                       Right  =>
                         New_Relation
                           (Domain  => EW_Pred,

@@ -342,15 +342,15 @@ package body Xtree_Sinfo is
       New_Field (W_Relation,
                  "Op_Type", "EW_Not_Null_Type");
       New_Field (W_Relation,
-                 "Left", "W_Prog", Id_One);
+                 "Left", "W_Expr", Id_One);
       New_Field (W_Relation,
                  "Op", "EW_Relation");
       New_Field (W_Relation,
-                 "Right", "W_Prog", Id_One);
+                 "Right", "W_Expr", Id_One);
       New_Field (W_Relation,
                  "Op2", "EW_Relation", "EW_None");
       New_Field (W_Relation,
-                 "Right2", "W_Prog", Id_Lone);
+                 "Right2", "W_Expr", Id_Lone);
 
       ------------------
       -- W_Connection --
@@ -408,7 +408,7 @@ package body Xtree_Sinfo is
       New_Field (W_Binding,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Binding,
-                 "Def", "W_Prog", Id_One);
+                 "Def", "W_Expr", Id_One);
       New_Field (W_Binding,
                  "Context", "W_Expr", Id_One);
 
@@ -417,7 +417,7 @@ package body Xtree_Sinfo is
       -------------------
 
       New_Field (W_Conditional,
-                 "Condition", "W_Prog", Id_One);
+                 "Condition", "W_Expr", Id_One);
       New_Field (W_Conditional,
                  "Then_Part", "W_Expr", Id_One);
       New_Field (W_Conditional,

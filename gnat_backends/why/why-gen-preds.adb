@@ -163,7 +163,7 @@ package body Why.Gen.Preds is
                 Op      => EW_Eq,
                 Op_Type => EW_Bool,
                 Left    => +Left,
-                Right   => New_Literal (Value => EW_True)),
+                Right   => New_Literal (Value => EW_True, Domain => EW_Prog)),
            Right => +Right);
    end New_Equal_Bool;
 

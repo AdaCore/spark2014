@@ -56,14 +56,14 @@ package body Why.Gen.Records is
                              others => <>));
 
       Cond        : constant W_Pred_Id :=
-                     New_Relation
+                      New_Relation
                         (Left    => +X_T,
                          Right   => +Y_T,
                          Op_Type => EW_Bool,
                          Op      => EW_Eq);
       Def         : constant W_Term_Id :=
-                     New_Conditional
-                        (Condition   => W_Prog_Id (Cond),
+                      New_Conditional
+                        (Condition   => +Cond,
                          Then_Part   => New_Literal (Value  => EW_True,
                                                      Domain => EW_Term),
                          Else_Part   => New_Literal (Value  => EW_False,

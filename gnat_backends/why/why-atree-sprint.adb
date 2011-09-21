@@ -633,11 +633,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Relation_Id)
    is
-      Left   : constant W_Prog_Id := Get_Left (Node);
+      Left   : constant W_Expr_Id := Get_Left (Node);
       Op     : constant EW_Relation := Get_Op (Node);
-      Right  : constant W_Prog_Id := Get_Right (Node);
+      Right  : constant W_Expr_Id := Get_Right (Node);
       Op2    : constant EW_Relation := Get_Op2 (Node);
-      Right2 : constant W_Prog_OId := Get_Right2 (Node);
+      Right2 : constant W_Expr_OId := Get_Right2 (Node);
    begin
       Traverse (State, +Left);
       P (O, " ");
@@ -766,7 +766,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Conditional_Id)
    is
-      Condition : constant W_Prog_Id := Get_Condition (Node);
+      Condition : constant W_Expr_Id := Get_Condition (Node);
       Then_Part : constant W_Expr_Id := Get_Then_Part (Node);
       Else_Part : constant W_Expr_OId := Get_Else_Part (Node);
       Has_Else  : constant Boolean := Else_Part /= Why_Empty;
@@ -924,7 +924,7 @@ package body Why.Atree.Sprint is
       Node  : W_Binding_Id)
    is
       Name             : constant W_Identifier_Id := Get_Name (Node);
-      Def              : constant W_Prog_Id := Get_Def (Node);
+      Def              : constant W_Expr_Id := Get_Def (Node);
       Context          : constant W_Expr_Id := Get_Context (Node);
       Binding_Sequence : constant Boolean := Get_Kind (+Context) = W_Binding;
    begin
