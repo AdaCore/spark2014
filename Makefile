@@ -8,7 +8,8 @@
 # library.
 #
 # For gnatprove to work, you also need working installations of Why3 and
-# Alt-Ergo. The INSTALL file contains information on how to install those.
+# Alt-Ergo. The files build_instructions*.txt contains information on how to 
+# install those.
 #
 # The necessary steps to correctly install gnat2why/gnatprove are
 #

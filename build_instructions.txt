@@ -11,7 +11,7 @@ To build Hi-Lite on a Unix / Linux machine, you need the following products:
    - Ocaml
    - Ocamlgraph
    - Alt-Ergo
-   - Why
+   - Why3
 
 The following instructions explain how to obtain and install these products.
 The final directory structure of all related products is:
@@ -187,13 +187,13 @@ The final directory structure of all related products is:
 
    8.4) Configure Why3
 
-      $ ./configure --prefix=<Root>/hi-lite/install
+      $ ./configure --prefix=<Root>/hi-lite/install --disable-gui
 
       where <Root> denotes a full path.
 
    8.5) Build Why3
 
-      $ make
+      $ make CC=gcc
 
    8.6) Install Why3
 
