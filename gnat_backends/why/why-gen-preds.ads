@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
-with VC_Kinds;  use VC_Kinds;
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
 
@@ -54,11 +52,5 @@ package Why.Gen.Preds is
      (Left  : W_Term_Id;
       Right : W_Pred_Id) return W_Pred_Id;
    --  Create the formula "Left = true <-> Right".
-
-   function New_Located_Expr
-      (Ada_Node : Node_Id;
-       Expr     : W_Expr_Id;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
 
 end Why.Gen.Preds;

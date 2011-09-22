@@ -38,6 +38,7 @@ with Why.Inter;             use Why.Inter;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
+with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;

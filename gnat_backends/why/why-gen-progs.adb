@@ -26,12 +26,13 @@
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Uintp;              use Uintp;
+with VC_Kinds;           use VC_Kinds;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Expr;       use Why.Gen.Expr;
 
 package body Why.Gen.Progs is
 
@@ -65,12 +66,6 @@ package body Why.Gen.Progs is
        From       : W_Base_Type_Id;
        Why_Expr   : W_Prog_Id;
        Base_Type  : W_Base_Type_Id) return W_Prog_Id;
-
-   function Is_False_Boolean (P : W_Expr_Id) return Boolean;
-   --  Check if the given program is the program "false"
-
-   function Is_True_Boolean (P : W_Expr_Id) return Boolean;
-   --  Check if the given program is the program "true"
 
    ---------------------
    -- Conversion_Name --
@@ -323,30 +318,6 @@ package body Why.Gen.Progs is
       end if;
    end Insert_Scalar_Conversion;
 
-   ----------------------
-   -- Is_False_Boolean --
-   ----------------------
-
-   function Is_False_Boolean (P : W_Expr_Id) return Boolean
-   is
-   begin
-      return
-         (Get_Kind (+P) = W_Literal and then
-          Get_Value (+P) = EW_False);
-   end Is_False_Boolean;
-
-   ---------------------
-   -- Is_True_Boolean --
-   ---------------------
-
-   function Is_True_Boolean (P : W_Expr_Id) return Boolean
-   is
-   begin
-      return
-         (Get_Kind (+P) = W_Literal and then
-          Get_Value (+P) = EW_True);
-   end Is_True_Boolean;
-
    --------------------------
    -- New_Assume_Statement --
    --------------------------
@@ -491,171 +462,6 @@ package body Why.Gen.Progs is
                 Domain   => EW_Pred));
    end New_Located_Assert;
 
-   ----------------------
-   -- New_Located_Call --
-   ----------------------
-
-   function New_Located_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Expr_Array;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
-   is
-   begin
-      return
-        +New_Located_Expr
-          (Ada_Node => Ada_Node,
-           Reason   => Reason,
-           Expr     =>
-             New_Call
-               (Ada_Node => Ada_Node,
-                Name     => Name,
-                Args     => Progs,
-                Domain   => Domain),
-           Domain  => Domain);
-   end New_Located_Call;
-
-   ------------------
-   -- New_And_Expr --
-   ------------------
-
-   function New_And_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
-   begin
-      if Is_True_Boolean (+Left) then
-         return Right;
-
-      elsif Is_True_Boolean (+Right) then
-         return Left;
-
-      else
-         if Domain = EW_Pred then
-            return New_Connection
-              (Domain => Domain,
-               Op     => EW_And,
-               Left   => +Left,
-               Right  => +Right);
-         else
-            return
-              New_Call
-                (Domain => Domain,
-                 Name   => New_Identifier ("bool_and"),
-                 Args   => (1 => +Left, 2 => +Right));
-         end if;
-      end if;
-   end New_And_Expr;
-
-   -----------------------
-   -- New_And_Then_Expr --
-   -----------------------
-
-   function New_And_Then_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
-   begin
-      if Is_True_Boolean (+Left) then
-         return Right;
-      elsif Is_True_Boolean (+Right) then
-         return Left;
-      else
-         if Domain = EW_Prog then
-            return
-               New_Connection
-                 (Op     => EW_And_Then,
-                  Left   => Left,
-                  Right  => Right,
-                  Domain => Domain);
-         else
-            return New_And_Expr (Left, Right, Domain);
-         end if;
-      end if;
-   end New_And_Then_Expr;
-
-   --------------------
-   -- New_Comparison --
-   --------------------
-
-   function New_Comparison
-     (Cmp         : EW_Relation;
-      Left, Right : W_Expr_Id;
-      Arg_Types   : EW_Scalar;
-      Domain      : EW_Domain)
-     return W_Expr_Id is
-   begin
-      if Domain in EW_Pred | EW_Prog then
-         return
-            New_Relation
-              (Domain  => Domain,
-               Op_Type => Arg_Types,
-               Left    => +Left,
-               Right   => +Right,
-               Op      => Cmp);
-      else
-         return
-           New_Call
-             (Name   => New_Bool_Cmp (Cmp, Arg_Types),
-              Args   => (1 => +Left, 2 => +Right),
-              Domain => Domain);
-      end if;
-   end New_Comparison;
-
-   -----------------
-   -- New_Or_Expr --
-   -----------------
-
-   function New_Or_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
-   begin
-      if Is_False_Boolean (Left) then
-         return Right;
-      elsif Is_False_Boolean (Right) then
-         return Left;
-      else
-         if Domain = EW_Pred then
-            return New_Connection
-              (Op     => EW_Or,
-               Left   => +Left,
-               Right  => +Right,
-               Domain => Domain);
-         else
-            return New_Call
-              (Domain => Domain,
-               Name => New_Identifier ("bool_or"),
-               Args => (1 => +Left, 2 => +Right));
-         end if;
-      end if;
-   end New_Or_Expr;
-
-   ----------------------
-   -- New_Or_Else_Expr --
-   ----------------------
-
-   function New_Or_Else_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id
-   is
-   begin
-      if Is_False_Boolean (Left) then
-         return Right;
-      elsif Is_False_Boolean (Right) then
-         return Left;
-      else
-         if Domain = EW_Prog then
-            return
-              New_Connection
-                (Domain => Domain,
-                 Op     => EW_Or_Else,
-                 Left   => Left,
-                 Right  => Right);
-         else
-            return New_Or_Expr (Left, Right, Domain);
-         end if;
-      end if;
-   end New_Or_Else_Expr;
-
    ----------------
    -- New_Result --
    ----------------
@@ -686,33 +492,8 @@ package body Why.Gen.Progs is
                    Effects => New_Effects));
    end New_Simpl_Any_Expr;
 
-   ---------------------------
-   -- New_Simpl_Conditional --
-   ---------------------------
-
-   function New_Simpl_Conditional
-      (Condition : W_Expr_Id;
-       Then_Part : W_Expr_Id;
-       Else_Part : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id
-   is
-   begin
-      if Is_True_Boolean (Condition) then
-         return Then_Part;
-      elsif Is_False_Boolean (Condition) then
-         return Else_Part;
-      else
-         return
-           New_Conditional
-             (Condition => +Condition,
-              Then_Part => Then_Part,
-              Else_Part => Else_Part,
-              Domain    => Domain);
-      end if;
-   end New_Simpl_Conditional;
-
    --------------
-   -- New_Void --
+   -- Sequence --
    --------------
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id

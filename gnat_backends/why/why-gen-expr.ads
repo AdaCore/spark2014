@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - L O C S                           --
+--                          W H Y - G E N - E X P R                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -24,10 +24,55 @@
 ------------------------------------------------------------------------------
 
 with Types;     use Types;
-with Why.Ids;   use Why.Ids;
 with VC_Kinds;  use VC_Kinds;
+with Why.Ids;   use Why.Ids;
+with Why.Sinfo; use Why.Sinfo;
 
-package Gnat2Why.Locs is
+package Why.Gen.Expr is
+
+   function New_And_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_And_Then_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Comparison
+     (Cmp         : EW_Relation;
+      Left, Right : W_Expr_Id;
+      Arg_Types   : EW_Scalar;
+      Domain      : EW_Domain)
+     return W_Expr_Id;
+
+   function New_Or_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Or_Else_Expr
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Simpl_Conditional
+      (Condition : W_Expr_Id;
+       Then_Part : W_Expr_Id;
+       Else_Part : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
+   --  Conditional, simplify if condition is true/false.
+
+   function New_Located_Expr
+      (Ada_Node : Node_Id;
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id;
+
+   function New_Located_Call
+      (Ada_Node : Node_Id;
+       Name     : W_Identifier_Id;
+       Progs    : W_Expr_Array;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id;
+   --  Build a program call with a fresh label corresponding to the Ada_Node.
 
    function New_Located_Label (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Id;
@@ -36,4 +81,4 @@ package Gnat2Why.Locs is
    --  This means: associate a fresh Why Identifier to the source location of
    --  the Ada Node, and return the identifier.
 
-end Gnat2Why.Locs;
+end Why.Gen.Expr;

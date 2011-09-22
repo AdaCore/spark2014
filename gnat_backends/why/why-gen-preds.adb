@@ -23,11 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Gnat2Why.Locs;       use Gnat2Why.Locs;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -170,33 +166,5 @@ package body Why.Gen.Preds is
                 Right   => New_Literal (Value => EW_True)),
            Right => +Right);
    end New_Equal_Bool;
-
-   ----------------------
-   -- New_Located_Expr --
-   ----------------------
-
-   function New_Located_Expr
-      (Ada_Node : Node_Id;
-       Expr     : W_Expr_Id;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
-   is
-   begin
-      if Domain /= EW_Term
-        and then Present (Ada_Node)
-        and then
-           not (Get_Kind (+Expr) = W_Literal
-                and then Get_Value (+Expr) = EW_True)
-      then
-         return
-            New_Label
-              (Ada_Node => Ada_Node,
-               Name     => New_Located_Label (Ada_Node, Reason),
-               Def      => Expr,
-               Domain   => Domain);
-      else
-         return Expr;
-      end if;
-   end New_Located_Expr;
 
 end Why.Gen.Preds;

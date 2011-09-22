@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;               use Types;
-with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Ids;             use Why.Ids;
@@ -89,46 +88,8 @@ package Why.Gen.Progs is
        Pred     : W_Pred_Id) return W_Prog_Id;
    --  Build a named assert (in programs) of a predicate
 
-   function New_Located_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Expr_Array;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
-   --  Build a program call with a fresh label corresponding to the Ada_Node.
-
-   function New_And_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
-
-   function New_And_Then_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
-
-   function New_Comparison
-     (Cmp         : EW_Relation;
-      Left, Right : W_Expr_Id;
-      Arg_Types   : EW_Scalar;
-      Domain      : EW_Domain)
-     return W_Expr_Id;
-
-   function New_Or_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
-
-   function New_Or_Else_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id;
-
    function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type.
-
-   function New_Simpl_Conditional
-      (Condition : W_Expr_Id;
-       Then_Part : W_Expr_Id;
-       Else_Part : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
-   --  Conditional, simplify if condition is true/false.
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
