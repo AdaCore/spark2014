@@ -224,6 +224,8 @@ package body Gnat2Why.Expr is
                        Transform_Expr (Expression (N),
                                        EW_Int_Type,
                                        Domain);
+      Cond_Domain  : constant EW_Domain :=
+         (if Domain = EW_Term then EW_Pred else Domain);
 
       --  We always take the last branch as the default value
       T            : W_Expr_Id := Branch_Expr (Cur_Case);
@@ -236,14 +238,14 @@ package body Gnat2Why.Expr is
             Cur_Choice : Node_Id := First (Discrete_Choices (Cur_Case));
             C          : W_Expr_Id :=
                            New_Literal
-                             (Domain => Domain,
+                             (Domain => Cond_Domain,
                               Value  => EW_False);
          begin
             while Present (Cur_Choice) loop
                C := New_Or_Else_Expr
                       (C,
-                       Equal_To (Matched_Expr, Cur_Choice, Domain),
-                       Domain);
+                       Equal_To (Matched_Expr, Cur_Choice, Cond_Domain),
+                       Cond_Domain);
                Next (Cur_Choice);
             end loop;
 
@@ -336,8 +338,10 @@ package body Gnat2Why.Expr is
    function Equal_To
      (E      : W_Expr_Id;
       N      : Node_Id;
-      Domain : EW_Domain)
-     return W_Expr_Id is
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Subdomain : constant EW_Domain :=
+         (if Domain = EW_Pred then EW_Term else Domain);
    begin
       case Nkind (N) is
          when N_Identifier
@@ -350,7 +354,7 @@ package body Gnat2Why.Expr is
                  New_Comparison
                  (Cmp       => EW_Eq,
                   Left      => E,
-                  Right     => Transform_Expr (N, BT, Domain),
+                  Right     => Transform_Expr (N, BT, Subdomain),
                   Arg_Types => Get_Base_Type (BT),
                   Domain    => Domain);
             end;
@@ -363,7 +367,7 @@ package body Gnat2Why.Expr is
                      (Cmp       => EW_Le,
                       Left      => Transform_Expr (Low_Bound (N),
                                                    EW_Int_Type,
-                                                   Domain),
+                                                   Subdomain),
                       Arg_Types => EW_Int,
                       Right     => E,
                       Domain    => Domain),
@@ -373,7 +377,7 @@ package body Gnat2Why.Expr is
                       Left      => E,
                       Right     => Transform_Expr (High_Bound (N),
                                                    EW_Int_Type,
-                                                   Domain),
+                                                   Subdomain),
                       Arg_Types => EW_Int,
                       Domain    => Domain),
                  Domain => Domain);
