@@ -200,6 +200,21 @@ procedure Gnatprove is
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
       Generate_Why3_Conf_File (Proj_Type.Object_Dir.Display_Full_Name);
+      if Timeout /= 0 then
+         Args.Append ("--timeout");
+         Args.Append (Int_Image (Timeout));
+      end if;
+      if Steps /= 0 then
+         Args.Append ("--steps");
+         Args.Append (Int_Image (Steps));
+      end if;
+      if Verbose then
+         Args.Append ("--verbose");
+      end if;
+      if Integer (Args.Length) > 0 then
+         Args.Prepend ("-cargs:Why");
+      end if;
+
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
    end Compute_VCs;
 
