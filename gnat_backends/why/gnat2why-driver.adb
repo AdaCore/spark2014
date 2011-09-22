@@ -64,7 +64,6 @@ with Why.Conversions;       use Why.Conversions;
 with Why.Inter;             use Why.Inter;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Locs;         use Gnat2Why.Locs;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
@@ -267,9 +266,6 @@ package body Gnat2Why.Driver is
          end loop;
       end;
 
-      Open_Current_File (Base_Name & "__package.loc");
-      Print_Locations_Table (Current_File);
-      Close_Current_File;
    end GNAT_To_Why;
 
    ------------------------
