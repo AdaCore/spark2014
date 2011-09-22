@@ -22,34 +22,40 @@
 #    This will apply gnat2why to the standard library of GNAT to obtain
 #    precompiled Why files
 #
-# 3) make install-stdlib
+# 3) make install
 #
-#    This will copy the files generated in the previous step to the directory
-#    of the Why library.
+#    This will copy all the necessary files into the install/ subdirectory
 #
 # 4) Put the directory install/bin in your path:
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
-.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install-stdlib
+.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
-DOC=install/share/doc/gnatprove
-ALI_DIR=install/lib/gnatprove
-GNATLIBDIR=install/share/gnatprove/stdlib
-EXAMPLES=install/share/examples/gnatprove
+INSTALLDIR=install
+SHAREDIR=$(INSTALLDIR)/share
+EXAMPLESDIR=$(SHAREDIR)/examples/gnatprove
+DOCDIR=$(SHAREDIR)/doc/gnatprove
+GNATPROVEDIR=$(SHAREDIR)/gnatprove
+ALI_DIR=$(INSTALLDIR)/lib/gnatprove
+GNATLIBDIR=$(GNATPROVEDIR)/stdlib
+CONFIGDIR=$(GNATPROVEDIR)/config
 STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
 
-all-nightly: gnat1why gnatprove local-stdlib install-stdlib install-examples
+all-nightly: gnat1why gnatprove local-stdlib install install-examples
 
+install: install-stdlib
+	mkdir -p $(CONFIGDIR)
+	cp release/share/gnatprove/config/*cgpr $(CONFIGDIR)
 doc:
 	$(MAKE) -C docs/ug latexpdf
 	$(MAKE) -C docs/ug html
-	mkdir -p $(DOC)/pdf
-	cp -p docs/ug/_build/latex/gnatprove_ug.pdf $(DOC)/pdf
-	cp -pr docs/ug/_build/html $(DOC)
+	mkdir -p $(DOCDIR)/pdf
+	cp -p docs/ug/_build/latex/gnatprove_ug.pdf $(DOCDIR)/pdfD
+	cp -pr docs/ug/_build/html $(DOCDIR)
 	$(MAKE) -C docs/ug clean
 
 gnat1why:
@@ -111,8 +117,8 @@ install-stdlib:
 	   $(GNATLIBDIR)
 
 install-examples:
-	mkdir -p $(EXAMPLES)
-	cp -r dist-examples/* $(EXAMPLES)
+	mkdir -p $(EXAMPLESDIR)
+	cp -r dist-examples/* $(EXAMPLESDIR)
 
 clean:
 	$(MAKE) -C gnat_backends/why/xgen clean
