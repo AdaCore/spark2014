@@ -7,8 +7,6 @@ generic
    with function Constructor (Params : not null access Parameters) return T
      is abstract;
 
-function Generic_Dispatching_Constructor
+procedure Atgdico
   (The_Tag : Integer;
-   Params  : not null access Parameters) return T'Class;
-pragma Preelaborate_05 (Generic_Dispatching_Constructor);
-pragma Import (Intrinsic, Generic_Dispatching_Constructor);
+   Params  : not null access Parameters);

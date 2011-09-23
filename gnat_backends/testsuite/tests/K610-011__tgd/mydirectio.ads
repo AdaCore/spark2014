@@ -21,4 +21,4 @@ pragma Ada_2005;
 
 with Ada.Direct_IO;
 
-generic package Direct_IO renames Ada.Direct_IO;
+generic package MyDirectIO renames Ada.Direct_IO;
