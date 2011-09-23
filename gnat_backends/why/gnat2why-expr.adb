@@ -87,6 +87,17 @@ package body Gnat2Why.Expr is
        Expr   : W_Expr_Id;
        Domain : EW_Domain)
       return W_Expr_Id;
+   --  Compute an access expression for record and array accesses without
+   --  considering subexpressions. [N] represents the Ada node of the access,
+   --  and [Expr] the Why expression of the prefix.
+
+   function One_Level_Update
+      (N      : Node_Id;
+       Pref   : W_Expr_Id;
+       Value  : W_Expr_Id;
+       Domain : EW_Domain)
+      return W_Expr_Id;
+   --  same as One_Level_Access, but for updates
 
    function Transform_Quantified_Expression
       (Expr         : Node_Id;
@@ -570,6 +581,47 @@ package body Gnat2Why.Expr is
       end case;
    end One_Level_Access;
 
+   ----------------------
+   -- One_Level_Update --
+   ----------------------
+
+   function One_Level_Update
+      (N      : Node_Id;
+       Pref   : W_Expr_Id;
+       Value  : W_Expr_Id;
+       Domain : EW_Domain)
+      return W_Expr_Id is
+   begin
+      case Nkind (N) is
+         when N_Selected_Component =>
+            return
+              New_Record_Update (Name  => Pref,
+                                 Field => Transform_Ident (Selector_Name (N)),
+                                 Value => Value);
+
+         when N_Indexed_Component =>
+            if Number_Dimensions (Etype (Prefix (N))) > 1 then
+               raise Not_Implemented;
+            end if;
+            return
+               New_Array_Update (Ada_Node  => N,
+                                 Type_Name => Type_Of_Node (Prefix (N)),
+                                 Ar        => Pref,
+                                 Index     =>
+                                    +Transform_Expr
+                                      (First (Expressions (N)),
+                                       EW_Int_Type,
+                                       EW_Prog),
+                                 Value     => Value,
+                                 Domain    => Domain);
+
+         when others =>
+            raise Not_Implemented;
+
+      end case;
+
+   end One_Level_Update;
+
    -------------------------------
    -- Predicate_Of_Pragma_Check --
    -------------------------------
@@ -708,12 +760,12 @@ package body Gnat2Why.Expr is
                return
                  (Rv =>
                     +Transform_Expr
-                     (Expression (Stmt),
-                      Expected_Type,
-                      EW_Prog),
+                       (Expression (Stmt),
+                        Expected_Type,
+                        EW_Prog),
                   Lv => +Transform_Expr (N, EW_Prog));
 
-            when N_Selected_Component =>
+            when N_Selected_Component | N_Indexed_Component =>
 
                --  Here, the update expression is simply
                --    {| path with field = update_expr |}
@@ -723,48 +775,10 @@ package body Gnat2Why.Expr is
 
                declare
                   R : constant RV_Rec := Compute_Rvalue (Prefix (N));
-                  F : constant W_Identifier_Id :=
-                     Transform_Ident (Selector_Name (N));
                begin
                   return
-                    (Rv =>
-                        New_Record_Update
-                           (Name  => +R.Lv,
-                            Field => F,
-                            Value => +R.Rv),
+                    (Rv => +One_Level_Update (N, +R.Lv, +R.Rv, EW_Prog),
                      Lv => +One_Level_Access (N, +R.Lv, EW_Prog));
-               end;
-
-            when N_Indexed_Component =>
-
-               --  The same principle as for record fields.
-               --  ??? update for more than one dimension
-               declare
-                  Pre : constant Node_Id := Prefix (N);
-                  R : constant RV_Rec := Compute_Rvalue (Pre);
-               begin
-                  if Number_Dimensions (Etype (Pre)) > 1 then
-                     raise Not_Implemented;
-                  end if;
-                  return
-                     (Rv =>
-                        +New_Array_Update
-                           (Ada_Node => N,
-                            Type_Name => Type_Of_Node (Pre),
-                            Ar        => +R.Lv,
-                            Index     =>
-                               +Transform_Expr
-                                 (First (Expressions (N)),
-                                  EW_Int_Type,
-                                  EW_Prog),
-                            Value     => +R.Rv,
-                            Domain    => EW_Prog),
-                      Lv =>
-                        +One_Level_Access
-                           (N => N,
-                            Expr => +R.Lv,
-                            Domain => EW_Prog));
-
                end;
 
             when others =>
