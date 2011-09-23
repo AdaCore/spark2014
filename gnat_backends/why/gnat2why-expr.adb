@@ -88,6 +88,8 @@ package body Gnat2Why.Expr is
        Current_Type : out W_Base_Type_Id) return W_Expr_Id;
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
+
+   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
@@ -577,6 +579,54 @@ package body Gnat2Why.Expr is
                                             Subdomain)),
            Domain => Domain);
    end Range_Expr;
+
+   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
+   is
+      Lvalue : constant Node_Id := Name (Stmt);
+   begin
+
+      case Nkind (Lvalue) is
+         when N_Identifier =>
+            return
+              New_Assignment
+                (Ada_Node => Stmt,
+                 Name     => Transform_Ident (Lvalue),
+                 Value    =>
+                   +Transform_Expr
+                     (Expression (Stmt),
+                      Type_Of_Node (Lvalue),
+                      EW_Prog));
+
+         when N_Indexed_Component =>
+            declare
+               Pre : constant Node_Id := Prefix (Lvalue);
+            begin
+               if Number_Dimensions (Etype (Pre)) > 1 then
+                  raise Not_Implemented;
+               else
+                  return
+                    New_Array_Update_Prog
+                      (Ada_Node  => Stmt,
+                       Type_Name => Type_Of_Node (Pre),
+                       Ar        => Transform_Ident (Pre),
+                       Index     =>
+                         +Transform_Expr
+                           (First (Expressions (Lvalue)),
+                            EW_Int_Type,
+                            EW_Prog),
+                       Value     =>
+                         +Transform_Expr
+                           (Expression (Stmt),
+                            Type_Of_Node
+                              (Component_Type (Etype (Pre))),
+                            EW_Prog));
+               end if;
+            end;
+
+         when others =>
+            raise Not_Implemented;
+      end case;
+   end Transform_Assignment_Statement;
 
    ---------------------
    -- Transform_Binop --
@@ -1376,57 +1426,8 @@ package body Gnat2Why.Expr is
             return New_Void (Stmt);
 
          when N_Assignment_Statement =>
-            declare
-               Lvalue : constant Node_Id := Name (Stmt);
-            begin
 
-               --  We need to differentiate the following cases
-               --  * arrays
-               --  * records (TBD)
-               --  * simple variables
-
-               case Nkind (Lvalue) is
-                  when N_Identifier =>
-                     return
-                       New_Assignment
-                         (Ada_Node => Stmt,
-                          Name     => Transform_Ident (Lvalue),
-                          Value    =>
-                            +Transform_Expr
-                              (Expression (Stmt),
-                               Type_Of_Node (Lvalue),
-                               EW_Prog));
-
-                  when N_Indexed_Component =>
-                     declare
-                        Pre : constant Node_Id := Prefix (Lvalue);
-                     begin
-                        if Number_Dimensions (Etype (Pre)) > 1 then
-                           raise Not_Implemented;
-                        else
-                           return
-                             New_Array_Update_Prog
-                               (Ada_Node  => Stmt,
-                                Type_Name => Type_Of_Node (Pre),
-                                Ar        => Transform_Ident (Pre),
-                                Index     =>
-                                  +Transform_Expr
-                                    (First (Expressions (Lvalue)),
-                                     EW_Int_Type,
-                                     EW_Prog),
-                                Value     =>
-                                  +Transform_Expr
-                                    (Expression (Stmt),
-                                     Type_Of_Node
-                                       (Component_Type (Etype (Pre))),
-                                     EW_Prog));
-                        end if;
-                     end;
-
-                  when others =>
-                     raise Not_Implemented;
-               end case;
-            end;
+            return Transform_Assignment_Statement (Stmt);
 
          --  Translate a return statement by raising the predefined exception
          --  for returns, which is caught at the end of the subprogram. For
