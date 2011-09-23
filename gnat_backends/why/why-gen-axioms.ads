@@ -83,4 +83,19 @@ package Why.Gen.Axioms is
    --   forall b : <type_b>.
    --    get___ar__my_record__a(make___ar__my_record(a, b)) = a
 
+   procedure Define_Equality_Axiom
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Binders   : Binder_Array);
+   --  Define a record equality axiom: its asserts that for a record of type t,
+   --  equality between records is equivalent to equality between their fields.
+   --  The axiom is of the form:
+   --
+   --  axiom ar__my_record__a___equality:
+   --   forall x, y : <type_name>.
+   --    get___ar__my_record__1(x) = get___ar__my_record__1(y)
+   --     /\ ...
+   --     /\ get___ar__my_record__n(x) = get___ar__my_record__n(y)
+   --     -> x = y
+
 end Why.Gen.Axioms;

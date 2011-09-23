@@ -46,4 +46,8 @@ package Why.Gen.Terms is
 
    function New_Result_Term return W_Term_Id;
    --  return the term containing the ident "result"
+
+   function New_Simpl_Epsilon_Term (T : W_Primitive_Type_Id) return W_Term_Id;
+   --  Build an epsilon term "epsilon _ : T . true"
+
 end Why.Gen.Terms;

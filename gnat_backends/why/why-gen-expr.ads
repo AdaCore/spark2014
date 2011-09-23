@@ -41,7 +41,7 @@ package Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : EW_Scalar;
+      Arg_Types   : W_Base_Type_Id;
       Domain      : EW_Domain)
      return W_Expr_Id;
 
@@ -80,5 +80,14 @@ package Why.Gen.Expr is
    --
    --  This means: associate a fresh Why Identifier to the source location of
    --  the Ada Node, and return the identifier.
+
+   function New_Simpl_Any_Expr
+     (Domain   : EW_Domain;
+      Arg_Type : W_Primitive_Type_Id) return W_Expr_Id
+   with
+     Pre => Domain in EW_Term | EW_Prog;
+   --  Build a "any" expression whose type is a simple type. In Prog domain,
+   --  this is translated into an "any", and in the Term domain as an
+   --  "epsilon".
 
 end Why.Gen.Expr;

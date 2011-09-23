@@ -37,11 +37,22 @@ package body Why.Gen.Records is
 
    procedure Define_Ada_Record
      (File    : W_File_Id;
+      E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array)
    is
       R_Type : constant W_Primitive_Type_Id :=
                  New_Abstract_Type (Name => New_Identifier (Name));
+      W_Type : constant W_Base_Type_Id := New_Base_Type (E, EW_Abstract);
+
+      Cmp_Binders : constant Binder_Array (1 .. 2) :=
+                      (1 => (B_Name => New_Identifier ("x"),
+                             B_Type => R_Type,
+                             others => <>),
+                       2 => (B_Name => New_Identifier ("y"),
+                             B_Type => R_Type,
+                             others => <>));
+
    begin
       Emit (File, New_Type (Name));
 
@@ -70,6 +81,20 @@ package body Why.Gen.Records is
             J,
             Binders);
       end loop;
+
+      Emit
+        (File,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => New_Bool_Cmp (EW_Eq, W_Type),
+            Binders     => Cmp_Binders,
+            Return_Type => New_Base_Type (Base_Type => EW_Bool)));
+
+      Define_Equality_Axiom
+        (File,
+         New_Identifier (Name),
+         Binders);
+
    end Define_Ada_Record;
 
 end Why.Gen.Records;

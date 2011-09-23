@@ -88,7 +88,7 @@ package Why.Gen.Progs is
        Pred     : W_Pred_Id) return W_Prog_Id;
    --  Build a named assert (in programs) of a predicate
 
-   function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id;
+   function New_Simpl_Any_Prog (T : W_Primitive_Type_Id) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type.
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;

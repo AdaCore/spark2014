@@ -77,6 +77,7 @@ package Gnat2Why.Expr is
 
    function Transform_Component_Associations
      (Domain : EW_Domain;
+      Typ    : Entity_Id;
       CA     : List_Id)
      return W_Expr_Array;
 

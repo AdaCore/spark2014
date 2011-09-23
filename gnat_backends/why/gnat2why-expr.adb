@@ -46,6 +46,7 @@ with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
+with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Expr is
 
@@ -219,13 +220,16 @@ package body Gnat2Why.Expr is
          end  case;
       end Branch_Expr;
 
+      Match_Domain  : constant EW_Domain :=
+         (if Domain = EW_Pred then EW_Term else Domain);
+      Cond_Domain  : constant EW_Domain :=
+         (if Domain = EW_Term then EW_Pred else Domain);
+
       Cur_Case     : Node_Id := Last (Alternatives (N));
       Matched_Expr : constant W_Expr_Id :=
                        Transform_Expr (Expression (N),
                                        EW_Int_Type,
-                                       Domain);
-      Cond_Domain  : constant EW_Domain :=
-         (if Domain = EW_Term then EW_Pred else Domain);
+                                       Match_Domain);
 
       --  We always take the last branch as the default value
       T            : W_Expr_Id := Branch_Expr (Cur_Case);
@@ -355,7 +359,7 @@ package body Gnat2Why.Expr is
                  (Cmp       => EW_Eq,
                   Left      => E,
                   Right     => Transform_Expr (N, BT, Subdomain),
-                  Arg_Types => Get_Base_Type (BT),
+                  Arg_Types => BT,
                   Domain    => Domain);
             end;
 
@@ -368,7 +372,7 @@ package body Gnat2Why.Expr is
                       Left      => Transform_Expr (Low_Bound (N),
                                                    EW_Int_Type,
                                                    Subdomain),
-                      Arg_Types => EW_Int,
+                      Arg_Types => New_Base_Type (Base_Type => EW_Int),
                       Right     => E,
                       Domain    => Domain),
                  Right =>
@@ -378,7 +382,7 @@ package body Gnat2Why.Expr is
                       Right     => Transform_Expr (High_Bound (N),
                                                    EW_Int_Type,
                                                    Subdomain),
-                      Arg_Types => EW_Int,
+                      Arg_Types => New_Base_Type (Base_Type => EW_Int),
                       Domain    => Domain),
                  Domain => Domain);
 
@@ -648,7 +652,7 @@ package body Gnat2Why.Expr is
                 (New_Binding
                    (Name    => Index,
                     Def     =>
-                      New_Simpl_Any_Expr
+                      New_Simpl_Any_Prog
                         (New_Base_Type (Base_Type => EW_Int)),
                     Context =>
                       New_Conditional
@@ -774,7 +778,7 @@ package body Gnat2Why.Expr is
       if Domain = EW_Pred and then
          not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
          | N_Op_Or | N_Or_Else | N_In | N_Conditional_Expression |
-         N_Quantified_Expression) then
+         N_Quantified_Expression | N_Case_Expression) then
          return
            New_Relation
              (Ada_Node => Expr,
@@ -787,17 +791,22 @@ package body Gnat2Why.Expr is
 
       case Nkind (Expr) is
          when N_Aggregate =>
-            T :=
-              New_Call
-                (Ada_Node => Expr,
-                 Domain   => Domain,
-                 Name     =>
-                   Record_Builder_Name.Id (Full_Name (Etype (Expr))),
-                 Args     =>
-                   Transform_Component_Associations
-                     (Domain,
-                      Component_Associations (Expr)));
-            Current_Type := EW_Abstract (Etype (Expr));
+            if Is_Record_Type (Etype (Expr)) then
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     =>
+                      Record_Builder_Name.Id (Full_Name (Etype (Expr))),
+                    Args     =>
+                      Transform_Component_Associations
+                        (Domain,
+                         Etype (Expr),
+                         Component_Associations (Expr)));
+               Current_Type := EW_Abstract (Etype (Expr));
+            else
+               raise Not_Implemented;
+            end if;
 
          when N_Integer_Literal =>
             T :=
@@ -901,7 +910,7 @@ package body Gnat2Why.Expr is
                    (Cmp       => Transform_Compare_Op (Nkind (Expr)),
                     Left      => Transform_Expr (Left, BT, Subdomain),
                     Right     => Transform_Expr (Right, BT, Subdomain),
-                    Arg_Types => Get_Base_Type (BT),
+                    Arg_Types => BT,
                     Domain    => Domain);
                Current_Type := EW_Bool_Type;
             end;
@@ -1511,18 +1520,81 @@ package body Gnat2Why.Expr is
 
    function Transform_Component_Associations
      (Domain : EW_Domain;
+      Typ    : Entity_Id;
       CA     : List_Id)
      return W_Expr_Array
    is
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean;
+      --  Return whether Association matches Component
+
+      function Number_Components (Typ : Entity_Id) return Natural;
+      --  Count the number of components in record type Typ
+
+      ------------------------------------
+      -- Matching_Component_Association --
+      ------------------------------------
+
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean
+      is
+         CL : constant List_Id := Choices (Association);
+      begin
+         pragma Assert (List_Length (CL) = 1);
+         return Component = Entity (First (CL));
+      end Matching_Component_Association;
+
+      -----------------------
+      -- Number_Components --
+      -----------------------
+
+      function Number_Components (Typ : Entity_Id) return Natural is
+         Count     : Natural := 0;
+         Component : Entity_Id := First_Component (Typ);
+      begin
+         while Component /= Empty loop
+            Count := Count + 1;
+            Component := Next_Component (Component);
+         end loop;
+         return Count;
+      end Number_Components;
+
+      Component   : Entity_Id := First_Component (Typ);
       Association : Node_Id := Nlists.First (CA);
-      Result      : W_Expr_Array (1 .. Integer (List_Length (CA)));
+      Result      : W_Expr_Array (1 .. Number_Components (Typ));
       J           : Positive := Result'First;
+
+   --  Start of Transform_Component_Associations
+
    begin
-      while Association /= Empty loop
-         Result (J) := Transform_Expr (Expression (Association), Domain);
+      while Component /= Empty loop
+         if Present (Association)
+           and then Matching_Component_Association (Component, Association)
+         then
+            if not Box_Present (Association) then
+               Result (J) := Transform_Expr (Expression (Association), Domain);
+            else
+               Result (J) :=
+                 New_Simpl_Any_Expr
+                   (Domain => Domain,
+                    Arg_Type =>
+                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+            end if;
+            Next (Association);
+         else
+            Result (J) :=
+              New_Simpl_Any_Expr
+                (Domain => Domain,
+                 Arg_Type =>
+                   +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+         end if;
+
          J := J + 1;
-         Next (Association);
+         Component := Next_Component (Component);
       end loop;
+      pragma Assert (No (Association));
       return Result;
    end Transform_Component_Associations;
 

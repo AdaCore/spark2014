@@ -477,10 +477,10 @@ package body Why.Gen.Progs is
    end New_Result;
 
    ------------------------
-   -- New_Simpl_Any_Expr --
+   -- New_Simpl_Any_Prog --
    ------------------------
 
-   function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id
+   function New_Simpl_Any_Prog (T : W_Primitive_Type_Id) return W_Prog_Id
    is
    begin
       return
@@ -490,7 +490,7 @@ package body Why.Gen.Progs is
                   (Domain  => EW_Prog,
                    Result  => New_Result (+T),
                    Effects => New_Effects));
-   end New_Simpl_Any_Expr;
+   end New_Simpl_Any_Prog;
 
    --------------
    -- Sequence --

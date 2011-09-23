@@ -141,4 +141,20 @@ package body Why.Gen.Terms is
       return +New_Result_Identifier.Id;
    end New_Result_Term;
 
+   ----------------------------
+   -- New_Simpl_Epsilon_Term --
+   ----------------------------
+
+   function New_Simpl_Epsilon_Term (T : W_Primitive_Type_Id) return W_Term_Id
+   is
+   begin
+      return
+        New_Epsilon
+          (Binder =>
+               New_Binder (Domain   => EW_Term,
+                           Name     => New_Identifier ("x"),
+                           Arg_Type => +T),
+           Pred   => New_Literal (Value => EW_True));
+   end New_Simpl_Epsilon_Term;
+
 end Why.Gen.Terms;

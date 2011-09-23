@@ -31,6 +31,8 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Gen.Progs;        use Why.Gen.Progs;
+with Why.Gen.Terms;        use Why.Gen.Terms;
 
 package body Why.Gen.Expr is
 
@@ -128,7 +130,7 @@ package body Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : EW_Scalar;
+      Arg_Types   : W_Base_Type_Id;
       Domain      : EW_Domain)
      return W_Expr_Id is
    begin
@@ -136,7 +138,7 @@ package body Why.Gen.Expr is
          return
             New_Relation
               (Domain  => Domain,
-               Op_Type => Arg_Types,
+               Op_Type => Get_Base_Type (Arg_Types),
                Left    => +Left,
                Right   => +Right,
                Op      => Cmp);
@@ -288,6 +290,21 @@ package body Why.Gen.Expr is
          end if;
       end if;
    end New_Or_Else_Expr;
+
+   ------------------------
+   -- New_Simpl_Any_Expr --
+   ------------------------
+
+   function New_Simpl_Any_Expr
+     (Domain   : EW_Domain;
+      Arg_Type : W_Primitive_Type_Id) return W_Expr_Id is
+   begin
+      case Domain is
+         when EW_Term => return +New_Simpl_Epsilon_Term (Arg_Type);
+         when EW_Prog => return +New_Simpl_Any_Prog (Arg_Type);
+         when others => raise Program_Error;
+      end case;
+   end New_Simpl_Any_Expr;
 
    ---------------------------
    -- New_Simpl_Conditional --

@@ -1015,7 +1015,12 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            Mark_Non_Alfa ("aggregate", N, NYI_Aggregate);
+            if Is_Record_Type (Etype (N)) then
+               pragma Assert (No (Expressions (N)));
+               Mark_List (Component_Associations (N));
+            else
+               Mark_Non_Alfa ("array aggregate", N, NYI_Aggregate);
+            end if;
 
          when N_Allocator =>
             Mark_Non_Alfa ("allocator", N, NIR_Dynamic_Alloc);
@@ -1057,6 +1062,16 @@ package body Alfa.Definition is
 
          when N_Code_Statement =>
             Mark_Non_Alfa ("code statement", N, NIR_Assembly_Lang);
+
+         when N_Component_Association =>
+            if Present (Loop_Actions (N)) then
+               Mark_Non_Alfa
+                 ("expression with action", N, NYI_Expr_With_Action);
+            end if;
+            Mark_List (Choices (N));
+            if not Box_Present (N) then
+               Mark (Expression (N));
+            end if;
 
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
@@ -1397,7 +1412,6 @@ package body Alfa.Definition is
               N_Aspect_Specification |
               N_Compilation_Unit |
               N_Compilation_Unit_Aux |
-              N_Component_Association |
               N_Component_Definition |
               N_Component_List |
               N_Contract |
@@ -1503,9 +1517,6 @@ package body Alfa.Definition is
             if Is_Array_Type (Left_T) then
                Mark_Non_Alfa
                  ("equality operator on array type", N, NYI_XXX);
-            elsif Is_Record_Type (Left_T) then
-               Mark_Non_Alfa
-                 ("equality operator on record type", N, NYI_XXX);
             end if;
 
          when N_Op_And | N_Op_Or =>

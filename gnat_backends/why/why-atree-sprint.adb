@@ -951,6 +951,7 @@ package body Why.Atree.Sprint is
       P (O, " . ");
       Traverse (State, +Get_Pred (Node));
       P (O, ") ");
+      State.Control := Abandon_Children;
    end Epsilon_Pre_Op;
 
    ---------------------

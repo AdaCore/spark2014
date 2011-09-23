@@ -42,9 +42,9 @@ package Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : EW_Scalar)
+      Arg_Types : W_Base_Type_Id)
      return W_Identifier_Id;
-   --  Return the name of boolean comparison operators for Why scalars
+   --  Return the name of boolean comparison operators for Why term types
    --  in the domain EW_Term (i.e. the name of a logic function returning
    --  bool).
 
@@ -96,6 +96,7 @@ package Why.Gen.Names is
    Coerce                   : constant String := "coerce";
    Boolean_Eq               : constant String := "eq_bool";
    Eq_Pred                  : constant String := "eq";
+   Equality_Axiom           : constant String := "equality";
    Record_Get               : constant String := "get";
    Record_Get_Axiom         : constant String := "getter";
    Record_Make              : constant String := "make";
@@ -247,6 +248,11 @@ package Why.Gen.Names is
    package New_Conversion_Axiom is
      new Name_Gen.Arity_2 (EW_Term, "", "of", "in_range");
    --  Create a new identifier for a conversion between to abstract types
+
+   package New_Equality_Axiom is
+     new Name_Gen.Arity_1 (EW_Term, "", Equality_Axiom);
+   --  Create a new name for the axiom that states equivalence between equality
+   --  and component-by-component equality.
 
    package Logic_Func_Name is
      new Name_Gen.Arity_1 (EW_Term, "", "", "");

@@ -26,12 +26,13 @@
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Conversions;     use Why.Conversions;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Names is
 
    function Bool_Cmp_String
      (Rel       : EW_Relation;
-      Arg_Types : EW_Scalar) return String;
+      Arg_Types : W_Base_Type_Id) return String;
    --  Return the name of a boolean integer comparison operator
 
    -----------------------
@@ -60,25 +61,34 @@ package body Why.Gen.Names is
 
    function Bool_Cmp_String
      (Rel       : EW_Relation;
-      Arg_Types : EW_Scalar) return String
+      Arg_Types : W_Base_Type_Id) return String
    is
+      Kind : constant EW_Type := Get_Base_Type (Arg_Types);
+      Name : constant String :=
+               (if Kind = EW_Abstract then
+                  Full_Name (Get_Ada_Node (+Arg_Types))
+                else
+                  EW_Base_Type_Name (Kind));
    begin
+      pragma Assert
+        (Kind /= EW_Abstract or else Rel = EW_Eq or else Rel = EW_Ne);
+
       case Rel is
          when EW_None =>
             pragma Assert (False);
-            return "always_true_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "always_true_" & Name & "_bool";
          when EW_Eq =>
-            return "eq_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "eq_" & Name & "_bool";
          when EW_Ne =>
-            return "neq_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "neq_" & Name & "_bool";
          when EW_Lt =>
-            return "lt_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "lt_" & Name & "_bool";
          when EW_Le =>
-            return "le_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "le_" & Name & "_bool";
          when EW_Gt =>
-            return "gt_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "gt_" & Name & "_bool";
          when EW_Ge =>
-            return "ge_" & EW_Base_Type_Name (Arg_Types) & "_bool";
+            return "ge_" & Name & "_bool";
       end case;
    end Bool_Cmp_String;
 
@@ -102,7 +112,7 @@ package body Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : EW_Scalar)
+      Arg_Types : W_Base_Type_Id)
      return W_Identifier_Id is
    begin
       return New_Identifier (EW_Pred, Bool_Cmp_String (Rel, Arg_Types));

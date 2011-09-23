@@ -70,12 +70,11 @@ package body Why.Inter is
    end Base_Why_Type;
 
    function Base_Why_Type (N : Node_Id) return W_Base_Type_Id is
-      E  : constant EW_Type := Get_EW_Term_Type (N);
+      E : constant EW_Type := Get_EW_Term_Type (N);
    begin
       case E is
          when EW_Abstract =>
-            raise Not_Implemented;
-
+            return EW_Abstract (Etype (N));
          when others =>
             return Why_Types (E);
       end case;

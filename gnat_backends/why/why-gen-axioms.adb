@@ -26,6 +26,7 @@
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Inter;          use Why.Inter;
 
@@ -152,6 +153,81 @@ package body Why.Gen.Axioms is
            (Name => Record_Getter_Axiom.Id (Binders (Position).B_Name),
             Def  => UPB));
    end Define_Getter_Axiom;
+
+   ---------------------------
+   -- Define_Equality_Axiom --
+   ---------------------------
+
+   procedure Define_Equality_Axiom
+     (File      : W_File_Id;
+      Type_Name : W_Identifier_Id;
+      Binders   : Binder_Array)
+   is
+      X_S : constant String := "x";
+      Y_S : constant String := "y";
+
+      function Component_Equality return W_Expr_Id;
+      --  Build the predicate that states component-wise equality of x and y
+
+      function Component_Equality return W_Expr_Id is
+         Eq : W_Expr_Id := New_Literal (Domain => EW_Pred, Value => EW_True);
+      begin
+         for J in Binders'Range loop
+            declare
+               X_Component  : constant W_Prog_Id :=
+                                New_Call
+                                  (Name =>
+                                     Record_Getter_Name.Id
+                                       (Binders (J).B_Name),
+                                   Args => (1 => +New_Identifier (X_S)));
+               Y_Component  : constant W_Prog_Id :=
+                                New_Call
+                                  (Name =>
+                                     Record_Getter_Name.Id
+                                       (Binders (J).B_Name),
+                                   Args => (1 => +New_Identifier (Y_S)));
+               Eq_Component : constant W_Expr_Id :=
+                                New_Relation
+                                  (Domain  => EW_Pred,
+                                   Op      => EW_Eq,
+                                   Op_Type => EW_Abstract,
+                                   Left    => X_Component,
+                                   Right   => Y_Component);
+            begin
+               Eq := New_And_Expr
+                       (Domain => EW_Pred,
+                        Left   => Eq,
+                        Right  => +Eq_Component);
+            end;
+         end loop;
+         return Eq;
+      end Component_Equality;
+
+      Formula       : constant W_Pred_Id :=
+                        New_Connection
+                          (Op    => EW_Imply,
+                           Left  => Component_Equality,
+                           Right =>
+                             New_Relation
+                               (Domain  => EW_Pred,
+                                Op      => EW_Eq,
+                                Op_Type => EW_Abstract,
+                                Left    => New_Prog (X_S),
+                                Right   => New_Prog (Y_S)));
+      Quantif_On_XY : constant W_Pred_Id :=
+                        New_Universal_Quantif
+                          (Var_Type  => New_Abstract_Type (Name => Type_Name),
+                           Variables =>
+                             (New_Identifier (X_S),
+                              New_Identifier (Y_S)),
+                           Pred      => Formula);
+   begin
+      Emit
+        (File,
+         New_Axiom
+           (Name => New_Equality_Axiom.Id (Type_Name),
+            Def  => Quantif_On_XY));
+   end Define_Equality_Axiom;
 
    ------------------------
    -- Define_Range_Axiom --

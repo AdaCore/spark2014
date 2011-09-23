@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;           use Types;
+
 with Why.Ids;         use Why.Ids;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
@@ -35,6 +37,7 @@ package Why.Gen.Records is
 
    procedure Define_Ada_Record
      (File    : W_File_Id;
+      E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array);
    --  Create the declaration of a null record; return its builder logic
