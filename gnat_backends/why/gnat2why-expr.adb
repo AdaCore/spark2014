@@ -643,19 +643,48 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
 
+      --  Here, we deal with assignment statements. In Alfa, the general form
+      --  of an assignment is
+      --
+      --    Lvalue := Expr;
+      --
+      --  where Lvalue is a mix of array and record accesses. If we adopt the
+      --  same notation for both, we obtain the general form
+      --
+      --    Prefix.Acc1.Acc2.(...).Accn := Expr;
+      --
+      --  where the Acc(i) are either array accesses using an index (or
+      --  several indices in the multidimensional case) or record accesses
+      --  using a field name.
+      --
+      --  Here, we generate Why code of the form
+      --
+      --    Prefix := Upd (Prefix, Acc1,
+      --                   (Upd (Prefix.Acc1, Acc2,
+      --                         Upd (..., Accn, Expr))));
+      --
+      --  The central function is Compute_Rvalue. For a given Lvalue, it
+      --  computes not only the corresponding update expression, but also the
+      --  access chain that leads to the updated component.
+
       type RV_Rec is
          record
-            Rv : W_Prog_Id;
-            Lv : W_Prog_Id;
+            Rv : W_Prog_Id; -- the update expression
+            Lv : W_Prog_Id; -- the path to the component that is updated
          end record;
 
       function Compute_Rvalue (N : Node_Id) return RV_Rec;
 
       function Expected_Type return W_Base_Type_Id;
+      --  Compute the expected type of the right hand side expression.
 
       function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
+      --  Compute the innermost that is accessed in the Lvalue, variable, ie
+      --  the outermost data structure; this basically corresponds to "Prefix"
+      --  above.
 
       Lvalue   : constant Node_Id := Name (Stmt);
+      --  The Lvalue in the Ada sense, ie the chain of accesses
 
       --------------------
       -- Compute_Rvalue --
@@ -663,9 +692,19 @@ package body Gnat2Why.Expr is
 
       function Compute_Rvalue (N : Node_Id) return RV_Rec
       is
+
+         --  For each step, we return not only the update expression, but also
+         --  the access expression that leads to the updated component.
+
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
+
+               --  This is the base case; the update expression is simply the
+               --  translation of the Ada right hand side; the path to the
+               --  updated component is simply the translation of the
+               --  identifier itself.
+
                return
                  (Rv =>
                     +Transform_Expr
@@ -675,6 +714,13 @@ package body Gnat2Why.Expr is
                   Lv => +Transform_Expr (N, EW_Prog));
 
             when N_Selected_Component =>
+
+               --  Here, the update expression is simply
+               --    {| path with field = update_expr |}
+               --  "path" is the path computed by the recursive call to
+               --  Compute_Rvalue; in the same way "update_expr" is the update
+               --  expression of the recursive call.
+
                declare
                   R : constant RV_Rec := Compute_Rvalue (Prefix (N));
                   F : constant W_Identifier_Id :=
@@ -690,20 +736,21 @@ package body Gnat2Why.Expr is
                end;
 
             when N_Indexed_Component =>
+
+               --  The same principle as for record fields.
                --  ??? update for more than one dimension
                declare
-                  P : constant Node_Id := Prefix (N);
-                  T : constant String := Type_Of_Node (P);
-                  R : constant RV_Rec := Compute_Rvalue (P);
+                  Pre : constant Node_Id := Prefix (N);
+                  R : constant RV_Rec := Compute_Rvalue (Pre);
                begin
-                  if Number_Dimensions (Etype (P)) > 1 then
+                  if Number_Dimensions (Etype (Pre)) > 1 then
                      raise Not_Implemented;
                   end if;
                   return
                      (Rv =>
                         +New_Array_Update
                            (Ada_Node => N,
-                            Type_Name => T,
+                            Type_Name => Type_Of_Node (Pre),
                             Ar        => +R.Lv,
                             Index     =>
                                +Transform_Expr
@@ -732,6 +779,9 @@ package body Gnat2Why.Expr is
 
       function Expected_Type return W_Base_Type_Id
       is
+         --  We simply traverse the Lvalue until we find the innermost access;
+         --  the type of the array, or the type of the record field, is the
+         --  expected type.
       begin
          case Nkind (Lvalue) is
             when N_Identifier | N_Expanded_Name =>
