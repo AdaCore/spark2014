@@ -115,6 +115,7 @@ package Why.Sinfo is
       W_Unary_Op,
       W_Match,
       W_Array_Access,
+      W_Epsilon,
 
       -----------------
       -- Progs, Expr --

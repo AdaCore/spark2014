@@ -186,6 +186,10 @@ private
      (State : in out Printer_State;
       Node  : W_Array_Access_Id);
 
+   procedure Epsilon_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Epsilon_Id);
+
    procedure Any_Expr_Pre_Op
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id);

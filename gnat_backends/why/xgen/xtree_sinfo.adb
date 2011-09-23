@@ -47,7 +47,7 @@ package body Xtree_Sinfo is
       New_Domain ("W_Term",
                   "W_Prog",
                   W_Identifier,
-                  W_Array_Access);
+                  W_Epsilon);
       New_Domain ("W_Prog",
                   "W_Expr",
                   W_Not,
@@ -466,6 +466,15 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Array_Access,
                  "Index", "W_Prog", Id_One);
+
+      ---------------
+      -- W_Epsilon --
+      ---------------
+
+      New_Field (W_Epsilon,
+                 "Binder", "W_Binder", Id_One);
+      New_Field (W_Epsilon,
+                 "Pred", "W_Pred", Id_One);
 
       ----------------
       -- W_Any_Expr --
