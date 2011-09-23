@@ -1,6 +1,6 @@
-p.adb:5:10: array bounds check not proved
 p.adb:5:13: (info) range check proved
-p.adb:6:10: array bounds check not proved
+p.adb:5:4: array bounds check not proved
 p.adb:6:13: (info) range check proved
+p.adb:6:4: array bounds check not proved
 p.adb:7:4: assertion not proved
 

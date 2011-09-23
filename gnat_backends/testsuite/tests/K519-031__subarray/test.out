@@ -1,11 +1,11 @@
-subar.adb:12:14: (info) array bounds check proved
 subar.adb:12:17: (info) range check proved
+subar.adb:12:7: (info) array bounds check proved
 subar.adb:13:7: (info) precondition proved
-subar.adb:25:14: (info) array bounds check proved
 subar.adb:25:17: (info) range check proved
+subar.adb:25:7: (info) array bounds check proved
 subar.adb:26:7: (info) precondition proved
-subar.adb:32:14: (info) array bounds check proved
 subar.adb:32:17: (info) range check proved
+subar.adb:32:7: (info) array bounds check proved
 subar.adb:33:7: (info) precondition proved
 subar.adb:5:7: (info) assertion proved
 subar.ads:18:20: (info) array bounds check proved

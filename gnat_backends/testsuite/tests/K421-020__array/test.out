@@ -1,12 +1,12 @@
-p.adb:15:13: (info) array bounds check proved
 p.adb:15:16: range check not proved
-p.adb:17:13: (info) array bounds check proved
+p.adb:15:4: (info) array bounds check proved
 p.adb:17:16: (info) range check proved
-p.adb:18:13: (info) array bounds check proved
+p.adb:17:4: (info) array bounds check proved
 p.adb:18:16: (info) range check proved
-p.adb:19:13: (info) array bounds check proved
+p.adb:18:4: (info) array bounds check proved
 p.adb:19:16: (info) range check proved
+p.adb:19:4: (info) array bounds check proved
 p.adb:21:35: (info) loop invariant initialization proved
 p.adb:21:35: (info) loop invariant preservation proved
-p.adb:22:16: (info) array bounds check proved
 p.adb:22:19: (info) range check proved
+p.adb:22:7: (info) array bounds check proved
