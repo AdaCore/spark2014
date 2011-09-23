@@ -403,6 +403,7 @@ procedure Gnatprove is
       Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "theories"));
       Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "modules"));
       Put_Loadpath (Stdlib_Dir);
+      Put_Loadpath (Theories_Dir);
       Put_Line (File, "magic = 7");
       Put_Line (File, "memlimit = 0");
       Put_Line (File, "running_provers_max = 2");

@@ -41,6 +41,7 @@ GNATPROVEDIR=$(SHAREDIR)/gnatprove
 ALI_DIR=$(INSTALLDIR)/lib/gnatprove
 GNATLIBDIR=$(GNATPROVEDIR)/stdlib
 CONFIGDIR=$(GNATPROVEDIR)/config
+THEORIESDIR=$(GNATPROVEDIR)/theories
 STDLIB_TMP=stdlib_tmp
 
 all: gnat2why gnatprove
@@ -49,7 +50,9 @@ all-nightly: gnat1why gnatprove local-stdlib install install-examples
 
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
+	mkdir -p $(THEORIESDIR)
 	cp release/share/gnatprove/config/*cgpr $(CONFIGDIR)
+	cp release/share/gnatprove/theories/*why $(THEORIESDIR)
 doc:
 	$(MAKE) -C docs/ug latexpdf
 	$(MAKE) -C docs/ug html

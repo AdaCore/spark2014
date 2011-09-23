@@ -129,6 +129,7 @@ package Configuration is
    --  prefix/share/why3      -     files that come with Why3
    --  prefix/share/gnatprove/config - gprbuild config files
    --  prefix/share/gnatprove/stdlib - Why3 files of the stdlib
+   --  prefix/share/gnatprove/theories - Why3 files for Ada theories
    --
    Prefix         : constant String := Executable_Location;
    Lib_Dir        : constant String :=
@@ -141,6 +142,8 @@ package Configuration is
       Ada.Directories.Compose (Share_Dir, "why3");
    Gnatprove_Dir  : constant String :=
       Ada.Directories.Compose (Share_Dir, "gnatprove");
+   Theories_Dir   : constant String :=
+      Ada.Directories.Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir    : constant String :=
       Ada.Directories.Compose (Gnatprove_Dir, "config");
 
