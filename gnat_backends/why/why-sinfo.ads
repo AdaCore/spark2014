@@ -57,7 +57,9 @@ package Why.Sinfo is
       W_Binder,
       W_Transparent_Type_Definition,
       W_Adt_Definition,
+      W_Record_Definition,
       W_Constr_Decl,
+      W_Record_Field,
 
       -------------------------
       -- Predicate structure --

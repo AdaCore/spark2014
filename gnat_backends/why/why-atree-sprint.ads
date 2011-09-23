@@ -82,6 +82,14 @@ private
      (State : in out Printer_State;
       Node  : W_Constr_Decl_Id);
 
+   procedure Record_Definition_Pre_Op
+      (State : in out Printer_State;
+       Node : W_Record_Definition_Id);
+
+   procedure Record_Field_Pre_Op
+      (State : in out Printer_State;
+       Node : W_Record_Field_Id);
+
    procedure Triggers_Pre_Op
      (State : in out Printer_State;
       Node  : W_Triggers_Id);

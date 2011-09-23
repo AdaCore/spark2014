@@ -65,10 +65,10 @@ package body Xtree_Sinfo is
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,
-                 W_Adt_Definition);
+                 W_Record_Definition);
       New_Class ("W_Declaration",
                  W_Function_Decl,
-                 W_Include_Declaration);
+                 W_Clone_Declaration);
       New_Class ("W_Any_Node",
                  W_Base_Type,
                  W_File);
@@ -197,6 +197,22 @@ package body Xtree_Sinfo is
       New_Field (W_Constr_Decl,
                  "Arg_List", "W_Primitive_Type", Id_Set);
       Set_Domain (W_Constr_Decl, EW_Term);
+
+      -------------------------
+      -- W_Record_Definition --
+      -------------------------
+
+      New_Field (W_Record_Definition,
+                 "Fields", "W_Record_Field", Id_Some);
+      Set_Domain (W_Record_Definition, EW_Term);
+
+      --------------------
+      -- W_Record_Field --
+      --------------------
+
+      New_Field (W_Record_Field, "Name", "W_Identifier", Id_One);
+      New_Field (W_Record_Field, "Field_Type", "W_Identifier", Id_One);
+      Set_Domain (W_Record_Field, EW_Term);
 
       ----------------
       -- W_Triggers --

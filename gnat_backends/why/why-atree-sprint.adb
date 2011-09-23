@@ -339,6 +339,36 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Constr_Decl_Pre_Op;
 
+   ------------------------------
+   -- Record_Definition_Pre_Op --
+   ------------------------------
+
+   procedure Record_Definition_Pre_Op
+      (State : in out Printer_State;
+       Node : W_Record_Definition_Id)
+   is
+   begin
+      P (O, "{| ");
+      Print_List (State, +Get_Fields (Node), "; ");
+      P (O, " |}");
+      State.Control := Abandon_Children;
+   end Record_Definition_Pre_Op;
+
+   -------------------------
+   -- Record_Field_Pre_Op --
+   -------------------------
+
+   procedure Record_Field_Pre_Op
+      (State : in out Printer_State;
+       Node : W_Record_Field_Id)
+   is
+   begin
+      Traverse (State, +Get_Name (Node));
+      P (O, " : ");
+      Traverse (State, +Get_Field_Type (Node));
+      State.Control := Abandon_Children;
+   end Record_Field_Pre_Op;
+
    ---------------------
    -- Triggers_Pre_Op --
    ---------------------
