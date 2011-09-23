@@ -578,139 +578,6 @@ package body Gnat2Why.Expr is
            Domain => Domain);
    end Range_Expr;
 
-   -------------------------------------
-   -- Transform_Quantified_Expression --
-   -------------------------------------
-
-   function Transform_Quantified_Expression
-      (Expr         : Node_Id;
-       Domain       : EW_Domain;
-       Current_Type : out W_Base_Type_Id) return W_Expr_Id
-   is
-      Index      : W_Identifier_Id;
-      Range_E    : Node_Id;
-   begin
-      Current_Type := Type_Of_Node (Expr);
-      Extract_From_Quantified_Expression (Expr, Index, Range_E);
-      if Domain = EW_Pred then
-         declare
-            Conclusion : constant W_Pred_Id :=
-                           +Transform_Expr (Condition (Expr),
-                                            EW_Pred);
-            Hypothesis : W_Pred_Id;
-            Quant_Body : W_Pred_Id;
-         begin
-            Hypothesis := +Range_Expr (Range_E, +Index, EW_Pred);
-            Quant_Body :=
-               New_Connection
-                (Op     => EW_Imply,
-                 Left   => +Hypothesis,
-                 Right  => +Conclusion);
-
-            if All_Present (Expr) then
-               return
-                  New_Universal_Quantif
-                     (Ada_Node  => Expr,
-                      Variables => (1 => Index),
-                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
-                      Pred      => Quant_Body);
-            else
-               return
-                  New_Existential_Quantif
-                     (Ada_Node  => Expr,
-                      Variables => (1 => Index),
-                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
-                      Pred      => Quant_Body);
-            end if;
-         end;
-      elsif Domain = EW_Prog then
-         --  We are interested in the checks for the entire range, and
-         --  in the return value of the entire expression, but we are
-         --  not interested in the exact order in which things are
-         --  evaluated. We also do not want to translate the expression
-         --  function by a loop. So our scheme is the following:
-         --    for all I in Cond => Expr
-         --
-         --  becomes:
-         --    (let i = ref [ int ] in
-         --       if cond then ignore (expr));
-         --    [ { } bool { result = true -> expr } ]
-         --  The condition is a formula that expresses that i is in the
-         --  range given by the quantification.
-         declare
-            Why_Expr   : constant W_Prog_Id :=
-                           New_Ignore
-                             (Prog =>
-                                +Transform_Expr (Condition (Expr),
-                                                 EW_Prog));
-            Range_Cond : W_Prog_Id;
-         begin
-            Range_Cond := +Range_Expr (Range_E, +Index, EW_Prog);
-            Current_Type := EW_Bool_Type;
-            return
-              +Sequence
-                (New_Binding
-                   (Name    => Index,
-                    Def     =>
-                      New_Simpl_Any_Prog
-                        (New_Base_Type (Base_Type => EW_Int)),
-                    Context =>
-                      New_Conditional
-                        (Domain    => EW_Prog,
-                         Condition => Range_Cond,
-                         Then_Part => +Why_Expr)),
-                 New_Assume_Statement
-                   (Ada_Node    => Expr,
-                    Return_Type => New_Base_Type (Base_Type => EW_Bool),
-                    Pred        =>
-                      +Transform_Expr (Expr, EW_Pred)));
-         end;
-      else
-         raise Not_Implemented;
-      end if;
-   end Transform_Quantified_Expression;
-
-   ------------------
-   -- Type_Of_Node --
-   ------------------
-
-   function Type_Of_Node (N : Node_Id) return Entity_Id is
-   begin
-      if Nkind (N) in N_Entity then
-         if Ekind (N) in Type_Kind then
-            return N;
-         else
-            return Etype (N);
-         end if;
-      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         return Etype (Entity (N));
-      else
-         return Etype (N);
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return String
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if E = Standard_Boolean then
-         return Why_Scalar_Type_Name (EW_Bool);
-      else
-         return Full_Name (E);
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if E = Standard_Boolean then
-         return EW_Bool_Type;
-      else
-         return EW_Abstract (E);
-      end if;
-   end Type_Of_Node;
-
    ---------------------
    -- Transform_Binop --
    ---------------------
@@ -727,6 +594,106 @@ package body Gnat2Why.Expr is
          when others => raise Program_Error;
       end case;
    end Transform_Binop;
+
+   --------------------------
+   -- Transform_Compare_Op --
+   --------------------------
+
+   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation is
+   begin
+      case Op is
+         when N_Op_Gt => return EW_Gt;
+         when N_Op_Lt => return EW_Lt;
+         when N_Op_Eq => return EW_Eq;
+         when N_Op_Ge => return EW_Ge;
+         when N_Op_Le => return EW_Le;
+         when N_Op_Ne => return EW_Ne;
+      end case;
+   end Transform_Compare_Op;
+
+   --------------------------------------
+   -- Transform_Component_Associations --
+   --------------------------------------
+
+   function Transform_Component_Associations
+     (Domain : EW_Domain;
+      Typ    : Entity_Id;
+      CA     : List_Id)
+     return W_Expr_Array
+   is
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean;
+      --  Return whether Association matches Component
+
+      function Number_Components (Typ : Entity_Id) return Natural;
+      --  Count the number of components in record type Typ
+
+      ------------------------------------
+      -- Matching_Component_Association --
+      ------------------------------------
+
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean
+      is
+         CL : constant List_Id := Choices (Association);
+      begin
+         pragma Assert (List_Length (CL) = 1);
+         return Component = Entity (First (CL));
+      end Matching_Component_Association;
+
+      -----------------------
+      -- Number_Components --
+      -----------------------
+
+      function Number_Components (Typ : Entity_Id) return Natural is
+         Count     : Natural := 0;
+         Component : Entity_Id := First_Component (Typ);
+      begin
+         while Component /= Empty loop
+            Count := Count + 1;
+            Component := Next_Component (Component);
+         end loop;
+         return Count;
+      end Number_Components;
+
+      Component   : Entity_Id := First_Component (Typ);
+      Association : Node_Id := Nlists.First (CA);
+      Result      : W_Expr_Array (1 .. Number_Components (Typ));
+      J           : Positive := Result'First;
+
+   --  Start of Transform_Component_Associations
+
+   begin
+      while Component /= Empty loop
+         if Present (Association)
+           and then Matching_Component_Association (Component, Association)
+         then
+            if not Box_Present (Association) then
+               Result (J) := Transform_Expr (Expression (Association), Domain);
+            else
+               Result (J) :=
+                 New_Simpl_Any_Expr
+                   (Domain => Domain,
+                    Arg_Type =>
+                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+            end if;
+            Next (Association);
+         else
+            Result (J) :=
+              New_Simpl_Any_Expr
+                (Domain => Domain,
+                 Arg_Type =>
+                   +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+         end if;
+
+         J := J + 1;
+         Component := Next_Component (Component);
+      end loop;
+      pragma Assert (No (Association));
+      return Result;
+   end Transform_Component_Associations;
 
    ----------------------------
    -- Transform_Enum_Literal --
@@ -1289,6 +1256,114 @@ package body Gnat2Why.Expr is
       return Transform_Expr (Expr, Type_Of_Node (Expr), Domain);
    end Transform_Expr;
 
+   ---------------------
+   -- Transform_Ident --
+   ---------------------
+
+   function Transform_Ident (Id : Node_Id) return W_Identifier_Id is
+      Ent : Entity_Id;
+   begin
+      if Nkind (Id) = N_Defining_Identifier then
+         Ent := Id;
+      else
+         Ent := Entity (Id);
+      end if;
+
+      return New_Identifier (Full_Name (Ent));
+   end Transform_Ident;
+
+   -------------------------------------
+   -- Transform_Quantified_Expression --
+   -------------------------------------
+
+   function Transform_Quantified_Expression
+      (Expr         : Node_Id;
+       Domain       : EW_Domain;
+       Current_Type : out W_Base_Type_Id) return W_Expr_Id
+   is
+      Index      : W_Identifier_Id;
+      Range_E    : Node_Id;
+   begin
+      Current_Type := Type_Of_Node (Expr);
+      Extract_From_Quantified_Expression (Expr, Index, Range_E);
+      if Domain = EW_Pred then
+         declare
+            Conclusion : constant W_Pred_Id :=
+                           +Transform_Expr (Condition (Expr),
+                                            EW_Pred);
+            Hypothesis : W_Pred_Id;
+            Quant_Body : W_Pred_Id;
+         begin
+            Hypothesis := +Range_Expr (Range_E, +Index, EW_Pred);
+            Quant_Body :=
+               New_Connection
+                (Op     => EW_Imply,
+                 Left   => +Hypothesis,
+                 Right  => +Conclusion);
+
+            if All_Present (Expr) then
+               return
+                  New_Universal_Quantif
+                     (Ada_Node  => Expr,
+                      Variables => (1 => Index),
+                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                      Pred      => Quant_Body);
+            else
+               return
+                  New_Existential_Quantif
+                     (Ada_Node  => Expr,
+                      Variables => (1 => Index),
+                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                      Pred      => Quant_Body);
+            end if;
+         end;
+      elsif Domain = EW_Prog then
+         --  We are interested in the checks for the entire range, and
+         --  in the return value of the entire expression, but we are
+         --  not interested in the exact order in which things are
+         --  evaluated. We also do not want to translate the expression
+         --  function by a loop. So our scheme is the following:
+         --    for all I in Cond => Expr
+         --
+         --  becomes:
+         --    (let i = ref [ int ] in
+         --       if cond then ignore (expr));
+         --    [ { } bool { result = true -> expr } ]
+         --  The condition is a formula that expresses that i is in the
+         --  range given by the quantification.
+         declare
+            Why_Expr   : constant W_Prog_Id :=
+                           New_Ignore
+                             (Prog =>
+                                +Transform_Expr (Condition (Expr),
+                                                 EW_Prog));
+            Range_Cond : W_Prog_Id;
+         begin
+            Range_Cond := +Range_Expr (Range_E, +Index, EW_Prog);
+            Current_Type := EW_Bool_Type;
+            return
+              +Sequence
+                (New_Binding
+                   (Name    => Index,
+                    Def     =>
+                      New_Simpl_Any_Prog
+                        (New_Base_Type (Base_Type => EW_Int)),
+                    Context =>
+                      New_Conditional
+                        (Domain    => EW_Prog,
+                         Condition => Range_Cond,
+                         Then_Part => +Why_Expr)),
+                 New_Assume_Statement
+                   (Ada_Node    => Expr,
+                    Return_Type => New_Base_Type (Base_Type => EW_Bool),
+                    Pred        =>
+                      +Transform_Expr (Expr, EW_Pred)));
+         end;
+      else
+         raise Not_Implemented;
+      end if;
+   end Transform_Quantified_Expression;
+
    -------------------------
    -- Transform_Statement --
    -------------------------
@@ -1511,122 +1586,6 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Statements;
 
-   --------------------------------------
-   -- Transform_Component_Associations --
-   --------------------------------------
-
-   function Transform_Component_Associations
-     (Domain : EW_Domain;
-      Typ    : Entity_Id;
-      CA     : List_Id)
-     return W_Expr_Array
-   is
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean;
-      --  Return whether Association matches Component
-
-      function Number_Components (Typ : Entity_Id) return Natural;
-      --  Count the number of components in record type Typ
-
-      ------------------------------------
-      -- Matching_Component_Association --
-      ------------------------------------
-
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean
-      is
-         CL : constant List_Id := Choices (Association);
-      begin
-         pragma Assert (List_Length (CL) = 1);
-         return Component = Entity (First (CL));
-      end Matching_Component_Association;
-
-      -----------------------
-      -- Number_Components --
-      -----------------------
-
-      function Number_Components (Typ : Entity_Id) return Natural is
-         Count     : Natural := 0;
-         Component : Entity_Id := First_Component (Typ);
-      begin
-         while Component /= Empty loop
-            Count := Count + 1;
-            Component := Next_Component (Component);
-         end loop;
-         return Count;
-      end Number_Components;
-
-      Component   : Entity_Id := First_Component (Typ);
-      Association : Node_Id := Nlists.First (CA);
-      Result      : W_Expr_Array (1 .. Number_Components (Typ));
-      J           : Positive := Result'First;
-
-   --  Start of Transform_Component_Associations
-
-   begin
-      while Component /= Empty loop
-         if Present (Association)
-           and then Matching_Component_Association (Component, Association)
-         then
-            if not Box_Present (Association) then
-               Result (J) := Transform_Expr (Expression (Association), Domain);
-            else
-               Result (J) :=
-                 New_Simpl_Any_Expr
-                   (Domain => Domain,
-                    Arg_Type =>
-                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
-            end if;
-            Next (Association);
-         else
-            Result (J) :=
-              New_Simpl_Any_Expr
-                (Domain => Domain,
-                 Arg_Type =>
-                   +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
-         end if;
-
-         J := J + 1;
-         Component := Next_Component (Component);
-      end loop;
-      pragma Assert (No (Association));
-      return Result;
-   end Transform_Component_Associations;
-
-   ---------------------
-   -- Transform_Ident --
-   ---------------------
-
-   function Transform_Ident (Id : Node_Id) return W_Identifier_Id is
-      Ent : Entity_Id;
-   begin
-      if Nkind (Id) = N_Defining_Identifier then
-         Ent := Id;
-      else
-         Ent := Entity (Id);
-      end if;
-
-      return New_Identifier (Full_Name (Ent));
-   end Transform_Ident;
-
-   --------------------------
-   -- Transform_Compare_Op --
-   --------------------------
-
-   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation is
-   begin
-      case Op is
-         when N_Op_Gt => return EW_Gt;
-         when N_Op_Lt => return EW_Lt;
-         when N_Op_Eq => return EW_Eq;
-         when N_Op_Ge => return EW_Ge;
-         when N_Op_Le => return EW_Le;
-         when N_Op_Ne => return EW_Ne;
-      end case;
-   end Transform_Compare_Op;
-
    ---------------------------
    -- Transform_Static_Expr --
    ---------------------------
@@ -1641,5 +1600,46 @@ package body Gnat2Why.Expr is
          return Why_Empty;
       end if;
    end Transform_Static_Expr;
+
+   ------------------
+   -- Type_Of_Node --
+   ------------------
+
+   function Type_Of_Node (N : Node_Id) return Entity_Id is
+   begin
+      if Nkind (N) in N_Entity then
+         if Ekind (N) in Type_Kind then
+            return N;
+         else
+            return Etype (N);
+         end if;
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
+         return Etype (Entity (N));
+      else
+         return Etype (N);
+      end if;
+   end Type_Of_Node;
+
+   function Type_Of_Node (N : Node_Id) return String
+   is
+      E : constant Entity_Id := Type_Of_Node (N);
+   begin
+      if E = Standard_Boolean then
+         return Why_Scalar_Type_Name (EW_Bool);
+      else
+         return Full_Name (E);
+      end if;
+   end Type_Of_Node;
+
+   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
+   is
+      E : constant Entity_Id := Type_Of_Node (N);
+   begin
+      if E = Standard_Boolean then
+         return EW_Bool_Type;
+      else
+         return EW_Abstract (E);
+      end if;
+   end Type_Of_Node;
 
 end Gnat2Why.Expr;
