@@ -82,6 +82,12 @@ package body Gnat2Why.Expr is
    --  procedure call. The node in argument must have a "Name" field and a
    --  "Parameter_Associations" field.
 
+   function One_Level_Access
+      (N      : Node_Id;
+       Expr   : W_Expr_Id;
+       Domain : EW_Domain)
+      return W_Expr_Id;
+
    function Transform_Quantified_Expression
       (Expr         : Node_Id;
        Domain       : EW_Domain;
@@ -514,6 +520,56 @@ package body Gnat2Why.Expr is
       end loop;
    end Iterate_Call_Arguments;
 
+   ----------------------
+   -- One_Level_Access --
+   ----------------------
+
+   function One_Level_Access
+      (N      : Node_Id;
+       Expr   : W_Expr_Id;
+       Domain : EW_Domain)
+      return W_Expr_Id
+   is
+   begin
+      case Nkind (N) is
+         when N_Selected_Component =>
+            return
+               New_Record_Access
+                 (Name   => Expr,
+                  Field  => Transform_Ident (Selector_Name (N)));
+
+         when N_Indexed_Component =>
+            --  ??? Save the index in a temporary variable
+            declare
+               Cnt      : Integer := 1;
+               Ar     : constant Node_Id := Prefix (N);
+               Index  : Node_Id := First (Expressions (N));
+               T_Name : constant String := Type_Of_Node (Ar);
+               T      : W_Expr_Id := Expr;
+            begin
+               while Present (Index) loop
+                  T :=
+                    New_Array_Access
+                     (Ada_Node => N,
+                      Domain   => Domain,
+                      Type_Name =>
+                        (if Cnt = 1 then T_Name
+                         else T_Name & "___" & Int_Image (Cnt)),
+                      Ar        => T,
+                      Index     =>
+                        Transform_Expr (Index, EW_Int_Type, Domain));
+                  Next (Index);
+                  Cnt := Cnt + 1;
+               end loop;
+               return T;
+            end;
+
+         when others =>
+            raise Not_Implemented;
+
+      end case;
+   end One_Level_Access;
+
    -------------------------------
    -- Predicate_Of_Pragma_Check --
    -------------------------------
@@ -580,52 +636,150 @@ package body Gnat2Why.Expr is
            Domain => Domain);
    end Range_Expr;
 
+   ------------------------------------
+   -- Transform_Assignment_Statement --
+   ------------------------------------
+
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Lvalue : constant Node_Id := Name (Stmt);
-   begin
 
-      case Nkind (Lvalue) is
-         when N_Identifier =>
-            return
-              New_Assignment
-                (Ada_Node => Stmt,
-                 Name     => Transform_Ident (Lvalue),
-                 Value    =>
-                   +Transform_Expr
+      type RV_Rec is
+         record
+            Rv : W_Prog_Id;
+            Lv : W_Prog_Id;
+         end record;
+
+      function Compute_Rvalue (N : Node_Id) return RV_Rec;
+
+      function Expected_Type return W_Base_Type_Id;
+
+      function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
+
+      Lvalue   : constant Node_Id := Name (Stmt);
+
+      --------------------
+      -- Compute_Rvalue --
+      --------------------
+
+      function Compute_Rvalue (N : Node_Id) return RV_Rec
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               return
+                 (Rv =>
+                    +Transform_Expr
                      (Expression (Stmt),
-                      Type_Of_Node (Lvalue),
-                      EW_Prog));
+                      Expected_Type,
+                      EW_Prog),
+                  Lv => +Transform_Expr (N, EW_Prog));
 
-         when N_Indexed_Component =>
-            declare
-               Pre : constant Node_Id := Prefix (Lvalue);
-            begin
-               if Number_Dimensions (Etype (Pre)) > 1 then
-                  raise Not_Implemented;
-               else
+            when N_Selected_Component =>
+               declare
+                  R : constant RV_Rec := Compute_Rvalue (Prefix (N));
+                  F : constant W_Identifier_Id :=
+                     Transform_Ident (Selector_Name (N));
+               begin
                   return
-                    New_Array_Update_Prog
-                      (Ada_Node  => Stmt,
-                       Type_Name => Type_Of_Node (Pre),
-                       Ar        => Transform_Ident (Pre),
-                       Index     =>
-                         +Transform_Expr
-                           (First (Expressions (Lvalue)),
-                            EW_Int_Type,
-                            EW_Prog),
-                       Value     =>
-                         +Transform_Expr
-                           (Expression (Stmt),
-                            Type_Of_Node
-                              (Component_Type (Etype (Pre))),
-                            EW_Prog));
-               end if;
-            end;
+                    (Rv =>
+                        New_Record_Update
+                           (Name  => +R.Lv,
+                            Field => F,
+                            Value => +R.Rv),
+                     Lv => +One_Level_Access (N, +R.Lv, EW_Prog));
+               end;
 
-         when others =>
-            raise Not_Implemented;
-      end case;
+            when N_Indexed_Component =>
+               --  ??? update for more than one dimension
+               declare
+                  P : constant Node_Id := Prefix (N);
+                  T : constant String := Type_Of_Node (P);
+                  R : constant RV_Rec := Compute_Rvalue (P);
+               begin
+                  if Number_Dimensions (Etype (P)) > 1 then
+                     raise Not_Implemented;
+                  end if;
+                  return
+                     (Rv =>
+                        +New_Array_Update
+                           (Ada_Node => N,
+                            Type_Name => T,
+                            Ar        => +R.Lv,
+                            Index     =>
+                               +Transform_Expr
+                                 (First (Expressions (N)),
+                                  EW_Int_Type,
+                                  EW_Prog),
+                            Value     => +R.Rv,
+                            Domain    => EW_Prog),
+                      Lv =>
+                        +One_Level_Access
+                           (N => N,
+                            Expr => +R.Lv,
+                            Domain => EW_Prog));
+
+               end;
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+      end Compute_Rvalue;
+
+      --------------------
+      -- Expected_Type --
+      --------------------
+
+      function Expected_Type return W_Base_Type_Id
+      is
+      begin
+         case Nkind (Lvalue) is
+            when N_Identifier | N_Expanded_Name =>
+               return Type_Of_Node (Lvalue);
+
+            when N_Indexed_Component =>
+               return Type_Of_Node (Component_Type (Etype (Prefix (Lvalue))));
+
+            when N_Selected_Component =>
+               return Type_Of_Node (Selector_Name (Lvalue));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+      end Expected_Type;
+
+      ----------------
+      -- Why_Lvalue --
+      ----------------
+
+      function Why_Lvalue (N : Node_Id) return W_Identifier_Id
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               return Transform_Ident (N);
+
+            when N_Indexed_Component | N_Selected_Component =>
+               return Why_Lvalue (Prefix (N));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+
+      end Why_Lvalue;
+
+      --  begin processing for Transform_Assignment_Statement
+
+      W_Lvalue : constant W_Identifier_Id := Why_Lvalue (Lvalue);
+      Result : constant RV_Rec := Compute_Rvalue (Lvalue);
+   begin
+      return
+         New_Assignment
+            (Ada_Node => Stmt,
+             Name     => W_Lvalue,
+             Value    => Result.Rv);
    end Transform_Assignment_Statement;
 
    ---------------------
@@ -1135,12 +1289,6 @@ package body Gnat2Why.Expr is
                                    Expected_Type,
                                    Domain);
 
-         when N_Selected_Component =>
-            T :=
-               New_Record_Access
-                  (Name  => Transform_Expr (Prefix (Expr), Domain),
-                   Field => Transform_Ident (Selector_Name (Expr)));
-
          when N_Function_Call =>
             declare
                Ident : constant W_Identifier_Id :=
@@ -1158,29 +1306,10 @@ package body Gnat2Why.Expr is
                     Reason   => VC_Precondition);
             end;
 
-         when N_Indexed_Component =>
-            declare
-               N      : Integer := 1;
-               Ar     : constant Node_Id := Prefix (Expr);
-               Index  : Node_Id := First (Expressions (Expr));
-               T_Name : constant String := Type_Of_Node (Ar);
-            begin
-               T := Transform_Expr (Ar, Domain);
-               while Present (Index) loop
-                  T :=
-                    New_Array_Access
-                     (Ada_Node => Expr,
-                      Domain   => Domain,
-                      Type_Name =>
-                        (if N = 1 then T_Name
-                         else T_Name & "___" & Int_Image (N)),
-                      Ar        => T,
-                      Index     =>
-                        Transform_Expr (Index, EW_Int_Type, Domain));
-                  Next (Index);
-                  N := N + 1;
-               end loop;
-            end;
+         when N_Indexed_Component | N_Selected_Component =>
+            T := One_Level_Access (Expr,
+                                   Transform_Expr (Prefix (Expr), Domain),
+                                   Domain);
 
          when N_Attribute_Reference =>
             declare

@@ -70,20 +70,12 @@ package Why.Gen.Arrays is
        Domain    : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to Ar'Name
 
-   function New_Array_Update_Prog
+   function New_Array_Update
       (Ada_Node  : Node_Id;
        Type_Name : String;
-       Ar        : W_Identifier_Id;
-       Index     : W_Prog_Id;
-       Value     : W_Prog_Id) return W_Prog_Id;
-   --  Generate an assignment that corresponds to an array update in Why
-   --  programs.
-
-   function New_Array_Update_Term
-      (Type_Name : String;
-       Ar        : W_Term_Id;
-       Index     : W_Term_Id;
-       Value     : W_Term_Id) return W_Term_Id;
-   --  Generate a Program that corresponds to an array update.
+       Ar        : W_Expr_Id;
+       Index     : W_Expr_Id;
+       Value     : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
 
 end Why.Gen.Arrays;

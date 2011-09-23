@@ -299,75 +299,40 @@ package body Why.Gen.Arrays is
                   Args   => (1 => +Ar))));
    end New_Array_Attr;
 
-   ---------------------------
-   -- New_Array_Update_Prog --
-   ---------------------------
+   ----------------------
+   -- New_Array_Update --
+   ----------------------
 
-   function New_Array_Update_Prog
+   function New_Array_Update
       (Ada_Node  : Node_Id;
        Type_Name : String;
-       Ar        : W_Identifier_Id;
-       Index     : W_Prog_Id;
-       Value     : W_Prog_Id) return W_Prog_Id
+       Ar        : W_Expr_Id;
+       Index     : W_Expr_Id;
+       Value     : W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id
    is
-   begin
-      return
-        New_Assignment
-          (Name  => Ar,
-           Value =>
-             New_Call
-               (Name => Array_Conv_To.Id (Type_Name),
-                Args =>
-                  (1 =>
-                     +New_Located_Call
-                       (Ada_Node => Ada_Node,
-                        Reason   => VC_Array_Bounds_Check,
-                        Domain   => EW_Prog,
-                        Name     =>
-                          To_Program_Space
-                            (Array_Update_Name.Id (Ada_Array)),
-                        Progs    =>
-                          (1 => +Index,
-                           2 => New_Call
-                                  (Domain => EW_Prog,
-                                   Name   => Array_Conv_From.Id (Type_Name),
-                                   Args   =>
-                                     (1 =>
-                                        New_Unary_Op
-                                          (Domain  => EW_Prog,
-                                           Op      => EW_Deref,
-                                           Right   => +Ar,
-                                           Op_Type => EW_Int))),
-                           3 => +Value)))));
-   end New_Array_Update_Prog;
-
-   ---------------------------
-   -- New_Array_Update_Term --
-   ---------------------------
-
-   function New_Array_Update_Term
-      (Type_Name : String;
-       Ar        : W_Term_Id;
-       Index     : W_Term_Id;
-       Value     : W_Term_Id) return W_Term_Id
-   is
+      Name : constant W_Identifier_Id := Array_Update_Name.Id (Ada_Array);
+      Used_Name : constant W_Identifier_Id :=
+         (if Domain = EW_Prog then To_Program_Space (Name) else Name);
+      Array_Upd : constant W_Expr_Id :=
+         New_Located_Call
+           (Ada_Node => Ada_Node,
+            Domain => Domain,
+            Reason => VC_Array_Bounds_Check,
+            Name   => Used_Name,
+            Progs   =>
+              (1 => +Index,
+               2 => New_Call
+                       (Domain => Domain,
+                        Name   => Array_Conv_From.Id (Type_Name),
+                        Args   => (1 => +Ar)),
+              3 => +Value));
    begin
       return
         New_Call
-          (Name => Array_Conv_To.Id (Type_Name),
-           Args =>
-             (1 =>
-                New_Call
-                  (Domain => EW_Term,
-                   Name   => Array_Update_Name.Id (Ada_Array),
-                   Args   =>
-                     (1 => +Index,
-                      2 =>
-                        New_Call
-                           (Domain => EW_Term,
-                            Name   => Array_Conv_From.Id (Type_Name),
-                            Args   => (1 => +Ar)),
-                     3 => +Value))));
-   end New_Array_Update_Term;
+          (Name   => Array_Conv_To.Id (Type_Name),
+           Args   => (1 => Array_Upd),
+           Domain => Domain);
+   end New_Array_Update;
 
 end Why.Gen.Arrays;
