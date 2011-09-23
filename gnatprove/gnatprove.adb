@@ -90,7 +90,7 @@ procedure Gnatprove is
    --  Generate project file with the given source dir. Write the file to disk
    --  and return the file name.
 
-   procedure Generate_Why3_Conf_File (Gnatprove_Dir : String);
+   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String);
 
    procedure Translate_To_Why
       (Project_File : String;
@@ -377,11 +377,11 @@ procedure Gnatprove is
    -- Generate_Why3_Conf_File --
    -----------------------------
 
-   procedure Generate_Why3_Conf_File (Gnatprove_Dir : String)
+   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String)
    is
       File : File_Type;
       Filename : constant String :=
-         Ada.Directories.Compose (Gnatprove_Dir, "why3.conf");
+         Ada.Directories.Compose (Gnatprove_Subdir, "why3.conf");
 
       procedure Put_Loadpath (S : String);
 
@@ -404,6 +404,7 @@ procedure Gnatprove is
       Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "modules"));
       Put_Loadpath (Stdlib_Dir);
       Put_Loadpath (Theories_Dir);
+      Put_Loadpath (Gnatprove_Subdir);
       Put_Line (File, "magic = 7");
       Put_Line (File, "memlimit = 0");
       Put_Line (File, "running_provers_max = 2");
