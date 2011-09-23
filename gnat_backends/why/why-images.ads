@@ -69,6 +69,10 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Domain);
 
+   procedure P (O : Output_Id; Value : EW_Subst_Type);
+
+   procedure P (O : Output_Id; Value : EW_Clone_Type);
+
    function Img (Name : Name_Id) return String;
    --  Return the String content of Name
 

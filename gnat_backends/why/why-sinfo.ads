@@ -143,12 +143,16 @@ package Why.Sinfo is
       W_Global_Ref_Declaration,
       W_Exception_Declaration,
       W_Include_Declaration,
+      W_Clone_Declaration,
+      W_Clone_Substitution,
 
       -----------------
       -- Input files --
       -----------------
 
-      W_File);
+      W_File
+
+      );
 
    type EW_ODomain is
      (EW_Expr,
@@ -217,6 +221,18 @@ package Why.Sinfo is
       EW_Le,
       EW_Gt,
       EW_Ge);
+
+   type EW_Clone_Type is
+      (EW_Import,
+       EW_Export,
+       EW_Clone_Default);
+
+   type EW_Subst_Type is
+      (EW_Type_Subst,
+       EW_Function,
+       EW_Namepace,
+       EW_Lemma,
+       EW_Goal);
 
    type EW_Connector is
      (EW_Or_Else,

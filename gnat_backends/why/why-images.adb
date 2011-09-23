@@ -345,4 +345,31 @@ package body Why.Images is
       end case;
    end P;
 
+   procedure P (O : Output_Id; Value : EW_Clone_Type) is
+   begin
+      case Value is
+         when EW_Import        =>
+            P (O, "import");
+         when EW_Export        =>
+            P (O, "export");
+         when EW_Clone_Default =>
+            null;
+      end case;
+   end P;
+
+   procedure P (O : Output_Id; Value : EW_Subst_Type) is
+   begin
+      case Value is
+         when EW_Type_Subst =>
+            P (O, "type");
+         when EW_Function   =>
+            P (O, "function");
+         when EW_Namepace   =>
+            P (O, "namespace");
+         when EW_Lemma      =>
+            P (O, "lemma");
+         when EW_Goal       =>
+            P (O, "goal");
+      end case;
+   end P;
 end Why.Images;

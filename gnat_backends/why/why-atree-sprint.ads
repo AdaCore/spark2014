@@ -266,6 +266,14 @@ private
      (State : in out Printer_State;
       Node  : W_Include_Declaration_Id);
 
+   procedure Clone_Declaration_Pre_Op
+      (State : in out Printer_State;
+       Node  : W_Clone_Declaration_Id);
+
+   procedure Clone_Substitution_Pre_Op
+      (State : in out Printer_State;
+       Node  : W_Clone_Substitution_Id);
+
    procedure File_Pre_Op
      (State : in out Printer_State;
       Node  : W_File_Id);

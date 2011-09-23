@@ -1484,6 +1484,50 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Include_Declaration_Pre_Op;
 
+   ------------------------------
+   -- Clone_Declaration_Pre_Op --
+   ------------------------------
+
+   procedure Clone_Declaration_Pre_Op
+      (State : in out Printer_State;
+       Node  : W_Clone_Declaration_Id)
+   is
+      As_Name    : constant W_Identifier_OId := +Get_As_Name (Node);
+      Subst_List : constant W_Clone_Substitution_OList :=
+                        +Get_Substitutions (Node);
+   begin
+      P (O, "clone ");
+      P (O, Get_Clone_Kind (Node));
+      P (O, " ");
+      Traverse (State, +Get_Origin (Node));
+      if As_Name /= Why_Empty then
+         P (O, " as ");
+         Traverse (State, +As_Name);
+      end if;
+      if not Is_Empty (+Subst_List) then
+         P (O, " with ");
+         Print_List (State, +Subst_List, ", " & ASCII.LF);
+      end if;
+      State.Control := Abandon_Children;
+   end Clone_Declaration_Pre_Op;
+
+   -------------------------------
+   -- Clone_Substitution_Pre_Op --
+   -------------------------------
+
+   procedure Clone_Substitution_Pre_Op
+      (State : in out Printer_State;
+       Node  : W_Clone_Substitution_Id)
+   is
+   begin
+      P (O, Get_Kind (Node));
+      P (O, " ");
+      Traverse (State, +Get_Orig_Name (Node));
+      P (O, " = ");
+      Traverse (State, +Get_Image (Node));
+      State.Control := Abandon_Children;
+   end Clone_Substitution_Pre_Op;
+
    -----------------
    -- File_Pre_Op --
    -----------------

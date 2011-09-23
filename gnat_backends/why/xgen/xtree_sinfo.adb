@@ -638,6 +638,31 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       Set_Domain (W_Include_Declaration, EW_Term);
 
+      -------------------------
+      -- W_Clone_Declaration --
+      -------------------------
+
+      New_Field (W_Clone_Declaration,
+                 "Origin", "W_Identifier", Id_One);
+      New_Field (W_Clone_Declaration,
+                 "As_Name", "W_Identifier", Id_Lone);
+      New_Field (W_Clone_Declaration,
+                 "Clone_Kind", "EW_Clone_Type");
+      New_Field (W_Clone_Declaration,
+                 "Substitutions", "W_Clone_Substitution", Id_Set);
+      Set_Domain (W_Clone_Declaration, EW_Term);
+
+      --------------------------
+      -- W_Clone_Substitution --
+      --------------------------
+
+      New_Field (W_Clone_Substitution, "Kind", "EW_Subst_Type");
+      New_Field (W_Clone_Substitution,
+                 "Orig_Name", "W_Identifier", Id_One);
+      New_Field (W_Clone_Substitution,
+                 "Image", "W_Identifier", Id_One);
+      Set_Domain (W_Clone_Substitution, EW_Term);
+
       ------------
       -- W_File --
       ------------
@@ -646,6 +671,7 @@ package body Xtree_Sinfo is
       New_Field (W_File,
                  "Declarations", "W_Declaration", Id_Set);
       Set_Domain (W_File, EW_Prog);
+
    end Build_AST;
 
 end Xtree_Sinfo;
