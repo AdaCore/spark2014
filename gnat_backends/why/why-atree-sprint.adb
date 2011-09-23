@@ -1321,6 +1321,7 @@ package body Why.Atree.Sprint is
                Traverse (State, +Post);
                PL (O, " }");
             end if;
+            Relative_Indent (O, -1);
       end case;
 
       State.Control := Abandon_Children;
