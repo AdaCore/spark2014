@@ -1,0 +1,36 @@
+
+rec_aggregate.adb:16:19: (info) range check proved
+rec_aggregate.adb:16:22: (info) range check proved
+rec_aggregate.adb:18:29: (info) range check proved
+rec_aggregate.adb:20:19: (info) range check proved
+rec_aggregate.adb:20:32: (info) range check proved
+rec_aggregate.adb:22:24: (info) range check proved
+rec_aggregate.adb:22:37: (info) range check proved
+rec_aggregate.adb:24:24: (info) range check proved
+rec_aggregate.adb:24:37: (info) range check proved
+rec_aggregate.adb:32:19: (info) range check proved
+rec_aggregate.adb:32:22: (info) range check proved
+rec_aggregate.adb:32:26: (info) range check proved
+rec_aggregate.adb:32:29: (info) range check proved
+rec_aggregate.adb:34:35: (info) range check proved
+rec_aggregate.adb:34:49: (info) range check proved
+rec_aggregate.adb:36:19: (info) range check proved
+rec_aggregate.adb:36:28: (info) range check proved
+rec_aggregate.adb:36:41: (info) range check proved
+rec_aggregate.adb:36:55: (info) range check proved
+rec_aggregate.adb:38:24: (info) range check proved
+rec_aggregate.adb:38:38: (info) range check proved
+rec_aggregate.adb:38:51: (info) range check proved
+rec_aggregate.adb:38:65: (info) range check proved
+rec_aggregate.adb:40:24: (info) range check proved
+rec_aggregate.adb:40:38: (info) range check proved
+rec_aggregate.adb:40:51: (info) range check proved
+rec_aggregate.adb:40:65: (info) range check proved
+rec_aggregate.adb:48:19: (info) range check proved
+rec_aggregate.adb:52:19: (info) range check proved
+rec_aggregate.adb:6:24: (info) range check proved
+rec_aggregate.adb:8:29: (info) range check proved
+rec_aggregate.ads:23:15: postcondition not proved
+rec_aggregate.ads:27:15: (info) postcondition proved
+rec_aggregate.ads:34:15: (info) postcondition proved
+rec_aggregate.ads:43:15: (info) postcondition proved
