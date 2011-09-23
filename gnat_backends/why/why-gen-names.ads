@@ -96,10 +96,6 @@ package Why.Gen.Names is
    Coerce                   : constant String := "coerce";
    Boolean_Eq               : constant String := "eq_bool";
    Eq_Pred                  : constant String := "eq";
-   Equality_Axiom           : constant String := "equality";
-   Record_Get               : constant String := "get";
-   Record_Get_Axiom         : constant String := "getter";
-   Record_Make              : constant String := "make";
    Of_Int                   : constant String := "of_int";
    Int_Of                   : constant String := "to_int";
    Definition               : constant String := "def";
@@ -249,11 +245,6 @@ package Why.Gen.Names is
      new Name_Gen.Arity_2 (EW_Term, "", "of", "in_range");
    --  Create a new identifier for a conversion between to abstract types
 
-   package New_Equality_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Equality_Axiom);
-   --  Create a new name for the axiom that states equivalence between equality
-   --  and component-by-component equality.
-
    package Logic_Func_Name is
      new Name_Gen.Arity_1 (EW_Term, "", "", "");
    --  Create a new identifier for the logic version of a
@@ -286,20 +277,6 @@ package Why.Gen.Names is
      new Name_Gen.Arity_1 (EW_Pred, "", In_Range);
    --  From the name of an abstract type, return the name of
    --  its range predicate.
-
-   package Record_Builder_Name is
-     new Name_Gen.Arity_1 (EW_Term, Record_Make, "");
-   --  From the name of a record type, return the name of its builder.
-
-   package Record_Getter_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Record_Get_Axiom);
-   --  From the full name of a record component, return the name of
-   --  its getter axiom.
-
-   package Record_Getter_Name is
-     new Name_Gen.Arity_1 (EW_Term, Record_Get, "");
-   --  From the full name of a record component, return the getter for
-   --  this component.
 
    package Unicity_Axiom is
      new Name_Gen.Arity_1 (EW_Term, "", Unicity);

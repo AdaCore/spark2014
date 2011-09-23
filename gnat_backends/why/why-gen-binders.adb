@@ -403,6 +403,24 @@ package body Why.Gen.Binders is
    end New_Guarded_Axiom;
 
    ---------------------------
+   -- New_Record_Definition --
+   ---------------------------
+
+   function New_Record_Definition
+      (Ada_Node : Node_Id := Empty;
+       Name     : W_Identifier_Id;
+       Binders  : Binder_Array) return W_Declaration_Id is
+   begin
+      return
+         New_Type
+           (Ada_Node   => Ada_Node,
+            Name       => Name,
+            Definition =>
+              New_Record_Definition
+                (Fields => New_Binders (EW_Pred, Binders)));
+   end New_Record_Definition;
+
+   ---------------------------
    -- New_Universal_Quantif --
    ---------------------------
 

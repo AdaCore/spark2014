@@ -354,21 +354,6 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Record_Definition_Pre_Op;
 
-   -------------------------
-   -- Record_Field_Pre_Op --
-   -------------------------
-
-   procedure Record_Field_Pre_Op
-      (State : in out Printer_State;
-       Node : W_Record_Field_Id)
-   is
-   begin
-      Traverse (State, +Get_Name (Node));
-      P (O, " : ");
-      Traverse (State, +Get_Field_Type (Node));
-      State.Control := Abandon_Children;
-   end Record_Field_Pre_Op;
-
    ---------------------
    -- Triggers_Pre_Op --
    ---------------------
@@ -983,6 +968,40 @@ package body Why.Atree.Sprint is
       P (O, ") ");
       State.Control := Abandon_Children;
    end Epsilon_Pre_Op;
+
+   --------------------------
+   -- Record_Access_Pre_Op --
+   --------------------------
+
+   procedure Record_Access_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Access_Id)
+   is
+   begin
+      Traverse (State, +Get_Name (Node));
+      P (O, ".");
+      Traverse (State, +Get_Field (Node));
+      State.Control := Abandon_Children;
+   end Record_Access_Pre_Op;
+
+   --------------------------
+   -- Record_Update_Pre_Op --
+   --------------------------
+
+   procedure Record_Update_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Update_Id)
+   is
+   begin
+      P (O, "{| ");
+      Traverse (State, +Get_Name (Node));
+      P (O, " with ");
+      Traverse (State, +Get_Field (Node));
+      P (O, " = ");
+      Traverse (State, +Get_Value (Node));
+      P (O, " |}");
+      State.Control := Abandon_Children;
+   end Record_Update_Pre_Op;
 
    ---------------------
    -- Any_Expr_Pre_Op --

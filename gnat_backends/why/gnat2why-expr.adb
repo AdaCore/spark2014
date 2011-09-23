@@ -791,22 +791,23 @@ package body Gnat2Why.Expr is
 
       case Nkind (Expr) is
          when N_Aggregate =>
-            if Is_Record_Type (Etype (Expr)) then
-               T :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Name     =>
-                      Record_Builder_Name.Id (Full_Name (Etype (Expr))),
-                    Args     =>
-                      Transform_Component_Associations
-                        (Domain,
-                         Etype (Expr),
-                         Component_Associations (Expr)));
-               Current_Type := EW_Abstract (Etype (Expr));
-            else
-               raise Not_Implemented;
-            end if;
+            raise Not_Implemented;
+
+            --  if Is_Record_Type (Etype (Expr)) then
+            --     T :=
+            --       New_Call
+            --         (Ada_Node => Expr,
+            --          Domain   => Domain,
+            --          Name     =>
+            --            Record_Builder_Name.Id (Full_Name (Etype (Expr))),
+            --          Args     =>
+            --            Transform_Component_Associations
+            --              (Domain,
+            --               Etype (Expr),
+            --               Component_Associations (Expr)));
+            --     Current_Type := EW_Abstract (Etype (Expr));
+            --  else
+            --  end if;
 
          when N_Integer_Literal =>
             T :=
@@ -1119,13 +1120,9 @@ package body Gnat2Why.Expr is
 
          when N_Selected_Component =>
             T :=
-              New_Call
-                (Domain => Domain,
-                 Name   =>
-                   Record_Getter_Name.Id
-                     (Full_Name (Entity (Selector_Name (Expr)))),
-                 Args => (1 => Transform_Expr (Prefix (Expr),
-                                               Domain)));
+               New_Record_Access
+                  (Name  => Transform_Expr (Prefix (Expr), Domain),
+                   Field => Transform_Ident (Selector_Name (Expr)));
 
          when N_Function_Call =>
             declare

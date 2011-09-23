@@ -86,10 +86,6 @@ private
       (State : in out Printer_State;
        Node : W_Record_Definition_Id);
 
-   procedure Record_Field_Pre_Op
-      (State : in out Printer_State;
-       Node : W_Record_Field_Id);
-
    procedure Triggers_Pre_Op
      (State : in out Printer_State;
       Node  : W_Triggers_Id);
@@ -197,6 +193,14 @@ private
    procedure Epsilon_Pre_Op
      (State : in out Printer_State;
       Node  : W_Epsilon_Id);
+
+   procedure Record_Access_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Access_Id);
+
+   procedure Record_Update_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Update_Id);
 
    procedure Any_Expr_Pre_Op
      (State : in out Printer_State;

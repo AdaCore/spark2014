@@ -47,7 +47,7 @@ package body Xtree_Sinfo is
       New_Domain ("W_Term",
                   "W_Prog",
                   W_Identifier,
-                  W_Epsilon);
+                  W_Record_Update);
       New_Domain ("W_Prog",
                   "W_Expr",
                   W_Not,
@@ -203,16 +203,8 @@ package body Xtree_Sinfo is
       -------------------------
 
       New_Field (W_Record_Definition,
-                 "Fields", "W_Record_Field", Id_Some);
+                 "Fields", "W_Binder", Id_Some);
       Set_Domain (W_Record_Definition, EW_Term);
-
-      --------------------
-      -- W_Record_Field --
-      --------------------
-
-      New_Field (W_Record_Field, "Name", "W_Identifier", Id_One);
-      New_Field (W_Record_Field, "Field_Type", "W_Identifier", Id_One);
-      Set_Domain (W_Record_Field, EW_Term);
 
       ----------------
       -- W_Triggers --
@@ -491,6 +483,26 @@ package body Xtree_Sinfo is
                  "Binder", "W_Binder", Id_One);
       New_Field (W_Epsilon,
                  "Pred", "W_Pred", Id_One);
+
+      ---------------------
+      -- W_Record_Access --
+      ---------------------
+
+      New_Field (W_Record_Access,
+                 "Name", "W_Expr", Id_One);
+      New_Field (W_Record_Access,
+                 "Field", "W_Identifier", Id_One);
+
+      ---------------------
+      -- W_Record_Update --
+      ---------------------
+
+      New_Field (W_Record_Update,
+                 "Name", "W_Expr", Id_One);
+      New_Field (W_Record_Update,
+                 "Field", "W_Identifier", Id_One);
+      New_Field (W_Record_Update,
+                 "Value", "W_Expr", Id_One);
 
       ----------------
       -- W_Any_Expr --

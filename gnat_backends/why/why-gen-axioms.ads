@@ -26,7 +26,6 @@
 with Why.Ids;         use Why.Ids;
 with Why.Types;       use Why.Types;
 with Why.Sinfo;       use Why.Sinfo;
-with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
@@ -68,34 +67,5 @@ package Why.Gen.Axioms is
    --  axiom standard__integer___unicity :
    --   forall x, y : <type_name>.
    --    <to_base_type> (x) = <to_base_type> (y) -> x = y
-
-   procedure Define_Getter_Axiom
-     (File      : W_File_Id;
-      Type_Name : String;
-      Position  : Natural;
-      Binders   : Binder_Array);
-   --  Define a record getter axiom: its asserts that for a record of type t,
-   --  built with a function make___t, get__t_a returns field a.
-   --  The axiom is of the form:
-   --
-   --  axiom ar__my_record__a___getter:
-   --   forall a : <type_a>.
-   --   forall b : <type_b>.
-   --    get___ar__my_record__a(make___ar__my_record(a, b)) = a
-
-   procedure Define_Equality_Axiom
-     (File      : W_File_Id;
-      Type_Name : W_Identifier_Id;
-      Binders   : Binder_Array);
-   --  Define a record equality axiom: its asserts that for a record of type t,
-   --  equality between records is equivalent to equality between their fields.
-   --  The axiom is of the form:
-   --
-   --  axiom ar__my_record__a___equality:
-   --   forall x, y : <type_name>.
-   --    get___ar__my_record__1(x) = get___ar__my_record__1(y)
-   --     /\ ...
-   --     /\ get___ar__my_record__n(x) = get___ar__my_record__n(y)
-   --     -> x = y
 
 end Why.Gen.Axioms;

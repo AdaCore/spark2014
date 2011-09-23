@@ -281,7 +281,7 @@ package body Gnat2Why.Types is
 
                         Next_Entity (Field);
                      end loop;
-                     Define_Ada_Record (File, Ident_Node, Name_Str, Binders);
+                     Define_Ada_Record (File, Name_Str, Binders);
                   end;
                end;
 

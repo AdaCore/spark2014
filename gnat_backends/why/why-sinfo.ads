@@ -59,7 +59,6 @@ package Why.Sinfo is
       W_Adt_Definition,
       W_Record_Definition,
       W_Constr_Decl,
-      W_Record_Field,
 
       -------------------------
       -- Predicate structure --
@@ -118,6 +117,8 @@ package Why.Sinfo is
       W_Match,
       W_Array_Access,
       W_Epsilon,
+      W_Record_Access,
+      W_Record_Update,
 
       -----------------
       -- Progs, Expr --

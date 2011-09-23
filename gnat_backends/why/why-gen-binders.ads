@@ -109,6 +109,11 @@ package Why.Gen.Binders is
                       New_Literal (Value => EW_True))
      return W_Declaration_Id;
 
+   function New_Record_Definition
+      (Ada_Node : Node_Id := Empty;
+       Name     : W_Identifier_Id;
+       Binders  : Binder_Array) return W_Declaration_Id;
+
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;

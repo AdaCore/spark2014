@@ -23,36 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;           use Types;
-
 with Why.Ids;         use Why.Ids;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
 
-   --  We are limited to read-only operations on record types for now;
-   --  so these are modeled by an abstract type in Why, with one getter
-   --  function per field, plus a builder.
-
    procedure Define_Ada_Record
      (File    : W_File_Id;
-      E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array);
-   --  Create the declaration of a null record; return its builder logic
-   --  function, of the form make___<name> : unit -> <name>.
-   --  Output the definition of an Ada record by generating
-   --  * its builder
-   --    (e.g. make___t (a,b,c) for record type t with three fields);
-   --  * its getters
-   --    (e.g. get___t_a (obj) for field a of record type t);
-   --  its axioms;
-   --    one per field, saying that applying a projection on a builder
-   --    returns the appropriate result. e.g.
-   --
-   --  axiom make_get___t_a :
-   --   forall (a : t1) (b : t2) (c : t3).
-   --    get___t_a (make___t (a,b,c)) = a
 
 end Why.Gen.Records;
