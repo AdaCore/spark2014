@@ -264,9 +264,9 @@ package body Why.Gen.Scalars is
                Return_Type => New_Base_Type (Base_Type => Base_Type),
                Spec        =>
                  (1 =>
-                    (Kind   => W_Function_Decl,
+                    (Kind   => W_Function_Def,
                      Domain => EW_Term,
-                     Def    => Attr_Values (J).Value,
+                     Term    => Attr_Values (J).Value,
                      others => <>)));
          end if;
       end loop;
