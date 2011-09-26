@@ -30,6 +30,12 @@ with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Expr is
 
+   function Is_False_Boolean (P : W_Expr_Id) return Boolean;
+   --  Check if the given program is the program "false"
+
+   function Is_True_Boolean (P : W_Expr_Id) return Boolean;
+   --  Check if the given program is the program "true"
+
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;

@@ -1006,7 +1006,12 @@ package body Gnat2Why.Expr is
       if Domain = EW_Pred and then
          not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
          | N_Op_Or | N_Or_Else | N_In | N_Conditional_Expression |
-         N_Quantified_Expression | N_Case_Expression) then
+         N_Quantified_Expression | N_Case_Expression) and then
+         not (Nkind (Expr) in N_Identifier | N_Expanded_Name and then
+              Ekind (Entity (Expr)) in E_Enumeration_Literal and then
+              (Entity (Expr) = Standard_True or else
+               Entity (Expr) = Standard_False))
+      then
          return
            New_Relation
              (Ada_Node => Expr,
@@ -1730,10 +1735,21 @@ package body Gnat2Why.Expr is
                      then
                         return New_Void (Stmt);
                      else
-                        return
-                          New_Located_Assert
-                            (Ada_Node => Stmt,
-                             Pred     => Predicate_Of_Pragma_Check (Stmt));
+                        declare
+                           Pred : constant W_Pred_Id :=
+                              Predicate_Of_Pragma_Check (Stmt);
+                        begin
+                           if Is_False_Boolean (+Pred) then
+                              return
+                                +New_Located_Expr
+                                  (Ada_Node => Stmt,
+                                   Expr     => +New_Identifier ("absurd"),
+                                   Reason   => VC_Assert,
+                                   Domain   => EW_Prog);
+                           else
+                              return New_Located_Assert (Stmt, Pred);
+                           end if;
+                        end;
                      end if;
                   end;
 

@@ -36,12 +36,6 @@ with Why.Gen.Terms;        use Why.Gen.Terms;
 
 package body Why.Gen.Expr is
 
-   function Is_False_Boolean (P : W_Expr_Id) return Boolean;
-   --  Check if the given program is the program "false"
-
-   function Is_True_Boolean (P : W_Expr_Id) return Boolean;
-   --  Check if the given program is the program "true"
-
    ----------------------
    -- Is_False_Boolean --
    ----------------------
