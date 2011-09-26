@@ -1,2 +1,2 @@
-rec.adb:5:22: (info) range check proved
+rec.adb:5:22: range check not proved
 rec.ads:9:32: (info) postcondition proved
