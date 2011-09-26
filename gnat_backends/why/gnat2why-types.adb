@@ -258,6 +258,14 @@ package body Gnat2Why.Types is
                      Next_Entity (Field);
                   end loop;
 
+                  --  Do nothing if the record is empty.
+                  --  Maybe we have to do something special here? Map all
+                  --  empty records to type unit in Why?
+
+                  if Number_Of_Fields = 0 then
+                     return;
+                  end if;
+
                   declare
                      Field   : Node_Id := First_Entity (Ident_Node);
                      Binders : Binder_Array (1 .. Number_Of_Fields);
