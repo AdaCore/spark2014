@@ -720,18 +720,9 @@ package body Gnat2Why.Expr is
       --    Prefix := Upd (Prefix, Acc1,
       --                   (Upd (Prefix.Acc1, Acc2,
       --                         Upd (..., Accn, Expr))));
-      --
-      --  The central function is Compute_Rvalue. For a given Lvalue, it
-      --  computes not only the corresponding update expression, but also the
-      --  access chain that leads to the updated component.
 
-      type RV_Rec is
-         record
-            Rv : W_Prog_Id; -- the update expression
-            Lv : W_Prog_Id; -- the path to the component that is updated
-         end record;
-
-      function Compute_Rvalue (N : Node_Id) return RV_Rec;
+      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+         return W_Prog_Id;
 
       function Expected_Type return W_Base_Type_Id;
       --  Compute the expected type of the right hand side expression.
@@ -748,44 +739,29 @@ package body Gnat2Why.Expr is
       -- Compute_Rvalue --
       --------------------
 
-      function Compute_Rvalue (N : Node_Id) return RV_Rec
-      is
+      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+         return W_Prog_Id is
 
-         --  For each step, we return not only the update expression, but also
-         --  the access expression that leads to the updated component.
-
+         --  The outermost Access node corresponds to the innermost data
+         --  structure; therefore, we compute the update expression before the
+         --  recursive call; It happens that the prefix of the current
+         --  node precisely corresponds to the data structure to be
+         --  updated.
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
 
-               --  This is the base case; the update expression is simply the
-               --  translation of the Ada right hand side; the path to the
-               --  updated component is simply the translation of the
-               --  identifier itself.
-
-               return
-                 (Rv =>
-                    +Transform_Expr
-                       (Expression (Stmt),
-                        Expected_Type,
-                        EW_Prog),
-                  Lv => +Transform_Expr (N, EW_Prog));
+               return Update_Expr;
 
             when N_Selected_Component | N_Indexed_Component =>
-
-               --  Here, the update expression is simply
-               --    {| path with field = update_expr |}
-               --  "path" is the path computed by the recursive call to
-               --  Compute_Rvalue; in the same way "update_expr" is the update
-               --  expression of the recursive call.
-
-               declare
-                  R : constant RV_Rec := Compute_Rvalue (Prefix (N));
-               begin
-                  return
-                    (Rv => +One_Level_Update (N, +R.Lv, +R.Rv, EW_Prog),
-                     Lv => +One_Level_Access (N, +R.Lv, EW_Prog));
-               end;
+               return
+                  Compute_Rvalue
+                    (Prefix (N),
+                     +One_Level_Update
+                       (N,
+                        +Transform_Expr (Prefix (N), EW_Prog),
+                        +Update_Expr,
+                        EW_Prog));
 
             when others =>
                raise Not_Implemented;
@@ -843,13 +819,16 @@ package body Gnat2Why.Expr is
       --  begin processing for Transform_Assignment_Statement
 
       W_Lvalue : constant W_Identifier_Id := Why_Lvalue (Lvalue);
-      Result : constant RV_Rec := Compute_Rvalue (Lvalue);
    begin
       return
          New_Assignment
             (Ada_Node => Stmt,
              Name     => W_Lvalue,
-             Value    => Result.Rv);
+             Value    =>
+               Compute_Rvalue (Lvalue,
+                               +Transform_Expr (Expression (Stmt),
+                                                Expected_Type,
+                                                EW_Prog)));
    end Transform_Assignment_Statement;
 
    ---------------------
