@@ -1207,7 +1207,7 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (State);
       pragma Unreferenced (Node);
    begin
-      P (O, " } ; ()");
+      P (O, " }");
    end Assert_Post_Op;
 
    ------------------
