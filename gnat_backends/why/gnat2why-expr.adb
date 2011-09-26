@@ -109,6 +109,12 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
+   function Transform_Component_Associations
+     (Domain : EW_Domain;
+      Typ    : Entity_Id;
+      CA     : List_Id)
+     return W_Field_Association_Array;
+
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
 
@@ -887,7 +893,7 @@ package body Gnat2Why.Expr is
      (Domain : EW_Domain;
       Typ    : Entity_Id;
       CA     : List_Id)
-     return W_Expr_Array
+     return W_Field_Association_Array
    is
       function Matching_Component_Association
         (Component   : Entity_Id;
@@ -928,36 +934,44 @@ package body Gnat2Why.Expr is
 
       Component   : Entity_Id := First_Component (Typ);
       Association : Node_Id := Nlists.First (CA);
-      Result      : W_Expr_Array (1 .. Number_Components (Typ));
+      Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
       J           : Positive := Result'First;
 
    --  Start of Transform_Component_Associations
 
    begin
       while Component /= Empty loop
-         if Present (Association)
-           and then Matching_Component_Association (Component, Association)
-         then
-            if not Box_Present (Association) then
-               Result (J) := Transform_Expr (Expression (Association), Domain);
+         declare
+            Expr : W_Expr_Id;
+         begin
+            if Present (Association)
+              and then Matching_Component_Association (Component, Association)
+            then
+               if not Box_Present (Association) then
+                  Expr := Transform_Expr (Expression (Association), Domain);
+               else
+                  Expr :=
+                     New_Simpl_Any_Expr
+                         (Domain => Domain,
+                          Arg_Type =>
+                            +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+               end if;
+               Next (Association);
             else
-               Result (J) :=
+               Expr :=
                  New_Simpl_Any_Expr
                    (Domain => Domain,
                     Arg_Type =>
                       +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
             end if;
-            Next (Association);
-         else
             Result (J) :=
-              New_Simpl_Any_Expr
-                (Domain => Domain,
-                 Arg_Type =>
-                   +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
-         end if;
-
-         J := J + 1;
-         Component := Next_Component (Component);
+               New_Field_Association
+                  (Domain => Domain,
+                   Field  => New_Identifier (Full_Name (Component)),
+                   Value  => Expr);
+            J := J + 1;
+            Component := Next_Component (Component);
+         end;
       end loop;
       pragma Assert (No (Association));
       return Result;
@@ -1026,23 +1040,17 @@ package body Gnat2Why.Expr is
 
       case Nkind (Expr) is
          when N_Aggregate =>
-            raise Not_Implemented;
-
-            --  if Is_Record_Type (Etype (Expr)) then
-            --     T :=
-            --       New_Call
-            --         (Ada_Node => Expr,
-            --          Domain   => Domain,
-            --          Name     =>
-            --            Record_Builder_Name.Id (Full_Name (Etype (Expr))),
-            --          Args     =>
-            --            Transform_Component_Associations
-            --              (Domain,
-            --               Etype (Expr),
-            --               Component_Associations (Expr)));
-            --     Current_Type := EW_Abstract (Etype (Expr));
-            --  else
-            --  end if;
+            if Is_Record_Type (Etype (Expr)) then
+               T :=
+                  New_Record_Aggregate
+                    (Associations => Transform_Component_Associations
+                                       (Domain,
+                                        Etype (Expr),
+                                        Component_Associations (Expr)));
+               Current_Type := EW_Abstract (Etype (Expr));
+            else
+               raise Not_Implemented;
+            end if;
 
          when N_Integer_Literal =>
             T :=

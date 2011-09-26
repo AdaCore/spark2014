@@ -78,6 +78,7 @@ package Why.Sinfo is
       W_Loop_Annot,
       W_Wf_Arg,
       W_Handler,
+      W_Field_Association,
 
       -----------------
       -- Preds, Expr --
@@ -119,6 +120,7 @@ package Why.Sinfo is
       W_Epsilon,
       W_Record_Access,
       W_Record_Update,
+      W_Record_Aggregate,
 
       -----------------
       -- Progs, Expr --

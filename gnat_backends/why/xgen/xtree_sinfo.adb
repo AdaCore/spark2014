@@ -47,7 +47,7 @@ package body Xtree_Sinfo is
       New_Domain ("W_Term",
                   "W_Prog",
                   W_Identifier,
-                  W_Record_Update);
+                  W_Record_Aggregate);
       New_Domain ("W_Prog",
                   "W_Expr",
                   W_Not,
@@ -295,6 +295,16 @@ package body Xtree_Sinfo is
       Set_Domain (W_Handler, EW_Prog);
 
       -------------------------
+      -- W_Field_Association --
+      -------------------------
+
+      New_Field (W_Field_Association,
+                 "Field", "W_Identifier", Id_One);
+      New_Field (W_Field_Association,
+                 "Value", "W_Expr", Id_One);
+      Set_Domain (W_Handler, EW_Term);
+
+      -------------------------
       -- W_Universal_Quantif --
       -------------------------
 
@@ -503,6 +513,13 @@ package body Xtree_Sinfo is
                  "Field", "W_Identifier", Id_One);
       New_Field (W_Record_Update,
                  "Value", "W_Expr", Id_One);
+
+      ------------------------
+      -- W_Record_Aggregate --
+      ------------------------
+
+      New_Field (W_Record_Aggregate,
+                 "Associations", "W_Field_Association", Id_Some);
 
       ----------------
       -- W_Any_Expr --

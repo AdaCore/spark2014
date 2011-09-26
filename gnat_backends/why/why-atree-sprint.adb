@@ -1003,6 +1003,35 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Record_Update_Pre_Op;
 
+   -----------------------------
+   -- Record_Aggregate_Pre_Op --
+   -----------------------------
+
+   procedure Record_Aggregate_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Aggregate_Id)
+   is
+   begin
+      P (O, "{| ");
+      Print_List (State, +Get_Associations (Node), "; ");
+      P (O, " |}");
+      State.Control := Abandon_Children;
+   end Record_Aggregate_Pre_Op;
+
+   -----------------------------
+   -- Field_Association_Pre_Op --
+   -----------------------------
+
+   procedure Field_Association_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Field_Association_Id)
+   is
+   begin
+      Traverse (State, +Get_Field (Node));
+      P (O, " = ");
+      Traverse (State, +Get_Value (Node));
+      State.Control := Abandon_Children;
+   end Field_Association_Pre_Op;
    ---------------------
    -- Any_Expr_Pre_Op --
    ---------------------

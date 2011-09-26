@@ -202,6 +202,14 @@ private
      (State : in out Printer_State;
       Node  : W_Record_Update_Id);
 
+   procedure Record_Aggregate_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Record_Aggregate_Id);
+
+   procedure Field_Association_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Field_Association_Id);
+
    procedure Any_Expr_Pre_Op
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id);
