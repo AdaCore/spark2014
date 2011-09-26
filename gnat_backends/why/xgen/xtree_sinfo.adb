@@ -376,10 +376,14 @@ package body Xtree_Sinfo is
       -- W_Identifier --
       ------------------
 
-      New_Field (W_Identifier,
-                 "Symbol", "Name_Id");
-      New_Field (W_Identifier,
-                 "Label", "Name_Id", "No_Name");
+      New_Field (W_Identifier, "Symbol", "Name_Id");
+
+      --------------
+      -- W_Tagged --
+      --------------
+
+      New_Field (W_Tagged, "Tag", "Name_Id");
+      New_Field (W_Tagged, "Def", "W_Expr", Id_One);
 
       ------------
       -- W_Call --

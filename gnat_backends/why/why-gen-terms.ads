@@ -37,9 +37,6 @@ package Why.Gen.Terms is
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
-   function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id;
-   --  Build an identifier with "old" label
-
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.

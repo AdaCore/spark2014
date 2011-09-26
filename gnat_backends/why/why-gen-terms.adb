@@ -120,17 +120,6 @@ package body Why.Gen.Terms is
       end case;
    end New_Ifb;
 
-   -------------------
-   -- New_Old_Ident --
-   -------------------
-
-   function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id
-   is
-   begin
-      return
-        +New_Identifier (Name => Ident, Label => "");
-   end New_Old_Ident;
-
    ---------------------
    -- New_Result_Term --
    ---------------------

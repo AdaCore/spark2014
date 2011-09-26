@@ -680,28 +680,38 @@ package body Why.Atree.Sprint is
 
    procedure Identifier_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Identifier_Id)
-   is
-      pragma Unreferenced (State);
-      Symbol : constant Name_Id := Get_Symbol (Node);
-      Label  : constant Name_Id := Get_Label (Node);
+      Node  : W_Identifier_Id) is
    begin
-      if Label = No_Name then
-         P (O, Symbol);
-
-      elsif Get_Name_String (Label) /= "" then
-         P (O, "(at !");
-         P (O, Symbol);
-         P (O, " ");
-         P (O, Label);
-         P (O, ")");
-
-      else
-         P (O, "(old !");
-         P (O, Symbol);
-         P (O, ")");
-      end if;
+      P (O, Get_Symbol (Node));
+      State.Control := Abandon_Children;
    end Identifier_Pre_Op;
+
+   -----------------------
+   -- Tagged_Pre_Op --
+   -----------------------
+
+   procedure Tagged_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Tagged_Id)
+   is
+      Tag    : constant Name_Id := Get_Tag (Node);
+   begin
+      if Tag = No_Name then
+         Traverse (State, +Get_Def (Node));
+
+      elsif Get_Name_String (Tag) /= "" then
+         P (O, "(at ");
+         Traverse (State, +Get_Def (Node));
+         P (O, " ");
+         P (O, Tag);
+         P (O, " )");
+      else
+         P (O, "(old ");
+         Traverse (State, +Get_Def (Node));
+         P (O, " )");
+      end if;
+      State.Control := Abandon_Children;
+   end Tagged_Pre_Op;
 
    -----------------
    -- Call_Pre_Op --

@@ -146,6 +146,10 @@ private
      (State : in out Printer_State;
       Node  : W_Identifier_Id);
 
+   procedure Tagged_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Tagged_Id);
+
    procedure Call_Pre_Op
      (State : in out Printer_State;
       Node  : W_Call_Id);

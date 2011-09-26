@@ -149,17 +149,6 @@ package body Why.Gen.Names is
       return New_Identifier (Domain => Domain, Symbol => NID (Name));
    end New_Identifier;
 
-   function New_Identifier
-     (Name   : W_Identifier_Id;
-      Label  : String)
-     return W_Identifier_Id
-   is
-      S : constant Name_Id := Get_Symbol (Name);
-      L : constant Name_Id := NID (Label);
-   begin
-      return New_Identifier (Domain => EW_Term, Symbol => S, Label => L);
-   end New_Identifier;
-
    ---------
    -- NID --
    ---------

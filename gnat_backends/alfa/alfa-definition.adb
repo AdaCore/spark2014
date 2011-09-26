@@ -1471,14 +1471,9 @@ package body Alfa.Definition is
          when Attribute_Result |
               Attribute_First  |
               Attribute_Last   |
-              Attribute_Length =>
+              Attribute_Length |
+              Attribute_Old =>
             null;
-
-         when Attribute_Old =>
-            if not Nkind_In (P, N_Identifier, N_Expanded_Name) then
-               Mark_Non_Alfa ("'Old not applied to object name", N,
-                              NYI_Old_Attribute);
-            end if;
 
          when others =>
             Mark_Non_Alfa ("attribute", N, NYI_Attribute);

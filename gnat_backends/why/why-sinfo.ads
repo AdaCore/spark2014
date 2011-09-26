@@ -101,6 +101,7 @@ package Why.Sinfo is
       -------------------------------
 
       W_Identifier,
+      W_Tagged,
       W_Call,
       W_Literal,
       W_Binding,

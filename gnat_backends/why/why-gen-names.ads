@@ -66,12 +66,6 @@ package Why.Gen.Names is
      return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
-   function New_Identifier
-     (Name   : W_Identifier_Id;
-      Label  : String)
-     return W_Identifier_Id;
-   --  Same as New_Identifier, adding a label ("Name@Label")
-
    function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name
 

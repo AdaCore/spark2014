@@ -1382,7 +1382,9 @@ package body Gnat2Why.Expr is
                         raise Not_Implemented;
                      end if;
 
-                     T := +New_Old_Ident (Transform_Ident (Var));
+                     T := New_Tagged (Def    => Transform_Expr (Var, Domain),
+                                      Tag    => NID (""),
+                                      Domain => Domain);
 
                   when Attribute_First | Attribute_Last | Attribute_Length =>
                      case Ekind (Etype (Var)) is
