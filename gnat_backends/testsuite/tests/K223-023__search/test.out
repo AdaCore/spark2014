@@ -5,5 +5,10 @@ search.adb:7:10: (info) loop invariant preservation proved
 search.adb:8:53: (info) overflow check proved
 search.adb:8:60: (info) array bounds check proved
 search.adb:9:13: (info) array bounds check proved
+search.ads:10:13: array bounds check not proved
+search.ads:11:34: (info) range check proved
+search.ads:11:54: (info) range check proved
 search.ads:5:53: (info) array bounds check proved
+search.ads:8:57: (info) range check proved
+search.ads:8:65: (info) range check proved
 search.ads:9:10: postcondition not proved

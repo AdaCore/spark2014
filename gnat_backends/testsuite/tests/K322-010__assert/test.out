@@ -4,5 +4,5 @@ pack.ads:13:21: (info) division by zero proved
 pack.ads:13:21: overflow check not proved
 pack.ads:13:25: postcondition not proved
 pack.ads:9:21: (info) division by zero proved
-pack.ads:8:21: overflow check not proved
+pack.ads:9:21: overflow check not proved
 pack.ads:9:25: postcondition not proved
