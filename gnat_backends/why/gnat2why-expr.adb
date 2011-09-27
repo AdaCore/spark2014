@@ -109,10 +109,16 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
-   function Transform_Component_Associations
+   function Transform_Array_Component_Associations
+     (Typ    : Entity_Id;
+      Id     : W_Identifier_Id;
+      Exprs  : List_Id;
+      Assocs : List_Id) return W_Pred_Id;
+
+   function Transform_Record_Component_Associations
      (Domain : EW_Domain;
       Typ    : Entity_Id;
-      CA     : List_Id)
+      Assocs : List_Id)
      return W_Field_Association_Array;
 
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
@@ -832,14 +838,218 @@ package body Gnat2Why.Expr is
       end case;
    end Transform_Compare_Op;
 
-   --------------------------------------
-   -- Transform_Component_Associations --
-   --------------------------------------
+   --------------------------------------------
+   -- Transform_Array_Component_Associations --
+   --------------------------------------------
 
-   function Transform_Component_Associations
+   function Transform_Array_Component_Associations
+     (Typ    : Entity_Id;
+      Id     : W_Identifier_Id;
+      Exprs  : List_Id;
+      Assocs : List_Id) return W_Pred_Id
+   is
+      T_Name    : constant String := Type_Of_Node (Typ);
+      Index     : constant W_Identifier_Id := New_Temp_Identifier;
+      Elmt_Type : constant W_Base_Type_Id :=
+                    +Why_Logic_Type_Of_Ada_Type (Component_Type (Typ));
+
+      -----------------------
+      -- Local subprograms --
+      -----------------------
+
+      function Constrain_Value_At_Index
+        (Expr_Or_Association : Node_Id) return W_Expr_Id;
+      --  Return the proposition that Id (Index) is equal to the value given in
+      --  Expr_Or_Association, or else "true" for box association.
+
+      function Select_Nth_Index (Offset : Nat) return W_Expr_Id;
+      --  Return the proposition that Index is at Offset from Id'First
+
+      function Select_These_Choices (L : List_Id) return W_Expr_Id;
+      --  Return a proposition that expresses that Index satisfies one choice
+      --  in the list of choices L.
+
+      function Select_This_Choice (N : Node_Id) return W_Expr_Id;
+      --  Return a proposition that expresses that Index satisfies choice N
+
+      ------------------------------
+      -- Constrain_Value_At_Index --
+      ------------------------------
+
+      function Constrain_Value_At_Index
+        (Expr_Or_Association : Node_Id) return W_Expr_Id is
+      begin
+         if Nkind (Expr_Or_Association) = N_Component_Association
+           and then Box_Present (Expr_Or_Association)
+         then
+            return New_Literal (Value  => EW_True,
+                                Domain => EW_Pred);
+         else
+            declare
+               Expr   : constant Node_Id :=
+                          (if Nkind (Expr_Or_Association) =
+                             N_Component_Association
+                           then
+                             Expression (Expr_Or_Association)
+                           else
+                             Expr_Or_Association);
+               Value  : constant W_Expr_Id :=
+                          Transform_Expr (Expr   => Expr,
+                                          Domain => EW_Term);
+               Read   : constant W_Expr_Id :=
+                          New_Array_Access
+                            (Ada_Node  => Expr_Or_Association,
+                             Domain    => EW_Term,
+                             Type_Name => T_Name,
+                             Ar        => +Id,
+                             Index     => +Index);
+            begin
+               return New_Comparison
+                 (Cmp       => EW_Eq,
+                  Left      => Read,
+                  Right     => Value,
+                  Arg_Types => Elmt_Type,
+                  Domain    => EW_Pred);
+            end;
+         end if;
+      end Constrain_Value_At_Index;
+
+      ----------------------
+      -- Select_Nth_Index --
+      ----------------------
+
+      function Select_Nth_Index (Offset : Nat) return W_Expr_Id is
+         First : constant W_Expr_Id :=
+                   New_Array_Attr
+                     (Attribute_Id'Image (Attribute_First),
+                      T_Name,
+                      +Id,
+                      EW_Term);
+         Nth   : constant W_Expr_Id :=
+                   New_Binary_Op
+                     (Left     => First,
+                      Right    =>
+                        New_Integer_Constant (Value  => UI_From_Int (Offset)),
+                      Op       => EW_Add,
+                      Op_Type  => EW_Int);
+      begin
+         return New_Comparison
+           (Cmp       => EW_Eq,
+            Left      => +Index,
+            Right     => Nth,
+            Arg_Types => EW_Int_Type,
+            Domain    => EW_Pred);
+      end Select_Nth_Index;
+
+      --------------------------
+      -- Select_These_Choices --
+      --------------------------
+
+      function Select_These_Choices (L : List_Id) return W_Expr_Id is
+         Result : W_Expr_Id := New_Literal (Value  => EW_False,
+                                            Domain => EW_Pred);
+         Choice : Node_Id   := First (L);
+      begin
+         while Present (Choice) loop
+            Result := New_Or_Expr (Left   => Result,
+                                   Right  => Select_This_Choice (Choice),
+                                   Domain => EW_Pred);
+            Next (Choice);
+         end loop;
+         return Result;
+      end Select_These_Choices;
+
+      ------------------------
+      -- Select_This_Choice --
+      ------------------------
+
+      function Select_This_Choice (N : Node_Id) return W_Expr_Id is
+         In_Range : W_Expr_Id;
+      begin
+         case Nkind (N) is
+            when N_Subtype_Indication | N_Range =>
+               In_Range := Range_Expr (N, +Index, EW_Pred);
+               return In_Range;
+            when N_Others_Choice =>
+               raise Program_Error;
+            when others =>
+               In_Range :=
+                 New_Comparison
+                   (Cmp       => EW_Eq,
+                    Left      => +Index,
+                    Right     => Transform_Expr (Expr          => N,
+                                                 Expected_Type => EW_Int_Type,
+                                                 Domain        => EW_Term),
+                    Arg_Types => EW_Int_Type,
+                    Domain    => EW_Pred);
+               return In_Range;
+         end case;
+      end Select_This_Choice;
+
+      Association : Node_Id;
+      Expression  : Node_Id;
+      Offset      : Nat;
+      Completion  : W_Expr_Id := New_Literal (Value  => EW_True,
+                                              Domain => EW_Pred);
+
+   begin
+      Association :=
+        (if Nlists.Is_Empty_List (Assocs) then Empty
+         else Nlists.Last (Assocs));
+
+      --  Special case for "others" choice, which must appear alone as last
+      --  association.
+
+      if Present (Association)
+        and then List_Length (Choices (Association)) = 1
+        and then Nkind (First (Choices (Association))) = N_Others_Choice
+      then
+         if not Box_Present (Association) then
+            Completion := Constrain_Value_At_Index (Association);
+         end if;
+         Prev (Association);
+      end if;
+
+      Expression :=
+        (if Nlists.Is_Empty_List (Exprs) then Empty else Nlists.Last (Exprs));
+      Offset     := List_Length (Exprs);
+      if Present (Expression) then
+         pragma Assert (No (Association));
+         while Present (Expression) loop
+            Offset := Offset - 1;
+            Completion := New_Conditional
+              (Domain    => EW_Pred,
+               Condition => +Select_Nth_Index (Offset),
+               Then_Part => Constrain_Value_At_Index (Expression),
+               Else_Part => Completion);
+            Prev (Expression);
+         end loop;
+
+      else
+         while Present (Association) loop
+            Completion := New_Conditional
+              (Domain    => EW_Pred,
+               Condition => +Select_These_Choices (Choices (Association)),
+               Then_Part => Constrain_Value_At_Index (Association),
+               Else_Part => Completion);
+            Prev (Association);
+         end loop;
+      end if;
+
+      return New_Universal_Quantif
+        (Variables => (1 => Index),
+         Var_Type  => +EW_Int_Type,
+         Pred      => +Completion);
+   end Transform_Array_Component_Associations;
+
+   ---------------------------------------------
+   -- Transform_Record_Component_Associations --
+   ---------------------------------------------
+
+   function Transform_Record_Component_Associations
      (Domain : EW_Domain;
       Typ    : Entity_Id;
-      CA     : List_Id)
+      Assocs : List_Id)
      return W_Field_Association_Array
    is
       function Matching_Component_Association
@@ -880,11 +1090,11 @@ package body Gnat2Why.Expr is
       end Number_Components;
 
       Component   : Entity_Id := First_Component (Typ);
-      Association : Node_Id := Nlists.First (CA);
+      Association : Node_Id := Nlists.First (Assocs);
       Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
       J           : Positive := Result'First;
 
-   --  Start of Transform_Component_Associations
+   --  Start of Transform_Record_Component_Associations
 
    begin
       while Component /= Empty loop
@@ -922,7 +1132,7 @@ package body Gnat2Why.Expr is
       end loop;
       pragma Assert (No (Association));
       return Result;
-   end Transform_Component_Associations;
+   end Transform_Record_Component_Associations;
 
    ----------------------------
    -- Transform_Enum_Literal --
@@ -993,15 +1203,36 @@ package body Gnat2Why.Expr is
       case Nkind (Expr) is
          when N_Aggregate =>
             if Is_Record_Type (Etype (Expr)) then
+               pragma Assert (No (Expressions (Expr)));
                T :=
                   New_Record_Aggregate
-                    (Associations => Transform_Component_Associations
+                    (Associations => Transform_Record_Component_Associations
                                        (Domain,
                                         Etype (Expr),
                                         Component_Associations (Expr)));
                Current_Type := EW_Abstract (Etype (Expr));
             else
-               raise Not_Implemented;
+               declare
+                  Id : constant W_Identifier_Id :=
+                         (if Domain = EW_Term then
+                            New_Temp_Identifier
+                          else New_Result_Identifier.Id);
+                  Base_Type : constant Entity_Id := Etype (Etype (Expr));
+                  BT : constant W_Base_Type_Id :=
+                                +Why_Logic_Type_Of_Ada_Type (Base_Type);
+               begin
+                  T := New_Simpl_Any_Expr
+                    (Domain   => Domain,
+                     Arg_Type => +BT,
+                     Id       => Id,
+                     Pred     =>
+                       Transform_Array_Component_Associations
+                         (Base_Type,
+                          Id,
+                          Expressions (Expr),
+                          Component_Associations (Expr)));
+                  Current_Type := EW_Abstract (Base_Type);
+               end;
             end if;
 
          when N_Integer_Literal =>
