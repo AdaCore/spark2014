@@ -263,6 +263,7 @@ package body Gnat2Why.Types is
                   --  empty records to type unit in Why?
 
                   if Number_Of_Fields = 0 then
+                     Emit (File, New_Type (Name_Str));
                      return;
                   end if;
 
