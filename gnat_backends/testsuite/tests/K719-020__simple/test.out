@@ -14,5 +14,8 @@ test.ads:23:20: (info) array bounds check proved
 test.ads:23:26: (info) array bounds check proved
 test.ads:24:31: (info) postcondition proved
 test.ads:27:25: (info) postcondition proved
+test.ads:30:22: (info) array bounds check proved
 test.ads:30:29: (info) postcondition proved
+test.ads:33:21: (info) array bounds check proved
+test.ads:33:27: (info) array bounds check proved
 test.ads:33:34: (info) postcondition proved

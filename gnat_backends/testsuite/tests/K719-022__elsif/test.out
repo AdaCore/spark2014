@@ -5,4 +5,6 @@ minus.adb:19:63: (info) range check proved
 minus.adb:6:17: (info) range check proved
 minus.adb:8:17: (info) range check proved
 minus.ads:4:27: (info) postcondition proved
+minus.ads:4:31: (info) overflow check proved
 minus.ads:8:28: (info) postcondition proved
+minus.ads:8:32: (info) overflow check proved

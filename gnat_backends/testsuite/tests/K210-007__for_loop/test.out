@@ -14,5 +14,9 @@ s.adb:6:9: (info) loop invariant initialization proved
 s.adb:6:9: (info) loop invariant preservation proved
 s.adb:7:26: (info) array bounds check proved
 s.adb:9:12: (info) array bounds check proved
-s.ads:12:14: (info) postcondition proved
+s.ads:12:14: postcondition not proved
+s.ads:12:41: (info) array bounds check proved
+s.ads:12:55: (info) array bounds check proved
 s.ads:8:14: (info) postcondition proved
+s.ads:8:68: (info) array bounds check proved
+s.ads:9:42: (info) array bounds check proved

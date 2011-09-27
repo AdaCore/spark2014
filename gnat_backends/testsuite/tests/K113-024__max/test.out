@@ -4,4 +4,5 @@ max.adb:6:10: (info) loop invariant preservation proved
 max.adb:6:25: (info) array bounds check proved
 max.adb:7:13: (info) array bounds check proved
 max.adb:8:21: (info) array bounds check proved
+max.ads:4:20: (info) array bounds check proved
 max.ads:4:26: (info) postcondition proved

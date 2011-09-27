@@ -7,3 +7,5 @@ divide.adb:8:32: (info) overflow check proved
 divide.adb:9:31: overflow check not proved
 divide.adb:9:35: overflow check not proved
 divide.ads:4:61: postcondition not proved
+divide.ads:4:27: overflow check not proved
+divide.ads:4:31: overflow check not proved

@@ -3,5 +3,7 @@ stacks.adb:5:18: (info) range check proved
 stacks.adb:6:7: (info) array bounds check proved
 stacks.ads:14:69: (info) array bounds check proved
 stacks.ads:18:31: postcondition not proved
+stacks.ads:18:58: (info) overflow check proved
 stacks.ads:22:43: postcondition not proved
+stacks.ads:22:70: (info) overflow check proved
 stacks.ads:8:69: (info) range check proved

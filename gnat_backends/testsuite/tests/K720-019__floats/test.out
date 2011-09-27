@@ -12,4 +12,5 @@ pack.adb:5:17: (info) range check proved
 pack.ads:13:33: (info) overflow check proved
 pack.ads:14:33: (info) overflow check proved
 pack.ads:15:31: (info) postcondition proved
+pack.ads:15:37: (info) overflow check proved
 pack.ads:18:46: (info) postcondition proved

@@ -1,5 +1,7 @@
 ar.adb:12:16: (info) range check proved
 ar.adb:12:7: (info) array bounds check proved
 ar.adb:6:14: (info) array bounds check proved
+ar.ads:10:21: (info) array bounds check proved
 ar.ads:10:27: (info) postcondition proved
 ar.ads:6:22: (info) postcondition proved
+ar.ads:6:24: (info) array bounds check proved

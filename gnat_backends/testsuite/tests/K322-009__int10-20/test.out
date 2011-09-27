@@ -8,5 +8,6 @@ inrange.adb:8:18: (info) precondition proved
 inrange.adb:8:23: (info) range check proved
 inrange.ads:10:28: (info) postcondition proved
 inrange.ads:14:23: (info) postcondition proved
+inrange.ads:14:31: (info) overflow check proved
 inrange.ads:17:34: (info) postcondition proved
 inrange.ads:7:24: (info) postcondition proved

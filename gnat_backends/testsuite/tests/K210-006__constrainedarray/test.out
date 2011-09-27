@@ -4,4 +4,5 @@ constr.adb:6:10: (info) array bounds check proved
 constr.adb:6:19: (info) array bounds check proved
 constr.adb:6:24: range check not proved
 constr.ads:5:20: (info) array bounds check proved
+constr.ads:6:21: (info) array bounds check proved
 constr.ads:6:26: postcondition not proved
