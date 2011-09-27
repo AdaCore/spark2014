@@ -797,8 +797,11 @@ package body Why.Atree.Sprint is
          end if;
          P (O, ")");
       else
-         pragma Assert (Get_Domain (+Node) = EW_Prog);
-         P (O, ")");
+         if Get_Domain (+Node) = EW_Prog then
+            P (O, ")");
+         else
+            P (O, ") else true");
+         end if;
       end if;
       P (O, ")");
 
