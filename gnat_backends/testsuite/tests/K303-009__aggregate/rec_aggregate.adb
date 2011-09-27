@@ -3,9 +3,9 @@ package body Rec_Aggregate is
    begin
       case B is
 	 when 1 =>
-	    R := (X => 1);
+	    R := (X => One);
 	 when others =>
-	    R := (others => 1);
+	    R := (others => One);
       end case;
    end P1;
 
@@ -13,15 +13,15 @@ package body Rec_Aggregate is
    begin
       case B is
 	 when 1 =>
-	    R := (1, 2);
+	    R := (One, 2);
 	 when 2 =>
-	    R := (others => 1);
+	    R := (others => One);
 	 when 3 =>
-	    R := (1, others => 1);
+	    R := (One, others => One);
 	 when 4 =>
-	    R := (X => 2, others => 1);
+	    R := (X => 2, others => One);
 	 when others =>
-	    R := (Y => 2, others => 1);
+	    R := (Y => 2, others => One);
       end case;
    end P2;
    
@@ -29,15 +29,15 @@ package body Rec_Aggregate is
    begin
       case B is
 	 when 1 =>
-	    R := (1, 2, (1, 2));
+	    R := (One, 2, (One, 2));
 	 when 2 =>
-	    R := (Z => (others => 1), others => 1);
+	    R := (Z => (others => One), others => One);
 	 when 3 =>
-	    R := (1, Z => (1, others => 1), others => 1);
+	    R := (One, Z => (1, others => One), others => One);
 	 when 4 =>
-	    R := (X => 2, Z => (X => 2, others => 1), others => 1);
+	    R := (X => 2, Z => (X => 2, others => One), others => One);
 	 when others =>
-	    R := (Y => 2, Z => (Y => 2, others => 1), others => 1);
+	    R := (Y => 2, Z => (Y => 2, others => One), others => One);
       end case;
    end P3;
    
@@ -45,11 +45,11 @@ package body Rec_Aggregate is
    begin
       case B is
 	 when 1 =>
-	    R := (1, True);
+	    R := (One, True);
 	 when 2 =>
 	    R := (others => <>);
 	 when 3 =>
-	    R := (1, others => <>);
+	    R := (One, others => <>);
 	 --  when 4 =>
 	 --     R := (X => <>, others => True);
 	 when others =>
