@@ -7,6 +7,6 @@ package aggregate is
 
    procedure A (X : Integer; K : out TemplatePadT)
       with Pre  => (X = 1),
-           Post => (K (1) = 1 and then K (11) = 2 and then K (12) = 0);
+           Post => (K (1) = 2 and then K (11) = 2 and then K (6) = 1);
 
 end aggregate;
