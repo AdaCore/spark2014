@@ -1015,12 +1015,8 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            if Is_Record_Type (Etype (N)) then
-               pragma Assert (No (Expressions (N)));
-               Mark_List (Component_Associations (N));
-            else
-               Mark_Non_Alfa ("array aggregate", N, NYI_Aggregate);
-            end if;
+            Mark_List (Expressions (N));
+            Mark_List (Component_Associations (N));
 
          when N_Allocator =>
             Mark_Non_Alfa ("allocator", N, NIR_Dynamic_Alloc);
