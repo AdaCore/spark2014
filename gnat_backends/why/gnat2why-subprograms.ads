@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet;         use Namet;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 
@@ -31,60 +32,45 @@ package Gnat2Why.Subprograms is
    --  This package deals with the translation of GNAT functions and
    --  statements to Why declarations.
 
-   --  There is one main distinction to make: the one between functions and
-   --  procedures.
-   --
-   --  Here in the Gnat2Why backend, we assume that all functions are
-   --  side effect free expression functions. All other functions have been
-   --  translated to procedures. We also currently assume that no recursion
-   --  exists. This means that we can translate such functions into Why
-   --  logical functions.
-   --  TBD: Do expression functions have a contract? We don't need one, but if
-   --  there is one, what to do with it?
-
-   --  Procedures are translated to Why programs with pre- and postconditions
-   --  (contracts). These assertions are strengthened to enforce the same
-   --  semantics as if these assertions were executed. For example, an array
-   --  access like
+   --  Subprograms are translated to Why programs with pre- and postconditions
+   --  (contracts). These assertions have to be self-guarded to enforce the
+   --  same semantics as if these assertions were executed. For example, an
+   --  array access like
    --     X (I) = 0
-   --  is protected by a condition:
+   --  must be protected by a condition:
    --     I in X'First .. X'Last and then X (I) = 0.
-   --  To do this, we use the generic functions that exist in the GNAT
-   --  frontend.
+   --  This is checked by generating, for all assertions, equivalent programs
+   --  that must be runtime error free.
    --
-   --  Procedure contracts may contain calls to expression functions. As we
+   --  Subprogram contracts may contain calls to expression functions. As we
    --  have translated these functions to Why logic functions, nothing special
    --  needs to be done.
    --
-   --  Why actually contains two languages: The logic language for assertions
-   --  and logical functions and the programming language for programs with
-   --  side effects. Programs may contain assertions, for example as pre- and
-   --  postconditions. We call the elements of the logic language "(logic)
-   --  terms" while we call the elements of the programming language
-   --  "(program) expressions".  There are no statements in the Why language;
-   --  statements are simply expressions of the type "unit".
+   --  For a Subprogram *declaration*, we generate a Why parameter
+   --  declaration, with the full argument list and the translation of the
+   --  contract, if any.
    --
-   --  We need two functions to deal with Ada expressions: one to translate
-   --  them to logic terms (the body of Ada expression functions) and one to
-   --  translate them to program expressions. As logic terms are allowed in
-   --  program expressions, an Ada expression should be preferentially
-   --  translated to a logic term whenever possible.  Ada Statements can only
-   --  occur in Ada procedures and are translated to program expressions only.
+   --  For a Subprogram *body*, we generate a Why program function *without*
+   --  parameters (expect a unit parameter); all Ada parameters and local
+   --  variables of subprograms, as well as local subprograms, are put at the
+   --  global toplevel in Why.
    --
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   procedure Why_Decl_Of_Ada_Subprogram
+   procedure Transform_Subprogram
      (File    : W_File_Id;
       Node    : Node_Id;
       As_Spec : Boolean);
    --  Generate a Why declaration that corresponds to an Ada subprogram
    --  Node is a N_Subprogram_Body
-   --
-   --  Care must be taken in a few cases:
-   --  * We need to add an argument of type "unit" if the Ada subprogram has
-   --    no parameters
-   --  * The types of arguments have to be references
-   --  * The pre/postconditions need special treatment (TCC)
+
+   function Register_Old_Node (N : Node_Id) return Name_Id;
+   --  Register a node that appears with attribute 'Old; return a fresh
+   --  Name_Id for this Node. This function is intended to be called by the
+   --  code that translates expressions to Why (Gnat2why.Expr), which itself
+   --  is called by Transform_Subprogram. For each call to this
+   --  function, a declaration at the beginning of the Why program is
+   --  generated.
 
 end Gnat2Why.Subprograms;

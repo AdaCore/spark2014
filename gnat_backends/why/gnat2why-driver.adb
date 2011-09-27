@@ -404,7 +404,7 @@ package body Gnat2Why.Driver is
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Why_Decl_Of_Ada_Subprogram (File, Element (Cu), As_Spec);
+               Transform_Subprogram (File, Element (Cu), As_Spec);
 
             when N_Object_Declaration
               | N_Number_Declaration =>

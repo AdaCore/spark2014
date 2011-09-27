@@ -46,12 +46,10 @@ with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
+with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Expr is
-
-   Result_String : constant String := "___result";
-   --  The internal name for the result of an expression
 
    function Case_Expr_Of_Ada_Node (N : Node_Id; Domain : EW_Domain)
       return W_Expr_Id;
@@ -1578,17 +1576,26 @@ package body Gnat2Why.Expr is
                         T := +New_Result_Term;
                      end if;
                      if Domain = EW_Prog then
-                        T := +New_Identifier (Result_String);
+                        T :=
+                           New_Unary_Op
+                             (Ada_Node => Expr,
+                              Op       => EW_Deref,
+                              Right    => +New_Result_Temp_Identifier.Id,
+                              Op_Type  => EW_Int,
+                              Domain   => Domain);
                      end if;
 
                   when Attribute_Old =>
                      if Domain = EW_Prog then
-                        raise Not_Implemented;
-                     end if;
-
-                     T := New_Tagged (Def    => Transform_Expr (Var, Domain),
+                        T := New_Identifier
+                                (Symbol => Register_Old_Node (Var),
+                                 Domain => Domain);
+                     else
+                        T :=
+                          New_Tagged (Def    => Transform_Expr (Var, Domain),
                                       Tag    => NID (""),
                                       Domain => Domain);
+                     end if;
 
                   when Attribute_First | Attribute_Last | Attribute_Length =>
                      case Ekind (Etype (Var)) is

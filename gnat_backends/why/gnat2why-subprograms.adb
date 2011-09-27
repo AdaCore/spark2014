@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
@@ -33,12 +34,12 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Atree;                 use Atree;
 with Debug;
 with Einfo;                 use Einfo;
-with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
+with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
 with Why;                   use Why;
@@ -61,6 +62,24 @@ with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
+
+   type Old_Node is
+      record
+         Ada_Node : Node_Id;
+         Why_Name : Name_Id;
+      end record;
+   --  This record contains an Ada expression for which we need to translate
+   --  an 'Old attribute. Ada_Node is the Ada expression, and Why_Name is the
+   --  name which is used for that expression.
+
+   package Old_Nodes is new Ada.Containers.Doubly_Linked_Lists (Old_Node);
+
+   Old_List : Old_Nodes.List;
+   --  This list contains all expressions with an 'Old attribute in the
+   --  current suprogram.
+   --  This list is cleared at the beginning of each subprogram translation,
+   --  and filled during the translation. At the end, this list is used to
+   --  generate necessary the copy instructions.
 
    function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
    --  Test if the effect in argument is empty.
@@ -88,11 +107,25 @@ package body Gnat2Why.Subprograms is
          Ada_Node => Empty);
    end Unit_Param;
 
-   --------------------------------
-   -- Why_Decl_Of_Ada_Subprogram --
-   --------------------------------
+   -----------------------
+   -- Register_Old_Node --
+   -----------------------
 
-   procedure Why_Decl_Of_Ada_Subprogram
+   function Register_Old_Node (N : Node_Id) return Name_Id is
+      Cnt : constant Natural := Natural (Old_List.Length);
+      Rec : constant Old_Node :=
+         (Ada_Node => N,
+          Why_Name => NID ("__gnatprove_old___" & Int_Image (Cnt)));
+   begin
+      Old_List.Append (Rec);
+      return Rec.Why_Name;
+   end Register_Old_Node;
+
+   --------------------------
+   -- Transform_Subprogram --
+   --------------------------
+
+   procedure Transform_Subprogram
      (File    : W_File_Id;
       Node    : Node_Id;
       As_Spec : Boolean)
@@ -119,7 +152,9 @@ package body Gnat2Why.Subprograms is
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments.
 
-      function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id;
+      function Compute_Context
+         (Initial_Body : W_Prog_Id;
+          Post_Check   : W_Prog_Id) return W_Prog_Id;
       --  Deal with object declarations at the beginning of the function.
       --  For local variables that originate from the source, simply assign
       --  the new value to the variable; Such variables have been declared
@@ -188,7 +223,9 @@ package body Gnat2Why.Subprograms is
       -- Compute_Context --
       ---------------------
 
-      function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id
+      function Compute_Context
+         (Initial_Body : W_Prog_Id;
+          Post_Check   : W_Prog_Id) return W_Prog_Id
       is
          Cur_Decl : Node_Id := Last (Declarations (Node));
          R        : W_Prog_Id := Initial_Body;
@@ -229,7 +266,7 @@ package body Gnat2Why.Subprograms is
                    (1 =>
                       New_Handler
                         (Name => New_Result_Exc_Identifier.Id,
-                         Def  => Result_Var)));
+                         Def  => Sequence (Post_Check, Result_Var))));
          end;
 
          --  Declare a local variable to hold the result of a function
@@ -253,6 +290,25 @@ package body Gnat2Why.Subprograms is
             end;
          end if;
 
+         declare
+            use Old_Nodes;
+            C : Cursor := Old_List.First;
+         begin
+            while Has_Element (C) loop
+               declare
+                  N : constant Old_Node := Element (C);
+               begin
+                  R :=
+                     New_Binding
+                        (Name    =>
+                          New_Identifier (Symbol => N.Why_Name,
+                                          Domain => EW_Prog),
+                         Def     => +Transform_Expr (N.Ada_Node, EW_Prog),
+                         Context => +R);
+                  Next (C);
+               end;
+            end loop;
+         end;
          return R;
       end Compute_Context;
 
@@ -453,6 +509,7 @@ package body Gnat2Why.Subprograms is
       Loc_Node     : Node_Id := Empty;
       Post         : constant W_Pred_Id :=
                        +Compute_Spec (Name_Postcondition, Loc_Node, EW_Pred);
+      Post_Check   : W_Prog_Id;
       Orig_Node    : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
       Is_Expr_Func : constant Boolean :=
@@ -469,9 +526,16 @@ package body Gnat2Why.Subprograms is
                          and then
                        Get_Value (+Post) = EW_True;
 
-   --  Start of processing for Why_Decl_Of_Ada_Subprogram
+   --  Start of processing for Transform_Subprogram
 
    begin
+
+      --  First, clear the "old list"
+
+      Old_List.Clear;
+
+      Post_Check := +Compute_Spec (Name_Postcondition, Dummy_Node, EW_Prog);
+
       if Nkind (Node) = N_Subprogram_Body
         and then not As_Spec
       then
@@ -528,7 +592,8 @@ package body Gnat2Why.Subprograms is
                     +Compute_Context
                       (Transform_Statements
                         (Statements
-                          (Handled_Statement_Sequence (Node))))));
+                          (Handled_Statement_Sequence (Node))),
+                      New_Ignore (Prog => Post_Check))));
          end if;
 
       else
@@ -584,6 +649,6 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
       end if;
-   end Why_Decl_Of_Ada_Subprogram;
+   end Transform_Subprogram;
 
 end Gnat2Why.Subprograms;
