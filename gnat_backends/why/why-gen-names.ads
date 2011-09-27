@@ -72,6 +72,9 @@ package Why.Gen.Names is
    function New_Prog (Name : String) return W_Prog_Id;
    --  Return a prog identified by the given name
 
+   function New_Temp_Identifier return W_Identifier_Id;
+   --  Create a new unique identifier and return the result
+
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
