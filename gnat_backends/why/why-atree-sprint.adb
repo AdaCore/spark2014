@@ -1380,9 +1380,12 @@ package body Why.Atree.Sprint is
             P (O, "function ");
             Traverse (State, +Name);
 
-            P (O, " (");
-            Print_List (State, +Binders, ") (");
-            P (O, ") : ");
+            if not Is_Empty (+Binders) then
+               P (O, " (");
+               Print_List (State, +Binders, ") (");
+               P (O, ")");
+            end if;
+            P (O, " : ");
 
             Traverse (State, +Result_Type);
             PL (O, " =");
