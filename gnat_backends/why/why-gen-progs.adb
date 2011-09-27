@@ -481,7 +481,9 @@ package body Why.Gen.Progs is
    -- New_Simpl_Any_Prog --
    ------------------------
 
-   function New_Simpl_Any_Prog (T : W_Primitive_Type_Id) return W_Prog_Id
+   function New_Simpl_Any_Prog
+     (T    : W_Primitive_Type_Id;
+      Pred : W_Pred_OId := Why_Empty) return W_Prog_Id
    is
    begin
       return
@@ -490,7 +492,8 @@ package body Why.Gen.Progs is
                New_Computation_Type
                   (Domain  => EW_Prog,
                    Result  => New_Result (+T),
-                   Effects => New_Effects));
+                   Effects => New_Effects,
+                   Post    => Pred));
    end New_Simpl_Any_Prog;
 
    --------------

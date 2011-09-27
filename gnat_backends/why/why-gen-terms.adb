@@ -29,8 +29,8 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Progs;       use Why.Gen.Progs;
-with Why.Sinfo;           use Why.Sinfo;
 with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
 
 package body Why.Gen.Terms is
 
@@ -134,8 +134,8 @@ package body Why.Gen.Terms is
    -- New_Simpl_Epsilon_Term --
    ----------------------------
 
-   function New_Simpl_Epsilon_Term (T : W_Primitive_Type_Id) return W_Term_Id
-   is
+   function New_Simpl_Epsilon_Term
+     (T : W_Primitive_Type_Id) return W_Term_Id is
    begin
       return
         New_Epsilon
@@ -144,6 +144,20 @@ package body Why.Gen.Terms is
                            Name     => New_Identifier ("x"),
                            Arg_Type => +T),
            Pred   => New_Literal (Value => EW_True));
+   end New_Simpl_Epsilon_Term;
+
+   function New_Simpl_Epsilon_Term
+     (T    : W_Primitive_Type_Id;
+      Id   : W_Identifier_Id;
+      Pred : W_Pred_Id) return W_Term_Id is
+   begin
+      return
+        New_Epsilon
+          (Binder =>
+               New_Binder (Domain   => EW_Term,
+                           Name     => Id,
+                           Arg_Type => +T),
+           Pred   => Pred);
    end New_Simpl_Epsilon_Term;
 
 end Why.Gen.Terms;

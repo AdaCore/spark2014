@@ -89,11 +89,15 @@ package Why.Gen.Expr is
 
    function New_Simpl_Any_Expr
      (Domain   : EW_Domain;
-      Arg_Type : W_Primitive_Type_Id) return W_Expr_Id
-   with
-     Pre => Domain in EW_Term | EW_Prog;
+      Arg_Type : W_Primitive_Type_Id) return W_Expr_Id;
    --  Build a "any" expression whose type is a simple type. In Prog domain,
    --  this is translated into an "any", and in the Term domain as an
    --  "epsilon".
+
+   function New_Simpl_Any_Expr
+     (Domain   : EW_Domain;
+      Arg_Type : W_Primitive_Type_Id;
+      Id       : W_Identifier_OId;
+      Pred     : W_Pred_Id) return W_Expr_Id;
 
 end Why.Gen.Expr;

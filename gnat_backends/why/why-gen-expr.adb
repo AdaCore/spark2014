@@ -300,6 +300,19 @@ package body Why.Gen.Expr is
       end case;
    end New_Simpl_Any_Expr;
 
+   function New_Simpl_Any_Expr
+     (Domain   : EW_Domain;
+      Arg_Type : W_Primitive_Type_Id;
+      Id       : W_Identifier_OId;
+      Pred     : W_Pred_Id) return W_Expr_Id is
+   begin
+      case Domain is
+         when EW_Term => return +New_Simpl_Epsilon_Term (Arg_Type, Id, Pred);
+         when EW_Prog => return +New_Simpl_Any_Prog (Arg_Type, Pred);
+         when others => raise Program_Error;
+      end case;
+   end New_Simpl_Any_Expr;
+
    ---------------------------
    -- New_Simpl_Conditional --
    ---------------------------

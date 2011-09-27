@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
+with Types;              use Types;
+with Why.Ids;            use Why.Ids;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
@@ -44,7 +44,14 @@ package Why.Gen.Terms is
    function New_Result_Term return W_Term_Id;
    --  return the term containing the ident "result"
 
-   function New_Simpl_Epsilon_Term (T : W_Primitive_Type_Id) return W_Term_Id;
+   function New_Simpl_Epsilon_Term
+     (T : W_Primitive_Type_Id) return W_Term_Id;
    --  Build an epsilon term "epsilon _ : T . true"
+
+   function New_Simpl_Epsilon_Term
+     (T    : W_Primitive_Type_Id;
+      Id   : W_Identifier_Id;
+      Pred : W_Pred_Id) return W_Term_Id;
+   --  Build an epsilon term "epsilon Id : T . Pred"
 
 end Why.Gen.Terms;

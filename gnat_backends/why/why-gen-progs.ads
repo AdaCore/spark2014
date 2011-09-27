@@ -29,6 +29,7 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Ids;             use Why.Ids;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package Why.Gen.Progs is
 
@@ -88,8 +89,11 @@ package Why.Gen.Progs is
        Pred     : W_Pred_Id) return W_Prog_Id;
    --  Build a named assert (in programs) of a predicate
 
-   function New_Simpl_Any_Prog (T : W_Primitive_Type_Id) return W_Prog_Id;
-   --  Build a "any" expression whose type is a simple type.
+   function New_Simpl_Any_Prog
+     (T    : W_Primitive_Type_Id;
+      Pred : W_Pred_OId := Why_Empty) return W_Prog_Id;
+   --  Build a "any" expression whose type is a simple type, satisfying
+   --  proposition Pred.
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
