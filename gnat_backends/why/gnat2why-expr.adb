@@ -628,38 +628,6 @@ package body Gnat2Why.Expr is
 
    end One_Level_Update;
 
-   -------------------------------
-   -- Predicate_Of_Pragma_Check --
-   -------------------------------
-
-   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id is
-   begin
-      if Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check then
-         declare
-            Arg1 : Node_Id;
-            Arg2 : Node_Id;
-         begin
-            if Present (Pragma_Argument_Associations (N)) then
-               Arg1 := First (Pragma_Argument_Associations (N));
-
-               if Present (Arg1) then
-                  Arg2 := Next (Arg1);
-               end if;
-            end if;
-
-            if Present (Expression (Arg2)) then
-               return +Transform_Expr (Expression (Arg2), EW_Pred);
-
-            else
-               raise Program_Error;
-            end if;
-         end;
-
-      else
-         raise Not_Implemented;
-      end if;
-   end Predicate_Of_Pragma_Check;
-
    ----------------
    -- Range_Expr --
    ----------------
@@ -1509,6 +1477,37 @@ package body Gnat2Why.Expr is
       return New_Identifier (Full_Name (Ent));
    end Transform_Ident;
 
+   ----------------------------
+   -- Transform_Pragma_Check --
+   ----------------------------
+
+   function Transform_Pragma_Check (Stmt : Node_Id; Runtime : out W_Prog_Id)
+      return W_Pred_Id
+   is
+      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
+      Arg2 : constant Node_Id := Next (Arg1);
+      Expr : constant Node_Id := Expression (Arg2);
+   begin
+
+      --  Pragma Check generated for Pre/Postconditions are
+      --  ignored.
+
+      if Chars (Get_Pragma_Arg (Arg1)) = Name_Precondition
+           or else
+         Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
+      then
+         Runtime := New_Void (Stmt);
+         return New_Literal (Value => EW_True);
+      end if;
+
+      if Present (Expr) then
+         Runtime := New_Ignore (Prog => +Transform_Expr (Expr, EW_Prog));
+         return +Transform_Expr (Expr, EW_Pred);
+      else
+         raise Program_Error;
+      end if;
+   end Transform_Pragma_Check;
+
    -------------------------------------
    -- Transform_Quantified_Expression --
    -------------------------------------
@@ -1723,38 +1722,31 @@ package body Gnat2Why.Expr is
 
                when Pragma_Check =>
                   declare
-                     Arg1 : constant Node_Id :=
-                              First (Pragma_Argument_Associations (Stmt));
+                     Check_Expr : W_Prog_Id;
+                     Pred : constant W_Pred_Id :=
+                        Transform_Pragma_Check (Stmt, Check_Expr);
                   begin
-                     --  Pragma Check generated for Pre/Postconditions are
-                     --  ignored.
-
-                     if Chars (Get_Pragma_Arg (Arg1)) = Name_Precondition
-                          or else
-                        Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
-                     then
+                     if Is_False_Boolean (+Pred) then
+                        return
+                          +New_Located_Expr
+                            (Ada_Node => Stmt,
+                             Expr     => +New_Identifier ("absurd"),
+                             Reason   => VC_Assert,
+                             Domain   => EW_Prog);
+                     elsif Is_True_Boolean (+Pred) then
                         return New_Void (Stmt);
+                     elsif Check_Expr /= Why_Empty then
+                        return
+                          Sequence (Check_Expr,
+                                    New_Located_Assert (Stmt, Pred));
                      else
-                        declare
-                           Pred : constant W_Pred_Id :=
-                              Predicate_Of_Pragma_Check (Stmt);
-                        begin
-                           if Is_False_Boolean (+Pred) then
-                              return
-                                +New_Located_Expr
-                                  (Ada_Node => Stmt,
-                                   Expr     => +New_Identifier ("absurd"),
-                                   Reason   => VC_Assert,
-                                   Domain   => EW_Prog);
-                           else
-                              return New_Located_Assert (Stmt, Pred);
-                           end if;
-                        end;
+                        return New_Located_Assert (Stmt, Pred);
                      end if;
                   end;
 
                when others =>
                   raise Not_Implemented;
+
             end case;
 
          when others =>

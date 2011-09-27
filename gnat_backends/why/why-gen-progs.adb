@@ -23,16 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Uintp;              use Uintp;
-with VC_Kinds;           use VC_Kinds;
+with Atree;                use Atree;
+with Einfo;                use Einfo;
+with Uintp;                use Uintp;
+with VC_Kinds;             use VC_Kinds;
 
-with Why.Conversions;    use Why.Conversions;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Expr;       use Why.Gen.Expr;
+with Why.Conversions;      use Why.Conversions;
+with Why.Atree.Mutators;   use Why.Atree.Mutators;
+with Why.Atree.Properties; use Why.Atree.Properties;
+with Why.Atree.Tables;     use Why.Atree.Tables;
+with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Gen.Expr;         use Why.Gen.Expr;
 
 package body Why.Gen.Progs is
 
@@ -531,16 +532,28 @@ package body Why.Gen.Progs is
                   return New_Statement_Sequence
                      (Statements => (1 => Left, 2 => Right));
                when others =>
-                  Statement_Sequence_Append_To_Statements
-                     (Id => W_Statement_Sequence_Id (Left), New_Item => Right);
-                  return Left;
+                  if Is_Root (+Left) then
+                     Statement_Sequence_Append_To_Statements
+                        (Id => W_Statement_Sequence_Id (Left),
+                         New_Item => Right);
+                     return Left;
+                  else
+                     return New_Statement_Sequence
+                        (Statements => (1 => Left, 2 => Right));
+                  end if;
             end case;
          when others =>
             case Get_Kind (+Right) is
                when W_Statement_Sequence =>
-                  Statement_Sequence_Prepend_To_Statements
-                     (Id => W_Statement_Sequence_Id (Right), New_Item => Left);
-                  return Right;
+                  if Is_Root (+Right) then
+                     Statement_Sequence_Prepend_To_Statements
+                        (Id => W_Statement_Sequence_Id (Right),
+                         New_Item => Left);
+                     return Right;
+                  else
+                     return New_Statement_Sequence
+                        (Statements => (1 => Left, 2 => Right));
+                  end if;
                when others =>
                   return New_Statement_Sequence
                      (Statements => (1 => Left, 2 => Right));

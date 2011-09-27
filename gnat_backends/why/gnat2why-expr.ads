@@ -43,9 +43,10 @@ package Gnat2Why.Expr is
    function Transform_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
 
-   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Pred_Id;
-   --  Compute a Why predicate from a node of kind Pragma Check. Raise
-   --  Not_Implemented if it is not a Pragma Check.
+   function Transform_Pragma_Check (Stmt : Node_Id; Runtime : out W_Prog_Id)
+      return W_Pred_Id;
+   --  Translate a pragma check into a predicate; also, generate an expression
+   --  which will make generate the necessary checks for Why
 
    function Transform_Expr
      (Expr          : Node_Id;

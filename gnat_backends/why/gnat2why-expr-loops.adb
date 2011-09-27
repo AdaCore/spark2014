@@ -42,6 +42,7 @@ package body Gnat2Why.Expr.Loops is
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
        Pred       : out W_Pred_Id;
+       Inv_Check  : out W_Prog_Id;
        Split_Node : out Node_Id);
    --  Given a list of statements (a loop body), construct a predicate that
    --  corresponds to the conjunction of all assertions at the beginning of
@@ -49,6 +50,8 @@ package body Gnat2Why.Expr.Loops is
    --  an assertion.
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
+   --  The out parameter Runtime contains an expression that corresponds to
+   --  the runtime checks of the invariant.
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
    --  Return the Defining_Identifier of the loop that belongs to an exit
@@ -59,17 +62,13 @@ package body Gnat2Why.Expr.Loops is
        Condition : W_Prog_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
+       Inv_Check : W_Prog_Id;
        Inv_Node  : Node_Id)
       return W_Prog_Id;
-   --  Given a loop body and condition, generate the expression
-   --  if <condition> then
-   --    try
-   --      loop {inv}
-   --         <loop body>
-   --         if not <condition> then raise <loop_name>;
-   --      end loop
-   --    with <loop_name> -> void
-   --  end if
+   --  Given a loop body, the loop condition, the loop name, the invariant,
+   --  the check_expression for the invariant, generate the entire loop
+   --  expression in Why.
+   --  See the comment in the body of Wrap_Loop to see how it's done.
 
    -----------------------
    -- Compute_Invariant --
@@ -78,21 +77,26 @@ package body Gnat2Why.Expr.Loops is
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
        Pred       : out W_Pred_Id;
+       Inv_Check  : out W_Prog_Id;
        Split_Node : out Node_Id)
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
    begin
       Pred := New_Literal (Value => EW_True);
+      Inv_Check := New_Void;
       Split_Node := Empty;
 
       while Nkind (Cur_Stmt) /= N_Empty loop
          case Nkind (Cur_Stmt) is
             when N_Pragma =>
-               Pred :=
-                 +New_And_Expr
-                   (Left => +Pred,
-                    Right => +Predicate_Of_Pragma_Check (Cur_Stmt),
-                    Domain => EW_Pred);
+               declare
+                  Cur_Check : W_Prog_Id;
+                  Cur_Pred : constant W_Pred_Id :=
+                     Transform_Pragma_Check (Cur_Stmt, Cur_Check);
+               begin
+                  Pred := +New_And_Expr (+Pred, +Cur_Pred, EW_Pred);
+                  Inv_Check := Sequence (Inv_Check, Cur_Check);
+               end;
 
             when others =>
                exit;
@@ -163,6 +167,7 @@ package body Gnat2Why.Expr.Loops is
       Loop_Body    : constant List_Id := Statements (Stmt);
       Split_Node   : Node_Id;
       Invariant    : W_Pred_Id;
+      Inv_Check    : W_Prog_Id;
       Loop_Content : W_Prog_Id;
       Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
       Loop_Entity  : constant Entity_Id := Entity (Identifier (Stmt));
@@ -197,7 +202,7 @@ package body Gnat2Why.Expr.Loops is
       --     The exception is necessary to deal with N_Exit_Statements
       --     (see also the corresponding case). The exception has to be
       --     declared at the toplevel.
-      Compute_Invariant (Loop_Body, Invariant, Split_Node);
+      Compute_Invariant (Loop_Body, Invariant, Inv_Check, Split_Node);
       Loop_Content :=
          Transform_Statements
            (Stmts      => Loop_Body,
@@ -212,6 +217,7 @@ package body Gnat2Why.Expr.Loops is
                 Condition => New_Literal (Value => EW_True),
                 Loop_Name => Loop_Name,
                 Invariant => Invariant,
+                Inv_Check => Inv_Check,
                 Inv_Node  => Split_Node);
 
       elsif
@@ -241,6 +247,7 @@ package body Gnat2Why.Expr.Loops is
                  +Transform_Expr (Condition (Scheme), EW_Prog),
                Loop_Name    => Loop_Name,
                Invariant    => Enriched_Inv,
+               Inv_Check    => Inv_Check,
                Inv_Node     => Inv_Node);
          end;
 
@@ -307,6 +314,7 @@ package body Gnat2Why.Expr.Loops is
                                      EW_Prog),
                                 Loop_Name    => Loop_Name,
                                 Invariant    => Enriched_Inv,
+                                Inv_Check    => Inv_Check,
                                 Inv_Node     => Inv_Node);
             Low          : constant Node_Id :=
                              Low_Bound
@@ -338,16 +346,30 @@ package body Gnat2Why.Expr.Loops is
        Condition : W_Prog_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
+       Inv_Check : W_Prog_Id;
        Inv_Node  : Node_Id)
       return W_Prog_Id
    is
+
+      --  Given a loop body and condition, generate the expression
+      --  if <condition> then
+      --    ignore (inv);
+      --    try
+      --      loop {inv}
+      --         <loop body>
+      --         if not <condition> then raise <loop_name>
+      --         else ignore (inv) ;
+      --      end loop
+      --    with <loop_name> -> void
+      --  end if
+
       Entire_Body : constant W_Prog_Id :=
                       Sequence
                         (Loop_Body,
                          New_Conditional
-                           (Condition =>
-                              New_Not (Right => +Condition),
-                            Then_Part =>
+                           (Condition => Condition,
+                            Then_Part => +Inv_Check,
+                            Else_Part =>
                               New_Raise
                                 (Name => New_Identifier (Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=
@@ -373,12 +395,15 @@ package body Gnat2Why.Expr.Loops is
         New_Conditional
           (Condition => Condition,
            Then_Part =>
-             New_Try_Block
-               (Prog    => Loop_Stmt,
-                Handler =>
-                  (1 =>
-                     New_Handler
-                       (Name => New_Identifier (Loop_Name),
-                        Def  => New_Void))));
+             +Sequence
+               (Inv_Check,
+                New_Try_Block
+                  (Prog    => Loop_Stmt,
+                   Handler =>
+                     (1 =>
+                        New_Handler
+                          (Name => New_Identifier (Loop_Name),
+                           Def  => New_Void)))));
    end Wrap_Loop;
+
 end Gnat2Why.Expr.Loops;
