@@ -234,7 +234,7 @@ package Why.Gen.Names is
    --  would be used into a postcondition.
 
    package New_Result_Temp_Identifier is
-     new Name_Gen.Arity_0 (EW_Term, "_result");
+     new Name_Gen.Arity_1 (EW_Term, "", "result");
    --  Return a new identifier for the temporary used to store a function's
    --  result.
 

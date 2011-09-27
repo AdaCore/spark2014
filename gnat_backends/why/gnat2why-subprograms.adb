@@ -255,7 +255,7 @@ package body Gnat2Why.Subprograms is
                               New_Unary_Op
                                 (Ada_Node => Node,
                                  Op       => EW_Deref,
-                                 Right    => +New_Result_Temp_Identifier.Id,
+                                 Right    => +Result_Name,
                                  Op_Type  => EW_Int)
                             else New_Void);
          begin
@@ -268,27 +268,6 @@ package body Gnat2Why.Subprograms is
                         (Name => New_Result_Exc_Identifier.Id,
                          Def  => Sequence (Post_Check, Result_Var))));
          end;
-
-         --  Declare a local variable to hold the result of a function
-
-         if Nkind (Spec) = N_Function_Specification then
-            declare
-               Rvalue : constant W_Prog_Id :=
-                          New_Simpl_Any_Prog
-                            (New_Base_Type
-                               (Base_Type => EW_Abstract,
-                                Ada_Node  =>
-                                  Type_Of_Node
-                                    (Defining_Entity (Spec))));
-            begin
-               R :=
-                 New_Binding_Ref
-                   (Ada_Node => Cur_Decl,
-                    Name     => New_Result_Temp_Identifier.Id,
-                    Def      => Rvalue,
-                    Context  => R);
-            end;
-         end if;
 
          declare
             use Old_Nodes;
@@ -530,9 +509,11 @@ package body Gnat2Why.Subprograms is
 
    begin
 
-      --  First, clear the "old list"
+      --  First, clear the "old list", and create a new identifier for
+      --  "result"
 
       Old_List.Clear;
+      Result_Name := New_Result_Temp_Identifier.Id (Name_Str);
 
       Post_Check := +Compute_Spec (Name_Postcondition, Dummy_Node, EW_Prog);
 
@@ -575,6 +556,19 @@ package body Gnat2Why.Subprograms is
          end if;
 
          if Is_Expr_Func or else not Debug.Debug_Flag_Dot_GG then
+
+            --  Declare a global variable to hold the result of a function
+
+            if Nkind (Spec) = N_Function_Specification then
+               Emit
+                 (File,
+                  New_Global_Ref_Declaration
+                     (Name => Result_Name,
+                      Ref_Type =>
+                        Why_Logic_Type_Of_Ada_Type
+                           (Entity (Result_Definition (Spec)))));
+            end if;
+
             Emit
               (File,
                New_Function_Def
@@ -649,6 +643,7 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
       end if;
+      Result_Name := Why_Empty;
    end Transform_Subprogram;
 
 end Gnat2Why.Subprograms;

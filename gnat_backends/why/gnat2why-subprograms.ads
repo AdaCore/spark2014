@@ -26,6 +26,7 @@
 with Namet;         use Namet;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
+with Why.Types;     use Why.Types;
 
 package Gnat2Why.Subprograms is
 
@@ -72,5 +73,11 @@ package Gnat2Why.Subprograms is
    --  is called by Transform_Subprogram. For each call to this
    --  function, a declaration at the beginning of the Why program is
    --  generated.
+
+   Result_Name : W_Identifier_Id := Why_Empty;
+
+   --  The Name_Id of the currently translated subprogram; intended to be used
+   --  by Gnat2why.Expr.Transform_Expr; This variable should be equal to
+   --  Why_Empty whenever we do *not* translate program expressions.
 
 end Gnat2Why.Subprograms;

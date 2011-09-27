@@ -1572,15 +1572,14 @@ package body Gnat2Why.Expr is
             begin
                case Attr_Id is
                   when Attribute_Result =>
-                     if Domain = EW_Term then
+                     if Result_Name = Why_Empty then
                         T := +New_Result_Term;
-                     end if;
-                     if Domain = EW_Prog then
+                     else
                         T :=
                            New_Unary_Op
                              (Ada_Node => Expr,
                               Op       => EW_Deref,
-                              Right    => +New_Result_Temp_Identifier.Id,
+                              Right    => +Result_Name,
                               Op_Type  => EW_Int,
                               Domain   => Domain);
                      end if;
@@ -1875,7 +1874,7 @@ package body Gnat2Why.Expr is
                      Result_Stmt :=
                        New_Assignment
                          (Ada_Node => Stmt,
-                          Name     => New_Result_Temp_Identifier.Id,
+                          Name     => Result_Name,
                           Value    =>
                             +Transform_Expr (Expression (Stmt),
                                              Return_Type,
