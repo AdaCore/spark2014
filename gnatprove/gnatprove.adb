@@ -211,6 +211,9 @@ procedure Gnatprove is
       if Verbose then
          Args.Append ("--verbose");
       end if;
+      if Report then
+         Args.Append ("--report");
+      end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
       end if;
