@@ -1517,9 +1517,11 @@ package body Gnat2Why.Expr is
 
          when N_Conditional_Expression =>
             declare
-               Cond      : constant Node_Id := First (Expressions (Expr));
-               Then_Part : constant Node_Id := Next (Cond);
-               Else_Part : constant Node_Id := Next (Then_Part);
+               Cond        : constant Node_Id := First (Expressions (Expr));
+               Then_Part   : constant Node_Id := Next (Cond);
+               Else_Part   : constant Node_Id := Next (Then_Part);
+               Cond_Domain : constant EW_Domain :=
+                               (if Domain = EW_Term then EW_Pred else Domain);
             begin
                T :=
                   New_Conditional
@@ -1527,7 +1529,7 @@ package body Gnat2Why.Expr is
                       Domain    => Domain,
                       Condition => +Transform_Expr (Cond,
                                                     EW_Bool_Type,
-                                                    Domain),
+                                                    Cond_Domain),
                       Then_Part => Transform_Expr (Then_Part,
                                                    Expected_Type,
                                                    Domain),
