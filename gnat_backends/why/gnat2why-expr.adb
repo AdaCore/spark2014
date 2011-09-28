@@ -892,8 +892,9 @@ package body Gnat2Why.Expr is
                            else
                              Expr_Or_Association);
                Value  : constant W_Expr_Id :=
-                          Transform_Expr (Expr   => Expr,
-                                          Domain => EW_Term);
+                          Transform_Expr (Expr          => Expr,
+                                          Expected_Type => Elmt_Type,
+                                          Domain        => EW_Term);
                Read   : constant W_Expr_Id :=
                           New_Array_Access
                             (Ada_Node  => Expr_Or_Association,
@@ -1215,7 +1216,7 @@ package body Gnat2Why.Expr is
                          (if Domain = EW_Term then
                             New_Temp_Identifier
                           else New_Result_Identifier.Id);
-                  Base_Type : constant Entity_Id := Etype (Etype (Expr));
+                  Base_Type : constant Entity_Id := Etype (Expr);
                   BT : constant W_Base_Type_Id :=
                                 +Why_Logic_Type_Of_Ada_Type (Base_Type);
                begin
