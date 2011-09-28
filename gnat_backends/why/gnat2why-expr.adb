@@ -848,8 +848,6 @@ package body Gnat2Why.Expr is
    is
       T_Name    : constant String := Type_Of_Node (Typ);
       Index     : constant W_Identifier_Id := New_Temp_Identifier;
-      Elmt_Type : constant W_Base_Type_Id :=
-                    +Why_Logic_Type_Of_Ada_Type (Component_Type (Typ));
 
       -----------------------
       -- Local subprograms --
@@ -875,7 +873,8 @@ package body Gnat2Why.Expr is
       ------------------------------
 
       function Constrain_Value_At_Index
-        (Expr_Or_Association : Node_Id) return W_Expr_Id is
+        (Expr_Or_Association : Node_Id) return W_Expr_Id
+      is
       begin
          if Nkind (Expr_Or_Association) = N_Component_Association
            and then Box_Present (Expr_Or_Association)
@@ -884,24 +883,30 @@ package body Gnat2Why.Expr is
                                 Domain => EW_Pred);
          else
             declare
-               Expr   : constant Node_Id :=
-                          (if Nkind (Expr_Or_Association) =
-                             N_Component_Association
-                           then
-                             Expression (Expr_Or_Association)
-                           else
-                             Expr_Or_Association);
-               Value  : constant W_Expr_Id :=
-                          Transform_Expr (Expr          => Expr,
-                                          Expected_Type => Elmt_Type,
-                                          Domain        => EW_Term);
-               Read   : constant W_Expr_Id :=
-                          New_Array_Access
-                            (Ada_Node  => Expr_Or_Association,
-                             Domain    => EW_Term,
-                             Type_Name => T_Name,
-                             Ar        => +Id,
-                             Index     => +Index);
+               Expr      : constant Node_Id :=
+                             (if Nkind (Expr_Or_Association) =
+                                N_Component_Association
+                              then
+                                Expression (Expr_Or_Association)
+                              else
+                                Expr_Or_Association);
+               Exp_Type  : constant Node_Id :=
+                             (if Number_Dimensions (Typ) = 1 then
+                                Component_Type (Typ)
+                              else Etype (Expr));
+               Elmt_Type : constant W_Base_Type_Id :=
+                             +Why_Logic_Type_Of_Ada_Type (Exp_Type);
+               Value     : constant W_Expr_Id :=
+                             Transform_Expr (Expr          => Expr,
+                                             Expected_Type => Elmt_Type,
+                                             Domain        => EW_Term);
+               Read      : constant W_Expr_Id :=
+                             New_Array_Access
+                               (Ada_Node  => Expr_Or_Association,
+                                Domain    => EW_Term,
+                                Type_Name => T_Name,
+                                Ar        => +Id,
+                                Index     => +Index);
             begin
                return New_Comparison
                  (Cmp       => EW_Eq,

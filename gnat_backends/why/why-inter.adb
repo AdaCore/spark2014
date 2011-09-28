@@ -260,6 +260,7 @@ package body Why.Inter is
    end EW_Abstract;
 
 begin
+   Type_Hierarchy.Move_Child (EW_Array, EW_Array);  --  Special self loop
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);
    Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
    Type_Hierarchy.Move_Child (EW_Real, EW_Int);
