@@ -1531,10 +1531,10 @@ package body Gnat2Why.Expr is
                                                     EW_Bool_Type,
                                                     Cond_Domain),
                       Then_Part => Transform_Expr (Then_Part,
-                                                   Expected_Type,
+                                                   Current_Type,
                                                    Domain),
                       Else_Part => Transform_Expr (Else_Part,
-                                                   Expected_Type,
+                                                   Current_Type,
                                                    Domain));
             end;
 
