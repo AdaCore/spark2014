@@ -206,7 +206,7 @@ The final directory structure of all related products is:
 
    $ make
    $ make stdlib
-   $ make install-stdlib
+   $ make install
    $ export PATH=<Root>/hi-lite/install/bin:$PATH
 
 10) Install AdaCore python
