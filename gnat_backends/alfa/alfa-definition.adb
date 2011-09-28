@@ -1001,6 +1001,18 @@ package body Alfa.Definition is
 
    procedure Mark (N : Node_Id) is
    begin
+      --  Make sure all types are marked, including Itypes which are not
+      --  declared before use.
+      --  CURRENTLY COMMENTED OUT AND ONLY ENABLED FOR AGGREGATE, UNTIL DYNAMIC
+      --  RANGES ARE IN ALFA, OTHERWISE ALMOST ALL LOOPS FALL OUT OF ALFA.
+
+      if -- Nkind (N) in N_Has_Etype
+         Nkind (N) = N_Aggregate
+        and then Is_Itype (Etype (N))
+      then
+         Mark_Type_Entity (Unique (Etype (N)));
+      end if;
+
       --  Dispatch on node kind
 
       case Nkind (N) is
