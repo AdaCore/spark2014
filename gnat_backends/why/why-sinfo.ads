@@ -178,6 +178,12 @@ package Why.Sinfo is
       EW_Bool,
       EW_Int,
       EW_Real,
+
+      --  This is really a set of types, as the array type is polymorphic in
+      --  the type of element. Since we are only using it for conversions in
+      --  gnat2why, this is fine. Using it to declare objects is not possible.
+      EW_Array,
+
       EW_Abstract);
 
    subtype EW_Not_Null_Type is EW_Type range
@@ -185,12 +191,14 @@ package Why.Sinfo is
    --  EW_Bool
    --  EW_Int
    --  EW_Real
+   --  EW_Array
        EW_Abstract;
 
    subtype EW_Term_Type is EW_Not_Null_Type range
        EW_Bool ..
    --  EW_Int
    --  EW_Real
+   --  EW_Array
        EW_Abstract;
 
    subtype EW_Base_Type is EW_Type range
@@ -198,7 +206,21 @@ package Why.Sinfo is
    --  EW_Prop
    --  EW_Bool
    --  EW_Int
+   --  EW_Real
+       EW_Array;
+
+   subtype EW_Basic_Type is EW_Base_Type range
+       EW_Unit ..
+   --  EW_Prop
+   --  EW_Bool
+   --  EW_Int
        EW_Real;
+
+   subtype EW_Scalar_Or_Array is EW_Base_Type range
+       EW_Bool ..
+   --  EW_Int
+   --  EW_Real
+       EW_Array;
 
    subtype EW_Scalar is EW_Base_Type range
        EW_Bool ..

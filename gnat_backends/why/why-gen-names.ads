@@ -37,7 +37,7 @@ package Why.Gen.Names is
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name
 
-   function EW_Base_Type_Name (Kind : EW_Base_Type) return String;
+   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
    --  Return the Why name of a base type (e.g. "int" for int)
 
    function New_Bool_Cmp

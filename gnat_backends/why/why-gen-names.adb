@@ -39,7 +39,7 @@ package body Why.Gen.Names is
    -- EW_Base_Type_Name --
    -----------------------
 
-   function EW_Base_Type_Name (Kind : EW_Base_Type) return String is
+   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String is
    begin
       case Kind is
          when EW_Unit =>

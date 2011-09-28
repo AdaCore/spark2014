@@ -85,7 +85,7 @@ package body Why.Gen.Progs is
 
          when EW_Scalar =>
             case To_Kind is
-               when EW_Unit | EW_Prop =>
+               when EW_Unit | EW_Prop | EW_Array =>
                   raise Not_Implemented;
 
                when EW_Scalar =>
@@ -108,10 +108,14 @@ package body Why.Gen.Progs is
 
                when EW_Abstract =>
                   return
-                     Conversion_From.Id
-                       (Full_Name (Get_Ada_Node (+To)),
-                        Why_Scalar_Type_Name (From_Kind));
+                    Conversion_From.Id (Full_Name (Get_Ada_Node (+To)),
+                                        Why_Scalar_Type_Name (From_Kind));
             end case;
+
+         when EW_Array =>
+            pragma Assert (To_Kind = EW_Abstract);
+            return Array_Conv_To.Id (Full_Name (Get_Ada_Node (+To)));
+
          when EW_Abstract =>
             case To_Kind is
                when EW_Unit | EW_Prop =>
@@ -121,6 +125,9 @@ package body Why.Gen.Progs is
                   return
                     Conversion_To.Id (Full_Name (Get_Ada_Node (+From)),
                                       Why_Scalar_Type_Name (To_Kind));
+               when EW_Array =>
+                  return Array_Conv_From.Id (Full_Name (Get_Ada_Node (+From)));
+
                when EW_Abstract =>
                   raise Program_Error
                      with "Conversion between arbitrary types attempted";
@@ -221,7 +228,7 @@ package body Why.Gen.Progs is
       --    * Ada Array type => Array conversion
       --    * other Ada type kind => failure
       case To_Kind is
-         when EW_Unit | EW_Prop =>
+         when EW_Unit | EW_Prop | EW_Array =>
             raise Not_Implemented;
 
          when EW_Scalar =>

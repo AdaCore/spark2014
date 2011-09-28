@@ -37,9 +37,9 @@ package Why.Gen.Progs is
       (From : W_Base_Type_Id;
        To   : W_Base_Type_Id) return W_Identifier_Id
       with Pre =>
-        (not (From = To) and then
-         (Get_Base_Type (From) in EW_Scalar
-          or else Get_Base_Type (To) in EW_Scalar));
+        (From /= To and then
+         (Get_Base_Type (From) in EW_Scalar_Or_Array
+          or else Get_Base_Type (To) in EW_Scalar_Or_Array));
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion

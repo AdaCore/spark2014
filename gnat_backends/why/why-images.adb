@@ -219,6 +219,8 @@ package body Why.Images is
             P (O, "int");
          when EW_Bool =>
             P (O, "bool");
+         when EW_Array =>
+            P (O, "[from Ada array]");
          when EW_Abstract =>
             P (O, "[from Ada node]");
       end case;

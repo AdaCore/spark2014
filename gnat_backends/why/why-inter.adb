@@ -74,7 +74,11 @@ package body Why.Inter is
    begin
       case E is
          when EW_Abstract =>
-            return EW_Abstract (Etype (N));
+            if Is_Array_Type (Etype (N)) then
+               return Why_Types (EW_Array);
+            else
+               return EW_Abstract (Etype (N));
+            end if;
          when others =>
             return Why_Types (E);
       end case;
