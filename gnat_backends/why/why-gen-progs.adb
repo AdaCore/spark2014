@@ -186,20 +186,36 @@ package body Why.Gen.Progs is
        From     : W_Base_Type_Id;
        Why_Expr : W_Prog_Id) return W_Prog_Id
    is
-      Ada_To   : constant Node_Id := Get_Ada_Node (+To);
-      Ada_From : constant Node_Id := Get_Ada_Node (+From);
+      To_Kind   : constant EW_Type := Get_Base_Type (To);
+      From_Kind : constant EW_Type := Get_Base_Type (From);
+      Ada_To    : constant Node_Id := Get_Ada_Node (+To);
+      Ada_From  : constant Node_Id := Get_Ada_Node (+From);
    begin
-      return
-        New_Call
-          (Ada_Node => Ada_Node,
-           Name     => Array_Conv_To.Id (Full_Name (Ada_To)),
-           Args     =>
-             (1 =>
-                New_Call
-                  (Ada_Node => Ada_Node,
-                   Domain   => EW_Prog,
-                   Name     => Array_Conv_From.Id (Full_Name (Ada_From)),
-                   Args     => (1 => +Why_Expr))));
+      if To_Kind = EW_Array then
+         return
+           New_Call
+             (Ada_Node => Ada_Node,
+              Name     => Array_Conv_From.Id (Full_Name (Ada_From)),
+              Args     => (1 => +Why_Expr));
+      elsif From_Kind = EW_Array then
+         return
+           New_Call
+             (Ada_Node => Ada_Node,
+              Name     => Array_Conv_To.Id (Full_Name (Ada_To)),
+              Args     => (1 => +Why_Expr));
+      else
+         return
+           New_Call
+             (Ada_Node => Ada_Node,
+              Name     => Array_Conv_To.Id (Full_Name (Ada_To)),
+              Args     =>
+                (1 =>
+                   New_Call
+                     (Ada_Node => Ada_Node,
+                      Domain   => EW_Prog,
+                      Name     => Array_Conv_From.Id (Full_Name (Ada_From)),
+                      Args     => (1 => +Why_Expr))));
+      end if;
    end Insert_Array_Conversion;
 
    -----------------------
@@ -228,13 +244,16 @@ package body Why.Gen.Progs is
       --    * Ada Array type => Array conversion
       --    * other Ada type kind => failure
       case To_Kind is
-         when EW_Unit | EW_Prop | EW_Array =>
+         when EW_Unit | EW_Prop =>
             raise Not_Implemented;
 
          when EW_Scalar =>
             return
                Insert_Scalar_Conversion
                   (Ada_Node, To_Kind, To, From, Why_Expr, Base_Type);
+
+         when EW_Array =>
+            return Insert_Array_Conversion (Ada_Node, To, From, Why_Expr);
 
          when EW_Abstract =>
             declare
