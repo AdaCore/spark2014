@@ -1296,6 +1296,9 @@ package body Alfa.Definition is
          when N_Subprogram_Declaration =>
             Mark_Subprogram_Declaration (N);
 
+         when N_Subtype_Indication =>
+            Mark_Subtype_Indication (N);
+
          when N_Type_Conversion =>
             Mark_Type_Conversion (N);
 
@@ -1396,7 +1399,6 @@ package body Alfa.Definition is
               N_Error |
               N_Defining_Character_Literal |
               N_Defining_Operator_Symbol |
-              N_Subtype_Indication |
               N_Loop_Parameter_Specification |
               N_Function_Specification |
               N_Procedure_Specification |
