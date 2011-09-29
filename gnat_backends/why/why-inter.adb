@@ -183,6 +183,9 @@ package body Why.Inter is
          when Private_Kind =>
             return Get_EW_Term_Type (Full_View (Ty));
 
+         when Fixed_Point_Kind =>
+            raise Not_Implemented;
+
          when others =>
             return EW_Abstract;
       end case;
