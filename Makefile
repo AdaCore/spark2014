@@ -69,6 +69,11 @@ gnat2why:
 	$(MAKE) -C gnat_backends/why/xgen
 	$(MAKE) -C gnat_backends/why
 
+coverage:
+	$(MAKE) -C gnat_backends/why/xgen
+	$(MAKE) -C gnat_backends/why coverage
+	cd gnat_backends/testsuite; ./run-tests -j 5
+
 gnatprove:
 	$(MAKE) -C gnatprove
 

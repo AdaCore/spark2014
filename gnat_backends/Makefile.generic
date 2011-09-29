@@ -43,6 +43,15 @@ build: obj/smissing.o force
 	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
 	  -o ../../../install/bin/$(TOOL_NAME) -largs smissing.o
 
+coverage: obj/smissing.o force
+	cd $(LOCAL_OBJ) && gnatmake -f \
+	   -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
+	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
+	  -o ../../../install/bin/$(TOOL_NAME) \
+	  -cargs -fprofile-arcs -ftest-coverage \
+	  -largs smissing.o -fprofile-arcs
+
+
 obj/smissing.o: ../smissing.c
 	gcc -c ../smissing.c -o obj/smissing.o
 

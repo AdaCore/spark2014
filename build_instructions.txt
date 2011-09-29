@@ -249,3 +249,14 @@ The final directory structure of all related products is:
 
       $ cd <Root>/acats
       $ ./run_acats_test.py --mode=gnatprove-check
+
+14) Obtain a coverage report
+
+   14.1) Compile gnat2why with coverage information and run the testsuite
+
+      $ make coverage
+
+   14.2) Open up gps and look at the coverage report
+
+      $ gps
+      Tools -> Coverage -> Gcov -> Compute coverage files
