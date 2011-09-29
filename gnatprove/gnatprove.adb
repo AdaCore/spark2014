@@ -218,6 +218,11 @@ procedure Gnatprove is
          Args.Prepend ("-cargs:Why");
       end if;
 
+      --  Always run gnatwhy3 on all files; it will detect itself if it is
+      --  necessary to (re)do proofs
+
+      Args.Prepend ("-f");
+
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
    end Compute_VCs;
 
