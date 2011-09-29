@@ -1335,14 +1335,35 @@ package body Gnat2Why.Expr is
                              Base_Why_Type (Left, Right);
                Subdomain : constant EW_Domain :=
                              (if Domain = EW_Pred then EW_Term else Domain);
+               Left_Arg  : constant W_Expr_Id :=
+                             Transform_Expr (Left, BT, Subdomain);
+               Right_Arg : constant W_Expr_Id :=
+                             Transform_Expr (Right, BT, Subdomain);
             begin
-               T :=
-                 New_Comparison
-                   (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                    Left      => Transform_Expr (Left, BT, Subdomain),
-                    Right     => Transform_Expr (Right, BT, Subdomain),
-                    Arg_Types => BT,
-                    Domain    => Domain);
+               if Is_Array_Type (Etype (Left)) then
+                  T := New_Call (Ada_Node => Expr,
+                                 Domain   => Subdomain,
+                                 Name     => Array_Equal_Name.Id (Ada_Array),
+                                 Args     =>
+                                   (1 => Left_Arg,
+                                    2 => Right_Arg));
+                  if Domain = EW_Pred then
+                     T := New_Comparison
+                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                        Left      => T,
+                        Right     => New_Literal (Domain => Subdomain,
+                                                  Value  => EW_True),
+                        Arg_Types => EW_Bool_Type,
+                        Domain    => Domain);
+                  end if;
+               else
+                  T := New_Comparison
+                    (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                     Left      => Left_Arg,
+                     Right     => Right_Arg,
+                     Arg_Types => BT,
+                     Domain    => Domain);
+               end if;
                Current_Type := EW_Bool_Type;
             end;
 

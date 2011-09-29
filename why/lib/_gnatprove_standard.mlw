@@ -20,6 +20,8 @@ module Main
   function t__ada_array___access int (t__ada_array 'a1) : 'a1
   
   function t__ada_array___update int (t__ada_array 'a1) 'a1 : (t__ada_array 'a1)
+
+  function t__ada_array___equal (t__ada_array 'a1) (t__ada_array 'a1) : bool
   
   function t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array 'a1) : int
   
@@ -80,6 +82,19 @@ val t__ada_array___update_ :
     (forall a:(t__ada_array 'a1).
       ((Int.(<) (t__ada_array___attr___ATTRIBUTE_LAST a : int) (t__ada_array___attr___ATTRIBUTE_FIRST a : int)) ->
        ((t__ada_array___attr___ATTRIBUTE_LENGTH a : int) = 0)))
+  
+  axiom T__ada_array___equal_def:
+    (forall a:(t__ada_array 'a1).
+      (forall b:(t__ada_array 'a1).
+        ((t__ada_array___attr___ATTRIBUTE_LENGTH a = 
+           t__ada_array___attr___ATTRIBUTE_LENGTH b)
+         /\ (forall i:int. 
+               (t__ada_array___attr___ATTRIBUTE_FIRST a <= i <=
+                  t__ada_array___attr___ATTRIBUTE_LAST a)
+                ->
+               (t__ada_array___access i a = 
+                  t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
+        <-> t__ada_array___equal a b = Bool.True))
   
   type standard___heap_type
   

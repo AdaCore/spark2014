@@ -1517,10 +1517,7 @@ package body Alfa.Definition is
             end if;
 
          when N_Op_Eq | N_Op_Ne =>
-            if Is_Array_Type (Left_T) then
-               Mark_Non_Alfa
-                 ("equality operator on array type", N, NYI_XXX);
-            end if;
+            null;
 
          when N_Op_And | N_Op_Or =>
             if Is_Array_Type (Left_T)

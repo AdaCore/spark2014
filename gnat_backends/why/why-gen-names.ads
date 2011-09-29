@@ -82,6 +82,7 @@ package Why.Gen.Names is
    Ada_Array                : constant String := "t__ada_array";
    Array_Access             : constant String := "access";
    Array_Update             : constant String := "update";
+   Array_Equal              : constant String := "equal";
    Array_Convert_From       : constant String := "to_ada_array";
    Array_Convert_To         : constant String := "of_ada_array";
    Array_First_Static_Name  : constant String := "static_first";
@@ -111,6 +112,10 @@ package Why.Gen.Names is
    package Array_Access_Name is
      new Name_Gen.Arity_1 (EW_Term, "", Array_Access);
    --  From the name of an array type, return the name of its access function.
+
+   package Array_Equal_Name is
+     new Name_Gen.Arity_1 (EW_Term, "", Array_Equal);
+   --  From the name of an array type, return the name of its equal function.
 
    package Array_Conv_To is
      new Name_Gen.Arity_1 (EW_Term, "", Array_Convert_To);
