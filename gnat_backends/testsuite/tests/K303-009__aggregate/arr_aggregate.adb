@@ -40,4 +40,19 @@ package body Arr_Aggregate is
 	    A := (2 => (2, others => One), 1 => (2 => 2, others => One));
       end case;
    end P3;
+   
+   procedure P1_Bis (A : in out A1; B : Integer) is
+   begin
+      P1 (A, B);
+   end P1_Bis;
+   
+   procedure P2_Bis (A : in out A2; B : Integer) is
+   begin
+      P2 (A, B);
+   end P2_Bis;
+   
+   procedure P3_Bis (A : in out A3; B : Integer) is
+   begin
+      P3 (A, B);
+   end P3_Bis;
 end Arr_Aggregate;

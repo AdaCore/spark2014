@@ -26,4 +26,26 @@ package Arr_Aggregate is
 	                when 3 => (for all J in A3'Range => (for all K in A2'Range => A (J) (K) = One)),
 	                when 4 => (for all J in A3'Range => (A (J) (One) = 2 and A (J) (2) = One)),
 	                when others => (for all J in A3'Range => (A (J) (One) = One and A (J) (2) = 2)));
+	
+   procedure P1_Bis (A : in out A1; B : Integer) with
+     Pre => One = 1,
+     Post => (case B is when 1      => A = (1 => One),
+   	                when others => A = (1 => One));
+	
+   procedure P2_Bis (A : in out A2; B : Integer) with
+     Pre => One = 1,
+     Post => (case B is when 1 => A = (One, 2),
+   	                when 2 => A = (One, One),
+   	                when 3 => A = (One, One),
+   	                when 4 => A = (2, One),
+   	                when others => A = (One, 2));
+     
+   procedure P3_Bis (A : in out A3; B : Integer) with
+     Pre => One = 1,
+     Post => (case B is when 1 => A = ((One, 2), (One, 2)),
+	                when 2 => A = ((One, One), (One, One)),
+	                when 3 => A = ((One, One), (One, One)),
+	                when 4 => A = ((2, One), (2, One)),
+	                when others => A = ((One, 2), (One, 2)));
+	
 end Arr_Aggregate;
