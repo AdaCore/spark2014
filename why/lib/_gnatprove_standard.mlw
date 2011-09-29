@@ -4,7 +4,7 @@ module Main
   use int.ComputerDivision
   use real.Real
   use export real.RealInfix
-  use real.Abs as AbsReal
+  use export real.Abs as AbsReal
   use real.Square as SquareReal
   use real.Trigonometry
   use bool.Bool
