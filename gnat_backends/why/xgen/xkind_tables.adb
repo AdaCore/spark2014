@@ -387,9 +387,28 @@ package body Xkind_Tables is
       FO : constant Why_Node_Kind := Class_First (Outer);
       LO : constant Why_Node_Kind := Class_Last (Outer);
    begin
-      return FI in  FO .. LO
-        and then LI in FO .. LO
-        and then Class_Name (Inner) /= Class_Name (Outer);
+
+      --  When the bounds are equal, Inner is a strict subclass of Outer iff
+      --  Outer is not a domain and Inner is; indeed a domain class has the
+      --  constraint that any node of this class must have the corresponding
+      --  domain, whereas a regular class does not have this constraint and is
+      --  therefore more general (i.e. accepts more nodes).
+      --  The idea is to have the most complete ordering possible; when we
+      --  cannot order using bounds, we still have a sensible way to order
+      --  using domains.
+
+      if LI = LO and then FI = FO then
+         return Is_Domain (Inner) and then not Is_Domain (Outer);
+
+      --  Otherwise, when bounds are different, just check that
+      --  Inner.First .. Inner.Last is a strict subrange of
+      --  Outer.First .. Outer.Last *without considering the domain*:
+      --  still with the idea to have the most complete ordering possible,
+      --  so avoiding constraints that would make some classes incomparable.
+
+      else
+         return FI in  FO .. LO and then LI in FO .. LO;
+      end if;
    end Is_Subclass;
 
    --------------------

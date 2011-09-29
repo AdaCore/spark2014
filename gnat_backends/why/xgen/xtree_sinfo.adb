@@ -56,6 +56,9 @@ package body Xtree_Sinfo is
 
       --  Classes
 
+      New_Class ("W_Value",
+                 W_Not,
+                 W_Unreachable_Code);
       New_Class ("W_Primitive_Type",
                  W_Base_Type,
                  W_Generic_Actual_Type_Chain);
@@ -342,15 +345,15 @@ package body Xtree_Sinfo is
       New_Field (W_Relation,
                  "Op_Type", "EW_Not_Null_Type");
       New_Field (W_Relation,
-                 "Left", "W_Expr", Id_One);
+                 "Left", "W_Value", Id_One);
       New_Field (W_Relation,
                  "Op", "EW_Relation");
       New_Field (W_Relation,
-                 "Right", "W_Expr", Id_One);
+                 "Right", "W_Value", Id_One);
       New_Field (W_Relation,
                  "Op2", "EW_Relation", "EW_None");
       New_Field (W_Relation,
-                 "Right2", "W_Expr", Id_Lone);
+                 "Right2", "W_Value", Id_Lone);
 
       ------------------
       -- W_Connection --
@@ -408,7 +411,7 @@ package body Xtree_Sinfo is
       New_Field (W_Binding,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Binding,
-                 "Def", "W_Expr", Id_One);
+                 "Def", "W_Value", Id_One);
       New_Field (W_Binding,
                  "Context", "W_Expr", Id_One);
 
