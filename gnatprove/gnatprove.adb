@@ -214,6 +214,9 @@ procedure Gnatprove is
       if Report then
          Args.Append ("--report");
       end if;
+      if Debug then
+         Args.Append ("--debug");
+      end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
       end if;
