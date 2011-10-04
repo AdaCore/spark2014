@@ -95,7 +95,7 @@ Redundant Annotations *(Not Yet Implemented)*
 A logical annotation (precondition, postcondition, assertion) should always be
 non-redundant, that is, no part of the annotation should be trivially true or
 false in the context of the complete annotation. Consider the following
-specification::
+specification:
 
 .. code-block:: ada
 
@@ -105,7 +105,7 @@ specification::
 Here, the programmer mistyped ``X`` for ``Y``, which makes the precondition
 redundant. At worst, the annotation may be tautological (always true), which
 makes it much easier to prove, and also completely useless to express anything
-interesting about a subprogram. Consider the following specification::
+interesting about a subprogram. Consider the following specification:
 
 .. code-block:: ada
 
@@ -138,7 +138,7 @@ Inconsistent Annotations *(Not Yet Implemented)*
 
 A logical annotation (precondition, postcondition, assertion) should always be
 consistent, that is, is should not be always false. Consider the following
-specification::
+specification:
 
 .. code-block:: ada
 
@@ -161,7 +161,7 @@ A contract should express in its precondition all restrictions under which a
 subprogram can possibly (maybe not always) deliver a proper service. This means
 that, given an input respecting the precondition, there should be a possible
 output respecting the postcondition. If this is not the case, then the
-subprogram is unimplementable. Consider the following specification::
+subprogram is unimplementable. Consider the following specification:
 
 .. code-block:: ada
 
@@ -187,7 +187,7 @@ establishing its postcondition. This is not the same as saying that a contract
 entirely summarizes the purpose of a subprogram, as the contract might still be
 an abstraction of the subprogram's behavior. But if some code is useless to
 establish the subprogram's postcondition, the contract is either wrong or
-incomplete. To illustrate the issue, consider the following procedure sketch::
+incomplete. To illustrate the issue, consider the following procedure sketch:
 
 .. code-block:: ada
 
@@ -215,7 +215,7 @@ either correct the contract to reflect both situations, remove the offending
 portion of the code, or accept the warning.
 
 Another case of incomplete specifications is illustrated by the following
-simple program::
+simple program:
 
 .. code-block:: ada
 
