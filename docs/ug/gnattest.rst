@@ -20,7 +20,9 @@ facilitate the formalization of test cases. It can be expressed either as an
 aspect in Ada 2012 or as a pragma in all Ada modes (83, 95, 2005, 2012). A
 formal test-case is attached to a subprogram declaration for a subprogram
 declared in a package specification inside a package spec unit.  The syntax of
-test-case pragmas is the following::
+test-case pragmas is the following:
+
+.. code-block:: ada
 
    pragma Test_Case (
       [Name     =>] static_string_Expression
@@ -35,7 +37,9 @@ where the rules for ``Requires`` are the same as the rule for an expression
 in ``Precondition`` and the rules for ``Ensures`` are the same as the
 rule for an expression in ``Postcondition``. In particular, attributes
 ``'Old`` and ``'Result`` can only be used within the ``Ensures``
-expression. The following is an example of use within a package spec::
+expression. The following is an example of use within a package spec:
+
+.. code-block:: ada
 
    package Math_Functions is
       ...
