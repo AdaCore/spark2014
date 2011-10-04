@@ -24,8 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;       use Ada.Text_IO;
 with Call;              use Call;
-with String_Utils;      use String_Utils;
+with Configuration;     use Configuration;
 
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
@@ -33,9 +35,7 @@ with GNAT.OS_Lib;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
-with Configuration;     use Configuration;
-
-with Ada.Text_IO;       use Ada.Text_IO;
+with String_Utils;      use String_Utils;
 with System.OS_Lib;
 
 procedure Gnatprove is
@@ -394,44 +394,85 @@ procedure Gnatprove is
       Filename : constant String :=
          Ada.Directories.Compose (Gnatprove_Subdir, "why3.conf");
 
-      procedure Put_Loadpath (S : String);
+      procedure Put_Keyval (Key : String; Value : String);
+      procedure Put_Keyval (Key : String; Value : Integer);
+      function Quote_Backslash (S : String) return String;
+      procedure Start_Section (Section : String);
 
-      ------------------
-      -- Put_Loadpath --
-      ------------------
+      ----------------
+      -- Put_Keyval --
+      ----------------
 
-      procedure Put_Loadpath (S : String) is
+      procedure Put_Keyval (Key : String; Value : String)
+      is
+         Quoted_Value : constant String := Quote_Backslash (Value);
       begin
-         Put (File, "loadpath = """);
-         Put (File, S);
+         Put (File, Key);
+         Put (File, " = """);
+         Put (File, Quoted_Value);
          Put_Line (File, """");
-      end Put_Loadpath;
+      end Put_Keyval;
+
+      procedure Put_Keyval (Key : String; Value : Integer)
+      is
+      begin
+         Put (File, Key);
+         Put (File, " = ");
+         Put_Line (File, Int_Image (Value));
+      end Put_Keyval;
+
+      ------------------
+      -- Quoted_Value --
+      ------------------
+
+      function Quote_Backslash (S : String) return String
+      is
+         use Ada.Strings.Unbounded;
+         Local : Unbounded_String := Null_Unbounded_String;
+      begin
+         for I in S'Range loop
+            if S (I) = '\' then
+               Append (Local, "\\");
+            else
+               Append (Local, S (I));
+            end if;
+         end loop;
+         return To_String (Local);
+      end Quote_Backslash;
+
+      -------------------
+      -- Start_Section --
+      -------------------
+
+      procedure Start_Section (Section : String)
+      is
+      begin
+         Put (File, "[");
+         Put (File, Section);
+         Put_Line (File, "]");
+      end Start_Section;
 
       --  begin processing for Generate_Why3_Conf_File
    begin
       Create (File, Out_File, Filename);
-      Put_Line (File, "[main]");
-      Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "theories"));
-      Put_Loadpath (Ada.Directories.Compose (Why3_Dir, "modules"));
-      Put_Loadpath (Stdlib_Dir);
-      Put_Loadpath (Theories_Dir);
-      Put_Loadpath (Gnatprove_Subdir);
-      Put_Line (File, "magic = 7");
-      Put_Line (File, "memlimit = 0");
-      Put_Line (File, "running_provers_max = 2");
-      Put_Line (File, "timelimit = 10");
-
-      Put_Line (File, "[prover alt-ergo]");
-      Put_Line (File,
-                "command = ""why3-cpulimit %t %m -s alt-ergo -proof %f""");
-      Put_Line (File,
-                "driver = """ &
-                Ada.Directories.Compose (Why3_Drivers_Dir,
-                                         "alt_ergo_trunk.drv") &
-                """");
-      Put_Line (File, "editor = """"");
-      Put_Line (File, "name = ""Alt-Ergo""");
-      Put_Line (File, "version = ""0.93""");
+      Start_Section ("main");
+      Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "theories"));
+      Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "modules"));
+      Put_Keyval ("loadpath", Stdlib_Dir);
+      Put_Keyval ("loadpath", Theories_Dir);
+      Put_Keyval ("loadpath", Gnatprove_Subdir);
+      Put_Keyval ("magic", 7);
+      Put_Keyval ("memlimit", 0);
+      Put_Keyval ("running_provers_max", 2);
+      Put_Keyval ("timelimit", 10);
+      Start_Section ("prover alt-ergo");
+      Put_Keyval ("command", "why3-cpulimit %t %m -s alt-ergo -proof %f");
+      Put_Keyval ("driver",
+                  Ada.Directories.Compose (Why3_Drivers_Dir,
+                                           "alt_ergo_trunk.drv"));
+      Put_Keyval ("editor", "");
+      Put_Keyval ("name", "Alt-Ergo");
+      Put_Keyval ("version", "0.93");
       Close (File);
    end Generate_Why3_Conf_File;
 
