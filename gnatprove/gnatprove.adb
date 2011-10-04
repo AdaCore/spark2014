@@ -34,6 +34,7 @@ with GNAT.OS_Lib;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
+with GNATCOLL.Utils;    use GNATCOLL.Utils;
 
 with String_Utils;      use String_Utils;
 with System.OS_Lib;
@@ -396,7 +397,6 @@ procedure Gnatprove is
 
       procedure Put_Keyval (Key : String; Value : String);
       procedure Put_Keyval (Key : String; Value : Integer);
-      function Quote_Backslash (S : String) return String;
       procedure Start_Section (Section : String);
 
       ----------------
@@ -405,11 +405,13 @@ procedure Gnatprove is
 
       procedure Put_Keyval (Key : String; Value : String)
       is
-         Quoted_Value : constant String := Quote_Backslash (Value);
+         use Ada.Strings.Unbounded;
+         Value_Unb : Unbounded_String := To_Unbounded_String (Value);
       begin
+         Replace (Value_Unb, "\", "\\");
          Put (File, Key);
          Put (File, " = """);
-         Put (File, Quoted_Value);
+         Put (File, To_String (Value_Unb));
          Put_Line (File, """");
       end Put_Keyval;
 
@@ -420,25 +422,6 @@ procedure Gnatprove is
          Put (File, " = ");
          Put_Line (File, Int_Image (Value));
       end Put_Keyval;
-
-      ------------------
-      -- Quoted_Value --
-      ------------------
-
-      function Quote_Backslash (S : String) return String
-      is
-         use Ada.Strings.Unbounded;
-         Local : Unbounded_String := Null_Unbounded_String;
-      begin
-         for I in S'Range loop
-            if S (I) = '\' then
-               Append (Local, "\\");
-            else
-               Append (Local, S (I));
-            end if;
-         end loop;
-         return To_String (Local);
-      end Quote_Backslash;
 
       -------------------
       -- Start_Section --
