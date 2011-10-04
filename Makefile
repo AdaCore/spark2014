@@ -57,7 +57,7 @@ doc:
 	$(MAKE) -C docs/ug latexpdf
 	$(MAKE) -C docs/ug html
 	mkdir -p $(DOCDIR)/pdf
-	cp -p docs/ug/_build/latex/gnatprove_ug.pdf $(DOCDIR)/pdfD
+	cp -p docs/ug/_build/latex/gnatprove_ug.pdf $(DOCDIR)/pdf
 	cp -pr docs/ug/_build/html $(DOCDIR)
 	$(MAKE) -C docs/ug clean
 
