@@ -119,13 +119,19 @@ This postcondition could be read as "if ``X`` is less than ``Y``, then function
 true, whatever function ``Max`` returns. To see it, consider the abstract form
 of the postcondition
 
+.. code-block:: ada
+
   (if A then B) or (if (not A) then C)
 
 It can be rewritten as
 
+.. code-block:: ada
+
   ((not A) or B) or (A or C)
 
 which is the same as
+
+.. code-block:: ada
 
   A or (not A) or B or C
 
