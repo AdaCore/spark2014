@@ -45,6 +45,7 @@ with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 
@@ -84,13 +85,19 @@ package body Gnat2Why.Types is
       Is_Base : Boolean)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
+      First      : W_Integer_Constant_Id := Why_Empty;
+      Last       : W_Integer_Constant_Id := Why_Empty;
    begin
-      Declare_Ada_Abstract_Signed_Int
-        (File,
-         Name,
-         Expr_Value (Low_Bound (Range_Node)),
-         Expr_Value (High_Bound (Range_Node)),
-         Is_Base);
+      if Is_Static_Expression (Low_Bound (Range_Node)) then
+         First :=
+           New_Integer_Constant (Value => Expr_Value (Low_Bound (Range_Node)));
+      end if;
+      if Is_Static_Expression (High_Bound (Range_Node)) then
+         Last :=
+           New_Integer_Constant (Value =>
+              Expr_Value (High_Bound (Range_Node)));
+      end if;
+      Declare_Ada_Abstract_Signed_Int (File, Name, First, Last, Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------

@@ -40,6 +40,7 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Types;          use Why.Types;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
@@ -144,7 +145,7 @@ package body Why.Gen.Enums is
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Scalar_Attributes
         (File, Name, EW_Int,
-         New_Constant (Uint_1), New_Constant (Max_Uint));
+         New_Constant (Uint_1), New_Constant (Max_Uint), Why_Empty);
       Define_Range_Predicate (File, Name, EW_Int);
       Emit
         (File,

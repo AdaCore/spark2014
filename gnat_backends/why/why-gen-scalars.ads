@@ -28,7 +28,6 @@ with Urealp;    use Urealp;
 
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
-with Why.Types; use Why.Types;
 
 package Why.Gen.Scalars is
    --  This package provides an interface to generate declarations
@@ -37,8 +36,8 @@ package Why.Gen.Scalars is
    procedure Declare_Ada_Abstract_Signed_Int
      (File    : W_File_Id;
       Name    : String;
-      First   : Uint;
-      Last    : Uint;
+      First : W_Integer_Constant_Id;
+      Last  : W_Integer_Constant_Id;
       Is_Base : Boolean);
    --  Declare the whole theory for a signed int of the given size,
    --  i.e. whose range is First .. Last. This creates an abstract type
@@ -70,11 +69,12 @@ package Why.Gen.Scalars is
    --  is an Ada base type.
 
    procedure Define_Scalar_Attributes
-     (File      : W_File_Id;
-      Name      : String;
-      Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id;
-      Modulus   : W_Term_OId := Why_Empty);
+     (File       : W_File_Id;
+      Name       : String;
+      Base_Type  : EW_Scalar;
+      First      : W_Term_Id;
+      Last       : W_Term_Id;
+      Modulus    : W_Term_OId;
+      Is_Modular : Boolean := False);
 
 end Why.Gen.Scalars;

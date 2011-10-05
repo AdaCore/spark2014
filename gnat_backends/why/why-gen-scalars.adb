@@ -34,6 +34,7 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Consts;     use Why.Gen.Consts;
+with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
 
@@ -80,8 +81,8 @@ package body Why.Gen.Scalars is
    procedure Declare_Ada_Abstract_Signed_Int
      (File    : W_File_Id;
       Name    : String;
-      First   : Uint;
-      Last    : Uint;
+      First : W_Integer_Constant_Id;
+      Last  : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
@@ -90,8 +91,9 @@ package body Why.Gen.Scalars is
         (File      => File,
          Name      => Name,
          Base_Type => EW_Int,
-         First     => New_Constant (First),
-         Last      => New_Constant (Last));
+         First     => +First,
+         Last      => +Last,
+         Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (File      => File,
          Name      => Name,
@@ -116,7 +118,8 @@ package body Why.Gen.Scalars is
          Name      => Name,
          Base_Type => EW_Real,
          First     => New_Constant (First),
-         Last      => New_Constant (Last));
+         Last      => New_Constant (Last),
+         Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (File      => File,
          Name      => Name,
@@ -251,12 +254,13 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (File      : W_File_Id;
-      Name      : String;
-      Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id;
-      Modulus   : W_Term_OId := Why_Empty)
+     (File       : W_File_Id;
+      Name       : String;
+      Base_Type  : EW_Scalar;
+      First      : W_Term_Id;
+      Last       : W_Term_Id;
+      Modulus    : W_Term_OId;
+      Is_Modular : Boolean := False)
    is
       type Scalar_Attr is (S_First, S_Last, S_Modulus);
 
@@ -271,22 +275,32 @@ package body Why.Gen.Scalars is
                        S_Modulus => (Attribute_Modulus, Modulus));
    begin
       for J in Attr_Values'Range loop
-         if Attr_Values (J).Value /= Why_Empty then
-            Emit_Top_Level_Declarations
-              (File        => File,
-               Name        =>
-                 Attr_Name.Id
-                   (Name,
-                    Attribute_Id'Image (Attr_Values (J).Attr_Id)),
-               Binders     => (1 .. 0 => <>),
-               Return_Type => New_Base_Type (Base_Type => Base_Type),
-               Spec        =>
-                 (1 =>
-                    (Kind   => W_Function_Def,
-                     Domain => EW_Term,
-                     Term    => Attr_Values (J).Value,
-                     others => <>)));
-         end if;
+         declare
+            Spec : Declaration_Spec;
+         begin
+            if Attr_Values (J).Attr_Id /= Attribute_Modulus or else
+               Is_Modular then
+               if Attr_Values (J).Value /= Why_Empty then
+                  Spec := (Kind   => W_Function_Def,
+                           Domain => EW_Term,
+                           Term   => Attr_Values (J).Value,
+                           others => <>);
+               else
+                  Spec := (Kind   => W_Function_Decl,
+                           Domain => EW_Term,
+                           others => <>);
+               end if;
+               Emit_Top_Level_Declarations
+                 (File        => File,
+                  Name        =>
+                    Attr_Name.Id
+                      (Name,
+                       Attribute_Id'Image (Attr_Values (J).Attr_Id)),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => New_Base_Type (Base_Type => Base_Type),
+                  Spec        => (1 => Spec));
+            end if;
+         end;
       end loop;
    end Define_Scalar_Attributes;
 
