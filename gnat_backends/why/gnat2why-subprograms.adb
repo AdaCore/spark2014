@@ -235,6 +235,13 @@ package body Gnat2Why.Subprograms is
                when N_Object_Declaration =>
                   R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
 
+               when N_Subtype_Declaration =>
+
+                  R := Sequence
+                         (Assume_of_Subtype_Entity
+                            (Defining_Identifier (Cur_Decl)),
+                          R);
+
                when others =>
                   null;
 
