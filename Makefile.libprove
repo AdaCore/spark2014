@@ -22,9 +22,10 @@ vpath %.ads $(ADA_INCLUDE_PATH)
 GNAT_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnat.a))
 GNARL_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnarl.a))
 EXCLUDE_OBJ:= \
-   adaint% argv% cio% cstreams% ctrl_c% errno% exit% env% raise% sysdep% aux-io% init% \
-   initialize% locales% seh_init% cal% arit64% final% tracebak% expect% mkdir% socket% \
-   targext% raise-gcc% adadecode%
+   adaint.o argv.o cio.o cstreams.o ctrl_c.o errno.o exit.o env.o raise.o \
+   sysdep.o aux-io.o init.o initialize.o locales.o seh_init.o cal.o \
+   arit64.o final.o tracebak.o expect.o mkdir.o socket.o \
+   targext.o raise-gcc.o adadecode.o
 
 ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
 ALL_ALIS:=$(ALL_OBJS:.o=.ali)
