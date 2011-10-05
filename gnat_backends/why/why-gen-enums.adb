@@ -31,14 +31,15 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
+with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
@@ -141,12 +142,10 @@ package body Why.Gen.Enums is
               New_Binders ((1 => New_Base_Type (Base_Type => EW_Int))),
             Return_Type => My_Type));
       Define_Enum_To_Int_Function (File, Name, Constructors);
-      Define_Range_Predicate
-        (File,
-         Name,
-         EW_Int,
-         First => New_Constant (Uint_1),
-         Last  => New_Constant (Max_Uint));
+      Define_Scalar_Attributes
+        (File, Name, EW_Int,
+         New_Constant (Uint_1), New_Constant (Max_Uint));
+      Define_Range_Predicate (File, Name, EW_Int);
       Emit
         (File,
          New_Function_Decl

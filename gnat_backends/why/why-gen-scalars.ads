@@ -23,10 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;  use Uintp;
-with Urealp; use Urealp;
+with Uintp;     use Uintp;
+with Urealp;    use Urealp;
 
-with Why.Ids; use Why.Ids;
+with Why.Ids;   use Why.Ids;
+with Why.Sinfo; use Why.Sinfo;
+with Why.Types; use Why.Types;
 
 package Why.Gen.Scalars is
    --  This package provides an interface to generate declarations
@@ -60,5 +62,13 @@ package Why.Gen.Scalars is
    --  is First .. Last.  This creates an abstract type whose name is
    --  given in parameter along with a set of axioms and subprograms
    --  for real conversion.
+
+   procedure Define_Scalar_Attributes
+     (File      : W_File_Id;
+      Name      : String;
+      Base_Type : EW_Scalar;
+      First     : W_Term_Id;
+      Last      : W_Term_Id;
+      Modulus   : W_Term_OId := Why_Empty);
 
 end Why.Gen.Scalars;

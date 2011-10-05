@@ -33,9 +33,7 @@ package Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File      : W_File_Id;
       Name      : String;
-      Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id);
+      Base_Type : EW_Scalar);
    --  Generate the definition of the range predicate for an abstract type
    --  whose base type is given in parameters. This predicate is True when
    --  the argument is in range First .. Last.

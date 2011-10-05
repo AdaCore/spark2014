@@ -34,8 +34,6 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Consts;     use Why.Gen.Consts;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
 
@@ -43,19 +41,9 @@ package body Why.Gen.Scalars is
      (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id;
       Modulus   : W_Term_OId := Why_Empty);
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
-
-   procedure Define_Scalar_Attributes
-     (File      : W_File_Id;
-      Name      : String;
-      Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id;
-      Modulus   : W_Term_OId := Why_Empty);
 
    ----------------------------------
    -- Declare_Ada_Abstract_Modular --
@@ -68,19 +56,17 @@ package body Why.Gen.Scalars is
    is
    begin
       Emit (File, New_Type (Name));
-      Define_Scalar_Conversions
-        (File      => File,
-         Name      => Name,
-         Base_Type => EW_Int,
-         First     => New_Constant (Uint_0),
-         Last      => New_Constant (Modulus - 1),
-         Modulus   => New_Constant (Modulus));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
          Base_Type => EW_Int,
          First     => New_Constant (Uint_0),
          Last      => New_Constant (Modulus - 1));
+      Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int,
+         Modulus   => New_Constant (Modulus));
    end Declare_Ada_Abstract_Modular;
 
    -------------------------------------
@@ -95,18 +81,16 @@ package body Why.Gen.Scalars is
    is
    begin
       Emit (File, New_Type (Name));
-      Define_Scalar_Conversions
-        (File      => File,
-         Name      => Name,
-         Base_Type => EW_Int,
-         First     => New_Constant (First),
-         Last      => New_Constant (Last));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
          Base_Type => EW_Int,
          First     => New_Constant (First),
          Last      => New_Constant (Last));
+      Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Int);
    end Declare_Ada_Abstract_Signed_Int;
 
    ----------------------
@@ -120,18 +104,16 @@ package body Why.Gen.Scalars is
       Last  : Ureal) is
    begin
       Emit (File, New_Type (Name));
-      Define_Scalar_Conversions
-        (File      => File,
-         Name      => Name,
-         Base_Type => EW_Real,
-         First     => New_Constant (First),
-         Last      => New_Constant (Last));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
          Base_Type => EW_Real,
          First     => New_Constant (First),
          Last      => New_Constant (Last));
+      Define_Scalar_Conversions
+        (File      => File,
+         Name      => Name,
+         Base_Type => EW_Real);
    end Declare_Ada_Real;
 
    -------------------------------
@@ -142,8 +124,6 @@ package body Why.Gen.Scalars is
      (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id;
       Modulus   : W_Term_OId := Why_Empty)
    is
       Signed  : constant Boolean := Modulus = Why_Empty;
@@ -152,7 +132,7 @@ package body Why.Gen.Scalars is
                   New_Base_Type (Base_Type => Base_Type);
       BT_Name : constant String := EW_Base_Type_Name (Base_Type);
    begin
-      Define_Range_Predicate (File, Name, Base_Type, First, Last);
+      Define_Range_Predicate (File, Name, Base_Type);
 
       --  to base type:
       Emit

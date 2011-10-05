@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Snames;              use Snames;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -96,17 +97,13 @@ package body Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File      : W_File_Id;
       Name      : String;
-      Base_Type : EW_Scalar;
-      First     : W_Term_Id;
-      Last      : W_Term_Id)
+      Base_Type : EW_Scalar)
    is
       BT         : constant W_Primitive_Type_Id
                      := New_Base_Type (Base_Type => Base_Type);
 
       --  Identifiers
       Arg_S      : constant String := "x";
-      First_S    : constant String := "first";
-      Last_S     : constant String := "last";
 
       --  predicate <name>___in_range (x : <base_type>) = [...]
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
@@ -114,27 +111,20 @@ package body Why.Gen.Preds is
                      (B_Name => New_Identifier (Arg_S),
                       B_Type => BT,
                       others => <>);
-
-      --  first <= x <= last
-      Context    : constant W_Pred_Id :=
-                     New_Relation (Op_Type => Base_Type,
-                                   Left    => +New_Term (First_S),
-                                   Op      => EW_Le,
-                                   Right   => +New_Term (Arg_S),
-                                   Op2     => EW_Le,
-                                   Right2  => +New_Term (Last_S));
-      --  let first = <first> in
-      --  let last  = <last>  in [...]
-      Decl_Last  : constant W_Pred_Id :=
-                     New_Binding
-                       (Name    => New_Identifier (Last_S),
-                        Def     => +Last,
-                        Context => +Context);
-      Decl_First : constant W_Pred_Id :=
-                     New_Binding
-                       (Name    => New_Identifier (First_S),
-                        Def     => +First,
-                        Context => +Decl_Last);
+      Decl       : constant W_Pred_Id :=
+            +New_Relation
+               (Op_Type => Base_Type,
+                Left    =>
+                    +Attr_Name.Id
+                      (Name,
+                       Attribute_Id'Image (Attribute_First)),
+                Op      => EW_Le,
+                Right   => +New_Term (Arg_S),
+                Op2     => EW_Le,
+                Right2  =>
+                    +Attr_Name.Id
+                      (Name,
+                       Attribute_Id'Image (Attribute_Last)));
    begin
       Emit
         (File,
@@ -142,7 +132,7 @@ package body Why.Gen.Preds is
            (Domain  => EW_Pred,
             Name    => Pred_Name,
             Binders => (1 => Binder),
-            Def     => +Decl_First));
+            Def     => +Decl));
    end Define_Range_Predicate;
 
    --------------------
