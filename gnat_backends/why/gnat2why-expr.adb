@@ -208,29 +208,45 @@ package body Gnat2Why.Expr is
 
    function Assume_of_Subtype_Entity (N : Node_Id) return W_Prog_Id
    is
-      Rng : constant Node_Id := Get_Range (N);
-      Rel_First : constant W_Pred_Id :=
+      Rng              : constant Node_Id := Get_Range (N);
+      Low_Expr         : constant W_Term_Id :=
+         +Transform_Expr (Low_Bound (Rng), EW_Int_Type, EW_Term);
+      High_Expr        : constant W_Term_Id :=
+         +Transform_Expr (High_Bound (Rng), EW_Int_Type, EW_Term);
+      First_Term       : constant W_Term_Id :=
+         +Attr_Name.Id (Full_Name (N), Attribute_Id'Image (Attribute_First));
+      Last_Term        : constant W_Term_Id :=
+         +Attr_Name.Id (Full_Name (N), Attribute_Id'Image (Attribute_Last));
+      Rel_First        : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
-            Left     =>
-               +Transform_Expr
-                  (Low_Bound (Rng), EW_Int_Type, EW_Term),
-            Right    =>
-                    +Attr_Name.Id
-                      (Full_Name (N),
-                       Attribute_Id'Image (Attribute_First)),
+            Left     => +Low_Expr,
+            Right    => +First_Term,
             Op       => EW_Eq);
-      Rel_Last : constant W_Pred_Id :=
+      Rel_Last         : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
-            Left     =>
-               +Transform_Expr
-                  (High_Bound (Rng), EW_Int_Type, EW_Term),
-            Right    =>
-                    +Attr_Name.Id
-                      (Full_Name (N),
-                       Attribute_Id'Image (Attribute_Last)),
+            Left     => +High_Expr,
+            Right    => +Last_Term,
             Op       => EW_Eq);
+      Base_Type_Entity : constant Entity_Id :=
+         Entity (Subtype_Mark (Subtype_Indication (Parent (N))));
+      First_In_Range   : constant W_Pred_Id :=
+         New_Relation
+           (Op_Type  => EW_Bool,
+            Left     => +Low_Expr,
+            Right    =>
+              +Attr_Name.Id (Full_Name (Base_Type_Entity),
+                             Attribute_Id'Image (Attribute_First)),
+            Op       => EW_Ge);
+      Last_In_Range    : constant W_Pred_Id :=
+         New_Relation
+           (Op_Type  => EW_Bool,
+            Left     => +High_Expr,
+            Right    =>
+              +Attr_Name.Id (Full_Name (Base_Type_Entity),
+                             Attribute_Id'Image (Attribute_Last)),
+            Op       => EW_Le);
    begin
       --  ??? We should generate a precondition that states that the subtype is
       --  legal
@@ -241,6 +257,11 @@ package body Gnat2Why.Expr is
                  (Domain => EW_Prog,
                   Result =>
                      New_Result (New_Base_Type (Base_Type => EW_Unit)),
+                  Pre   =>
+                    +New_And_Expr
+                      (Domain => EW_Pred,
+                       Left   => +First_In_Range,
+                       Right  => +Last_In_Range),
                   Post   =>
                     +New_And_Expr
                       (Domain => EW_Pred,
