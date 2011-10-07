@@ -237,10 +237,19 @@ package body Gnat2Why.Subprograms is
 
                when N_Subtype_Declaration =>
 
-                  R := Sequence
-                         (Assume_of_Subtype_Entity
-                            (Defining_Identifier (Cur_Decl)),
-                          R);
+                  declare
+                     Ent : constant Entity_Id :=
+                        Defining_Identifier (Cur_Decl);
+                  begin
+
+                     --  If the range is not static, we need to generate a
+                     --  check that the subtype declaration is valid;
+                     --  otherwise, the fronted has done it for us already
+
+                     if not Is_Static_Expression (Get_Range (Ent)) then
+                        R := Sequence (Assume_of_Subtype_Entity (Ent), R);
+                     end if;
+                  end;
 
                when others =>
                   null;

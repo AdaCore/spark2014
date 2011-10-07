@@ -38,7 +38,8 @@ package VC_Kinds is
       VC_Loop_Invariant,
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
-      VC_Assert
+      VC_Assert,
+      VC_Subtype_Decl
    );
 
 end VC_Kinds;

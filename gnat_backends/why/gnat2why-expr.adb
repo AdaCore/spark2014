@@ -247,26 +247,43 @@ package body Gnat2Why.Expr is
               +Attr_Name.Id (Full_Name (Base_Type_Entity),
                              Attribute_Id'Image (Attribute_Last)),
             Op       => EW_Le);
-   begin
-      --  ??? We should generate a precondition that states that the subtype is
-      --  legal
-      return
-        New_Any_Expr
+      First_Le_Last    : constant W_Pred_Id :=
+         New_Relation
+           (Op_Type  => EW_Bool,
+            Left     => +Low_Expr,
+            Right    => +High_Expr,
+            Op       => EW_Le);
+      Precond          : constant W_Pred_Id :=
+         +New_Connection
+           (Op     => EW_Imply,
+            Left   => +First_Le_Last,
+            Right  =>
+              +New_And_Expr
+                 (Domain => EW_Pred,
+                  Left   => +First_In_Range,
+                  Right => +Last_In_Range));
+      Any_Expr        : constant W_Prog_Id :=
+         New_Any_Expr
            (Any_Type =>
               New_Computation_Type
                  (Domain => EW_Prog,
                   Result =>
                      New_Result (New_Base_Type (Base_Type => EW_Unit)),
-                  Pre   =>
-                    +New_And_Expr
-                      (Domain => EW_Pred,
-                       Left   => +First_In_Range,
-                       Right  => +Last_In_Range),
+                  Pre   => +Precond,
                   Post   =>
                     +New_And_Expr
                       (Domain => EW_Pred,
                        Left   => +Rel_First,
                        Right  => +Rel_Last)));
+   begin
+      --  ??? We should generate a precondition that states that the subtype is
+      --  legal
+      return
+        +New_Located_Expr
+          (Ada_Node => N,
+           Domain   => EW_Prog,
+           Reason   => VC_Subtype_Decl,
+           Expr     => +Any_Expr);
    end Assume_of_Subtype_Entity;
 
    ---------------------------
