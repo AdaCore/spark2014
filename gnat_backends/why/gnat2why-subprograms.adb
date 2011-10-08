@@ -35,6 +35,7 @@ with Atree;                 use Atree;
 with Debug;
 with Einfo;                 use Einfo;
 with Nlists;                use Nlists;
+with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
@@ -246,7 +247,7 @@ package body Gnat2Why.Subprograms is
                      --  check that the subtype declaration is valid;
                      --  otherwise, the fronted has done it for us already
 
-                     if not Is_Static_Expression (Get_Range (Ent)) then
+                     if not Is_Static_Range (Get_Range (Ent)) then
                         R := Sequence (Assume_of_Subtype_Entity (Ent), R);
                      end if;
                   end;
