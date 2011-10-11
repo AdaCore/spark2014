@@ -266,7 +266,7 @@ package body Why.Gen.Progs is
                            (Ada_Node, EW_Int,
                             To, From, Why_Expr, Base_Type);
 
-                  when Float_Kind =>
+                  when Real_Kind =>
                      return
                         Insert_Scalar_Conversion
                            (Ada_Node, EW_Real,

@@ -109,11 +109,11 @@ package body Why.Gen.Scalars is
          Last      => New_Constant (Last));
    end Declare_Ada_Abstract_Signed_Int;
 
-   --------------------------------
-   -- Declare_Ada_Floating_Point --
-   --------------------------------
+   ----------------------
+   -- Declare_Ada_Real --
+   ----------------------
 
-   procedure Declare_Ada_Floating_Point
+   procedure Declare_Ada_Real
      (File  : W_File_Id;
       Name  : String;
       First : Ureal;
@@ -132,7 +132,7 @@ package body Why.Gen.Scalars is
          Base_Type => EW_Real,
          First     => New_Constant (First),
          Last      => New_Constant (Last));
-   end Declare_Ada_Floating_Point;
+   end Declare_Ada_Real;
 
    -------------------------------
    -- Define_Scalar_Conversions --

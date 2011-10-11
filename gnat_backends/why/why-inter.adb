@@ -172,7 +172,7 @@ package body Why.Inter is
       end if;
 
       case Ekind (Ty) is
-         when Float_Kind =>
+         when Real_Kind =>
             return EW_Real;
 
          when Integer_Kind | Enumeration_Kind =>
@@ -182,9 +182,6 @@ package body Why.Inter is
 
          when Private_Kind =>
             return Get_EW_Term_Type (Full_View (Ty));
-
-         when Fixed_Point_Kind =>
-            raise Not_Implemented;
 
          when others =>
             return EW_Abstract;

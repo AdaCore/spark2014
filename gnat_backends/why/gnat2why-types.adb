@@ -57,11 +57,11 @@ package body Gnat2Why.Types is
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
-   procedure Declare_Ada_Floating_Point_From_Range
+   procedure Declare_Ada_Real_From_Range
      (File : W_File_Id;
       Name : String;
       Rng  : Node_Id);
-   --  Same as Declare_Ada_Floating_Point but extract range information
+   --  Same as Declare_Ada_Real but extract range information
    --  from node.
 
    function Get_List_Of_Index_Ranges (E : Entity_Id) return
@@ -86,23 +86,23 @@ package body Gnat2Why.Types is
          Expr_Value (High_Bound (Range_Node)));
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
-   -------------------------------------------
-   -- Declare_Ada_Floating_Point_From_Range --
-   -------------------------------------------
+   ---------------------------------
+   -- Declare_Ada_Real_From_Range --
+   ---------------------------------
 
-   procedure Declare_Ada_Floating_Point_From_Range
+   procedure Declare_Ada_Real_From_Range
      (File : W_File_Id;
       Name : String;
       Rng  : Node_Id)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
    begin
-      Declare_Ada_Floating_Point
+      Declare_Ada_Real
         (File,
          Name,
          Expr_Value_R (Low_Bound (Range_Node)),
          Expr_Value_R (High_Bound (Range_Node)));
-   end Declare_Ada_Floating_Point_From_Range;
+   end Declare_Ada_Real_From_Range;
 
    ------------------------------
    -- Get_List_Of_Index_Ranges --
@@ -197,8 +197,8 @@ package body Gnat2Why.Types is
                   Name_Str,
                   Modulus (Ident_Node));
 
-            when E_Floating_Point_Type | E_Floating_Point_Subtype =>
-               Declare_Ada_Floating_Point_From_Range
+            when Real_Kind =>
+               Declare_Ada_Real_From_Range
                  (File,
                   Name_Str,
                   Scalar_Range (Ident_Node));

@@ -463,7 +463,9 @@ package body Gnat2Why.Expr is
            | N_Real_Range_Specification
            | N_Signed_Integer_Type_Definition
            | N_Modular_Type_Definition
-           | N_Floating_Point_Definition =>
+           | N_Floating_Point_Definition
+           | N_Ordinary_Fixed_Point_Definition
+           | N_Decimal_Fixed_Point_Definition =>
             return N;
 
          when N_Subtype_Indication =>
@@ -1645,12 +1647,7 @@ package body Gnat2Why.Expr is
                                 Attribute_Id'Image (Attr_Id));
                            Current_Type := EW_Int_Type;
 
-                        when Fixed_Point_Kind =>
-                           --  ??? What should be done for fixed points
-                           --  is not clear yet.
-                           raise Not_Implemented;
-
-                        when Float_Kind =>
+                        when Real_Kind =>
                            T :=
                              +Attr_Name.Id
                                (Full_Name (Etype (Var)),

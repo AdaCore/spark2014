@@ -84,7 +84,7 @@ package body Alfa.Definition is
       S_Wide_String         => False,
       S_Wide_Wide_String    => False,
 
-      S_Duration            => False);
+      S_Duration            => True);
 
    ------------------
    -- Global State --
@@ -2749,15 +2749,12 @@ package body Alfa.Definition is
          when E_Record_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
 
-         when Float_Kind =>
+         when Real_Kind =>
             if not (Is_Static_Range (Scalar_Range (+Id))) then
                Mark_Non_Alfa
-                 ("floating point type with dynamic range", +Id,
+                 ("real type with dynamic range", +Id,
                   NYI_Non_Static_Range);
             end if;
-
-         when Fixed_Point_Kind =>
-            Mark_Non_Alfa ("type definition", +Id, NYI_Float);
 
          when Access_Kind =>
             Mark_Non_Alfa ("access type", +Id, NIR_Access);

@@ -51,12 +51,12 @@ package Why.Gen.Scalars is
    --  type whose name is given in parameter along with a set of axioms and
    --  subprograms for int conversion.
 
-   procedure Declare_Ada_Floating_Point
+   procedure Declare_Ada_Real
      (File  : W_File_Id;
       Name  : String;
       First : Ureal;
       Last  : Ureal);
-   --  Declare the whole theory for a floating point type whose range
+   --  Declare the whole theory for a floating/fixed point type whose range
    --  is First .. Last.  This creates an abstract type whose name is
    --  given in parameter along with a set of axioms and subprograms
    --  for real conversion.
