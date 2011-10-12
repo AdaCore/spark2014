@@ -206,7 +206,9 @@ package body Gnat2Why.Expr is
    -- Assume_of_Integer_Subtype --
    -------------------------------
 
-   function Assume_of_Integer_Subtype (N : Node_Id) return W_Prog_Id
+   function Assume_of_Integer_Subtype
+      (N    : Entity_Id;
+       Base : Entity_Id) return W_Prog_Id
    is
       Rng              : constant Node_Id := Get_Range (N);
       Low_Expr         : constant W_Term_Id :=
@@ -229,13 +231,12 @@ package body Gnat2Why.Expr is
             Left     => +High_Expr,
             Right    => +Last_Term,
             Op       => EW_Eq);
-      Base_Type_Entity : constant Entity_Id := Etype (N);
       First_In_Range   : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
             Left     => +Low_Expr,
             Right    =>
-              +Attr_Name.Id (Full_Name (Base_Type_Entity),
+              +Attr_Name.Id (Full_Name (Base),
                              Attribute_Id'Image (Attribute_First)),
             Op       => EW_Ge);
       Last_In_Range    : constant W_Pred_Id :=
@@ -243,7 +244,7 @@ package body Gnat2Why.Expr is
            (Op_Type  => EW_Bool,
             Left     => +High_Expr,
             Right    =>
-              +Attr_Name.Id (Full_Name (Base_Type_Entity),
+              +Attr_Name.Id (Full_Name (Base),
                              Attribute_Id'Image (Attribute_Last)),
             Op       => EW_Le);
       First_Le_Last    : constant W_Pred_Id :=
@@ -275,14 +276,20 @@ package body Gnat2Why.Expr is
                        Left   => +Rel_First,
                        Right  => +Rel_Last)));
    begin
-      --  ??? We should generate a precondition that states that the subtype is
-      --  legal
       return
         +New_Located_Expr
           (Ada_Node => N,
            Domain   => EW_Prog,
            Reason   => VC_Subtype_Decl,
            Expr     => +Any_Expr);
+   end Assume_of_Integer_Subtype;
+
+   function Assume_of_Integer_Subtype (E : Entity_Id) return W_Prog_Id is
+      BaseType : constant Entity_Id :=
+         (if Is_Itype (E) then Etype (E)
+          else Entity (Subtype_Mark (Subtype_Indication (Parent (E)))));
+   begin
+      return Assume_of_Integer_Subtype (E, BaseType);
    end Assume_of_Integer_Subtype;
 
    ---------------------------

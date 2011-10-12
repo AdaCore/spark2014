@@ -280,6 +280,9 @@ package body Gnat2Why.Subprograms is
                               end loop;
                            end;
 
+                        when E_Enumeration_Subtype =>
+                           null;
+
                         when others =>
                            raise Not_Implemented;
 
