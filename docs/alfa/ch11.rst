@@ -1,2 +1,11 @@
 Exceptions
 ==========
+
+Exceptions being raised and handled define alternate flows of control through a
+program, which complicate both specification and verification of a program's
+behavior. This is the reason why explicit uses of exceptions are excluded from
+Alfa.
+
+Exceptions can still be raised implicitly (for example, by the failure of a
+language-defined check). Pragmas ``Assert``, ``Assertion_Policy``, ``Suppress``
+and ``Unsuppress`` are in Alfa.
