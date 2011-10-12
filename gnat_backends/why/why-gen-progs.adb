@@ -162,8 +162,7 @@ package body Why.Gen.Progs is
        From     : EW_Scalar;
        To       : W_Base_Type_Id;
        Why_Expr : W_Prog_Id;
-       Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id
-   is
+       Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id is
    begin
       return
         +New_Located_Call
@@ -231,7 +230,10 @@ package body Why.Gen.Progs is
    is
       To_Kind : constant EW_Type := Get_Base_Type (To);
    begin
-      --  In this particular case, we do nothing
+      --  If both types are equal: and if the base type is not a scalar,
+      --  then an overflow check should be included. Otherwise, nothing
+      --  to do.
+
       if Get_Base_Type (Base_Type) in EW_Scalar
         and then Eq (To, From) then
          return Why_Expr;

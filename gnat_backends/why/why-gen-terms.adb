@@ -29,8 +29,8 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Inter;           use Why.Inter;
-with Why.Sinfo;           use Why.Sinfo;
 
 package body Why.Gen.Terms is
 
@@ -39,17 +39,20 @@ package body Why.Gen.Terms is
    ----------------------------
 
    function Insert_Conversion_Term
-      (Ada_Node : Node_Id := Empty;
+      (Domain   : EW_Domain;
+       Ada_Node : Node_Id := Empty;
+       Why_Term : W_Expr_Id;
        To       : W_Base_Type_Id;
        From     : W_Base_Type_Id;
-       Why_Term : W_Term_Id) return W_Term_Id
+       By       : W_Base_Type_OId := Why_Empty;
+       Reason   : VC_Kind         := VC_Range_Check) return W_Expr_Id
    is
-      Base : constant W_Base_Type_Id := LCA (To, From);
+      Base   : constant W_Base_Type_Id := LCA (To, From);
 
       function Insert_Single_Conversion
         (To       : W_Base_Type_Id;
          From     : W_Base_Type_Id;
-         Why_Term : W_Term_Id) return W_Term_Id;
+         Why_Term : W_Expr_Id) return W_Expr_Id;
       --  Assuming that there is at most one step between To and From in the
       --  type hierarchy (i.e. that it exists a conversion from From
       --  to To; a counterexample would be two abstract types whose base
@@ -58,20 +61,65 @@ package body Why.Gen.Terms is
       function Insert_Single_Conversion
         (To       : W_Base_Type_Id;
          From     : W_Base_Type_Id;
-         Why_Term : W_Term_Id) return W_Term_Id is
+         Why_Term : W_Expr_Id) return W_Expr_Id is
       begin
          if Eq (From, To) then
             return Why_Term;
          else
-            return
-              New_Call
-                (Ada_Node => Ada_Node,
-                 Name     => Conversion_Name (From => From, To => To),
-                 Args     => (1 => +Why_Term));
+            declare
+               Name : constant W_Identifier_Id :=
+                        Conversion_Name (From => From, To => To);
+            begin
+               --  Conversions from a base why type to an Ada type should
+               --  generate a check in program space.
+
+               if Domain = EW_Prog
+                 and then Get_Base_Type (From) in EW_Scalar
+                 and then not (Get_Base_Type (To) in EW_Scalar)
+               then
+                  return
+                    New_Located_Call
+                      (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       Name     => To_Program_Space (Name),
+                       Progs    => (1 => +Why_Term),
+                       Reason   => Reason);
+
+               --  In any other case (logic space, or conversions to a more
+               --  general type), no check is needed.
+
+               else
+                  return
+                    New_Call
+                      (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       Name     => Name,
+                       Args     => (1 => +Why_Term));
+               end if;
+            end;
          end if;
       end Insert_Single_Conversion;
 
    begin
+      if By /= Why_Empty then
+         return
+           Insert_Conversion_Term
+             (Domain   => Domain,
+              Ada_Node => Ada_Node,
+              To       => To,
+              From     => By,
+              By       => Why_Empty,
+              Why_Term =>
+                Insert_Conversion_Term
+                  (Domain   => Domain,
+                   Ada_Node => Ada_Node,
+                   Reason   => Reason,
+                   To       => By,
+                   From     => From,
+                   By       => Why_Empty,
+                   Why_Term => Why_Term));
+      end if;
+
       if Eq (To, From) then
          return Why_Term;
       end if;
@@ -86,9 +134,11 @@ package body Why.Gen.Terms is
               From => Up_To,
               Why_Term =>
                 Insert_Conversion_Term
-                  (Ada_Node => Ada_Node,
+                  (Domain   => Domain,
+                   Ada_Node => Ada_Node,
                    To       => Up_To,
                    From     => Up_From,
+                   By       => Why_Empty,
                    Why_Term =>
                      Insert_Single_Conversion
                        (To   => Up_From,

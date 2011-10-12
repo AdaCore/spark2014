@@ -1687,29 +1687,28 @@ package body Gnat2Why.Expr is
       end case;
 
       declare
-         Base_Type : constant W_Base_Type_Id :=
-                       (if Overflow_Check_Needed then
-                          EW_Abstract (Etype (Expr))
-                        else
-                          EW_Int_Type);
+         By    : constant W_Base_Type_Id :=
+                   (if Overflow_Check_Needed then
+                      EW_Abstract (Etype (Expr))
+                    else
+                      Why_Empty);
+         Reason : constant VC_Kind :=
+                    (if By /= Why_Empty then
+                       VC_Overflow_Check
+                     else
+                       VC_Range_Check);
       begin
          case Domain is
-            when EW_Prog =>
-               return
-                 +Insert_Conversion
-                   (Ada_Node  => Expr,
-                    From      => Current_Type,
-                    To        => Expected_Type,
-                    Why_Expr  => +T,
-                    Base_Type => Base_Type);
-
-            when EW_Term =>
+            when EW_Term | EW_Prog =>
                return
                  +Insert_Conversion_Term
-                   (Ada_Node => Expr,
+                   (Domain   => Domain,
+                    Ada_Node => Expr,
                     Why_Term => +T,
                     From     => Current_Type,
-                    To       => Expected_Type);
+                    To       => Expected_Type,
+                    By       => By,
+                    Reason   => Reason);
 
             when EW_Pred =>
                return T;
