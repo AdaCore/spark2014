@@ -1692,11 +1692,6 @@ package body Gnat2Why.Expr is
                       EW_Abstract (Etype (Expr))
                     else
                       Why_Empty);
-         Reason : constant VC_Kind :=
-                    (if By /= Why_Empty then
-                       VC_Overflow_Check
-                     else
-                       VC_Range_Check);
       begin
          case Domain is
             when EW_Term | EW_Prog =>
@@ -1707,8 +1702,7 @@ package body Gnat2Why.Expr is
                     Why_Term => +T,
                     From     => Current_Type,
                     To       => Expected_Type,
-                    By       => By,
-                    Reason   => Reason);
+                    By       => By);
 
             when EW_Pred =>
                return T;

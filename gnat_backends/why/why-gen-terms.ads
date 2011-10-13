@@ -33,7 +33,6 @@ with Why.Types;          use Why.Types;
 pragma Warnings (On);
 with Why.Ids;            use Why.Ids;
 with Why.Sinfo;          use Why.Sinfo;
-with VC_Kinds;           use VC_Kinds;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
@@ -44,8 +43,7 @@ package Why.Gen.Terms is
        Why_Term : W_Expr_Id;
        To       : W_Base_Type_Id;
        From     : W_Base_Type_Id;
-       By       : W_Base_Type_OId := Why_Empty;
-       Reason   : VC_Kind         := VC_Range_Check) return W_Expr_Id;
+       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
 
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".

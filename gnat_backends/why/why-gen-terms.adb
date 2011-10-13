@@ -31,6 +31,7 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Progs;       use Why.Gen.Progs;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Inter;           use Why.Inter;
+with VC_Kinds;            use VC_Kinds;
 
 package body Why.Gen.Terms is
 
@@ -44,8 +45,7 @@ package body Why.Gen.Terms is
        Why_Term : W_Expr_Id;
        To       : W_Base_Type_Id;
        From     : W_Base_Type_Id;
-       By       : W_Base_Type_OId := Why_Empty;
-       Reason   : VC_Kind         := VC_Range_Check) return W_Expr_Id
+       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id
    is
       Base   : constant W_Base_Type_Id := LCA (To, From);
 
@@ -57,6 +57,26 @@ package body Why.Gen.Terms is
       --  type hierarchy (i.e. that it exists a conversion from From
       --  to To; a counterexample would be two abstract types whose base
       --  types differ), insert the corresponding conversion.
+
+      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id;
+
+      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id is
+      begin
+         if Domain = EW_Prog
+           and then Get_Base_Type (By) = EW_Abstract
+         then
+            return
+              New_Located_Call
+                (Domain   => Domain,
+                 Ada_Node => Ada_Node,
+                 Name     =>
+                   Range_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
+                 Progs    => (1 => +Expr),
+                 Reason   => VC_Overflow_Check);
+         else
+            return Expr;
+         end if;
+      end Insert_Overflow_Check;
 
       function Insert_Single_Conversion
         (To       : W_Base_Type_Id;
@@ -83,7 +103,7 @@ package body Why.Gen.Terms is
                        Ada_Node => Ada_Node,
                        Name     => To_Program_Space (Name),
                        Progs    => (1 => +Why_Term),
-                       Reason   => Reason);
+                       Reason   => VC_Range_Check);
 
                --  In any other case (logic space, or conversions to a more
                --  general type), no check is needed.
@@ -107,17 +127,18 @@ package body Why.Gen.Terms is
              (Domain   => Domain,
               Ada_Node => Ada_Node,
               To       => To,
-              From     => By,
+              From     => Base,
               By       => Why_Empty,
               Why_Term =>
-                Insert_Conversion_Term
-                  (Domain   => Domain,
-                   Ada_Node => Ada_Node,
-                   Reason   => Reason,
-                   To       => By,
-                   From     => From,
-                   By       => Why_Empty,
-                   Why_Term => Why_Term));
+                Insert_Overflow_Check
+                  (Expr =>
+                     Insert_Conversion_Term
+                       (Domain   => Domain,
+                        Ada_Node => Ada_Node,
+                        To       => Base,
+                        From     => From,
+                        By       => Why_Empty,
+                        Why_Term => Why_Term)));
       end if;
 
       if Eq (To, From) then

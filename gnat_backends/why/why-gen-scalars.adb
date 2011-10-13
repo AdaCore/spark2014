@@ -41,7 +41,8 @@ package body Why.Gen.Scalars is
      (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
-      Modulus   : W_Term_OId := Why_Empty);
+      Modulus   : W_Term_OId := Why_Empty;
+      Is_Base   : Boolean := False);
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
 
@@ -52,7 +53,8 @@ package body Why.Gen.Scalars is
    procedure Declare_Ada_Abstract_Modular
      (File    : W_File_Id;
       Name    : String;
-      Modulus : Uint)
+      Modulus : Uint;
+      Is_Base : Boolean)
    is
    begin
       Emit (File, New_Type (Name));
@@ -61,12 +63,14 @@ package body Why.Gen.Scalars is
          Name      => Name,
          Base_Type => EW_Int,
          First     => New_Constant (Uint_0),
-         Last      => New_Constant (Modulus - 1));
+         Last      => New_Constant (Modulus - 1),
+         Modulus   => New_Constant (Modulus));
       Define_Scalar_Conversions
         (File      => File,
          Name      => Name,
          Base_Type => EW_Int,
-         Modulus   => New_Constant (Modulus));
+         Modulus   => New_Constant (Modulus),
+         Is_Base   => Is_Base);
    end Declare_Ada_Abstract_Modular;
 
    -------------------------------------
@@ -74,10 +78,11 @@ package body Why.Gen.Scalars is
    -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint)
+     (File    : W_File_Id;
+      Name    : String;
+      First   : Uint;
+      Last    : Uint;
+      Is_Base : Boolean)
    is
    begin
       Emit (File, New_Type (Name));
@@ -90,7 +95,8 @@ package body Why.Gen.Scalars is
       Define_Scalar_Conversions
         (File      => File,
          Name      => Name,
-         Base_Type => EW_Int);
+         Base_Type => EW_Int,
+         Is_Base   => Is_Base);
    end Declare_Ada_Abstract_Signed_Int;
 
    ----------------------
@@ -98,10 +104,11 @@ package body Why.Gen.Scalars is
    ----------------------
 
    procedure Declare_Ada_Real
-     (File  : W_File_Id;
-      Name  : String;
-      First : Ureal;
-      Last  : Ureal) is
+     (File    : W_File_Id;
+      Name    : String;
+      First   : Ureal;
+      Last    : Ureal;
+      Is_Base : Boolean) is
    begin
       Emit (File, New_Type (Name));
       Define_Scalar_Attributes
@@ -113,7 +120,8 @@ package body Why.Gen.Scalars is
       Define_Scalar_Conversions
         (File      => File,
          Name      => Name,
-         Base_Type => EW_Real);
+         Base_Type => EW_Real,
+         Is_Base   => Is_Base);
    end Declare_Ada_Real;
 
    -------------------------------
@@ -124,7 +132,8 @@ package body Why.Gen.Scalars is
      (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
-      Modulus   : W_Term_OId := Why_Empty)
+      Modulus   : W_Term_OId := Why_Empty;
+      Is_Base   : Boolean := False)
    is
       Signed  : constant Boolean := Modulus = Why_Empty;
       Arg_S   : constant String := "n";
@@ -193,6 +202,35 @@ package body Why.Gen.Scalars is
                      others => <>)),
             Return_Type => Return_Type,
             Spec => Spec);
+
+         --  If this is an Ada base type, declare a range check
+         --  for overflows checks.
+
+         if Is_Base then
+            declare
+               --  same precondition as conversion to base type
+               --  postcondition: {result = n}
+               Range_Check_Post : constant W_Pred_Id :=
+                                    New_Relation
+                                      (Op_Type => Base_Type,
+                                       Op      => EW_Eq,
+                                       Left    => +New_Result_Term,
+                                       Right   => +New_Term (Arg_S));
+            begin
+               Emit
+                 (File,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => Range_Check_Name.Id (Name),
+                     Binders     => (1 => (B_Name => New_Identifier (Arg_S),
+                                           B_Type => BT,
+                                           others => <>)),
+                     Return_Type => BT,
+                     Pre         => Range_Check,
+                     Post        => Range_Check_Post));
+            end;
+         end if;
+
          Define_Eq_Predicate (File, Name, Base_Type);
          Define_Range_Axiom (File,
                              New_Identifier (Name),

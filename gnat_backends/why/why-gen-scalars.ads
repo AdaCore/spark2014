@@ -35,33 +35,39 @@ package Why.Gen.Scalars is
    --  (types, subprograms, axioms) for scalar types.
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File  : W_File_Id;
-      Name  : String;
-      First : Uint;
-      Last  : Uint);
+     (File    : W_File_Id;
+      Name    : String;
+      First   : Uint;
+      Last    : Uint;
+      Is_Base : Boolean);
    --  Declare the whole theory for a signed int of the given size,
    --  i.e. whose range is First .. Last. This creates an abstract type
    --  whose name is given in parameter along with a set of axioms and
-   --  subprograms for int conversion.
+   --  subprograms for int conversion.  Is_Base is True if the corresponding
+   --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Abstract_Modular
      (File    : W_File_Id;
       Name    : String;
-      Modulus : Uint);
+      Modulus : Uint;
+      Is_Base : Boolean);
    --  Declare the whole theory for a unsigned int of the given size,
    --  i.e. whose range is 0 .. Modulus - 1. This creates an abstract
    --  type whose name is given in parameter along with a set of axioms and
-   --  subprograms for int conversion.
+   --  subprograms for int conversion. Is_Base is True if the corresponding
+   --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Real
-     (File  : W_File_Id;
-      Name  : String;
-      First : Ureal;
-      Last  : Ureal);
+     (File    : W_File_Id;
+      Name    : String;
+      First   : Ureal;
+      Last    : Ureal;
+      Is_Base : Boolean);
    --  Declare the whole theory for a floating/fixed point type whose range
    --  is First .. Last.  This creates an abstract type whose name is
    --  given in parameter along with a set of axioms and subprograms
-   --  for real conversion.
+   --  for real conversion. Is_Base is True if the corresponding Ada type
+   --  is an Ada base type.
 
    procedure Define_Scalar_Attributes
      (File      : W_File_Id;

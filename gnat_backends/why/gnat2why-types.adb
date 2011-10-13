@@ -50,17 +50,22 @@ with Gnat2Why.Expr;      use Gnat2Why.Expr;
 
 package body Gnat2Why.Types is
 
+   function Is_Ada_Base_Type (N : Node_Id) return Boolean;
+   --  Return True is N is of an Ada base type
+
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File : W_File_Id;
-      Name : String;
-      Rng  : Node_Id);
+     (File    : W_File_Id;
+      Name    : String;
+      Rng     : Node_Id;
+      Is_Base : Boolean);
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
    procedure Declare_Ada_Real_From_Range
-     (File : W_File_Id;
-      Name : String;
-      Rng  : Node_Id);
+     (File    : W_File_Id;
+      Name    : String;
+      Rng     : Node_Id;
+      Is_Base : Boolean);
    --  Same as Declare_Ada_Real but extract range information
    --  from node.
 
@@ -73,9 +78,10 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File : W_File_Id;
-      Name : String;
-      Rng  : Node_Id)
+     (File    : W_File_Id;
+      Name    : String;
+      Rng     : Node_Id;
+      Is_Base : Boolean)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
    begin
@@ -83,7 +89,8 @@ package body Gnat2Why.Types is
         (File,
          Name,
          Expr_Value (Low_Bound (Range_Node)),
-         Expr_Value (High_Bound (Range_Node)));
+         Expr_Value (High_Bound (Range_Node)),
+         Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------
@@ -91,9 +98,10 @@ package body Gnat2Why.Types is
    ---------------------------------
 
    procedure Declare_Ada_Real_From_Range
-     (File : W_File_Id;
-      Name : String;
-      Rng  : Node_Id)
+     (File    : W_File_Id;
+      Name    : String;
+      Rng     : Node_Id;
+      Is_Base : Boolean)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
    begin
@@ -101,7 +109,8 @@ package body Gnat2Why.Types is
         (File,
          Name,
          Expr_Value_R (Low_Bound (Range_Node)),
-         Expr_Value_R (High_Bound (Range_Node)));
+         Expr_Value_R (High_Bound (Range_Node)),
+         Is_Base);
    end Declare_Ada_Real_From_Range;
 
    ------------------------------
@@ -121,6 +130,16 @@ package body Gnat2Why.Types is
       end loop;
       return L;
    end Get_List_Of_Index_Ranges;
+
+   ----------------------
+   -- Is_Ada_Base_Type --
+   ----------------------
+
+   function Is_Ada_Base_Type (N : Node_Id) return Boolean is
+      T : constant Entity_Id := Etype (N);
+   begin
+      return Base_Type (T) = T;
+   end Is_Ada_Base_Type;
 
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
@@ -166,7 +185,8 @@ package body Gnat2Why.Types is
          Declare_Ada_Abstract_Signed_Int_From_Range
            (File,
             Name_Str,
-            Ident_Node);
+            Ident_Node,
+            Is_Ada_Base_Type (Ident_Node));
 
       else
          case Ekind (Ident_Node) is
@@ -189,19 +209,22 @@ package body Gnat2Why.Types is
                Declare_Ada_Abstract_Signed_Int_From_Range
                  (File,
                   Name_Str,
-                  Scalar_Range (Ident_Node));
+                  Scalar_Range (Ident_Node),
+                  Is_Ada_Base_Type (Ident_Node));
 
             when Modular_Integer_Kind =>
                Declare_Ada_Abstract_Modular
                  (File,
                   Name_Str,
-                  Modulus (Ident_Node));
+                  Modulus (Ident_Node),
+                  Is_Ada_Base_Type (Ident_Node));
 
             when Real_Kind =>
                Declare_Ada_Real_From_Range
                  (File,
                   Name_Str,
-                  Scalar_Range (Ident_Node));
+                  Scalar_Range (Ident_Node),
+                  Is_Ada_Base_Type (Ident_Node));
 
             when Array_Kind =>
                declare

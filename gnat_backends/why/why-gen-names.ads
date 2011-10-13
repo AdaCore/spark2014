@@ -280,6 +280,11 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its range predicate.
 
+   package Range_Check_Name is
+     new Name_Gen.Arity_1 (EW_Prog, "", In_Range & "_");
+   --  From the name of an abstract type, return the name of
+   --  its range check.
+
    package Unicity_Axiom is
      new Name_Gen.Arity_1 (EW_Term, "", Unicity);
    --  From the name of an abstract type, return the name of
