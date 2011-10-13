@@ -1,1 +1,1 @@
-used.adb:6:17: range check not proved
+used.adb:6:17: overflow check not proved

@@ -1,4 +1,6 @@
+stacks.adb:11:18: (info) overflow check proved
 stacks.adb:11:18: (info) range check proved
+stacks.adb:5:18: (info) overflow check proved
 stacks.adb:5:18: (info) range check proved
 stacks.adb:6:7: (info) array bounds check proved
 stacks.ads:14:69: (info) array bounds check proved

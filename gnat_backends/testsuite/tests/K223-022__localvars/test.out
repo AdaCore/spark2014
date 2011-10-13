@@ -1,6 +1,6 @@
 loc.adb:4:24: (info) division by zero proved
-loc.adb:4:24: range check not proved
+loc.adb:4:24: overflow check not proved
 loc.adb:5:24: division by zero not proved
-loc.adb:5:24: range check not proved
+loc.adb:5:24: overflow check not proved
 loc.adb:8:12: (info) range check proved
 loc.ads:4:34: (info) postcondition proved

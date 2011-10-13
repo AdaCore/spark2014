@@ -1,5 +1,5 @@
 twodim.adb:8:16: division by zero not proved
-twodim.adb:8:16: range check not proved
+twodim.adb:8:16: overflow check not proved
 twodim.adb:8:19: array bounds check not proved
 twodim.adb:8:25: (info) overflow check proved
 twodim.adb:8:29: overflow check not proved

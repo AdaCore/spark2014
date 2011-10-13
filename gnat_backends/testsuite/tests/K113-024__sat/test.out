@@ -1,4 +1,5 @@
 sat.adb:6:12: (info) overflow check proved
+sat.adb:7:19: (info) overflow check proved
 sat.adb:7:19: (info) range check proved
 sat.adb:9:17: (info) range check proved
 sat.ads:8:14: (info) overflow check proved
