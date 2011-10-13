@@ -258,6 +258,10 @@ private
      (State : in out Printer_State;
       Node  : W_Try_Block_Id);
 
+   procedure Tag_Intro_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Tag_Intro_Id);
+
    procedure Unreachable_Code_Pre_Op
      (State : in out Printer_State;
       Node  : W_Unreachable_Code_Id);

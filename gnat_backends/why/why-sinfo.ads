@@ -136,6 +136,7 @@ package Why.Sinfo is
       W_Assert,
       W_Raise,
       W_Try_Block,
+      W_Tag_Intro,
       W_Unreachable_Code,
 
       ----------------------------

@@ -610,6 +610,15 @@ package body Xtree_Sinfo is
       New_Field (W_Try_Block,
                  "Handler", "W_Handler", Id_Some);
 
+      -----------------
+      -- W_Tag_Intro --
+      -----------------
+
+      New_Field (W_Tag_Intro,
+                 "Prog", "W_Prog", Id_One);
+      New_Field (W_Tag_Intro,
+                 "Tag", "W_Identifier", Id_One);
+
       ------------------------
       -- W_Unreachable_Code --
       ------------------------

@@ -702,7 +702,7 @@ package body Why.Atree.Sprint is
       elsif Get_Name_String (Tag) /= "" then
          P (O, "(at ");
          Traverse (State, +Get_Def (Node));
-         P (O, " ");
+         P (O, " '");
          P (O, Tag);
          P (O, " )");
       else
@@ -1262,6 +1262,22 @@ package body Why.Atree.Sprint is
       P (O, "end");
       State.Control := Abandon_Children;
    end Try_Block_Pre_Op;
+
+   ----------------------
+   -- Tag_Intro_Pre_Op --
+   ----------------------
+
+   procedure Tag_Intro_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Tag_Intro_Id)
+   is
+   begin
+      P (O, "( '");
+      P (O, +Get_Tag (Node));
+      P (O, " : ");
+      Traverse (State, +Get_Prog (Node));
+      State.Control := Abandon_Children;
+   end Tag_Intro_Pre_Op;
 
    -----------------------------
    -- Unreachable_Code_Pre_Op --
