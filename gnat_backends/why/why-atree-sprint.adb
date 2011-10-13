@@ -1276,6 +1276,7 @@ package body Why.Atree.Sprint is
       P (O, +Get_Tag (Node));
       P (O, " : ");
       Traverse (State, +Get_Prog (Node));
+      P (O, " )");
       State.Control := Abandon_Children;
    end Tag_Intro_Pre_Op;
 
