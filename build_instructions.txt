@@ -64,13 +64,18 @@ The final directory structure of all related products is:
 
       in directory <Root>. This step creates directory <Root>/gnat.
 
-   3.2) Build the compiler.
+   Steps 3.2 and 3.3 are optional; you do not need to install the latest
+   compiler, it is sufficient to install a recent wavefront of GNAT Pro from a
+   nightly build. For the following (in particular step 9), we only need the
+   GNAT sources.
+
+   3.2o) Build the compiler.
 
       $ cd <Root>/gnat
       $ make setup
       $ make all
 
-   3.3) Export the compiler.
+   3.3o) Export the compiler.
 
       $ export PATH=<Root>/local/bin:$PATH
 
