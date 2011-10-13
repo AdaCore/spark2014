@@ -265,6 +265,11 @@ package Why.Gen.Names is
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
+   package Overflow_Check_Name is
+     new Name_Gen.Arity_1 (EW_Prog, "", "overflow_check_");
+   --  From the name of an abstract type, return the name of
+   --  its overflow check.
+
    package Program_Func_Name is
      new Name_Gen.Arity_1 (EW_Prog, "", "_", "");
    --  Create a new identifier for the program version of a
@@ -279,11 +284,6 @@ package Why.Gen.Names is
      new Name_Gen.Arity_1 (EW_Pred, "", In_Range);
    --  From the name of an abstract type, return the name of
    --  its range predicate.
-
-   package Range_Check_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "", In_Range & "_");
-   --  From the name of an abstract type, return the name of
-   --  its range check.
 
    package Unicity_Axiom is
      new Name_Gen.Arity_1 (EW_Term, "", Unicity);

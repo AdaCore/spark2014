@@ -70,7 +70,7 @@ package body Why.Gen.Terms is
                 (Domain   => Domain,
                  Ada_Node => Ada_Node,
                  Name     =>
-                   Range_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
+                   Overflow_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
                  Progs    => (1 => +Expr),
                  Reason   => VC_Overflow_Check);
          else

@@ -210,24 +210,24 @@ package body Why.Gen.Scalars is
             declare
                --  same precondition as conversion to base type
                --  postcondition: {result = n}
-               Range_Check_Post : constant W_Pred_Id :=
-                                    New_Relation
-                                      (Op_Type => Base_Type,
-                                       Op      => EW_Eq,
-                                       Left    => +New_Result_Term,
-                                       Right   => +New_Term (Arg_S));
+               Overflow_Check_Post : constant W_Pred_Id :=
+                                       New_Relation
+                                         (Op_Type => Base_Type,
+                                          Op      => EW_Eq,
+                                          Left    => +New_Result_Term,
+                                          Right   => +New_Term (Arg_S));
             begin
                Emit
                  (File,
                   New_Function_Decl
                     (Domain      => EW_Prog,
-                     Name        => Range_Check_Name.Id (Name),
+                     Name        => Overflow_Check_Name.Id (Name),
                      Binders     => (1 => (B_Name => New_Identifier (Arg_S),
                                            B_Type => BT,
                                            others => <>)),
                      Return_Type => BT,
                      Pre         => Range_Check,
-                     Post        => Range_Check_Post));
+                     Post        => Overflow_Check_Post));
             end;
          end if;
 
