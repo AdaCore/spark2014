@@ -35,6 +35,34 @@ with VC_Kinds;            use VC_Kinds;
 
 package body Why.Gen.Terms is
 
+   package Reason_Handling is
+
+      procedure Set_Next (Reason : VC_Kind);
+
+      function Get return VC_Kind;
+
+   private
+      Default_Reason : constant VC_Kind := VC_Range_Check;
+
+      Next_Reason : VC_Kind := Default_Reason;
+   end Reason_Handling;
+
+   package body Reason_Handling is
+
+      procedure Set_Next (Reason : VC_Kind) is
+      begin
+         Next_Reason := Reason;
+      end Set_Next;
+
+      function Get return VC_Kind is
+         Result : constant VC_Kind := Next_Reason;
+      begin
+         Next_Reason := Default_Reason;
+         return Result;
+      end Get;
+
+   end Reason_Handling;
+
    ----------------------------
    -- Insert_Conversion_Term --
    ----------------------------
@@ -62,9 +90,26 @@ package body Why.Gen.Terms is
 
       function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id is
       begin
-         if Domain = EW_Prog
-           and then Get_Base_Type (By) = EW_Abstract
+         if Domain /= EW_Prog
+           or else Get_Base_Type (By) /= EW_Abstract
          then
+            return Expr;
+         end if;
+
+         --  If To and From are equal, the conversion from the base type to
+         --  To will introduce a range check that is identical to the overflow
+         --  check. So do not generate the duplicated overflow check, just
+         --  change the label of the next conversion.
+
+         if Eq (To, By) then
+            Reason_Handling.Set_Next (VC_Overflow_Check);
+            return Expr;
+
+         --  Otherwise, this is the regular case: the range check and the
+         --  the overflow check will be different, so we cannot count on the
+         --  conversion scheme to introduce the second.
+
+         else
             return
               New_Located_Call
                 (Domain   => Domain,
@@ -73,8 +118,6 @@ package body Why.Gen.Terms is
                    Overflow_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
                  Progs    => (1 => +Expr),
                  Reason   => VC_Overflow_Check);
-         else
-            return Expr;
          end if;
       end Insert_Overflow_Check;
 
@@ -103,7 +146,7 @@ package body Why.Gen.Terms is
                        Ada_Node => Ada_Node,
                        Name     => To_Program_Space (Name),
                        Progs    => (1 => +Why_Term),
-                       Reason   => VC_Range_Check);
+                       Reason   => Reason_Handling.Get);
 
                --  In any other case (logic space, or conversions to a more
                --  general type), no check is needed.

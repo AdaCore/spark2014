@@ -105,7 +105,17 @@ package body Why.Inter is
    begin
       case Left_Kind is
          when EW_Abstract =>
-            return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
+            declare
+               Ada_Node_Left  : constant Node_Id := Get_Ada_Node (+Left);
+               Ada_Node_Right : constant Node_Id := Get_Ada_Node (+Right);
+            begin
+               if No (Ada_Node_Left) or else No (Ada_Node_Right) then
+                  return Ada_Node_Left = Ada_Node_Right;
+               else
+                  return
+                    Full_Name (Ada_Node_Left) = Full_Name (Ada_Node_Right);
+               end if;
+            end;
          when others =>
             return Left_Kind = Right_Kind;
       end case;
