@@ -616,8 +616,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Tag_Intro,
                  "Prog", "W_Prog", Id_One);
-      New_Field (W_Tag_Intro,
-                 "Tag", "W_Identifier", Id_One);
+      New_Field (W_Tag_Intro, "Tag", "Name_Id");
 
       ------------------------
       -- W_Unreachable_Code --
