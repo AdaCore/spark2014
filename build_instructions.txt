@@ -204,10 +204,11 @@ The final directory structure of all related products is:
    Detailed information can be found in the main Makefile. The short version
    is:
 
+   $ ln -s <Root>/gnat gnat_backends/gnat_src
    $ make
+   $ export PATH=<Root>/hi-lite/install/bin:$PATH
    $ make stdlib
    $ make install
-   $ export PATH=<Root>/hi-lite/install/bin:$PATH
 
 10) Install AdaCore python
 

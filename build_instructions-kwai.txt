@@ -1,0 +1,53 @@
+-------------------------------------------------------------------------------
+--            HI-LITE BUILD INSTRUCTIONS FOR ADACORE DEVELOPERS              --
+--                                                                           --
+--                   Reduced setup specifically for kwai                     --
+-------------------------------------------------------------------------------
+
+
+Do step 1 of build_instructions.txt (create open-do account)
+Do step 2 (checkout hi-lite repository)
+
+Do step 3.1 (checkout gnat)
+   (if you don't have a copy of gnat already)
+   $ svn co svn+ssh://svn.us.adacore.com/Dev/trunk/gnat
+
+   You do NOT need to compile gnat yourself, simply put the nightly compiler in your path:
+      $ export PATH=/draa.a/gnatmail/gcc-45/install-draa/bin:$PATH
+
+
+Do NOT do steps 4 to 8 (yay!)
+
+Instead, do these steps to get the ocaml-compiled tools:
+
+   * Get all the tools from the nightly build
+      $ cd hi-lite
+      $ cp -r /draa.a/gnatmail/gcc-45/build-draa/hilite/install/ .
+   * remove files that will be built locally
+      $ rm -rf install/libexec
+      $ rm install/bin/gnat2why
+      $ rm install/bin/alfa_report
+      $ rm install/bin/gnatprove
+
+Do step 9 (reproduced here)
+
+   (in hi-lite repository)
+   $ ln -s <gnatdir> gnat_backends/gnat_src
+   $ make
+   $ export PATH=<hi-lite-dir>/install/bin:$PATH
+   $ make stdlib
+   $ make install
+
+Skip steps 10 and 11, and do instead:
+   $ export PATH=/draa.a/gnatmail/install/bin:$PATH
+
+Do step 12 to test the setup
+
+Of course, all the "export PATH=" stuff should go into your .bashrc at some point.
+
+To stay up to date:
+
+1) Update gnat checkout (svn up)
+2) Update hi-lite checkout (git pull)
+3) Redo the step that replaces steps 4 to 8
+4) redo the "make" commands of step 9
