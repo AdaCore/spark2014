@@ -53,6 +53,7 @@ install: install-stdlib
 	mkdir -p $(THEORIESDIR)
 	cp release/share/gnatprove/config/*cgpr $(CONFIGDIR)
 	cp release/share/gnatprove/theories/*why $(THEORIESDIR)
+	cp release/share/gnatprove/theories/*mlw $(THEORIESDIR)
 doc:
 	$(MAKE) -C docs/ug latexpdf
 	$(MAKE) -C docs/ug html
@@ -97,7 +98,6 @@ local-stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
 	cp Makefile.libprove $(STDLIB_TMP)
-	cp why/lib/_gnatprove_standard.mlw $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
 	GNAT2WHY="../install/bin/gnat2why -B ../install/bin -I $(ADAINCLUDE)"
 
@@ -105,7 +105,6 @@ stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
 	cp Makefile.libprove $(STDLIB_TMP)
-	cp why/lib/_gnatprove_standard.mlw $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
 
 # "make stdlib-check" will run why on all Why files of the standard library,
@@ -121,7 +120,7 @@ install-stdlib:
 	cp $(STDLIB_TMP)/*__types_vars_spec.mlw \
            $(STDLIB_TMP)/*__types_vars_body.mlw \
 	   $(STDLIB_TMP)/*__subp_spec.mlw \
-	   $(STDLIB_TMP)/*_standard.mlw \
+	   $(STDLIB_TMP)/_standard.mlw \
 	   $(GNATLIBDIR)
 
 install-examples:

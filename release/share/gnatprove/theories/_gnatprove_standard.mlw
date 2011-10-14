@@ -78,7 +78,7 @@ val t__ada_array___update_ :
 
   axiom T__ada_array___length_non_zero:
     forall a:t__ada_array 'a.
-      t__ada_array___attr___ATTRIBUTE_LAST a >= t__ada_array___attr___ATTRIBUTE_FIRST ->
+      t__ada_array___attr___ATTRIBUTE_LAST a >= t__ada_array___attr___ATTRIBUTE_FIRST a ->
        t__ada_array___attr___ATTRIBUTE_LENGTH a =
        t__ada_array___attr___ATTRIBUTE_LAST a -
        t__ada_array___attr___ATTRIBUTE_FIRST a + 1
