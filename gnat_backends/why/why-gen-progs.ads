@@ -25,35 +25,11 @@
 
 with Types;               use Types;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Ids;             use Why.Ids;
-with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
 
 package Why.Gen.Progs is
-
-   function Conversion_Name
-      (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id
-      with Pre =>
-        (From /= To and then
-         (Get_Base_Type (From) in EW_Scalar_Or_Array
-          or else Get_Base_Type (To) in EW_Scalar_Or_Array));
-   --  Return the name of the conversion function between the two types
-
-   function Insert_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To                    : W_Base_Type_Id;
-       From                  : W_Base_Type_Id;
-       Why_Expr              : W_Prog_Id;
-       Base_Type             : W_Base_Type_Id := EW_Int_Type)
-       return W_Prog_Id;
-   --  We expect Why_Expr to be of the type that corresponds to the type
-   --  "From". We insert a conversion so that its type corresponds to "To".
-   --  If Base_Type is set to "int", nothing else happens. Otherwise, if
-   --  From and to are set to "int", we insert a check that the result belongs
-   --  to the range of the Base_Type.
 
    function New_Assume_Statement
       (Ada_Node    : Node_Id;

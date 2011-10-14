@@ -23,30 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;              use Types;
-pragma Warnings (Off);
---  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
---  common ancestor with the current package. So it hides compilation unit
---  with the same name ("Types"). Maybe we should think of renaming it to
---  "Why.W_Types".
-with Why.Types;          use Why.Types;
-pragma Warnings (On);
 with Why.Ids;            use Why.Ids;
-with Why.Sinfo;          use Why.Sinfo;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
-
-   function Insert_Conversion_Term
-      (Domain   : EW_Domain;
-       Ada_Node : Node_Id := Empty;
-       Why_Term : W_Expr_Id;
-       To       : W_Base_Type_Id;
-       From     : W_Base_Type_Id;
-       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
-
-   --  We expect Why_Expr to be of the type that corresponds to the type
-   --  "From". We insert a conversion so that its type corresponds to "To".
 
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the

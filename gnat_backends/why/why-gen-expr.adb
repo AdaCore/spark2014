@@ -33,8 +33,240 @@ with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Progs;        use Why.Gen.Progs;
 with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Expr is
+
+   package Conversion_Reason is
+      --  This package provide a rudimentary way to deleguate
+      --  vc kinds to other checks. This allow to optimize out
+      --  some checks without losing their reason.
+      --
+      --  The typical case for such a deleguation would be:
+      --
+      --  A : Integer := 10;
+      --  B : Integer := A + 1;
+      --
+      --  The second line would translated as something like:
+      --
+      --  B := integer_from_int_ (overflow_check (integer_to_int (A) + 1))
+      --
+      --  Two identical checks would then be to prove: a range check by
+      --  integer_from_int_, and overflow check by overflow_check. The thing
+      --  is, there is little point in having two checks here, as they are
+      --  strictly identical (both check that A + 1 is in range of Integer).
+      --  The range check is the one to eliminate here, as it corresponds to
+      --  nothing in the Ada code. But integer_from_int_ cannot be removed,
+      --  So the idea is to remove overflow_check and to deleguate its
+      --  reason (VC_Overflow_Check) to integer_from_int_. e.g.
+      --
+      --  B := #sloc# "gnatprove:VC_OVERFLOW_CHECK"
+      --         integer_from_int_ (integer_to_int (A) + 1)
+      --
+      --  This feature can only record one reason at a time, backing up for
+      --  a default if none has been pushed; we could make it a real stack;
+      --  but one slot is enough for now, and what we would really need in
+      --  the future is still a bit unclear, so keep it simple.
+
+      procedure Set_Next (Reason : VC_Kind);
+      --  Specify the reason for the next check that will be inserted
+
+      function Pop return VC_Kind;
+      --  Extract the reason to be included in a conversion
+      --  and reset next reasons to default.
+
+   private
+      Default_Reason : constant VC_Kind := VC_Range_Check;
+      Next_Reason    : VC_Kind := Default_Reason;
+   end Conversion_Reason;
+
+   -----------------------
+   -- Conversion_Reason --
+   -----------------------
+
+   package body Conversion_Reason is
+
+      ---------
+      -- Pop --
+      ---------
+
+      function Pop return VC_Kind is
+         Result : constant VC_Kind := Next_Reason;
+      begin
+         Next_Reason := Default_Reason;
+         return Result;
+      end Pop;
+
+      --------------
+      -- Set_Next --
+      --------------
+
+      procedure Set_Next (Reason : VC_Kind) is
+      begin
+         Next_Reason := Reason;
+      end Set_Next;
+
+   end Conversion_Reason;
+
+   -----------------------
+   -- Insert_Conversion --
+   -----------------------
+
+   function Insert_Conversion
+      (Domain   : EW_Domain;
+       Ada_Node : Node_Id := Empty;
+       Expr     : W_Expr_Id;
+       To       : W_Base_Type_Id;
+       From     : W_Base_Type_Id;
+       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id
+   is
+      Base   : constant W_Base_Type_Id := LCA (To, From);
+
+      function Insert_Single_Conversion
+        (To   : W_Base_Type_Id;
+         From : W_Base_Type_Id;
+         Expr : W_Expr_Id) return W_Expr_Id;
+      --  Assuming that there is at most one step between To and From in the
+      --  type hierarchy (i.e. that it exists a conversion from From
+      --  to To; a counterexample would be two abstract types whose base
+      --  types differ), insert the corresponding conversion.
+
+      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id;
+      --  If it makes sense in the context, insert an overflow check
+      --  on the top of Expr
+
+      ---------------------------
+      -- Insert_Overflow_Check --
+      ---------------------------
+
+      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id is
+      begin
+         if Domain /= EW_Prog
+           or else Get_Base_Type (By) /= EW_Abstract
+         then
+            return Expr;
+         end if;
+
+         --  If To and From are equal, the conversion from the base type to
+         --  To will introduce a range check that is identical to the overflow
+         --  check. So do not generate the duplicated overflow check, just
+         --  change the label of the next conversion.
+
+         if Eq (To, By) then
+            Conversion_Reason.Set_Next (VC_Overflow_Check);
+            return Expr;
+
+         --  Otherwise, this is the regular case: the range check and the
+         --  the overflow check will be different, so we cannot count on the
+         --  conversion scheme to introduce the second.
+
+         else
+            return
+              New_Located_Call
+                (Domain   => Domain,
+                 Ada_Node => Ada_Node,
+                 Name     =>
+                   Overflow_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
+                 Progs    => (1 => +Expr),
+                 Reason   => VC_Overflow_Check);
+         end if;
+      end Insert_Overflow_Check;
+
+      ------------------------------
+      -- Insert_Single_Conversion --
+      ------------------------------
+
+      function Insert_Single_Conversion
+        (To   : W_Base_Type_Id;
+         From : W_Base_Type_Id;
+         Expr : W_Expr_Id) return W_Expr_Id is
+      begin
+         if Eq (From, To) then
+            return Expr;
+         else
+            declare
+               Name : constant W_Identifier_Id :=
+                        Conversion_Name (From => From, To => To);
+            begin
+               --  Conversions from a base why type to an Ada type should
+               --  generate a check in program space.
+
+               if Domain = EW_Prog
+                 and then Get_Base_Type (From) in EW_Scalar
+                 and then not (Get_Base_Type (To) in EW_Scalar)
+               then
+                  return
+                    New_Located_Call
+                      (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       Name     => To_Program_Space (Name),
+                       Progs    => (1 => +Expr),
+                       Reason   => Conversion_Reason.Pop);
+
+               --  In any other case (logic space, or conversions to a more
+               --  general type), no check is needed.
+
+               else
+                  return
+                    New_Call
+                      (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       Name     => Name,
+                       Args     => (1 => +Expr));
+               end if;
+            end;
+         end if;
+      end Insert_Single_Conversion;
+
+   --  Start of processing for Insert_Conversion
+
+   begin
+      if By /= Why_Empty then
+         return
+           Insert_Conversion
+             (Domain   => Domain,
+              Ada_Node => Ada_Node,
+              To       => To,
+              From     => Base,
+              By       => Why_Empty,
+              Expr     =>
+                Insert_Overflow_Check
+                  (Expr =>
+                     Insert_Conversion
+                       (Domain   => Domain,
+                        Ada_Node => Ada_Node,
+                        To       => Base,
+                        From     => From,
+                        By       => Why_Empty,
+                        Expr     => Expr)));
+      end if;
+
+      if Eq (To, From) then
+         return Expr;
+      end if;
+
+      declare
+         Up_From : constant W_Base_Type_Id := Up (From, Base);
+         Up_To   : constant W_Base_Type_Id := Up (To, Base);
+      begin
+         return
+           Insert_Single_Conversion
+             (To   => To,
+              From => Up_To,
+              Expr =>
+                Insert_Conversion
+                  (Domain   => Domain,
+                   Ada_Node => Ada_Node,
+                   To       => Up_To,
+                   From     => Up_From,
+                   By       => Why_Empty,
+                   Expr     =>
+                     Insert_Single_Conversion
+                       (To   => Up_From,
+                        From => From,
+                        Expr => Expr)));
+      end;
+   end Insert_Conversion;
 
    ----------------------
    -- Is_False_Boolean --

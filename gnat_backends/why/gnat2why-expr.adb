@@ -1696,10 +1696,10 @@ package body Gnat2Why.Expr is
          case Domain is
             when EW_Term | EW_Prog =>
                return
-                 +Insert_Conversion_Term
+                 Insert_Conversion
                    (Domain   => Domain,
                     Ada_Node => Expr,
-                    Why_Term => +T,
+                    Expr     => T,
                     From     => Current_Type,
                     To       => Expected_Type,
                     By       => By);

@@ -24,6 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Types;     use Types;
+pragma Warnings (Off);
+--  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
+--  common ancestor with the current package. So it hides compilation unit
+--  with the same name ("Types"). Maybe we should think of renaming it to
+--  "Why.W_Types".
+with Why.Types; use Why.Types;
+pragma Warnings (On);
 with VC_Kinds;  use VC_Kinds;
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
@@ -99,5 +106,19 @@ package Why.Gen.Expr is
       Arg_Type : W_Primitive_Type_Id;
       Id       : W_Identifier_OId;
       Pred     : W_Pred_Id) return W_Expr_Id;
+
+   function Insert_Conversion
+      (Domain   : EW_Domain;
+       Ada_Node : Node_Id := Empty;
+       Expr     : W_Expr_Id;
+       To       : W_Base_Type_Id;
+       From     : W_Base_Type_Id;
+       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
+
+   --  We expect Expr to be of the type that corresponds to the type
+   --  "From". We insert a conversion so that its type corresponds to "To".
+   --  if "By" is non empty, then it specifies that the operation in expr
+   --  is done in the corresponding base type and that its overflow check
+   --  should be inserted.
 
 end Why.Gen.Expr;

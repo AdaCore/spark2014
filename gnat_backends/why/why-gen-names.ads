@@ -29,6 +29,7 @@ with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
 with Why.Gen.Name_Gen;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -36,6 +37,15 @@ package Why.Gen.Names is
 
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name
+
+   function Conversion_Name
+      (From : W_Base_Type_Id;
+       To   : W_Base_Type_Id) return W_Identifier_Id
+      with Pre =>
+        (From /= To and then
+         (Get_Base_Type (From) in EW_Scalar_Or_Array
+          or else Get_Base_Type (To) in EW_Scalar_Or_Array));
+   --  Return the name of the conversion function between the two types
 
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
    --  Return the Why name of a base type (e.g. "int" for int)
