@@ -17,17 +17,17 @@ module Main
 
   type t__ada_array 'a
 
-  function t__ada_array___access int (t__ada_array 'a1) : 'a1
+  function t__ada_array___access int (t__ada_array 'a) : 'a
 
-  function t__ada_array___update int (t__ada_array 'a1) 'a1 : (t__ada_array 'a1)
+  function t__ada_array___update int (t__ada_array 'a) 'a : (t__ada_array 'a)
 
-  function t__ada_array___equal (t__ada_array 'a1) (t__ada_array 'a1) : bool
+  function t__ada_array___equal (t__ada_array 'a) (t__ada_array 'a) : bool
 
-  function t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array 'a) : int
 
-  function t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array 'a) : int
 
-  function t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array 'a1) : int
+  function t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array 'a) : int
 
 val t__ada_array___access_ :
  i : int -> a : t__ada_array 'a ->
@@ -49,7 +49,7 @@ val t__ada_array___update_ :
     forall a:t__ada_array 'a.
     forall i:int.
     forall j:int.
-    forall v:'a1 [t__ada_array___access j (t__ada_array___update i a v ) |
+    forall v:'a [t__ada_array___access j (t__ada_array___update i a v ) |
                   t__ada_array___update i a v,
                   t__ada_array___access j a].
       i <> j ->
@@ -58,14 +58,14 @@ val t__ada_array___update_ :
   axiom T__ada_array___first_update:
     forall a:t__ada_array 'a.
     forall i:int.
-    forall v:'a1.
+    forall v:'a.
       t__ada_array___attr___ATTRIBUTE_FIRST a =
       t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array___update i a v)
 
   axiom T__ada_array___last_update:
     forall a:t__ada_array 'a.
     forall i:int.
-    forall v:'a1.
+    forall v:'a.
       t__ada_array___attr___ATTRIBUTE_LAST a =
       t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array___update i a v )
 
