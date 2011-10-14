@@ -202,11 +202,11 @@ package body Gnat2Why.Expr is
       end if;
    end Assignment_of_Obj_Decl;
 
-   ----------------------------
-   -- Assume_of_Subtype_Decl --
-   ----------------------------
+   -------------------------------
+   -- Assume_of_Integer_Subtype --
+   -------------------------------
 
-   function Assume_of_Subtype_Entity (N : Node_Id) return W_Prog_Id
+   function Assume_of_Integer_Subtype (N : Node_Id) return W_Prog_Id
    is
       Rng              : constant Node_Id := Get_Range (N);
       Low_Expr         : constant W_Term_Id :=
@@ -229,8 +229,7 @@ package body Gnat2Why.Expr is
             Left     => +High_Expr,
             Right    => +Last_Term,
             Op       => EW_Eq);
-      Base_Type_Entity : constant Entity_Id :=
-         Entity (Subtype_Mark (Subtype_Indication (Parent (N))));
+      Base_Type_Entity : constant Entity_Id := Etype (N);
       First_In_Range   : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
@@ -284,7 +283,7 @@ package body Gnat2Why.Expr is
            Domain   => EW_Prog,
            Reason   => VC_Subtype_Decl,
            Expr     => +Any_Expr);
-   end Assume_of_Subtype_Entity;
+   end Assume_of_Integer_Subtype;
 
    ---------------------------
    -- Case_Expr_Of_Ada_Node --

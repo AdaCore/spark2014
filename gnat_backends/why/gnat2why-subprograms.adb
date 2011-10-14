@@ -228,6 +228,30 @@ package body Gnat2Why.Subprograms is
          (Initial_Body : W_Prog_Id;
           Post_Check   : W_Prog_Id) return W_Prog_Id
       is
+         procedure Assume_of_Integer_Subtype
+            (Ent : Entity_Id;
+             R   : in out W_Prog_Id);
+         --  Local Wrapper for Assume_of_Integer_Subtype
+
+         -------------------------------
+         -- Assume_of_Integer_Subtype --
+         -------------------------------
+
+         procedure Assume_of_Integer_Subtype
+            (Ent : Entity_Id;
+             R   : in out W_Prog_Id)
+         is
+         begin
+
+            --  If the range is not static, we need to generate a check that
+            --  the subtype declaration is valid; otherwise, the frontend has
+            --  done it for us already
+
+            if not Is_Static_Range (Get_Range (Ent)) then
+               R := Sequence (Assume_of_Integer_Subtype (Ent), R);
+            end if;
+         end Assume_of_Integer_Subtype;
+
          Cur_Decl : Node_Id := Last (Declarations (Node));
          R        : W_Prog_Id := Initial_Body;
       begin
@@ -237,19 +261,29 @@ package body Gnat2Why.Subprograms is
                   R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
 
                when N_Subtype_Declaration =>
-
                   declare
                      Ent : constant Entity_Id :=
                         Defining_Identifier (Cur_Decl);
                   begin
 
-                     --  If the range is not static, we need to generate a
-                     --  check that the subtype declaration is valid;
-                     --  otherwise, the fronted has done it for us already
+                     case Ekind (Ent) is
+                        when E_Signed_Integer_Subtype =>
+                           Assume_of_Integer_Subtype (Ent, R);
 
-                     if not Is_Static_Range (Get_Range (Ent)) then
-                        R := Sequence (Assume_of_Subtype_Entity (Ent), R);
-                     end if;
+                        when E_Array_Subtype =>
+                           declare
+                              Index : Node_Id := First_Index (Ent);
+                           begin
+                              while Present (Index) loop
+                                 Assume_of_Integer_Subtype (Etype (Index), R);
+                                 Next (Index);
+                              end loop;
+                           end;
+
+                        when others =>
+                           raise Not_Implemented;
+
+                     end case;
                   end;
 
                when others =>

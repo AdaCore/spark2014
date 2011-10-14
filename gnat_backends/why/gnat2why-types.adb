@@ -251,15 +251,27 @@ package body Gnat2Why.Types is
                      begin
                         if Is_Constrained (Ident_Node) then
                            declare
-                              Rng            : constant Node_Id :=
+                              Rng : constant Node_Id :=
                                  Get_Range (Element (C));
+                              Low  : W_Term_Id := Why_Empty;
+                              High : W_Term_Id := Why_Empty;
                            begin
+                              if Is_Static_Expression (Low_Bound (Rng)) then
+                                 Low := New_Integer_Constant
+                                          (Value =>
+                                             Expr_Value (Low_Bound (Rng)));
+                              end if;
+                              if Is_Static_Expression (High_Bound (Rng)) then
+                                 High := New_Integer_Constant
+                                          (Value =>
+                                             Expr_Value (High_Bound (Rng)));
+                              end if;
                               Declare_Ada_Constrained_Array
                                  (File,
                                   Ty_Name,
                                   Comp_Type.all,
-                                  Expr_Value (Low_Bound (Rng)),
-                                  Expr_Value (High_Bound (Rng)));
+                                  Low,
+                                  High);
                            end;
                         else
                            Declare_Ada_Unconstrained_Array

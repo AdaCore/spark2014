@@ -30,6 +30,7 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Types;          use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -41,8 +42,8 @@ package body Why.Gen.Arrays is
      (File      : W_File_Id;
       Name      : String;
       Component : String;
-      First     : Uint;
-      Last      : Uint)
+      First     : W_Term_Id;
+      Last      : W_Term_Id)
    is
       Ar         : constant W_Term_Id :=
                      New_Term ("a");
@@ -57,56 +58,60 @@ package body Why.Gen.Arrays is
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
-      Emit
-        (File,
-         New_Guarded_Axiom
-           (Name => Array_First_Static.Id (Name),
-            Binders => (1 => Ar_Binder),
-            Def =>
-              New_Relation
-                (Op      => EW_Eq,
-                 Op_Type => EW_Int,
-                 Left    =>
-                   +New_Array_Attr
-                     (Attr_First,
-                      Name,
-                      +Ar,
-                      EW_Term),
-                 Right   => New_Integer_Constant (Value => First))));
-      Emit
-        (File,
-         New_Guarded_Axiom
-           (Name => Array_Last_Static.Id (Name),
-            Binders => (1 => Ar_Binder),
-            Def =>
-              New_Relation
-                (Op      => EW_Eq,
-                 Op_Type => EW_Int,
-                 Left    =>
-                   +New_Array_Attr
-                     (Attr_Last,
-                      Name,
-                      +Ar,
-                      EW_Term),
-                 Right   => New_Integer_Constant (Value => Last))));
-      Emit
-        (File,
-         New_Guarded_Axiom
-           (Name => Array_Length_Static.Id (Name),
-            Binders => (1 => Ar_Binder),
-            Def =>
-              New_Relation
-                (Op      => EW_Eq,
-                 Op_Type => EW_Int,
-                 Left    =>
-                   +New_Array_Attr
-                     (Attr_Length,
-                      Name,
-                      +Ar,
-                      EW_Term),
-                 Right   =>
-                   New_Integer_Constant
-                     (Value => UI_Add (UI_Sub (Last, First), 1)))));
+      if First /= Why_Empty then
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name => Array_First_Static.Id (Name),
+               Binders => (1 => Ar_Binder),
+               Def =>
+                 New_Relation
+                   (Op      => EW_Eq,
+                    Op_Type => EW_Int,
+                    Left    =>
+                      +New_Array_Attr
+                        (Attr_First,
+                         Name,
+                         +Ar,
+                         EW_Term),
+                    Right   => +First)));
+      end if;
+      if Last /= Why_Empty then
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name => Array_Last_Static.Id (Name),
+               Binders => (1 => Ar_Binder),
+               Def =>
+                 New_Relation
+                   (Op      => EW_Eq,
+                    Op_Type => EW_Int,
+                    Left    =>
+                      +New_Array_Attr
+                        (Attr_Last,
+                         Name,
+                         +Ar,
+                         EW_Term),
+                    Right   => +Last)));
+      end if;
+      --  Emit
+      --    (File,
+      --     New_Guarded_Axiom
+      --       (Name => Array_Length_Static.Id (Name),
+      --        Binders => (1 => Ar_Binder),
+      --        Def =>
+      --          New_Relation
+      --            (Op      => EW_Eq,
+      --             Op_Type => EW_Int,
+      --             Left    =>
+      --               +New_Array_Attr
+      --                 (Attr_Length,
+      --                  Name,
+      --                  +Ar,
+      --                  EW_Term),
+      --             Right   =>
+      --               New_Integer_Constant
+      --                 (Value => UI_Add (UI_Sub (Last, First), 1)))));
    end Declare_Ada_Constrained_Array;
 
    -------------------------------------

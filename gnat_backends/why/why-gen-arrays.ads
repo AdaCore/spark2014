@@ -26,7 +26,6 @@
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
-with Uintp;        use Uintp;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -41,8 +40,8 @@ package Why.Gen.Arrays is
      (File      : W_File_Id;
       Name      : String;
       Component : String;
-      First     : Uint;
-      Last      : Uint);
+      First     : W_Term_Id;
+      Last      : W_Term_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
