@@ -16,7 +16,9 @@ Do step 3.1 (checkout gnat)
       $ export PATH=/draa.a/gnatmail/gcc-45/install-draa/bin:$PATH
 
 
-Do NOT do steps 4 to 8 (yay!)
+Do step 4 (checkout, build and install gnatcoll)
+
+Do NOT do steps 5 to 8 (yay!)
 
 Instead, do these steps to get the ocaml-compiled tools:
 
