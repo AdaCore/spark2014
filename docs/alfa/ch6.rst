@@ -4,6 +4,13 @@ Subprograms
 Subprogram Declarations
 -----------------------
 
+In Alfa, a function is pure, that is, the evaluation of a call to such a
+function cannot modify the value of a variable or memory location.
+
+A subprogram is in Alfa if all the types that appear in its profile are in
+Alfa, and its contract is in Alfa.
+
+
 Preconditions and Postconditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -61,5 +68,12 @@ when returning from the subprogram.
 Subprogram Bodies
 -----------------
 
+A subprogram body is in Alfa if all entities and constructs referenced are in
+Alfa. 
+
 Subprogram Calls
 ----------------
+
+A call is in Alfa if it resolves statically to an Alfa subprogram (whether the
+call is dispatching or not) and all parameters are in Alfa (whether explicit or
+implicit).

@@ -1,2 +1,12 @@
 Representation Issues
 =====================
+
+Machine Code Insertions
+-----------------------
+
+Machine code insertions are not in Alfa.
+
+Unchecked Type Conversions
+--------------------------
+
+Unchecked type conversions are not in Alfa.
