@@ -22,6 +22,7 @@ Alfa Reference Manual
    ch11
    ch12
    ch13
+   ch14
 
 .. Indices and tables
 .. ==================

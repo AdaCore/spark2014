@@ -33,9 +33,9 @@ of pragmas:
 .. code-block:: ada
 
    pragma Restrictions (
-            No_Aliased_Parameters,
-            No_Finalization_Of_Tagged,
-            No_Implicit_Aliasing);
+            No_Finalization,
+            No_Implicit_Aliasing,
+	    No_Parameter_Aliasing);
 
 The Alfa Restriction
 ^^^^^^^^^^^^^^^^^^^^
