@@ -30,6 +30,11 @@ package Why.Gen.Decl is
    --  toplevel declarations.
 
    function New_Type (Name : String) return W_Declaration_Id;
+
+   function New_Type
+     (Name  : W_Identifier_Id;
+      Alias : W_Primitive_Type_Id) return W_Declaration_Id;
+
    function New_Type
      (Name : W_Identifier_Id;
       Args : Natural)

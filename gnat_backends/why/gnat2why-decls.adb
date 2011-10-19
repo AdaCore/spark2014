@@ -81,7 +81,19 @@ package body Gnat2Why.Decls is
       Def  : Node_Id := Empty)
    is
       Name : constant String := Full_Name (Id);
+
    begin
+      --  Generate an alias for the name of the object's type, based on the
+      --  name of the object. This is useful when generating logic functions
+      --  from Ada functions, to generate additional parameters for the global
+      --  objects read.
+
+      Emit
+        (File,
+         New_Type
+           (Name  => Object_Type_Name.Id (Name),
+            Alias => +Why_Logic_Type_Of_Ada_Obj (Id)));
+
       --  If the object is mutable, we generate a global ref
 
       if Is_Mutable (Id) then

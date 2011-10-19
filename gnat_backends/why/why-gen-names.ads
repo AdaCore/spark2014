@@ -275,6 +275,10 @@ package Why.Gen.Names is
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
+   package Object_Type_Name is
+     new Name_Gen.Arity_1 (EW_Prog, "_type_of_", "");
+   --  From the name of an object, return the name of its type
+
    package Overflow_Check_Name is
      new Name_Gen.Arity_1 (EW_Prog, "", "overflow_check_");
    --  From the name of an abstract type, return the name of
