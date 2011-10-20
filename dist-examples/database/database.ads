@@ -79,7 +79,8 @@ package Database is
 
    procedure Deposit (Account : in Account_Num; Sum : in Money.Amount)
    with
-     Pre  => Currency (Account) = Sum.Currency and then
+     Pre  => Existing (Account) and then
+             Currency (Account) = Sum.Currency and then
              Balance (Account).Value + Sum.Value <= Money.Raw_Amount'Last,
      Post => Balance (Account) = Balance (Account)'Old + Sum,
      Test_Case => (Name     => "common case",
@@ -96,7 +97,8 @@ package Database is
 
    procedure Withdraw (Account : in Account_Num; Sum : in Money.Amount)
    with
-     Pre  => Currency (Account) = Sum.Currency and then
+     Pre  => Existing (Account) and then
+             Currency (Account) = Sum.Currency and then
              Sum.Value <= Balance (Account).Value,
      Post => Balance (Account) = Balance (Account)'Old - Sum,
      Test_Case => (Name     => "common case",
