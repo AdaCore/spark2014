@@ -801,22 +801,22 @@ package body Gnat2Why.Expr is
       return
         New_And_Then_Expr
           (Left  =>
-             New_Relation
-               (Domain  => Domain,
-                Op_Type => EW_Int,
-                Op      => EW_Le,
-                Left    => +Transform_Expr (Low_Bound (Range_Node),
+             New_Comparison
+               (Domain    => Domain,
+                Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                Cmp       => EW_Le,
+                Left      => +Transform_Expr (Low_Bound (Range_Node),
                                             EW_Int_Type,
                                             Subdomain,
                                             Ref_Allowed),
                 Right   => +T),
            Right  =>
-             New_Relation
-               (Domain  => Domain,
-                Op_Type => EW_Int,
-                Op      => EW_Le,
-                Left    => +T,
-                Right   => +Transform_Expr (High_Bound (Range_Node),
+             New_Comparison
+               (Domain    => Domain,
+                Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                Cmp       => EW_Le,
+                Left      => +T,
+                Right     => +Transform_Expr (High_Bound (Range_Node),
                                             EW_Int_Type,
                                             Subdomain,
                                             Ref_Allowed)),
@@ -1273,7 +1273,9 @@ package body Gnat2Why.Expr is
             then
                if not Box_Present (Association) then
                   Expr := Transform_Expr
-                    (Expression (Association), Domain, Ref_Allowed);
+                    (Expression (Association),
+                     +Why_Logic_Type_Of_Ada_Type (Etype (Component)),
+                     Domain, Ref_Allowed);
                else
                   Expr :=
                      New_Simpl_Any_Expr
@@ -1879,6 +1881,13 @@ package body Gnat2Why.Expr is
                                    Expected_Type,
                                    EW_Prog,
                                    Ref_Allowed));
+
+         when N_Qualified_Expression =>
+            Current_Type := Base_Why_Type (Expression (Expr));
+            T := Transform_Expr (Expression (Expr),
+                                 Current_Type,
+                                 Domain,
+                                 Ref_Allowed);
 
          when others =>
             raise Not_Implemented;

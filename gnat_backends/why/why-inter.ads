@@ -135,8 +135,8 @@ package Why.Inter is
    --  i.e. the smallest base type B such that Left <= B and right <= B.
 
    function Full_Name (N : Entity_Id) return String
-      with Pre => (Nkind (N) = N_Defining_Identifier);
-   --  Given an N_Defining_Identifier, return its Full Name, as used in Why.
+      with Pre => (Nkind (N) in N_Entity);
+   --  Given an N_Entity, return its Full Name, as used in Why.
 
    function Eq (Left, Right : W_Base_Type_Id) return Boolean;
    --  Extensional equality (i.e. returns True if Left and Right are of

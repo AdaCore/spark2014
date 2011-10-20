@@ -158,7 +158,11 @@ package body Gnat2Why.Types is
    is
       Ty : constant Entity_Id := Unique_Entity (Etype (N));
    begin
-      return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+      if Is_Boolean_Type (Ty) then
+         return New_Base_Type (Base_Type => EW_Bool);
+      else
+         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+      end if;
    end  Why_Logic_Type_Of_Ada_Obj;
 
    --------------------------------
@@ -171,7 +175,11 @@ package body Gnat2Why.Types is
    is
       T : constant Entity_Id := Unique_Entity (Ty);
    begin
-      return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => T);
+      if Is_Boolean_Type (T) then
+         return New_Base_Type (Base_Type => EW_Bool);
+      else
+         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => T);
+      end if;
    end  Why_Logic_Type_Of_Ada_Type;
 
    -----------------------------

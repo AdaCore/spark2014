@@ -326,6 +326,7 @@ package body Alfa.Definition is
    function In_Logic_Scope return Boolean is
      (for some S in First_Scope_Index .. Scope_Stack.Last =>
         Scope_Stack.Table (S).Is_Logic);
+   pragma Unreferenced (In_Logic_Scope);
    --  Return True if there is a logic scope in the current scope stack
 
    procedure Pop_Scope (E : Unique_Entity_Id);
@@ -1244,7 +1245,8 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("procedure instantiation", N, NYI_Generic);
 
          when N_Qualified_Expression =>
-            Mark_Non_Alfa ("qualified expression", N, NYI_Qualification);
+            Mark (Subtype_Mark (N));
+            Mark (Expression (N));
 
          when N_Quantified_Expression =>
             Mark (Condition (N));
@@ -1601,14 +1603,6 @@ package body Alfa.Definition is
 
       elsif not Spec_Is_In_Alfa (Unique (Entity (Nam))) then
          Mark_Non_Alfa ("subprogram called", N, From => Unique (Entity (Nam)));
-
-      elsif In_Logic_Scope then
-
-         if not Expression_Functions_All_The_Way (Entity (Nam)) then
-            Mark_Non_Alfa ("not pure expression function called in logic", N,
-                           NYI_Logic_Function);
-         end if;
-
       end if;
    end Mark_Call;
 

@@ -639,6 +639,7 @@ package body Why.Atree.Sprint is
       Op2    : constant EW_Relation := Get_Op2 (Node);
       Right2 : constant W_Value_OId := Get_Right2 (Node);
    begin
+      P (O, "( ");
       Traverse (State, +Left);
       P (O, " ");
       P (O, Op, Get_Op_Type (Node));
@@ -652,6 +653,7 @@ package body Why.Atree.Sprint is
          Traverse (State, +Right2);
       end if;
 
+      P (O, " )");
       State.Control := Abandon_Children;
    end Relation_Pre_Op;
 

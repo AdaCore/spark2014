@@ -186,9 +186,11 @@ package body Why.Inter is
             return EW_Real;
 
          when Integer_Kind | Enumeration_Kind =>
-            --  ??? What about booleans ? We should have
-            --  a special case for them...
-            return EW_Int;
+            if Is_Boolean_Type (Ty) then
+               return EW_Bool;
+            else
+               return EW_Int;
+            end if;
 
          when Private_Kind =>
             return Get_EW_Term_Type (Full_View (Ty));
