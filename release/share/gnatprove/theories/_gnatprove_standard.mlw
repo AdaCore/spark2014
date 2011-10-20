@@ -101,9 +101,9 @@ val t__ada_array___update_ :
                   t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
         <-> t__ada_array___equal a b = Bool.True
 
-  type standard___heap_type
+  type _type_of______HEAP
 
-  val __HEAP : ref standard___heap_type
+  val __HEAP : ref _type_of______HEAP
 
   function bool_int__eq int int : Bool.bool
 
