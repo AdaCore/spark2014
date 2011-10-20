@@ -1,8 +1,9 @@
+
 p.adb:12:30: (info) postcondition proved
 p.adb:22:22: (info) postcondition proved
 p.adb:27:33: (info) postcondition proved
 p.adb:32:7: (info) assertion proved
-p.adb:34:7: assertion not proved
+p.adb:34:7: (info) assertion proved
 p.adb:36:7: (info) assertion proved
 p.adb:38:7: (info) assertion proved
 p.adb:7:19: (info) postcondition proved
