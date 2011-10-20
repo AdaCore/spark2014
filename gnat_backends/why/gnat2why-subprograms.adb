@@ -28,7 +28,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
 with Alfa.Common;           use Alfa.Common;
-with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
@@ -569,6 +568,12 @@ package body Gnat2Why.Subprograms is
             return Tmp_Node;
          end if;
 
+         --  For a subprogram body separated from the subprogram spec
+
+         if Nkind (Original_Node (Node)) = N_Expression_Function then
+            return Original_Node (Node);
+         end if;
+
          --  But if we are at the function declaration, it is possible that
          --  the function definition is given later, using an expression
          --  function. We check this second possibility here.
@@ -613,9 +618,6 @@ package body Gnat2Why.Subprograms is
                        Nkind (Spec) = N_Function_Specification
                          and then
                        Is_Empty (+Get_Writes (Effects))
-                         and then
-                       Expression_Functions_All_The_Way
-                         (Defining_Entity (Spec))
                          and then
                        Orig_Node /= Node
                          and then
