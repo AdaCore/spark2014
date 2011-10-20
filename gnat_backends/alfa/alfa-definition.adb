@@ -1604,11 +1604,7 @@ package body Alfa.Definition is
 
       elsif In_Logic_Scope then
 
-         if Has_Global_Reads (Entity (Nam)) then
-            Mark_Non_Alfa ("global read in subprogram called in logic", N,
-                           NYI_Logic_Function);
-
-         elsif not Expression_Functions_All_The_Way (Entity (Nam)) then
+         if not Expression_Functions_All_The_Way (Entity (Nam)) then
             Mark_Non_Alfa ("not pure expression function called in logic", N,
                            NYI_Logic_Function);
          end if;

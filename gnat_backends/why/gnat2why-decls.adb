@@ -116,7 +116,8 @@ package body Gnat2Why.Decls is
               (1 =>
                  (Kind   => W_Function_Decl,
                   Domain => EW_Term,
-                  Def    => Transform_Static_Expr (Def, Type_Of_Node (Id)),
+                  Def    => Transform_Static_Expr (Def, Type_Of_Node (Id),
+                                                   Ref_Allowed => False),
                   others => <>)));
       end if;
    end Why_Decl_Of_Ada_Object_Decl;

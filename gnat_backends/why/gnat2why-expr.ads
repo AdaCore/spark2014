@@ -40,8 +40,11 @@ package Gnat2Why.Expr is
       (N    : Entity_Id;
        Base : Entity_Id) return W_Prog_Id;
 
-   function Range_Expr (N : Node_Id; T : W_Expr_Id; Domain : EW_Domain)
-      return W_Expr_Id;
+   function Range_Expr
+     (N           : Node_Id;
+      T           : W_Expr_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean) return W_Expr_Id;
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
    --  where "low" and "high" are the lower and higher bounds of N.
@@ -57,18 +60,26 @@ package Gnat2Why.Expr is
    function Transform_Expr
      (Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id;
-      Domain        : EW_Domain) return W_Expr_Id;
+      Domain        : EW_Domain;
+      Ref_Allowed   : Boolean) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
-   --  term or program
+   --  term or program. If Ref_Allowed is True, then references are allowed,
+   --  for example in the context of a program (whether the domain is EW_Prog
+   --  for program text or EW_Pred/EW_Term for contract). If Ref_Allowed is
+   --  False, then references are not allowed, for example in the context of an
+   --  axiom or a logic function definition.
 
-   function Transform_Expr (Expr : Node_Id; Domain : EW_Domain)
-      return W_Expr_Id;
+   function Transform_Expr
+     (Expr        : Node_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Static_Expr
      (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id) return W_Term_Id;
+      Expected_Type : W_Base_Type_Id;
+      Ref_Allowed   : Boolean) return W_Term_Id;
    --  If Expr is static, return a term equivalent to Expr. Otherwise,
    --  return Why_Empty.
 

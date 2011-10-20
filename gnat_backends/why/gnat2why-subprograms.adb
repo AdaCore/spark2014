@@ -52,7 +52,6 @@ with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Conversions;       use Why.Conversions;
@@ -82,18 +81,8 @@ package body Gnat2Why.Subprograms is
    --  and filled during the translation. At the end, this list is used to
    --  generate necessary the copy instructions.
 
-   function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
-   --  Test if the effect in argument is empty.
-
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
-   --
-   function Effect_Is_Empty (E : W_Effects_Id) return Boolean is
-   begin
-      return
-        (Is_Empty (+Get_Reads (E)) and then
-         Is_Empty (+Get_Writes (E)));
-   end Effect_Is_Empty;
 
    ----------------
    -- Unit_Param --
@@ -148,7 +137,10 @@ package body Gnat2Why.Subprograms is
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
-      function Compute_Binders return Binder_Array;
+      function Compute_Args (Binders : Binder_Array) return W_Expr_Array;
+
+      function Compute_Binders
+        (Logic_Function : Boolean := False) return Binder_Array;
       --  Compute the arguments of the generated Why function;
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments.
@@ -186,17 +178,60 @@ package body Gnat2Why.Subprograms is
       -- Compute_Binders --
       ---------------------
 
-      function Compute_Binders return Binder_Array
-      is
-         Cur_Binder : Node_Id := First (Ada_Binders);
-         Cnt        : Integer := 1;
+      function Compute_Args (Binders : Binder_Array) return W_Expr_Array is
+         Cnt    : Integer := 1;
+         Result : W_Expr_Array (1 .. Binders'Last);
+         E      : constant Entity_Id := Unique_Defining_Entity (Node);
+
       begin
-         if Arg_Length = 0 then
+         if Arg_Length = 0
+           and then not Has_Global_Reads (E)
+         then
+            return W_Expr_Array'(1 => New_Void);
+         end if;
+
+         while Cnt <= Integer (Arg_Length) loop
+            Result (Cnt) := +Binders (Cnt).B_Name;
+            Cnt := Cnt + 1;
+         end loop;
+
+         while Cnt <= Binders'Last loop
+            Result (Cnt) :=
+              New_Unary_Op (Domain   => EW_Term,
+                            Op       => EW_Deref,
+                            Right    => +Binders (Cnt).B_Name,
+                            Op_Type  => EW_Int);
+            Cnt := Cnt + 1;
+         end loop;
+
+         return Result;
+      end Compute_Args;
+
+      function Compute_Binders
+        (Logic_Function : Boolean := False) return Binder_Array
+      is
+         Cur_Binder  : Node_Id := First (Ada_Binders);
+         Cnt         : Integer := 1;
+         E           : constant Entity_Id := Unique_Defining_Entity (Node);
+         Read_Names  : Name_Set.Set;
+         Num_Binders : Int;
+
+      begin
+         --  Collect global variables potentially read
+
+         Read_Names := Get_Reads (E);
+
+         Num_Binders := Arg_Length;
+         if Logic_Function then
+            Num_Binders := Num_Binders + Int (Read_Names.Length);
+         end if;
+
+         if Num_Binders = 0 then
             return (1 => Unit_Param);
          else
             declare
                Result : Binder_Array :=
-                          (1 .. Integer (Arg_Length) => <>);
+                          (1 .. Integer (Num_Binders) => <>);
             begin
                while Present (Cur_Binder) loop
                   declare
@@ -215,6 +250,29 @@ package body Gnat2Why.Subprograms is
                      Cnt := Cnt + 1;
                   end;
                end loop;
+
+               if Logic_Function then
+                  --  Workaround for K526-008 and K525-019
+
+                  declare
+                     use Name_Set;
+
+                     C : Cursor := Read_Names.First;
+                  begin
+                     while C /= No_Element loop
+                        Result (Cnt) :=
+                          (Ada_Node => Empty,
+                           B_Name   => New_Identifier (Element (C).all),
+                           B_Type   =>
+                             New_Abstract_Type
+                               (Name => Object_Type_Name.Id (Element (C).all)),
+                           Modifier => None);
+                        Next (C);
+                        Cnt := Cnt + 1;
+                     end loop;
+                  end;
+               end if;
+
                return Result;
             end;
          end if;
@@ -336,7 +394,8 @@ package body Gnat2Why.Subprograms is
                         (Name    =>
                           New_Identifier (Symbol => N.Why_Name,
                                           Domain => EW_Prog),
-                         Def     => +Transform_Expr (N.Ada_Node, EW_Prog),
+                         Def     => +Transform_Expr (N.Ada_Node, EW_Prog,
+                                                     Ref_Allowed => True),
                          Context => +R);
                   Next (C);
                end;
@@ -481,7 +540,8 @@ package body Gnat2Why.Subprograms is
 
                   Cur_Spec :=
                      New_And_Then_Expr
-                       (Left   => Transform_Expr (Ada_Spec, Domain),
+                      (Left   => Transform_Expr (Ada_Spec, Domain,
+                                                 Ref_Allowed => True),
                         Right  => Cur_Spec,
                         Domain => Domain);
                end;
@@ -536,6 +596,10 @@ package body Gnat2Why.Subprograms is
       end Is_Syntactic_Expr_Function;
 
       Func_Binders : constant Binder_Array := Compute_Binders;
+      Logic_Func_Binders : constant Binder_Array :=
+                             Compute_Binders (Logic_Function => True);
+      Logic_Func_Args    : constant W_Expr_Array :=
+                             Compute_Args (Logic_Func_Binders);
       Dummy_Node   : Node_Id;
       Pre          : constant W_Pred_Id :=
                        +Compute_Spec (Name_Precondition, Dummy_Node, EW_Pred);
@@ -548,7 +612,7 @@ package body Gnat2Why.Subprograms is
       Is_Expr_Func : constant Boolean :=
                        Nkind (Spec) = N_Function_Specification
                          and then
-                       Effect_Is_Empty (Effects)
+                       Is_Empty (+Get_Writes (Effects))
                          and then
                        Expression_Functions_All_The_Way
                          (Defining_Entity (Spec))
@@ -590,10 +654,11 @@ package body Gnat2Why.Subprograms is
                  (File,
                   New_Defining_Bool_Axiom
                     (Name    => Logic_Func_Name.Id (Name_Str),
-                     Binders => Func_Binders,
+                     Binders => Logic_Func_Binders,
                      Pre     => Pre,
                      Def     => +Transform_Expr (Expression (Orig_Node),
-                                                       EW_Pred)));
+                                                 EW_Pred,
+                                                 Ref_Allowed => False)));
 
             else
                Emit
@@ -601,11 +666,12 @@ package body Gnat2Why.Subprograms is
                   New_Defining_Axiom
                     (Name        => Logic_Func_Name.Id (Name_Str),
                      Return_Type => Get_EW_Type (Expression (Orig_Node)),
-                     Binders     => Func_Binders,
+                     Binders     => Logic_Func_Binders,
                      Pre         => Pre,
                      Def         =>
                        +Transform_Expr
-                         (Expression (Orig_Node), EW_Term)));
+                         (Expression (Orig_Node), EW_Term,
+                          Ref_Allowed => False)));
             end if;
          end if;
 
@@ -654,25 +720,34 @@ package body Gnat2Why.Subprograms is
                               New_Base_Type (Base_Type => EW_Unit));
             Param_Post : constant W_Pred_Id :=
                            (if Is_Expr_Func then
-                              (if Entity (Result_Definition (Spec)) =
-                                              Standard_Boolean
-                               then
-                                 New_Equal_Bool
-                                   (Left  => New_Result_Term,
-                                    Right =>
-                                      +Transform_Expr
-                                        (Expression (Orig_Node), EW_Pred))
-                               else
-                                 New_Relation
+                              New_Relation
                                    (Op      => EW_Eq,
                                     Op_Type =>
                                       Get_EW_Type (Expression (Orig_Node)),
                                     Left    => +New_Result_Term,
                                     Right   =>
-                                      +Transform_Expr
-                                        (Expression (Orig_Node), EW_Term)))
+                                    New_Call
+                                      (Domain  => EW_Term,
+                                       Name    =>
+                                         Logic_Func_Name.Id (Name_Str),
+                                       Args    => Logic_Func_Args))
                             else Post);
          begin
+
+            --  Generate a logic function
+
+            if Nkind (Spec) = N_Function_Specification then
+               Emit
+                 (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => Logic_Func_Name.Id (Name_Str),
+                     Binders     => Logic_Func_Binders,
+                     Return_Type =>
+                     +Why_Logic_Type_Of_Ada_Type
+                       (Etype (Defining_Entity (Spec)))));
+            end if;
+
             Emit
               (File,
                New_Function_Decl
@@ -683,18 +758,6 @@ package body Gnat2Why.Subprograms is
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));
-
-            if Is_Expr_Func then
-               Emit
-                 (File,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Logic_Func_Name.Id (Name_Str),
-                     Binders     => Func_Binders,
-                     Return_Type =>
-                       +Why_Logic_Type_Of_Ada_Type
-                         (Etype (Defining_Entity (Spec)))));
-            end if;
          end;
       end if;
       Result_Name := Why_Empty;

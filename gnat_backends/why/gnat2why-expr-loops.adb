@@ -153,7 +153,8 @@ package body Gnat2Why.Expr.Loops is
          return
            New_Conditional
              (Ada_Node  => Stmt,
-              Condition => +Transform_Expr (Condition (Stmt), EW_Prog),
+              Condition => +Transform_Expr (Condition (Stmt), EW_Prog,
+                                            Ref_Allowed => True),
               Then_Part => +Raise_Stmt);
       end if;
    end Transform_Exit_Statement;
@@ -232,7 +233,8 @@ package body Gnat2Why.Expr.Loops is
                                (Left   => +Invariant,
                                 Right  =>
                                   Transform_Expr
-                                    (Condition (Scheme), EW_Pred),
+                                    (Condition (Scheme), EW_Pred,
+                                     Ref_Allowed => True),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
             --  none at the beginning, we need to put a location here.
@@ -244,7 +246,8 @@ package body Gnat2Why.Expr.Loops is
               Wrap_Loop
               (Loop_Body    => Loop_Content,
                Condition    =>
-                 +Transform_Expr (Condition (Scheme), EW_Prog),
+               +Transform_Expr (Condition (Scheme), EW_Prog,
+                                Ref_Allowed => True),
                Loop_Name    => Loop_Name,
                Invariant    => Enriched_Inv,
                Inv_Check    => Inv_Check,
@@ -296,7 +299,8 @@ package body Gnat2Why.Expr.Loops is
                                        Op      => EW_Deref,
                                        Right   => +Loop_Index,
                                        Op_Type => EW_Int),
-                                    EW_Pred),
+                                    EW_Pred,
+                                    Ref_Allowed => True),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
             --  none at the beginning, we need to put a location here.
@@ -311,7 +315,8 @@ package body Gnat2Why.Expr.Loops is
                                   +Range_Expr
                                     (Loop_Range,
                                      +Index_Deref,
-                                     EW_Prog),
+                                  EW_Prog,
+                                  Ref_Allowed => True),
                                 Loop_Name    => Loop_Name,
                                 Invariant    => Enriched_Inv,
                                 Inv_Check    => Inv_Check,
@@ -326,8 +331,9 @@ package body Gnat2Why.Expr.Loops is
               New_Binding_Ref
                 (Name    => Loop_Index,
                  Def     => +Transform_Expr (Low,
-                                                   EW_Int_Type,
-                                                   EW_Prog),
+                                             EW_Int_Type,
+                                             EW_Prog,
+                                             Ref_Allowed => True),
                  Context => Entire_Loop);
          end;
 
