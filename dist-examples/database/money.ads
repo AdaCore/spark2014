@@ -25,7 +25,7 @@ package Money is
 
    function "+" (A, B : Amount) return Amount
    with
-     Pre  => A.Currency = B.Currency and A.Value + B.Value < Raw_Amount'Last,
+     Pre  => A.Currency = B.Currency and A.Value + B.Value <= Raw_Amount'Last,
      Post => "+"'Result = Amount'(A.Currency, A.Value + B.Value);
 
    function "-" (A, B : Amount) return Amount
