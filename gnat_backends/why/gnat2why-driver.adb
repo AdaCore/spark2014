@@ -54,6 +54,7 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Sinfo;             use Why.Sinfo;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
@@ -77,10 +78,15 @@ package body Gnat2Why.Driver is
    --  Take a list of entities and translate them to Why abstract entities
 
    procedure Translate_List_Of_Decls
-     (File    : W_File_Id;
-      Decls   : List_Of_Nodes.List;
-      As_Spec : Boolean);
-   --  Take a list of Ada declarations and translate them to Why declarations
+     (File      : W_File_Id;
+      Prog_File : W_File_Id;
+      Decls     : List_Of_Nodes.List;
+      As_Spec   : Boolean);
+   --  Take a list of Ada declarations and translate them to Why declarations.
+   --  Declarations output in File should not depend on those output in
+   --  Prog_File, which gives the opportunity to issue logic declarations in
+   --  File (like axioms) and program declaration in Prog_File, although this
+   --  is not enforced right now.
 
    procedure Translate_Context (File : W_File_Id; L : String_Lists.List);
    --  Translate the context of an Ada unit into Why includes
@@ -321,6 +327,7 @@ package body Gnat2Why.Driver is
    procedure Translate_CUnit (Pack : Why_Package)
    is
       File      : constant W_File_Id := New_File;
+      Prog_File : constant W_File_Id := New_File;
       Unit_Name : constant String := Pack.WP_Name.all;
 
       use List_Of_Nodes;
@@ -329,10 +336,20 @@ package body Gnat2Why.Driver is
 
       Translate_Context (File, Pack.WP_Context);
       Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Types);
-      Translate_List_Of_Decls (File, Pack.WP_Types, As_Spec => False);
+      Translate_List_Of_Decls
+        (File, Prog_File, Pack.WP_Types, As_Spec => False);
       Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Obj);
-      Translate_List_Of_Decls (File, Pack.WP_Decls_As_Spec, As_Spec => True);
-      Translate_List_Of_Decls (File, Pack.WP_Decls, As_Spec => False);
+      Translate_List_Of_Decls
+        (File, Prog_File, Pack.WP_Decls_As_Spec, As_Spec => True);
+      Translate_List_Of_Decls
+        (File, Prog_File, Pack.WP_Decls, As_Spec => False);
+
+      --  Append program declarations after logic declarations, so all
+      --  necessary axioms are seen before the corresponding logic functions
+      --  are used in programs.
+
+      File_Append_To_Declarations (Id        => File,
+                                   New_Items => Get_Declarations (Prog_File));
 
       Open_Current_File (Unit_Name & ".mlw");
       Sprint_Why_Node (+File, Current_File);
@@ -385,9 +402,10 @@ package body Gnat2Why.Driver is
    -----------------------------
 
    procedure Translate_List_Of_Decls
-     (File    : W_File_Id;
-      Decls   : List_Of_Nodes.List;
-      As_Spec : Boolean)
+     (File      : W_File_Id;
+      Prog_File : W_File_Id;
+      Decls     : List_Of_Nodes.List;
+      As_Spec   : Boolean)
    is
       use List_Of_Nodes;
 
@@ -404,7 +422,7 @@ package body Gnat2Why.Driver is
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Transform_Subprogram (File, Element (Cu), As_Spec);
+               Transform_Subprogram (File, Prog_File, Element (Cu), As_Spec);
 
             when N_Object_Declaration
               | N_Number_Declaration =>
@@ -485,7 +503,7 @@ package body Gnat2Why.Driver is
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
-        (File, Filter_Standard_Package, As_Spec => False);
+        (File, File, Filter_Standard_Package, As_Spec => False);
 
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere

@@ -115,9 +115,10 @@ package body Gnat2Why.Subprograms is
    --------------------------
 
    procedure Transform_Subprogram
-     (File    : W_File_Id;
-      Node    : Node_Id;
-      As_Spec : Boolean)
+     (File      : W_File_Id;
+      Prog_File : W_File_Id;
+      Node      : Node_Id;
+      As_Spec   : Boolean)
    is
       Spec        : constant Node_Id :=
                       (if Nkind (Node) = N_Subprogram_Body and then
@@ -641,7 +642,7 @@ package body Gnat2Why.Subprograms is
         and then not As_Spec
       then
          Emit
-           (File,
+           (Prog_File,
             New_Function_Def
               (Domain  => EW_Prog,
                Name    => New_Pre_Check_Name.Id (Name_Str),
@@ -683,7 +684,7 @@ package body Gnat2Why.Subprograms is
 
             if Nkind (Spec) = N_Function_Specification then
                Emit
-                 (File,
+                 (Prog_File,
                   New_Global_Ref_Declaration
                      (Name => Result_Name,
                       Ref_Type =>
@@ -692,7 +693,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             Emit
-              (File,
+              (Prog_File,
                New_Function_Def
                  (Domain  => EW_Prog,
                   Name    => New_Definition_Name.Id (Name_Str),
@@ -720,19 +721,27 @@ package body Gnat2Why.Subprograms is
                                 (Entity (Result_Definition (Spec)))
                             else
                               New_Base_Type (Base_Type => EW_Unit));
+
+            --  Each function has in its postcondition that its result is equal
+            --  to the application of the corresponding logic function to the
+            --  same arguments.
+
             Param_Post : constant W_Pred_Id :=
-                           (if Is_Expr_Func then
-                              New_Relation
+                           (if Nkind (Spec) = N_Function_Specification then
+                            +New_And_Expr
+                              (Left   => New_Relation
                                    (Op      => EW_Eq,
-                                    Op_Type =>
-                                      Get_EW_Type (Expression (Orig_Node)),
+                                    Op_Type => Get_EW_Type (Ret_Type),
                                     Left    => +New_Result_Term,
                                     Right   =>
                                     New_Call
                                       (Domain  => EW_Term,
                                        Name    =>
                                          Logic_Func_Name.Id (Name_Str),
-                                       Args    => Logic_Func_Args))
+                                       Args    => Logic_Func_Args),
+                                    Domain => EW_Pred),
+                               Right  => +Post,
+                               Domain => EW_Pred)
                             else Post);
          begin
 
@@ -751,7 +760,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             Emit
-              (File,
+              (Prog_File,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Program_Func_Name.Id (Name_Str),
