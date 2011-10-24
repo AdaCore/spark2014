@@ -154,15 +154,9 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Obj
      (N : Node_Id)
-     return W_Primitive_Type_Id
-   is
-      Ty : constant Entity_Id := Unique_Entity (Etype (N));
+     return W_Primitive_Type_Id is
    begin
-      if Is_Boolean_Type (Ty) then
-         return New_Base_Type (Base_Type => EW_Bool);
-      else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-      end if;
+      return Why_Logic_Type_Of_Ada_Type (Etype (N));
    end  Why_Logic_Type_Of_Ada_Obj;
 
    --------------------------------
@@ -175,7 +169,10 @@ package body Gnat2Why.Types is
    is
       T : constant Entity_Id := Unique_Entity (Ty);
    begin
-      if Is_Boolean_Type (T) then
+      --  Standard.Boolean is modeled as bool; any other boolean subtype
+      --  is modeled as an abstract type to have range checks.
+
+      if T = Standard_Boolean then
          return New_Base_Type (Base_Type => EW_Bool);
       else
          return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => T);

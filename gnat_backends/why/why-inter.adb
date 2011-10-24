@@ -186,7 +186,18 @@ package body Why.Inter is
             return EW_Real;
 
          when Integer_Kind | Enumeration_Kind =>
-            if Is_Boolean_Type (Ty) then
+            --  In the case of Standard.Boolean, the base type 'bool' is
+            --  used directly. For its subtypes, however, an abstract type
+            --  representing a signed int is generated, just like for any
+            --  other enumeration subtype.
+            --  ??? It would make sense to use a bool-based abstract
+            --  subtype in this case, and it should be rather easy to
+            --  make this change as soon as theory cloning would work
+            --  in Why 3. No point in implementing this improvement
+            --  before that, as we have seen no cases where this was a
+            --  problem for the prover.
+
+            if Ty = Standard_Boolean then
                return EW_Bool;
             else
                return EW_Int;
