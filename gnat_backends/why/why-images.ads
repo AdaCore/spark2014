@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;     use Types;
 with Namet;     use Namet;
 with Uintp;     use Uintp;
 with Urealp;    use Urealp;
@@ -36,7 +37,11 @@ package Why.Images is
 
    procedure P (O : Output_Id; Name : Name_Id);
 
+   procedure P (O : Output_Id; Node : Node_Id);
+
    procedure P (O : Output_Id; Node : Why_Node_Id);
+
+   procedure P (O : Output_Id; Node : Why_Node_Set);
 
    procedure P (O : Output_Id; Value : Uint);
 
@@ -76,7 +81,7 @@ package Why.Images is
    function Img (Name : Name_Id) return String;
    --  Return the String content of Name
 
-   function Img (Node : Why_Node_Id) return String;
+   function Img (Node : Why_Node_Set) return String;
    --  Return an image of a Node Id (with no leading space)
 
 end Why.Images;

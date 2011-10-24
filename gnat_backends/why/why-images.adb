@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types; use Types;
-
 package body Why.Images is
+
+   function Img (Node : Node_Id) return String;
 
    ---------
    -- Img --
@@ -40,11 +40,22 @@ package body Why.Images is
       end if;
    end Img;
 
-   function Img (Node : Why_Node_Id) return String is
-      Result : constant String := Why_Node_Id'Image (Node);
+   function Img (Node : Why_Node_Set) return String is
+      Result : constant String := Why_Node_Set'Image (Node);
       First  : constant Positive := Result'First + 1;
    begin
       return Result (First .. Result'Last);
+   end Img;
+
+   function Img (Node : Node_Id) return String is
+      Result : constant String := Node_Id'Image (Node);
+      First  : constant Positive := Result'First + 1;
+   begin
+      if Node = 0 then
+         return "[empty]";
+      else
+         return Result (First .. Result'Last);
+      end if;
    end Img;
 
    -------
@@ -57,6 +68,11 @@ package body Why.Images is
    end P;
 
    procedure P (O : Output_Id; Node : Why_Node_Id) is
+   begin
+      P (O, Why_Node_Set (Node));
+   end P;
+
+   procedure P (O : Output_Id; Node : Why_Node_Set) is
    begin
       P (O, Img (Node));
    end P;
@@ -278,8 +294,7 @@ package body Why.Images is
    begin
       case Value is
          when EW_None =>
-            pragma Assert (False);
-            null;
+            P (O, " <none> ");
          when EW_Eq =>
             P (O, "=");
          when EW_Ne =>
@@ -374,4 +389,10 @@ package body Why.Images is
             P (O, "goal");
       end case;
    end P;
+
+   procedure P (O : Output_Id; Node : Node_Id) is
+   begin
+      P (O, Img (Node));
+   end P;
+
 end Why.Images;

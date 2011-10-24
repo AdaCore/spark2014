@@ -537,13 +537,23 @@ package body Xtree_Traversal is
       PL (O, "if State.Depth /= 0 then");
       Relative_Indent (O, 3);
       PL (O, Depth & " := " & Depth & " - 1;");
+      PL (O, "Relative_Indent (O, 1);");
+
+      for FI of Common_Fields.Fields loop
+         if Field_Kind (FI) /= Field_Special then
+            PL (O, "P (O, """ & Param_Name (FI) & ": "");");
+            PL (O, "P (O, "
+                & Accessor_Name (W_Unused_At_Start, Regular, FI)
+                & " (+" & Node_Param & "));");
+            PL (O, "NL (O);");
+         end if;
+      end loop;
 
       if Has_Variant_Part (Kind) then
-         PL (O, "Relative_Indent (O, 1);");
          Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
-         PL (O, "Relative_Indent (O, -1);");
       end if;
 
+      PL (O, "Relative_Indent (O, -1);");
       PL (O, Depth & " := " & Depth & " + 1;");
       Relative_Indent (O, -3);
       PL (O, "end if;");
