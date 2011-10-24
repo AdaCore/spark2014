@@ -215,6 +215,14 @@ package body Gnat2Why.Types is
                   Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                end;
 
+            --  Note that enumeration subtypes are represented as signed int
+            --  abstract types; this allows to do conversions between subtypes
+            --  using int as an "universal" intermediate step.
+            --  Boolean subtypes is not a special case here: there are
+            --  represented as signed abstract type as well. This may be
+            --  changed in medium term; more details about that in
+            --  why-inter.adb:Get_EW_Term_Type.
+
             when E_Signed_Integer_Type
                | E_Signed_Integer_Subtype
                | E_Enumeration_Subtype =>
