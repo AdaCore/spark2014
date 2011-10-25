@@ -33,6 +33,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Types;            use Why.Types;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 
@@ -116,8 +117,10 @@ package body Gnat2Why.Decls is
               (1 =>
                  (Kind   => W_Function_Decl,
                   Domain => EW_Term,
-                  Def    => Transform_Static_Expr (Def, Type_Of_Node (Id),
-                                                   Ref_Allowed => False),
+                  Def    => (if Present (Def) then
+                               Get_Pure_Logic_Term_If_Possible
+                                 (Def, Type_Of_Node (Id))
+                             else Why_Empty),
                   others => <>)));
       end if;
    end Why_Decl_Of_Ada_Object_Decl;

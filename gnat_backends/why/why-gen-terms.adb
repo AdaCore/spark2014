@@ -27,10 +27,36 @@ with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Terms is
+
+   function Has_Dereference (T : W_Term_Id) return Boolean is
+      type Search_State is new Traversal_State with record
+         Found : Boolean;
+      end record;
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Unary_Op_Id);
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Unary_Op_Id) is
+      begin
+         if Get_Op (Node) = EW_Deref then
+            State.Found   := True;
+            State.Control := Terminate_Immediately;
+         end if;
+      end Unary_Op_Pre_Op;
+
+      SS : Search_State := (Control => Continue, Found => False);
+   begin
+      Traverse (SS, +T);
+      return SS.Found;
+   end Has_Dereference;
 
    -------------
    -- New_Ifb --

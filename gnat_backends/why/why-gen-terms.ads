@@ -28,6 +28,9 @@ with Why.Ids;            use Why.Ids;
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
 
+   function Has_Dereference (T : W_Term_Id) return Boolean;
+   --  Return True if T contains a dereference
+
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.

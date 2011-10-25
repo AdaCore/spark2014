@@ -600,6 +600,24 @@ package body Gnat2Why.Expr is
       Index := New_Identifier (Full_Name (Defining_Identifier (Spec)));
    end Extract_From_Quantified_Expression;
 
+   -------------------------------------
+   -- Get_Pure_Logic_Term_If_Possible --
+   -------------------------------------
+
+   function Get_Pure_Logic_Term_If_Possible
+     (Expr          : Node_Id;
+      Expected_Type : W_Base_Type_Id) return W_Term_Id
+   is
+      Result : constant W_Term_Id :=
+        +Transform_Expr (Expr, Expected_Type, EW_Term, Ref_Allowed => True);
+   begin
+      if Has_Dereference (Result) then
+         return Why_Empty;
+      else
+         return Result;
+      end if;
+   end Get_Pure_Logic_Term_If_Possible;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -2248,22 +2266,6 @@ package body Gnat2Why.Expr is
       end loop;
       return Result;
    end Transform_Statements;
-
-   ---------------------------
-   -- Transform_Static_Expr --
-   ---------------------------
-
-   function Transform_Static_Expr
-     (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
-      Ref_Allowed   : Boolean) return W_Term_Id is
-   begin
-      if Present (Expr) and then Is_Static_Expression (Expr) then
-         return +Transform_Expr (Expr, Expected_Type, EW_Term, Ref_Allowed);
-      else
-         return Why_Empty;
-      end if;
-   end Transform_Static_Expr;
 
    ------------------
    -- Type_Of_Node --

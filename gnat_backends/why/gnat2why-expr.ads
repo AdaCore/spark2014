@@ -40,6 +40,12 @@ package Gnat2Why.Expr is
       (N    : Entity_Id;
        Base : Entity_Id) return W_Prog_Id;
 
+   function Get_Pure_Logic_Term_If_Possible
+     (Expr          : Node_Id;
+      Expected_Type : W_Base_Type_Id) return W_Term_Id;
+   --  If Expr can be translated into a pure logic term (without dereference),
+   --  return this term. Otherwise, return Why_Empty.
+
    function Range_Expr
      (N           : Node_Id;
       T           : W_Expr_Id;
@@ -75,13 +81,6 @@ package Gnat2Why.Expr is
       Domain      : EW_Domain;
       Ref_Allowed : Boolean) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
-
-   function Transform_Static_Expr
-     (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
-      Ref_Allowed   : Boolean) return W_Term_Id;
-   --  If Expr is static, return a term equivalent to Expr. Otherwise,
-   --  return Why_Empty.
 
    function Transform_Statements
      (Stmts      : List_Id;
