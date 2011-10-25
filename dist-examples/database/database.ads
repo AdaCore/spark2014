@@ -62,7 +62,6 @@ package Database is
       Account  : in Account_Num)
    with
      Pre  => Existing (Account) and then Balance (Account).Value = 0,
-     Post => not Existing (Account),
      Test_Case => (Name     => "last account",
                    Mode     => Nominal,
                    Requires => Num_Accounts = 1,

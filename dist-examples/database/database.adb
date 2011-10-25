@@ -34,7 +34,8 @@ package body Database is
       procedure Reserve_First_Available (Account : out Account_Num)
       with
         Pre  => Some_Available,
-        Post => (for all Act in Account_Num =>
+        Post => not Is_Available (Account) and then
+                (for all Act in Account_Num =>
                    (if Act /= Account then
                       Links (Act).Available = Links'Old (Act).Available));
 
@@ -206,6 +207,8 @@ package body Database is
       Accounts (Account) := Account_Rec'(Owner_Name => Customer,
                                          Owner_Id   => Id,
                                          Account    => Account);
+      Accounts_Balance (Account) := Account_Balance'(Value   => No_Amount,
+						     Account => Account);
       Num_Accounts_Used := Num_Accounts_Used + 1;
    end Open;
 
