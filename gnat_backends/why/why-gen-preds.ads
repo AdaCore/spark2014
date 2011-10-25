@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Preds is
@@ -31,7 +32,7 @@ package Why.Gen.Preds is
    --  This package provides facilities to manipulate Why predicates
 
    procedure Define_Range_Predicate
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the range predicate for an abstract type
@@ -39,7 +40,7 @@ package Why.Gen.Preds is
    --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type

@@ -54,7 +54,6 @@ with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Conversions;       use Why.Conversions;
-with Why.Inter;             use Why.Inter;
 with Why.Sinfo;             use Why.Sinfo;
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
@@ -115,10 +114,9 @@ package body Gnat2Why.Subprograms is
    --------------------------
 
    procedure Transform_Subprogram
-     (File      : W_File_Id;
-      Prog_File : W_File_Id;
-      Node      : Node_Id;
-      As_Spec   : Boolean)
+     (File        : W_File_Sections;
+      Node        : Node_Id;
+      As_Spec     : Boolean)
    is
       Spec        : constant Node_Id :=
                       (if Nkind (Node) = N_Subprogram_Body and then
@@ -606,7 +604,8 @@ package body Gnat2Why.Subprograms is
                              Compute_Binders (Logic_Function => True);
       Logic_Func_Args    : constant W_Expr_Array :=
                              Compute_Args (Logic_Func_Binders);
-      Dummy_Node   : Node_Id;
+      Dummy_Node         : Node_Id;
+      pragma Unreferenced (Dummy_Node);
       Pre          : constant W_Pred_Id :=
                        +Compute_Spec (Name_Precondition, Dummy_Node, EW_Pred);
       Loc_Node     : Node_Id := Empty;
@@ -642,7 +641,7 @@ package body Gnat2Why.Subprograms is
         and then not As_Spec
       then
          Emit
-           (Prog_File,
+           (File (W_File_Prog),
             New_Function_Def
               (Domain  => EW_Prog,
                Name    => New_Pre_Check_Name.Id (Name_Str),
@@ -659,7 +658,7 @@ package body Gnat2Why.Subprograms is
          if Is_Expr_Func then
             if Etype (Defining_Entity (Spec)) = Standard_Boolean then
                Emit
-                 (File,
+                 (File (W_File_Axiom),
                   New_Defining_Bool_Axiom
                     (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Logic_Func_Binders,
@@ -669,7 +668,7 @@ package body Gnat2Why.Subprograms is
 
             else
                Emit
-                 (File,
+                 (File (W_File_Axiom),
                   New_Defining_Axiom
                     (Name        => Logic_Func_Name.Id (Name_Str),
                      Return_Type => Get_EW_Type (Expression (Orig_Node)),
@@ -687,7 +686,7 @@ package body Gnat2Why.Subprograms is
 
             if Nkind (Spec) = N_Function_Specification then
                Emit
-                 (Prog_File,
+                 (File (W_File_Prog),
                   New_Global_Ref_Declaration
                      (Name => Result_Name,
                       Ref_Type =>
@@ -696,7 +695,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             Emit
-              (Prog_File,
+              (File (W_File_Prog),
                New_Function_Def
                  (Domain  => EW_Prog,
                   Name    => New_Definition_Name.Id (Name_Str),
@@ -747,12 +746,11 @@ package body Gnat2Why.Subprograms is
                                Domain => EW_Pred)
                             else Post);
          begin
-
             --  Generate a logic function
 
             if Nkind (Spec) = N_Function_Specification then
                Emit
-                 (File,
+                 (File (W_File_Logic_Func),
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => Logic_Func_Name.Id (Name_Str),
@@ -763,7 +761,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             Emit
-              (Prog_File,
+              (File (W_File_Prog),
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Program_Func_Name.Id (Name_Str),

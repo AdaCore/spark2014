@@ -23,14 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;              use Why.Ids;
+with Why.Inter;          use Why.Inter;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
    --  in the program space and in the logic space.
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Id;
+      (File          : W_File_Sections;
        Type_Name     : String);
       --  Create a parameter of the form
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->

@@ -25,10 +25,8 @@
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Sinfo;           use Why.Sinfo;
-with Why.Types; use Why.Types;
 
 package body Why.Gen.Decl is
 
@@ -44,29 +42,6 @@ package body Why.Gen.Decl is
         (Id => File,
          New_Item => +Decl);
    end Emit;
-
-   ---------------------------------
-   -- File_Append_To_Declarations --
-   ---------------------------------
-
-   procedure File_Append_To_Declarations
-     (Id        : W_File_Id;
-      New_Items : W_Declaration_List)
-   is
-      use Node_Lists;
-
-      Nodes    : constant List := Get_List (Why_Node_List (New_Items));
-      Position : Cursor := First (Nodes);
-   begin
-      while Position /= No_Element loop
-         declare
-            Node : constant Why_Node_Id := Element (Position);
-         begin
-            File_Append_To_Declarations (Id, W_Declaration_Id (Node));
-         end;
-         Position := Next (Position);
-      end loop;
-   end File_Append_To_Declarations;
 
    --------------
    -- New_Type --

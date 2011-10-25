@@ -65,7 +65,7 @@ package Why.Inter is
          WP_Abstract_Types : List_Of_Nodes.List;
          --  Special list for types that are not in Alfa, but for which we
          --  still generate abstract type declarations in Why.
-         WP_Abstract_Obj : List_Of_Nodes.List;
+         WP_Abstract_Obj   : List_Of_Nodes.List;
          --  Special list for objects that are not in Alfa (either because of
          --  their type, or because of their initialization expression), but
          --  for which we still generate a parameter. This parameter may be
@@ -141,5 +141,31 @@ package Why.Inter is
    function Eq (Left, Right : W_Base_Type_Id) return Boolean;
    --  Extensional equality (i.e. returns True if Left and Right are of
    --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
+
+   type W_File_Section is
+     (W_File_Header,      --  include declarations
+      W_File_Logic_Type,  --  logic type declarations (with func and axioms)
+      W_File_Logic_Func,  --  logic function declarations
+      W_File_Axiom,       --  axioms
+      W_File_Data,        --  reference declarations
+      W_File_Prog);       --  program declarations
+   --  This type is used to divide a Why file into sections, so that translated
+   --  items can be put into their section, and later on the complete file is
+   --  created by putting the sections in order.
+
+   type W_File_Sections is array (W_File_Section) of W_File_Id;
+   --  File sections matching the partition of W_File_Section
+
+   function New_File_Sections return W_File_Sections;
+   --  Return fresh sections
+
+   procedure Copy_Section
+     (From     : W_File_Sections;
+      To       : W_File_Sections;
+      Section  : W_File_Section);
+   --  Copy the section Section in file From to file To
+
+   function Get_One_File (Sections : W_File_Sections) return W_File_Id;
+   --  Return a file corresponding to the concatenation of all file sections
 
 end Why.Inter;

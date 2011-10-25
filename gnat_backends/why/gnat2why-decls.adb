@@ -27,13 +27,14 @@ with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
 
+with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
-with Why.Inter;            use Why.Inter;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Types;            use Why.Types;
+
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 
@@ -77,7 +78,7 @@ package body Gnat2Why.Decls is
    ---------------------------------
 
    procedure Why_Decl_Of_Ada_Object_Decl
-     (File : W_File_Id;
+     (File : W_File_Sections;
       Id   : Entity_Id;
       Def  : Node_Id := Empty)
    is
@@ -90,7 +91,7 @@ package body Gnat2Why.Decls is
       --  objects read.
 
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Type
            (Name  => Object_Type_Name.Id (Name),
             Alias => +Why_Logic_Type_Of_Ada_Obj (Id)));
@@ -99,7 +100,7 @@ package body Gnat2Why.Decls is
 
       if Is_Mutable (Id) then
          Emit
-           (File,
+           (File (W_File_Data),
             New_Global_Ref_Declaration
               (Name     => New_Identifier (Name),
                Ref_Type => +Why_Logic_Type_Of_Ada_Obj (Id)));

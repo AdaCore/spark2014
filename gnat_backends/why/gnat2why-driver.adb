@@ -41,6 +41,7 @@ with Osint.C;               use Osint.C;
 with Output;                use Output;
 with Outputs;               use Outputs;
 with Sem;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Stand;                 use Stand;
 with Switch;                use Switch;
@@ -53,16 +54,15 @@ with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
-with Why.Sinfo;             use Why.Sinfo;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Conversions;       use Why.Conversions;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Conversions;       use Why.Conversions;
-with Why.Inter;             use Why.Inter;
+with Why.Ids;               use Why.Ids;
+with Why.Sinfo;             use Why.Sinfo;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
@@ -73,13 +73,12 @@ package body Gnat2Why.Driver is
    --   This is the main driver for the Ada-to-Why back-end
 
    procedure Translate_List_Of_Abstract_Decls
-     (File  : W_File_Id;
+     (File  : W_File_Sections;
       Decls : List_Of_Nodes.List);
    --  Take a list of entities and translate them to Why abstract entities
 
    procedure Translate_List_Of_Decls
-     (File      : W_File_Id;
-      Prog_File : W_File_Id;
+     (File      : W_File_Sections;
       Decls     : List_Of_Nodes.List;
       As_Spec   : Boolean);
    --  Take a list of Ada declarations and translate them to Why declarations.
@@ -88,10 +87,10 @@ package body Gnat2Why.Driver is
    --  File (like axioms) and program declaration in Prog_File, although this
    --  is not enforced right now.
 
-   procedure Translate_Context (File : W_File_Id; L : String_Lists.List);
+   procedure Translate_Context (File : W_File_Sections; L : String_Lists.List);
    --  Translate the context of an Ada unit into Why includes
 
-   procedure Translate_CUnit (Pack : Why_Package);
+   procedure Translate_CUnit (Type_Vars_Pack, Subp_Pack : Why_Package);
    --  Translate an Ada unit into Why declarations
 
    -----------------
@@ -256,22 +255,10 @@ package body Gnat2Why.Driver is
 
       Filter_Compilation_Unit (GNAT_Root);
 
-      --  Workaround for K526-008 and K525-019
-
-      --  for CU of Alfa_Compilation_Units loop
-      --     Translate_CUnit (CU);
-      --  end loop;
-      declare
-         use List_Of_Why_Packs;
-
-         C : Cursor := Alfa_Compilation_Units.First;
-      begin
-         while C /= No_Element loop
-            Translate_CUnit (Element (C));
-            Next (C);
-         end loop;
-      end;
-
+      Translate_CUnit (Types_Vars_Spec,
+                       Subp_Spec);
+      Translate_CUnit (Types_Vars_Body,
+                       Subp_Body);
    end GNAT_To_Why;
 
    ------------------------
@@ -307,13 +294,14 @@ package body Gnat2Why.Driver is
    -- Translate_Context --
    -----------------------
 
-   procedure Translate_Context (File : W_File_Id; L : String_Lists.List) is
+   procedure Translate_Context (File : W_File_Sections; L : String_Lists.List)
+   is
       use String_Lists;
       Cur : Cursor := First (L);
    begin
       while Has_Element (Cur) loop
          Emit
-           (File,
+           (File (W_File_Header),
             New_Include_Declaration
              (Name => New_Identifier (Element (Cur))));
          Next (Cur);
@@ -324,39 +312,64 @@ package body Gnat2Why.Driver is
    -- Translate_CUnit --
    ---------------------
 
-   procedure Translate_CUnit (Pack : Why_Package)
-   is
-      File      : constant W_File_Id := New_File;
-      Prog_File : constant W_File_Id := New_File;
-      Unit_Name : constant String := Pack.WP_Name.all;
+   procedure Translate_CUnit (Type_Vars_Pack, Subp_Pack : Why_Package) is
+      Type_Vars_File : constant W_File_Sections := New_File_Sections;
+      Subp_File      : constant W_File_Sections := New_File_Sections;
+      File           : constant W_File_Sections := New_File_Sections;
+      Full_File  : W_File_Id;
 
       use List_Of_Nodes;
    begin
       Current_Why_Output_File := File;
 
-      Translate_Context (File, Pack.WP_Context);
-      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Types);
-      Translate_List_Of_Decls
-        (File, Prog_File, Pack.WP_Types, As_Spec => False);
-      Translate_List_Of_Abstract_Decls (File, Pack.WP_Abstract_Obj);
-      Translate_List_Of_Decls
-        (File, Prog_File, Pack.WP_Decls_As_Spec, As_Spec => True);
-      Translate_List_Of_Decls
-        (File, Prog_File, Pack.WP_Decls, As_Spec => False);
+      Translate_Context (Type_Vars_File, Type_Vars_Pack.WP_Context);
+      Translate_Context (Subp_File, Subp_Pack.WP_Context);
 
-      --  Append program declarations after logic declarations, so all
-      --  necessary axioms are seen before the corresponding logic functions
-      --  are used in programs.
+      --  Translate all declarations from Type_Vars_Pack and Subp_Pack in File
 
-      File_Append_To_Declarations (Id        => File,
-                                   New_Items => Get_Declarations (Prog_File));
+      Translate_List_Of_Abstract_Decls
+        (File, Type_Vars_Pack.WP_Abstract_Types);
+      Translate_List_Of_Decls
+        (File, Type_Vars_Pack.WP_Types, As_Spec => False);
+      Translate_List_Of_Abstract_Decls
+        (File, Type_Vars_Pack.WP_Abstract_Obj);
+      Translate_List_Of_Decls
+        (File, Type_Vars_Pack.WP_Decls, As_Spec => False);
 
-      Open_Current_File (Unit_Name & ".mlw");
-      Sprint_Why_Node (+File, Current_File);
+      Translate_List_Of_Decls
+        (File, Subp_Pack.WP_Decls_As_Spec, As_Spec => True);
+      Translate_List_Of_Decls
+        (File, Subp_Pack.WP_Decls, As_Spec => False);
+
+      --  Copy sections in relevant file. For examepl, append program
+      --  declarations after logic declarations, so all necessary axioms are
+      --  seen before the corresponding logic functions are used in programs.
+
+      Copy_Section (File, Type_Vars_File, W_File_Logic_Type);
+      Copy_Section (File, Type_Vars_File, W_File_Data);
+
+      Copy_Section (File, Subp_File, W_File_Logic_Func);
+      Copy_Section (File, Subp_File, W_File_Axiom);
+      Copy_Section (File, Subp_File, W_File_Prog);
+
+      --  Generate final files
+
+      Full_File := Get_One_File (Type_Vars_File);
+      Open_Current_File (Type_Vars_Pack.WP_Name.all & ".mlw");
+      Sprint_Why_Node (+Full_File, Current_File);
       Close_Current_File;
 
       if Print_Generated_Code then
-         wpg (+File);
+         wpg (+Full_File);
+      end if;
+
+      Full_File := Get_One_File (Subp_File);
+      Open_Current_File (Subp_Pack.WP_Name.all & ".mlw");
+      Sprint_Why_Node (+Full_File, Current_File);
+      Close_Current_File;
+
+      if Print_Generated_Code then
+         wpg (+Full_File);
       end if;
    end Translate_CUnit;
 
@@ -365,7 +378,7 @@ package body Gnat2Why.Driver is
    --------------------------------------
 
    procedure Translate_List_Of_Abstract_Decls
-     (File  : W_File_Id;
+     (File  : W_File_Sections;
       Decls : List_Of_Nodes.List)
    is
       use List_Of_Nodes;
@@ -375,19 +388,24 @@ package body Gnat2Why.Driver is
       --  (for N of Decls loop...)
       while Cu /= No_Element loop
          declare
-            N    : Node_Id := Element (Cu);
+            N : constant Node_Id := Element (Cu);
+            E : Entity_Id := N;
          begin
+            if Nkind (E) /= N_Defining_Identifier then
+               E := Defining_Entity (E);
+            end if;
+
             --  if the node is not an entity, get the corresponding entity
 
-            if Nkind (N) /= N_Defining_Identifier then
-               N := Defining_Identifier (N);
-            end if;
-            case Ekind (N) is
+            case Ekind (E) is
                when Type_Kind =>
-                  Emit (File, New_Type (Full_Name (N)));
+                  Emit (File (W_File_Logic_Type), New_Type (Full_Name (N)));
 
                when Object_Kind | Named_Kind =>
-                  Why_Decl_Of_Ada_Object_Decl (File, N);
+                  Why_Decl_Of_Ada_Object_Decl (File, E);
+
+               when Subprogram_Kind | E_Subprogram_Body =>
+                  Transform_Subprogram (File, N, As_Spec => True);
 
                when others =>
                   raise Program_Error;
@@ -402,8 +420,7 @@ package body Gnat2Why.Driver is
    -----------------------------
 
    procedure Translate_List_Of_Decls
-     (File      : W_File_Id;
-      Prog_File : W_File_Id;
+     (File      : W_File_Sections;
       Decls     : List_Of_Nodes.List;
       As_Spec   : Boolean)
    is
@@ -422,7 +439,7 @@ package body Gnat2Why.Driver is
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Transform_Subprogram (File, Prog_File, Element (Cu), As_Spec);
+               Transform_Subprogram (File, Element (Cu), As_Spec);
 
             when N_Object_Declaration
               | N_Number_Declaration =>
@@ -470,7 +487,8 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
-      File : constant W_File_Id := New_File;
+      File       : constant W_File_Sections := New_File_Sections;
+      Full_File  : W_File_Id;
 
       procedure Add_Standard_Type (T : Entity_Id);
       --  Add declaration for type in Standard not declared in Standard
@@ -497,13 +515,13 @@ package body Gnat2Why.Driver is
       --  Generate the inclusion of the GNATprove Why theory
 
       Emit
-        (File,
+        (File (W_File_Header),
          New_Include_Declaration
            (Name => New_Identifier ("_gnatprove_standard")));
 
       Translate_List_Of_Abstract_Decls (File, Filter_Out_Standard_Package);
       Translate_List_Of_Decls
-        (File, File, Filter_Standard_Package, As_Spec => False);
+        (File, Filter_Standard_Package, As_Spec => False);
 
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere
@@ -519,7 +537,7 @@ package body Gnat2Why.Driver is
       --  definition. The type is not in Alfa anyway, so we just generate the
       --  correct abstract type in Why.
 
-      Emit (File, New_Type ("standard___renaming_type"));
+      Emit (File (W_File_Logic_Type), New_Type ("standard___renaming_type"));
 
       --  We also need to define the ASCII entities
 
@@ -528,7 +546,7 @@ package body Gnat2Why.Driver is
       begin
          while Present (Cur) loop
             Emit
-              (File,
+              (File (W_File_Logic_Func),
                New_Function_Decl
                  (Domain => EW_Term,
                   Name   =>
@@ -543,12 +561,14 @@ package body Gnat2Why.Driver is
          end loop;
       end;
 
+      Full_File := Get_One_File (File);
+
       Open_Current_File ("_standard.mlw");
-      Sprint_Why_Node (+File, Current_File);
+      Sprint_Why_Node (+Full_File, Current_File);
       Close_Current_File;
 
       if Print_Generated_Code then
-         wpn (+File);
+         wpn (+Full_File);
       end if;
    end Translate_Standard_Package;
 

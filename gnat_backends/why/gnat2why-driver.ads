@@ -30,12 +30,12 @@
 --  packages that deal with type declarations, data declarations and
 --  function/procedure definitions.
 
-with Types;   use Types;
-with Why.Ids; use Why.Ids;
+with Types;     use Types;
+with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Driver is
 
-   Current_Why_Output_File : W_File_Id;
+   Current_Why_Output_File : W_File_Sections;
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id);
    --  Translates an entire GNAT tree for a compilation unit into

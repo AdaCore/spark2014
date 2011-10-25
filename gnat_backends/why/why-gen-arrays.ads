@@ -25,6 +25,7 @@
 
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
+with Why.Inter;    use Why.Inter;
 with Why.Sinfo;    use Why.Sinfo;
 
 package Why.Gen.Arrays is
@@ -37,7 +38,7 @@ package Why.Gen.Arrays is
    --  We are limited to constrained arrays with static bounds for now.
 
    procedure Declare_Ada_Constrained_Array
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Component : String;
       First     : W_Term_Id;
@@ -47,7 +48,7 @@ package Why.Gen.Arrays is
    --  type A is Array (index) of Component
 
    procedure Declare_Ada_Unconstrained_Array
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Component : String);
    --  Introduce all the necessary declarations for an Ada array declaration

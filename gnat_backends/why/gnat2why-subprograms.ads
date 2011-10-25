@@ -26,6 +26,7 @@
 with Namet;         use Namet;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
+with Why.Inter;     use Why.Inter;
 with Why.Types;     use Why.Types;
 
 package Gnat2Why.Subprograms is
@@ -60,10 +61,9 @@ package Gnat2Why.Subprograms is
    --  in this package.
 
    procedure Transform_Subprogram
-     (File      : W_File_Id;
-      Prog_File : W_File_Id;
-      Node      : Node_Id;
-      As_Spec   : Boolean);
+     (File        : W_File_Sections;
+      Node        : Node_Id;
+      As_Spec     : Boolean);
    --  Generate a Why declaration that corresponds to an Ada subprogram
    --  Node is a N_Subprogram_Body
 

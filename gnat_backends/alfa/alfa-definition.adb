@@ -554,6 +554,8 @@ package body Alfa.Definition is
 
       if Ekind (Ent) in Private_Kind
         and then Ekind (Ent) not in Record_Kind
+        and then not Has_Unknown_Discriminants (Ent)
+        and then not Has_Discriminants (Ent)
       then
          return True;
       end if;
@@ -897,6 +899,12 @@ package body Alfa.Definition is
 
             return Is_Main_Cunit (Root);
 
+         --  The only way a node in a subunit can be seen is when this subunit
+         --  is part of the main unit.
+
+         when N_Subunit =>
+            return True;
+
          when N_Package_Declaration            |
               N_Generic_Package_Declaration    |
               N_Subprogram_Declaration         |
@@ -934,7 +942,8 @@ package body Alfa.Definition is
 
       case Nkind (Root) is
          when N_Package_Body    |
-              N_Subprogram_Body =>
+              N_Subprogram_Body |
+              N_Subunit         =>
 
             return False;
 
@@ -1747,7 +1756,8 @@ package body Alfa.Definition is
 
          case Ekind (+E) is
             when Object_Kind =>
-               if Ekind_In (+E, E_Variable, E_Constant)
+               if (Ekind_In (+E, E_Variable, E_Constant)
+                    or else Ekind (+E) in Formal_Kind)
                  and then not (Object_Is_In_Alfa (E))
                then
                   Mark_Non_Alfa ("object", N, From => Unique (Entity (N)));
@@ -2062,8 +2072,8 @@ package body Alfa.Definition is
          return;
       end if;
 
-      --  The object is in Alfa if-and-only-if its type is in Alfa and it is
-      --  not aliased.
+      --  The object is in Alfa if-and-only-if its type is in Alfa, it is
+      --  not aliased, and its initialization expression, if any, is in Alfa.
 
       Push_Scope (Id);
       if not Type_Is_In_Alfa (T) then
@@ -2395,21 +2405,19 @@ package body Alfa.Definition is
       --  generate object declarations for its parameters; This is necessary
       --  to support local subprograms which use these parameters, which may
       --  be in Alfa.
-
-      declare
-         Param : Entity_Id := First_Entity (+Id);
-      begin
-         while Present (Param) loop
-            if Nkind (Parent (Param)) = N_Parameter_Specification then
-               if Type_Is_In_Alfa (Etype (Param)) then
-                  Decls_In_Body (Alfa_Object).Append (Parent (Param));
-               else
-                  Decls_In_Body (Non_Alfa_Type).Append (Parent (Param));
-               end if;
-            end if;
-            Next_Entity (Param);
-         end loop;
-      end;
+--
+--        declare
+--           Param : Entity_Id := First_Entity (+Id);
+--        begin
+--           while Present (Param) loop
+--              if Nkind (Parent (Param)) = N_Parameter_Specification then
+--                 Mark_Object_In_Alfa
+--                   (Unique (Param), Parent (Param),
+--                    In_Alfa => Type_Is_In_Alfa (Etype (Param)));
+--              end if;
+--              Next_Entity (Param);
+--           end loop;
+--        end;
 
       --  Inherit violations from spec to body
 
@@ -2488,7 +2496,7 @@ package body Alfa.Definition is
       Id         : constant Entity_Id := Unique_Defining_Entity (N);
       Formals    : constant List_Id   := Parameter_Specifications (N);
       Param_Spec : Node_Id;
-      Formal     : Entity_Id;
+      Formal     : Unique_Entity_Id;
 
    begin
 
@@ -2499,15 +2507,21 @@ package body Alfa.Definition is
       if Present (Formals) then
          Param_Spec := First (Formals);
          while Present (Param_Spec) loop
-            Formal := Defining_Identifier (Param_Spec);
+            Formal := Unique (Defining_Identifier (Param_Spec));
 
             --  The parameter is in Alfa if-and-only-if its type is in Alfa
 
-            if not Type_Is_In_Alfa (Etype (Formal)) then
+            if not Type_Is_In_Alfa (Etype (+Formal)) then
                Mark_Non_Alfa_Declaration
                  ("type of formal", Param_Spec,
-                  From => Unique (Etype (Formal)));
+                  From => Unique (Etype (+Formal)));
             end if;
+
+            --  If parameter is in Alfa, store this information explicitly
+
+            Mark_Object_In_Alfa
+              (Formal, Param_Spec,
+               In_Alfa => Object_Is_Computed_In_Alfa (Formal));
 
             Next (Param_Spec);
          end loop;

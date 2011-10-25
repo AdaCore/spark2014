@@ -35,7 +35,7 @@ package body Why.Gen.Axioms is
    -------------------------
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty)
@@ -106,7 +106,7 @@ package body Why.Gen.Axioms is
                                   Pred      => Formula);
    begin
       Emit
-        (File,
+        (File (W_File_Axiom),
          New_Axiom
            (Name => Coerce_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
@@ -117,7 +117,7 @@ package body Why.Gen.Axioms is
    ------------------------
 
    procedure Define_Range_Axiom
-     (File       : W_File_Id;
+     (File       : W_File_Sections;
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id)
    is
@@ -140,7 +140,7 @@ package body Why.Gen.Axioms is
                                   Formula);
    begin
       Emit
-        (File,
+        (File (W_File_Axiom),
          New_Axiom
            (Name => Range_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
@@ -151,7 +151,7 @@ package body Why.Gen.Axioms is
    --------------------------
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar)
    is
@@ -198,7 +198,7 @@ package body Why.Gen.Axioms is
                                  Formula);
    begin
       Emit
-        (File,
+        (File (W_File_Axiom),
          New_Axiom
            (Name => Unicity_Axiom.Id (Type_Name),
             Def  => Quantif_On_XY));

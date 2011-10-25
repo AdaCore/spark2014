@@ -39,7 +39,7 @@ package body Why.Gen.Arrays is
    -----------------------------------
 
    procedure Declare_Ada_Constrained_Array
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Component : String;
       First     : W_Term_Id;
@@ -60,7 +60,7 @@ package body Why.Gen.Arrays is
 
       if First /= Why_Empty then
          Emit
-           (File,
+           (File (W_File_Axiom),
             New_Guarded_Axiom
               (Name => Array_First_Static.Id (Name),
                Binders => (1 => Ar_Binder),
@@ -78,7 +78,7 @@ package body Why.Gen.Arrays is
       end if;
       if Last /= Why_Empty then
          Emit
-           (File,
+           (File (W_File_Axiom),
             New_Guarded_Axiom
               (Name => Array_Last_Static.Id (Name),
                Binders => (1 => Ar_Binder),
@@ -119,7 +119,7 @@ package body Why.Gen.Arrays is
    -------------------------------------
 
    procedure Declare_Ada_Unconstrained_Array
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Component : String)
    is
@@ -149,23 +149,23 @@ package body Why.Gen.Arrays is
       --  ??? why-gen-axioms defines general methods to
       --  generate these axioms. Presumably not exactly those ones,
       --  but close enough. This should be factorized out.
-      Emit (File, New_Type (Name));
+      Emit (File (W_File_Logic_Type), New_Type (Name));
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Array_Conv_From.Id (Name),
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Array_Conv_To.Id (Name),
             Binders     => (1 => Ar_Binder_2),
             Return_Type => Name_Type));
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Axiom
            (Name => Array_Conv_Idem.Id (Name),
             Def  =>
@@ -199,7 +199,7 @@ package body Why.Gen.Arrays is
                                    Name   => Array_Conv_From.Id (Name),
                                    Args   => (1 => +Ar))))))));
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Guarded_Axiom
            (Name    => Array_Conv_Idem_2.Id (Name),
             Binders => (1 => Ar_Binder_2),

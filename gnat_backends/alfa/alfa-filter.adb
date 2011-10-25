@@ -51,16 +51,6 @@ package body Alfa.Filter is
       Subp_Spec_Suffix       : constant String := "__subp_spec";
       Main_Suffix            : constant String := "__package";
 
-      Types_Vars_Spec : Why_Package :=
-         Make_Empty_Why_Pack (Prefix & Types_Vars_Spec_Suffix);
-      Types_Vars_Body : Why_Package :=
-         Make_Empty_Why_Pack (Prefix & Types_Vars_Body_Suffix);
-      Subp_Spec       : Why_Package :=
-         Make_Empty_Why_Pack (Prefix & Subp_Spec_Suffix);
-
-      Subp_Body       : Why_Package :=
-         Make_Empty_Why_Pack (Prefix & Main_Suffix);
-
       --  All subprogram definitions should end up in this package, as it
       --  corresponds to the only Why file which is not included by other Why
       --  files, so that we will not redo the same proof more than once. In
@@ -98,6 +88,11 @@ package body Alfa.Filter is
    --  Start of processing for Filter_Compilation_Unit
 
    begin
+      Types_Vars_Spec := Make_Empty_Why_Pack (Prefix & Types_Vars_Spec_Suffix);
+      Types_Vars_Body := Make_Empty_Why_Pack (Prefix & Types_Vars_Body_Suffix);
+      Subp_Spec       := Make_Empty_Why_Pack (Prefix & Subp_Spec_Suffix);
+      Subp_Body       := Make_Empty_Why_Pack (Prefix & Main_Suffix);
+
       case Nkind (Unit (N)) is
          when N_Package_Body =>
             Spec_Unit :=
@@ -262,11 +257,6 @@ package body Alfa.Filter is
             end;
          end if;
       end;
-
-      Alfa_Compilation_Units.Append (Types_Vars_Spec);
-      Alfa_Compilation_Units.Append (Types_Vars_Body);
-      Alfa_Compilation_Units.Append (Subp_Spec);
-      Alfa_Compilation_Units.Append (Subp_Body);
    end Filter_Compilation_Unit;
 
    -----------------------------

@@ -30,6 +30,7 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Ids;            use Why.Ids;
 
 package body Why.Gen.Funcs is
 
@@ -38,7 +39,7 @@ package body Why.Gen.Funcs is
    ------------------------------------
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Id;
+      (File          : W_File_Sections;
        Type_Name     : String)
    is
       Arg_S    : constant String := "n";
@@ -75,7 +76,7 @@ package body Why.Gen.Funcs is
                                                               Type_Name));
    begin
       Emit
-        (File,
+        (File (W_File_Prog),
          New_Function_Decl
            (Domain      => EW_Prog,
             Name        => Eq_Param_Name.Id (Type_Name),

@@ -27,6 +27,7 @@ with Why.Atree.Builders;        use Why.Atree.Builders;
 with Why.Conversions;           use Why.Conversions;
 with Why.Gen.Decl;              use Why.Gen.Decl;
 with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Ids;                   use Why.Ids;
 with Why.Sinfo;                 use Why.Sinfo;
 
 package body Why.Gen.Records is
@@ -36,7 +37,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Define_Ada_Record
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array)
@@ -69,12 +70,12 @@ package body Why.Gen.Records is
                          Else_Part   => New_Literal (Value  => EW_False,
                                                      Domain => EW_Term));
    begin
-      Emit (File,
+      Emit (File (W_File_Logic_Type),
         New_Record_Definition (Name    => New_Identifier (Name),
                                Binders => Binders));
 
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Function_Def
            (Domain      => EW_Term,
             Name        => New_Bool_Cmp (EW_Eq, W_Type),

@@ -24,14 +24,14 @@
 ------------------------------------------------------------------------------
 
 with String_Utils;  use String_Utils;
-with Why.Ids;       use Why.Ids;
+with Why.Inter;     use Why.Inter;
 
 package Why.Gen.Enums is
 
    --  This package provides ways to declare enumeration types
 
    procedure Declare_Ada_Enum_Type
-     (File         : W_File_Id;
+     (File         : W_File_Sections;
       Name         : String;
       Constructors : String_Lists.List);
    --  This creates a new enumeration type with the given name and given

@@ -27,7 +27,10 @@ with Why.Inter; use Why.Inter;
 
 package Alfa.Filter is
 
-   Alfa_Compilation_Units : List_Of_Why_Packs.List;
+   Types_Vars_Spec : Why_Package;
+   Types_Vars_Body : Why_Package;
+   Subp_Spec       : Why_Package;
+   Subp_Body       : Why_Package;
 
    procedure Filter_Compilation_Unit (N : Node_Id);
    --  Filter declarations in compilation unit N and generate compilation units

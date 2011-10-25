@@ -37,7 +37,7 @@ package body Why.Gen.Preds is
    -------------------------
 
    procedure Define_Eq_Predicate
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar)
    is
@@ -76,7 +76,7 @@ package body Why.Gen.Preds is
    begin
       --  ...now set the pieces together:
       Emit
-        (File,
+        (File (W_File_Logic_Func),
          New_Function_Def
            (Name    => Pred_Name,
             Domain  => EW_Pred,
@@ -95,7 +95,7 @@ package body Why.Gen.Preds is
    ----------------------------
 
    procedure Define_Range_Predicate
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar)
    is
@@ -127,7 +127,7 @@ package body Why.Gen.Preds is
                        Attribute_Id'Image (Attribute_Last)));
    begin
       Emit
-        (File,
+        (File (W_File_Logic_Func),
          New_Function_Def
            (Domain  => EW_Pred,
             Name    => Pred_Name,

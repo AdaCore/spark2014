@@ -39,7 +39,7 @@ with Why.Types;          use Why.Types;
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -52,13 +52,13 @@ package body Why.Gen.Scalars is
    ----------------------------------
 
    procedure Declare_Ada_Abstract_Modular
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Modulus : Uint;
       Is_Base : Boolean)
    is
    begin
-      Emit (File, New_Type (Name));
+      Emit (File (W_File_Logic_Type), New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -79,14 +79,14 @@ package body Why.Gen.Scalars is
    -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       First : W_Integer_Constant_Id;
       Last  : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
-      Emit (File, New_Type (Name));
+      Emit (File (W_File_Logic_Type), New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -106,13 +106,13 @@ package body Why.Gen.Scalars is
    ----------------------
 
    procedure Declare_Ada_Real
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       First   : Ureal;
       Last    : Ureal;
       Is_Base : Boolean) is
    begin
-      Emit (File, New_Type (Name));
+      Emit (File (W_File_Logic_Type), New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -132,7 +132,7 @@ package body Why.Gen.Scalars is
    -------------------------------
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -148,7 +148,7 @@ package body Why.Gen.Scalars is
 
       --  to base type:
       Emit
-        (File,
+        (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conversion_To.Id (Name, BT_Name),
@@ -221,7 +221,7 @@ package body Why.Gen.Scalars is
                                           Right   => +New_Term (Arg_S));
             begin
                Emit
-                 (File,
+                 (File (W_File_Prog),
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => Overflow_Check_Name.Id (Name),
@@ -254,7 +254,7 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (File       : W_File_Id;
+     (File       : W_File_Sections;
       Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;

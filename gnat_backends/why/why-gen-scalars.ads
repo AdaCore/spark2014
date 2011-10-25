@@ -27,6 +27,7 @@ with Uintp;     use Uintp;
 with Urealp;    use Urealp;
 
 with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Scalars is
@@ -34,7 +35,7 @@ package Why.Gen.Scalars is
    --  (types, subprograms, axioms) for scalar types.
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       First : W_Integer_Constant_Id;
       Last  : W_Integer_Constant_Id;
@@ -46,7 +47,7 @@ package Why.Gen.Scalars is
    --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Abstract_Modular
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Modulus : Uint;
       Is_Base : Boolean);
@@ -57,7 +58,7 @@ package Why.Gen.Scalars is
    --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Real
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       First   : Ureal;
       Last    : Ureal;
@@ -69,7 +70,7 @@ package Why.Gen.Scalars is
    --  is an Ada base type.
 
    procedure Define_Scalar_Attributes
-     (File       : W_File_Id;
+     (File       : W_File_Sections;
       Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;

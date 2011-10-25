@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;   use Types;
-with Why.Ids; use Why.Ids;
+with Types;     use Types;
+with Why.Inter; use Why.Inter;
+
 package Gnat2Why.Decls is
 
    function Is_Mutable (N : Node_Id) return Boolean;
@@ -32,7 +33,7 @@ package Gnat2Why.Decls is
    --  the Why translation
 
    procedure Why_Decl_Of_Ada_Object_Decl
-     (File : W_File_Id;
+     (File : W_File_Sections;
       Id   : Entity_Id;
       Def  : Node_Id := Empty);
    --  Generate Why declarations that correspond to an Ada top level object

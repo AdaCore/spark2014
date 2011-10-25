@@ -34,6 +34,7 @@ pragma Warnings (On);
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Ids;            use Why.Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Inter;          use Why.Inter;
 
 package Why.Gen.Binders is
    --  This package provides operations to build binders in program space
@@ -216,7 +217,7 @@ package Why.Gen.Binders is
      of Declaration_Spec;
 
    procedure Set_Top_Level_Declarations
-     (File        : W_File_Id;
+     (File        : W_File_Sections;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -224,7 +225,7 @@ package Why.Gen.Binders is
       Spec        : in out Declaration_Spec_Array);
 
    procedure Emit_Top_Level_Declarations
-     (File        : W_File_Id;
+     (File        : W_File_Sections;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;

@@ -29,14 +29,6 @@ package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
    --  toplevel declarations.
 
-   procedure File_Append_To_Declarations
-     (Id        : W_File_Id;
-      New_Items : W_Declaration_List);
-   --  Append all declarations in New_Items to Id. This is currently a manually
-   --  written procedure. It could be added to the API of Atree lists in the
-   --  future, like done currently for File_Append_To_Declarations applied to a
-   --  single element.
-
    function New_Type (Name : String) return W_Declaration_Id;
 
    function New_Type

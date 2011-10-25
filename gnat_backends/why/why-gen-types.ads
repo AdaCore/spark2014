@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;      use Why.Ids;
+with Why.Inter;    use Why.Inter;
 with String_Utils; use String_Utils;
 
 package Why.Gen.Types is
@@ -31,7 +31,7 @@ package Why.Gen.Types is
    --  This package provides ways to create Why types
 
    procedure New_Enum_Type_Declaration
-     (File         : W_File_Id;
+     (File         : W_File_Sections;
       Name         : String;
       Constructors : String_Lists.List);
    --  Create the declaration of an enumeration type with name [Name] and list

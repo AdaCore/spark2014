@@ -40,13 +40,14 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Ids;            use Why.Ids;
 with Why.Types;          use Why.Types;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
 
    procedure Define_Enum_To_Int_Function
-     (File         : W_File_Id;
+     (File         : W_File_Sections;
       Name         : String;
       Constructors : String_Lists.List);
    --  define conversion function from enum type to integer
@@ -65,7 +66,7 @@ package body Why.Gen.Enums is
    ---------------------------------
 
    procedure Define_Enum_To_Int_Function
-      (File         : W_File_Id;
+      (File         : W_File_Sections;
        Name         : String;
        Constructors : String_Lists.List)
       --  ??? Not fully implemented yet
@@ -112,7 +113,7 @@ package body Why.Gen.Enums is
                            others => <>)),
                      Def         => +Match);
       begin
-         Emit (File, Func);
+         Emit (File (W_File_Logic_Func), Func);
       end;
    end Define_Enum_To_Int_Function;
 
@@ -121,7 +122,7 @@ package body Why.Gen.Enums is
    ---------------------------
 
    procedure Declare_Ada_Enum_Type
-     (File         : W_File_Id;
+     (File         : W_File_Sections;
       Name         : String;
       Constructors : String_Lists.List)
    is
@@ -134,7 +135,7 @@ package body Why.Gen.Enums is
       pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
       Emit
-        (File,
+        (File (W_File_Logic_Func),
          Binders.New_Function_Decl
            (Domain      => EW_Term,
             Name        =>
@@ -148,7 +149,7 @@ package body Why.Gen.Enums is
          New_Constant (Uint_1), New_Constant (Max_Uint), Why_Empty);
       Define_Range_Predicate (File, Name, EW_Int);
       Emit
-        (File,
+        (File (W_File_Prog),
          New_Function_Decl
            (Domain      => EW_Prog,
             Name        => To_Program_Space (Conversion_From.Id (Name, "int")),

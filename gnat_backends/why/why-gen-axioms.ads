@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;         use Why.Ids;
+with Why.Inter;       use Why.Inter;
 with Why.Types;       use Why.Types;
 with Why.Sinfo;       use Why.Sinfo;
 
@@ -31,7 +32,7 @@ package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
 
    procedure Define_Range_Axiom
-     (File       : W_File_Id;
+     (File       : W_File_Sections;
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id);
    --  Define a range axiom; it asserts the given abstract type stays in the
@@ -42,7 +43,7 @@ package Why.Gen.Axioms is
    --    <type_name>___in_range (<conversion> (x))
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty);
@@ -57,7 +58,7 @@ package Why.Gen.Axioms is
    --     <to_base_type> (<from_base_type> (x)) = x % modulus
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar);
    --  Define a unicity axiom; it asserts that if two object of the

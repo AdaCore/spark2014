@@ -43,7 +43,6 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
@@ -55,7 +54,7 @@ package body Gnat2Why.Types is
    --  Return True is N is of an Ada base type
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -63,7 +62,7 @@ package body Gnat2Why.Types is
    --  from node.
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -79,7 +78,7 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -105,7 +104,7 @@ package body Gnat2Why.Types is
    ---------------------------------
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Id;
+     (File    : W_File_Sections;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -184,7 +183,7 @@ package body Gnat2Why.Types is
    -----------------------------
 
    procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Id;
+      (File       : W_File_Sections;
        Name_Str   : String;
        Ident_Node : Node_Id) is
    begin
@@ -318,7 +317,7 @@ package body Gnat2Why.Types is
                   --  empty records to type unit in Why?
 
                   if Number_Of_Fields = 0 then
-                     Emit (File, New_Type (Name_Str));
+                     Emit (File (W_File_Logic_Type), New_Type (Name_Str));
                      return;
                   end if;
 
@@ -355,7 +354,7 @@ package body Gnat2Why.Types is
                --  derived from a private type. We just generate an
                --  abstract type here.
 
-               Emit (File, New_Type (Name_Str));
+               Emit (File (W_File_Logic_Type), New_Type (Name_Str));
 
             when others =>
                raise Not_Implemented;
@@ -365,7 +364,7 @@ package body Gnat2Why.Types is
    end Why_Type_Decl_Of_Entity;
 
    procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Id;
+      (File       : W_File_Sections;
        Ident_Node : Node_Id)
    is
       Name_Str : constant String := Full_Name (Ident_Node);
