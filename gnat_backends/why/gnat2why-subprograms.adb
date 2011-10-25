@@ -651,6 +651,11 @@ package body Gnat2Why.Subprograms is
                                          Dummy_Node,
                                          EW_Prog)));
 
+         --  Given an expression function F with expression E, define an axiom
+         --  that states that: "for all <args> => F(<args>) = E".
+         --  There is no need to use the precondition here, as the above axiom
+         --  is always sound.
+
          if Is_Expr_Func then
             if Etype (Defining_Entity (Spec)) = Standard_Boolean then
                Emit
@@ -658,7 +663,6 @@ package body Gnat2Why.Subprograms is
                   New_Defining_Bool_Axiom
                     (Name    => Logic_Func_Name.Id (Name_Str),
                      Binders => Logic_Func_Binders,
-                     Pre     => Pre,
                      Def     => +Transform_Expr (Expression (Orig_Node),
                                                  EW_Pred,
                                                  Ref_Allowed => False)));
@@ -670,7 +674,6 @@ package body Gnat2Why.Subprograms is
                     (Name        => Logic_Func_Name.Id (Name_Str),
                      Return_Type => Get_EW_Type (Expression (Orig_Node)),
                      Binders     => Logic_Func_Binders,
-                     Pre         => Pre,
                      Def         =>
                        +Transform_Expr
                          (Expression (Orig_Node), EW_Term,
