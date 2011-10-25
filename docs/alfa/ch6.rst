@@ -1,18 +1,26 @@
 Subprograms
 ===========
 
+We separate the *declaration view* introduced by a ``subprogram_declaration``
+from the *implementation view* introduced by a ``subprogram_body`` or an
+``expression_function_declaration``. For subprograms that are not announced by
+a ``subprogram_declaration``, the ``subprogram_body`` or
+``expression_function_declaration`` also introduces a declaration view which
+may be in Alfa even if the implementation view is not.
+
 Subprogram Declarations
 -----------------------
 
-In Alfa, a function is pure, that is, the evaluation of a call to such a
-function cannot modify the value of a variable or memory location.
-
-A subprogram is in Alfa if all the types that appear in its profile are in
-Alfa, and its contract is in Alfa.
-
+A function is in Alfa only if it is pure.
 
 Preconditions and Postconditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As indicated by the ``aspect_specification`` being part of a
+``subprogram_declaration``, a subprogram is in Alfa only if its specific
+contract expressions (introduced by ``Pre`` and ``Post``) and class-wide
+contract expressions (introduced by ``Pre'Class`` and ``Post'Class``), if any,
+are in Alfa.
 
 Global Parameters
 ^^^^^^^^^^^^^^^^^
@@ -28,52 +36,72 @@ GNAT provides a way to specify the global parameters of a subprogram:
 
 .. code-block::
 
-  Aspect_Mark global [in|out|in out]? => Annotation_List
+  Aspect_Mark Global [in|out|in out]? => Annotation_List
   Annotation_List ::= ( Annotation_Item {, Annotation_Item} )
-  Annotation_Item ::= object_name | NULL | OTHERS
+  Annotation_Item ::= object_name | NULL
 
-Specifying ``global => null`` states that the subprogram is a pure function of
-its arguments to its result.
+Item ``object_name`` should identify an object in scope, while **null**, if
+present, should be the only item in the list. Specifying ``Global => null`` on
+an imported function states that the subprogram is a pure function of its
+arguments to its result. An imported function is in Alfa only if it has such an
+annotation.
 
 Formal Parameter Modes
 ----------------------
 
 In Alfa-friendly code, it is not allowed in a call to pass as parameters
 references to overlapping locations, when at least one of the parameters is of
-mode ``out`` or ``in out``. Likewise, it is not allowed in a call to pass as
-``out`` or ``in out`` parameter a reference to some location which overlaps
-with any global parameter of the subprogram. Finally, it is not allowed in a
-call to pass as ``in`` or ``in out`` parameter a reference to some location
-which overlaps with a global parameter of mode ``out`` or ``in out`` of the
-subprogram. This is the meaning of restriction ``No_Parameter_Aliasing``.
+mode ``out`` or ``in out``, unless the other parameter is of mode ``in`` and
+by-copy. Likewise, it is not allowed in a call to pass as ``out`` or ``in out``
+parameter a reference to some location which overlaps with any global parameter
+of the subprogram. Finally, it is not allowed in a call to pass as ``in`` or
+``in out`` parameter a reference to some location which overlaps with a global
+parameter of mode ``out`` or ``in out`` of the subprogram, unless the parameter
+is of mode ``in`` and by-copy. This is the meaning of restriction
+``No_Parameter_Aliasing``.
 
-A parameter of type T is said to be valid if:
+A parameter X of type T is said to be valid if:
 
-  * it is in range for an integral type T;
+  * ``X'Valid`` evaluates to True for a scalar type T;
 
-  * all components are valid for a record type T, and
+  * all components are valid for a record type T, where the validity of a 
+    variant component is defined as the validity of the components for its 
+    current value of discriminant;
 
-    * the value of the tag corresponds to T or a derived type from T, for a
-      tagged record T;
-    * the discriminant is valid for a discriminant type T;
-    * an array component whose bounds are controlled by the discriminant has
-      expected bounds, for a discriminant type T; 
-
-  * all indexed components are valid for an array type T;
+  * all indexed components are valid for an array type T.
 
 In Alfa-friendly code, all ``in`` and ``in out`` parameters should be valid at
 the point of call. And all ``out`` and ``in out`` parameters should be valid
-when returning from the subprogram.
+when returning from the subprogram. This is the meaning of restriction
+``No_Uninitialized_Parameters``.
 
 Subprogram Bodies
 -----------------
 
-A subprogram body is in Alfa if all entities and constructs referenced are in
-Alfa. 
+No specific restrictions.
 
 Subprogram Calls
 ----------------
 
-A call is in Alfa if it resolves statically to an Alfa subprogram (whether the
-call is dispatching or not) and all parameters are in Alfa (whether explicit or
-implicit).
+A call is in Alfa only if it resolves statically to a subprogram whose
+declaration view is in Alfa (whether the call is dispatching or not).
+
+Return Statements
+-----------------
+
+No specific restrictions.
+
+Overloading of Operators
+------------------------
+
+No specific restrictions.
+
+Null Procedures
+---------------
+
+No specific restrictions.
+
+Expression Functions
+--------------------
+
+No specific restrictions.

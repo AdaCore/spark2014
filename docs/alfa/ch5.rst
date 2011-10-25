@@ -4,40 +4,38 @@ Statements
 Simple and Compound Statements - Sequences of Statements
 --------------------------------------------------------
 
-A sequence of statements is in Alfa if all statements in the sequence are in
-Alfa.
+No specific restrictions.
 
 Assignment Statements
 ---------------------
 
-An assignment statement is in Alfa if its target and expression are in Alfa.
+No specific restrictions.
 
 If Statements
 -------------
 
-An if statement is in Alfa if all conditions and statements involved are in
-Alfa.
+No specific restrictions.
 
 Case Statements
 ---------------
 
-A case statement is in Alfa if all expressions and statements involved are in
-Alfa.
+No specific restrictions.
 
 Loop Statements
 ---------------
 
+User-defined iterator types are not in Alfa. An ``iterator_specification`` is
+not in Alfa.
+
 Block Statements
 ----------------
 
-A block statement is in Alfa if all declarations and statements involved are in
-Alfa.
+No specific restrictions.
 
 Exit Statements
 ---------------
 
-An exit statement without condition is in Alfa. An exit statement with
-condition is in Alfa if the condition involved is in Alfa
+No specific restrictions.
 
 Goto Statements
 ---------------
