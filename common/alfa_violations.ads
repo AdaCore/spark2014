@@ -53,7 +53,6 @@ package Alfa_Violations is
       NYI_Impure_Function,  --  impure functions
       NYI_Logic_Function,   --  logic functions
       NYI_Modular,          --  modular type and subtype
-      NYI_Non_Static_Range, --  non static range in type
       NYI_Old_Attribute,    --  'Old attribute
       NYI_Pragma,           --  pragma
       NYI_Qualification,    --  qualification
@@ -116,7 +115,6 @@ package Alfa_Violations is
       NYI_Impure_Function  => To_Unbounded_String ("impure function"),
       NYI_Logic_Function   => To_Unbounded_String ("logic function"),
       NYI_Modular          => To_Unbounded_String ("modular"),
-      NYI_Non_Static_Range => To_Unbounded_String ("non static range"),
       NYI_Old_Attribute    => To_Unbounded_String ("Old attribute"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),
       NYI_Qualification    => To_Unbounded_String ("qualification"),

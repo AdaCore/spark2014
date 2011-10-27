@@ -36,7 +36,6 @@ with Lib;                   use Lib;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Snames;                use Snames;
-with Sem_Eval;              use Sem_Eval;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
@@ -1014,13 +1013,7 @@ package body Alfa.Definition is
 
    procedure Mark (N : Node_Id) is
    begin
-      --  Make sure all types are marked, including Itypes which are not
-      --  declared before use.
-      --  CURRENTLY COMMENTED OUT AND ONLY ENABLED FOR AGGREGATE, UNTIL DYNAMIC
-      --  RANGES ARE IN ALFA, OTHERWISE ALMOST ALL LOOPS FALL OUT OF ALFA.
-
-      if -- Nkind (N) in N_Has_Etype
-         Nkind (N) = N_Aggregate
+      if Nkind (N) in N_Has_Etype
         and then Is_Itype (Etype (N))
       then
          Mark_Type_Entity (Unique (Etype (N)));
@@ -1333,7 +1326,7 @@ package body Alfa.Definition is
          --  Frontend sometimes declares in package B an Itype for the base
          --  type of a type T declared in package A. Thus we could get a
          --  conflict when two such packages B1 and B2 were declaring the same
-         --  type. Now, Itypes serving as base types ar always marked at the
+         --  type. Now, Itypes serving as base types are always marked at the
          --  point of declaration in A, so B1/B2 do not declare it.
 
          when N_Full_Type_Declaration         |
@@ -2565,9 +2558,7 @@ package body Alfa.Definition is
          Cstr := Constraint (N);
          case Nkind (Cstr) is
             when N_Range_Constraint =>
-               if not Is_Static_Range (Range_Expression (Cstr)) then
-                  Mark_Non_Alfa ("non-static range", N, NYI_Non_Static_Range);
-               end if;
+               null;
 
             when N_Index_Or_Discriminant_Constraint =>
 
@@ -2587,11 +2578,7 @@ package body Alfa.Definition is
                           ("index type", N, NYI_XXX);
 
                      when N_Range =>
-                        if Comes_From_Source (N) and then
-                          not Is_Static_Range (Cstr) then
-                           Mark_Non_Alfa
-                             ("non-static range", N, NYI_Non_Static_Range);
-                        end if;
+                        null;
 
                      when others =>
                         raise Program_Error;
@@ -2659,7 +2646,6 @@ package body Alfa.Definition is
                Index         : Node_Id := First_Index (+Id);
 
             begin
-
                --  Check that all index types are in Alfa
 
                while Present (Index) loop
@@ -2684,43 +2670,24 @@ package body Alfa.Definition is
                      From => Unique (Component_Typ));
                end if;
 
-               --  Check that array bounds are static
-
-               if Is_Constrained (+Id)
-                 and then not Has_Static_Array_Bounds (+Id)
-               then
-                  Mark_Non_Alfa
-                    ("array type with non-static bounds",
-                     +Id, NYI_Non_Static_Range);
-               end if;
             end;
 
          when Enumeration_Kind =>
 
             --  Enumeration type is in Alfa only if it is not a character type
 
-            if not (Is_Static_Range (Scalar_Range (+Id))) then
-               Mark_Non_Alfa
-                 ("enumeration type with dynamic range", +Id,
-                  NYI_Non_Static_Range);
-            end if;
             if Is_Character_Type (+Id) then
                Mark_Non_Alfa ("character enumeration type", +Id, NYI_XXX);
             end if;
 
-         when Integer_Kind =>
-            if not (Is_Static_Range (Scalar_Range (+Id))) then
-               Mark_Non_Alfa
-                 ("integer type with dynamic range", +Id,
-                  NYI_Non_Static_Range);
-            end if;
+         when Integer_Kind | Real_Kind =>
+            --  Such types should always be in alfa
+
+            null;
 
          when E_Record_Type =>
             if Is_Interface (+Id) then
                Mark_Non_Alfa ("interface", +Id, NYI_XXX);
-
-            elsif Has_Discriminants (+Id) then
-               Mark_Non_Alfa ("discriminant", +Id, NYI_Discriminant);
 
             else
                declare
@@ -2728,6 +2695,15 @@ package body Alfa.Definition is
                   Typ   : Entity_Id;
 
                begin
+                  if Has_Discriminants (+Id) then
+                     Mark_Non_Alfa ("discriminant", +Id, NYI_Discriminant);
+                  end if;
+
+                  --  Always call Type_Is_In_Alfa on all component types, as it
+                  --  may be required to declare Itypes as early as possible,
+                  --  which avoids multiple declarations in client packages of
+                  --  this type.
+
                   Push_Scope (Id);
 
                   while Present (Field) loop
@@ -2753,13 +2729,6 @@ package body Alfa.Definition is
 
          when E_Record_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
-
-         when Real_Kind =>
-            if not (Is_Static_Range (Scalar_Range (+Id))) then
-               Mark_Non_Alfa
-                 ("real type with dynamic range", +Id,
-                  NYI_Non_Static_Range);
-            end if;
 
          when Access_Kind =>
             Mark_Non_Alfa ("access type", +Id, NIR_Access);
