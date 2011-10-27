@@ -14,10 +14,16 @@ package Subar is
    --  subtype of unconstrained type, with additional bounds
    subtype E is C (Integer range 1..10);
 
+   type Smaller is array (One_Ten range <>) of Integer;
+
+   type Test is array (11..19) of Integer;
+
    procedure F (X : A)
       with Pre => (X (1) = 1);
 
    procedure G (X : C)
       with Pre => (X (X'First) = 1);
 
+   procedure Local (X : One_Twenty)
+      with Pre => (1 < X and then X < 10);
 end Subar;

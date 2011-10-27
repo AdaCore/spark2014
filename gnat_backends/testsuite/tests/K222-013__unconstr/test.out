@@ -1,0 +1,5 @@
+unconstr.adb:3:14: validity of subtype declaration not proved
+unconstr.adb:5:22: (info) range check proved
+unconstr.adb:5:7: (info) array bounds check proved
+unconstr.ads:9:21: (info) array bounds check proved
+unconstr.ads:9:33: (info) postcondition proved

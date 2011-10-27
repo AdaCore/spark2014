@@ -1,3 +1,5 @@
 length.adb:18:15: (info) range check proved
+length.adb:21:14: validity of subtype declaration not proved
+length.ads:16:23: (info) postcondition proved
 length.ads:6:22: (info) postcondition proved
 length.ads:9:30: (info) postcondition proved

@@ -2,7 +2,14 @@ p.adb:16:34: overflow check not proved
 p.adb:16:38: (info) loop invariant initialization proved
 p.adb:16:38: (info) loop invariant preservation proved
 p.adb:17:28: overflow check not proved
+p.adb:21:16: (info) range check proved
+p.adb:23:37: overflow check not proved
+p.adb:23:41: (info) loop invariant initialization proved
+p.adb:23:41: (info) loop invariant preservation proved
+p.adb:24:25: overflow check not proved
+p.adb:24:25: range check not proved
 p.adb:33:37: overflow check not proved
 p.adb:33:41: (info) loop invariant initialization proved
 p.adb:33:41: (info) loop invariant preservation proved
 p.adb:34:25: overflow check not proved
+p.adb:8:15: (info) validity of subtype declaration proved
