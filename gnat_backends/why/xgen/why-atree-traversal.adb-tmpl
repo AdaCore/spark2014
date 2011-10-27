@@ -62,10 +62,10 @@ package body Why.Atree.Traversal is
          declare
             Node : constant Why_Node_Id := Element (Position);
          begin
+            Traverse (State, Node);
+
             exit when State.Control = Abandon_Siblings
               or else State.Control = Terminate_Immediately;
-
-            Traverse (State, Node);
          end;
 
          Next (Position);
