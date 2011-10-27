@@ -552,13 +552,17 @@ package body Alfa.Definition is
          Mark (+Id);
       end if;
 
-      if Ekind (Ent) in Private_Kind
-        and then Ekind (Ent) not in Record_Kind
-        and then not Has_Unknown_Discriminants (Ent)
-        and then not Has_Discriminants (Ent)
-      then
-         return True;
-      end if;
+      --  Until we treat record subtypes, we cannot blindly consider private
+      --  types as in Alfa, as this means subtypes of it will be in Alfa, and
+      --  then we need to be able to translate record subtypes.
+
+--        if Ekind (Ent) in Private_Kind
+--          and then Ekind (Ent) not in Record_Kind
+--          and then not Has_Unknown_Discriminants (Ent)
+--          and then not Has_Discriminants (Ent)
+--        then
+--           return True;
+--        end if;
 
       return Id_Set.Contains (Types_In_Alfa, +Id);
    end Type_Is_In_Alfa;
