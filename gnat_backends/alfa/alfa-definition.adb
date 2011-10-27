@@ -432,7 +432,6 @@ package body Alfa.Definition is
    procedure Mark_Iteration_Scheme            (N : Node_Id);
    procedure Mark_Number_Declaration          (N : Node_Id);
    procedure Mark_Object_Declaration          (N : Node_Id);
-   procedure Mark_Object_Renaming_Declaration (N : Node_Id);
    procedure Mark_Package_Body                (N : Node_Id);
    procedure Mark_Package_Declaration         (N : Node_Id);
    procedure Mark_Package_Specification       (N : Node_Id);
@@ -1218,9 +1217,6 @@ package body Alfa.Definition is
          when N_Object_Declaration =>
             Mark_Object_Declaration (N);
 
-         when N_Object_Renaming_Declaration =>
-            Mark_Object_Renaming_Declaration (N);
-
          when N_Unary_Op =>
             Mark_Unary_Op (N);
 
@@ -1396,6 +1392,12 @@ package body Alfa.Definition is
               N_Use_Package_Clause              |
               N_With_Clause                     |
               N_Use_Type_Clause                 =>
+            null;
+
+         --  Object renamings are rewritten by expansion, but they are kept in
+         --  the tree, so just ignore them.
+
+         when N_Object_Renaming_Declaration =>
             null;
 
          --  The following kinds are rewritten by expansion
@@ -2119,15 +2121,6 @@ package body Alfa.Definition is
          Next (Cur);
       end loop;
    end Mark_Object_Declarations_In_List;
-
-   --------------------------------------
-   -- Mark_Object_Renaming_Declaration --
-   --------------------------------------
-
-   procedure Mark_Object_Renaming_Declaration (N : Node_Id) is
-   begin
-      Mark_Non_Alfa_Declaration ("object being renamed", N, NYI_XXX);
-   end Mark_Object_Renaming_Declaration;
 
    -----------------------
    -- Mark_Package_Body --
