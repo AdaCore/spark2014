@@ -1594,7 +1594,7 @@ package body Gnat2Why.Expr is
                Overflow_Check_Needed := True;
             end;
 
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
+         when N_Op_Add | N_Op_Multiply | N_Op_Subtract | N_Op_Mod =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types
             declare

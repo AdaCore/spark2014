@@ -1565,7 +1565,7 @@ package body Alfa.Definition is
                   Right_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
-         when N_Op_Multiply | N_Op_Divide | N_Op_Rem | N_Op_Mod =>
+         when N_Op_Multiply | N_Op_Divide | N_Op_Mod =>
             if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
               and then Paren_Count (Left_Opnd (N)) = 0
             then
@@ -1582,7 +1582,8 @@ package body Alfa.Definition is
                   Right_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
-         when N_Op_Expon |
+         when N_Op_Rem   |
+              N_Op_Expon |
               N_Op_Xor   |
               N_Op_Shift =>
             Mark_Non_Alfa ("operator", N, NYI_Arith_Operation);
@@ -2640,6 +2641,9 @@ package body Alfa.Definition is
       then
          Mark_Non_Alfa
            ("type conversion not between scalar types", N, NYI_Conversion);
+      elsif Is_Real_Type (Etype (Expr)) /= Is_Real_Type (Etype (N)) then
+         Mark_Non_Alfa
+           ("type conversion between real and integer", N, NYI_Conversion);
       end if;
 
       Mark (Expr);
