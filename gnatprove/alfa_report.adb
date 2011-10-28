@@ -147,7 +147,7 @@ procedure Alfa_Report is
 
       procedure Add_One_Violation (S : String) is
          Count : Natural renames
-                   Violation_Cnt (Alfa_Violations.Violation_From_Msg
+                   Violation_Cnt (Alfa_Violations.Violation_From_Msg.Element
                                   (To_Unbounded_String (S)));
       begin
          Count := Count + 1;

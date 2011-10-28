@@ -497,7 +497,7 @@ package body Alfa.Frame_Conditions is
                  Make_Entity_Name (Name'Unrestricted_Access);
       E_Id   : Id;
    begin
-      E_Id := Entity_Ids (E_Name);
+      E_Id := Entity_Ids.Element (E_Name);
       return To_Names (Reads.Element (E_Id) - Defines.Element (E_Id));
    exception
       when Constraint_Error =>
@@ -519,7 +519,7 @@ package body Alfa.Frame_Conditions is
                  Make_Entity_Name (Name'Unrestricted_Access);
       E_Id   : Id;
    begin
-      E_Id := Entity_Ids (E_Name);
+      E_Id := Entity_Ids.Element (E_Name);
       return To_Names (Writes.Element (E_Id) - Defines.Element (E_Id));
    exception
       when Constraint_Error =>
