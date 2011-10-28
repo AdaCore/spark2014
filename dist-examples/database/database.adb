@@ -47,6 +47,8 @@ package body Database is
                    (if Act /= Account then
                       Links (Act).Available = Links'Old (Act).Available));
 
+      function Num_Available return Natural;
+
    end Availability;
 
    -------------------------------
@@ -80,8 +82,6 @@ package body Database is
 
    type Account_Data is array (Account_Num) of Account_Rec;
    type Account_Balance_Data is array (Account_Num) of Account_Balance;
-
-   Num_Accounts_Used : Natural := 0;
 
    ---------------------
    -- Local Variables --
@@ -128,6 +128,18 @@ package body Database is
          First_Available := Account;
       end Make_Available;
 
+      function Num_Available return Natural is
+         Count : Natural := 0;
+      begin
+         for I in Account_Num loop
+            pragma Assert (Count < Natural(I));
+            if Is_Available (I) then
+               Count := Count + 1;
+            end if;
+         end loop;
+         return Count;
+      end Num_Available;
+
       procedure Initialize_Links is
          Tmp_Prev : Ext_Account_Num;
          Tmp_Next : Ext_Account_Num;
@@ -164,7 +176,10 @@ package body Database is
    -- Num_Accounts --
    ------------------
 
-   function Num_Accounts return Natural is (Num_Accounts_Used);
+   function Num_Accounts return Natural is
+   begin
+      return Availability.Num_Available;
+   end Num_Accounts;
 
    --------------
    -- Existing --
@@ -209,7 +224,6 @@ package body Database is
                                          Account    => Account);
       Accounts_Balance (Account) := Account_Balance'(Value   => No_Amount,
 						     Account => Account);
-      Num_Accounts_Used := Num_Accounts_Used + 1;
    end Open;
 
    -----------
@@ -235,7 +249,6 @@ package body Database is
       then
          Accounts (Account) := No_Account_Rec;
          Availability.Make_Available (Account);
-         Num_Accounts_Used := Num_Accounts_Used - 1;
       end if;
    end Close;
 

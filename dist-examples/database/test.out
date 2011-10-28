@@ -14,39 +14,41 @@ database.adb:124:37: array bounds check not proved
 database.adb:126:10: (info) array bounds check proved
 database.adb:127:10: (info) array bounds check proved
 database.adb:128:29: (info) range check proved
-database.adb:135:31: (info) loop invariant initialization proved
-database.adb:135:31: (info) loop invariant preservation proved
-database.adb:139:30: (info) overflow check proved
-database.adb:139:30: (info) range check proved
-database.adb:144:30: (info) overflow check proved
-database.adb:144:30: (info) range check proved
-database.adb:146:13: (info) array bounds check proved
-database.adb:181:8: (info) array bounds check proved
-database.adb:188:8: (info) array bounds check proved
-database.adb:202:21: (info) range check proved
-database.adb:206:19: (info) precondition proved
-database.adb:207:7: (info) array bounds check proved
-database.adb:209:56: (info) range check proved
-database.adb:210:7: (info) array bounds check proved
-database.adb:211:65: (info) range check proved
-database.adb:212:46: (info) range check proved
-database.adb:212:46: overflow check not proved
-database.adb:226:10: (info) precondition proved
-database.adb:233:10: (info) array bounds check proved
-database.adb:234:18: (info) array bounds check proved
-database.adb:236:10: (info) array bounds check proved
-database.adb:237:22: (info) precondition proved
-database.adb:238:49: (info) overflow check proved
-database.adb:238:49: range check not proved
-database.adb:251:17: (info) precondition proved
-database.adb:251:41: (info) overflow check proved
-database.adb:256:7: (info) array bounds check proved
-database.adb:257:42: (info) precondition proved
-database.adb:257:9: (info) array bounds check proved
-database.adb:269:29: (info) precondition proved
-database.adb:274:7: (info) array bounds check proved
-database.adb:275:42: (info) precondition proved
-database.adb:275:9: (info) array bounds check proved
+database.adb:132:29: (info) range check proved
+database.adb:135:13: (info) loop invariant initialization proved
+database.adb:135:13: (info) loop invariant preservation proved
+database.adb:136:30: (info) range check proved
+database.adb:137:31: (info) overflow check proved
+database.adb:137:31: (info) range check proved
+database.adb:147:31: (info) loop invariant initialization proved
+database.adb:147:31: (info) loop invariant preservation proved
+database.adb:151:30: (info) overflow check proved
+database.adb:151:30: (info) range check proved
+database.adb:156:30: (info) overflow check proved
+database.adb:156:30: (info) range check proved
+database.adb:158:13: (info) array bounds check proved
+database.adb:196:8: (info) array bounds check proved
+database.adb:203:8: (info) array bounds check proved
+database.adb:217:21: (info) range check proved
+database.adb:221:19: (info) precondition proved
+database.adb:222:7: (info) array bounds check proved
+database.adb:224:56: (info) range check proved
+database.adb:225:7: (info) array bounds check proved
+database.adb:226:65: (info) range check proved
+database.adb:240:10: (info) precondition proved
+database.adb:247:10: (info) array bounds check proved
+database.adb:248:18: (info) array bounds check proved
+database.adb:250:10: (info) array bounds check proved
+database.adb:251:22: (info) precondition proved
+database.adb:264:17: (info) precondition proved
+database.adb:264:41: (info) overflow check proved
+database.adb:269:7: (info) array bounds check proved
+database.adb:270:42: (info) precondition proved
+database.adb:270:9: (info) array bounds check proved
+database.adb:282:29: (info) precondition proved
+database.adb:287:7: (info) array bounds check proved
+database.adb:288:42: (info) precondition proved
+database.adb:288:9: (info) array bounds check proved
 database.adb:32:10: (info) array bounds check proved
 database.adb:38:18: (info) postcondition proved
 database.adb:40:23: (info) array bounds check proved
