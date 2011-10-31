@@ -1033,8 +1033,16 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            Mark_List (Expressions (N));
-            Mark_List (Component_Associations (N));
+            --  Workaround for KA31-020 !!!!
+
+            if List_Length (Expressions (N))
+              + List_Length (Component_Associations (N)) > 1_000
+            then
+               Mark_Non_Alfa ("too large aggregate", N, NYI_Aggregate);
+            else
+               Mark_List (Expressions (N));
+               Mark_List (Component_Associations (N));
+            end if;
 
          when N_Allocator =>
             Mark_Non_Alfa ("allocator", N, NIR_Dynamic_Alloc);
