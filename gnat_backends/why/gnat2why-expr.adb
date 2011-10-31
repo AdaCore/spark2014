@@ -191,6 +191,10 @@ package body Gnat2Why.Expr is
    function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation;
    --  Convert an Ada comparison operator to a Why relation symbol
 
+   ----------------------------
+   -- Assignment_of_Obj_Decl --
+   ----------------------------
+
    function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id
    is
       Lvalue   : constant Entity_Id := Defining_Identifier (N);
