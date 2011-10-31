@@ -5,7 +5,7 @@ Names
 -----
 
 A name that denotes an entity is in Alfa if and only if the entity is in
-Alfa. Both ``explicit_dereference`` and ``implicit_dereference`` are not in
+Alfa. Neither ``explicit_dereference`` nor ``implicit_dereference`` are in
 Alfa.
 
 Attribute ``Access`` is not in Alfa. As they are based on access discriminants,

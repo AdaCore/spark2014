@@ -4,7 +4,7 @@ Visibility Rules
 Use Clauses 
 -----------
 
-Use clauses are not by themselves in Alfa or not.
+Use clauses are always in Alfa.
 
 Renaming Declarations
 ---------------------

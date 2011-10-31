@@ -1,9 +1,9 @@
 Subprograms
 ===========
 
-We separate the *declaration view* introduced by a ``subprogram_declaration``
+We distinguish the *declaration view* introduced by a ``subprogram_declaration``
 from the *implementation view* introduced by a ``subprogram_body`` or an
-``expression_function_declaration``. For subprograms that are not announced by
+``expression_function_declaration``. For subprograms that are not declared by
 a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in Alfa even if the implementation view is not.
@@ -25,13 +25,13 @@ are in Alfa.
 Global Parameters
 ^^^^^^^^^^^^^^^^^
 
-Besides reading and writing its parameters, a subprogram may reference directly
-objects in scope at the point of the reference, as well as locations pointed to
-through dereferences of a non-local access type. Note that such references may
-occur directly in the body of the subprogram, or in the body of another
-subprogram called. The locations referenced through objects in scope and global
-dereferences, instead of just parameters and local dereferences, are the global
-parameters of a subprogram.
+Besides reading and writing its parameters, a subprogram in Ada may directly
+reference objects in scope at the point of the reference, as well as locations
+pointed to through dereferences of a non-local access type. Note that such
+references may occur directly in the body of the subprogram, or in the body of
+another called subprogram. Objects other than formal parameters that are
+referenced either directly by their name or via dereferences of a non-local
+access type are referred to as the *global parameters* of a subprogram.
 
 GNAT provides a way to specify the global parameters of a subprogram:
 
@@ -43,9 +43,9 @@ GNAT provides a way to specify the global parameters of a subprogram:
 
 Item ``object_name`` should identify an object in scope, while **null**, if
 present, should be the only item in the list. Specifying ``Global => null`` on
-an imported function states that the subprogram is a pure function of its
-arguments to its result. An imported function is in Alfa only if it has such an
-annotation.
+an imported function states that the subprogram does not have global
+parameters. An imported function is in Alfa only if it has an annotation
+giving its global parameters.
 
 Formal Parameter Modes
 ----------------------

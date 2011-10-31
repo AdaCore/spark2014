@@ -1,14 +1,17 @@
 Packages
 ========
 
-A package is not by itself in Alfa or not. What matters is that it contains the
-declarations of entities which are in Alfa or not. 
+Packages themselves are not classified as being Alfa or non-Alfa.  Rather,
+declarations within a package are individually classified as to whether
+they are in Alfa.
 
 Private Types and Private Extensions
 ------------------------------------
 
-The partial view of a private type may in Alfa even if its full view is not in
-Alfa.
+The partial view of a private type or private extension may be in Alfa even if
+its full view is not in Alfa. The usual rule applies here, so a private type
+without discriminants is in Alfa, while a private type with discriminants is in
+Alfa only if its discriminants are in Alfa.
 
 Type Invariants
 ---------------
