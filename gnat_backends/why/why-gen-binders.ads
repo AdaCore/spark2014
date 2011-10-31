@@ -232,4 +232,7 @@ package Why.Gen.Binders is
       Return_Type : W_Primitive_Type_Id;
       Spec        : Declaration_Spec_Array);
 
+   function Unit_Param return Binder_Type;
+   --  return a dummy binder for a single argument of type unit
+
 end Why.Gen.Binders;

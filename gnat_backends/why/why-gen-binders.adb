@@ -599,4 +599,17 @@ package body Why.Gen.Binders is
       end loop;
    end Set_Top_Level_Declarations;
 
+   ----------------
+   -- Unit_Param --
+   ----------------
+
+   function Unit_Param return Binder_Type is
+   begin
+      return
+        (B_Name   => New_Identifier ("__void_param"),
+         B_Type   => New_Base_Type (Base_Type => EW_Unit),
+         Modifier => None,
+         Ada_Node => Empty);
+   end Unit_Param;
+
 end Why.Gen.Binders;

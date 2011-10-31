@@ -23,8 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Sets;
 
 with Why.Classes; use Why.Classes;
 
@@ -92,6 +94,15 @@ package Why.Atree.Tables is
    package Node_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
                                              "=" => "=");
+
+   function Why_Node_Hash (X : Why_Node_Id) return Hash_Type is
+     (Hash_Type (X));
+
+   package Why_Node_Sets is new
+     Hashed_Sets (Element_Type        => Why_Node_Id,
+                  Hash                => Why_Node_Hash,
+                  Equivalent_Elements => "=",
+                  "="                 => "=");
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
 

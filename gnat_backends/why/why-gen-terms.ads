@@ -23,10 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;            use Why.Ids;
+with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Ids;          use Why.Ids;
+with Why.Types;        use Why.Types;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
+
+   function Get_All_Dereferences (W : Why_Node_Id) return Why_Node_Sets.Set;
+   --  Return a list of the variables dereferenced in T
 
    function Has_Dereference (T : W_Term_Id) return Boolean;
    --  Return True if T contains a dereference

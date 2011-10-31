@@ -26,12 +26,40 @@
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Terms is
+
+   function Get_All_Dereferences (W : Why_Node_Id) return Why_Node_Sets.Set is
+      type Collect_State is new Traversal_State with record
+         Found : Why_Node_Sets.Set;
+      end record;
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Collect_State;
+         Node  : W_Unary_Op_Id);
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Collect_State;
+         Node  : W_Unary_Op_Id) is
+      begin
+         if Get_Op (Node) = EW_Deref then
+            State.Found.Include (+Get_Right (Node));
+         end if;
+      end Unary_Op_Pre_Op;
+
+      SS : Collect_State :=
+             (Control => Continue, Found => Why_Node_Sets.Empty_Set);
+   begin
+      Traverse (SS, W);
+      return SS.Found;
+   end Get_All_Dereferences;
+
+   ---------------------
+   -- Has_Dereference --
+   ---------------------
 
    function Has_Dereference (T : W_Term_Id) return Boolean is
       type Search_State is new Traversal_State with record

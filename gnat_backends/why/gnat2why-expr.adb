@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;                     use Ada.Containers;
+with Ada.Containers.Hashed_Maps;
+
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
@@ -39,7 +42,10 @@ with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
+with Why.Gen.Binders;       use Why.Gen.Binders;
+with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
@@ -50,8 +56,30 @@ with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
+with Gnat2Why.Driver; use Gnat2Why.Driver;
 
 package body Gnat2Why.Expr is
+
+   ---------------------
+   -- Local Variables --
+   ---------------------
+
+   function Node_Hash (X : Node_Id) return Hash_Type is (Hash_Type (X));
+
+   package Ada_To_Why is new Hashed_Maps (Key_Type        => Node_Id,
+                                          Element_Type    => Why_Node_Id,
+                                          Hash            => Node_Hash,
+                                          Equivalent_Keys => "=",
+                                          "="             => "=");
+
+   Ada_To_Why_Term : array (Boolean) of Ada_To_Why.Map;
+   --  Mappings from Ada nodes to their Why translation as a term, with the
+   --  Boolean index of the array denoting whether Ref_Allowed was True or
+   --  False when building the term.
+
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
 
    function Case_Expr_Of_Ada_Node
      (N           : Node_Id;
@@ -113,6 +141,25 @@ package body Gnat2Why.Expr is
       Current_Type : out W_Base_Type_Id) return W_Expr_Id;
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
+
+   procedure Transform_Array_Aggregate
+     (File : W_File_Sections;
+      Typ  : Entity_Id;
+      Id   : W_Identifier_Id;
+      Expr : Node_Id);
+   --  Transform an aggregate Expr into the equivalent Why terms, both with and
+   --  w/o references allowed. The results of this translation are stored in
+   --  Ada_To_Why_Term, so that the necessary function and axiom are generated
+   --  only once per source aggregate.
+   --
+   --  A logic function F is generated to replace the aggregate with a call. It
+   --  takes in parameters all values of references used in the aggregate:
+   --     function F (<params>) : <type of aggregate>
+   --
+   --  An axiom A gives the value of the function:
+   --     axiom A:
+   --        forall R:<type of aggregate>. forall <params>.
+   --           R = F(<params>) -> <predicate for the aggregate R>
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
@@ -495,7 +542,7 @@ package body Gnat2Why.Expr is
                          (Domain   => EW_Term,
                           Op       => EW_Deref,
                           Right    => +New_Identifier (Element (C).all),
-                          Op_Type  => EW_Int);
+                          Op_Type  => EW_Int);  --  BAD TYPE, not used
                   else
                      Why_Args (Cnt) := +New_Identifier (Element (C).all);
                   end if;
@@ -840,6 +887,141 @@ package body Gnat2Why.Expr is
                                             Ref_Allowed)),
            Domain => Domain);
    end Range_Expr;
+
+   -------------------------------
+   -- Transform_Array_Aggregate --
+   -------------------------------
+
+   procedure Transform_Array_Aggregate
+     (File : W_File_Sections;
+      Typ  : Entity_Id;
+      Id   : W_Identifier_Id;
+      Expr : Node_Id)
+   is
+      use Why_Node_Sets;
+
+      Func : constant W_Identifier_Id := New_Temp_Identifier;
+
+      --  Predicate used to define the aggregate
+
+      Pred : constant W_Pred_Id :=
+               Transform_Array_Component_Associations
+                 (Typ,
+                  Id,
+                  Expressions (Expr),
+                  Component_Associations (Expr),
+                  Ref_Allowed => False);
+
+      --  Compute the list of references used in the aggregate
+
+      Pred_With_Refs : constant W_Pred_Id :=
+                         Transform_Array_Component_Associations
+                           (Typ,
+                            Id,
+                            Expressions (Expr),
+                            Component_Associations (Expr),
+                            Ref_Allowed => True);
+      Refs           : constant Why_Node_Sets.Set :=
+                         Get_All_Dereferences (+Pred_With_Refs);
+
+      --  Values used in calls to the aggregate function
+
+      Ret_Type : constant W_Primitive_Type_Id :=
+                   +Why_Logic_Type_Of_Ada_Type (Typ);
+      Id_Binder : constant Binder_Type :=
+                    (Ada_Node => Empty,
+                     B_Name   => Id,
+                     Modifier => None,
+                     B_Type   => Ret_Type);
+      Deref_Args : W_Expr_Array :=
+                    (if Refs.Length = 0 then
+                      (1 => New_Void)
+                    else
+                      (1 .. Integer (Refs.Length) => <>));
+      Args : W_Expr_Array :=
+                    (if Refs.Length = 0 then
+                      (1 => New_Void)
+                    else
+                       (1 .. Integer (Refs.Length) => <>));
+      Call, Deref_Call : W_Expr_Id;
+      Id_Expr          : W_Expr_Id;
+      Unique_Param     : constant Binder_Array :=
+                   (if Refs.Length = 0 then
+                      (1 => Unit_Param)
+                    else
+                      (1 .. 0 => <>));
+      Other_Params   : Binder_Array :=
+                   (if Refs.Length = 0 then
+                      (1 .. 0 => <>)
+                    else
+                      (1 .. Integer (Refs.Length) => <>));
+      Cnt      : Positive;
+      Cursor   : Why_Node_Sets.Cursor;
+
+   begin
+      --  Compute the parameters/arguments for the function call and axiom
+
+      Cnt := 1;
+      Cursor := Refs.First;
+      while Cursor /= No_Element loop
+         Other_Params (Cnt) :=
+           (Ada_Node => Empty,
+            B_Name   => +Element (Cursor),
+            Modifier => None,
+            B_Type   =>
+              New_Abstract_Type
+                (Name => Object_Type_Name.Id
+                     (Get_Name_String (Get_Symbol (+Element (Cursor))))));
+
+         Args (Cnt) := +Element (Cursor);
+         Deref_Args (Cnt) :=
+           New_Unary_Op
+             (Domain   => EW_Term,
+              Op       => EW_Deref,
+              Right    => +Element (Cursor),
+              Op_Type  => EW_Int);  --  BAD TYPE, not used
+         Next (Cursor);
+         Cnt := Cnt + 1;
+      end loop;
+
+      --  Compute and store the translation of aggregate into Why terms, both
+      --  w/ and w/o references allowed.
+
+      Call := New_Call (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Name     => Func,
+                        Args     => Args);
+      Deref_Call := New_Call (Ada_Node => Empty,
+                              Domain   => EW_Term,
+                              Name     => Func,
+                              Args     => Deref_Args);
+
+      Ada_To_Why_Term (True).Include (Expr, +Deref_Call);
+      Ada_To_Why_Term (False).Include (Expr, +Call);
+
+      --  Generate the necessary logic function and axiom declarations
+
+      Emit
+        (File (W_File_Logic_Func),
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Func,
+            Binders     => Unique_Param & Other_Params,
+            Return_Type => Ret_Type));
+
+      Id_Expr := New_Comparison (Cmp       => EW_Eq,
+                                 Left      => +Id,
+                                 Right     => Call,
+                                 Arg_Types => +Ret_Type,
+                                 Domain    => EW_Pred);
+      Emit
+        (File (W_File_Axiom),
+         New_Guarded_Axiom
+           (Name        => Logic_Func_Axiom.Id (Func),
+            Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
+            Pre         => +Id_Expr,
+            Def         => Pred));
+   end Transform_Array_Aggregate;
 
    ------------------------------------
    -- Transform_Assignment_Statement --
@@ -1412,17 +1594,25 @@ package body Gnat2Why.Expr is
                   BT : constant W_Base_Type_Id :=
                                 +Why_Logic_Type_Of_Ada_Type (Base_Type);
                begin
-                  T := New_Simpl_Any_Expr
-                    (Domain   => Domain,
-                     Arg_Type => +BT,
-                     Id       => Id,
-                     Pred     =>
-                       Transform_Array_Component_Associations
-                         (Base_Type,
-                          Id,
-                          Expressions (Expr),
-                          Component_Associations (Expr),
-                          Ref_Allowed));
+                  if Domain = EW_Term then
+                     if not Ada_To_Why_Term (Ref_Allowed).Contains (Expr) then
+                        Transform_Array_Aggregate
+                          (Current_Why_Output_File, Base_Type, Id, Expr);
+                     end if;
+                     T := +Ada_To_Why_Term (Ref_Allowed).Element (Expr);
+                  else
+                     T := New_Simpl_Any_Expr
+                       (Domain   => Domain,
+                        Arg_Type => +BT,
+                        Id       => Id,
+                        Pred     =>
+                          Transform_Array_Component_Associations
+                            (Base_Type,
+                             Id,
+                             Expressions (Expr),
+                             Component_Associations (Expr),
+                             Ref_Allowed));
+                  end if;
                   Current_Type := EW_Abstract (Base_Type);
                end;
             end if;
