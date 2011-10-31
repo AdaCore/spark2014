@@ -142,6 +142,9 @@ package Why.Inter is
    --  Extensional equality (i.e. returns True if Left and Right are of
    --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
 
+   function Eq (Left, Right : Entity_Id) return Boolean;
+   --  Return True if Left and Right corresponds to the same Why identifier
+
    type W_File_Section is
      (W_File_Header,      --  include declarations
       W_File_Logic_Type,  --  logic type declarations (with func and axioms)

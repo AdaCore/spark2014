@@ -40,9 +40,11 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Why;                   use Why;
 with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
+with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
@@ -90,9 +92,33 @@ package body Gnat2Why.Expr is
    function Compute_Call_Args
      (Call        : Node_Id;
       Domain      : EW_Domain;
+      Nb_Of_Refs  : out Natural;
       Ref_Allowed : Boolean) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
+   --  If Nb_Of_Refs is not null, it indicates that the number of ref arguments
+   --  that could not be translated "as is" (because of a type mismatch) and
+   --  for which Insert_Ref_Context must be called.
+
+   function Insert_Ref_Context
+     (Ada_Call   : Node_Id;
+      Why_Call   : W_Prog_Id;
+      Nb_Of_Refs : Positive)
+     return W_Prog_Id;
+   --  Considering a call to an Ada subprogram; Ada_Call being its node
+   --  in the Ada syntax tree, and Why_Call its corresponding call in the
+   --  Why syntax tree:
+   --
+   --  For all "out"/"in out" parameters that need a conversion, generate
+   --  the whole context around the call, using a temporary variable
+   --  which is named after the corresponding formal. e.g. something of the
+   --  form:
+   --
+   --   let formal := ref (to_formal_type_ (from_actual_type (!actual))) in
+   --    (<why_call> ;
+   --     actual := to_actual_type_ (from_formal_type (!formal))
+   --
+   --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
    function Equal_To
      (E           : W_Expr_Id;
@@ -478,6 +504,7 @@ package body Gnat2Why.Expr is
    function Compute_Call_Args
      (Call        : Node_Id;
       Domain      : EW_Domain;
+      Nb_Of_Refs  : out Natural;
       Ref_Allowed : Boolean) return W_Expr_Array
    is
       Subp   : constant Entity_Id := Entity (Name (Call));
@@ -485,7 +512,9 @@ package body Gnat2Why.Expr is
       Len    : Nat;
       Read_Names : constant Name_Set.Set := Get_Reads (Subp);
    begin
+      Nb_Of_Refs := 0;
       Len := List_Length (Params);
+
       if Domain = EW_Term then
          Len := Len + Int (Read_Names.Length);
       end if;
@@ -510,9 +539,29 @@ package body Gnat2Why.Expr is
          begin
             case Ekind (Formal) is
                when E_In_Out_Parameter | E_Out_Parameter =>
-                  --  Parameters that are "out" must be variables
-                  --  They are translated "as is"
-                  Why_Args (Cnt) := +Transform_Ident (Actual);
+
+                  --  Parameters that are "out" are refs;
+                  --  if no conversion is needed, they can be
+                  --  translated "as is".
+
+                  if Eq (Etype (Actual), Etype (Formal)) then
+                     Why_Args (Cnt) := +Transform_Ident (Actual);
+
+                  --  If a conversion is needed, it can only be done for
+                  --  a value. That is to say, something of this sort
+                  --  should be generated:
+                  --
+                  --  let formal = ref to_formal (!actual) in
+                  --   (subprogram_call (formal); actual := !formal)
+                  --
+                  --  The generation of the context is left to the caller;
+                  --  this function only signals the existence of such
+                  --  parameters by incrementing Nb_Of_Refs.
+
+                  else
+                     Why_Args (Cnt) := +Transform_Ident (Formal);
+                     Nb_Of_Refs := Nb_Of_Refs + 1;
+                  end if;
 
                when others =>
                   --  No special treatment for parameters that are
@@ -708,6 +757,161 @@ package body Gnat2Why.Expr is
             raise Program_Error;
       end case;
    end Get_Range;
+
+   ------------------------
+   -- Insert_Ref_Context --
+   ------------------------
+
+   function Insert_Ref_Context
+     (Ada_Call   : Node_Id;
+      Why_Call   : W_Prog_Id;
+      Nb_Of_Refs : Positive)
+     return W_Prog_Id
+   is
+      --  This go recursively through the out/"in out" parameters
+      --  to be converted; and collect, for each of them:
+      --
+      --  * the name of the corresponding tmp variable;
+      --  * the expression of the conversion from the actual to the tmp;
+      --  * a statement sequence for the conversions back to the actual.
+      --
+      --  The first two are set together after that. It cannot be done
+      --  during the recursive traversal, as we are building its
+      --  children during the traversal and that only root nodes can have
+      --  their children modified.
+
+      Ref_Context : W_Prog_Id;
+      Index       : Positive := 1;
+      Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Refs);
+      Fetch       : W_Prog_Array (1 .. Nb_Of_Refs);
+      Store       : constant W_Statement_Sequence_Unchecked_Id :=
+                      New_Unchecked_Statement_Sequence;
+
+      procedure Process_Arg (Formal, Actual : Node_Id);
+
+      -----------------
+      -- Process_Arg --
+      -----------------
+
+      procedure Process_Arg (Formal, Actual : Node_Id) is
+      begin
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           and then not Eq (Etype (Actual), Etype (Formal))
+         then
+            declare
+               --  Types:
+
+               Formal_T      : constant W_Base_Type_Id :=
+                                 Type_Of_Node (Formal);
+               Actual_T      : constant W_Base_Type_Id :=
+                                 Type_Of_Node (Formal);
+               BT            : constant W_Base_Type_Id :=
+                                 Base_Why_Type (Formal_T, Actual_T);
+
+               --  Variables:
+
+               Tmp_Var       : constant W_Identifier_Id :=
+                                 Transform_Ident (Formal);
+               Tmp_Var_Deref : constant W_Prog_Id :=
+                                 New_Unary_Op
+                                   (Op       => EW_Deref,
+                                    Right    => +Tmp_Var,
+                                    Op_Type  => Get_Base_Type (BT));
+               Result        : constant W_Identifier_Id :=
+                                  Transform_Ident (Actual);
+               Result_Deref  : constant W_Prog_Id :=
+                                 New_Unary_Op
+                                   (Op       => EW_Deref,
+                                    Right    => +Result,
+                                    Op_Type  => Get_Base_Type (BT));
+
+               --  1/ Before the call (saving into a temporary variable):
+               ----------------------------------------------------------
+
+               --  On fetch, range checks are only needed when the formal
+               --  is "in out". Disable them by using the term domain in
+               --  case of "out" parameters.
+
+               Fetch_Domain  : constant EW_Domain :=
+                                 (if Ekind (Formal) in E_Out_Parameter then
+                                    EW_Term
+                                  else
+                                    EW_Prog);
+
+               --  Generate an expression of the form:
+               --
+               --    to_formal_type (from_actual_type (!actual))
+               --
+               --  ... with the appropriate range checks in the case of
+               --  "in out" parameters:
+
+               Fetch_Actual  : constant W_Prog_Id :=
+                                 +Insert_Conversion
+                                   (Domain   => Fetch_Domain,
+                                    Ada_Node => Actual,
+                                    Expr     => +Result_Deref,
+                                    From     => Type_Of_Node (Actual),
+                                    To       => Type_Of_Node (Formal));
+
+               --  2/ After the call (storing the result):
+               -------------------------------------------
+
+               --  Generate an expression of the form:
+               --
+               --    to_actual_type_ (from_formal_type (!tmp_var))
+               --
+               --  ... with the appropriate range checks...
+
+               Arg_Value     : constant W_Prog_Id :=
+                                 +Insert_Conversion
+                                   (Domain   => EW_Prog,
+                                    Ada_Node => Actual,
+                                    Expr     => +Tmp_Var_Deref,
+                                    From     => Type_Of_Node (Formal),
+                                    To       => Type_Of_Node (Actual));
+
+               --  ...then store it into the actual:
+
+               Store_Value   : constant W_Prog_Id :=
+                                 New_Assignment
+                                   (Ada_Node => Actual,
+                                    Name     =>
+                                      New_Identifier
+                                        (EW_Prog,
+                                         Full_Name (Entity (Actual))),
+                                    Value    =>
+                                      Arg_Value);
+            begin
+               Statement_Sequence_Append_To_Statements (Store, Store_Value);
+               Tmp_Vars (Index) := Tmp_Var;
+               Fetch (Index) := Fetch_Actual;
+               Index := Index + 1;
+            end;
+         end if;
+      end Process_Arg;
+
+      procedure Iterate_Call is new
+        Iterate_Call_Arguments (Process_Arg);
+
+   --  Start of processing for Insert_Ref_Context
+
+   begin
+      Statement_Sequence_Append_To_Statements (Store, Why_Call);
+      Iterate_Call (Ada_Call);
+
+      --  Set the pieces together
+
+      Ref_Context := +Store;
+      for J in Fetch'Range loop
+         Ref_Context :=
+           New_Binding_Ref
+             (Name    => Tmp_Vars (J),
+              Def     => Fetch (J),
+              Context => Ref_Context);
+      end loop;
+
+      return Ref_Context;
+   end Insert_Ref_Context;
 
    ----------------------------
    -- Iterate_Call_Arguments --
@@ -1984,16 +2188,22 @@ package body Gnat2Why.Expr is
 
          when N_Function_Call =>
             declare
-               Ident : constant W_Identifier_Id :=
-                         Transform_Ident (Name (Expr));
-               Name  : constant W_Identifier_Id :=
-                         (if Domain = EW_Prog then To_Program_Space (Ident)
-                          else Logic_Func_Name.Id (Ident));
+               Ident      : constant W_Identifier_Id :=
+                              Transform_Ident (Name (Expr));
+               Name       : constant W_Identifier_Id :=
+                              (if Domain = EW_Prog then
+                                 To_Program_Space (Ident)
+                              else
+                                 Logic_Func_Name.Id (Ident));
+               Nb_Of_Refs : Natural;
             begin
                T :=
                  +New_Located_Call
                    (Name     => Name,
-                    Progs    => Compute_Call_Args (Expr, Domain, Ref_Allowed),
+                    Progs    => Compute_Call_Args (Expr,
+                                                   Domain,
+                                                   Nb_Of_Refs,
+                                                   Ref_Allowed),
                     Ada_Node => Expr,
                     Domain   => Domain,
                     Reason   => VC_Precondition);
@@ -2331,15 +2541,28 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Procedure_Call_Statement =>
-            return
-              +New_Located_Call
-                (Ada_Node => Stmt,
-                 Name     =>
-                   To_Program_Space (Transform_Ident (Name (Stmt))),
-                 Progs    =>
-                   Compute_Call_Args (Stmt, EW_Prog, Ref_Allowed => True),
-                 Domain   => EW_Prog,
-                 Reason   => VC_Precondition);
+            declare
+               Nb_Of_Refs : Natural;
+               Call       : constant W_Prog_Id :=
+                              +New_Located_Call
+                                (Ada_Node => Stmt,
+                                 Name     =>
+                                   To_Program_Space
+                                     (Transform_Ident (Name (Stmt))),
+                                 Progs    =>
+                                   Compute_Call_Args
+                                     (Stmt, EW_Prog, Nb_Of_Refs,
+                                      Ref_Allowed => True),
+                                 Domain   => EW_Prog,
+                                 Reason   => VC_Precondition);
+            begin
+               if Nb_Of_Refs = 0 then
+                  return Call;
+               else
+                  return
+                    Insert_Ref_Context (Stmt, Call, Nb_Of_Refs);
+               end if;
+            end;
 
          when N_If_Statement =>
             declare
