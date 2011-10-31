@@ -16,8 +16,8 @@ even if the entity declared by the corresponding
 ``private_extension_declaration`` is not in Alfa.
 
 For a type or subtype to be in Alfa, all predicate specifications that apply to
-the (sub)type must be in Alfa.  When we say that a (sub)type is in Alfa, it is
-always conditionally to the applicable subtype predicates being in Alfa.
+the (sub)type must be in Alfa.  Notwithstanding any rule to the contrary, a
+(sub)type is never in Alfa if its applicable predicate is not in Alfa.
 
 Objects and Named Numbers
 -------------------------
@@ -62,12 +62,12 @@ Access Types
 Access types allow the creation of aliased data structures and objects, which
 notably complicate the specification and verification of a program's
 behavior. This is the reason why access types are excluded from Alfa. This
-falls out without any specific restrictions from the reserved word ``aliased``
+falls out without any specific restrictions from the reserved word ``access``
 not being in Alfa.
 
 Additionally, values of type access-to-subprogram make it impossible to compute
-the global parameters of subprograms and to detect aliasing, thus
-``access_to_subprogram_definition`` is not Alfa friendly.
+the global parameters of subprograms and to detect aliasing. This excludes all
+forms of access-to-subprogram types in Alfa friendly code.
 
 Declarative Parts
 -----------------

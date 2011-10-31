@@ -26,19 +26,20 @@ Global Parameters
 ^^^^^^^^^^^^^^^^^
 
 Besides reading and writing its parameters, a subprogram may reference directly
-objects in scope at the point of the reference, as well as locations pointed-to
-through dereferences. Note that such references may occur directly in the body
-of the subprogram, or in the body of another subprogram called. The locations
-referenced through objects in scope and dereferences, instead of just
-parameters, are the global parameters of a subprogram.
+objects in scope at the point of the reference, as well as locations pointed to
+through dereferences of a non-local access type. Note that such references may
+occur directly in the body of the subprogram, or in the body of another
+subprogram called. The locations referenced through objects in scope and global
+dereferences, instead of just parameters and local dereferences, are the global
+parameters of a subprogram.
 
 GNAT provides a way to specify the global parameters of a subprogram:
 
-.. code-block::
+.. code-block:: ada
 
-  Aspect_Mark Global [in|out|in out]? => Annotation_List
-  Annotation_List ::= ( Annotation_Item {, Annotation_Item} )
-  Annotation_Item ::= object_name | NULL
+    Aspect_Mark Global [in|out|in out]? => Annotation_List
+    Annotation_List ::= ( Annotation_Item {, Annotation_Item} )
+    Annotation_Item ::= object_name | NULL
 
 Item ``object_name`` should identify an object in scope, while **null**, if
 present, should be the only item in the list. Specifying ``Global => null`` on

@@ -1,5 +1,5 @@
 Generic Units
 =============
 
-Generit units are not by themselves in Alfa or not. Only their instantiations
+Generic units are not by themselves in Alfa or not. Only their instantiations
 are analyzed.
