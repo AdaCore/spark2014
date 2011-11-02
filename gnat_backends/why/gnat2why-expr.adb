@@ -1614,7 +1614,7 @@ package body Gnat2Why.Expr is
                Else_Part   => Else_Part);
          end;
 
-      else
+      elsif Present (Association) then
          declare
             Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
          begin
@@ -1633,6 +1633,9 @@ package body Gnat2Why.Expr is
                Elsif_Parts => Elsif_Parts,
                Else_Part   => Else_Part);
          end;
+
+      else
+         Result := Else_Part;
       end if;
 
       return New_Universal_Quantif
