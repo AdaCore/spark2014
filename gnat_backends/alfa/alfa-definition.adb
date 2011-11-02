@@ -1039,6 +1039,14 @@ package body Alfa.Definition is
               + List_Length (Component_Associations (N)) > 1_000
             then
                Mark_Non_Alfa ("too large aggregate", N, NYI_Aggregate);
+
+            --  Not implemented until KB02-023 is done
+
+            elsif Is_Array_Type (Etype (N))
+              and then Number_Dimensions (Etype (N)) > 1
+            then
+               Mark_Non_Alfa ("multi-dimensional aggregate", N, NYI_Aggregate);
+
             else
                Mark_List (Expressions (N));
                Mark_List (Component_Associations (N));
