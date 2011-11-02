@@ -2207,6 +2207,9 @@ package body Gnat2Why.Expr is
                     Ada_Node => Expr,
                     Domain   => Domain,
                     Reason   => VC_Precondition);
+
+               pragma Assert (Nb_Of_Refs = 0,
+                              "Only pure functions are in alfa");
             end;
 
          when N_Indexed_Component | N_Selected_Component =>
