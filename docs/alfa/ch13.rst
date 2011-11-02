@@ -1,6 +1,12 @@
 Representation Issues
 =====================
 
+Representation Clauses
+----------------------
+
+Representation clauses are in Alfa, except for ``'Address`` representation
+clauses.
+
 Machine Code Insertions
 -----------------------
 
@@ -10,3 +16,18 @@ Unchecked Type Conversions
 --------------------------
 
 Unchecked type conversions are not in Alfa.
+
+Storage Management
+------------------
+
+Storage pools are not Alfa friendly, like other controlled types.
+
+Streams
+-------
+
+Stream ``Read`` and ``Write`` operations are not in Alfa.
+
+Interfacing to Other Languages
+------------------------------
+
+Pragma or aspect ``Unchecked_Union`` is not in Alfa.

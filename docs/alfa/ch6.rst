@@ -37,15 +37,26 @@ GNAT provides a way to specify the global parameters of a subprogram:
 
 .. code-block:: ada
 
-    Aspect_Mark Global [in|out|in out]? => Annotation_List
-    Annotation_List ::= ( Annotation_Item {, Annotation_Item} )
-    Annotation_Item ::= object_name | NULL
+   Global [in|out|in out]? => Annotation_List
+   Annotation_List ::= ( Annotation_Item { Annotation_Item} )
+   Annotation_Item ::= object_name | NULL
 
-Item ``object_name`` should identify an object in scope, while **null**, if
-present, should be the only item in the list. Specifying ``Global => null`` on
+Item ``object_name`` shall identify an object in scope, while **null**, if
+present, shall be the only item in the list. Specifying ``Global => null`` on
 an imported function states that the subprogram does not have global
 parameters. An imported function is in Alfa only if it has an annotation
 giving its global parameters.
+
+Here are examples of use of global parameters:
+
+.. code-block:: ada
+
+   procedure Get_Obj with Global in => Obj;
+   procedure Set_Obj with Global out => Obj;
+   procedure Incr_Obj with Global in out => Obj;
+   procedure Copy with Global in => From, Global out => To;
+   procedure Mult_Copy with Global in => From1 From2, Global out => To1 To2;
+   function Pure_Func (X, Y : T) return Boolean with Global => null;
 
 Formal Parameter Modes
 ----------------------
