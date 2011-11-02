@@ -158,6 +158,10 @@ private
      (State : in out Printer_State;
       Node  : W_Literal_Id);
 
+   procedure Elsif_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Elsif_Id);
+
    procedure Conditional_Pre_Op
      (State : in out Printer_State;
       Node  : W_Conditional_Id);

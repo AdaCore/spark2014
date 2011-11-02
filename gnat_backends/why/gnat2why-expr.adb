@@ -1563,11 +1563,13 @@ package body Gnat2Why.Expr is
 
       Association : Node_Id;
       Expression  : Node_Id;
-      Offset      : Nat;
-      Completion  : W_Expr_Id := New_Literal (Value  => EW_True,
+      Else_Part   : W_Expr_Id := New_Literal (Value  => EW_True,
                                               Domain => EW_Pred);
+      Result      : W_Expr_Id;
+      Assocs_Len  : Nat;
 
    begin
+      Assocs_Len := List_Length (Assocs);
       Association :=
         (if Nlists.Is_Empty_List (Assocs) then Empty
          else Nlists.Last (Assocs));
@@ -1580,41 +1582,63 @@ package body Gnat2Why.Expr is
         and then Nkind (First (Choices (Association))) = N_Others_Choice
       then
          if not Box_Present (Association) then
-            Completion := Constrain_Value_At_Index (Association);
+            Else_Part := Constrain_Value_At_Index (Association);
          end if;
          Prev (Association);
+         Assocs_Len := Assocs_Len - 1;
       end if;
 
       Expression :=
         (if Nlists.Is_Empty_List (Exprs) then Empty else Nlists.Last (Exprs));
-      Offset     := List_Length (Exprs);
+
       if Present (Expression) then
          pragma Assert (No (Association));
-         while Present (Expression) loop
-            Offset := Offset - 1;
-            Completion := New_Conditional
-              (Domain    => EW_Pred,
-               Condition => +Select_Nth_Index (Offset),
-               Then_Part => Constrain_Value_At_Index (Expression),
-               Else_Part => Completion);
-            Prev (Expression);
-         end loop;
+
+         declare
+            Elsif_Parts : W_Expr_Array
+              (1 .. Integer (List_Length (Exprs)) - 1);
+         begin
+            for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
+               Elsif_Parts (Integer (Offset)) := New_Elsif
+                 (Domain    => EW_Pred,
+                  Condition => +Select_Nth_Index (Offset),
+                  Then_Part => Constrain_Value_At_Index (Expression));
+               Prev (Expression);
+            end loop;
+
+            Result := New_Conditional
+              (Domain      => EW_Pred,
+               Condition   => +Select_Nth_Index (0),
+               Then_Part   => Constrain_Value_At_Index (Expression),
+               Elsif_Parts => Elsif_Parts,
+               Else_Part   => Else_Part);
+         end;
 
       else
-         while Present (Association) loop
-            Completion := New_Conditional
+         declare
+            Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
+         begin
+            for Offset in reverse 1 .. Assocs_Len - 1 loop
+               Elsif_Parts (Integer (Offset)) := New_Elsif
+                 (Domain    => EW_Pred,
+                  Condition => +Select_These_Choices (Choices (Association)),
+                  Then_Part => Constrain_Value_At_Index (Association));
+               Prev (Association);
+            end loop;
+
+            Result := New_Conditional
               (Domain    => EW_Pred,
                Condition => +Select_These_Choices (Choices (Association)),
                Then_Part => Constrain_Value_At_Index (Association),
-               Else_Part => Completion);
-            Prev (Association);
-         end loop;
+               Elsif_Parts => Elsif_Parts,
+               Else_Part   => Else_Part);
+         end;
       end if;
 
       return New_Universal_Quantif
         (Variables => (1 => Index),
          Var_Type  => +EW_Int_Type,
-         Pred      => +Completion);
+         Pred      => +Result);
    end Transform_Array_Component_Associations;
 
    ---------------------------------------------

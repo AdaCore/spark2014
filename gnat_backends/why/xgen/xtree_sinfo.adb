@@ -415,6 +415,15 @@ package body Xtree_Sinfo is
       New_Field (W_Binding,
                  "Context", "W_Expr", Id_One);
 
+      -------------
+      -- W_Elsif --
+      -------------
+
+      New_Field (W_Elsif,
+                 "Condition", "W_Expr", Id_One);
+      New_Field (W_Elsif,
+                 "Then_Part", "W_Expr", Id_One);
+
       -------------------
       -- W_Conditional --
       -------------------
@@ -423,6 +432,8 @@ package body Xtree_Sinfo is
                  "Condition", "W_Expr", Id_One);
       New_Field (W_Conditional,
                  "Then_Part", "W_Expr", Id_One);
+      New_Field (W_Conditional,
+                 "Elsif_Parts", "W_Expr", Id_Set);
       New_Field (W_Conditional,
                  "Else_Part", "W_Expr", Id_Lone);
 

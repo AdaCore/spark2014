@@ -1033,16 +1033,9 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            --  ??? Workaround for KA31-020
-
-            if List_Length (Expressions (N))
-              + List_Length (Component_Associations (N)) > 1_000
-            then
-               Mark_Non_Alfa ("too large aggregate", N, NYI_Aggregate);
-
             --  Not implemented until KB02-023 is done
 
-            elsif Is_Array_Type (Etype (N))
+            if Is_Array_Type (Etype (N))
               and then Number_Dimensions (Etype (N)) > 1
             then
                Mark_Non_Alfa ("multi-dimensional aggregate", N, NYI_Aggregate);

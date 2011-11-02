@@ -105,6 +105,7 @@ package Why.Sinfo is
       W_Call,
       W_Literal,
       W_Binding,
+      W_Elsif,
       W_Conditional,
 
       -------------------------
