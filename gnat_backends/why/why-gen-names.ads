@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with Namet;        use Namet;
 with Snames;       use Snames;
 with Why.Ids;      use Why.Ids;
@@ -34,6 +36,11 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
+
+   New_Temp_Identifier_Suffix : Unbounded_String;
+   --  Suffix for all temporary names, so that the final name is
+   --    _temp_<suffix>_<num>
+   --  where <num> is a counter increased by one at each new temporary.
 
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name

@@ -25,6 +25,8 @@
 
 --  with Ada.Text_IO; use Ada.Text_IO; (debugging only)
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with ALI;                   use ALI;
 with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
@@ -120,6 +122,13 @@ package body Gnat2Why.Driver is
         (Action => Mark_Compilation_Unit);
 
    begin
+      --  All temporaries created for this unit should be different from
+      --  temporaries created for other units. To that end, use the unit name
+      --  as a suffix for creating temporary names.
+
+      New_Temp_Identifier_Suffix :=
+        To_Unbounded_String (Full_Name (Defining_Entity (N)));
+
       Mark_Standard_Package;
 
       --  Authorize warnings now, since regular compiler warnings should

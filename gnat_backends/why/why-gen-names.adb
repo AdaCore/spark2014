@@ -247,7 +247,8 @@ package body Why.Gen.Names is
    begin
       New_Temp_Identifier_Counter := New_Temp_Identifier_Counter + 1;
       return New_Identifier
-        ("_temp" & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
+        ("_temp_" & To_String (New_Temp_Identifier_Suffix) & "_"
+         & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
    end New_Temp_Identifier;
 
    --------------
