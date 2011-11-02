@@ -1110,9 +1110,9 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Traverse (State, +Get_Name (Node));
-      P (O, " = ref ");
+      P (O, " = ref (");
       Traverse (State, +Get_Def (Node));
-      PL (O, " in ");
+      PL (O, ") in ");
 
       if not Binding_Sequence then
          Relative_Indent (O, 1);
