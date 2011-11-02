@@ -8,5 +8,6 @@ p.adb:19:16: (info) range check proved
 p.adb:19:4: (info) array bounds check proved
 p.adb:21:35: (info) loop invariant initialization proved
 p.adb:21:35: (info) loop invariant preservation proved
+p.adb:21:8: (info) validity of subtype declaration proved
 p.adb:22:19: (info) range check proved
 p.adb:22:7: (info) array bounds check proved

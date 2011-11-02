@@ -1,4 +1,5 @@
 max.adb:3:25: (info) array bounds check proved
+max.adb:5:11: (info) validity of subtype declaration proved
 max.adb:6:10: (info) loop invariant initialization proved
 max.adb:6:10: (info) loop invariant preservation proved
 max.adb:6:25: (info) array bounds check proved
