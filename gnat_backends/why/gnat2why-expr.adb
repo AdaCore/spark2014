@@ -96,9 +96,9 @@ package body Gnat2Why.Expr is
       Ref_Allowed : Boolean) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
-   --  If Nb_Of_Refs is not null, it indicates that the number of ref arguments
-   --  that could not be translated "as is" (because of a type mismatch) and
-   --  for which Insert_Ref_Context must be called.
+   --  Nb_Of_Refs is the number of ref arguments that could not be
+   --  translated "as is" (because of a type mismatch) and for which
+   --  Insert_Ref_Context must be called.
 
    function Insert_Ref_Context
      (Ada_Call   : Node_Id;
@@ -768,8 +768,8 @@ package body Gnat2Why.Expr is
       Nb_Of_Refs : Positive)
      return W_Prog_Id
    is
-      --  This go recursively through the out/"in out" parameters
-      --  to be converted; and collect, for each of them:
+      --  This goes recursively through the out/"in out" parameters
+      --  to be converted; and collects, for each of them:
       --
       --  * the name of the corresponding tmp variable;
       --  * the expression of the conversion from the actual to the tmp;
