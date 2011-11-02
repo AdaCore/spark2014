@@ -322,19 +322,18 @@ package body Gnat2Why.Expr.Loops is
                                 Inv_Check    => Inv_Check,
                                 Inv_Node     => Inv_Node);
             Low          : constant Node_Id :=
-                             Low_Bound
-                               (Get_Range
-                                 (Discrete_Subtype_Definition
-                                   (LParam_Spec)));
+                             Low_Bound (Get_Range (Loop_Range));
          begin
             return
-              New_Binding_Ref
-                (Name    => Loop_Index,
-                 Def     => +Transform_Expr (Low,
-                                             EW_Int_Type,
-                                             EW_Prog,
-                                             Ref_Allowed => True),
-                 Context => Entire_Loop);
+              Sequence
+                (Assume_of_Subtype_Indication (Loop_Range),
+                 New_Binding_Ref
+                   (Name    => Loop_Index,
+                    Def     => +Transform_Expr (Low,
+                                                EW_Int_Type,
+                                                EW_Prog,
+                                                Ref_Allowed => True),
+                    Context => Entire_Loop));
          end;
 
       else

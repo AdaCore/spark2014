@@ -1875,7 +1875,8 @@ package body Alfa.Definition is
 
       elsif Present (Loop_Parameter_Specification (N)) then
          --  The entity for iterating over a loop is always in Alfa
-         null;
+         Mark (Discrete_Subtype_Definition
+                 (Loop_Parameter_Specification (N)));
 
       else
          pragma Assert (Present (Iterator_Specification (N)));

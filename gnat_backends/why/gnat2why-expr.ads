@@ -40,6 +40,8 @@ package Gnat2Why.Expr is
       (N    : Entity_Id;
        Base : Entity_Id) return W_Prog_Id;
 
+   function Assume_of_Subtype_Indication (N : Node_Id) return W_Prog_Id;
+
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id;

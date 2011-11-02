@@ -383,6 +383,20 @@ package body Gnat2Why.Expr is
       return Assume_of_Integer_Subtype (E, BaseType);
    end Assume_of_Integer_Subtype;
 
+   ----------------------------------
+   -- Assume_of_Subtype_Indication --
+   ----------------------------------
+
+   function Assume_of_Subtype_Indication (N : Node_Id) return W_Prog_Id is
+   begin
+      if Nkind (N) = N_Subtype_Indication then
+         return
+           Assume_of_Integer_Subtype (Etype (N), Etype (Subtype_Mark (N)));
+      else
+         return New_Void;
+      end if;
+   end Assume_of_Subtype_Indication;
+
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
    ---------------------------
