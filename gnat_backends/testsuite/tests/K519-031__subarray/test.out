@@ -14,16 +14,18 @@ subar.adb:37:7: (info) validity of subtype declaration proved
 subar.adb:40:16: (info) range check proved
 subar.adb:40:7: array bounds check not proved
 subar.adb:46:22: (info) range check proved
+subar.adb:48:11: (info) validity of subtype declaration proved
 subar.adb:48:32: (info) loop invariant initialization proved
 subar.adb:48:32: (info) loop invariant preservation proved
 subar.adb:51:14: (info) overflow check proved
+subar.adb:52:11: (info) validity of subtype declaration proved
 subar.adb:52:32: (info) loop invariant initialization proved
 subar.adb:52:32: (info) loop invariant preservation proved
 subar.adb:55:14: (info) overflow check proved
-subar.adb:56:32: (info) loop invariant initialization proved
-subar.adb:56:32: (info) loop invariant preservation proved
+subar.adb:57:11: validity of subtype declaration not proved
+subar.adb:57:32: (info) loop invariant initialization proved
+subar.adb:57:32: (info) loop invariant preservation proved
 subar.adb:5:22: (info) array bounds check proved
 subar.adb:5:7: (info) assertion proved
 subar.ads:22:20: (info) array bounds check proved
 subar.ads:25:20: array bounds check not proved
-
