@@ -1033,7 +1033,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            --  Workaround for KA31-020 !!!!
+            --  ??? Workaround for KA31-020
 
             if List_Length (Expressions (N))
               + List_Length (Component_Associations (N)) > 1_000
