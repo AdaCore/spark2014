@@ -233,6 +233,14 @@ package Why.Gen.Names is
      new Name_Gen.Arity_0 (EW_Term, "computer_div");
    --  Return an identifier that corresponds to integer division in Why
 
+   package New_Integer_Rem is
+     new Name_Gen.Arity_0 (EW_Term, "computer_mod");
+   --  Return an identifier that corresponds to computer modulo in Why
+
+   package New_Integer_Mod is
+     new Name_Gen.Arity_0 (EW_Term, "math_mod");
+   --  Return an identifier that corresponds to Enclidian modulo in Why
+
    package New_Real_Division is
      new Name_Gen.Arity_0 (EW_Term, "div_real");
    --  Return an identifier that corresponds to real division in Why
@@ -273,9 +281,6 @@ package Why.Gen.Names is
      new Name_Gen.Arity_1 (EW_Term, "", Logic_Def_Axiom);
    --  Create a new name for the axiom that states equivalence of
    --  a subprogram and its logic definition.
-
-   package Mod_Name is
-     new Name_Gen.Arity_0 (EW_Term, "math_mod");
 
    package New_Pre_Check_Name is
      new Name_Gen.Arity_1 (EW_Prog, Pre_Check, "");

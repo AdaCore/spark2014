@@ -75,7 +75,7 @@ package body Why.Gen.Axioms is
                                   New_Term (Arg_S)
                                 else
                                   New_Call
-                                    (Name => Mod_Name.Id,
+                                    (Name => New_Integer_Mod.Id,
                                      Args =>
                                        (+New_Term (Arg_S),
                                         +Modulus)));

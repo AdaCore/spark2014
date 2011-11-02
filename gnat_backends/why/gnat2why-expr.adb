@@ -2033,7 +2033,7 @@ package body Gnat2Why.Expr is
                Overflow_Check_Needed := True;
             end;
 
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract | N_Op_Mod =>
+         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types
             declare
@@ -2086,6 +2086,38 @@ package body Gnat2Why.Expr is
                                             Ref_Allowed)),
                     Reason   => VC_Division_By_Zero);
                Overflow_Check_Needed := True;
+            end;
+
+         when N_Op_Rem | N_Op_Mod =>
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Name  : W_Identifier_Id;
+            begin
+               Current_Type := Base_Why_Type (Left, Right);
+               Name := (if Nkind (Expr) = N_Op_Rem then
+                          New_Integer_Rem.Id
+                        else
+                          New_Integer_Mod.Id);
+               Name := (if Domain = EW_Prog then
+                          To_Program_Space (Name)
+                        else
+                          Name);
+               T :=
+                 New_Located_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     => Name,
+                    Progs    =>
+                      (1 => Transform_Expr (Left,
+                                            Current_Type,
+                                            Domain,
+                                            Ref_Allowed),
+                       2 => Transform_Expr (Right,
+                                            Current_Type,
+                                            Domain,
+                                            Ref_Allowed)),
+                    Reason   => VC_Division_By_Zero);
             end;
 
          when N_Op_Not =>
