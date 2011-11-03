@@ -818,9 +818,7 @@ package body Gnat2Why.Expr is
                Formal_T      : constant W_Base_Type_Id :=
                                  Type_Of_Node (Formal);
                Actual_T      : constant W_Base_Type_Id :=
-                                 Type_Of_Node (Formal);
-               BT            : constant W_Base_Type_Id :=
-                                 Base_Why_Type (Formal_T, Actual_T);
+                                 Type_Of_Node (Actual);
 
                --  Variables:
 
@@ -830,14 +828,14 @@ package body Gnat2Why.Expr is
                                  New_Unary_Op
                                    (Op       => EW_Deref,
                                     Right    => +Tmp_Var,
-                                    Op_Type  => Get_Base_Type (BT));
+                                    Op_Type  => EW_Int); --  Not used
                Result        : constant W_Identifier_Id :=
                                   Transform_Ident (Actual);
                Result_Deref  : constant W_Prog_Id :=
                                  New_Unary_Op
                                    (Op       => EW_Deref,
                                     Right    => +Result,
-                                    Op_Type  => Get_Base_Type (BT));
+                                    Op_Type  => EW_Int); -- Not used
 
                --  1/ Before the call (saving into a temporary variable):
                ----------------------------------------------------------
@@ -864,8 +862,8 @@ package body Gnat2Why.Expr is
                                    (Domain   => Fetch_Domain,
                                     Ada_Node => Actual,
                                     Expr     => +Result_Deref,
-                                    From     => Type_Of_Node (Actual),
-                                    To       => Type_Of_Node (Formal));
+                                    From     => Actual_T,
+                                    To       => Formal_T);
 
                --  2/ After the call (storing the result):
                -------------------------------------------
@@ -881,8 +879,8 @@ package body Gnat2Why.Expr is
                                    (Domain   => EW_Prog,
                                     Ada_Node => Actual,
                                     Expr     => +Tmp_Var_Deref,
-                                    From     => Type_Of_Node (Formal),
-                                    To       => Type_Of_Node (Actual));
+                                    From     => Formal_T,
+                                    To       => Actual_T);
 
                --  ...then store it into the actual:
 
