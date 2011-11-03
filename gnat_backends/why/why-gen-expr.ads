@@ -101,6 +101,13 @@ package Why.Gen.Expr is
    --  this is translated into an "any", and in the Term domain as an
    --  "epsilon".
 
+   function New_Range_Expr
+     (Domain    : EW_Domain;
+      Low, High : W_Expr_Id;
+      Expr      : W_Expr_Id) return W_Expr_Id;
+   --  Build an expression (Low <= Expr and then Expr <= High), all
+   --  comparisons being in "int"
+
    function New_Simpl_Any_Expr
      (Domain   : EW_Domain;
       Arg_Type : W_Primitive_Type_Id;

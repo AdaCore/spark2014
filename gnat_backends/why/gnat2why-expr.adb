@@ -1084,28 +1084,17 @@ package body Gnat2Why.Expr is
       Range_Node : constant Node_Id := Get_Range (N);
    begin
       return
-        New_And_Then_Expr
-          (Left  =>
-             New_Comparison
-               (Domain    => Domain,
-                Arg_Types => New_Base_Type (Base_Type => EW_Int),
-                Cmp       => EW_Le,
-                Left      => +Transform_Expr (Low_Bound (Range_Node),
-                                            EW_Int_Type,
-                                            Subdomain,
-                                            Ref_Allowed),
-                Right   => +T),
-           Right  =>
-             New_Comparison
-               (Domain    => Domain,
-                Arg_Types => New_Base_Type (Base_Type => EW_Int),
-                Cmp       => EW_Le,
-                Left      => +T,
-                Right     => +Transform_Expr (High_Bound (Range_Node),
-                                            EW_Int_Type,
-                                            Subdomain,
-                                            Ref_Allowed)),
-           Domain => Domain);
+        New_Range_Expr
+          (Domain => Domain,
+           Low    => +Transform_Expr (Low_Bound (Range_Node),
+                                      EW_Int_Type,
+                                      Subdomain,
+                                      Ref_Allowed),
+           High   => +Transform_Expr (High_Bound (Range_Node),
+                                      EW_Int_Type,
+                                      Subdomain,
+                                      Ref_Allowed),
+           Expr   => T);
    end Range_Expr;
 
    -------------------------------

@@ -50,7 +50,7 @@ package body Gnat2Why.Expr.Loops is
    --  an assertion.
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
-   --  The out parameter Runtime contains an expression that corresponds to
+   --  The out parameter Inv_Check contains an expression that corresponds to
    --  the runtime checks of the invariant.
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
@@ -255,7 +255,12 @@ package body Gnat2Why.Expr.Loops is
          end;
 
       elsif Nkind (Condition (Scheme)) = N_Empty then
-         --  A for loop
+
+         --  A for loop. Here, we set the condition to express that the index
+         --  is in the range of the loop. We need to evaluate the range
+         --  expression once at the beginning of the loop, to get potential
+         --  checks in that expression only once.
+
          declare
             LParam_Spec  : constant Node_Id :=
                              Loop_Parameter_Specification (Scheme);
@@ -307,33 +312,48 @@ package body Gnat2Why.Expr.Loops is
             Inv_Node     : constant Node_Id :=
                              (if Present (Split_Node) then Split_Node
                               else Stmt);
-            Entire_Loop  : constant W_Prog_Id :=
+            Actual_Range : constant Node_Id := Get_Range (Loop_Range);
+            Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
+            High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
+            Condition    : constant W_Prog_Id :=
+                             +New_Range_Expr (Domain => EW_Prog,
+                                             Low    => +Low_Ident,
+                                             High   => +High_Ident,
+                                             Expr   => +Index_Deref);
+            Entire_Loop  : W_Prog_Id :=
                              Wrap_Loop
                                (Loop_Body    =>
                                   Sequence (Loop_Content, Incr_Stmt),
-                                Condition    =>
-                                  +Range_Expr
-                                    (Loop_Range,
-                                     +Index_Deref,
-                                  EW_Prog,
-                                  Ref_Allowed => True),
+                                Condition    => Condition,
                                 Loop_Name    => Loop_Name,
                                 Invariant    => Enriched_Inv,
                                 Inv_Check    => Inv_Check,
                                 Inv_Node     => Inv_Node);
-            Low          : constant Node_Id :=
-                             Low_Bound (Get_Range (Loop_Range));
          begin
+            Entire_Loop := New_Binding_Ref
+                             (Name    => Loop_Index,
+                              Def     => +Low_Ident,
+                              Context => Entire_Loop);
+            Entire_Loop :=
+               New_Binding
+                 (Name    => High_Ident,
+                  Def     => +Transform_Expr (High_Bound (Actual_Range),
+                                              EW_Int_Type,
+                                              EW_Prog,
+                                              Ref_Allowed => True),
+                  Context => +Entire_Loop);
+            Entire_Loop :=
+               New_Binding
+                 (Name    => Low_Ident,
+                  Def     => +Transform_Expr (Low_Bound (Actual_Range),
+                                              EW_Int_Type,
+                                              EW_Prog,
+                                              Ref_Allowed => True),
+                  Context => +Entire_Loop);
             return
               Sequence
                 (Assume_of_Subtype_Indication (Loop_Range),
-                 New_Binding_Ref
-                   (Name    => Loop_Index,
-                    Def     => +Transform_Expr (Low,
-                                                EW_Int_Type,
-                                                EW_Prog,
-                                                Ref_Allowed => True),
-                    Context => Entire_Loop));
+                 Entire_Loop);
          end;
 
       else
@@ -362,8 +382,8 @@ package body Gnat2Why.Expr.Loops is
       --    try
       --      loop {inv}
       --         <loop body>
-      --         if not <condition> then raise <loop_name>
-      --         else ignore (inv) ;
+      --         if <condition> then ignore (inv)
+      --         else raise <loop_name>;
       --      end loop
       --    with <loop_name> -> void
       --  end if

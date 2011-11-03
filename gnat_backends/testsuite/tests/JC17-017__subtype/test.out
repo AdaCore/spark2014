@@ -12,6 +12,7 @@ p.adb:24:25: overflow check not proved
 p.adb:24:25: range check not proved
 p.adb:33:11: validity of subtype declaration not proved
 p.adb:33:37: overflow check not proved
+p.adb:33:11: validity of subtype declaration not proved
 p.adb:33:41: (info) loop invariant initialization proved
 p.adb:33:41: (info) loop invariant preservation proved
 p.adb:34:25: overflow check not proved

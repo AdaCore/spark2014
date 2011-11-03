@@ -517,6 +517,35 @@ package body Why.Gen.Expr is
       end if;
    end New_Or_Else_Expr;
 
+   --------------------
+   -- New_Range_Expr --
+   --------------------
+
+   function New_Range_Expr
+     (Domain    : EW_Domain;
+      Low, High : W_Expr_Id;
+      Expr      : W_Expr_Id) return W_Expr_Id
+   is
+   begin
+      return
+         New_And_Then_Expr
+           (Left  =>
+              New_Comparison
+                (Domain    => Domain,
+                 Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                 Cmp       => EW_Le,
+                 Left      => +Low,
+                 Right     => +Expr),
+            Right  =>
+              New_Comparison
+                (Domain    => Domain,
+                 Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                 Cmp       => EW_Le,
+                 Left      => +Expr,
+                 Right     => High),
+            Domain => Domain);
+   end New_Range_Expr;
+
    ------------------------
    -- New_Simpl_Any_Expr --
    ------------------------
