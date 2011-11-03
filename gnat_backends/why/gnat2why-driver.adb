@@ -411,7 +411,7 @@ package body Gnat2Why.Driver is
                   Emit (File (W_File_Logic_Type), New_Type (Full_Name (N)));
 
                when Object_Kind | Named_Kind =>
-                  Why_Decl_Of_Ada_Object_Decl (File, E);
+                  Why_Decl_Of_Ada_Object_Decl (File, E, Abstract_Type => True);
 
                when Subprogram_Kind | E_Subprogram_Body =>
                   Transform_Subprogram (File, N, As_Spec => True);
@@ -455,12 +455,14 @@ package body Gnat2Why.Driver is
                Why_Decl_Of_Ada_Object_Decl
                  (File,
                   Defining_Identifier (Element (Cu)),
-                  Expression (Element (Cu)));
+                  Expression (Element (Cu)),
+                  Abstract_Type => False);
 
             when N_Parameter_Specification =>
                Why_Decl_Of_Ada_Object_Decl
                  (File,
-                  Defining_Identifier (Element (Cu)));
+                  Defining_Identifier (Element (Cu)),
+                  Abstract_Type => False);
 
             when N_Itype_Reference =>
                null;  --  Nothing to do

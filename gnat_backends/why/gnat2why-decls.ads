@@ -33,9 +33,10 @@ package Gnat2Why.Decls is
    --  the Why translation
 
    procedure Why_Decl_Of_Ada_Object_Decl
-     (File : W_File_Sections;
-      Id   : Entity_Id;
-      Def  : Node_Id := Empty);
+     (File          : W_File_Sections;
+      Id            : Entity_Id;
+      Def           : Node_Id := Empty;
+      Abstract_Type : Boolean);
    --  Generate Why declarations that correspond to an Ada top level object
    --  declaration
 

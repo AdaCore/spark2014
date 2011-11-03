@@ -445,6 +445,9 @@ package body Alfa.Definition is
    procedure Mark_Unary_Op                    (N : Node_Id);
 
    procedure Mark_Object_Declarations_In_List (L : List_Id);
+   --  Mark all objects in list and sub-packages as non Alfa, so that they are
+   --  declared for effects. This is a workaround until generic instantiations
+   --  are treated like non-generic code.
 
    ------------------------------
    -- Alfa marking of entities --
@@ -2115,11 +2118,14 @@ package body Alfa.Definition is
 
          --  Pick any node that IS an object declaration or may CONTAIN one
 
-         if Nkind (Cur) = N_Object_Declaration or else
-            Nkind (Cur) = N_Package_Declaration
-         then
-            Mark (Cur);
+         if Nkind (Cur) = N_Object_Declaration then
+            Mark_Object_In_Alfa (Unique (Defining_Entity (Cur)), Cur,
+                                 In_Alfa => False);
+         elsif Nkind (Cur) = N_Package_Declaration then
+            Mark_Object_Declarations_In_List
+              (Visible_Declarations (Specification (Cur)));
          end if;
+
          Next (Cur);
       end loop;
    end Mark_Object_Declarations_In_List;

@@ -29,6 +29,7 @@ with Sinfo;                use Sinfo;
 
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
@@ -78,11 +79,23 @@ package body Gnat2Why.Decls is
    ---------------------------------
 
    procedure Why_Decl_Of_Ada_Object_Decl
-     (File : W_File_Sections;
-      Id   : Entity_Id;
-      Def  : Node_Id := Empty)
+     (File          : W_File_Sections;
+      Id            : Entity_Id;
+      Def           : Node_Id := Empty;
+      Abstract_Type : Boolean)
    is
       Name : constant String := Full_Name (Id);
+      Decl : constant W_Declaration_Id :=
+        (if Abstract_Type then
+            New_Type
+              (Name => Object_Type_Name.Id (Name),
+               Args => 0)
+         else
+            New_Type
+              (Name  => Object_Type_Name.Id (Name),
+               Alias => +Why_Logic_Type_Of_Ada_Obj (Id)));
+      Typ  : constant W_Primitive_Type_Id :=
+               New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
 
    begin
       --  Generate an alias for the name of the object's type, based on the
@@ -90,11 +103,7 @@ package body Gnat2Why.Decls is
       --  from Ada functions, to generate additional parameters for the global
       --  objects read.
 
-      Emit
-        (File (W_File_Logic_Type),
-         New_Type
-           (Name  => Object_Type_Name.Id (Name),
-            Alias => +Why_Logic_Type_Of_Ada_Obj (Id)));
+      Emit (File (W_File_Logic_Type), Decl);
 
       --  If the object is mutable, we generate a global ref
 
@@ -103,7 +112,7 @@ package body Gnat2Why.Decls is
            (File (W_File_Data),
             New_Global_Ref_Declaration
               (Name     => New_Identifier (Name),
-               Ref_Type => +Why_Logic_Type_Of_Ada_Obj (Id)));
+               Ref_Type => Typ));
 
       --  Otherwise we can generate a "logic", with a defining axiom if
       --  necessary and possible.
@@ -113,7 +122,7 @@ package body Gnat2Why.Decls is
            (File        => File,
             Name        => New_Identifier (Name),
             Binders     => (1 .. 0 => <>),
-            Return_Type => Why_Logic_Type_Of_Ada_Obj (Id),
+            Return_Type => Typ,
             Spec        =>
               (1 =>
                  (Kind   => W_Function_Decl,
