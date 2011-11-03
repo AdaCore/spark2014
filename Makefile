@@ -111,7 +111,7 @@ stdlib:
 # to detect problems with the translation to Why
 
 stdlib-check:
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check -k
+	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check
 
 install-stdlib:
 	mkdir -p $(ALI_DIR)
