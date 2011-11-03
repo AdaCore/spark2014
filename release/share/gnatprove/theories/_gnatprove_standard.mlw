@@ -344,5 +344,50 @@ val t__ada_array___update_ :
   use real.FromInt
 
   function real_of_int (x : int) : real = FromInt.from_int x
+
+  (* Boolean comparison functions for reals *)  
+
+  function lt_real_bool real real : Bool.bool
+
+  function le_real_bool real real : Bool.bool
+
+  function gt_real_bool real real : Bool.bool
+
+  function ge_real_bool real real : Bool.bool
+
+  function eq_real_bool real real : Bool.bool
+
+  function neq_real_bool real real : Bool.bool
+
+  axiom Lt_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((lt_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(<) x y))))
+
+  axiom Le_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((le_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(<=) x y))))
+
+  axiom Gt_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((gt_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(>) x y))))
+
+  axiom Ge_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((ge_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(>=) x y))))
+
+  axiom Eq_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((eq_real_bool x y : Bool.bool) = Bool.True) <-> (x = y))))
+
+  axiom Neq_real_bool_axiom:
+    (forall x:real.
+      (forall y:real.
+        (((neq_real_bool x y : Bool.bool) = Bool.True) <-> (x <> y))))
+
 end
 
