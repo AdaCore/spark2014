@@ -1,3 +1,4 @@
+
 s.adb:18:22: (info) range check proved
 s.adb:21:10: (info) loop invariant initialization proved
 s.adb:21:10: (info) loop invariant preservation proved
@@ -11,7 +12,7 @@ s.adb:27:35: (info) overflow check proved
 s.adb:28:15: (info) range check proved
 s.adb:30:7: (info) assertion proved
 s.adb:36:10: (info) loop invariant initialization proved
-s.adb:36:10: (info) loop invariant preservation proved
+s.adb:36:10: loop invariant preservation not proved
 s.adb:36:59: (info) overflow check proved
 s.adb:37:27: (info) array bounds check proved
 s.adb:37:41: (info) array bounds check proved
@@ -22,7 +23,7 @@ s.adb:41:26: (info) array bounds check proved
 s.adb:42:10: (info) array bounds check proved
 s.adb:42:25: (info) range check proved
 s.adb:49:10: (info) loop invariant initialization proved
-s.adb:49:10: (info) loop invariant preservation proved
+s.adb:49:10: loop invariant preservation not proved
 s.adb:49:45: (info) overflow check proved
 s.adb:50:27: (info) array bounds check proved
 s.adb:50:41: (info) array bounds check proved
