@@ -2517,7 +2517,7 @@ package body Gnat2Why.Expr is
          --  becomes:
          --    (let i = ref [ int ] in
          --       if cond then ignore (expr));
-         --    [ { } bool { result = true -> expr } ]
+         --    [ { } bool { result = true <-> expr } ]
          --  The condition is a formula that expresses that i is in the
          --  range given by the quantification.
          declare
@@ -2546,7 +2546,19 @@ package body Gnat2Why.Expr is
                    (Ada_Node    => Expr,
                     Return_Type => New_Base_Type (Base_Type => EW_Bool),
                     Pred        =>
-                      +Transform_Expr (Expr, EW_Pred, Ref_Allowed)));
+                      +W_Expr_Id'(New_Connection
+                        (Domain   => EW_Pred,
+                         Left     =>
+                           New_Relation
+                             (Domain   => EW_Pred,
+                              Op_Type  => EW_Bool,
+                              Left     => +New_Result_Identifier.Id,
+                              Op       => EW_Eq,
+                              Right    => New_Literal (Value  => EW_True,
+                                                       Domain => EW_Term)),
+                         Op       => EW_Equivalent,
+                         Right    =>
+                           +Transform_Expr (Expr, EW_Pred, Ref_Allowed)))));
          end;
       else
          raise Not_Implemented;
