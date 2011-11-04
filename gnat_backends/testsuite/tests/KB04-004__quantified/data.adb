@@ -14,7 +14,9 @@ package body Data is
    procedure Make_Available_3 (X : in out T) is
    begin
       for I in X'Range loop
-	 pragma Assert (for all K in X'First .. I-1 => X(K) = not X'Old(K));
+	 pragma Assert ((for all K in X'First .. I-1 => X(K) = not X'Old(K))
+			  and then 
+			    (for all K in I .. X'Last => X(K) = X'Old(K)));
 	 X(I) := not X(I);
       end loop;
    end Make_Available_3;
