@@ -225,8 +225,8 @@ val t__ada_array___update_ :
   axiom Int_min_is_le:
     forall x:int.
     forall y:int.
-        int_min x y : int <= x /\
-        int_min x y : int <= y
+        (int_min x y : int) <= x /\
+        (int_min x y : int) <= y
 
   axiom Int_min_is_some:
     forall x:int.
