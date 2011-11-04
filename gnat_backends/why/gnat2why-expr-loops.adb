@@ -278,21 +278,25 @@ package body Gnat2Why.Expr.Loops is
                                 Op       => EW_Deref,
                                 Right    => +Loop_Index,
                                 Op_Type  => EW_Int);
-            Addition     : constant W_Prog_Id :=
+            Update_Op    : constant EW_Binary_Op :=
+               (if Reverse_Present (LParam_Spec)
+                then EW_Substract
+                else EW_Add);
+            Update_Expr  : constant W_Prog_Id :=
                              New_Binary_Op
                                (Ada_Node => Stmt,
-                                Op       => EW_Add,
+                                Op       => Update_Op,
                                 Op_Type  => EW_Int,
                                 Left     => +Index_Deref,
                                 Right    =>
                                   New_Integer_Constant
                                     (Ada_Node => Stmt,
                                      Value     => Uint_1));
-            Incr_Stmt    : constant W_Prog_Id :=
+            Update_Stmt  : constant W_Prog_Id :=
                              New_Assignment
                                (Ada_Node => Stmt,
                                 Name     => Loop_Index,
-                                Value    => Addition);
+                                Value    => Update_Expr);
             Enriched_Inv : constant W_Pred_Id :=
                              +New_And_Expr
                                (Left  => +Invariant,
@@ -323,16 +327,20 @@ package body Gnat2Why.Expr.Loops is
             Entire_Loop  : W_Prog_Id :=
                              Wrap_Loop
                                (Loop_Body    =>
-                                  Sequence (Loop_Content, Incr_Stmt),
+                                  Sequence (Loop_Content, Update_Stmt),
                                 Condition    => Condition,
                                 Loop_Name    => Loop_Name,
                                 Invariant    => Enriched_Inv,
                                 Inv_Check    => Inv_Check,
                                 Inv_Node     => Inv_Node);
+            Init_Index  : constant W_Identifier_Id :=
+               (if Reverse_Present (LParam_Spec)
+                then High_Ident
+                else Low_Ident);
          begin
             Entire_Loop := New_Binding_Ref
                              (Name    => Loop_Index,
-                              Def     => +Low_Ident,
+                              Def     => +Init_Index,
                               Context => Entire_Loop);
             Entire_Loop :=
                New_Binding
