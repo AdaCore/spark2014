@@ -349,6 +349,9 @@ val t__ada_array___update_ :
   val math_mod_ : x:int -> y:int ->
     { y<>0 } int { result = math_mod x y }
 
+  val div_real_ : x:real -> y:real ->
+    { y<>0.0 } real { result = div_real x y }
+
   use real.FromInt
 
   function real_of_int (x : int) : real = FromInt.from_int x

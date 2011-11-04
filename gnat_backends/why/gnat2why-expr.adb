@@ -2074,12 +2074,11 @@ package body Gnat2Why.Expr is
                Name  : W_Identifier_Id;
             begin
                Current_Type := Base_Why_Type (Left, Right);
-               --  ??? What about Float division?
-               Name :=
-                  (if Domain = EW_Prog then
-                     To_Program_Space (New_Integer_Division.Id)
-                   else
-                     New_Division (Get_Base_Type (Current_Type)));
+               Name := New_Division (Get_Base_Type (Current_Type));
+               if Domain = EW_Prog then
+                  Name := To_Program_Space (Name);
+               end if;
+
                T :=
                  New_Located_Call
                    (Ada_Node => Expr,
