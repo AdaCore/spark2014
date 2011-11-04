@@ -62,6 +62,8 @@ package body Why.Gen.Names is
                      return Real_Of_Int.Id;
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
                      return Int_Of_Bool.Id;
+                  elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
+                     return Bool_Of_Int.Id;
                   else
 
                      --  either the two objects are of the same type

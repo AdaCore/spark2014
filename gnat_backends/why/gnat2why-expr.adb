@@ -2131,6 +2131,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
+            Current_Type := EW_Bool_Type;
             if Domain = EW_Term then
                T :=
                  New_Call
@@ -2151,7 +2152,6 @@ package body Gnat2Why.Expr is
                                               Ref_Allowed),
                     Domain => Domain);
             end if;
-            Current_Type := EW_Bool_Type;
 
          when N_Op_And =>
             T :=
