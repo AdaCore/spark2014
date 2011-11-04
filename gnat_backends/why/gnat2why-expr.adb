@@ -300,11 +300,13 @@ package body Gnat2Why.Expr is
        Base : Entity_Id) return W_Prog_Id
    is
       Rng              : constant Node_Id := Get_Range (N);
+      Why_Base         : constant W_Base_Type_Id := Base_Why_Type (N);
+      Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
       Low_Expr         : constant W_Term_Id :=
-         +Transform_Expr (Low_Bound (Rng), EW_Int_Type, EW_Term,
+         +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term,
                           Ref_Allowed => True);
       High_Expr        : constant W_Term_Id :=
-         +Transform_Expr (High_Bound (Rng), EW_Int_Type, EW_Term,
+         +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term,
                           Ref_Allowed => True);
       First_Term       : constant W_Term_Id :=
          +Attr_Name.Id (Full_Name (N), Attribute_Id'Image (Attribute_First));
@@ -324,7 +326,7 @@ package body Gnat2Why.Expr is
             Op       => EW_Eq);
       First_In_Range   : constant W_Pred_Id :=
          New_Relation
-           (Op_Type  => EW_Bool,
+           (Op_Type  => Why_Base_EW,
             Left     => +Low_Expr,
             Right    =>
               +Attr_Name.Id (Full_Name (Base),
@@ -332,7 +334,7 @@ package body Gnat2Why.Expr is
             Op       => EW_Ge);
       Last_In_Range    : constant W_Pred_Id :=
          New_Relation
-           (Op_Type  => EW_Bool,
+           (Op_Type  => Why_Base_EW,
             Left     => +High_Expr,
             Right    =>
               +Attr_Name.Id (Full_Name (Base),
@@ -340,7 +342,7 @@ package body Gnat2Why.Expr is
             Op       => EW_Le);
       First_Le_Last    : constant W_Pred_Id :=
          New_Relation
-           (Op_Type  => EW_Bool,
+           (Op_Type  => Why_Base_EW,
             Left     => +Low_Expr,
             Right    => +High_Expr,
             Op       => EW_Le);
@@ -777,7 +779,7 @@ package body Gnat2Why.Expr is
 
          when N_Defining_Identifier =>
             case Ekind (N) is
-               when Discrete_Kind =>
+               when Discrete_Or_Fixed_Point_Kind | Float_Kind =>
                   return Scalar_Range (N);
 
                when Object_Kind =>

@@ -311,7 +311,7 @@ package body Gnat2Why.Subprograms is
                            E_Floating_Point_Subtype =>
                            Assume_of_Scalar_Subtype (Ent, R);
 
-                        when E_Array_Subtype =>
+                        when Array_Kind =>
                            declare
                               Index : Node_Id := First_Index (Ent);
                            begin
@@ -321,7 +321,10 @@ package body Gnat2Why.Subprograms is
                               end loop;
                            end;
 
-                        when E_Enumeration_Subtype =>
+                        when Enumeration_Kind =>
+                           null;
+
+                        when E_Record_Type =>
                            null;
 
                         when others =>
