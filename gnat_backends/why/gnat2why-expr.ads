@@ -34,9 +34,9 @@ package Gnat2Why.Expr is
    function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
-   function Assume_of_Integer_Subtype (E : Entity_Id) return W_Prog_Id;
+   function Assume_of_Scalar_Subtype (E : Entity_Id) return W_Prog_Id;
 
-   function Assume_of_Integer_Subtype
+   function Assume_of_Scalar_Subtype
       (N    : Entity_Id;
        Base : Entity_Id) return W_Prog_Id;
 

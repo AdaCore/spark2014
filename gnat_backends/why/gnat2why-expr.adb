@@ -291,11 +291,11 @@ package body Gnat2Why.Expr is
       end if;
    end Assignment_of_Obj_Decl;
 
-   -------------------------------
-   -- Assume_of_Integer_Subtype --
-   -------------------------------
+   ------------------------------
+   -- Assume_of_Scalar_Subtype --
+   ------------------------------
 
-   function Assume_of_Integer_Subtype
+   function Assume_of_Scalar_Subtype
       (N    : Entity_Id;
        Base : Entity_Id) return W_Prog_Id
    is
@@ -373,15 +373,36 @@ package body Gnat2Why.Expr is
            Domain   => EW_Prog,
            Reason   => VC_Subtype_Decl,
            Expr     => +Any_Expr);
-   end Assume_of_Integer_Subtype;
+   end Assume_of_Scalar_Subtype;
 
-   function Assume_of_Integer_Subtype (E : Entity_Id) return W_Prog_Id is
-      BaseType : constant Entity_Id :=
-         (if Is_Itype (E) then Etype (E)
-          else Entity (Subtype_Mark (Subtype_Indication (Parent (E)))));
+   function Assume_of_Scalar_Subtype (E : Entity_Id) return W_Prog_Id is
+      BaseType : Entity_Id;
    begin
-      return Assume_of_Integer_Subtype (E, BaseType);
-   end Assume_of_Integer_Subtype;
+      if Is_Itype (E) then
+         BaseType := Etype (E);
+      else
+
+         --  ??? It would be better not to scan the declaration to get the
+         --  base type of the current type. But the entity does not have this
+         --  information.
+
+         case Nkind (Parent (E)) is
+            when N_Subtype_Declaration =>
+               BaseType :=
+                  Entity (Subtype_Mark (Subtype_Indication (Parent (E))));
+
+            when N_Full_Type_Declaration =>
+               BaseType :=
+                  Entity (Subtype_Mark
+                     (Subtype_Indication (Type_Definition (Parent (E)))));
+
+            when others =>
+               raise Program_Error;
+
+         end case;
+      end if;
+      return Assume_of_Scalar_Subtype (E, BaseType);
+   end Assume_of_Scalar_Subtype;
 
    ----------------------------------
    -- Assume_of_Subtype_Indication --
@@ -391,7 +412,7 @@ package body Gnat2Why.Expr is
    begin
       if Nkind (N) = N_Subtype_Indication then
          return
-           Assume_of_Integer_Subtype (Etype (N), Etype (Subtype_Mark (N)));
+           Assume_of_Scalar_Subtype (Etype (N), Etype (Subtype_Mark (N)));
       else
          return New_Void;
       end if;

@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Uintp;     use Uintp;
-with Urealp;    use Urealp;
 
 with Why.Ids;   use Why.Ids;
 with Why.Inter; use Why.Inter;
@@ -60,8 +59,8 @@ package Why.Gen.Scalars is
    procedure Declare_Ada_Real
      (File    : W_File_Sections;
       Name    : String;
-      First   : Ureal;
-      Last    : Ureal;
+      First   : W_Real_Constant_Id;
+      Last    : W_Real_Constant_Id;
       Is_Base : Boolean);
    --  Declare the whole theory for a floating/fixed point type whose range
    --  is First .. Last.  This creates an abstract type whose name is

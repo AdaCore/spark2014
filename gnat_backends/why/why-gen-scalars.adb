@@ -108,8 +108,8 @@ package body Why.Gen.Scalars is
    procedure Declare_Ada_Real
      (File    : W_File_Sections;
       Name    : String;
-      First   : Ureal;
-      Last    : Ureal;
+      First   : W_Real_Constant_Id;
+      Last    : W_Real_Constant_Id;
       Is_Base : Boolean) is
    begin
       Emit (File (W_File_Logic_Type), New_Type (Name));
@@ -117,8 +117,8 @@ package body Why.Gen.Scalars is
         (File      => File,
          Name      => Name,
          Base_Type => EW_Real,
-         First     => New_Constant (First),
-         Last      => New_Constant (Last),
+         First     => +First,
+         Last      => +Last,
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (File      => File,

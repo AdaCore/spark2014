@@ -110,13 +110,20 @@ package body Gnat2Why.Types is
       Is_Base : Boolean)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
+      First      : W_Real_Constant_Id := Why_Empty;
+      Last       : W_Real_Constant_Id := Why_Empty;
    begin
-      Declare_Ada_Real
-        (File,
-         Name,
-         Expr_Value_R (Low_Bound (Range_Node)),
-         Expr_Value_R (High_Bound (Range_Node)),
-         Is_Base);
+      if Is_Static_Expression (Low_Bound (Range_Node)) then
+         First :=
+            New_Real_Constant (Value =>
+              Expr_Value_R (Low_Bound (Range_Node)));
+      end if;
+      if Is_Static_Expression (High_Bound (Range_Node)) then
+         Last :=
+            New_Real_Constant (Value =>
+              Expr_Value_R (High_Bound (Range_Node)));
+      end if;
+      Declare_Ada_Real (File, Name, First, Last, Is_Base);
    end Declare_Ada_Real_From_Range;
 
    ------------------------------

@@ -268,16 +268,16 @@ package body Gnat2Why.Subprograms is
          (Initial_Body : W_Prog_Id;
           Post_Check   : W_Prog_Id) return W_Prog_Id
       is
-         procedure Assume_of_Integer_Subtype
+         procedure Assume_of_Scalar_Subtype
             (Ent : Entity_Id;
              R   : in out W_Prog_Id);
-         --  Local Wrapper for Assume_of_Integer_Subtype
+         --  Local Wrapper for Assume_of_Scalar_Subtype
 
-         -------------------------------
-         -- Assume_of_Integer_Subtype --
-         -------------------------------
+         ------------------------------
+         -- Assume_of_Scalar_Subtype --
+         ------------------------------
 
-         procedure Assume_of_Integer_Subtype
+         procedure Assume_of_Scalar_Subtype
             (Ent : Entity_Id;
              R   : in out W_Prog_Id)
          is
@@ -288,9 +288,9 @@ package body Gnat2Why.Subprograms is
             --  done it for us already
 
             if not Is_Static_Range (Get_Range (Ent)) then
-               R := Sequence (Assume_of_Integer_Subtype (Ent), R);
+               R := Sequence (Assume_of_Scalar_Subtype (Ent), R);
             end if;
-         end Assume_of_Integer_Subtype;
+         end Assume_of_Scalar_Subtype;
 
          Cur_Decl : Node_Id := Last (Declarations (Node));
          R        : W_Prog_Id := Initial_Body;
@@ -300,22 +300,23 @@ package body Gnat2Why.Subprograms is
                when N_Object_Declaration =>
                   R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
 
-               when N_Subtype_Declaration =>
+               when N_Subtype_Declaration | N_Full_Type_Declaration =>
                   declare
                      Ent : constant Entity_Id :=
                         Defining_Identifier (Cur_Decl);
                   begin
 
                      case Ekind (Ent) is
-                        when E_Signed_Integer_Subtype =>
-                           Assume_of_Integer_Subtype (Ent, R);
+                        when E_Signed_Integer_Subtype |
+                           E_Floating_Point_Subtype =>
+                           Assume_of_Scalar_Subtype (Ent, R);
 
                         when E_Array_Subtype =>
                            declare
                               Index : Node_Id := First_Index (Ent);
                            begin
                               while Present (Index) loop
-                                 Assume_of_Integer_Subtype (Etype (Index), R);
+                                 Assume_of_Scalar_Subtype (Etype (Index), R);
                                  Next (Index);
                               end loop;
                            end;
