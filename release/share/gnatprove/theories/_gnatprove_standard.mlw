@@ -340,6 +340,11 @@ val t__ada_array___update_ :
   val computer_div_ : x:int -> y:int ->
     { y<>0 } int { result = computer_div x y }
 
+  val computer_mod_ : x:int -> y:int ->
+    { y<>0 } int { result = computer_mod x y }
+
+  val math_mod_ : x:int -> y:int ->
+    { y<>0 } int { result = math_mod x y }
 
   use real.FromInt
 
