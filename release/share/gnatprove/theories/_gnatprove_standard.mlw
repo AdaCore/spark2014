@@ -7,13 +7,18 @@ module Main
   use real.Abs as AbsReal
   use real.Square as SquareReal
   use real.Trigonometry
-  use bool.Bool
+  use import bool.Bool
   use floating_point.Rounding
   use floating_point.Single
   use floating_point.Double
   use import module ref.Ref
 
+  (* This exception is used to simulate return statements *)
+
   exception Gnatprove_Exception___result_exc
+
+
+  (* The theory of Ada arrays of one dimension *)
 
   type t__ada_array 'a
 
@@ -99,107 +104,102 @@ val t__ada_array___update_ :
                 ->
                (t__ada_array___access i a =
                   t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
-        <-> t__ada_array___equal a b = Bool.True
+        <-> t__ada_array___equal a b = True
+
+
+  (* The type for the heap, and the heap variable. This variable represents
+     all effects that we cannot describe more precisely, and that do not
+     interfere with other variables, i.e., writes through pointers, aliased
+     variables etc. *)
 
   type _type_of______HEAP
 
   val __HEAP : ref _type_of______HEAP
 
-  function bool_int__eq int int : Bool.bool
+
+  (* Boolean logical connectors, functions for conversion of booleans, etc *)
+
+  function bool_and bool bool : bool
+
+  function bool_or bool bool : bool
+
+  function bool_xor bool bool : bool
+
+  function bool_not bool : bool
+
+  axiom Bool_and_def:
+    forall a:bool.
+    forall b:bool.
+     bool_and a b = True <-> (a = True /\ b = True)
+
+  axiom Bool_or_def:
+    forall a:bool.
+    forall b:bool.
+      bool_or a b = True <-> (a = True \/ b = True)
+
+  axiom Bool_xor_def:
+    forall a:bool.
+    forall b:bool.
+      bool_xor a b = True <-> a <> b
+
+  axiom Bool_not_def:
+    forall a:bool.  bool_not a = True <-> a = Bool.False
+
+  function ite bool 'a 'a : 'a
+
+  axiom Ite_true:
+    forall x:'a. forall y:'a. ite True x y = x
+
+  axiom Ite_false:
+    forall x:'a. forall y:'a. ite Bool.False x y = y
+
+  function int_of_bool (b : bool) : int =
+   if b = True then 1 else 0
+
+  function bool_of_int (i : int) : bool =
+   if i = 0 then False else True
+
+  function bool_int__eq int int : bool
 
   axiom Bool_int__eq_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__eq x y : Bool.bool) = Bool.True) -> (x = y)) /\
-         (((bool_int__eq x y : Bool.bool) = Bool.False) -> (not (x = y))))))
+    forall x:int.
+    forall y:int.
+      bool_int__eq x y = True <-> x = y
 
-  function bool_int__ne int int : Bool.bool
+  function bool_int__ne int int : bool
 
   axiom Bool_int__ne_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__ne x y : Bool.bool) = Bool.True) -> (x <> y)) /\
-         (((bool_int__ne x y : Bool.bool) = Bool.False) -> (not (x <> y))))))
+    forall x:int.
+      forall y:int.
+        bool_int__ne x y = True <-> x <> y
 
-  function bool_int__lt int int : Bool.bool
+  function bool_int__lt int int : bool
 
   axiom Bool_int__lt_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__lt x y : Bool.bool) = Bool.True) -> (Int.(<) x y)) /\
-         (((bool_int__lt x y : Bool.bool) = Bool.False) ->
-          (not (Int.(<) x y))))))
+    forall x:int.
+    forall y:int.
+        bool_int__lt x y = True <-> x < y
 
-  function bool_int__le int int : Bool.bool
+  function bool_int__le int int : bool
 
   axiom Bool_int__le_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__le x y : Bool.bool) = Bool.True) -> (Int.(<=) x y)) /\
-         (((bool_int__le x y : Bool.bool) = Bool.False) ->
-          (not (Int.(<=) x y))))))
+    forall x:int.  forall y:int.  bool_int__le x y = True <-> x <= y
 
-  function bool_int__gt int int : Bool.bool
+  function bool_int__gt int int : bool
 
   axiom Bool_int__gt_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__gt x y : Bool.bool) = Bool.True) -> (Int.(>) x y)) /\
-         (((bool_int__gt x y : Bool.bool) = Bool.False) ->
-          (not (Int.(>) x y))))))
+    forall x:int.
+    forall y:int.
+        bool_int__gt x y = True <-> x > y
 
-  function bool_int__ge int int : Bool.bool
+  function bool_int__ge int int : bool
 
   axiom Bool_int__ge_axiom:
-    (forall x:int.
-      (forall y:int.
-        ((((bool_int__ge x y : Bool.bool) = Bool.True) -> (Int.(>=) x y)) /\
-         (((bool_int__ge x y : Bool.bool) = Bool.False) ->
-          (not (Int.(>=) x y))))))
+    forall x:int.
+    forall y:int.
+        bool_int__ge x y = True <-> x >= y
 
   function ___ignore 'a1 : ()
-
-  function lt_int_bool int int : Bool.bool
-
-  function le_int_bool int int : Bool.bool
-
-  function gt_int_bool int int : Bool.bool
-
-  function ge_int_bool int int : Bool.bool
-
-  function eq_int_bool int int : Bool.bool
-
-  function neq_int_bool int int : Bool.bool
-
-  axiom Lt_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((lt_int_bool x y : Bool.bool) = Bool.True) <-> (Int.(<) x y))))
-
-  axiom Le_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((le_int_bool x y : Bool.bool) = Bool.True) <-> (Int.(<=) x y))))
-
-  axiom Gt_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((gt_int_bool x y : Bool.bool) = Bool.True) <-> (Int.(>) x y))))
-
-  axiom Ge_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((ge_int_bool x y : Bool.bool) = Bool.True) <-> (Int.(>=) x y))))
-
-  axiom Eq_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((eq_int_bool x y : Bool.bool) = Bool.True) <-> (x = y))))
-
-  axiom Neq_int_bool_axiom:
-    (forall x:int.
-      (forall y:int.
-        (((neq_int_bool x y : Bool.bool) = Bool.True) <-> (x <> y))))
 
   function abs_int int : int
 
@@ -295,49 +295,6 @@ val t__ada_array___update_ :
         ((y <> 0) ->
          (Int.(<=) (AbsInt.abs (Int.(*) (ComputerDivision.div x y : int) y : int) : int) (AbsInt.abs x : int)))))
 
-  function bool_and Bool.bool Bool.bool : Bool.bool
-
-  function bool_or Bool.bool Bool.bool : Bool.bool
-
-  function bool_xor Bool.bool Bool.bool : Bool.bool
-
-  function bool_not Bool.bool : Bool.bool
-
-  axiom Bool_and_def:
-    (forall a:Bool.bool.
-      (forall b:Bool.bool.
-        (((bool_and a b : Bool.bool) = Bool.True) <->
-         ((a = Bool.True) /\ (b = Bool.True)))))
-
-  axiom Bool_or_def:
-    (forall a:Bool.bool.
-      (forall b:Bool.bool.
-        (((bool_or a b : Bool.bool) = Bool.True) <->
-         ((a = Bool.True) \/ (b = Bool.True)))))
-
-  axiom Bool_xor_def:
-    (forall a:Bool.bool.
-      (forall b:Bool.bool.
-        (((bool_xor a b : Bool.bool) = Bool.True) <-> (a <> b))))
-
-  axiom Bool_not_def:
-    (forall a:Bool.bool.
-      (((bool_not a : Bool.bool) = Bool.True) <-> (a = Bool.False)))
-
-  function ite Bool.bool 'a1 'a1 : 'a1
-
-  axiom Ite_true:
-    (forall x:'a1. (forall y:'a1. ((ite Bool.True x y : 'a1) = x)))
-
-  axiom Ite_false:
-    (forall x:'a1. (forall y:'a1. ((ite Bool.False x y : 'a1) = y)))
-
-  function int_of_bool (b : Bool.bool) : int =
-   if b = True then 1 else 0
-
-  function bool_of_int (i : int) : Bool.bool =
-   if i = 0 then False else True
-
   function div_real (x : real) (y : real) : real = x /. y
 
   val computer_div_ : x:int -> y:int ->
@@ -358,47 +315,47 @@ val t__ada_array___update_ :
 
   (* Boolean comparison functions for reals *)  
 
-  function lt_real_bool real real : Bool.bool
+  function lt_real_bool real real : bool
 
-  function le_real_bool real real : Bool.bool
+  function le_real_bool real real : bool
 
-  function gt_real_bool real real : Bool.bool
+  function gt_real_bool real real : bool
 
-  function ge_real_bool real real : Bool.bool
+  function ge_real_bool real real : bool
 
-  function eq_real_bool real real : Bool.bool
+  function eq_real_bool real real : bool
 
-  function neq_real_bool real real : Bool.bool
+  function neq_real_bool real real : bool
 
   axiom Lt_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((lt_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(<) x y))))
+        (((lt_real_bool x y : bool) = True) <-> (Real.(<) x y))))
 
   axiom Le_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((le_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(<=) x y))))
+        (((le_real_bool x y : bool) = True) <-> (Real.(<=) x y))))
 
   axiom Gt_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((gt_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(>) x y))))
+        (((gt_real_bool x y : bool) = True) <-> (Real.(>) x y))))
 
   axiom Ge_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((ge_real_bool x y : Bool.bool) = Bool.True) <-> (Real.(>=) x y))))
+        (((ge_real_bool x y : bool) = True) <-> (Real.(>=) x y))))
 
   axiom Eq_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((eq_real_bool x y : Bool.bool) = Bool.True) <-> (x = y))))
+        (((eq_real_bool x y : bool) = True) <-> (x = y))))
 
   axiom Neq_real_bool_axiom:
     (forall x:real.
       (forall y:real.
-        (((neq_real_bool x y : Bool.bool) = Bool.True) <-> (x <> y))))
+        (((neq_real_bool x y : bool) = True) <-> (x <> y))))
 
 end
 

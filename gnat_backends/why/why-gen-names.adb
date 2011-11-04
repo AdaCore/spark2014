@@ -146,17 +146,17 @@ package body Why.Gen.Names is
             pragma Assert (False);
             return "always_true_" & Name & "_bool";
          when EW_Eq =>
-            return "eq_" & Name & "_bool";
+            return "bool_" & Name & "__eq";
          when EW_Ne =>
-            return "neq_" & Name & "_bool";
+            return "bool_" & Name & "__ne";
          when EW_Lt =>
-            return "lt_" & Name & "_bool";
+            return "bool_" & Name & "__lt";
          when EW_Le =>
-            return "le_" & Name & "_bool";
+            return "bool_" & Name & "__le";
          when EW_Gt =>
-            return "gt_" & Name & "_bool";
+            return "bool_" & Name & "__gt";
          when EW_Ge =>
-            return "ge_" & Name & "_bool";
+            return "bool_" & Name & "__ge";
       end case;
    end Bool_Cmp_String;
 
