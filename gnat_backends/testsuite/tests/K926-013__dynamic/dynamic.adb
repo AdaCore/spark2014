@@ -11,6 +11,8 @@ package body Dynamic is
       subtype G is Positive range M .. 10;
       subtype H is Positive range Z + 1 .. M - 1;
 
+      type T is new Positive range X .. 10;
+
       OA : A := 1;
       OB : B := 2;
       OC : C := M;
