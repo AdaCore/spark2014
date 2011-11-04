@@ -205,11 +205,11 @@ package Why.Gen.Names is
 
    package Int_Of_Bool is
      new Name_Gen.Arity_0 (EW_Term, "int_of_bool");
-   --  Return the name of the conversions from int to real
+   --  Return the name of the conversions from bool to int
 
    package Bool_Of_Int is
      new Name_Gen.Arity_0 (EW_Term, "bool_of_int");
-   --  Return the name of the conversions from int to real
+   --  Return the name of the conversions from int to bool
 
    package New_Conversion_To_Int is
      new Name_Gen.Arity_1 (EW_Term, "", Int_Of);
