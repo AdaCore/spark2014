@@ -4,8 +4,13 @@ package body Search is
       Pos : Integer := 0;
    begin
       for I in 1 .. 10 loop
+	 --  Possible run-time errors below due to non-lazy operators used
          pragma Assert
-           (for all J in Position range T'First .. I-1 => (T(J) /= V));
+           ((Pos = 0 and 
+	       (for all J in Position range T'First .. I-1 => (T(J) /= V)))
+	    or 
+	      (T(Pos) = V and 
+		 (for all J in Position range T'First .. Pos-1 => (T(J) /= V))));
          if T (I) = V then
             Pos := I;
             --  exit;
