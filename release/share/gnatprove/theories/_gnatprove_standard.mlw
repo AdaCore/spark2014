@@ -312,47 +312,47 @@ val t__ada_array___update_ :
 
   (* Boolean comparison functions for reals *)  
 
-  function lt_real_bool real real : bool
+  function bool_real__lt real real : bool
 
-  function le_real_bool real real : bool
+  function bool_real__le real real : bool
 
-  function gt_real_bool real real : bool
+  function bool_real__gt real real : bool
 
-  function ge_real_bool real real : bool
+  function bool_real__ge real real : bool
 
-  function eq_real_bool real real : bool
+  function bool_real__eq real real : bool
 
-  function neq_real_bool real real : bool
+  function bool_real__neq real real : bool
 
-  axiom Lt_real_bool_axiom:
+  axiom Bool_real__lt_axiom:
     (forall x:real.
       (forall y:real.
-        (((lt_real_bool x y : bool) = True) <-> (Real.(<) x y))))
+        (((bool_real__lt x y : bool) = True) <-> (Real.(<) x y))))
 
-  axiom Le_real_bool_axiom:
+  axiom Bool_real__le_axiom:
     (forall x:real.
       (forall y:real.
-        (((le_real_bool x y : bool) = True) <-> (Real.(<=) x y))))
+        (((bool_real__le x y : bool) = True) <-> (Real.(<=) x y))))
 
-  axiom Gt_real_bool_axiom:
+  axiom Bool_real__gt_axiom:
     (forall x:real.
       (forall y:real.
-        (((gt_real_bool x y : bool) = True) <-> (Real.(>) x y))))
+        (((bool_real__gt x y : bool) = True) <-> (Real.(>) x y))))
 
-  axiom Ge_real_bool_axiom:
+  axiom Bool_real__ge_axiom:
     (forall x:real.
       (forall y:real.
-        (((ge_real_bool x y : bool) = True) <-> (Real.(>=) x y))))
+        (((bool_real__ge x y : bool) = True) <-> (Real.(>=) x y))))
 
-  axiom Eq_real_bool_axiom:
+  axiom Bool_real__eq_axiom:
     (forall x:real.
       (forall y:real.
-        (((eq_real_bool x y : bool) = True) <-> (x = y))))
+        (((bool_real__eq x y : bool) = True) <-> (x = y))))
 
-  axiom Neq_real_bool_axiom:
+  axiom Bool_real__neq_axiom:
     (forall x:real.
       (forall y:real.
-        (((neq_real_bool x y : bool) = True) <-> (x <> y))))
+        (((bool_real__neq x y : bool) = True) <-> (x <> y))))
 
 end
 
