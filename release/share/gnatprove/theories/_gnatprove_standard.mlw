@@ -199,42 +199,39 @@ val t__ada_array___update_ :
     forall y:int.
         bool_int__ge x y = True <-> x >= y
 
-  function ___ignore 'a1 : ()
-
-  function abs_int int : int
+  function ___ignore 'a : ()
 
   axiom Abs_int_pos:
-    (forall x:int. ((Int.(>=) x 0) -> ((AbsInt.abs x : int) = x)))
+    forall x:int. x >= 0 -> AbsInt.abs x = x
 
   axiom Abs_int_neg:
-    (forall x:int.
-      ((Int.(<=) x 0) -> ((AbsInt.abs x : int) = (Int.(-_) x : int))))
+    forall x:int.
+      x <= 0 -> AbsInt.abs x = - x
 
   function int_max int int : int
 
   function int_min int int : int
 
   axiom Int_max_is_ge:
-    (forall x:int.
-      (forall y:int.
-        ((Int.(>=) (int_max x y : int) x) /\
-         (Int.(>=) (int_max x y : int) y))))
+    forall x:int.
+    forall y:int.
+      int_max x y >= x /\ int_max x y >= y
 
   axiom Int_max_is_some:
-    (forall x:int.
-      (forall y:int.
-        (((int_max x y : int) = x) \/ ((int_max x y : int) = y))))
+    forall x:int.
+    forall y:int.
+        int_max x y = x \/ int_max x y = y
 
   axiom Int_min_is_le:
-    (forall x:int.
-      (forall y:int.
-        ((Int.(<=) (int_min x y : int) x) /\
-         (Int.(<=) (int_min x y : int) y))))
+    forall x:int.
+    forall y:int.
+        int_min x y : int <= x /\
+        int_min x y : int <= y
 
   axiom Int_min_is_some:
-    (forall x:int.
-      (forall y:int.
-        (((int_min x y : int) = x) \/ ((int_min x y : int) = y))))
+    forall x:int.
+    forall y:int.
+        int_min x y = x \/ int_min x y = y
 
   function computer_div int int : int
 
