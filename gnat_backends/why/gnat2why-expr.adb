@@ -2596,7 +2596,7 @@ package body Gnat2Why.Expr is
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
-         when N_Null_Statement =>
+         when N_Label | N_Null_Statement =>
             return New_Void (Stmt);
 
          when N_Assignment_Statement =>
