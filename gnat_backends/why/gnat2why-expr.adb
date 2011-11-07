@@ -100,6 +100,12 @@ package body Gnat2Why.Expr is
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
 
+   function Needs_Temporary_Ref
+     (Actual : Node_Id;
+      Formal : Node_Id)
+     return Boolean;
+   --  True if the parameter passing needs a temporary ref to be performed.
+
    function Insert_Ref_Context
      (Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
@@ -189,6 +195,13 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
+
+   function New_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Lvalue   : Node_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id;
+   --  Translate an assignment of the form "Lvalue := Expr",
+   --  using Ada_Node for its source location.
 
    function Transform_Attr
      (Expr         : Node_Id;
@@ -584,15 +597,15 @@ package body Gnat2Why.Expr is
                when E_In_Out_Parameter | E_Out_Parameter =>
 
                   --  Parameters that are "out" are refs;
-                  --  if no conversion is needed, they can be
-                  --  translated "as is".
+                  --  if the actual is a simple identifier and no conversion
+                  --  is needed, it can be translated "as is".
 
-                  if Eq (Etype (Actual), Etype (Formal)) then
+                  if not Needs_Temporary_Ref (Actual, Formal) then
                      Why_Args (Cnt) := +Transform_Ident (Actual);
 
-                  --  If a conversion is needed, it can only be done for
-                  --  a value. That is to say, something of this sort
-                  --  should be generated:
+                  --  If a conversion or a component indexing is needed,
+                  --  it can only be done for a value. That is to say,
+                  --  something of this sort should be generated:
                   --
                   --  let formal = ref to_formal (!actual) in
                   --   (subprogram_call (formal); actual := !formal)
@@ -838,9 +851,7 @@ package body Gnat2Why.Expr is
 
       procedure Process_Arg (Formal, Actual : Node_Id) is
       begin
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-           and then not Eq (Etype (Actual), Etype (Formal))
-         then
+         if Needs_Temporary_Ref (Actual, Formal) then
             declare
                --  Types:
 
@@ -858,13 +869,6 @@ package body Gnat2Why.Expr is
                                    (Op       => EW_Deref,
                                     Right    => +Tmp_Var,
                                     Op_Type  => EW_Int); --  Not used
-               Result        : constant W_Identifier_Id :=
-                                  Transform_Ident (Actual);
-               Result_Deref  : constant W_Prog_Id :=
-                                 New_Unary_Op
-                                   (Op       => EW_Deref,
-                                    Right    => +Result,
-                                    Op_Type  => EW_Int); -- Not used
 
                --  1/ Before the call (saving into a temporary variable):
                ----------------------------------------------------------
@@ -890,7 +894,10 @@ package body Gnat2Why.Expr is
                                  +Insert_Conversion
                                    (Domain   => Fetch_Domain,
                                     Ada_Node => Actual,
-                                    Expr     => +Result_Deref,
+                                    Expr     =>
+                                      +Transform_Expr (Actual,
+                                                       EW_Prog,
+                                                       True),
                                     From     => Actual_T,
                                     To       => Formal_T);
 
@@ -916,12 +923,8 @@ package body Gnat2Why.Expr is
                Store_Value   : constant W_Prog_Id :=
                                  New_Assignment
                                    (Ada_Node => Actual,
-                                    Name     =>
-                                      New_Identifier
-                                        (EW_Prog,
-                                         Full_Name (Entity (Actual))),
-                                    Value    =>
-                                      Arg_Value);
+                                    Lvalue   => Actual,
+                                    Expr     => Arg_Value);
             begin
                Statement_Sequence_Append_To_Statements (Store, Store_Value);
                Tmp_Vars (Index) := Tmp_Var;
@@ -1004,6 +1007,22 @@ package body Gnat2Why.Expr is
          end if;
       end loop;
    end Iterate_Call_Arguments;
+
+   -------------------------
+   -- Needs_Temporary_Ref --
+   -------------------------
+
+   function Needs_Temporary_Ref
+     (Actual : Node_Id;
+      Formal : Node_Id)
+     return Boolean is
+   begin
+      --  Temporary refs are needed for out or in out parameters that
+      --  need a conversion or who are not an identifier.
+      return Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+        and then (not Eq (Etype (Actual), Etype (Formal))
+                  or else not (Nkind (Actual) in N_Entity));
+   end Needs_Temporary_Ref;
 
    ----------------------
    -- One_Level_Access --
@@ -1267,6 +1286,61 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
+      function Expected_Type return W_Base_Type_Id;
+      --  Compute the expected type of the right hand side expression.
+
+      Lvalue   : constant Node_Id := Name (Stmt);
+      --  The Lvalue in the Ada sense, ie the chain of accesses
+
+      --------------------
+      -- Expected_Type --
+      --------------------
+
+      function Expected_Type return W_Base_Type_Id
+      is
+         --  We simply traverse the Lvalue until we find the innermost access;
+         --  the type of the array, or the type of the record field, is the
+         --  expected type.
+      begin
+         case Nkind (Lvalue) is
+            when N_Identifier | N_Expanded_Name =>
+               return Type_Of_Node (Lvalue);
+
+            when N_Indexed_Component =>
+               return Type_Of_Node (Component_Type (Etype (Prefix (Lvalue))));
+
+            when N_Selected_Component =>
+               return Type_Of_Node (Selector_Name (Lvalue));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+      end Expected_Type;
+
+   --  Start of processing for Transform_Assignment_Statement
+
+   begin
+      return
+        New_Assignment
+          (Ada_Node => Stmt,
+           Lvalue   => Lvalue,
+           Expr     =>
+             +Transform_Expr (Expression (Stmt),
+                              Expected_Type,
+                              EW_Prog,
+                              Ref_Allowed => True));
+   end Transform_Assignment_Statement;
+
+   --------------------
+   -- New_Assignment --
+   --------------------
+
+   function New_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Lvalue   : Node_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id
+   is
 
       --  Here, we deal with assignment statements. In Alfa, the general form
       --  of an assignment is
@@ -1291,16 +1365,10 @@ package body Gnat2Why.Expr is
       function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
          return W_Prog_Id;
 
-      function Expected_Type return W_Base_Type_Id;
-      --  Compute the expected type of the right hand side expression.
-
       function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
       --  Compute the innermost that is accessed in the Lvalue, variable, ie
       --  the outermost data structure; this basically corresponds to "Prefix"
       --  above.
-
-      Lvalue   : constant Node_Id := Name (Stmt);
-      --  The Lvalue in the Ada sense, ie the chain of accesses
 
       --------------------
       -- Compute_Rvalue --
@@ -1338,32 +1406,6 @@ package body Gnat2Why.Expr is
          end case;
       end Compute_Rvalue;
 
-      --------------------
-      -- Expected_Type --
-      --------------------
-
-      function Expected_Type return W_Base_Type_Id
-      is
-         --  We simply traverse the Lvalue until we find the innermost access;
-         --  the type of the array, or the type of the record field, is the
-         --  expected type.
-      begin
-         case Nkind (Lvalue) is
-            when N_Identifier | N_Expanded_Name =>
-               return Type_Of_Node (Lvalue);
-
-            when N_Indexed_Component =>
-               return Type_Of_Node (Component_Type (Etype (Prefix (Lvalue))));
-
-            when N_Selected_Component =>
-               return Type_Of_Node (Selector_Name (Lvalue));
-
-            when others =>
-               raise Not_Implemented;
-
-         end case;
-      end Expected_Type;
-
       ----------------
       -- Why_Lvalue --
       ----------------
@@ -1391,15 +1433,11 @@ package body Gnat2Why.Expr is
    begin
       return
          New_Assignment
-            (Ada_Node => Stmt,
+            (Ada_Node => Ada_Node,
              Name     => W_Lvalue,
              Value    =>
-               Compute_Rvalue (Lvalue,
-                               +Transform_Expr (Expression (Stmt),
-                                                Expected_Type,
-                                                EW_Prog,
-                                                Ref_Allowed => True)));
-   end Transform_Assignment_Statement;
+               Compute_Rvalue (Lvalue, Expr));
+   end New_Assignment;
 
    ---------------------
    -- Transform_Binop --
