@@ -37,18 +37,16 @@ package body Why.Gen.Terms is
          Found : Why_Node_Sets.Set;
       end record;
 
-      procedure Unary_Op_Pre_Op
+      procedure Deref_Pre_Op
         (State : in out Collect_State;
-         Node  : W_Unary_Op_Id);
+         Node  : W_Deref_Id);
 
-      procedure Unary_Op_Pre_Op
+      procedure Deref_Pre_Op
         (State : in out Collect_State;
-         Node  : W_Unary_Op_Id) is
+         Node  : W_Deref_Id) is
       begin
-         if Get_Op (Node) = EW_Deref then
-            State.Found.Include (+Get_Right (Node));
-         end if;
-      end Unary_Op_Pre_Op;
+         State.Found.Include (+Get_Right (Node));
+      end Deref_Pre_Op;
 
       SS : Collect_State :=
              (Control => Continue, Found => Why_Node_Sets.Empty_Set);
@@ -66,19 +64,19 @@ package body Why.Gen.Terms is
          Found : Boolean;
       end record;
 
-      procedure Unary_Op_Pre_Op
+      procedure Deref_Pre_Op
         (State : in out Search_State;
-         Node  : W_Unary_Op_Id);
+         Node  : W_Deref_Id);
 
-      procedure Unary_Op_Pre_Op
+      procedure Deref_Pre_Op
         (State : in out Search_State;
-         Node  : W_Unary_Op_Id) is
+         Node  : W_Deref_Id)
+      is
+         pragma Unreferenced (Node);
       begin
-         if Get_Op (Node) = EW_Deref then
-            State.Found   := True;
-            State.Control := Terminate_Immediately;
-         end if;
-      end Unary_Op_Pre_Op;
+         State.Found   := True;
+         State.Control := Terminate_Immediately;
+      end Deref_Pre_Op;
 
       SS : Search_State := (Control => Continue, Found => False);
    begin

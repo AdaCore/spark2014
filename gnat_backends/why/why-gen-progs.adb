@@ -72,11 +72,9 @@ package body Why.Gen.Progs is
       Loop_Body  : W_Prog_Id) return W_Prog_Id
    is
       Index_Deref  : constant W_Prog_Id :=
-                       New_Unary_Op
+                       New_Deref
                          (Ada_Node => Ada_Node,
-                          Op       => EW_Deref,
-                          Right    => +Loop_Index,
-                          Op_Type  => EW_Int);
+                          Right    => Loop_Index);
       Addition     : constant W_Prog_Id :=
                        New_Binary_Op
                          (Ada_Node => Ada_Node,

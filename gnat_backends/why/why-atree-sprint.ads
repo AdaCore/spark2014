@@ -186,6 +186,10 @@ private
      (State : in out Printer_State;
       Node  : W_Unary_Op_Id);
 
+   procedure Deref_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Deref_Id);
+
    procedure Match_Pre_Op
      (State : in out Printer_State;
       Node  : W_Match_Id);

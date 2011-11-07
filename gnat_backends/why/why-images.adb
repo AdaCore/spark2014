@@ -345,8 +345,6 @@ package body Why.Images is
       case Value is
          when EW_Minus =>
             P (O, EW_Substract, Op_Type);
-         when EW_Deref =>
-            P (O, "!");
       end case;
    end P;
 

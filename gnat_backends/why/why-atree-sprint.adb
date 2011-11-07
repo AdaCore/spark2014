@@ -925,6 +925,20 @@ package body Why.Atree.Sprint is
    end Unary_Op_Pre_Op;
 
    ------------------
+   -- Deref_Pre_Op --
+   ------------------
+
+   procedure Deref_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Deref_Id)
+   is
+      pragma Unreferenced (State);
+      pragma Unreferenced (Node);
+   begin
+      P (O, "!");
+   end Deref_Pre_Op;
+
+   ------------------
    -- Match_Pre_Op --
    ------------------
 

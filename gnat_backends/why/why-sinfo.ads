@@ -117,6 +117,7 @@ package Why.Sinfo is
       W_Void,
       W_Binary_Op,
       W_Unary_Op,
+      W_Deref,
       W_Match,
       W_Array_Access,
       W_Epsilon,
@@ -273,6 +274,6 @@ package Why.Sinfo is
       EW_Or,
       EW_And);
 
-   type EW_Unary_Op is (EW_Minus, EW_Deref);
+   type EW_Unary_Op is (EW_Minus);
 
 end Why.Sinfo;

@@ -273,11 +273,9 @@ package body Gnat2Why.Expr.Loops is
                                   (Defining_Identifier
                                     (LParam_Spec)));
             Index_Deref  : constant W_Prog_Id :=
-                             New_Unary_Op
+                             New_Deref
                                (Ada_Node => Stmt,
-                                Op       => EW_Deref,
-                                Right    => +Loop_Index,
-                                Op_Type  => EW_Int);
+                                Right    => +Loop_Index);
             Update_Op    : constant EW_Binary_Op :=
                (if Reverse_Present (LParam_Spec)
                 then EW_Substract
@@ -303,11 +301,7 @@ package body Gnat2Why.Expr.Loops is
                                 Right =>
                                   Range_Expr
                                    (Loop_Range,
-                                    New_Unary_Op
-                                      (Domain  => EW_Term,
-                                       Op      => EW_Deref,
-                                       Right   => +Loop_Index,
-                                       Op_Type => EW_Int),
+                                    New_Deref (Right => Loop_Index),
                                     EW_Pred,
                                     Ref_Allowed => True),
                                 Domain => EW_Pred);

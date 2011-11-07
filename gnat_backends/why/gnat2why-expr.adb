@@ -647,11 +647,7 @@ package body Gnat2Why.Expr is
                while C /= No_Element loop
                   if Ref_Allowed then
                      Why_Args (Cnt) :=
-                       New_Unary_Op
-                         (Domain   => EW_Term,
-                          Op       => EW_Deref,
-                          Right    => +New_Identifier (Element (C).all),
-                          Op_Type  => EW_Int);  --  BAD TYPE, not used
+                       New_Deref (Right => New_Identifier (Element (C).all));
                   else
                      Why_Args (Cnt) := +New_Identifier (Element (C).all);
                   end if;
@@ -865,10 +861,7 @@ package body Gnat2Why.Expr is
                Tmp_Var       : constant W_Identifier_Id :=
                                  Transform_Ident (Formal);
                Tmp_Var_Deref : constant W_Prog_Id :=
-                                 New_Unary_Op
-                                   (Op       => EW_Deref,
-                                    Right    => +Tmp_Var,
-                                    Op_Type  => EW_Int); --  Not used
+                                 New_Deref (Right => Tmp_Var);
 
                --  1/ Before the call (saving into a temporary variable):
                ----------------------------------------------------------
@@ -1232,11 +1225,7 @@ package body Gnat2Why.Expr is
 
          Args (Cnt) := +Element (Cursor);
          Deref_Args (Cnt) :=
-           New_Unary_Op
-             (Domain   => EW_Term,
-              Op       => EW_Deref,
-              Right    => +Element (Cursor),
-              Op_Type  => EW_Int);  --  BAD TYPE, not used
+           New_Deref (Right => +Element (Cursor));
          Next (Cursor);
          Cnt := Cnt + 1;
       end loop;
@@ -1734,12 +1723,9 @@ package body Gnat2Why.Expr is
                T := +New_Result_Term;
             else
                T :=
-                  New_Unary_Op
-                    (Ada_Node => Expr,
-                     Op       => EW_Deref,
-                     Right    => +Result_Name,
-                     Op_Type  => EW_Int,
-                     Domain   => Domain);
+                 New_Deref
+                   (Ada_Node => Expr,
+                    Right    => Result_Name);
             end if;
 
          when Attribute_Old =>
@@ -2075,12 +2061,9 @@ package body Gnat2Why.Expr is
                        and then Ref_Allowed
                      then
                         T :=
-                          New_Unary_Op
+                          New_Deref
                             (Ada_Node => Expr,
-                             Domain   => Domain,
-                             Op       => EW_Deref,
-                             Right    => +Id,
-                             Op_Type  => EW_Int);
+                             Right    => Id);
                      else
                         T := +Id;
                      end if;
@@ -2143,7 +2126,6 @@ package body Gnat2Why.Expr is
                T :=
                  New_Unary_Op
                    (Ada_Node => Expr,
-                    Domain   => Domain,
                     Op       => EW_Minus,
                     Right    =>
                     +Transform_Expr (Right, Current_Type, Domain,

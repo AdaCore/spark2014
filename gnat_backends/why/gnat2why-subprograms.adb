@@ -179,10 +179,7 @@ package body Gnat2Why.Subprograms is
 
          while Cnt <= Binders'Last loop
             Result (Cnt) :=
-              New_Unary_Op (Domain   => EW_Term,
-                            Op       => EW_Deref,
-                            Right    => +Binders (Cnt).B_Name,
-                            Op_Type  => EW_Int);
+              New_Deref (Right => Binders (Cnt).B_Name);
             Cnt := Cnt + 1;
          end loop;
 
@@ -350,11 +347,9 @@ package body Gnat2Why.Subprograms is
                               Name     => New_Result_Exc_Identifier.Id);
             Result_Var : constant W_Prog_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
-                              New_Unary_Op
+                              New_Deref
                                 (Ada_Node => Node,
-                                 Op       => EW_Deref,
-                                 Right    => +Result_Name,
-                                 Op_Type  => EW_Int)
+                                 Right    => Result_Name)
                             else New_Void);
          begin
             R :=
