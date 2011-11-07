@@ -103,8 +103,9 @@ package body Call is
       Verbose   : Boolean := False;
       Free_Args : Boolean := True)
    is
-      Executable : String_Access :=
-         Locate_Exec_On_Path (Command);
+      Executable : String_Access := Locate_Exec_On_Path (Command);
+      Tmp_Fd     : File_Descriptor;
+      Tmp_Name   : String_Access;
    begin
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
@@ -114,10 +115,24 @@ package body Call is
          Print_Command_Line (Command, Arguments);
          Ada.Text_IO.New_Line;
       end if;
-      Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
+
+      --  ??? Workaround for KB07-017 and KA28-006: save output in tmp file,
+      --  and cat tmp file later, instead of passing Standout directly to
+      --  Spawn. Should be removed once KB07-017 is fixed.
+
+      Create_Temp_File (Tmp_Fd, Tmp_Name);
+      Spawn (Executable.all, Arguments, Tmp_Fd, Status, Err_To_Out => True);
+      Close (Tmp_Fd);
       if Free_Args then
          Free_Argument_List (Arguments);
       end if;
+      Cat (Tmp_Name.all);
+      declare
+         Status : Boolean;
+      begin
+         Delete_File (Tmp_Name.all, Status);
+         pragma Unreferenced (Status);
+      end;
       Free (Executable);
    end Call_With_Status;
 
