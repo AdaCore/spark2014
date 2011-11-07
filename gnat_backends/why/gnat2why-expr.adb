@@ -2027,28 +2027,14 @@ package body Gnat2Why.Expr is
             --  than the rewritten node; typically, the will be in decimal
             --  base whereas the expanded node will be of the form
             --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
-            --  even between two litterals.
+            --  even between two litterals. Note that Alfa-marking makes sure
+            --  the original node is in Alfa in this case.
 
             if Is_Rewrite_Substitution (Expr) then
-               begin
-                  T := Transform_Expr (Original_Node (Expr),
-                                       EW_Real_Type,
-                                       Domain,
-                                       Ref_Allowed);
-
-               --  It may happen that the original node is not in
-               --  alfa, whereas the rewritten one is: typically,
-               --  if the original node uses exponentiation. So try
-               --  the original node and fall back to the rewritten
-               --  node if failed.
-
-               exception
-                  when Not_Implemented =>
-                     T :=
-                       New_Real_Constant
-                         (Ada_Node => Expr,
-                          Value    => Realval (Expr));
-               end;
+               T := Transform_Expr (Original_Node (Expr),
+                                    EW_Real_Type,
+                                    Domain,
+                                    Ref_Allowed);
 
             else
                T :=

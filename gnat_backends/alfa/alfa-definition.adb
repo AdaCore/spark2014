@@ -1388,6 +1388,14 @@ package body Alfa.Definition is
               N_Timed_Entry_Call           =>
             Mark_Non_Alfa ("tasking", N, NIR_Tasking);
 
+         --  Make sure the original node is in Alfa in that case, because it is
+         --  expected to be so by translation.
+
+         when N_Real_Literal =>
+            if Is_Rewrite_Substitution (N) then
+               Mark (Original_Node (N));
+            end if;
+
          --  The following kinds can be safely ignored by marking
 
          when N_Character_Literal               |
@@ -1400,7 +1408,6 @@ package body Alfa.Definition is
               N_Operator_Symbol                 |
               N_Others_Choice                   |
               N_Package_Renaming_Declaration    |
-              N_Real_Literal                    |
               N_Subprogram_Info                 |
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
