@@ -29,6 +29,7 @@ with Ada.Containers.Hashed_Maps;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
+with Sem_Util;           use Sem_Util;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with String_Utils;       use String_Utils;
@@ -1087,7 +1088,7 @@ package body Gnat2Why.Expr is
                                  Value => Value);
 
          when N_Indexed_Component =>
-            if Number_Dimensions (Etype (Prefix (N))) > 1 then
+            if Number_Dimensions (Unique_Entity (Etype (Prefix (N)))) > 1 then
                raise Not_Implemented;
             end if;
             return
@@ -1296,7 +1297,8 @@ package body Gnat2Why.Expr is
                return Type_Of_Node (Lvalue);
 
             when N_Indexed_Component =>
-               return Type_Of_Node (Component_Type (Etype (Prefix (Lvalue))));
+               return Type_Of_Node
+                 (Component_Type (Unique_Entity (Etype (Prefix (Lvalue)))));
 
             when N_Selected_Component =>
                return Type_Of_Node (Selector_Name (Lvalue));
