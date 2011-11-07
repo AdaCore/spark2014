@@ -80,14 +80,19 @@ package body Why.Inter is
    end Base_Why_Type;
 
    function Base_Why_Type (N : Node_Id) return W_Base_Type_Id is
-      E : constant EW_Type := Get_EW_Term_Type (N);
+
+      --  Get to the unique type, in order to reach the actual base type,
+      --  because the private view has another base type (possibly itself).
+
+      E   : constant EW_Type := Get_EW_Term_Type (N);
+      Typ : constant Entity_Id := Unique_Entity (Etype (N));
    begin
       case E is
          when EW_Abstract =>
-            if Is_Array_Type (Etype (N)) then
+            if Is_Array_Type (Typ) then
                return Why_Types (EW_Array);
             else
-               return EW_Abstract (Etype (N));
+               return EW_Abstract (Typ);
             end if;
          when others =>
             return Why_Types (E);
@@ -227,6 +232,10 @@ package body Why.Inter is
         or else not (Ekind (N) in Type_Kind) then
          Ty := Etype (N);
       end if;
+
+      --  Get to the unique type, to skip private type
+
+      Ty := Unique_Entity (Ty);
 
       case Ekind (Ty) is
          when Real_Kind =>
