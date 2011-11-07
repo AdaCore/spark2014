@@ -190,6 +190,12 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
+   function Transform_Attr
+     (Expr         : Node_Id;
+      Domain       : EW_Domain;
+      Current_Type : out W_Base_Type_Id;
+      Ref_Allowed  : Boolean) return W_Expr_Id;
+
    function Transform_Array_Component_Associations
      (Typ         : Entity_Id;
       Id          : W_Identifier_Id;
@@ -1668,6 +1674,89 @@ package body Gnat2Why.Expr is
          Pred      => +Result);
    end Transform_Array_Component_Associations;
 
+   --------------------
+   -- Transform_Attr --
+   --------------------
+
+   function Transform_Attr
+     (Expr         : Node_Id;
+      Domain       : EW_Domain;
+      Current_Type : out W_Base_Type_Id;
+      Ref_Allowed  : Boolean) return W_Expr_Id
+   is
+      Aname   : constant Name_Id := Attribute_Name (Expr);
+      Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+      Var     : constant Node_Id      := Prefix (Expr);
+      T       : W_Expr_Id;
+   begin
+      Current_Type := Type_Of_Node (Expr);
+      case Attr_Id is
+         when Attribute_Result =>
+            if Result_Name = Why_Empty then
+               T := +New_Result_Term;
+            else
+               T :=
+                  New_Unary_Op
+                    (Ada_Node => Expr,
+                     Op       => EW_Deref,
+                     Right    => +Result_Name,
+                     Op_Type  => EW_Int,
+                     Domain   => Domain);
+            end if;
+
+         when Attribute_Old =>
+            if Domain = EW_Prog then
+               T := New_Identifier
+                       (Symbol => Register_Old_Node (Var),
+                        Domain => Domain);
+            else
+               T :=
+                 New_Tagged (Def    => Transform_Expr
+                             (Var, Domain, Ref_Allowed),
+                             Tag    => NID (""),
+                             Domain => Domain);
+            end if;
+
+         when Attribute_First | Attribute_Last | Attribute_Length =>
+            case Ekind (Etype (Var)) is
+               when Array_Kind =>
+                  --  ???  Missing support for Array_Type'First
+                  --  ???  Missing support of A'First (N)
+                  T :=
+                    New_Array_Attr
+                      (Attribute_Id'Image (Attr_Id),
+                       Full_Name (Etype (Var)),
+                       Transform_Expr (Var, Domain, Ref_Allowed),
+                       Domain);
+                  Current_Type := EW_Int_Type;
+
+               when Enumeration_Kind | Integer_Kind =>
+                  T :=
+                    +Attr_Name.Id
+                      (Full_Name (Etype (Var)),
+                       Attribute_Id'Image (Attr_Id));
+                  Current_Type := EW_Int_Type;
+
+               when Real_Kind =>
+                  T :=
+                    +Attr_Name.Id
+                      (Full_Name (Etype (Var)),
+                       Attribute_Id'Image (Attr_Id));
+                  Current_Type := EW_Real_Type;
+
+               when others =>
+                  --  All possible cases should have been handled
+                  --  before this point.
+                  pragma Assert (False);
+                  null;
+            end case;
+
+      when others =>
+         raise Not_Implemented;
+      end case;
+      return T;
+   end Transform_Attr;
+
    ---------------------------------------------
    -- Transform_Record_Component_Associations --
    ---------------------------------------------
@@ -2302,76 +2391,7 @@ package body Gnat2Why.Expr is
                                    Ref_Allowed);
 
          when N_Attribute_Reference =>
-            declare
-               Aname   : constant Name_Id := Attribute_Name (Expr);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-               Var     : constant Node_Id      := Prefix (Expr);
-            begin
-               case Attr_Id is
-                  when Attribute_Result =>
-                     if Result_Name = Why_Empty then
-                        T := +New_Result_Term;
-                     else
-                        T :=
-                           New_Unary_Op
-                             (Ada_Node => Expr,
-                              Op       => EW_Deref,
-                              Right    => +Result_Name,
-                              Op_Type  => EW_Int,
-                              Domain   => Domain);
-                     end if;
-
-                  when Attribute_Old =>
-                     if Domain = EW_Prog then
-                        T := New_Identifier
-                                (Symbol => Register_Old_Node (Var),
-                                 Domain => Domain);
-                     else
-                        T :=
-                          New_Tagged (Def    => Transform_Expr
-                                      (Var, Domain, Ref_Allowed),
-                                      Tag    => NID (""),
-                                      Domain => Domain);
-                     end if;
-
-                  when Attribute_First | Attribute_Last | Attribute_Length =>
-                     case Ekind (Etype (Var)) is
-                        when Array_Kind =>
-                           --  ???  Missing support for Array_Type'First
-                           --  ???  Missing support of A'First (N)
-                           T :=
-                             New_Array_Attr
-                               (Attribute_Id'Image (Attr_Id),
-                                Full_Name (Etype (Var)),
-                                Transform_Expr (Var, Domain, Ref_Allowed),
-                                Domain);
-                           Current_Type := EW_Int_Type;
-
-                        when Enumeration_Kind | Integer_Kind =>
-                           T :=
-                             +Attr_Name.Id
-                               (Full_Name (Etype (Var)),
-                                Attribute_Id'Image (Attr_Id));
-                           Current_Type := EW_Int_Type;
-
-                        when Real_Kind =>
-                           T :=
-                             +Attr_Name.Id
-                               (Full_Name (Etype (Var)),
-                                Attribute_Id'Image (Attr_Id));
-                           Current_Type := EW_Real_Type;
-
-                        when others =>
-                           --  All possible cases should have been handled
-                           --  before this point.
-                           pragma Assert (False);
-                           null;
-                     end case;
-
-               when others =>
-                  raise Not_Implemented;
-               end case;
-            end;
+            T := Transform_Attr (Expr, Domain, Current_Type, Ref_Allowed);
 
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node (Expr, Domain, Ref_Allowed);
