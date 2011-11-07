@@ -2709,7 +2709,11 @@ package body Alfa.Definition is
 
             null;
 
-         when E_Record_Type =>
+         when E_Record_Type | E_Record_Subtype =>
+            if Ekind (+Id) = E_Record_Subtype then
+               Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
+            end if;
+
             if Is_Interface (+Id) then
                Mark_Non_Alfa ("interface", +Id, NYI_XXX);
 
@@ -2750,9 +2754,6 @@ package body Alfa.Definition is
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
             Mark_Non_Alfa ("type definition", +Id, NYI_XXX);
-
-         when E_Record_Subtype =>
-            Mark_Non_Alfa ("type definition", +Id, NYI_Discriminant);
 
          when Access_Kind =>
             Mark_Non_Alfa ("access type", +Id, NIR_Access);
