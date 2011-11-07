@@ -469,7 +469,16 @@ package body Alfa.Definition is
 
    procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
    begin
-      if Current_Unit_Is_Main_Spec then
+      if Current_Unit_Is_Main_Spec
+
+        --  When dealing with the subprogram spec for a subprogram compilation
+        --  unit, always declare the subprogram in the "spec" file, for
+        --  inclusion by other generated Why units.
+
+        or else (Current_Unit_Is_Main_Body
+                  and then Kind = Alfa_Subprogram_Spec
+                  and then Nkind (Parent (N)) = N_Compilation_Unit)
+      then
          Decls_In_Spec (Kind).Append (N);
       elsif Current_Unit_Is_Main_Body then
          Decls_In_Body (Kind).Append (N);
