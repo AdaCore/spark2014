@@ -1720,14 +1720,26 @@ package body Gnat2Why.Expr is
          when Attribute_First | Attribute_Last | Attribute_Length =>
             case Ekind (Etype (Var)) is
                when Array_Kind =>
-                  --  ???  Missing support for Array_Type'First
+
                   --  ???  Missing support of A'First (N)
-                  T :=
-                    New_Array_Attr
-                      (Attribute_Id'Image (Attr_Id),
-                       Full_Name (Etype (Var)),
-                       Transform_Expr (Var, Domain, Ref_Allowed),
-                       Domain);
+                  --  ???  Missing support of Array_Type'First (N)
+
+                  --  Array_Type'First
+
+                  if Nkind (Var) = N_Identifier and then
+                     Is_Type (Entity (Var)) then
+                     T :=
+                        +Attr_Name.Id
+                           (Full_Name (Etype (First_Index (Entity (Var)))),
+                            Attribute_Id'Image (Attr_Id));
+                  else
+                     T :=
+                       New_Array_Attr
+                         (Attribute_Id'Image (Attr_Id),
+                          Full_Name (Etype (Var)),
+                          Transform_Expr (Var, Domain, Ref_Allowed),
+                          Domain);
+                  end if;
                   Current_Type := EW_Int_Type;
 
                when Enumeration_Kind | Integer_Kind =>
