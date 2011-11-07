@@ -183,47 +183,37 @@ package body Alfa.Filter is
          end;
       end if;
 
-      --  Add diagonal dependencies for spec -> body dependencies
+      --  Add diagonal dependencies for spec -> body dependencies. This cannot
+      --  be achieved by simply browsing the with'ed units of the main unit,
+      --  for reasons described below. Instead, browse all ALI files read.
+
       if Present (Body_Unit) then
-         declare
-            Cursor : Node_Id := First (Context_Items (Body_Unit));
+         for Index in ALIs.First .. ALIs.Last loop
+            declare
+               Pkg_Name : constant String :=
+                            File_Name_Without_Suffix
+                              (Get_Name_String (ALIs.Table (Index).Afile));
+            begin
+               --  Subprograms may mention in their effects variables from
+               --  units which are not directly with'ed, hence the need to
+               --  browse all ALI files.
 
-         begin
-            while Present (Cursor) loop
-               case Nkind (Cursor) is
-                  when N_With_Clause =>
-                     declare
-                        Pkg_Name : constant String :=
-                                     File_Name_Without_Suffix
-                                       (Sloc (Library_Unit (Cursor)));
-                     begin
-                        Add_With_Clause
-                          (Types_Vars_Body,
-                           Pkg_Name & Types_Vars_Spec_Suffix);
-                        Add_With_Clause
-                          (Subp_Body,
-                           Pkg_Name & Subp_Spec_Suffix);
-                     end;
+               Add_With_Clause
+                 (Subp_Spec,
+                  Pkg_Name & Types_Vars_Body_Suffix);
 
-                  when others =>
-                     null;
+               --  If seperate units are used, units may be with'ed in the
+               --  separate unit, and not directly in the main unit, hence the
+               --  need to browse all ALI files.
 
-               end case;
-               Next (Cursor);
-            end loop;
-
-            for Index in ALIs.First .. ALIs.Last loop
-               declare
-                  Pkg_Name : constant String :=
-                             File_Name_Without_Suffix
-                               (Get_Name_String (ALIs.Table (Index).Afile));
-               begin
-                  Add_With_Clause
-                    (Subp_Spec,
-                     Pkg_Name & Types_Vars_Body_Suffix);
-               end;
-            end loop;
-         end;
+               Add_With_Clause
+                 (Types_Vars_Body,
+                  Pkg_Name & Types_Vars_Spec_Suffix);
+               Add_With_Clause
+                 (Subp_Body,
+                  Pkg_Name & Subp_Spec_Suffix);
+            end;
+         end loop;
       end if;
 
       --  If the current package is a child package, add the implicit with
