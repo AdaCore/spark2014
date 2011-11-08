@@ -106,6 +106,149 @@ val t__ada_array___update_ :
                   t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
         <-> t__ada_array___equal a b = True
 
+  (* The theory of Ada arrays of two dimensions *)
+
+  type t__ada_array_2 'a
+
+  function t__ada_array_2___access int int (t__ada_array_2 'a) : 'a
+
+  function t__ada_array_2___update int int (t__ada_array_2 'a) 'a
+     : (t__ada_array_2 'a)
+
+  function t__ada_array_2___equal (t__ada_array_2 'a) (t__ada_array_2 'a) : bool
+
+  function t__ada_array_2___attr___ATTRIBUTE_LENGTH (t__ada_array_2 'a) : int
+  function t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 (t__ada_array_2 'a) : int
+
+  function t__ada_array_2___attr___ATTRIBUTE_FIRST (t__ada_array_2 'a) : int
+  function t__ada_array_2___attr___ATTRIBUTE_FIRST_2 (t__ada_array_2 'a) : int
+
+  function t__ada_array_2___attr___ATTRIBUTE_LAST (t__ada_array_2 'a) : int
+  function t__ada_array_2___attr___ATTRIBUTE_LAST_2 (t__ada_array_2 'a) : int
+
+val t__ada_array_2___access_ :
+ i : int -> j : int -> a : t__ada_array_2 'a ->
+ { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
+   t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
+ }
+ 'a
+ { result = t__ada_array_2___access i j a }
+
+val t__ada_array_2___update_ :
+ i : int -> j : int -> a : t__ada_array_2 'a -> v : 'a ->
+ { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
+   t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
+ }
+ t__ada_array_2 'a
+ { result = t__ada_array_2___update i j a v }
+
+  axiom T__ada_array_2___accupd_eq:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j :int.
+    forall v:'a [t__ada_array_2___update i j a v].
+       t__ada_array_2___access i j (t__ada_array_2___update i j a v) = v
+
+  axiom T__ada_array_2___accupd_neq:
+    forall a:t__ada_array_2 'a.
+    forall i1:int.
+    forall i2:int.
+    forall j1:int.
+    forall j2:int.
+    forall v:'a [t__ada_array_2___access i2 j2 (t__ada_array_2___update i1 j1 a v ) |
+                  t__ada_array_2___update i1 j1 a v,
+                  t__ada_array_2___access i2 j2 a].
+      (i1 <> i2 \/ j1 <> j2) ->
+       t__ada_array_2___access i2 j2 (t__ada_array_2___update i1 j1 a v ) =
+       t__ada_array_2___access i2 j2 a
+
+  axiom T__ada_array_2___first_update:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+      t__ada_array_2___attr___ATTRIBUTE_FIRST a =
+      t__ada_array_2___attr___ATTRIBUTE_FIRST (t__ada_array_2___update i j a v)
+
+  axiom T__ada_array_2___first_update_2:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a =
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 (t__ada_array_2___update i j a v)
+
+  axiom T__ada_array_2___last_update:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST a =
+      t__ada_array_2___attr___ATTRIBUTE_LAST (t__ada_array_2___update i j a v )
+
+  axiom T__ada_array_2___last_update_2:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a =
+      t__ada_array_2___attr___ATTRIBUTE_LAST_2 (t__ada_array_2___update i j a v )
+
+  axiom T__ada_array_2___length_update:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH a =
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH (t__ada_array_2___update i j a v)
+
+  axiom T__ada_array_2___length_update_2:
+    forall a:t__ada_array_2 'a.
+    forall i:int. forall j : int.
+    forall v:'a.
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a =
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 (t__ada_array_2___update i j a v)
+
+  axiom T__ada_array_2___length_non_zero:
+    forall a:t__ada_array_2 'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST a >= t__ada_array_2___attr___ATTRIBUTE_FIRST a ->
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH a =
+       t__ada_array_2___attr___ATTRIBUTE_LAST a -
+       t__ada_array_2___attr___ATTRIBUTE_FIRST a + 1
+
+  axiom T__ada_array_2___length_zero:
+    forall a:t__ada_array_2 'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST a < t__ada_array_2___attr___ATTRIBUTE_FIRST a ->
+      t__ada_array_2___attr___ATTRIBUTE_LENGTH a = 0
+
+  axiom T__ada_array_2___length_non_zero_2:
+    forall a:t__ada_array_2 'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a >=
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a ->
+       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a =
+       t__ada_array_2___attr___ATTRIBUTE_LAST_2 a -
+       t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a + 1
+
+  axiom T__ada_array_2___length_zero_2:
+    forall a:t__ada_array_2 'a.
+      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a <
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a ->
+      t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a = 0
+
+  axiom T__ada_array_2___equal_def:
+    forall a:t__ada_array_2 'a.
+    forall b:t__ada_array_2 'a.
+        ((t__ada_array_2___attr___ATTRIBUTE_LENGTH a = t__ada_array_2___attr___ATTRIBUTE_LENGTH b)
+         /\
+         (t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a = t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 b)
+         /\
+         (forall i:int. forall j : int.
+               (t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <=
+                  t__ada_array_2___attr___ATTRIBUTE_LAST a)
+                ->
+               (t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <=
+                  t__ada_array_2___attr___ATTRIBUTE_LAST_2 a)
+                ->
+               (t__ada_array_2___access i j a =
+                  t__ada_array_2___access
+                  (t__ada_array_2___attr___ATTRIBUTE_FIRST b - t__ada_array_2___attr___ATTRIBUTE_FIRST a + i)
+                  (t__ada_array_2___attr___ATTRIBUTE_FIRST_2 b - t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a + j)
+                  b)))
+        <-> t__ada_array_2___equal a b = True
 
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
