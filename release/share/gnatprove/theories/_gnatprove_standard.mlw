@@ -225,8 +225,8 @@ val t__ada_array___update_ :
   axiom Int_min_is_le:
     forall x:int.
     forall y:int.
-        (int_min x y : int) <= x /\
-        (int_min x y : int) <= y
+        int_min x y <= x /\
+        int_min x y <= y
 
   axiom Int_min_is_some:
     forall x:int.
@@ -242,55 +242,51 @@ val t__ada_array___update_ :
   function math_mod int int : int
 
   axiom Math_div_mod:
-    (forall x:int.
-      (forall y:int.
-        ((y <> 0) ->
-         (x = (Int.(+) (Int.(*) y (math_div x y : int) : int) (math_mod x y : int) : int)))))
+    forall x:int.
+    forall y:int.
+        y <> 0 ->
+         x = (y * math_div x y) + math_mod x y
 
   axiom Math_mod_bound:
-    (forall x:int.
-      (forall y:int.
-        ((y <> 0) ->
-         ((Int.(<=) 0 (math_mod x y : int)) /\
-          (Int.(<) (math_mod x y : int) (AbsInt.abs y : int))))))
+    forall x:int.
+    forall y:int.
+        y <> 0 ->
+         0 <= math_mod x y /\
+          math_mod x y < AbsInt.abs y
 
   axiom Computer_div_mod:
-    (forall x:int.
-      (forall y:int [(ComputerDivision.div x y : int),
-        (ComputerDivision.mod x y : int)].
-        ((y <> 0) ->
-         (x = (Int.(+) (Int.(*) y (ComputerDivision.div x y : int) : int) (ComputerDivision.mod x y : int) : int)))))
+    forall x:int.
+    forall y:int [ComputerDivision.div x y, ComputerDivision.mod x y].
+        y <> 0 ->
+         x = (y * ComputerDivision.div x y) + ComputerDivision.mod x y
 
   axiom Computer_div_bound:
-    (forall x:int.
-      (forall y:int.
-        (((Int.(>=) x 0) /\ (Int.(>) y 0)) ->
-         ((Int.(<=) 0 (ComputerDivision.div x y : int)) /\
-          (Int.(<=) (ComputerDivision.div x y : int) x)))))
+    forall x:int.
+      forall y:int.
+        (x >= 0 /\ y > 0) ->
+         (0 <= ComputerDivision.div x y /\
+          ComputerDivision.div x y <= x)
 
   axiom Computer_mod_bound:
-    (forall x:int.
-      (forall y:int.
-        ((y <> 0) ->
-         (Int.(<) (AbsInt.abs (ComputerDivision.mod x y : int) : int) (AbsInt.abs y : int)))))
+    forall x:int.
+    forall y:int.
+        y <> 0 -> AbsInt.abs (ComputerDivision.mod x y) < AbsInt.abs y
 
   axiom Computer_mod_sign_pos:
-    (forall x:int.
-      (forall y:int.
-        (((Int.(>=) x 0) /\ (y <> 0)) ->
-         (Int.(>=) (ComputerDivision.mod x y : int) 0))))
+    forall x:int.
+    forall y:int.
+        (x >= 0 /\ y <> 0) -> ComputerDivision.mod x y >= 0
 
   axiom Computer_mod_sign_neg:
-    (forall x:int.
-      (forall y:int.
-        (((Int.(<=) x 0) /\ (y <> 0)) ->
-         (Int.(<=) (ComputerDivision.mod x y : int) 0))))
+    forall x:int.
+    forall y:int.
+        (x <= 0 /\ y <> 0) -> ComputerDivision.mod x y <= 0
 
   axiom Computer_rounds_toward_zero:
-    (forall x:int.
-      (forall y:int.
-        ((y <> 0) ->
-         (Int.(<=) (AbsInt.abs (Int.(*) (ComputerDivision.div x y : int) y : int) : int) (AbsInt.abs x : int)))))
+    forall x:int.
+    forall y:int.
+        y <> 0 ->
+         AbsInt.abs (ComputerDivision.div x y * y) <= AbsInt.abs x
 
   function div_real (x : real) (y : real) : real = x /. y
 
@@ -310,7 +306,7 @@ val t__ada_array___update_ :
 
   function real_of_int (x : int) : real = FromInt.from_int x
 
-  (* Boolean comparison functions for reals *)  
+  (* Boolean comparison functions for reals *)
 
   function bool_real__lt real real : bool
 
@@ -325,34 +321,34 @@ val t__ada_array___update_ :
   function bool_real__neq real real : bool
 
   axiom Bool_real__lt_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__lt x y : bool) = True) <-> (Real.(<) x y))))
+    forall x:real.
+    forall y:real.
+      bool_real__lt x y = True <-> x <. y
 
   axiom Bool_real__le_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__le x y : bool) = True) <-> (Real.(<=) x y))))
+    forall x:real.
+    forall y:real.
+      bool_real__le x y = True <-> x <=. y
 
   axiom Bool_real__gt_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__gt x y : bool) = True) <-> (Real.(>) x y))))
+    forall x:real.
+    forall y:real.
+        bool_real__gt x y = True <-> x >. y
 
   axiom Bool_real__ge_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__ge x y : bool) = True) <-> (Real.(>=) x y))))
+    forall x:real.
+    forall y:real.
+      bool_real__ge x y = True <-> x >=. y
 
   axiom Bool_real__eq_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__eq x y : bool) = True) <-> (x = y))))
+    forall x:real.
+    forall y:real.
+      bool_real__eq x y = True <-> x = y
 
   axiom Bool_real__neq_axiom:
-    (forall x:real.
-      (forall y:real.
-        (((bool_real__neq x y : bool) = True) <-> (x <> y))))
+    forall x:real.
+    forall y:real.
+       bool_real__neq x y = True <-> x <> y
 
 end
 
