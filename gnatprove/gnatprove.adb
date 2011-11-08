@@ -447,7 +447,7 @@ procedure Gnatprove is
       Put_Keyval ("magic", 7);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
-      Put_Keyval ("timelimit", 10);
+      Put_Keyval ("timelimit", 20);
       Start_Section ("prover alt-ergo");
       Put_Keyval ("command", "why3-cpulimit %t %m -s alt-ergo -proof %f");
       Put_Keyval ("driver",
