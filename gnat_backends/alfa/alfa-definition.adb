@@ -1790,6 +1790,11 @@ package body Alfa.Definition is
                   Mark_Non_Alfa ("object", N, From => Unique (Entity (N)));
                end if;
 
+            when Named_Kind =>
+               if not (Object_Is_In_Alfa (E)) then
+                  Mark_Non_Alfa ("object", N, From => Unique (Entity (N)));
+               end if;
+
             when Type_Kind =>
                if not Type_Is_In_Alfa (Entity (N)) then
                   Mark_Non_Alfa ("type", N, From => Unique (Entity (N)));
@@ -1798,7 +1803,6 @@ package body Alfa.Definition is
             --  Subprogram name appears for example in Sub'Result
 
             when E_Void                  |
-                 Named_Kind              |
                  E_Enumeration_Literal   |
                  Subprogram_Kind         |
                  E_Block                 |
