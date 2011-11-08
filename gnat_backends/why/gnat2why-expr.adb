@@ -2136,6 +2136,15 @@ package body Gnat2Why.Expr is
                Overflow_Check_Needed := True;
             end;
 
+         when N_Op_Plus =>
+            --  unary plus
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+            begin
+               Current_Type := Base_Why_Type (Right);
+               T := Transform_Expr (Right, Current_Type, Domain, Ref_Allowed);
+            end;
+
          when N_Op_Abs =>
             declare
                Right : constant Node_Id := Right_Opnd (Expr);
