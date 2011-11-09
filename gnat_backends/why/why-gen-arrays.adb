@@ -130,15 +130,14 @@ package body Why.Gen.Arrays is
                         Name       => BT_Id);
       Name_Type   : constant W_Primitive_Type_Id :=
                      New_Abstract_Type (Name => Type_Id);
-      Ar          : constant W_Term_Id := New_Term ("a");
       Ar_Binder_2 : constant Binder_Type :=
                       (B_Name => New_Identifier ("a"),
                        B_Type => Ar_Type,
                        others => <>);
-
-      Trig        : constant W_Term_Id :=
-               New_Call (Name => Conversion_To.Id (Name, BT_Str),
-                         Args => (1 => +Ar));
+      Conv_From   : constant W_Identifier_Id :=
+                      Conversion_From.Id (Name, BT_Str);
+      Conv_To     : constant W_Identifier_Id :=
+                      Conversion_To.Id (Name, BT_Str);
    begin
       --  generate the theory:
       --  type t
@@ -154,43 +153,22 @@ package body Why.Gen.Arrays is
         (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Conversion_To.Id (Name, BT_Str),
+            Name        => Conv_To,
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
         (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Conversion_From.Id (Name, BT_Str),
+            Name        => Conv_From,
             Binders     => (1 => Ar_Binder_2),
             Return_Type => Name_Type));
-      Emit
-        (File (W_File_Logic_Type),
-         New_Axiom
-           (Name => Array_Conv_Idem.Id (Name),
-            Def  =>
-              New_Universal_Quantif
-                (Var_Type  =>
-                   New_Abstract_Type (Name => Type_Id),
-                 Variables => (1 => New_Identifier ("a")),
-                 Triggers  => New_Triggers
-                   (Triggers =>
-                      (1 => New_Trigger (Terms => (1 => +Trig)))),
-                 Pred      =>
-                   New_Relation
-                     (Op      => EW_Eq,
-                      Op_Type => EW_Abstract,
-                      Left    => +Ar,
-                      Right   =>
-                        New_Call
-                          (Domain => EW_Term,
-                           Name   => Conversion_From.Id (Name, BT_Str),
-                           Args   =>
-                             (1 =>
-                                New_Call
-                                  (Domain => EW_Term,
-                                   Name   => Conversion_To.Id (Name, BT_Str),
-                                   Args   => (1 => +Ar))))))));
+      Define_Coerce_Axiom
+         (File      => File,
+          Type_Name => Type_Id,
+          Base_Type => Ar_Type,
+          From      => Conv_From,
+          To        => Conv_To);
       Define_Unicity_Axiom
         (File       => File,
          Axiom_Name => Unicity_Axiom.Id (Name),

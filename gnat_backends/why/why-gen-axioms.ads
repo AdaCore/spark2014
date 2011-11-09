@@ -43,6 +43,15 @@ package Why.Gen.Axioms is
    --    <type_name>___in_range (<conversion> (x))
 
    procedure Define_Coerce_Axiom
+     (File         : W_File_Sections;
+      Type_Name    : W_Identifier_Id;
+      Base_Type    : W_Primitive_Type_Id;
+      From         : W_Identifier_Id;
+      To           : W_Identifier_Id;
+      Hypothesis   : W_Pred_Id := Why_Empty;
+      Modulus      : W_Term_OId := Why_Empty);
+
+   procedure Define_Coerce_Axiom
      (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;

@@ -35,68 +35,61 @@ package body Why.Gen.Axioms is
    -------------------------
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Sections;
-      Type_Name : W_Identifier_Id;
-      Base_Type : EW_Scalar;
-      Modulus   : W_Term_OId := Why_Empty)
+     (File         : W_File_Sections;
+      Type_Name    : W_Identifier_Id;
+      Base_Type    : W_Primitive_Type_Id;
+      From         : W_Identifier_Id;
+      To           : W_Identifier_Id;
+      Hypothesis   : W_Pred_Id := Why_Empty;
+      Modulus      : W_Term_OId := Why_Empty)
    is
-      Base_Type_Name       : constant W_Identifier_Id :=
-                               New_Identifier
-                                 (EW_Base_Type_Name (Base_Type));
-      From_Base_Type       : constant W_Identifier_Id :=
-                               Conversion_From.Id (Type_Name, Base_Type_Name);
-      To_Base_Type         : constant W_Identifier_Id :=
-                               Conversion_To.Id (Type_Name, Base_Type_Name);
-      BT                   : constant W_Primitive_Type_Id
-                               := New_Base_Type (Base_Type => Base_Type);
-      Arg_S                : constant String := "x";
+      Arg_S                : constant W_Term_Id := New_Term ("x");
       X_To_Type_Op         : constant W_Term_Id :=
                                New_Call
-                                 (Name => From_Base_Type,
-                                  Args => (1 => +New_Term (Arg_S)));
+                                 (Name => From,
+                                  Args => (1 => +Arg_S));
       Back_To_Base_Type_Op : constant W_Term_Id :=
                                New_Call
-                                 (Name => To_Base_Type,
+                                 (Name => To,
                                   Args => (1 => +X_To_Type_Op));
-      In_Range             : constant W_Pred_Id :=
-                               New_Call
-                                 (Name =>
-                                    Range_Pred_Name.Id (Type_Name),
-                                  Args =>
-                                    (1 => +New_Term (Arg_S)));
       Normalized_Result    : constant W_Term_Id :=
                                (if Modulus = Why_Empty then
-                                  New_Term (Arg_S)
+                                  Arg_S
                                 else
                                   New_Call
                                     (Name => New_Integer_Mod.Id,
-                                     Args =>
-                                       (+New_Term (Arg_S),
-                                        +Modulus)));
+                                     Args => (+Arg_S, +Modulus)));
+      Equality             : constant W_Pred_Id :=
+                              New_Relation
+                                (Op_Type => EW_Abstract,
+                                 Left    => +Back_To_Base_Type_Op,
+                                 Op      => EW_Eq,
+                                 Right   => +Normalized_Result);
       Formula              : constant W_Pred_Id :=
-                               New_Connection
-                                 (Op    => EW_Imply,
-                                  Left  => +In_Range,
-                                  Right =>
-                                    New_Relation
-                                      (Domain  => EW_Pred,
-                                       Op_Type => Base_Type,
-                                       Left    => +Back_To_Base_Type_Op,
-                                       Op      => EW_Eq,
-                                       Right   => +Normalized_Result));
+                                 (if Hypothesis = Why_Empty then
+                                    Equality
+                                  else
+                                    New_Connection
+                                      (Op    => EW_Imply,
+                                       Left  => +Hypothesis,
+                                       Right => +Equality));
+      Basic_Trigger        : constant W_Trigger_Id :=
+         New_Trigger (Terms => (1 => +Back_To_Base_Type_Op));
+      Enhanced_Triggers    : constant W_Triggers_OId :=
+         (if Hypothesis = Why_Empty then
+            New_Triggers (Triggers => (1 => Basic_Trigger))
+          else
+            New_Triggers (Triggers =>
+               (1 => Basic_Trigger,
+                2 => New_Trigger (Terms =>
+                  (1 => +Hypothesis,
+                   2 => +X_To_Type_Op)))));
       Quantif_On_X         : constant W_Pred_Id :=
                                New_Universal_Quantif
-                                 (Var_Type  => BT,
+                                 (Var_Type  => Base_Type,
                                   Variables => (1 => New_Identifier (EW_Term,
-                                                                     Arg_S)),
-                                  Triggers  => New_Triggers (
-                                    Triggers =>
-                                      (1 => New_Trigger (
-                                         Terms => (1 => +In_Range,
-                                                   2 => +X_To_Type_Op)),
-                                       2 => New_Trigger (
-                                         Terms => (1 =>
-                                                     +Back_To_Base_Type_Op)))),
+                                                                     "x")),
+                                  Triggers  => Enhanced_Triggers,
                                   Pred      => Formula);
    begin
       Emit
@@ -104,6 +97,29 @@ package body Why.Gen.Axioms is
          New_Axiom
            (Name => Coerce_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
+   end Define_Coerce_Axiom;
+
+   procedure Define_Coerce_Axiom
+     (File      : W_File_Sections;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar;
+      Modulus   : W_Term_OId := Why_Empty)
+   is
+      In_Range       : constant W_Pred_Id :=
+                        New_Call
+                           (Name => Range_Pred_Name.Id (Type_Name),
+                            Args => (1 => +New_Term ("x")));
+      Base_Type_Name : constant W_Identifier_Id :=
+         New_Identifier (EW_Base_Type_Name (Base_Type));
+   begin
+      Define_Coerce_Axiom
+        (File       => File,
+         Type_Name  => Type_Name,
+         Base_Type  => New_Base_Type (Base_Type => Base_Type),
+         From       => Conversion_From.Id (Type_Name, Base_Type_Name),
+         To         => Conversion_To.Id (Type_Name, Base_Type_Name),
+         Hypothesis => In_Range,
+         Modulus    => Modulus);
    end Define_Coerce_Axiom;
 
    ------------------------
