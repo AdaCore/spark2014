@@ -29,10 +29,10 @@ with Ada.Containers.Hashed_Maps;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
+with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Snames;             use Snames;
 with Stand;              use Stand;
-with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
@@ -1037,30 +1037,35 @@ package body Gnat2Why.Expr is
                   Field  => Transform_Ident (Selector_Name (N)));
 
          when N_Indexed_Component =>
+
             --  ??? Save the index in a temporary variable
+
             declare
-               Cnt      : Integer := 1;
-               Ar     : constant Node_Id := Prefix (N);
-               Index  : Node_Id := First (Expressions (N));
-               T_Name : constant String := Type_Of_Node (Ar);
-               T      : W_Expr_Id := Expr;
+               Ar      : constant Node_Id := Prefix (N);
+               Dim     : constant Positive :=
+                  Positive (Number_Dimensions (Etype (Ar)));
+               T_Name  : constant String := Type_Of_Node (Ar);
+               Indices : W_Expr_Array :=
+                  (1 .. Dim => <>);
+               Cursor  : Node_Id := First (Expressions (N));
+               Count   : Positive := 1;
             begin
-               while Present (Index) loop
-                  T :=
-                    New_Array_Access
-                     (Ada_Node => N,
-                      Domain   => Domain,
-                      Type_Name =>
-                        (if Cnt = 1 then T_Name
-                         else T_Name & "___" & Int_Image (Cnt)),
-                      Ar        => T,
-                      Index     =>
-                        Transform_Expr
-                          (Index, EW_Int_Type, Domain, Ref_Allowed));
-                  Next (Index);
-                  Cnt := Cnt + 1;
+               while Present (Cursor) loop
+                  Indices (Count) :=
+                     Transform_Expr
+                        (Cursor, EW_Int_Type, Domain, Ref_Allowed);
+                  Count := Count + 1;
+                  Next (Cursor);
                end loop;
-               return T;
+
+               return
+                  New_Array_Access
+                   (Ada_Node  => N,
+                    Domain    => Domain,
+                    Type_Name => T_Name,
+                    Ar        => Expr,
+                    Index     => Indices,
+                    Dimension => Positive (Number_Dimensions (Etype (Ar))));
             end;
 
          when others =>
@@ -1088,21 +1093,30 @@ package body Gnat2Why.Expr is
                                  Value => Value);
 
          when N_Indexed_Component =>
-            if Number_Dimensions (Unique_Entity (Etype (Prefix (N)))) > 1 then
-               raise Not_Implemented;
-            end if;
-            return
-               New_Array_Update (Ada_Node  => N,
-                                 Type_Name => Type_Of_Node (Prefix (N)),
-                                 Ar        => Pref,
-                                 Index     =>
-                                    +Transform_Expr
-                                      (First (Expressions (N)),
-                                       EW_Int_Type,
-                                       EW_Prog,
-                                       Ref_Allowed),
-                                 Value     => Value,
-                                 Domain    => Domain);
+            declare
+               Dim     : constant Positive :=
+                  Positive (Number_Dimensions (Etype (Prefix (N))));
+               Indices : W_Expr_Array :=
+                  (1 .. Dim => <>);
+               Cursor  : Node_Id := First (Expressions (N));
+               Count   : Positive := 1;
+            begin
+               while Present (Cursor) loop
+                  Indices (Count) :=
+                     Transform_Expr
+                        (Cursor, EW_Int_Type, EW_Prog, Ref_Allowed);
+                  Count := Count + 1;
+                  Next (Cursor);
+               end loop;
+               return
+                  New_Array_Update (Ada_Node  => N,
+                                    Type_Name => Type_Of_Node (Prefix (N)),
+                                    Ar        => Pref,
+                                    Index     => Indices,
+                                    Value     => Value,
+                                    Domain    => Domain,
+                                    Dimension => Dim);
+            end;
 
          when others =>
             raise Not_Implemented;
@@ -1530,12 +1544,16 @@ package body Gnat2Why.Expr is
                                              Domain        => EW_Term,
                                              Ref_Allowed   => Ref_Allowed);
                Read      : constant W_Expr_Id :=
+
+               --  ??? Deal with multidimensional case
+
                              New_Array_Access
                                (Ada_Node  => Expr_Or_Association,
                                 Domain    => EW_Term,
                                 Type_Name => T_Name,
                                 Ar        => +Id,
-                                Index     => +Index);
+                                Index     => (1 => +Index),
+                                Dimension => 1);
             begin
                return New_Comparison
                  (Cmp       => EW_Eq,
@@ -1552,12 +1570,15 @@ package body Gnat2Why.Expr is
       ----------------------
 
       function Select_Nth_Index (Offset : Nat) return W_Expr_Id is
+         --  ??? Deal with multidimensional case
          First : constant W_Expr_Id :=
                    New_Array_Attr
-                     (Attribute_Id'Image (Attribute_First),
+                     (Attribute_First,
                       T_Name,
                       +Id,
-                      EW_Term);
+                      EW_Term,
+                      1,
+                      Uint_1);
          Nth   : constant W_Expr_Id :=
                    New_Binary_Op
                      (Left     => First,
@@ -1761,10 +1782,14 @@ package body Gnat2Why.Expr is
                   else
                      T :=
                        New_Array_Attr
-                         (Attribute_Id'Image (Attr_Id),
+                         (Attr_Id,
                           Full_Name (Etype (Var)),
                           Transform_Expr (Var, Domain, Ref_Allowed),
-                          Domain);
+                          Domain,
+                          Positive (Number_Dimensions (Etype (Var))),
+                          (if Present (Expressions (Expr)) then
+                             Expr_Value (First (Expressions (Expr)))
+                           else Uint_1));
                   end if;
                   Current_Type := EW_Int_Type;
 

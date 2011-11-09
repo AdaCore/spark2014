@@ -23,10 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;        use Types;
-with Why.Ids;      use Why.Ids;
-with Why.Inter;    use Why.Inter;
-with Why.Sinfo;    use Why.Sinfo;
+with Snames;    use Snames;
+with Types;     use Types;
+with Uintp;     use Uintp;
+with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
+with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -38,11 +40,15 @@ package Why.Gen.Arrays is
    --  We are limited to constrained arrays with static bounds for now.
 
    procedure Declare_Ada_Constrained_Array
-     (File      : W_File_Sections;
-      Name      : String;
-      Component : String;
-      First     : W_Term_Id;
-      Last      : W_Term_Id);
+     (File       : W_File_Sections;
+      Name       : String;
+      Component  : String;
+      First_List : W_Term_Array;
+      Last_List  : W_Term_Array;
+      Dimension  : Positive)
+      with Pre =>
+         (First_List'Length = Last_List'Length and then
+          Dimension = Positive (First_List'Length));
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
@@ -50,7 +56,8 @@ package Why.Gen.Arrays is
    procedure Declare_Ada_Unconstrained_Array
      (File      : W_File_Sections;
       Name      : String;
-      Component : String);
+      Component : String;
+      Dimension : Positive);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component
@@ -59,23 +66,29 @@ package Why.Gen.Arrays is
      (Ada_Node      : Node_Id;
       Type_Name     : String;
       Ar            : W_Expr_Id;
-      Index         : W_Expr_Id;
-      Domain        : EW_Domain) return W_Expr_Id;
+      Index         : W_Expr_Array;
+      Domain        : EW_Domain;
+      Dimension     : Positive) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
    function New_Array_Attr
-      (Name      : String;
+      (Attr      : Attribute_Id;
        Type_Name : String;
        Ar        : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
-   --  Generate an expr that corresponds to Ar'Name
+       Domain    : EW_Domain;
+       Dimension : Positive;
+       Argument  : Uint) return W_Expr_Id
+       with Pre =>
+         (Attr in Attribute_First | Attribute_Last | Attribute_Length);
+   --  Generate an expr that corresponds to Ar'Attr
 
    function New_Array_Update
       (Ada_Node  : Node_Id;
        Type_Name : String;
        Ar        : W_Expr_Id;
-       Index     : W_Expr_Id;
+       Index     : W_Expr_Array;
        Value     : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
+       Domain    : EW_Domain;
+       Dimension  : Positive) return W_Expr_Id;
 
 end Why.Gen.Arrays;

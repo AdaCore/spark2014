@@ -26,7 +26,6 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Namet;        use Namet;
-with Snames;       use Snames;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
@@ -119,12 +118,6 @@ package Why.Gen.Names is
    Range_Name               : constant String := "range";
    In_Range                 : constant String := "in_range";
    Unicity                  : constant String := "unicity";
-   Attr_First               : constant String :=
-                                Attribute_Id'Image (Attribute_First);
-   Attr_Last                : constant String :=
-                                Attribute_Id'Image (Attribute_Last);
-   Attr_Length              : constant String :=
-                                Attribute_Id'Image (Attribute_Length);
 
    package Array_Access_Name is
      new Name_Gen.Arity_1 (EW_Term, "", Array_Access);

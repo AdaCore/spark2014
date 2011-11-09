@@ -25,7 +25,6 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with GNAT.Strings;       use GNAT.Strings;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Sem_Eval;           use Sem_Eval;
@@ -68,10 +67,6 @@ package body Gnat2Why.Types is
       Is_Base : Boolean);
    --  Same as Declare_Ada_Real but extract range information
    --  from node.
-
-   function Get_List_Of_Index_Ranges (E : Entity_Id) return
-      List_Of_Nodes.List;
-   --  Return the list of nodes that describe the indices of an array
 
    ------------------------------------------------
    -- Declare_Ada_Abstract_Signed_Int_From_Range --
@@ -125,24 +120,6 @@ package body Gnat2Why.Types is
       end if;
       Declare_Ada_Real (File, Name, First, Last, Is_Base);
    end Declare_Ada_Real_From_Range;
-
-   ------------------------------
-   -- Get_List_Of_Index_Ranges --
-   ------------------------------
-
-   function Get_List_Of_Index_Ranges (E : Entity_Id) return
-      List_Of_Nodes.List
-   is
-      use List_Of_Nodes;
-      L : List := Empty_List;
-      N : Node_Id := First_Index (E);
-   begin
-      while Present (N) loop
-         L.Append (N);
-         Next_Index (N);
-      end loop;
-      return L;
-   end Get_List_Of_Index_Ranges;
 
    ----------------------
    -- Is_Ada_Base_Type --
@@ -253,58 +230,56 @@ package body Gnat2Why.Types is
                   Is_Ada_Base_Type (Ident_Node));
 
             when Array_Kind =>
-               declare
-                  use List_Of_Nodes;
-                  Comp_Type  : String_Access :=
-                     new String'(Full_Name (Component_Type (Ident_Node)));
-                  Index_List : constant List :=
-                     Get_List_Of_Index_Ranges (Ident_Node);
-                  C          : Cursor := Last (Index_List);
-                  N          : Integer := Integer (Length (Index_List));
-               begin
-                  while Has_Element (C) loop
-                     declare
-                        Ty_Name : constant String :=
-                           (if N = 1 then Name_Str else Name_Str & "___" &
-                              Int_Image (N));
-                     begin
-                        if Is_Constrained (Ident_Node) then
-                           declare
-                              Rng : constant Node_Id :=
-                                 Get_Range (Element (C));
-                              Low  : W_Term_Id := Why_Empty;
-                              High : W_Term_Id := Why_Empty;
-                           begin
-                              if Is_Static_Expression (Low_Bound (Rng)) then
-                                 Low := New_Integer_Constant
-                                          (Value =>
-                                             Expr_Value (Low_Bound (Rng)));
-                              end if;
-                              if Is_Static_Expression (High_Bound (Rng)) then
-                                 High := New_Integer_Constant
-                                          (Value =>
-                                             Expr_Value (High_Bound (Rng)));
-                              end if;
-                              Declare_Ada_Constrained_Array
-                                 (File,
-                                  Ty_Name,
-                                  Comp_Type.all,
-                                  Low,
-                                  High);
-                           end;
-                        else
-                           Declare_Ada_Unconstrained_Array
-                             (File,
-                              Ty_Name,
-                              Comp_Type.all);
-                        end if;
-                        N := N - 1;
-                        Previous (C);
-                        Free (Comp_Type);
-                        Comp_Type := new String'(Ty_Name);
-                     end;
-                  end loop;
-               end;
+
+               --  ??? A special case that we did not handle before and that
+               --  gets in the way of the current refactoring; ignore for now.
+
+               if Ekind (Ident_Node) = E_String_Literal_Subtype then
+                  return;
+               end if;
+
+               if Is_Constrained (Ident_Node) then
+                  declare
+                     Dims      : constant Positive :=
+                        Positive (Number_Dimensions (Ident_Node));
+                     Low_List  : W_Term_Array := (1 .. Dims => Why_Empty);
+                     High_List : W_Term_Array := (1 .. Dims => Why_Empty);
+                     Index     : Node_Id := First_Index (Ident_Node);
+                     Count     : Positive := 1;
+                  begin
+                     while Present (Index) loop
+                        declare
+                           Rng  : constant Node_Id := Get_Range (Index);
+                        begin
+                           if Is_Static_Expression (Low_Bound (Rng)) then
+                              Low_List (Count) :=
+                                 New_Integer_Constant
+                                    (Value => Expr_Value (Low_Bound (Rng)));
+                           end if;
+                           if Is_Static_Expression (High_Bound (Rng)) then
+                              High_List (Count) :=
+                                 New_Integer_Constant
+                                    (Value => Expr_Value (High_Bound (Rng)));
+                           end if;
+                           Next_Index (Index);
+                           Count := Count + 1;
+                        end;
+                     end loop;
+                     Declare_Ada_Constrained_Array
+                       (File,
+                        Name_Str,
+                        Full_Name (Component_Type (Ident_Node)),
+                        Low_List,
+                        High_List,
+                        Dims);
+                  end;
+               else
+                  Declare_Ada_Unconstrained_Array
+                    (File,
+                     Name_Str,
+                     Full_Name (Component_Type (Ident_Node)),
+                     Positive (Number_Dimensions (Ident_Node)));
+               end if;
 
             when E_Record_Type =>
                declare
