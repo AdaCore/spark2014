@@ -26,6 +26,7 @@
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -117,19 +118,19 @@ package body Why.Gen.Arrays is
       Component : String;
       Dimension : Pos)
    is
+      Type_Id    : constant W_Identifier_Id := New_Identifier (Name);
+      BT_Str     : constant String := New_Ada_Array_Name (Dimension);
+      BT_Id      : constant W_Identifier_Id := New_Identifier (BT_Str);
       Comp_Type  : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
                        (Name => (New_Identifier (Component)));
       Ar_Type    : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
-                        Name       =>
-                          New_Identifier (New_Ada_Array_Name (Dimension)));
+                        Name       => BT_Id);
       Name_Type  : constant W_Primitive_Type_Id :=
-                     New_Abstract_Type
-                       (Name => (New_Identifier (Name)));
+                     New_Abstract_Type (Name => Type_Id);
       Ar         : constant W_Term_Id := New_Term ("a");
-      Arb        : constant W_Term_Id := New_Term ("b");
       Ar_Binder_2 : constant Binder_Type :=
                       (B_Name => New_Identifier ("a"),
                        B_Type => Ar_Type,
@@ -149,14 +150,14 @@ package body Why.Gen.Arrays is
         (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Array_Conv_From.Id (Name),
+            Name        => Conversion_To.Id (Name, BT_Str),
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
         (File (W_File_Logic_Type),
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Array_Conv_To.Id (Name),
+            Name        => Conversion_From.Id (Name, BT_Str),
             Binders     => (1 => Ar_Binder_2),
             Return_Type => Name_Type));
       Emit
@@ -166,8 +167,7 @@ package body Why.Gen.Arrays is
             Def  =>
               New_Universal_Quantif
                 (Var_Type  =>
-                   New_Abstract_Type
-                     (Name => (New_Identifier (Name))),
+                   New_Abstract_Type (Name => Type_Id),
                  Variables => (1 => New_Identifier ("a")),
                  Triggers  => New_Triggers
                    (Triggers =>
@@ -176,7 +176,7 @@ package body Why.Gen.Arrays is
                            (Terms =>
                               (1 =>
                                  New_Call
-                                   (Name => Array_Conv_From.Id (Name),
+                                   (Name => Conversion_To.Id (Name, BT_Str),
                                     Args => (1 => +Ar)))))),
                  Pred      =>
                    New_Relation
@@ -186,61 +186,18 @@ package body Why.Gen.Arrays is
                       Right   =>
                         New_Call
                           (Domain => EW_Term,
-                           Name   => Array_Conv_To.Id (Name),
+                           Name   => Conversion_From.Id (Name, BT_Str),
                            Args   =>
                              (1 =>
                                 New_Call
                                   (Domain => EW_Term,
-                                   Name   => Array_Conv_From.Id (Name),
+                                   Name   => Conversion_To.Id (Name, BT_Str),
                                    Args   => (1 => +Ar))))))));
-      Emit
-        (File (W_File_Logic_Type),
-         New_Guarded_Axiom
-           (Name    => Array_Conv_Idem_2.Id (Name),
-            Binders => (1 => Ar_Binder_2),
-            Def     =>
-              New_Universal_Quantif
-                (Var_Type  => +Ar_Type,
-                 Variables => (1 => New_Identifier ("b")),
-                 Triggers  =>
-                   New_Triggers
-                     (Triggers =>
-                       (1 =>
-                          New_Trigger
-                            (Terms =>
-                               (1 =>
-                                  New_Call
-                                    (Name => Array_Conv_To.Id (Name),
-                                     Args => (1 => +Ar)),
-                                2 =>
-                                  New_Call
-                                    (Name => Array_Conv_To.Id (Name),
-                                     Args => (1 => +Arb)))))),
-                 Pred      =>
-                   New_Connection
-                     (Op     => EW_Imply,
-                      Left   =>
-                        New_Relation
-                          (Domain  => EW_Pred,
-                           Op      => EW_Eq,
-                           Op_Type => EW_Abstract,
-                           Left    =>
-                             New_Call
-                               (Domain => EW_Term,
-                                Name   => Array_Conv_To.Id (Name),
-                                Args   => (1 => +Ar)),
-                           Right =>
-                             New_Call
-                               (Domain => EW_Term,
-                                Name   => Array_Conv_To.Id (Name),
-                                Args   => (1 => +Arb))),
-                      Right  =>
-                        New_Relation
-                          (Domain  => EW_Pred,
-                           Op      => EW_Eq,
-                           Op_Type => EW_Abstract,
-                           Left    => +Ar,
-                           Right   => +Arb)))));
+      Define_Unicity_Axiom
+        (File       => File,
+         Axiom_Name => Unicity_Axiom.Id (Name),
+         Var_Type   => Ar_Type,
+         Conversion => Conversion_From.Id (Name, BT_Str));
    end Declare_Ada_Unconstrained_Array;
 
    ----------------------
@@ -255,14 +212,14 @@ package body Why.Gen.Arrays is
       Domain        : EW_Domain;
       Dimension     : Pos) return W_Expr_Id
    is
-      Name      : constant W_Identifier_Id :=
-         Array_Access_Name.Id (New_Ada_Array_Name (Dimension));
+      BT_Str    : constant String := New_Ada_Array_Name (Dimension);
+      Name      : constant W_Identifier_Id := Array_Access_Name.Id (BT_Str);
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
       Progs     : constant W_Expr_Array :=
          Index & (1 => New_Call
                          (Domain => Domain,
-                          Name   => Array_Conv_From.Id (Type_Name),
+                          Name   => Conversion_To.Id (Type_Name, BT_Str),
                           Args   => (1 => +Ar)));
    begin
       return
@@ -295,21 +252,22 @@ package body Why.Gen.Arrays is
 
       UI_Image (Argument);
       declare
-         Arg_Buf : constant String := UI_Image_Buffer (1 .. UI_Image_Length);
+         Arg_Buf   : constant String := UI_Image_Buffer (1 .. UI_Image_Length);
          Attr_Suff : constant String :=
             (if Argument = Uint_1 then Attr_Str
              else Attr_Str & "_" & Arg_Buf);
+         BT_Str  : constant String := New_Ada_Array_Name (Dimension);
       begin
          return
            New_Call
              (Domain => Domain,
               Name   =>
-                Attr_Name.Id (New_Ada_Array_Name (Dimension), Attr_Suff),
+                Attr_Name.Id (BT_Str, Attr_Suff),
               Args   =>
                (1 =>
                   New_Call
                     (Domain => Domain,
-                     Name   => Array_Conv_From.Id (Type_Name),
+                     Name   => Conversion_To.Id (Type_Name, BT_Str),
                      Args   => (1 => +Ar))));
       end;
    end New_Array_Attr;
@@ -327,15 +285,15 @@ package body Why.Gen.Arrays is
        Domain    : EW_Domain;
        Dimension : Pos) return W_Expr_Id
    is
-      Name : constant W_Identifier_Id :=
-         Array_Update_Name.Id (New_Ada_Array_Name (Dimension));
+      BT_Str    : constant String := New_Ada_Array_Name (Dimension);
+      Name      : constant W_Identifier_Id := Array_Update_Name.Id (BT_Str);
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
       Args : constant W_Expr_Array :=
          Index &
                (1 => New_Call
                        (Domain => Domain,
-                        Name   => Array_Conv_From.Id (Type_Name),
+                        Name   => Conversion_To.Id (Type_Name, BT_Str),
                         Args   => (1 => +Ar)),
                 2 => +Value);
       Array_Upd : constant W_Expr_Id :=
@@ -348,7 +306,7 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Call
-          (Name   => Array_Conv_To.Id (Type_Name),
+          (Name   => Conversion_From.Id (Type_Name, BT_Str),
            Args   => (1 => Array_Upd),
            Domain => Domain);
    end New_Array_Update;

@@ -151,15 +151,11 @@ package body Why.Gen.Axioms is
    --------------------------
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Sections;
-      Type_Name : W_Identifier_Id;
-      Base_Type : EW_Scalar)
+     (File       : W_File_Sections;
+      Axiom_Name : W_Identifier_Id;
+      Var_Type   : W_Primitive_Type_Id;
+      Conversion : W_Identifier_Id)
    is
-      BT_Name           : constant W_Identifier_Id :=
-                            New_Identifier
-                              (EW_Base_Type_Name (Base_Type));
-      Conversion        : constant W_Identifier_Id :=
-                            Conversion_To.Id (Type_Name, BT_Name);
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
       X_To_Base_Type_Op : constant W_Term_Id :=
@@ -176,7 +172,7 @@ package body Why.Gen.Axioms is
                                Left  =>
                                  New_Relation
                                    (Domain  => EW_Pred,
-                                    Op_Type => Base_Type,
+                                    Op_Type => EW_Abstract,
                                     Left    => +X_To_Base_Type_Op,
                                     Op      => EW_Eq,
                                     Right   => +Y_To_Base_Type_Op),
@@ -189,19 +185,47 @@ package body Why.Gen.Axioms is
                                     Right   => +New_Term (Y_S)));
       Quantif_On_XY     : constant W_Pred_Id :=
                             New_Universal_Quantif
-                              (Var_Type =>
-                                 New_Abstract_Type (Name => Type_Name),
+                              (Var_Type => Var_Type,
                                Variables =>
                                  (New_Identifier (X_S),
                                   New_Identifier (Y_S)),
+                               Triggers =>
+                                 New_Triggers (Triggers =>
+                                    (1 => New_Trigger (Terms =>
+                                       (1 => X_To_Base_Type_Op,
+                                        2 => Y_To_Base_Type_Op)))),
                                Pred =>
                                  Formula);
    begin
       Emit
         (File (W_File_Axiom),
          New_Axiom
-           (Name => Unicity_Axiom.Id (Type_Name),
+           (Name => Axiom_Name,
             Def  => Quantif_On_XY));
+   end Define_Unicity_Axiom;
+
+   procedure Define_Unicity_Axiom
+     (File      : W_File_Sections;
+      Type_Name : W_Identifier_Id;
+      Base_Type : W_Identifier_Id)
+   is
+   begin
+      Define_Unicity_Axiom
+         (File       => File,
+          Axiom_Name => Unicity_Axiom.Id (Type_Name),
+          Var_Type   => New_Abstract_Type (Name => Type_Name),
+          Conversion => Conversion_To.Id (Type_Name, Base_Type));
+   end Define_Unicity_Axiom;
+
+   procedure Define_Unicity_Axiom
+     (File      : W_File_Sections;
+      Type_Name : W_Identifier_Id;
+      Base_Type : EW_Scalar) is
+   begin
+      Define_Unicity_Axiom
+        (File      => File,
+         Type_Name => Type_Name,
+         Base_Type => New_Identifier (EW_Base_Type_Name (Base_Type)));
    end Define_Unicity_Axiom;
 
 end Why.Gen.Axioms;

@@ -82,7 +82,10 @@ package body Why.Gen.Names is
 
          when EW_Array =>
             pragma Assert (To_Kind = EW_Abstract);
-            return Array_Conv_To.Id (Full_Name (Get_Ada_Node (+To)));
+            return
+              Conversion_From.Id
+                (Full_Name (Get_Ada_Node (+To)),
+                 Ada_Array);
 
          when EW_Abstract =>
             case To_Kind is
@@ -94,7 +97,10 @@ package body Why.Gen.Names is
                     Conversion_To.Id (Full_Name (Get_Ada_Node (+From)),
                                       Why_Scalar_Type_Name (To_Kind));
                when EW_Array =>
-                  return Array_Conv_From.Id (Full_Name (Get_Ada_Node (+From)));
+                  return
+                    Conversion_To.Id
+                       (Full_Name (Get_Ada_Node (+From)),
+                        Ada_Array);
 
                when EW_Abstract =>
                   raise Program_Error

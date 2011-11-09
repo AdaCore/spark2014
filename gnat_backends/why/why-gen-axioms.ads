@@ -58,6 +58,17 @@ package Why.Gen.Axioms is
    --     <to_base_type> (<from_base_type> (x)) = x % modulus
 
    procedure Define_Unicity_Axiom
+     (File       : W_File_Sections;
+      Axiom_Name : W_Identifier_Id;
+      Var_Type   : W_Primitive_Type_Id;
+      Conversion : W_Identifier_Id);
+
+   procedure Define_Unicity_Axiom
+     (File      : W_File_Sections;
+      Type_Name : W_Identifier_Id;
+      Base_Type : W_Identifier_Id);
+
+   procedure Define_Unicity_Axiom
      (File      : W_File_Sections;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar);
