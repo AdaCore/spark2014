@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils;       use String_Utils;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -62,58 +61,48 @@ package body Why.Gen.Arrays is
 
       for Index in First_List'Range loop
          if First_List (Index) /= Why_Empty then
-            declare
-               Base_Name : constant String :=
-                 (if Index = 1 then Name
-                  else Name & "_" & Int_Image (Index));
-            begin
-               Emit
-                 (File (W_File_Axiom),
-                  New_Guarded_Axiom
-                    (Name => Array_First_Static.Id (Base_Name),
-                     Binders => (1 => Ar_Binder),
-                     Def =>
-                       New_Relation
-                         (Op      => EW_Eq,
-                          Op_Type => EW_Int,
-                          Left    =>
-                            +New_Array_Attr
-                              (Attribute_First,
-                               Name,
-                               +Ar,
-                               EW_Term,
-                               Dimension,
-                               UI_From_Int (Int (Index))),
-                          Right   => +First_List (Index))));
-            end;
+            Emit
+              (File (W_File_Axiom),
+               New_Guarded_Axiom
+                 (Name =>
+                    Array_First_Static.Id (Add_Int_Suffix (Name, Index)),
+                  Binders => (1 => Ar_Binder),
+                  Def =>
+                    New_Relation
+                      (Op      => EW_Eq,
+                       Op_Type => EW_Int,
+                       Left    =>
+                         +New_Array_Attr
+                           (Attribute_First,
+                            Name,
+                            +Ar,
+                            EW_Term,
+                            Dimension,
+                            UI_From_Int (Int (Index))),
+                       Right   => +First_List (Index))));
          end if;
       end loop;
       for Index in Last_List'Range loop
          if Last_List (Index) /= Why_Empty then
-            declare
-               Base_Name : constant String :=
-                 (if Index = 1 then Name
-                  else Name & "_" & Int_Image (Index));
-            begin
-               Emit
-                 (File (W_File_Axiom),
-                  New_Guarded_Axiom
-                    (Name => Array_Last_Static.Id (Base_Name),
-                     Binders => (1 => Ar_Binder),
-                     Def =>
-                       New_Relation
-                         (Op      => EW_Eq,
-                          Op_Type => EW_Int,
-                          Left    =>
-                            +New_Array_Attr
-                              (Attribute_Last,
-                               Name,
-                               +Ar,
-                               EW_Term,
-                               Dimension,
-                               UI_From_Int (Int (Index))),
-                          Right   => +Last_List (Index))));
-            end;
+            Emit
+              (File (W_File_Axiom),
+               New_Guarded_Axiom
+                 (Name =>
+                    Array_Last_Static.Id (Add_Int_Suffix (Name, Index)),
+                  Binders => (1 => Ar_Binder),
+                  Def =>
+                    New_Relation
+                      (Op      => EW_Eq,
+                       Op_Type => EW_Int,
+                       Left    =>
+                         +New_Array_Attr
+                           (Attribute_Last,
+                            Name,
+                            +Ar,
+                            EW_Term,
+                            Dimension,
+                            UI_From_Int (Int (Index))),
+                       Right   => +Last_List (Index))));
          end if;
       end loop;
    end Declare_Ada_Constrained_Array;
@@ -131,13 +120,11 @@ package body Why.Gen.Arrays is
       Comp_Type  : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
                        (Name => (New_Identifier (Component)));
-      Ar_Name    : constant String :=
-         (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Ar_Type    : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
-                        Name       => New_Identifier (Ar_Name));
+                        Name       =>
+                          New_Identifier (New_Ada_Array_Name (Dimension)));
       Name_Type  : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
                        (Name => (New_Identifier (Name)));
@@ -268,10 +255,8 @@ package body Why.Gen.Arrays is
       Domain        : EW_Domain;
       Dimension     : Pos) return W_Expr_Id
    is
-      Base_Name : constant String :=
-         (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
-      Name      : constant W_Identifier_Id := Array_Access_Name.Id (Base_Name);
+      Name      : constant W_Identifier_Id :=
+         Array_Access_Name.Id (New_Ada_Array_Name (Dimension));
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
       Progs     : constant W_Expr_Array :=
@@ -301,22 +286,25 @@ package body Why.Gen.Arrays is
        Dimension : Pos;
        Argument  : Uint) return W_Expr_Id
    is
-      Base_Name : constant String :=
-         (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Attr_Str  : constant String := Attribute_Id'Image (Attr);
    begin
+
+      --  ??? Extracting the value from the attribute argument is really a
+      --  mess.  It also means that the logic to obtain the right suffix (_2,
+      --  _3 etc) is duplicated here. Should be fixed.
+
       UI_Image (Argument);
       declare
          Arg_Buf : constant String := UI_Image_Buffer (1 .. UI_Image_Length);
          Attr_Suff : constant String :=
-            (if Argument = 1 then Attr_Str
+            (if Argument = Uint_1 then Attr_Str
              else Attr_Str & "_" & Arg_Buf);
       begin
          return
            New_Call
              (Domain => Domain,
-              Name   => Attr_Name.Id (Base_Name, Attr_Suff),
+              Name   =>
+                Attr_Name.Id (New_Ada_Array_Name (Dimension), Attr_Suff),
               Args   =>
                (1 =>
                   New_Call
@@ -339,10 +327,8 @@ package body Why.Gen.Arrays is
        Domain    : EW_Domain;
        Dimension : Pos) return W_Expr_Id
    is
-      Base_Name : constant String :=
-         (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
-      Name : constant W_Identifier_Id := Array_Update_Name.Id (Base_Name);
+      Name : constant W_Identifier_Id :=
+         Array_Update_Name.Id (New_Ada_Array_Name (Dimension));
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
       Args : constant W_Expr_Array :=

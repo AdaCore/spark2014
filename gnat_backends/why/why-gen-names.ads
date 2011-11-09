@@ -26,6 +26,8 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Namet;        use Namet;
+with String_Utils; use String_Utils;
+with Types;        use Types;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
@@ -315,4 +317,11 @@ package Why.Gen.Names is
 
    package Assume_Name is
       new Name_Gen.Arity_1 (EW_Term, "", Assume);
+
+   function Add_Int_Suffix (Name : String; I : Integer) return String is
+      (if I = 1 then Name else Name & "_" & Int_Image (I));
+
+   function New_Ada_Array_Name (Dimension : Pos) return String is
+      (Add_Int_Suffix (Ada_Array, Integer (Dimension)));
+
 end Why.Gen.Names;
