@@ -64,12 +64,6 @@ package body Why.Gen.Axioms is
                                     Range_Pred_Name.Id (Type_Name),
                                   Args =>
                                     (1 => +New_Term (Arg_S)));
-      In_Range_t           : constant W_Term_Id :=
-                               New_Call
-                                 (Name =>
-                                    Range_Pred_Name.Id (Type_Name),
-                                  Args =>
-                                    (1 => +New_Term (Arg_S)));
       Normalized_Result    : constant W_Term_Id :=
                                (if Modulus = Why_Empty then
                                   New_Term (Arg_S)
@@ -98,11 +92,11 @@ package body Why.Gen.Axioms is
                                   Triggers  => New_Triggers (
                                     Triggers =>
                                       (1 => New_Trigger (
-                                         Terms => (1 => In_Range_t,
-                                                   2 => X_To_Type_Op)),
+                                         Terms => (1 => +In_Range,
+                                                   2 => +X_To_Type_Op)),
                                        2 => New_Trigger (
                                          Terms => (1 =>
-                                                     Back_To_Base_Type_Op)))),
+                                                     +Back_To_Base_Type_Op)))),
                                   Pred      => Formula);
    begin
       Emit
@@ -192,8 +186,8 @@ package body Why.Gen.Axioms is
                                Triggers =>
                                  New_Triggers (Triggers =>
                                     (1 => New_Trigger (Terms =>
-                                       (1 => X_To_Base_Type_Op,
-                                        2 => Y_To_Base_Type_Op)))),
+                                       (1 => +X_To_Base_Type_Op,
+                                        2 => +Y_To_Base_Type_Op)))),
                                Pred =>
                                  Formula);
    begin

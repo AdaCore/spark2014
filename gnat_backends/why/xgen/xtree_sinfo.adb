@@ -222,7 +222,7 @@ package body Xtree_Sinfo is
       ---------------
 
       New_Field (W_Trigger,
-                 "Terms", "W_Term", Id_Some);
+                 "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
 
       ---------------

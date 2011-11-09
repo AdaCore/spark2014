@@ -378,7 +378,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Trigger_Id)
    is
-      Terms    : constant W_Term_List := Get_Terms (Node);
+      Terms    : constant W_Expr_OList := Get_Terms (Node);
    begin
       Print_List (State, +Terms);
       State.Control := Abandon_Children;

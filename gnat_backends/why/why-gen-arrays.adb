@@ -118,23 +118,27 @@ package body Why.Gen.Arrays is
       Component : String;
       Dimension : Pos)
    is
-      Type_Id    : constant W_Identifier_Id := New_Identifier (Name);
-      BT_Str     : constant String := New_Ada_Array_Name (Dimension);
-      BT_Id      : constant W_Identifier_Id := New_Identifier (BT_Str);
-      Comp_Type  : constant W_Primitive_Type_Id :=
+      Type_Id     : constant W_Identifier_Id := New_Identifier (Name);
+      BT_Str      : constant String := New_Ada_Array_Name (Dimension);
+      BT_Id       : constant W_Identifier_Id := New_Identifier (BT_Str);
+      Comp_Type   : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
                        (Name => (New_Identifier (Component)));
-      Ar_Type    : constant W_Primitive_Type_Id :=
+      Ar_Type     : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
                         Name       => BT_Id);
-      Name_Type  : constant W_Primitive_Type_Id :=
+      Name_Type   : constant W_Primitive_Type_Id :=
                      New_Abstract_Type (Name => Type_Id);
-      Ar         : constant W_Term_Id := New_Term ("a");
+      Ar          : constant W_Term_Id := New_Term ("a");
       Ar_Binder_2 : constant Binder_Type :=
                       (B_Name => New_Identifier ("a"),
                        B_Type => Ar_Type,
                        others => <>);
+
+      Trig        : constant W_Term_Id :=
+               New_Call (Name => Conversion_To.Id (Name, BT_Str),
+                         Args => (1 => +Ar));
    begin
       --  generate the theory:
       --  type t
@@ -171,13 +175,7 @@ package body Why.Gen.Arrays is
                  Variables => (1 => New_Identifier ("a")),
                  Triggers  => New_Triggers
                    (Triggers =>
-                      (1 =>
-                         New_Trigger
-                           (Terms =>
-                              (1 =>
-                                 New_Call
-                                   (Name => Conversion_To.Id (Name, BT_Str),
-                                    Args => (1 => +Ar)))))),
+                      (1 => New_Trigger (Terms => (1 => +Trig)))),
                  Pred      =>
                    New_Relation
                      (Op      => EW_Eq,
