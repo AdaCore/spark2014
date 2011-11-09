@@ -1042,11 +1042,10 @@ package body Gnat2Why.Expr is
 
             declare
                Ar      : constant Node_Id := Prefix (N);
-               Dim     : constant Positive :=
-                  Positive (Number_Dimensions (Etype (Ar)));
+               Dim     : constant Pos := Number_Dimensions (Etype (Ar));
                T_Name  : constant String := Type_Of_Node (Ar);
                Indices : W_Expr_Array :=
-                  (1 .. Dim => <>);
+                  (1 .. Integer (Dim) => <>);
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
@@ -1065,7 +1064,7 @@ package body Gnat2Why.Expr is
                     Type_Name => T_Name,
                     Ar        => Expr,
                     Index     => Indices,
-                    Dimension => Positive (Number_Dimensions (Etype (Ar))));
+                    Dimension => Number_Dimensions (Etype (Ar)));
             end;
 
          when others =>
@@ -1094,10 +1093,9 @@ package body Gnat2Why.Expr is
 
          when N_Indexed_Component =>
             declare
-               Dim     : constant Positive :=
-                  Positive (Number_Dimensions (Etype (Prefix (N))));
-               Indices : W_Expr_Array :=
-                  (1 .. Dim => <>);
+               Dim     : constant Pos :=
+                  Number_Dimensions (Etype (Prefix (N)));
+               Indices : W_Expr_Array := (1 .. Integer (Dim) => <>);
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
@@ -1786,7 +1784,7 @@ package body Gnat2Why.Expr is
                           Full_Name (Etype (Var)),
                           Transform_Expr (Var, Domain, Ref_Allowed),
                           Domain,
-                          Positive (Number_Dimensions (Etype (Var))),
+                          Number_Dimensions (Etype (Var)),
                           (if Present (Expressions (Expr)) then
                              Expr_Value (First (Expressions (Expr)))
                            else Uint_1));

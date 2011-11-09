@@ -45,10 +45,10 @@ package Why.Gen.Arrays is
       Component  : String;
       First_List : W_Term_Array;
       Last_List  : W_Term_Array;
-      Dimension  : Positive)
+      Dimension  : Pos)
       with Pre =>
          (First_List'Length = Last_List'Length and then
-          Dimension = Positive (First_List'Length));
+          Dimension = First_List'Length);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
@@ -57,7 +57,7 @@ package Why.Gen.Arrays is
      (File      : W_File_Sections;
       Name      : String;
       Component : String;
-      Dimension : Positive);
+      Dimension : Pos);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component
@@ -68,7 +68,7 @@ package Why.Gen.Arrays is
       Ar            : W_Expr_Id;
       Index         : W_Expr_Array;
       Domain        : EW_Domain;
-      Dimension     : Positive) return W_Expr_Id;
+      Dimension     : Pos) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
    function New_Array_Attr
@@ -76,7 +76,7 @@ package Why.Gen.Arrays is
        Type_Name : String;
        Ar        : W_Expr_Id;
        Domain    : EW_Domain;
-       Dimension : Positive;
+       Dimension : Pos;
        Argument  : Uint) return W_Expr_Id
        with Pre =>
          (Attr in Attribute_First | Attribute_Last | Attribute_Length);
@@ -89,6 +89,6 @@ package Why.Gen.Arrays is
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
        Domain    : EW_Domain;
-       Dimension  : Positive) return W_Expr_Id;
+       Dimension  : Pos) return W_Expr_Id;
 
 end Why.Gen.Arrays;

@@ -240,10 +240,12 @@ package body Gnat2Why.Types is
 
                if Is_Constrained (Ident_Node) then
                   declare
-                     Dims      : constant Positive :=
-                        Positive (Number_Dimensions (Ident_Node));
-                     Low_List  : W_Term_Array := (1 .. Dims => Why_Empty);
-                     High_List : W_Term_Array := (1 .. Dims => Why_Empty);
+                     Dims      : constant Pos :=
+                                    Number_Dimensions (Ident_Node);
+                     Low_List  : W_Term_Array :=
+                        (1 .. Integer (Dims) => Why_Empty);
+                     High_List : W_Term_Array :=
+                        (1 .. Integer (Dims) => Why_Empty);
                      Index     : Node_Id := First_Index (Ident_Node);
                      Count     : Positive := 1;
                   begin
@@ -278,7 +280,7 @@ package body Gnat2Why.Types is
                     (File,
                      Name_Str,
                      Full_Name (Component_Type (Ident_Node)),
-                     Positive (Number_Dimensions (Ident_Node)));
+                     Number_Dimensions (Ident_Node));
                end if;
 
             when E_Record_Type =>

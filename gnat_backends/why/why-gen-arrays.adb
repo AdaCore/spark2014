@@ -45,7 +45,7 @@ package body Why.Gen.Arrays is
       Component  : String;
       First_List : W_Term_Array;
       Last_List  : W_Term_Array;
-      Dimension  : Positive)
+      Dimension  : Pos)
    is
       Ar         : constant W_Term_Id :=
                      New_Term ("a");
@@ -126,14 +126,14 @@ package body Why.Gen.Arrays is
      (File      : W_File_Sections;
       Name      : String;
       Component : String;
-      Dimension : Positive)
+      Dimension : Pos)
    is
       Comp_Type  : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
                        (Name => (New_Identifier (Component)));
       Ar_Name    : constant String :=
          (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Dimension));
+          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Ar_Type    : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
@@ -266,11 +266,11 @@ package body Why.Gen.Arrays is
       Ar            : W_Expr_Id;
       Index         : W_Expr_Array;
       Domain        : EW_Domain;
-      Dimension     : Positive) return W_Expr_Id
+      Dimension     : Pos) return W_Expr_Id
    is
       Base_Name : constant String :=
          (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Dimension));
+          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Name      : constant W_Identifier_Id := Array_Access_Name.Id (Base_Name);
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
@@ -298,12 +298,12 @@ package body Why.Gen.Arrays is
        Type_Name : String;
        Ar        : W_Expr_Id;
        Domain    : EW_Domain;
-       Dimension : Positive;
+       Dimension : Pos;
        Argument  : Uint) return W_Expr_Id
    is
       Base_Name : constant String :=
          (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Dimension));
+          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Attr_Str  : constant String := Attribute_Id'Image (Attr);
    begin
       UI_Image (Argument);
@@ -337,11 +337,11 @@ package body Why.Gen.Arrays is
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
        Domain    : EW_Domain;
-       Dimension : Positive) return W_Expr_Id
+       Dimension : Pos) return W_Expr_Id
    is
       Base_Name : constant String :=
          (if Dimension = 1 then Ada_Array
-          else Ada_Array & "_" & Int_Image (Dimension));
+          else Ada_Array & "_" & Int_Image (Integer (Dimension)));
       Name : constant W_Identifier_Id := Array_Update_Name.Id (Base_Name);
       Used_Name : constant W_Identifier_Id :=
          (if Domain = EW_Prog then To_Program_Space (Name) else Name);
