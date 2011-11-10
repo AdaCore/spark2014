@@ -2120,7 +2120,10 @@ package body Gnat2Why.Expr is
                if Is_Array_Type (Etype (Left)) then
                   T := New_Call (Ada_Node => Expr,
                                  Domain   => Subdomain,
-                                 Name     => Array_Equal_Name.Id (Ada_Array),
+                                 Name     =>
+                                   Array_Equal_Name.Id
+                                     (New_Ada_Array_Name
+                                          (Number_Dimensions (Etype (Left)))),
                                  Args     =>
                                    (1 => Left_Arg,
                                     2 => Right_Arg));

@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo; use Einfo;
+
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
 with Why.Inter;           use Why.Inter;
@@ -85,7 +87,7 @@ package body Why.Gen.Names is
             return
               Conversion_From.Id
                 (Full_Name (Get_Ada_Node (+To)),
-                 Ada_Array);
+                 New_Ada_Array_Name (Number_Dimensions (Get_Ada_Node (+To))));
 
          when EW_Abstract =>
             case To_Kind is
@@ -100,7 +102,8 @@ package body Why.Gen.Names is
                   return
                     Conversion_To.Id
                        (Full_Name (Get_Ada_Node (+From)),
-                        Ada_Array);
+                        New_Ada_Array_Name
+                          (Number_Dimensions (Get_Ada_Node (+From))));
 
                when EW_Abstract =>
                   raise Program_Error
