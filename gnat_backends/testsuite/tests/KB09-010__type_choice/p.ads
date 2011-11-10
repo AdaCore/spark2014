@@ -12,4 +12,6 @@ package P is
      (Priority'First ..
       Priority'Last           => 6,
       Interrupt_Priority      => 15);
+   
+   function F (X : Any_Priority) return Integer;
 end P;
