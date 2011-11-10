@@ -1045,17 +1045,8 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-            --  Not implemented until KB02-023 is done
-
-            if Is_Array_Type (Etype (N))
-              and then Number_Dimensions (Etype (N)) > 1
-            then
-               Mark_Non_Alfa ("multi-dimensional aggregate", N, NYI_Aggregate);
-
-            else
-               Mark_List (Expressions (N));
-               Mark_List (Component_Associations (N));
-            end if;
+            Mark_List (Expressions (N));
+            Mark_List (Component_Associations (N));
 
          when N_Allocator =>
             Mark_Non_Alfa ("allocator", N, NIR_Dynamic_Alloc);
