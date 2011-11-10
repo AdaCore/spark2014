@@ -2681,6 +2681,12 @@ package body Alfa.Definition is
                Index         : Node_Id := First_Index (+Id);
 
             begin
+               --  Currently, array types of dimention 2 at most are supported
+
+               if Number_Dimensions (+Id) > 2 then
+                  Mark_Non_Alfa ("array type", +Id, NYI_Multi_Dim_Array);
+               end if;
+
                --  Check that all index types are in Alfa
 
                while Present (Index) loop
