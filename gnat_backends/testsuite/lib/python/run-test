@@ -28,6 +28,7 @@ def main():
                    m.options.restricted_discs,
                    len(m.args) > 1 and m.args[1:] or None)
     os.environ['TMPDIR'] = t.work_dir
+    os.environ['TEMP'] = t.work_dir
 
     t.execute()
 if __name__ == '__main__':
