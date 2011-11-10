@@ -211,10 +211,9 @@ package body Gnat2Why.Expr is
       Ref_Allowed  : Boolean) return W_Expr_Id;
 
    function Transform_Array_Component_Associations
-     (Typ         : Entity_Id;
+     (Expr        : Node_Id;
+      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
-      Exprs       : List_Id;
-      Assocs      : List_Id;
       Ref_Allowed : Boolean) return W_Pred_Id;
 
    function Transform_Record_Component_Associations
@@ -1104,20 +1103,18 @@ package body Gnat2Why.Expr is
 
       Pred : constant W_Pred_Id :=
                Transform_Array_Component_Associations
-                 (Typ,
+                 (Expr,
+                  Typ,
                   Id,
-                  Expressions (Expr),
-                  Component_Associations (Expr),
                   Ref_Allowed => False);
 
       --  Compute the list of references used in the aggregate
 
       Pred_With_Refs : constant W_Pred_Id :=
                          Transform_Array_Component_Associations
-                           (Typ,
+                           (Expr,
+                            Typ,
                             Id,
-                            Expressions (Expr),
-                            Component_Associations (Expr),
                             Ref_Allowed => True);
       Refs           : constant Why_Node_Sets.Set :=
                          Get_All_Dereferences (+Pred_With_Refs);
@@ -1415,38 +1412,54 @@ package body Gnat2Why.Expr is
    --------------------------------------------
 
    function Transform_Array_Component_Associations
-     (Typ         : Entity_Id;
+     (Expr        : Node_Id;
+      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
-      Exprs       : List_Id;
-      Assocs      : List_Id;
       Ref_Allowed : Boolean) return W_Pred_Id
    is
-      T_Name    : constant String := Type_Of_Node (Typ);
-      Index     : constant W_Identifier_Id := New_Temp_Identifier;
+      T_Name  : constant String := Type_Of_Node (Typ);
+      Num_Dim : constant Pos := Number_Dimensions (Typ);
+      Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
+      Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
 
       -----------------------
       -- Local subprograms --
       -----------------------
 
       function Constrain_Value_At_Index
-        (Expr_Or_Association : Node_Id) return W_Expr_Id;
-      --  Return the proposition that Id (Index) is equal to the value given in
-      --  Expr_Or_Association, or else "true" for box association.
+        (Dim                 : Pos;
+         Expr_Or_Association : Node_Id) return W_Expr_Id;
+      --  Return the proposition that the array at the given indices is equal
+      --  to the value given in Expr_Or_Association, or else "true" for box
+      --  association.
 
-      function Select_Nth_Index (Offset : Nat) return W_Expr_Id;
+      function Select_Nth_Index
+        (Dim    : Pos;
+         Offset : Nat) return W_Expr_Id;
       --  Return the proposition that Index is at Offset from Id'First
 
-      function Select_These_Choices (L : List_Id) return W_Expr_Id;
+      function Select_These_Choices
+        (Dim : Pos;
+         L   : List_Id) return W_Expr_Id;
       --  Return a proposition that expresses that Index satisfies one choice
       --  in the list of choices L.
+
+      function Transform_Rec_Aggregate
+        (Dim  : Pos;
+         Expr : Node_Id) return W_Expr_Id;
+      --  Main recursive function operating over multi-dimensional array
+      --  aggregates.
 
       ------------------------------
       -- Constrain_Value_At_Index --
       ------------------------------
 
       function Constrain_Value_At_Index
-        (Expr_Or_Association : Node_Id) return W_Expr_Id
+        (Dim                 : Pos;
+         Expr_Or_Association : Node_Id) return W_Expr_Id
       is
+         Expr : Node_Id;
+
       begin
          if Nkind (Expr_Or_Association) = N_Component_Association
            and then Box_Present (Expr_Or_Association)
@@ -1454,44 +1467,46 @@ package body Gnat2Why.Expr is
             return New_Literal (Value  => EW_True,
                                 Domain => EW_Pred);
          else
-            declare
-               Expr      : constant Node_Id :=
-                             (if Nkind (Expr_Or_Association) =
-                                N_Component_Association
-                              then
-                                Expression (Expr_Or_Association)
-                              else
-                                Expr_Or_Association);
-               Exp_Type  : constant Node_Id :=
-                             (if Number_Dimensions (Typ) = 1 then
-                                Component_Type (Typ)
-                              else Etype (Expr));
-               Elmt_Type : constant W_Base_Type_Id :=
-                             +Why_Logic_Type_Of_Ada_Type (Exp_Type);
-               Value     : constant W_Expr_Id :=
-                             Transform_Expr (Expr          => Expr,
-                                             Expected_Type => Elmt_Type,
-                                             Domain        => EW_Term,
-                                             Ref_Allowed   => Ref_Allowed);
-               Read      : constant W_Expr_Id :=
+            Expr :=
+              (if Nkind (Expr_Or_Association) =
+                 N_Component_Association
+               then
+                  Expression (Expr_Or_Association)
+               else
+                  Expr_Or_Association);
 
-               --  ??? Deal with multidimensional case
-
-                             New_Array_Access
-                               (Ada_Node  => Expr_Or_Association,
-                                Domain    => EW_Term,
-                                Type_Name => T_Name,
-                                Ar        => +Id,
-                                Index     => (1 => +Index),
-                                Dimension => 1);
-            begin
-               return New_Comparison
-                 (Cmp       => EW_Eq,
-                  Left      => Read,
-                  Right     => Value,
-                  Arg_Types => Elmt_Type,
-                  Domain    => EW_Pred);
-            end;
+            if Nkind (Expr) = N_Aggregate then
+               return Transform_Rec_Aggregate (Dim + 1, Expr);
+            else
+               declare
+                  Exp_Type  : constant Node_Id :=
+                                (if Number_Dimensions (Typ) = 1 then
+                                   Component_Type (Typ)
+                                 else Etype (Expr));
+                  Elmt_Type : constant W_Base_Type_Id :=
+                                +Why_Logic_Type_Of_Ada_Type (Exp_Type);
+                  Value     : constant W_Expr_Id :=
+                                Transform_Expr (Expr          => Expr,
+                                                Expected_Type => Elmt_Type,
+                                                Domain        => EW_Term,
+                                                Ref_Allowed   => Ref_Allowed);
+                  Read      : constant W_Expr_Id :=
+                                New_Array_Access
+                                  (Ada_Node  => Expr_Or_Association,
+                                   Domain    => EW_Term,
+                                   Type_Name => T_Name,
+                                   Ar        => +Id,
+                                   Index     => Indexes,
+                                   Dimension => Num_Dim);
+               begin
+                  return New_Comparison
+                    (Cmp       => EW_Eq,
+                     Left      => Read,
+                     Right     => Value,
+                     Arg_Types => Elmt_Type,
+                     Domain    => EW_Pred);
+               end;
+            end if;
          end if;
       end Constrain_Value_At_Index;
 
@@ -1499,16 +1514,18 @@ package body Gnat2Why.Expr is
       -- Select_Nth_Index --
       ----------------------
 
-      function Select_Nth_Index (Offset : Nat) return W_Expr_Id is
-         --  ??? Deal with multidimensional case
+      function Select_Nth_Index
+        (Dim    : Pos;
+         Offset : Nat) return W_Expr_Id
+      is
          First : constant W_Expr_Id :=
                    New_Array_Attr
                      (Attribute_First,
                       T_Name,
                       +Id,
                       EW_Term,
-                      1,
-                      Uint_1);
+                      Num_Dim,
+                      UI_From_Int (Dim));
          Nth   : constant W_Expr_Id :=
                    New_Binary_Op
                      (Left     => First,
@@ -1519,7 +1536,7 @@ package body Gnat2Why.Expr is
       begin
          return New_Comparison
            (Cmp       => EW_Eq,
-            Left      => +Index,
+            Left      => Indexes (Integer (Dim)),
             Right     => Nth,
             Arg_Types => EW_Int_Type,
             Domain    => EW_Pred);
@@ -1529,7 +1546,10 @@ package body Gnat2Why.Expr is
       -- Select_These_Choices --
       --------------------------
 
-      function Select_These_Choices (L : List_Id) return W_Expr_Id is
+      function Select_These_Choices
+        (Dim : Pos;
+         L   : List_Id) return W_Expr_Id
+      is
          Result : W_Expr_Id := New_Literal (Value  => EW_False,
                                             Domain => EW_Pred);
          Choice : Node_Id   := First (L);
@@ -1538,97 +1558,121 @@ package body Gnat2Why.Expr is
             Result := New_Or_Expr
               (Left   => Result,
                Right  =>
-                 Transform_Discrete_Choice (Choice      => Choice,
-                                            Expr        => +Index,
-                                            Domain      => EW_Pred,
-                                            Ref_Allowed => Ref_Allowed),
+                 Transform_Discrete_Choice
+                   (Choice      => Choice,
+                    Expr        => Indexes (Integer (Dim)),
+                    Domain      => EW_Pred,
+                    Ref_Allowed => Ref_Allowed),
                Domain => EW_Pred);
             Next (Choice);
          end loop;
          return Result;
       end Select_These_Choices;
 
-      Association : Node_Id;
-      Expression  : Node_Id;
-      Else_Part   : W_Expr_Id := New_Literal (Value  => EW_True,
-                                              Domain => EW_Pred);
-      Result      : W_Expr_Id;
-      Assocs_Len  : Nat;
+      -----------------------------
+      -- Transform_Rec_Aggregate --
+      -----------------------------
+
+      function Transform_Rec_Aggregate
+        (Dim  : Pos;
+         Expr : Node_Id) return W_Expr_Id
+      is
+         Exprs       : constant List_Id := Expressions (Expr);
+         Assocs      : constant List_Id := Component_Associations (Expr);
+         Association : Node_Id;
+         Expression  : Node_Id;
+         Else_Part   : W_Expr_Id := New_Literal (Value  => EW_True,
+                                                 Domain => EW_Pred);
+         Assocs_Len  : Nat;
+
+      begin
+         Assocs_Len := List_Length (Assocs);
+         Association :=
+           (if Nlists.Is_Empty_List (Assocs) then Empty
+            else Nlists.Last (Assocs));
+
+         --  Special case for "others" choice, which must appear alone as
+         --  last association.
+
+         if Present (Association)
+           and then List_Length (Choices (Association)) = 1
+           and then Nkind (First (Choices (Association))) = N_Others_Choice
+         then
+            if not Box_Present (Association) then
+               Else_Part := Constrain_Value_At_Index (Dim, Association);
+            end if;
+            Prev (Association);
+            Assocs_Len := Assocs_Len - 1;
+         end if;
+
+         Expression :=
+           (if Nlists.Is_Empty_List (Exprs) then
+               Empty
+            else
+               Nlists.Last (Exprs));
+
+         if Present (Expression) then
+            pragma Assert (No (Association));
+
+            declare
+               Elsif_Parts : W_Expr_Array
+                 (1 .. Integer (List_Length (Exprs)) - 1);
+            begin
+               for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
+                  Elsif_Parts (Integer (Offset)) := New_Elsif
+                    (Domain    => EW_Pred,
+                     Condition => +Select_Nth_Index (Dim, Offset),
+                     Then_Part => Constrain_Value_At_Index (Dim, Expression));
+                  Prev (Expression);
+               end loop;
+
+               return New_Conditional
+                 (Domain      => EW_Pred,
+                  Condition   => +Select_Nth_Index (Dim, 0),
+                  Then_Part   => Constrain_Value_At_Index (Dim, Expression),
+                  Elsif_Parts => Elsif_Parts,
+                  Else_Part   => Else_Part);
+            end;
+
+         elsif Present (Association) then
+            declare
+               Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
+            begin
+               for Offset in reverse 1 .. Assocs_Len - 1 loop
+                  Elsif_Parts (Integer (Offset)) := New_Elsif
+                    (Domain    => EW_Pred,
+                     Condition =>
+                       +Select_These_Choices (Dim, Choices (Association)),
+                     Then_Part => Constrain_Value_At_Index (Dim, Association));
+                  Prev (Association);
+               end loop;
+
+               return New_Conditional
+                 (Domain      => EW_Pred,
+                  Condition   =>
+                    +Select_These_Choices (Dim, Choices (Association)),
+                  Then_Part   => Constrain_Value_At_Index (Dim, Association),
+                  Elsif_Parts => Elsif_Parts,
+                  Else_Part   => Else_Part);
+            end;
+
+         else
+            return Else_Part;
+         end if;
+      end Transform_Rec_Aggregate;
+
+   --  Start of Transform_Array_Component_Associations
 
    begin
-      Assocs_Len := List_Length (Assocs);
-      Association :=
-        (if Nlists.Is_Empty_List (Assocs) then Empty
-         else Nlists.Last (Assocs));
-
-      --  Special case for "others" choice, which must appear alone as last
-      --  association.
-
-      if Present (Association)
-        and then List_Length (Choices (Association)) = 1
-        and then Nkind (First (Choices (Association))) = N_Others_Choice
-      then
-         if not Box_Present (Association) then
-            Else_Part := Constrain_Value_At_Index (Association);
-         end if;
-         Prev (Association);
-         Assocs_Len := Assocs_Len - 1;
-      end if;
-
-      Expression :=
-        (if Nlists.Is_Empty_List (Exprs) then Empty else Nlists.Last (Exprs));
-
-      if Present (Expression) then
-         pragma Assert (No (Association));
-
-         declare
-            Elsif_Parts : W_Expr_Array
-              (1 .. Integer (List_Length (Exprs)) - 1);
-         begin
-            for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
-               Elsif_Parts (Integer (Offset)) := New_Elsif
-                 (Domain    => EW_Pred,
-                  Condition => +Select_Nth_Index (Offset),
-                  Then_Part => Constrain_Value_At_Index (Expression));
-               Prev (Expression);
-            end loop;
-
-            Result := New_Conditional
-              (Domain      => EW_Pred,
-               Condition   => +Select_Nth_Index (0),
-               Then_Part   => Constrain_Value_At_Index (Expression),
-               Elsif_Parts => Elsif_Parts,
-               Else_Part   => Else_Part);
-         end;
-
-      elsif Present (Association) then
-         declare
-            Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
-         begin
-            for Offset in reverse 1 .. Assocs_Len - 1 loop
-               Elsif_Parts (Integer (Offset)) := New_Elsif
-                 (Domain    => EW_Pred,
-                  Condition => +Select_These_Choices (Choices (Association)),
-                  Then_Part => Constrain_Value_At_Index (Association));
-               Prev (Association);
-            end loop;
-
-            Result := New_Conditional
-              (Domain    => EW_Pred,
-               Condition => +Select_These_Choices (Choices (Association)),
-               Then_Part => Constrain_Value_At_Index (Association),
-               Elsif_Parts => Elsif_Parts,
-               Else_Part   => Else_Part);
-         end;
-
-      else
-         Result := Else_Part;
-      end if;
+      for J in 1 .. Integer (Num_Dim) loop
+         Binders (J) := New_Temp_Identifier;
+         Indexes (J) := +Binders (J);
+      end loop;
 
       return New_Universal_Quantif
-        (Variables => (1 => Index),
+        (Variables => Binders,
          Var_Type  => +EW_Int_Type,
-         Pred      => +Result);
+         Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
    end Transform_Array_Component_Associations;
 
    --------------------
@@ -1975,10 +2019,9 @@ package body Gnat2Why.Expr is
                         Id       => Id,
                         Pred     =>
                           Transform_Array_Component_Associations
-                            (Base_Type,
+                            (Expr,
+                             Base_Type,
                              Id,
-                             Expressions (Expr),
-                             Component_Associations (Expr),
                              Ref_Allowed));
                   end if;
                   Current_Type := EW_Abstract (Base_Type);
