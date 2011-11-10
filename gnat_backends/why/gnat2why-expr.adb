@@ -1613,27 +1613,37 @@ package body Gnat2Why.Expr is
       ------------------------
 
       function Select_This_Choice (N : Node_Id) return W_Expr_Id is
-         In_Range : W_Expr_Id;
+         Is_Range : Boolean;
+
       begin
          case Nkind (N) is
             when N_Subtype_Indication | N_Range =>
-               In_Range := Range_Expr (N, +Index, EW_Pred, Ref_Allowed);
-               return In_Range;
+               Is_Range := True;
+            when N_Identifier | N_Expanded_Name =>
+               if Ekind (Entity (N)) in Type_Kind then
+                  Is_Range := True;
+               else
+                  Is_Range := False;
+               end if;
             when N_Others_Choice =>
                raise Program_Error;
             when others =>
-               In_Range :=
-                 New_Comparison
-                   (Cmp       => EW_Eq,
-                    Left      => +Index,
-                    Right     => Transform_Expr (Expr          => N,
-                                                 Expected_Type => EW_Int_Type,
-                                                 Domain        => EW_Term,
-                                                 Ref_Allowed   => Ref_Allowed),
-                    Arg_Types => EW_Int_Type,
-                    Domain    => EW_Pred);
-               return In_Range;
+               Is_Range := False;
          end case;
+
+         if Is_Range then
+            return Range_Expr (N, +Index, EW_Pred, Ref_Allowed);
+         else
+            return New_Comparison
+              (Cmp       => EW_Eq,
+               Left      => +Index,
+               Right     => Transform_Expr (Expr          => N,
+                                            Expected_Type => EW_Int_Type,
+                                            Domain        => EW_Term,
+                                            Ref_Allowed   => Ref_Allowed),
+               Arg_Types => EW_Int_Type,
+               Domain    => EW_Pred);
+         end if;
       end Select_This_Choice;
 
       Association : Node_Id;
