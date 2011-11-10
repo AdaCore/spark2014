@@ -128,15 +128,6 @@ package body Gnat2Why.Expr is
    --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
-   function Equal_To
-     (E           : W_Expr_Id;
-      N           : Node_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id;
-   --  For an expression E of type "int" and a Node that represents a
-   --  Discrete_Choice, build an expression that expresses that T belongs to
-   --  the range expressed by N.
-
    procedure Extract_From_Quantified_Expression
       (N       : Node_Id;
        Index   : out W_Identifier_Id;
@@ -167,6 +158,14 @@ package body Gnat2Why.Expr is
       Domain      : EW_Domain;
       Ref_Allowed : Boolean) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
+
+   function Transform_Discrete_Choice
+     (Choice      : Node_Id;
+      Expr        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean) return W_Expr_Id;
+   --  For an expression Expr of a discrete type and a discrete Choice, build
+   --  the expression that Expr belongs to the range expressed by Choice.
 
    function Transform_Quantified_Expression
      (Expr         : Node_Id;
@@ -533,8 +532,10 @@ package body Gnat2Why.Expr is
             while Present (Cur_Choice) loop
                C := New_Or_Else_Expr
                       (C,
-                       Equal_To
-                         (Matched_Expr, Cur_Choice, Cond_Domain, Ref_Allowed),
+                       Transform_Discrete_Choice (Choice      => Cur_Choice,
+                                                  Expr        => Matched_Expr,
+                                                  Domain      => Cond_Domain,
+                                                  Ref_Allowed => Ref_Allowed),
                        Cond_Domain);
                Next (Cur_Choice);
             end loop;
@@ -658,69 +659,6 @@ package body Gnat2Why.Expr is
          return Why_Args;
       end;
    end Compute_Call_Args;
-
-   --------------
-   -- Equal_To --
-   --------------
-
-   function Equal_To
-     (E           : W_Expr_Id;
-      N           : Node_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id
-   is
-      Subdomain : constant EW_Domain :=
-         (if Domain = EW_Pred then EW_Term else Domain);
-   begin
-      case Nkind (N) is
-         when N_Identifier
-           | N_Real_Literal
-           | N_Integer_Literal =>
-            declare
-               BT : constant W_Base_Type_Id := Base_Why_Type (N);
-            begin
-               return
-                 New_Comparison
-                 (Cmp       => EW_Eq,
-                  Left      => E,
-                  Right     => Transform_Expr (N, BT, Subdomain, Ref_Allowed),
-                  Arg_Types => BT,
-                  Domain    => Domain);
-            end;
-
-         when N_Range =>
-            return
-              New_And_Expr
-                (Left  =>
-                   New_Comparison
-                     (Cmp       => EW_Le,
-                      Left      => Transform_Expr (Low_Bound (N),
-                                                   EW_Int_Type,
-                                                   Subdomain,
-                                                   Ref_Allowed),
-                      Arg_Types => New_Base_Type (Base_Type => EW_Int),
-                      Right     => E,
-                      Domain    => Domain),
-                 Right =>
-                   New_Comparison
-                     (Cmp       => EW_Le,
-                      Left      => E,
-                      Right     => Transform_Expr (High_Bound (N),
-                                                   EW_Int_Type,
-                                                   Subdomain,
-                                                   Ref_Allowed),
-                      Arg_Types => New_Base_Type (Base_Type => EW_Int),
-                      Domain    => Domain),
-                 Domain => Domain);
-
-         when N_Others_Choice =>
-            return New_Literal (Domain => Domain, Value => EW_True);
-
-         when others =>
-            raise Not_Implemented;
-
-      end case;
-   end Equal_To;
 
    ----------------------------------------
    -- Extract_From_Quantified_Expression --
@@ -1502,9 +1440,6 @@ package body Gnat2Why.Expr is
       --  Return a proposition that expresses that Index satisfies one choice
       --  in the list of choices L.
 
-      function Select_This_Choice (N : Node_Id) return W_Expr_Id;
-      --  Return a proposition that expresses that Index satisfies choice N
-
       ------------------------------
       -- Constrain_Value_At_Index --
       ------------------------------
@@ -1600,51 +1535,18 @@ package body Gnat2Why.Expr is
          Choice : Node_Id   := First (L);
       begin
          while Present (Choice) loop
-            Result := New_Or_Expr (Left   => Result,
-                                   Right  => Select_This_Choice (Choice),
-                                   Domain => EW_Pred);
+            Result := New_Or_Expr
+              (Left   => Result,
+               Right  =>
+                 Transform_Discrete_Choice (Choice      => Choice,
+                                            Expr        => +Index,
+                                            Domain      => EW_Pred,
+                                            Ref_Allowed => Ref_Allowed),
+               Domain => EW_Pred);
             Next (Choice);
          end loop;
          return Result;
       end Select_These_Choices;
-
-      ------------------------
-      -- Select_This_Choice --
-      ------------------------
-
-      function Select_This_Choice (N : Node_Id) return W_Expr_Id is
-         Is_Range : Boolean;
-
-      begin
-         case Nkind (N) is
-            when N_Subtype_Indication | N_Range =>
-               Is_Range := True;
-            when N_Identifier | N_Expanded_Name =>
-               if Ekind (Entity (N)) in Type_Kind then
-                  Is_Range := True;
-               else
-                  Is_Range := False;
-               end if;
-            when N_Others_Choice =>
-               raise Program_Error;
-            when others =>
-               Is_Range := False;
-         end case;
-
-         if Is_Range then
-            return Range_Expr (N, +Index, EW_Pred, Ref_Allowed);
-         else
-            return New_Comparison
-              (Cmp       => EW_Eq,
-               Left      => +Index,
-               Right     => Transform_Expr (Expr          => N,
-                                            Expected_Type => EW_Int_Type,
-                                            Domain        => EW_Term,
-                                            Ref_Allowed   => Ref_Allowed),
-               Arg_Types => EW_Int_Type,
-               Domain    => EW_Pred);
-         end if;
-      end Select_This_Choice;
 
       Association : Node_Id;
       Expression  : Node_Id;
@@ -1919,6 +1821,56 @@ package body Gnat2Why.Expr is
       pragma Assert (No (Association));
       return Result;
    end Transform_Record_Component_Associations;
+
+   -------------------------------
+   -- Transform_Discrete_Choice --
+   -------------------------------
+
+   function Transform_Discrete_Choice
+     (Choice      : Node_Id;
+      Expr        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean) return W_Expr_Id
+   is
+      Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Pred then EW_Term else Domain);
+      BT        : constant W_Base_Type_Id := Base_Why_Type (Choice);
+      Is_Range  : Boolean;
+
+   begin
+      if Nkind (Choice) = N_Others_Choice then
+         return New_Literal (Domain => Domain, Value => EW_True);
+      end if;
+
+      case Nkind (Choice) is
+         when N_Subtype_Indication | N_Range =>
+            Is_Range := True;
+         when N_Identifier | N_Expanded_Name =>
+            if Ekind (Entity (Choice)) in Type_Kind then
+               Is_Range := True;
+            else
+               Is_Range := False;
+            end if;
+         when N_Others_Choice =>
+            raise Program_Error;
+         when others =>
+            Is_Range := False;
+      end case;
+
+      if Is_Range then
+         return Range_Expr (Choice, Expr, Domain, Ref_Allowed);
+      else
+         return New_Comparison
+           (Cmp       => EW_Eq,
+            Left      => Expr,
+            Right     => Transform_Expr (Expr          => Choice,
+                                         Expected_Type => BT,
+                                         Domain        => Subdomain,
+                                         Ref_Allowed   => Ref_Allowed),
+            Arg_Types => BT,
+            Domain    => Domain);
+      end if;
+   end Transform_Discrete_Choice;
 
    ----------------------------
    -- Transform_Enum_Literal --
