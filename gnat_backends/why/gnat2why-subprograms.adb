@@ -607,6 +607,11 @@ package body Gnat2Why.Subprograms is
                        Get_Kind (+Post) = W_Literal
                          and then
                        Get_Value (+Post) = EW_True;
+      Result_Ent : constant Entity_Id :=
+         (if Nkind (Spec) = N_Function_Specification then
+            Entity (Result_Definition (Spec))
+          else
+            Empty);
 
    --  Start of processing for Transform_Subprogram
 
@@ -658,8 +663,10 @@ package body Gnat2Why.Subprograms is
                      Binders     => Logic_Func_Binders,
                      Def         =>
                        +Transform_Expr
-                         (Expression (Orig_Node), EW_Term,
-                          Ref_Allowed => False)));
+                         (Expression (Orig_Node),
+                          Expected_Type => EW_Abstract (Result_Ent),
+                          Domain        => EW_Term,
+                          Ref_Allowed   => False)));
             end if;
          end if;
 
@@ -673,8 +680,7 @@ package body Gnat2Why.Subprograms is
                   New_Global_Ref_Declaration
                      (Name => Result_Name,
                       Ref_Type =>
-                        Why_Logic_Type_Of_Ada_Type
-                           (Entity (Result_Definition (Spec)))));
+                        Why_Logic_Type_Of_Ada_Type (Result_Ent)));
             end if;
 
             Emit
@@ -702,8 +708,7 @@ package body Gnat2Why.Subprograms is
          declare
             Ret_Type   : constant W_Primitive_Type_Id :=
                            (if Nkind (Spec) = N_Function_Specification then
-                              +Why_Logic_Type_Of_Ada_Type
-                                (Entity (Result_Definition (Spec)))
+                              +Why_Logic_Type_Of_Ada_Type (Result_Ent)
                             else
                               New_Base_Type (Base_Type => EW_Unit));
 

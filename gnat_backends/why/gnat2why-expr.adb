@@ -85,9 +85,10 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Case_Expr_Of_Ada_Node
-     (N           : Node_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id;
+     (N             : Node_Id;
+      Expected_Type : W_Base_Type_OId := Why_Empty;
+      Domain        : EW_Domain;
+      Ref_Allowed   : Boolean) return W_Expr_Id;
    --  Build Case expression of Ada Node.
 
    function Compute_Call_Args
@@ -445,9 +446,10 @@ package body Gnat2Why.Expr is
    ---------------------------
 
    function Case_Expr_Of_Ada_Node
-     (N           : Node_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id
+     (N             : Node_Id;
+      Expected_Type : W_Base_Type_OId := Why_Empty;
+      Domain        : EW_Domain;
+      Ref_Allowed   : Boolean) return W_Expr_Id
    is
       --  For a given case expression
       --
@@ -477,7 +479,20 @@ package body Gnat2Why.Expr is
       begin
          case Nkind (N) is
             when N_Case_Expression_Alternative =>
-               return Transform_Expr (Expression (N), Domain, Ref_Allowed);
+               if Expected_Type = Why_Empty then
+                  return
+                    Transform_Expr
+                       (Expression (N),
+                        Domain,
+                        Ref_Allowed);
+               else
+                  return
+                    Transform_Expr
+                       (Expression (N),
+                        Expected_Type,
+                        Domain,
+                        Ref_Allowed);
+               end if;
 
             when N_Case_Statement_Alternative =>
                --  ??? Maybe we should merge the code for statements?
@@ -524,30 +539,12 @@ package body Gnat2Why.Expr is
                Next (Cur_Choice);
             end loop;
 
-            declare
-               Then_Part : W_Expr_Id;
-            begin
-               case Nkind (Cur_Case) is
-                  when N_Case_Expression_Alternative =>
-                     Then_Part :=
-                       Transform_Expr
-                         (Expression (Cur_Case), Domain, Ref_Allowed);
-
-                  when N_Case_Statement_Alternative =>
-                     Then_Part :=
-                        +Transform_Statements (Statements (Cur_Case));
-
-                  when others =>
-                     raise Unexpected_Node;
-
-               end  case;
-               T :=
-                  New_Simpl_Conditional
-                     (Condition => C,
-                      Then_Part => Then_Part,
-                      Else_Part => T,
-                      Domain    => Domain);
-            end;
+            T :=
+               New_Simpl_Conditional
+                  (Condition => C,
+                   Then_Part => Branch_Expr (Cur_Case),
+                   Else_Part => T,
+                   Domain    => Domain);
          end;
          Prev (Cur_Case);
       end loop;
@@ -2446,7 +2443,11 @@ package body Gnat2Why.Expr is
             T := Transform_Attr (Expr, Domain, Current_Type, Ref_Allowed);
 
          when N_Case_Expression =>
-            T := Case_Expr_Of_Ada_Node (Expr, Domain, Ref_Allowed);
+            T := Case_Expr_Of_Ada_Node
+                   (Expr,
+                    Expected_Type,
+                    Domain,
+                    Ref_Allowed);
 
          when N_Expression_With_Actions =>
             if not (Domain = EW_Prog) then
@@ -2789,7 +2790,11 @@ package body Gnat2Why.Expr is
             return Transform_Exit_Statement (Stmt);
 
          when N_Case_Statement =>
-            return +Case_Expr_Of_Ada_Node (Stmt, EW_Prog, Ref_Allowed => True);
+            return
+              +Case_Expr_Of_Ada_Node
+                 (N           => Stmt,
+                  Domain      => EW_Prog,
+                  Ref_Allowed => True);
 
          when N_Pragma =>
             case Get_Pragma_Id (Pragma_Name (Stmt)) is
