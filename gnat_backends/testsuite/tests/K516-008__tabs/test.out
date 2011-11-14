@@ -1,1 +1,19 @@
-something here
+
+tab.adb:10:58: (info) range check proved
+tab.adb:11:20: (info) array bounds check proved
+tab.adb:12:53: overflow check not proved
+tab.adb:12:60: array bounds check not proved
+tab.adb:12:65: (info) array bounds check proved
+tab.adb:13:14: (info) array bounds check proved
+tab.adb:14:13: array bounds check not proved
+tab.adb:14:23: (info) array bounds check proved
+tab.adb:15:24: (info) overflow check proved
+tab.adb:4:24: (info) range check proved
+tab.adb:6:49: (info) overflow check proved
+tab.adb:6:49: range check not proved
+tab.adb:9:10: loop invariant initialization not proved
+tab.adb:9:10: loop invariant preservation not proved
+tab.ads:6:18: postcondition not proved
+tab.ads:7:25: (info) array bounds check proved
+tab.ads:8:47: (info) array bounds check proved
+tab.ads:8:54: (info) array bounds check proved
