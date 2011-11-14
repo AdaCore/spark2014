@@ -1,0 +1,18 @@
+
+flight_manager.adb:16:21: overflow check not proved
+flight_manager.adb:16:43: (info) division by zero proved
+flight_manager.adb:16:43: overflow check not proved
+flight_manager.adb:23:20: overflow check not proved
+flight_manager.adb:31:28: (info) range check proved
+flight_manager.adb:33:28: (info) range check proved
+flight_manager.adb:37:29: (info) range check proved
+flight_manager.adb:39:29: (info) range check proved
+flight_manager.adb:42:56: overflow check not proved
+flight_manager.adb:43:56: overflow check not proved
+flight_manager.ads:13:27: overflow check not proved
+flight_manager.ads:13:62: overflow check not proved
+flight_manager.ads:14:18: (info) overflow check proved
+flight_manager.ads:15:23: overflow check not proved
+flight_manager.ads:15:58: overflow check not proved
+flight_manager.ads:15:6: postcondition not proved
+flight_manager.ads:16:18: (info) overflow check proved
