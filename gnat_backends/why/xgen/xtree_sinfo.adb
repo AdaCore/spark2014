@@ -471,7 +471,7 @@ package body Xtree_Sinfo is
       New_Field (W_Unary_Op,
                  "Op", "EW_Unary_Op");
       New_Field (W_Unary_Op,
-                 "Right", "W_Term", Id_One);
+                 "Right", "W_Expr", Id_One);
       New_Field (W_Unary_Op,
                  "Op_Type", "EW_Scalar");
 
