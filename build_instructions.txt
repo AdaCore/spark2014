@@ -161,27 +161,22 @@ The final directory structure of all related products is:
       $ make install
 
 7) Alt-Ergo
-   7.1) Visit the following website
+   7.1) Clone the alt-ergo repository
 
-      http://alt-ergo.lri.fr/
+      git clone ssh://git.eu.adacore.com/scmrepos/git/alt-ergo
 
-      and download the tarbal under section "Download", bullet "Source".
+   7.2) Configure Alt-Ergo
 
-   7.2) Extract the archive in directory <Root>/hi-lite. This step creates
-      directory <Root>/hi-lite/alt-ergo-<XXX> where <XXX> is the version number.
-
-   7.3) Configure Alt-Ergo
-
-      $ cd <Root>/hi-lite/alt-ergo-<XXX>
-      $ ./configure --prefix=<Root>/local
+      $ cd alt-ergo
+      $ ./configure --prefix=<Root>/hi-lite/install
 
       where <Root> denotes a full path.
 
-   7.4) Build Alt-Ergo
+   7.3) Build Alt-Ergo
 
       $ make
 
-   7.5) Install Alt-Ergo
+   7.4) Install Alt-Ergo
 
       $ make install
 
@@ -192,6 +187,7 @@ The final directory structure of all related products is:
 
    8.4) Configure Why3
 
+      $ cd why3
       $ ./configure --prefix=<Root>/hi-lite/install --disable-gui
 
       where <Root> denotes a full path.
