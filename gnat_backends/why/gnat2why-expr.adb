@@ -2457,6 +2457,7 @@ package body Gnat2Why.Expr is
                     Expected_Type,
                     Domain,
                     Ref_Allowed);
+            Current_Type := Expected_Type;
 
          when N_Expression_With_Actions =>
             if not (Domain = EW_Prog) then
