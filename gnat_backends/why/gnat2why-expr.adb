@@ -1475,7 +1475,8 @@ package body Gnat2Why.Expr is
                else
                   Expr_Or_Association);
 
-            if Nkind (Expr) = N_Aggregate then
+            if Dim < Num_Dim then
+               pragma Assert (Nkind (Expr) = N_Aggregate);
                return Transform_Rec_Aggregate (Dim + 1, Expr);
             else
                declare
