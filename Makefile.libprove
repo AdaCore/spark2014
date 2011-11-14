@@ -25,7 +25,7 @@ EXCLUDE_OBJ:= \
    adaint.o argv.o cio.o cstreams.o ctrl_c.o errno.o exit.o env.o raise.o \
    sysdep.o aux-io.o init.o initialize.o locales.o seh_init.o cal.o \
    arit64.o final.o tracebak.o expect.o mkdir.o socket.o \
-   targext.o raise-gcc.o adadecode.o
+   targext.o raise-gcc.o adadecode.o terminals.o
 
 ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
 ALL_ALIS:=$(ALL_OBJS:.o=.ali)
