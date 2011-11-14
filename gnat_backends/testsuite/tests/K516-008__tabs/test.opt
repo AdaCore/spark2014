@@ -1,1 +1,0 @@
-ALL XFAIL hoisting of range expr in quantif expression (see K519-019) 

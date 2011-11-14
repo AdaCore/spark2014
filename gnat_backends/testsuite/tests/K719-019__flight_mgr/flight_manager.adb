@@ -7,7 +7,10 @@ package body Flight_Manager is
       Result : Engine_Values;
 
       procedure Adjust_Speed
-        (F : in out Float; Distance_To_Target : Float);
+        (F : in out Float; Distance_To_Target : Float) with
+        Post =>
+          (if Distance_To_Target < 10.0 then
+            F = (F'Old * Distance_To_Target) / 10.0);
 
       procedure Adjust_Speed
         (F : in out Float; Distance_To_Target : Float) is
