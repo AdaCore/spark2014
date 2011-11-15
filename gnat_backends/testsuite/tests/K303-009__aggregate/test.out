@@ -14,7 +14,7 @@ arr_aggregate.ads:19:35: (info) array bounds check proved
 arr_aggregate.ads:19:51: (info) array bounds check proved
 arr_aggregate.ads:20:40: (info) array bounds check proved
 arr_aggregate.ads:20:58: (info) array bounds check proved
-arr_aggregate.ads:24:15: (info) postcondition proved
+arr_aggregate.ads:24:15: postcondition not proved
 arr_aggregate.ads:24:62: (info) array bounds check proved
 arr_aggregate.ads:24:84: (info) array bounds check proved
 arr_aggregate.ads:25:87: (info) array bounds check proved
@@ -23,6 +23,7 @@ arr_aggregate.ads:27:62: (info) array bounds check proved
 arr_aggregate.ads:27:82: (info) array bounds check proved
 arr_aggregate.ads:28:67: (info) array bounds check proved
 arr_aggregate.ads:28:89: (info) array bounds check proved
-arr_aggregate.ads:32:15: postcondition not proved
+arr_aggregate.ads:32:15: (info) postcondition proved
 arr_aggregate.ads:37:15: postcondition not proved
 arr_aggregate.ads:45:15: postcondition not proved
+

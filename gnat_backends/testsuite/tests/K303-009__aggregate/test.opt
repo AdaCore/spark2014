@@ -1,1 +1,1 @@
-ALL XFAIL array aggregates
+ALL XFAIL problem with traceability labels (K928-020)
