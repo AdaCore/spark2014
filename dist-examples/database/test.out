@@ -10,7 +10,7 @@ database.adb:118:13: (info) array bounds check proved
 database.adb:118:20: (info) array bounds check proved
 database.adb:118:50: (info) array bounds check proved
 database.adb:124:13: (info) array bounds check proved
-database.adb:124:37: array bounds check not proved
+database.adb:124:37: (info) array bounds check proved
 database.adb:126:10: (info) array bounds check proved
 database.adb:127:10: (info) array bounds check proved
 database.adb:128:29: (info) range check proved
@@ -58,7 +58,7 @@ database.adb:48:23: (info) array bounds check proved
 database.adb:48:52: (info) array bounds check proved
 database.ads:101:27: (info) precondition proved
 database.ads:102:14: (info) precondition proved
-database.ads:102:32: postcondition not proved
+database.ads:102:32: (info) postcondition proved
 database.ads:102:34: (info) precondition proved
 database.ads:102:56: (info) precondition proved
 database.ads:45:42: (info) precondition proved
@@ -67,7 +67,7 @@ database.ads:64:42: (info) precondition proved
 database.ads:83:14: (info) precondition proved
 database.ads:83:38: (info) overflow check proved
 database.ads:84:14: (info) precondition proved
-database.ads:84:32: postcondition not proved
+database.ads:84:32: (info) postcondition proved
 database.ads:84:34: (info) precondition proved
 database.ads:84:56: (info) precondition proved
 money.adb:4:35: (info) overflow check proved

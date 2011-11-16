@@ -1,4 +1,3 @@
-
 search.adb:10:57: (info) overflow check proved
 search.adb:10:64: (info) array bounds check proved
 search.adb:12:16: array bounds check not proved
@@ -11,7 +10,7 @@ search.adb:6:24: (info) loop invariant initialization proved
 search.adb:6:24: (info) loop invariant preservation proved
 search.adb:8:10: assertion not proved
 search.ads:10:13: (info) array bounds check proved
-search.ads:11:34: (info) range check proved
+search.ads:11:34: range check not proved
 search.ads:11:54: (info) overflow check proved
 search.ads:11:54: range check not proved
 search.ads:5:53: (info) array bounds check proved
