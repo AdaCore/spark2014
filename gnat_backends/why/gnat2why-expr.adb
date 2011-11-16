@@ -2878,12 +2878,12 @@ package body Gnat2Why.Expr is
          if Ekind (N) in Type_Kind then
             return N;
          else
-            return Etype (N);
+            return Unique_Entity (Etype (N));
          end if;
       elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         return Etype (Entity (N));
+         return Unique_Entity (Etype (Entity (N)));
       else
-         return Etype (N);
+         return Unique_Entity (Etype (N));
       end if;
    end Type_Of_Node;
 
