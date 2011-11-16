@@ -444,7 +444,7 @@ procedure Gnatprove is
       Put_Keyval ("loadpath", Stdlib_Dir);
       Put_Keyval ("loadpath", Theories_Dir);
       Put_Keyval ("loadpath", Gnatprove_Subdir);
-      Put_Keyval ("magic", 7);
+      Put_Keyval ("magic", 8);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
       Put_Keyval ("timelimit", 10);
