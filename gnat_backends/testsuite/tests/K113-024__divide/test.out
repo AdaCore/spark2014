@@ -1,7 +1,8 @@
+
 divide.adb:10:10: (info) loop invariant initialization proved
 divide.adb:10:10: loop invariant preservation not proved
-divide.adb:11:17: (info) overflow check proved
-divide.adb:12:17: (info) overflow check proved
+divide.adb:11:17: overflow check not proved
+divide.adb:12:17: overflow check not proved
 divide.adb:5:12: (info) range check proved
 divide.adb:8:32: (info) overflow check proved
 divide.adb:9:31: overflow check not proved

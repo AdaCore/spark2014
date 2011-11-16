@@ -38,7 +38,7 @@ funcs.adb:71:43: (info) range check proved
 funcs.adb:72:26: (info) range check proved
 funcs.adb:72:35: (info) range check proved
 funcs.adb:73:16: (info) range check proved
-funcs.adb:73:20: (info) assertion proved
+funcs.adb:73:20: assertion not proved
 funcs.adb:73:43: (info) range check proved
 funcs.adb:75:12: (info) range check proved
 funcs.adb:77:26: (info) range check proved
