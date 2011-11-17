@@ -730,10 +730,10 @@ package body Gnat2Why.Expr is
          when N_Defining_Identifier =>
             case Ekind (N) is
                when Discrete_Or_Fixed_Point_Kind | Float_Kind =>
-                  return Scalar_Range (N);
+                  return Get_Range (Scalar_Range (N));
 
                when Object_Kind =>
-                  return Scalar_Range (Etype (N));
+                  return Get_Range (Scalar_Range (Etype (N)));
 
                when others =>
                   raise Program_Error;
