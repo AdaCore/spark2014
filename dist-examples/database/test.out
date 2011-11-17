@@ -2,18 +2,18 @@ database.adb:105:21: (info) range check proved
 database.adb:106:10: (info) array bounds check proved
 database.adb:107:29: (info) array bounds check proved
 database.adb:114:13: (info) array bounds check proved
-database.adb:115:13: (info) array bounds check proved
+database.adb:115:13: array bounds check not proved
 database.adb:115:20: (info) array bounds check proved
 database.adb:115:50: (info) array bounds check proved
-database.adb:117:13: (info) array bounds check proved
-database.adb:118:13: (info) array bounds check proved
+database.adb:117:13: array bounds check not proved
+database.adb:118:13: array bounds check not proved
 database.adb:118:20: (info) array bounds check proved
 database.adb:118:50: (info) array bounds check proved
-database.adb:124:13: (info) array bounds check proved
-database.adb:124:37: (info) array bounds check proved
-database.adb:126:10: (info) array bounds check proved
-database.adb:127:10: (info) array bounds check proved
-database.adb:128:29: (info) range check proved
+database.adb:124:13: array bounds check not proved
+database.adb:124:37: array bounds check not proved
+database.adb:126:10: array bounds check not proved
+database.adb:127:10: array bounds check not proved
+database.adb:128:29: range check not proved
 database.adb:132:29: (info) range check proved
 database.adb:135:13: (info) loop invariant initialization proved
 database.adb:135:13: (info) loop invariant preservation proved
@@ -43,19 +43,19 @@ database.adb:251:22: (info) precondition proved
 database.adb:264:17: (info) precondition proved
 database.adb:264:41: (info) overflow check proved
 database.adb:269:7: (info) array bounds check proved
-database.adb:270:42: (info) precondition proved
+database.adb:270:42: precondition not proved
 database.adb:270:9: (info) array bounds check proved
 database.adb:282:29: (info) precondition proved
 database.adb:287:7: (info) array bounds check proved
-database.adb:288:42: (info) precondition proved
+database.adb:288:42: precondition not proved
 database.adb:288:9: (info) array bounds check proved
 database.adb:32:10: (info) array bounds check proved
-database.adb:38:18: (info) postcondition proved
-database.adb:40:23: (info) array bounds check proved
-database.adb:40:52: (info) array bounds check proved
+database.adb:38:18: postcondition not proved
+database.adb:40:23: array bounds check not proved
+database.adb:40:52: array bounds check not proved
 database.adb:46:18: postcondition not proved
 database.adb:48:23: (info) array bounds check proved
-database.adb:48:52: (info) array bounds check proved
+database.adb:48:52: array bounds check not proved
 database.ads:101:27: (info) precondition proved
 database.ads:102:14: (info) precondition proved
 database.ads:102:32: (info) postcondition proved
