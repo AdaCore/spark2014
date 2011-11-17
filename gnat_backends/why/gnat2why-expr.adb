@@ -1028,7 +1028,7 @@ package body Gnat2Why.Expr is
          when N_Indexed_Component =>
             declare
                Dim     : constant Pos :=
-                  Number_Dimensions (Etype (Prefix (N)));
+                  Number_Dimensions (Type_Of_Node (Prefix (N)));
                Indices : W_Expr_Array := (1 .. Integer (Dim) => <>);
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
