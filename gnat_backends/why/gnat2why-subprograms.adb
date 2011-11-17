@@ -330,7 +330,15 @@ package body Gnat2Why.Subprograms is
                   end case;
                end;
             else
-               return Entity (Subtype_Mark (Subtype_Indication (N)));
+               declare
+                  S : constant Node_Id := Subtype_Indication (N);
+               begin
+                  if Nkind (S) = N_Subtype_Indication then
+                     return Entity (Subtype_Mark (S));
+                  else
+                     return Entity (S);
+                  end if;
+               end;
             end if;
          end Get_Base_Type;
 
