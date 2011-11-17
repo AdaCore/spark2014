@@ -453,9 +453,7 @@ procedure Gnatprove is
       Put_Keyval ("driver",
                   Ada.Directories.Compose (Why3_Drivers_Dir,
                                            "alt_ergo_trunk.drv"));
-      Put_Keyval ("editor", "");
       Put_Keyval ("name", "Alt-Ergo");
-      Put_Keyval ("version", "0.93");
       Close (File);
    end Generate_Why3_Conf_File;
 
