@@ -266,17 +266,24 @@ package body Gnat2Why.Subprograms is
           Post_Check   : W_Prog_Id) return W_Prog_Id
       is
          procedure Assume_of_Scalar_Subtype
-            (Ent : Entity_Id;
-             R   : in out W_Prog_Id);
+            (Ent  : Entity_Id;
+             Base : Entity_Id;
+             R    : in out W_Prog_Id);
          --  Local Wrapper for Assume_of_Scalar_Subtype
+
+         function Get_Base_Type (N : Node_Id) return Entity_Id;
+         --  Return the base type when N is the node of a (sub-)type
+         --  declaration which requires a check.
+         --  Return Empty otherwise.
 
          ------------------------------
          -- Assume_of_Scalar_Subtype --
          ------------------------------
 
          procedure Assume_of_Scalar_Subtype
-            (Ent : Entity_Id;
-             R   : in out W_Prog_Id)
+            (Ent  : Entity_Id;
+             Base : Entity_Id;
+             R    : in out W_Prog_Id)
          is
          begin
 
@@ -285,9 +292,47 @@ package body Gnat2Why.Subprograms is
             --  done it for us already
 
             if not Is_Static_Range (Get_Range (Ent)) then
-               R := Sequence (Assume_of_Scalar_Subtype (Ent), R);
+               R := Sequence (Assume_of_Scalar_Subtype (Ent, Base), R);
             end if;
          end Assume_of_Scalar_Subtype;
+
+         -------------------
+         -- Get_Base_Type --
+         -------------------
+
+         function Get_Base_Type (N : Node_Id) return Entity_Id
+         is
+            Ent : constant Entity_Id := Defining_Identifier (N);
+         begin
+
+            --  Full type declarations can only require checks when they are
+            --  discrete types, and then only when the range is non-static.
+            if Nkind (N) = N_Full_Type_Declaration then
+               if Ekind (Ent) in Discrete_Kind | Float_Kind then
+                  if Is_Static_Range (Get_Range (Ent)) then
+                     return Empty;
+                  end if;
+               end if;
+               declare
+                  T_Def : constant Node_Id := Type_Definition (N);
+               begin
+                  case Nkind (T_Def) is
+                     when N_Subtype_Indication =>
+                        return Entity (Subtype_Mark (T_Def));
+
+                     when N_Derived_Type_Definition =>
+                        return
+                          Entity (Subtype_Mark (Subtype_Indication (T_Def)));
+
+                     when others =>
+                        return Empty;
+
+                  end case;
+               end;
+            else
+               return Entity (Subtype_Mark (Subtype_Indication (N)));
+            end if;
+         end Get_Base_Type;
 
          Cur_Decl : Node_Id := Last (Declarations (Node));
          R        : W_Prog_Id := Initial_Body;
@@ -301,33 +346,36 @@ package body Gnat2Why.Subprograms is
                   declare
                      Ent : constant Entity_Id :=
                         Defining_Identifier (Cur_Decl);
+                     Base : constant Entity_Id := Get_Base_Type (Cur_Decl);
                   begin
+                     if Present (Base) then
+                        case Ekind (Ent) is
+                           when Discrete_Kind | Float_Kind =>
+                              Assume_of_Scalar_Subtype (Ent, Base, R);
 
-                     case Ekind (Ent) is
-                        when E_Signed_Integer_Subtype |
-                           E_Floating_Point_Subtype =>
-                           Assume_of_Scalar_Subtype (Ent, R);
+                           when Array_Kind =>
+                              declare
+                                 Index      : Node_Id := First_Index (Ent);
+                                 Index_Base : Entity_Id := First_Index (Base);
+                              begin
+                                 while Present (Index) loop
+                                    Assume_of_Scalar_Subtype
+                                       (Etype (Index),
+                                        Etype (Index_Base),
+                                        R);
+                                    Next (Index);
+                                    Next (Index_Base);
+                                 end loop;
+                              end;
 
-                        when Array_Kind =>
-                           declare
-                              Index : Node_Id := First_Index (Ent);
-                           begin
-                              while Present (Index) loop
-                                 Assume_of_Scalar_Subtype (Etype (Index), R);
-                                 Next (Index);
-                              end loop;
-                           end;
+                           when E_Record_Type =>
+                              null;
 
-                        when Enumeration_Kind =>
-                           null;
+                           when others =>
+                              raise Not_Implemented;
 
-                        when E_Record_Type =>
-                           null;
-
-                        when others =>
-                           raise Not_Implemented;
-
-                     end case;
+                        end case;
+                     end if;
                   end;
 
                when others =>

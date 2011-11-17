@@ -396,35 +396,6 @@ package body Gnat2Why.Expr is
            Expr     => +Any_Expr);
    end Assume_of_Scalar_Subtype;
 
-   function Assume_of_Scalar_Subtype (E : Entity_Id) return W_Prog_Id is
-      BaseType : Entity_Id;
-   begin
-      if Is_Itype (E) then
-         BaseType := Etype (E);
-      else
-
-         --  ??? It would be better not to scan the declaration to get the
-         --  base type of the current type. But the entity does not have this
-         --  information.
-
-         case Nkind (Parent (E)) is
-            when N_Subtype_Declaration =>
-               BaseType :=
-                  Entity (Subtype_Mark (Subtype_Indication (Parent (E))));
-
-            when N_Full_Type_Declaration =>
-               BaseType :=
-                  Entity (Subtype_Mark
-                     (Subtype_Indication (Type_Definition (Parent (E)))));
-
-            when others =>
-               raise Program_Error;
-
-         end case;
-      end if;
-      return Assume_of_Scalar_Subtype (E, BaseType);
-   end Assume_of_Scalar_Subtype;
-
    ----------------------------------
    -- Assume_of_Subtype_Indication --
    ----------------------------------
