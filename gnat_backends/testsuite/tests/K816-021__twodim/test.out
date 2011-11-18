@@ -1,4 +1,4 @@
-twodim.adb:11:16: validity of subtype declaration not proved
+twodim.adb:11:16: (info) validity of subtype declaration proved
 twodim.adb:13:27: overflow check not proved
 twodim.adb:8:16: division by zero not proved
 twodim.adb:8:16: overflow check not proved

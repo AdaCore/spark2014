@@ -1,7 +1,7 @@
 subar.adb:12:17: (info) range check proved
 subar.adb:12:7: (info) array bounds check proved
 subar.adb:13:7: (info) precondition proved
-subar.adb:16:14: validity of subtype declaration not proved
+subar.adb:16:14: (info) validity of subtype declaration proved
 subar.adb:18:22: array bounds check not proved
 subar.adb:18:7: (info) assertion proved
 subar.adb:25:17: (info) range check proved
