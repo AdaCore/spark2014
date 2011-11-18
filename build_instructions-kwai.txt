@@ -24,7 +24,7 @@ Instead, do these steps to get the ocaml-compiled tools:
 
    * Get all the tools from the nightly build
       $ cd hi-lite
-      $ cp -r /draa.a/gnatmail/gcc-45/build-draa/hilite/install/ .
+      $ cp -r /draa.a/gnatmail/gcc-45/build-draa/x86_64-linux/hilite/install/ .
    * remove files that will be built locally
       $ rm -rf install/libexec
       $ rm install/bin/gnat2why
