@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;       use Ada.Text_IO;
 with Call;              use Call;
@@ -195,12 +196,15 @@ procedure Gnatprove is
      (Proj   : Project_Tree;
       Status : out Integer)
    is
+      use Ada.Environment_Variables;
       Proj_Type     : constant Project_Type := Proj.Root_Project;
+      Obj_Dir       : constant String :=
+         Proj_Type.Object_Dir.Display_Full_Name;
       Why_Proj_File : constant String :=
-         Generate_Why_Project_File (Proj_Type.Object_Dir.Display_Full_Name);
+         Generate_Why_Project_File (Obj_Dir);
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
-      Generate_Why3_Conf_File (Proj_Type.Object_Dir.Display_Full_Name);
+      Generate_Why3_Conf_File (Obj_Dir);
       if Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
@@ -227,6 +231,8 @@ procedure Gnatprove is
 
       Args.Prepend ("-f");
 
+      Set ("TEMP", Obj_Dir);
+      Set ("TMPDIR", Obj_Dir);
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
    end Compute_VCs;
 
