@@ -35,6 +35,13 @@ with Why.Types;          use Why.Types;
 
 package body Why.Gen.Arrays is
 
+   procedure Define_In_Range_Axiom
+     (File       : W_File_Sections;
+      Type_Name  : String;
+      Index_Name : String;
+      Dimension  : Pos;
+      Argument   : Uint);
+
    -----------------------------------
    -- Declare_Ada_Constrained_Array --
    -----------------------------------
@@ -56,7 +63,8 @@ package body Why.Gen.Arrays is
                           (Name => (New_Identifier (Name))),
                       others => <>);
    begin
-      Declare_Ada_Unconstrained_Array (File, Name, Component, Dimension);
+      Declare_Ada_Unconstrained_Array
+         (File, Name, Component, String_Lists.Empty_List, Dimension);
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
@@ -113,10 +121,11 @@ package body Why.Gen.Arrays is
    -------------------------------------
 
    procedure Declare_Ada_Unconstrained_Array
-     (File      : W_File_Sections;
-      Name      : String;
-      Component : String;
-      Dimension : Pos)
+     (File       : W_File_Sections;
+      Name       : String;
+      Component  : String;
+      Index_List : String_Lists.List;
+      Dimension  : Pos)
    is
       Type_Id     : constant W_Identifier_Id := New_Identifier (Name);
       BT_Str      : constant String := New_Ada_Array_Name (Dimension);
@@ -145,9 +154,6 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      --  ??? why-gen-axioms defines general methods to
-      --  generate these axioms. Presumably not exactly those ones,
-      --  but close enough. This should be factorized out.
       Emit (File (W_File_Logic_Type), New_Type (Name));
       Emit
         (File (W_File_Logic_Type),
@@ -174,7 +180,87 @@ package body Why.Gen.Arrays is
          Axiom_Name => Unicity_Axiom.Id (Name),
          Var_Type   => Ar_Type,
          Conversion => Conversion_From.Id (Name, BT_Str));
+      declare
+         Arg : Uint := Uint_1;
+      begin
+         for Index of Index_List loop
+            Define_In_Range_Axiom
+              (File       => File,
+               Type_Name  => Name,
+               Index_Name => Index,
+               Dimension  => Dimension,
+               Argument   => Arg);
+            Arg := Arg + Uint_1;
+         end loop;
+      end;
    end Declare_Ada_Unconstrained_Array;
+
+   ---------------------------
+   -- Define_In_Range_Axiom --
+   ---------------------------
+
+   procedure Define_In_Range_Axiom
+     (File       : W_File_Sections;
+      Type_Name  : String;
+      Index_Name : String;
+      Dimension  : Pos;
+      Argument   : Uint)
+   is
+      Var            : constant W_Identifier_Id :=
+         New_Identifier ("x");
+      First_Term     : constant W_Term_Id :=
+               +New_Array_Attr (Attribute_First,
+                                Type_Name,
+                                +Var,
+                                EW_Term,
+                                Dimension,
+                                Argument);
+      Last_Term      : constant W_Term_Id :=
+               +New_Array_Attr (Attribute_Last,
+                                Type_Name,
+                                +Var,
+                                EW_Term,
+                                Dimension,
+                                Argument);
+      Precond        : constant W_Pred_Id :=
+               New_Relation
+                  (Op_Type => EW_Bool,
+                   Left    => +First_Term,
+                   Right   => +Last_Term,
+                   Op      => EW_Le);
+      First_In_Range : constant W_Pred_Id :=
+               New_Call (Name => Range_Pred_Name.Id (Index_Name),
+                         Args => (1 => +First_Term));
+      Last_In_Range  : constant W_Pred_Id :=
+               New_Call (Name => Range_Pred_Name.Id (Index_Name),
+                         Args => (1 => +Last_Term));
+      Conclusion     : constant W_Pred_Id :=
+         New_Connection
+            (Op    => EW_And,
+             Left  => +First_In_Range,
+             Right => +Last_In_Range);
+      Formula        : constant W_Pred_Id :=
+         New_Connection
+            (Op    => EW_Imply,
+             Left  => +Precond,
+             Right => +Conclusion);
+      Quantif        : constant W_Pred_Id :=
+         New_Universal_Quantif
+            (Var_Type  =>
+               New_Abstract_Type (Name => New_Identifier (Type_Name)),
+             Variables => (1 => Var),
+             Pred => Formula);
+      Axiom_Base     : constant String := Type_Name & "__index_in_range";
+      Axiom_Name     : constant String :=
+         (if Argument = Uint_1 then Axiom_Base
+          else Axiom_Base & "_" & Uint_Image (Argument));
+   begin
+      Emit
+        (File (W_File_Axiom),
+         New_Axiom
+            (Name => New_Identifier (Axiom_Name),
+             Def  => Quantif));
+   end Define_In_Range_Axiom;
 
    ----------------------
    -- New_Array_Access --
@@ -220,32 +306,27 @@ package body Why.Gen.Arrays is
        Argument  : Uint) return W_Expr_Id
    is
       Attr_Str  : constant String := Attribute_Id'Image (Attr);
+
+      --  ??? The logic to obtain the right suffix (_2, _3 etc) is duplicated
+      --  here because of the usage of Uint. Should be fixed.
+
+      Attr_Suff : constant String :=
+         (if Argument = Uint_1 then Attr_Str
+          else Attr_Str & "_" & Uint_Image (Argument));
+      BT_Str  : constant String := New_Ada_Array_Name (Dimension);
    begin
 
-      --  ??? Extracting the value from the attribute argument is really a
-      --  mess.  It also means that the logic to obtain the right suffix (_2,
-      --  _3 etc) is duplicated here. Should be fixed.
-
-      UI_Image (Argument);
-      declare
-         Arg_Buf   : constant String := UI_Image_Buffer (1 .. UI_Image_Length);
-         Attr_Suff : constant String :=
-            (if Argument = Uint_1 then Attr_Str
-             else Attr_Str & "_" & Arg_Buf);
-         BT_Str  : constant String := New_Ada_Array_Name (Dimension);
-      begin
-         return
-           New_Call
-             (Domain => Domain,
-              Name   =>
-                Attr_Name.Id (BT_Str, Attr_Suff),
-              Args   =>
-               (1 =>
-                  New_Call
-                    (Domain => Domain,
-                     Name   => Conversion_To.Id (Type_Name, BT_Str),
-                     Args   => (1 => +Ar))));
-      end;
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Attr_Name.Id (BT_Str, Attr_Suff),
+           Args   =>
+            (1 =>
+               New_Call
+                 (Domain => Domain,
+                  Name   => Conversion_To.Id (Type_Name, BT_Str),
+                  Args   => (1 => +Ar))));
    end New_Array_Attr;
 
    ----------------------
