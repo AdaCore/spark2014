@@ -8,13 +8,18 @@ package body Binary_Search is
       if A'Length = 0 then
          return 0;
       end if;
-      Left := Ar'First;
+
+      Left  := Ar'First;
       Right := Ar'Last;
+
       if A (Left) > I or else A (Right) < I then
          return 0;
       end if;
+
       while Left < Right loop
-         pragma Assert (A (Left) <= I and then I <= A (Right));
+         pragma Assert
+           ((for all Index in A'First .. Left => A (Index) <= I)
+              and then (for all Index in A'First .. Left => I <= A (Index)));
          Med := Left + (Right - Left) / 2;
          if A (Med) < I then
             Left := Med;

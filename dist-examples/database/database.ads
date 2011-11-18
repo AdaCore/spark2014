@@ -17,6 +17,11 @@ package Database is
 
    function Existing (Account : in Account_Num) return Boolean;
 
+   function Belongs_To
+     (Account  : in Account_Num;
+      Customer : in Identity.Name;
+      Id       : in Identity.Id) return Boolean;
+
    function Num_Accounts return Natural;
 
    function Max_Account_Reached return Boolean;
@@ -39,10 +44,13 @@ package Database is
    procedure Open
      (Customer : in     Identity.Name;
       Id       : in     Identity.Id;
+      Cur      : in     Money.CUR;
       Account  :    out Account_Num)
    with
      Pre  => not Max_Account_Reached,
-     Post => Existing (Account) and then Balance (Account).Value = 0,
+     Post => Existing (Account)
+               and then Belongs_To (Account, Customer, Id)
+               and then Money.Is_Empty (Balance (Account)),
      Test_Case => (Name     => "first account",
                    Mode     => Nominal,
                    Requires => Num_Accounts = 0,
@@ -61,7 +69,9 @@ package Database is
       Id       : in Identity.Id;
       Account  : in Account_Num)
    with
-     Pre  => Existing (Account) and then Balance (Account).Value = 0,
+     Pre  => Existing (Account)
+               and then Belongs_To (Account, Customer, Id)
+               and then Money.Is_Empty (Balance (Account)),
      Test_Case => (Name     => "last account",
                    Mode     => Nominal,
                    Requires => Num_Accounts = 1,
@@ -72,7 +82,7 @@ package Database is
                    Ensures  => Num_Accounts = Num_Accounts'Old - 1),
      Test_Case => (Name     => "non-null balance",
                    Mode     => Robustness,
-                   Requires => Balance (Account).Value /= 0,
+                   Requires => not Money.Is_Empty (Balance (Account)),
                    Ensures  => Existing (Account) and then
                                Balance (Account) = Balance (Account)'Old);
 
@@ -80,17 +90,17 @@ package Database is
    with
      Pre  => Existing (Account) and then
              Currency (Account) = Sum.Currency and then
-             Balance (Account).Value + Sum.Value <= Money.Raw_Amount'Last,
+             Balance (Account).Raw + Sum.Raw <= Money.Raw_Amount'Last,
      Post => Balance (Account) = Balance (Account)'Old + Sum,
-     Test_Case => (Name     => "common case",
-                   Mode     => Nominal),
+--       Test_Case => (Name     => "common case",
+--                     Mode     => Nominal),
      Test_Case => (Name     => "different currency",
                    Mode     => Robustness,
                    Requires => Currency (Account) /= Sum.Currency,
                    Ensures  => Balance (Account) = Balance (Account)'Old),
      Test_Case => (Name     => "too large",
                    Mode     => Robustness,
-                   Requires => Balance (Account).Value + Sum.Value >
+                   Requires => Balance (Account).Raw + Sum.Raw >
                                  Money.Raw_Amount'Last,
                    Ensures  => Balance (Account) = Balance (Account)'Old);
 
@@ -98,17 +108,17 @@ package Database is
    with
      Pre  => Existing (Account) and then
              Currency (Account) = Sum.Currency and then
-             Sum.Value <= Balance (Account).Value,
+             Sum.Raw <= Balance (Account).Raw,
      Post => Balance (Account) = Balance (Account)'Old - Sum,
-     Test_Case => (Name     => "common case",
-                   Mode     => Nominal),
+--       Test_Case => (Name     => "common case",
+--                     Mode     => Nominal),
      Test_Case => (Name     => "different currency",
                    Mode     => Robustness,
                    Requires => Currency (Account) /= Sum.Currency,
                    Ensures  => Balance (Account) = Balance (Account)'Old),
      Test_Case => (Name     => "too large",
                    Mode     => Robustness,
-                   Requires => Sum.Value > Balance (Account).Value,
+                   Requires => Sum.Raw > Balance (Account).Raw,
                    Ensures  => Balance (Account) = Balance (Account)'Old);
 
 end Database;

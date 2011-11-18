@@ -188,6 +188,18 @@ package body Database is
    function Existing (Account : in Account_Num) return Boolean is
       (not Availability.Is_Available (Account));
 
+   ----------------
+   -- Belongs_To --
+   ----------------
+
+   function Belongs_To
+     (Account  : in Account_Num;
+      Customer : in Identity.Name;
+      Id       : in Identity.Id) return Boolean
+   is
+     (Accounts (Account) = Account_Rec'(Owner_Name => Customer,
+                                        Owner_Id   => Id,
+                                        Account    => Account));
    -------------
    -- Balance --
    -------------
@@ -209,6 +221,7 @@ package body Database is
    procedure Open
      (Customer : in     Identity.Name;
       Id       : in     Identity.Id;
+      Cur      : in     Money.CUR;
       Account  :    out Account_Num) is
    begin
       --  Defensive programming if precondition is not checked at run-time
@@ -222,8 +235,10 @@ package body Database is
       Accounts (Account) := Account_Rec'(Owner_Name => Customer,
                                          Owner_Id   => Id,
                                          Account    => Account);
-      Accounts_Balance (Account) := Account_Balance'(Value   => No_Amount,
-						     Account => Account);
+      Accounts_Balance (Account) :=
+        Account_Balance'(Value   => Money.Amount'(Currency => Cur,
+                                                  Raw      => 0),
+                         Account => Account);
    end Open;
 
    -----------
@@ -237,7 +252,7 @@ package body Database is
    begin
       --  Defensive programming if precondition is not checked at run-time
 
-      if Balance (Account).Value /= 0 then
+      if Balance (Account).Raw /= 0 then
          return;
       end if;
 
@@ -261,7 +276,7 @@ package body Database is
       --  Defensive programming if precondition is not checked at run-time
 
       if Currency (Account) /= Sum.Currency
-        or else Balance (Account).Value + Sum.Value > Money.Raw_Amount'Last
+        or else Balance (Account).Raw + Sum.Raw > Money.Raw_Amount'Last
       then
          return;
       end if;
@@ -279,7 +294,7 @@ package body Database is
       --  Defensive programming if precondition is not checked at run-time
 
       if Currency (Account) /= Sum.Currency
-        or else Sum.Value > Balance (Account).Value
+        or else Sum.Raw > Balance (Account).Raw
       then
          return;
       end if;

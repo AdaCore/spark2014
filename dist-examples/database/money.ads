@@ -14,23 +14,25 @@ package Money is
 
    type Amount is record
       Currency : CUR;
-      Value    : Raw_Amount;
+      Raw    : Raw_Amount;
    end record;
 
    No_Amount : constant Amount := Amount'(Currency => None,
-                                          Value    => 0);
+                                          Raw      => 0);
+
+   function Is_Empty (A : Amount) return Boolean is (A.Raw = 0);
 
    --  Basic arithmetic operations over amounts of money. All arguments should
    --  be in the same currency, and the result is returned in this currency.
 
    function "+" (A, B : Amount) return Amount
    with
-     Pre  => A.Currency = B.Currency and A.Value + B.Value <= Raw_Amount'Last,
-     Post => "+"'Result = Amount'(A.Currency, A.Value + B.Value);
+     Pre  => A.Currency = B.Currency and A.Raw + B.Raw <= Raw_Amount'Last,
+     Post => "+"'Result = Amount'(A.Currency, A.Raw + B.Raw);
 
    function "-" (A, B : Amount) return Amount
    with
-     Pre  => A.Currency = B.Currency and B.Value <= A.Value,
-     Post => "-"'Result = Amount'(A.Currency, A.Value - B.Value);
+     Pre  => A.Currency = B.Currency and B.Raw <= A.Raw,
+     Post => "-"'Result = Amount'(A.Currency, A.Raw - B.Raw);
 
 end Money;
