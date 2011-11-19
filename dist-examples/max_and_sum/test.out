@@ -1,0 +1,16 @@
+maxandsum.adb:10:21: (info) overflow check proved
+maxandsum.adb:10:21: (info) range check proved
+maxandsum.adb:10:23: (info) array bounds check proved
+maxandsum.adb:11:19: (info) array bounds check proved
+maxandsum.adb:12:20: (info) array bounds check proved
+maxandsum.adb:12:20: (info) range check proved
+maxandsum.adb:14:10: assertion not proved
+maxandsum.adb:14:33: (info) overflow check proved
+maxandsum.adb:6:14: (info) range check proved
+maxandsum.adb:7:14: (info) range check proved
+maxandsum.adb:9:10: (info) loop invariant initialization proved
+maxandsum.adb:9:10: (info) loop invariant preservation proved
+maxandsum.adb:9:34: (info) overflow check proved
+maxandsum.adb:9:37: (info) overflow check proved
+maxandsum.ads:8:21: (info) postcondition proved
+maxandsum.ads:8:25: (info) overflow check proved

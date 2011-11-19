@@ -1,0 +1,21 @@
+queen.ads:10:15: (info) overflow check proved
+queen.ads:10:23: (info) array bounds check proved
+queen.ads:10:30: (info) overflow check proved
+queen.ads:10:32: (info) array bounds check proved
+queen.ads:11:15: (info) overflow check proved
+queen.ads:11:23: (info) array bounds check proved
+queen.ads:11:30: (info) overflow check proved
+queen.ads:11:32: (info) array bounds check proved
+queen.ads:14:43: (info) overflow check proved
+queen.ads:15:39: (info) range check proved
+queen.ads:20:46: (info) array bounds check proved
+queen.ads:20:53: (info) array bounds check proved
+queen.ads:21:42: (info) overflow check proved
+queen.ads:21:63: (info) range check proved
+queen.ads:32:42: (info) overflow check proved
+queen.ads:32:48: (info) array bounds check proved
+queen.ads:32:55: (info) array bounds check proved
+queen.ads:33:42: (info) overflow check proved
+queen.ads:33:63: (info) range check proved
+queen.ads:9:10: (info) array bounds check proved
+queen.ads:9:20: (info) array bounds check prove

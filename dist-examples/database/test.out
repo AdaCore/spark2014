@@ -2,18 +2,18 @@ database.adb:105:21: (info) range check proved
 database.adb:106:10: (info) array bounds check proved
 database.adb:107:29: (info) array bounds check proved
 database.adb:114:13: (info) array bounds check proved
-database.adb:115:13: array bounds check not proved
+database.adb:115:13: (info) array bounds check proved
 database.adb:115:20: (info) array bounds check proved
 database.adb:115:50: (info) array bounds check proved
-database.adb:117:13: array bounds check not proved
-database.adb:118:13: array bounds check not proved
+database.adb:117:13: (info) array bounds check proved
+database.adb:118:13: (info) array bounds check proved
 database.adb:118:20: (info) array bounds check proved
 database.adb:118:50: (info) array bounds check proved
-database.adb:124:13: array bounds check not proved
-database.adb:124:37: array bounds check not proved
-database.adb:126:10: array bounds check not proved
-database.adb:127:10: array bounds check not proved
-database.adb:128:29: range check not proved
+database.adb:124:13: (info) array bounds check proved
+database.adb:124:37: (info) array bounds check proved
+database.adb:126:10: (info) array bounds check proved
+database.adb:127:10: (info) array bounds check proved
+database.adb:128:29: (info) range check proved
 database.adb:132:29: (info) range check proved
 database.adb:135:13: (info) loop invariant initialization proved
 database.adb:135:13: (info) loop invariant preservation proved
@@ -27,57 +27,60 @@ database.adb:151:30: (info) range check proved
 database.adb:156:30: (info) overflow check proved
 database.adb:156:30: (info) range check proved
 database.adb:158:13: (info) array bounds check proved
-database.adb:196:8: (info) array bounds check proved
-database.adb:203:8: (info) array bounds check proved
-database.adb:217:21: (info) range check proved
-database.adb:221:19: (info) precondition proved
-database.adb:222:7: (info) array bounds check proved
-database.adb:224:56: (info) range check proved
-database.adb:225:7: (info) array bounds check proved
-database.adb:226:65: (info) range check proved
-database.adb:240:10: (info) precondition proved
-database.adb:247:10: (info) array bounds check proved
-database.adb:248:18: (info) array bounds check proved
-database.adb:250:10: (info) array bounds check proved
-database.adb:251:22: (info) precondition proved
-database.adb:264:17: (info) precondition proved
-database.adb:264:41: (info) overflow check proved
-database.adb:269:7: (info) array bounds check proved
-database.adb:270:42: precondition not proved
-database.adb:270:9: (info) array bounds check proved
-database.adb:282:29: (info) precondition proved
-database.adb:287:7: (info) array bounds check proved
-database.adb:288:42: precondition not proved
-database.adb:288:9: (info) array bounds check proved
+database.adb:200:7: (info) array bounds check proved
+database.adb:202:55: (info) range check proved
+database.adb:208:8: (info) array bounds check proved
+database.adb:215:8: (info) array bounds check proved
+database.adb:230:21: (info) range check proved
+database.adb:234:19: (info) precondition proved
+database.adb:235:7: (info) array bounds check proved
+database.adb:237:56: (info) range check proved
+database.adb:238:7: (info) array bounds check proved
+database.adb:240:63: (info) range check proved
+database.adb:241:37: (info) range check proved
+database.adb:255:10: (info) precondition proved
+database.adb:262:10: (info) array bounds check proved
+database.adb:263:18: (info) array bounds check proved
+database.adb:265:10: (info) array bounds check proved
+database.adb:266:22: (info) precondition proved
+database.adb:279:17: (info) precondition proved
+database.adb:279:39: (info) overflow check proved
+database.adb:284:7: (info) array bounds check proved
+database.adb:285:42: (info) precondition proved
+database.adb:285:9: (info) array bounds check proved
+database.adb:297:27: (info) precondition proved
+database.adb:302:7: (info) array bounds check proved
+database.adb:303:42: (info) precondition proved
+database.adb:303:9: (info) array bounds check proved
 database.adb:32:10: (info) array bounds check proved
-database.adb:38:18: postcondition not proved
-database.adb:40:23: array bounds check not proved
-database.adb:40:52: array bounds check not proved
+database.adb:38:18: (info) postcondition proved
+database.adb:40:23: (info) array bounds check proved
+database.adb:40:52: (info) array bounds check proved
 database.adb:46:18: postcondition not proved
 database.adb:48:23: (info) array bounds check proved
-database.adb:48:52: array bounds check not proved
-database.ads:101:27: (info) precondition proved
-database.ads:102:14: (info) precondition proved
-database.ads:102:32: (info) postcondition proved
-database.ads:102:34: (info) precondition proved
-database.ads:102:56: (info) precondition proved
-database.ads:45:42: (info) precondition proved
-database.ads:45:66: postcondition not proved
-database.ads:64:42: (info) precondition proved
-database.ads:83:14: (info) precondition proved
-database.ads:83:38: (info) overflow check proved
-database.ads:84:14: (info) precondition proved
-database.ads:84:32: (info) postcondition proved
-database.ads:84:34: (info) precondition proved
-database.ads:84:56: (info) precondition proved
-money.adb:4:35: (info) overflow check proved
-money.adb:4:35: (info) range check proved
-money.adb:7:35: (info) overflow check proved
-money.adb:7:35: (info) range check proved
-money.ads:28:50: (info) overflow check proved
-money.ads:29:25: (info) postcondition proved
-money.ads:29:55: (info) overflow check proved
-money.ads:29:55: (info) range check proved
-money.ads:34:25: (info) postcondition proved
-money.ads:34:55: (info) overflow check proved
-money.ads:34:55: (info) range check proved
+database.adb:48:52: (info) array bounds check proved
+database.ads:111:25: (info) precondition proved
+database.ads:112:14: (info) precondition proved
+database.ads:112:32: (info) postcondition proved
+database.ads:112:34: (info) precondition proved
+database.ads:112:56: (info) precondition proved
+database.ads:53:30: postcondition not proved
+database.ads:53:41: (info) precondition proved
+database.ads:74:41: (info) precondition proved
+database.ads:93:14: (info) precondition proved
+database.ads:93:36: (info) overflow check proved
+database.ads:94:14: (info) precondition proved
+database.ads:94:32: (info) postcondition proved
+database.ads:94:34: (info) precondition proved
+database.ads:94:56: (info) precondition proved
+money.adb:4:33: (info) overflow check proved
+money.adb:4:33: (info) range check proved
+money.adb:7:33: (info) overflow check proved
+money.adb:7:33: (info) range check proved
+money.ads:30:48: (info) overflow check proved
+money.ads:31:25: (info) postcondition proved
+money.ads:31:53: (info) overflow check proved
+money.ads:31:53: (info) range check proved
+money.ads:36:25: (info) postcondition proved
+money.ads:36:53: (info) overflow check proved
+money.ads:36:53: (info) range check proved

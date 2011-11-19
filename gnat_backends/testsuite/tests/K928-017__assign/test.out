@@ -9,6 +9,6 @@ p.ads:11:16: (info) array bounds check proved
 p.ads:12:16: (info) array bounds check proved
 p.ads:12:27: (info) array bounds check proved
 p.ads:13:16: (info) array bounds check proved
-p.ads:13:24: postcondition not proved
+p.ads:13:24: (info) postcondition proved
 p.ads:13:27: (info) array bounds check proved
 p.ads:16:16: (info) array bounds check proved
