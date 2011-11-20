@@ -18,4 +18,4 @@ queen.ads:32:55: (info) array bounds check proved
 queen.ads:33:42: (info) overflow check proved
 queen.ads:33:63: (info) range check proved
 queen.ads:9:10: (info) array bounds check proved
-queen.ads:9:20: (info) array bounds check prove
+queen.ads:9:20: (info) array bounds check proved
