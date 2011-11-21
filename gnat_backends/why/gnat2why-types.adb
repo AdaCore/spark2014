@@ -239,42 +239,7 @@ package body Gnat2Why.Types is
                end if;
 
                if Is_Constrained (Ident_Node) then
-                  declare
-                     Dims      : constant Pos :=
-                                    Number_Dimensions (Ident_Node);
-                     Low_List  : W_Term_Array :=
-                        (1 .. Integer (Dims) => Why_Empty);
-                     High_List : W_Term_Array :=
-                        (1 .. Integer (Dims) => Why_Empty);
-                     Index     : Node_Id := First_Index (Ident_Node);
-                     Count     : Positive := 1;
-                  begin
-                     while Present (Index) loop
-                        declare
-                           Rng  : constant Node_Id := Get_Range (Index);
-                        begin
-                           if Is_Static_Expression (Low_Bound (Rng)) then
-                              Low_List (Count) :=
-                                 New_Integer_Constant
-                                    (Value => Expr_Value (Low_Bound (Rng)));
-                           end if;
-                           if Is_Static_Expression (High_Bound (Rng)) then
-                              High_List (Count) :=
-                                 New_Integer_Constant
-                                    (Value => Expr_Value (High_Bound (Rng)));
-                           end if;
-                           Next_Index (Index);
-                           Count := Count + 1;
-                        end;
-                     end loop;
-                     Declare_Ada_Constrained_Array
-                       (File,
-                        Name_Str,
-                        Full_Name (Component_Type (Ident_Node)),
-                        Low_List,
-                        High_List,
-                        Dims);
-                  end;
+                  Declare_Ada_Constrained_Array (File, Ident_Node);
                else
                   declare
                      use String_Lists;

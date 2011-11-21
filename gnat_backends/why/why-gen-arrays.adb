@@ -23,6 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;              use Atree;
+with Einfo;              use Einfo;
+with Gnat2Why.Expr;      use Gnat2Why.Expr;
+--  ??? because of Get_Range, which should be moved
+
+with Sem_Eval;           use Sem_Eval;
+with Sinfo;              use Sinfo;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -31,7 +38,6 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Types;          use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -48,71 +54,79 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Constrained_Array
      (File       : W_File_Sections;
-      Name       : String;
-      Component  : String;
-      First_List : W_Term_Array;
-      Last_List  : W_Term_Array;
-      Dimension  : Pos)
+      Entity     : Entity_Id)
    is
-      Ar         : constant W_Term_Id :=
-                     New_Term ("a");
+      Name       : constant String := Full_Name (Entity);
+      Component  : constant String := Full_Name (Component_Type (Entity));
+      Dimension  : constant Pos := Number_Dimensions (Entity);
+      Ar         : constant W_Term_Id := New_Term ("a");
       Ar_Binder  : constant Binder_Type :=
                      (B_Name => New_Identifier ("a"),
                       B_Type =>
                         New_Abstract_Type
                           (Name => (New_Identifier (Name))),
                       others => <>);
+      Index      : Node_Id := First_Index (Entity);
+      Count      : Positive := 1;
    begin
       Declare_Ada_Unconstrained_Array
          (File, Name, Component, String_Lists.Empty_List, Dimension);
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
-      for Index in First_List'Range loop
-         if First_List (Index) /= Why_Empty then
-            Emit
-              (File (W_File_Axiom),
-               New_Guarded_Axiom
-                 (Name =>
-                    Array_First_Static.Id (Add_Int_Suffix (Name, Index)),
-                  Binders => (1 => Ar_Binder),
-                  Def =>
-                    New_Relation
-                      (Op      => EW_Eq,
-                       Op_Type => EW_Int,
-                       Left    =>
-                         +New_Array_Attr
-                           (Attribute_First,
-                            Name,
-                            +Ar,
-                            EW_Term,
-                            Dimension,
-                            UI_From_Int (Int (Index))),
-                       Right   => +First_List (Index))));
-         end if;
-      end loop;
-      for Index in Last_List'Range loop
-         if Last_List (Index) /= Why_Empty then
-            Emit
-              (File (W_File_Axiom),
-               New_Guarded_Axiom
-                 (Name =>
-                    Array_Last_Static.Id (Add_Int_Suffix (Name, Index)),
-                  Binders => (1 => Ar_Binder),
-                  Def =>
-                    New_Relation
-                      (Op      => EW_Eq,
-                       Op_Type => EW_Int,
-                       Left    =>
-                         +New_Array_Attr
-                           (Attribute_Last,
-                            Name,
-                            +Ar,
-                            EW_Term,
-                            Dimension,
-                            UI_From_Int (Int (Index))),
-                       Right   => +Last_List (Index))));
-         end if;
+      while Present (Index) loop
+         declare
+            Rng  : constant Node_Id := Get_Range (Index);
+            Low  : constant Node_Id := Low_Bound (Rng);
+            High : constant Node_Id := High_Bound (Rng);
+         begin
+            if Is_Static_Expression (Low) then
+               Emit
+                 (File (W_File_Axiom),
+                  New_Guarded_Axiom
+                    (Name =>
+                       Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
+                     Binders => (1 => Ar_Binder),
+                     Def =>
+                       New_Relation
+                         (Op      => EW_Eq,
+                          Op_Type => EW_Int,
+                          Left    =>
+                            +New_Array_Attr
+                              (Attribute_First,
+                               Name,
+                               +Ar,
+                               EW_Term,
+                               Dimension,
+                               UI_From_Int (Int (Count))),
+                          Right   => New_Integer_Constant
+                                       (Value => Expr_Value (Low)))));
+            end if;
+            if Is_Static_Expression (High) then
+               Emit
+                 (File (W_File_Axiom),
+                  New_Guarded_Axiom
+                    (Name =>
+                       Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
+                     Binders => (1 => Ar_Binder),
+                     Def =>
+                       New_Relation
+                         (Op      => EW_Eq,
+                          Op_Type => EW_Int,
+                          Left    =>
+                            +New_Array_Attr
+                              (Attribute_Last,
+                               Name,
+                               +Ar,
+                               EW_Term,
+                               Dimension,
+                               UI_From_Int (Int (Count))),
+                          Right   => New_Integer_Constant
+                                       (Value => Expr_Value (High)))));
+            end if;
+            Next_Index (Index);
+            Count := Count + 1;
+         end;
       end loop;
    end Declare_Ada_Constrained_Array;
 

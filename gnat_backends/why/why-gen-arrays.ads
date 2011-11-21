@@ -42,14 +42,7 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Constrained_Array
      (File       : W_File_Sections;
-      Name       : String;
-      Component  : String;
-      First_List : W_Term_Array;
-      Last_List  : W_Term_Array;
-      Dimension  : Pos)
-      with Pre =>
-         (First_List'Length = Last_List'Length and then
-          Dimension = First_List'Length);
+      Entity     : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
