@@ -231,13 +231,6 @@ package body Gnat2Why.Types is
 
             when Array_Kind =>
 
-               --  ??? A special case that we did not handle before and that
-               --  gets in the way of the current refactoring; ignore for now.
-
-               if Ekind (Ident_Node) = E_String_Literal_Subtype then
-                  return;
-               end if;
-
                Declare_Ada_Array (File, Ident_Node);
 
             when E_Record_Type =>
