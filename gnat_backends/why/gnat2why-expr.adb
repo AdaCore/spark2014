@@ -947,7 +947,7 @@ package body Gnat2Why.Expr is
 
             declare
                Ar      : constant Node_Id := Prefix (N);
-               Dim     : constant Pos := Number_Dimensions (Etype (Ar));
+               Dim     : constant Pos := Number_Dimensions (Type_Of_Node (Ar));
                T_Name  : constant String := Type_Of_Node (Ar);
                Indices : W_Expr_Array :=
                   (1 .. Integer (Dim) => <>);
@@ -969,7 +969,7 @@ package body Gnat2Why.Expr is
                     Type_Name => T_Name,
                     Ar        => Expr,
                     Index     => Indices,
-                    Dimension => Number_Dimensions (Etype (Ar)));
+                    Dimension => Dim);
             end;
 
          when others =>
@@ -1709,7 +1709,7 @@ package body Gnat2Why.Expr is
                           Full_Name (Etype (Var)),
                           Transform_Expr (Var, Domain, Ref_Allowed),
                           Domain,
-                          Number_Dimensions (Etype (Var)),
+                          Number_Dimensions (Type_Of_Node (Var)),
                           (if Present (Expressions (Expr)) then
                              Expr_Value (First (Expressions (Expr)))
                            else Uint_1));
@@ -2094,8 +2094,8 @@ package body Gnat2Why.Expr is
                                  Domain   => Subdomain,
                                  Name     =>
                                    Array_Equal_Name.Id
-                                     (New_Ada_Array_Name
-                                          (Number_Dimensions (Etype (Left)))),
+                                    (New_Ada_Array_Name
+                                    (Number_Dimensions (Type_Of_Node (Left)))),
                                  Args     =>
                                    (1 => Left_Arg,
                                     2 => Right_Arg));
