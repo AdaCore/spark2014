@@ -238,25 +238,12 @@ package body Gnat2Why.Types is
                   return;
                end if;
 
+               --  ??? move this test into Why.Gen.Arrays.
+
                if Is_Constrained (Ident_Node) then
                   Declare_Ada_Constrained_Array (File, Ident_Node);
                else
-                  declare
-                     use String_Lists;
-                     Index_List : List := Empty_List;
-                     Index     : Node_Id := First_Index (Ident_Node);
-                  begin
-                     while Present (Index) loop
-                        Index_List.Append (Full_Name (Etype (Index)));
-                        Next_Index (Index);
-                     end loop;
-                     Declare_Ada_Unconstrained_Array
-                       (File,
-                        Name_Str,
-                        Full_Name (Component_Type (Ident_Node)),
-                        Index_List,
-                        Number_Dimensions (Ident_Node));
-                  end;
+                  Declare_Ada_Unconstrained_Array (File, Ident_Node);
                end if;
 
             when E_Record_Type =>

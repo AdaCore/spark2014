@@ -23,13 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Snames;       use Snames;
-with String_Utils; use String_Utils;
-with Types;        use Types;
-with Uintp;        use Uintp;
-with Why.Ids;      use Why.Ids;
-with Why.Inter;    use Why.Inter;
-with Why.Sinfo;    use Why.Sinfo;
+with Snames;    use Snames;
+with Types;     use Types;
+with Uintp;     use Uintp;
+with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
+with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -49,10 +48,7 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (File       : W_File_Sections;
-      Name       : String;
-      Component  : String;
-      Index_List : String_Lists.List;
-      Dimension  : Pos);
+      Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component

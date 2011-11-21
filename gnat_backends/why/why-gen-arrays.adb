@@ -30,6 +30,8 @@ with Gnat2Why.Expr;      use Gnat2Why.Expr;
 
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
+with Stand;              use Stand;
+with String_Utils;       use String_Utils;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -57,7 +59,6 @@ package body Why.Gen.Arrays is
       Entity     : Entity_Id)
    is
       Name       : constant String := Full_Name (Entity);
-      Component  : constant String := Full_Name (Component_Type (Entity));
       Dimension  : constant Pos := Number_Dimensions (Entity);
       Ar         : constant W_Term_Id := New_Term ("a");
       Ar_Binder  : constant Binder_Type :=
@@ -69,8 +70,7 @@ package body Why.Gen.Arrays is
       Index      : Node_Id := First_Index (Entity);
       Count      : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array
-         (File, Name, Component, String_Lists.Empty_List, Dimension);
+      Declare_Ada_Unconstrained_Array (File, Entity);
 
       --  State axioms about fixed 'First, 'Last and 'Length
 
@@ -136,11 +136,11 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (File       : W_File_Sections;
-      Name       : String;
-      Component  : String;
-      Index_List : String_Lists.List;
-      Dimension  : Pos)
+      Entity : Entity_Id)
    is
+      Name       : constant String := Full_Name (Entity);
+      Component  : constant String := Full_Name (Component_Type (Entity));
+      Dimension  : constant Pos := Number_Dimensions (Entity);
       Type_Id     : constant W_Identifier_Id := New_Identifier (Name);
       BT_Str      : constant String := New_Ada_Array_Name (Dimension);
       BT_Id       : constant W_Identifier_Id := New_Identifier (BT_Str);
@@ -195,16 +195,24 @@ package body Why.Gen.Arrays is
          Var_Type   => Ar_Type,
          Conversion => Conversion_From.Id (Name, BT_Str));
       declare
-         Arg : Uint := Uint_1;
+         Arg   : Uint := Uint_1;
+         Index : Node_Id := First_Index (Entity);
       begin
-         for Index of Index_List loop
-            Define_In_Range_Axiom
-              (File       => File,
-               Type_Name  => Name,
-               Index_Name => Index,
-               Dimension  => Dimension,
-               Argument   => Arg);
+         while Present (Index) loop
+            declare
+               Index_Entity : constant Entity_Id := Etype (Index);
+            begin
+               if Index_Entity /= Standard_Boolean then
+                  Define_In_Range_Axiom
+                    (File       => File,
+                     Type_Name  => Name,
+                     Index_Name => Full_Name (Index_Entity),
+                     Dimension  => Dimension,
+                     Argument   => Arg);
+               end if;
+            end;
             Arg := Arg + Uint_1;
+            Next_Index (Index);
          end loop;
       end;
    end Declare_Ada_Unconstrained_Array;
