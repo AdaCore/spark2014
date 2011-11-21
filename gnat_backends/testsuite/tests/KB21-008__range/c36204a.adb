@@ -1,0 +1,7 @@
+PROCEDURE C36204A IS
+    A1 : ARRAY (BOOLEAN,
+                INTEGER RANGE 1..(10))
+         OF STRING(5..7);
+BEGIN
+   null;
+END C36204A;
