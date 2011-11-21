@@ -39,7 +39,7 @@ package Why.Gen.Arrays is
 
    --  We are limited to constrained arrays with static bounds for now.
 
-   procedure Declare_Ada_Constrained_Array
+   procedure Declare_Ada_Array
      (File       : W_File_Sections;
       Entity     : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration

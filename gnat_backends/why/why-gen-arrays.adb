@@ -50,11 +50,11 @@ package body Why.Gen.Arrays is
       Dimension  : Pos;
       Argument   : Uint);
 
-   -----------------------------------
-   -- Declare_Ada_Constrained_Array --
-   -----------------------------------
+   -----------------------
+   -- Declare_Ada_Array --
+   -----------------------
 
-   procedure Declare_Ada_Constrained_Array
+   procedure Declare_Ada_Array
      (File       : W_File_Sections;
       Entity     : Entity_Id)
    is
@@ -72,63 +72,65 @@ package body Why.Gen.Arrays is
    begin
       Declare_Ada_Unconstrained_Array (File, Entity);
 
-      --  State axioms about fixed 'First, 'Last and 'Length
+      if Is_Constrained (Entity) then
+         --  State axioms about fixed 'First, 'Last and 'Length
 
-      while Present (Index) loop
-         declare
-            Rng  : constant Node_Id := Get_Range (Index);
-            Low  : constant Node_Id := Low_Bound (Rng);
-            High : constant Node_Id := High_Bound (Rng);
-         begin
-            if Is_Static_Expression (Low) then
-               Emit
-                 (File (W_File_Axiom),
-                  New_Guarded_Axiom
-                    (Name =>
-                       Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
-                     Binders => (1 => Ar_Binder),
-                     Def =>
-                       New_Relation
-                         (Op      => EW_Eq,
-                          Op_Type => EW_Int,
-                          Left    =>
-                            +New_Array_Attr
-                              (Attribute_First,
-                               Name,
-                               +Ar,
-                               EW_Term,
-                               Dimension,
-                               UI_From_Int (Int (Count))),
-                          Right   => New_Integer_Constant
-                                       (Value => Expr_Value (Low)))));
-            end if;
-            if Is_Static_Expression (High) then
-               Emit
-                 (File (W_File_Axiom),
-                  New_Guarded_Axiom
-                    (Name =>
-                       Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
-                     Binders => (1 => Ar_Binder),
-                     Def =>
-                       New_Relation
-                         (Op      => EW_Eq,
-                          Op_Type => EW_Int,
-                          Left    =>
-                            +New_Array_Attr
-                              (Attribute_Last,
-                               Name,
-                               +Ar,
-                               EW_Term,
-                               Dimension,
-                               UI_From_Int (Int (Count))),
-                          Right   => New_Integer_Constant
-                                       (Value => Expr_Value (High)))));
-            end if;
-            Next_Index (Index);
-            Count := Count + 1;
-         end;
-      end loop;
-   end Declare_Ada_Constrained_Array;
+         while Present (Index) loop
+            declare
+               Rng  : constant Node_Id := Get_Range (Index);
+               Low  : constant Node_Id := Low_Bound (Rng);
+               High : constant Node_Id := High_Bound (Rng);
+            begin
+               if Is_Static_Expression (Low) then
+                  Emit
+                    (File (W_File_Axiom),
+                     New_Guarded_Axiom
+                       (Name =>
+                          Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
+                        Binders => (1 => Ar_Binder),
+                        Def =>
+                          New_Relation
+                            (Op      => EW_Eq,
+                             Op_Type => EW_Int,
+                             Left    =>
+                               +New_Array_Attr
+                                 (Attribute_First,
+                                  Name,
+                                  +Ar,
+                                  EW_Term,
+                                  Dimension,
+                                  UI_From_Int (Int (Count))),
+                             Right   => New_Integer_Constant
+                                          (Value => Expr_Value (Low)))));
+               end if;
+               if Is_Static_Expression (High) then
+                  Emit
+                    (File (W_File_Axiom),
+                     New_Guarded_Axiom
+                       (Name =>
+                          Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
+                        Binders => (1 => Ar_Binder),
+                        Def =>
+                          New_Relation
+                            (Op      => EW_Eq,
+                             Op_Type => EW_Int,
+                             Left    =>
+                               +New_Array_Attr
+                                 (Attribute_Last,
+                                  Name,
+                                  +Ar,
+                                  EW_Term,
+                                  Dimension,
+                                  UI_From_Int (Int (Count))),
+                             Right   => New_Integer_Constant
+                                          (Value => Expr_Value (High)))));
+               end if;
+               Next_Index (Index);
+               Count := Count + 1;
+            end;
+         end loop;
+      end if;
+   end Declare_Ada_Array;
 
    -------------------------------------
    -- Declare_Ada_Unconstrained_Array --
@@ -194,27 +196,29 @@ package body Why.Gen.Arrays is
          Axiom_Name => Unicity_Axiom.Id (Name),
          Var_Type   => Ar_Type,
          Conversion => Conversion_From.Id (Name, BT_Str));
-      declare
-         Arg   : Uint := Uint_1;
-         Index : Node_Id := First_Index (Entity);
-      begin
-         while Present (Index) loop
-            declare
-               Index_Entity : constant Entity_Id := Etype (Index);
-            begin
-               if Index_Entity /= Standard_Boolean then
-                  Define_In_Range_Axiom
-                    (File       => File,
-                     Type_Name  => Name,
-                     Index_Name => Full_Name (Index_Entity),
-                     Dimension  => Dimension,
-                     Argument   => Arg);
-               end if;
-            end;
-            Arg := Arg + Uint_1;
-            Next_Index (Index);
-         end loop;
-      end;
+      if not (Is_Constrained (Entity)) then
+         declare
+            Arg   : Uint := Uint_1;
+            Index : Node_Id := First_Index (Entity);
+         begin
+            while Present (Index) loop
+               declare
+                  Index_Entity : constant Entity_Id := Etype (Index);
+               begin
+                  if Index_Entity /= Standard_Boolean then
+                     Define_In_Range_Axiom
+                       (File       => File,
+                        Type_Name  => Name,
+                        Index_Name => Full_Name (Index_Entity),
+                        Dimension  => Dimension,
+                        Argument   => Arg);
+                  end if;
+               end;
+               Arg := Arg + Uint_1;
+               Next_Index (Index);
+            end loop;
+         end;
+      end if;
    end Declare_Ada_Unconstrained_Array;
 
    ---------------------------
