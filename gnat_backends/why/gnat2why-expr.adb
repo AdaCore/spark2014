@@ -1451,10 +1451,7 @@ package body Gnat2Why.Expr is
                return Transform_Rec_Aggregate (Dim + 1, Expr);
             else
                declare
-                  Exp_Type  : constant Node_Id :=
-                                (if Number_Dimensions (Typ) = 1 then
-                                   Component_Type (Typ)
-                                 else Etype (Expr));
+                  Exp_Type  : constant Node_Id := Component_Type (Typ);
                   Elmt_Type : constant W_Base_Type_Id :=
                                 +Why_Logic_Type_Of_Ada_Type (Exp_Type);
                   Value     : constant W_Expr_Id :=
