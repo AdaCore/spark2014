@@ -1,0 +1,351 @@
+module Main
+  use import int.Int
+  use import module ref.Ref
+  
+  type cursor
+  
+  type list
+  
+  type element_t
+  
+  function no_element  : cursor
+  
+  function empty_  : list
+  
+  function length_ list : int
+  
+  axiom Length_gte_zero:
+    (forall co:list [(length_ co : int)]. (Int.(>=) (length_ co : int) 0))
+  
+  function position_ list cursor : int
+  
+  axiom Position_gte_zero:
+    (forall co:list.
+      (forall cu:cursor.
+        (length_ co) >= (position_ co cu) /\
+         (position_ co cu) >= 0))
+  
+  axiom Position_no_element:
+    (forall co:list. ((position_ co (no_element  : cursor) : int) = 0))
+  
+  axiom Position_eq:
+    (forall co:list.
+      (forall cu1:cursor.
+        (forall cu2:cursor.
+          ((Int.(>) (position_ co cu1 : int) 0) ->
+           (((position_ co cu1 : int) = (position_ co cu2 : int)) ->
+            (cu1 = cu2))))))
+  
+  predicate is_empty_ (co : list) =
+    ((forall cu:cursor. ((position_ co cu : int) = 0)) /\
+     ((length_ co : int) = 0))
+  
+  axiom Empty_is_empty: (is_empty_ (empty_  : list))
+  
+  function previous_ list cursor : cursor
+  
+  axiom Previous_previous:
+    ((forall co:list.
+       (forall cu:cursor [(position_ co (previous_ co cu : cursor) : int)|
+         (previous_ co cu : cursor), (position_ co cu : int)].
+         ((Int.(>) (position_ co cu : int) 1) ->
+          ((position_ co (previous_ co cu : cursor) : int) = (Int.(-) (position_ co cu : int) 1 : int))))) /\
+     (forall co:list.
+       (forall cu:cursor [(previous_ co cu : cursor)].
+         ((((position_ co cu : int) = 1) \/ (cu = (no_element  : cursor))) ->
+          ((previous_ co cu : cursor) = (no_element  : cursor))))))
+  
+  predicate next__ (co : list) (cu1 : cursor) (cu2 : cursor) =
+    ((((Int.(>) (length_ co : int) (position_ co cu1 : int)) /\
+       (Int.(>) (position_ co cu1 : int) 0)) ->
+      ((position_ co cu2 : int) = (Int.(+) (position_ co cu1 : int) 1 : int))) /\
+     ((((Int.(>) (length_ co : int) 0) /\
+        ((position_ co cu1 : int) = (length_ co : int))) \/
+       (cu1 = (no_element  : cursor))) ->
+      (cu2 = (no_element  : cursor))))
+  
+  function next_ list cursor : cursor
+  
+  axiom Next_next:
+    (forall co:list.
+      (forall cu:cursor [(next_ co cu : cursor)].
+        (next__ co cu (next_ co cu : cursor))))
+  
+  predicate last__ (co : list) (cu : cursor) =
+    (((not (is_empty_ co)) -> ((position_ co cu : int) = (length_ co : int))) /\
+     ((is_empty_ co) -> (cu = (no_element  : cursor))))
+  
+  function last_ list : cursor
+  
+  axiom Last_last:
+    (forall co:list [(last_ co : cursor)]. (last__ co (last_ co : cursor)))
+  
+  predicate first__ (co : list) (cu : cursor) =
+    (((not (is_empty_ co)) -> ((position_ co cu : int) = 1)) /\
+     ((is_empty_ co) -> (cu = (no_element  : cursor))))
+  
+  function first_ list : cursor
+  
+  axiom First_first:
+    (forall co:list [(first_ co : cursor)].
+      (first__ co (first_ co : cursor)))
+  
+  function element_ list cursor : element_t
+  
+  predicate left_pos (co : list) (i : int) (col : list) =
+    ((forall cu:cursor.
+       ((Int.(<=) i (position_ co cu : int)) ->
+        ((position_ col cu : int) = 0))) /\
+     ((forall cu:cursor.
+        ((Int.(>) i (position_ co cu : int)) ->
+         ((position_ col cu : int) = (position_ co cu : int)))) /\
+      ((forall cu:cursor.
+         ((Int.(>) i (position_ co cu : int)) ->
+          ((element_ col cu : element_t) = (element_ co cu : element_t)))) /\
+       (forall cu:cursor.
+         ((Int.(>) (position_ col cu : int) 0) ->
+          ((position_ co cu : int) = (position_ col cu : int)))))))
+  
+  predicate left__ (co : list) (cu : cursor) (col : list) =
+    (((cu = (no_element  : cursor)) -> (col = co)) /\
+     ((Int.(>) (position_ co cu : int) 0) ->
+      (((length_ col : int) = (Int.(-) (position_ co cu : int) 1 : int)) /\
+       (left_pos co (position_ co cu : int) col))))
+  
+  function left_ list cursor : list
+  
+  axiom Left_left:
+    (forall co:list.
+      (forall cu:cursor [(left_ co cu : list)].
+        (left__ co cu (left_ co cu : list))))
+  
+  predicate right_pos (co : list) (i : int) (cor : list) =
+    ((forall cu:cursor.
+       ((Int.(>) i (position_ co cu : int)) -> ((position_ cor cu : int) = 0))) /\
+     ((forall cu:cursor.
+        (((Int.(<=) i (position_ co cu : int)) ->
+          ((position_ cor cu : int) = (Int.(+) (Int.(-) (position_ co cu : int) i : int) 1 : int))) /\
+         ((Int.(>) (position_ cor cu : int) 0) ->
+          ((position_ co cu : int) = (Int.(-) (Int.(+) (position_ cor cu : int) i : int) 1 : int))))) /\
+      (forall cu:cursor.
+        ((Int.(<=) i (position_ co cu : int)) ->
+         ((element_ cor cu : element_t) = (element_ co cu : element_t))))))
+  
+  predicate right__ (co : list) (cu : cursor) (cor : list) =
+    (((cu = (no_element  : cursor)) -> (cor = (empty_  : list))) /\
+     (((Int.(>) (position_ co cu : int) 0) ->
+       (((length_ cor : int) = (Int.(+) (Int.(-) (length_ co : int) (position_ co cu : int) : int) 1 : int)) /\
+        (right_pos co (position_ co cu : int) cor))) /\
+      (forall cun:cursor.
+        ((Int.(>) (position_ cor cun : int) 0) ->
+         (Int.(>) (position_ co cun : int) 0)))))
+  
+  function right_ list cursor : list
+  
+  axiom Right_right:
+    (forall co:list.
+      (forall cu:cursor [(right_ co cu : list)].
+        (right__ co cu (right_ co cu : list))))
+  
+  function find_first list element_t : cursor
+  
+  predicate find__ (co : list) (e : element_t) (cu : cursor) =
+    (((cu = (no_element  : cursor)) /\
+      (forall cun:cursor.
+        ((Int.(>) (position_ co cun : int) 0) ->
+         ((element_ co cun : element_t) <> e)))) \/
+     ((Int.(>) (position_ co cu : int) 0) /\
+      (((element_ co cu : element_t) = e) /\
+       (forall cun:cursor.
+         (((Int.(>) (position_ co cu : int) (position_ co cun : int)) /\
+           (Int.(>) (position_ co cun : int) 0)) ->
+          (not ((element_ co cun : element_t) = e)))))))
+  
+  axiom Find_find_val:
+    (forall co:list, e:element_t [find_first co e]. (find__ co e (find_first co e : cursor)))
+  
+  function find_ (l : list) (e : element_t) (cu : cursor) : cursor =
+    (find_first (right_ l cu : list) e : cursor)
+  
+  predicate equal_ (co1 : list) (co2 : list) =
+    ((forall cu:cursor.
+       ((position_ co1 cu : int) = (position_ co2 cu : int))) /\
+     (forall cu:cursor.
+       ((Int.(>) (position_ co1 cu : int) 0) ->
+        ((element_ co1 cu : element_t) = (element_ co2 cu : element_t)))))
+  
+  predicate replace_element_ (co1 : list) (cu : cursor) (e : element_t) (co2 : list) =
+    ((Int.(>) (position_ co1 cu : int) 0) /\
+     (((length_ co1 : int) = (length_ co2 : int)) /\
+      (((element_ co2 cu : element_t) = e) /\
+       ((forall cun:cursor [position_ co2 cun, position_ co1 cun].
+          ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
+        (forall cun:cursor [element_ co2 cun | element_ co1 cun].
+          (((cu <> cun) /\ (Int.(>) (position_ co1 cun : int) 0)) ->
+           ((element_ co2 cun : element_t) = (element_ co1 cun : element_t))))))))
+  
+  predicate insert_pos (co1 : list) (i : int) (co2 : list) =
+    ((forall cun:cursor [(position_ co2 cun : int),
+       (position_ co1 cun : int)].
+       ((((Int.(>) i (position_ co1 cun : int)) /\
+          (Int.(>) (position_ co1 cun : int) 0)) ->
+         ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
+        ((Int.(<=) i (position_ co1 cun : int)) ->
+         ((position_ co2 cun : int) = (Int.(+) (position_ co1 cun : int) 1 : int))))) /\
+     (forall cun:cursor [element_ co1 cun | element_ co2 cun].
+       ((Int.(>) (position_ co1 cun : int) 0) ->
+        ((element_ co1 cun : element_t) = (element_ co2 cun : element_t)))))
+  
+  predicate insert_inv (co1 : list) (i : int) (e : element_t) (co2 : list) =
+    ((forall cun:cursor [element_ co2 cun].
+       (((position_ co2 cun : int) = i) ->
+        ((element_ co2 cun : element_t) = e))) /\
+     ((forall cun:cursor [element_ co1 cun | element_ co2 cun].
+        ((((Int.(>) i (position_ co2 cun : int)) /\
+           (Int.(>) (position_ co2 cun : int) 0)) ->
+          ((element_ co1 cun : element_t) = (element_ co2 cun : element_t))) /\
+         ((Int.(>) (position_ co2 cun : int) i) ->
+          ((element_ co1 cun : element_t) = (element_ co2 cun : element_t))))) /\
+      (forall cun:cursor [(position_ co2 cun : int),
+        (position_ co1 cun : int)].
+        ((((position_ co2 cun : int) = i) -> ((position_ co1 cun : int) = 0)) /\
+         ((((Int.(>) i (position_ co2 cun : int)) /\
+            (Int.(>) (position_ co2 cun : int) 0)) ->
+           ((position_ co1 cun : int) = (position_ co2 cun : int))) /\
+          ((Int.(>) (position_ co2 cun : int) i) ->
+           ((position_ co1 cun : int) = (Int.(-) (position_ co2 cun : int) 1 : int))))))))
+  
+  predicate insert_ (co1 : list) (cu : cursor) (e : element_t) (co2 : list) =
+    (((cu = (no_element  : cursor)) \/ (Int.(>) (position_ co1 cu : int) 0)) /\
+     (((length_ co2 : int) = (Int.(+) (length_ co1 : int) 1 : int)) /\
+      (((cu = (no_element  : cursor)) /\
+        ((insert_pos co1 (Int.(+) (length_ co1 : int) 1 : int) co2) /\
+         (insert_inv co1 (Int.(+) (length_ co1 : int) 1 : int) e co2))) \/
+       ((Int.(>) (position_ co1 cu : int) 0) /\
+        ((insert_pos co1 (position_ co1 cu : int) co2) /\
+         (insert_inv co1 (position_ co1 cu : int) e co2))))))
+  
+  predicate delete_pos (co1 : list) (i : int) (co2 : list) =
+    ((forall cun:cursor [(position_ co2 cun : int),
+       (position_ co1 cun : int)].
+       ((((position_ co1 cun : int) = i) -> ((position_ co2 cun : int) = 0)) /\
+        (((Int.(>) (position_ co1 cun : int) i) ->
+          ((position_ co2 cun : int) = (Int.(-) (position_ co1 cun : int) 1 : int))) /\
+         ((Int.(>) i (position_ co1 cun : int)) ->
+          ((position_ co2 cun : int) = (position_ co1 cun : int)))))) /\
+     (forall cun:cursor [(element_ co2 cun : element_t)|
+       (element_ co1 cun : element_t)].
+       (((Int.(>) (position_ co1 cun : int) i) ->
+         ((element_ co2 cun : element_t) = (element_ co1 cun : element_t))) /\
+        ((Int.(>) i (position_ co1 cun : int)) ->
+         ((element_ co2 cun : element_t) = (element_ co1 cun : element_t))))))
+  
+  predicate delete_inv (co1 : list) (i : int) (co2 : list) =
+    ((forall cun:cursor [(element_ co2 cun : element_t)|
+       (element_ co1 cun : element_t)].
+       (((Int.(<=) i (position_ co2 cun : int)) ->
+         ((element_ co1 cun : element_t) = (element_ co2 cun : element_t))) /\
+        (((Int.(>) i (position_ co2 cun : int)) /\
+          (Int.(>) (position_ co2 cun : int) 0)) ->
+         ((element_ co2 cun : element_t) = (element_ co1 cun : element_t))))) /\
+     (forall cun:cursor [(position_ co2 cun : int),
+       (position_ co1 cun : int)].
+       ((((Int.(>) i (position_ co2 cun : int)) /\
+          (Int.(>) (position_ co2 cun : int) 0)) ->
+         ((position_ co1 cun : int) = (position_ co2 cun : int))) /\
+        ((Int.(<=) i (position_ co2 cun : int)) ->
+         ((position_ co1 cun : int) = (Int.(+) (position_ co2 cun : int) 1 : int))))))
+  
+  predicate delete_ (co1 : list) (cu : cursor) (co2 : list) =
+    ((Int.(>) (position_ co1 cu : int) 0) /\
+     (((length_ co2 : int) = (Int.(-) (length_ co1 : int) 1 : int)) /\
+      ((delete_pos co1 (position_ co1 cu : int) co2) /\
+       (delete_inv co1 (position_ co1 cu : int) co2))))
+  
+  predicate has_element_ (co : list) (cu : cursor) =
+    (Int.(>) (position_ co cu : int) 0)
+  
+  predicate contains_ (co : list) (e : element_t) =
+    (Int.(>) (position_ co (find_first co e : cursor) : int) 0)
+
+val element :
+	  co:list -> cu:cursor ->
+	  { has_element_ co cu }
+	  element_t
+	  { result = element_ co cu }
+
+val replace_element :
+	  co:ref list -> cu:cursor -> e:element_t ->
+	  { has_element_ !co cu }
+	  unit writes co
+	  { replace_element_ (old !co) cu e !co }
+
+val insert :
+	  co:ref list -> cu:cursor -> e:element_t ->
+	  { has_element_ !co cu \/ cu = no_element }
+	  unit reads co writes co
+	  { insert_ (old !co) cu e !co }
+
+val prepend :
+	  co:ref list -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_ (old !co) (first_ (old !co)) e !co }
+
+val append :
+	  co:ref list -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_ (old !co) no_element e !co }
+
+val delete :
+	  co:ref list -> cu:cursor ->
+	  { has_element_ !co cu }
+	  unit reads co writes co
+	  { delete_ (old !co) cu !co }
+
+val previous :
+	  co:list -> cu:cursor ->
+	  { cu = no_element \/ has_element_ co cu }
+	  cursor
+	  { result = previous_ co cu }
+
+val next :
+	  co:list -> cu:cursor ->
+	  { cu = no_element \/ has_element_ co cu }
+	  cursor 
+	  { result = next_ co cu }
+
+val first :
+	  co:list ->
+	  { }
+	  cursor
+	  { result = first_ co }
+
+val last :
+	  co:list ->
+	  { }
+	  cursor
+	  { result = last_ co }
+
+val has_element :
+	  co:list -> cu:cursor ->
+	  { }
+	  bool
+	  { (result = True /\ has_element_ co cu) \/ (result = False /\ position_ co cu = 0) }
+
+val length :
+	  co:list ->
+	  { }
+	  int
+	  { result = length_ co }
+
+val contains :
+          l : list -> e : element_t ->
+          { }
+          bool
+          { (result = True /\ contains_ l e) \/ (result = False /\ find_first l e = no_element) }
+  
+  
+end
+
