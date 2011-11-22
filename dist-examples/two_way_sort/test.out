@@ -1,17 +1,17 @@
-p1.adb:10:14: (info) validity of subtype declaration proved
-p1.adb:11:31: (info) array bounds check proved
-p1.adb:13:15: (info) array bounds check proved
-p1.adb:13:7: (info) array bounds check proved
-p1.adb:14:7: (info) array bounds check proved
-p1.adb:17:14: (info) validity of subtype declaration proved
+p1.adb:10:14: (info) range check proved
+p1.adb:11:31: (info) index check proved
+p1.adb:13:15: (info) index check proved
+p1.adb:13:7: (info) index check proved
+p1.adb:14:7: (info) index check proved
+p1.adb:17:14: (info) range check proved
 p1.adb:25:13: (info) range check proved
 p1.adb:26:13: (info) range check proved
 p1.adb:28:10: (info) loop invariant initialization proved
 p1.adb:28:10: loop invariant preservation not proved
-p1.adb:34:17: (info) array bounds check proved
+p1.adb:34:17: (info) index check proved
 p1.adb:35:19: (info) overflow check proved
 p1.adb:35:19: range check not proved
-p1.adb:36:16: (info) array bounds check proved
+p1.adb:36:16: (info) index check proved
 p1.adb:37:19: (info) overflow check proved
 p1.adb:37:19: range check not proved
 p1.adb:39:13: (info) precondition proved
@@ -19,14 +19,14 @@ p1.adb:40:19: (info) overflow check proved
 p1.adb:40:19: (info) range check proved
 p1.adb:41:19: (info) overflow check proved
 p1.adb:41:19: (info) range check proved
-p1.adb:5:14: (info) array bounds check proved
-p1.adb:5:21: (info) array bounds check proved
-p1.adb:6:25: (info) array bounds check proved
-p1.adb:6:32: (info) array bounds check proved
+p1.adb:5:14: (info) index check proved
+p1.adb:5:21: (info) index check proved
+p1.adb:6:25: (info) index check proved
+p1.adb:6:32: (info) index check proved
 p1.adb:7:26: (info) postcondition proved
-p1.adb:8:55: (info) array bounds check proved
-p1.adb:8:63: (info) array bounds check proved
+p1.adb:8:55: (info) index check proved
+p1.adb:8:63: (info) index check proved
 p1.ads:6:16: postcondition not proved
-p1.ads:7:61: (info) array bounds check proved
+p1.ads:7:61: (info) index check proved
 p1.ads:8:53: overflow check not proved
-p1.ads:8:69: (info) array bounds check proved
+p1.ads:8:69: (info) index check proved
