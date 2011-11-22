@@ -1,1 +1,1 @@
-ALL XFAIL crash on ill-formed Why
+ALL XFAIL crash on ill-formed Why (KB18-036)
