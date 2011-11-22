@@ -43,6 +43,7 @@ GNATLIBDIR=$(GNATPROVEDIR)/stdlib
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
 STDLIB_TMP=stdlib_tmp
+DOC=ug alfa
 
 all: gnat2why gnatprove
 
@@ -54,13 +55,16 @@ install: install-stdlib
 	cp release/share/gnatprove/config/*cgpr $(CONFIGDIR)
 	cp release/share/gnatprove/theories/*why $(THEORIESDIR)
 	cp release/share/gnatprove/theories/*mlw $(THEORIESDIR)
-doc:
-	$(MAKE) -C docs/ug latexpdf
-	$(MAKE) -C docs/ug html
+doc: $(DOC)
+
+$(DOC):
+	$(MAKE) -C docs/$@ latexpdf
+	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
-	cp -p docs/ug/_build/latex/gnatprove_ug.pdf $(DOCDIR)/pdf
-	cp -pr docs/ug/_build/html $(DOCDIR)
-	$(MAKE) -C docs/ug clean
+	mkdir -p $(DOCDIR)/html
+	cp -p docs/$@/_build/latex/*.pdf $(DOCDIR)/pdf
+	cp -pr docs/$@/_build/html $(DOCDIR)/html/$@
+	$(MAKE) -C docs/$@ clean
 
 gnat1why:
 	$(MAKE) -C gnat_backends/why/xgen
@@ -132,3 +136,4 @@ clean:
 	$(MAKE) -C gnat_backends/why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean
+	$(MAKE) -C docs/alfa clean
