@@ -23,23 +23,32 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package VC_Kinds is
-   --  This package defines the different kinds of VCs that we generate in
-   --  Gnat2why.
+--  This package defines the different kinds of VCs that we generate in
+--  Gnat2why. The run-time checks correspond to Ada RM checks, for which the
+--  front-end defines distinct constants in types.ads. Here, we use a new
+--  enumeration instead of these constants, because we are only interested in
+--  run-time errors that can happen in Alfa code (e.g. it excludes
+--  Access_Check), and which GNATprove can detect (it excludes
+--  Storage_Check), plus various assertions that we want to distinguish.
 
-   type VC_Kind is (
-      VC_Unused,
+package VC_Kinds is
+
+   type VC_Kind is
+      --  Run-time checks
+
+     (VC_Unused,
+      VC_Division_Check,
+      VC_Index_Check,
       VC_Overflow_Check,
       VC_Range_Check,
-      VC_Array_Bounds_Check,
-      VC_Division_By_Zero,
+
+      --  Assertions
+
       VC_Precondition,
       VC_Postcondition,
       VC_Loop_Invariant,
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
-      VC_Assert,
-      VC_Subtype_Decl
-   );
+      VC_Assert);
 
 end VC_Kinds;

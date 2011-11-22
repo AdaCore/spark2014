@@ -309,7 +309,7 @@ package body Why.Gen.Arrays is
       return
          +New_Located_Call
             (Ada_Node => Ada_Node,
-             Reason   => VC_Array_Bounds_Check,
+             Reason   => VC_Index_Check,
              Name     => Used_Name,
              Domain   => Domain,
              Progs    => Progs);
@@ -379,7 +379,7 @@ package body Why.Gen.Arrays is
          New_Located_Call
            (Ada_Node => Ada_Node,
             Domain => Domain,
-            Reason => VC_Array_Bounds_Check,
+            Reason => VC_Index_Check,
             Name   => Used_Name,
             Progs   => Args);
    begin

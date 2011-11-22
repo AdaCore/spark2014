@@ -392,7 +392,7 @@ package body Gnat2Why.Expr is
         +New_Located_Expr
           (Ada_Node => N,
            Domain   => EW_Prog,
-           Reason   => VC_Subtype_Decl,
+           Reason   => VC_Range_Check,
            Expr     => +Any_Expr);
    end Assume_of_Scalar_Subtype;
 
@@ -2208,7 +2208,7 @@ package body Gnat2Why.Expr is
                                             Current_Type,
                                             Domain,
                                             Ref_Allowed)),
-                    Reason   => VC_Division_By_Zero);
+                    Reason   => VC_Division_Check);
                Overflow_Check_Needed := True;
             end;
 
@@ -2241,7 +2241,7 @@ package body Gnat2Why.Expr is
                                             Current_Type,
                                             Domain,
                                             Ref_Allowed)),
-                    Reason   => VC_Division_By_Zero);
+                    Reason   => VC_Division_Check);
             end;
 
          when N_Op_Not =>
