@@ -1,7 +1,7 @@
 find.adb:3:24: (info) range check proved
 find.adb:6:10: (info) loop invariant initialization proved
 find.adb:6:10: (info) loop invariant preservation proved
-find.adb:7:13: (info) array bounds check proved
+find.adb:7:13: (info) index check proved
 find.adb:8:20: (info) range check proved
 find.ads:5:11: (info) postcondition proved
-find.ads:5:36: (info) array bounds check proved
+find.ads:5:36: (info) index check proved

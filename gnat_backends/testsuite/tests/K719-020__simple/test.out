@@ -1,21 +1,21 @@
-test.adb:12:15: (info) array bounds check proved
-test.adb:18:14: (info) array bounds check proved
-test.adb:18:20: (info) array bounds check proved
+test.adb:12:15: (info) index check proved
+test.adb:18:14: (info) index check proved
+test.adb:18:20: (info) index check proved
 test.adb:23:14: (info) range check proved
 test.adb:28:18: (info) range check proved
-test.adb:28:8: (info) array bounds check proved
-test.adb:33:13: (info) array bounds check proved
+test.adb:28:8: (info) index check proved
+test.adb:33:13: (info) index check proved
 test.adb:33:23: (info) range check proved
-test.adb:33:7: (info) array bounds check proved
+test.adb:33:7: (info) index check proved
 test.ads:16:31: (info) postcondition proved
-test.ads:19:21: (info) array bounds check proved
+test.ads:19:21: (info) index check proved
 test.ads:20:31: (info) postcondition proved
-test.ads:23:20: (info) array bounds check proved
-test.ads:23:26: (info) array bounds check proved
+test.ads:23:20: (info) index check proved
+test.ads:23:26: (info) index check proved
 test.ads:24:31: (info) postcondition proved
 test.ads:27:25: (info) postcondition proved
-test.ads:30:22: (info) array bounds check proved
+test.ads:30:22: (info) index check proved
 test.ads:30:29: (info) postcondition proved
-test.ads:33:21: (info) array bounds check proved
-test.ads:33:27: (info) array bounds check proved
+test.ads:33:21: (info) index check proved
+test.ads:33:27: (info) index check proved
 test.ads:33:34: (info) postcondition proved

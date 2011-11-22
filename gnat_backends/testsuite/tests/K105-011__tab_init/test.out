@@ -1,11 +1,11 @@
 
 tab_init.adb:10:11: (info) assertion proved
-tab_init.adb:10:26: (info) array bounds check proved
+tab_init.adb:10:26: (info) index check proved
 tab_init.adb:10:32: (info) overflow check proved
 tab_init.adb:7:11: (info) loop invariant initialization proved
 tab_init.adb:7:11: loop invariant preservation not proved
 tab_init.adb:7:53: (info) overflow check proved
-tab_init.adb:8:32: (info) array bounds check proved
+tab_init.adb:8:32: (info) index check proved
 tab_init.adb:8:40: (info) overflow check proved
-tab_init.adb:9:11: (info) array bounds check proved
+tab_init.adb:9:11: (info) index check proved
 tab_init.adb:9:20: overflow check not proved

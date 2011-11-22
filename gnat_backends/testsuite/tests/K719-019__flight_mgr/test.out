@@ -1,10 +1,10 @@
 
 flight_manager.adb:12:12: (info) postcondition proved
 flight_manager.adb:13:24: (info) overflow check proved
-flight_manager.adb:13:46: (info) division by zero proved
+flight_manager.adb:13:46: (info) division check proved
 flight_manager.adb:13:46: (info) overflow check proved
 flight_manager.adb:19:21: overflow check not proved
-flight_manager.adb:19:43: (info) division by zero proved
+flight_manager.adb:19:43: (info) division check proved
 flight_manager.adb:19:43: (info) overflow check proved
 flight_manager.adb:25:28: (info) overflow check proved
 flight_manager.adb:25:28: (info) range check proved

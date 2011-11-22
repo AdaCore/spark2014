@@ -1,10 +1,10 @@
 
 multi.ads:10:15: postcondition not proved
-multi.ads:10:61: (info) array bounds check proved
-multi.ads:10:82: (info) array bounds check proved
-multi.ads:11:90: (info) array bounds check proved
-multi.ads:12:90: (info) array bounds check proved
+multi.ads:10:61: (info) index check proved
+multi.ads:10:82: (info) index check proved
+multi.ads:11:90: (info) index check proved
+multi.ads:12:90: (info) index check proved
 multi.ads:13:126: (info) range check proved
-multi.ads:13:90: (info) array bounds check proved
+multi.ads:13:90: (info) index check proved
 multi.ads:14:131: (info) range check proved
-multi.ads:14:95: (info) array bounds check proved
+multi.ads:14:95: (info) index check proved

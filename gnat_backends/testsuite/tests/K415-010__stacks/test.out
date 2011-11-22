@@ -2,8 +2,8 @@ stacks.adb:11:18: (info) overflow check proved
 stacks.adb:11:18: range check not proved
 stacks.adb:5:18: (info) overflow check proved
 stacks.adb:5:18: range check not proved
-stacks.adb:6:7: (info) array bounds check proved
-stacks.ads:14:69: (info) array bounds check proved
+stacks.adb:6:7: (info) index check proved
+stacks.ads:14:69: (info) index check proved
 stacks.ads:18:31: (info) postcondition proved
 stacks.ads:18:58: (info) overflow check proved
 stacks.ads:22:43: (info) postcondition proved

@@ -1,5 +1,5 @@
-forall.adb:6:14: (info) array bounds check proved
-forall.ads:5:45: division by zero not proved
+forall.adb:6:14: (info) index check proved
+forall.ads:5:45: division check not proved
 forall.ads:5:45: overflow check not proved
-forall.ads:5:46: (info) array bounds check proved
+forall.ads:5:46: (info) index check proved
 forall.ads:6:36: postcondition not proved

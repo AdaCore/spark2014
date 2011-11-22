@@ -1,4 +1,4 @@
 pack.adb:7:22: (info) range check proved
 tctouch.adb:8:22: (info) range check proved
 tctouch.adb:8:22: overflow check not proved
-tctouch.adb:9:5: array bounds check not proved
+tctouch.adb:9:5: index check not proved

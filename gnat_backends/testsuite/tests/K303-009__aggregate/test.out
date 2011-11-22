@@ -3,26 +3,26 @@ arr_aggregate.adb:46:7: (info) precondition proved
 arr_aggregate.adb:51:7: (info) precondition proved
 arr_aggregate.adb:56:7: (info) precondition proved
 arr_aggregate.ads:11:15: (info) postcondition proved
-arr_aggregate.ads:11:40: (info) array bounds check proved
-arr_aggregate.ads:12:66: (info) array bounds check proved
+arr_aggregate.ads:11:40: (info) index check proved
+arr_aggregate.ads:12:66: (info) index check proved
 arr_aggregate.ads:16:15: postcondition not proved
-arr_aggregate.ads:16:35: (info) array bounds check proved
-arr_aggregate.ads:16:53: (info) array bounds check proved
-arr_aggregate.ads:17:61: (info) array bounds check proved
-arr_aggregate.ads:18:61: (info) array bounds check proved
-arr_aggregate.ads:19:35: (info) array bounds check proved
-arr_aggregate.ads:19:51: (info) array bounds check proved
-arr_aggregate.ads:20:40: (info) array bounds check proved
-arr_aggregate.ads:20:58: (info) array bounds check proved
+arr_aggregate.ads:16:35: (info) index check proved
+arr_aggregate.ads:16:53: (info) index check proved
+arr_aggregate.ads:17:61: (info) index check proved
+arr_aggregate.ads:18:61: (info) index check proved
+arr_aggregate.ads:19:35: (info) index check proved
+arr_aggregate.ads:19:51: (info) index check proved
+arr_aggregate.ads:20:40: (info) index check proved
+arr_aggregate.ads:20:58: (info) index check proved
 arr_aggregate.ads:24:15: postcondition not proved
-arr_aggregate.ads:24:62: (info) array bounds check proved
-arr_aggregate.ads:24:84: (info) array bounds check proved
-arr_aggregate.ads:25:87: (info) array bounds check proved
-arr_aggregate.ads:26:87: (info) array bounds check proved
-arr_aggregate.ads:27:62: (info) array bounds check proved
-arr_aggregate.ads:27:82: (info) array bounds check proved
-arr_aggregate.ads:28:67: (info) array bounds check proved
-arr_aggregate.ads:28:89: (info) array bounds check proved
+arr_aggregate.ads:24:62: (info) index check proved
+arr_aggregate.ads:24:84: (info) index check proved
+arr_aggregate.ads:25:87: (info) index check proved
+arr_aggregate.ads:26:87: (info) index check proved
+arr_aggregate.ads:27:62: (info) index check proved
+arr_aggregate.ads:27:82: (info) index check proved
+arr_aggregate.ads:28:67: (info) index check proved
+arr_aggregate.ads:28:89: (info) index check proved
 arr_aggregate.ads:32:15: (info) postcondition proved
 arr_aggregate.ads:37:15: postcondition not proved
 arr_aggregate.ads:45:15: postcondition not proved

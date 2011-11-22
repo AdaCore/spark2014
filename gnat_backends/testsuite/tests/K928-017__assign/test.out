@@ -1,14 +1,14 @@
-p.adb:10:22: (info) array bounds check proved
+p.adb:10:22: (info) index check proved
 p.adb:10:32: (info) overflow check proved
-p.adb:10:8: (info) array bounds check proved
-p.adb:5:18: (info) array bounds check proved
+p.adb:10:8: (info) index check proved
+p.adb:5:18: (info) index check proved
 p.adb:5:27: (info) overflow check proved
-p.adb:5:7: (info) array bounds check proved
-p.ads:10:16: (info) array bounds check proved
-p.ads:11:16: (info) array bounds check proved
-p.ads:12:16: (info) array bounds check proved
-p.ads:12:27: (info) array bounds check proved
-p.ads:13:16: (info) array bounds check proved
+p.adb:5:7: (info) index check proved
+p.ads:10:16: (info) index check proved
+p.ads:11:16: (info) index check proved
+p.ads:12:16: (info) index check proved
+p.ads:12:27: (info) index check proved
+p.ads:13:16: (info) index check proved
 p.ads:13:24: (info) postcondition proved
-p.ads:13:27: (info) array bounds check proved
-p.ads:16:16: (info) array bounds check proved
+p.ads:13:27: (info) index check proved
+p.ads:16:16: (info) index check proved

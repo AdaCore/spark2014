@@ -5,10 +5,10 @@ main.adb:18:15: (info) postcondition proved
 main.adb:21:45: (info) range check proved
 main.adb:35:17: (info) range check proved
 main.adb:38:14: (info) range check proved
-main.adb:44:28: (info) array bounds check proved
-main.adb:45:28: (info) array bounds check proved
-main.adb:46:28: (info) array bounds check proved
-main.adb:49:28: (info) array bounds check proved
+main.adb:44:28: (info) index check proved
+main.adb:45:28: (info) index check proved
+main.adb:46:28: (info) index check proved
+main.adb:49:28: (info) index check proved
 main.adb:53:25: (info) range check proved
 main.adb:58:32: (info) range check proved
 main.adb:58:32: overflow check not proved

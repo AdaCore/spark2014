@@ -5,5 +5,5 @@ p.adb:19:12: (info) range check proved
 p.adb:20:12: (info) range check proved
 p.adb:22:35: (info) loop invariant initialization proved
 p.adb:22:35: (info) loop invariant preservation proved
-p.adb:22:8: (info) validity of subtype declaration proved
+p.adb:22:8: (info) range check proved
 p.adb:23:15: (info) range check proved
