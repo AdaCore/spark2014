@@ -110,6 +110,29 @@ No error will be returned in this case; so this precondition cannot
 raise a run-time error (for more information about the ``check`` mode,
 please consult the section :ref:`completeness of preconditions`).
 
+As the body of ``After_Tax`` is in Alfa, GNATprove can also check that its
+implementation is free from run-time errors and fulfills its contract.
+This is given by the ``prove`` mode::
+
+    gnatprove --mode=prove -P taxes.gpr
+
+Here, it reports that the arithmetic operations may overflow, and that the
+resulting value may be out of bounds::
+
+    after_tax.adb:5:22: overflow check not proved
+    after_tax.adb:5:22: range check not proved
+    after_tax.adb:5:36: overflow check not proved
+    after_tax.adb:5:44: overflow check not proved
+
+It could not prove either that the postcondition holds::
+
+    after_tax.ads:6:29: postcondition not proved
+
+The contract or implementation of ``After_Tax`` should be modified to correct
+these problems (for more information about the ``prove`` mode,
+please consult the sections :ref:`absence of run-time errors` and 
+:ref:`functional verification`).
+
 This concludes our quick tour of GNATprove; the following chapters
 will detail further Alfa, GNATprove, GNATtest and the functionalities
 that these tools provides, making a clear separation between what

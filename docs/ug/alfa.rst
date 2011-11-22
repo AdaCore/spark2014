@@ -4,14 +4,15 @@ Definition of Alfa
 Rationale
 ---------
 
-Alfa is intended to be the largest possible subset of Ada amenable to automatic
-proving. In the context of Ada 2012, aspects are natural means of expressing
-important features such as subprogram contracts or test case definitions, so in
-that context, Alfa is best described as a subset of Ada 2012. That being said,
-nothing from Ada 2012 is essential for Alfa, and in particular for legacy
-applications, Alfa can be described as a subset of other Ada versions (83, 95,
-2005). Specific GNAT pragmas can be used to replace the important features
-mentioned earlier.
+Alfa is a subset of Ada 2012 described in the Alfa Reference Manual. It is
+intended to be the largest possible subset of Ada amenable to automatic
+proving.
+
+In the context of Ada 2012, aspects are natural means of expressing important
+features such as subprogram contracts or test case definitions, so Alfa is
+defined in terms of these Ada 2012 features. For legacy applications, GNATprove
+and GNATtest also support other Ada versions (83, 95, 2005), where specific
+GNAT pragmas can be used to replace the important features mentioned above.
 
 Alfa is meant to facilitate the expression of functional properties on Ada
 programs, so that these properties can be verified either by testing or by
@@ -410,14 +411,12 @@ Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The contracts of functions called in annotations are essential for automatic
-proofs. The current translation scheme in GNATprove could introduce
-inconsistent axioms for incorrect function contracts, so we restrict calls in
-annotations to expression functions only. The syntax of expression functions,
-introduced in Ada 2012, allows defining functions whose implementation simply
-returns an expression. For such expression functions to be called in
-annotations in Alfa, they must not have contracts and only call other
-expression functions with the same qualities, and no recursion is allowed
-between them:
+proofs. Currently, the knowledge that a function call in an annotation respects
+its postcondition (when called in a context where the precondition is
+satisfied) is only available for expression functions. The syntax of expression
+functions, introduced in Ada 2012, allows defining functions whose
+implementation simply returns an expression, such as ``Even``, ``Odd`` and
+``Is_Prime`` below.
 
 .. code-block:: ada
 
@@ -431,13 +430,11 @@ between them:
 Calls to Standard Library Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Standard library functions are conservatively assumed to write to globals, so
-they are not currently in Alfa. Note that this does not apply to procedures
-from the standard library. It will require a pre-analysis of the standard
-library to define proper contracts.
+The standard library for the selected target is pre-analyzed, so that user code
+can freely call standard library subprograms.
 
-Loop Invariants *(Not Yet Implemented)*
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Loop Invariants
+^^^^^^^^^^^^^^^
 
 In order for GNATprove to prove formally the properties of interest on
 subprograms with loops, the user should annotate these loops with loop
@@ -494,6 +491,12 @@ function ``Move`` below, one has to write a loop invariant referring to
      end loop;
   end Move;
 
+Note that GNATprove does not yet support the use of attribute ``'Loop_Entry``,
+which can be replaced sometimes by the use of attribute ``'Old`` referring to
+the value of a variable at subprogram entry. Ultimately, uses of ``'Old``
+outside of postconditions will be deprecated, once attribute ``'Loop_Entry`` is
+supported.
+
 Quantified Expressions
 ----------------------
 
@@ -512,7 +515,6 @@ execution will stop, with the result value ``False``. However, GNATprove
 requires the expression to be run-time error free over the entire range,
 including ``I = 3``, so there will be an unproved VC for this case.
 
-
 Features Not Yet Implemented
 ----------------------------
 
@@ -523,11 +525,10 @@ The major features not yet implemented are:
 * formal containers
 * invariants on types (invariants and predicates)
 
-Minor features not yet implemented are:
+Other important features not yet implemented are:
 
 * discriminant / variant records
 * array slices
 * declare block statements
 * elaboration code
-* many corner cases in expressions
 * attribute ``'Loop_Entry``

@@ -18,6 +18,7 @@ GNATprove accepts the following options::
        detect      Detect and output Alfa information (default)
        force       Output errors for violations of Alfa (warn unimplemented)
        check       Check consistency of contracts
+       prove       Prove subprogram contracts and absence of run-time errors
 
    --report=     Control reporting
        fail        Report failures to prove VCs (default)
@@ -27,13 +28,10 @@ GNATprove accepts the following options::
 
    --pedantic    Use a strict interpretation of the Ada standard
 
-..   prove       Prove subprogram contracts and absence of run-time errors
-
-In modes ``detect`` and ``force``, GNATprove does not
-compute an accurate set of global variables read and written in each
-subprogram. Hence, its detection of subprograms in Alfa might be slightly more
-optimistic than the reality. When using mode ``check`` on the contrary, the
-detection is accurate.
+In modes ``detect`` and ``force``, GNATprove does not compute an accurate set
+of global variables read and written in each subprogram. Hence, its detection
+of subprograms in Alfa might be slightly more optimistic than the reality. When
+using mode ``check`` or ``prove`` on the contrary, the detection is accurate.
 
 Although --report has only some effect in mode ``check``, all combinations of
 options are allowed.
@@ -57,11 +55,12 @@ the standard output. All other detection information is to be found in the
 In mode ``force``, GNATprove prints on the standard output error messages for
 Alfa subset violations, and warning messages for unimplemented features.
 
-In mode ``check`` and report ``fail``, GNATprove prints on the standard output
-error messages for unproved VCs.
+In modes ``check`` or ``prove`` and report ``fail``, GNATprove prints on the
+standard output error messages for unproved VCs.
 
-In mode ``check`` and report ``all``, GNATprove prints on the standard output
-error messages for unproved VCs, and information messages for proved VCs.
+In modes ``check`` or ``prove`` and report ``all``, GNATprove prints on the
+standard output error messages for unproved VCs, and information messages for
+proved VCs.
 
 GNATprove always generates :ref:`project statistics` in file ``gnatprove.out``.
 
@@ -86,7 +85,8 @@ The current version is not integrated with GNATbench.
 Known Limitations
 -----------------
 
-In mode ``check``, the current version has the following limitations:
+In modes ``check`` and ``prove``, the current version has the following
+limitations:
 
    * It only accepts projects with a single object directory; it will stop
      with an error message if run on projects with more than one object

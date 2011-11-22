@@ -11,12 +11,13 @@ properties of the code described in the subsequent sections.
 Completeness of Preconditions
 -----------------------------
 
-This is currently the only verification activity available with GNATprove, in
-mode ``check``. It consists in verifying that preconditions of subprograms can
+This verification activity is available in mode ``check`` (where it is the only
+verification performed) and in mode ``prove``.
+It consists in verifying that preconditions of subprograms can
 never raise a run-time error, whatever the calling context. In order to get
-such a good property on the preconditions, the user should in general
-guard all expressions which may raise a ``Constraint_Error`` in Ada, such as
-array accesses and arithmetic operations.
+such a good property on the preconditions, the user should in general guard all
+expressions which may raise a ``Constraint_Error`` in Ada, such as array
+accesses and arithmetic operations.
 
 These guards may take the form desired by the user. In particular, no guard is
 necessary if the operation cannot raise a run-time error, e.g. due to the
@@ -56,23 +57,41 @@ error::
    p.ads:10:31: overflow check failed
    p.ads:13:15: (info) proved: overflow check
 
-Absence of Run-Time Errors *(In Progress)*
--------------------------------------------
+.. _absence of run-time errors:
 
+Absence of Run-Time Errors
+--------------------------
+
+This verification activity is available in mode ``prove``.
 GNATprove generates VCs to prove that the code of a subprogram analyzed does
 not contain violations of the following checks:
 
 * overflow check
 * range check
-* array bound check
-* division by zero check
+* index check
+* division check
 
-Functional Verification *(In Progress)*
--------------------------------------
+The precise meaning of these checks is given by the Ada Language Reference
+Manual. An (*overflow check*) violation occurs when the result of an arithmetic
+operation cannot be represented in the base type (usually a machine integer)
+for this operation. A (*range check*) violation occurs when a value does not
+respect the range constraint for its type. An (*index check*) violation occurs
+when the value used to index into an array does not fit between the array
+bounds. A (*division check*) violation occurs when the divisor of a division
+operation (or ``rem`` or ``mod``) is zero.
 
-GNATprove generates VCs to prove that all subprograms called in the code of a
-subprogram analyzed have their precondition satisfied at the point of call. It
-also VCs to prove that the postcondition of the subprogram analyzed is satisfied.
+Notice that VCs are also generated for proving that assertions are free from
+run-time errors. This includes postconditions.
+
+.. _functional verification:
+
+Functional Verification
+-----------------------
+
+This verification activity is available in mode ``prove``.  GNATprove generates
+VCs to prove that all subprograms called in the code of a subprogram analyzed
+have their precondition satisfied at the point of call. It also generates VCs
+to prove that the postcondition of the subprogram analyzed is satisfied.
 
 In order to prove such VCs, the user may have to write loop invariants, for
 which specific VCs are generated, to prove that the loop invariant is initially
