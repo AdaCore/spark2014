@@ -56,7 +56,7 @@ ASCII.LF &
 ASCII.LF &
 " -jnnn             Use nnn parallel processes (default: 1)" &
 ASCII.LF &
-"     --mode=m      Set the mode of GNATprove (m=detect*,force,check)" &
+"     --mode=m      Set the mode of GNATprove (m=detect*,force,check,prove)" &
 ASCII.LF &
 " -Pproj            Use GNAT project file proj" &
 ASCII.LF &
