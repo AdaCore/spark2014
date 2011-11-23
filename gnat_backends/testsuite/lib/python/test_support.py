@@ -11,6 +11,7 @@ import shutil
 import json
 
 max_steps = 2000
+default_timeout = 20
 parallel_procs = 1
 #  Change directory
 
@@ -117,17 +118,18 @@ def gnatprove(opt=["-P", "test.gpr"]):
     for line in out:
         print line
 
-def prove(opt=[],steps=max_steps, mode="check"):
+def prove(opt=[], steps=max_steps, timeout=default_timeout, mode="check"):
     """Call gnatprove with standard options"""
     opt += ["--report=all", "-P", "test.gpr", "--quiet"]
+    opt += ["--timeout=%d"%(timeout)]
     opt += ["--steps=%d"%(steps)]
     opt += ["--mode=%s"%(mode)]
     opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
-def prove_all(opt=[],steps=max_steps):
+def prove_all(opt=[], steps=max_steps, timeout=default_timeout):
     """Call gnatprove with standard options to prove all VCs"""
-    prove(opt,steps, "prove")
+    prove(opt, steps, timeout, "prove")
 
 def to_list(arg):
     """Convert to list
