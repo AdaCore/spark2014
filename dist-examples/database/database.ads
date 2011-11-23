@@ -92,8 +92,8 @@ package Database is
              Currency (Account) = Sum.Currency and then
              Balance (Account).Raw + Sum.Raw <= Money.Raw_Amount'Last,
      Post => Balance (Account) = Balance (Account)'Old + Sum,
---       Test_Case => (Name     => "common case",
---                     Mode     => Nominal),
+     Test_Case => (Name     => "common case",
+                   Mode     => Nominal),
      Test_Case => (Name     => "different currency",
                    Mode     => Robustness,
                    Requires => Currency (Account) /= Sum.Currency,
@@ -110,8 +110,8 @@ package Database is
              Currency (Account) = Sum.Currency and then
              Sum.Raw <= Balance (Account).Raw,
      Post => Balance (Account) = Balance (Account)'Old - Sum,
---       Test_Case => (Name     => "common case",
---                     Mode     => Nominal),
+     Test_Case => (Name     => "common case",
+                   Mode     => Nominal),
      Test_Case => (Name     => "different currency",
                    Mode     => Robustness,
                    Requires => Currency (Account) /= Sum.Currency,
