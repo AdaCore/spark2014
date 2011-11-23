@@ -1688,9 +1688,6 @@ package body Gnat2Why.Expr is
             case Ekind (Etype (Var)) is
                when Array_Kind =>
 
-                  --  ???  Missing support of A'First (N)
-                  --  ???  Missing support of Array_Type'First (N)
-
                   --  Array_Type'First
 
                   if Nkind (Var) = N_Identifier and then
@@ -2652,7 +2649,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id is
    begin
-      --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
          when N_Label | N_Null_Statement =>
             return New_Void (Stmt);
