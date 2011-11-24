@@ -10,5 +10,5 @@ pack.adb:44:24: (info) range check proved
 -- pack__p1 pack.ads:15 (access)
 ++ pack__p2__B_2__p5 pack.adb:38
 ++ pack__p2__B_2__p2_ok pack.adb:47
-*+ pack__p2 pack.ads:17 [block statement]
+++ pack__p2 pack.ads:17
 
