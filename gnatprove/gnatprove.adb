@@ -216,9 +216,18 @@ procedure Gnatprove is
       if Verbose then
          Args.Append ("--verbose");
       end if;
-      if Report then
-         Args.Append ("--report");
-      end if;
+      Args.Append ("--report");
+      case Report is
+         when GPR_Fail =>
+            Args.Append ("fail");
+
+         when GPR_Verbose =>
+            Args.Append ("all");
+
+         when GPR_Detailed =>
+            Args.Append ("detailed");
+
+      end case;
       if Debug then
          Args.Append ("--debug");
       end if;

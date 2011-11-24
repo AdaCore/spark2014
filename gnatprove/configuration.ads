@@ -66,6 +66,13 @@ package Configuration is
    --    Mode GPM_Prove is undocumented (ie should not appear in help/error
    --    messages)
 
+   type Report_Mode is (GPR_Fail, GPR_Verbose, GPR_Detailed);
+   --  The modes for reporting of VCs.
+   --    GPR_Fail means that only unproved VCs will be reported.
+   --    GPR_Verbose means that all VCs will be reported
+   --    GPR_Detailed means that all VCs will be reported, including a reason
+   --    for unproved VCs (timeout, max steps)
+   --
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    type GP_Call_Mode is (GPC_Project, GPC_Only_Files, GPC_Project_Files);
@@ -96,8 +103,8 @@ package Configuration is
    --  set by option --mode=
    Report_Input   : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
-   Report      : aliased Boolean;
-   --  True is --report=all is present. Give messages even for proved VCs
+   Report      : Report_Mode := GPR_Fail;
+   --  Silent Reporting is the Default
    No_Proof     : aliased Boolean;
    --  True if --no-proof switch is present. Do not call Alt-Ergo.
    Parallel     : aliased Integer;

@@ -62,7 +62,7 @@ ASCII.LF &
 ASCII.LF &
 " -q, --quiet       Be quiet/terse" &
 ASCII.LF &
-"     --report=r    Set the report mode of GNATprove (r=all,fail*)" &
+"     --report=r    Set the report mode of GNATprove (r=fail*, all, detailed)"&
 ASCII.LF &
 " -u                Unique compilation, only compile/prove the given files" &
 ASCII.LF &
@@ -229,7 +229,7 @@ ASCII.LF &
         (Config,
          Report_Input'Access,
          Long_Switch => "--report=",
-         Help => "Set the report mode of GNATprove (all | fail)");
+         Help => "Set the report mode of GNATprove (fail| all| detailed)");
 
       Define_Switch
          (Config, Steps'Access,
@@ -284,11 +284,14 @@ ASCII.LF &
       end if;
 
       if Report_Input.all = "fail" or else Report_Input.all = "" then
-         Report := False;
+         Report := GPR_Fail;
       elsif Report_Input.all = "all" then
-         Report := True;
+         Report := GPR_Verbose;
+      elsif Report_Input.all = "detailed" then
+         Report := GPR_Detailed;
       else
-         Abort_With_Message ("report should be one of (all | fail)");
+         Abort_With_Message
+           ("report should be one of (fail | all | detailed)");
       end if;
 
       --  Detect the call mode of GNATprove and check for compatibility with
