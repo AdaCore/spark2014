@@ -34,7 +34,6 @@ with Atree;                 use Atree;
 with Debug;
 with Einfo;                 use Einfo;
 with Nlists;                use Nlists;
-with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
@@ -265,133 +264,9 @@ package body Gnat2Why.Subprograms is
          (Initial_Body : W_Prog_Id;
           Post_Check   : W_Prog_Id) return W_Prog_Id
       is
-         procedure Assume_of_Scalar_Subtype
-            (Ent  : Entity_Id;
-             Base : Entity_Id;
-             R    : in out W_Prog_Id);
-         --  Local Wrapper for Assume_of_Scalar_Subtype
-
-         function Get_Base_Type (N : Node_Id) return Entity_Id;
-         --  Return the base type when N is the node of a (sub-)type
-         --  declaration which requires a check.
-         --  Return Empty otherwise.
-
-         ------------------------------
-         -- Assume_of_Scalar_Subtype --
-         ------------------------------
-
-         procedure Assume_of_Scalar_Subtype
-            (Ent  : Entity_Id;
-             Base : Entity_Id;
-             R    : in out W_Prog_Id)
-         is
-         begin
-
-            --  If the range is not static, we need to generate a check that
-            --  the subtype declaration is valid; otherwise, the frontend has
-            --  done it for us already
-
-            if not Is_Static_Range (Get_Range (Ent)) then
-               R := Sequence (Assume_of_Scalar_Subtype (Ent, Base), R);
-            end if;
-         end Assume_of_Scalar_Subtype;
-
-         -------------------
-         -- Get_Base_Type --
-         -------------------
-
-         function Get_Base_Type (N : Node_Id) return Entity_Id
-         is
-            Ent : constant Entity_Id := Defining_Identifier (N);
-         begin
-
-            --  Full type declarations can only require checks when they are
-            --  discrete types, and then only when the range is non-static.
-            if Nkind (N) = N_Full_Type_Declaration then
-               if Ekind (Ent) in Discrete_Kind | Float_Kind then
-                  if Is_Static_Range (Get_Range (Ent)) then
-                     return Empty;
-                  end if;
-               end if;
-               declare
-                  T_Def : constant Node_Id := Type_Definition (N);
-               begin
-                  case Nkind (T_Def) is
-                     when N_Subtype_Indication =>
-                        return Entity (Subtype_Mark (T_Def));
-
-                     when N_Derived_Type_Definition =>
-                        return
-                          Entity (Subtype_Mark (Subtype_Indication (T_Def)));
-
-                     when others =>
-                        return Empty;
-
-                  end case;
-               end;
-            else
-               declare
-                  S : constant Node_Id := Subtype_Indication (N);
-               begin
-                  if Nkind (S) = N_Subtype_Indication then
-                     return Entity (Subtype_Mark (S));
-                  else
-                     return Entity (S);
-                  end if;
-               end;
-            end if;
-         end Get_Base_Type;
-
-         Cur_Decl : Node_Id := Last (Declarations (Node));
          R        : W_Prog_Id := Initial_Body;
       begin
-         while Nkind (Cur_Decl) /= N_Empty loop
-            case Nkind (Cur_Decl) is
-               when N_Object_Declaration =>
-                  R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
-
-               when N_Subtype_Declaration | N_Full_Type_Declaration =>
-                  declare
-                     Ent : constant Entity_Id :=
-                        Defining_Identifier (Cur_Decl);
-                     Base : constant Entity_Id := Get_Base_Type (Cur_Decl);
-                  begin
-                     if Present (Base) then
-                        case Ekind (Ent) is
-                           when Discrete_Kind | Float_Kind =>
-                              Assume_of_Scalar_Subtype (Ent, Base, R);
-
-                           when Array_Kind =>
-                              declare
-                                 Index      : Node_Id := First_Index (Ent);
-                                 Index_Base : Entity_Id := First_Index (Base);
-                              begin
-                                 while Present (Index) loop
-                                    Assume_of_Scalar_Subtype
-                                       (Etype (Index),
-                                        Etype (Index_Base),
-                                        R);
-                                    Next (Index);
-                                    Next (Index_Base);
-                                 end loop;
-                              end;
-
-                           when E_Record_Type =>
-                              null;
-
-                           when others =>
-                              raise Not_Implemented;
-
-                        end case;
-                     end if;
-                  end;
-
-               when others =>
-                  null;
-
-            end case;
-            Cur_Decl := Prev (Cur_Decl);
-         end loop;
+         R := Transform_Declarations_Block (Declarations (Node), R);
 
          --  Enclose the subprogram body in a try-block, so that return
          --  statements can be translated as raising exceptions.

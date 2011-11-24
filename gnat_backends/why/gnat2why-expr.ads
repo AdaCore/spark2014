@@ -92,6 +92,13 @@ package Gnat2Why.Expr is
    --  translation process is to be started. All nodes before and including
    --  Start_From are ignored.
 
+   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
+      return W_Prog_Id;
+   --  Translate the Declarations block of Block statement or subprogram to a
+   --  sequence of Why expressions; dynamic type declarations are translated
+   --  to assert/assume statements, object declarations to assignment
+   --  statements
+
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
 
