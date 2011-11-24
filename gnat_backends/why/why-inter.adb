@@ -260,7 +260,10 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            return Get_EW_Term_Type (Full_View (Ty));
+            --  We can only be in this case if Ty is *derived* from a private
+            --  type. We go up one step to go the the base type.
+
+            return Get_EW_Term_Type (Etype (Ty));
 
          when others =>
             return EW_Abstract;
