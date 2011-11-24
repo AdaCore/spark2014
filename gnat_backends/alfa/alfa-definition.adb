@@ -1068,7 +1068,6 @@ package body Alfa.Definition is
             Mark_Binary_Op (N);
 
          when N_Block_Statement =>
-            Mark_Non_Alfa ("block statement", N, NYI_Block_Statement);
             Mark_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 

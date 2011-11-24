@@ -40,7 +40,6 @@ package Alfa_Violations is
       NYI_Aggregate,        --  aggregate
       NYI_Arith_Operation,  --  arithmetic operation
       NYI_Attribute,        --  attribute
-      NYI_Block_Statement,  --  block declare statement
       NYI_Concatenation,    --  concatenation
       NYI_Conversion,       --  conversion
       NYI_Container,        --  formal containers
@@ -50,12 +49,8 @@ package Alfa_Violations is
       NYI_Float,            --  float
       NYI_Generic,          --  generics
       NYI_Impure_Function,  --  impure functions
-      NYI_Logic_Function,   --  logic functions
-      NYI_Modular,          --  modular type and subtype
       NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
-      NYI_Old_Attribute,    --  'Old attribute
       NYI_Pragma,           --  pragma
-      NYI_Qualification,    --  qualification
       NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
       NYI_String_Literal,   --  string literal
@@ -102,7 +97,6 @@ package Alfa_Violations is
       NYI_Aggregate        => To_Unbounded_String ("aggregate"),
       NYI_Arith_Operation  => To_Unbounded_String ("arithmetic operation"),
       NYI_Attribute        => To_Unbounded_String ("attribute"),
-      NYI_Block_Statement  => To_Unbounded_String ("block statement"),
       NYI_Concatenation    => To_Unbounded_String ("concatenation"),
       NYI_Conversion       => To_Unbounded_String ("conversion"),
       NYI_Container        => To_Unbounded_String ("container"),
@@ -112,12 +106,8 @@ package Alfa_Violations is
       NYI_Float            => To_Unbounded_String ("float"),
       NYI_Generic          => To_Unbounded_String ("generic"),
       NYI_Impure_Function  => To_Unbounded_String ("impure function"),
-      NYI_Logic_Function   => To_Unbounded_String ("logic function"),
-      NYI_Modular          => To_Unbounded_String ("modular"),
       NYI_Multi_Dim_Array  => To_Unbounded_String ("multi dim array"),
-      NYI_Old_Attribute    => To_Unbounded_String ("Old attribute"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),
-      NYI_Qualification    => To_Unbounded_String ("qualification"),
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
       NYI_String_Literal   => To_Unbounded_String ("string literal"),
