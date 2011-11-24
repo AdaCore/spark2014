@@ -28,5 +28,5 @@ p1.adb:8:55: (info) index check proved
 p1.adb:8:63: (info) index check proved
 p1.ads:6:16: postcondition not proved
 p1.ads:7:61: (info) index check proved
-p1.ads:8:53: overflow check not proved
+p1.ads:8:53: (info) overflow check proved
 p1.ads:8:69: (info) index check proved
