@@ -164,7 +164,7 @@ package body Gnat2Why.Expr is
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Ref_Allowed : Boolean) return W_Expr_Id;
-   --  For an expression Expr of a discrete type and a discrete Choice, build
+   --  For an expression Expr of a type EW_Int and a discrete Choice, build
    --  the expression that Expr belongs to the range expressed by Choice.
 
    function Transform_Quantified_Expression
@@ -1844,7 +1844,6 @@ package body Gnat2Why.Expr is
    is
       Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
-      BT        : constant W_Base_Type_Id := Base_Why_Type (Choice);
       Is_Range  : Boolean;
 
    begin
@@ -1874,10 +1873,10 @@ package body Gnat2Why.Expr is
            (Cmp       => EW_Eq,
             Left      => Expr,
             Right     => Transform_Expr (Expr          => Choice,
-                                         Expected_Type => BT,
+                                         Expected_Type => EW_Int_Type,
                                          Domain        => Subdomain,
                                          Ref_Allowed   => Ref_Allowed),
-            Arg_Types => BT,
+            Arg_Types => EW_Int_Type,
             Domain    => Domain);
       end if;
    end Transform_Discrete_Choice;
