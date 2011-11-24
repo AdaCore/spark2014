@@ -23,6 +23,8 @@ GNATprove accepts the following options::
    --report=     Control reporting
        fail        Report failures to prove VCs (default)
        all         Report all results of proving VCs
+       detailed    Report all results of proving VCs, including a reason when
+                   not proved
 
    -u            Unique compilation, only consider the given files
 
