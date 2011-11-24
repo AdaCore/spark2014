@@ -1951,47 +1951,54 @@ package body Gnat2Why.Expr is
 
       case Nkind (Expr) is
          when N_Aggregate =>
-            if Is_Record_Type (Etype (Expr)) then
-               pragma Assert (No (Expressions (Expr)));
-               T :=
-                  New_Record_Aggregate
-                    (Associations => Transform_Record_Component_Associations
-                                       (Domain,
-                                        Etype (Expr),
-                                        Component_Associations (Expr),
-                                        Ref_Allowed));
-               Current_Type := EW_Abstract (Etype (Expr));
-            else
-               declare
-                  Id : constant W_Identifier_Id :=
-                         (if Domain = EW_Term then
-                            New_Temp_Identifier
-                          else New_Result_Identifier.Id);
-                  Base_Type : constant Entity_Id := Etype (Expr);
-                  BT : constant W_Base_Type_Id :=
-                                +Why_Logic_Type_Of_Ada_Type (Base_Type);
-               begin
-                  if Domain = EW_Term then
-                     if not Ada_To_Why_Term (Ref_Allowed).Contains (Expr) then
-                        Transform_Array_Aggregate
-                          (Current_Why_Output_File, Base_Type, Id, Expr);
+            declare
+               Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
+            begin
+               if Is_Record_Type (Expr_Type) then
+                  pragma Assert (No (Expressions (Expr)));
+                  T :=
+                     New_Record_Aggregate
+                       (Associations => Transform_Record_Component_Associations
+                                          (Domain,
+                                           Expr_Type,
+                                           Component_Associations (Expr),
+                                           Ref_Allowed));
+                  Current_Type := EW_Abstract (Expr_Type);
+               else
+                  pragma Assert
+                     (Is_Array_Type (Expr_Type) or else
+                      Is_String_Type (Expr_Type));
+                  declare
+                     Id : constant W_Identifier_Id :=
+                            (if Domain = EW_Term then
+                               New_Temp_Identifier
+                             else New_Result_Identifier.Id);
+                     BT : constant W_Base_Type_Id :=
+                                   +Why_Logic_Type_Of_Ada_Type (Expr_Type);
+                  begin
+                     if Domain = EW_Term then
+                        if not (Ada_To_Why_Term (Ref_Allowed).
+                                   Contains (Expr)) then
+                           Transform_Array_Aggregate
+                             (Current_Why_Output_File, Expr_Type, Id, Expr);
+                        end if;
+                        T := +Ada_To_Why_Term (Ref_Allowed).Element (Expr);
+                     else
+                        T := New_Simpl_Any_Expr
+                          (Domain   => Domain,
+                           Arg_Type => +BT,
+                           Id       => Id,
+                           Pred     =>
+                             Transform_Array_Component_Associations
+                               (Expr,
+                                Expr_Type,
+                                Id,
+                                Ref_Allowed));
                      end if;
-                     T := +Ada_To_Why_Term (Ref_Allowed).Element (Expr);
-                  else
-                     T := New_Simpl_Any_Expr
-                       (Domain   => Domain,
-                        Arg_Type => +BT,
-                        Id       => Id,
-                        Pred     =>
-                          Transform_Array_Component_Associations
-                            (Expr,
-                             Base_Type,
-                             Id,
-                             Ref_Allowed));
-                  end if;
-                  Current_Type := EW_Abstract (Base_Type);
-               end;
-            end if;
+                     Current_Type := EW_Abstract (Expr_Type);
+                  end;
+               end if;
+            end;
 
          when N_Integer_Literal =>
             T :=
