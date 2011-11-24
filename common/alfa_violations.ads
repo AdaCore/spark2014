@@ -39,7 +39,6 @@ package Alfa_Violations is
 
       NYI_Aggregate,        --  aggregate
       NYI_Arith_Operation,  --  arithmetic operation
-      NYI_Array_Subtype,    --  array subtype
       NYI_Attribute,        --  attribute
       NYI_Block_Statement,  --  block declare statement
       NYI_Concatenation,    --  concatenation
@@ -102,7 +101,6 @@ package Alfa_Violations is
      (
       NYI_Aggregate        => To_Unbounded_String ("aggregate"),
       NYI_Arith_Operation  => To_Unbounded_String ("arithmetic operation"),
-      NYI_Array_Subtype    => To_Unbounded_String ("array subtype"),
       NYI_Attribute        => To_Unbounded_String ("attribute"),
       NYI_Block_Statement  => To_Unbounded_String ("block statement"),
       NYI_Concatenation    => To_Unbounded_String ("concatenation"),

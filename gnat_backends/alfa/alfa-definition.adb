@@ -2575,8 +2575,6 @@ package body Alfa.Definition is
 
       if not Type_Is_In_Alfa (T) then
          Mark_Non_Alfa ("base type", N, From => Unique (T));
-      elsif Is_Array_Type (T) then
-         Mark_Non_Alfa ("array subtype", N, NYI_Array_Subtype);
       end if;
 
       if Nkind (N) = N_Subtype_Indication then
