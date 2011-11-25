@@ -19,9 +19,15 @@ package body Database is
          Prev, Next : Ext_Account_Num;
       end record;
 
+      No_Account_Link : constant Account_Link :=
+                          Account_Link'(Available => False,
+                                        Prev      => No_Account_Num,
+                                        Next      => No_Account_Num);
+
       type Account_Link_Data is array (Database.Account_Num) of Account_Link;
 
-      Links : Account_Link_Data;
+      Links : Account_Link_Data :=
+                Account_Link_Data'(others => No_Account_Link);
 
       First_Available : Ext_Account_Num := Account_Num'First;
 
