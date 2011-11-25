@@ -925,6 +925,113 @@ package body Gnat2Why.Expr is
                   or else not (Nkind (Actual) in N_Entity));
    end Needs_Temporary_Ref;
 
+   --------------------
+   -- New_Assignment --
+   --------------------
+
+   function New_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Lvalue   : Node_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id
+   is
+
+      --  Here, we deal with assignment statements. In Alfa, the general form
+      --  of an assignment is
+      --
+      --    Lvalue := Expr;
+      --
+      --  where Lvalue is a mix of array and record accesses. If we adopt the
+      --  same notation for both, we obtain the general form
+      --
+      --    Prefix.Acc1.Acc2.(...).Accn := Expr;
+      --
+      --  where the Acc(i) are either array accesses using an index (or
+      --  several indices in the multidimensional case) or record accesses
+      --  using a field name.
+      --
+      --  Here, we generate Why code of the form
+      --
+      --    Prefix := Upd (Prefix, Acc1,
+      --                   (Upd (Prefix.Acc1, Acc2,
+      --                         Upd (..., Accn, Expr))));
+
+      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+         return W_Prog_Id;
+
+      function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
+      --  Compute the innermost that is accessed in the Lvalue, variable, ie
+      --  the outermost data structure; this basically corresponds to "Prefix"
+      --  above.
+
+      --------------------
+      -- Compute_Rvalue --
+      --------------------
+
+      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+         return W_Prog_Id is
+
+         --  The outermost Access node corresponds to the innermost data
+         --  structure; therefore, we compute the update expression before the
+         --  recursive call; It happens that the prefix of the current
+         --  node precisely corresponds to the data structure to be
+         --  updated.
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+
+               return Update_Expr;
+
+            when N_Selected_Component | N_Indexed_Component =>
+               return
+                  Compute_Rvalue
+                    (Prefix (N),
+                     +One_Level_Update
+                       (N,
+                        +Transform_Expr
+                         (Prefix (N), EW_Prog, Ref_Allowed => True),
+                        +Update_Expr,
+                        EW_Prog,
+                        Ref_Allowed => True));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+      end Compute_Rvalue;
+
+      ----------------
+      -- Why_Lvalue --
+      ----------------
+
+      function Why_Lvalue (N : Node_Id) return W_Identifier_Id
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               return Transform_Ident (N);
+
+            when N_Indexed_Component | N_Selected_Component =>
+               return Why_Lvalue (Prefix (N));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+
+      end Why_Lvalue;
+
+      --  begin processing for Transform_Assignment_Statement
+
+      W_Lvalue : constant W_Identifier_Id := Why_Lvalue (Lvalue);
+   begin
+      return
+         New_Assignment
+            (Ada_Node => Ada_Node,
+             Name     => W_Lvalue,
+             Value    =>
+               Compute_Rvalue (Lvalue, Expr));
+   end New_Assignment;
+
    ----------------------
    -- One_Level_Access --
    ----------------------
@@ -1186,199 +1293,6 @@ package body Gnat2Why.Expr is
             Pre         => +Id_Expr,
             Def         => Pred));
    end Transform_Array_Aggregate;
-
-   ------------------------------------
-   -- Transform_Assignment_Statement --
-   ------------------------------------
-
-   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
-   is
-      function Expected_Type return W_Base_Type_Id;
-      --  Compute the expected type of the right hand side expression.
-
-      Lvalue   : constant Node_Id := Name (Stmt);
-      --  The Lvalue in the Ada sense, ie the chain of accesses
-
-      --------------------
-      -- Expected_Type --
-      --------------------
-
-      function Expected_Type return W_Base_Type_Id
-      is
-         --  We simply traverse the Lvalue until we find the innermost access;
-         --  the type of the array, or the type of the record field, is the
-         --  expected type.
-      begin
-         case Nkind (Lvalue) is
-            when N_Identifier | N_Expanded_Name =>
-               return Type_Of_Node (Lvalue);
-
-            when N_Indexed_Component =>
-               return Type_Of_Node
-                 (Component_Type (Unique_Entity (Etype (Prefix (Lvalue)))));
-
-            when N_Selected_Component =>
-               return Type_Of_Node (Selector_Name (Lvalue));
-
-            when others =>
-               raise Not_Implemented;
-
-         end case;
-      end Expected_Type;
-
-   --  Start of processing for Transform_Assignment_Statement
-
-   begin
-      return
-        New_Assignment
-          (Ada_Node => Stmt,
-           Lvalue   => Lvalue,
-           Expr     =>
-             +Transform_Expr (Expression (Stmt),
-                              Expected_Type,
-                              EW_Prog,
-                              Ref_Allowed => True));
-   end Transform_Assignment_Statement;
-
-   --------------------
-   -- New_Assignment --
-   --------------------
-
-   function New_Assignment
-     (Ada_Node : Node_Id := Empty;
-      Lvalue   : Node_Id;
-      Expr     : W_Prog_Id) return W_Prog_Id
-   is
-
-      --  Here, we deal with assignment statements. In Alfa, the general form
-      --  of an assignment is
-      --
-      --    Lvalue := Expr;
-      --
-      --  where Lvalue is a mix of array and record accesses. If we adopt the
-      --  same notation for both, we obtain the general form
-      --
-      --    Prefix.Acc1.Acc2.(...).Accn := Expr;
-      --
-      --  where the Acc(i) are either array accesses using an index (or
-      --  several indices in the multidimensional case) or record accesses
-      --  using a field name.
-      --
-      --  Here, we generate Why code of the form
-      --
-      --    Prefix := Upd (Prefix, Acc1,
-      --                   (Upd (Prefix.Acc1, Acc2,
-      --                         Upd (..., Accn, Expr))));
-
-      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
-         return W_Prog_Id;
-
-      function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
-      --  Compute the innermost that is accessed in the Lvalue, variable, ie
-      --  the outermost data structure; this basically corresponds to "Prefix"
-      --  above.
-
-      --------------------
-      -- Compute_Rvalue --
-      --------------------
-
-      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
-         return W_Prog_Id is
-
-         --  The outermost Access node corresponds to the innermost data
-         --  structure; therefore, we compute the update expression before the
-         --  recursive call; It happens that the prefix of the current
-         --  node precisely corresponds to the data structure to be
-         --  updated.
-      begin
-         case Nkind (N) is
-            when N_Identifier | N_Expanded_Name =>
-
-               return Update_Expr;
-
-            when N_Selected_Component | N_Indexed_Component =>
-               return
-                  Compute_Rvalue
-                    (Prefix (N),
-                     +One_Level_Update
-                       (N,
-                        +Transform_Expr
-                         (Prefix (N), EW_Prog, Ref_Allowed => True),
-                        +Update_Expr,
-                        EW_Prog,
-                        Ref_Allowed => True));
-
-            when others =>
-               raise Not_Implemented;
-
-         end case;
-      end Compute_Rvalue;
-
-      ----------------
-      -- Why_Lvalue --
-      ----------------
-
-      function Why_Lvalue (N : Node_Id) return W_Identifier_Id
-      is
-      begin
-         case Nkind (N) is
-            when N_Identifier | N_Expanded_Name =>
-               return Transform_Ident (N);
-
-            when N_Indexed_Component | N_Selected_Component =>
-               return Why_Lvalue (Prefix (N));
-
-            when others =>
-               raise Not_Implemented;
-
-         end case;
-
-      end Why_Lvalue;
-
-      --  begin processing for Transform_Assignment_Statement
-
-      W_Lvalue : constant W_Identifier_Id := Why_Lvalue (Lvalue);
-   begin
-      return
-         New_Assignment
-            (Ada_Node => Ada_Node,
-             Name     => W_Lvalue,
-             Value    =>
-               Compute_Rvalue (Lvalue, Expr));
-   end New_Assignment;
-
-   ---------------------
-   -- Transform_Binop --
-   ---------------------
-
-   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op is
-   begin
-      case Op is
-         when N_Op_Add      => return EW_Add;
-         when N_Op_Subtract => return EW_Substract;
-         when N_Op_Divide   => return EW_Divide;
-         when N_Op_Multiply => return EW_Multiply;
-         when N_Op_Mod      => return EW_Mod;
-         when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
-         when others => raise Program_Error;
-      end case;
-   end Transform_Binop;
-
-   --------------------------
-   -- Transform_Compare_Op --
-   --------------------------
-
-   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation is
-   begin
-      case Op is
-         when N_Op_Gt => return EW_Gt;
-         when N_Op_Lt => return EW_Lt;
-         when N_Op_Eq => return EW_Eq;
-         when N_Op_Ge => return EW_Ge;
-         when N_Op_Le => return EW_Le;
-         when N_Op_Ne => return EW_Ne;
-      end case;
-   end Transform_Compare_Op;
 
    --------------------------------------------
    -- Transform_Array_Component_Associations --
@@ -1646,6 +1560,59 @@ package body Gnat2Why.Expr is
          Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
    end Transform_Array_Component_Associations;
 
+   ------------------------------------
+   -- Transform_Assignment_Statement --
+   ------------------------------------
+
+   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
+   is
+      function Expected_Type return W_Base_Type_Id;
+      --  Compute the expected type of the right hand side expression.
+
+      Lvalue   : constant Node_Id := Name (Stmt);
+      --  The Lvalue in the Ada sense, ie the chain of accesses
+
+      --------------------
+      -- Expected_Type --
+      --------------------
+
+      function Expected_Type return W_Base_Type_Id
+      is
+         --  We simply traverse the Lvalue until we find the innermost access;
+         --  the type of the array, or the type of the record field, is the
+         --  expected type.
+      begin
+         case Nkind (Lvalue) is
+            when N_Identifier | N_Expanded_Name =>
+               return Type_Of_Node (Lvalue);
+
+            when N_Indexed_Component =>
+               return Type_Of_Node
+                 (Component_Type (Unique_Entity (Etype (Prefix (Lvalue)))));
+
+            when N_Selected_Component =>
+               return Type_Of_Node (Selector_Name (Lvalue));
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+      end Expected_Type;
+
+   --  Start of processing for Transform_Assignment_Statement
+
+   begin
+      return
+        New_Assignment
+          (Ada_Node => Stmt,
+           Lvalue   => Lvalue,
+           Expr     =>
+             +Transform_Expr (Expression (Stmt),
+                              Expected_Type,
+                              EW_Prog,
+                              Ref_Allowed => True));
+   end Transform_Assignment_Statement;
+
    --------------------
    -- Transform_Attr --
    --------------------
@@ -1739,6 +1706,23 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Attr;
 
+   ---------------------
+   -- Transform_Binop --
+   ---------------------
+
+   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op is
+   begin
+      case Op is
+         when N_Op_Add      => return EW_Add;
+         when N_Op_Subtract => return EW_Substract;
+         when N_Op_Divide   => return EW_Divide;
+         when N_Op_Multiply => return EW_Multiply;
+         when N_Op_Mod      => return EW_Mod;
+         when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
+         when others => raise Program_Error;
+      end case;
+   end Transform_Binop;
+
    -------------------------------
    -- Transform_Block_Statement --
    -------------------------------
@@ -1750,6 +1734,22 @@ package body Gnat2Why.Expr is
    begin
       return Transform_Declarations_Block (Declarations (N), Core);
    end Transform_Block_Statement;
+
+   --------------------------
+   -- Transform_Compare_Op --
+   --------------------------
+
+   function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation is
+   begin
+      case Op is
+         when N_Op_Gt => return EW_Gt;
+         when N_Op_Lt => return EW_Lt;
+         when N_Op_Eq => return EW_Eq;
+         when N_Op_Ge => return EW_Ge;
+         when N_Op_Le => return EW_Le;
+         when N_Op_Ne => return EW_Ne;
+      end case;
+   end Transform_Compare_Op;
 
    ----------------------------------
    -- Transform_Declarations_Block --
@@ -1887,101 +1887,6 @@ package body Gnat2Why.Expr is
       end loop;
       return R;
    end Transform_Declarations_Block;
-
-   ---------------------------------------------
-   -- Transform_Record_Component_Associations --
-   ---------------------------------------------
-
-   function Transform_Record_Component_Associations
-     (Domain      : EW_Domain;
-      Typ         : Entity_Id;
-      Assocs      : List_Id;
-      Ref_Allowed : Boolean) return W_Field_Association_Array
-   is
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean;
-      --  Return whether Association matches Component
-
-      function Number_Components (Typ : Entity_Id) return Natural;
-      --  Count the number of components in record type Typ
-
-      ------------------------------------
-      -- Matching_Component_Association --
-      ------------------------------------
-
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean
-      is
-         CL : constant List_Id := Choices (Association);
-      begin
-         pragma Assert (List_Length (CL) = 1);
-         return Component = Entity (First (CL));
-      end Matching_Component_Association;
-
-      -----------------------
-      -- Number_Components --
-      -----------------------
-
-      function Number_Components (Typ : Entity_Id) return Natural is
-         Count     : Natural := 0;
-         Component : Entity_Id := First_Component (Typ);
-      begin
-         while Component /= Empty loop
-            Count := Count + 1;
-            Component := Next_Component (Component);
-         end loop;
-         return Count;
-      end Number_Components;
-
-      Component   : Entity_Id := First_Component (Typ);
-      Association : Node_Id := Nlists.First (Assocs);
-      Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
-      J           : Positive := Result'First;
-
-   --  Start of Transform_Record_Component_Associations
-
-   begin
-      while Component /= Empty loop
-         declare
-            Expr : W_Expr_Id;
-         begin
-            if Present (Association)
-              and then Matching_Component_Association (Component, Association)
-            then
-               if not Box_Present (Association) then
-                  Expr := Transform_Expr
-                    (Expression (Association),
-                     +Why_Logic_Type_Of_Ada_Type (Etype (Component)),
-                     Domain, Ref_Allowed);
-               else
-                  Expr :=
-                     New_Simpl_Any_Expr
-                         (Domain => Domain,
-                          Arg_Type =>
-                            +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
-               end if;
-               Next (Association);
-            else
-               Expr :=
-                 New_Simpl_Any_Expr
-                   (Domain => Domain,
-                    Arg_Type =>
-                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
-            end if;
-            Result (J) :=
-               New_Field_Association
-                  (Domain => Domain,
-                   Field  => New_Identifier (Full_Name (Component)),
-                   Value  => Expr);
-            J := J + 1;
-            Component := Next_Component (Component);
-         end;
-      end loop;
-      pragma Assert (No (Association));
-      return Result;
-   end Transform_Record_Component_Associations;
 
    -------------------------------
    -- Transform_Discrete_Choice --
@@ -2804,6 +2709,101 @@ package body Gnat2Why.Expr is
          raise Not_Implemented;
       end if;
    end Transform_Quantified_Expression;
+
+   ---------------------------------------------
+   -- Transform_Record_Component_Associations --
+   ---------------------------------------------
+
+   function Transform_Record_Component_Associations
+     (Domain      : EW_Domain;
+      Typ         : Entity_Id;
+      Assocs      : List_Id;
+      Ref_Allowed : Boolean) return W_Field_Association_Array
+   is
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean;
+      --  Return whether Association matches Component
+
+      function Number_Components (Typ : Entity_Id) return Natural;
+      --  Count the number of components in record type Typ
+
+      ------------------------------------
+      -- Matching_Component_Association --
+      ------------------------------------
+
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean
+      is
+         CL : constant List_Id := Choices (Association);
+      begin
+         pragma Assert (List_Length (CL) = 1);
+         return Component = Entity (First (CL));
+      end Matching_Component_Association;
+
+      -----------------------
+      -- Number_Components --
+      -----------------------
+
+      function Number_Components (Typ : Entity_Id) return Natural is
+         Count     : Natural := 0;
+         Component : Entity_Id := First_Component (Typ);
+      begin
+         while Component /= Empty loop
+            Count := Count + 1;
+            Component := Next_Component (Component);
+         end loop;
+         return Count;
+      end Number_Components;
+
+      Component   : Entity_Id := First_Component (Typ);
+      Association : Node_Id := Nlists.First (Assocs);
+      Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
+      J           : Positive := Result'First;
+
+   --  Start of Transform_Record_Component_Associations
+
+   begin
+      while Component /= Empty loop
+         declare
+            Expr : W_Expr_Id;
+         begin
+            if Present (Association)
+              and then Matching_Component_Association (Component, Association)
+            then
+               if not Box_Present (Association) then
+                  Expr := Transform_Expr
+                    (Expression (Association),
+                     +Why_Logic_Type_Of_Ada_Type (Etype (Component)),
+                     Domain, Ref_Allowed);
+               else
+                  Expr :=
+                     New_Simpl_Any_Expr
+                         (Domain => Domain,
+                          Arg_Type =>
+                            +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+               end if;
+               Next (Association);
+            else
+               Expr :=
+                 New_Simpl_Any_Expr
+                   (Domain => Domain,
+                    Arg_Type =>
+                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+            end if;
+            Result (J) :=
+               New_Field_Association
+                  (Domain => Domain,
+                   Field  => New_Identifier (Full_Name (Component)),
+                   Value  => Expr);
+            J := J + 1;
+            Component := Next_Component (Component);
+         end;
+      end loop;
+      pragma Assert (No (Association));
+      return Result;
+   end Transform_Record_Component_Associations;
 
    -------------------------
    -- Transform_Statement --
