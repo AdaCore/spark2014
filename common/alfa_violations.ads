@@ -48,7 +48,6 @@ package Alfa_Violations is
       NYI_Expr_With_Action, --  expression with action
       NYI_Float,            --  float
       NYI_Generic,          --  generics
-      NYI_Impure_Function,  --  impure functions
       NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
       NYI_Pragma,           --  pragma
       NYI_Rep_Clause,       --  representation clause
@@ -69,6 +68,7 @@ package Alfa_Violations is
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
+      NYR_Impure_Function,  --  impure functions
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is Vkind range NYI_Aggregate .. NYI_XXX;
@@ -104,7 +104,6 @@ package Alfa_Violations is
       NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),
       NYI_Float            => To_Unbounded_String ("float"),
       NYI_Generic          => To_Unbounded_String ("generic"),
-      NYI_Impure_Function  => To_Unbounded_String ("impure function"),
       NYI_Multi_Dim_Array  => To_Unbounded_String ("multi dim array"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
@@ -119,6 +118,7 @@ package Alfa_Violations is
       NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
       NIR_Exception        => To_Unbounded_String ("exception"),
       NIR_Goto             => To_Unbounded_String ("goto"),
+      NYR_Impure_Function  => To_Unbounded_String ("impure function"),
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),

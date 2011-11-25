@@ -1719,7 +1719,7 @@ package body Alfa.Definition is
 
    begin
       if Has_Global_Writes (Id) then
-         Mark_Non_Alfa ("function with side-effect", Id, NYI_Impure_Function);
+         Mark_Non_Alfa ("function with side-effect", Id, NYR_Impure_Function);
          return;
       end if;
 
@@ -1731,11 +1731,11 @@ package body Alfa.Definition is
             case Ekind (Param_Id) is
                when E_Out_Parameter =>
                   Mark_Non_Alfa ("function with OUT parameter", Id,
-                                 NYI_Impure_Function);
+                                 NYR_Impure_Function);
                   return;
                when E_In_Out_Parameter =>
                   Mark_Non_Alfa ("function with IN OUT parameter", Id,
-                                 NYI_Impure_Function);
+                                 NYR_Impure_Function);
                   return;
                when others =>
                   null;
