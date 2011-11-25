@@ -68,7 +68,7 @@ package Alfa_Violations is
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
-      NYR_Impure_Function,  --  impure functions
+      NIR_Impure_Function,  --  impure functions
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is Vkind range NYI_Aggregate .. NYI_XXX;
@@ -118,7 +118,7 @@ package Alfa_Violations is
       NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
       NIR_Exception        => To_Unbounded_String ("exception"),
       NIR_Goto             => To_Unbounded_String ("goto"),
-      NYR_Impure_Function  => To_Unbounded_String ("impure function"),
+      NIR_Impure_Function  => To_Unbounded_String ("impure function"),
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
