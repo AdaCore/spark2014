@@ -53,7 +53,6 @@ package Alfa_Violations is
       NYI_Pragma,           --  pragma
       NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
-      NYI_String_Literal,   --  string literal
       NYI_Tagged,           --  tagged type
       NYI_XXX,              --  all other cases
 
@@ -110,7 +109,6 @@ package Alfa_Violations is
       NYI_Pragma           => To_Unbounded_String ("pragma"),
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
-      NYI_String_Literal   => To_Unbounded_String ("string literal"),
       NYI_Tagged           => To_Unbounded_String ("tagged type"),
       NYI_XXX              => To_Unbounded_String ("not yet implemented"),
 

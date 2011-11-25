@@ -80,8 +80,8 @@ package body Alfa.Definition is
       S_Wide_Wide_Character => True,
 
       S_String              => True,
-      S_Wide_String         => False,
-      S_Wide_Wide_String    => False,
+      S_Wide_String         => True,
+      S_Wide_Wide_String    => True,
 
       S_Duration            => True);
 
@@ -1357,7 +1357,7 @@ package body Alfa.Definition is
             end;
 
          when N_String_Literal =>
-            Mark_Non_Alfa ("string literal", N, NYI_String_Literal);
+            null;
 
          when N_Abort_Statement            |
               N_Accept_Statement           |

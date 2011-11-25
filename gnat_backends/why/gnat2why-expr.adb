@@ -671,7 +671,7 @@ package body Gnat2Why.Expr is
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Ref_Allowed => True);
    begin
-      if Has_Dereference (Result) then
+      if Has_Dereference_Or_Any (Result) then
          return Why_Empty;
       else
          return Result;
@@ -894,7 +894,7 @@ package body Gnat2Why.Expr is
 
       while Present (Cur_Formal) and then Present (Cur_Actual) loop
          Handle_Argument (Cur_Formal, Cur_Actual);
-         Cur_Formal := Next_Entity (Cur_Formal);
+         Cur_Formal := Next_Formal (Cur_Formal);
 
          if In_Named then
             Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
@@ -2195,6 +2195,11 @@ package body Gnat2Why.Expr is
          --  * global constants are logics in Why
          --  * global mutable variables are references
          --  * loop parameters are always mutable, and of type int
+
+         when N_String_Literal =>
+            T := +New_Simpl_Any_Prog (T =>
+                     New_Abstract_Type (Name =>
+                        New_Identifier (Type_Of_Node (Expr))));
 
          when N_Identifier | N_Expanded_Name =>
             declare
