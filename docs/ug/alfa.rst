@@ -147,9 +147,7 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 
 * aggregate: array or record aggregate;
 * arithmetic operation: arithmetic operation;
-* array subtype: array subtype;
 * attribute: not yet implemented attribute;
-* block statement: block declare statement;
 * concatenation: array concatenation;
 * conversion: type conversion;
 * container: formal container;
@@ -159,12 +157,8 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * float: float;
 * generic: generic;
 * impure function: functions which write to variables other than parameters;
-* logic function: call to regular function (not an expression function) in annotation;
-* modular: modular integer type;
-* non static range: non static range in type;
-* 'Old attribute: 'Old attribute applied to something else than object name;
+* multi dim array: multi-dimensional array of dimention > 2;
 * pragma: not yet implemented pragma;
-* qualification: type qualification;
 * representation clause: representation clause;
 * slice: array slice;
 * string literal: string literal;
