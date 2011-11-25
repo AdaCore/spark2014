@@ -5,6 +5,6 @@ pack.adb:17:10: explicit dereference is not in Alfa
 pack.adb:18:13: explicit dereference is not in Alfa
 pack.ads:4:08: type is not in Alfa
 pack.ads:4:26: allocator is not in Alfa
-pack.ads:6:13: warning: function with side-effect is not yet implemented in Alfa
+pack.ads:6:13: warning: function with side-effect is not in Alfa
 pack.ads:7:18: explicit dereference is not in Alfa
 
