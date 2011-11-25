@@ -212,6 +212,8 @@ package body Gnat2Why.Expr is
       Current_Type : out W_Base_Type_Id;
       Ref_Allowed  : Boolean) return W_Expr_Id;
 
+   procedure Transform_String_Literal (File : W_File_Sections; N : Node_Id);
+
    function Transform_Array_Component_Associations
      (Expr        : Node_Id;
       Typ         : Entity_Id;
@@ -2102,9 +2104,10 @@ package body Gnat2Why.Expr is
          --  * loop parameters are always mutable, and of type int
 
          when N_String_Literal =>
-            T := +New_Simpl_Any_Prog (T =>
-                     New_Abstract_Type (Name =>
-                        New_Identifier (Type_Of_Node (Expr))));
+            if not (Ada_To_Why_Term (Ref_Allowed).Contains (Expr)) then
+               Transform_String_Literal (Current_Why_Output_File, Expr);
+            end if;
+            T := +Ada_To_Why_Term (Ref_Allowed).Element (Expr);
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -3004,6 +3007,25 @@ package body Gnat2Why.Expr is
       end loop;
       return Result;
    end Transform_Statements;
+
+   procedure Transform_String_Literal (File : W_File_Sections; N : Node_Id)
+   is
+      Id       : constant W_Identifier_Id := New_Temp_Identifier;
+      Ty       : constant Entity_Id := Type_Of_Node (N);
+      Why_Type : constant W_Primitive_Type_Id :=
+         +Why_Logic_Type_Of_Ada_Type (Ty);
+   begin
+      Emit
+        (File (W_File_Logic_Func),
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Id,
+            Binders     => (1 .. 0 => <>),
+            Return_Type => Why_Type));
+
+      Ada_To_Why_Term (True).Include (N, +Id);
+      Ada_To_Why_Term (False).Include (N, +Id);
+   end Transform_String_Literal;
 
    ------------------
    -- Type_Of_Node --
