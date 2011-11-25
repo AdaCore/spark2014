@@ -1,0 +1,5 @@
+dir.adb:17:7: (info) range check proved
+dir.adb:18:7: (info) range check proved
+dir.adb:23:13: (info) range check proved
+dir.adb:8:13: (info) range check proved
+
