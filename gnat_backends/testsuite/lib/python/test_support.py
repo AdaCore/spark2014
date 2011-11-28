@@ -11,7 +11,7 @@ import shutil
 import json
 
 max_steps = 2000
-default_timeout = 40
+default_timeout = 120
 parallel_procs = 1
 #  Change directory
 
