@@ -184,7 +184,7 @@ package body Database is
 
    function Num_Accounts return Natural is
    begin
-      return Availability.Num_Available;
+      return (Max_Account_Num - Availability.Num_Available);
    end Num_Accounts;
 
    --------------
