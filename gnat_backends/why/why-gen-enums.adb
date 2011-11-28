@@ -77,7 +77,7 @@ package body Why.Gen.Enums is
       Match    : constant W_Match_Unchecked_Id :=
                    New_Unchecked_Match;
       Cur      : Cursor := First (Constructors);
-      Cnt      : Uint := Uint_1;
+      Cnt      : Uint := Uint_0;
    begin
       Match_Set_Term (Match, New_Term (Arg_Name));
       while Has_Element (Cur) loop
