@@ -1888,7 +1888,7 @@ package body Gnat2Why.Expr is
                begin
                   if Present (Base) then
                      case Ekind (Ent) is
-                        when Discrete_Kind | Float_Kind =>
+                        when Discrete_Kind | Real_Kind =>
                            Assume_of_Scalar_Subtype (Ent, Base, R);
 
                         when Array_Kind =>
