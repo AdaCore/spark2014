@@ -1769,7 +1769,11 @@ package body Gnat2Why.Expr is
       Core : constant W_Prog_Id :=
          Transform_Statements (Statements (Handled_Statement_Sequence (N)));
    begin
-      return Transform_Declarations_Block (Declarations (N), Core);
+      if Present (Declarations (N)) then
+         return Transform_Declarations_Block (Declarations (N), Core);
+      else
+         return Core;
+      end if;
    end Transform_Block_Statement;
 
    --------------------------
