@@ -1,8 +1,9 @@
+p.adb:12:18: (info) range check proved
+p.adb:17:18: (info) range check proved
 p.adb:4:22: (info) loop invariant initialization proved
 p.adb:4:22: (info) loop invariant preservation proved
 p.adb:5:10: (info) index check proved
 p.adb:5:18: (info) index check proved
-p.ads:9:15: postcondition not proved
-++ p__shadow_effect p.ads:8
-*+ p__p p.ads:11 [attribute]
-*+ p__q p.ads:15 [attribute]
+p.ads:10:15: postcondition not proved
+p.ads:15:30: postcondition not proved
+p.ads:20:30: (info) postcondition proved

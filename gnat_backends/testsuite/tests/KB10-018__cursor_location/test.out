@@ -4,7 +4,10 @@ cursor_location.adb:12:42: (info) index check proved
 cursor_location.adb:19:18: (info) index check proved
 cursor_location.adb:19:51: (info) index check proved
 cursor_location.adb:28:29: (info) range check proved
+cursor_location.adb:29:21: (info) range check proved
 cursor_location.adb:30:32: (info) range check proved
+cursor_location.adb:31:21: (info) range check proved
+cursor_location.adb:33:21: (info) range check proved
 cursor_location.ads:10:23: (info) range check proved
 cursor_location.ads:11:24: (info) range check proved
 cursor_location.ads:18:10: (info) index check proved
