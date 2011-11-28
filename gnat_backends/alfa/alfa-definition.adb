@@ -1510,6 +1510,10 @@ package body Alfa.Definition is
               Attribute_First  |
               Attribute_Last   |
               Attribute_Length |
+              Attribute_Succ   |
+              Attribute_Pred   |
+              Attribute_Val    |
+              Attribute_Pos    |
               Attribute_Old =>
             null;
 

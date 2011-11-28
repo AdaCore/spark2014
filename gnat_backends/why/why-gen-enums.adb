@@ -130,7 +130,8 @@ package body Why.Gen.Enums is
       My_Type  : constant W_Primitive_Type_Id :=
                    New_Abstract_Type
                      (Name => New_Identifier (Name));
-      Max_Uint : constant Uint := UI_From_Int (Int (Len));
+      Min_Uint : constant Uint := Uint_0;
+      Max_Uint : constant Uint := UI_From_Int (Int (Len) - 1);
    begin
       pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
@@ -146,7 +147,7 @@ package body Why.Gen.Enums is
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Scalar_Attributes
         (File, Name, EW_Int,
-         New_Constant (Uint_1), New_Constant (Max_Uint), Why_Empty);
+         New_Constant (Min_Uint), New_Constant (Max_Uint), Why_Empty);
       Define_Range_Predicate (File, Name, EW_Int);
       Emit
         (File (W_File_Prog),
@@ -162,7 +163,7 @@ package body Why.Gen.Enums is
             Pre         =>
               New_Relation
                 (Op_Type => EW_Int,
-                 Left    => New_Integer_Constant (Value => Uint_1),
+                 Left    => New_Integer_Constant (Value => Min_Uint),
                  Op      => EW_Le,
                  Right   => +New_Term ("x"),
                  Op2     => EW_Le,

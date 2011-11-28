@@ -31,13 +31,11 @@ with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
-with String_Utils;       use String_Utils;
 with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
@@ -185,29 +183,9 @@ package body Gnat2Why.Types is
 
       else
          case Ekind (Ident_Node) is
-            when E_Enumeration_Type =>
-               declare
-                  Constructors : String_Lists.List := String_Lists.Empty_List;
-                  Cur_Lit      : Entity_Id :=
-                                   First_Literal (Ident_Node);
-               begin
-                  while Present (Cur_Lit) loop
-                     Constructors.Append (Full_Name (Cur_Lit));
-                     Next_Literal (Cur_Lit);
-                  end loop;
-                  Declare_Ada_Enum_Type (File, Name_Str, Constructors);
-               end;
-
-            --  Note that enumeration subtypes are represented as signed int
-            --  abstract types; this allows to do conversions between subtypes
-            --  using int as an "universal" intermediate step.
-            --  Boolean subtypes is not a special case here: there are
-            --  represented as signed abstract type as well. This may be
-            --  changed in medium term; more details about that in
-            --  why-inter.adb:Get_EW_Term_Type.
-
             when E_Signed_Integer_Type
                | E_Signed_Integer_Subtype
+               | E_Enumeration_Type
                | E_Enumeration_Subtype =>
                Declare_Ada_Abstract_Signed_Int_From_Range
                  (File,

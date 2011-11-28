@@ -207,10 +207,11 @@ package body Gnat2Why.Expr is
    --  using Ada_Node for its source location.
 
    function Transform_Attr
-     (Expr         : Node_Id;
-      Domain       : EW_Domain;
-      Current_Type : out W_Base_Type_Id;
-      Ref_Allowed  : Boolean) return W_Expr_Id;
+     (Expr          : Node_Id;
+      Expected_Type : W_Base_Type_Id;
+      Domain        : EW_Domain;
+      Current_Type  : out W_Base_Type_Id;
+      Ref_Allowed   : Boolean) return W_Expr_Id;
 
    procedure Transform_String_Literal (File : W_File_Sections; N : Node_Id);
 
@@ -1620,10 +1621,11 @@ package body Gnat2Why.Expr is
    --------------------
 
    function Transform_Attr
-     (Expr         : Node_Id;
-      Domain       : EW_Domain;
-      Current_Type : out W_Base_Type_Id;
-      Ref_Allowed  : Boolean) return W_Expr_Id
+     (Expr          : Node_Id;
+      Expected_Type : W_Base_Type_Id;
+      Domain        : EW_Domain;
+      Current_Type  : out W_Base_Type_Id;
+      Ref_Allowed   : Boolean) return W_Expr_Id
    is
       Aname   : constant Name_Id := Attribute_Name (Expr);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
@@ -1654,6 +1656,39 @@ package body Gnat2Why.Expr is
                              Tag    => NID (""),
                              Domain => Domain);
             end if;
+
+         when Attribute_Pred | Attribute_Succ =>
+            declare
+               Op  : constant EW_Binary_Op :=
+                  (if Attr_Id = Attribute_Succ then EW_Add else EW_Substract);
+               Old : constant W_Expr_Id :=
+                  Transform_Expr (First (Expressions (Expr)),
+                                  EW_Int_Type,
+                                  Domain,
+                                  Ref_Allowed);
+            begin
+               T :=
+                 New_Binary_Op
+                   (Ada_Node => Expr,
+                    Left     => Old,
+                    Right    => New_Integer_Constant (Value => Uint_1),
+                    Op       => Op,
+                    Op_Type  => EW_Int);
+               Current_Type := EW_Int_Type;
+            end;
+
+         when Attribute_Pos =>
+            T := Transform_Expr (First (Expressions (Expr)),
+                                 EW_Int_Type,
+                                 Domain,
+                                 Ref_Allowed);
+            Current_Type := EW_Int_Type;
+
+         when Attribute_Val =>
+            T := Transform_Expr (First (Expressions (Expr)),
+                                 Expected_Type,
+                                 Domain,
+                                 Ref_Allowed);
 
          when Attribute_First | Attribute_Last | Attribute_Length =>
             case Ekind (Etype (Var)) is
@@ -1965,8 +2000,10 @@ package body Gnat2Why.Expr is
       --  conversion. We do so here by modifying the Current_Type; the
       --  conversion itself will be inserted by Transform_Expr.
 
-      Current_Type := EW_Abstract (Etype (Entity (Enum)));
-      return +Transform_Ident (Enum);
+      Current_Type := EW_Int_Type;
+      return New_Integer_Constant
+               (Ada_Node => Enum,
+                Value    => Enumeration_Pos (Entity (Enum)));
    end Transform_Enum_Literal;
 
    --------------------
@@ -2492,7 +2529,11 @@ package body Gnat2Why.Expr is
                                    Ref_Allowed);
 
          when N_Attribute_Reference =>
-            T := Transform_Attr (Expr, Domain, Current_Type, Ref_Allowed);
+            T := Transform_Attr (Expr,
+                                 Expected_Type,
+                                 Domain,
+                                 Current_Type,
+                                 Ref_Allowed);
 
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node
