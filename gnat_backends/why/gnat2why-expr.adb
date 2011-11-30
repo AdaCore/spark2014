@@ -1843,9 +1843,9 @@ package body Gnat2Why.Expr is
       begin
 
          --  Full type declarations can only require checks when they are
-         --  discrete types, and then only when the range is non-static.
+         --  scalar types, and then only when the range is non-static.
          if Nkind (N) = N_Full_Type_Declaration then
-            if Ekind (Ent) in Discrete_Kind | Float_Kind then
+            if Ekind (Ent) in Scalar_Kind then
                if Is_Static_Range (Get_Range (Ent)) then
                   return Empty;
                end if;
