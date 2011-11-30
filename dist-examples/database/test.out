@@ -1,4 +1,3 @@
-
 database.adb:111:21: (info) range check proved
 database.adb:112:10: (info) index check proved
 database.adb:113:29: (info) index check proved
@@ -28,6 +27,8 @@ database.adb:157:30: (info) range check proved
 database.adb:162:30: (info) overflow check proved
 database.adb:162:30: (info) range check proved
 database.adb:164:13: (info) index check proved
+database.adb:187:30: (info) overflow check proved
+database.adb:187:30: (info) range check proved
 database.adb:206:7: (info) index check proved
 database.adb:208:55: (info) range check proved
 database.adb:214:8: (info) index check proved

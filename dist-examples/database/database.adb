@@ -53,7 +53,7 @@ package body Database is
                    (if Act /= Account then
                       Links (Act).Available = Links'Old (Act).Available));
 
-      function Num_Available return Natural;
+      function Num_Available return Ext_Account_Num;
 
    end Availability;
 
@@ -134,11 +134,11 @@ package body Database is
          First_Available := Account;
       end Make_Available;
 
-      function Num_Available return Natural is
-         Count : Natural := 0;
+      function Num_Available return Ext_Account_Num is
+         Count : Ext_Account_Num := 0;
       begin
          for I in Account_Num loop
-            pragma Assert (Count < Natural(I));
+            pragma Assert (Count < I);
             if Is_Available (I) then
                Count := Count + 1;
             end if;
@@ -182,9 +182,9 @@ package body Database is
    -- Num_Accounts --
    ------------------
 
-   function Num_Accounts return Natural is
+   function Num_Accounts return Ext_Account_Num is
    begin
-      return (Max_Account_Num - Availability.Num_Available);
+      return Max_Account_Num - Availability.Num_Available;
    end Num_Accounts;
 
    --------------
