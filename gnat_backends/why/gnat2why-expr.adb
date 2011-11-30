@@ -704,7 +704,7 @@ package body Gnat2Why.Expr is
 
          when N_Defining_Identifier =>
             case Ekind (N) is
-               when Discrete_Or_Fixed_Point_Kind | Float_Kind =>
+               when Scalar_Kind =>
                   return Get_Range (Scalar_Range (N));
 
                when Object_Kind =>
@@ -1719,7 +1719,7 @@ package body Gnat2Why.Expr is
                   end if;
                   Current_Type := EW_Int_Type;
 
-               when Enumeration_Kind | Integer_Kind =>
+               when Discrete_Kind =>
                   T :=
                     +Attr_Name.Id
                       (Full_Name (Etype (Var)),
@@ -1902,7 +1902,7 @@ package body Gnat2Why.Expr is
                begin
                   if Present (Base) then
                      case Ekind (Ent) is
-                        when Discrete_Kind | Real_Kind =>
+                        when Scalar_Kind =>
                            Assume_of_Scalar_Subtype (Ent, Base, R);
 
                         when Array_Kind =>

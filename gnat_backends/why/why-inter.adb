@@ -241,7 +241,7 @@ package body Why.Inter is
          when Real_Kind =>
             return EW_Real;
 
-         when Integer_Kind | Enumeration_Kind =>
+         when Discrete_Kind =>
             --  In the case of Standard.Boolean, the base type 'bool' is
             --  used directly. For its subtypes, however, an abstract type
             --  representing a signed int is generated, just like for any
