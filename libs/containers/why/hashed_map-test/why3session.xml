@@ -1,0 +1,2884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session SYSTEM "why3session.dtd">
+<why3session
+ name="hashed_map-test/why3session.xml">
+ <prover
+  id="alt-ergo"
+  name="Alt-Ergo"
+  version="0.93.1"/>
+ <prover
+  id="coq"
+  name="Coq"
+  version="8.3pl1"/>
+ <prover
+  id="cvc3"
+  name="CVC3"
+  version="2.4.1"/>
+ <prover
+  id="simplify"
+  name="Simplify"
+  version="1.5.4"/>
+ <prover
+  id="z3"
+  name="Z3"
+  version="3.2"/>
+ <file
+  name="../hashed_map-test.mlw"
+  verified="false"
+  expanded="true">
+  <theory
+   name="WP Main"
+   verified="false"
+   expanded="true">
+   <goal
+    name="containsinsert"
+    sum="bd26132dbea06f8c75a80f00c7e76df6"
+    proved="true"
+    expanded="false"
+    shape="acontainsV0V4Oainfix =V4awitnessV2IacontainsV1V4Iainsert_V0V2V3V1FacontainsV1V4ainsert_V0V2V3V1acontainsV0V4ainsert_V0V2V3V1FFFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="2.69"/>
+    </proof>
+   </goal>
+   <goal
+    name="containsdelete"
+    sum="1cc325427af2e571b870cb9e52ff4ba5"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V3awitnessakey_V0V2NAacontainsV0V3IacontainsV1V3Iadelete_V0V2V1FacontainsV1V3adelete_V0V2V1acontainsV0V3adelete_V0V2V1FFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.22"/>
+    </proof>
+   </goal>
+   <goal
+    name="insert_has_element"
+    sum="3d952e484fca22b40f576511d454ace2"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V4afind_V3awitnessV1Oahas_elementV0V4Iahas_elementV3V4Iainsert_V0V1V2V3Fahas_elementV3V4ainsert_V0V1V2V3FFFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.39"/>
+    </proof>
+   </goal>
+   <goal
+    name="delete_has_element"
+    sum="b22ff2552219db07865b49633515ebfe"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V3V1NAahas_elementV0V3Iahas_elementV2V3Iadelete_V0V1V2Fahas_elementV2V3adelete_V0V1V2FFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.05"/>
+    </proof>
+   </goal>
+   <goal
+    name="position_right"
+    sum="af16361916c9ee65973c527c2bbb3ca8"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement_V0V2aelement_aright_V0V1V2Aainfix =akey_V0V2akey_aright_V0V1V2Aainfix >=aposition_V0V2aposition_V0V1Iainfix >aposition_aright_V0V1V2c0Iahas_elementV0V1Faelement_aright_V0V1V2akey_aright_V0V1V2aposition_aright_V0V1V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="1.33"/>
+    </proof>
+   </goal>
+   <goal
+    name="left_find"
+    sum="7d70bc036bd85f9f38ef51fe3da0bcfb"
+    proved="true"
+    expanded="false"
+    shape="ainfix =afind_aleft_V0anext_V0V1V2V1Oainfix =afind_aleft_V0anext_V0V1V2afind_aleft_V0V1V2Iacontainsaleft_V0anext_V0V1V2Iahas_elementV0V1Facontainsaleft_V0anext_V0V1V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="38.60"/>
+    </proof>
+   </goal>
+   <goal
+    name="left_contains"
+    sum="262fe89920a14f9a0ce537758500c630"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V2awitnessakey_V0V1Oacontainsaleft_V0V1V2qacontainsaleft_V0anext_V0V1V2Iahas_elementV0V1Facontainsaleft_V0anext_V0V1V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="49.94"/>
+    </proof>
+   </goal>
+   <goal
+    name="containsleft"
+    sum="92ac26241496bdc58130258d26961a3b"
+    proved="true"
+    expanded="false"
+    shape="acontainsaleft_V0V1awitnessakey_V0V1NIahas_elementV0V1Facontainsaleft_V0V1awitnessakey_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="13.32"/>
+    </proof>
+   </goal>
+   <goal
+    name="containselement"
+    sum="6d8fa7e25eb53cc0d52a955daa9825c5"
+    proved="true"
+    expanded="false"
+    shape="acontainsV0awitnessakey_V0V1Iahas_elementV0V1FacontainsV0awitnessakey_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.05"/>
+    </proof>
+   </goal>
+   <goal
+    name="delete_next"
+    sum="a00cd52940a63bf2fdfc0f9669db7f17"
+    proved="true"
+    expanded="false"
+    shape="ainfix =anext_V0V1ano_elementOahas_elementV2anext_V0V1Iadelete_V0V1V2Fahas_elementV2anext_V0V1adelete_V0V1V2FFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.11"/>
+    </proof>
+   </goal>
+   <goal
+    name="lengthleft"
+    sum="8426b38ec1555f73a90d03768cb80941"
+    proved="true"
+    expanded="false"
+    shape="ainfix =alengthaleft_V0V1ainfix -aposition_V0V1c1Iahas_elementV0V1Falengthaleft_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="equal_refl"
+    sum="37b6791d9538cf23ad7ba160e79d2d28"
+    proved="true"
+    expanded="false"
+    shape="astrict_equalV1V0Iastrict_equalV0V1Fastrict_equalV1V0F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.04"/>
+    </proof>
+   </goal>
+   <goal
+    name="has_elementnext_right"
+    sum="b8615e4766ea32d3f3b31d8b72775273"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementaright_V0V1anext_V0V1Iahas_elementV0anext_V0V1Iahas_elementV0V1Fahas_elementaright_V0V1anext_V0V1aright_V0V1ahas_elementV0anext_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.10"/>
+    </proof>
+   </goal>
+   <goal
+    name="has_elementright"
+    sum="9e9d08e011ec701be557f6a576940ec4"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV0V2Iahas_elementaright_V0V1V2Fahas_elementaright_V0V1V2aright_V0V1ahas_elementV0V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.06"/>
+    </proof>
+   </goal>
+   <goal
+    name="equal_has_element"
+    sum="b7ef190a31d16f482b8c24ac7a1ac7ec"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV1V2Iastrict_equalV0V1Iahas_elementV0V2Fahas_elementV1V2astrict_equalV0V1FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.03"/>
+    </proof>
+   </goal>
+   <goal
+    name="right_equal_next"
+    sum="9276843bb4ff8f5a5765e9ed97b68fd0"
+    proved="true"
+    expanded="false"
+    shape="ainfix =anext_V0V1anext_V2V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1Fanext_V0V1astrict_equalaright_V0V1aright_V2V1FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="49.44"/>
+    </proof>
+   </goal>
+   <goal
+    name="interm1"
+    sum="b23451c3c3b3818400cc1227e8101263"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aposition_aright_V2anext_V2V1V3c0Iainfix <=aposition_V2V3aposition_V2V1Aainfix =aposition_aright_V0anext_V0V1V3c0Iainfix <=aposition_V0V3aposition_V0V1Aainfix =akey_aright_V2V1V3akey_aright_V2anext_V2V1V3Aainfix =akey_aright_V0anext_V0V1V3akey_aright_V0V1V3Aainfix =akey_aright_V0V1V3akey_aright_V2V1V3Aainfix =aelement_aright_V2anext_V2V1V3aelement_aright_V2V1V3Aainfix =aelement_aright_V0anext_V0V1V3aelement_aright_V0V1V3Aainfix =aelement_aright_V0V1V3aelement_aright_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Aainfix =aposition_aright_V2V1V3aposition_aright_V0V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Aainfix =anext_V0V1anext_V2V1Aainfix >aposition_V2V3aposition_V2V1qainfix >aposition_V0V3aposition_V0V1Aainfix =aposition_aright_V2anext_V2V1V3ainfix -aposition_aright_V2V1V3c1Iainfix >aposition_V2V3aposition_V2V1Aainfix =aposition_aright_V0anext_V0V1V3ainfix -aposition_aright_V0V1V3c1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="interm1.1"
+      sum="dacba1ec1f67ebc8dd23031c31fe9fb6"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aposition_aright_V0anext_V0V1V3ainfix -aposition_aright_V0V1V3c1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="31.96"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.2"
+      sum="e707d8860965ea6f86a5caae155a0e84"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aposition_aright_V2anext_V2V1V3ainfix -aposition_aright_V2V1V3c1Iainfix >aposition_V2V3aposition_V2V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="28.25"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.3"
+      sum="7eba1bc1e38ba6ce18db77cfcde29f7c"
+      proved="true"
+      expanded="false"
+      shape="ainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="7.14"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.4"
+      sum="36c3ae79e08200336c6392da4f7cdcae"
+      proved="true"
+      expanded="false"
+      shape="ainfix >aposition_V0V3aposition_V0V1Iainfix >aposition_V2V3aposition_V2V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="6.08"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.5"
+      sum="7779380bbfc02232020a7fe52c647884"
+      proved="true"
+      expanded="false"
+      shape="ainfix =anext_V0V1anext_V2V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.6"
+      sum="b3c95ec454492497e0b9c1277f80847f"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aposition_aright_V2V1V3aposition_aright_V0V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.05"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.7"
+      sum="b09703b1fa9aa48c7ee118b3248213aa"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aelement_aright_V0V1V3aelement_aright_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.28"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.8"
+      sum="c07b076e0123ae365522eab23c62f8a2"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aelement_aright_V0anext_V0V1V3aelement_aright_V0V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="9.12"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.9"
+      sum="c62d7ae59bf80d055b1f9f9b5558525a"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aelement_aright_V2anext_V2V1V3aelement_aright_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="10.92"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.10"
+      sum="1d932d468b41e39b6db5bdac479d5a47"
+      proved="true"
+      expanded="false"
+      shape="ainfix =akey_aright_V0V1V3akey_aright_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.28"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.11"
+      sum="7d0283764b76c84f4bd362b7cf10425d"
+      proved="true"
+      expanded="false"
+      shape="ainfix =akey_aright_V0anext_V0V1V3akey_aright_V0V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="9.12"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.12"
+      sum="ab05eaaf77aa872f727b0ef7939aa6b9"
+      proved="true"
+      expanded="false"
+      shape="ainfix =akey_aright_V2V1V3akey_aright_V2anext_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="10.43"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.13"
+      sum="4922f83cde09f5b006543063b3b45e10"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aposition_aright_V0anext_V0V1V3c0Iainfix <=aposition_V0V3aposition_V0V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.21"/>
+      </proof>
+     </goal>
+     <goal
+      name="interm1.14"
+      sum="4532f2d6ea8a0d4f5aa7099812c919cb"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aposition_aright_V2anext_V2V1V3c0Iainfix <=aposition_V2V3aposition_V2V1Iastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.20"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="interm2"
+    sum="2b3d0d2c23adcacc3ae17647046292b5"
+    proved="true"
+    expanded="false"
+    shape="ainfix =akey_aright_V0anext_V0V1V3akey_aright_V2anext_V0V1V3Aainfix =aelement_aright_V0anext_V0V1V3aelement_aright_V2anext_V0V1V3Aainfix =aposition_aright_V0anext_V0V1V3aposition_aright_V2anext_V0V1V3Oainfix =aposition_aright_V0anext_V0V1V3c0Aainfix =aposition_aright_V2anext_V0V1V3c0Iainfix =aposition_aright_V2anext_V2V1V3c0Iainfix <=aposition_V2V3aposition_V2V1Aainfix =aposition_aright_V0anext_V0V1V3c0Iainfix <=aposition_V0V3aposition_V0V1Aainfix =akey_aright_V2V1V3akey_aright_V2anext_V2V1V3Aainfix =akey_aright_V0anext_V0V1V3akey_aright_V0V1V3Aainfix =akey_aright_V0V1V3akey_aright_V2V1V3Aainfix =aelement_aright_V2anext_V2V1V3aelement_aright_V2V1V3Aainfix =aelement_aright_V0anext_V0V1V3aelement_aright_V0V1V3Aainfix =aelement_aright_V0V1V3aelement_aright_V2V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Aainfix =aposition_aright_V2V1V3aposition_aright_V0V1V3Iainfix >aposition_V2V3aposition_V2V1Iainfix >aposition_V0V3aposition_V0V1Aainfix =anext_V0V1anext_V2V1Aainfix >aposition_V2V3aposition_V2V1qainfix >aposition_V0V3aposition_V0V1Aainfix =aposition_aright_V2anext_V2V1V3ainfix -aposition_aright_V2V1V3c1Iainfix >aposition_V2V3aposition_V2V1Aainfix =aposition_aright_V0anext_V0V1V3ainfix -aposition_aright_V0V1V3c1Iainfix >aposition_V0V3aposition_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.55"/>
+    </proof>
+   </goal>
+   <goal
+    name="interm3"
+    sum="63eb417e3154a20b18ba7219f6ebbf18"
+    proved="true"
+    expanded="false"
+    shape="astrict_equalaright_V0anext_V0V1aright_V2anext_V0V1Iainfix =akey_aright_V0anext_V0V1V4akey_aright_V2anext_V0V1V4Aainfix =aelement_aright_V0anext_V0V1V4aelement_aright_V2anext_V0V1V4Aainfix =aposition_aright_V0anext_V0V1V4aposition_aright_V2anext_V0V1V4Oainfix =aposition_aright_V0anext_V0V1V4c0Aainfix =aposition_aright_V2anext_V0V1V4c0FIastrict_equalaright_V0V1aright_V2V1Iahas_elementV0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="44.67"/>
+    </proof>
+   </goal>
+   <goal
+    name="equal_trans"
+    sum="e5c86a967071bb0b3104274255c1c7c5"
+    proved="true"
+    expanded="false"
+    shape="astrict_equalV0V2Iastrict_equalV1V2Iastrict_equalV0V1Fastrict_equalV0V2astrict_equalV0V1astrict_equalV0V2astrict_equalV1V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.06"/>
+    </proof>
+   </goal>
+   <goal
+    name="left_length"
+    sum="04ee8cdb780100ef4c1950116caab4c3"
+    proved="true"
+    expanded="false"
+    shape="ainfix =ainfix +alengthaleft_V0V2c1alengthaleft_V0anext_V0V2Iahas_elementV0V2Falengthaleft_V0anext_V1V2FFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.16"/>
+    </proof>
+   </goal>
+   <goal
+    name="has_elementleft"
+    sum="18444c86bbc3c6e38baa0c864b7e512c"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV0V2Iahas_elementaleft_V0V1V2Iainfix =V1ano_elementOahas_elementV0V1Fahas_elementV0V2aleft_V0V1ahas_elementaleft_V0V1V2FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.92"/>
+    </proof>
+   </goal>
+   <goal
+    name="key_find"
+    sum="26c84e8ffaf0c498914d6ddaff54d5e4"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V1awitnessakey_V0afind_V0V1Iainfix >aposition_V0afind_V0V1c0Fawitnessakey_V0afind_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.04"/>
+    </proof>
+   </goal>
+   <goal
+    name="element__left_nxt"
+    sum="ff4814e794f14c0837f7df97902ae2b5"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement__aleft_V1V2V0aelement__aleft_V1anext_V1V2V0Aacontainsaleft_V1V2V0Oainfix =aelement_V1V2aelement__aleft_V1anext_V1V2V0Aainfix =V0awitnessakey_V1V2Iacontainsaleft_V1anext_V1V2V0Iahas_elementV1V2Faelement__aleft_V1anext_V1V2V0FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="14.69"/>
+    </proof>
+   </goal>
+   <goal
+    name="element__left"
+    sum="18b6b27b554125096255b67cb1841332"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement__aleft_V1V2V0aelement__V1V0Iacontainsaleft_V1V2V0Iahas_elementV1V2Oainfix =V2ano_elementFaelement__aleft_V1V2V0FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="15.85"/>
+    </proof>
+   </goal>
+   <goal
+    name="element_element"
+    sum="338f3d67305d15f1ca95cdc54c95d577"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement__V0awitnessakey_V0V1aelement_V0V1Iahas_elementV0V1Faelement__V0awitnessakey_V0V1F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.72"/>
+    </proof>
+   </goal>
+   <goal
+    name="element__insert"
+    sum="eb975b45a07ed60fddfc07e5d9fb9bd6"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement__V2V0V4Aainfix =V0awitnessV3Oainfix =aelement__V1V0aelement__V2V0AacontainsV1V0IacontainsV2V0Iainsert_V1V3V4V2Faelement__V2V0ainsert_V1V3V4V2FFFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="4.21"/>
+    </proof>
+   </goal>
+   <goal
+    name="lift"
+    sum="7b4e0af81077cf5dab8497cf44716016"
+    proved="true"
+    expanded="false"
+    shape="ainfix =awitnessV2V0EIacontainsV1V0FacontainsV1V0F">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.08"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_replace_element1"
+    expl="parameter test_replace_element1"
+    sum="3b785c2ea6036c1ce293edff6e97e918"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aposition_V5V1aposition_V4V1Aainfix =aelement__V5awitnessV2aelement__V4awitnessV2Aahas_elementV5V1Aainfix =aelement_V5V1aelement_V4V1Aainfix =aelement_V5V0V3Iareplace_element_V4V0V3V5FAainfix >aposition_V4V0c0Iainfix =awitnessV2awitnessakey_V4V0NAacontainsV4awitnessV2Aainfix =V0V1NAahas_elementV4V1Aahas_elementV4V0FFFFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.43"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_replace_element2"
+    expl="parameter test_replace_element2"
+    sum="f9a519663d0da9e5accc16454804f06f"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV3V0Aainfix =aelement_V3V0V1Aap_forall_contV3Iareplace_element_V2V0V1V3FAainfix >aposition_V2V0c0Iap_forall_contV2AapV1Aahas_elementV2V0FFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="1.58"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_insert1"
+    expl="parameter test_insert1"
+    sum="8007e3363d73219af4599501fa240ac3"
+    proved="true"
+    expanded="false"
+    shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5ainfix +alengthV4c1Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =aelement__V5awitnessV3aelement__V4awitnessV3Iainfix =awitnessV0awitnessV3NAainfix =akey_V5V2akey_V4V2AacontainsV5awitnessV0Aap_forall_contV5Iainsert_V4V0V1V5FAacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_insert1.1"
+      expl="precondition"
+      sum="85a3a4a018153cd4c3dd0d26d2d76649"
+      proved="true"
+      expanded="false"
+      shape="acontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_insert1.2"
+      expl="normal postcondition"
+      sum="ef587d9307ff2c584fc9d60366541226"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5ainfix +alengthV4c1Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =aelement__V5awitnessV3aelement__V4awitnessV3Iainfix =awitnessV0awitnessV3NAainfix =akey_V5V2akey_V4V2AacontainsV5awitnessV0Aap_forall_contV5Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_insert1.2.1"
+        expl="parameter test_insert1"
+        sum="4932fef296e5a9d5af6141bc3d07432b"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contV5Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.52"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.2"
+        expl="parameter test_insert1"
+        sum="4bcb5e5b648cb10c473f5c5178b61ff2"
+        proved="true"
+        expanded="false"
+        shape="acontainsV5awitnessV0Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.3"
+        expl="parameter test_insert1"
+        sum="3a38082653bfd9f9ef6adc22e3cfe64a"
+        proved="true"
+        expanded="false"
+        shape="ainfix =akey_V5V2akey_V4V2Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.07"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.4"
+        expl="parameter test_insert1"
+        sum="f2a7f77d27b4423c917707138e8256e0"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__V5awitnessV3aelement__V4awitnessV3Iainfix =awitnessV0awitnessV3NIainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.10"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.5"
+        expl="parameter test_insert1"
+        sum="fa542f15af0f92b7e02cd6de22b6e131"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement_V5V2aelement_V4V2Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.07"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.6"
+        expl="parameter test_insert1"
+        sum="ad73f6c8ff9c87af619315605e5ec55b"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__V5awitnessV0V1Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.04"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.7"
+        expl="parameter test_insert1"
+        sum="33faed1b094969539ce249406bafd177"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthV5ainfix +alengthV4c1Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert1.2.8"
+        expl="parameter test_insert1"
+        sum="a0c91311fb762ce3635072e4c9fafe65"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Iainsert_V4V0V1V5FIacontainsV4awitnessV0NIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_include1"
+    expl="normal postcondition"
+    sum="7ac7e96d3f73e68b0d25b9fd67d93b45"
+    proved="true"
+    expanded="false"
+    shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5ainfix +alengthV4c1Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =akey_V5V2akey_V4V2AacontainsV5awitnessV0Aap_forall_contV5Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_include1.1"
+      expl="normal postcondition"
+      sum="7ac7e96d3f73e68b0d25b9fd67d93b45"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5ainfix +alengthV4c1Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =akey_V5V2akey_V4V2AacontainsV5awitnessV0Aap_forall_contV5Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_include1.1.1"
+        expl="parameter test_include1"
+        sum="0d79e9d2d58aa81463ca9be8a9487e98"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contV5Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <transf
+         name="inline_goal"
+         proved="true"
+         expanded="false">
+         <goal
+          name="WP_parameter test_include1.1.1.1"
+          expl="parameter test_include1"
+          sum="62a3448aae4926b52eb322bfb5a0c82c"
+          proved="true"
+          expanded="false"
+          shape="apaelement_V5V6Iahas_elementV5V6FIainsert_V4V0V1V5Iainfix =afind_V4awitnessV0ano_elementAareplace_V4V0V1V5Iainfix >aposition_V4afind_V4awitnessV0c0FIainfix >aposition_V4afind_V4awitnessV3c0Aainfix >aposition_V4afind_V4awitnessV0c0NAainfix >aposition_V4V2c0Aapaelement_V4V7Iahas_elementV4V7FAapV1FFFFF">
+          <proof
+           prover="alt-ergo"
+           timelimit="60"
+           edited=""
+           obsolete="false">
+           <result status="valid" time="54.53"/>
+          </proof>
+         </goal>
+        </transf>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.2"
+        expl="parameter test_include1"
+        sum="5f2db1ff5b1f7b99fd8148545382252f"
+        proved="true"
+        expanded="false"
+        shape="acontainsV5awitnessV0Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.28"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.3"
+        expl="parameter test_include1"
+        sum="3562273f51bbe924b68cb1f97e018f7e"
+        proved="true"
+        expanded="false"
+        shape="ainfix =akey_V5V2akey_V4V2Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.40"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.4"
+        expl="parameter test_include1"
+        sum="d6d6962c4360b4b8a15abf87633451ad"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement_V5V2aelement_V4V2Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.38"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.5"
+        expl="parameter test_include1"
+        sum="6ae2f31e13809bdf25009d72b96600e7"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__V5awitnessV0V1Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.30"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.6"
+        expl="parameter test_include1"
+        sum="cb5101f2bcbfd9c40ca1e6b052273f59"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthV5ainfix +alengthV4c1Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.32"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include1.1.7"
+        expl="parameter test_include1"
+        sum="0247a72d92212c158c589415ddaceb11"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Iainclude__V4V0V1V5FIacontainsV4awitnessV3AacontainsV4awitnessV0NAahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.41"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_include2"
+    expl="parameter test_include2"
+    sum="df209f46fac7be8c93dfd6f308548217"
+    proved="true"
+    expanded="false"
+    shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5alengthV4Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =akey_V5V2akey_V4V2Aainfix =akey_V5afind_V4awitnessV0V0Aap_forall_contV5Iareplace_V4V0V1V5FAacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_include2.1"
+      expl="precondition"
+      sum="c2fc8195d6fed0a34c501359fc29382b"
+      proved="true"
+      expanded="false"
+      shape="acontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_include2.2"
+      expl="normal postcondition"
+      sum="98848807eac897e505e0cbd02dc1e01c"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Aainfix =alengthV5alengthV4Aainfix =aelement__V5awitnessV0V1Aainfix =aelement_V5V2aelement_V4V2Aainfix =akey_V5V2akey_V4V2Aainfix =akey_V5afind_V4awitnessV0V0Aap_forall_contV5Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_include2.2.1"
+        expl="parameter test_include2"
+        sum="c19e3b2c048bdf37ee8605d5f8185cd2"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contV5Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.41"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.2"
+        expl="parameter test_include2"
+        sum="404f58b95f027ade3718c8406319f8c0"
+        proved="true"
+        expanded="false"
+        shape="ainfix =akey_V5afind_V4awitnessV0V0Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.3"
+        expl="parameter test_include2"
+        sum="6fca1b1b59b663c9fd5ba7dcf830eade"
+        proved="true"
+        expanded="false"
+        shape="ainfix =akey_V5V2akey_V4V2Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.4"
+        expl="parameter test_include2"
+        sum="0f2bc1df50827d9f1b02ab46eb945dc1"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement_V5V2aelement_V4V2Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.04"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.5"
+        expl="parameter test_include2"
+        sum="355d29ab4c4b814dc8a0005837072e74"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__V5awitnessV0V1Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.07"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.6"
+        expl="parameter test_include2"
+        sum="f02916803a15728b64c8199893588a8e"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthV5alengthV4Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_include2.2.7"
+        expl="parameter test_include2"
+        sum="2a6a5435562e05e091bf9b95f8febb45"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afind_V5awitnessV3afind_V4awitnessV3Iareplace_V4V0V1V5FIacontainsV4awitnessV0Iainfix =afind_V4awitnessV0V2NAainfix =awitnessV0awitnessV3NAacontainsV4awitnessV0Aahas_elementV4V2Aap_forall_contV4AapV1FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_delete"
+    expl="parameter test_delete"
+    sum="f16cca08642bf8fa8f898213f16989b8"
+    proved="true"
+    expanded="false"
+    shape="ainfix =alengthV3ainfix -alengthV2c1AacontainsV3awitnessakey_V2V0NAainfix =aelement__V3awitnessV1aelement__V2awitnessV1Aainfix =afind_V3awitnessV1afind_V2awitnessV1Aahas_elementV3V0NAap_forall_contV3Iadelete_V2V0V3FAahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_delete.1"
+      expl="precondition"
+      sum="bcff5902729a701dc7971205ef661c61"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_delete.2"
+      expl="normal postcondition"
+      sum="3e8d69aa79822c85f988901c713c5bb2"
+      proved="true"
+      expanded="false"
+      shape="ainfix =alengthV3ainfix -alengthV2c1AacontainsV3awitnessakey_V2V0NAainfix =aelement__V3awitnessV1aelement__V2awitnessV1Aainfix =afind_V3awitnessV1afind_V2awitnessV1Aahas_elementV3V0NAap_forall_contV3Iadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_delete.2.1"
+        expl="parameter test_delete"
+        sum="f106d5274be68bda6f3ac7da38d91356"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contV3Iadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.11"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_delete.2.2"
+        expl="parameter test_delete"
+        sum="b251c20aec5e926acb1398661dcb52a9"
+        proved="true"
+        expanded="false"
+        shape="ahas_elementV3V0NIadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_delete.2.3"
+        expl="parameter test_delete"
+        sum="9cc1904e8cc143985f4dd96e3b012c26"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afind_V3awitnessV1afind_V2awitnessV1Iadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.06"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_delete.2.4"
+        expl="parameter test_delete"
+        sum="335a61212d98643e725d9e376bbfe022"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__V3awitnessV1aelement__V2awitnessV1Iadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.47"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_delete.2.5"
+        expl="parameter test_delete"
+        sum="449d76731f87461e8d750e41518ae453"
+        proved="true"
+        expanded="false"
+        shape="acontainsV3awitnessakey_V2V0NIadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_delete.2.6"
+        expl="parameter test_delete"
+        sum="f98ef9846a4e19423dfec62dad1a07f3"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthV3ainfix -alengthV2c1Iadelete_V2V0V3FIahas_elementV2V0IacontainsV2awitnessV1Aainfix =awitnessV1awitnessakey_V2V0NAap_forall_contV2Aahas_elementV2V0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_insert_delete"
+    expl="parameter test_insert_delete"
+    sum="0feaf427bfe9ac71976305d4995e9071"
+    proved="true"
+    expanded="false"
+    shape="Lafind_V5awitnessV1ainfix =afind_V7awitnessV3afind_V4awitnessV3Aainfix =aelement_V7V0aelement_V4V0Aap_forall_contV7Iadelete_V5V6V7FAahas_elementV5V6Iainsert_V4V1V2V5FAacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_insert_delete.1"
+      expl="precondition"
+      sum="2ae7c22db0d0add424f8579f147ff9d9"
+      proved="true"
+      expanded="false"
+      shape="acontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_insert_delete.2"
+      expl="precondition"
+      sum="d296bcd13066ddfa91fdfbae95fb10f5"
+      proved="true"
+      expanded="false"
+      shape="Lafind_V5awitnessV1ahas_elementV5V6Iainsert_V4V1V2V5FIacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_insert_delete.3"
+      expl="normal postcondition"
+      sum="5168dfb2aa22ce1f5fb2e65877c6a424"
+      proved="true"
+      expanded="false"
+      shape="Lafind_V5awitnessV1ainfix =afind_V7awitnessV3afind_V4awitnessV3Aainfix =aelement_V7V0aelement_V4V0Aap_forall_contV7Iadelete_V5V6V7FIahas_elementV5V6Iainsert_V4V1V2V5FIacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_insert_delete.3.1"
+        expl="parameter test_insert_delete"
+        sum="21e218087aa4e935fdd0e4eb039af9e5"
+        proved="true"
+        expanded="false"
+        shape="Lafind_V5awitnessV1ap_forall_contV7Iadelete_V5V6V7FIahas_elementV5V6Iainsert_V4V1V2V5FIacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="4.69"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert_delete.3.2"
+        expl="parameter test_insert_delete"
+        sum="f76ebc10a8fc6e5f5529376aa285b21f"
+        proved="true"
+        expanded="false"
+        shape="Lafind_V5awitnessV1ainfix =aelement_V7V0aelement_V4V0Iadelete_V5V6V7FIahas_elementV5V6Iainsert_V4V1V2V5FIacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="1.70"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_insert_delete.3.3"
+        expl="parameter test_insert_delete"
+        sum="d4f4b9d5b1aa86a1f82908193d72d056"
+        proved="true"
+        expanded="false"
+        shape="Lafind_V5awitnessV1ainfix =afind_V7awitnessV3afind_V4awitnessV3Iadelete_V5V6V7FIahas_elementV5V6Iainsert_V4V1V2V5FIacontainsV4awitnessV1NIacontainsV4awitnessV1NAahas_elementV4V0Aap_forall_contV4FFFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.37"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_exclude"
+    expl="normal postcondition"
+    sum="f8da4fc645e4d0d18366ef4716c48ff6"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement_V4V1aelement_V3V1Iaexclude_V3V2V4FIainfix =V0V1NAahas_elementV3V1Aainfix =akey_V3V0V2Aahas_elementV3V0FFFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="8.76"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_left1"
+    expl="normal postcondition"
+    sum="06a9f9ac7ae1939d60e72aea877d3d13"
+    proved="true"
+    expanded="false"
+    shape="acontainsaleft_V0V1awitnessV2Aastrict_equalV0aleft_V0ano_elementAainfix =aelement__aleft_V0V1awitnessV2aelement__V0awitnessV2Aais_empty_aleft_V0afirstV0Aap_forall_contaleft_V0V1Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_left1.1"
+      expl="normal postcondition"
+      sum="06a9f9ac7ae1939d60e72aea877d3d13"
+      proved="true"
+      expanded="false"
+      shape="acontainsaleft_V0V1awitnessV2Aastrict_equalV0aleft_V0ano_elementAainfix =aelement__aleft_V0V1awitnessV2aelement__V0awitnessV2Aais_empty_aleft_V0afirstV0Aap_forall_contaleft_V0V1Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_left1.1.1"
+        expl="parameter test_left1"
+        sum="15d7880b8feee2301cbe536d90184a86"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contaleft_V0V1Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+        <proof
+         prover="cvc3"
+         timelimit="60"
+         edited=""
+         obsolete="true">
+         <result status="valid" time="50.49"/>
+        </proof>
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="2.34"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_left1.1.2"
+        expl="parameter test_left1"
+        sum="97b531cd5e1dedd3c92cc5591bbbbaea"
+        proved="true"
+        expanded="false"
+        shape="ais_empty_aleft_V0afirstV0Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.04"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_left1.1.3"
+        expl="parameter test_left1"
+        sum="3986ffad8db0686245f99b137493b50e"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__aleft_V0V1awitnessV2aelement__V0awitnessV2Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.52"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_left1.1.4"
+        expl="parameter test_left1"
+        sum="25c75382a3cb147b9041447faf7466f8"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalV0aleft_V0ano_elementIainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.19"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_left1.1.5"
+        expl="parameter test_left1"
+        sum="4889c762ad52c10563d05f1bf9914a2f"
+        proved="true"
+        expanded="false"
+        shape="acontainsaleft_V0V1awitnessV2Iainfix <aposition_V0afind_V0awitnessV2aposition_V0V1Aainfix <c0aposition_V0afind_V0awitnessV2Aainfix =V1ano_elementOahas_elementV0V1Aap_forall_contaleft_V0ano_elementFFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.61"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_right1"
+    expl="normal postcondition"
+    sum="7b06ee7ccfdf7075d806a71dd11d6453"
+    proved="true"
+    expanded="false"
+    shape="acontainsaright_V0V1awitnessV2Aastrict_equalV0aright_V0afirstV0Aainfix =aelement__aright_V0V1awitnessV2aelement__V0awitnessV2Aais_empty_aright_V0ano_elementAap_forall_contaright_V0V1Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_right1.1"
+      expl="normal postcondition"
+      sum="7b06ee7ccfdf7075d806a71dd11d6453"
+      proved="true"
+      expanded="false"
+      shape="acontainsaright_V0V1awitnessV2Aastrict_equalV0aright_V0afirstV0Aainfix =aelement__aright_V0V1awitnessV2aelement__V0awitnessV2Aais_empty_aright_V0ano_elementAap_forall_contaright_V0V1Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test_right1.1.1"
+        expl="parameter test_right1"
+        sum="e4bec2c81930bd8b67fc9b62894edb51"
+        proved="true"
+        expanded="false"
+        shape="ap_forall_contaright_V0V1Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.11"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_right1.1.2"
+        expl="parameter test_right1"
+        sum="9a4d23c592e3da3a803f3e4d51a9bee8"
+        proved="true"
+        expanded="false"
+        shape="ais_empty_aright_V0ano_elementIainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_right1.1.3"
+        expl="parameter test_right1"
+        sum="9101e94b9be17b328bf3debab1887940"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement__aright_V0V1awitnessV2aelement__V0awitnessV2Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="7.74"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_right1.1.4"
+        expl="parameter test_right1"
+        sum="eef84fa639d72207d6a6ac9f106f12ad"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalV0aright_V0afirstV0Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="3.40"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test_right1.1.5"
+        expl="parameter test_right1"
+        sum="b64d7e2c1e2d71c5935b8ad0af546d47"
+        proved="true"
+        expanded="false"
+        shape="acontainsaright_V0V1awitnessV2Iainfix >=aposition_V0afind_V0awitnessV2aposition_V0V1Aahas_elementV0V1Aap_forall_contV0FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="4.52"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_false"
+    expl="parameter test_false"
+    sum="a946c9139ad5eba0ded538d5695a7bbe"
+    proved="false"
+    expanded="false"
+    shape="ainfix >aposition_V0V1c0NFF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="unknown" time="10.56"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test11"
+    expl="parameter test11"
+    sum="ec20885e275c93fa2018beb9e8741b8f"
+    proved="true"
+    expanded="false"
+    shape="iainfix <=V4V1Lakey_V0V5ainfix <=V10ainfix +V1c1Aainfix =aposition_V0V9V10Aainfix =alengthV8ainfix -V10c1Aainfix =aelement__V8awitnessV11aelement__V0awitnessV11IacontainsV8awitnessV11FAainfix <aposition_V0afind_V0awitnessV12V10Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV8awitnessV12FIainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FAahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FAacontainsV6awitnessV7NAahas_elementV0V5Aahas_elementV0V5ainfix =alengthV6V1Aaequal_V6aleft_V0V5Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV13aelement__V0awitnessV13IacontainsV6awitnessV13FAainfix <aposition_V0afind_V0awitnessV14V4Aainfix <c0aposition_V0afind_V0awitnessV14IacontainsV6awitnessV14FFFFAainfix <=c1ainfix +V1c1Aainfix =aposition_V0V3c1Aainfix =alengthV2ainfix -c1c1Aainfix =aelement__V2awitnessV15aelement__V0awitnessV15IacontainsV2awitnessV15FAainfix <aposition_V0afind_V0awitnessV16c1Aainfix <c0aposition_V0afind_V0awitnessV16IacontainsV2awitnessV16FIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test11.1"
+      expl="loop invariant init"
+      sum="b4a92d783279004ffe8a69f1463d8d14"
+      proved="true"
+      expanded="false"
+      shape="ainfix <=c1ainfix +V1c1Aainfix =aposition_V0V3c1Aainfix =alengthV2ainfix -c1c1Aainfix =aelement__V2awitnessV4aelement__V0awitnessV4IacontainsV2awitnessV4FAainfix <aposition_V0afind_V0awitnessV5c1Aainfix <c0aposition_V0afind_V0awitnessV5IacontainsV2awitnessV5FIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.08"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test11.2"
+      expl="precondition"
+      sum="705dc38b6583ba809f9920bd8ad3e442"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV7aelement__V0awitnessV7IacontainsV6awitnessV7FAainfix <aposition_V0afind_V0awitnessV8V4Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV6awitnessV8FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test11.3"
+      expl="precondition"
+      sum="5b616516827c0bd8fb0ca24bba9ecb1c"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV8aelement__V0awitnessV8IacontainsV6awitnessV8FAainfix <aposition_V0afind_V0awitnessV9V4Aainfix <c0aposition_V0afind_V0awitnessV9IacontainsV6awitnessV9FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test11.4"
+      expl="precondition"
+      sum="846e69146cc9dcfca901e5042eacbb9d"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5acontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV8aelement__V0awitnessV8IacontainsV6awitnessV8FAainfix <aposition_V0afind_V0awitnessV9V4Aainfix <c0aposition_V0afind_V0awitnessV9IacontainsV6awitnessV9FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="4.50"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test11.5"
+      expl="precondition"
+      sum="e31992c6e4a56a58fc59a4d22f2604c1"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV9aelement__V0awitnessV9IacontainsV6awitnessV9FAainfix <aposition_V0afind_V0awitnessV10V4Aainfix <c0aposition_V0afind_V0awitnessV10IacontainsV6awitnessV10FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test11.6"
+      expl="loop invariant preservation"
+      sum="add07d908f1480aef3146e487951f739"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ainfix <=V10ainfix +V1c1Aainfix =aposition_V0V9V10Aainfix =alengthV8ainfix -V10c1Aainfix =aelement__V8awitnessV11aelement__V0awitnessV11IacontainsV8awitnessV11FAainfix <aposition_V0afind_V0awitnessV12V10Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV8awitnessV12FIainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV13aelement__V0awitnessV13IacontainsV6awitnessV13FAainfix <aposition_V0afind_V0awitnessV14V4Aainfix <c0aposition_V0afind_V0awitnessV14IacontainsV6awitnessV14FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test11.6.1"
+        expl="parameter test11"
+        sum="813ec8ba3acea5d13eb0154c3a1124b6"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix <c0aposition_V0afind_V0awitnessV11IacontainsV8awitnessV11FIainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV12aelement__V0awitnessV12IacontainsV6awitnessV12FAainfix <aposition_V0afind_V0awitnessV13V4Aainfix <c0aposition_V0afind_V0awitnessV13IacontainsV6awitnessV13FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="5.20"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test11.6.2"
+        expl="parameter test11"
+        sum="d4084ddb4f0aa277c3a126c8552ebab4"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix <aposition_V0afind_V0awitnessV11V10IacontainsV8awitnessV11FIainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV12aelement__V0awitnessV12IacontainsV6awitnessV12FAainfix <aposition_V0afind_V0awitnessV13V4Aainfix <c0aposition_V0afind_V0awitnessV13IacontainsV6awitnessV13FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="6.67"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test11.6.3"
+        expl="parameter test11"
+        sum="1d090ba95e5df16449b5b22424145af6"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix =aelement__V8awitnessV11aelement__V0awitnessV11IacontainsV8awitnessV11FIainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV12aelement__V0awitnessV12IacontainsV6awitnessV12FAainfix <aposition_V0afind_V0awitnessV13V4Aainfix <c0aposition_V0afind_V0awitnessV13IacontainsV6awitnessV13FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.09"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test11.6.4"
+        expl="parameter test11"
+        sum="d86e96c12f35fcd8309383cee611f9ba"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix =alengthV8ainfix -V10c1Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV11aelement__V0awitnessV11IacontainsV6awitnessV11FAainfix <aposition_V0afind_V0awitnessV12V4Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV6awitnessV12FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test11.6.5"
+        expl="parameter test11"
+        sum="99fa05ce72b26b92cea76242cc5d1730"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix =aposition_V0V9V10Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV11aelement__V0awitnessV11IacontainsV6awitnessV11FAainfix <aposition_V0afind_V0awitnessV12V4Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV6awitnessV12FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.17"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test11.6.6"
+        expl="parameter test11"
+        sum="aafa08d99e0bb0e17e17aa14832438b0"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix <=V10ainfix +V1c1Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <=V4V1Iainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV11aelement__V0awitnessV11IacontainsV6awitnessV11FAainfix <aposition_V0afind_V0awitnessV12V4Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV6awitnessV12FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test11.7"
+      expl="normal postcondition"
+      sum="5df2a5578b87c73bdef0b644030d1bce"
+      proved="true"
+      expanded="false"
+      shape="ainfix =alengthV6V1Aaequal_V6aleft_V0V5Iainfix <=V4V1NIainfix <=V4ainfix +V1c1Aainfix =aposition_V0V5V4Aainfix =alengthV6ainfix -V4c1Aainfix =aelement__V6awitnessV7aelement__V0awitnessV7IacontainsV6awitnessV7FAainfix <aposition_V0afind_V0awitnessV8V4Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV6awitnessV8FFFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="1.11"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test12"
+    expl="parameter test12"
+    sum="6a878ed694703f6a9310164fbcd81174"
+    proved="true"
+    expanded="false"
+    shape="iainfix <V4V1Lakey_V0V5ainfix <=V10V1Aainfix =alengthV8V10Aaequal_V8aleft_V0V9Aahas_elementV0V9Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FAahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FAacontainsV6awitnessV7NAahas_elementV0V5Aahas_elementV0V5ainfix =alengthV6V1Aaequal_V6aleft_V0V5Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFAainfix <=c0V1Aainfix =alengthV2c0Aaequal_V2aleft_V0V3Aahas_elementV0V3Iainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test12.1"
+      expl="loop invariant init"
+      sum="369c1a35d024d6195b5008d4b2105b7b"
+      proved="true"
+      expanded="false"
+      shape="ainfix <=c0V1Aainfix =alengthV2c0Aaequal_V2aleft_V0V3Aahas_elementV0V3Iainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.41"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test12.2"
+      expl="precondition"
+      sum="becbaa83c2b45f90a044aeb7943a9249"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test12.3"
+      expl="precondition"
+      sum="67671b812603cd32f9b360f0fb333359"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test12.4"
+      expl="precondition"
+      sum="f0c23442ba64ae247728d98839ccfc4e"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5acontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test12.5"
+      expl="precondition"
+      sum="0011f7cef917c031f1e765e8b2ce9b72"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test12.6"
+      expl="loop invariant preservation"
+      sum="0b204aa39dc845bb9fb938cb84769eb0"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V5ainfix <=V10V1Aainfix =alengthV8V10Aaequal_V8aleft_V0V9Aahas_elementV0V9Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test12.6.1"
+        expl="parameter test12"
+        sum="ac1772f37052b8da1457017a7f18e663"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ahas_elementV0V9Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="18.97"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test12.6.2"
+        expl="parameter test12"
+        sum="75dbcda95d564b7bf4815e97dbe7e85b"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5aequal_V8aleft_V0V9Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="46.84"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test12.6.3"
+        expl="parameter test12"
+        sum="eb79274f4112574a542462c07a19193f"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix =alengthV8V10Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.04"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test12.6.4"
+        expl="parameter test12"
+        sum="e16949593a52114d993491857fa4be8c"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V5ainfix <=V10V1Iainfix =V10ainfix +V4c1FIainfix =V9anext_V0V5FIahas_elementV0V5Oainfix =V5ano_elementIainsert_V6V7aelement_V0V5V8FIacontainsV6awitnessV7NIahas_elementV0V5Iahas_elementV0V5Iainfix <V4V1Iainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.03"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test12.7"
+      expl="normal postcondition"
+      sum="9c133f4ec647dc8e5efcadb6d3ed8016"
+      proved="true"
+      expanded="false"
+      shape="ainfix =alengthV6V1Aaequal_V6aleft_V0V5Iainfix <V4V1NIainfix <=V4V1Aainfix =alengthV6V4Aaequal_V6aleft_V0V5Aahas_elementV0V5FFFIainfix =V3afirstV0FIainfix >V1c0Aainfix >alengthV0V1Aais_empty_V2FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test2"
+    expl="parameter test2"
+    sum="b2afe6e7d7c32f3daae419a313d24526"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V2Lakey_V0V2ainfix =alengthV5alengthV0Iainfix =V6ano_elementAainfix =alengthV5ainfix -aposition_V0V6c1Iahas_elementV0V6Aainfix =aelement__V5awitnessV7aelement__V0awitnessV7IacontainsV5awitnessV7FAainfix <=aposition_V0afind_V0awitnessV8alengthV5Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV5awitnessV8FAainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FAahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FAacontainsV3awitnessV4NAahas_elementV0V2Aahas_elementV0V2aequal_V3V0Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV9aelement__V0awitnessV9IacontainsV3awitnessV9FAainfix <=aposition_V0afind_V0awitnessV10alengthV3Aainfix <c0aposition_V0afind_V0awitnessV10IacontainsV3awitnessV10FAainfix =V2ano_elementOahas_elementV0V2FFAainfix =alengthV1alengthV0Iainfix =afirstV0ano_elementAainfix =alengthV1ainfix -aposition_V0afirstV0c1Iahas_elementV0afirstV0Aainfix =aelement__V1awitnessV11aelement__V0awitnessV11IacontainsV1awitnessV11FAainfix <=aposition_V0afind_V0awitnessV12alengthV1Aainfix <c0aposition_V0afind_V0awitnessV12IacontainsV1awitnessV12FAainfix =afirstV0ano_elementOahas_elementV0afirstV0Iainfix >alengthV0c0Aais_empty_V1FF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test2.1"
+      expl="loop invariant init"
+      sum="4c0b6fbed3ed07c91c8ea75e092ccc83"
+      proved="true"
+      expanded="false"
+      shape="ainfix =alengthV1alengthV0Iainfix =afirstV0ano_elementAainfix =alengthV1ainfix -aposition_V0afirstV0c1Iahas_elementV0afirstV0Aainfix =aelement__V1awitnessV2aelement__V0awitnessV2IacontainsV1awitnessV2FAainfix <=aposition_V0afind_V0awitnessV3alengthV1Aainfix <c0aposition_V0afind_V0awitnessV3IacontainsV1awitnessV3FAainfix =afirstV0ano_elementOahas_elementV0afirstV0Iainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.44"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test2.2"
+      expl="precondition"
+      sum="23d2465e0670a90f6bb93e732bc46c31"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV4aelement__V0awitnessV4IacontainsV3awitnessV4FAainfix <=aposition_V0afind_V0awitnessV5alengthV3Aainfix <c0aposition_V0afind_V0awitnessV5IacontainsV3awitnessV5FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test2.3"
+      expl="precondition"
+      sum="bf30ab99fdaf81518c1d57b32b7d1a6f"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2ahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV5aelement__V0awitnessV5IacontainsV3awitnessV5FAainfix <=aposition_V0afind_V0awitnessV6alengthV3Aainfix <c0aposition_V0afind_V0awitnessV6IacontainsV3awitnessV6FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test2.4"
+      expl="precondition"
+      sum="8b1f10b939c7089574ee263739957d3c"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2acontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV5aelement__V0awitnessV5IacontainsV3awitnessV5FAainfix <=aposition_V0afind_V0awitnessV6alengthV3Aainfix <c0aposition_V0afind_V0awitnessV6IacontainsV3awitnessV6FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="3.43"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test2.5"
+      expl="precondition"
+      sum="09f4b673a106ee7083951a67c150c85e"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2ahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV6aelement__V0awitnessV6IacontainsV3awitnessV6FAainfix <=aposition_V0afind_V0awitnessV7alengthV3Aainfix <c0aposition_V0afind_V0awitnessV7IacontainsV3awitnessV7FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test2.6"
+      expl="loop invariant preservation"
+      sum="164ee5c5bd3775a7e5bb273766e720f8"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2ainfix =alengthV5alengthV0Iainfix =V6ano_elementAainfix =alengthV5ainfix -aposition_V0V6c1Iahas_elementV0V6Aainfix =aelement__V5awitnessV7aelement__V0awitnessV7IacontainsV5awitnessV7FAainfix <=aposition_V0afind_V0awitnessV8alengthV5Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV5awitnessV8FAainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV9aelement__V0awitnessV9IacontainsV3awitnessV9FAainfix <=aposition_V0afind_V0awitnessV10alengthV3Aainfix <c0aposition_V0afind_V0awitnessV10IacontainsV3awitnessV10FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test2.6.1"
+        expl="parameter test2"
+        sum="233c1ba985ada34ba1343019b15fed23"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV7aelement__V0awitnessV7IacontainsV3awitnessV7FAainfix <=aposition_V0afind_V0awitnessV8alengthV3Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV3awitnessV8FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="4.45"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test2.6.2"
+        expl="parameter test2"
+        sum="9c94eec5a249d1fc24c5ec2e65bfa24e"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix <c0aposition_V0afind_V0awitnessV7IacontainsV5awitnessV7FIainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV8aelement__V0awitnessV8IacontainsV3awitnessV8FAainfix <=aposition_V0afind_V0awitnessV9alengthV3Aainfix <c0aposition_V0afind_V0awitnessV9IacontainsV3awitnessV9FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="3.85"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test2.6.3"
+        expl="parameter test2"
+        sum="0251df014de97f4f15559bcbfed81ffd"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix <=aposition_V0afind_V0awitnessV7alengthV5IacontainsV5awitnessV7FIainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV8aelement__V0awitnessV8IacontainsV3awitnessV8FAainfix <=aposition_V0afind_V0awitnessV9alengthV3Aainfix <c0aposition_V0afind_V0awitnessV9IacontainsV3awitnessV9FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="4.44"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test2.6.4"
+        expl="parameter test2"
+        sum="7d877e36641ac5548c27027ea53cb911"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix =aelement__V5awitnessV7aelement__V0awitnessV7IacontainsV5awitnessV7FIainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV8aelement__V0awitnessV8IacontainsV3awitnessV8FAainfix <=aposition_V0afind_V0awitnessV9alengthV3Aainfix <c0aposition_V0afind_V0awitnessV9IacontainsV3awitnessV9FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.10"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test2.6.5"
+        expl="parameter test2"
+        sum="f213793cc83d31b02c38664cd5529371"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix =alengthV5ainfix -aposition_V0V6c1Iahas_elementV0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV7aelement__V0awitnessV7IacontainsV3awitnessV7FAainfix <=aposition_V0afind_V0awitnessV8alengthV3Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV3awitnessV8FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="0.20"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test2.6.6"
+        expl="parameter test2"
+        sum="900b56795df3ab139b95a4071d555441"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix =alengthV5alengthV0Iainfix =V6ano_elementIainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV7aelement__V0awitnessV7IacontainsV3awitnessV7FAainfix <=aposition_V0afind_V0awitnessV8alengthV3Aainfix <c0aposition_V0afind_V0awitnessV8IacontainsV3awitnessV8FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="1.15"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test2.7"
+      expl="normal postcondition"
+      sum="6999949a5039a46ba9be24bfc5b43e55"
+      proved="true"
+      expanded="false"
+      shape="aequal_V3V0Iahas_elementV0V2NIainfix =alengthV3alengthV0Iainfix =V2ano_elementAainfix =alengthV3ainfix -aposition_V0V2c1Iahas_elementV0V2Aainfix =aelement__V3awitnessV4aelement__V0awitnessV4IacontainsV3awitnessV4FAainfix <=aposition_V0afind_V0awitnessV5alengthV3Aainfix <c0aposition_V0afind_V0awitnessV5IacontainsV3awitnessV5FAainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.31"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test22"
+    expl="parameter test22"
+    sum="2c1ba66c749dd5bc7bd4591676f151dd"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V2Lakey_V0V2aequal_V5aleft_V0V6Aainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FAahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FAacontainsV3awitnessV4NAahas_elementV0V2Aahas_elementV0V2aequal_V3V0Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFAaequal_V1aleft_V0afirstV0Aainfix =afirstV0ano_elementOahas_elementV0afirstV0Iainfix >alengthV0c0Aais_empty_V1FF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test22.1"
+      expl="loop invariant init"
+      sum="543665780b4148df9c3fd23237e6861d"
+      proved="true"
+      expanded="false"
+      shape="aequal_V1aleft_V0afirstV0Aainfix =afirstV0ano_elementOahas_elementV0afirstV0Iainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.60"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test22.2"
+      expl="precondition"
+      sum="e6ff325d54fb9cfaa6b9cf9937674955"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test22.3"
+      expl="precondition"
+      sum="957e2096879982543729ddbd1cbb9ff5"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2ahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test22.4"
+      expl="precondition"
+      sum="c73d564d6982e7b78cec4f5ca38137d2"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2acontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.05"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test22.5"
+      expl="precondition"
+      sum="303bf15e64378a84b5647df94984bcfe"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2ahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test22.6"
+      expl="loop invariant preservation"
+      sum="04229015488191a83f8f2a719b0dbac1"
+      proved="true"
+      expanded="false"
+      shape="Lakey_V0V2aequal_V5aleft_V0V6Aainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test22.6.1"
+        expl="parameter test22"
+        sum="c0e21091e52b7717df0771483e34f2e2"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2ainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="9.89"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test22.6.2"
+        expl="parameter test22"
+        sum="a31ee6f0e31fcac18e92e32696c2d221"
+        proved="true"
+        expanded="false"
+        shape="Lakey_V0V2aequal_V5aleft_V0V6Iainfix =V6anext_V0V2FIahas_elementV0V2Oainfix =V2ano_elementIainsert_V3V4aelement_V0V2V5FIacontainsV3awitnessV4NIahas_elementV0V2Iahas_elementV0V2Iahas_elementV0V2Iaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+        <proof
+         prover="alt-ergo"
+         timelimit="60"
+         edited=""
+         obsolete="false">
+         <result status="valid" time="45.13"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test22.7"
+      expl="normal postcondition"
+      sum="08fbe96780dba4f92a59cde2f21db28b"
+      proved="true"
+      expanded="false"
+      shape="aequal_V3V0Iahas_elementV0V2NIaequal_V3aleft_V0V2Aainfix =V2ano_elementOahas_elementV0V2FFIainfix >alengthV0c0Aais_empty_V1FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.14"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test3"
+    expl="parameter test3"
+    sum="92681749f27280376604af8ab2a0723a"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V4iainfix =V3aTrueNiainfix =aequivalent_keysV1akey_V0V4aTrueacontainsaleft_V0V4awitnessV1NAainfix =V5aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V5aTrueAainfix =V4ano_elementOahas_elementV0V4Iainfix =V5aTrueFacontainsaleft_V0V6awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V6Aahas_elementV0V6Aainfix =V3aTrueAainfix =V6ano_elementOahas_elementV0V6Iainfix =V6anext_V0V4FAahas_elementV0V4Oainfix =V4ano_elementAahas_elementV0V4ainfix =V4afind_V0awitnessV1AacontainsV0awitnessV1qainfix =V3aTrueainfix =V4afind_V0awitnessV1AacontainsV0awitnessV1qainfix =V3aTrueIacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFAacontainsaleft_V0V2awitnessV1NAainfix =aFalseaTrueNOainfix =awitnessV1awitnessakey_V0V2Aahas_elementV0V2Aainfix =aFalseaTrueAainfix =V2ano_elementOahas_elementV0V2Iainfix =V2afirstV0FFF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test3.1"
+      expl="loop invariant init"
+      sum="a2fdc642637996fb3697ed1f3ad64bdc"
+      proved="true"
+      expanded="false"
+      shape="acontainsaleft_V0V2awitnessV1NAainfix =aFalseaTrueNOainfix =awitnessV1awitnessakey_V0V2Aahas_elementV0V2Aainfix =aFalseaTrueAainfix =V2ano_elementOahas_elementV0V2Iainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.32"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.2"
+      expl="precondition"
+      sum="a9f9d7ccff693716c166e2753f4555e2"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V4Iainfix =V3aTrueNIahas_elementV0V4Iacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.3"
+      expl="loop invariant preservation"
+      sum="b424f2a8c9f36e5d44150a250cc21511"
+      proved="true"
+      expanded="false"
+      shape="acontainsaleft_V0V4awitnessV1NAainfix =V5aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V5aTrueAainfix =V4ano_elementOahas_elementV0V4Iainfix =V5aTrueFIainfix =aequivalent_keysV1akey_V0V4aTrueIahas_elementV0V4Iainfix =V3aTrueNIahas_elementV0V4Iacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.07"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.4"
+      expl="precondition"
+      sum="9252e6a1074d981bcf53b89b5358a1f5"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V4Oainfix =V4ano_elementIainfix =aequivalent_keysV1akey_V0V4aTrueNIahas_elementV0V4Iainfix =V3aTrueNIahas_elementV0V4Iacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.5"
+      expl="loop invariant preservation"
+      sum="7d6c1d096c21e607d7cb2c8db16c8ac9"
+      proved="true"
+      expanded="false"
+      shape="acontainsaleft_V0V5awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V5Aahas_elementV0V5Aainfix =V3aTrueAainfix =V5ano_elementOahas_elementV0V5Iainfix =V5anext_V0V4FIahas_elementV0V4Oainfix =V4ano_elementIainfix =aequivalent_keysV1akey_V0V4aTrueNIahas_elementV0V4Iainfix =V3aTrueNIahas_elementV0V4Iacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="6.52"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.6"
+      expl="normal postcondition"
+      sum="79656c3dac174cb100582b0d06e901e9"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V4afind_V0awitnessV1AacontainsV0awitnessV1qainfix =V3aTrueIainfix =V3aTrueNNIahas_elementV0V4Iacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.20"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.7"
+      expl="normal postcondition"
+      sum="8881f32d6ca526b7c65b176ba4d411d3"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V4afind_V0awitnessV1AacontainsV0awitnessV1qainfix =V3aTrueIahas_elementV0V4NIacontainsaleft_V0V4awitnessV1NAainfix =V3aTrueNOainfix =awitnessV1awitnessakey_V0V4Aahas_elementV0V4Aainfix =V3aTrueAainfix =V4ano_elementOahas_elementV0V4FFIainfix =V2afirstV0FFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.18"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_max"
+    expl="parameter test_max"
+    sum="b963f21ea9abe6f9f4fdf611d02e72c3"
+    proved="true"
+    expanded="false"
+    shape="iainfix <=c1V0iainfix <=V3V0Lamax_V4Lakey_V4V5Lamax_V4Lamax_V4ainfix >=acompare_aelement_V8V12aelement_V10V13c0Iahas_elementV10V13Iahas_elementV8V12FFAano_overlapingV10V8Aainfix =alengthV10ainfix +ainfix -alengthV1V11c1Iainfix =V11ainfix +V3c1FIadelete_V4V9V10FAahas_elementV4V9Aais_empty_V4NIainsert_V2V6aelement_V4V7V8FAacontainsV2awitnessV6NAahas_elementV4V7Aais_empty_V4NAahas_elementV4V5Aais_empty_V4Nainfix >=acompare_aelement_V2V14aelement_V4V15c0Iahas_elementV4V15Iahas_elementV2V14FFIainfix >=acompare_aelement_V2V16aelement_V4V17c0Iahas_elementV4V17Iahas_elementV2V16FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFAainfix >=acompare_aelement_aempty_V18aelement_V1V19c0Iahas_elementV1V19Iahas_elementaempty_V18FFAano_overlapingV1aempty_Aainfix =alengthV1ainfix +ainfix -alengthV1c1c1Laempty_ainfix >=acompare_aelement_V20V21aelement_V1V22c0Iahas_elementV1V22Iahas_elementV20V21FFIainfix >=alengthV1V0FF">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_max.1"
+      expl="loop invariant init"
+      sum="4a30b3d3e48e553592f47f9dd9d46db0"
+      proved="true"
+      expanded="false"
+      shape="ainfix >=acompare_aelement_aempty_V2aelement_V1V3c0Iahas_elementV1V3Iahas_elementaempty_V2FFAano_overlapingV1aempty_Aainfix =alengthV1ainfix +ainfix -alengthV1c1c1Iainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.2"
+      expl="precondition"
+      sum="ce036904beb585d820c0535a49bdbcab"
+      proved="true"
+      expanded="false"
+      shape="ais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V5aelement_V4V6c0Iahas_elementV4V6Iahas_elementV2V5FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.3"
+      expl="precondition"
+      sum="b0f127aae5c04d4ce13677fdcaa521b2"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4ahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V6aelement_V4V7c0Iahas_elementV4V7Iahas_elementV2V6FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.4"
+      expl="precondition"
+      sum="bfbe704eb961dfb1d90beb5a2d7645df"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5ais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V7aelement_V4V8c0Iahas_elementV4V8Iahas_elementV2V7FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.5"
+      expl="precondition"
+      sum="72c8190e5842609ceb90b9f7c97fdd4d"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5Lamax_V4ahas_elementV4V7Iais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V8aelement_V4V9c0Iahas_elementV4V9Iahas_elementV2V8FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.6"
+      expl="precondition"
+      sum="8afd082dc7d53640024476c6a9a4d897"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5Lamax_V4acontainsV2awitnessV6NIahas_elementV4V7Iais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V8aelement_V4V9c0Iahas_elementV4V9Iahas_elementV2V8FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.7"
+      expl="precondition"
+      sum="e1cf13f31b8a75b5f183792b497d4beb"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5Lamax_V4ais_empty_V4NIainsert_V2V6aelement_V4V7V8FIacontainsV2awitnessV6NIahas_elementV4V7Iais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V9aelement_V4V10c0Iahas_elementV4V10Iahas_elementV2V9FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.8"
+      expl="precondition"
+      sum="bb6042656ed1fbce0fdd42d3d78ae5ac"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5Lamax_V4Lamax_V4ahas_elementV4V9Iais_empty_V4NIainsert_V2V6aelement_V4V7V8FIacontainsV2awitnessV6NIahas_elementV4V7Iais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V10aelement_V4V11c0Iahas_elementV4V11Iahas_elementV2V10FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.9"
+      expl="loop invariant preservation"
+      sum="c7f9a2f8a97542b96abaeb30e6af388a"
+      proved="true"
+      expanded="false"
+      shape="Lamax_V4Lakey_V4V5Lamax_V4Lamax_V4ainfix >=acompare_aelement_V8V12aelement_V10V13c0Iahas_elementV10V13Iahas_elementV8V12FFAano_overlapingV10V8Aainfix =alengthV10ainfix +ainfix -alengthV1V11c1Iainfix =V11ainfix +V3c1FIadelete_V4V9V10FIahas_elementV4V9Iais_empty_V4NIainsert_V2V6aelement_V4V7V8FIacontainsV2awitnessV6NIahas_elementV4V7Iais_empty_V4NIahas_elementV4V5Iais_empty_V4NIainfix <=V3V0Iainfix >=acompare_aelement_V2V14aelement_V4V15c0Iahas_elementV4V15Iahas_elementV2V14FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="26.46"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.10"
+      expl="normal postcondition"
+      sum="c4b17f83aa57cdccfef9905b4f52a1cb"
+      proved="true"
+      expanded="false"
+      shape="ainfix >=acompare_aelement_V2V5aelement_V4V6c0Iahas_elementV4V6Iahas_elementV2V5FFIainfix <=V3V0NIainfix >=acompare_aelement_V2V7aelement_V4V8c0Iahas_elementV4V8Iahas_elementV2V7FFAano_overlapingV4V2Aainfix =alengthV4ainfix +ainfix -alengthV1V3c1FFFIainfix <=c1V0Iainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_max.11"
+      expl="normal postcondition"
+      sum="25d7771a60a2f4457f136fc6dbdf58ee"
+      proved="true"
+      expanded="false"
+      shape="Laempty_ainfix >=acompare_aelement_V2V3aelement_V1V4c0Iahas_elementV1V4Iahas_elementV2V3FFIainfix <=c1V0NIainfix >=alengthV1V0FF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of"
+    expl="parameter test_sum_of"
+    sum="9671af37ebdb70fd54d9d475a5402e59"
+    proved="false"
+    expanded="false"
+    shape="iahas_elementV6V4iainfix =V7aTrueacontainsV9awitnessV1NAainfix =asum_of_weightV9ainfix -asum_of_weightV2V8Iadelete_V6V4V9FAahas_elementV6V4Iainfix =V8ainfix +V5aweight_aelement_V6V4FAahas_elementV6V4acontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5Iainfix =V10anext_V6V4FAahas_elementV6V4Oainfix =V4ano_elementIacheckk_aelement_V6V4qainfix =V7aTrueFAahas_elementV6V4ainfix =asum_of_weightV11asum_of_weightV2Iainsert_V6V1V0V11FAacontainsV6awitnessV1NAainfix =aweight_V0V5IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFAacontainsV2awitnessV1NAainfix =asum_of_weightV2ainfix -asum_of_weightV2V3Iainfix =V3c0FIacontainsV2awitnessV1NFFF">
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="false">
+     <goal
+      name="WP_parameter test_sum_of.1"
+      expl="loop invariant init"
+      sum="a1b2f1415ae3f813b04c6cc132167a7d"
+      proved="true"
+      expanded="false"
+      shape="acontainsV2awitnessV1NAainfix =asum_of_weightV2ainfix -asum_of_weightV2V3Iainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.2"
+      expl="precondition"
+      sum="5f70f801c830398588cc1ffb87a22707"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.3"
+      expl="precondition"
+      sum="3d285cca799a3c90b21b2ac11d0b54ed"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV6V4Iainfix =V7aTrueIacheckk_aelement_V6V4qainfix =V7aTrueFIahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.4"
+      expl="precondition"
+      sum="df2b3bb0db7960eebdf36473b472de6a"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV6V4Iainfix =V8ainfix +V5aweight_aelement_V6V4FIahas_elementV6V4Iainfix =V7aTrueIacheckk_aelement_V6V4qainfix =V7aTrueFIahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.5"
+      expl="loop invariant preservation"
+      sum="684c5549928b397fc14bd3e93734667f"
+      proved="true"
+      expanded="false"
+      shape="acontainsV9awitnessV1NAainfix =asum_of_weightV9ainfix -asum_of_weightV2V8Iadelete_V6V4V9FIahas_elementV6V4Iainfix =V8ainfix +V5aweight_aelement_V6V4FIahas_elementV6V4Iainfix =V7aTrueIacheckk_aelement_V6V4qainfix =V7aTrueFIahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.18"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.6"
+      expl="precondition"
+      sum="6aa11fdb410ff5786210214d9643a462"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV6V4Oainfix =V4ano_elementIainfix =V7aTrueNIacheckk_aelement_V6V4qainfix =V7aTrueFIahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.7"
+      expl="loop invariant preservation"
+      sum="1a7d9119b0612c98a95625cdf3d8a821"
+      proved="true"
+      expanded="false"
+      shape="acontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5Iainfix =V8anext_V6V4FIahas_elementV6V4Oainfix =V4ano_elementIainfix =V7aTrueNIacheckk_aelement_V6V4qainfix =V7aTrueFIahas_elementV6V4Iahas_elementV6V4IacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.8"
+      expl="assertion"
+      sum="b7849123afbb2b58594d460dca3a878e"
+      proved="false"
+      expanded="false"
+      shape="ainfix =aweight_V0V5Iahas_elementV6V4NIacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="timeout" time="63.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.9"
+      expl="precondition"
+      sum="9a1f3a3586403f500a799b51b95c8610"
+      proved="true"
+      expanded="false"
+      shape="acontainsV6awitnessV1NIainfix =aweight_V0V5Iahas_elementV6V4NIacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.10"
+      expl="normal postcondition"
+      sum="76c61889a2e0e77ab5b2c4eb2cd9bd25"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV7asum_of_weightV2Iainsert_V6V1V0V7FIacontainsV6awitnessV1NIainfix =aweight_V0V5Iahas_elementV6V4NIacontainsV6awitnessV1NAainfix =asum_of_weightV6ainfix -asum_of_weightV2V5FFFIainfix =V3c0FIacontainsV2awitnessV1NFFF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.07"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of2"
+    expl="parameter test_sum_of2"
+    sum="6cddf5f80ba2eab6f256dfebe9df8afd"
+    proved="true"
+    expanded="false"
+    shape="iainfix <V2V0iainfix <V3V0ainfix =asum_of_weightV6ainfix -asum_of_weightV1V5Iadelete_V4afirstV4V6FAahas_elementV4afirstV4Iainfix =V5ainfix +V3aweight_aelement_V4afirstV4FAahas_elementV4afirstV4ainfix >=V3V0Aainfix =asum_of_weightV4ainfix -asum_of_weightV1V3Iainfix =asum_of_weightV4ainfix -asum_of_weightV1V3FFAainfix =asum_of_weightV1ainfix -asum_of_weightV1V2ainfix >=V2V0Aainfix =asum_of_weightV1ainfix -asum_of_weightV1V2Iainfix =V2c0FIainfix <=V0asum_of_weightV1FF">
+    <proof
+     prover="alt-ergo"
+     timelimit="60"
+     edited=""
+     obsolete="false">
+     <result status="valid" time="0.07"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of3"
+    expl="parameter test_sum_of3"
+    sum="8b06a79723875bd2350539e97fb6e9cc"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0afirstV0iahas_elementV0V1ainfix =V4ano_elementOahas_elementV0V4Aainfix =V3asum_of_weightaleft_V0V4Iainfix =V4anext_V0V1FAahas_elementV0V1Oainfix =V1ano_elementIainfix =V3ainfix +V2aweight_aelement_V0V1FAahas_elementV0V1ainfix =asum_of_weightV0V2Iainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FFAainfix =afirstV0ano_elementOahas_elementV0afirstV0Aainfix =c0asum_of_weightaleft_V0afirstV0ainfix =asum_of_weightV0c0F">
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test_sum_of3.1"
+      expl="loop invariant init"
+      sum="7c6cafe01568a2aa2e5cdc2cc1a1fd1e"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afirstV0ano_elementOahas_elementV0afirstV0Aainfix =c0asum_of_weightaleft_V0afirstV0Iahas_elementV0afirstV0F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.12"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of3.2"
+      expl="precondition"
+      sum="40221cdb8669d4d95a6f74f2b0155120"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V1Iahas_elementV0V1Iainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FFIahas_elementV0afirstV0F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of3.3"
+      expl="precondition"
+      sum="5e7b66d8e7b1f0571d1f8b91f0a16b1e"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V1Oainfix =V1ano_elementIainfix =V3ainfix +V2aweight_aelement_V0V1FIahas_elementV0V1Iahas_elementV0V1Iainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FFIahas_elementV0afirstV0F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of3.4"
+      expl="loop invariant preservation"
+      sum="0f7064cbc5f111817493fd97e8857d80"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V4ano_elementOahas_elementV0V4Aainfix =V3asum_of_weightaleft_V0V4Iainfix =V4anext_V0V1FIahas_elementV0V1Oainfix =V1ano_elementIainfix =V3ainfix +V2aweight_aelement_V0V1FIahas_elementV0V1Iahas_elementV0V1Iainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FFIahas_elementV0afirstV0F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="23.45"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of3.5"
+      expl="normal postcondition"
+      sum="cba870574fe20abbac27c6e6f2ad6c6b"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV0V2Iahas_elementV0V1NIainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FFIahas_elementV0afirstV0F">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.08"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of3.6"
+      expl="normal postcondition"
+      sum="6c8a119cf80ddd88664b3f7cd9e7b05b"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV0c0Iahas_elementV0afirstV0NF">
+      <proof
+       prover="alt-ergo"
+       timelimit="60"
+       edited=""
+       obsolete="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>
