@@ -208,7 +208,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Attr
      (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain;
       Current_Type  : out W_Base_Type_Id;
       Ref_Allowed   : Boolean) return W_Expr_Id;
@@ -1622,7 +1621,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Attr
      (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain;
       Current_Type  : out W_Base_Type_Id;
       Ref_Allowed   : Boolean) return W_Expr_Id
@@ -1685,10 +1683,15 @@ package body Gnat2Why.Expr is
             Current_Type := EW_Int_Type;
 
          when Attribute_Val =>
-            T := Transform_Expr (First (Expressions (Expr)),
-                                 Expected_Type,
-                                 Domain,
-                                 Ref_Allowed);
+            declare
+               Val_Type : constant W_Base_Type_Id := Type_Of_Node (Var);
+            begin
+               T := Transform_Expr (First (Expressions (Expr)),
+                                    Val_Type,
+                                    Domain,
+                                    Ref_Allowed);
+               Current_Type := Val_Type;
+            end;
 
          when Attribute_First | Attribute_Last | Attribute_Length =>
             case Ekind (Etype (Var)) is
@@ -2534,7 +2537,6 @@ package body Gnat2Why.Expr is
 
          when N_Attribute_Reference =>
             T := Transform_Attr (Expr,
-                                 Expected_Type,
                                  Domain,
                                  Current_Type,
                                  Ref_Allowed);
