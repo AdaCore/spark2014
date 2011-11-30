@@ -2975,6 +2975,14 @@ package body Gnat2Why.Expr is
          when N_Object_Declaration =>
             return Assignment_of_Obj_Decl (Stmt);
 
+         when N_Object_Renaming_Declaration =>
+
+            --  Renamings are replaced by the renamed object in the frontend,
+            --  but the renaming objects are not removed from the tree. We can
+            --  safely ignore them.
+
+            return New_Void;
+
          when N_Loop_Statement =>
             return Transform_Loop_Statement (Stmt);
 
