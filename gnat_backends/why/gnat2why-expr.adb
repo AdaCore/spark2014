@@ -1839,17 +1839,51 @@ package body Gnat2Why.Expr is
 
       function Get_Base_Type (N : Node_Id) return Entity_Id
       is
-         Ent  : constant Entity_Id := Defining_Identifier (N);
-         Base : constant Entity_Id := Base_Type (Ent);
+         Ent : constant Entity_Id := Defining_Identifier (N);
       begin
-         if Ekind (Ent) in Scalar_Kind and then
-            Is_Static_Range (Get_Range (Ent)) then
-            return Empty;
+
+         --  Full type declarations can only require checks when they are
+         --  discrete types, and then only when the range is non-static.
+         if Nkind (N) = N_Full_Type_Declaration then
+            if Ekind (Ent) in Discrete_Kind | Float_Kind then
+               if Is_Static_Range (Get_Range (Ent)) then
+                  return Empty;
+               end if;
+            end if;
+            declare
+               T_Def : constant Node_Id := Type_Definition (N);
+            begin
+               case Nkind (T_Def) is
+                  when N_Subtype_Indication =>
+                     return Entity (Subtype_Mark (T_Def));
+
+                  when N_Derived_Type_Definition =>
+                     declare
+                        S : constant Node_Id := Subtype_Indication (T_Def);
+                     begin
+                        if Nkind (S) = N_Subtype_Indication then
+                           return Entity (Subtype_Mark (S));
+                        else
+                           return Entity (S);
+                        end if;
+                     end;
+
+                  when others =>
+                     return Empty;
+
+               end case;
+            end;
+         else
+            declare
+               S : constant Node_Id := Subtype_Indication (N);
+            begin
+               if Nkind (S) = N_Subtype_Indication then
+                  return Entity (Subtype_Mark (S));
+               else
+                  return Entity (S);
+               end if;
+            end;
          end if;
-         if Base = Ent then
-            return Empty;
-         end if;
-         return Base;
       end Get_Base_Type;
 
       Cur_Decl : Node_Id := Last (L);
