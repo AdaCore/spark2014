@@ -1858,8 +1858,15 @@ package body Gnat2Why.Expr is
                      return Entity (Subtype_Mark (T_Def));
 
                   when N_Derived_Type_Definition =>
-                     return
-                       Entity (Subtype_Mark (Subtype_Indication (T_Def)));
+                     declare
+                        S : constant Node_Id := Subtype_Indication (T_Def);
+                     begin
+                        if Nkind (S) = N_Subtype_Indication then
+                           return Entity (Subtype_Mark (S));
+                        else
+                           return Entity (S);
+                        end if;
+                     end;
 
                   when others =>
                      return Empty;
