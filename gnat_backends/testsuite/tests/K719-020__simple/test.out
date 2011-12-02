@@ -18,4 +18,4 @@ test.ads:30:22: (info) index check proved
 test.ads:30:29: (info) postcondition proved
 test.ads:33:21: (info) index check proved
 test.ads:33:27: (info) index check proved
-test.ads:33:34: (info) postcondition proved
+test.ads:33:34: postcondition not proved

@@ -2,24 +2,24 @@ database.adb:111:21: (info) range check proved
 database.adb:112:10: (info) index check proved
 database.adb:113:29: (info) index check proved
 database.adb:120:13: (info) index check proved
-database.adb:121:13: (info) index check proved
+database.adb:121:13: index check not proved
 database.adb:121:20: (info) index check proved
 database.adb:121:50: (info) index check proved
 database.adb:123:13: (info) index check proved
-database.adb:124:13: (info) index check proved
+database.adb:124:13: index check not proved
 database.adb:124:20: (info) index check proved
 database.adb:124:50: (info) index check proved
-database.adb:130:13: (info) index check proved
-database.adb:130:37: (info) index check proved
-database.adb:132:10: (info) index check proved
-database.adb:133:10: (info) index check proved
-database.adb:134:29: (info) range check proved
+database.adb:130:13: index check not proved
+database.adb:130:37: index check not proved
+database.adb:132:10: index check not proved
+database.adb:133:10: index check not proved
+database.adb:134:29: range check not proved
 database.adb:138:37: (info) range check proved
 database.adb:141:13: (info) loop invariant initialization proved
 database.adb:141:13: (info) loop invariant preservation proved
 database.adb:142:30: (info) range check proved
-database.adb:143:31: (info) overflow check proved
-database.adb:143:31: (info) range check proved
+database.adb:143:31: overflow check not proved
+database.adb:143:31: range check not proved
 database.adb:153:31: (info) loop invariant initialization proved
 database.adb:153:31: (info) loop invariant preservation proved
 database.adb:157:30: (info) overflow check proved
@@ -55,12 +55,12 @@ database.adb:308:7: (info) index check proved
 database.adb:309:42: (info) precondition proved
 database.adb:309:9: (info) index check proved
 database.adb:38:10: (info) index check proved
-database.adb:44:18: (info) postcondition proved
-database.adb:46:23: (info) index check proved
-database.adb:46:52: (info) index check proved
+database.adb:44:18: postcondition not proved
+database.adb:46:23: index check not proved
+database.adb:46:52: index check not proved
 database.adb:52:18: postcondition not proved
 database.adb:54:23: (info) index check proved
-database.adb:54:52: (info) index check proved
+database.adb:54:52: index check not proved
 database.ads:111:25: (info) precondition proved
 database.ads:112:14: (info) precondition proved
 database.ads:112:32: (info) postcondition proved

@@ -1,6 +1,6 @@
 queen.ads:10:15: (info) overflow check proved
 queen.ads:10:23: (info) index check proved
-queen.ads:10:30: (info) overflow check proved
+queen.ads:10:30: overflow check not proved
 queen.ads:10:32: (info) index check proved
 queen.ads:11:15: (info) overflow check proved
 queen.ads:11:23: (info) index check proved
