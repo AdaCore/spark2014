@@ -142,12 +142,12 @@ package body Why.Inter is
       Left_Kind  : constant EW_Type := Get_Base_Type (Left);
       Right_Kind : constant EW_Type := Get_Base_Type (Right);
    begin
-      case Left_Kind is
-         when EW_Abstract =>
-            return Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
-         when others =>
-            return Left_Kind = Right_Kind;
-      end case;
+      if Left_Kind /= Right_Kind then
+         return False;
+      end if;
+
+      return Left_Kind /= EW_Abstract
+        or else Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
    end Eq;
 
    ---------------------------------
