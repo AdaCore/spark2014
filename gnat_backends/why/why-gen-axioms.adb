@@ -105,10 +105,19 @@ package body Why.Gen.Axioms is
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty)
    is
+      --  Protect the "double" conversion (back and forth from the base type)
+      --  by an in_range predicate in order to consider only valid cases.
+      --  In the case of a modular type, this predicate is not emitted.
+      --  Indeed, conversions back and forth from int are always valid
+      --  and should always end up in the range, whatever the initial value.
+
       In_Range       : constant W_Pred_Id :=
-                        New_Call
-                           (Name => Range_Pred_Name.Id (Type_Name),
-                            Args => (1 => +New_Term ("x")));
+                         (if Modulus /= Why_Empty then
+                            Why_Empty
+                          else
+                            New_Call
+                              (Name => Range_Pred_Name.Id (Type_Name),
+                               Args => (1 => +New_Term ("x"))));
       Base_Type_Name : constant W_Identifier_Id :=
          New_Identifier (EW_Base_Type_Name (Base_Type));
    begin
