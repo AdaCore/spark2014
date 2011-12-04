@@ -2202,15 +2202,15 @@ package body Alfa.Definition is
 
    procedure Mark_Package_Specification (N : Node_Id) is
       Vis_Decls  : constant List_Id := Visible_Declarations (N);
-      PriNYI_Decls : constant List_Id := Private_Declarations (N);
+      Priv_Decls : constant List_Id := Private_Declarations (N);
 
    begin
       if Present (Vis_Decls) then
          Mark_List (Vis_Decls);
       end if;
 
-      if Present (PriNYI_Decls) then
-         Mark_List (PriNYI_Decls);
+      if Present (Priv_Decls) then
+         Mark_List (Priv_Decls);
       end if;
    end Mark_Package_Specification;
 
