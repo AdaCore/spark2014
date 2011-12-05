@@ -15,4 +15,15 @@ package body Pack is
       return M + 1;
    end Next255;
 
+   function Minus (A, B : Modular) return Modular
+   is
+   begin
+      return A - B;
+   end Minus;
+
+   function Test_Div (A, B : Modular) return Modular
+   is
+   begin
+      return (A + B) / (Subst (A,B));
+   end Test_Div;
 end Pack;

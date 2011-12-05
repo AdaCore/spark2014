@@ -13,4 +13,12 @@ package Pack is
      with Pre  => (M = 255),
           Post => (Next255'Result = 0);
 
+   function Minus (A, B : Modular) return Modular
+     with Pre  => (A /= B),
+          Post => (Minus'Result /= 0);
+
+   function Subst (A, B : Modular) return Modular is (A - B);
+   function Test_Div (A, B : Modular) return Modular
+     with Pre  => (A /= B);
+
 end Pack;
