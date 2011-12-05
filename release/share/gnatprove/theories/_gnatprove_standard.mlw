@@ -1,7 +1,8 @@
 module Main
   use export int.Int
   use export module ref.Ref
-  use int.Abs as AbsInt
+  use export int.Abs
+  use int.MinMax
   use int.ComputerDivision
   use int.EuclideanDivision
   use real.Real
@@ -14,12 +15,12 @@ module Main
   use floating_point.Rounding
   use floating_point.Single
   use floating_point.Double
-  use import module ref.Ref
-
   (* This exception is used to simulate return statements *)
 
   exception Gnatprove_Exception___result_exc
 
+  (* ignore blocks of code *)
+  function ___ignore 'a : ()
 
   (* The theory of Ada arrays of one dimension *)
 
@@ -311,39 +312,9 @@ val t__ada_array_2___update_ :
     forall y:int.
         bool_int__ge x y = True <-> x >= y
 
-  function ___ignore 'a : ()
+  function int_max (x y : int) : int = MinMax.max x y
 
-  axiom Abs_int_pos:
-    forall x:int. x >= 0 -> AbsInt.abs x = x
-
-  axiom Abs_int_neg:
-    forall x:int.
-      x <= 0 -> AbsInt.abs x = - x
-
-  function int_max int int : int
-
-  function int_min int int : int
-
-  axiom Int_max_is_ge:
-    forall x:int.
-    forall y:int.
-      int_max x y >= x /\ int_max x y >= y
-
-  axiom Int_max_is_some:
-    forall x:int.
-    forall y:int.
-        int_max x y = x \/ int_max x y = y
-
-  axiom Int_min_is_le:
-    forall x:int.
-    forall y:int.
-        int_min x y <= x /\
-        int_min x y <= y
-
-  axiom Int_min_is_some:
-    forall x:int.
-    forall y:int.
-        int_min x y = x \/ int_min x y = y
+  function int_min (x y : int) : int = MinMax.min x y
 
   function computer_div (x y : int) : int = ComputerDivision.div x y
 
