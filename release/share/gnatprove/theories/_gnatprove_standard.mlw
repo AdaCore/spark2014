@@ -9,6 +9,7 @@ module Main
   use real.Square as SquareReal
   use real.Trigonometry
   use import bool.Bool
+  use export bool.Ite
   use floating_point.Rounding
   use floating_point.Single
   use floating_point.Double
@@ -262,40 +263,6 @@ val t__ada_array_2___update_ :
 
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
-
-  function bool_and bool bool : bool
-
-  function bool_or bool bool : bool
-
-  function bool_xor bool bool : bool
-
-  function bool_not bool : bool
-
-  axiom Bool_and_def:
-    forall a:bool.
-    forall b:bool.
-     bool_and a b = True <-> (a = True /\ b = True)
-
-  axiom Bool_or_def:
-    forall a:bool.
-    forall b:bool.
-      bool_or a b = True <-> (a = True \/ b = True)
-
-  axiom Bool_xor_def:
-    forall a:bool.
-    forall b:bool.
-      bool_xor a b = True <-> a <> b
-
-  axiom Bool_not_def:
-    forall a:bool.  bool_not a = True <-> a = Bool.False
-
-  function ite bool 'a 'a : 'a
-
-  axiom Ite_true:
-    forall x:'a. forall y:'a. ite True x y = x
-
-  axiom Ite_false:
-    forall x:'a. forall y:'a. ite Bool.False x y = y
 
   function int_of_bool (b : bool) : int =
    if b = True then 1 else 0

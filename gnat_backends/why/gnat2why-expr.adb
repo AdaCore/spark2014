@@ -2369,7 +2369,7 @@ package body Gnat2Why.Expr is
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
-                    Name     => New_Identifier ("bool_not"),
+                    Name     => New_Identifier ("notb"),
                     Args     =>
                       (1 => Transform_Expr (Right_Opnd (Expr),
                                             Current_Type,

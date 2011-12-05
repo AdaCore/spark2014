@@ -317,7 +317,7 @@ package body Why.Gen.Expr is
             return
               New_Call
                 (Domain => Domain,
-                 Name   => New_Identifier ("bool_and"),
+                 Name   => New_Identifier ("andb"),
                  Args   => (1 => +Left, 2 => +Right));
          end if;
       end if;
@@ -484,7 +484,7 @@ package body Why.Gen.Expr is
          else
             return New_Call
               (Domain => Domain,
-               Name => New_Identifier ("bool_or"),
+               Name => New_Identifier ("orb"),
                Args => (1 => +Left, 2 => +Right));
          end if;
       end if;
