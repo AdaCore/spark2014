@@ -272,6 +272,9 @@ val t__ada_array_2___update_ :
   function bool_of_int (i : int) : bool =
    if i = 0 then False else True
 
+   function bool___attr___ATTRIBUTE_LAST : int = 1
+   function bool___attr___ATTRIBUTE_FIRST : int = 0
+
   function bool_int__eq int int : bool
 
   axiom Bool_int__eq_axiom:
