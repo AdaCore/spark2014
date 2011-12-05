@@ -140,6 +140,7 @@ package body Why.Gen.Scalars is
    is
       Signed  : constant Boolean := Modulus = Why_Empty;
       Arg_S   : constant String := "n";
+      Arg_T   : constant W_Term_Id := New_Term (Arg_S);
       BT      : constant W_Primitive_Type_Id :=
                   New_Base_Type (Base_Type => Base_Type);
       BT_Name : constant String := EW_Base_Type_Name (Base_Type);
@@ -168,7 +169,7 @@ package body Why.Gen.Scalars is
                           (if Signed then
                              New_Call
                                (Name   => Range_Pred_Name.Id (Name),
-                                Args   => (1 => +New_Term (Arg_S)))
+                                Args   => (1 => +Arg_T))
                            else
                              Why_Empty);
          --  postcondition: { <name>___of_<base_type> (result) = n }
@@ -179,12 +180,18 @@ package body Why.Gen.Scalars is
                                                  BT_Name),
                              Args   =>
                                (1 => +New_Result_Term));
+         Normal_Arg   : constant W_Term_Id :=
+            (if Signed then
+               Arg_T
+             else
+                New_Call (Name => New_Integer_Mod.Id,
+                          Args => (+Arg_T, +Modulus)));
          Post         : constant W_Pred_Id :=
                           New_Relation
                             (Op_Type => Base_Type,
                              Left    => +Base_Result,
                              Op      => EW_Eq,
-                             Right   => +New_Term (Arg_S));
+                             Right   => +Normal_Arg);
          Spec         : constant Declaration_Spec_Array :=
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
