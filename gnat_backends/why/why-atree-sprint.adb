@@ -1711,8 +1711,6 @@ package body Why.Atree.Sprint is
    is
    begin
       PL (O, "module Main");
-      PL (O, "use import int.Int");
-      PL (O, "use import module ref.Ref");
 
       Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
 

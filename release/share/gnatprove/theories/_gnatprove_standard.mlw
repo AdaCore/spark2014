@@ -1,5 +1,6 @@
 module Main
-  use import int.Int
+  use export int.Int
+  use export module ref.Ref
   use int.Abs as AbsInt
   use int.ComputerDivision
   use int.EuclideanDivision
