@@ -2,6 +2,7 @@ module Main
   use import int.Int
   use int.Abs as AbsInt
   use int.ComputerDivision
+  use int.EuclideanDivision
   use real.Real
   use export real.RealInfix
   use real.Abs as AbsReal
@@ -376,60 +377,13 @@ val t__ada_array_2___update_ :
     forall y:int.
         int_min x y = x \/ int_min x y = y
 
-  function computer_div int int : int
+  function computer_div (x y : int) : int = ComputerDivision.div x y
 
-  function computer_mod int int : int
+  function computer_mod (x y : int) : int = ComputerDivision.mod x y
 
-  function math_div int int : int
+  function math_div (x y : int) : int = EuclideanDivision.div x y
 
-  function math_mod int int : int
-
-  axiom Math_div_mod:
-    forall x:int.
-    forall y:int.
-        y <> 0 ->
-         x = (y * math_div x y) + math_mod x y
-
-  axiom Math_mod_bound:
-    forall x:int.
-    forall y:int.
-        y <> 0 ->
-         0 <= math_mod x y /\
-          math_mod x y < AbsInt.abs y
-
-  axiom Computer_div_mod:
-    forall x:int.
-    forall y:int [ComputerDivision.div x y, ComputerDivision.mod x y].
-        y <> 0 ->
-         x = (y * ComputerDivision.div x y) + ComputerDivision.mod x y
-
-  axiom Computer_div_bound:
-    forall x:int.
-      forall y:int.
-        (x >= 0 /\ y > 0) ->
-         (0 <= ComputerDivision.div x y /\
-          ComputerDivision.div x y <= x)
-
-  axiom Computer_mod_bound:
-    forall x:int.
-    forall y:int.
-        y <> 0 -> AbsInt.abs (ComputerDivision.mod x y) < AbsInt.abs y
-
-  axiom Computer_mod_sign_pos:
-    forall x:int.
-    forall y:int.
-        (x >= 0 /\ y <> 0) -> ComputerDivision.mod x y >= 0
-
-  axiom Computer_mod_sign_neg:
-    forall x:int.
-    forall y:int.
-        (x <= 0 /\ y <> 0) -> ComputerDivision.mod x y <= 0
-
-  axiom Computer_rounds_toward_zero:
-    forall x:int.
-    forall y:int.
-        y <> 0 ->
-         AbsInt.abs (ComputerDivision.div x y * y) <= AbsInt.abs x
+  function math_mod (x y : int) : int = EuclideanDivision.mod x y
 
   function div_real (x : real) (y : real) : real = x /. y
 
