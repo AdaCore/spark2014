@@ -74,7 +74,6 @@ package Why.Gen.Scalars is
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;
-      Modulus    : W_Term_OId;
-      Is_Modular : Boolean := False);
+      Modulus    : W_Term_OId);
 
 end Why.Gen.Scalars;

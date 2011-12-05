@@ -266,8 +266,7 @@ package body Why.Gen.Scalars is
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;
-      Modulus    : W_Term_OId;
-      Is_Modular : Boolean := False)
+      Modulus    : W_Term_OId)
    is
       type Scalar_Attr is (S_First, S_Last, S_Modulus);
 
@@ -285,8 +284,7 @@ package body Why.Gen.Scalars is
          declare
             Spec : Declaration_Spec;
          begin
-            if Attr_Values (J).Attr_Id /= Attribute_Modulus or else
-               Is_Modular then
+            if Attr_Values (J).Attr_Id /= Attribute_Modulus then
                if Attr_Values (J).Value /= Why_Empty then
                   Spec := (Kind   => W_Function_Def,
                            Domain => EW_Term,
