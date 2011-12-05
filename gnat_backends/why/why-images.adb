@@ -278,8 +278,6 @@ package body Why.Images is
             P (O, "*");
          when EW_Divide =>
             P (O, "/");
-         when EW_Mod =>
-            P (O, "%");
       end case;
 
       if Op_Type = EW_Real then

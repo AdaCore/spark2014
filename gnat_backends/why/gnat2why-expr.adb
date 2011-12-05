@@ -1757,8 +1757,7 @@ package body Gnat2Why.Expr is
          when N_Op_Subtract => return EW_Substract;
          when N_Op_Divide   => return EW_Divide;
          when N_Op_Multiply => return EW_Multiply;
-         when N_Op_Mod      => return EW_Mod;
-         when N_Op_Rem | N_Op_Concat | N_Op_Expon => raise Program_Error;
+         when N_Op_Concat | N_Op_Expon => raise Program_Error;
          when others => raise Program_Error;
       end case;
    end Transform_Binop;

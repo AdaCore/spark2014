@@ -242,8 +242,7 @@ package Why.Sinfo is
      (EW_Add,
       EW_Substract,
       EW_Multiply,
-      EW_Divide,
-      EW_Mod);
+      EW_Divide);
 
    type EW_Relation is
      (EW_None,
