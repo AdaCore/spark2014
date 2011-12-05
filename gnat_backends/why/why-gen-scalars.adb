@@ -284,27 +284,25 @@ package body Why.Gen.Scalars is
          declare
             Spec : Declaration_Spec;
          begin
-            if Attr_Values (J).Attr_Id /= Attribute_Modulus then
-               if Attr_Values (J).Value /= Why_Empty then
-                  Spec := (Kind   => W_Function_Def,
-                           Domain => EW_Term,
-                           Term   => Attr_Values (J).Value,
-                           others => <>);
-               else
-                  Spec := (Kind   => W_Function_Decl,
-                           Domain => EW_Term,
-                           others => <>);
-               end if;
-               Emit_Top_Level_Declarations
-                 (File        => File,
-                  Name        =>
-                    Attr_Name.Id
-                      (Name,
-                       Attribute_Id'Image (Attr_Values (J).Attr_Id)),
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => New_Base_Type (Base_Type => Base_Type),
-                  Spec        => (1 => Spec));
+            if Attr_Values (J).Value /= Why_Empty then
+               Spec := (Kind   => W_Function_Def,
+                        Domain => EW_Term,
+                        Term   => Attr_Values (J).Value,
+                        others => <>);
+            else
+               Spec := (Kind   => W_Function_Decl,
+                        Domain => EW_Term,
+                        others => <>);
             end if;
+            Emit_Top_Level_Declarations
+              (File        => File,
+               Name        =>
+                 Attr_Name.Id
+                   (Name,
+                    Attribute_Id'Image (Attr_Values (J).Attr_Id)),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => New_Base_Type (Base_Type => Base_Type),
+               Spec        => (1 => Spec));
          end;
       end loop;
    end Define_Scalar_Attributes;

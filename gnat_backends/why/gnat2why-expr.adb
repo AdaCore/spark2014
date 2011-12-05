@@ -1740,8 +1740,30 @@ package body Gnat2Why.Expr is
                   null;
             end case;
 
-      when others =>
-         raise Not_Implemented;
+         when Attribute_Modulus =>
+            T :=
+              +Attr_Name.Id (Full_Name (Etype (Var)),
+                             Attribute_Id'Image (Attr_Id));
+            Current_Type := EW_Int_Type;
+
+         when Attribute_Mod =>
+            T :=
+              New_Call (Ada_Node => Expr,
+                        Domain   => Domain,
+                        Name     => New_Integer_Mod.Id,
+                        Args     =>
+                          (1 => Transform_Expr (First (Expressions (Expr)),
+                                                EW_Int_Type,
+                                                Domain,
+                                                Ref_Allowed),
+                           2 =>
+                                +Attr_Name.Id (Full_Name (Etype (Var)),
+                                               Attribute_Id'Image
+                                                  (Attribute_Modulus))));
+            Current_Type := EW_Int_Type;
+
+         when others =>
+            raise Not_Implemented;
       end case;
       return T;
    end Transform_Attr;
