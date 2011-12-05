@@ -12,4 +12,14 @@ package body P is
       return Integer(Y);
    end G;
 
+   function M return Integer is
+   begin
+      return T'Modulus;
+   end M;
+
+   function Id (X : T) return T is
+   begin
+      return T'Mod (X);
+   end Id;
+
 end P;

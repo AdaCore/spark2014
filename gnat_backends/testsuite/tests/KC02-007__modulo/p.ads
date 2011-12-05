@@ -12,4 +12,9 @@ package P is
      Post => G'Result = 1;
    --  This postcondition is correct
 
+   function M return Integer
+     with Post => (M'Result = 16);
+
+   function Id (X : T) return T
+      with Post => (Id'Result = X);
 end P;
