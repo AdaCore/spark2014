@@ -84,6 +84,16 @@ package body Gnat2Why.Expr is
    -- Local Subprograms --
    -----------------------
 
+   function Apply_Modulus
+      (E                     : Entity_Id;
+       T                     : W_Expr_Id;
+       Domain                : EW_Domain;
+       Overflow_Check_Needed : out Boolean)
+       return W_Expr_Id;
+   --  Apply a modulus on T, where the modulus is defined by the Entity N
+   --  which must be a modular type. If E is not a modular type, set
+   --  Overflow_Check_Needed to True and return T unchanged.
+
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
       Expected_Type : W_Base_Type_OId := Why_Empty;
@@ -239,6 +249,32 @@ package body Gnat2Why.Expr is
 
    function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation;
    --  Convert an Ada comparison operator to a Why relation symbol
+
+   -------------------
+   -- Apply_Modulus --
+   -------------------
+
+   function Apply_Modulus
+      (E                     : Entity_Id;
+       T                     : W_Expr_Id;
+       Domain                : EW_Domain;
+       Overflow_Check_Needed : out Boolean)
+      return W_Expr_Id
+   is
+   begin
+      if Is_Modular_Integer_Type (E) then
+         return
+            New_Call (Name => New_Integer_Mod.Id,
+                      Domain => Domain,
+                      Args =>
+                       (1 => T,
+                        2 => New_Integer_Constant
+                                (Value => Modulus (E))));
+      else
+         Overflow_Check_Needed := True;
+         return T;
+      end if;
+   end Apply_Modulus;
 
    ----------------------------
    -- Assignment_of_Obj_Decl --
@@ -2269,7 +2305,11 @@ package body Gnat2Why.Expr is
                     +Transform_Expr (Right, Current_Type, Domain,
                      Ref_Allowed),
                     Op_Type  => Get_Base_Type (Current_Type));
-               Overflow_Check_Needed := True;
+               T := Apply_Modulus
+                      (Etype (Expr),
+                       T,
+                       Domain,
+                       Overflow_Check_Needed);
             end;
 
          when N_Op_Plus =>
@@ -2318,7 +2358,11 @@ package body Gnat2Why.Expr is
                                                 Ref_Allowed),
                     Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Get_Base_Type (Current_Type));
-               Overflow_Check_Needed := True;
+               T := Apply_Modulus
+                      (Etype (Expr),
+                       T,
+                       Domain,
+                       Overflow_Check_Needed);
             end;
 
          when N_Op_Divide =>
@@ -2348,7 +2392,11 @@ package body Gnat2Why.Expr is
                                             Domain,
                                             Ref_Allowed)),
                     Reason   => VC_Division_Check);
-               Overflow_Check_Needed := True;
+               T := Apply_Modulus
+                      (Etype (Expr),
+                       T,
+                       Domain,
+                       Overflow_Check_Needed);
             end;
 
          when N_Op_Rem | N_Op_Mod =>
