@@ -118,8 +118,10 @@ def gnatprove(opt=["-P", "test.gpr"]):
     for line in out:
         print line
 
-def prove(opt=[], steps=max_steps, timeout=default_timeout, mode="check"):
+def prove(opt=None, steps=max_steps, timeout=default_timeout, mode="check"):
     """Call gnatprove with standard options"""
+    if opt is None:
+        opt = []
     opt += ["--report=all", "-P", "test.gpr", "--quiet"]
     opt += ["--timeout=%d"%(timeout)]
     opt += ["--steps=%d"%(steps)]
@@ -127,7 +129,7 @@ def prove(opt=[], steps=max_steps, timeout=default_timeout, mode="check"):
     opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
-def prove_all(opt=[], steps=max_steps, timeout=default_timeout):
+def prove_all(opt=None, steps=max_steps, timeout=default_timeout):
     """Call gnatprove with standard options to prove all VCs"""
     prove(opt, steps, timeout, "prove")
 
