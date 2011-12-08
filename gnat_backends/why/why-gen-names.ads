@@ -233,7 +233,7 @@ package Why.Gen.Names is
    --  Return an identifier that corresponds to real division in Why
 
    package New_Integer_Abs is
-     new Name_Gen.Arity_0 (EW_Term, "AbsInt.abs");
+     new Name_Gen.Arity_0 (EW_Term, "abs");
    --  Return an identifier that corresponds to integer abs in Why
 
    package New_Real_Abs is
