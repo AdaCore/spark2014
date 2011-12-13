@@ -1,6 +1,7 @@
 libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
-testsuite/*/*/* no-precommit-check
+testsuite/gnatprove/tests/*/* no-precommit-check
+testsuite/alt-ergo/tests/*/* no-precommit-check
 gnat_backends/testsuite/tests/*/* no-precommit-check
 gnat_backends/testsuite/tests/*/*/* no-precommit-check
 dist-examples/* no-precommit-check
