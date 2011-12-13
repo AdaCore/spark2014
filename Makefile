@@ -129,7 +129,9 @@ install-stdlib:
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
-	cp -r dist-examples/* $(EXAMPLESDIR)
+	for dir in `cat MANIFEST.examples` ; do \
+	   cp -r testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
+	done
 
 clean:
 	$(MAKE) -C gnat_backends/why/xgen clean
