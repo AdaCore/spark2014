@@ -24,14 +24,14 @@ def timing():
 
     PARAMETERS
     """
-    file_list = glob.glob("*.why")
+    file_list = sorted(glob.glob("*.why"))
     for f in file_list:
         cmd = [cpulimit, timeout, "0", "-h", altergo, f]
         process = Run(cmd)
         for line in process.out.splitlines():
             m = re.search(regex, line)
             if m:
-                print m.group(1)
+                print f + " : " + m.group(1)
             else:
                 print line
                 print "error on file " + f
