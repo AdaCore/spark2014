@@ -1,5 +1,5 @@
 arrays.adb:8:17: (info) range check proved
 arrays.adb:8:4: (info) index check proved
 arrays.adb:9:19: (info) index check proved
-arrays.adb:9:4: assertion not proved
+arrays.adb:9:4: (info) assertion proved
 
