@@ -88,7 +88,7 @@ package body Gnat2Why.Expr is
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
        Domain                : EW_Domain;
-       Overflow_Check_Needed : out Boolean)
+       Overflow_Check_Needed : in out Boolean)
        return W_Expr_Id;
    --  Apply a modulus on T, where the modulus is defined by the Entity N
    --  which must be a modular type. If E is not a modular type, set
@@ -258,7 +258,7 @@ package body Gnat2Why.Expr is
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
        Domain                : EW_Domain;
-       Overflow_Check_Needed : out Boolean)
+       Overflow_Check_Needed : in out Boolean)
       return W_Expr_Id
    is
    begin
