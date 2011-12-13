@@ -1,0 +1,41 @@
+model.adb:62:10: (info) loop invariant initialization proved
+model.adb:62:10: loop invariant preservation not proved
+model.adb:63:52: (info) overflow check proved
+model.adb:64:20: (info) index check proved
+model.adb:65:20: (info) index check proved
+model.adb:67:10: (info) index check proved
+model.adb:68:42: (info) index check proved
+model.adb:71:43: (info) loop invariant initialization proved
+model.adb:71:43: (info) loop invariant preservation proved
+model.adb:72:10: assertion not proved
+model.adb:74:20: (info) index check proved
+model.adb:74:41: (info) index check proved
+model.adb:75:20: (info) index check proved
+model.adb:75:28: (info) index check proved
+model.adb:77:20: index check not proved
+model.adb:77:39: (info) index check proved
+model.adb:78:20: index check not proved
+model.adb:78:26: (info) index check proved
+model.adb:80:20: index check not proved
+model.adb:81:38: (info) range check proved
+model.adb:81:43: index check not proved
+model.adb:82:18: (info) index check proved
+model.adb:83:36: (info) range check proved
+model.adb:83:39: (info) index check proved
+model.ads:102:25: (info) postcondition proved
+model.ads:106:23: (info) postcondition proved
+model.ads:129:33: (info) postcondition proved
+model.ads:134:31: (info) postcondition proved
+model.ads:149:7: postcondition not proved
+model.ads:151:17: index check not proved
+model.ads:151:38: index check not proved
+model.ads:152:19: index check not proved
+model.ads:153:27: index check not proved
+model.ads:155:17: index check not proved
+model.ads:155:36: (info) index check proved
+model.ads:156:19: index check not proved
+model.ads:157:25: (info) index check proved
+model.ads:36:25: (info) postcondition proved
+model.ads:40:23: (info) postcondition proved
+model.ads:63:32: (info) postcondition proved
+model.ads:68:37: (info) postcondition proved
