@@ -1,0 +1,6 @@
+project Test is
+  for Main use ("main.adb");
+  package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12", "-gnata");
+  end Compiler;
+end Test;
