@@ -22,7 +22,7 @@ package Database is
       Customer : in Identity.Name;
       Id       : in Identity.Id) return Boolean;
 
-   function Num_Accounts return Ext_Account_Num;
+   function Num_Accounts return Natural;
 
    function Max_Account_Reached return Boolean;
 
