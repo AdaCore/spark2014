@@ -25,6 +25,7 @@
 
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Nlists;                use Nlists;
+with Snames;                use Snames;
 with Uintp;                 use Uintp;
 with VC_Kinds;              use VC_Kinds;
 with Why;                   use Why;
@@ -89,14 +90,16 @@ package body Gnat2Why.Expr.Loops is
       while Nkind (Cur_Stmt) /= N_Empty loop
          case Nkind (Cur_Stmt) is
             when N_Pragma =>
-               declare
-                  Cur_Check : W_Prog_Id;
-                  Cur_Pred : constant W_Pred_Id :=
-                     Transform_Pragma_Check (Cur_Stmt, Cur_Check);
-               begin
-                  Pred := +New_And_Expr (+Pred, +Cur_Pred, EW_Pred);
-                  Inv_Check := Sequence (Inv_Check, Cur_Check);
-               end;
+               if Get_Pragma_Id (Pragma_Name (Cur_Stmt)) = Pragma_Check then
+                  declare
+                     Cur_Check : W_Prog_Id;
+                     Cur_Pred : constant W_Pred_Id :=
+                        Transform_Pragma_Check (Cur_Stmt, Cur_Check);
+                  begin
+                     Pred := +New_And_Expr (+Pred, +Cur_Pred, EW_Pred);
+                     Inv_Check := Sequence (Inv_Check, Cur_Check);
+                  end;
+               end if;
 
             when others =>
                exit;
