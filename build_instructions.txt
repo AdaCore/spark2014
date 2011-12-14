@@ -224,7 +224,7 @@ The final directory structure of all related products is:
 
 12) Run the testsuite
 
-   $ cd <Root>/hi-lite/gnat_backends/testsuite
+   $ cd <Root>/hi-lite/testsuite/gnatprove
    $ ./run-tests
 
    OR
