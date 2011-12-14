@@ -52,9 +52,9 @@ all-nightly: gnat1why gnatprove local-stdlib install install-examples
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
 	mkdir -p $(THEORIESDIR)
-	cp release/share/gnatprove/config/*cgpr $(CONFIGDIR)
-	cp release/share/gnatprove/theories/*why $(THEORIESDIR)
-	cp release/share/gnatprove/theories/*mlw $(THEORIESDIR)
+	cp share/gnatprove/config/*cgpr $(CONFIGDIR)
+	cp share/gnatprove/theories/*why $(THEORIESDIR)
+	cp share/gnatprove/theories/*mlw $(THEORIESDIR)
 doc: $(DOC)
 
 $(DOC):
