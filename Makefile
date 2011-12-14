@@ -45,6 +45,8 @@ THEORIESDIR=$(GNATPROVEDIR)/theories
 STDLIB_TMP=stdlib_tmp
 DOC=ug alfa
 
+CP=cp -pr
+
 all: gnat2why gnatprove
 
 all-nightly: gnat1why gnatprove local-stdlib install install-examples
@@ -52,9 +54,9 @@ all-nightly: gnat1why gnatprove local-stdlib install install-examples
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
 	mkdir -p $(THEORIESDIR)
-	cp share/gnatprove/config/*cgpr $(CONFIGDIR)
-	cp share/gnatprove/theories/*why $(THEORIESDIR)
-	cp share/gnatprove/theories/*mlw $(THEORIESDIR)
+	$(CP) share/gnatprove/config/*cgpr $(CONFIGDIR)
+	$(CP) share/gnatprove/theories/*why $(THEORIESDIR)
+	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
 doc: $(DOC)
 
 $(DOC):
@@ -62,8 +64,8 @@ $(DOC):
 	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
 	mkdir -p $(DOCDIR)/html
-	cp -p docs/$@/_build/latex/*.pdf $(DOCDIR)/pdf
-	cp -pr docs/$@/_build/html $(DOCDIR)/html/$@
+	$(CP) docs/$@/_build/latex/*.pdf $(DOCDIR)/pdf
+	$(CP) docs/$@/_build/html $(DOCDIR)/html/$@
 	$(MAKE) -C docs/$@ clean
 
 gnat1why:
@@ -101,14 +103,14 @@ gnatprove:
 local-stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
-	cp Makefile.libprove $(STDLIB_TMP)
+	$(CP) Makefile.libprove $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
 	GNAT2WHY="../install/bin/gnat2why -B ../install/bin -I $(ADAINCLUDE)"
 
 stdlib:
 	rm -rf $(STDLIB_TMP)
 	mkdir -p $(STDLIB_TMP)
-	cp Makefile.libprove $(STDLIB_TMP)
+	$(CP) Makefile.libprove $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
 
 # "make stdlib-check" will run why on all Why files of the standard library,
@@ -120,17 +122,17 @@ stdlib-check:
 install-stdlib:
 	mkdir -p $(ALI_DIR)
 	mkdir -p $(GNATLIBDIR)
-	cp $(STDLIB_TMP)/*.ali $(ALI_DIR)
-	cp $(STDLIB_TMP)/*__types_vars_spec.mlw \
-           $(STDLIB_TMP)/*__types_vars_body.mlw \
-	   $(STDLIB_TMP)/*__subp_spec.mlw \
-	   $(STDLIB_TMP)/_standard.mlw \
-	   $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*.ali $(ALI_DIR)
+	$(CP) $(STDLIB_TMP)/*__types_vars_spec.mlw \
+              $(STDLIB_TMP)/*__types_vars_body.mlw \
+	      $(STDLIB_TMP)/*__subp_spec.mlw \
+	      $(STDLIB_TMP)/_standard.mlw \
+	      $(GNATLIBDIR)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
 	for dir in `cat MANIFEST.examples` ; do \
-	   cp -r testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
+	   $(CP) testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
 	done
 
 clean:
