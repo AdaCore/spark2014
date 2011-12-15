@@ -155,6 +155,8 @@ package body Gnat2Why.Types is
 
       if T = Standard_Boolean then
          return New_Base_Type (Base_Type => EW_Bool);
+      elsif T = Universal_Fixed then
+         return New_Base_Type (Base_Type => EW_Real);
       else
          return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => T);
       end if;
@@ -170,6 +172,9 @@ package body Gnat2Why.Types is
        Ident_Node : Node_Id) is
    begin
       if Ident_Node = Standard_Boolean then
+         null;
+
+      elsif Ident_Node = Universal_Fixed then
          null;
 
       elsif Ident_Node = Standard_Character or else

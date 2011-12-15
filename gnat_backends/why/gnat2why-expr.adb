@@ -3183,6 +3183,8 @@ package body Gnat2Why.Expr is
    begin
       if E = Standard_Boolean then
          return Why_Scalar_Type_Name (EW_Bool);
+      elsif E = Universal_Fixed then
+         return Why_Scalar_Type_Name (EW_Real);
       else
          return Full_Name (E);
       end if;
@@ -3194,6 +3196,8 @@ package body Gnat2Why.Expr is
    begin
       if E = Standard_Boolean then
          return EW_Bool_Type;
+      elsif E = Universal_Fixed then
+         return EW_Real_Type;
       else
          return EW_Abstract (E);
       end if;

@@ -181,6 +181,8 @@ package body Why.Inter is
    begin
       if N = Standard_Boolean then
          return "bool";
+      elsif N = Universal_Fixed then
+         return "real";
       else
          declare
             S : String := Unique_Name (N);
@@ -255,6 +257,8 @@ package body Why.Inter is
 
             if Ty = Standard_Boolean then
                return EW_Bool;
+            elsif Ty = Universal_Fixed then
+               return EW_Real;
             else
                return EW_Int;
             end if;
@@ -359,10 +363,15 @@ package body Why.Inter is
    -- EW_Abstract --
    -----------------
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id
-   is
+   function EW_Abstract (N : Node_Id) return W_Base_Type_Id is
    begin
-      return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+      if N = Standard_Boolean then
+         return EW_Bool_Type;
+      elsif N = Universal_Fixed then
+         return EW_Real_Type;
+      else
+         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+      end if;
    end EW_Abstract;
 
 begin
