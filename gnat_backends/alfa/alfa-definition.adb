@@ -2668,6 +2668,14 @@ package body Alfa.Definition is
          Mark_Non_Alfa ("tagged type", +Id, NYI_Tagged);
       end if;
 
+      if Has_Invariants (+Id) then
+         Mark_Non_Alfa ("type invariant", +Id, NYI_Invariant);
+      end if;
+
+      if Has_Predicates (+Id) then
+         Mark_Non_Alfa ("type predicate", +Id, NYI_Predicate);
+      end if;
+
       case Ekind (+Id) is
          when Array_Kind =>
             declare

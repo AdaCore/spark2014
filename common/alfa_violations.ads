@@ -48,8 +48,10 @@ package Alfa_Violations is
       NYI_Expr_With_Action, --  expression with action
       NYI_Float,            --  float
       NYI_Generic,          --  generics
+      NYI_Invariant,        --  type invariant
       NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
       NYI_Pragma,           --  pragma
+      NYI_Predicate,        --  type predicate
       NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
       NYI_Tagged,           --  tagged type
@@ -104,8 +106,10 @@ package Alfa_Violations is
       NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),
       NYI_Float            => To_Unbounded_String ("float"),
       NYI_Generic          => To_Unbounded_String ("generic"),
+      NYI_Invariant        => To_Unbounded_String ("type invariant"),
       NYI_Multi_Dim_Array  => To_Unbounded_String ("multi dim array"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),
+      NYI_Predicate        => To_Unbounded_String ("type predicate"),
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
       NYI_Tagged           => To_Unbounded_String ("tagged type"),
