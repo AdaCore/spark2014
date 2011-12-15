@@ -162,6 +162,8 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * representation clause: representation clause;
 * slice: array slice;
 * tagged type: tagged type;
+* type invariant;
+* type predicate;
 * not yet implemented: any other not yet implemented construct.
 
 As an example, consider the following code:
