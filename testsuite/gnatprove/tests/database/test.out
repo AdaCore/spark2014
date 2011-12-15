@@ -14,12 +14,12 @@ database.adb:130:37: index check not proved
 database.adb:132:10: index check not proved
 database.adb:133:10: index check not proved
 database.adb:134:29: range check not proved
-database.adb:138:37: (info) range check proved
+database.adb:138:29: (info) range check proved
 database.adb:141:13: (info) loop invariant initialization proved
 database.adb:141:13: (info) loop invariant preservation proved
 database.adb:142:30: (info) range check proved
-database.adb:143:31: overflow check not proved
-database.adb:143:31: range check not proved
+database.adb:143:31: (info) overflow check proved
+database.adb:143:31: (info) range check proved
 database.adb:153:31: (info) loop invariant initialization proved
 database.adb:153:31: (info) loop invariant preservation proved
 database.adb:157:30: (info) overflow check proved
@@ -27,8 +27,6 @@ database.adb:157:30: (info) range check proved
 database.adb:162:30: (info) overflow check proved
 database.adb:162:30: (info) range check proved
 database.adb:164:13: (info) index check proved
-database.adb:187:30: (info) overflow check proved
-database.adb:187:30: (info) range check proved
 database.adb:206:7: (info) index check proved
 database.adb:208:55: (info) range check proved
 database.adb:214:8: (info) index check proved
@@ -63,7 +61,7 @@ database.adb:54:23: (info) index check proved
 database.adb:54:52: index check not proved
 database.ads:111:25: (info) precondition proved
 database.ads:112:14: (info) precondition proved
-database.ads:112:32: (info) postcondition proved
+database.ads:112:32: postcondition not proved
 database.ads:112:34: (info) precondition proved
 database.ads:112:56: (info) precondition proved
 database.ads:53:30: postcondition not proved
@@ -72,7 +70,7 @@ database.ads:74:41: (info) precondition proved
 database.ads:93:14: (info) precondition proved
 database.ads:93:36: (info) overflow check proved
 database.ads:94:14: (info) precondition proved
-database.ads:94:32: (info) postcondition proved
+database.ads:94:32: postcondition not proved
 database.ads:94:34: (info) precondition proved
 database.ads:94:56: (info) precondition proved
 money.adb:4:33: (info) overflow check proved
