@@ -12,6 +12,8 @@ configuration project Gnat2why is
       for Mapping_Body_Suffix      ("Ada") use "%b";
       for Config_File_Switches     ("Ada") use ("-gnatec=");
       for Include_Path_File     ("Ada") use "ADA_PRJ_INCLUDE_FILE";
+
+      for Driver ("C") use "gnat2why";
    end Compiler;
 
    package Naming is
@@ -19,6 +21,9 @@ configuration project Gnat2why is
       for Body_Suffix ("Ada") use ".adb";
       for Casing use "lowercase";
       for Dot_Replacement use "-";
+
+      for Spec_Suffix ("C") use ".h";
+      for Body_Suffix ("C") use ".c";
    end Naming;
 end Gnat2why;
 

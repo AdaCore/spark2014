@@ -138,6 +138,7 @@ ASCII.LF &
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, Subdir_Name);
+      Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
       Tree.Load
         (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
          Proj_Env);

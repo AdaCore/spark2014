@@ -156,12 +156,6 @@ procedure Gnatprove is
       Args.Append (Project_File);
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-U");
-      Args.Append ("-gnatc");       --  only generate ALI
-      Args.Append ("-gnatd.F");     --  ALFA section in ALI
-      if Pedantic then
-         Args.Append ("-gnatd.D");
-      end if;
-
       if Force then
          Args.Append ("-f");
       end if;
@@ -181,8 +175,17 @@ procedure Gnatprove is
          Args.Append ("-k");
       end if;
 
+      Args.Append ("--restricted-to-languages=ada");
+
+      Args.Append ("-cargs:Ada");
+      Args.Append ("-gnatc");       --  only generate ALI
+      Args.Append ("-gnatd.F");     --  ALFA section in ALI
+      if Pedantic then
+         Args.Append ("-gnatd.D");
+      end if;
+
       Call_With_Status
-        (Command   => "gnatmake",
+        (Command   => "gprbuild",
          Arguments => Args,
          Status    => Status,
          Verbose   => Verbose);
@@ -562,6 +565,7 @@ procedure Gnatprove is
       Cur    : Cursor := First (Cargs_List);
       Args   : String_Lists.List := Empty_List;
    begin
+      Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-k");
       if Call_Mode = GPC_Project_Files then
