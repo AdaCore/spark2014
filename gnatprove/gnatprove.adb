@@ -234,6 +234,9 @@ procedure Gnatprove is
       if Force then
          Args.Append ("--force");
       end if;
+      if No_Proof then
+         Args.Append ("--no-proof");
+      end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
       end if;
