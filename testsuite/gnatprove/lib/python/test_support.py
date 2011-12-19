@@ -11,7 +11,7 @@ import shutil
 import json
 
 max_steps = 100
-default_timeout = 120
+default_vc_timeout = 120
 parallel_procs = 1
 #  Change directory
 
@@ -24,6 +24,12 @@ from gnatpython.ex import Run
 
 def quick_mode():
     return "quick" in os.environ and os.environ["quick"] == "true"
+
+def vc_timeout():
+    if "vc_timeout" in os.environ:
+        return int(os.environ["vc_timeout"])
+    else:
+        return default_vc_timeout
 
 def cat(filename, force_in_quick_mode=False):
     """Dump the content of a file on stdout
@@ -118,20 +124,20 @@ def gnatprove(opt=["-P", "test.gpr"]):
     for line in out:
         print line
 
-def prove(opt=None, steps=max_steps, timeout=default_timeout, mode="check"):
+def prove(opt=None, steps=max_steps, vc_timeout=vc_timeout(), mode="check"):
     """Call gnatprove with standard options"""
     if opt is None:
         opt = []
     opt += ["--report=all", "-P", "test.gpr", "--quiet"]
-    opt += ["--timeout=%d"%(timeout)]
+    opt += ["--timeout=%d"%(vc_timeout)]
     opt += ["--steps=%d"%(steps)]
     opt += ["--mode=%s"%(mode)]
     opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
-def prove_all(opt=None, steps=max_steps, timeout=default_timeout):
+def prove_all(opt=None, steps=max_steps, vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
-    prove(opt, steps, timeout, "prove")
+    prove(opt, steps, vc_timeout, "prove")
 
 def to_list(arg):
     """Convert to list
