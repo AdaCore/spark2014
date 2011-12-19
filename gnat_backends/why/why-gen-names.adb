@@ -87,7 +87,9 @@ package body Why.Gen.Names is
             return
               Conversion_From.Id
                 (Full_Name (Get_Ada_Node (+To)),
-                 New_Ada_Array_Name (Number_Dimensions (Get_Ada_Node (+To))));
+                 New_Ada_Array_Name
+                    (Number_Dimensions
+                       (Underlying_Type (Get_Ada_Node (+To)))));
 
          when EW_Abstract =>
             case To_Kind is
@@ -103,7 +105,8 @@ package body Why.Gen.Names is
                     Conversion_To.Id
                        (Full_Name (Get_Ada_Node (+From)),
                         New_Ada_Array_Name
-                          (Number_Dimensions (Get_Ada_Node (+From))));
+                          (Number_Dimensions
+                             (Underlying_Type (Get_Ada_Node (+From)))));
 
                when EW_Abstract =>
                   raise Program_Error
