@@ -62,9 +62,10 @@ package Gnat2Why.Types is
    --  functions and axioms.
 
    procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Sections;
-       Name_Str   : String;
-       Ident_Node : Node_Id);
+      (File        : W_File_Sections;
+       Orig_Entity : Entity_Id;
+       Name_Str    : String;
+       Ident_Node  : Node_Id);
    --  Similar to the previous function, but use Name_Str as name of the type,
    --  regardless of the name of the Entity.
 

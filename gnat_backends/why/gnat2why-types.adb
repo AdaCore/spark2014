@@ -167,9 +167,10 @@ package body Gnat2Why.Types is
    -----------------------------
 
    procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Sections;
-       Name_Str   : String;
-       Ident_Node : Node_Id) is
+      (File        : W_File_Sections;
+       Orig_Entity : Entity_Id;
+       Name_Str    : String;
+       Ident_Node  : Node_Id) is
    begin
       if Ident_Node = Standard_Boolean then
          null;
@@ -261,17 +262,14 @@ package body Gnat2Why.Types is
 
                         Next_Entity (Field);
                      end loop;
-                     Define_Ada_Record (File, Ident_Node, Name_Str, Binders);
+                     Define_Ada_Record (File, Orig_Entity, Name_Str, Binders);
                   end;
                end;
 
             when Private_Kind =>
 
-               --  This can happen when we have a private type which is
-               --  derived from a private type. We just generate an
-               --  abstract type here.
-
-               Emit (File (W_File_Logic_Type), New_Type (Name_Str));
+               Why_Type_Decl_Of_Entity
+                  (File, Orig_Entity, Name_Str, Underlying_Type (Ident_Node));
 
             when others =>
                raise Not_Implemented;
@@ -286,7 +284,7 @@ package body Gnat2Why.Types is
    is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
-      Why_Type_Decl_Of_Entity (File, Name_Str, Ident_Node);
+      Why_Type_Decl_Of_Entity (File, Ident_Node, Name_Str, Ident_Node);
    end Why_Type_Decl_Of_Entity;
 
    -------------------------------
