@@ -56,10 +56,10 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (File       : W_File_Sections;
-      Entity     : Entity_Id)
+     (File        : W_File_Sections;
+      Name        : String;
+      Entity      : Entity_Id)
    is
-      Name       : constant String := Full_Name (Entity);
       Dimension  : constant Pos := Number_Dimensions (Entity);
       Ar         : constant W_Term_Id := New_Term ("a");
       Ar_Binder  : constant Binder_Type :=
@@ -71,7 +71,7 @@ package body Why.Gen.Arrays is
       Index      : Node_Id := First_Index (Entity);
       Count      : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array (File, Entity);
+      Declare_Ada_Unconstrained_Array (File, Name, Entity);
 
       if Is_Constrained (Entity) then
          --  State axioms about fixed 'First, 'Last and 'Length
@@ -139,9 +139,9 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (File       : W_File_Sections;
-      Entity : Entity_Id)
+      Name       : String;
+      Entity     : Entity_Id)
    is
-      Name       : constant String := Full_Name (Entity);
       Component  : constant String := Full_Name (Component_Type (Entity));
       Dimension  : constant Pos := Number_Dimensions (Entity);
       Type_Id     : constant W_Identifier_Id := New_Identifier (Name);

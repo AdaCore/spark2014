@@ -215,7 +215,7 @@ package body Gnat2Why.Types is
 
             when Array_Kind =>
 
-               Declare_Ada_Array (File, Ident_Node);
+               Declare_Ada_Array (File, Name_Str, Ident_Node);
 
             when E_Record_Type =>
                declare

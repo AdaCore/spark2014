@@ -41,6 +41,7 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Array
      (File       : W_File_Sections;
+      Name       : String;
       Entity     : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
@@ -48,7 +49,8 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (File       : W_File_Sections;
-      Entity : Entity_Id);
+      Name       : String;
+      Entity     : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component
