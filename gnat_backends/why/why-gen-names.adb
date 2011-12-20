@@ -37,105 +37,6 @@ package body Why.Gen.Names is
    --  Return the name of a boolean integer comparison operator
 
    ---------------------
-   -- Conversion_Name --
-   ---------------------
-
-   function Conversion_Name
-      (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id
-   is
-      From_Kind : constant EW_Type := Get_Base_Type (From);
-      To_Kind   : constant EW_Type := Get_Base_Type (To);
-   begin
-      case From_Kind is
-         when EW_Unit | EW_Prop =>
-            raise Not_Implemented;
-
-         when EW_Scalar =>
-            case To_Kind is
-               when EW_Unit | EW_Prop | EW_Array =>
-                  raise Not_Implemented;
-
-               when EW_Scalar =>
-
-                  --  Only certain conversions are OK
-
-                  if From_Kind = EW_Int and then To_Kind = EW_Real then
-                     return Real_Of_Int.Id;
-                  elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
-                     return Int_Of_Bool.Id;
-                  elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
-                     return Bool_Of_Int.Id;
-                  else
-
-                     --  either the two objects are of the same type
-                     --  (in which case the conversion is useless) or
-                     --  they are of incompatible types
-                     --  In both cases, it is an error.
-
-                     raise Program_Error;
-                  end if;
-
-               when EW_Abstract =>
-                  return
-                    Conversion_From.Id (Full_Name (Get_Ada_Node (+To)),
-                                        Why_Scalar_Type_Name (From_Kind));
-            end case;
-
-         when EW_Array =>
-            pragma Assert (To_Kind = EW_Abstract);
-            return
-              Conversion_From.Id
-                (Full_Name (Get_Ada_Node (+To)),
-                 New_Ada_Array_Name
-                    (Number_Dimensions
-                       (Underlying_Type (Get_Ada_Node (+To)))));
-
-         when EW_Abstract =>
-            case To_Kind is
-               when EW_Unit | EW_Prop =>
-                  raise Not_Implemented;
-
-               when EW_Scalar =>
-                  return
-                    Conversion_To.Id (Full_Name (Get_Ada_Node (+From)),
-                                      Why_Scalar_Type_Name (To_Kind));
-               when EW_Array =>
-                  return
-                    Conversion_To.Id
-                       (Full_Name (Get_Ada_Node (+From)),
-                        New_Ada_Array_Name
-                          (Number_Dimensions
-                             (Underlying_Type (Get_Ada_Node (+From)))));
-
-               when EW_Abstract =>
-                  raise Program_Error
-                     with "Conversion between arbitrary types attempted";
-            end case;
-      end case;
-   end Conversion_Name;
-
-   -----------------------
-   -- EW_Base_Type_Name --
-   -----------------------
-
-   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String is
-   begin
-      case Kind is
-         when EW_Unit =>
-            return "unit";
-         when EW_Prop =>
-            return "prop";
-         when EW_Real =>
-            return "real";
-         when EW_Int =>
-            return "int";
-         when EW_Bool =>
-            return "bool";
-      end case;
-   end EW_Base_Type_Name;
-
-   ---------------------
    -- Bool_Cmp_String --
    ---------------------
 
@@ -171,6 +72,105 @@ package body Why.Gen.Names is
             return "bool_" & Name & "__ge";
       end case;
    end Bool_Cmp_String;
+
+   ---------------------
+   -- Conversion_Name --
+   ---------------------
+
+   function Conversion_Name
+      (From : W_Base_Type_Id;
+       To   : W_Base_Type_Id) return W_Identifier_Id
+   is
+      From_Kind : constant EW_Type := Get_Base_Type (From);
+      To_Kind   : constant EW_Type := Get_Base_Type (To);
+   begin
+      case From_Kind is
+         when EW_Unit | EW_Prop =>
+            raise Not_Implemented;
+
+         when EW_Scalar =>
+            case To_Kind is
+               when EW_Unit | EW_Prop | EW_Array =>
+                  raise Not_Implemented;
+
+               when EW_Scalar =>
+
+                  --  Only certain conversions are OK
+
+                  if From_Kind = EW_Int and then To_Kind = EW_Real then
+                     return Real_Of_Int.Id;
+                  elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
+                     return Int_Of_Bool.Id;
+                  elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
+                     return Bool_Of_Int.Id;
+
+                  --  Either the two objects are of the same type
+                  --  (in which case the conversion is useless) or
+                  --  they are of incompatible types
+                  --  In both cases, it is an error.
+
+                  else
+                     raise Program_Error;
+                  end if;
+
+               when EW_Abstract =>
+                  return
+                    Conversion_From.Id (Full_Name (Get_Ada_Node (+To)),
+                                        Why_Scalar_Type_Name (From_Kind));
+            end case;
+
+         when EW_Array =>
+            pragma Assert (To_Kind = EW_Abstract);
+            return
+              Conversion_From.Id
+                (Full_Name (Get_Ada_Node (+To)),
+                 New_Ada_Array_Name
+                   (Number_Dimensions
+                     (Underlying_Type (Get_Ada_Node (+To)))));
+
+         when EW_Abstract =>
+            case To_Kind is
+               when EW_Unit | EW_Prop =>
+                  raise Not_Implemented;
+
+               when EW_Scalar =>
+                  return
+                    Conversion_To.Id (Full_Name (Get_Ada_Node (+From)),
+                                      Why_Scalar_Type_Name (To_Kind));
+               when EW_Array =>
+                  return
+                    Conversion_To.Id
+                      (Full_Name (Get_Ada_Node (+From)),
+                       New_Ada_Array_Name
+                         (Number_Dimensions
+                           (Underlying_Type (Get_Ada_Node (+From)))));
+
+               when EW_Abstract =>
+                  raise Program_Error
+                     with "Conversion between arbitrary types attempted";
+            end case;
+      end case;
+   end Conversion_Name;
+
+   -----------------------
+   -- EW_Base_Type_Name --
+   -----------------------
+
+   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String is
+   begin
+      case Kind is
+         when EW_Unit =>
+            return "unit";
+         when EW_Prop =>
+            return "prop";
+         when EW_Real =>
+            return "real";
+         when EW_Int =>
+            return "int";
+         when EW_Bool =>
+            return "bool";
+      end case;
+   end EW_Base_Type_Name;
 
    -------------
    -- New_Abs --

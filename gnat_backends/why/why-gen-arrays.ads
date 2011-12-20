@@ -40,28 +40,28 @@ package Why.Gen.Arrays is
    --  We are limited to constrained arrays with static bounds for now.
 
    procedure Declare_Ada_Array
-     (File       : W_File_Sections;
-      Name       : String;
-      Entity     : Entity_Id);
+     (File   : W_File_Sections;
+      Name   : String;
+      Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
 
    procedure Declare_Ada_Unconstrained_Array
-     (File       : W_File_Sections;
-      Name       : String;
-      Entity     : Entity_Id);
+     (File   : W_File_Sections;
+      Name   : String;
+      Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component
 
    function New_Array_Access
-     (Ada_Node      : Node_Id;
-      Type_Name     : String;
-      Ar            : W_Expr_Id;
-      Index         : W_Expr_Array;
-      Domain        : EW_Domain;
-      Dimension     : Pos) return W_Expr_Id;
+     (Ada_Node  : Node_Id;
+      Type_Name : String;
+      Ar        : W_Expr_Id;
+      Index     : W_Expr_Array;
+      Domain    : EW_Domain;
+      Dimension : Pos) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
    function New_Array_Attr
@@ -82,6 +82,6 @@ package Why.Gen.Arrays is
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
        Domain    : EW_Domain;
-       Dimension  : Pos) return W_Expr_Id;
+       Dimension : Pos) return W_Expr_Id;
 
 end Why.Gen.Arrays;
