@@ -1190,19 +1190,23 @@ package body Gnat2Why.Expr is
       Subdomain  : constant EW_Domain :=
                      (if Domain = EW_Pred then EW_Term else Domain);
       Range_Node : constant Node_Id := Get_Range (N);
+      Low        : constant Node_Id := Low_Bound (Range_Node);
+      High       : constant Node_Id := High_Bound (Range_Node);
+      Base_Type  : constant W_Base_Type_Id := Base_Why_Type (Low, High);
    begin
       return
         New_Range_Expr
-          (Domain => Domain,
-           Low    => +Transform_Expr (Low_Bound (Range_Node),
-                                      EW_Int_Type,
-                                      Subdomain,
-                                      Ref_Allowed),
-           High   => +Transform_Expr (High_Bound (Range_Node),
-                                      EW_Int_Type,
-                                      Subdomain,
-                                      Ref_Allowed),
-           Expr   => T);
+          (Domain    => Domain,
+           Base_Type => Base_Type,
+           Low       => +Transform_Expr (Low,
+                                         Base_Type,
+                                         Subdomain,
+                                         Ref_Allowed),
+           High      => +Transform_Expr (High,
+                                         Base_Type,
+                                         Subdomain,
+                                         Ref_Allowed),
+           Expr      => T);
    end Range_Expr;
 
    -------------------------------
@@ -2563,12 +2567,13 @@ package body Gnat2Why.Expr is
             declare
                Subdomain : constant EW_Domain :=
                              (if Domain = EW_Pred then EW_Term else Domain);
+               Var       : constant Node_Id := Left_Opnd (Expr);
             begin
                T :=
                  Range_Expr
                    (Right_Opnd (Expr),
-                    Transform_Expr (Left_Opnd (Expr),
-                                    EW_Int_Type,
+                    Transform_Expr (Var,
+                                    Base_Why_Type (Var),
                                     Subdomain,
                                     Ref_Allowed),
                     Domain,

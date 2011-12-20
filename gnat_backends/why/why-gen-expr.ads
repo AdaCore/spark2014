@@ -103,10 +103,11 @@ package Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
+      Base_Type : W_Base_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
-   --  comparisons being in "int"
+   --  comparisons being in Base_Type (int or real)
 
    function New_Simpl_Any_Expr
      (Domain   : EW_Domain;

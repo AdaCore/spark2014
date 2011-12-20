@@ -253,6 +253,12 @@ package Why.Sinfo is
       EW_Gt,
       EW_Ge);
 
+   subtype EW_Inequality is EW_Relation range
+       EW_Lt ..
+   --  EW_Le
+   --  EW_Gt
+       EW_Ge;
+
    type EW_Clone_Type is
       (EW_Import,
        EW_Export,

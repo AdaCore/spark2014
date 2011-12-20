@@ -317,10 +317,12 @@ package body Gnat2Why.Expr.Loops is
             Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
             High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
             Condition    : constant W_Prog_Id :=
-                             +New_Range_Expr (Domain => EW_Prog,
-                                             Low    => +Low_Ident,
-                                             High   => +High_Ident,
-                                             Expr   => +Index_Deref);
+                             +New_Range_Expr
+                               (Domain    => EW_Prog,
+                                Base_Type => EW_Int_Type,
+                                Low       => +Low_Ident,
+                                High      => +High_Ident,
+                                Expr      => +Index_Deref);
             Entire_Loop  : W_Prog_Id :=
                              Wrap_Loop
                                (Loop_Body    =>

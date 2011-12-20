@@ -358,21 +358,47 @@ package body Why.Gen.Expr is
       Left, Right : W_Expr_Id;
       Arg_Types   : W_Base_Type_Id;
       Domain      : EW_Domain)
-     return W_Expr_Id is
+     return W_Expr_Id
+   is
+      Op_Type : W_Base_Type_Id;
+      Left1   : W_Expr_Id;
+      Right1  : W_Expr_Id;
    begin
+      if Get_Base_Type (Arg_Types) = EW_Bool
+        and then Cmp in EW_Inequality
+      then
+         Op_Type := EW_Int_Type;
+         Left1  :=
+           Insert_Conversion
+             (Domain => Domain,
+              Expr   => Left,
+              From   => Arg_Types,
+              To     => EW_Int_Type);
+         Right1 :=
+           Insert_Conversion
+             (Domain => Domain,
+              Expr   => Right,
+              From   => Arg_Types,
+              To     => EW_Int_Type);
+      else
+         Op_Type := Arg_Types;
+         Left1  := Left;
+         Right1 := Right;
+      end if;
+
       if Domain in EW_Pred | EW_Prog then
          return
-            New_Relation
-              (Domain  => Domain,
-               Op_Type => Get_Base_Type (Arg_Types),
-               Left    => +Left,
-               Right   => +Right,
-               Op      => Cmp);
+           New_Relation
+             (Domain  => Domain,
+              Op_Type => Get_Base_Type (Op_Type),
+              Left    => +Left1,
+              Right   => +Right1,
+              Op      => Cmp);
       else
          return
            New_Call
-             (Name   => New_Bool_Cmp (Cmp, Arg_Types),
-              Args   => (1 => +Left, 2 => +Right),
+             (Name   => New_Bool_Cmp (Cmp, Op_Type),
+              Args   => (1 => +Left1, 2 => +Right1),
               Domain => Domain);
       end if;
    end New_Comparison;
@@ -523,6 +549,7 @@ package body Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
+      Base_Type : W_Base_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
@@ -532,14 +559,14 @@ package body Why.Gen.Expr is
            (Left  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
                  Left      => +Low,
                  Right     => +Expr),
             Right  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => New_Base_Type (Base_Type => EW_Int),
+                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
                  Left      => +Expr,
                  Right     => High),
