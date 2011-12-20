@@ -34,7 +34,9 @@ with Sem_Util;           use Sem_Util;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
+with Urealp;             use Urealp;
 with VC_Kinds;           use VC_Kinds;
+with Eval_Fat;
 
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
@@ -1693,22 +1695,69 @@ package body Gnat2Why.Expr is
 
          when Attribute_Pred | Attribute_Succ =>
             declare
-               Op  : constant EW_Binary_Op :=
-                  (if Attr_Id = Attribute_Succ then EW_Add else EW_Substract);
-               Old : constant W_Expr_Id :=
-                  Transform_Expr (First (Expressions (Expr)),
-                                  EW_Int_Type,
-                                  Domain,
-                                  Ref_Allowed);
+               Op     : constant EW_Binary_Op :=
+                          (if Attr_Id = Attribute_Succ then
+                             EW_Add
+                           else
+                             EW_Substract);
+               Old    : W_Expr_Id;
+               Offset : W_Expr_Id;
+               A_Type : constant Entity_Id := Etype (Var);
+               W_Type : EW_Scalar;
             begin
+               case Ekind (Etype (Var)) is
+                  when Discrete_Kind =>
+                     if A_Type = Standard_Boolean then
+                        W_Type := EW_Bool;
+                        raise Not_Implemented;
+                     else
+                        W_Type := EW_Int;
+                        Offset := New_Integer_Constant (Value => Uint_1);
+                     end if;
+
+                  when Float_Kind =>
+                     W_Type := EW_Real;
+
+                     --  ??? This is not strictly correct; F'Succ (A) is
+                     --  usually different from A + F'Succ (0.0). But the
+                     --  correct computation will be much more complicated;
+                     --  and, as we map floating points to reals, our model
+                     --  is quite loose anyway.
+
+                     Offset :=
+                       New_Real_Constant
+                         (Value =>
+                            Eval_Fat.Succ
+                              (Root_Type (A_Type),
+                               Ureal_0));
+
+                  when Fixed_Point_Kind =>
+                     W_Type := EW_Real;
+                     Offset :=
+                       New_Real_Constant (Value => Small_Value (A_Type));
+
+                  when others =>
+                     --  All possible cases should have been handled
+                     --  before this point.
+                     pragma Assert (False);
+                     null;
+               end case;
+
+               Old :=
+                 Transform_Expr
+                   (First (Expressions (Expr)),
+                    Why_Types (W_Type),
+                    Domain,
+                    Ref_Allowed);
+
                T :=
                  New_Binary_Op
                    (Ada_Node => Expr,
                     Left     => Old,
-                    Right    => New_Integer_Constant (Value => Uint_1),
+                    Right    => Offset,
                     Op       => Op,
-                    Op_Type  => EW_Int);
-               Current_Type := EW_Int_Type;
+                    Op_Type  => W_Type);
+               Current_Type := Why_Types (W_Type);
             end;
 
          when Attribute_Pos =>
