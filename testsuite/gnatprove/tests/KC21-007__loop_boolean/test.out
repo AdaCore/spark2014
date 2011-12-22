@@ -1,0 +1,6 @@
+
+p.adb:10:7: (info) index check proved
+p.adb:11:18: (info) range check proved
+p.adb:7:25: (info) range check proved
+p.adb:9:27: (info) loop invariant initialization proved
+p.adb:9:27: (info) loop invariant preservation proved
