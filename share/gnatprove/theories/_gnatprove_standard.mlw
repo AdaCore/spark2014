@@ -8,7 +8,6 @@ module Main
   use real.Real
   use export real.RealInfix
   use real.Abs as AbsReal
-  use real.Square as SquareReal
   use import bool.Bool
   use export bool.Ite
   use floating_point.Rounding
