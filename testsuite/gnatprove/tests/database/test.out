@@ -2,7 +2,7 @@ database.adb:111:21: (info) range check proved
 database.adb:112:10: (info) index check proved
 database.adb:113:29: (info) index check proved
 database.adb:120:13: (info) index check proved
-database.adb:121:13: index check not proved
+database.adb:121:13: (info) index check proved
 database.adb:121:20: (info) index check proved
 database.adb:121:50: (info) index check proved
 database.adb:123:13: (info) index check proved

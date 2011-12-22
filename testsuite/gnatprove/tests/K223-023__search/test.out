@@ -11,7 +11,7 @@ search.adb:6:24: (info) loop invariant preservation proved
 search.adb:8:10: assertion not proved
 search.ads:10:13: (info) index check proved
 search.ads:11:34: (info) range check proved
-search.ads:11:54: overflow check not proved
+search.ads:11:54: (info) overflow check proved
 search.ads:11:54: range check not proved
 search.ads:5:53: (info) index check proved
 search.ads:8:57: (info) range check proved

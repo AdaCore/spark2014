@@ -1,4 +1,4 @@
-funcs.adb:101:26: range check not proved
+funcs.adb:101:26: (info) range check proved
 funcs.adb:101:35: range check not proved
 funcs.adb:102:16: range check not proved
 funcs.adb:102:20: assertion not proved
@@ -88,7 +88,7 @@ funcs.adb:96:35: (info) range check proved
 funcs.adb:97:12: (info) precondition proved
 funcs.adb:97:16: (info) range check proved
 funcs.adb:97:20: assertion not proved
-funcs.adb:97:39: precondition not proved
-funcs.adb:97:43: range check not proved
+funcs.adb:97:39: (info) precondition proved
+funcs.adb:97:43: (info) range check proved
 funcs.ads:19:68: postcondition not proved
 funcs.ads:20:68: postcondition not proved
