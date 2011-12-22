@@ -9,7 +9,6 @@ module Main
   use export real.RealInfix
   use real.Abs as AbsReal
   use real.Square as SquareReal
-  use real.Trigonometry
   use import bool.Bool
   use export bool.Ite
   use floating_point.Rounding
