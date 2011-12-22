@@ -1,0 +1,11 @@
+
+p.adb:13:21: (info) range check proved
+p.adb:13:35: overflow check not proved
+p.adb:21:19: (info) range check proved
+p.adb:21:31: overflow check not proved
+p.adb:29:18: (info) range check proved
+p.adb:29:29: overflow check not proved
+p.adb:37:19: (info) range check proved
+p.adb:37:31: overflow check not proved
+p.adb:45:19: (info) range check proved
+p.adb:45:31: overflow check not proved
