@@ -280,9 +280,10 @@ package body Gnat2Why.Expr.Loops is
                                (Ada_Node => Stmt,
                                 Right    => +Loop_Index);
             Update_Op    : constant EW_Binary_Op :=
-               (if Reverse_Present (LParam_Spec)
-                then EW_Substract
-                else EW_Add);
+                             (if Reverse_Present (LParam_Spec) then
+                                EW_Substract
+                              else
+                                EW_Add);
             Update_Expr  : constant W_Prog_Id :=
                              New_Binary_Op
                                (Ada_Node => Stmt,
@@ -333,9 +334,10 @@ package body Gnat2Why.Expr.Loops is
                                 Inv_Check    => Inv_Check,
                                 Inv_Node     => Inv_Node);
             Init_Index  : constant W_Identifier_Id :=
-               (if Reverse_Present (LParam_Spec)
-                then High_Ident
-                else Low_Ident);
+                            (if Reverse_Present (LParam_Spec) then
+                               High_Ident
+                             else
+                               Low_Ident);
          begin
             Entire_Loop := New_Binding_Ref
                              (Name    => Loop_Index,
