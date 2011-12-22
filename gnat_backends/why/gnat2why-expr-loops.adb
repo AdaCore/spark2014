@@ -299,6 +299,12 @@ package body Gnat2Why.Expr.Loops is
                                (Ada_Node => Stmt,
                                 Name     => Loop_Index,
                                 Value    => Update_Expr);
+
+            --  In the range expression of the invariant, explicitly
+            --  set T_Type to handle the special case of
+            --  Standard.Boolean, where bounds and index are of
+            --  different base types (bool for bounds, int for index).
+
             Enriched_Inv : constant W_Pred_Id :=
                              +New_And_Expr
                                (Left  => +Invariant,
@@ -307,7 +313,8 @@ package body Gnat2Why.Expr.Loops is
                                    (Loop_Range,
                                     New_Deref (Right => Loop_Index),
                                     EW_Pred,
-                                    Ref_Allowed => True),
+                                    Ref_Allowed => True,
+                                    T_Type      => EW_Int_Type),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
             --  none at the beginning, we need to put a location here.

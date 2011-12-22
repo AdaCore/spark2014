@@ -26,6 +26,7 @@
 with Atree;         use Atree;
 with Sinfo;         use Sinfo;
 with Types;         use Types;
+with Why.Types;     use Why.Types;
 with Why.Ids;       use Why.Ids;
 with Why.Sinfo;     use Why.Sinfo;
 
@@ -50,10 +51,14 @@ package Gnat2Why.Expr is
      (N           : Node_Id;
       T           : W_Expr_Id;
       Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id;
+      Ref_Allowed : Boolean;
+      T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
    --  where "low" and "high" are the lower and higher bounds of N.
+   --  T_Type is the base type in which the comparisons take
+   --  place (e.g. int, real). If it is not set, it is deduced from
+   --  the bounds' type.
 
    function Transform_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.

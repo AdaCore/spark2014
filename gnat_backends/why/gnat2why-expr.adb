@@ -41,7 +41,6 @@ with Eval_Fat;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
-with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 with Why.Atree.Builders;    use Why.Atree.Builders;
@@ -1185,15 +1184,20 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       T           : W_Expr_Id;
       Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id
+      Ref_Allowed : Boolean;
+      T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id
    is
       Subdomain  : constant EW_Domain :=
                      (if Domain = EW_Pred then EW_Term else Domain);
       Range_Node : constant Node_Id := Get_Range (N);
       Low        : constant Node_Id := Low_Bound (Range_Node);
       High       : constant Node_Id := High_Bound (Range_Node);
-      Base_Type  : constant W_Base_Type_Id := Base_Why_Type (Low, High);
+      Base_Type  : W_Base_Type_Id := Base_Why_Type (Low, High);
    begin
+      if T_Type /= Why_Empty then
+         Base_Type := Base_Why_Type (T_Type, Base_Type);
+      end if;
+
       return
         New_Range_Expr
           (Domain    => Domain,
