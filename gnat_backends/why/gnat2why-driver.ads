@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,12 +30,32 @@
 --  packages that deal with type declarations, data declarations and
 --  function/procedure definitions.
 
-with Types;     use Types;
-with Why.Inter; use Why.Inter;
+with Types;   use Types;
+with Why.Ids; use Why.Ids;
+with Alfa.Filter; use Alfa.Filter;
 
 package Gnat2Why.Driver is
 
-   Current_Why_Output_File : W_File_Sections;
+   type Translation_Phase is (Translation,
+                              Generate_VCs_For_Pre,
+                              Generate_VCs_For_Body,
+                              Generate_VCs_For_Post);
+
+   subtype Generate_VCs is Translation_Phase range
+     Generate_VCs_For_Pre ..
+     --  Generate_VCs_For_Body,
+     Generate_VCs_For_Post;
+
+   type Translation_Params is record
+      File        : W_File_Id;
+      Phase       : Translation_Phase;
+      Ref_Allowed : Boolean;
+   end record;
+
+   function Body_Params return Translation_Params is
+     (Translation_Params'(File        => Main_File.File,
+                          Phase       => Generate_VCs_For_Body,
+                          Ref_Allowed => True));
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id);
    --  Translates an entire GNAT tree for a compilation unit into

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,10 +31,9 @@ with Alfa.Common;           use Alfa.Common;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
-with Debug;
 with Einfo;                 use Einfo;
+with Namet;         use Namet;
 with Nlists;                use Nlists;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
@@ -42,656 +41,787 @@ with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
 with Why;                   use Why;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
-with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
+with Why.Inter;             use Why.Inter;
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
+with Why.Types;     use Why.Types;
+
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Types;        use Gnat2Why.Types;
+with Gnat2Why.Driver; use Gnat2Why.Driver;
 
 package body Gnat2Why.Subprograms is
 
-   type Old_Node is
-      record
-         Ada_Node : Node_Id;
-         Why_Name : Name_Id;
-      end record;
-   --  This record contains an Ada expression for which we need to translate
-   --  an 'Old attribute. Ada_Node is the Ada expression, and Why_Name is the
-   --  name which is used for that expression.
+   ---------------------
+   -- Local Variables --
+   ---------------------
+
+   --  Expressions X'Old and F'Result are normally expanded into references to
+   --  saved values of variables by the frontend, but this expansion does not
+   --  apply to the original postcondition. It is this postcondition which
+   --  is translated by gnat2why into a program to detect possible run-time
+   --  errors, therefore a special mechanism is needed to deal with expressions
+   --  X'Old and F'Result.
+
+   Result_Name : W_Identifier_Id := Why_Empty;
+   --  Name to use for occurrences of F'Result in the postcondition. It should
+   --  be equal to Why_Empty when we are not generating code for detecting
+   --  run-time errors in the postcondition.
+
+   type Old_Node is record
+      Ada_Node : Node_Id;
+      Why_Name : Name_Id;
+   end record;
+   --  Ada_Node is an expression whose 'Old attribute is used in a
+   --  postcondition. Why_Name is the name to use for Ada_Node'Old in Why.
 
    package Old_Nodes is new Ada.Containers.Doubly_Linked_Lists (Old_Node);
 
    Old_List : Old_Nodes.List;
-   --  This list contains all expressions with an 'Old attribute in the
-   --  current suprogram.
-   --  This list is cleared at the beginning of each subprogram translation,
-   --  and filled during the translation. At the end, this list is used to
-   --  generate necessary the copy instructions.
+   --  List of all expressions whose 'Old attribute is used in the current
+   --  postcondition, together with the translation of the corresponding
+   --  expression in Why.
+   --
+   --  The list is cleared before generating Why code for a postcondition,
+   --  filled during the translation, and used afterwards to generate necessary
+   --  the copy instructions.
 
    -----------------------
-   -- Register_Old_Node --
+   -- Local Subprograms --
    -----------------------
 
-   function Register_Old_Node (N : Node_Id) return Name_Id is
-      Cnt : constant Natural := Natural (Old_List.Length);
-      Rec : constant Old_Node :=
-         (Ada_Node => N,
-          Why_Name => NID ("__gnatprove_old___" & Int_Image (Cnt)));
+   function Compute_Args
+     (E       : Entity_Id;
+      Binders : Binder_Array) return W_Expr_Array;
+   --  Compute arguments corresponding to logical parameters Binders for
+   --  subprogram E.
+
+   function Compute_Binders (E : Entity_Id) return Binder_Array;
+   --  Return Why binders for the parameters of subprogram E. The array is
+   --  a singleton of unit type if E has no parameters.
+
+   function Compute_Context
+     (Params : Translation_Params;
+      E            : Entity_Id;
+      Initial_Body : W_Prog_Id;
+      Post_Check   : W_Prog_Id) return W_Prog_Id;
+   --  Deal with object declarations at the beginning of the function.
+   --  For local variables that originate from the source, simply assign
+   --  the new value to the variable; Such variables have been declared
+   --  globally.
+   --  For local variables that are introduced by the compiler, add a "let"
+   --  binding to Why body for each local variable of the procedure.
+
+   function Compute_Effects (E : Entity_Id) return W_Effects_Id;
+   --  Compute the effects of the generated Why function.
+
+   function Compute_Logic_Binders (E : Entity_Id) return Binder_Array;
+   --  Return Why binders for the parameters and read effects of function E.
+   --  The array is a singleton of unit type if E has no parameters and no
+   --  effects.
+
+   function Compute_Raw_Binders (E : Entity_Id) return Binder_Array;
+   --  Return Why binders for the parameters of subprogram E. The array is
+   --  empty if E has no parameters.
+
+   function Compute_Spec
+     (Params : Translation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  Compute the precondition or postcondition of the generated Why function.
+   --  Kind is Name_Precondition or Name_Postcondition to specify which one is
+   --  computed.
+
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   --  If E is the entity of an expression function, return the corresponding
+   --  N_Expression_Function original node. Otherwise, return Empty.
+
+   function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
+   --  Return a node with a proper location for the postcondition of E, if any
+
+   function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
+   --  Return the N_Subprogram_Body node for a unique entity E
+
+   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
+   --  Return the N_Specification node for a unique entity E
+
+   ---------------------
+   -- Compute_Binders --
+   ---------------------
+
+   function Compute_Binders (E : Entity_Id) return Binder_Array is
+      Binders : constant Binder_Array := Compute_Raw_Binders (E);
    begin
-      Old_List.Append (Rec);
-      return Rec.Why_Name;
-   end Register_Old_Node;
-
-   --------------------------
-   -- Transform_Subprogram --
-   --------------------------
-
-   procedure Transform_Subprogram
-     (File        : W_File_Sections;
-      Node        : Node_Id;
-      As_Spec     : Boolean)
-   is
-      Spec        : constant Node_Id :=
-                      (if Nkind (Node) = N_Subprogram_Body and then
-                         Present (Corresponding_Spec (Node))
-                       then
-                         (if Nkind (Parent (Corresponding_Spec (Node))) =
-                            N_Defining_Program_Unit_Name
-                          then
-                            Parent (Parent (Corresponding_Spec (Node)))
-                          else
-                            Parent (Corresponding_Spec (Node)))
-                       else
-                         Specification (Node));
-      Name_Str    : constant String  :=
-                      Get_Name_String (Chars (Defining_Entity (Spec)));
-      Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
-      Arg_Length  : constant Nat := List_Length (Ada_Binders);
-
-      function Compute_Args (Binders : Binder_Array) return W_Expr_Array;
-
-      function Compute_Binders
-        (Logic_Function : Boolean := False) return Binder_Array;
-      --  Compute the arguments of the generated Why function;
-      --  use argument (x : void) if the Ada procedure / function has no
-      --  arguments.
-
-      function Compute_Context
-         (Initial_Body : W_Prog_Id;
-          Post_Check   : W_Prog_Id) return W_Prog_Id;
-      --  Deal with object declarations at the beginning of the function.
-      --  For local variables that originate from the source, simply assign
-      --  the new value to the variable; Such variables have been declared
-      --  globally.
-      --  For local variables that are introduced by the compiler, add a "let"
-      --  binding to Why body for each local variable of the procedure.
-
-      function Compute_Effects return W_Effects_Id;
-      --  Compute the effects of the generated Why function.
-
-      function Compute_Spec
-         (Kind         : Name_Id;
-          Located_Node : out Node_Id;
-          Domain       : EW_Domain) return W_Expr_Id;
-      --  Compute the precondition of the generated Why functions.
-      --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
-      --  you want the pre- or postcondition.
-      --  Also output a suitable location node, if available.
-
-      function Is_Syntactic_Expr_Function return Node_Id;
-      --  Compute if Node is an expression function in the source, also works
-      --  for the declaration of an expression function.
-      --  If Is_Syntactic_Expr_Function'Result is equal to Node, Node is not
-      --  an expression function; otherwise, Is_Syntactic_Expr_Function'Result
-      --  is the original node of the expression function.
-
-      ---------------------
-      -- Compute_Binders --
-      ---------------------
-
-      function Compute_Args (Binders : Binder_Array) return W_Expr_Array is
-         Cnt    : Integer := 1;
-         Result : W_Expr_Array (1 .. Binders'Last);
-         E      : constant Entity_Id := Unique_Defining_Entity (Node);
-
-      begin
-         if Arg_Length = 0
-           and then not Has_Global_Reads (E)
-         then
-            return W_Expr_Array'(1 => New_Void);
-         end if;
-
-         while Cnt <= Integer (Arg_Length) loop
-            Result (Cnt) := +Binders (Cnt).B_Name;
-            Cnt := Cnt + 1;
-         end loop;
-
-         while Cnt <= Binders'Last loop
-            Result (Cnt) :=
-              New_Deref (Right => Binders (Cnt).B_Name);
-            Cnt := Cnt + 1;
-         end loop;
-
-         return Result;
-      end Compute_Args;
-
-      function Compute_Binders
-        (Logic_Function : Boolean := False) return Binder_Array
-      is
-         Cur_Binder  : Node_Id := First (Ada_Binders);
-         Cnt         : Integer := 1;
-         E           : constant Entity_Id := Unique_Defining_Entity (Node);
-         Read_Names  : Name_Set.Set;
-         Num_Binders : Int;
-
-      begin
-         --  Collect global variables potentially read
-
-         Read_Names := Get_Reads (E);
-
-         Num_Binders := Arg_Length;
-         if Logic_Function then
-            Num_Binders := Num_Binders + Int (Read_Names.Length);
-         end if;
-
-         if Num_Binders = 0 then
-            return (1 => Unit_Param);
-         else
-            declare
-               Result : Binder_Array :=
-                          (1 .. Integer (Num_Binders) => <>);
-            begin
-               while Present (Cur_Binder) loop
-                  declare
-                     Id   : constant Node_Id :=
-                              Defining_Identifier (Cur_Binder);
-                     Name : constant W_Identifier_Id :=
-                              Transform_Ident (Id);
-                  begin
-                     Result (Cnt) :=
-                       (Ada_Node => Cur_Binder,
-                        B_Name   => Name,
-                        Modifier =>
-                          (if Is_Mutable (Id) then Ref_Modifier else None),
-                        B_Type => +Why_Prog_Type_Of_Ada_Obj (Id, True));
-                     Next (Cur_Binder);
-                     Cnt := Cnt + 1;
-                  end;
-               end loop;
-
-               if Logic_Function then
-                  --  Workaround for K526-008 and K525-019
-
-                  declare
-                     use Name_Set;
-
-                     C : Cursor := Read_Names.First;
-                  begin
-                     while C /= No_Element loop
-                        Result (Cnt) :=
-                          (Ada_Node => Empty,
-                           B_Name   => New_Identifier (Element (C).all),
-                           B_Type   =>
-                             New_Abstract_Type
-                               (Name => Object_Type_Name.Id (Element (C).all)),
-                           Modifier => None);
-                        Next (C);
-                        Cnt := Cnt + 1;
-                     end loop;
-                  end;
-               end if;
-
-               return Result;
-            end;
-         end if;
-      end Compute_Binders;
-
-      ---------------------
-      -- Compute_Context --
-      ---------------------
-
-      function Compute_Context
-         (Initial_Body : W_Prog_Id;
-          Post_Check   : W_Prog_Id) return W_Prog_Id
-      is
-         R        : W_Prog_Id := Initial_Body;
-      begin
-         R := Transform_Declarations_Block (Declarations (Node), R);
-
-         --  Enclose the subprogram body in a try-block, so that return
-         --  statements can be translated as raising exceptions.
-
-         declare
-            Raise_Stmt : constant W_Prog_Id :=
-                           New_Raise
-                             (Ada_Node => Node,
-                              Name     => New_Result_Exc_Identifier.Id);
-            Result_Var : constant W_Prog_Id :=
-                           (if Nkind (Spec) = N_Function_Specification then
-                              New_Deref
-                                (Ada_Node => Node,
-                                 Right    => Result_Name)
-                            else New_Void);
-         begin
-            R :=
-              New_Try_Block
-                (Prog    => Sequence (R, Raise_Stmt),
-                 Handler =>
-                   (1 =>
-                      New_Handler
-                        (Name => New_Result_Exc_Identifier.Id,
-                         Def  => Sequence (Post_Check, Result_Var))));
-         end;
-
-         declare
-            use Old_Nodes;
-            C : Cursor := Old_List.First;
-         begin
-            while Has_Element (C) loop
-               declare
-                  N : constant Old_Node := Element (C);
-               begin
-                  R :=
-                     New_Binding
-                        (Name    =>
-                          New_Identifier (Symbol => N.Why_Name,
-                                          Domain => EW_Prog),
-                         Def     => +Transform_Expr (N.Ada_Node, EW_Prog,
-                                                     Ref_Allowed => True),
-                         Context => +R);
-                  Next (C);
-               end;
-            end loop;
-         end;
-         return R;
-      end Compute_Context;
-
-      ---------------------
-      -- Compute_Effects --
-      ---------------------
-
-      function Compute_Effects return W_Effects_Id is
-         E               : constant Entity_Id := Unique_Defining_Entity (Node);
-         Read_Names      : Name_Set.Set;
-         Write_Names     : Name_Set.Set;
-         Write_All_Names : UString_Set.Set;
-         Eff             : constant W_Effects_Id := New_Effects;
-
-      begin
-         --  Collect global variables potentially read and written
-
-         Read_Names  := Get_Reads (E);
-         Write_Names := Get_Writes (E);
-
-         --  Workaround for K526-008 and K525-019
-
-         --  for Name of Write_Names loop
-         --     Write_All_Names.Include (To_Unbounded_String (Name.all));
-         --  end loop;
-
-         declare
-            use Name_Set;
-
-            C : Cursor := Write_Names.First;
-         begin
-            while C /= No_Element loop
-               Write_All_Names.Include (To_Unbounded_String (Element (C).all));
-               Next (C);
-            end loop;
-         end;
-
-         --  Add all OUT and IN OUT parameters as potential writes
-
-         declare
-            Arg : Node_Id;
-            Id  : Entity_Id;
-         begin
-            if Is_Non_Empty_List (Ada_Binders) then
-               Arg := First (Ada_Binders);
-               while Present (Arg) loop
-                  Id := Defining_Identifier (Arg);
-
-                  if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
-                     Write_All_Names.Include
-                       (To_Unbounded_String (Full_Name (Id)));
-                  end if;
-
-                  Next (Arg);
-               end loop;
-            end if;
-         end;
-
-         --  Workaround for K526-008 and K525-019
-
-         --  for Name of Read_Names loop
-         --     Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
-         --  end loop;
-
-         declare
-            use Name_Set;
-
-            C : Cursor := Read_Names.First;
-         begin
-            while C /= No_Element loop
-               Effects_Append_To_Reads (Eff, New_Identifier (Element (C).all));
-               Next (C);
-            end loop;
-         end;
-
-         --  Workaround for K526-008 and K525-019
-
-         --  for Name of Write_All_Names loop
-         --     Effects_Append_To_Writes (Eff,
-         --                               New_Identifier (To_String (Name)));
-         --  end loop;
-
-         declare
-            use UString_Set;
-
-            C : Cursor := Write_All_Names.First;
-         begin
-            while C /= No_Element loop
-               Effects_Append_To_Writes (Eff,
-                                         New_Identifier
-                                           (To_String (Element (C))));
-               Next (C);
-            end loop;
-         end;
-
-         return +Eff;
-      end Compute_Effects;
-
-      ------------------
-      -- Compute_Spec --
-      ------------------
-
-      function Compute_Spec
-         (Kind         : Name_Id;
-          Located_Node : out Node_Id;
-          Domain       : EW_Domain) return W_Expr_Id
-      is
-         Corr_Spec      : Node_Id;
-         Cur_Spec       : W_Expr_Id := New_Literal (Value  => EW_True,
-                                                    Domain => Domain);
-         Found_Location : Boolean := False;
-         PPCs           : Node_Id;
-
-      begin
-         if Nkind (Node) = N_Subprogram_Declaration then
-            Corr_Spec := Defining_Entity (Spec);
-         else
-            Corr_Spec := Corresponding_Spec (Node);
-         end if;
-
-         if Nkind (Corr_Spec) = N_Empty then
-            return Cur_Spec;
-         end if;
-
-         PPCs := Spec_PPC_List (Contract (Corr_Spec));
-         while Present (PPCs) loop
-            if Pragma_Name (PPCs) = Kind then
-               declare
-                  Ada_Spec : constant Node_Id :=
-                               Expression
-                                 (First (Pragma_Argument_Associations (PPCs)));
-               begin
-                  if not Found_Location then
-                     Located_Node := Ada_Spec;
-                     Found_Location := True;
-                  end if;
-
-                  Cur_Spec :=
-                     New_And_Then_Expr
-                      (Left   => Transform_Expr (Ada_Spec, Domain,
-                                                 Ref_Allowed => True),
-                        Right  => Cur_Spec,
-                        Domain => Domain);
-               end;
-            end if;
-
-            PPCs := Next_Pragma (PPCs);
-         end loop;
-
-         return Cur_Spec;
-      end Compute_Spec;
-
-      --------------------------------
-      -- Is_Syntactic_Expr_Function --
-      --------------------------------
-
-      function Is_Syntactic_Expr_Function return Node_Id
-      is
-         Tmp_Node : Node_Id := Original_Node (Parent (Spec));
-      begin
-         --  Usually, it is sufficient to check for the original node of the
-         --  function (but for some reason we have to descend to the spec and
-         --  move up to another parent).
-
-         if Nkind (Tmp_Node) = N_Expression_Function then
-            return Tmp_Node;
-         end if;
-
-         --  For a subprogram body separated from the subprogram spec
-
-         if Nkind (Original_Node (Node)) = N_Expression_Function then
-            return Original_Node (Node);
-         end if;
-
-         --  But if we are at the function declaration, it is possible that
-         --  the function definition is given later, using an expression
-         --  function. We check this second possibility here.
-
-         if Nkind (Node) = N_Subprogram_Declaration then
-            Tmp_Node :=
-              Original_Node (Parent (Parent (Corresponding_Body (Node))));
-
-            if Nkind (Tmp_Node) = N_Expression_Function then
-               return Tmp_Node;
-            end if;
-
-         --  ??? I don't know in which situation we need this case ...
-
-         else
-            Tmp_Node :=
-               Original_Node (Parent (Parent (Corresponding_Spec (Node))));
-
-            if Nkind (Tmp_Node) = N_Expression_Function then
-               return Tmp_Node;
-            end if;
-         end if;
-
-         return Node;
-      end Is_Syntactic_Expr_Function;
-
-      Func_Binders : constant Binder_Array := Compute_Binders;
-      Logic_Func_Binders : constant Binder_Array :=
-                             Compute_Binders (Logic_Function => True);
-      Logic_Func_Args    : constant W_Expr_Array :=
-                             Compute_Args (Logic_Func_Binders);
-      Dummy_Node         : Node_Id;
-      pragma Unreferenced (Dummy_Node);
-      Pre          : constant W_Pred_Id :=
-                       +Compute_Spec (Name_Precondition, Dummy_Node, EW_Pred);
-      Loc_Node     : Node_Id := Empty;
-      Post         : constant W_Pred_Id :=
-                       +Compute_Spec (Name_Postcondition, Loc_Node, EW_Pred);
-      Post_Check   : W_Prog_Id;
-      Orig_Node    : constant Node_Id := Is_Syntactic_Expr_Function;
-      Effects      : constant W_Effects_Id := Compute_Effects;
-      Is_Expr_Func : constant Boolean :=
-                       Nkind (Spec) = N_Function_Specification
-                         and then
-                       Is_Empty (+Get_Writes (Effects))
-                         and then
-                       Orig_Node /= Node
-                         and then
-                       Get_Kind (+Post) = W_Literal
-                         and then
-                       Get_Value (+Post) = EW_True;
-      Result_Ent : constant Entity_Id :=
-         (if Nkind (Spec) = N_Function_Specification then
-            Entity (Result_Definition (Spec))
-          else
-            Empty);
-
-   --  Start of processing for Transform_Subprogram
+      --  If E has no parameters, return a singleton of unit type
+
+      if Binders'Length = 0 then
+         return (1 => Unit_Param);
+      else
+         return Binders;
+      end if;
+   end Compute_Binders;
+
+   ---------------------------
+   -- Compute_Logic_Binders --
+   ---------------------------
+
+   function Compute_Logic_Binders (E : Entity_Id) return Binder_Array is
+      Binders     : constant Binder_Array := Compute_Raw_Binders (E);
+      Read_Names  : Name_Set.Set;
+      Num_Binders : Integer;
+      Count       : Integer;
 
    begin
+      --  Collect global variables potentially read
 
-      --  First, clear the "old list", and create a new identifier for
-      --  "result"
+      Read_Names := Get_Reads (E);
 
-      Old_List.Clear;
-      Result_Name := New_Result_Temp_Identifier.Id (Name_Str);
+      --  If E has no parameters and no read effects, return a singleton of
+      --  unit type.
 
-      Post_Check := +Compute_Spec (Name_Postcondition, Dummy_Node, EW_Prog);
+      Num_Binders := Binders'Length + Integer (Read_Names.Length);
 
-      if Nkind (Node) = N_Subprogram_Body
-        and then not As_Spec
-      then
-         Emit
-           (File (W_File_Prog),
-            New_Function_Def
-              (Domain  => EW_Prog,
-               Name    => New_Pre_Check_Name.Id (Name_Str),
-               Binders => Func_Binders,
-               Def     => +Compute_Spec (Name_Precondition,
-                                         Dummy_Node,
-                                         EW_Prog)));
-
-         --  Given an expression function F with expression E, define an axiom
-         --  that states that: "for all <args> => F(<args>) = E".
-         --  There is no need to use the precondition here, as the above axiom
-         --  is always sound.
-
-         if Is_Expr_Func then
-            if Etype (Defining_Entity (Spec)) = Standard_Boolean then
-               Emit
-                 (File (W_File_Axiom),
-                  New_Defining_Bool_Axiom
-                    (Name    => Logic_Func_Name.Id (Name_Str),
-                     Binders => Logic_Func_Binders,
-                     Def     => +Transform_Expr (Expression (Orig_Node),
-                                                 EW_Pred,
-                                                 Ref_Allowed => False)));
-
-            else
-               Emit
-                 (File (W_File_Axiom),
-                  New_Defining_Axiom
-                    (Name        => Logic_Func_Name.Id (Name_Str),
-                     Return_Type => Get_EW_Type (Expression (Orig_Node)),
-                     Binders     => Logic_Func_Binders,
-                     Def         =>
-                       +Transform_Expr
-                         (Expression (Orig_Node),
-                          Expected_Type => EW_Abstract (Result_Ent),
-                          Domain        => EW_Term,
-                          Ref_Allowed   => False)));
-            end if;
-         end if;
-
-         if Is_Expr_Func or else not Debug.Debug_Flag_Dot_GG then
-
-            --  Declare a global variable to hold the result of a function
-
-            if Nkind (Spec) = N_Function_Specification then
-               Emit
-                 (File (W_File_Prog),
-                  New_Global_Ref_Declaration
-                     (Name => Result_Name,
-                      Ref_Type =>
-                        Why_Logic_Type_Of_Ada_Type (Result_Ent)));
-            end if;
-
-            Emit
-              (File (W_File_Prog),
-               New_Function_Def
-                 (Domain  => EW_Prog,
-                  Name    => New_Definition_Name.Id (Name_Str),
-                  Binders => (1 => Unit_Param),
-                  Pre     => Pre,
-                  Post    =>
-                    +New_Located_Expr
-                      (Loc_Node,
-                       +Post,
-                       VC_Postcondition,
-                       EW_Pred),
-                  Def     =>
-                    +Compute_Context
-                      (Transform_Statements
-                        (Statements
-                          (Handled_Statement_Sequence (Node))),
-                      New_Ignore (Prog => Post_Check))));
-         end if;
+      if Num_Binders = 0 then
+         return (1 => Unit_Param);
 
       else
          declare
-            Ret_Type   : constant W_Primitive_Type_Id :=
-                           (if Nkind (Spec) = N_Function_Specification then
-                              +Why_Logic_Type_Of_Ada_Type (Result_Ent)
-                            else
-                              New_Base_Type (Base_Type => EW_Unit));
+            Result : Binder_Array (1 .. Num_Binders);
+
+         begin
+            --  First, copy all binders for parameters of E
+
+            Result (1 .. Binders'Length) := Binders;
+
+            --  Next, add binders for read effects of E
+
+            Count := Binders'Length + 1;
+            for R of Read_Names loop
+               Result (Count) :=
+                 (Ada_Node => Empty,
+                  B_Name   => New_Identifier (R.all),
+                  B_Type   =>
+                    New_Abstract_Type (Name => Object_Type_Name.Id (R.all)),
+                  Modifier => None);
+               Count := Count + 1;
+            end loop;
+
+            return Result;
+         end;
+      end if;
+   end Compute_Logic_Binders;
+
+   -------------------------
+   -- Compute_Raw_Binders --
+   -------------------------
+
+   function Compute_Raw_Binders (E : Entity_Id) return Binder_Array is
+      Params : constant List_Id :=
+                 Parameter_Specifications (Get_Subprogram_Spec (E));
+      Result : Binder_Array (1 .. Integer (List_Length (Params)));
+      Param  : Node_Id;
+      Count  : Integer;
+
+   begin
+      Param := First (Params);
+      Count := 1;
+      while Present (Param) loop
+         declare
+            Id   : constant Node_Id := Defining_Identifier (Param);
+            Name : constant W_Identifier_Id := Transform_Ident (Id);
+         begin
+            Result (Count) :=
+              (Ada_Node => Param,
+               B_Name   => Name,
+               Modifier => (if Is_Mutable (Id) then Ref_Modifier else None),
+               B_Type   => +Why_Prog_Type_Of_Ada_Obj (Id, True));
+            Next (Param);
+            Count := Count + 1;
+         end;
+      end loop;
+
+      return Result;
+   end Compute_Raw_Binders;
+
+   ------------------
+   -- Compute_Spec --
+   ------------------
+
+   function Compute_Spec
+     (Params : Translation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Cur_Spec : W_Expr_Id := New_Literal (Value  => EW_True,
+                                           Domain => Domain);
+      PPC      : Node_Id;
+
+   begin
+      PPC := Spec_PPC_List (Contract (E));
+      while Present (PPC) loop
+         if Pragma_Name (PPC) = Kind then
+            declare
+               Expr : constant Node_Id :=
+                        Expression
+                          (First (Pragma_Argument_Associations (PPC)));
+            begin
+               Cur_Spec :=
+                 New_And_Then_Expr
+                   (Left   => Transform_Expr (Expr, Domain, Params),
+                    Right  => Cur_Spec,
+                    Domain => Domain);
+            end;
+         end if;
+
+         PPC := Next_Pragma (PPC);
+      end loop;
+
+      return Cur_Spec;
+   end Compute_Spec;
+
+   --------------------------------------
+   -- Generate_VCs_For_Subprogram_Spec --
+   --------------------------------------
+
+   procedure Generate_VCs_For_Subprogram_Spec
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      Name    : constant String := Full_Name (E);
+      Binders : constant Binder_Array := Compute_Binders (E);
+      Params  : constant Translation_Params :=
+                  (File        => File,
+                   Phase       => Generate_VCs_For_Pre,
+                   Ref_Allowed => True);
+   begin
+      Emit
+        (File,
+         New_Function_Def
+           (Domain  => EW_Prog,
+            Name    => New_Pre_Check_Name.Id (Name),
+            Binders => Binders,
+            Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
+   end Generate_VCs_For_Subprogram_Spec;
+
+   -----------------------------
+   -- Get_Expression_Function --
+   -----------------------------
+
+   function Get_Expression_Function (E : Entity_Id) return Node_Id is
+      Decl_N : constant Node_Id := Parent (Get_Subprogram_Spec (E));
+      Body_N : constant Node_Id := Get_Subprogram_Body (E);
+      Orig_N : Node_Id;
+   begin
+      --  Get the original node either from the declaration for E, or from the
+      --  subprogram body for E, which may be different if E is attached to a
+      --  subprogram declaration.
+
+      if Present (Original_Node (Decl_N)) then
+         Orig_N := Original_Node (Decl_N);
+      else
+         Orig_N := Original_Node (Body_N);
+      end if;
+
+      if Nkind (Orig_N) = N_Expression_Function then
+         return Orig_N;
+      else
+         return Empty;
+      end if;
+   end Get_Expression_Function;
+
+   -------------------------
+   -- Get_Subprogram_Body --
+   -------------------------
+
+   function Get_Subprogram_Body (E : Entity_Id) return Node_Id is
+      Body_E : Entity_Id;
+      N      : Node_Id;
+
+   begin
+      --  Retrieve the declaration for E
+
+      N := Parent (Get_Subprogram_Spec (E));
+
+      --  If this declaration is not a subprogram body, then it must be a
+      --  subprogram declaration, from which we can retrieve the entity
+      --  for the corresponding subprogram body.
+
+      if Nkind (N) = N_Subprogram_Body then
+         Body_E := E;
+      else
+         Body_E := Corresponding_Body (N);
+      end if;
+
+      --  Retrieve the subprogram body
+
+      return Parent (Get_Subprogram_Spec (Body_E));
+   end Get_Subprogram_Body;
+
+   -------------------------
+   -- Get_Subprogram_Spec --
+   -------------------------
+
+   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id is
+      N : Node_Id;
+
+   begin
+      N := Parent (E);
+
+      if Nkind (N) = N_Defining_Program_Unit_Name then
+         N := Parent (N);
+      end if;
+
+      return N;
+   end Get_Subprogram_Spec;
+
+   ------------------
+   -- Name_For_Old --
+   ------------------
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
+      Cnt : constant Natural := Natural (Old_List.Length);
+      Rec : constant Old_Node :=
+              (Ada_Node => N,
+               Why_Name => NID ("__gnatprove_old___" & Int_Image (Cnt)));
+   begin
+      Old_List.Append (Rec);
+      return New_Identifier (Symbol => Rec.Why_Name, Domain => EW_Term);
+   end Name_For_Old;
+
+   ---------------------
+   -- Name_For_Result --
+   ---------------------
+
+   function Name_For_Result return W_Identifier_Id is
+   begin
+      pragma Assert (Result_Name /= Why_Empty);
+      return Result_Name;
+   end Name_For_Result;
+
+   ---------------------
+   -- Compute_Binders --
+   ---------------------
+
+   function Compute_Args
+     (E       : Entity_Id;
+      Binders : Binder_Array) return W_Expr_Array
+   is
+      Cnt    : Integer := 1;
+      Result : W_Expr_Array (1 .. Binders'Last);
+      Ada_Binders : constant List_Id :=
+                      Parameter_Specifications (Get_Subprogram_Spec (E));
+      Arg_Length  : constant Nat := List_Length (Ada_Binders);
+
+   begin
+      if Arg_Length = 0
+        and then not Has_Global_Reads (E)
+      then
+         return W_Expr_Array'(1 => New_Void);
+      end if;
+
+      while Cnt <= Integer (Arg_Length) loop
+         Result (Cnt) := +Binders (Cnt).B_Name;
+         Cnt := Cnt + 1;
+      end loop;
+
+      while Cnt <= Binders'Last loop
+         Result (Cnt) :=
+           New_Deref (Right => Binders (Cnt).B_Name);
+         Cnt := Cnt + 1;
+      end loop;
+
+      return Result;
+   end Compute_Args;
+
+   ---------------------
+   -- Compute_Effects --
+   ---------------------
+
+   function Compute_Effects (E : Entity_Id) return W_Effects_Id is
+      Read_Names      : Name_Set.Set;
+      Write_Names     : Name_Set.Set;
+      Write_All_Names : UString_Set.Set;
+      Eff             : constant W_Effects_Id := New_Effects;
+
+      Ada_Binders : constant List_Id :=
+                      Parameter_Specifications (Get_Subprogram_Spec (E));
+
+   begin
+      --  Collect global variables potentially read and written
+
+      Read_Names  := Get_Reads (E);
+      Write_Names := Get_Writes (E);
+
+      --  Workaround for K526-008 and K525-019
+
+      --  for Name of Write_Names loop
+      --     Write_All_Names.Include (To_Unbounded_String (Name.all));
+      --  end loop;
+
+      declare
+         use Name_Set;
+
+         C : Cursor := Write_Names.First;
+      begin
+         while C /= No_Element loop
+            Write_All_Names.Include (To_Unbounded_String (Element (C).all));
+            Next (C);
+         end loop;
+      end;
+
+      --  Add all OUT and IN OUT parameters as potential writes
+
+      declare
+         Arg : Node_Id;
+         Id  : Entity_Id;
+      begin
+         if Is_Non_Empty_List (Ada_Binders) then
+            Arg := First (Ada_Binders);
+            while Present (Arg) loop
+               Id := Defining_Identifier (Arg);
+
+               if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
+                  Write_All_Names.Include
+                    (To_Unbounded_String (Full_Name (Id)));
+               end if;
+
+               Next (Arg);
+            end loop;
+         end if;
+      end;
+
+      --  Workaround for K526-008 and K525-019
+
+      --  for Name of Read_Names loop
+      --     Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
+      --  end loop;
+
+      declare
+         use Name_Set;
+
+         C : Cursor := Read_Names.First;
+      begin
+         while C /= No_Element loop
+            Effects_Append_To_Reads (Eff, New_Identifier (Element (C).all));
+            Next (C);
+         end loop;
+      end;
+
+      --  Workaround for K526-008 and K525-019
+
+      --  for Name of Write_All_Names loop
+      --     Effects_Append_To_Writes (Eff,
+      --                               New_Identifier (To_String (Name)));
+      --  end loop;
+
+      declare
+         use UString_Set;
+
+         C : Cursor := Write_All_Names.First;
+      begin
+         while C /= No_Element loop
+            Effects_Append_To_Writes (Eff,
+                                      New_Identifier
+                                        (To_String (Element (C))));
+            Next (C);
+         end loop;
+      end;
+
+      return +Eff;
+   end Compute_Effects;
+
+   ------------------------------------
+   -- Get_Location_For_Postcondition --
+   ------------------------------------
+
+   function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id is
+      PPC : Node_Id;
+
+   begin
+      PPC := Spec_PPC_List (Contract (E));
+      while Present (PPC) loop
+         if Pragma_Name (PPC) = Name_Postcondition then
+            return Expression (First (Pragma_Argument_Associations (PPC)));
+         end if;
+
+         PPC := Next_Pragma (PPC);
+      end loop;
+
+      return Empty;
+   end Get_Location_For_Postcondition;
+
+   ---------------------
+   -- Compute_Context --
+   ---------------------
+
+   function Compute_Context
+     (Params : Translation_Params;
+      E            : Entity_Id;
+      Initial_Body : W_Prog_Id;
+      Post_Check   : W_Prog_Id) return W_Prog_Id
+   is
+      R        : W_Prog_Id := Initial_Body;
+      Node : constant Node_Id := Get_Subprogram_Body (E);
+   begin
+      R := Transform_Declarations_Block (Declarations (Node), R);
+
+      --  Enclose the subprogram body in a try-block, so that return
+      --  statements can be translated as raising exceptions.
+
+      declare
+         Raise_Stmt : constant W_Prog_Id :=
+                        New_Raise
+                          (Ada_Node => Node,
+                           Name     => New_Result_Exc_Identifier.Id);
+         Result_Var : constant W_Prog_Id :=
+                        (if Ekind (E) = E_Function then
+                         New_Deref
+                           (Ada_Node => Node,
+                            Right    => Result_Name)
+                         else New_Void);
+      begin
+         R :=
+           New_Try_Block
+             (Prog    => Sequence (R, Raise_Stmt),
+              Handler =>
+                (1 =>
+                   New_Handler
+                     (Name => New_Result_Exc_Identifier.Id,
+                      Def  => Sequence (Post_Check, Result_Var))));
+      end;
+
+      declare
+         use Old_Nodes;
+         C : Cursor := Old_List.First;
+      begin
+         while Has_Element (C) loop
+            declare
+               N : constant Old_Node := Element (C);
+            begin
+               R :=
+                 New_Binding
+                   (Name    =>
+                        New_Identifier (Symbol => N.Why_Name,
+                                        Domain => EW_Prog),
+                    Def     => +Transform_Expr (N.Ada_Node, EW_Prog, Params),
+                    Context => +R);
+               Next (C);
+            end;
+         end loop;
+      end;
+      return R;
+   end Compute_Context;
+
+   procedure Translate_Subprogram_Spec
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      Name         : constant String := Full_Name (E);
+      Effects      : constant W_Effects_Id := Compute_Effects (E);
+      Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
+      Is_Expr_Func : constant Boolean :=
+                       Ekind (E) = E_Function
+                         and then
+                       Present (Expr_Fun_N);
+      Logic_Func_Binders : constant Binder_Array :=
+                             Compute_Logic_Binders (E);
+
+      Params : Translation_Params :=
+                 (File        => File,
+                  Phase       => Translation,
+                  Ref_Allowed => True);
+
+      Pre          : constant W_Pred_Id :=
+              +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      Post         : constant W_Pred_Id :=
+              +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+      Func_Binders : constant Binder_Array := Compute_Binders (E);
+
+   begin
+      if Ekind (E) = E_Function then
+         declare
+            Logic_Func_Args    : constant W_Expr_Array :=
+                                   Compute_Args (E, Logic_Func_Binders);
 
             --  Each function has in its postcondition that its result is equal
             --  to the application of the corresponding logic function to the
             --  same arguments.
 
             Param_Post : constant W_Pred_Id :=
-                           (if Nkind (Spec) = N_Function_Specification then
                             +New_And_Expr
                               (Left   => New_Relation
                                    (Op      => EW_Eq,
-                                    Op_Type => Get_EW_Type (Ret_Type),
+                                    Op_Type =>
+                                      Get_EW_Type (+Why_Logic_Type_Of_Ada_Type
+                                      (Etype (E))),
                                     Left    => +New_Result_Term,
                                     Right   =>
                                     New_Call
                                       (Domain  => EW_Term,
                                        Name    =>
-                                         Logic_Func_Name.Id (Name_Str),
+                                         Logic_Func_Name.Id (Name),
                                        Args    => Logic_Func_Args),
                                     Domain => EW_Pred),
                                Right  => +Post,
-                               Domain => EW_Pred)
-                            else Post);
+                               Domain => EW_Pred);
+
          begin
             --  Generate a logic function
 
-            if Nkind (Spec) = N_Function_Specification then
-               Emit
-                 (File (W_File_Logic_Func),
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Logic_Func_Name.Id (Name_Str),
-                     Binders     => Logic_Func_Binders,
-                     Return_Type =>
+            Emit
+              (File,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Logic_Func_Name.Id (Name),
+                  Binders     => Logic_Func_Binders,
+                  Return_Type =>
                      +Why_Logic_Type_Of_Ada_Type
-                       (Etype (Defining_Entity (Spec)))));
-            end if;
+                       (Etype (E))));
 
             Emit
-              (File (W_File_Prog),
+              (File,
                New_Function_Decl
                  (Domain      => EW_Prog,
-                  Name        => Program_Func_Name.Id (Name_Str),
+                  Name        => Program_Func_Name.Id (Name),
                   Binders     => Func_Binders,
-                  Return_Type => Ret_Type,
+                  Return_Type => +Why_Logic_Type_Of_Ada_Type (Etype (E)),
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));
          end;
+      else
+         Emit
+           (File,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => Program_Func_Name.Id (Name),
+               Binders     => Func_Binders,
+               Return_Type => New_Base_Type (Base_Type => EW_Unit),
+               Effects     => Effects,
+               Pre         => Pre,
+               Post        => Post));
       end if;
-      Result_Name := Why_Empty;
-   end Transform_Subprogram;
+
+      --  Given an expression function F with expression E, define an axiom
+      --  that states that: "for all <args> => F(<args>) = E".
+      --  There is no need to use the precondition here, as the above axiom
+      --  is always sound.
+
+      if Is_Expr_Func then
+         Params := (File        => File,
+                    Phase       => Translation,
+                    Ref_Allowed => False);
+
+         if Etype (E) = Standard_Boolean then
+            Emit
+              (File,
+               New_Defining_Bool_Axiom
+                 (Name    => Logic_Func_Name.Id (Name),
+                  Binders => Logic_Func_Binders,
+                  Def     => +Transform_Expr (Expression (Expr_Fun_N),
+                                              EW_Pred,
+                                              Params)));
+
+         else
+            Emit
+              (File,
+               New_Defining_Axiom
+                 (Name        => Logic_Func_Name.Id (Name),
+                  Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
+                  Binders     => Logic_Func_Binders,
+                  Def         =>
+                  +Transform_Expr
+                    (Expression (Expr_Fun_N),
+                     Expected_Type => EW_Abstract (Etype (E)),
+                     Domain        => EW_Term,
+                     Params        => Params)));
+         end if;
+      end if;
+   end Translate_Subprogram_Spec;
+
+   --------------------------------------
+   -- Generate_VCs_For_Subprogram_Body --
+   --------------------------------------
+
+   procedure Generate_VCs_For_Subprogram_Body
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      Name       : constant String := Full_Name (E);
+      Body_N     : constant Node_Id := Get_Subprogram_Body (E);
+      Post_N     : constant Node_Id := Get_Location_For_Postcondition (E);
+      Pre        : W_Pred_Id;
+      Post       : W_Pred_Id;
+      Post_Check : W_Prog_Id;
+      Params     : Translation_Params;
+
+   begin
+      --  First, clear the list of translations for X'Old expressions, and
+      --  create a new identifier for F'Result.
+
+      Old_List.Clear;
+      Result_Name := New_Result_Temp_Identifier.Id (Name);
+
+      --  Generate code to detect possible run-time errors in the postcondition
+
+      Params := (File        => File,
+                 Phase       => Generate_VCs_For_Post,
+                 Ref_Allowed => True);
+      Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
+
+      --  Set the phase to Generate_VCs_For_Body from now on, so that
+      --  occurrences of F'Result are properly translated as Result_Name.
+
+      Params := (File        => File,
+                 Phase       => Generate_VCs_For_Body,
+                 Ref_Allowed => True);
+
+      --  Translate contract of E
+
+      Pre  := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+
+      --  Declare a global variable to hold the result of a function
+
+      if Ekind (E) = E_Function then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Name     => Result_Name,
+               Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
+      end if;
+
+      --  Generate code to detect possible run-time errors in body
+
+      Emit
+        (File,
+         New_Function_Def
+           (Domain  => EW_Prog,
+            Name    => New_Definition_Name.Id (Name),
+            Binders => (1 => Unit_Param),
+            Pre     => Pre,
+            Post    =>
+              +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
+            Def     =>
+              +Compute_Context
+                (Params,
+                 E,
+                 Transform_Statements
+                   (Statements
+                     (Handled_Statement_Sequence (Body_N))),
+                 New_Ignore (Prog => Post_Check))));
+
+   end Generate_VCs_For_Subprogram_Body;
 
 end Gnat2Why.Subprograms;

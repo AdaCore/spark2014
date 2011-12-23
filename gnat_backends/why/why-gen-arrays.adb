@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -41,11 +41,12 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Inter; use Why.Inter;
 
 package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Type_Name  : String;
       Index_Name : String;
       Dimension  : Pos;
@@ -56,7 +57,7 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (File   : W_File_Sections;
+     (File   : W_File_Id;
       Name   : String;
       Entity : Entity_Id)
    is
@@ -84,7 +85,7 @@ package body Why.Gen.Arrays is
             begin
                if Is_Static_Expression (Low) then
                   Emit
-                    (File (W_File_Axiom),
+                    (File,
                      New_Guarded_Axiom
                        (Name =>
                           Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
@@ -107,7 +108,7 @@ package body Why.Gen.Arrays is
 
                if Is_Static_Expression (High) then
                   Emit
-                    (File (W_File_Axiom),
+                    (File,
                      New_Guarded_Axiom
                        (Name =>
                           Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
@@ -140,7 +141,7 @@ package body Why.Gen.Arrays is
    -------------------------------------
 
    procedure Declare_Ada_Unconstrained_Array
-     (File   : W_File_Sections;
+     (File   : W_File_Id;
       Name   : String;
       Entity : Entity_Id)
    is
@@ -173,16 +174,16 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      Emit (File (W_File_Logic_Type), New_Type (Name));
+      Emit (File, New_Type (Name));
       Emit
-        (File (W_File_Logic_Type),
+        (File,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_To,
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
-        (File (W_File_Logic_Type),
+        (File,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_From,
@@ -231,7 +232,7 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Define_In_Range_Axiom
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Type_Name  : String;
       Index_Name : String;
       Dimension  : Pos;
@@ -294,7 +295,7 @@ package body Why.Gen.Arrays is
                             Axiom_Base & "_" & Uint_Image (Argument));
    begin
       Emit
-        (File (W_File_Axiom),
+        (File,
          New_Axiom
            (Name => New_Identifier (Axiom_Name),
             Def  => Quantif));

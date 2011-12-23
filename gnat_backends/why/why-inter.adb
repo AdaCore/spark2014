@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,18 +32,8 @@ with Constant_Tree;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Types;           use Why.Types;
 
 package body Why.Inter is
-
-   procedure File_Append_To_Declarations
-     (Id        : W_File_Id;
-      New_Items : W_Declaration_List);
-   --  Append all declarations in New_Items to Id. This is currently a manually
-   --  written procedure. It could be added to the API of Atree lists in the
-   --  future, like done currently for File_Append_To_Declarations applied to
-   --  a single element.
 
    package Type_Hierarchy is
      new Constant_Tree (EW_Base_Type, EW_Unit);
@@ -54,14 +44,14 @@ package body Why.Inter is
    -- Add_With_Clause --
    ---------------------
 
-   procedure Add_With_Clause (P : out Why_Package; Name : String) is
+   procedure Add_With_Clause (P : out Why_File; Name : String) is
    begin
-      P.WP_Context.Append (Name);
+      P.Context.Append (Name);
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P : out Why_Package; Other : Why_Package) is
+   procedure Add_With_Clause (P : out Why_File; Other : Why_File) is
    begin
-      P.WP_Context.Append (Other.WP_Name.all);
+      P.Context.Append (Other.Name.all);
    end Add_With_Clause;
 
    -------------------
@@ -110,20 +100,6 @@ package body Why.Inter is
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
-   ------------------
-   -- Copy_Section --
-   ------------------
-
-   procedure Copy_Section
-     (From     : W_File_Sections;
-      To       : W_File_Sections;
-      Section  : W_File_Section) is
-   begin
-      File_Append_To_Declarations
-        (Id        => To (Section),
-         New_Items => Get_Declarations (From (Section)));
-   end Copy_Section;
-
    --------
    -- Eq --
    --------
@@ -149,29 +125,6 @@ package body Why.Inter is
       return Left_Kind /= EW_Abstract
         or else Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
    end Eq;
-
-   ---------------------------------
-   -- File_Append_To_Declarations --
-   ---------------------------------
-
-   procedure File_Append_To_Declarations
-     (Id        : W_File_Id;
-      New_Items : W_Declaration_List)
-   is
-      use Node_Lists;
-
-      Nodes    : constant List := Get_List (Why_Node_List (New_Items));
-      Position : Cursor := First (Nodes);
-   begin
-      while Position /= No_Element loop
-         declare
-            Node : constant Why_Node_Id := Element (Position);
-         begin
-            File_Append_To_Declarations (Id, W_Declaration_Id (Node));
-         end;
-         Position := Next (Position);
-      end loop;
-   end File_Append_To_Declarations;
 
    ---------------
    -- Full_Name --
@@ -274,21 +227,6 @@ package body Why.Inter is
       end case;
    end Get_EW_Term_Type;
 
-   ------------------
-   -- Get_One_File --
-   ------------------
-
-   function Get_One_File (Sections : W_File_Sections) return W_File_Id is
-      File : constant W_File_Id := New_File;
-   begin
-      for Section in W_File_Section loop
-         File_Append_To_Declarations
-           (Id        => File,
-            New_Items => Get_Declarations (Sections (Section)));
-      end loop;
-      return File;
-   end Get_One_File;
-
    ---------
    -- LCA --
    ---------
@@ -306,30 +244,16 @@ package body Why.Inter is
    end LCA;
 
    -------------------------
-   -- Make_Empty_Why_Pack --
+   -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_Pack (S : String) return Why_Package
-   is
+   function Make_Empty_Why_File (S : String) return Why_File is
    begin
       return
-        (WP_Name           => new String'(S),
-         WP_Context        => String_Lists.Empty_List,
-         WP_Types          => List_Of_Nodes.Empty_List,
-         WP_Abstract_Types => List_Of_Nodes.Empty_List,
-         WP_Abstract_Obj   => List_Of_Nodes.Empty_List,
-         WP_Decls          => List_Of_Nodes.Empty_List,
-         WP_Decls_As_Spec  => List_Of_Nodes.Empty_List);
-   end Make_Empty_Why_Pack;
-
-   -----------------------
-   -- New_File_Sections --
-   -----------------------
-
-   function New_File_Sections return W_File_Sections is
-   begin
-      return W_File_Sections'(others => New_File);
-   end New_File_Sections;
+        (Name    => new String'(S),
+         Context => String_Lists.Empty_List,
+         File    => New_File);
+   end Make_Empty_Why_File;
 
    --------
    -- Up --

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,7 +27,6 @@ with Snames;    use Snames;
 with Types;     use Types;
 with Uintp;     use Uintp;
 with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Arrays is
@@ -40,7 +39,7 @@ package Why.Gen.Arrays is
    --  We are limited to constrained arrays with static bounds for now.
 
    procedure Declare_Ada_Array
-     (File   : W_File_Sections;
+     (File   : W_File_Id;
       Name   : String;
       Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
@@ -48,7 +47,7 @@ package Why.Gen.Arrays is
    --  type A is Array (index) of Component
 
    procedure Declare_Ada_Unconstrained_Array
-     (File   : W_File_Sections;
+     (File   : W_File_Id;
       Name   : String;
       Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration

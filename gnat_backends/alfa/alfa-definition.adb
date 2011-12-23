@@ -234,24 +234,6 @@ package body Alfa.Definition is
    --  Mark type Id as being in Alfa if In_Alfa is set, or not being in Alfa
    --  otherwise.
 
-   function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether the body of subprogram Id is in Alfa
-
-   function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether an object Id is in Alfa
-
-   function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether the spec of subprogram Id is in Alfa
-
-   function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean;
-   --  Return whether a type Ent is in Alfa. Contrary to other .._Is_In_Alfa
-   --  functions, it takes an entity rather than a unique entity. Indeed,
-   --  private types are always in Alfa, even when the corresponding full type
-   --  is not in Alfa. This corresponds to cases where a client of the package,
-   --  which has only view over the private declaration, may still be in Alfa,
-   --  while an operation in the package over non-Alfa fields may not be in
-   --  Alfa.
-
    procedure Generate_Output_In_Out_Alfa (Id : Unique_Entity_Id);
    --  Produce a line in output file for subprogram Id, following syntax:
    --
@@ -468,20 +450,33 @@ package body Alfa.Definition is
      (for all S of Spec_Violations => not S.Contains (+Id));
 
    procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
+      --  Temporary case distinction, while N can be both an entity or a
+      --  declaration.
+
+      E : constant Entity_Id :=
+            (if Nkind (N) = N_Defining_Identifier then
+               N
+             else
+               Unique_Defining_Entity (N));
    begin
-      if Current_Unit_Is_Main_Spec
+      if not All_Entities.Contains (E) then
+         All_Entities.Insert (E);
 
-        --  When dealing with the subprogram spec for a subprogram compilation
-        --  unit, always declare the subprogram in the "spec" file, for
-        --  inclusion by other generated Why units.
+         if Current_Unit_Is_Main_Spec
 
-        or else (Current_Unit_Is_Main_Body
-                  and then Kind = Alfa_Subprogram_Spec
-                  and then Nkind (Parent (N)) = N_Compilation_Unit)
-      then
-         Decls_In_Spec (Kind).Append (N);
-      elsif Current_Unit_Is_Main_Body then
-         Decls_In_Body (Kind).Append (N);
+           --  When dealing with the subprogram spec for a subprogram
+           --  compilation unit, always declare the subprogram in the "spec"
+           --  file, for inclusion by other generated Why units.
+
+           or else (Current_Unit_Is_Main_Body
+                     and then Kind = Alfa_Subprogram_Spec
+                     and then Nkind (Parent (N)) = N_Compilation_Unit)
+         then
+            Spec_Entities.Append (E);
+
+         elsif Current_Unit_Is_Main_Body then
+            Body_Entities.Append (E);
+         end if;
       end if;
    end Filter_In_Alfa;
 

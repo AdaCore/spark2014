@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,14 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Inter;          use Why.Inter;
+with Why.Ids; use Why.Ids;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
    --  in the program space and in the logic space.
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Sections;
+      (File          : W_File_Id;
        Type_Name     : String);
       --  Create a parameter of the form
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->

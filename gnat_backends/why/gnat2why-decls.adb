@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,14 +27,16 @@ with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
 
-with Why.Ids;              use Why.Ids;
+with Alfa.Definition;      use Alfa.Definition;
+
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Types;            use Why.Types;
+with Why.Inter;            use Why.Inter;
+with Why.Types; use Why.Types;
 
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
@@ -74,26 +76,24 @@ package body Gnat2Why.Decls is
       end if;
    end Is_Mutable;
 
-   ---------------------------------
-   -- Why_Decl_Of_Ada_Object_Decl --
-   ---------------------------------
+   ------------------------
+   -- Translate_Variable --
+   ------------------------
 
-   procedure Why_Decl_Of_Ada_Object_Decl
-     (File          : W_File_Sections;
-      Id            : Entity_Id;
-      Def           : Node_Id := Empty;
-      Abstract_Type : Boolean)
+   procedure Translate_Variable
+     (File : W_File_Id;
+      E    : Entity_Id)
    is
-      Name : constant String := Full_Name (Id);
+      Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
-        (if Abstract_Type then
-            New_Type
-              (Name => Object_Type_Name.Id (Name),
-               Args => 0)
-         else
+        (if Object_Is_In_Alfa (Unique (E)) then
             New_Type
               (Name  => Object_Type_Name.Id (Name),
-               Alias => +Why_Logic_Type_Of_Ada_Obj (Id)));
+               Alias => +Why_Logic_Type_Of_Ada_Obj (E))
+         else
+            New_Type
+              (Name => Object_Type_Name.Id (Name),
+               Args => 0));
       Typ  : constant W_Primitive_Type_Id :=
                New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
 
@@ -103,36 +103,66 @@ package body Gnat2Why.Decls is
       --  from Ada functions, to generate additional parameters for the global
       --  objects read.
 
-      Emit (File (W_File_Logic_Type), Decl);
+      Emit (File, Decl);
 
-      --  If the object is mutable, we generate a global ref
+      --  We generate a global ref
 
-      if Is_Mutable (Id) then
-         Emit
-           (File (W_File_Data),
-            New_Global_Ref_Declaration
-              (Name     => New_Identifier (Name),
-               Ref_Type => Typ));
+      Emit
+        (File,
+         New_Global_Ref_Declaration
+           (Name     => New_Identifier (Name),
+            Ref_Type => Typ));
+   end Translate_Variable;
 
-      --  Otherwise we can generate a "logic", with a defining axiom if
-      --  necessary and possible.
+   ------------------------
+   -- Translate_Constant --
+   ------------------------
+
+   procedure Translate_Constant
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      Name : constant String := Full_Name (E);
+      Typ  : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
+      Decl : constant Node_Id := Parent (E);
+      Def  : Node_Id;
+
+   begin
+      --  We do not currently translate the definition of delayed constants,
+      --  in order to support parameterized verification not depending on the
+      --  value of a delayed constant. This could be modified to give access to
+      --  the definition only in the package where the constant is defined.
+
+      if Is_Public (E) and then In_Private_Part (E) then
+         Def := Empty;
+
+      --  Default values of parameters are not considered as the value of the
+      --  constant representing the parameter.
+
+      elsif Ekind (E) = E_In_Parameter then
+         Def := Empty;
 
       else
-         Emit_Top_Level_Declarations
-           (File        => File,
-            Name        => New_Identifier (Name),
-            Binders     => (1 .. 0 => <>),
-            Return_Type => Typ,
-            Spec        =>
-              (1 =>
-                 (Kind   => W_Function_Decl,
-                  Domain => EW_Term,
-                  Def    => (if Present (Def) then
-                               Get_Pure_Logic_Term_If_Possible
-                                 (Def, Type_Of_Node (Id))
-                             else Why_Empty),
-                  others => <>)));
+         Def := Expression (Decl);
       end if;
-   end Why_Decl_Of_Ada_Object_Decl;
+
+      --  We generate a "logic", with a defining axiom if
+      --  necessary and possible.
+
+      Emit_Top_Level_Declarations
+        (File        => File,
+         Name        => New_Identifier (Name),
+         Binders     => (1 .. 0 => <>),
+         Return_Type => Typ,
+         Spec        =>
+           (1 =>
+              (Kind   => W_Function_Decl,
+               Domain => EW_Term,
+               Def    => (if Present (Def) then
+                          Get_Pure_Logic_Term_If_Possible
+                            (File, Def, Type_Of_Node (E))
+                          else Why_Empty),
+               others => <>)));
+   end Translate_Constant;
 
 end Gnat2Why.Decls;

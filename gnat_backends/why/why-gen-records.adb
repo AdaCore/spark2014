@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,7 +27,6 @@ with Why.Atree.Builders;        use Why.Atree.Builders;
 with Why.Conversions;           use Why.Conversions;
 with Why.Gen.Decl;              use Why.Gen.Decl;
 with Why.Gen.Names;             use Why.Gen.Names;
-with Why.Ids;                   use Why.Ids;
 with Why.Sinfo;                 use Why.Sinfo;
 
 package body Why.Gen.Records is
@@ -37,7 +36,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Define_Ada_Record
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array)
@@ -70,12 +69,12 @@ package body Why.Gen.Records is
                          Else_Part   => New_Literal (Value  => EW_False,
                                                      Domain => EW_Term));
    begin
-      Emit (File (W_File_Logic_Type),
+      Emit (File,
         New_Record_Definition (Name    => New_Identifier (Name),
                                Binders => Binders));
 
       Emit
-        (File (W_File_Logic_Type),
+        (File,
          New_Function_Def
            (Domain      => EW_Term,
             Name        => New_Bool_Cmp (EW_Eq, W_Type),

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,7 +30,6 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Ids;            use Why.Ids;
 
 package body Why.Gen.Funcs is
 
@@ -39,7 +38,7 @@ package body Why.Gen.Funcs is
    ------------------------------------
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Sections;
+      (File          : W_File_Id;
        Type_Name     : String)
    is
       Arg_S    : constant String := "n";
@@ -76,7 +75,7 @@ package body Why.Gen.Funcs is
                                                               Type_Name));
    begin
       Emit
-        (File (W_File_Prog),
+        (File,
          New_Function_Decl
            (Domain      => EW_Prog,
             Name        => Eq_Param_Name.Id (Type_Name),

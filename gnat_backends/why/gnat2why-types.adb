@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -40,6 +40,7 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
@@ -51,7 +52,7 @@ package body Gnat2Why.Types is
    --  Return True is N is of an Ada base type
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -59,7 +60,7 @@ package body Gnat2Why.Types is
    --  from node.
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -71,7 +72,7 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -97,7 +98,7 @@ package body Gnat2Why.Types is
    ---------------------------------
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -162,65 +163,70 @@ package body Gnat2Why.Types is
       end if;
    end  Why_Logic_Type_Of_Ada_Type;
 
-   -----------------------------
-   -- Why_Type_Decl_Of_Entity --
-   -----------------------------
+   --------------------
+   -- Translate_Type --
+   --------------------
 
-   procedure Why_Type_Decl_Of_Entity
-      (File        : W_File_Sections;
-       Orig_Entity : Entity_Id;
-       Name_Str    : String;
-       Ident_Node  : Node_Id) is
-   begin
-      if Ident_Node = Standard_Boolean then
-         null;
+   procedure Translate_Type
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      procedure Translate_Underlying_Type
+        (File : W_File_Id;
+         Name : String;
+         Orig : Entity_Id;
+         E    : Entity_Id);
+      --  Translate a non-private type entity E
 
-      elsif Ident_Node = Universal_Fixed then
-         null;
+      -------------------------------
+      -- Translate_Underlying_Type --
+      -------------------------------
 
-      elsif Ident_Node = Standard_Character or else
-              Ident_Node = Standard_Wide_Character or else
-              Ident_Node = Standard_Wide_Wide_Character then
-         Declare_Ada_Abstract_Signed_Int_From_Range
-           (File,
-            Name_Str,
-            Ident_Node,
-            Is_Ada_Base_Type (Ident_Node));
+      procedure Translate_Underlying_Type
+        (File : W_File_Id;
+         Name : String;
+         Orig : Entity_Id;
+         E    : Entity_Id) is
+      begin
+         if E = Standard_Boolean or else
+           E = Universal_Fixed
+         then
+            null;
 
-      else
-         case Ekind (Ident_Node) is
-            when E_Signed_Integer_Type
-               | E_Signed_Integer_Subtype
-               | E_Enumeration_Type
-               | E_Enumeration_Subtype =>
+         elsif E = Standard_Character           or else
+               E = Standard_Wide_Character      or else
+               E = Standard_Wide_Wide_Character
+         then
+            Declare_Ada_Abstract_Signed_Int_From_Range
+              (File, Name, E, Is_Base => Is_Ada_Base_Type (E));
+
+         else
+            case Ekind (E) is
+            when E_Signed_Integer_Type    |
+                 E_Signed_Integer_Subtype |
+                 E_Enumeration_Type       |
+                 E_Enumeration_Subtype    =>
                Declare_Ada_Abstract_Signed_Int_From_Range
-                 (File,
-                  Name_Str,
-                  Scalar_Range (Ident_Node),
-                  Is_Ada_Base_Type (Ident_Node));
+                 (File, Name, Scalar_Range (E),
+                  Is_Base => Is_Ada_Base_Type (E));
 
             when Modular_Integer_Kind =>
                Declare_Ada_Abstract_Modular
-                 (File,
-                  Name_Str,
-                  Modulus (Ident_Node),
-                  Is_Ada_Base_Type (Ident_Node));
+                 (File, Name, Modulus (E),
+                  Is_Base => Is_Ada_Base_Type (E));
 
             when Real_Kind =>
                Declare_Ada_Real_From_Range
-                 (File,
-                  Name_Str,
-                  Scalar_Range (Ident_Node),
-                  Is_Ada_Base_Type (Ident_Node));
+                 (File, Name, Scalar_Range (E),
+                  Is_Base => Is_Ada_Base_Type (E));
 
             when Array_Kind =>
-
-               Declare_Ada_Array (File, Name_Str, Ident_Node);
+               Declare_Ada_Array (File, Name, E);
 
             when E_Record_Type =>
                declare
                   Number_Of_Fields : Natural := 0;
-                  Field            : Node_Id := First_Entity (Ident_Node);
+                  Field            : Node_Id := First_Entity (E);
                begin
                   while Present (Field) loop
                      if Ekind (Field) in Object_Kind then
@@ -235,12 +241,12 @@ package body Gnat2Why.Types is
                   --  empty records to type unit in Why?
 
                   if Number_Of_Fields = 0 then
-                     Emit (File (W_File_Logic_Type), New_Type (Name_Str));
+                     Emit (File, New_Type (Name));
                      return;
                   end if;
 
                   declare
-                     Field   : Node_Id := First_Entity (Ident_Node);
+                     Field   : Node_Id := First_Entity (E);
                      Binders : Binder_Array (1 .. Number_Of_Fields);
                      J       : Natural := 0;
                   begin
@@ -248,7 +254,7 @@ package body Gnat2Why.Types is
                         if Ekind (Field) in Object_Kind then
                            declare
                               C_Name : constant String :=
-                                         Name_Str & "__" &
+                                         Name & "__" &
                                          Get_Name_String (Chars (Field));
                            begin
                               J := J + 1;
@@ -262,30 +268,28 @@ package body Gnat2Why.Types is
 
                         Next_Entity (Field);
                      end loop;
-                     Define_Ada_Record (File, Orig_Entity, Name_Str, Binders);
+                     Define_Ada_Record (File, Orig, Name, Binders);
                   end;
                end;
 
-            when Private_Kind =>
-
-               Why_Type_Decl_Of_Entity
-                  (File, Orig_Entity, Name_Str, Underlying_Type (Ident_Node));
-
             when others =>
                raise Not_Implemented;
-         end case;
-      end if;
+            end case;
+         end if;
+      end Translate_Underlying_Type;
 
-   end Why_Type_Decl_Of_Entity;
+      Name         : constant String := Full_Name (E);
+      Underlying_E : Entity_Id := E;
 
-   procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Sections;
-       Ident_Node : Node_Id)
-   is
-      Name_Str : constant String := Full_Name (Ident_Node);
+   --  Start of Translate_Type
+
    begin
-      Why_Type_Decl_Of_Entity (File, Ident_Node, Name_Str, Ident_Node);
-   end Why_Type_Decl_Of_Entity;
+      while Ekind (Underlying_E) in Private_Kind loop
+         Underlying_E := Underlying_Type (E);
+      end loop;
+
+      Translate_Underlying_Type (File, Name, E, Underlying_E);
+   end Translate_Type;
 
    -------------------------------
    -- Why_Prog_Type_Of_Ada_Type --

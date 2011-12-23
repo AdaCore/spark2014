@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,6 +29,7 @@ with Types;         use Types;
 with Why.Types;     use Why.Types;
 with Why.Ids;       use Why.Ids;
 with Why.Sinfo;     use Why.Sinfo;
+with Gnat2Why.Driver; use Gnat2Why.Driver;
 
 package Gnat2Why.Expr is
 
@@ -36,13 +37,17 @@ package Gnat2Why.Expr is
    --  Generate an assignment from an object declaration
 
    function Assume_of_Scalar_Subtype
-      (N    : Entity_Id;
-       Base : Entity_Id) return W_Prog_Id;
+     (Params : Translation_Params;
+      N      : Entity_Id;
+      Base   : Entity_Id) return W_Prog_Id;
 
-   function Assume_of_Subtype_Indication (N : Node_Id) return W_Prog_Id;
+   function Assume_Of_Subtype_Indication
+     (Params : Translation_Params;
+      N      : Node_Id) return W_Prog_Id;
 
    function Get_Pure_Logic_Term_If_Possible
-     (Expr          : Node_Id;
+     (File          : W_File_Id;
+      Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
@@ -51,7 +56,7 @@ package Gnat2Why.Expr is
      (N           : Node_Id;
       T           : W_Expr_Id;
       Domain      : EW_Domain;
-      Ref_Allowed : Boolean;
+      Params      : Translation_Params;
       T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
@@ -72,7 +77,7 @@ package Gnat2Why.Expr is
      (Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain;
-      Ref_Allowed   : Boolean) return W_Expr_Id;
+      Params        : Translation_Params) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
    --  term or program. If Ref_Allowed is True, then references are allowed,
@@ -84,7 +89,7 @@ package Gnat2Why.Expr is
    function Transform_Expr
      (Expr        : Node_Id;
       Domain      : EW_Domain;
-      Ref_Allowed : Boolean) return W_Expr_Id;
+      Params      : Translation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Statements

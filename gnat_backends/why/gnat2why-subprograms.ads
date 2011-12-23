@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,11 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;         use Namet;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
-with Why.Inter;     use Why.Inter;
-with Why.Types;     use Why.Types;
 
 package Gnat2Why.Subprograms is
 
@@ -60,14 +57,23 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   procedure Transform_Subprogram
-     (File        : W_File_Sections;
-      Node        : Node_Id;
-      As_Spec     : Boolean);
-   --  Generate a Why declaration that corresponds to an Ada subprogram
-   --  Node is a N_Subprogram_Body
+   procedure Generate_VCs_For_Subprogram_Body
+     (File : W_File_Id;
+      E    : Entity_Id);
+   --  Generate Why code from which Why VC generator will generate all VCs
+   --  related to the contract of E and the absence of run-time errors in the
+   --  body and postcondition of E.
 
-   function Register_Old_Node (N : Node_Id) return Name_Id;
+   procedure Generate_VCs_For_Subprogram_Spec
+     (File : W_File_Id;
+      E    : Entity_Id);
+   --  Generate Why code from which Why VC generator will generate all VCs
+   --  related to the absence of run-time errors in the precondition of E.
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id;
+   --  During the generation of code for detecting run-time errors in the
+   --  postcondition, return the name to use for occurrences of N'Old.
+
    --  Register a node that appears with attribute 'Old; return a fresh
    --  Name_Id for this Node. This function is intended to be called by the
    --  code that translates expressions to Why (Gnat2why.Expr), which itself
@@ -75,10 +81,14 @@ package Gnat2Why.Subprograms is
    --  function, a declaration at the beginning of the Why program is
    --  generated.
 
-   Result_Name : W_Identifier_Id := Why_Empty;
+   function Name_For_Result return W_Identifier_Id;
+   --  During the generation of code for detecting run-time errors in the
+   --  postcondition of F, return the name to use for occurrences of F'Result.
 
-   --  The Name_Id of the currently translated subprogram; intended to be used
-   --  by Gnat2why.Expr.Transform_Expr; This variable should be equal to
-   --  Why_Empty whenever we do *not* translate program expressions.
+   procedure Translate_Subprogram_Spec
+     (File : W_File_Id;
+      E    : Entity_Id);
+   --  Generate a Why declaration that corresponds to an Ada subprogram
+   --  Node is a N_Subprogram_Body
 
 end Gnat2Why.Subprograms;

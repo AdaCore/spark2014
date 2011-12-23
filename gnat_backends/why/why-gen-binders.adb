@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,6 +29,7 @@ with Why.Gen.Decl;    use Why.Gen.Decl;
 with Why.Gen.Terms;   use Why.Gen.Terms;
 with Why.Gen.Preds;   use Why.Gen.Preds;
 with Why.Gen.Progs;   use Why.Gen.Progs;
+with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -59,7 +60,7 @@ package body Why.Gen.Binders is
    ---------------------------------
 
    procedure Emit_Top_Level_Declarations
-     (File        : W_File_Sections;
+     (File        : W_File_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -449,7 +450,7 @@ package body Why.Gen.Binders is
    --------------------------------
 
    procedure Set_Top_Level_Declarations
-     (File        : W_File_Sections;
+     (File        : W_File_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -470,7 +471,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File (W_File_Logic_Func),
+                       (File,
                         New_Function_Decl
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -481,7 +482,7 @@ package body Why.Gen.Binders is
 
                      if Spec (S).Def /= Why_Empty then
                         Emit
-                          (File (W_File_Axiom),
+                          (File,
                            New_Defining_Axiom
                              (Ada_Node    => Ada_Node,
                               Name        => Spec (S).Name,
@@ -524,7 +525,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File (W_File_Prog),
+                       (File,
                         New_Function_Decl
                         (Ada_Node    => Ada_Node,
                          Domain      => EW_Prog,
@@ -547,7 +548,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File (W_File_Logic_Func),
+                       (File,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -563,7 +564,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File (W_File_Logic_Func),
+                       (File,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -585,7 +586,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File (W_File_Prog),
+                       (File,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,

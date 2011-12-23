@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
-with Why.Inter; use Why.Inter;
+with Types;   use Types;
+with Why.Ids; use Why.Ids;
 
 package Gnat2Why.Decls is
 
@@ -32,12 +32,15 @@ package Gnat2Why.Decls is
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation
 
-   procedure Why_Decl_Of_Ada_Object_Decl
-     (File          : W_File_Sections;
-      Id            : Entity_Id;
-      Def           : Node_Id := Empty;
-      Abstract_Type : Boolean);
+   procedure Translate_Variable
+     (File : W_File_Id;
+      E    : Entity_Id);
    --  Generate Why declarations that correspond to an Ada top level object
    --  declaration
+
+   procedure Translate_Constant
+     (File : W_File_Id;
+      E    : Entity_Id);
+   --  Called for IN parameters, named numbers and constant objects
 
 end Gnat2Why.Decls;

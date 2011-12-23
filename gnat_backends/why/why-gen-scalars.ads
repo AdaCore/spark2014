@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,7 +26,6 @@
 with Uintp;     use Uintp;
 
 with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Scalars is
@@ -34,10 +33,10 @@ package Why.Gen.Scalars is
    --  (types, subprograms, axioms) for scalar types.
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
-      First : W_Integer_Constant_Id;
-      Last  : W_Integer_Constant_Id;
+      First   : W_Integer_Constant_Id;
+      Last    : W_Integer_Constant_Id;
       Is_Base : Boolean);
    --  Declare the whole theory for a signed int of the given size,
    --  i.e. whose range is First .. Last. This creates an abstract type
@@ -46,7 +45,7 @@ package Why.Gen.Scalars is
    --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Abstract_Modular
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Modulus : Uint;
       Is_Base : Boolean);
@@ -57,7 +56,7 @@ package Why.Gen.Scalars is
    --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Real
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
@@ -69,7 +68,7 @@ package Why.Gen.Scalars is
    --  is an Ada base type.
 
    procedure Define_Scalar_Attributes
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;

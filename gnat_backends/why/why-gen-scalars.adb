@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -39,7 +39,7 @@ with Why.Types;          use Why.Types;
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -52,13 +52,13 @@ package body Why.Gen.Scalars is
    ----------------------------------
 
    procedure Declare_Ada_Abstract_Modular
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       Modulus : Uint;
       Is_Base : Boolean)
    is
    begin
-      Emit (File (W_File_Logic_Type), New_Type (Name));
+      Emit (File, New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -79,14 +79,14 @@ package body Why.Gen.Scalars is
    -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
-      First : W_Integer_Constant_Id;
-      Last  : W_Integer_Constant_Id;
+      First   : W_Integer_Constant_Id;
+      Last    : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
-      Emit (File (W_File_Logic_Type), New_Type (Name));
+      Emit (File, New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -106,13 +106,13 @@ package body Why.Gen.Scalars is
    ----------------------
 
    procedure Declare_Ada_Real
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       Name    : String;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
       Is_Base : Boolean) is
    begin
-      Emit (File (W_File_Logic_Type), New_Type (Name));
+      Emit (File, New_Type (Name));
       Define_Scalar_Attributes
         (File      => File,
          Name      => Name,
@@ -132,7 +132,7 @@ package body Why.Gen.Scalars is
    -------------------------------
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -148,7 +148,7 @@ package body Why.Gen.Scalars is
 
       --  to base type:
       Emit
-        (File (W_File_Logic_Type),
+        (File,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conversion_To.Id (Name, BT_Name),
@@ -218,7 +218,7 @@ package body Why.Gen.Scalars is
                                           Right   => +New_Term (Arg_S));
             begin
                Emit
-                 (File (W_File_Prog),
+                 (File,
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => Overflow_Check_Name.Id (Name),
@@ -251,7 +251,7 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;

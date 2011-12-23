@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,7 +31,7 @@ package Why.Gen.Types is
    --  This package provides ways to create Why types
 
    procedure New_Enum_Type_Declaration
-     (File         : W_File_Sections;
+     (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List);
    --  Create the declaration of an enumeration type with name [Name] and list

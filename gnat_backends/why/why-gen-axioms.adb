@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -35,7 +35,7 @@ package body Why.Gen.Axioms is
    -------------------------
 
    procedure Define_Coerce_Axiom
-     (File         : W_File_Sections;
+     (File         : W_File_Id;
       Type_Name    : W_Identifier_Id;
       Base_Type    : W_Primitive_Type_Id;
       From         : W_Identifier_Id;
@@ -93,14 +93,14 @@ package body Why.Gen.Axioms is
                                   Pred      => Formula);
    begin
       Emit
-        (File (W_File_Axiom),
+        (File,
          New_Axiom
            (Name => Coerce_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
    end Define_Coerce_Axiom;
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty)
@@ -136,7 +136,7 @@ package body Why.Gen.Axioms is
    ------------------------
 
    procedure Define_Range_Axiom
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id)
    is
@@ -159,7 +159,7 @@ package body Why.Gen.Axioms is
                                   Formula);
    begin
       Emit
-        (File (W_File_Axiom),
+        (File,
          New_Axiom
            (Name => Range_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
@@ -170,7 +170,7 @@ package body Why.Gen.Axioms is
    --------------------------
 
    procedure Define_Unicity_Axiom
-     (File       : W_File_Sections;
+     (File       : W_File_Id;
       Axiom_Name : W_Identifier_Id;
       Var_Type   : W_Primitive_Type_Id;
       Conversion : W_Identifier_Id)
@@ -217,14 +217,14 @@ package body Why.Gen.Axioms is
                                  Formula);
    begin
       Emit
-        (File (W_File_Axiom),
+        (File,
          New_Axiom
            (Name => Axiom_Name,
             Def  => Quantif_On_XY));
    end Define_Unicity_Axiom;
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : W_Identifier_Id)
    is
@@ -237,7 +237,7 @@ package body Why.Gen.Axioms is
    end Define_Unicity_Axiom;
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar) is
    begin

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -37,7 +37,7 @@ package body Why.Gen.Preds is
    -------------------------
 
    procedure Define_Eq_Predicate
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar)
    is
@@ -76,7 +76,7 @@ package body Why.Gen.Preds is
    begin
       --  ...now set the pieces together:
       Emit
-        (File (W_File_Logic_Func),
+        (File,
          New_Function_Def
            (Name    => Pred_Name,
             Domain  => EW_Pred,
@@ -95,7 +95,7 @@ package body Why.Gen.Preds is
    ----------------------------
 
    procedure Define_Range_Predicate
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar)
    is
@@ -127,7 +127,7 @@ package body Why.Gen.Preds is
                        Attribute_Id'Image (Attribute_Last)));
    begin
       Emit
-        (File (W_File_Logic_Func),
+        (File,
          New_Function_Def
            (Domain  => EW_Pred,
             Name    => Pred_Name,

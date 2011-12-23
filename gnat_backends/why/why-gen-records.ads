@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,14 +24,14 @@
 ------------------------------------------------------------------------------
 
 with Types;           use Types;
-with Why.Inter;       use Why.Inter;
+with Why.Ids;   use Why.Ids;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
 
    procedure Define_Ada_Record
-     (File    : W_File_Sections;
+     (File    : W_File_Id;
       E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array);

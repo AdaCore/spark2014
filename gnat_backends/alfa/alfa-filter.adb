@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                      Copyright (C) 2011-2012, AdaCore                    --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -45,10 +45,12 @@ package body Alfa.Filter is
 
    procedure Filter_Compilation_Unit (N : Node_Id) is
       Prefix                 : constant String :=
-         File_Name_Without_Suffix (Sloc (N));
-      Types_Vars_Spec_Suffix : constant String := "__types_vars_spec";
-      Types_Vars_Body_Suffix : constant String := "__types_vars_body";
-      Subp_Spec_Suffix       : constant String := "__subp_spec";
+                                 File_Name_Without_Suffix (Sloc (N));
+      Types_In_Spec_Suffix   : constant String := "__types_in_spec";
+      Types_In_Body_Suffix   : constant String := "__types_in_body";
+      Variables_Suffix       : constant String := "__variables";
+      Context_In_Spec_Suffix : constant String := "__context_in_spec";
+      Context_In_Body_Suffix : constant String := "__context_in_body";
       Main_Suffix            : constant String := "__package";
 
       --  All subprogram definitions should end up in this package, as it
@@ -57,41 +59,22 @@ package body Alfa.Filter is
       --  particular, subprogram bodies for expression functions, which may be
       --  originally declared in the package spec, should end up here.
 
-      function Concat (A, B : List_Of_Nodes.List) return List_Of_Nodes.List;
-
-      function Concat (A, B : List_Of_Nodes.List) return List_Of_Nodes.List is
-         C : List_Of_Nodes.List := A;
-      begin
-         --  Workaround for K526-008 and K525-019
-
-         --  for N of B loop
-         --     C.Append (N);
-         --  end loop;
-
-         declare
-            use List_Of_Nodes;
-
-            Cu : Cursor := B.First;
-         begin
-            while Cu /= No_Element loop
-               C.Append (Element (Cu));
-               Next (Cu);
-            end loop;
-         end;
-
-         return C;
-      end Concat;
-
       Spec_Unit : Node_Id := Empty;
       Body_Unit : Node_Id := Empty;
 
    --  Start of processing for Filter_Compilation_Unit
 
    begin
-      Types_Vars_Spec := Make_Empty_Why_Pack (Prefix & Types_Vars_Spec_Suffix);
-      Types_Vars_Body := Make_Empty_Why_Pack (Prefix & Types_Vars_Body_Suffix);
-      Subp_Spec       := Make_Empty_Why_Pack (Prefix & Subp_Spec_Suffix);
-      Subp_Body       := Make_Empty_Why_Pack (Prefix & Main_Suffix);
+      Types_In_Spec_File :=
+        Make_Empty_Why_File (Prefix & Types_In_Spec_Suffix);
+      Types_In_Body_File :=
+        Make_Empty_Why_File (Prefix & Types_In_Body_Suffix);
+      Variables_File := Make_Empty_Why_File (Prefix & Variables_Suffix);
+      Context_In_Spec_File :=
+        Make_Empty_Why_File (Prefix & Context_In_Spec_Suffix);
+      Context_In_Body_File :=
+        Make_Empty_Why_File (Prefix & Context_In_Body_Suffix);
+      Main_File := Make_Empty_Why_File (Prefix & Main_Suffix);
 
       case Nkind (Unit (N)) is
          when N_Package_Body =>
@@ -128,30 +111,15 @@ package body Alfa.Filter is
             raise Program_Error;
       end case;
 
-      Types_Vars_Spec.WP_Abstract_Types := Decls_In_Spec (Non_Alfa_Type);
-      Types_Vars_Spec.WP_Types := Decls_In_Spec (Alfa_Type);
-      Types_Vars_Spec.WP_Abstract_Obj := Decls_In_Spec (Non_Alfa_Object);
-      Types_Vars_Spec.WP_Decls := Decls_In_Spec (Alfa_Object);
-
-      Types_Vars_Body.WP_Abstract_Types := Decls_In_Body (Non_Alfa_Type);
-      Types_Vars_Body.WP_Types := Decls_In_Body (Alfa_Type);
-      Types_Vars_Body.WP_Abstract_Obj := Decls_In_Body (Non_Alfa_Object);
-      Types_Vars_Body.WP_Decls := Decls_In_Body (Alfa_Object);
-
-      Subp_Spec.WP_Decls_As_Spec := Decls_In_Spec (Alfa_Subprogram_Spec);
-      Subp_Body.WP_Decls_As_Spec := Decls_In_Body (Alfa_Subprogram_Spec);
-
-      Subp_Body.WP_Decls :=
-        Concat (Decls_In_Spec (Alfa_Subprogram_Body),
-                Decls_In_Body (Alfa_Subprogram_Body));
-
       --  Take into account dependencies
       --  Add standard package only to types_vars for spec
-      Add_With_Clause (Types_Vars_Spec, Standard_Why_Package_Name);
+      Add_With_Clause (Types_In_Spec_File, Standard_Why_Package_Name);
       --  Add "vertical" dependencies for a single package
-      Add_With_Clause (Types_Vars_Body, Types_Vars_Spec);
-      Add_With_Clause (Subp_Spec, Types_Vars_Body);
-      Add_With_Clause (Subp_Body, Subp_Spec);
+      Add_With_Clause (Types_In_Body_File, Types_In_Spec_File);
+      Add_With_Clause (Variables_File, Types_In_Body_File);
+      Add_With_Clause (Context_In_Spec_File, Variables_File);
+      Add_With_Clause (Context_In_Body_File, Context_In_Spec_File);
+      Add_With_Clause (Main_File, Context_In_Body_File);
 
       --  for each with clause in the package spec, add horizontal
       --  dependencies between spec packages
@@ -168,11 +136,11 @@ package body Alfa.Filter is
                                        (Sloc (Library_Unit (Cursor)));
                      begin
                         Add_With_Clause
-                          (Types_Vars_Spec,
-                           Pkg_Name & Types_Vars_Spec_Suffix);
+                          (Types_In_Spec_File,
+                           Pkg_Name & Types_In_Spec_Suffix);
                         Add_With_Clause
-                          (Subp_Spec,
-                           Pkg_Name & Subp_Spec_Suffix);
+                          (Context_In_Spec_File,
+                           Pkg_Name & Context_In_Spec_Suffix);
                      end;
 
                   when others =>
@@ -199,54 +167,60 @@ package body Alfa.Filter is
                --  browse all ALI files.
 
                Add_With_Clause
-                 (Subp_Spec,
-                  Pkg_Name & Types_Vars_Body_Suffix);
+                 (Context_In_Spec_File,
+                  Pkg_Name & Variables_Suffix);
 
                --  If seperate units are used, units may be with'ed in the
                --  separate unit, and not directly in the main unit, hence the
                --  need to browse all ALI files.
 
                Add_With_Clause
-                 (Types_Vars_Body,
-                  Pkg_Name & Types_Vars_Spec_Suffix);
+                 (Types_In_Body_File,
+                  Pkg_Name & Types_In_Spec_Suffix);
                Add_With_Clause
-                 (Subp_Body,
-                  Pkg_Name & Subp_Spec_Suffix);
+                 (Variables_File,
+                  Pkg_Name & Types_In_Body_Suffix);
+               Add_With_Clause
+                 (Context_In_Body_File,
+                  Pkg_Name & Context_In_Spec_Suffix);
             end;
          end loop;
       end if;
 
       --  If the current package is a child package, add the implicit with
-      --  clause from the child spec to the parent spec
-      declare
-         Def_Unit_Name : Node_Id := Empty;
-      begin
-         case Nkind (Unit (N)) is
-            when N_Package_Declaration =>
-               Def_Unit_Name :=
-                  Defining_Unit_Name (Specification (Unit (N)));
+      --  clause from the child spec to the parent spec. Currently this is not
+      --  needed due to the conservative inclusions above. Keep it commented
+      --  out as the inclusion scheme will still change.
 
-            when N_Package_Body =>
-               Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
-
-            when others =>
-               null;
-         end case;
-
-         if Present (Def_Unit_Name) and then
-            Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
-            declare
-               Target_Name : constant String :=
-                  File_Name_Without_Suffix
-                    (Sloc (Entity (Name (Def_Unit_Name))));
-            begin
-               Add_With_Clause
-                  (Types_Vars_Spec, Target_Name & Types_Vars_Spec_Suffix);
-               Add_With_Clause
-                  (Subp_Spec, Target_Name & Subp_Spec_Suffix);
-            end;
-         end if;
-      end;
+--        declare
+--           Def_Unit_Name : Node_Id := Empty;
+--        begin
+--           case Nkind (Unit (N)) is
+--              when N_Package_Declaration =>
+--                 Def_Unit_Name :=
+--                    Defining_Unit_Name (Specification (Unit (N)));
+--
+--              when N_Package_Body =>
+--                 Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
+--
+--              when others =>
+--                 null;
+--           end case;
+--
+--           if Present (Def_Unit_Name) and then
+--              Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
+--              declare
+--                 Target_Name : constant String :=
+--                    File_Name_Without_Suffix
+--                      (Sloc (Entity (Name (Def_Unit_Name))));
+--              begin
+--                 Add_With_Clause
+--                    (Types_File, Target_Name & Types_Suffix);
+--                 Add_With_Clause
+--                    (Context_File, Target_Name & Context_Suffix);
+--              end;
+--           end if;
+--        end;
    end Filter_Compilation_Unit;
 
    -----------------------------

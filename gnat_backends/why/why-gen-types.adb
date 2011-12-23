@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -36,7 +36,7 @@ package body Why.Gen.Types is
    -------------------------------
 
    procedure New_Enum_Type_Declaration
-     (File         : W_File_Sections;
+     (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List)
    is
@@ -49,7 +49,7 @@ package body Why.Gen.Types is
       Cnt     : Integer range 0 .. Integer (Len) := 0;
    begin
       if Len = 0 then
-         Emit (File (W_File_Logic_Type), New_Type (Name));
+         Emit (File, New_Type (Name));
 
       else
          while Has_Element (Cursor) loop
@@ -61,7 +61,7 @@ package body Why.Gen.Types is
          end loop;
 
          Emit
-           (File (W_File_Logic_Type),
+           (File,
             New_Adt_Definition
               (Name         => New_Identifier (Name),
                Constructors => Constrs));

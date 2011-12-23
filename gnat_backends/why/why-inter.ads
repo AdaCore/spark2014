@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,6 +25,7 @@
 
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Sets;
 
 with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;
@@ -47,6 +48,20 @@ package Why.Inter is
    package List_Of_Nodes is new Doubly_Linked_Lists (Node_Id);
    --  Standard list of nodes. It is better to use these, as a Node_Id can be
    --  in any number of these lists, while it can be only in one List_Id.
+
+   function Node_Hash (X : Node_Id) return Hash_Type is (Hash_Type (X));
+
+   package Node_Sets is new Hashed_Sets (Element_Type        => Node_Id,
+                                         Hash                => Node_Hash,
+                                         Equivalent_Elements => "=",
+                                         "="                 => "=");
+
+   type Why_File is
+      record
+         Name    : access String;
+         Context : String_Lists.List;
+         File    : W_File_Id;
+      end record;
 
    type Why_Package is
       record
@@ -77,13 +92,13 @@ package Why.Inter is
 
    package List_Of_Why_Packs is new Doubly_Linked_Lists (Why_Package);
 
-   function Make_Empty_Why_Pack (S : String) return Why_Package;
-   --  Build an empty Why_Package with the given name
+   function Make_Empty_Why_File (S : String) return Why_File;
+   --  Build an empty Why_File with the given name
 
-   procedure Add_With_Clause (P : out Why_Package; Name : String);
+   procedure Add_With_Clause (P : out Why_File; Name : String);
    --  Add a package name to the context of a Why package.
 
-   procedure Add_With_Clause (P : out Why_Package; Other : Why_Package);
+   procedure Add_With_Clause (P : out Why_File; Other : Why_File);
    --  Add a package name to the context of a Why package.
 
    EW_Bool_Type : constant W_Base_Type_Id :=
@@ -144,31 +159,5 @@ package Why.Inter is
 
    function Eq (Left, Right : Entity_Id) return Boolean;
    --  Return True if Left and Right corresponds to the same Why identifier
-
-   type W_File_Section is
-     (W_File_Header,      --  include declarations
-      W_File_Logic_Type,  --  logic type declarations (with func and axioms)
-      W_File_Logic_Func,  --  logic function declarations
-      W_File_Axiom,       --  axioms
-      W_File_Data,        --  reference declarations
-      W_File_Prog);       --  program declarations
-   --  This type is used to divide a Why file into sections, so that translated
-   --  items can be put into their section, and later on the complete file is
-   --  created by putting the sections in order.
-
-   type W_File_Sections is array (W_File_Section) of W_File_Id;
-   --  File sections matching the partition of W_File_Section
-
-   function New_File_Sections return W_File_Sections;
-   --  Return fresh sections
-
-   procedure Copy_Section
-     (From     : W_File_Sections;
-      To       : W_File_Sections;
-      Section  : W_File_Section);
-   --  Copy the section Section in file From to file To
-
-   function Get_One_File (Sections : W_File_Sections) return W_File_Id;
-   --  Return a file corresponding to the concatenation of all file sections
 
 end Why.Inter;

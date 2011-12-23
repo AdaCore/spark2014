@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Preds is
@@ -32,7 +31,7 @@ package Why.Gen.Preds is
    --  This package provides facilities to manipulate Why predicates
 
    procedure Define_Range_Predicate
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the range predicate for an abstract type
@@ -40,7 +39,7 @@ package Why.Gen.Preds is
    --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (File      : W_File_Sections;
+     (File      : W_File_Id;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type

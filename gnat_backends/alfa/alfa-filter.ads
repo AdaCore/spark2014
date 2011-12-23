@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                      Copyright (C) 2011-2012, AdaCore                    --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,10 +27,16 @@ with Why.Inter; use Why.Inter;
 
 package Alfa.Filter is
 
-   Types_Vars_Spec : Why_Package;
-   Types_Vars_Body : Why_Package;
-   Subp_Spec       : Why_Package;
-   Subp_Body       : Why_Package;
+   --  Entities translated from Ada to Why3 should end up in one of the
+   --  following Why3 files, which should finally be printed in files on disk
+   --  before calling Why3.
+
+   Types_In_Spec_File   : Why_File;
+   Types_In_Body_File   : Why_File;
+   Variables_File       : Why_File;
+   Context_In_Spec_File : Why_File;
+   Context_In_Body_File : Why_File;
+   Main_File            : Why_File;
 
    procedure Filter_Compilation_Unit (N : Node_Id);
    --  Filter declarations in compilation unit N and generate compilation units

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -157,7 +157,7 @@ package body Gnat2Why.Expr.Loops is
            New_Conditional
              (Ada_Node  => Stmt,
               Condition => +Transform_Expr (Condition (Stmt), EW_Prog,
-                                            Ref_Allowed => True),
+                                            Params => Body_Params),
               Then_Part => +Raise_Stmt);
       end if;
    end Transform_Exit_Statement;
@@ -237,7 +237,7 @@ package body Gnat2Why.Expr.Loops is
                                 Right  =>
                                   Transform_Expr
                                     (Condition (Scheme), EW_Pred,
-                                     Ref_Allowed => True),
+                                     Params => Body_Params),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
             --  none at the beginning, we need to put a location here.
@@ -250,7 +250,7 @@ package body Gnat2Why.Expr.Loops is
               (Loop_Body    => Loop_Content,
                Condition    =>
                +Transform_Expr (Condition (Scheme), EW_Prog,
-                                Ref_Allowed => True),
+                                Params => Body_Params),
                Loop_Name    => Loop_Name,
                Invariant    => Enriched_Inv,
                Inv_Check    => Inv_Check,
@@ -313,7 +313,7 @@ package body Gnat2Why.Expr.Loops is
                                    (Loop_Range,
                                     New_Deref (Right => Loop_Index),
                                     EW_Pred,
-                                    Ref_Allowed => True,
+                                    Params => Body_Params,
                                     T_Type      => EW_Int_Type),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
@@ -356,7 +356,7 @@ package body Gnat2Why.Expr.Loops is
                   Def     => +Transform_Expr (High_Bound (Actual_Range),
                                               EW_Int_Type,
                                               EW_Prog,
-                                              Ref_Allowed => True),
+                                              Params => Body_Params),
                   Context => +Entire_Loop);
             Entire_Loop :=
                New_Binding
@@ -364,11 +364,11 @@ package body Gnat2Why.Expr.Loops is
                   Def     => +Transform_Expr (Low_Bound (Actual_Range),
                                               EW_Int_Type,
                                               EW_Prog,
-                                              Ref_Allowed => True),
+                                              Params => Body_Params),
                   Context => +Entire_Loop);
             return
               Sequence
-                (Assume_of_Subtype_Indication (Loop_Range),
+                (Assume_Of_Subtype_Indication (Body_Params, Loop_Range),
                  Entire_Loop);
          end;
 
@@ -427,7 +427,7 @@ package body Gnat2Why.Expr.Loops is
                          Loop_Content => Entire_Body);
    begin
       Emit
-        (Current_Why_Output_File (W_File_Prog),
+        (Body_Params.File,
          New_Exception_Declaration
            (Name => New_Identifier (Loop_Name),
             Arg  => Why.Types.Why_Empty));

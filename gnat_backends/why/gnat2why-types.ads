@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,6 @@
 
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Types is
 
@@ -54,20 +53,12 @@ package Gnat2Why.Types is
    --   for integer types. We then declare an abstract type for arrays, and
    --   access/update functions with axioms.
 
-   procedure Why_Type_Decl_Of_Entity
-      (File       : W_File_Sections;
-       Ident_Node : Node_Id);
+   procedure Translate_Type
+      (File : W_File_Id;
+       E    : Entity_Id);
    --  Take an Ada Entity and consider it as a full type declaration.
    --  Transform it into a Why type declaration, including conversion
    --  functions and axioms.
-
-   procedure Why_Type_Decl_Of_Entity
-      (File        : W_File_Sections;
-       Orig_Entity : Entity_Id;
-       Name_Str    : String;
-       Ident_Node  : Node_Id);
-   --  Similar to the previous function, but use Name_Str as name of the type,
-   --  regardless of the name of the Entity.
 
    function Why_Prog_Type_Of_Ada_Obj
      (N            : Node_Id;

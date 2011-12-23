@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                     Copyright (C) 2011-2012, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -61,6 +61,24 @@ package Alfa.Definition is
    --  Given the entity E for a function, determine whether E is an expression
    --  function that only calls expression functions, directly or indirectly.
 
+   function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether the body of subprogram Id is in Alfa
+
+   function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether an object Id is in Alfa
+
+   function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether the spec of subprogram Id is in Alfa
+
+   function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean;
+   --  Return whether a type Ent is in Alfa. Contrary to other .._Is_In_Alfa
+   --  functions, it takes an entity rather than a unique entity. Indeed,
+   --  private types are always in Alfa, even when the corresponding full type
+   --  is not in Alfa. This corresponds to cases where a client of the package,
+   --  which has only view over the private declaration, may still be in Alfa,
+   --  while an operation in the package over non-Alfa fields may not be in
+   --  Alfa.
+
    type Alfa_Decl is
      (Alfa_Object,
       Alfa_Type,
@@ -69,9 +87,15 @@ package Alfa.Definition is
       Alfa_Subprogram_Spec,
       Alfa_Subprogram_Body);
 
-   type Alfa_Decls is array (Alfa_Decl) of List_Of_Nodes.List;
+   Spec_Entities : List_Of_Nodes.List;
+   Body_Entities : List_Of_Nodes.List;
+   --  Lists of entities which are defined in the current unit, that require
+   --  a translation in Why3. One is for entities defined in the spec, and the
+   --  other for entities defined in the body. These lists contains both
+   --  entities in Alfa and entities not in Alfa. Each entity may be
+   --  attached to a declaration or not (for Itypes).
 
-   Decls_In_Spec : Alfa_Decls;
-   Decls_In_Body : Alfa_Decls;
+   All_Entities : Node_Sets.Set;
+   --  Set of all entities in list Entities
 
 end Alfa.Definition;
