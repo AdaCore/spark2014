@@ -1065,7 +1065,17 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("attribute definition clause", N, NYI_Rep_Clause);
 
          when N_Binary_Op =>
-            Mark_Binary_Op (N);
+            if Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor then
+               if Is_Boolean_Type (Etype (N)) then
+                  Mark_Binary_Op (N);
+               else
+                  Mark_Non_Alfa ("bitwise modular operation",
+                                 N,
+                                 NYI_Arith_Operation);
+               end if;
+            else
+               Mark_Binary_Op (N);
+            end if;
 
          when N_Block_Statement =>
             Mark_List (Declarations (N));
