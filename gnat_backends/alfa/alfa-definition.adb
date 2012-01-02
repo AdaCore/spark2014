@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                        Copyright (C) 2011-2012, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1543,11 +1543,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("concatenation", N, NYI_Concatenation);
 
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
-            if Is_Boolean_Type (Left_T) then
-               Mark_Non_Alfa
-                 ("ordering operator on boolean type", N, NYI_Arith_Operation);
-
-            elsif Is_Array_Type (Left_T) then
+            if Is_Array_Type (Left_T) then
                Mark_Non_Alfa
                  ("ordering operator on array type", N, NYI_XXX);
             end if;
