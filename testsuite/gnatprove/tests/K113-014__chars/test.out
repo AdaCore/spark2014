@@ -1,10 +1,10 @@
-chars.adb:13:33: (info) range check proved
-chars.adb:14:44: (info) range check proved
-chars.adb:15:55: (info) range check proved
-chars.adb:4:24: (info) range check proved
-chars.adb:5:24: (info) range check proved
-chars.adb:6:30: (info) range check proved
-chars.adb:7:30: (info) range check proved
-chars.adb:8:36: (info) range check proved
-chars.adb:9:36: (info) range check proved
-chars.ads:3:25: (info) postcondition proved
+chars.adb:13:33: info: range check proved
+chars.adb:14:44: info: range check proved
+chars.adb:15:55: info: range check proved
+chars.adb:4:24: info: range check proved
+chars.adb:5:24: info: range check proved
+chars.adb:6:30: info: range check proved
+chars.adb:7:30: info: range check proved
+chars.adb:8:36: info: range check proved
+chars.adb:9:36: info: range check proved
+chars.ads:3:25: info: postcondition proved

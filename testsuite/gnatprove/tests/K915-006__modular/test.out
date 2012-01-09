@@ -1,11 +1,11 @@
-pack.adb:10:16: (info) range check proved
-pack.adb:15:16: (info) range check proved
-pack.adb:21:16: (info) range check proved
-pack.adb:27:22: (info) division check proved
-pack.adb:27:22: (info) range check proved
-pack.adb:5:16: (info) range check proved
-pack.ads:10:33: (info) postcondition proved
-pack.ads:14:35: (info) postcondition proved
-pack.ads:18:33: (info) postcondition proved
-pack.ads:20:57: (info) range check proved
-pack.ads:6:32: (info) postcondition proved
+pack.adb:10:16: info: range check proved
+pack.adb:15:16: info: range check proved
+pack.adb:21:16: info: range check proved
+pack.adb:27:22: info: division check proved
+pack.adb:27:22: info: range check proved
+pack.adb:5:16: info: range check proved
+pack.ads:10:33: info: postcondition proved
+pack.ads:14:35: info: postcondition proved
+pack.ads:18:33: info: postcondition proved
+pack.ads:20:57: info: range check proved
+pack.ads:6:32: info: postcondition proved

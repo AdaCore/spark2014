@@ -1,8 +1,8 @@
-sat.adb:4:12: (info) overflow check proved
-sat.adb:5:12: (info) overflow check proved
-sat.adb:5:12: (info) range check proved
-sat.adb:7:10: (info) range check proved
-sat.ads:6:17: (info) overflow check proved
-sat.ads:6:49: (info) overflow check proved
-sat.ads:6:54: (info) postcondition proved
-sat.ads:7:17: (info) overflow check proved
+sat.adb:4:12: info: overflow check proved
+sat.adb:5:12: info: overflow check proved
+sat.adb:5:12: info: range check proved
+sat.adb:7:10: info: range check proved
+sat.ads:6:17: info: overflow check proved
+sat.ads:6:49: info: overflow check proved
+sat.ads:6:54: info: postcondition proved
+sat.ads:7:17: info: overflow check proved

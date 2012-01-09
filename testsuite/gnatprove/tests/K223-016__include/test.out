@@ -1,2 +1,2 @@
 callee.adb:4:14: overflow check not proved
-caller.adb:5:22: (info) range check proved
+caller.adb:5:22: info: range check proved

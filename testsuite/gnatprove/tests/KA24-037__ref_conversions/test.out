@@ -1,5 +1,5 @@
-p.adb:11:19: (info) range check proved
-p.adb:11:22: (info) range check proved
-p.adb:12:19: (info) range check proved
-p.adb:12:22: (info) range check proved
-p.adb:7:18: (info) range check proved
+p.adb:11:19: info: range check proved
+p.adb:11:22: info: range check proved
+p.adb:12:19: info: range check proved
+p.adb:12:22: info: range check proved
+p.adb:7:18: info: range check proved

@@ -1,11 +1,11 @@
-sub.adb:16:20: (info) range check proved
-sub.adb:18:20: (info) range check proved
-sub.adb:23:18: (info) range check proved
-sub.adb:24:22: (info) range check proved
-sub.adb:25:18: (info) range check proved
-sub.adb:31:22: (info) range check proved
-sub.adb:32:18: (info) range check proved
-sub.adb:6:20: (info) range check proved
-sub.adb:8:20: (info) range check proved
-sub.ads:12:11: (info) postcondition proved
-sub.ads:8:11: (info) postcondition proved
+sub.adb:16:20: info: range check proved
+sub.adb:18:20: info: range check proved
+sub.adb:23:18: info: range check proved
+sub.adb:24:22: info: range check proved
+sub.adb:25:18: info: range check proved
+sub.adb:31:22: info: range check proved
+sub.adb:32:18: info: range check proved
+sub.adb:6:20: info: range check proved
+sub.adb:8:20: info: range check proved
+sub.ads:12:11: info: postcondition proved
+sub.ads:8:11: info: postcondition proved

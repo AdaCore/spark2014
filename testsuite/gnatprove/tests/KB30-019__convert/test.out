@@ -1,2 +1,2 @@
-c46042a.adb:11:24: (info) range check proved
-c46042a.adb:11:36: (info) range check proved
+c46042a.adb:11:24: info: range check proved
+c46042a.adb:11:36: info: range check proved

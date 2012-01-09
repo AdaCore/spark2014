@@ -1,2 +1,2 @@
-enum.adb:5:14: (info) range check proved
-enum.ads:6:35: (info) postcondition proved
+enum.adb:5:14: info: range check proved
+enum.ads:6:35: info: postcondition proved

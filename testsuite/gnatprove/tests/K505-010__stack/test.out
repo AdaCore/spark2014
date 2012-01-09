@@ -1,2 +1,2 @@
-error.adb:10:18: (info) range check proved
-error.adb:15:18: (info) range check proved
+error.adb:10:18: info: range check proved
+error.adb:15:18: info: range check proved

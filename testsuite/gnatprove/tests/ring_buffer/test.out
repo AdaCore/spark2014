@@ -7,21 +7,21 @@ harness.adb:15:4: precondition not proved
 harness.adb:16:4: assertion not proved
 harness.adb:8:4: precondition not proved
 harness.adb:9:4: precondition not proved
-ring_buf.adb:11:24: (info) overflow check proved
-ring_buf.adb:11:36: (info) division check proved
-ring_buf.adb:11:8: (info) index check proved
-ring_buf.adb:12:28: (info) overflow check proved
-ring_buf.adb:12:28: (info) range check proved
-ring_buf.adb:18:19: (info) index check proved
-ring_buf.adb:19:27: (info) overflow check proved
-ring_buf.adb:19:32: (info) division check proved
-ring_buf.adb:19:32: (info) range check proved
-ring_buf.adb:20:28: (info) overflow check proved
-ring_buf.adb:20:28: (info) range check proved
-ring_buf.adb:5:19: (info) range check proved
-ring_buf.ads:47:21: (info) postcondition proved
-ring_buf.ads:49:59: (info) index check proved
-ring_buf.ads:55:29: (info) postcondition proved
-ring_buf.ads:55:44: (info) overflow check proved
-ring_buf.ads:60:39: (info) overflow check proved
+ring_buf.adb:11:24: info: overflow check proved
+ring_buf.adb:11:36: info: division check proved
+ring_buf.adb:11:8: info: index check proved
+ring_buf.adb:12:28: info: overflow check proved
+ring_buf.adb:12:28: info: range check proved
+ring_buf.adb:18:19: info: index check proved
+ring_buf.adb:19:27: info: overflow check proved
+ring_buf.adb:19:32: info: division check proved
+ring_buf.adb:19:32: info: range check proved
+ring_buf.adb:20:28: info: overflow check proved
+ring_buf.adb:20:28: info: range check proved
+ring_buf.adb:5:19: info: range check proved
+ring_buf.ads:47:21: info: postcondition proved
+ring_buf.ads:49:59: info: index check proved
+ring_buf.ads:55:29: info: postcondition proved
+ring_buf.ads:55:44: info: overflow check proved
+ring_buf.ads:60:39: info: overflow check proved
 ring_buf.ads:60:65: postcondition not proved

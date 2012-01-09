@@ -1,2 +1,2 @@
-pack.adb:5:30: (info) range check proved
+pack.adb:5:30: info: range check proved
 pack.adb:5:30: overflow check not proved

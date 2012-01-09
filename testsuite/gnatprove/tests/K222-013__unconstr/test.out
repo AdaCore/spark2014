@@ -1,5 +1,5 @@
-unconstr.adb:3:14: (info) range check proved
-unconstr.adb:5:22: (info) range check proved
-unconstr.adb:5:7: (info) index check proved
-unconstr.ads:9:21: (info) index check proved
-unconstr.ads:9:33: (info) postcondition proved
+unconstr.adb:3:14: info: range check proved
+unconstr.adb:5:22: info: range check proved
+unconstr.adb:5:7: info: index check proved
+unconstr.ads:9:21: info: index check proved
+unconstr.ads:9:33: info: postcondition proved

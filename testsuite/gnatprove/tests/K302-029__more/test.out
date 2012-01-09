@@ -1,7 +1,7 @@
 
-pack.adb:44:20: (info) range check proved
-pack.adb:44:22: (info) range check proved
-pack.adb:44:24: (info) range check proved
+pack.adb:44:20: info: range check proved
+pack.adb:44:22: info: range check proved
+pack.adb:44:24: info: range check proved
 -+ pack__p0__p3 pack.adb:4 (access)
 ++ pack__p0__p0_ok pack.adb:10
 -+ pack__p0 pack.ads:13 (access)

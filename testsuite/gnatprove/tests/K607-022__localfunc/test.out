@@ -1,4 +1,4 @@
-locfunc.adb:10:15: (info) range check proved
-locfunc.adb:11:15: (info) range check proved
-locfunc.adb:6:41: (info) postcondition proved
-locfunc.ads:3:23: (info) postcondition proved
+locfunc.adb:10:15: info: range check proved
+locfunc.adb:11:15: info: range check proved
+locfunc.adb:6:41: info: postcondition proved
+locfunc.ads:3:23: info: postcondition proved

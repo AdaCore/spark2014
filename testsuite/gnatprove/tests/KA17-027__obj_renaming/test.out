@@ -1,24 +1,24 @@
-main.adb:12:29: (info) postcondition proved
-main.adb:12:44: (info) range check proved
-main.adb:15:29: (info) postcondition proved
-main.adb:18:15: (info) postcondition proved
-main.adb:21:45: (info) range check proved
-main.adb:35:17: (info) range check proved
-main.adb:38:14: (info) range check proved
-main.adb:44:28: (info) index check proved
-main.adb:45:28: (info) index check proved
-main.adb:46:28: (info) index check proved
-main.adb:49:28: (info) index check proved
-main.adb:53:25: (info) range check proved
-main.adb:58:32: (info) range check proved
+main.adb:12:29: info: postcondition proved
+main.adb:12:44: info: range check proved
+main.adb:15:29: info: postcondition proved
+main.adb:18:15: info: postcondition proved
+main.adb:21:45: info: range check proved
+main.adb:35:17: info: range check proved
+main.adb:38:14: info: range check proved
+main.adb:44:28: info: index check proved
+main.adb:45:28: info: index check proved
+main.adb:46:28: info: index check proved
+main.adb:49:28: info: index check proved
+main.adb:53:25: info: range check proved
+main.adb:58:32: info: range check proved
 main.adb:58:32: overflow check not proved
-main.adb:63:16: (info) range check proved
+main.adb:63:16: info: range check proved
 main.adb:69:4: assertion not proved
 main.adb:70:4: assertion not proved
-main.adb:71:4: (info) assertion proved
+main.adb:71:4: info: assertion proved
 main.adb:72:4: assertion not proved
-main.adb:73:4: (info) assertion proved
-main.adb:74:4: (info) assertion proved
+main.adb:73:4: info: assertion proved
+main.adb:74:4: info: assertion proved
 main.adb:83:4: assertion not proved
 main.adb:84:4: assertion not proved
 main.adb:85:4: assertion not proved

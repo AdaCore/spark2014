@@ -1,27 +1,27 @@
-const.adb:10:22: (info) index check proved
+const.adb:10:22: info: index check proved
 const.adb:10:7: assertion not proved
-const.adb:11:22: (info) index check proved
+const.adb:11:22: info: index check proved
 const.adb:11:7: assertion not proved
-const.adb:12:22: (info) index check proved
+const.adb:12:22: info: index check proved
 const.adb:12:7: assertion not proved
-const.adb:13:22: (info) index check proved
+const.adb:13:22: info: index check proved
 const.adb:13:7: assertion not proved
-const.adb:18:22: (info) index check proved
+const.adb:18:22: info: index check proved
 const.adb:18:7: assertion not proved
-const.adb:19:22: (info) index check proved
+const.adb:19:22: info: index check proved
 const.adb:19:7: assertion not proved
-const.adb:23:7: (info) assertion proved
-const.adb:24:7: (info) assertion proved
-const.adb:25:7: (info) assertion proved
-const.adb:26:7: (info) assertion proved
-const.adb:27:7: (info) assertion proved
-const.adb:28:7: (info) assertion proved
-const.adb:32:7: (info) assertion proved
-const.adb:33:7: (info) assertion proved
-const.adb:34:7: (info) assertion proved
-const.adb:35:7: (info) assertion proved
-const.adb:36:7: (info) assertion proved
-const.adb:37:7: (info) assertion proved
+const.adb:23:7: info: assertion proved
+const.adb:24:7: info: assertion proved
+const.adb:25:7: info: assertion proved
+const.adb:26:7: info: assertion proved
+const.adb:27:7: info: assertion proved
+const.adb:28:7: info: assertion proved
+const.adb:32:7: info: assertion proved
+const.adb:33:7: info: assertion proved
+const.adb:34:7: info: assertion proved
+const.adb:35:7: info: assertion proved
+const.adb:36:7: info: assertion proved
+const.adb:37:7: info: assertion proved
 const.adb:41:7: assertion not proved
 const.adb:42:7: assertion not proved
-const.ads:22:35: (info) range check proved
+const.ads:22:35: info: range check proved

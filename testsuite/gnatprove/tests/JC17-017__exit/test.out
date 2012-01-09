@@ -1,13 +1,13 @@
-p.adb:15:9: (info) overflow check proved
+p.adb:15:9: info: overflow check proved
 p.adb:17:7: assertion not proved
-p.adb:21:7: (info) loop invariant initialization proved
-p.adb:21:7: (info) loop invariant preservation proved
-p.adb:29:7: (info) loop invariant initialization proved
-p.adb:29:7: (info) loop invariant preservation proved
-p.adb:37:30: (info) loop invariant initialization proved
-p.adb:37:30: (info) loop invariant preservation proved
-p.adb:39:10: (info) loop invariant initialization proved
-p.adb:39:10: (info) loop invariant preservation proved
-p.adb:48:13: (info) range check proved
-p.adb:48:18: (info) overflow check proved
-p.adb:4:33: (info) postcondition proved
+p.adb:21:7: info: loop invariant initialization proved
+p.adb:21:7: info: loop invariant preservation proved
+p.adb:29:7: info: loop invariant initialization proved
+p.adb:29:7: info: loop invariant preservation proved
+p.adb:37:30: info: loop invariant initialization proved
+p.adb:37:30: info: loop invariant preservation proved
+p.adb:39:10: info: loop invariant initialization proved
+p.adb:39:10: info: loop invariant preservation proved
+p.adb:48:13: info: range check proved
+p.adb:48:18: info: overflow check proved
+p.adb:4:33: info: postcondition proved

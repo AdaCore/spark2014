@@ -1,12 +1,12 @@
-s.adb:12:20: (info) range check proved
-s.adb:14:9: (info) loop invariant initialization proved
-s.adb:14:9: (info) loop invariant preservation proved
-s.adb:15:12: (info) index check proved
-s.adb:24:24: (info) overflow check proved
-s.adb:24:24: (info) range check proved
-s.adb:35:13: (info) index check proved
-s.ads:12:36: (info) postcondition proved
-s.ads:12:44: (info) index check proved
-s.ads:19:45: (info) postcondition proved
-s.ads:19:48: (info) index check proved
+s.adb:12:20: info: range check proved
+s.adb:14:9: info: loop invariant initialization proved
+s.adb:14:9: info: loop invariant preservation proved
+s.adb:15:12: info: index check proved
+s.adb:24:24: info: overflow check proved
+s.adb:24:24: info: range check proved
+s.adb:35:13: info: index check proved
+s.ads:12:36: info: postcondition proved
+s.ads:12:44: info: index check proved
+s.ads:19:45: info: postcondition proved
+s.ads:19:48: info: index check proved
 
