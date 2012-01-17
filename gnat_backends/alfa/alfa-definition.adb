@@ -1012,7 +1012,8 @@ package body Alfa.Definition is
            or else Safe_Instantiation_Depth (From) > 0
          then
             A (NYI_Generic).Include (+To);
-
+         elsif From = To then
+            A (NIR_Recursive).Include (+To);
          else
             A (NIR_XXX).Include (+To);
          end if;

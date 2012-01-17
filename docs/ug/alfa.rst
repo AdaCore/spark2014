@@ -141,6 +141,7 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 * tasking: tasking;
 * unchecked conversion: unchecked conversion;
 * impure function: functions which write to variables other than parameters;
+* recursive call: forbidden types of recursive calls, e.g. in contracts;
 * unsupported construct: any other unsupported construct.
 
 GNATprove outputs which features in Alfa but not yet implemented are used

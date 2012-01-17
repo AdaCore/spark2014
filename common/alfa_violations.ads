@@ -77,6 +77,7 @@ package Alfa_Violations is
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
       NIR_Impure_Function,  --  impure functions
+      NIR_Recursive,        --  disallowed recursive calls (e.g. in specs)
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is
@@ -139,6 +140,7 @@ package Alfa_Violations is
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),
       NIR_Unchecked_Conv   => To_Unbounded_String ("unchecked conversion"),
+      NIR_Recursive        => To_Unbounded_String ("recursive call"),
       NIR_XXX              => To_Unbounded_String ("unsupported construct"));
 
    function Name_Hash (N : Unbounded_String) return Hash_Type is
