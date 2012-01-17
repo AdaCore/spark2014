@@ -167,7 +167,6 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * type predicate;
 * operation on arrays: rarely used operation on arrays, such as boolean operators;
 * iterators: loops with iterators;
-* character enumeration: an enumeration type based on character types;
 * class wide types: class wide types;
 * interfaces: interfaces;
 * not yet implemented: any other not yet implemented construct.

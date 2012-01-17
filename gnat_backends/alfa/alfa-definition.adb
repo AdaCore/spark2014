@@ -2725,16 +2725,7 @@ package body Alfa.Definition is
 
             end;
 
-         when Enumeration_Kind =>
-
-            --  Enumeration type is in Alfa only if it is not a character type
-
-            if Is_Character_Type (+Id) then
-               Mark_Non_Alfa ("character enumeration type",
-                              +Id, NYI_Char_Enum);
-            end if;
-
-         when Integer_Kind | Real_Kind =>
+         when Integer_Kind | Real_Kind | Enumeration_Kind =>
             --  Such types should always be in alfa
 
             null;

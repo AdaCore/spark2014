@@ -57,7 +57,6 @@ package Alfa_Violations is
       NYI_Tagged,           --  tagged type
       NYI_Array_Operation,  --  some operations on arrays
       NYI_Iterators,        --  iterators
-      NYI_Char_Enum,        --  char enums
       NYI_Interface,        --  interfaces
       NYI_Class_Wide,       --  class wide types
       NYI_Unchecked,        --  unchecked expressions
@@ -123,7 +122,6 @@ package Alfa_Violations is
       NYI_Tagged           => To_Unbounded_String ("tagged type"),
       NYI_Array_Operation  => To_Unbounded_String ("operation on arrays"),
       NYI_Iterators        => To_Unbounded_String ("iterators"),
-      NYI_Char_Enum        => To_Unbounded_String ("character enumeration"),
       NYI_Class_Wide       => To_Unbounded_String ("class wide types"),
       NYI_Interface        => To_Unbounded_String ("interfaces"),
       NYI_Unchecked        => To_Unbounded_String ("unchecked expressions"),
