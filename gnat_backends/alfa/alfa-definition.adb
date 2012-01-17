@@ -1328,7 +1328,7 @@ package body Alfa.Definition is
             Mark_Type_Conversion (N);
 
          when N_Unchecked_Expression =>
-            Mark_Non_Alfa ("unchecked expression", N, NYI_XXX);
+            Mark_Non_Alfa ("unchecked expression", N, NYI_Unchecked);
 
          when N_Unchecked_Type_Conversion =>
             if Comes_From_Source (N) then

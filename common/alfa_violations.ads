@@ -60,8 +60,8 @@ package Alfa_Violations is
       NYI_Char_Enum,        --  char enums
       NYI_Interface,        --  interfaces
       NYI_Class_Wide,       --  class wide types
+      NYI_Unchecked,        --  unchecked expressions
       NYI_Extended_Return,  --  extended return
-      NYI_XXX,              --  all other cases
 
       --  NIR: Not In Roadmap
       --  These constructs are not in Alfa in the foreseeable future
@@ -79,7 +79,8 @@ package Alfa_Violations is
       NIR_Impure_Function,  --  impure functions
       NIR_XXX);             --  all other cases
 
-   subtype Not_Yet_Implemented is Vkind range NYI_Aggregate .. NYI_XXX;
+   subtype Not_Yet_Implemented is
+     Vkind range NYI_Aggregate .. NYI_Extended_Return;
    subtype Known_Not_Yet_Implemented is Not_Yet_Implemented range
      Not_Yet_Implemented'First ..
        Not_Yet_Implemented'Val
@@ -124,8 +125,8 @@ package Alfa_Violations is
       NYI_Char_Enum        => To_Unbounded_String ("character enumeration"),
       NYI_Class_Wide       => To_Unbounded_String ("class wide types"),
       NYI_Interface        => To_Unbounded_String ("interfaces"),
+      NYI_Unchecked        => To_Unbounded_String ("unchecked expressions"),
       NYI_Extended_Return  => To_Unbounded_String ("extended return"),
-      NYI_XXX              => To_Unbounded_String ("not yet implemented"),
 
       NIR_Access           => To_Unbounded_String ("access"),
       NIR_Ambiguous_Expr   => To_Unbounded_String ("ambiguous expr"),
