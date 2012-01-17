@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -302,6 +302,15 @@ package Why.Gen.Names is
      new Name_Gen.Arity_1 (EW_Term, "", Unicity);
    --  From the name of an abstract type, return the name of
    --  its unicity axiom.
+
+   package Bool_And is
+     new Name_Gen.Arity_0 (EW_Term, "andb");
+
+   package Bool_Or is
+     new Name_Gen.Arity_0 (EW_Term, "orb");
+
+   package Bool_Xor is
+     new Name_Gen.Arity_0 (EW_Term, "xorb");
 
    package Assume_Name is
       new Name_Gen.Arity_1 (EW_Term, "", Assume);

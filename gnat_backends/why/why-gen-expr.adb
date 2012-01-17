@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -317,7 +317,7 @@ package body Why.Gen.Expr is
             return
               New_Call
                 (Domain => Domain,
-                 Name   => New_Identifier ("andb"),
+                 Name   => Bool_And.Id,
                  Args   => (1 => +Left, 2 => +Right));
          end if;
       end if;
@@ -510,7 +510,7 @@ package body Why.Gen.Expr is
          else
             return New_Call
               (Domain => Domain,
-               Name => New_Identifier ("orb"),
+               Name => Bool_Or.Id,
                Args => (1 => +Left, 2 => +Right));
          end if;
       end if;
@@ -626,4 +626,34 @@ package body Why.Gen.Expr is
       end if;
    end New_Simpl_Conditional;
 
+   ------------------
+   -- New_Xor_Expr --
+   ------------------
+
+   function New_Xor_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain) return W_Expr_Id is
+   begin
+      if Domain = EW_Pred then
+         declare
+            Or_Expr : constant W_Expr_Id := New_Or_Expr (Left, Right, Domain);
+            Both_Expr : constant W_Expr_Id :=
+              New_And_Expr (Left, Right, Domain);
+            Not_Both_Expr : constant W_Expr_Id :=
+              New_Not (Domain => Domain, Right => Both_Expr);
+         begin
+            return New_Connection
+              (Domain => Domain,
+               Op     => EW_And,
+               Left   => Or_Expr,
+               Right  => Not_Both_Expr);
+         end;
+      else
+         return
+           New_Call
+             (Domain => Domain,
+              Name   => Bool_Xor.Id,
+              Args   => (1 => +Left, 2 => +Right));
+      end if;
+   end New_Xor_Expr;
 end Why.Gen.Expr;

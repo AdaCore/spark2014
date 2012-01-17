@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2528,6 +2528,20 @@ package body Gnat2Why.Expr is
          when N_Op_Or =>
             T :=
                New_Or_Expr
+                 (Left     => Transform_Expr (Left_Opnd (Expr),
+                                              Current_Type,
+                                              Domain,
+                                              Ref_Allowed),
+                  Right    => Transform_Expr (Right_Opnd (Expr),
+                                              Current_Type,
+                                              Domain,
+                                              Ref_Allowed),
+                  Domain   => Domain);
+            Current_Type := EW_Bool_Type;
+
+         when N_Op_Xor =>
+            T :=
+               New_Xor_Expr
                  (Left     => Transform_Expr (Left_Opnd (Expr),
                                               Current_Type,
                                               Domain,
