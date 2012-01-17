@@ -1562,7 +1562,7 @@ package body Alfa.Definition is
          when N_Op_Eq | N_Op_Ne =>
             null;
 
-         when N_Op_And | N_Op_Or =>
+         when N_Op_And | N_Op_Or | N_Op_Xor =>
             if Is_Array_Type (Left_T)
               and then Nkind (N) in N_Binary_Op
             then
@@ -1609,7 +1609,6 @@ package body Alfa.Definition is
             end if;
 
          when N_Op_Expon |
-              N_Op_Xor   |
               N_Op_Shift =>
             Mark_Non_Alfa ("operator", N, NYI_Arith_Operation);
       end case;
