@@ -60,6 +60,7 @@ package Alfa_Violations is
       NYI_Char_Enum,        --  char enums
       NYI_Interface,        --  interfaces
       NYI_Class_Wide,       --  class wide types
+      NYI_Extended_Return,  --  extended return
       NYI_XXX,              --  all other cases
 
       --  NIR: Not In Roadmap
@@ -123,6 +124,7 @@ package Alfa_Violations is
       NYI_Char_Enum        => To_Unbounded_String ("character enumeration"),
       NYI_Class_Wide       => To_Unbounded_String ("class wide types"),
       NYI_Interface        => To_Unbounded_String ("interfaces"),
+      NYI_Extended_Return  => To_Unbounded_String ("extended return"),
       NYI_XXX              => To_Unbounded_String ("not yet implemented"),
 
       NIR_Access           => To_Unbounded_String ("access"),

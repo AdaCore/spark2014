@@ -1151,7 +1151,7 @@ package body Alfa.Definition is
             end;
 
          when N_Extended_Return_Statement =>
-            Mark_Non_Alfa ("extended RETURN", N, NYI_XXX);
+            Mark_Non_Alfa ("extended RETURN", N, NYI_Extended_Return);
 
          when N_Extension_Aggregate =>
             Mark_Non_Alfa ("extension aggregate", N, NYI_Aggregate);
@@ -2608,9 +2608,12 @@ package body Alfa.Definition is
                              ("index type", N, From => Unique (Entity (Cstr)));
                         end if;
 
-                     when N_Subtype_Indication =>  --  TO DO
-                        Mark_Non_Alfa
-                          ("index type", N, NYI_XXX);
+                     when N_Subtype_Indication =>
+                        if not Type_Is_In_Alfa (Subtype_Mark (Cstr)) then
+                           Mark_Non_Alfa
+                             ("index type", N, From =>
+                                Unique (Entity (Subtype_Mark (Cstr))));
+                        end if;
 
                      when N_Range =>
                         null;
