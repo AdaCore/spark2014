@@ -1555,7 +1555,7 @@ package body Alfa.Definition is
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
             if Is_Array_Type (Left_T) then
                Mark_Non_Alfa
-                 ("ordering operator on array type", N, NYI_XXX);
+                 ("ordering operator on array type", N, NYI_Array_Operation);
             end if;
 
          when N_Op_Eq | N_Op_Ne =>
@@ -1566,7 +1566,7 @@ package body Alfa.Definition is
               and then Nkind (N) in N_Binary_Op
             then
                Mark_Non_Alfa
-                 ("binary operator on array type", N, NYI_XXX);
+                 ("binary operator on array type", N, NYI_Array_Operation);
             end if;
 
          --  Do not allow arithmetic operations which could be reordered by the
@@ -1904,7 +1904,7 @@ package body Alfa.Definition is
 
       else
          pragma Assert (Present (Iterator_Specification (N)));
-         Mark_Non_Alfa ("loop with iterator", N, NYI_XXX);
+         Mark_Non_Alfa ("loop with iterator", N, NYI_Iterators);
       end if;
    end Mark_Iteration_Scheme;
 
@@ -2726,7 +2726,8 @@ package body Alfa.Definition is
             --  Enumeration type is in Alfa only if it is not a character type
 
             if Is_Character_Type (+Id) then
-               Mark_Non_Alfa ("character enumeration type", +Id, NYI_XXX);
+               Mark_Non_Alfa ("character enumeration type",
+                              +Id, NYI_Char_Enum);
             end if;
 
          when Integer_Kind | Real_Kind =>
@@ -2740,7 +2741,7 @@ package body Alfa.Definition is
             end if;
 
             if Is_Interface (+Id) then
-               Mark_Non_Alfa ("interface", +Id, NYI_XXX);
+               Mark_Non_Alfa ("interface", +Id, NYI_Interface);
 
             else
                declare
@@ -2778,7 +2779,7 @@ package body Alfa.Definition is
 
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
-            Mark_Non_Alfa ("type definition", +Id, NYI_XXX);
+            Mark_Non_Alfa ("type definition", +Id, NYI_Class_Wide);
 
          when Access_Kind =>
             Mark_Non_Alfa ("access type", +Id, NIR_Access);

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -55,6 +55,11 @@ package Alfa_Violations is
       NYI_Rep_Clause,       --  representation clause
       NYI_Slice,            --  array slice
       NYI_Tagged,           --  tagged type
+      NYI_Array_Operation,  --  some operations on arrays
+      NYI_Iterators,        --  iterators
+      NYI_Char_Enum,        --  char enums
+      NYI_Interface,        --  interfaces
+      NYI_Class_Wide,       --  class wide types
       NYI_XXX,              --  all other cases
 
       --  NIR: Not In Roadmap
@@ -113,6 +118,11 @@ package Alfa_Violations is
       NYI_Rep_Clause       => To_Unbounded_String ("representation clause"),
       NYI_Slice            => To_Unbounded_String ("slice"),
       NYI_Tagged           => To_Unbounded_String ("tagged type"),
+      NYI_Array_Operation  => To_Unbounded_String ("operation on arrays"),
+      NYI_Iterators        => To_Unbounded_String ("iterators"),
+      NYI_Char_Enum        => To_Unbounded_String ("character enumeration"),
+      NYI_Class_Wide       => To_Unbounded_String ("class wide types"),
+      NYI_Interface        => To_Unbounded_String ("interfaces"),
       NYI_XXX              => To_Unbounded_String ("not yet implemented"),
 
       NIR_Access           => To_Unbounded_String ("access"),
