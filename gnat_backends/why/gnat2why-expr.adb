@@ -2498,14 +2498,14 @@ package body Gnat2Why.Expr is
                     Name     => New_Identifier ("notb"),
                     Args     =>
                       (1 => Transform_Expr (Right_Opnd (Expr),
-                                            Current_Type,
+                                            EW_Bool_Type,
                                             Domain,
                                             Ref_Allowed)));
             else
                T :=
                  New_Not
                    (Right  => Transform_Expr (Right_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Ref_Allowed),
                     Domain => Domain);
@@ -2515,11 +2515,11 @@ package body Gnat2Why.Expr is
             T :=
                New_And_Expr
                  (Left   => Transform_Expr (Left_Opnd (Expr),
-                                            Current_Type,
+                                            EW_Bool_Type,
                                             Domain,
                                             Ref_Allowed),
                   Right  => Transform_Expr (Right_Opnd (Expr),
-                                            Current_Type,
+                                            EW_Bool_Type,
                                             Domain,
                                             Ref_Allowed),
                   Domain => Domain);
@@ -2529,11 +2529,11 @@ package body Gnat2Why.Expr is
             T :=
                New_Or_Expr
                  (Left     => Transform_Expr (Left_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Ref_Allowed),
                   Right    => Transform_Expr (Right_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Ref_Allowed),
                   Domain   => Domain);
@@ -2543,11 +2543,11 @@ package body Gnat2Why.Expr is
             T :=
                New_Xor_Expr
                  (Left     => Transform_Expr (Left_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Ref_Allowed),
                   Right    => Transform_Expr (Right_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Ref_Allowed),
                   Domain   => Domain);
@@ -3095,8 +3095,11 @@ package body Gnat2Why.Expr is
                         Tail :=
                           +New_Simpl_Conditional
                             (Condition =>
-                               Transform_Expr (Condition (Cur), EW_Prog,
-                                Ref_Allowed => True),
+                               Transform_Expr
+                                 (Condition (Cur),
+                                  EW_Bool_Type,
+                                  EW_Prog,
+                                  Ref_Allowed => True),
                              Then_Part =>
                                +Transform_Statements (Then_Statements (Cur)),
                              Else_Part => +Tail,
@@ -3110,9 +3113,10 @@ package body Gnat2Why.Expr is
 
                return
                  +New_Simpl_Conditional
-                   (Condition => Transform_Expr (Condition (Stmt),
-                                                 EW_Prog,
-                                                 Ref_Allowed => True),
+                 (Condition => Transform_Expr (Condition (Stmt),
+                                               EW_Bool_Type,
+                                               EW_Prog,
+                                               Ref_Allowed => True),
                     Then_Part =>
                       +Transform_Statements (Then_Statements (Stmt)),
                     Else_Part => +Tail,
