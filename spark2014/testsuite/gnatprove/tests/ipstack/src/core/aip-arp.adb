@@ -286,6 +286,7 @@ is
             exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
 
             Send_Packet (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
+            Buffers.Buffer_Blind_Free (Packet_Buf);
          end loop Flush_Queue;
       end if;
    end ARP_Update;
@@ -432,8 +433,12 @@ is
                   ARP_Table (AEID).Dst_MAC_Address);
 
             when Incomplete =>
-               --  Park packet on entry's pending list
 
+               --  Park packet on entry's pending list. Record this as an
+               --  additional reference to Buf, which will be freed when the
+               --  packet is removed from the queue.
+
+               Buffers.Buffer_Ref (Buf);
                Buffers.Append_Packet
                  (Buffers.Link,
                   ARP_Table (AEID).Packet_Queue,
