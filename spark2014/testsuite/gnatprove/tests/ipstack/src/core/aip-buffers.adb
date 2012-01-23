@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
@@ -499,7 +499,7 @@ is
    procedure Remove_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
-      Buf : out Buffer_Id)
+      Buf   : out Buffer_Id)
    --# global in Common.Buf_List;
    is
    begin
