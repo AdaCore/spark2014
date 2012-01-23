@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.ARPH;
@@ -89,7 +89,7 @@ is
          ARPH.Set_ARPH_Hardware_Type   (Ahdr, ARPH.ARP_Hw_Ethernet);
          ARPH.Set_ARPH_Protocol        (Ahdr, EtherH.Ether_Type_IP);
          ARPH.Set_ARPH_Hw_Len          (Ahdr, AIP.Ethernet_Address'Size / 8);
-         ARPH.Set_ARPH_Pr_Len          (Ahdr, IPaddrs.IPaddr'Size);
+         ARPH.Set_ARPH_Pr_Len          (Ahdr, IPaddrs.IPaddr'Size / 8);
          ARPH.Set_ARPH_Operation       (Ahdr, ARPH.ARP_Op_Request);
          ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Get_MAC_Address (Nid));
          ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
