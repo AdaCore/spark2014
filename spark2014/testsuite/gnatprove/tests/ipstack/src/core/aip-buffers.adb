@@ -14,21 +14,6 @@ package body AIP.Buffers
 --#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
 --#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
-   --------------------
-   -- Is_Data_Buffer --
-   --------------------
-
-   --  Early definition of Is_Data_Buffer out of alphabetical order, because
-   --  function is called in other subprograms
-
-   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
-   begin
-      --  Decision between data buffer and no-data buffer should not apply to
-      --  null buffer, which is both
-      Support.Verify (Buf /= NOBUF);
-
-      return Buf <= Config.Data_Buffer_Num;
-   end Is_Data_Buffer;
 
    -------------------
    -- Append_Packet --
@@ -202,7 +187,7 @@ is
    is
       Result : System.Address;
    begin
-      if Is_Data_Buffer (Buf) then
+      if Common.Is_Data_Buffer (Buf) then
          Result := Data.Buffer_Payload (Data.To_Dbuf_Id (Buf));
       else
          Result := No_Data.Buffer_Payload (No_Data.To_Rbuf_Id (Buf));
@@ -330,7 +315,7 @@ is
 
          --  Store head of appropriate free-list in Free_List
 
-         if Is_Data_Buffer (Cur_Buf) then
+         if Common.Is_Data_Buffer (Cur_Buf) then
             Free_List := Data.To_Common_Id (Data.Free_List);
          else
             Free_List := No_Data.To_Common_Id (No_Data.Free_List);
@@ -351,14 +336,14 @@ is
 
             --  Perform link actions specific to data buffers
 
-            if Is_Data_Buffer (Cur_Buf) then
+            if Common.Is_Data_Buffer (Cur_Buf) then
                Data.Buffer_Link
                  (Data.To_Dbuf_Id (Cur_Buf), Data.To_Dbuf_Id (Free_List));
             end if;
 
             --  Push to the head of the appropriate free-list
 
-            if Is_Data_Buffer (Cur_Buf) then
+            if Common.Is_Data_Buffer (Cur_Buf) then
                Data.Free_List    := Data.To_Dbuf_Id (Cur_Buf);
             else
                No_Data.Free_List := No_Data.To_Rbuf_Id (Cur_Buf);

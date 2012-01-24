@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management
@@ -286,11 +286,6 @@ private
 
    Empty_Packet_Queue : constant Packet_Queue :=
                          Packet_Queue'(Head => NOBUF, Tail => NOBUF);
-
-   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
-   --  Return whether buffer Buf is a data buffer or a no-data buffer.
-   --  Declared in the private part as SPARK forbids declarations in body and
-   --  style checks require a declaration.
 
    --------------------------------------------------------------
    -- General notes on internal data structures and buffer Ids --

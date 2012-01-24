@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management.
@@ -55,5 +55,8 @@ is
    subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Buffer_Id'Last;
    type Buffer_Array is array (Buffer_Index) of Buffer;
    Buf_List : Buffer_Array;
+
+   function Is_Data_Buffer (Buf : Buffers.Buffer_Id) return Boolean;
+   --  Return True if Buf is a Data buffer, False if it is a No_Data buffer
 
 end AIP.Buffers.Common;

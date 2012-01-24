@@ -161,10 +161,10 @@ is
          Cur_Buf  := Next_Buf;
          Cur_Cbuf := To_Common_Id (Cur_Buf);
 
-         if Is_Data_Buffer (Common.Buf_List (Cur_Cbuf).Next) then
+         if Common.Is_Data_Buffer (Common.Buf_List (Cur_Cbuf).Next) then
             Next_Buf := To_Dbuf_Id (Common.Buf_List (Cur_Cbuf).Next);
          else
-            Next_Buf := To_Dbuf_Id (NOBUF);
+            Next_Buf := To_Dbuf_Id (Buffers.NOBUF);
          end if;
 
          --  Num and Num_No_Jump are as currently defined
