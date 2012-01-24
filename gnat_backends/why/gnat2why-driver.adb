@@ -57,6 +57,7 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Why;                   use Why;
 with Why.Conversions;       use Why.Conversions;
 with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
@@ -297,7 +298,8 @@ package body Gnat2Why.Driver is
       procedure Print_Why_File (File : Why_File) is
       begin
          Open_Current_File (File.Name.all & ".mlw");
-         Sprint_Why_Node (+File.Main_Theory, Current_File);
+         File_Append_To_Theories (File.File, File.Cur_Theory);
+         Sprint_Why_Node (+File.File, Current_File);
          Close_Current_File;
       end Print_Why_File;
 
@@ -305,17 +307,17 @@ package body Gnat2Why.Driver is
       --  Translate Ada entities into Why3
 
       for E of Spec_Entities loop
-         Translate_Entity (E, Types_In_Spec_File.Main_Theory,
-                           Variables_File.Main_Theory,
-                           Context_In_Spec_File.Main_Theory,
-                           Main_File.Main_Theory);
+         Translate_Entity (E, Types_In_Spec_File.Cur_Theory,
+                           Variables_File.Cur_Theory,
+                           Context_In_Spec_File.Cur_Theory,
+                           Main_File.Cur_Theory);
       end loop;
 
       for E of Body_Entities loop
-         Translate_Entity (E, Types_In_Body_File.Main_Theory,
-                           Variables_File.Main_Theory,
-                           Context_In_Body_File.Main_Theory,
-                           Main_File.Main_Theory);
+         Translate_Entity (E, Types_In_Body_File.Cur_Theory,
+                           Variables_File.Cur_Theory,
+                           Context_In_Body_File.Cur_Theory,
+                           Main_File.Cur_Theory);
       end loop;
 
       --  Generate Why3 files
@@ -328,12 +330,12 @@ package body Gnat2Why.Driver is
       Print_Why_File (Main_File);
 
       if Print_Generated_Code then
-         wpg (+Types_In_Spec_File.Main_Theory);
-         wpg (+Types_In_Body_File.Main_Theory);
-         wpg (+Variables_File.Main_Theory);
-         wpg (+Context_In_Spec_File.Main_Theory);
-         wpg (+Context_In_Body_File.Main_Theory);
-         wpg (+Main_File.Main_Theory);
+         wpg (+Types_In_Spec_File.Cur_Theory);
+         wpg (+Types_In_Body_File.Cur_Theory);
+         wpg (+Variables_File.Cur_Theory);
+         wpg (+Context_In_Spec_File.Cur_Theory);
+         wpg (+Context_In_Body_File.Cur_Theory);
+         wpg (+Main_File.Cur_Theory);
       end if;
    end Translate_CUnit;
 

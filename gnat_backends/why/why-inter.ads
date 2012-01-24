@@ -58,7 +58,8 @@ package Why.Inter is
    type Why_File is
       record
          Name        : access String;
-         Main_Theory : W_Theory_Declaration_Id;
+         File        : W_File_Id;
+         Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
    function Make_Empty_Why_File (S : String) return Why_File;

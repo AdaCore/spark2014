@@ -48,7 +48,7 @@ package body Why.Inter is
 
    procedure Add_With_Clause (P : in out Why_File; Name : String) is
    begin
-      Emit (P.Main_Theory,
+      Emit (P.Cur_Theory,
             New_Include_Declaration (Name     => New_Identifier (Name),
                                      Use_Kind => EW_Export,
                                      Kind     => EW_Module));
@@ -256,7 +256,8 @@ package body Why.Inter is
    begin
       return
         (Name    => new String'(S),
-         Main_Theory =>
+         File    => New_File,
+         Cur_Theory =>
            New_Theory_Declaration (Name => New_Identifier ("Main"),
                                    Kind => EW_Module));
    end Make_Empty_Why_File;
