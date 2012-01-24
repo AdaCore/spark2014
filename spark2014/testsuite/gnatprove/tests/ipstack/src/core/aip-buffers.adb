@@ -316,7 +316,7 @@ is
    --#               Data.Free_List, No_Data.Free_List;
    is
       Cur_Buf, Next_Buf : Buffer_Id;
-      Free_List         : Common.Buffer_Index;
+      Free_List         : Buffer_Id;
    begin
       Next_Buf   := Buf;
       N_Deallocs := 0;

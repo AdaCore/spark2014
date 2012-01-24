@@ -110,7 +110,7 @@ is
       --  Remaining size to be allocated
 
       Cur_Buf, Next_Buf : Dbuf_Id;
-      --  Local indexes to run over the free list
+      --  Local indices to run over the free list
 
       Cur_Cbuf : Buffers.Buffer_Id;
       --  Common index for Cur_Buf
@@ -160,7 +160,12 @@ is
 
          Cur_Buf  := Next_Buf;
          Cur_Cbuf := To_Common_Id (Cur_Buf);
-         Next_Buf := To_Dbuf_Id (Common.Buf_List (Cur_Cbuf).Next);
+
+         if Is_Data_Buffer (Common.Buf_List (Cur_Cbuf).Next) then
+            Next_Buf := To_Dbuf_Id (Common.Buf_List (Cur_Cbuf).Next);
+         else
+            Next_Buf := To_Dbuf_Id (NOBUF);
+         end if;
 
          --  Num and Num_No_Jump are as currently defined
 
