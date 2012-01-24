@@ -52,7 +52,7 @@ package body Gnat2Why.Types is
    --  Return True is N is of an Ada base type
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -60,7 +60,7 @@ package body Gnat2Why.Types is
    --  from node.
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean);
@@ -72,7 +72,7 @@ package body Gnat2Why.Types is
    ------------------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -90,7 +90,7 @@ package body Gnat2Why.Types is
            New_Integer_Constant (Value =>
               Expr_Value (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Abstract_Signed_Int (File, Name, First, Last, Is_Base);
+      Declare_Ada_Abstract_Signed_Int (Theory, Name, First, Last, Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------
@@ -98,7 +98,7 @@ package body Gnat2Why.Types is
    ---------------------------------
 
    procedure Declare_Ada_Real_From_Range
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       Rng     : Node_Id;
       Is_Base : Boolean)
@@ -117,7 +117,7 @@ package body Gnat2Why.Types is
             New_Real_Constant (Value =>
               Expr_Value_R (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Real (File, Name, First, Last, Is_Base);
+      Declare_Ada_Real (Theory, Name, First, Last, Is_Base);
    end Declare_Ada_Real_From_Range;
 
    ----------------------
@@ -168,14 +168,14 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       procedure Translate_Underlying_Type
-        (File : W_File_Id;
-         Name : String;
-         Orig : Entity_Id;
-         E    : Entity_Id);
+        (Theory : W_Theory_Declaration_Id;
+         Name   : String;
+         Orig   : Entity_Id;
+         E      : Entity_Id);
       --  Translate a non-private type entity E
 
       -------------------------------
@@ -183,10 +183,10 @@ package body Gnat2Why.Types is
       -------------------------------
 
       procedure Translate_Underlying_Type
-        (File : W_File_Id;
-         Name : String;
-         Orig : Entity_Id;
-         E    : Entity_Id) is
+        (Theory : W_Theory_Declaration_Id;
+         Name   : String;
+         Orig   : Entity_Id;
+         E      : Entity_Id) is
       begin
          if E = Standard_Boolean or else
            E = Universal_Fixed
@@ -198,7 +198,7 @@ package body Gnat2Why.Types is
                E = Standard_Wide_Wide_Character
          then
             Declare_Ada_Abstract_Signed_Int_From_Range
-              (File, Name, E, Is_Base => Is_Ada_Base_Type (E));
+              (Theory, Name, E, Is_Base => Is_Ada_Base_Type (E));
 
          else
             case Ekind (E) is
@@ -207,21 +207,21 @@ package body Gnat2Why.Types is
                  E_Enumeration_Type       |
                  E_Enumeration_Subtype    =>
                Declare_Ada_Abstract_Signed_Int_From_Range
-                 (File, Name, Scalar_Range (E),
+                 (Theory, Name, Scalar_Range (E),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Modular_Integer_Kind =>
                Declare_Ada_Abstract_Modular
-                 (File, Name, Modulus (E),
+                 (Theory, Name, Modulus (E),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Real_Kind =>
                Declare_Ada_Real_From_Range
-                 (File, Name, Scalar_Range (E),
+                 (Theory, Name, Scalar_Range (E),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Array_Kind =>
-               Declare_Ada_Array (File, Name, E);
+               Declare_Ada_Array (Theory, Name, E);
 
             when E_Record_Type =>
                declare
@@ -241,7 +241,7 @@ package body Gnat2Why.Types is
                   --  empty records to type unit in Why?
 
                   if Number_Of_Fields = 0 then
-                     Emit (File, New_Type (Name));
+                     Emit (Theory, New_Type (Name));
                      return;
                   end if;
 
@@ -268,7 +268,7 @@ package body Gnat2Why.Types is
 
                         Next_Entity (Field);
                      end loop;
-                     Define_Ada_Record (File, Orig, Name, Binders);
+                     Define_Ada_Record (Theory, Orig, Name, Binders);
                   end;
                end;
 
@@ -288,7 +288,7 @@ package body Gnat2Why.Types is
          Underlying_E := Underlying_Type (E);
       end loop;
 
-      Translate_Underlying_Type (File, Name, E, Underlying_E);
+      Translate_Underlying_Type (Theory, Name, E, Underlying_E);
    end Translate_Type;
 
    -------------------------------

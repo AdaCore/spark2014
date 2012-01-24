@@ -216,7 +216,7 @@ package Why.Gen.Binders is
      of Declaration_Spec;
 
    procedure Set_Top_Level_Declarations
-     (File        : W_File_Id;
+     (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -224,7 +224,7 @@ package Why.Gen.Binders is
       Spec        : in out Declaration_Spec_Array);
 
    procedure Emit_Top_Level_Declarations
-     (File        : W_File_Id;
+     (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;

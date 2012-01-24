@@ -31,7 +31,7 @@ package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
 
    procedure Define_Range_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id);
    --  Define a range axiom; it asserts the given abstract type stays in the
@@ -42,7 +42,7 @@ package Why.Gen.Axioms is
    --    <type_name>___in_range (<conversion> (x))
 
    procedure Define_Coerce_Axiom
-     (File         : W_File_Id;
+     (Theory       : W_Theory_Declaration_Id;
       Type_Name    : W_Identifier_Id;
       Base_Type    : W_Primitive_Type_Id;
       From         : W_Identifier_Id;
@@ -51,7 +51,7 @@ package Why.Gen.Axioms is
       Modulus      : W_Term_OId := Why_Empty);
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty);
@@ -66,18 +66,18 @@ package Why.Gen.Axioms is
    --     <to_base_type> (<from_base_type> (x)) = x % modulus
 
    procedure Define_Unicity_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Axiom_Name : W_Identifier_Id;
       Var_Type   : W_Primitive_Type_Id;
       Conversion : W_Identifier_Id);
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : W_Identifier_Id);
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar);
    --  Define a unicity axiom; it asserts that if two object of the

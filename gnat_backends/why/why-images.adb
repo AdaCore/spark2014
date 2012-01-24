@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2011, AdaCore                        --
+--                       Copyright (C) 2011-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -367,6 +367,20 @@ package body Why.Images is
             P (O, "export");
          when EW_Clone_Default =>
             null;
+      end case;
+   end P;
+
+   procedure P (O : Output_Id;
+                Value : EW_Theory_Type;
+                Empty_For_Theory : Boolean := False) is
+   begin
+      case Value is
+         when EW_Theory =>
+            if not Empty_For_Theory then
+               P (O, "theory");
+            end if;
+         when EW_Module =>
+            P (O, "module");
       end case;
    end P;
 

@@ -46,7 +46,7 @@ with Why.Inter; use Why.Inter;
 package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Type_Name  : String;
       Index_Name : String;
       Dimension  : Pos;
@@ -57,7 +57,7 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (File   : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       Name   : String;
       Entity : Entity_Id)
    is
@@ -72,7 +72,7 @@ package body Why.Gen.Arrays is
       Index     : Node_Id := First_Index (Entity);
       Count     : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array (File, Name, Entity);
+      Declare_Ada_Unconstrained_Array (Theory, Name, Entity);
 
       if Is_Constrained (Entity) then
          --  State axioms about fixed 'First, 'Last and 'Length
@@ -85,7 +85,7 @@ package body Why.Gen.Arrays is
             begin
                if Is_Static_Expression (Low) then
                   Emit
-                    (File,
+                    (Theory,
                      New_Guarded_Axiom
                        (Name =>
                           Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
@@ -108,7 +108,7 @@ package body Why.Gen.Arrays is
 
                if Is_Static_Expression (High) then
                   Emit
-                    (File,
+                    (Theory,
                      New_Guarded_Axiom
                        (Name =>
                           Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
@@ -141,7 +141,7 @@ package body Why.Gen.Arrays is
    -------------------------------------
 
    procedure Declare_Ada_Unconstrained_Array
-     (File   : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       Name   : String;
       Entity : Entity_Id)
    is
@@ -174,29 +174,29 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      Emit (File, New_Type (Name));
+      Emit (Theory, New_Type (Name));
       Emit
-        (File,
+        (Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_To,
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
-        (File,
+        (Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_From,
             Binders     => (1 => Ar_Binder_2),
             Return_Type => Name_Type));
       Define_Coerce_Axiom
-         (File      => File,
+         (Theory    => Theory,
           Type_Name => Type_Id,
           Base_Type => Ar_Type,
           From      => Conv_From,
           To        => Conv_To);
       Define_Unicity_Axiom
-        (File       => File,
+        (Theory     => Theory,
          Axiom_Name => Unicity_Axiom.Id (Name),
          Var_Type   => Ar_Type,
          Conversion => Conversion_From.Id (Name, BT_Str));
@@ -212,7 +212,7 @@ package body Why.Gen.Arrays is
                begin
                   if Index_Entity /= Standard_Boolean then
                      Define_In_Range_Axiom
-                       (File       => File,
+                       (Theory     => Theory,
                         Type_Name  => Name,
                         Index_Name => Full_Name (Index_Entity),
                         Dimension  => Dimension,
@@ -232,7 +232,7 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Define_In_Range_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Type_Name  : String;
       Index_Name : String;
       Dimension  : Pos;
@@ -295,7 +295,7 @@ package body Why.Gen.Arrays is
                             Axiom_Base & "_" & Uint_Image (Argument));
    begin
       Emit
-        (File,
+        (Theory,
          New_Axiom
            (Name => New_Identifier (Axiom_Name),
             Def  => Quantif));

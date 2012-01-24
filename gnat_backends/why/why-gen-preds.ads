@@ -31,7 +31,7 @@ package Why.Gen.Preds is
    --  This package provides facilities to manipulate Why predicates
 
    procedure Define_Range_Predicate
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the range predicate for an abstract type
@@ -39,7 +39,7 @@ package Why.Gen.Preds is
    --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type

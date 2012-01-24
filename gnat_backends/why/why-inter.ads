@@ -29,7 +29,6 @@ with Ada.Containers.Hashed_Sets;
 
 with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;
-with String_Utils;                       use String_Utils;
 with Types;                              use Types;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
@@ -58,18 +57,17 @@ package Why.Inter is
 
    type Why_File is
       record
-         Name    : access String;
-         Context : String_Lists.List;
-         File    : W_File_Id;
+         Name        : access String;
+         Main_Theory : W_Theory_Declaration_Id;
       end record;
 
    function Make_Empty_Why_File (S : String) return Why_File;
    --  Build an empty Why_File with the given name
 
-   procedure Add_With_Clause (P : out Why_File; Name : String);
+   procedure Add_With_Clause (P : in out Why_File; Name : String);
    --  Add a package name to the context of a Why package.
 
-   procedure Add_With_Clause (P : out Why_File; Other : Why_File);
+   procedure Add_With_Clause (P : in out Why_File; Other : Why_File);
    --  Add a package name to the context of a Why package.
 
    EW_Bool_Type : constant W_Base_Type_Id :=

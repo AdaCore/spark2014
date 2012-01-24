@@ -60,7 +60,7 @@ package body Why.Gen.Binders is
    ---------------------------------
 
    procedure Emit_Top_Level_Declarations
-     (File        : W_File_Id;
+     (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -70,7 +70,7 @@ package body Why.Gen.Binders is
       Spec0 : Declaration_Spec_Array := Spec;
    begin
       Set_Top_Level_Declarations
-        (File, Ada_Node, Name, Binders, Return_Type, Spec0);
+        (Theory, Ada_Node, Name, Binders, Return_Type, Spec0);
    end Emit_Top_Level_Declarations;
 
    -----------------
@@ -450,7 +450,7 @@ package body Why.Gen.Binders is
    --------------------------------
 
    procedure Set_Top_Level_Declarations
-     (File        : W_File_Id;
+     (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
@@ -471,7 +471,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File,
+                       (Theory,
                         New_Function_Decl
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -482,7 +482,7 @@ package body Why.Gen.Binders is
 
                      if Spec (S).Def /= Why_Empty then
                         Emit
-                          (File,
+                          (Theory,
                            New_Defining_Axiom
                              (Ada_Node    => Ada_Node,
                               Name        => Spec (S).Name,
@@ -525,7 +525,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File,
+                       (Theory,
                         New_Function_Decl
                         (Ada_Node    => Ada_Node,
                          Domain      => EW_Prog,
@@ -548,7 +548,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File,
+                       (Theory,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -564,7 +564,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File,
+                       (Theory,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,
@@ -586,7 +586,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      Emit
-                       (File,
+                       (Theory,
                         New_Function_Def
                           (Ada_Node    => Ada_Node,
                            Domain      => Spec (S).Domain,

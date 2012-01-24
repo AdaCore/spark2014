@@ -285,18 +285,18 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (File : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       E    : Entity_Id)
    is
       Name    : constant String := Full_Name (E);
       Binders : constant Binder_Array := Compute_Binders (E);
       Params  : constant Translation_Params :=
-                  (File        => File,
+                  (Theory        => Theory,
                    Phase       => Generate_VCs_For_Pre,
                    Ref_Allowed => True);
    begin
       Emit
-        (File,
+        (Theory,
          New_Function_Def
            (Domain  => EW_Prog,
             Name    => New_Pre_Check_Name.Id (Name),
@@ -547,8 +547,8 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       Name       : constant String := Full_Name (E);
       Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
@@ -557,7 +557,7 @@ package body Gnat2Why.Subprograms is
                              Compute_Logic_Binders (E);
 
       Params : constant Translation_Params :=
-                 (File        => File,
+                 (Theory      => Theory,
                   Phase       => Translation,
                   Ref_Allowed => False);
 
@@ -569,7 +569,7 @@ package body Gnat2Why.Subprograms is
 
       if Etype (E) = Standard_Boolean then
          Emit
-           (File,
+           (Theory,
             New_Defining_Bool_Axiom
               (Name    => Logic_Func_Name.Id (Name),
                Binders => Logic_Func_Binders,
@@ -579,7 +579,7 @@ package body Gnat2Why.Subprograms is
 
       else
          Emit
-           (File,
+           (Theory,
             New_Defining_Axiom
               (Name        => Logic_Func_Name.Id (Name),
                Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
@@ -598,8 +598,8 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
       Effects      : constant W_Effects_Id := Compute_Effects (E);
@@ -607,7 +607,7 @@ package body Gnat2Why.Subprograms is
                              Compute_Logic_Binders (E);
 
       Params : constant Translation_Params :=
-                 (File        => File,
+                 (Theory      => Theory,
                   Phase       => Translation,
                   Ref_Allowed => True);
 
@@ -649,7 +649,7 @@ package body Gnat2Why.Subprograms is
             --  Generate a logic function
 
             Emit
-              (File,
+              (Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Logic_Func_Name.Id (Name),
@@ -659,7 +659,7 @@ package body Gnat2Why.Subprograms is
                        (Etype (E))));
 
             Emit
-              (File,
+              (Theory,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Program_Func_Name.Id (Name),
@@ -671,7 +671,7 @@ package body Gnat2Why.Subprograms is
          end;
       else
          Emit
-           (File,
+           (Theory,
             New_Function_Decl
               (Domain      => EW_Prog,
                Name        => Program_Func_Name.Id (Name),
@@ -681,6 +681,7 @@ package body Gnat2Why.Subprograms is
                Pre         => Pre,
                Post        => Post));
       end if;
+
    end Translate_Subprogram_Spec;
 
    --------------------------------------
@@ -688,8 +689,8 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Body
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       Name       : constant String := Full_Name (E);
       Body_N     : constant Node_Id := Get_Subprogram_Body (E);
@@ -708,7 +709,7 @@ package body Gnat2Why.Subprograms is
 
       --  Generate code to detect possible run-time errors in the postcondition
 
-      Params := (File        => File,
+      Params := (Theory        => Theory,
                  Phase       => Generate_VCs_For_Post,
                  Ref_Allowed => True);
       Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
@@ -716,7 +717,7 @@ package body Gnat2Why.Subprograms is
       --  Set the phase to Generate_VCs_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
 
-      Params := (File        => File,
+      Params := (Theory      => Theory,
                  Phase       => Generate_VCs_For_Body,
                  Ref_Allowed => True);
 
@@ -729,7 +730,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Emit
-           (File,
+           (Theory,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
@@ -738,7 +739,7 @@ package body Gnat2Why.Subprograms is
       --  Generate code to detect possible run-time errors in body
 
       Emit
-        (File,
+        (Theory,
          New_Function_Def
            (Domain  => EW_Prog,
             Name    => New_Definition_Name.Id (Name),

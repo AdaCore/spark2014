@@ -427,7 +427,7 @@ package body Gnat2Why.Expr.Loops is
                          Loop_Content => Entire_Body);
    begin
       Emit
-        (Body_Params.File,
+        (Body_Params.Theory,
          New_Exception_Declaration
            (Name => New_Identifier (Loop_Name),
             Arg  => Why.Types.Why_Empty));

@@ -39,7 +39,7 @@ with Why.Types;          use Why.Types;
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -52,22 +52,22 @@ package body Why.Gen.Scalars is
    ----------------------------------
 
    procedure Declare_Ada_Abstract_Modular
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       Modulus : Uint;
       Is_Base : Boolean)
    is
    begin
-      Emit (File, New_Type (Name));
+      Emit (Theory, New_Type (Name));
       Define_Scalar_Attributes
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Int,
          First     => New_Constant (Uint_0),
          Last      => New_Constant (Modulus - 1),
          Modulus   => New_Constant (Modulus));
       Define_Scalar_Conversions
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Int,
          Modulus   => New_Constant (Modulus),
@@ -79,23 +79,23 @@ package body Why.Gen.Scalars is
    -------------------------------------
 
    procedure Declare_Ada_Abstract_Signed_Int
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
-      Emit (File, New_Type (Name));
+      Emit (Theory, New_Type (Name));
       Define_Scalar_Attributes
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Int,
          First     => +First,
          Last      => +Last,
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Int,
          Is_Base   => Is_Base);
@@ -106,22 +106,22 @@ package body Why.Gen.Scalars is
    ----------------------
 
    procedure Declare_Ada_Real
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       Name    : String;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
       Is_Base : Boolean) is
    begin
-      Emit (File, New_Type (Name));
+      Emit (Theory, New_Type (Name));
       Define_Scalar_Attributes
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Real,
          First     => +First,
          Last      => +Last,
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
-        (File      => File,
+        (Theory    => Theory,
          Name      => Name,
          Base_Type => EW_Real,
          Is_Base   => Is_Base);
@@ -132,7 +132,7 @@ package body Why.Gen.Scalars is
    -------------------------------
 
    procedure Define_Scalar_Conversions
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
@@ -144,11 +144,11 @@ package body Why.Gen.Scalars is
                   New_Base_Type (Base_Type => Base_Type);
       BT_Name : constant String := EW_Base_Type_Name (Base_Type);
    begin
-      Define_Range_Predicate (File, Name, Base_Type);
+      Define_Range_Predicate (Theory, Name, Base_Type);
 
       --  to base type:
       Emit
-        (File,
+        (Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conversion_To.Id (Name, BT_Name),
@@ -194,7 +194,7 @@ package body Why.Gen.Scalars is
 
       begin
          Emit_Top_Level_Declarations
-           (File => File,
+           (Theory => Theory,
             Name => Conversion_From.Id (Name, BT_Name),
             Binders =>
               (1 => (B_Name => New_Identifier (Arg_S),
@@ -218,7 +218,7 @@ package body Why.Gen.Scalars is
                                           Right   => +New_Term (Arg_S));
             begin
                Emit
-                 (File,
+                 (Theory,
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => Overflow_Check_Name.Id (Name),
@@ -231,19 +231,19 @@ package body Why.Gen.Scalars is
             end;
          end if;
 
-         Define_Eq_Predicate (File, Name, Base_Type);
-         Define_Range_Axiom (File,
+         Define_Eq_Predicate (Theory, Name, Base_Type);
+         Define_Range_Axiom (Theory,
                              New_Identifier (Name),
                              Conversion_To.Id (Name, BT_Name));
-         Define_Coerce_Axiom (File,
+         Define_Coerce_Axiom (Theory,
                               New_Identifier (Name),
                               Base_Type,
                               Modulus);
-         Define_Unicity_Axiom (File,
+         Define_Unicity_Axiom (Theory,
                                New_Identifier (Name),
                                Base_Type);
       end;
-      New_Boolean_Equality_Parameter (File, Name);
+      New_Boolean_Equality_Parameter (Theory, Name);
    end Define_Scalar_Conversions;
 
    ------------------------------
@@ -251,7 +251,7 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
@@ -285,7 +285,7 @@ package body Why.Gen.Scalars is
                         others => <>);
             end if;
             Emit_Top_Level_Declarations
-              (File        => File,
+              (Theory      => Theory,
                Name        =>
                  Attr_Name.Id
                    (Name,

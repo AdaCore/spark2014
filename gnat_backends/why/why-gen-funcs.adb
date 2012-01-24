@@ -38,7 +38,7 @@ package body Why.Gen.Funcs is
    ------------------------------------
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Id;
+      (Theory        : W_Theory_Declaration_Id;
        Type_Name     : String)
    is
       Arg_S    : constant String := "n";
@@ -75,7 +75,7 @@ package body Why.Gen.Funcs is
                                                               Type_Name));
    begin
       Emit
-        (File,
+        (Theory,
          New_Function_Decl
            (Domain      => EW_Prog,
             Name        => Eq_Param_Name.Id (Type_Name),

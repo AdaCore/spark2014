@@ -58,14 +58,14 @@ package Gnat2Why.Subprograms is
    --  in this package.
 
    procedure Generate_VCs_For_Subprogram_Body
-     (File : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the contract of E and the absence of run-time errors in the
    --  body and postcondition of E.
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (File : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in the precondition of E.
@@ -86,14 +86,14 @@ package Gnat2Why.Subprograms is
    --  postcondition of F, return the name to use for occurrences of F'Result.
 
    procedure Translate_Expression_Function_Body
-     (File : W_File_Id;
-      E    : Entity_Id);
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id);
    --  Generate a Why axiom that, given a function F with expression E,
    --  states that: "for all <args> => F(<args>) = E".
 
    procedure Translate_Subprogram_Spec
-     (File : W_File_Id;
-      E    : Entity_Id);
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id);
    --  Generate a Why declaration that corresponds to an Ada subprogram
    --  Node is a N_Subprogram_Body
 

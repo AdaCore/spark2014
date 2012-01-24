@@ -707,12 +707,12 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : W_File_Id;
+     (Theory        : W_Theory_Declaration_Id;
       Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id
    is
       Params : constant Translation_Params :=
-                 (File        => File,
+                 (Theory      => Theory,
                   Phase       => Translation,
                   Ref_Allowed => True);
       Result : constant W_Term_Id :=
@@ -1239,7 +1239,7 @@ package body Gnat2Why.Expr is
       --  Predicate used to define the aggregate
 
       Params_No_Ref : constant Translation_Params :=
-                        (File        => Params.File,
+                        (Theory      => Params.Theory,
                          Phase       => Params.Phase,
                          Ref_Allowed => False);
       Pred : constant W_Pred_Id :=
@@ -1252,7 +1252,7 @@ package body Gnat2Why.Expr is
       --  Compute the list of references used in the aggregate
 
       Params_Ref : constant Translation_Params :=
-                     (File        => Params.File,
+                     (Theory      => Params.Theory,
                       Phase       => Params.Phase,
                       Ref_Allowed => True);
       Pred_With_Refs : constant W_Pred_Id :=
@@ -1338,7 +1338,7 @@ package body Gnat2Why.Expr is
       --  Generate the necessary logic function and axiom declarations
 
       Emit
-        (Params.File,
+        (Params.Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Func,
@@ -1351,7 +1351,7 @@ package body Gnat2Why.Expr is
                                  Arg_Types => +Ret_Type,
                                  Domain    => EW_Pred);
       Emit
-        (Params.File,
+        (Params.Theory,
          New_Guarded_Axiom
            (Name        => Logic_Func_Axiom.Id (Func),
             Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
@@ -3245,7 +3245,7 @@ package body Gnat2Why.Expr is
          +Why_Logic_Type_Of_Ada_Type (Ty);
    begin
       Emit
-        (Params.File,
+        (Params.Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,

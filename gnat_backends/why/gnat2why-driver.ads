@@ -47,13 +47,13 @@ package Gnat2Why.Driver is
      Generate_VCs_For_Post;
 
    type Translation_Params is record
-      File        : W_File_Id;
+      Theory      : W_Theory_Declaration_Id;
       Phase       : Translation_Phase;
       Ref_Allowed : Boolean;
    end record;
 
    function Body_Params return Translation_Params is
-     (Translation_Params'(File        => Main_File.File,
+     (Translation_Params'(Theory      => Main_File.Main_Theory,
                           Phase       => Generate_VCs_For_Body,
                           Ref_Allowed => True));
 

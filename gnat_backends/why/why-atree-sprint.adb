@@ -1653,10 +1653,13 @@ package body Why.Atree.Sprint is
       Node  : W_Include_Declaration_Id)
    is
    begin
-      P (O, "use export module """);
+      P (O, "use ");
+      P (O, Get_Use_Kind (Node));
+      P (O, " ");
+      P (O, Get_Kind (Node), True);
+      P (O, " """);
       Traverse (State, +Get_Name (Node));
       P (O, """.Main");
-
       NL (O);
       State.Control := Abandon_Children;
    end Include_Declaration_Pre_Op;
@@ -1675,6 +1678,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "clone ");
       P (O, Get_Clone_Kind (Node));
+      P (O, " ");
+      P (O, Get_Theory_Kind (Node));
       P (O, " ");
       Traverse (State, +Get_Origin (Node));
       if As_Name /= Why_Empty then
@@ -1705,6 +1710,27 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Clone_Substitution_Pre_Op;
 
+   -------------------------------
+   -- Theory_Declaration_Pre_Op --
+   -------------------------------
+
+   procedure Theory_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Theory_Declaration_Id)
+   is
+      Kind : constant EW_Theory_Type := Get_Kind (Node);
+   begin
+      P (O, Kind, False);
+      P (O, " ");
+      Traverse (State, +Get_Name (Node));
+      NL (O);
+      Relative_Indent (O, 1);
+      Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
+      Relative_Indent (O, 1);
+      PL (O, "end");
+      State.Control := Abandon_Children;
+   end Theory_Declaration_Pre_Op;
+
    -----------------
    -- File_Pre_Op --
    -----------------
@@ -1714,12 +1740,7 @@ package body Why.Atree.Sprint is
       Node  : W_File_Id)
    is
    begin
-      PL (O, "module Main");
-
-      Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
-
-      PL (O, "end");
-
+      Print_List (State, +Get_Theories (Node), "" & ASCII.LF);
       State.Control := Abandon_Children;
    end File_Pre_Op;
 

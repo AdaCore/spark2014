@@ -30,7 +30,7 @@ package Why.Gen.Funcs is
    --  in the program space and in the logic space.
 
    procedure New_Boolean_Equality_Parameter
-      (File          : W_File_Id;
+      (Theory        : W_Theory_Declaration_Id;
        Type_Name     : String);
       --  Create a parameter of the form
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->

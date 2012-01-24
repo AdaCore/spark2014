@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2011, AdaCore                        --
+--                       Copyright (C) 2011-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -77,6 +77,12 @@ package Why.Images is
    procedure P (O : Output_Id; Value : EW_Subst_Type);
 
    procedure P (O : Output_Id; Value : EW_Clone_Type);
+
+   procedure P (O : Output_Id;
+                Value : EW_Theory_Type;
+                Empty_For_Theory : Boolean := False);
+   --  Print either "module" or "theory" depending on theory type, if kind is
+   --  EW_Theory and Empty_For_Theory is true, print nothing.
 
    function Img (Name : Name_Id) return String;
    --  Return the String content of Name

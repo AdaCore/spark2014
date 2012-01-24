@@ -32,6 +32,8 @@ with Constant_Tree;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Inter is
 
@@ -44,14 +46,17 @@ package body Why.Inter is
    -- Add_With_Clause --
    ---------------------
 
-   procedure Add_With_Clause (P : out Why_File; Name : String) is
+   procedure Add_With_Clause (P : in out Why_File; Name : String) is
    begin
-      P.Context.Append (Name);
+      Emit (P.Main_Theory,
+            New_Include_Declaration (Name     => New_Identifier (Name),
+                                     Use_Kind => EW_Export,
+                                     Kind     => EW_Module));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P : out Why_File; Other : Why_File) is
+   procedure Add_With_Clause (P : in out Why_File; Other : Why_File) is
    begin
-      P.Context.Append (Other.Name.all);
+      Add_With_Clause (P, Other.Name.all);
    end Add_With_Clause;
 
    -------------------
@@ -251,8 +256,9 @@ package body Why.Inter is
    begin
       return
         (Name    => new String'(S),
-         Context => String_Lists.Empty_List,
-         File    => New_File);
+         Main_Theory =>
+           New_Theory_Declaration (Name => New_Identifier ("Main"),
+                                   Kind => EW_Module));
    end Make_Empty_Why_File;
 
    --------

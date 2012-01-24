@@ -36,7 +36,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Define_Ada_Record
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array)
@@ -69,12 +69,12 @@ package body Why.Gen.Records is
                          Else_Part   => New_Literal (Value  => EW_False,
                                                      Domain => EW_Term));
    begin
-      Emit (File,
+      Emit (Theory,
         New_Record_Definition (Name    => New_Identifier (Name),
                                Binders => Binders));
 
       Emit
-        (File,
+        (Theory,
          New_Function_Def
            (Domain      => EW_Term,
             Name        => New_Bool_Cmp (EW_Eq, W_Type),

@@ -43,14 +43,14 @@ package Gnat2Why.Decls is
    --  the Why translation
 
    procedure Translate_Variable
-     (File : W_File_Id;
-      E    : Entity_Id);
+     (Theory : W_Theory_Declaration_Id;
+      E     : Entity_Id);
    --  Generate Why declarations that correspond to an Ada top level object
    --  declaration
 
    procedure Translate_Constant
-     (File : W_File_Id;
-      E    : Entity_Id);
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id);
    --  Called for IN parameters, named numbers and constant objects
 
 end Gnat2Why.Decls;

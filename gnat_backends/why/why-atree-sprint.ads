@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -313,6 +313,10 @@ private
    procedure Clone_Substitution_Pre_Op
       (State : in out Printer_State;
        Node  : W_Clone_Substitution_Id);
+
+   procedure Theory_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Theory_Declaration_Id);
 
    procedure File_Pre_Op
      (State : in out Printer_State;

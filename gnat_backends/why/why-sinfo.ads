@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -155,6 +155,7 @@ package Why.Sinfo is
       W_Include_Declaration,
       W_Clone_Declaration,
       W_Clone_Substitution,
+      W_Theory_Declaration,
 
       -----------------
       -- Input files --
@@ -258,6 +259,10 @@ package Why.Sinfo is
    --  EW_Le
    --  EW_Gt
        EW_Ge;
+
+   type EW_Theory_Type is
+     (EW_Theory,
+      EW_Module);
 
    type EW_Clone_Type is
       (EW_Import,

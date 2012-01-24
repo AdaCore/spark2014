@@ -46,7 +46,7 @@ package Gnat2Why.Expr is
       N      : Node_Id) return W_Prog_Id;
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : W_File_Id;
+     (Theory        : W_Theory_Declaration_Id;
       Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),

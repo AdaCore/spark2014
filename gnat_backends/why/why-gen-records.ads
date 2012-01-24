@@ -31,7 +31,7 @@ package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
 
    procedure Define_Ada_Record
-     (File    : W_File_Id;
+     (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
       Name    : String;
       Binders : Binder_Array);

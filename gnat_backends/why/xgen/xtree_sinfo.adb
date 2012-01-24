@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -714,6 +714,10 @@ package body Xtree_Sinfo is
 
       New_Field (W_Include_Declaration,
                  "Name", "W_Identifier", Id_One);
+      New_Field (W_Include_Declaration,
+                 "Kind", "EW_Theory_Type");
+      New_Field (W_Include_Declaration,
+                 "Use_Kind", "EW_Clone_Type");
       Set_Domain (W_Include_Declaration, EW_Term);
 
       -------------------------
@@ -728,6 +732,8 @@ package body Xtree_Sinfo is
                  "Clone_Kind", "EW_Clone_Type");
       New_Field (W_Clone_Declaration,
                  "Substitutions", "W_Clone_Substitution", Id_Set);
+      New_Field (W_Clone_Declaration,
+                 "Theory_Kind", "EW_Theory_Type");
       Set_Domain (W_Clone_Declaration, EW_Term);
 
       --------------------------
@@ -741,13 +747,26 @@ package body Xtree_Sinfo is
                  "Image", "W_Identifier", Id_One);
       Set_Domain (W_Clone_Substitution, EW_Term);
 
+      --------------------------
+      -- W_Theory_Declaration --
+      --------------------------
+
+      Set_Mutable (W_Theory_Declaration);
+      New_Field (W_Theory_Declaration,
+                 "Declarations", "W_Declaration", Id_Set);
+      New_Field (W_Theory_Declaration,
+                 "Name", "W_Identifier", Id_One);
+      New_Field (W_Theory_Declaration,
+                 "Kind", "EW_Theory_Type");
+      Set_Domain (W_Theory_Declaration, EW_Prog);
+
       ------------
       -- W_File --
       ------------
 
       Set_Mutable (W_File);
       New_Field (W_File,
-                 "Declarations", "W_Declaration", Id_Set);
+                 "Theories", "W_Theory_Declaration", Id_Set);
       Set_Domain (W_File, EW_Prog);
 
    end Build_AST;

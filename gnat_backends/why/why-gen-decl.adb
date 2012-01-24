@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -35,11 +35,11 @@ package body Why.Gen.Decl is
    ----------
 
    procedure Emit
-     (File : W_File_Id;
+     (Theory : W_Theory_Declaration_Id;
       Decl : W_Declaration_Id) is
    begin
-      File_Append_To_Declarations
-        (Id => File,
+      Theory_Declaration_Append_To_Declarations
+        (Id => Theory,
          New_Item => +Decl);
    end Emit;
 

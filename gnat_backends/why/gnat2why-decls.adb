@@ -152,8 +152,8 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Variable
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
@@ -174,12 +174,12 @@ package body Gnat2Why.Decls is
       --  from Ada functions, to generate additional parameters for the global
       --  objects read.
 
-      Emit (File, Decl);
+      Emit (Theory, Decl);
 
       --  We generate a global ref
 
       Emit
-        (File,
+        (Theory,
          New_Global_Ref_Declaration
            (Name     => New_Identifier (Name),
             Ref_Type => Typ));
@@ -190,8 +190,8 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Constant
-     (File : W_File_Id;
-      E    : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       Name : constant String := Full_Name (E);
       Typ  : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
@@ -221,7 +221,7 @@ package body Gnat2Why.Decls is
       --  necessary and possible.
 
       Emit_Top_Level_Declarations
-        (File        => File,
+        (Theory      => Theory,
          Name        => New_Identifier (Name),
          Binders     => (1 .. 0 => <>),
          Return_Type => Typ,
@@ -231,7 +231,7 @@ package body Gnat2Why.Decls is
                Domain => EW_Term,
                Def    => (if Present (Def) then
                           Get_Pure_Logic_Term_If_Possible
-                            (File, Def, Type_Of_Node (E))
+                            (Theory, Def, Type_Of_Node (E))
                           else Why_Empty),
                others => <>)));
    end Translate_Constant;

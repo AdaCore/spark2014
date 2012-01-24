@@ -35,7 +35,7 @@ package body Why.Gen.Axioms is
    -------------------------
 
    procedure Define_Coerce_Axiom
-     (File         : W_File_Id;
+     (Theory       : W_Theory_Declaration_Id;
       Type_Name    : W_Identifier_Id;
       Base_Type    : W_Primitive_Type_Id;
       From         : W_Identifier_Id;
@@ -93,14 +93,14 @@ package body Why.Gen.Axioms is
                                   Pred      => Formula);
    begin
       Emit
-        (File,
+        (Theory,
          New_Axiom
            (Name => Coerce_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
    end Define_Coerce_Axiom;
 
    procedure Define_Coerce_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty)
@@ -122,7 +122,7 @@ package body Why.Gen.Axioms is
          New_Identifier (EW_Base_Type_Name (Base_Type));
    begin
       Define_Coerce_Axiom
-        (File       => File,
+        (Theory     => Theory,
          Type_Name  => Type_Name,
          Base_Type  => New_Base_Type (Base_Type => Base_Type),
          From       => Conversion_From.Id (Type_Name, Base_Type_Name),
@@ -136,7 +136,7 @@ package body Why.Gen.Axioms is
    ------------------------
 
    procedure Define_Range_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id)
    is
@@ -159,7 +159,7 @@ package body Why.Gen.Axioms is
                                   Formula);
    begin
       Emit
-        (File,
+        (Theory,
          New_Axiom
            (Name => Range_Axiom.Id (Type_Name),
             Def  => Quantif_On_X));
@@ -170,7 +170,7 @@ package body Why.Gen.Axioms is
    --------------------------
 
    procedure Define_Unicity_Axiom
-     (File       : W_File_Id;
+     (Theory     : W_Theory_Declaration_Id;
       Axiom_Name : W_Identifier_Id;
       Var_Type   : W_Primitive_Type_Id;
       Conversion : W_Identifier_Id)
@@ -217,32 +217,32 @@ package body Why.Gen.Axioms is
                                  Formula);
    begin
       Emit
-        (File,
+        (Theory,
          New_Axiom
            (Name => Axiom_Name,
             Def  => Quantif_On_XY));
    end Define_Unicity_Axiom;
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : W_Identifier_Id)
    is
    begin
       Define_Unicity_Axiom
-         (File       => File,
+         (Theory     => Theory,
           Axiom_Name => Unicity_Axiom.Id (Type_Name),
           Var_Type   => New_Abstract_Type (Name => Type_Name),
           Conversion => Conversion_To.Id (Type_Name, Base_Type));
    end Define_Unicity_Axiom;
 
    procedure Define_Unicity_Axiom
-     (File      : W_File_Id;
+     (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar) is
    begin
       Define_Unicity_Axiom
-        (File      => File,
+        (Theory    => Theory,
          Type_Name => Type_Name,
          Base_Type => New_Identifier (EW_Base_Type_Name (Base_Type)));
    end Define_Unicity_Axiom;
