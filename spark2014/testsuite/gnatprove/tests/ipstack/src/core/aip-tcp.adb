@@ -563,6 +563,13 @@ is
          TPCB.Retransmit_Ticks := 0;
       end if;
 
+      --  Append segment to the Unack_Queue
+
+      Buffers.Append_Packet
+        (Layer => Buffers.Transport,
+         Buf   => Tbuf,
+         Queue => TPCB.Unack_Queue);
+
       --  Finally hand out segment to IP
 
       IP.IP_Output_If
@@ -597,7 +604,7 @@ is
       Thdr : System.Address;
 
       N_ACKs_Q : AIP.U32_T;
-      --  Number of ACKs sent together with segments from the Send_Queue.
+      --  Number of ACKs sent together with segments from the Send_Queue
 
    begin
 
@@ -1827,6 +1834,10 @@ is
             Buffers.Remove_Packet
               (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
             --# end accept;
+
+            --  Finally deallocate Packet
+
+            Buffers.Buffer_Blind_Free (Packet);
          end loop;
 
          --  If nothing remains on the Unack_Queue, stop retransmit timer,
