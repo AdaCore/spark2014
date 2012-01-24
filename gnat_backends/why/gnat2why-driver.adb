@@ -402,6 +402,13 @@ package body Gnat2Why.Driver is
             if Body_Is_In_Alfa (Unique (E))
               and then not Debug.Debug_Flag_Dot_GG
             then
+               --  The body of expression functions is implicitly used as a
+               --  postcondition, when it is in Alfa.
+
+               if Present (Get_Expression_Function (E)) then
+                  Translate_Expression_Function_Body (Context_File, E);
+               end if;
+
                Generate_VCs_For_Subprogram_Body (Main_File, E);
             end if;
 

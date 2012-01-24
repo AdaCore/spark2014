@@ -28,6 +28,16 @@ with Why.Ids; use Why.Ids;
 
 package Gnat2Why.Decls is
 
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   --  If E is the entity of an expression function, return the corresponding
+   --  N_Expression_Function original node. Otherwise, return Empty.
+
+   function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
+   --  Return the N_Subprogram_Body node for a unique entity E
+
+   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
+   --  Return the N_Specification node for a unique entity E
+
    function Is_Mutable (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation

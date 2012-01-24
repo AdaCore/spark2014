@@ -142,18 +142,8 @@ package body Gnat2Why.Subprograms is
    --  Kind is Name_Precondition or Name_Postcondition to specify which one is
    --  computed.
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id;
-   --  If E is the entity of an expression function, return the corresponding
-   --  N_Expression_Function original node. Otherwise, return Empty.
-
    function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
    --  Return a node with a proper location for the postcondition of E, if any
-
-   function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
-   --  Return the N_Subprogram_Body node for a unique entity E
-
-   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
-   --  Return the N_Specification node for a unique entity E
 
    ---------------------
    -- Compute_Binders --
@@ -313,77 +303,6 @@ package body Gnat2Why.Subprograms is
             Binders => Binders,
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
    end Generate_VCs_For_Subprogram_Spec;
-
-   -----------------------------
-   -- Get_Expression_Function --
-   -----------------------------
-
-   function Get_Expression_Function (E : Entity_Id) return Node_Id is
-      Decl_N : constant Node_Id := Parent (Get_Subprogram_Spec (E));
-      Body_N : constant Node_Id := Get_Subprogram_Body (E);
-      Orig_N : Node_Id;
-   begin
-      --  Get the original node either from the declaration for E, or from the
-      --  subprogram body for E, which may be different if E is attached to a
-      --  subprogram declaration.
-
-      if Present (Original_Node (Decl_N)) then
-         Orig_N := Original_Node (Decl_N);
-      else
-         Orig_N := Original_Node (Body_N);
-      end if;
-
-      if Nkind (Orig_N) = N_Expression_Function then
-         return Orig_N;
-      else
-         return Empty;
-      end if;
-   end Get_Expression_Function;
-
-   -------------------------
-   -- Get_Subprogram_Body --
-   -------------------------
-
-   function Get_Subprogram_Body (E : Entity_Id) return Node_Id is
-      Body_E : Entity_Id;
-      N      : Node_Id;
-
-   begin
-      --  Retrieve the declaration for E
-
-      N := Parent (Get_Subprogram_Spec (E));
-
-      --  If this declaration is not a subprogram body, then it must be a
-      --  subprogram declaration, from which we can retrieve the entity
-      --  for the corresponding subprogram body.
-
-      if Nkind (N) = N_Subprogram_Body then
-         Body_E := E;
-      else
-         Body_E := Corresponding_Body (N);
-      end if;
-
-      --  Retrieve the subprogram body
-
-      return Parent (Get_Subprogram_Spec (Body_E));
-   end Get_Subprogram_Body;
-
-   -------------------------
-   -- Get_Subprogram_Spec --
-   -------------------------
-
-   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-
-   begin
-      N := Parent (E);
-
-      if Nkind (N) = N_Defining_Program_Unit_Name then
-         N := Parent (N);
-      end if;
-
-      return N;
-   end Get_Subprogram_Spec;
 
    ------------------
    -- Name_For_Old --
@@ -623,21 +542,71 @@ package body Gnat2Why.Subprograms is
       return R;
    end Compute_Context;
 
+   ----------------------------------------
+   -- Translate_Expression_Function_Body --
+   ----------------------------------------
+
+   procedure Translate_Expression_Function_Body
+     (File : W_File_Id;
+      E    : Entity_Id)
+   is
+      Name       : constant String := Full_Name (E);
+      Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
+      pragma Assert (Present (Expr_Fun_N));
+      Logic_Func_Binders : constant Binder_Array :=
+                             Compute_Logic_Binders (E);
+
+      Params : constant Translation_Params :=
+                 (File        => File,
+                  Phase       => Translation,
+                  Ref_Allowed => False);
+
+   begin
+      --  Given an expression function F with expression E, define an axiom
+      --  that states that: "for all <args> => F(<args>) = E".
+      --  There is no need to use the precondition here, as the above axiom
+      --  is always sound.
+
+      if Etype (E) = Standard_Boolean then
+         Emit
+           (File,
+            New_Defining_Bool_Axiom
+              (Name    => Logic_Func_Name.Id (Name),
+               Binders => Logic_Func_Binders,
+               Def     => +Transform_Expr (Expression (Expr_Fun_N),
+                                           EW_Pred,
+                                           Params)));
+
+      else
+         Emit
+           (File,
+            New_Defining_Axiom
+              (Name        => Logic_Func_Name.Id (Name),
+               Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
+               Binders     => Logic_Func_Binders,
+               Def         =>
+               +Transform_Expr
+                 (Expression (Expr_Fun_N),
+                  Expected_Type => EW_Abstract (Etype (E)),
+                  Domain        => EW_Term,
+                  Params        => Params)));
+      end if;
+   end Translate_Expression_Function_Body;
+
+   -------------------------------
+   -- Translate_Subprogram_Spec --
+   -------------------------------
+
    procedure Translate_Subprogram_Spec
      (File : W_File_Id;
       E    : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
       Effects      : constant W_Effects_Id := Compute_Effects (E);
-      Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
-      Is_Expr_Func : constant Boolean :=
-                       Ekind (E) = E_Function
-                         and then
-                       Present (Expr_Fun_N);
       Logic_Func_Binders : constant Binder_Array :=
                              Compute_Logic_Binders (E);
 
-      Params : Translation_Params :=
+      Params : constant Translation_Params :=
                  (File        => File,
                   Phase       => Translation,
                   Ref_Allowed => True);
@@ -711,42 +680,6 @@ package body Gnat2Why.Subprograms is
                Effects     => Effects,
                Pre         => Pre,
                Post        => Post));
-      end if;
-
-      --  Given an expression function F with expression E, define an axiom
-      --  that states that: "for all <args> => F(<args>) = E".
-      --  There is no need to use the precondition here, as the above axiom
-      --  is always sound.
-
-      if Is_Expr_Func then
-         Params := (File        => File,
-                    Phase       => Translation,
-                    Ref_Allowed => False);
-
-         if Etype (E) = Standard_Boolean then
-            Emit
-              (File,
-               New_Defining_Bool_Axiom
-                 (Name    => Logic_Func_Name.Id (Name),
-                  Binders => Logic_Func_Binders,
-                  Def     => +Transform_Expr (Expression (Expr_Fun_N),
-                                              EW_Pred,
-                                              Params)));
-
-         else
-            Emit
-              (File,
-               New_Defining_Axiom
-                 (Name        => Logic_Func_Name.Id (Name),
-                  Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
-                  Binders     => Logic_Func_Binders,
-                  Def         =>
-                  +Transform_Expr
-                    (Expression (Expr_Fun_N),
-                     Expected_Type => EW_Abstract (Etype (E)),
-                     Domain        => EW_Term,
-                     Params        => Params)));
-         end if;
       end if;
    end Translate_Subprogram_Spec;
 

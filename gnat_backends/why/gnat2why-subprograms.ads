@@ -85,6 +85,12 @@ package Gnat2Why.Subprograms is
    --  During the generation of code for detecting run-time errors in the
    --  postcondition of F, return the name to use for occurrences of F'Result.
 
+   procedure Translate_Expression_Function_Body
+     (File : W_File_Id;
+      E    : Entity_Id);
+   --  Generate a Why axiom that, given a function F with expression E,
+   --  states that: "for all <args> => F(<args>) = E".
+
    procedure Translate_Subprogram_Spec
      (File : W_File_Id;
       E    : Entity_Id);
