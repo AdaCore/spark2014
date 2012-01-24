@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--         Copyright (C) 2010-2012, Free Software Foundation, Inc.          --
 ------------------------------------------------------------------------------
 
 with AIP.Support;
@@ -50,9 +50,9 @@ is
       return Dbuf_Id (Buf);
    end To_Dbuf_Id;
 
-   ----------------------
+   ------------------
    -- To_Common_Id --
-   ----------------------
+   ------------------
 
    function To_Common_Id (Buf : Dbuf_Id) return Buffers.Buffer_Id is
    begin
