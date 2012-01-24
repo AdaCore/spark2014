@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--         Copyright (C) 2010-2012, Free Software Foundation, Inc.          --
 ------------------------------------------------------------------------------
 
 with AIP.TCP;
@@ -126,8 +126,7 @@ is
 
    --  Arrange for the Echo_State entry ES to be free for re-use
 
-   procedure ES_Release (Es : in out Echo_State)
-   is
+   procedure ES_Release (Es : in out Echo_State) is
    begin
       Es.Kind := ES_FREE;
    end ES_Release;
@@ -157,9 +156,9 @@ is
       Es  : in out Echo_State)
    --# global in out ESP; in out AIP.Buffers.State;
    is
-      Buf : AIP.Buffers.Buffer_Id;
+      Buf  : AIP.Buffers.Buffer_Id;
       Plen : AIP.U16_T;
-      Err : AIP.Err_T := AIP.NOERR;
+      Err  : AIP.Err_T := AIP.NOERR;
    begin
 
       --  Proceed as long as there's something left to send and there's room
@@ -169,8 +168,7 @@ is
         and then Es.Buf /= AIP.Buffers.NOBUF
         and then AIP.Buffers.Buffer_Len (Es.Buf) <= AIP.TCP.TCP_Sndbuf (Pcb)
       loop
-
-         --  Enqueue the current Buff for transmission
+         --  Enqueue the current Buf for transmission
 
          Buf := Es.Buf;
          AIP.TCP.TCP_Write
@@ -181,23 +179,36 @@ is
             Push => False,
             Err  => Err);
 
-         --  If all went well, move to next Buff in chain
+         --  If all went well, move to next Buf in chain
 
          if Err = AIP.NOERR then
 
-            --  Grab reference to the following Buff, if any. Release
-            --  the one we just processed and inform tell the other end.
+            --  Record length of sent data
 
-            Es.Buf := AIP.Buffers.Buffer_Next (Buf);
             Plen := AIP.Buffers.Buffer_Len (Buf);
 
-            --  we can read more data now
+            --  Grab reference to the following Buf, if any
+
+            Es.Buf := AIP.Buffers.Buffer_Next (Buf);
+            if Es.Buf /= AIP.Buffers.NOBUF then
+               AIP.Buffers.Buffer_Ref (Es.Buf);
+            end if;
+
+            --  Deallocate the processed buffer
+
+            AIP.Buffers.Buffer_Blind_Free (Buf);
+
+            --  Signal TCP layer that we can accept more data
 
             AIP.TCP.TCP_Recved (Pcb, Plen);
 
          elsif Err = AIP.ERR_MEM then
-            --  we are low on memory, defer to poll
+
+            --  We are low on memory, defer to poll
+
             Es.Buf := Buf;
+            --  This is a no-op???
+
          else
             --  other problem ??
             null;
@@ -220,10 +231,14 @@ is
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
       if Es.Buf /= AIP.Buffers.NOBUF then
+         --  More data to send, do it now
+
          Echo_Send (Pcb, Es);
+
       elsif Es.Kind = ES_CLOSING then
          Echo_Close (Pcb, Es);
       end if;
+
       Err := AIP.NOERR;
    end ECHO_Process_Sent;
 
@@ -295,12 +310,12 @@ is
          end if;
 
       else
-
          case Es.Kind is
             when ES_ACCEPTED =>
 
                Es.Kind := ES_RECEIVED;
                Es.Buf  := Ev.Buf;
+               AIP.Buffers.Buffer_Ref (Ev.Buf);
                Echo_Send (Pcb, Es);
 
             when ES_RECEIVED =>
@@ -308,8 +323,10 @@ is
                --  Read some more data
 
                if Es.Buf = AIP.Buffers.NOBUF then
+                  AIP.Buffers.Buffer_Ref (Ev.Buf);
                   Es.Buf := Ev.Buf;
                   Echo_Send (Pcb, Es);
+
                else
                   AIP.Buffers.Buffer_Chain (Es.Buf, Ev.Buf);
                end if;
