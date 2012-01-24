@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1473,7 +1473,9 @@ package body Why.Atree.Sprint is
             Relative_Indent (O, 1);
 
             if Pre = Why_Empty then
-               PL (O, "{ }");
+               if not Is_Empty (+Binders) then
+                  PL (O, "{ }");
+               end if;
             else
                PL (O, "{ ");
                Traverse (State, +Pre);
@@ -1487,7 +1489,9 @@ package body Why.Atree.Sprint is
             NL (O);
 
             if Post = Why_Empty then
-               PL (O, "{ true }");
+               if not Is_Empty (+Binders) then
+                  PL (O, "{ true }");
+               end if;
             else
                PL (O, "{ ");
                Traverse (State, +Post);
