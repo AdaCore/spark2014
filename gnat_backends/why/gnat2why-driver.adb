@@ -78,7 +78,7 @@ package body Gnat2Why.Driver is
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
       Context_Theory   : W_Theory_Declaration_Id;
-      Main_Theory      : W_Theory_Declaration_Id);
+      Main_File        : Why_File);
    --  Take an Ada entity and translate it to Why. Depending on the entity and
    --  whether it is in Alfa or not, declarations may be issued in the
    --  different parameter files.
@@ -309,14 +309,14 @@ package body Gnat2Why.Driver is
          Translate_Entity (E, Types_In_Spec_File.Cur_Theory,
                            Variables_File.Cur_Theory,
                            Context_In_Spec_File.Cur_Theory,
-                           Main_File.Cur_Theory);
+                           Main_File);
       end loop;
 
       for E of Body_Entities loop
          Translate_Entity (E, Types_In_Body_File.Cur_Theory,
                            Variables_File.Cur_Theory,
                            Context_In_Body_File.Cur_Theory,
-                           Main_File.Cur_Theory);
+                           Main_File);
       end loop;
 
       --  Generate Why3 files
@@ -347,7 +347,7 @@ package body Gnat2Why.Driver is
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
       Context_Theory   : W_Theory_Declaration_Id;
-      Main_Theory      : W_Theory_Declaration_Id) is
+      Main_File        : Why_File) is
    begin
       case Ekind (E) is
          when Type_Kind =>
@@ -376,7 +376,7 @@ package body Gnat2Why.Driver is
 
             if Spec_Is_In_Alfa (Unique (E)) then
                Translate_Subprogram_Spec (Context_Theory, E);
-               Generate_VCs_For_Subprogram_Spec (Main_Theory, E);
+               Generate_VCs_For_Subprogram_Spec (Main_File.Cur_Theory, E);
             end if;
 
             if Body_Is_In_Alfa (Unique (E))
@@ -389,7 +389,7 @@ package body Gnat2Why.Driver is
                   Translate_Expression_Function_Body (Context_Theory, E);
                end if;
 
-               Generate_VCs_For_Subprogram_Body (Main_Theory, E);
+               Generate_VCs_For_Subprogram_Body (Main_File.Cur_Theory, E);
             end if;
 
          when others =>
@@ -402,16 +402,15 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
-      Theory : constant W_Theory_Declaration_Id :=
-        New_Theory_Declaration (Name => New_Identifier ("Main"),
-                                Kind => EW_Module);
+      F : Why_File := Make_Empty_Why_File ("_standard");
 
       procedure Add_Standard_Type (T : Entity_Id);
       --  Add declaration for type in Standard not declared in Standard
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Translate_Entity (T, Theory, Theory, Theory, Theory);
+         Translate_Entity (T, F.Cur_Theory, F.Cur_Theory,
+                           F.Cur_Theory, F);
       end Add_Standard_Type;
 
       Decl : Node_Id;
@@ -433,7 +432,7 @@ package body Gnat2Why.Driver is
       --  Generate the inclusion of the GNATprove Why theory
 
       Emit
-        (Theory,
+        (F.Cur_Theory,
          New_Include_Declaration
            (Kind => EW_Module,
             Use_Kind => EW_Export,
@@ -447,8 +446,8 @@ package body Gnat2Why.Driver is
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
                Translate_Entity (Unique_Defining_Entity (Decl),
-                                 Theory, Theory,
-                                 Theory, Theory);
+                                 F.Cur_Theory, F.Cur_Theory,
+                                 F.Cur_Theory, F);
 
             when others =>
                null;
@@ -471,7 +470,7 @@ package body Gnat2Why.Driver is
       --  definition. The type is not in Alfa anyway, so we just generate the
       --  correct abstract type in Why.
 
-      Emit (Theory, New_Type ("standard___renaming_type"));
+      Emit (F.Cur_Theory, New_Type ("standard___renaming_type"));
 
       --  We also need to define the ASCII entities
 
@@ -480,7 +479,7 @@ package body Gnat2Why.Driver is
       begin
          while Present (Cur) loop
             Emit
-              (Theory,
+              (F.Cur_Theory,
                New_Function_Decl
                  (Domain => EW_Term,
                   Name   =>
@@ -496,11 +495,12 @@ package body Gnat2Why.Driver is
       end;
 
       Open_Current_File ("_standard.mlw");
-      Sprint_Why_Node (+Theory, Current_File);
+      Close_File (F);
+      Sprint_Why_Node (+F.File, Current_File);
       Close_Current_File;
 
       if Print_Generated_Code then
-         wpn (+Theory);
+         wpn (+F.File);
       end if;
    end Translate_Standard_Package;
 
