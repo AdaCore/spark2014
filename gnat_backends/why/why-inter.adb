@@ -32,6 +32,7 @@ with Constant_Tree;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 
@@ -104,6 +105,16 @@ package body Why.Inter is
    begin
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
+
+   ----------------
+   -- Close_File --
+   ----------------
+
+   procedure Close_File (P : in out Why_File)
+   is
+   begin
+      File_Append_To_Theories (P.File, P.Cur_Theory);
+   end Close_File;
 
    --------
    -- Eq --
@@ -261,6 +272,21 @@ package body Why.Inter is
            New_Theory_Declaration (Name => New_Identifier ("Main"),
                                    Kind => EW_Module));
    end Make_Empty_Why_File;
+
+   -------------------
+   -- Switch_Theory --
+   -------------------
+
+   procedure Switch_Theory (P           : in out Why_File;
+                            Name        : String;
+                            Kind        : EW_Theory_Type)
+   is
+   begin
+      File_Append_To_Theories (P.File, P.Cur_Theory);
+      P.Cur_Theory := New_Theory_Declaration
+        (Name => New_Identifier (Name),
+         Kind => Kind);
+   end Switch_Theory;
 
    --------
    -- Up --

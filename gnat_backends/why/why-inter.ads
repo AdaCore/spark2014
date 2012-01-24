@@ -65,6 +65,15 @@ package Why.Inter is
    function Make_Empty_Why_File (S : String) return Why_File;
    --  Build an empty Why_File with the given name
 
+   procedure Switch_Theory (P : in out Why_File;
+                            Name : String;
+                            Kind : EW_Theory_Type);
+   --  Close the current theory of P, add it to the current File, and set the
+   --  current theory to a new theory with given name and kind
+
+   procedure Close_File (P : in out Why_File);
+   --  Close the current theory of P, and add it to the current File.
+
    procedure Add_With_Clause (P : in out Why_File; Name : String);
    --  Add a package name to the context of a Why package.
 
