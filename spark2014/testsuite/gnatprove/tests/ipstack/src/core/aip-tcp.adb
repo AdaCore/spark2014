@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with System;
@@ -1539,7 +1539,7 @@ is
    --# global in out IPCBs, TPCBs; in Boot_Time, IP.FIB;
    is
       Next_Hop_IP    : IPaddrs.IPaddr;
-      Next_Hop_Netif : NIF.Netif_Id;
+      Next_Hop_Netif : AIP.EID;
    begin
       IPCBs (PCB).Remote_IP   := Remote_IP;
       IPCBs (PCB).Remote_Port := Remote_Port;
