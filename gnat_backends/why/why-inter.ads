@@ -63,35 +63,6 @@ package Why.Inter is
          File    : W_File_Id;
       end record;
 
-   type Why_Package is
-      record
-         WP_Name           : access String;
-         WP_Context        : String_Lists.List;
-         WP_Decls          : List_Of_Nodes.List;
-         --  All declarations of the package that in Alfa and that are not
-         --  types.
-         WP_Decls_As_Spec  : List_Of_Nodes.List;
-         --  Special list of declarations for subprogram specs *and* subprogram
-         --  bodies which are their own spec. A spec should be generated for
-         --  these, not a body (which is generated or not somewhere else).
-         WP_Types          : List_Of_Nodes.List;
-         --  List of type declarations that are in Alfa. They are translated
-         --  to Why entirely.
-         WP_Abstract_Types : List_Of_Nodes.List;
-         --  Special list for types that are not in Alfa, but for which we
-         --  still generate abstract type declarations in Why.
-         WP_Abstract_Obj   : List_Of_Nodes.List;
-         --  Special list for objects that are not in Alfa (either because of
-         --  their type, or because of their initialization expression), but
-         --  for which we still generate a parameter. This parameter may be
-         --  used in frame conditions.
-      end record;
-   --  This type represents a Why package (file), whose list of declarations
-   --  is not yet translated. Such a package has a name, a list of packages to
-   --  include and the list of Ada nodes yet to be translated.
-
-   package List_Of_Why_Packs is new Doubly_Linked_Lists (Why_Package);
-
    function Make_Empty_Why_File (S : String) return Why_File;
    --  Build an empty Why_File with the given name
 
