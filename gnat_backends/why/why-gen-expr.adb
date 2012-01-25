@@ -58,10 +58,19 @@ package body Why.Gen.Expr is
          Node  : W_Identifier_Id)
       is
          A : constant Node_Id := Get_Ada_Node (+Node);
+         N : Node_Id := Empty;
       begin
          if Present (A) then
-            if Present (Entity (A)) then
-               State.S.Include (Entity (A));
+            case Nkind (A) is
+               when N_Identifier =>
+                  N := Entity (A);
+               when N_Object_Declaration =>
+                  N := Defining_Identifier (A);
+               when others =>
+                  null;
+            end case;
+            if Present (N) then
+               State.S.Include (N);
             end if;
          end if;
       end Identifier_Pre_Op;
