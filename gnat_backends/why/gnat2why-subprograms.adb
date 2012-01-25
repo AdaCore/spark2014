@@ -507,6 +507,8 @@ package body Gnat2Why.Subprograms is
       --  Generate code to detect possible run-time errors in body
 
       declare
+         use Node_Sets;
+
          Func_Def : constant W_Declaration_Id :=
            New_Function_Def
              (Domain  => EW_Prog,
@@ -523,18 +525,24 @@ package body Gnat2Why.Subprograms is
                    (Statements
                       (Handled_Statement_Sequence (Body_N))),
                  New_Ignore (Prog => Post_Check)));
-         S : constant Node_Sets.Set := Compute_Ada_Nodeset (+Func_Def);
+         S        : constant Set := Compute_Ada_Nodeset (+Func_Def);
+         Unit_Set : Set := Empty_Set;
       begin
+
+         --  S contains all mentioned Ada entities; for each, we get the unit
+         --  where it was defined and add it to the unit set
+
          for N of S loop
-            declare
-               Unit : constant Node_Id := Enclosing_Lib_Unit_Node (N);
-               Unit_Name : constant String :=
-                 File_Name_Without_Suffix (Sloc (Unit));
-            begin
-               Add_With_Clause (File,
-                                Unit_Name & Context_In_Body_Suffix,
-                                EW_Import);
-            end;
+            Unit_Set.Include (Enclosing_Lib_Unit_Node (N));
+         end loop;
+
+         --  for each Unit_Set, we add a with clause to the current theory
+
+         for N of Unit_Set loop
+            Add_With_Clause (File,
+                             File_Name_Without_Suffix (Sloc (N)) &
+                               Context_In_Body_Suffix,
+                             EW_Import);
          end loop;
          Emit (File.Cur_Theory, Func_Def);
       end;
