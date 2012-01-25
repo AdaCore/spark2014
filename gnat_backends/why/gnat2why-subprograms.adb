@@ -544,7 +544,7 @@ package body Gnat2Why.Subprograms is
                                Context_In_Body_Suffix,
                              EW_Import);
          end loop;
-         Add_With_Clause (File, Standard_Why_Package_Name);
+         Add_With_Clause (File, Standard_Why_Package_Name, EW_Import);
          Emit (File.Cur_Theory, Func_Def);
       end;
    end Generate_VCs_For_Subprogram_Body;
