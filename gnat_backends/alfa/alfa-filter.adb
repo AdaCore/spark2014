@@ -74,7 +74,8 @@ package body Alfa.Filter is
         Make_Empty_Why_File (Prefix & Context_In_Spec_Suffix);
       Context_In_Body_File :=
         Make_Empty_Why_File (Prefix & Context_In_Body_Suffix);
-      Main_File := Make_Empty_Why_File (Prefix & Main_Suffix);
+      Main_File :=
+        Make_Empty_Why_File (Prefix & Main_Suffix, No_Theory => True);
 
       case Nkind (Unit (N)) is
          when N_Package_Body =>
@@ -119,7 +120,6 @@ package body Alfa.Filter is
       Add_With_Clause (Variables_File, Types_In_Body_File);
       Add_With_Clause (Context_In_Spec_File, Variables_File);
       Add_With_Clause (Context_In_Body_File, Context_In_Spec_File);
-      Add_With_Clause (Main_File, Context_In_Body_File);
 
       --  for each with clause in the package spec, add horizontal
       --  dependencies between spec packages

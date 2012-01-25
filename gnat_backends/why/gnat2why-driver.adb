@@ -376,7 +376,7 @@ package body Gnat2Why.Driver is
 
             if Spec_Is_In_Alfa (Unique (E)) then
                Translate_Subprogram_Spec (Context_Theory, E);
-               Generate_VCs_For_Subprogram_Spec (Main_File.Cur_Theory, E);
+               Generate_VCs_For_Subprogram_Spec (Main_File, E);
             end if;
 
             if Body_Is_In_Alfa (Unique (E))

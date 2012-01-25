@@ -35,6 +35,7 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Types;           use Why.Types;
 
 package body Why.Inter is
 
@@ -47,17 +48,21 @@ package body Why.Inter is
    -- Add_With_Clause --
    ---------------------
 
-   procedure Add_With_Clause (P : in out Why_File; Name : String) is
+   procedure Add_With_Clause (P        : in out Why_File;
+                              Name     : String;
+                              Use_Kind : EW_Clone_Type := EW_Export) is
    begin
       Emit (P.Cur_Theory,
             New_Include_Declaration (Name     => New_Identifier (Name),
-                                     Use_Kind => EW_Export,
+                                     Use_Kind => Use_Kind,
                                      Kind     => EW_Module));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P : in out Why_File; Other : Why_File) is
+   procedure Add_With_Clause (P        : in out Why_File;
+                              Other    : Why_File;
+                              Use_Kind : EW_Clone_Type := EW_Export) is
    begin
-      Add_With_Clause (P, Other.Name.all);
+      Add_With_Clause (P, Other.Name.all, Use_Kind);
    end Add_With_Clause;
 
    -------------------
@@ -263,14 +268,20 @@ package body Why.Inter is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_File (S : String) return Why_File is
+   function Make_Empty_Why_File (S : String;
+                                 No_Theory : Boolean := False)
+                                 return Why_File is
+      T : W_Theory_Declaration_Id := Why_Empty;
    begin
+      if not No_Theory then
+         T :=
+           New_Theory_Declaration (Name => New_Identifier ("Main"),
+                                   Kind => EW_Module);
+      end if;
       return
         (Name    => new String'(S),
          File    => New_File,
-         Cur_Theory =>
-           New_Theory_Declaration (Name => New_Identifier ("Main"),
-                                   Kind => EW_Module));
+         Cur_Theory => T);
    end Make_Empty_Why_File;
 
    -------------------

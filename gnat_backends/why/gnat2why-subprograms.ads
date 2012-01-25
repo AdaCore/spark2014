@@ -66,7 +66,7 @@ package Gnat2Why.Subprograms is
    --  body and postcondition of E.
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (Theory : W_Theory_Declaration_Id;
+     (File : in out Why_File;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in the precondition of E.

@@ -495,7 +495,7 @@ package body Gnat2Why.Subprograms is
       --  subprogram
 
       Switch_Theory (File, Name, EW_Module);
-      Add_With_Clause (File, Context_In_Body_File);
+      Add_With_Clause (File, Context_In_Body_File, EW_Import);
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -559,18 +559,22 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (Theory : W_Theory_Declaration_Id;
+     (File : in out Why_File;
       E    : Entity_Id)
    is
       Name    : constant String := Full_Name (E);
       Binders : constant Binder_Array := Compute_Binders (E);
-      Params  : constant Translation_Params :=
-                  (Theory        => Theory,
-                   Phase       => Generate_VCs_For_Pre,
-                   Ref_Allowed => True);
+      Params  : Translation_Params;
    begin
+      Switch_Theory (File, Name & "__pre", EW_Module);
+      Add_With_Clause (File, Context_In_Body_File, EW_Import);
+      Params :=
+        (Theory        => File.Cur_Theory,
+         Phase       => Generate_VCs_For_Pre,
+         Ref_Allowed => True);
+
       Emit
-        (Theory,
+        (File.Cur_Theory,
          New_Function_Def
            (Domain  => EW_Prog,
             Name    => New_Pre_Check_Name.Id (Name),

@@ -62,8 +62,11 @@ package Why.Inter is
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
-   function Make_Empty_Why_File (S : String) return Why_File;
-   --  Build an empty Why_File with the given name
+   function Make_Empty_Why_File (S : String;
+                                 No_Theory : Boolean := False)
+                                 return Why_File;
+   --  Build an empty Why_File with the given name; If No_Theory is set, no
+   --  initial theory is created.
 
    procedure Switch_Theory (P : in out Why_File;
                             Name : String;
@@ -74,10 +77,14 @@ package Why.Inter is
    procedure Close_File (P : in out Why_File);
    --  Close the current theory of P, and add it to the current File.
 
-   procedure Add_With_Clause (P : in out Why_File; Name : String);
+   procedure Add_With_Clause (P        : in out Why_File;
+                              Name     : String;
+                              Use_Kind : EW_Clone_Type := EW_Export);
    --  Add a package name to the context of a Why package.
 
-   procedure Add_With_Clause (P : in out Why_File; Other : Why_File);
+   procedure Add_With_Clause (P        : in out Why_File;
+                              Other    : Why_File;
+                              Use_Kind : EW_Clone_Type := EW_Export);
    --  Add a package name to the context of a Why package.
 
    EW_Bool_Type : constant W_Base_Type_Id :=
