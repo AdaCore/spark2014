@@ -45,6 +45,8 @@ package Alfa.Filter is
    Context_In_Body_Suffix : constant String := "__context_in_body";
    Main_Suffix            : constant String := "__package";
 
+   Standard_Why_Package_Name : constant String := "_standard";
+
    procedure Filter_Compilation_Unit (N : Node_Id);
    --  Filter declarations in compilation unit N and generate compilation units
    --  which are appended to Compilation_Units.

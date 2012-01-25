@@ -37,8 +37,6 @@ with Alfa.Common;     use Alfa.Common;
 
 package body Alfa.Filter is
 
-   Standard_Why_Package_Name : constant String := "_standard";
-
    -----------------------------
    -- Filter_Compilation_Unit --
    -----------------------------
