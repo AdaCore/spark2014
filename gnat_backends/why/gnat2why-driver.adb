@@ -78,7 +78,7 @@ package body Gnat2Why.Driver is
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
       Context_Theory   : W_Theory_Declaration_Id;
-      Main_File        : Why_File);
+      Main_File        : in out Why_File);
    --  Take an Ada entity and translate it to Why. Depending on the entity and
    --  whether it is in Alfa or not, declarations may be issued in the
    --  different parameter files.
@@ -347,7 +347,7 @@ package body Gnat2Why.Driver is
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
       Context_Theory   : W_Theory_Declaration_Id;
-      Main_File        : Why_File) is
+      Main_File        : in out Why_File) is
    begin
       case Ekind (E) is
          when Type_Kind =>
@@ -389,7 +389,7 @@ package body Gnat2Why.Driver is
                   Translate_Expression_Function_Body (Context_Theory, E);
                end if;
 
-               Generate_VCs_For_Subprogram_Body (Main_File.Cur_Theory, E);
+               Generate_VCs_For_Subprogram_Body (Main_File, E);
             end if;
 
          when others =>

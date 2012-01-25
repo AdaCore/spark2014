@@ -281,10 +281,12 @@ package body Why.Inter is
                             Name        : String;
                             Kind        : EW_Theory_Type)
    is
+      S : String := Name;
    begin
+      S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
       File_Append_To_Theories (P.File, P.Cur_Theory);
       P.Cur_Theory := New_Theory_Declaration
-        (Name => New_Identifier (Name),
+        (Name => New_Identifier (S),
          Kind => Kind);
    end Switch_Theory;
 

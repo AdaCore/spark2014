@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
 with Alfa.Common;           use Alfa.Common;
+with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
@@ -49,7 +50,6 @@ with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
-with Why.Inter;             use Why.Inter;
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;     use Why.Types;
@@ -689,7 +689,7 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Body
-     (Theory : W_Theory_Declaration_Id;
+     (File   : in out Why_File;
       E      : Entity_Id)
    is
       Name       : constant String := Full_Name (E);
@@ -701,6 +701,12 @@ package body Gnat2Why.Subprograms is
       Params     : Translation_Params;
 
    begin
+      --  We open a new theory, so that the context is fresh for that
+      --  subprogram
+
+      Switch_Theory (File, Name, EW_Module);
+      Add_With_Clause (File, Context_In_Body_File);
+
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
 
@@ -709,7 +715,7 @@ package body Gnat2Why.Subprograms is
 
       --  Generate code to detect possible run-time errors in the postcondition
 
-      Params := (Theory        => Theory,
+      Params := (Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Post,
                  Ref_Allowed => True);
       Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
@@ -717,7 +723,7 @@ package body Gnat2Why.Subprograms is
       --  Set the phase to Generate_VCs_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
 
-      Params := (Theory      => Theory,
+      Params := (Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Ref_Allowed => True);
 
@@ -730,7 +736,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Emit
-           (Theory,
+           (File.Cur_Theory,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
@@ -739,7 +745,7 @@ package body Gnat2Why.Subprograms is
       --  Generate code to detect possible run-time errors in body
 
       Emit
-        (Theory,
+        (File.Cur_Theory,
          New_Function_Def
            (Domain  => EW_Prog,
             Name    => New_Definition_Name.Id (Name),

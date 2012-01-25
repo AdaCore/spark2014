@@ -25,6 +25,7 @@
 
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
+with Why.Inter;     use Why.Inter;
 
 package Gnat2Why.Subprograms is
 
@@ -58,7 +59,7 @@ package Gnat2Why.Subprograms is
    --  in this package.
 
    procedure Generate_VCs_For_Subprogram_Body
-     (Theory : W_Theory_Declaration_Id;
+     (File : in out Why_File;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the contract of E and the absence of run-time errors in the
