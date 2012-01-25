@@ -52,7 +52,7 @@ package body Why.Inter is
                               Name     : String;
                               Use_Kind : EW_Clone_Type := EW_Export) is
    begin
-      Emit (P.Cur_Theory,
+      Emit (P.Inclusions,
             New_Include_Declaration (Name     => New_Identifier (Name => Name),
                                      Use_Kind => Use_Kind,
                                      Kind     => EW_Module));
@@ -117,7 +117,12 @@ package body Why.Inter is
 
    procedure Close_File (P : in out Why_File)
    is
+      L : constant Node_Lists.List :=
+        Get_List (Theory_Declaration_Get_Declarations (+P.Inclusions));
    begin
+      for Elt of L loop
+         Theory_Declaration_Prepend_To_Declarations (P.Cur_Theory, +Elt);
+      end loop;
       File_Append_To_Theories (P.File, P.Cur_Theory);
    end Close_File;
 
@@ -279,8 +284,11 @@ package body Why.Inter is
                                    Kind => EW_Module);
       end if;
       return
-        (Name    => new String'(S),
-         File    => New_File,
+        (Name       => new String'(S),
+         File       => New_File,
+         Inclusions =>
+           New_Theory_Declaration (Name =>  New_Identifier (Name => "Dummy"),
+                                   Kind => EW_Module),
          Cur_Theory => T);
    end Make_Empty_Why_File;
 
@@ -293,11 +301,19 @@ package body Why.Inter is
                             Kind        : EW_Theory_Type)
    is
       S : String := Name;
+      L : constant Node_Lists.List :=
+        Get_List (Theory_Declaration_Get_Declarations (+P.Inclusions));
    begin
+      for Elt of L loop
+         Theory_Declaration_Prepend_To_Declarations (P.Cur_Theory, +Elt);
+      end loop;
       S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
       File_Append_To_Theories (P.File, P.Cur_Theory);
       P.Cur_Theory := New_Theory_Declaration
         (Name => New_Identifier (Name => S),
+         Kind => Kind);
+      P.Inclusions := New_Theory_Declaration
+        (Name => New_Identifier (Name => "Dummy"),
          Kind => Kind);
    end Switch_Theory;
 
