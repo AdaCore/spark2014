@@ -3,8 +3,8 @@ representation_clauses
 private_types
 hidden
 notes
+with_clauses
 expression_reordering -- work-around for L125-011
-with_clauses -- can't be suppressed with accept, L125-015
 pragma pure
 pragma unreferenced
 pragma inline
