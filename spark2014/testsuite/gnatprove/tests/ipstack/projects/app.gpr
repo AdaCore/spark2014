@@ -4,4 +4,9 @@ project App is
    for Source_Dirs use ("../app");
    for Object_Dir use "../build/app";
    for Main use ("echop");
+
+   package Linker is
+      for Default_Switches ("Ada") use ("-g");
+   end Linker;
+
 end App;
