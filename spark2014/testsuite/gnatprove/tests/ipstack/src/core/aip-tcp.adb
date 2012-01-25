@@ -1830,10 +1830,8 @@ is
             --  Note: the following call leaves Packet unchanged (but removes
             --  it from the head of Unack_Queue).
 
-            --# accept F,10,Packet,"Value discarded";
             Buffers.Remove_Packet
               (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
-            --# end accept;
 
             --  Finally deallocate Packet
 
