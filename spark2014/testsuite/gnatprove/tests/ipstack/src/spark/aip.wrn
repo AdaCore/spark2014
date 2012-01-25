@@ -3,6 +3,8 @@ representation_clauses
 private_types
 hidden
 notes
+expression_reordering -- work-around for L125-011
+with_clauses -- can't be suppressed with accept, L125-015
 pragma pure
 pragma unreferenced
 pragma inline
@@ -13,3 +15,4 @@ pragma convention
 pragma warnings
 pragma style_checks
 pragma Ada_2005
+pragma weak_external
