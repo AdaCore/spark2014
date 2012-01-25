@@ -33,6 +33,7 @@ with Why.Types; use Why.Types;
 pragma Warnings (On);
 with VC_Kinds;  use VC_Kinds;
 with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Expr is
@@ -132,5 +133,10 @@ package Why.Gen.Expr is
    --  if "By" is non empty, then it specifies that the operation in expr
    --  is done in the corresponding base type and that its overflow check
    --  should be inserted.
+
+   function Compute_Ada_Nodeset (W : Why_Node_Id) return
+     Node_Sets.Set;
+   --  For a given Why node, compute the required Ada nodes, from which we can
+   --  compute the necessary inclusions on the Why side
 
 end Why.Gen.Expr;

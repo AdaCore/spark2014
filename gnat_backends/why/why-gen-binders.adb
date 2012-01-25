@@ -87,7 +87,7 @@ package body Why.Gen.Binders is
       for J in Anonymous_Binders'Range loop
          Result (J) :=
            (B_Name =>
-              New_Identifier ("dummy__" & N),
+              New_Identifier (Name => "dummy__" & N),
             B_Type =>
               Anonymous_Binders (J),
             others => <>);
@@ -607,7 +607,7 @@ package body Why.Gen.Binders is
    function Unit_Param return Binder_Type is
    begin
       return
-        (B_Name   => New_Identifier ("__void_param"),
+        (B_Name   => New_Identifier (Name => "__void_param"),
          B_Type   => New_Base_Type (Base_Type => EW_Unit),
          Modifier => None,
          Ada_Node => Empty);

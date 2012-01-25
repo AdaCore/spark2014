@@ -46,13 +46,6 @@ package body Alfa.Filter is
    procedure Filter_Compilation_Unit (N : Node_Id) is
       Prefix                 : constant String :=
                                  File_Name_Without_Suffix (Sloc (N));
-      Types_In_Spec_Suffix   : constant String := "__types_in_spec";
-      Types_In_Body_Suffix   : constant String := "__types_in_body";
-      Variables_Suffix       : constant String := "__variables";
-      Context_In_Spec_Suffix : constant String := "__context_in_spec";
-      Context_In_Body_Suffix : constant String := "__context_in_body";
-      Main_Suffix            : constant String := "__package";
-
       --  All subprogram definitions should end up in this package, as it
       --  corresponds to the only Why file which is not included by other Why
       --  files, so that we will not redo the same proof more than once. In

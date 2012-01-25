@@ -436,7 +436,7 @@ package body Gnat2Why.Driver is
          New_Include_Declaration
            (Kind => EW_Module,
             Use_Kind => EW_Export,
-            Name => New_Identifier ("_gnatprove_standard")));
+            Name => New_Identifier (Name => "_gnatprove_standard")));
 
       Decl :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));

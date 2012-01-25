@@ -148,7 +148,7 @@ package body Gnat2Why.Expr.Loops is
       Raise_Stmt  : constant W_Prog_Id :=
                       New_Raise
                         (Ada_Node => Stmt,
-                         Name => New_Identifier (Exc_Name));
+                         Name => New_Identifier (Name => Exc_Name));
    begin
       if Nkind (Condition (Stmt)) = N_Empty then
          return Raise_Stmt;
@@ -272,7 +272,7 @@ package body Gnat2Why.Expr.Loops is
                                (LParam_Spec);
             Loop_Index   : constant W_Identifier_Id :=
                              New_Identifier
-                               (Full_Name
+                               (Name => Full_Name
                                   (Defining_Identifier
                                     (LParam_Spec)));
             Index_Deref  : constant W_Prog_Id :=
@@ -412,7 +412,7 @@ package body Gnat2Why.Expr.Loops is
                             Then_Part => +Inv_Check,
                             Else_Part =>
                               New_Raise
-                                (Name => New_Identifier (Loop_Name))));
+                                (Name => New_Identifier (Name => Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=
                       New_While_Loop
                         (Condition   => New_Literal (Value => EW_True),
@@ -429,7 +429,7 @@ package body Gnat2Why.Expr.Loops is
       Emit
         (Body_Params.Theory,
          New_Exception_Declaration
-           (Name => New_Identifier (Loop_Name),
+           (Name => New_Identifier (Name => Loop_Name),
             Arg  => Why.Types.Why_Empty));
 
       return
@@ -443,7 +443,7 @@ package body Gnat2Why.Expr.Loops is
                    Handler =>
                      (1 =>
                         New_Handler
-                          (Name => New_Identifier (Loop_Name),
+                          (Name => New_Identifier (Name => Loop_Name),
                            Def  => New_Void)))));
    end Wrap_Loop;
 

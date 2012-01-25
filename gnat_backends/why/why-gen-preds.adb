@@ -50,16 +50,18 @@ package body Why.Gen.Preds is
       --  predicate eq___<name> (x : <name>, y : <name>) = [...]
       Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name.Id (Name);
       X_Binder          : constant Binder_Type :=
-                            (B_Name => New_Identifier (X_S),
+                            (B_Name => New_Identifier (Name => X_S),
                              B_Type => New_Abstract_Type
-                                         (Name => New_Identifier (EW_Term,
-                                                                  Name)),
+                               (Name =>
+                                  New_Identifier (Domain => EW_Term,
+                                                  Name   => Name)),
                              others => <>);
       Y_Binder          : constant Binder_Type :=
-                            (B_Name => New_Identifier (Y_S),
+                            (B_Name => New_Identifier (Name => Y_S),
                              B_Type => New_Abstract_Type
-                                         (Name => New_Identifier (EW_Term,
-                                                                  Name)),
+                               (Name =>
+                                  New_Identifier (Domain => EW_Term,
+                                                  Name   => Name)),
                              others => <>);
 
       --  <base_type>_of___<name> (x) = <base_type>_of___<name> (y)
@@ -108,7 +110,7 @@ package body Why.Gen.Preds is
       --  predicate <name>___in_range (x : <base_type>) = [...]
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name.Id (Name);
       Binder     : constant Binder_Type :=
-                     (B_Name => New_Identifier (Arg_S),
+                     (B_Name => New_Identifier (Name => Arg_S),
                       B_Type => BT,
                       others => <>);
       Decl       : constant W_Pred_Id :=

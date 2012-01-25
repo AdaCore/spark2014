@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -195,7 +195,8 @@ package body Why.Gen.Names is
       Arg_Types : W_Base_Type_Id)
      return W_Identifier_Id is
    begin
-      return New_Identifier (EW_Pred, Bool_Cmp_String (Rel, Arg_Types));
+      return New_Identifier (Domain => EW_Pred,
+                             Name   => Bool_Cmp_String (Rel, Arg_Types));
    end New_Bool_Cmp;
 
    ------------------
@@ -216,17 +217,21 @@ package body Why.Gen.Names is
    -- New_Identifier --
    --------------------
 
-   function New_Identifier (Name : String) return W_Identifier_Id is
+   function New_Identifier (Ada_Node : Node_Id := Empty; Name : String)
+                            return W_Identifier_Id is
    begin
-      return New_Identifier (EW_Term, Name);
+      return New_Identifier (Ada_Node, EW_Term, Name);
    end New_Identifier;
 
    function New_Identifier
-     (Domain : EW_Domain;
-      Name   : String)
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : String)
      return W_Identifier_Id is
    begin
-      return New_Identifier (Domain => Domain, Symbol => NID (Name));
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Domain => Domain,
+                             Symbol => NID (Name));
    end New_Identifier;
 
    ---------
@@ -246,7 +251,8 @@ package body Why.Gen.Names is
 
    function New_Prog (Name : String) return W_Prog_Id is
    begin
-      return +New_Identifier (EW_Prog, Name);
+      return +New_Identifier (Domain => EW_Prog,
+                              Name   => Name);
    end New_Prog;
 
    -------------------------
@@ -261,7 +267,7 @@ package body Why.Gen.Names is
    begin
       New_Temp_Identifier_Counter := New_Temp_Identifier_Counter + 1;
       return New_Identifier
-        ("_temp_" & To_String (New_Temp_Identifier_Suffix) & "_"
+        (Name => "_temp_" & To_String (New_Temp_Identifier_Suffix) & "_"
          & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
    end New_Temp_Identifier;
 
@@ -271,7 +277,7 @@ package body Why.Gen.Names is
 
    function New_Term (Name : String) return W_Term_Id is
    begin
-      return +New_Identifier (Name);
+      return +New_Identifier (Name => Name);
    end New_Term;
 
    ----------------------
@@ -283,7 +289,7 @@ package body Why.Gen.Names is
       N_Id   : constant Name_Id := Get_Symbol (Name);
       Img    : constant String := Get_Name_String (N_Id);
    begin
-      return New_Identifier (EW_Prog, Img & Suffix);
+      return New_Identifier (Get_Ada_Node (+Name), EW_Prog, Img & Suffix);
    end To_Program_Space;
 
    --------------------------

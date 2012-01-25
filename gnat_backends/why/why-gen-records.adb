@@ -42,16 +42,16 @@ package body Why.Gen.Records is
       Binders : Binder_Array)
    is
       R_Type      : constant W_Primitive_Type_Id :=
-                 New_Abstract_Type (Name => New_Identifier (Name));
+                 New_Abstract_Type (Name => New_Identifier (Name => Name));
       W_Type      : constant W_Base_Type_Id := New_Base_Type (E, EW_Abstract);
 
-      X_T         : constant W_Term_Id := +New_Identifier ("x");
-      Y_T         : constant W_Term_Id := +New_Identifier ("y");
+      X_T         : constant W_Term_Id := +New_Identifier (Name => "x");
+      Y_T         : constant W_Term_Id := +New_Identifier (Name => "y");
       Cmp_Binders : constant Binder_Array (1 .. 2) :=
-                      (1 => (B_Name => New_Identifier ("x"),
+                      (1 => (B_Name => New_Identifier (Name => "x"),
                              B_Type => R_Type,
                              others => <>),
-                       2 => (B_Name => New_Identifier ("y"),
+                       2 => (B_Name => New_Identifier (Name => "y"),
                              B_Type => R_Type,
                              others => <>));
 
@@ -70,7 +70,7 @@ package body Why.Gen.Records is
                                                      Domain => EW_Term));
    begin
       Emit (Theory,
-        New_Record_Definition (Name    => New_Identifier (Name),
+        New_Record_Definition (Name    => New_Identifier (Name => Name),
                                Binders => Binders));
 
       Emit

@@ -33,8 +33,9 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
-with Namet;         use Namet;
+with Namet;                 use Namet;
 with Nlists;                use Nlists;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
@@ -52,12 +53,12 @@ with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
-with Why.Types;     use Why.Types;
+with Why.Types;             use Why.Types;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
+with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Types;        use Gnat2Why.Types;
-with Gnat2Why.Driver; use Gnat2Why.Driver;
 
 package body Gnat2Why.Subprograms is
 
@@ -207,7 +208,7 @@ package body Gnat2Why.Subprograms is
       Post_Check   : W_Prog_Id) return W_Prog_Id
    is
       R        : W_Prog_Id := Initial_Body;
-      Node : constant Node_Id := Get_Subprogram_Body (E);
+      Node : constant Node_Id := Decls.Get_Subprogram_Body (E);
    begin
       R := Transform_Declarations_Block (Declarations (Node), R);
 
@@ -315,42 +316,14 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
-      --  Workaround for K526-008 and K525-019
+      for Name of Read_Names loop
+         Effects_Append_To_Reads (Eff, New_Identifier (Name => Name.all));
+      end loop;
 
-      --  for Name of Read_Names loop
-      --     Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
-      --  end loop;
-
-      declare
-         use Name_Set;
-
-         C : Cursor := Read_Names.First;
-      begin
-         while C /= No_Element loop
-            Effects_Append_To_Reads (Eff, New_Identifier (Element (C).all));
-            Next (C);
-         end loop;
-      end;
-
-      --  Workaround for K526-008 and K525-019
-
-      --  for Name of Write_All_Names loop
-      --     Effects_Append_To_Writes (Eff,
-      --                               New_Identifier (To_String (Name)));
-      --  end loop;
-
-      declare
-         use UString_Set;
-
-         C : Cursor := Write_All_Names.First;
-      begin
-         while C /= No_Element loop
-            Effects_Append_To_Writes (Eff,
-                                      New_Identifier
-                                        (To_String (Element (C))));
-            Next (C);
-         end loop;
-      end;
+      for Name of Write_All_Names loop
+         Effects_Append_To_Writes (Eff,
+                                   New_Identifier (Name => To_String (Name)));
+      end loop;
 
       return +Eff;
    end Compute_Effects;
@@ -393,7 +366,7 @@ package body Gnat2Why.Subprograms is
             for R of Read_Names loop
                Result (Count) :=
                  (Ada_Node => Empty,
-                  B_Name   => New_Identifier (R.all),
+                  B_Name   => New_Identifier (Name => R.all),
                   B_Type   =>
                     New_Abstract_Type (Name => Object_Type_Name.Id (R.all)),
                   Modifier => None);
@@ -483,7 +456,7 @@ package body Gnat2Why.Subprograms is
       E      : Entity_Id)
    is
       Name       : constant String := Full_Name (E);
-      Body_N     : constant Node_Id := Get_Subprogram_Body (E);
+      Body_N     : constant Node_Id := Decls.Get_Subprogram_Body (E);
       Post_N     : constant Node_Id := Get_Location_For_Postcondition (E);
       Pre        : W_Pred_Id;
       Post       : W_Pred_Id;
@@ -495,7 +468,6 @@ package body Gnat2Why.Subprograms is
       --  subprogram
 
       Switch_Theory (File, Name, EW_Module);
-      Add_With_Clause (File, Context_In_Body_File, EW_Import);
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -534,24 +506,38 @@ package body Gnat2Why.Subprograms is
 
       --  Generate code to detect possible run-time errors in body
 
-      Emit
-        (File.Cur_Theory,
-         New_Function_Def
-           (Domain  => EW_Prog,
-            Name    => New_Definition_Name.Id (Name),
-            Binders => (1 => Unit_Param),
-            Pre     => Pre,
-            Post    =>
+      declare
+         Func_Def : constant W_Declaration_Id :=
+           New_Function_Def
+             (Domain  => EW_Prog,
+              Name    => New_Definition_Name.Id (Name),
+              Binders => (1 => Unit_Param),
+              Pre     => Pre,
+              Post    =>
               +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
-            Def     =>
+              Def     =>
               +Compute_Context
                 (Params,
                  E,
                  Transform_Statements
                    (Statements
-                     (Handled_Statement_Sequence (Body_N))),
-                 New_Ignore (Prog => Post_Check))));
-
+                      (Handled_Statement_Sequence (Body_N))),
+                 New_Ignore (Prog => Post_Check)));
+         S : constant Node_Sets.Set := Compute_Ada_Nodeset (+Func_Def);
+      begin
+         for N of S loop
+            declare
+               Unit : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+               Unit_Name : constant String :=
+                 File_Name_Without_Suffix (Sloc (Unit));
+            begin
+               Add_With_Clause (File,
+                                Unit_Name & Context_In_Body_Suffix,
+                                EW_Import);
+            end;
+         end loop;
+         Emit (File.Cur_Theory, Func_Def);
+      end;
    end Generate_VCs_For_Subprogram_Body;
 
    --------------------------------------

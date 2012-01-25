@@ -259,7 +259,7 @@ package body Gnat2Why.Types is
                            begin
                               J := J + 1;
                               Binders (J) :=
-                                (B_Name => New_Identifier (C_Name),
+                                (B_Name => New_Identifier (Name => C_Name),
                                  B_Type =>
                                    Why_Logic_Type_Of_Ada_Type (Etype (Field)),
                                  others => <>);

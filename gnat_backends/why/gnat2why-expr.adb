@@ -308,7 +308,8 @@ package body Gnat2Why.Expr is
                                           EW_Prog,
                                           Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
-            L_Id     : constant W_Identifier_Id := New_Identifier (L_Name);
+            L_Id     : constant W_Identifier_Id :=
+              New_Identifier (N, L_Name);
          begin
             if Is_Mutable (Lvalue) then
                return New_Assignment
@@ -652,22 +653,15 @@ package body Gnat2Why.Expr is
          if Domain = EW_Term then
             --  Workaround for K526-008 and K525-019
 
-            declare
-               use Name_Set;
-
-               C : Cursor := Read_Names.First;
-            begin
-               while C /= No_Element loop
-                  if Params.Ref_Allowed then
-                     Why_Args (Cnt) :=
-                       New_Deref (Right => New_Identifier (Element (C).all));
-                  else
-                     Why_Args (Cnt) := +New_Identifier (Element (C).all);
-                  end if;
-                  Next (C);
-                  Cnt := Cnt + 1;
-               end loop;
-            end;
+            for Elt of Read_Names loop
+               if Params.Ref_Allowed then
+                  Why_Args (Cnt) :=
+                    New_Deref (Right => New_Identifier (Name => Elt.all));
+               else
+                  Why_Args (Cnt) := +New_Identifier (Name => Elt.all);
+               end if;
+               Cnt := Cnt + 1;
+            end loop;
          end if;
 
          return Why_Args;
@@ -699,7 +693,7 @@ package body Gnat2Why.Expr is
          raise Program_Error;
       end if;
 
-      Index := New_Identifier (Full_Name (Defining_Identifier (Spec)));
+      Index := New_Identifier (N, Full_Name (Defining_Identifier (Spec)));
    end Extract_From_Quantified_Expression;
 
    -------------------------------------
@@ -2515,7 +2509,7 @@ package body Gnat2Why.Expr is
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
-                    Name     => New_Identifier ("notb"),
+                    Name     => New_Identifier (Name => "notb"),
                     Args     =>
                       (1 => Transform_Expr (Right_Opnd (Expr),
                                             EW_Bool_Type,
@@ -2788,7 +2782,7 @@ package body Gnat2Why.Expr is
          Ent := Entity (Id);
       end if;
 
-      return New_Identifier (Full_Name (Ent));
+      return New_Identifier (Id, Full_Name (Ent));
    end Transform_Ident;
 
    ----------------------------
@@ -3013,7 +3007,7 @@ package body Gnat2Why.Expr is
             Result (J) :=
                New_Field_Association
                   (Domain => Domain,
-                   Field  => New_Identifier (Full_Name (Component)),
+                   Field  => New_Identifier (Typ, Full_Name (Component)),
                    Value  => Expr);
             J := J + 1;
             Component := Next_Component (Component);
@@ -3188,7 +3182,7 @@ package body Gnat2Why.Expr is
                         return
                           +New_Located_Expr
                             (Ada_Node => Stmt,
-                             Expr     => +New_Identifier ("absurd"),
+                             Expr     => +New_Identifier (Name => "absurd"),
                              Reason   => VC_Assert,
                              Domain   => EW_Prog);
                      elsif Is_True_Boolean (+Pred) then

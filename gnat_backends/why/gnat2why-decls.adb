@@ -181,7 +181,7 @@ package body Gnat2Why.Decls is
       Emit
         (Theory,
          New_Global_Ref_Declaration
-           (Name     => New_Identifier (Name),
+           (Name     => New_Identifier (Name => Name),
             Ref_Type => Typ));
    end Translate_Variable;
 
@@ -222,7 +222,7 @@ package body Gnat2Why.Decls is
 
       Emit_Top_Level_Declarations
         (Theory      => Theory,
-         Name        => New_Identifier (Name),
+         Name        => New_Identifier (Name => Name),
          Binders     => (1 .. 0 => <>),
          Return_Type => Typ,
          Spec        =>

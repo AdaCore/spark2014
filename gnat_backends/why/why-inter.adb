@@ -53,7 +53,7 @@ package body Why.Inter is
                               Use_Kind : EW_Clone_Type := EW_Export) is
    begin
       Emit (P.Cur_Theory,
-            New_Include_Declaration (Name     => New_Identifier (Name),
+            New_Include_Declaration (Name     => New_Identifier (Name => Name),
                                      Use_Kind => Use_Kind,
                                      Kind     => EW_Module));
    end Add_With_Clause;
@@ -275,7 +275,7 @@ package body Why.Inter is
    begin
       if not No_Theory then
          T :=
-           New_Theory_Declaration (Name => New_Identifier ("Main"),
+           New_Theory_Declaration (Name => New_Identifier (Name => "Main"),
                                    Kind => EW_Module);
       end if;
       return
@@ -297,7 +297,7 @@ package body Why.Inter is
       S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
       File_Append_To_Theories (P.File, P.Cur_Theory);
       P.Cur_Theory := New_Theory_Declaration
-        (Name => New_Identifier (S),
+        (Name => New_Identifier (Name => S),
          Kind => Kind);
    end Switch_Theory;
 

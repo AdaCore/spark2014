@@ -87,8 +87,9 @@ package body Why.Gen.Axioms is
       Quantif_On_X         : constant W_Pred_Id :=
                                New_Universal_Quantif
                                  (Var_Type  => Base_Type,
-                                  Variables => (1 => New_Identifier (EW_Term,
-                                                                     "x")),
+                                  Variables =>
+                                    (1 => New_Identifier (Domain => EW_Term,
+                                                          Name   => "x")),
                                   Triggers  => Enhanced_Triggers,
                                   Pred      => Formula);
    begin
@@ -119,7 +120,7 @@ package body Why.Gen.Axioms is
                               (Name => Range_Pred_Name.Id (Type_Name),
                                Args => (1 => +New_Term ("x"))));
       Base_Type_Name : constant W_Identifier_Id :=
-         New_Identifier (EW_Base_Type_Name (Base_Type));
+         New_Identifier (Name => EW_Base_Type_Name (Base_Type));
    begin
       Define_Coerce_Axiom
         (Theory     => Theory,
@@ -154,7 +155,7 @@ package body Why.Gen.Axioms is
                                (Var_Type =>
                                   New_Abstract_Type (Name => Type_Name),
                                 Variables =>
-                                  (1 => New_Identifier (Arg_S)),
+                                  (1 => New_Identifier (Name => Arg_S)),
                                 Pred =>
                                   Formula);
    begin
@@ -206,8 +207,8 @@ package body Why.Gen.Axioms is
                             New_Universal_Quantif
                               (Var_Type => Var_Type,
                                Variables =>
-                                 (New_Identifier (X_S),
-                                  New_Identifier (Y_S)),
+                                 (New_Identifier (Name => X_S),
+                                  New_Identifier (Name => Y_S)),
                                Triggers =>
                                  New_Triggers (Triggers =>
                                     (1 => New_Trigger (Terms =>
@@ -244,7 +245,7 @@ package body Why.Gen.Axioms is
       Define_Unicity_Axiom
         (Theory    => Theory,
          Type_Name => Type_Name,
-         Base_Type => New_Identifier (EW_Base_Type_Name (Base_Type)));
+         Base_Type => New_Identifier (Name => EW_Base_Type_Name (Base_Type)));
    end Define_Unicity_Axiom;
 
 end Why.Gen.Axioms;

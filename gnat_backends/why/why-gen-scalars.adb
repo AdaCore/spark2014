@@ -155,14 +155,15 @@ package body Why.Gen.Scalars is
             Binders        =>
               New_Binders
                 ((1 => New_Abstract_Type
-                         (Name => New_Identifier (Name)))),
+                         (Name => New_Identifier (Name => Name)))),
             Return_Type => BT));
 
       --  from base type:
       declare
          Return_Type  : constant W_Primitive_Type_Id :=
-                          New_Abstract_Type (Name => New_Identifier (EW_Term,
-                                                                     Name));
+           New_Abstract_Type (Name =>
+                                New_Identifier (Domain => EW_Term,
+                                                Name   => Name));
          --  precondition: { <name>___in_range (n) }
          Range_Check  : constant W_Pred_OId :=
                           New_Call
@@ -197,7 +198,7 @@ package body Why.Gen.Scalars is
            (Theory => Theory,
             Name => Conversion_From.Id (Name, BT_Name),
             Binders =>
-              (1 => (B_Name => New_Identifier (Arg_S),
+              (1 => (B_Name => New_Identifier (Name => Arg_S),
                      B_Type => BT,
                      others => <>)),
             Return_Type => Return_Type,
@@ -222,7 +223,8 @@ package body Why.Gen.Scalars is
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => Overflow_Check_Name.Id (Name),
-                     Binders     => (1 => (B_Name => New_Identifier (Arg_S),
+                     Binders     => (1 => (B_Name =>
+                                             New_Identifier (Name => Arg_S),
                                            B_Type => BT,
                                            others => <>)),
                      Return_Type => BT,
@@ -233,14 +235,14 @@ package body Why.Gen.Scalars is
 
          Define_Eq_Predicate (Theory, Name, Base_Type);
          Define_Range_Axiom (Theory,
-                             New_Identifier (Name),
+                             New_Identifier (Name => Name),
                              Conversion_To.Id (Name, BT_Name));
          Define_Coerce_Axiom (Theory,
-                              New_Identifier (Name),
+                              New_Identifier (Name => Name),
                               Base_Type,
                               Modulus);
          Define_Unicity_Axiom (Theory,
-                               New_Identifier (Name),
+                               New_Identifier (Name => Name),
                                Base_Type);
       end;
       New_Boolean_Equality_Parameter (Theory, Name);

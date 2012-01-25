@@ -75,12 +75,14 @@ package Why.Gen.Names is
    function New_Abs (Kind : EW_Numeric) return W_Identifier_Id;
    --  Return the name of the absolute value operator for the given kind
 
-   function New_Identifier (Name : String) return W_Identifier_Id;
+   function New_Identifier (Ada_Node : Node_Id := Empty; Name : String)
+       return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
    function New_Identifier
-     (Domain : EW_Domain;
-      Name   : String)
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : String)
      return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 

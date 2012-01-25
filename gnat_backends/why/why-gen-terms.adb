@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -116,7 +116,7 @@ package body Why.Gen.Terms is
          when others =>
             return
               New_Call
-                (Name => New_Identifier ("ite"),
+                (Name => New_Identifier (Name => "ite"),
                  Args => (1 => +Condition, 2 => +Left, 3 => +Right));
       end case;
    end New_Ifb;
@@ -142,7 +142,7 @@ package body Why.Gen.Terms is
         New_Epsilon
           (Binder =>
                New_Binder (Domain   => EW_Term,
-                           Name     => New_Identifier ("x"),
+                           Name     => New_Identifier (Name => "x"),
                            Arg_Type => +T),
            Pred   => New_Literal (Value => EW_True));
    end New_Simpl_Epsilon_Term;

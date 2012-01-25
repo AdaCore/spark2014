@@ -71,8 +71,9 @@ package body Why.Gen.Funcs is
       Pre     : constant W_Pred_Id :=
                   New_Literal (Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=
-                   New_Abstract_Type (Name => New_Identifier (EW_Term,
-                                                              Type_Name));
+        New_Abstract_Type (Name =>
+                             New_Identifier (Domain => EW_Term,
+                                             Name   => Type_Name));
    begin
       Emit
         (Theory,
@@ -81,11 +82,11 @@ package body Why.Gen.Funcs is
             Name        => Eq_Param_Name.Id (Type_Name),
             Binders     =>
               (1 =>
-                 (B_Name => New_Identifier (Arg_S),
+                 (B_Name => New_Identifier (Name => Arg_S),
                   B_Type => Arg_Type,
                   others => <>),
                2 =>
-                 (B_Name => New_Identifier (Arg_T),
+                 (B_Name => New_Identifier (Name => Arg_T),
                   B_Type => Arg_Type,
                   others => <>)),
             Return_Type => New_Base_Type (Base_Type => EW_Bool),

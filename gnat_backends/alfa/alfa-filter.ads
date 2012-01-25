@@ -38,6 +38,13 @@ package Alfa.Filter is
    Context_In_Body_File : Why_File;
    Main_File            : Why_File;
 
+   Types_In_Spec_Suffix   : constant String := "__types_in_spec";
+   Types_In_Body_Suffix   : constant String := "__types_in_body";
+   Variables_Suffix       : constant String := "__variables";
+   Context_In_Spec_Suffix : constant String := "__context_in_spec";
+   Context_In_Body_Suffix : constant String := "__context_in_body";
+   Main_Suffix            : constant String := "__package";
+
    procedure Filter_Compilation_Unit (N : Node_Id);
    --  Filter declarations in compilation unit N and generate compilation units
    --  which are appended to Compilation_Units.

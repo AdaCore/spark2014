@@ -25,17 +25,52 @@
 
 with Atree;                use Atree;
 with Namet;                use Namet;
+with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Tables;     use Why.Atree.Tables;
+with Why.Atree.Traversal;  use Why.Atree.Traversal;
 with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Progs;        use Why.Gen.Progs;
 with Why.Gen.Terms;        use Why.Gen.Terms;
-with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Expr is
+
+   --------------------------
+   -- Compute_Ada_Node_Set --
+   --------------------------
+
+   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set is
+      use Node_Sets;
+
+      type Search_State is new Traversal_State with record
+         S : Set;
+      end record;
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id);
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id)
+      is
+         A : constant Node_Id := Get_Ada_Node (+Node);
+      begin
+         if Present (A) then
+            if Present (Entity (A)) then
+               State.S.Include (Entity (A));
+            end if;
+         end if;
+      end Identifier_Pre_Op;
+
+      SS : Search_State := (Control => Continue, S => Empty_Set);
+   begin
+      Traverse (SS, +W);
+      return SS.S;
+   end Compute_Ada_Nodeset;
 
    package Conversion_Reason is
       --  This package provide a rudimentary way to deleguate
@@ -485,7 +520,7 @@ package body Why.Gen.Expr is
          Column_Number'Image (Column) & " 0# " &
          """gnatprove:" & VC_Kind'Image (Reason) & """";
    begin
-      return New_Identifier (Label);
+      return New_Identifier (Name => Label);
    end New_Located_Label;
 
    -----------------

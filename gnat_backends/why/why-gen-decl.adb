@@ -49,7 +49,7 @@ package body Why.Gen.Decl is
 
    function New_Type (Name : String) return W_Declaration_Id is
    begin
-      return New_Type (Name => New_Identifier (Name));
+      return New_Type (Name => New_Identifier (Name => Name));
    end New_Type;
 
    function New_Type
@@ -76,7 +76,7 @@ package body Why.Gen.Decl is
       end if;
 
       for I in 1 .. Args loop
-         Type_Ar (I) := New_Identifier ((1 => C));
+         Type_Ar (I) := New_Identifier (Name => (1 => C));
          C := Character'Succ (C);
       end loop;
 

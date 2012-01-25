@@ -64,10 +64,10 @@ package body Why.Gen.Arrays is
       Dimension : constant Pos := Number_Dimensions (Entity);
       Ar        : constant W_Term_Id := New_Term ("a");
       Ar_Binder : constant Binder_Type :=
-                    (B_Name => New_Identifier ("a"),
+                    (B_Name => New_Identifier (Name => "a"),
                      B_Type =>
                        New_Abstract_Type
-                         (Name => (New_Identifier (Name))),
+                         (Name => (New_Identifier (Name => Name))),
                      others => <>);
       Index     : Node_Id := First_Index (Entity);
       Count     : Positive := 1;
@@ -147,12 +147,13 @@ package body Why.Gen.Arrays is
    is
       Component   : constant String := Full_Name (Component_Type (Entity));
       Dimension   : constant Pos := Number_Dimensions (Entity);
-      Type_Id     : constant W_Identifier_Id := New_Identifier (Name);
+      Type_Id     : constant W_Identifier_Id := New_Identifier (Name => Name);
       BT_Str      : constant String := New_Ada_Array_Name (Dimension);
-      BT_Id       : constant W_Identifier_Id := New_Identifier (BT_Str);
+      BT_Id       : constant W_Identifier_Id :=
+        New_Identifier (Name => BT_Str);
       Comp_Type   : constant W_Primitive_Type_Id :=
                      New_Abstract_Type
-                       (Name => (New_Identifier (Component)));
+                       (Name => (New_Identifier (Name => Component)));
       Ar_Type     : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
@@ -160,7 +161,7 @@ package body Why.Gen.Arrays is
       Name_Type   : constant W_Primitive_Type_Id :=
                      New_Abstract_Type (Name => Type_Id);
       Ar_Binder_2 : constant Binder_Type :=
-                      (B_Name => New_Identifier ("a"),
+                      (B_Name => New_Identifier (Name => "a"),
                        B_Type => Ar_Type,
                        others => <>);
       Conv_From   : constant W_Identifier_Id :=
@@ -239,7 +240,7 @@ package body Why.Gen.Arrays is
       Argument   : Uint)
    is
       Var            : constant W_Identifier_Id :=
-                         New_Identifier ("x");
+                         New_Identifier (Name => "x");
       First_Term     : constant W_Term_Id :=
                          +New_Array_Attr
                            (Attribute_First,
@@ -284,7 +285,7 @@ package body Why.Gen.Arrays is
                          New_Universal_Quantif
                            (Var_Type  =>
                               New_Abstract_Type
-                                (Name => New_Identifier (Type_Name)),
+                                (Name => New_Identifier (Name => Type_Name)),
                             Variables => (1 => Var),
                             Pred => Formula);
       Axiom_Base     : constant String := Type_Name & "__index_in_range";
@@ -297,7 +298,7 @@ package body Why.Gen.Arrays is
       Emit
         (Theory,
          New_Axiom
-           (Name => New_Identifier (Axiom_Name),
+           (Name => New_Identifier (Name => Axiom_Name),
             Def  => Quantif));
    end Define_In_Range_Axiom;
 
