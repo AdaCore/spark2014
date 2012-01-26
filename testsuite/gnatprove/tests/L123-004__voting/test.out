@@ -1,0 +1,6 @@
+evoting.adb:149:17: info: range check proved
+evoting.adb:150:34: info: loop invariant initialization proved
+evoting.adb:150:34: info: loop invariant preservation proved
+evoting.adb:151:13: info: index check proved
+evoting.adb:151:27: info: index check proved
+evoting.adb:152:23: info: range check proved

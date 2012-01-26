@@ -1,0 +1,9 @@
+evoting_simple.adb:146:17: info: range check proved
+evoting_simple.adb:147:34: info: loop invariant initialization proved
+evoting_simple.adb:147:34: info: loop invariant preservation proved
+evoting_simple.adb:148:13: info: index check proved
+evoting_simple.adb:148:27: info: index check proved
+evoting_simple.adb:149:23: info: range check proved
+evoting_simple.adb:51:34: info: loop invariant initialization proved
+evoting_simple.adb:51:34: info: loop invariant preservation proved
+evoting_simple.adb:53:40: info: range check proved
