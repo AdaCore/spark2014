@@ -554,10 +554,17 @@ package body Gnat2Why.Subprograms is
             --  for each Unit_Set, we add a with clause to the current theory
 
             for N of Unit_Set loop
-               Add_With_Clause (File,
-                                File_Name_Without_Suffix (Sloc (N)) &
-                                  Context_In_Body_Suffix,
-                                EW_Import);
+               declare
+                  This_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
+                  Suffix    : constant String :=
+                    (if N = This_Unit then Context_In_Body_Suffix
+                     else Context_In_Spec_Suffix);
+               begin
+                  Add_With_Clause (File,
+                                   File_Name_Without_Suffix (Sloc (N)) &
+                                     Suffix,
+                                   EW_Import);
+               end;
             end loop;
             Add_With_Clause (File, Standard_Why_Package_Name, EW_Import);
          end;
