@@ -1,7 +1,7 @@
 /*-----------------------------------------------------------------------------------*/
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
- * Copyright (C) 2010, AdaCore
+ * Copyright (C) 2010-2012, AdaCore
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -198,7 +198,7 @@ low_level_init(char *Params, struct netif *netif)
         goto bailout;
     }
 
-    /* Force mcast msgs to loopback (support for several guests on same host */
+    /* Force mcast msgs to loopback (support for several guests on one host) */
     val = 1;
     rc = setsockopt (mintapif->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
 		     (const char *)&val, sizeof(val));
