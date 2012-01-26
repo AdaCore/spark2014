@@ -978,6 +978,18 @@ package body Alfa.Definition is
    end In_Main_Unit_Spec;
 
    ------------------------
+   -- Is_In_Current_Unit --
+   ------------------------
+
+   function Is_In_Current_Unit (N : Node_Id) return Boolean is
+   begin
+
+      --  ??? Should be made more efficient
+
+      return In_Main_Unit_Spec (N) or else In_Main_Unit_Body (N);
+   end Is_In_Current_Unit;
+
+   ------------------------
    -- Inherit_Violations --
    ------------------------
 

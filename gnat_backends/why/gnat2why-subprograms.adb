@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
 with Alfa.Common;           use Alfa.Common;
+with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
@@ -555,9 +556,8 @@ package body Gnat2Why.Subprograms is
 
             for N of Unit_Set loop
                declare
-                  This_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
                   Suffix    : constant String :=
-                    (if N = This_Unit then Context_In_Body_Suffix
+                    (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
                      else Context_In_Spec_Suffix);
                begin
                   Add_With_Clause (File,

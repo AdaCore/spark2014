@@ -79,6 +79,10 @@ package Alfa.Definition is
    --  while an operation in the package over non-Alfa fields may not be in
    --  Alfa.
 
+   function Is_In_Current_Unit (N : Node_Id) return Boolean;
+   --  Return True when the node belongs to the Spec or Body of the current
+   --  unit.
+
    type Alfa_Decl is
      (Alfa_Object,
       Alfa_Type,
