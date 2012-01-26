@@ -53,11 +53,19 @@ package body Why.Gen.Expr is
         (State : in out Search_State;
          Node  : W_Identifier_Id);
 
-      procedure Identifier_Pre_Op
+      procedure Base_Type_Pre_Op
         (State : in out Search_State;
-         Node  : W_Identifier_Id)
-      is
-         A : constant Node_Id := Get_Ada_Node (+Node);
+         Node  : W_Base_Type_Id);
+
+      procedure Analyze_Ada_Node (S : in out Set;
+                                  A : Node_Id);
+
+      ----------------------
+      -- Analyze_Ada_Node --
+      ----------------------
+
+      procedure Analyze_Ada_Node (S : in out Set;
+                                  A : Node_Id) is
          N : Node_Id := Empty;
       begin
          if Present (A) then
@@ -66,14 +74,42 @@ package body Why.Gen.Expr is
                   N := Entity (A);
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);
+               when N_Defining_Identifier =>
+                  N := A;
                when others =>
                   null;
             end case;
             if Present (N) then
-               State.S.Include (N);
+               S.Include (N);
             end if;
          end if;
+      end Analyze_Ada_Node;
+
+      -----------------------
+      -- Identifier_Pre_Op --
+      -----------------------
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
       end Identifier_Pre_Op;
+
+      ----------------------
+      -- Base_Type_Pre_Op --
+      ----------------------
+
+      procedure Base_Type_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Base_Type_Id)
+      is
+      begin
+         if Get_Base_Type (+Node) = EW_Abstract then
+            Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+         end if;
+      end Base_Type_Pre_Op;
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
    begin

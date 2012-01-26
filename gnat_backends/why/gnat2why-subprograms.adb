@@ -525,27 +525,38 @@ package body Gnat2Why.Subprograms is
                    (Statements
                       (Handled_Statement_Sequence (Body_N))),
                  New_Ignore (Prog => Post_Check)));
-         S        : constant Set := Compute_Ada_Nodeset (+Func_Def);
-         Unit_Set : Set := Empty_Set;
       begin
 
-         --  S contains all mentioned Ada entities; for each, we get the unit
-         --  where it was defined and add it to the unit set
-
-         for N of S loop
-            Unit_Set.Include (Enclosing_Lib_Unit_Node (N));
-         end loop;
-
-         --  for each Unit_Set, we add a with clause to the current theory
-
-         for N of Unit_Set loop
-            Add_With_Clause (File,
-                             File_Name_Without_Suffix (Sloc (N)) &
-                               Context_In_Body_Suffix,
-                             EW_Import);
-         end loop;
-         Add_With_Clause (File, Standard_Why_Package_Name, EW_Import);
          Emit (File.Cur_Theory, Func_Def);
+
+         declare
+            S        : constant Set := Compute_Ada_Nodeset (+File.Cur_Theory);
+            Unit_Set : Set := Empty_Set;
+         begin
+
+            --  S contains all mentioned Ada entities; for each, we get the
+            --  unit where it was defined and add it to the unit set
+
+            for N of S loop
+               declare
+                  U : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+               begin
+                  if Present (U) then
+                     Unit_Set.Include (U);
+                  end if;
+               end;
+            end loop;
+
+            --  for each Unit_Set, we add a with clause to the current theory
+
+            for N of Unit_Set loop
+               Add_With_Clause (File,
+                                File_Name_Without_Suffix (Sloc (N)) &
+                                  Context_In_Body_Suffix,
+                                EW_Import);
+            end loop;
+            Add_With_Clause (File, Standard_Why_Package_Name, EW_Import);
+         end;
       end;
    end Generate_VCs_For_Subprogram_Body;
 
