@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,6 +25,7 @@
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Name_Gen is
 
@@ -151,7 +152,7 @@ package body Why.Gen.Name_Gen is
         (Name : W_Identifier_Id)
         return W_Identifier_Id is
       begin
-         return Id (Empty, Name);
+         return Id (Get_Ada_Node (+Name), Name);
       end Id;
 
    end Arity_1;
