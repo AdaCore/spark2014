@@ -539,9 +539,13 @@ package body Gnat2Why.Subprograms is
 
             for N of S loop
                declare
-                  U : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+                  U : Node_Id := Enclosing_Lib_Unit_Node (N);
                begin
                   if Present (U) then
+                     Unit_Set.Include (U);
+                  elsif Is_Itype (N) then
+                     U := Enclosing_Lib_Unit_Node
+                       (Associated_Node_For_Itype (N));
                      Unit_Set.Include (U);
                   end if;
                end;
