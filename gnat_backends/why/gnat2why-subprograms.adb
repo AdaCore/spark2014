@@ -28,7 +28,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
 with Alfa.Common;           use Alfa.Common;
-with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
@@ -537,7 +536,6 @@ package body Gnat2Why.Subprograms is
       Params  : Translation_Params;
    begin
       Switch_Theory (File, Name & "__pre", EW_Module);
-      Add_With_Clause (File, Context_In_Body_File, EW_Import);
       Params :=
         (Theory        => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
