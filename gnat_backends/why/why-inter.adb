@@ -37,7 +37,6 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Types;           use Why.Types;
 
 package body Why.Inter is
 
@@ -114,60 +113,55 @@ package body Why.Inter is
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
-   ----------------
-   -- Close_File --
-   ----------------
+   ------------------
+   -- Close_Theory --
+   ------------------
 
-   procedure Close_File (P : in out Why_File)
-   is
-   begin
-      File_Append_To_Theories (P.File, P.Cur_Theory);
-   end Close_File;
-
-   -------------------------------
-   -- Close_Theory_With_Imports --
-   -------------------------------
-
-   procedure Close_Theory_With_Imports (P : in out Why_File)
-   is
+   procedure Close_Theory (P : in out Why_File;
+                           No_Imports : Boolean := False) is
       use Node_Sets;
       S        : constant Set := Compute_Ada_Nodeset (+P.Cur_Theory);
       Unit_Set : Set := Empty_Set;
    begin
       Add_With_Clause (P, Standard_Why_Package_Name, EW_Import);
 
-      --  S contains all mentioned Ada entities; for each, we get the
-      --  unit where it was defined and add it to the unit set
+      if not No_Imports then
 
-      for N of S loop
-         declare
-            U : Node_Id := Enclosing_Lib_Unit_Node (N);
-         begin
-            if Present (U) then
-               Unit_Set.Include (U);
-            elsif Is_Itype (N) then
-               U := Enclosing_Lib_Unit_Node
-                 (Associated_Node_For_Itype (N));
-               Unit_Set.Include (U);
-            end if;
-         end;
-      end loop;
+         --  S contains all mentioned Ada entities; for each, we get the
+         --  unit where it was defined and add it to the unit set
 
-      --  for each Unit_Set, we add a with clause to the current theory
+         for N of S loop
+            declare
+               U : Node_Id := Enclosing_Lib_Unit_Node (N);
+            begin
+               if Present (U) then
+                  Unit_Set.Include (U);
+               elsif Is_Itype (N) then
+                  U := Enclosing_Lib_Unit_Node
+                    (Associated_Node_For_Itype (N));
+                  Unit_Set.Include (U);
+               end if;
+            end;
+         end loop;
 
-      for N of Unit_Set loop
-         declare
-            Suffix    : constant String :=
-              (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
-               else Context_In_Spec_Suffix);
-         begin
-            Add_With_Clause (P,
-                             File_Name_Without_Suffix (Sloc (N)) &
-                               Suffix,
-                             EW_Import);
-         end;
-      end loop;
-   end Close_Theory_With_Imports;
+         --  for each Unit_Set, we add a with clause to the current theory
+
+         for N of Unit_Set loop
+            declare
+               Suffix    : constant String :=
+                 (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
+                  else Context_In_Spec_Suffix);
+            begin
+               Add_With_Clause (P,
+                                File_Name_Without_Suffix (Sloc (N)) &
+                                  Suffix,
+                                EW_Import);
+            end;
+         end loop;
+      end if;
+      File_Append_To_Theories (P.File, P.Cur_Theory);
+      P.Cur_Theory := Why_Empty;
+   end Close_Theory;
 
    --------
    -- Eq --
@@ -316,38 +310,28 @@ package body Why.Inter is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_File (S : String;
-                                 No_Theory : Boolean := False)
-                                 return Why_File is
-      T : W_Theory_Declaration_Id := Why_Empty;
+   function Make_Empty_Why_File (S : String) return Why_File is
    begin
-      if not No_Theory then
-         T :=
-           New_Theory_Declaration (Name => New_Identifier (Name => "Main"),
-                                   Kind => EW_Module);
-      end if;
       return
         (Name       => new String'(S),
          File       => New_File,
-         Cur_Theory => T);
+         Cur_Theory => Why_Empty);
    end Make_Empty_Why_File;
 
-   -------------------
-   -- Switch_Theory --
-   -------------------
+   -----------------
+   -- Open_Theory --
+   -----------------
 
-   procedure Switch_Theory (P           : in out Why_File;
-                            Name        : String;
-                            Kind        : EW_Theory_Type)
-   is
+   procedure Open_Theory (P    : in out Why_File;
+                          Name : String;
+                          Kind : EW_Theory_Type := EW_Module) is
       S : String := Name;
    begin
       S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
-      File_Append_To_Theories (P.File, P.Cur_Theory);
-      P.Cur_Theory := New_Theory_Declaration
-        (Name => New_Identifier (Name => S),
-         Kind => Kind);
-   end Switch_Theory;
+      P.Cur_Theory :=
+        New_Theory_Declaration (Name => New_Identifier (Name => S),
+                                Kind => Kind);
+   end Open_Theory;
 
    --------
    -- Up --

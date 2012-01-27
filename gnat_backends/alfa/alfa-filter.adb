@@ -66,8 +66,13 @@ package body Alfa.Filter is
       Context_In_Body_File :=
         Make_Empty_Why_File (Prefix & Context_In_Body_Suffix);
       Main_File :=
-        Make_Empty_Why_File (Prefix & Main_Suffix, No_Theory => True);
+        Make_Empty_Why_File (Prefix & Main_Suffix);
 
+      Open_Theory (Types_In_Spec_File, "Main");
+      Open_Theory (Types_In_Body_File, "Main");
+      Open_Theory (Variables_File, "Main");
+      Open_Theory (Context_In_Spec_File, "Main");
+      Open_Theory (Context_In_Body_File, "Main");
       case Nkind (Unit (N)) is
          when N_Package_Body =>
             Spec_Unit :=

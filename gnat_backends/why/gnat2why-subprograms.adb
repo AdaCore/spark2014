@@ -465,7 +465,7 @@ package body Gnat2Why.Subprograms is
       --  We open a new theory, so that the context is fresh for that
       --  subprogram
 
-      Switch_Theory (File, Name, EW_Module);
+      Open_Theory (File, Name);
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -520,7 +520,7 @@ package body Gnat2Why.Subprograms is
                   (Statements
                      (Handled_Statement_Sequence (Body_N))),
               New_Ignore (Prog => Post_Check))));
-      Close_Theory_With_Imports (File);
+      Close_Theory (File);
    end Generate_VCs_For_Subprogram_Body;
 
    --------------------------------------
@@ -535,7 +535,7 @@ package body Gnat2Why.Subprograms is
       Binders : constant Binder_Array := Compute_Binders (E);
       Params  : Translation_Params;
    begin
-      Switch_Theory (File, Name & "__pre", EW_Module);
+      Open_Theory (File, Name & "__pre");
       Params :=
         (Theory        => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
@@ -548,7 +548,7 @@ package body Gnat2Why.Subprograms is
             Name    => New_Pre_Check_Name.Id (Name),
             Binders => Binders,
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
-      Close_Theory_With_Imports (File);
+      Close_Theory (File);
    end Generate_VCs_For_Subprogram_Spec;
 
    ------------------------------------

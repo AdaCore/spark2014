@@ -297,7 +297,6 @@ package body Gnat2Why.Driver is
       procedure Print_Why_File (File : in out Why_File) is
       begin
          Open_Current_File (File.Name.all & ".mlw");
-         Close_File (File);
          Sprint_Why_Node (+File.File, Current_File);
          Close_Current_File;
       end Print_Why_File;
@@ -320,6 +319,12 @@ package body Gnat2Why.Driver is
       end loop;
 
       --  Generate Why3 files
+
+      Close_Theory (Types_In_Spec_File, No_Imports => True);
+      Close_Theory (Types_In_Body_File, No_Imports => True);
+      Close_Theory (Variables_File, No_Imports => True);
+      Close_Theory (Context_In_Spec_File, No_Imports => True);
+      Close_Theory (Context_In_Body_File, No_Imports => True);
 
       Print_Why_File (Types_In_Spec_File);
       Print_Why_File (Types_In_Body_File);
@@ -429,6 +434,7 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
+      Open_Theory (F, "Main");
       --  Generate the inclusion of the GNATprove Why theory
 
       Emit
@@ -495,7 +501,7 @@ package body Gnat2Why.Driver is
       end;
 
       Open_Current_File ("_standard.mlw");
-      Close_File (F);
+      Close_Theory (F, No_Imports => True);
       Sprint_Why_Node (+F.File, Current_File);
       Close_Current_File;
 

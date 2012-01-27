@@ -39,6 +39,7 @@ with Why.Sinfo;                          use Why.Sinfo;
 pragma Warnings (On);
 with Why.Ids;                            use Why.Ids;
 with Why.Atree.Builders;                 use Why.Atree.Builders;
+with Why.Types;                          use Why.Types;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
@@ -62,23 +63,23 @@ package Why.Inter is
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
-   function Make_Empty_Why_File (S : String;
-                                 No_Theory : Boolean := False)
-                                 return Why_File;
-   --  Build an empty Why_File with the given name; If No_Theory is set, no
-   --  initial theory is created.
+   function Make_Empty_Why_File (S : String) return Why_File
+     with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
+   --  Build an empty Why_File with the given name.
 
-   procedure Switch_Theory (P : in out Why_File;
-                            Name : String;
-                            Kind : EW_Theory_Type);
-   --  Close the current theory of P, add it to the current File, and set the
-   --  current theory to a new theory with given name and kind
+   procedure Close_Theory (P : in out Why_File;
+                           No_Imports : Boolean := False)
+     with Pre => (P.Cur_Theory /= Why_Empty),
+          Post => (P.Cur_Theory = Why_Empty);
+   --  Close the current theory by adding all necessary imports and adding the
+   --  theory to the file
+   --  Skip computing imports when No_Imports is set.
 
-   procedure Close_File (P : in out Why_File);
-   --  Close the current theory of P, and add it to the current File.
-
-   procedure Close_Theory_With_Imports (P : in out Why_File);
-   --  Close the current theory by adding all necessary imports
+   procedure Open_Theory (P    : in out Why_File;
+                          Name : String;
+                          Kind : EW_Theory_Type := EW_Module)
+     with Pre => (P.Cur_Theory = Why_Empty);
+   --  Open a new theory in the file.
 
    procedure Add_With_Clause (P        : in out Why_File;
                               Name     : String;
