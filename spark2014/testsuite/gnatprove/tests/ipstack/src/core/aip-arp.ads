@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  RFC826 - Address Resolution Protocol
@@ -28,6 +28,10 @@ is
    procedure ARP_Timer;
    --# global in out Buffers.State, State;
    --  Called periodically to expire old, unused entries
+
+   procedure ARP_Clear;
+   --# global in out Buffers.State, State;
+   --  Remove all non-permanent entries
 
 private
 

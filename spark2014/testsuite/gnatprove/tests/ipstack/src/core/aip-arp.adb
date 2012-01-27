@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.ARPH;
@@ -457,11 +457,15 @@ is
       end if;
    end ARP_Output;
 
+   --  procedure ARP_Flush (All : Boolean)
+   --  Common subprogram for ARP_Timer and ARP_Clear: remove all non-permanent
+   --  entries (if All_Entries is True) or only obsolete ones (if it is False).
+
    ---------------
-   -- ARP_Timer --
+   -- ARP_Flush --
    ---------------
 
-   procedure ARP_Timer
+   procedure ARP_Flush (All_Entries : Boolean)
    --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
    is
       Now        : Time_Types.Time;
@@ -480,7 +484,9 @@ is
 
          if not ARP_Table (AEID).Permanent
                  and then
-               ((ARP_Table (AEID).State = Active
+               (All_Entries
+                  or else
+                (ARP_Table (AEID).State = Active
                    and then AE_Age > Max_ARP_Age_Active * Time_Types.Hz
                    and then Buffers.Empty (ARP_Table (AEID).Packet_Queue))
                   or else
@@ -501,7 +507,29 @@ is
 
          AEID := Next_AEID;
       end loop;
+   end ARP_Flush;
+
+   ---------------
+   -- ARP_Timer --
+   ---------------
+
+   procedure ARP_Timer
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   is
+   begin
+      ARP_Flush (All_Entries => False);
    end ARP_Timer;
+
+   ---------------
+   -- ARP_Clear --
+   ---------------
+
+   procedure ARP_Clear
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   is
+   begin
+      ARP_Flush (All_Entries => True);
+   end ARP_Clear;
 
    --------------
    -- IP_Input --
