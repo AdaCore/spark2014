@@ -758,6 +758,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Theory_Declaration,
                  "Kind", "EW_Theory_Type");
+      New_Field (W_Theory_Declaration,
+                 "Includes", "W_Include_Declaration", Id_Set);
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
       ------------

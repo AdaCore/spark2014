@@ -59,7 +59,6 @@ package Why.Inter is
       record
          Name        : access String;
          File        : W_File_Id;
-         Inclusions  : W_Theory_Declaration_Id;
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
