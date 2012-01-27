@@ -28,7 +28,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
 with Alfa.Common;           use Alfa.Common;
-with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Filter;           use Alfa.Filter;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
@@ -36,7 +35,6 @@ with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
@@ -507,68 +505,23 @@ package body Gnat2Why.Subprograms is
 
       --  Generate code to detect possible run-time errors in body
 
-      declare
-         use Node_Sets;
-
-         Func_Def : constant W_Declaration_Id :=
-           New_Function_Def
-             (Domain  => EW_Prog,
-              Name    => New_Definition_Name.Id (Name),
-              Binders => (1 => Unit_Param),
-              Pre     => Pre,
-              Post    =>
-              +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
-              Def     =>
-              +Compute_Context
-                (Params,
-                 E,
-                 Transform_Statements
-                   (Statements
-                      (Handled_Statement_Sequence (Body_N))),
-                 New_Ignore (Prog => Post_Check)));
-      begin
-
-         Emit (File.Cur_Theory, Func_Def);
-
-         declare
-            S        : constant Set := Compute_Ada_Nodeset (+File.Cur_Theory);
-            Unit_Set : Set := Empty_Set;
-         begin
-
-            --  S contains all mentioned Ada entities; for each, we get the
-            --  unit where it was defined and add it to the unit set
-
-            for N of S loop
-               declare
-                  U : Node_Id := Enclosing_Lib_Unit_Node (N);
-               begin
-                  if Present (U) then
-                     Unit_Set.Include (U);
-                  elsif Is_Itype (N) then
-                     U := Enclosing_Lib_Unit_Node
-                       (Associated_Node_For_Itype (N));
-                     Unit_Set.Include (U);
-                  end if;
-               end;
-            end loop;
-
-            --  for each Unit_Set, we add a with clause to the current theory
-
-            for N of Unit_Set loop
-               declare
-                  Suffix    : constant String :=
-                    (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
-                     else Context_In_Spec_Suffix);
-               begin
-                  Add_With_Clause (File,
-                                   File_Name_Without_Suffix (Sloc (N)) &
-                                     Suffix,
-                                   EW_Import);
-               end;
-            end loop;
-            Add_With_Clause (File, Standard_Why_Package_Name, EW_Import);
-         end;
-      end;
+      Emit (File.Cur_Theory,
+        New_Function_Def
+          (Domain  => EW_Prog,
+           Name    => New_Definition_Name.Id (Name),
+           Binders => (1 => Unit_Param),
+           Pre     => Pre,
+           Post    =>
+             +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
+           Def     =>
+             +Compute_Context
+               (Params,
+                E,
+                Transform_Statements
+                  (Statements
+                     (Handled_Statement_Sequence (Body_N))),
+              New_Ignore (Prog => Post_Check))));
+      Close_Theory_With_Imports (File);
    end Generate_VCs_For_Subprogram_Body;
 
    --------------------------------------
@@ -597,6 +550,7 @@ package body Gnat2Why.Subprograms is
             Name    => New_Pre_Check_Name.Id (Name),
             Binders => Binders,
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
+      Close_Theory_With_Imports (File);
    end Generate_VCs_For_Subprogram_Spec;
 
    ------------------------------------

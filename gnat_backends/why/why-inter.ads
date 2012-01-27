@@ -77,6 +77,9 @@ package Why.Inter is
    procedure Close_File (P : in out Why_File);
    --  Close the current theory of P, and add it to the current File.
 
+   procedure Close_Theory_With_Imports (P : in out Why_File);
+   --  Close the current theory by adding all necessary imports
+
    procedure Add_With_Clause (P        : in out Why_File;
                               Name     : String;
                               Use_Kind : EW_Clone_Type := EW_Export);

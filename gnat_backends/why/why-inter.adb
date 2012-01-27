@@ -24,7 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;
-
+with Alfa.Common;          use Alfa.Common;
+with Alfa.Filter;         use Alfa.Filter;
+with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
 with Sem_Util;            use Sem_Util;
 with Stand;               use Stand;
@@ -34,6 +36,7 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Types;           use Why.Types;
 
 package body Why.Inter is
@@ -120,6 +123,51 @@ package body Why.Inter is
    begin
       File_Append_To_Theories (P.File, P.Cur_Theory);
    end Close_File;
+
+   -------------------------------
+   -- Close_Theory_With_Imports --
+   -------------------------------
+
+   procedure Close_Theory_With_Imports (P : in out Why_File)
+   is
+      use Node_Sets;
+      S        : constant Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+      Unit_Set : Set := Empty_Set;
+   begin
+      Add_With_Clause (P, Standard_Why_Package_Name, EW_Import);
+
+      --  S contains all mentioned Ada entities; for each, we get the
+      --  unit where it was defined and add it to the unit set
+
+      for N of S loop
+         declare
+            U : Node_Id := Enclosing_Lib_Unit_Node (N);
+         begin
+            if Present (U) then
+               Unit_Set.Include (U);
+            elsif Is_Itype (N) then
+               U := Enclosing_Lib_Unit_Node
+                 (Associated_Node_For_Itype (N));
+               Unit_Set.Include (U);
+            end if;
+         end;
+      end loop;
+
+      --  for each Unit_Set, we add a with clause to the current theory
+
+      for N of Unit_Set loop
+         declare
+            Suffix    : constant String :=
+              (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
+               else Context_In_Spec_Suffix);
+         begin
+            Add_With_Clause (P,
+                             File_Name_Without_Suffix (Sloc (N)) &
+                               Suffix,
+                             EW_Import);
+         end;
+      end loop;
+   end Close_Theory_With_Imports;
 
    --------
    -- Eq --
