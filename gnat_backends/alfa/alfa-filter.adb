@@ -110,7 +110,7 @@ package body Alfa.Filter is
 
       --  Take into account dependencies
       --  Add standard package only to types_vars for spec
-      Add_With_Clause (Types_In_Spec_File, Standard_Why_Package_Name);
+      Add_With_Clause (Types_In_Spec_File, Standard_Why_Package_Name, "Main");
       --  Add "vertical" dependencies for a single package
       Add_With_Clause (Types_In_Body_File, Types_In_Spec_File);
       Add_With_Clause (Variables_File, Types_In_Body_File);
@@ -133,10 +133,10 @@ package body Alfa.Filter is
                      begin
                         Add_With_Clause
                           (Types_In_Spec_File,
-                           Pkg_Name & Types_In_Spec_Suffix);
+                           Pkg_Name & Types_In_Spec_Suffix, "Main");
                         Add_With_Clause
                           (Context_In_Spec_File,
-                           Pkg_Name & Context_In_Spec_Suffix);
+                           Pkg_Name & Context_In_Spec_Suffix, "Main");
                      end;
 
                   when others =>
@@ -164,7 +164,7 @@ package body Alfa.Filter is
 
                Add_With_Clause
                  (Context_In_Spec_File,
-                  Pkg_Name & Variables_Suffix);
+                  Pkg_Name & Variables_Suffix, "Main");
 
                --  If seperate units are used, units may be with'ed in the
                --  separate unit, and not directly in the main unit, hence the
@@ -172,13 +172,13 @@ package body Alfa.Filter is
 
                Add_With_Clause
                  (Types_In_Body_File,
-                  Pkg_Name & Types_In_Spec_Suffix);
+                  Pkg_Name & Types_In_Spec_Suffix, "Main");
                Add_With_Clause
                  (Variables_File,
-                  Pkg_Name & Types_In_Body_Suffix);
+                  Pkg_Name & Types_In_Body_Suffix, "Main");
                Add_With_Clause
                  (Context_In_Body_File,
-                  Pkg_Name & Context_In_Spec_Suffix);
+                  Pkg_Name & Context_In_Spec_Suffix, "Main");
             end;
          end loop;
       end if;

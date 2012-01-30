@@ -440,9 +440,10 @@ package body Gnat2Why.Driver is
       Emit
         (F.Cur_Theory,
          New_Include_Declaration
-           (Kind => EW_Module,
+           (Kind     => EW_Module,
             Use_Kind => EW_Export,
-            Name => New_Identifier (Name => "_gnatprove_standard")));
+            File     => New_Identifier (Name => "_gnatprove_standard"),
+            T_Name   => New_Identifier (Name => "Main")));
 
       Decl :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));

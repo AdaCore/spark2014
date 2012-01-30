@@ -82,7 +82,8 @@ package Why.Inter is
    --  Open a new theory in the file.
 
    procedure Add_With_Clause (P        : in out Why_File;
-                              Name     : String;
+                              File     : String;
+                              T_Name     : String;
                               Use_Kind : EW_Clone_Type := EW_Export);
    --  Add a package name to the context of a Why package.
 

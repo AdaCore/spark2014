@@ -1658,8 +1658,9 @@ package body Why.Atree.Sprint is
       P (O, " ");
       P (O, Get_Kind (Node), True);
       P (O, " """);
-      Traverse (State, +Get_Name (Node));
-      P (O, """.Main");
+      Traverse (State, +Get_File (Node));
+      P (O, """.");
+      Traverse (State, +Get_T_Name (Node));
       NL (O);
       State.Control := Abandon_Children;
    end Include_Declaration_Pre_Op;

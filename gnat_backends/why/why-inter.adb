@@ -50,12 +50,14 @@ package body Why.Inter is
    ---------------------
 
    procedure Add_With_Clause (P        : in out Why_File;
-                              Name     : String;
+                              File     : String;
+                              T_Name   : String;
                               Use_Kind : EW_Clone_Type := EW_Export) is
    begin
       Theory_Declaration_Append_To_Includes
         (P.Cur_Theory,
-         New_Include_Declaration (Name     => New_Identifier (Name => Name),
+         New_Include_Declaration (File     => New_Identifier (Name => File),
+                                  T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => EW_Module));
    end Add_With_Clause;
@@ -64,7 +66,7 @@ package body Why.Inter is
                               Other    : Why_File;
                               Use_Kind : EW_Clone_Type := EW_Export) is
    begin
-      Add_With_Clause (P, Other.Name.all, Use_Kind);
+      Add_With_Clause (P, Other.Name.all, "Main", Use_Kind);
    end Add_With_Clause;
 
    -------------------
@@ -123,7 +125,7 @@ package body Why.Inter is
       S        : constant Set := Compute_Ada_Nodeset (+P.Cur_Theory);
       Unit_Set : Set := Empty_Set;
    begin
-      Add_With_Clause (P, Standard_Why_Package_Name, EW_Import);
+      Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
 
       if not No_Imports then
 
@@ -155,6 +157,7 @@ package body Why.Inter is
                Add_With_Clause (P,
                                 File_Name_Without_Suffix (Sloc (N)) &
                                   Suffix,
+                                "Main",
                                 EW_Import);
             end;
          end loop;
