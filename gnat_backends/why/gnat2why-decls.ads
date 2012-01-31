@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;   use Types;
-with Why.Ids; use Why.Ids;
+with Types;     use Types;
+with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Decls is
 
@@ -49,7 +50,7 @@ package Gnat2Why.Decls is
    --  declaration
 
    procedure Translate_Constant
-     (Theory : W_Theory_Declaration_Id;
+     (File   : in out Why_File;
       E      : Entity_Id);
    --  Called for IN parameters, named numbers and constant objects
 

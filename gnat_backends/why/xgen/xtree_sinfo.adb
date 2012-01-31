@@ -713,7 +713,7 @@ package body Xtree_Sinfo is
       ---------------------------
 
       New_Field (W_Include_Declaration,
-                 "File", "W_Identifier", Id_One);
+                 "File", "W_Identifier", Id_Lone);
       New_Field (W_Include_Declaration,
                  "T_Name", "W_Identifier", Id_One);
       New_Field (W_Include_Declaration,

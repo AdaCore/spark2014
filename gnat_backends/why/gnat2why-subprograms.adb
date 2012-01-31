@@ -120,7 +120,8 @@ package body Gnat2Why.Subprograms is
    --  For local variables that are introduced by the compiler, add a "let"
    --  binding to Why body for each local variable of the procedure.
 
-   function Compute_Effects (E : Entity_Id) return W_Effects_Id;
+   function Compute_Effects (File : in out Why_File;
+                             E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
    function Compute_Logic_Binders (E : Entity_Id) return Binder_Array;
@@ -261,7 +262,8 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects (E : Entity_Id) return W_Effects_Id is
+   function Compute_Effects (File : in out Why_File;
+                             E    : Entity_Id) return W_Effects_Id is
       Read_Names      : Name_Set.Set;
       Write_Names     : Name_Set.Set;
       Write_All_Names : UString_Set.Set;
@@ -322,6 +324,9 @@ package body Gnat2Why.Subprograms is
          Effects_Append_To_Writes (Eff,
                                    New_Identifier (Name => To_String (Name)));
       end loop;
+
+      Add_Effect_Imports (File, Read_Names);
+      Add_Effect_Imports (File, Write_Names);
 
       return +Eff;
    end Compute_Effects;
@@ -600,7 +605,7 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (Theory : W_Theory_Declaration_Id;
+     (File   : in out Why_File;
       E      : Entity_Id)
    is
       Name       : constant String := Full_Name (E);
@@ -609,12 +614,14 @@ package body Gnat2Why.Subprograms is
       Logic_Func_Binders : constant Binder_Array :=
                              Compute_Logic_Binders (E);
 
-      Params : constant Translation_Params :=
-                 (Theory      => Theory,
-                  Phase       => Translation,
-                  Ref_Allowed => False);
-
+      Params : Translation_Params;
    begin
+      Open_Theory (File, Name);
+      Params :=
+        (Theory      => File.Cur_Theory,
+         Phase       => Translation,
+         Ref_Allowed => False);
+
       --  Given an expression function F with expression E, define an axiom
       --  that states that: "for all <args> => F(<args>) = E".
       --  There is no need to use the precondition here, as the above axiom
@@ -622,7 +629,7 @@ package body Gnat2Why.Subprograms is
 
       if Etype (E) = Standard_Boolean then
          Emit
-           (Theory,
+           (File.Cur_Theory,
             New_Defining_Bool_Axiom
               (Name    => Logic_Func_Name.Id (Name),
                Binders => Logic_Func_Binders,
@@ -632,7 +639,7 @@ package body Gnat2Why.Subprograms is
 
       else
          Emit
-           (Theory,
+           (File.Cur_Theory,
             New_Defining_Axiom
               (Name        => Logic_Func_Name.Id (Name),
                Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
@@ -644,6 +651,7 @@ package body Gnat2Why.Subprograms is
                   Domain        => EW_Term,
                   Params        => Params)));
       end if;
+      Close_Theory (File);
    end Translate_Expression_Function_Body;
 
    -------------------------------
@@ -651,26 +659,31 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (Theory : W_Theory_Declaration_Id;
+     (File   : in out Why_File;
       E      : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
-      Effects      : constant W_Effects_Id := Compute_Effects (E);
+      Effects      : W_Effects_Id;
       Logic_Func_Binders : constant Binder_Array :=
                              Compute_Logic_Binders (E);
 
-      Params : constant Translation_Params :=
-                 (Theory      => Theory,
-                  Phase       => Translation,
-                  Ref_Allowed => True);
-
-      Pre          : constant W_Pred_Id :=
-              +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-      Post         : constant W_Pred_Id :=
-              +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
       Func_Binders : constant Binder_Array := Compute_Binders (E);
-
+      Params       : Translation_Params;
+      Pre          : W_Pred_Id;
+      Post         : W_Pred_Id;
    begin
+      Open_Theory (File, Name);
+
+      Params :=
+        (Theory      => File.Cur_Theory,
+         Phase       => Translation,
+         Ref_Allowed => True);
+
+      Effects := Compute_Effects (File, E);
+
+      Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+
       if Ekind (E) = E_Function then
          declare
             Logic_Func_Args    : constant W_Expr_Array :=
@@ -702,7 +715,7 @@ package body Gnat2Why.Subprograms is
             --  Generate a logic function
 
             Emit
-              (Theory,
+              (File.Cur_Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Logic_Func_Name.Id (Name),
@@ -712,7 +725,7 @@ package body Gnat2Why.Subprograms is
                        (Etype (E))));
 
             Emit
-              (Theory,
+              (File.Cur_Theory,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Program_Func_Name.Id (Name),
@@ -724,7 +737,7 @@ package body Gnat2Why.Subprograms is
          end;
       else
          Emit
-           (Theory,
+           (File.Cur_Theory,
             New_Function_Decl
               (Domain      => EW_Prog,
                Name        => Program_Func_Name.Id (Name),
@@ -735,6 +748,7 @@ package body Gnat2Why.Subprograms is
                Post        => Post));
       end if;
 
+      Close_Theory (File);
    end Translate_Subprogram_Spec;
 
 end Gnat2Why.Subprograms;

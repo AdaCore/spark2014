@@ -35,8 +35,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Inter;            use Why.Inter;
-with Why.Types; use Why.Types;
+with Why.Types;            use Why.Types;
 
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
@@ -190,7 +189,7 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Constant
-     (Theory : W_Theory_Declaration_Id;
+     (File   : in out Why_File;
       E      : Entity_Id)
    is
       Name : constant String := Full_Name (E);
@@ -199,6 +198,7 @@ package body Gnat2Why.Decls is
       Def  : Node_Id;
 
    begin
+      Open_Theory (File, Name);
       --  We do not currently translate the definition of delayed constants,
       --  in order to support parameterized verification not depending on the
       --  value of a delayed constant. This could be modified to give access to
@@ -221,7 +221,7 @@ package body Gnat2Why.Decls is
       --  necessary and possible.
 
       Emit_Top_Level_Declarations
-        (Theory      => Theory,
+        (Theory      => File.Cur_Theory,
          Name        => New_Identifier (Name => Name),
          Binders     => (1 .. 0 => <>),
          Return_Type => Typ,
@@ -231,9 +231,10 @@ package body Gnat2Why.Decls is
                Domain => EW_Term,
                Def    => (if Present (Def) then
                           Get_Pure_Logic_Term_If_Possible
-                            (Theory, Def, Type_Of_Node (E))
+                            (File.Cur_Theory, Def, Type_Of_Node (E))
                           else Why_Empty),
                others => <>)));
+      Close_Theory (File);
    end Translate_Constant;
 
 end Gnat2Why.Decls;

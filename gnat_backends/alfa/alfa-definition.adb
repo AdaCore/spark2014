@@ -28,7 +28,6 @@ with Ada.Text_IO;           use Ada.Text_IO;
 
 with AA_Util;               use AA_Util;
 with Alloc;                 use Alloc;
-with Atree;                 use Atree;
 with Debug;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
@@ -111,9 +110,6 @@ package body Alfa.Definition is
      (Present (Corresponding_Body (N))
        and then Is_Main_Cunit
          (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
-
-   function Is_In_Standard_Package (N : Node_Id) return Boolean is
-      (Sloc (N) = Standard_Location);
 
    function In_Main_Unit_Body (N : Node_Id) return Boolean;
    function In_Main_Unit_Spec (N : Node_Id) return Boolean;

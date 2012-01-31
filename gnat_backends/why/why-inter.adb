@@ -22,9 +22,9 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-
+with AA_Util;             use AA_Util;
 with Ada.Characters.Handling;
-with Alfa.Common;          use Alfa.Common;
+with Alfa.Common;         use Alfa.Common;
 with Alfa.Filter;         use Alfa.Filter;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
@@ -38,12 +38,35 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 
+with Gnat2Why.Decls;      use Gnat2Why.Decls;
+
 package body Why.Inter is
 
    package Type_Hierarchy is
      new Constant_Tree (EW_Base_Type, EW_Unit);
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
+
+   ------------------------
+   -- Add_Effect_Imports --
+   ------------------------
+
+   procedure Add_Effect_Imports (P : in out Why_File;
+                                 S : Name_Set.Set)
+   is
+   begin
+      for Var of S loop
+         declare
+            F : constant Entity_Name := File_Of_Entity (Var);
+         begin
+            Add_With_Clause (P,
+                             File_Name_Without_Suffix (F.all) &
+                               Variables_Suffix,
+                             "Main",
+                             EW_Import);
+         end;
+      end loop;
+   end Add_Effect_Imports;
 
    ---------------------
    -- Add_With_Clause --
@@ -53,10 +76,12 @@ package body Why.Inter is
                               File     : String;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type := EW_Export) is
+      File_Ident : constant W_Identifier_Id :=
+        (if File = "" then Why_Empty else New_Identifier (Name => File));
    begin
       Theory_Declaration_Append_To_Includes
         (P.Cur_Theory,
-         New_Include_Declaration (File     => New_Identifier (Name => File),
+         New_Include_Declaration (File     => File_Ident,
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => EW_Module));
@@ -120,48 +145,128 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory (P : in out Why_File;
-                           No_Imports : Boolean := False) is
-      use Node_Sets;
-      S        : constant Set := Compute_Ada_Nodeset (+P.Cur_Theory);
-      Unit_Set : Set := Empty_Set;
-   begin
-      Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
+                           No_Imports : Boolean := False)
+   is
 
+      function File_Base_Name_Of_Entity (E : Entity_Id) return String;
+      --  return the base name of the unit in which the entity is
+      --  defined
+
+      function File_Suffix (E : Entity_Id) return String;
+      --  compute the file suffix of the unit in which the entity is defined
+
+      function Theory_Name (E : Entity_Id) return String;
+      --  compute the name of the theory in which the Why equivalent of the
+      --  entity is defined
+
+      ------------------------------
+      -- File_Base_Name_Of_Entity --
+      ------------------------------
+
+      function File_Base_Name_Of_Entity (E : Entity_Id) return String is
+         U : Node_Id;
+      begin
+         if Is_In_Standard_Package (E) then
+            return "_standard";
+         end if;
+         U := Enclosing_Lib_Unit_Node (E);
+         if not Present (U) and then Is_Itype (E) then
+            U := Enclosing_Lib_Unit_Node (Associated_Node_For_Itype (E));
+         end if;
+         return File_Name_Without_Suffix (Sloc (U));
+      end File_Base_Name_Of_Entity;
+
+      -----------------
+      -- File_Suffix --
+      -----------------
+
+      function File_Suffix (E : Entity_Id) return String is
+      begin
+         if Is_In_Standard_Package (E) then
+            return "";
+         end if;
+         case Ekind (E) is
+            when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+               if Is_In_Current_Unit (E) and then
+                 Body_Entities.Contains (E) then
+                  return Context_In_Body_Suffix;
+               else
+                  return Context_In_Spec_Suffix;
+               end if;
+
+            when Object_Kind =>
+               if not Is_Mutable (E) then
+                  if Is_In_Current_Unit (E) and then
+                    Body_Entities.Contains (E) then
+                     return Context_In_Body_Suffix;
+                  else
+                     return Context_In_Spec_Suffix;
+                  end if;
+               else
+                  return Variables_Suffix;
+               end if;
+
+            when Type_Kind =>
+               return Types_In_Body_Suffix;
+
+            when others =>
+               return Variables_Suffix;
+
+         end case;
+      end File_Suffix;
+
+      -----------------
+      -- Theory_Name --
+      -----------------
+
+      function Theory_Name (E : Entity_Id) return String is
+      begin
+         if Is_In_Standard_Package (E) then
+            return "Main";
+         end if;
+         case Ekind (E) is
+            when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+               return Full_Name (E);
+
+            when Object_Kind =>
+               if not Is_Mutable (E) then
+                  return Full_Name (E);
+               else
+                  return "Main";
+               end if;
+
+            when others =>
+               return "Main";
+
+         end case;
+      end Theory_Name;
+
+      use Node_Sets;
+
+      S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+   begin
       if not No_Imports then
+         Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
 
          for N of S loop
             declare
-               U : Node_Id := Enclosing_Lib_Unit_Node (N);
+               File_Name : constant String :=
+                 File_Base_Name_Of_Entity (N) & File_Suffix (N);
+               T         : String := Theory_Name (N);
             begin
-               if Present (U) then
-                  Unit_Set.Include (U);
-               elsif Is_Itype (N) then
-                  U := Enclosing_Lib_Unit_Node
-                    (Associated_Node_For_Itype (N));
-                  Unit_Set.Include (U);
+               T (T'First) := Ada.Characters.Handling.To_Upper (T (T'First));
+               if File_Name /= P.Name.all then
+                  Add_With_Clause (P, File_Name, T, EW_Import);
+               else
+                  Add_With_Clause (P, "", T, EW_Import);
                end if;
             end;
          end loop;
-
-         --  for each Unit_Set, we add a with clause to the current theory
-
-         for N of Unit_Set loop
-            declare
-               Suffix    : constant String :=
-                 (if Is_In_Current_Unit (N) then Context_In_Body_Suffix
-                  else Context_In_Spec_Suffix);
-            begin
-               Add_With_Clause (P,
-                                File_Name_Without_Suffix (Sloc (N)) &
-                                  Suffix,
-                                "Main",
-                                EW_Import);
-            end;
-         end loop;
       end if;
+
       File_Append_To_Theories (P.File, P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
    end Close_Theory;

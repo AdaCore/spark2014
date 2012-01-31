@@ -27,6 +27,8 @@ with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 
+with Alfa.Frame_Conditions;              use Alfa.Frame_Conditions;
+
 with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;
 with Types;                              use Types;
@@ -91,6 +93,10 @@ package Why.Inter is
                               Other    : Why_File;
                               Use_Kind : EW_Clone_Type := EW_Export);
    --  Add a package name to the context of a Why package.
+
+   procedure Add_Effect_Imports (P : in out Why_File;
+                                 S : Name_Set.Set);
+   --  Add all import clauses that are necessary for the given set of variables
 
    EW_Bool_Type : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Bool);

@@ -22,7 +22,7 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-
+with Atree;    use Atree;
 with Sem_Util; use Sem_Util;
 
 with Why.Inter; use Why.Inter;
@@ -82,6 +82,10 @@ package Alfa.Definition is
    function Is_In_Current_Unit (N : Node_Id) return Boolean;
    --  Return True when the node belongs to the Spec or Body of the current
    --  unit.
+
+   function Is_In_Standard_Package (N : Node_Id) return Boolean is
+     (Sloc (N) = Standard_Location or else
+        Sloc (N) = Standard_ASCII_Location);
 
    type Alfa_Decl is
      (Alfa_Object,

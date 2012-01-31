@@ -71,8 +71,6 @@ package body Alfa.Filter is
       Open_Theory (Types_In_Spec_File, "Main");
       Open_Theory (Types_In_Body_File, "Main");
       Open_Theory (Variables_File, "Main");
-      Open_Theory (Context_In_Spec_File, "Main");
-      Open_Theory (Context_In_Body_File, "Main");
       case Nkind (Unit (N)) is
          when N_Package_Body =>
             Spec_Unit :=
@@ -114,8 +112,6 @@ package body Alfa.Filter is
       --  Add "vertical" dependencies for a single package
       Add_With_Clause (Types_In_Body_File, Types_In_Spec_File);
       Add_With_Clause (Variables_File, Types_In_Body_File);
-      Add_With_Clause (Context_In_Spec_File, Variables_File);
-      Add_With_Clause (Context_In_Body_File, Context_In_Spec_File);
 
       --  for each with clause in the package spec, add horizontal
       --  dependencies between spec packages
@@ -134,9 +130,6 @@ package body Alfa.Filter is
                         Add_With_Clause
                           (Types_In_Spec_File,
                            Pkg_Name & Types_In_Spec_Suffix, "Main");
-                        Add_With_Clause
-                          (Context_In_Spec_File,
-                           Pkg_Name & Context_In_Spec_Suffix, "Main");
                      end;
 
                   when others =>
@@ -162,10 +155,6 @@ package body Alfa.Filter is
                --  units which are not directly with'ed, hence the need to
                --  browse all ALI files.
 
-               Add_With_Clause
-                 (Context_In_Spec_File,
-                  Pkg_Name & Variables_Suffix, "Main");
-
                --  If seperate units are used, units may be with'ed in the
                --  separate unit, and not directly in the main unit, hence the
                --  need to browse all ALI files.
@@ -176,9 +165,6 @@ package body Alfa.Filter is
                Add_With_Clause
                  (Variables_File,
                   Pkg_Name & Types_In_Body_Suffix, "Main");
-               Add_With_Clause
-                 (Context_In_Body_File,
-                  Pkg_Name & Context_In_Spec_Suffix, "Main");
             end;
          end loop;
       end if;

@@ -77,7 +77,7 @@ package body Gnat2Why.Driver is
      (E                : Entity_Id;
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
-      Context_Theory   : W_Theory_Declaration_Id;
+      Context_File     : in out Why_File;
       Main_File        : in out Why_File);
    --  Take an Ada entity and translate it to Why. Depending on the entity and
    --  whether it is in Alfa or not, declarations may be issued in the
@@ -307,14 +307,14 @@ package body Gnat2Why.Driver is
       for E of Spec_Entities loop
          Translate_Entity (E, Types_In_Spec_File.Cur_Theory,
                            Variables_File.Cur_Theory,
-                           Context_In_Spec_File.Cur_Theory,
+                           Context_In_Spec_File,
                            Main_File);
       end loop;
 
       for E of Body_Entities loop
          Translate_Entity (E, Types_In_Body_File.Cur_Theory,
                            Variables_File.Cur_Theory,
-                           Context_In_Body_File.Cur_Theory,
+                           Context_In_Body_File,
                            Main_File);
       end loop;
 
@@ -323,8 +323,6 @@ package body Gnat2Why.Driver is
       Close_Theory (Types_In_Spec_File, No_Imports => True);
       Close_Theory (Types_In_Body_File, No_Imports => True);
       Close_Theory (Variables_File, No_Imports => True);
-      Close_Theory (Context_In_Spec_File, No_Imports => True);
-      Close_Theory (Context_In_Body_File, No_Imports => True);
 
       Print_Why_File (Types_In_Spec_File);
       Print_Why_File (Types_In_Body_File);
@@ -351,7 +349,7 @@ package body Gnat2Why.Driver is
      (E                : Entity_Id;
       Types_Theory     : W_Theory_Declaration_Id;
       Variables_Theory : W_Theory_Declaration_Id;
-      Context_Theory   : W_Theory_Declaration_Id;
+      Context_File     : in out Why_File;
       Main_File        : in out Why_File) is
    begin
       case Ekind (E) is
@@ -364,13 +362,13 @@ package body Gnat2Why.Driver is
 
          when Named_Kind =>
             if Object_Is_In_Alfa (Unique (E)) then
-               Translate_Constant (Context_Theory, E);
+               Translate_Constant (Context_File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable (E) then
                if Object_Is_In_Alfa (Unique (E)) then
-                  Translate_Constant (Context_Theory, E);
+                  Translate_Constant (Context_File, E);
                end if;
             else
                Translate_Variable (Variables_Theory, E);
@@ -380,7 +378,7 @@ package body Gnat2Why.Driver is
               E_Subprogram_Body =>
 
             if Spec_Is_In_Alfa (Unique (E)) then
-               Translate_Subprogram_Spec (Context_Theory, E);
+               Translate_Subprogram_Spec (Context_File, E);
                Generate_VCs_For_Subprogram_Spec (Main_File, E);
             end if;
 
@@ -391,7 +389,7 @@ package body Gnat2Why.Driver is
                --  postcondition, when it is in Alfa.
 
                if Present (Get_Expression_Function (E)) then
-                  Translate_Expression_Function_Body (Context_Theory, E);
+                  Translate_Expression_Function_Body (Context_File, E);
                end if;
 
                Generate_VCs_For_Subprogram_Body (Main_File, E);
@@ -415,7 +413,7 @@ package body Gnat2Why.Driver is
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
          Translate_Entity (T, F.Cur_Theory, F.Cur_Theory,
-                           F.Cur_Theory, F);
+                           F, F);
       end Add_Standard_Type;
 
       Decl : Node_Id;
@@ -453,8 +451,7 @@ package body Gnat2Why.Driver is
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
                Translate_Entity (Unique_Defining_Entity (Decl),
-                                 F.Cur_Theory, F.Cur_Theory,
-                                 F.Cur_Theory, F);
+                                 F.Cur_Theory, F.Cur_Theory, F, F);
 
             when others =>
                null;

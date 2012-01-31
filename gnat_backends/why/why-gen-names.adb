@@ -114,9 +114,15 @@ package body Why.Gen.Names is
                   end if;
 
                when EW_Abstract =>
-                  return
-                    Conversion_From.Id (Full_Name (Get_Ada_Node (+To)),
-                                        Why_Scalar_Type_Name (From_Kind));
+                  declare
+                     A : constant Node_Id := Get_Ada_Node (+To);
+                  begin
+                     return
+                       Conversion_From.Id (Ada_Node => A,
+                                           L_Name   => Full_Name (A),
+                                           R_Name   =>
+                                             Why_Scalar_Type_Name (From_Kind));
+                  end;
             end case;
 
          when EW_Array =>
@@ -134,9 +140,15 @@ package body Why.Gen.Names is
                   raise Not_Implemented;
 
                when EW_Scalar =>
-                  return
-                    Conversion_To.Id (Full_Name (Get_Ada_Node (+From)),
-                                      Why_Scalar_Type_Name (To_Kind));
+                  declare
+                     A : constant Node_Id := Get_Ada_Node (+From);
+                  begin
+                     return
+                       Conversion_To.Id (Ada_Node => A,
+                                         L_Name   => Full_Name (A),
+                                         R_Name   =>
+                                           Why_Scalar_Type_Name (To_Kind));
+                  end;
                when EW_Array =>
                   return
                     Conversion_To.Id
