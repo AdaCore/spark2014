@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                      Copyright (C) 2011-2012, AdaCore                    --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,6 +32,7 @@
 --  hashing of strings in computations over sets/maps of entities.
 
 with Ada.Containers;             use Ada.Containers;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;
 
@@ -55,6 +56,14 @@ package Alfa.Frame_Conditions is
       "="                 => Name_Equal);
    use Name_Set;
 
+   package Name_Map is new Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Entity_Name,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => Name_Equal);
+   use Name_Map;
+
    procedure Display_Maps;
    --  Send maps to output for debug
 
@@ -71,6 +80,9 @@ package Alfa.Frame_Conditions is
    function Has_Global_Writes (E : Entity_Id) return Boolean is
      (not Get_Writes (E).Is_Empty);
    --  Return True if subprogram E writes to global variables
+
+   function File_Of_Entity (E : Entity_Name) return Entity_Name;
+   --  Return the name of the file defining the entity E
 
    procedure Load_Alfa (ALI_Filename : String);
    --  Extract xref information from an ALI file

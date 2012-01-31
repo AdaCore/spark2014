@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011, AdaCore                       --
+--                     Copyright (C) 2011-2012, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Unchecked_Deallocation;
 
@@ -104,11 +103,12 @@ package body Alfa.Frame_Conditions is
 
    Scopes  : Id_Set.Set;  --  All scope entities
 
-   Defines : Id_Map.Map;  --  Entities defined by each scope
-   Writes  : Id_Map.Map;  --  Entities written in each scope
-   Reads   : Id_Map.Map;  --  Entities read in each scope
-   Callers : Id_Map.Map;  --  Callers for each subprogram
-   Calls   : Id_Map.Map;  --  Subprograms called in each subprogram
+   File_Defines : Name_Map.Map;  --  File defining each entities
+   Defines      : Id_Map.Map;  --  Entities defined by each scope
+   Writes       : Id_Map.Map;  --  Entities written in each scope
+   Reads        : Id_Map.Map;  --  Entities read in each scope
+   Callers      : Id_Map.Map;  --  Callers for each subprogram
+   Calls        : Id_Map.Map;  --  Subprograms called in each subprogram
 
    Next_Id : Id := 1;     --  Next available identity
 
@@ -473,6 +473,15 @@ package body Alfa.Frame_Conditions is
       Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
+   --------------------
+   -- File_Of_Entity --
+   --------------------
+
+   function File_Of_Entity (E : Entity_Name) return Entity_Name is
+   begin
+      return File_Defines.Element (E);
+   end File_Of_Entity;
+
    ---------------
    -- Free_SCCs --
    ---------------
@@ -704,7 +713,7 @@ package body Alfa.Frame_Conditions is
                   Srec : Alfa_Scope_Record renames Alfa_Scope_Table.Table (S);
                   Sco  : constant Scope_Name :=
                            Scope_Name'(File_Num  => Srec.File_Num,
-                                      Scope_Num => Srec.Scope_Num);
+                                       Scope_Num => Srec.Scope_Num);
                   Ent  : constant Entity_Name :=
                            Make_Entity_Name (Srec.Scope_Name);
                begin
@@ -720,7 +729,7 @@ package body Alfa.Frame_Conditions is
                   if Srec.Spec_File_Num /= 0 then
                      Scope_Specs.Insert (Sco,
                        Scope_Name'(File_Num  => Srec.Spec_File_Num,
-                                  Scope_Num => Srec.Spec_Scope_Num));
+                                   Scope_Num => Srec.Spec_Scope_Num));
                   end if;
                end;
             end loop;
@@ -737,12 +746,16 @@ package body Alfa.Frame_Conditions is
                  .. Alfa_Scope_Table.Table (S).To_Xref
                loop
                   Do_One_Xref : declare
+                     Frec : Alfa_File_Record renames
+                              Alfa_File_Table.Table (F);
                      Srec : Alfa_Scope_Record renames
                               Alfa_Scope_Table.Table (S);
                      Xref : Alfa_Xref_Record renames Alfa_Xref_Table.Table (X);
 
+                     File_Entity : constant Entity_Name :=
+                                     Make_Entity_Name (Frec.File_Name);
                      Ref_Entity : constant Entity_Name :=
-                                    Make_Entity_Name (Xref.Entity_Name);
+                                     Make_Entity_Name (Xref.Entity_Name);
 
                      Ref_Scope     : Scope_Name;
                      Def_Scope     : Scope_Name;
@@ -755,7 +768,7 @@ package body Alfa.Frame_Conditions is
                      --  Compute the entity for the scope being referenced
 
                      Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
-                                             Scope_Num => Xref.Scope_Num);
+                                              Scope_Num => Xref.Scope_Num);
                      if Scope_Specs.Contains (Ref_Scope) then
                         Ref_Scope := Scope_Specs.Element (Ref_Scope);
                      end if;
@@ -764,7 +777,7 @@ package body Alfa.Frame_Conditions is
                      --  Compute the entity for the scope of the definition
 
                      Def_Scope := Scope_Name'(File_Num  => Srec.File_Num,
-                                             Scope_Num => Srec.Scope_Num);
+                                              Scope_Num => Srec.Scope_Num);
                      if Scope_Specs.Contains (Def_Scope) then
                         Def_Scope := Scope_Specs.Element (Def_Scope);
                      end if;
@@ -778,6 +791,7 @@ package body Alfa.Frame_Conditions is
                         Add_To_Map (Defines,
                                     Id_Of_Entity (Def_Scope_Ent),
                                     Id_Of_Entity (Ref_Entity));
+                        File_Defines.Include (Ref_Entity, File_Entity);
                      end if;
 
                      --  Register xref according to type
@@ -978,7 +992,7 @@ package body Alfa.Frame_Conditions is
 
       begin
          --  Initialize all maps so that each subprogram has an entry in each
-         --  map.
+         --  map. This is not needed for File_Defines.
 
          Set_Default_To_Empty (Defines, Scopes);
          Set_Default_To_Empty (Writes,  Scopes);
