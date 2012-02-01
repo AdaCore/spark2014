@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Unchecked_Conversion;
@@ -8,11 +8,11 @@ with Ada.Unchecked_Conversion;
 package body AIP.NIF is
 
    type Netif is record
-      State             : Netif_State;
-      --  Interface state
-
       Name              : Netif_Name;
       --  Unique name of interface
+
+      State             : Netif_State;
+      --  Interface state
 
       LL_Address        : LL_Address_Storage;
       --  Link-level address

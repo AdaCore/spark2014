@@ -11,6 +11,8 @@ with Raw_UDP_Syslog;
 with Raw_UDP_Dispatcher;
 pragma Warnings (Off, Raw_UDP_Dispatcher);
 
+with Shell;
+
 with AIP.IO;
 with AIP.OSAL;
 with AIP.OSAL.Single;
@@ -26,10 +28,8 @@ procedure Echop is
    Poll_Freq : constant := 100;
    --  100 ms
 
-   Prompt : Boolean := True;
-
 begin
-   AIP.IO.Put_Line ("*** IPStack starting ***");
+   AIP.IO.Put_Line ("*** IPstack starting ***");
 
    --  Initialize IP stack
 
@@ -47,21 +47,9 @@ begin
 
       Events := AIP.OSAL.Single.Process_Interface_Events;
 
-      --  Process console I/O
+      --  Handle console interaction
 
-      if Prompt then
-         AIP.IO.Put ("> ");
-         Prompt := False;
-      end if;
-
-      if AIP.IO.Line_Available then
-         declare
-            Line : constant String := AIP.IO.Get;
-         begin
-            AIP.IO.Put_Line ("+ " & Line);
-            Prompt := True;
-         end;
-      end if;
+      Shell.Poll;
 
       --  Block for a while or do some stuff
 

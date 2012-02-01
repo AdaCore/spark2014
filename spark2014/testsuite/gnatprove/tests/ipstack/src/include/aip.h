@@ -1,6 +1,6 @@
 /****************************************************************************
  *                            IPSTACK COMPONENTS                            *
- *             Copyright (C) 2010, Free Software Foundation, Inc.           *
+ *          Copyright (C) 2010-2012, Free Software Foundation, Inc.         *
  ****************************************************************************/
 
 /* C binding to AIP library */
@@ -83,8 +83,8 @@ typedef EID Netif_Id;
 #define MAX_LL_ADDRESS_LENGTH 6
 
 typedef struct netif {
-  Netif_State State;
   char        Name[2];
+  Netif_State State;
 
   char        LL_Address[MAX_LL_ADDRESS_LENGTH];
   U8_T        LL_Address_Length;
