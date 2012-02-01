@@ -47,7 +47,7 @@ package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
      (Theory     : W_Theory_Declaration_Id;
-      Type_Name  : String;
+      Ty_Entity  : Entity_Id;
       Index_Name : String;
       Dimension  : Pos;
       Argument   : Uint);
@@ -97,7 +97,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_First,
-                                  Name,
+                                  Entity,
                                   +Ar,
                                   EW_Term,
                                   Dimension,
@@ -120,7 +120,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_Last,
-                                  Name,
+                                  Entity,
                                   +Ar,
                                   EW_Term,
                                   Dimension,
@@ -214,7 +214,7 @@ package body Why.Gen.Arrays is
                   if Index_Entity /= Standard_Boolean then
                      Define_In_Range_Axiom
                        (Theory     => Theory,
-                        Type_Name  => Name,
+                        Ty_Entity  => Entity,
                         Index_Name => Full_Name (Index_Entity),
                         Dimension  => Dimension,
                         Argument   => Arg);
@@ -234,17 +234,18 @@ package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
      (Theory     : W_Theory_Declaration_Id;
-      Type_Name  : String;
+      Ty_Entity  : Entity_Id;
       Index_Name : String;
       Dimension  : Pos;
       Argument   : Uint)
    is
+      Type_Name      : constant String := Full_Name (Ty_Entity);
       Var            : constant W_Identifier_Id :=
                          New_Identifier (Name => "x");
       First_Term     : constant W_Term_Id :=
                          +New_Array_Attr
                            (Attribute_First,
-                            Type_Name,
+                            Ty_Entity,
                             +Var,
                             EW_Term,
                             Dimension,
@@ -252,7 +253,7 @@ package body Why.Gen.Arrays is
       Last_Term      : constant W_Term_Id :=
                          +New_Array_Attr
                            (Attribute_Last,
-                            Type_Name,
+                            Ty_Entity,
                             +Var,
                             EW_Term,
                             Dimension,
@@ -308,7 +309,7 @@ package body Why.Gen.Arrays is
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
-      Type_Name : String;
+      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
       Domain    : EW_Domain;
@@ -325,7 +326,10 @@ package body Why.Gen.Arrays is
                     Index & (1 => New_Call
                                     (Domain => Domain,
                                      Name   =>
-                                       Conversion_To.Id (Type_Name, BT_Str),
+                                       Conversion_To.Id
+                                         (Ada_Node => Ty_Entity,
+                                          L_Name   => Full_Name (Ty_Entity),
+                                          R_Name   => BT_Str),
                                      Args   => (1 => +Ar)));
    begin
       return
@@ -343,7 +347,7 @@ package body Why.Gen.Arrays is
 
    function New_Array_Attr
       (Attr      : Attribute_Id;
-       Type_Name : String;
+       Ty_Entity : Entity_Id;
        Ar        : W_Expr_Id;
        Domain    : EW_Domain;
        Dimension : Pos;
@@ -365,12 +369,17 @@ package body Why.Gen.Arrays is
         New_Call
           (Domain => Domain,
            Name   =>
-             Attr_Name.Id (BT_Str, Attr_Suff),
+             Attr_Name.Id (Ada_Node => Ty_Entity,
+                           L_Name   => BT_Str,
+                           R_Name   => Attr_Suff),
            Args   =>
             (1 =>
                New_Call
                  (Domain => Domain,
-                  Name   => Conversion_To.Id (Type_Name, BT_Str),
+                  Name   => Conversion_To.Id
+                    (Ada_Node => Ty_Entity,
+                     L_Name   => Full_Name (Ty_Entity),
+                     R_Name   => BT_Str),
                   Args   => (1 => +Ar))));
    end New_Array_Attr;
 
@@ -380,7 +389,7 @@ package body Why.Gen.Arrays is
 
    function New_Array_Update
       (Ada_Node  : Node_Id;
-       Type_Name : String;
+       Ty_Entity : Entity_Id;
        Ar        : W_Expr_Id;
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
@@ -398,7 +407,10 @@ package body Why.Gen.Arrays is
                     Index & (1 => New_Call
                                     (Domain => Domain,
                                      Name   =>
-                                       Conversion_To.Id (Type_Name, BT_Str),
+                                       Conversion_To.Id
+                                         (Ada_Node => Ty_Entity,
+                                          L_Name   => Full_Name (Ty_Entity),
+                                          R_Name   => BT_Str),
                                      Args   => (1 => +Ar)),
                              2 => +Value);
       Array_Upd : constant W_Expr_Id :=
@@ -411,7 +423,10 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Call
-          (Name   => Conversion_From.Id (Type_Name, BT_Str),
+          (Name   =>
+               Conversion_From.Id (Ada_Node => Ty_Entity,
+                                   L_Name   => Full_Name (Ty_Entity),
+                                   R_Name   => BT_Str),
            Args   => (1 => Array_Upd),
            Domain => Domain);
    end New_Array_Update;

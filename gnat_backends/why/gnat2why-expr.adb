@@ -370,9 +370,9 @@ package body Gnat2Why.Expr is
       High_Expr        : constant W_Term_Id :=
          +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
       First_Term       : constant W_Term_Id :=
-        New_Attribute_Expr (N, Attribute_First);
+        +New_Attribute_Expr (N, Attribute_First);
       Last_Term        : constant W_Term_Id :=
-        New_Attribute_Expr (N, Attribute_Last);
+        +New_Attribute_Expr (N, Attribute_Last);
       Rel_First        : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
@@ -389,13 +389,13 @@ package body Gnat2Why.Expr is
          New_Relation
            (Op_Type  => Why_Base_EW,
             Left     => +Low_Expr,
-            Right    => New_Attribute_Expr (Base, Attribute_First),
+            Right    => +New_Attribute_Expr (Base, Attribute_First),
             Op       => EW_Ge);
       Last_In_Range    : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => Why_Base_EW,
             Left     => +High_Expr,
-            Right    => New_Attribute_Expr (Base, Attribute_Last),
+            Right    => +New_Attribute_Expr (Base, Attribute_Last),
             Op       => EW_Le);
       First_Le_Last    : constant W_Pred_Id :=
          New_Relation
@@ -1095,7 +1095,7 @@ package body Gnat2Why.Expr is
             declare
                Ar      : constant Node_Id := Prefix (N);
                Dim     : constant Pos := Number_Dimensions (Type_Of_Node (Ar));
-               T_Name  : constant String := Type_Of_Node (Ar);
+               T_Name  : constant Entity_Id := Type_Of_Node (Ar);
                Indices : W_Expr_Array :=
                   (1 .. Integer (Dim) => <>);
                Cursor  : Node_Id := First (Expressions (N));
@@ -1113,7 +1113,7 @@ package body Gnat2Why.Expr is
                   New_Array_Access
                    (Ada_Node  => N,
                     Domain    => Domain,
-                    Type_Name => T_Name,
+                    Ty_Entity => T_Name,
                     Ar        => Expr,
                     Index     => Indices,
                     Dimension => Dim);
@@ -1160,7 +1160,7 @@ package body Gnat2Why.Expr is
                end loop;
                return
                   New_Array_Update (Ada_Node  => N,
-                                    Type_Name => Type_Of_Node (Prefix (N)),
+                                    Ty_Entity => Type_Of_Node (Prefix (N)),
                                     Ar        => Pref,
                                     Index     => Indices,
                                     Value     => Value,
@@ -1359,7 +1359,7 @@ package body Gnat2Why.Expr is
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id
    is
-      T_Name  : constant String := Type_Of_Node (Typ);
+      T_Name  : constant Entity_Id := Type_Of_Node (Typ);
       Num_Dim : constant Pos := Number_Dimensions (Typ);
       Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
       Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
@@ -1434,7 +1434,7 @@ package body Gnat2Why.Expr is
                                 New_Array_Access
                                   (Ada_Node  => Expr_Or_Association,
                                    Domain    => EW_Term,
-                                   Type_Name => T_Name,
+                                   Ty_Entity => T_Name,
                                    Ar        => +Id,
                                    Index     => Indexes,
                                    Dimension => Num_Dim);
@@ -1807,7 +1807,7 @@ package body Gnat2Why.Expr is
                      T :=
                        New_Array_Attr
                          (Attr_Id,
-                          Full_Name (Etype (Var)),
+                          Etype (Var),
                           Transform_Expr (Var, Domain, Params),
                           Domain,
                           Number_Dimensions (Type_Of_Node (Var)),
