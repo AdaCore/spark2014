@@ -127,12 +127,17 @@ package body Why.Gen.Names is
 
          when EW_Array =>
             pragma Assert (To_Kind = EW_Abstract);
-            return
-              Conversion_From.Id
-                (Full_Name (Get_Ada_Node (+To)),
-                 New_Ada_Array_Name
-                   (Number_Dimensions
-                     (Underlying_Type (Get_Ada_Node (+To)))));
+            declare
+               A : constant Node_Id := Get_Ada_Node (+To);
+            begin
+               return
+                 Conversion_From.Id
+                   (Ada_Node => A,
+                    L_Name   => Full_Name (A),
+                    R_Name   =>
+                      New_Ada_Array_Name
+                        (Number_Dimensions (Underlying_Type (A))));
+            end;
 
          when EW_Abstract =>
             case To_Kind is
@@ -150,12 +155,17 @@ package body Why.Gen.Names is
                                            Why_Scalar_Type_Name (To_Kind));
                   end;
                when EW_Array =>
-                  return
-                    Conversion_To.Id
-                      (Full_Name (Get_Ada_Node (+From)),
-                       New_Ada_Array_Name
-                         (Number_Dimensions
-                           (Underlying_Type (Get_Ada_Node (+From)))));
+                  declare
+                     A : constant Node_Id := Get_Ada_Node (+From);
+                  begin
+                     return
+                       Conversion_To.Id
+                         (Ada_Node => A,
+                          L_Name   => Full_Name (A),
+                          R_Name   =>
+                            New_Ada_Array_Name
+                              (Number_Dimensions (Underlying_Type (A))));
+                  end;
 
                when EW_Abstract =>
                   raise Program_Error
