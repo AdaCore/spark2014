@@ -136,9 +136,6 @@ package body Alfa.Frame_Conditions is
    function Id_Of_Entity (E : Entity_Name) return Id;
    --  Return integer identity for name, and create it if necessary
 
-   function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
-   --  Return whether Ent is the special variable "__HEAP"
-
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
    --  Build a name for an entity, making sure the name is not empty

@@ -56,15 +56,17 @@ package body Why.Inter is
    is
    begin
       for Var of S loop
-         declare
-            F : constant Entity_Name := File_Of_Entity (Var);
-         begin
-            Add_With_Clause (P,
-                             File_Name_Without_Suffix (F.all) &
-                               Variables_Suffix,
-                             "Main",
-                             EW_Import);
-         end;
+         if not (Is_Heap_Variable (Var)) then
+            declare
+               F : constant Entity_Name := File_Of_Entity (Var);
+            begin
+               Add_With_Clause (P,
+                                File_Name_Without_Suffix (F.all) &
+                                  Variables_Suffix,
+                                "Main",
+                                EW_Import);
+            end;
+         end if;
       end loop;
    end Add_Effect_Imports;
 

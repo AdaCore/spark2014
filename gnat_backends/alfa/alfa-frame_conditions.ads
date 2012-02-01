@@ -64,6 +64,9 @@ package Alfa.Frame_Conditions is
       "="             => Name_Equal);
    use Name_Map;
 
+   function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
+   --  Return whether Ent is the special variable "__HEAP"
+
    procedure Display_Maps;
    --  Send maps to output for debug
 
