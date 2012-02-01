@@ -429,6 +429,19 @@ package body Why.Gen.Expr is
       end if;
    end New_And_Then_Expr;
 
+   ------------------------
+   -- New_Attribute_Expr --
+   ------------------------
+
+   function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
+     return W_Expr_Id
+   is
+   begin
+      return +Attr_Name.Id (Ada_Node => Ty,
+                            L_Name   => Full_Name (Ty),
+                            R_Name   => Attribute_Id'Image (Attr));
+   end New_Attribute_Expr;
+
    --------------------
    -- New_Comparison --
    --------------------
@@ -736,4 +749,5 @@ package body Why.Gen.Expr is
               Args   => (1 => +Left, 2 => +Right));
       end if;
    end New_Xor_Expr;
+
 end Why.Gen.Expr;

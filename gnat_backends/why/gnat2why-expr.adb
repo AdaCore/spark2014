@@ -370,13 +370,9 @@ package body Gnat2Why.Expr is
       High_Expr        : constant W_Term_Id :=
          +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
       First_Term       : constant W_Term_Id :=
-        +Attr_Name.Id (Ada_Node => N,
-                       L_Name   => Full_Name (N),
-                       R_Name   => Attribute_Id'Image (Attribute_First));
+        New_Attribute_Expr (N, Attribute_First);
       Last_Term        : constant W_Term_Id :=
-        +Attr_Name.Id (Ada_Node => N,
-                       L_Name   => Full_Name (N),
-                       R_Name   => Attribute_Id'Image (Attribute_Last));
+        New_Attribute_Expr (N, Attribute_Last);
       Rel_First        : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => EW_Bool,
@@ -393,19 +389,13 @@ package body Gnat2Why.Expr is
          New_Relation
            (Op_Type  => Why_Base_EW,
             Left     => +Low_Expr,
-            Right    =>
-            +Attr_Name.Id (Ada_Node => Base,
-                           L_Name   => Full_Name (Base),
-                           R_Name   => Attribute_Id'Image (Attribute_First)),
+            Right    => New_Attribute_Expr (Base, Attribute_First),
             Op       => EW_Ge);
       Last_In_Range    : constant W_Pred_Id :=
          New_Relation
            (Op_Type  => Why_Base_EW,
             Left     => +High_Expr,
-            Right    =>
-            +Attr_Name.Id (Ada_Node => Base,
-                           L_Name   => Full_Name (Base),
-                           R_Name   => Attribute_Id'Image (Attribute_Last)),
+            Right    => New_Attribute_Expr (Base, Attribute_Last),
             Op       => EW_Le);
       First_Le_Last    : constant W_Pred_Id :=
          New_Relation
@@ -1809,16 +1799,10 @@ package body Gnat2Why.Expr is
 
                   if Nkind (Var) = N_Identifier and then
                     Is_Type (Entity (Var)) then
-                     declare
-                        First_Type : constant Entity_Id :=
-                          Etype (First_Index (Entity (Var)));
-                     begin
-                        T :=
-                           +Attr_Name.Id
-                          (Ada_Node => First_Type,
-                           L_Name   => Full_Name (First_Type),
-                           R_Name   => Attribute_Id'Image (Attr_Id));
-                     end;
+
+                     T := New_Attribute_Expr
+                       (Etype (First_Index (Entity (Var))),
+                        Attr_Id);
                   else
                      T :=
                        New_Array_Attr
@@ -1833,21 +1817,11 @@ package body Gnat2Why.Expr is
                   end if;
                   Current_Type := EW_Int_Type;
 
-               when Discrete_Kind =>
-                  T :=
-                    +Attr_Name.Id
-                       (Ada_Node => Etype (Var),
-                        L_Name   => Full_Name (Etype (Var)),
-                        R_Name   => Attribute_Id'Image (Attr_Id));
-                  Current_Type := EW_Int_Type;
-
-               when Real_Kind =>
-                  T :=
-                    +Attr_Name.Id
-                       (Ada_Node => Etype (Var),
-                        L_Name   => Full_Name (Etype (Var)),
-                        R_Name   => Attribute_Id'Image (Attr_Id));
-                  Current_Type := EW_Real_Type;
+               when Discrete_Kind | Real_Kind =>
+                  T := New_Attribute_Expr (Etype (Var), Attr_Id);
+                  Current_Type :=
+                    (if Ekind (Etype (Var)) in Discrete_Kind
+                     then EW_Int_Type else EW_Real_Type);
 
                when others =>
                   --  All possible cases should have been handled
@@ -1857,10 +1831,7 @@ package body Gnat2Why.Expr is
             end case;
 
          when Attribute_Modulus =>
-            T :=
-                    +Attr_Name.Id (Ada_Node => Etype (Var),
-                                   L_Name   => Full_Name (Etype (Var)),
-                                   R_Name   => Attribute_Id'Image (Attr_Id));
+            T := New_Attribute_Expr (Etype (Var), Attr_Id);
             Current_Type := EW_Int_Type;
 
          when Attribute_Mod =>
@@ -1874,11 +1845,8 @@ package body Gnat2Why.Expr is
                                                 Domain,
                                                 Params),
                            2 =>
-                           +Attr_Name.Id
-                             (Ada_Node => Etype (Var),
-                              L_Name   => Full_Name (Etype (Var)),
-                              R_Name   => Attribute_Id'Image
-                                (Attribute_Modulus))));
+                           New_Attribute_Expr
+                              (Etype (Var), Attribute_Modulus)));
             Current_Type := EW_Int_Type;
 
          when others =>

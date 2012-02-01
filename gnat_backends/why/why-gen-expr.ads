@@ -22,7 +22,7 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-
+with Snames;    use Snames;
 with Types;     use Types;
 pragma Warnings (Off);
 --  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
@@ -133,6 +133,9 @@ package Why.Gen.Expr is
    --  if "By" is non empty, then it specifies that the operation in expr
    --  is done in the corresponding base type and that its overflow check
    --  should be inserted.
+
+   function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
+                                return W_Expr_Id;
 
    function Compute_Ada_Nodeset (W : Why_Node_Id) return
      Node_Sets.Set;
