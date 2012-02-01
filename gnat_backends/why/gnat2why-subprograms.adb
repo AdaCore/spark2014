@@ -98,6 +98,12 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
+   procedure Translate_Expression_Function_Body
+     (File   : in out Why_File;
+      E      : Entity_Id);
+   --  Generate a Why axiom that, given a function F with expression E,
+   --  states that: "for all <args> => F(<args>) = E".
+
    function Compute_Args
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array;
@@ -616,7 +622,6 @@ package body Gnat2Why.Subprograms is
 
       Params : Translation_Params;
    begin
-      Open_Theory (File, Name);
       Params :=
         (Theory      => File.Cur_Theory,
          Phase       => Translation,
@@ -651,7 +656,6 @@ package body Gnat2Why.Subprograms is
                   Domain        => EW_Term,
                   Params        => Params)));
       end if;
-      Close_Theory (File);
    end Translate_Expression_Function_Body;
 
    -------------------------------
@@ -659,8 +663,9 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (File   : in out Why_File;
-      E      : Entity_Id)
+     (File        : in out Why_File;
+      E           : Entity_Id;
+      Is_Expr_Fun : Boolean)
    is
       Name         : constant String := Full_Name (E);
       Effects      : W_Effects_Id;
@@ -747,7 +752,9 @@ package body Gnat2Why.Subprograms is
                Pre         => Pre,
                Post        => Post));
       end if;
-
+      if Is_Expr_Fun then
+         Translate_Expression_Function_Body (File, E);
+      end if;
       Close_Theory (File);
    end Translate_Subprogram_Spec;
 

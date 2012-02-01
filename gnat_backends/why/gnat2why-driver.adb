@@ -378,20 +378,23 @@ package body Gnat2Why.Driver is
               E_Subprogram_Body =>
 
             if Spec_Is_In_Alfa (Unique (E)) then
-               Translate_Subprogram_Spec (Context_File, E);
-               Generate_VCs_For_Subprogram_Spec (Main_File, E);
+
+               --  Bodies of expression functions are put in the same theory as
+               --  the spec
+
+               declare
+                  Is_Expr_Fun : constant Boolean :=
+                    Body_Is_In_Alfa (Unique (E)) and then
+                    Present (Get_Expression_Function (E));
+               begin
+                  Translate_Subprogram_Spec (Context_File, E, Is_Expr_Fun);
+                  Generate_VCs_For_Subprogram_Spec (Main_File, E);
+               end;
             end if;
 
             if Body_Is_In_Alfa (Unique (E))
               and then not Debug.Debug_Flag_Dot_GG
             then
-               --  The body of expression functions is implicitly used as a
-               --  postcondition, when it is in Alfa.
-
-               if Present (Get_Expression_Function (E)) then
-                  Translate_Expression_Function_Body (Context_File, E);
-               end if;
-
                Generate_VCs_For_Subprogram_Body (Main_File, E);
             end if;
 
