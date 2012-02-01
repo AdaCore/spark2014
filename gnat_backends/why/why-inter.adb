@@ -254,18 +254,25 @@ package body Why.Inter is
          --  unit where it was defined and add it to the unit set
 
          for N of S loop
-            declare
-               File_Name : constant String :=
-                 File_Base_Name_Of_Entity (N) & File_Suffix (N);
-               T         : String := Theory_Name (N);
-            begin
-               T (T'First) := Ada.Characters.Handling.To_Upper (T (T'First));
-               if File_Name /= P.Name.all then
-                  Add_With_Clause (P, File_Name, T, EW_Import);
-               else
-                  Add_With_Clause (P, "", T, EW_Import);
-               end if;
-            end;
+
+            --  Loop parameters may appear, but they do not have a Why
+            --  declaration; we skip them here.
+
+            if Ekind (N) /= E_Loop_Parameter then
+               declare
+                  File_Name : constant String :=
+                    File_Base_Name_Of_Entity (N) & File_Suffix (N);
+                  T         : String := Theory_Name (N);
+               begin
+                  T (T'First) :=
+                    Ada.Characters.Handling.To_Upper (T (T'First));
+                  if File_Name /= P.Name.all then
+                     Add_With_Clause (P, File_Name, T, EW_Import);
+                  else
+                     Add_With_Clause (P, "", T, EW_Import);
+                  end if;
+               end;
+            end if;
          end loop;
       end if;
 
