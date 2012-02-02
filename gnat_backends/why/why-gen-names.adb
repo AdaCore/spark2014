@@ -214,11 +214,16 @@ package body Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id)
-     return W_Identifier_Id is
+      Arg_Types : W_Base_Type_Id) return W_Identifier_Id
+   is
+      Kind : constant EW_Type := Get_Base_Type (Arg_Types);
+      A    : constant Node_Id :=
+        (if Kind = EW_Abstract then Get_Ada_Node (+Arg_Types)
+         else Empty);
    begin
-      return New_Identifier (Domain => EW_Pred,
-                             Name   => Bool_Cmp_String (Rel, Arg_Types));
+      return New_Identifier (Ada_Node => A,
+                             Domain   => EW_Pred,
+                             Name     => Bool_Cmp_String (Rel, Arg_Types));
    end New_Bool_Cmp;
 
    ------------------
