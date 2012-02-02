@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;     use Types;
-with Why.Ids;   use Why.Ids;
 with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Decls is
@@ -44,8 +43,8 @@ package Gnat2Why.Decls is
    --  the Why translation
 
    procedure Translate_Variable
-     (Theory : W_Theory_Declaration_Id;
-      E     : Entity_Id);
+     (File : in out Why_File;
+      E    : Entity_Id);
    --  Generate Why declarations that correspond to an Ada top level object
    --  declaration
 

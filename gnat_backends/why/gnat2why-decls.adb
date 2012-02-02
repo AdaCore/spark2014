@@ -29,6 +29,7 @@ with Sinfo;                use Sinfo;
 
 with Alfa.Definition;      use Alfa.Definition;
 
+with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
@@ -151,8 +152,8 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Variable
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id)
+     (File : in out Why_File;
+      E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
@@ -168,20 +169,24 @@ package body Gnat2Why.Decls is
                New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
 
    begin
+      Open_Theory (File, Name);
+
       --  Generate an alias for the name of the object's type, based on the
       --  name of the object. This is useful when generating logic functions
       --  from Ada functions, to generate additional parameters for the global
       --  objects read.
 
-      Emit (Theory, Decl);
+      Emit (File.Cur_Theory, Decl);
 
       --  We generate a global ref
 
       Emit
-        (Theory,
+        (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => New_Identifier (Name => Name),
             Ref_Type => Typ));
+
+      Close_Theory (File);
    end Translate_Variable;
 
    ------------------------

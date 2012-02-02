@@ -70,7 +70,6 @@ package body Alfa.Filter is
 
       Open_Theory (Types_In_Spec_File, "Main");
       Open_Theory (Types_In_Body_File, "Main");
-      Open_Theory (Variables_File, "Main");
       case Nkind (Unit (N)) is
          when N_Package_Body =>
             Spec_Unit :=
@@ -111,7 +110,6 @@ package body Alfa.Filter is
       Add_With_Clause (Types_In_Spec_File, Standard_Why_Package_Name, "Main");
       --  Add "vertical" dependencies for a single package
       Add_With_Clause (Types_In_Body_File, Types_In_Spec_File);
-      Add_With_Clause (Variables_File, Types_In_Body_File);
 
       --  for each with clause in the package spec, add horizontal
       --  dependencies between spec packages
@@ -162,47 +160,9 @@ package body Alfa.Filter is
                Add_With_Clause
                  (Types_In_Body_File,
                   Pkg_Name & Types_In_Spec_Suffix, "Main");
-               Add_With_Clause
-                 (Variables_File,
-                  Pkg_Name & Types_In_Body_Suffix, "Main");
             end;
          end loop;
       end if;
-
-      --  If the current package is a child package, add the implicit with
-      --  clause from the child spec to the parent spec. Currently this is not
-      --  needed due to the conservative inclusions above. Keep it commented
-      --  out as the inclusion scheme will still change.
-
---        declare
---           Def_Unit_Name : Node_Id := Empty;
---        begin
---           case Nkind (Unit (N)) is
---              when N_Package_Declaration =>
---                 Def_Unit_Name :=
---                    Defining_Unit_Name (Specification (Unit (N)));
---
---              when N_Package_Body =>
---                 Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
---
---              when others =>
---                 null;
---           end case;
---
---           if Present (Def_Unit_Name) and then
---              Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
---              declare
---                 Target_Name : constant String :=
---                    File_Name_Without_Suffix
---                      (Sloc (Entity (Name (Def_Unit_Name))));
---              begin
---                 Add_With_Clause
---                    (Types_File, Target_Name & Types_Suffix);
---                 Add_With_Clause
---                    (Context_File, Target_Name & Context_Suffix);
---              end;
---           end if;
---        end;
    end Filter_Compilation_Unit;
 
    -----------------------------

@@ -1083,10 +1083,15 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
-            return
-               New_Record_Access
-                 (Name   => Expr,
-                  Field  => Transform_Ident (Selector_Name (N)));
+            declare
+               E : constant Entity_Id := Type_Of_Node (Prefix (N));
+            begin
+               return
+                 New_Record_Access
+                   (Name   => Expr,
+                    Field  => Transform_Ident (Ada_Node => E,
+                                               Id       => Selector_Name (N)));
+            end;
 
          when N_Indexed_Component =>
 
@@ -1140,7 +1145,10 @@ package body Gnat2Why.Expr is
          when N_Selected_Component =>
             return
               New_Record_Update (Name  => Pref,
-                                 Field => Transform_Ident (Selector_Name (N)),
+                                 Field =>
+                                 Transform_Ident
+                                   (Selector_Name (N),
+                                    Ada_Node => Type_Of_Node (Prefix (N))),
                                  Value => Value);
 
          when N_Indexed_Component =>
@@ -2758,16 +2766,16 @@ package body Gnat2Why.Expr is
    -- Transform_Ident --
    ---------------------
 
-   function Transform_Ident (Id : Node_Id) return W_Identifier_Id is
-      Ent : Entity_Id;
+   function Transform_Ident (Id : Node_Id;
+                             Ada_Node : Node_Id := Empty)
+                             return W_Identifier_Id
+   is
+      Ent    : constant Entity_Id :=
+        (if Nkind (Id) = N_Defining_Identifier then Id else Entity (Id));
+      Origin : constant Entity_Id :=
+        (if Ada_Node /= Empty then Ada_Node else Id);
    begin
-      if Nkind (Id) = N_Defining_Identifier then
-         Ent := Id;
-      else
-         Ent := Entity (Id);
-      end if;
-
-      return New_Identifier (Id, Full_Name (Ent));
+      return New_Identifier (Origin, Full_Name (Ent));
    end Transform_Ident;
 
    ----------------------------

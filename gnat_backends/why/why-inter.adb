@@ -59,11 +59,14 @@ package body Why.Inter is
          if not (Is_Heap_Variable (Var)) then
             declare
                F : constant Entity_Name := File_Of_Entity (Var);
+               S : String := Var.all;
             begin
+               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
+
                Add_With_Clause (P,
                                 File_Name_Without_Suffix (F.all) &
                                   Variables_Suffix,
-                                "Main",
+                                S,
                                 EW_Import);
             end;
          end if;
@@ -227,15 +230,11 @@ package body Why.Inter is
             return "Main";
          end if;
          case Ekind (E) is
-            when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+            when Subprogram_Kind
+               | E_Subprogram_Body
+               | Named_Kind
+               | Object_Kind =>
                return Full_Name (E);
-
-            when Object_Kind =>
-               if not Is_Mutable (E) then
-                  return Full_Name (E);
-               else
-                  return "Main";
-               end if;
 
             when others =>
                return "Main";

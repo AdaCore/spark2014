@@ -74,11 +74,11 @@ package body Gnat2Why.Driver is
    --   This is the main driver for the Ada-to-Why back-end
 
    procedure Translate_Entity
-     (E                : Entity_Id;
-      Types_Theory     : W_Theory_Declaration_Id;
-      Variables_Theory : W_Theory_Declaration_Id;
-      Context_File     : in out Why_File;
-      Main_File        : in out Why_File);
+     (E              : Entity_Id;
+      Types_Theory   : W_Theory_Declaration_Id;
+      Variables_File : in out Why_File;
+      Context_File   : in out Why_File;
+      Main_File      : in out Why_File);
    --  Take an Ada entity and translate it to Why. Depending on the entity and
    --  whether it is in Alfa or not, declarations may be issued in the
    --  different parameter files.
@@ -306,14 +306,14 @@ package body Gnat2Why.Driver is
 
       for E of Spec_Entities loop
          Translate_Entity (E, Types_In_Spec_File.Cur_Theory,
-                           Variables_File.Cur_Theory,
+                           Variables_File,
                            Context_In_Spec_File,
                            Main_File);
       end loop;
 
       for E of Body_Entities loop
          Translate_Entity (E, Types_In_Body_File.Cur_Theory,
-                           Variables_File.Cur_Theory,
+                           Variables_File,
                            Context_In_Body_File,
                            Main_File);
       end loop;
@@ -322,7 +322,6 @@ package body Gnat2Why.Driver is
 
       Close_Theory (Types_In_Spec_File, No_Imports => True);
       Close_Theory (Types_In_Body_File, No_Imports => True);
-      Close_Theory (Variables_File, No_Imports => True);
 
       Print_Why_File (Types_In_Spec_File);
       Print_Why_File (Types_In_Body_File);
@@ -346,11 +345,11 @@ package body Gnat2Why.Driver is
    ----------------------
 
    procedure Translate_Entity
-     (E                : Entity_Id;
-      Types_Theory     : W_Theory_Declaration_Id;
-      Variables_Theory : W_Theory_Declaration_Id;
-      Context_File     : in out Why_File;
-      Main_File        : in out Why_File) is
+     (E              : Entity_Id;
+      Types_Theory   : W_Theory_Declaration_Id;
+      Variables_File : in out Why_File;
+      Context_File   : in out Why_File;
+      Main_File      : in out Why_File) is
    begin
       case Ekind (E) is
          when Type_Kind =>
@@ -371,7 +370,7 @@ package body Gnat2Why.Driver is
                   Translate_Constant (Context_File, E);
                end if;
             else
-               Translate_Variable (Variables_Theory, E);
+               Translate_Variable (Variables_File, E);
             end if;
 
          when Subprogram_Kind   |
@@ -415,8 +414,7 @@ package body Gnat2Why.Driver is
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Translate_Entity (T, F.Cur_Theory, F.Cur_Theory,
-                           F, F);
+         Translate_Entity (T, F.Cur_Theory, F, F, F);
       end Add_Standard_Type;
 
       Decl : Node_Id;
@@ -454,7 +452,7 @@ package body Gnat2Why.Driver is
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
                Translate_Entity (Unique_Defining_Entity (Decl),
-                                 F.Cur_Theory, F.Cur_Theory, F, F);
+                                 F.Cur_Theory, F, F, F);
 
             when others =>
                null;
