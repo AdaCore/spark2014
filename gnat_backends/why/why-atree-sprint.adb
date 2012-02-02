@@ -1732,7 +1732,7 @@ package body Why.Atree.Sprint is
       Relative_Indent (O, 1);
       Print_List (State, +Get_Includes (Node), "" & ASCII.LF);
       Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
-      Relative_Indent (O, 1);
+      Relative_Indent (O, -1);
       PL (O, "end");
       State.Control := Abandon_Children;
    end Theory_Declaration_Pre_Op;

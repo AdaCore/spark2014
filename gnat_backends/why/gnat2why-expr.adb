@@ -647,8 +647,6 @@ package body Gnat2Why.Expr is
          Iterate_Call (Call);
 
          if Domain = EW_Term then
-            --  Workaround for K526-008 and K525-019
-
             for Elt of Read_Names loop
                if Params.Ref_Allowed then
                   Why_Args (Cnt) :=
@@ -658,6 +656,11 @@ package body Gnat2Why.Expr is
                end if;
                Cnt := Cnt + 1;
             end loop;
+
+            --  We also need to add inclusions to allow the usage of those read
+            --  variables
+
+            Add_Effect_Imports (Params.Theory, Read_Names);
          end if;
 
          return Why_Args;

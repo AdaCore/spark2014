@@ -47,11 +47,16 @@ package body Why.Inter is
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+                              File     : String;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type := EW_Export);
+
    ------------------------
    -- Add_Effect_Imports --
    ------------------------
 
-   procedure Add_Effect_Imports (P : in out Why_File;
+   procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
                                  S : Name_Set.Set)
    is
    begin
@@ -63,7 +68,7 @@ package body Why.Inter is
             begin
                S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
 
-               Add_With_Clause (P,
+               Add_With_Clause (T,
                                 File_Name_Without_Suffix (F.all) &
                                   Variables_Suffix,
                                 S,
@@ -73,11 +78,18 @@ package body Why.Inter is
       end loop;
    end Add_Effect_Imports;
 
+   procedure Add_Effect_Imports (P : in out Why_File;
+                                 S : Name_Set.Set)
+   is
+   begin
+      Add_Effect_Imports (P.Cur_Theory, S);
+   end Add_Effect_Imports;
+
    ---------------------
    -- Add_With_Clause --
    ---------------------
 
-   procedure Add_With_Clause (P        : in out Why_File;
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type := EW_Export) is
@@ -85,11 +97,19 @@ package body Why.Inter is
         (if File = "" then Why_Empty else New_Identifier (Name => File));
    begin
       Theory_Declaration_Append_To_Includes
-        (P.Cur_Theory,
+        (T,
          New_Include_Declaration (File     => File_Ident,
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => EW_Module));
+   end Add_With_Clause;
+
+   procedure Add_With_Clause (P        : in out Why_File;
+                              File     : String;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type := EW_Export) is
+   begin
+      Add_With_Clause (P.Cur_Theory, File, T_Name, Use_Kind);
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : in out Why_File;
@@ -178,6 +198,9 @@ package body Why.Inter is
          if not Present (U) and then Is_Itype (E) then
             U := Enclosing_Lib_Unit_Node (Associated_Node_For_Itype (E));
          end if;
+         while Nkind (Unit (U)) = N_Subunit loop
+            U := Library_Unit (U);
+         end loop;
          return File_Name_Without_Suffix (Sloc (U));
       end File_Base_Name_Of_Entity;
 

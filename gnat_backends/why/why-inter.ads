@@ -96,6 +96,9 @@ package Why.Inter is
 
    procedure Add_Effect_Imports (P : in out Why_File;
                                  S : Name_Set.Set);
+
+   procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
+                                 S : Name_Set.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
    EW_Bool_Type : constant W_Base_Type_Id :=
