@@ -75,7 +75,7 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Entity
      (E              : Entity_Id;
-      Types_Theory   : W_Theory_Declaration_Id;
+      Types_File     : in out Why_File;
       Variables_File : in out Why_File;
       Context_File   : in out Why_File;
       Main_File      : in out Why_File);
@@ -305,23 +305,20 @@ package body Gnat2Why.Driver is
       --  Translate Ada entities into Why3
 
       for E of Spec_Entities loop
-         Translate_Entity (E, Types_In_Spec_File.Cur_Theory,
+         Translate_Entity (E, Types_In_Spec_File,
                            Variables_File,
                            Context_In_Spec_File,
                            Main_File);
       end loop;
 
       for E of Body_Entities loop
-         Translate_Entity (E, Types_In_Body_File.Cur_Theory,
+         Translate_Entity (E, Types_In_Body_File,
                            Variables_File,
                            Context_In_Body_File,
                            Main_File);
       end loop;
 
       --  Generate Why3 files
-
-      Close_Theory (Types_In_Spec_File, No_Imports => True);
-      Close_Theory (Types_In_Body_File, No_Imports => True);
 
       Print_Why_File (Types_In_Spec_File);
       Print_Why_File (Types_In_Body_File);
@@ -346,7 +343,7 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Entity
      (E              : Entity_Id;
-      Types_Theory   : W_Theory_Declaration_Id;
+      Types_File     : in out Why_File;
       Variables_File : in out Why_File;
       Context_File   : in out Why_File;
       Main_File      : in out Why_File) is
@@ -354,9 +351,15 @@ package body Gnat2Why.Driver is
       case Ekind (E) is
          when Type_Kind =>
             if Type_Is_In_Alfa (E) then
-               Translate_Type (Types_Theory, E);
+               Translate_Type (Types_File, E);
             else
-               Emit (Types_Theory, New_Type (Full_Name (E)));
+               declare
+                  Name : constant String := Full_Name (E);
+               begin
+                  Open_Theory (Types_File, Name);
+                  Emit (Types_File.Cur_Theory, New_Type (Name));
+                  Close_Theory (Types_File);
+               end;
             end if;
 
          when Named_Kind =>
@@ -414,7 +417,9 @@ package body Gnat2Why.Driver is
 
       procedure Add_Standard_Type (T : Entity_Id) is
       begin
-         Translate_Entity (T, F.Cur_Theory, F, F, F);
+         pragma Warnings (Off);
+         Translate_Entity (T, F, F, F, F);
+         pragma Warnings (On);
       end Add_Standard_Type;
 
       Decl : Node_Id;
@@ -451,9 +456,10 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
+               pragma Warnings (Off);
                Translate_Entity (Unique_Defining_Entity (Decl),
-                                 F.Cur_Theory, F, F, F);
-
+                                 F, F, F, F);
+               pragma Warnings (On);
             when others =>
                null;
          end case;

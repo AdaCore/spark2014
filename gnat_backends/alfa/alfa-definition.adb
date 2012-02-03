@@ -978,11 +978,14 @@ package body Alfa.Definition is
    ------------------------
 
    function Is_In_Current_Unit (N : Node_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
    begin
 
       --  ??? Should be made more efficient
 
-      return In_Main_Unit_Spec (N) or else In_Main_Unit_Body (N);
+      return In_Main_Unit_Spec (Real_Node) or else
+        In_Main_Unit_Body (Real_Node);
    end Is_In_Current_Unit;
 
    ------------------------

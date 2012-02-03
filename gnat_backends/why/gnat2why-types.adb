@@ -40,7 +40,6 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
@@ -168,8 +167,8 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id)
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
@@ -288,7 +287,9 @@ package body Gnat2Why.Types is
          Underlying_E := Underlying_Type (E);
       end loop;
 
-      Translate_Underlying_Type (Theory, Name, E, Underlying_E);
+      Open_Theory (File, Name);
+      Translate_Underlying_Type (File.Cur_Theory, Name, E, Underlying_E);
+      Close_Theory (File, Filter_Entity => E);
    end Translate_Type;
 
    -------------------------------

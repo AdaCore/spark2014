@@ -69,8 +69,9 @@ package Why.Inter is
      with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Build an empty Why_File with the given name.
 
-   procedure Close_Theory (P : in out Why_File;
-                           No_Imports : Boolean := False)
+   procedure Close_Theory (P             : in out Why_File;
+                           No_Imports    : Boolean := False;
+                           Filter_Entity : Entity_Id := Empty)
      with Pre => (P.Cur_Theory /= Why_Empty),
           Post => (P.Cur_Theory = Why_Empty);
    --  Close the current theory by adding all necessary imports and adding the

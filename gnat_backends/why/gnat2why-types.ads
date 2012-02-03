@@ -25,6 +25,7 @@
 
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Types is
 
@@ -54,8 +55,8 @@ package Gnat2Why.Types is
    --   access/update functions with axioms.
 
    procedure Translate_Type
-      (Theory : W_Theory_Declaration_Id;
-       E      : Entity_Id);
+      (File : in out Why_File;
+       E    : Entity_Id);
    --  Take an Ada Entity and consider it as a full type declaration.
    --  Transform it into a Why type declaration, including conversion
    --  functions and axioms.

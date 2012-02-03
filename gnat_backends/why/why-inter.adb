@@ -169,8 +169,9 @@ package body Why.Inter is
    -- Close_Theory --
    ------------------
 
-   procedure Close_Theory (P : in out Why_File;
-                           No_Imports : Boolean := False)
+   procedure Close_Theory (P             : in out Why_File;
+                           No_Imports    : Boolean := False;
+                           Filter_Entity : Entity_Id := Empty)
    is
 
       function File_Base_Name_Of_Entity (E : Entity_Id) return String;
@@ -235,10 +236,15 @@ package body Why.Inter is
                end if;
 
             when Type_Kind =>
-               return Types_In_Body_Suffix;
+               if Is_In_Current_Unit (E) and then
+                 Body_Entities.Contains (E) then
+                  return Types_In_Body_Suffix;
+               else
+                  return Types_In_Spec_Suffix;
+               end if;
 
             when others =>
-               return Variables_Suffix;
+               raise Program_Error;
 
          end case;
       end File_Suffix;
@@ -252,17 +258,7 @@ package body Why.Inter is
          if Is_In_Standard_Package (E) then
             return "Main";
          end if;
-         case Ekind (E) is
-            when Subprogram_Kind
-               | E_Subprogram_Body
-               | Named_Kind
-               | Object_Kind =>
-               return Full_Name (E);
-
-            when others =>
-               return "Main";
-
-         end case;
+         return Full_Name (E);
       end Theory_Name;
 
       use Node_Sets;
@@ -280,7 +276,7 @@ package body Why.Inter is
             --  Loop parameters may appear, but they do not have a Why
             --  declaration; we skip them here.
 
-            if Ekind (N) /= E_Loop_Parameter then
+            if N /= Filter_Entity and then Ekind (N) /= E_Loop_Parameter then
                declare
                   File_Name : constant String :=
                     File_Base_Name_Of_Entity (N) & File_Suffix (N);

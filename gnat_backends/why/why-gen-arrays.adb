@@ -46,11 +46,11 @@ with Why.Inter; use Why.Inter;
 package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
-     (Theory     : W_Theory_Declaration_Id;
-      Ty_Entity  : Entity_Id;
-      Index_Name : String;
-      Dimension  : Pos;
-      Argument   : Uint);
+     (Theory       : W_Theory_Declaration_Id;
+      Ty_Entity    : Entity_Id;
+      Index_Entity : Entity_Id;
+      Dimension    : Pos;
+      Argument     : Uint);
 
    -----------------------
    -- Declare_Ada_Array --
@@ -145,15 +145,17 @@ package body Why.Gen.Arrays is
       Name   : String;
       Entity : Entity_Id)
    is
-      Component   : constant String := Full_Name (Component_Type (Entity));
+      Comp_Entity : constant Entity_Id := Component_Type (Entity);
+      Component   : constant String := Full_Name (Comp_Entity);
       Dimension   : constant Pos := Number_Dimensions (Entity);
       Type_Id     : constant W_Identifier_Id := New_Identifier (Name => Name);
       BT_Str      : constant String := New_Ada_Array_Name (Dimension);
       BT_Id       : constant W_Identifier_Id :=
         New_Identifier (Name => BT_Str);
       Comp_Type   : constant W_Primitive_Type_Id :=
-                     New_Abstract_Type
-                       (Name => (New_Identifier (Name => Component)));
+        New_Abstract_Type
+          (Name => (New_Identifier (Ada_Node => Comp_Entity,
+                                    Name => Component)));
       Ar_Type     : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
@@ -213,11 +215,11 @@ package body Why.Gen.Arrays is
                begin
                   if Index_Entity /= Standard_Boolean then
                      Define_In_Range_Axiom
-                       (Theory     => Theory,
-                        Ty_Entity  => Entity,
-                        Index_Name => Full_Name (Index_Entity),
-                        Dimension  => Dimension,
-                        Argument   => Arg);
+                       (Theory       => Theory,
+                        Ty_Entity    => Entity,
+                        Index_Entity => Index_Entity,
+                        Dimension    => Dimension,
+                        Argument     => Arg);
                   end if;
                end;
 
@@ -233,13 +235,14 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Define_In_Range_Axiom
-     (Theory     : W_Theory_Declaration_Id;
-      Ty_Entity  : Entity_Id;
-      Index_Name : String;
-      Dimension  : Pos;
-      Argument   : Uint)
+     (Theory       : W_Theory_Declaration_Id;
+      Ty_Entity    : Entity_Id;
+      Index_Entity : Entity_Id;
+      Dimension    : Pos;
+      Argument     : Uint)
    is
       Type_Name      : constant String := Full_Name (Ty_Entity);
+      Index_Name     : constant String := Full_Name (Index_Entity);
       Var            : constant W_Identifier_Id :=
                          New_Identifier (Name => "x");
       First_Term     : constant W_Term_Id :=
@@ -265,13 +268,17 @@ package body Why.Gen.Arrays is
                             Right   => +Last_Term,
                             Op      => EW_Le);
       First_In_Range : constant W_Pred_Id :=
-                         New_Call
-                           (Name => Range_Pred_Name.Id (Index_Name),
-                            Args => (1 => +First_Term));
+        New_Call
+          (Name =>
+               Range_Pred_Name.Id (Ada_Node => Index_Entity,
+                                   Name => Index_Name),
+           Args => (1 => +First_Term));
       Last_In_Range  : constant W_Pred_Id :=
-                         New_Call
-                           (Name => Range_Pred_Name.Id (Index_Name),
-                            Args => (1 => +Last_Term));
+        New_Call
+          (Name =>
+               Range_Pred_Name.Id (Ada_Node => Index_Entity,
+                                   Name => Index_Name),
+           Args => (1 => +Last_Term));
       Conclusion     : constant W_Pred_Id :=
                          New_Connection
                            (Op    => EW_And,
