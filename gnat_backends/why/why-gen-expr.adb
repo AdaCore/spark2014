@@ -241,14 +241,19 @@ package body Why.Gen.Expr is
          --  conversion scheme to introduce the second.
 
          else
-            return
-              New_Located_Call
-                (Domain   => Domain,
-                 Ada_Node => Ada_Node,
-                 Name     =>
-                   Overflow_Check_Name.Id (Full_Name (Get_Ada_Node (+By))),
-                 Progs    => (1 => +Expr),
-                 Reason   => VC_Overflow_Check);
+            declare
+               A : constant Node_Id := Get_Ada_Node (+By);
+            begin
+               return
+                 New_Located_Call
+                   (Domain   => Domain,
+                    Ada_Node => Ada_Node,
+                    Name     =>
+                      Overflow_Check_Name.Id (Ada_Node => A,
+                                              Name     => Full_Name (A)),
+                    Progs    => (1 => +Expr),
+                    Reason   => VC_Overflow_Check);
+            end;
          end if;
       end Insert_Overflow_Check;
 
