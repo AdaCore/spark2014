@@ -237,7 +237,7 @@ package body Why.Inter is
 
             when Type_Kind =>
                if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (E) then
+                 Body_Entities.Contains (Node_Id (Unique (E))) then
                   return Types_In_Body_Suffix;
                else
                   return Types_In_Spec_Suffix;
