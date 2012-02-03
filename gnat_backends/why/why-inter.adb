@@ -255,9 +255,6 @@ package body Why.Inter is
 
       function Theory_Name (E : Entity_Id) return String is
       begin
-         if Is_In_Standard_Package (E) then
-            return "Main";
-         end if;
          return Full_Name (E);
       end Theory_Name;
 
@@ -266,7 +263,10 @@ package body Why.Inter is
       S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
    begin
       if not No_Imports then
-         Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
+         Add_With_Clause (P, "_gnatprove_standard", "Main", EW_Import);
+         if not Standard_Mode then
+            Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
+         end if;
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set

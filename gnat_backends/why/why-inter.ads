@@ -58,6 +58,10 @@ package Why.Inter is
                                          Equivalent_Elements => "=",
                                          "="                 => "=");
 
+   Standard_Mode : Boolean := False;
+
+   --  This boolean is set to true when we treat the standard package
+
    type Why_File is
       record
          Name        : access String;
@@ -86,7 +90,7 @@ package Why.Inter is
 
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
-                              T_Name     : String;
+                              T_Name   : String;
                               Use_Kind : EW_Clone_Type := EW_Export);
    --  Add a package name to the context of a Why package.
 

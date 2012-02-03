@@ -425,6 +425,8 @@ package body Gnat2Why.Driver is
       Decl : Node_Id;
 
    begin
+      Standard_Mode := True;
+
       Mark_Standard_Package;
 
       --  Authorize warnings now, since regular compiler warnings should
@@ -437,17 +439,6 @@ package body Gnat2Why.Driver is
 
       Atree.Unlock;
       Nlists.Unlock;
-
-      Open_Theory (F, "Main");
-      --  Generate the inclusion of the GNATprove Why theory
-
-      Emit
-        (F.Cur_Theory,
-         New_Include_Declaration
-           (Kind     => EW_Module,
-            Use_Kind => EW_Export,
-            File     => New_Identifier (Name => "_gnatprove_standard"),
-            T_Name   => New_Identifier (Name => "Main")));
 
       Decl :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
@@ -481,7 +472,11 @@ package body Gnat2Why.Driver is
       --  definition. The type is not in Alfa anyway, so we just generate the
       --  correct abstract type in Why.
 
+      Open_Theory (F, "Main");
+
       Emit (F.Cur_Theory, New_Type ("standard___renaming_type"));
+
+      Add_With_Clause (F, "", "Standard__character", EW_Import);
 
       --  We also need to define the ASCII entities
 
