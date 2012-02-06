@@ -55,15 +55,10 @@ with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
-with Why.Conversions;       use Why.Conversions;
-with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
-with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Sinfo;             use Why.Sinfo;
-
+with Why.Types;             use Why.Types;
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
@@ -72,18 +67,14 @@ package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why back-end
 
-   procedure Translate_Entity
-     (E              : Entity_Id;
-      Types_File     : in out Why_File;
-      Variables_File : in out Why_File;
-      Context_File   : in out Why_File;
-      Main_File      : in out Why_File);
-   --  Take an Ada entity and translate it to Why. Depending on the entity and
-   --  whether it is in Alfa or not, declarations may be issued in the
-   --  different parameter files.
+   procedure Translate_Entity (E : Entity_Id);
+   --  Take an Ada entity and translate it to Why. The procedure decides in
+   --  which file the entity has to be stored
 
    procedure Translate_CUnit;
    --  Translate an Ada unit into Why declarations
+
+   procedure Print_Why_File (File : in out Why_File);
 
    -----------------
    -- GNAT_To_Why --
@@ -250,10 +241,9 @@ package body Gnat2Why.Driver is
          return;
       end if;
 
-   --  Start the translation to Why
+      --  Start the translation to Why
 
-      Init_Why_Files (GNAT_Root);
-
+      Init_Why_Files (File_Name_Without_Suffix (Sloc (N)));
       Translate_CUnit;
    end GNAT_To_Why;
 
@@ -286,35 +276,31 @@ package body Gnat2Why.Driver is
       end case;
    end Is_Back_End_Switch;
 
+   --------------------
+   -- Print_Why_File --
+   --------------------
+
+   procedure Print_Why_File (File : in out Why_File) is
+   begin
+      Open_Current_File (File.Name.all & ".mlw");
+      Sprint_Why_Node (Why_Node_Id (File.File), Current_File);
+      Close_Current_File;
+   end Print_Why_File;
+
    ---------------------
    -- Translate_CUnit --
    ---------------------
 
    procedure Translate_CUnit is
-      procedure Print_Why_File (File : in out Why_File);
-
-      procedure Print_Why_File (File : in out Why_File) is
-      begin
-         Open_Current_File (File.Name.all & ".mlw");
-         Sprint_Why_Node (+File.File, Current_File);
-         Close_Current_File;
-      end Print_Why_File;
-
    begin
       --  Translate Ada entities into Why3
 
       for E of Spec_Entities loop
-         Translate_Entity (E, Why_Files (WF_Types_In_Spec),
-                           Why_Files (WF_Variables),
-                           Why_Files (WF_Context_In_Spec),
-                           Why_Files (WF_Main));
+         Translate_Entity (E);
       end loop;
 
       for E of Body_Entities loop
-         Translate_Entity (E, Why_Files (WF_Types_In_Body),
-                           Why_Files (WF_Variables),
-                           Why_Files (WF_Context_In_Body),
-                           Why_Files (WF_Main));
+         Translate_Entity (E);
       end loop;
 
       --  Generate Why3 files
@@ -325,7 +311,7 @@ package body Gnat2Why.Driver is
 
       if Print_Generated_Code then
          for Kind in Why_File_Enum loop
-            wpg (+Why_Files (Kind).File);
+            wpg (Why_Node_Id (Why_Files (Kind).File));
          end loop;
       end if;
    end Translate_CUnit;
@@ -334,39 +320,37 @@ package body Gnat2Why.Driver is
    -- Translate_Entity --
    ----------------------
 
-   procedure Translate_Entity
-     (E              : Entity_Id;
-      Types_File     : in out Why_File;
-      Variables_File : in out Why_File;
-      Context_File   : in out Why_File;
-      Main_File      : in out Why_File) is
+   procedure Translate_Entity (E : Entity_Id)
+   is
+      File : Why_File := Why_Files (Dispatch_Entity (E));
    begin
+
       case Ekind (E) is
          when Type_Kind =>
             if Type_Is_In_Alfa (E) then
-               Translate_Type (Types_File, E);
+               Translate_Type (File, E);
             else
                declare
                   Name : constant String := Full_Name (E);
                begin
-                  Open_Theory (Types_File, Name);
-                  Emit (Types_File.Cur_Theory, New_Type (Name));
-                  Close_Theory (Types_File);
+                  Open_Theory (File, Name);
+                  Emit (File.Cur_Theory, New_Type (Name));
+                  Close_Theory (File);
                end;
             end if;
 
          when Named_Kind =>
             if Object_Is_In_Alfa (Unique (E)) then
-               Translate_Constant (Context_File, E);
+               Translate_Constant (File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable (E) then
                if Object_Is_In_Alfa (Unique (E)) then
-                  Translate_Constant (Context_File, E);
+                  Translate_Constant (File, E);
                end if;
             else
-               Translate_Variable (Variables_File, E);
+               Translate_Variable (File, E);
             end if;
 
          when Subprogram_Kind   |
@@ -382,15 +366,15 @@ package body Gnat2Why.Driver is
                     Body_Is_In_Alfa (Unique (E)) and then
                     Present (Get_Expression_Function (E));
                begin
-                  Translate_Subprogram_Spec (Context_File, E, Is_Expr_Fun);
-                  Generate_VCs_For_Subprogram_Spec (Main_File, E);
+                  Translate_Subprogram_Spec (File, E, Is_Expr_Fun);
+                  Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
                end;
             end if;
 
             if Body_Is_In_Alfa (Unique (E))
               and then not Debug.Debug_Flag_Dot_GG
             then
-               Generate_VCs_For_Subprogram_Body (Main_File, E);
+               Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
             end if;
 
          when others =>
@@ -403,22 +387,9 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
-      F : Why_File := Make_Empty_Why_File (Standard_Why_Package_Name);
-
-      procedure Add_Standard_Type (T : Entity_Id);
-      --  Add declaration for type in Standard not declared in Standard
-
-      procedure Add_Standard_Type (T : Entity_Id) is
-      begin
-         pragma Warnings (Off);
-         Translate_Entity (T, F, F, F, F);
-         pragma Warnings (On);
-      end Add_Standard_Type;
-
       Decl : Node_Id;
 
    begin
-      Standard_Mode := True;
 
       Mark_Standard_Package;
 
@@ -433,6 +404,8 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
+      Init_Why_Files (Standard_Why_Package_Name);
+
       Decl :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
       while Present (Decl) loop
@@ -440,10 +413,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               pragma Warnings (Off);
-               Translate_Entity (Unique_Defining_Entity (Decl),
-                                 F, F, F, F);
-               pragma Warnings (On);
+               Translate_Entity (Unique_Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -454,52 +424,21 @@ package body Gnat2Why.Driver is
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere
 
-      Add_Standard_Type (Standard_Integer_8);
-      Add_Standard_Type (Standard_Integer_16);
-      Add_Standard_Type (Standard_Integer_32);
-      Add_Standard_Type (Standard_Integer_64);
-      Add_Standard_Type (Universal_Integer);
-      Add_Standard_Type (Universal_Real);
+      Translate_Entity (Standard_Integer_8);
+      Translate_Entity (Standard_Integer_16);
+      Translate_Entity (Standard_Integer_32);
+      Translate_Entity (Standard_Integer_64);
+      Translate_Entity (Universal_Integer);
+      Translate_Entity (Universal_Real);
 
-      --  Additionally, the following type does not even have a type
-      --  definition. The type is not in Alfa anyway, so we just generate the
-      --  correct abstract type in Why.
-
-      Open_Theory (F, "Main");
-
-      Emit (F.Cur_Theory, New_Type ("standard___renaming_type"));
-
-      Add_With_Clause (F, "", "Standard__character");
-
-      --  We also need to define the ASCII entities
-
-      declare
-         Cur : Node_Id := First_Entity (Standard_ASCII);
-      begin
-         while Present (Cur) loop
-            Emit
-              (F.Cur_Theory,
-               New_Function_Decl
-                 (Domain => EW_Term,
-                  Name   =>
-                    New_Identifier (Name => Full_Name (Cur)),
-                  Binders =>
-                    (1 .. 0 => <>),
-                  Return_Type =>
-                    New_Base_Type
-                      (Ada_Node  => Standard_Character,
-                       Base_Type => EW_Abstract)));
-            Next_Entity (Cur);
-         end loop;
-      end;
-
-      Open_Current_File (Standard_Why_Package_Name & ".mlw");
-      Close_Theory (F, No_Imports => True);
-      Sprint_Why_Node (+F.File, Current_File);
-      Close_Current_File;
+      for Kind in Why_File_Enum loop
+         Print_Why_File (Why_Files (Kind));
+      end loop;
 
       if Print_Generated_Code then
-         wpn (+F.File);
+         for Kind in Why_File_Enum loop
+            wpg (Why_Node_Id (Why_Files (Kind).File));
+         end loop;
       end if;
    end Translate_Standard_Package;
 

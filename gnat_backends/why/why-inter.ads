@@ -58,10 +58,6 @@ package Why.Inter is
                                          Equivalent_Elements => "=",
                                          "="                 => "=");
 
-   Standard_Mode : Boolean := False;
-
-   --  This boolean is set to true when we treat the standard package
-
    type Why_File is
       record
          Name        : access String;
@@ -83,7 +79,7 @@ package Why.Inter is
 
    Standard_Why_Package_Name : constant String := "_standard";
 
-   procedure Init_Why_Files (N : Node_Id);
+   procedure Init_Why_Files (Prefix : String);
    --  Call this procedure to initialize the predefined Why_Files
 
    function Make_Empty_Why_File (S : String) return Why_File

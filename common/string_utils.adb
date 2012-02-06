@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -22,6 +22,8 @@
 -- gnatprove is maintained by AdaCore (http://www.adacore.com)              --
 --                                                                          --
 ------------------------------------------------------------------------------
+
+with Ada.Characters.Handling;
 
 package body String_Utils is
 
@@ -42,6 +44,22 @@ package body String_Utils is
       end loop;
       return True;
    end Ends_With;
+
+   ----------------------
+   -- Capitalize_First --
+   ----------------------
+
+   function Capitalize_First (S : String) return String is
+      T : String := S;
+   begin
+      Capitalize_First (T);
+      return T;
+   end Capitalize_First;
+
+   procedure Capitalize_First (S : in out String) is
+   begin
+      S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
+   end Capitalize_First;
 
    ---------------
    -- Int_Image --

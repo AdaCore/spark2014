@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -33,6 +33,15 @@ package String_Utils is
    function Ends_With (Str, Suffix : String) return Boolean;
    --  return True when Str ends with Suffix
 
+   function Starts_With (Str, Prefix : String) return Boolean;
+   --  Check if Str starts with Prefix
+
+   function Capitalize_First (S : String) return String;
+   --  Return a string with first character capitalized
+
+   procedure Capitalize_First (S : in out String);
+   --  Modify S in place to capitalize the first character
+
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.
 
@@ -43,8 +52,5 @@ package String_Utils is
 
    function Is_Blank (S : String) return Boolean;
    --  Determines if S has only blank characters (space or tab)
-
-   function Starts_With (Str, Prefix : String) return Boolean;
-   --  Check if Str starts with Prefix
 
 end String_Utils;

@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 with AA_Util;             use AA_Util;
-with Ada.Characters.Handling;
 with Alfa.Common;         use Alfa.Common;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
 with Sem_Util;            use Sem_Util;
 with Stand;               use Stand;
+with String_Utils;        use String_Utils;
 with Constant_Tree;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -63,10 +63,8 @@ package body Why.Inter is
          if not (Is_Heap_Variable (Var)) then
             declare
                F : constant Entity_Name := File_Of_Entity (Var);
-               S : String := Var.all;
+               S : constant String := Capitalize_First (Var.all);
             begin
-               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
-
                Add_With_Clause (T,
                                 File_Name_Without_Suffix (F.all) &
                                   Why_File_Suffix (WF_Variables),
@@ -176,13 +174,6 @@ package body Why.Inter is
       --  return the base name of the unit in which the entity is
       --  defined
 
-      function File_Suffix (E : Entity_Id) return String;
-      --  compute the file suffix of the unit in which the entity is defined
-
-      function Theory_Name (E : Entity_Id) return String;
-      --  compute the name of the theory in which the Why equivalent of the
-      --  entity is defined
-
       ------------------------------
       -- File_Base_Name_Of_Entity --
       ------------------------------
@@ -191,7 +182,7 @@ package body Why.Inter is
          U : Node_Id;
       begin
          if Is_In_Standard_Package (E) then
-            return "_standard";
+            return Standard_Why_Package_Name;
          end if;
          U := Enclosing_Lib_Unit_Node (E);
 
@@ -211,37 +202,12 @@ package body Why.Inter is
          return File_Name_Without_Suffix (Sloc (U));
       end File_Base_Name_Of_Entity;
 
-      -----------------
-      -- File_Suffix --
-      -----------------
-
-      function File_Suffix (E : Entity_Id) return String is
-      begin
-         if Is_In_Standard_Package (E) then
-            return "";
-         end if;
-
-         return Why_File_Suffix (Dispatch_Entity (E));
-      end File_Suffix;
-
-      -----------------
-      -- Theory_Name --
-      -----------------
-
-      function Theory_Name (E : Entity_Id) return String is
-      begin
-         return Full_Name (E);
-      end Theory_Name;
-
       use Node_Sets;
 
       S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
    begin
       if not No_Imports then
          Add_With_Clause (P, "_gnatprove_standard", "Main");
-         if not Standard_Mode then
-            Add_With_Clause (P, Standard_Why_Package_Name, "Main");
-         end if;
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
@@ -253,16 +219,16 @@ package body Why.Inter is
 
             if N /= Filter_Entity and then Ekind (N) /= E_Loop_Parameter then
                declare
-                  File_Name : constant String :=
-                    File_Base_Name_Of_Entity (N) & File_Suffix (N);
-                  T         : String := Theory_Name (N);
+                  File_Name   : constant String :=
+                    File_Base_Name_Of_Entity (N) &
+                    Why_File_Suffix (Dispatch_Entity (N));
+                  Theory_Name : constant String :=
+                    Capitalize_First (Full_Name (N));
                begin
-                  T (T'First) :=
-                    Ada.Characters.Handling.To_Upper (T (T'First));
                   if File_Name /= P.Name.all then
-                     Add_With_Clause (P, File_Name, T);
+                     Add_With_Clause (P, File_Name, Theory_Name);
                   else
-                     Add_With_Clause (P, "", T);
+                     Add_With_Clause (P, "", Theory_Name);
                   end if;
                end;
             end if;
@@ -375,7 +341,7 @@ package body Why.Inter is
             --  doesn't care, so we enforce upper case here
 
             if Ekind (N) = E_Enumeration_Literal then
-               S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
+               Capitalize_First (S);
             end if;
             return S;
          end;
@@ -461,10 +427,8 @@ package body Why.Inter is
    -- Init_Why_Files --
    --------------------
 
-   procedure Init_Why_Files (N : Node_Id)
+   procedure Init_Why_Files (Prefix : String)
    is
-      Prefix                 : constant String :=
-                                 File_Name_Without_Suffix (Sloc (N));
    begin
       for Kind in Why_File_Enum loop
          Why_Files (Kind) :=
@@ -507,9 +471,8 @@ package body Why.Inter is
    procedure Open_Theory (P    : in out Why_File;
                           Name : String;
                           Kind : EW_Theory_Type := EW_Module) is
-      S : String := Name;
+      S : constant String := Capitalize_First (Name);
    begin
-      S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
       P.Cur_Theory :=
         New_Theory_Declaration (Name => New_Identifier (Name => S),
                                 Kind => Kind);

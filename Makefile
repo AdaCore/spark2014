@@ -127,7 +127,6 @@ install-stdlib:
               $(STDLIB_TMP)/*__types_in_body.mlw \
               $(STDLIB_TMP)/*__variables.mlw \
 	      $(STDLIB_TMP)/*__context_in_spec.mlw \
-	      $(STDLIB_TMP)/_standard.mlw \
 	      $(GNATLIBDIR)
 
 install-examples:
