@@ -196,9 +196,17 @@ package body Why.Inter is
             return "_standard";
          end if;
          U := Enclosing_Lib_Unit_Node (E);
+
+         --  Itypes are not attached to the tree, so we go through the
+         --  associated node
+
          if not Present (U) and then Is_Itype (E) then
             U := Enclosing_Lib_Unit_Node (Associated_Node_For_Itype (E));
          end if;
+
+         --  Special handling for entities of subunits, we extract the library
+         --  unit
+
          while Nkind (Unit (U)) = N_Subunit loop
             U := Library_Unit (U);
          end loop;
