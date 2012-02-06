@@ -318,6 +318,10 @@ private
      (State : in out Printer_State;
       Node  : W_Theory_Declaration_Id);
 
+   procedure Custom_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Custom_Declaration_Id);
+
    procedure File_Pre_Op
      (State : in out Printer_State;
       Node  : W_File_Id);

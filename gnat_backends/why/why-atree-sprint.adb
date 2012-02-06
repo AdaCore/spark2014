@@ -1737,6 +1737,20 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Theory_Declaration_Pre_Op;
 
+   -------------------------------
+   -- Custom_Declaration_Pre_Op --
+   -------------------------------
+
+   procedure Custom_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Custom_Declaration_Id)
+   is
+   begin
+      NL (O);
+      Traverse (State, +Get_Content (Node));
+      NL (O);
+   end Custom_Declaration_Pre_Op;
+
    -----------------
    -- File_Pre_Op --
    -----------------

@@ -75,6 +75,9 @@ package body Xtree_Sinfo is
       New_Class ("W_Any_Node",
                  W_Base_Type,
                  W_File);
+      New_Class ("W_Generic_Theory",
+                 W_Theory_Declaration,
+                 W_Custom_Declaration);
 
       --  AST
 
@@ -764,13 +767,20 @@ package body Xtree_Sinfo is
                  "Includes", "W_Include_Declaration", Id_Set);
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
+      --------------------------
+      -- W_Custom_Declaration --
+      --------------------------
+
+      New_Field (W_Custom_Declaration,
+                 "Content", "W_Identifier", Id_One);
+
       ------------
       -- W_File --
       ------------
 
       Set_Mutable (W_File);
       New_Field (W_File,
-                 "Theories", "W_Theory_Declaration", Id_Set);
+                 "Theories", "W_Generic_Theory", Id_Set);
       Set_Domain (W_File, EW_Prog);
 
    end Build_AST;

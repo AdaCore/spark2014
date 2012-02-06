@@ -235,7 +235,7 @@ package body Why.Inter is
          end loop;
       end if;
 
-      File_Append_To_Theories (P.File, P.Cur_Theory);
+      File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
    end Close_Theory;
 
