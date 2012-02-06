@@ -57,11 +57,12 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (Theory : W_Theory_Declaration_Id;
-      Name   : String;
-      Entity : Entity_Id)
+     (Theory   : W_Theory_Declaration_Id;
+      Name     : String;
+      Orig_Ent : Entity_Id;
+      Und_Ent  : Entity_Id)
    is
-      Dimension : constant Pos := Number_Dimensions (Entity);
+      Dimension : constant Pos := Number_Dimensions (Und_Ent);
       Ar        : constant W_Term_Id := New_Term ("a");
       Ar_Binder : constant Binder_Type :=
                     (B_Name => New_Identifier (Name => "a"),
@@ -69,12 +70,12 @@ package body Why.Gen.Arrays is
                        New_Abstract_Type
                          (Name => (New_Identifier (Name => Name))),
                      others => <>);
-      Index     : Node_Id := First_Index (Entity);
+      Index     : Node_Id := First_Index (Und_Ent);
       Count     : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array (Theory, Name, Entity);
+      Declare_Ada_Unconstrained_Array (Theory, Name, Und_Ent);
 
-      if Is_Constrained (Entity) then
+      if Is_Constrained (Und_Ent) then
          --  State axioms about fixed 'First, 'Last and 'Length
 
          while Present (Index) loop
@@ -97,7 +98,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_First,
-                                  Entity,
+                                  Orig_Ent,
                                   +Ar,
                                   EW_Term,
                                   Dimension,
@@ -120,7 +121,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_Last,
-                                  Entity,
+                                  Orig_Ent,
                                   +Ar,
                                   EW_Term,
                                   Dimension,

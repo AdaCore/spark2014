@@ -220,7 +220,7 @@ package body Gnat2Why.Types is
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Array_Kind =>
-               Declare_Ada_Array (Theory, Name, E);
+               Declare_Ada_Array (Theory, Name, Orig, E);
 
             when E_Record_Type =>
                declare

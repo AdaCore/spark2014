@@ -39,12 +39,15 @@ package Why.Gen.Arrays is
    --  We are limited to constrained arrays with static bounds for now.
 
    procedure Declare_Ada_Array
-     (Theory : W_Theory_Declaration_Id;
-      Name   : String;
-      Entity : Entity_Id);
+     (Theory   : W_Theory_Declaration_Id;
+      Name     : String;
+      Orig_Ent : Entity_Id;
+      Und_Ent  : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
-   --  of the form
-   --  type A is Array (index) of Component
+   --  Name is the full name of the entity to be translated
+   --  Orig_Ent is the entity of to be translated
+   --  Und_Ent is the entity which contains the relevant type information (the
+   --  underlying type)
 
    procedure Declare_Ada_Unconstrained_Array
      (Theory : W_Theory_Declaration_Id;
