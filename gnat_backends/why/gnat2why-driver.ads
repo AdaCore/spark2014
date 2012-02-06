@@ -30,9 +30,9 @@
 --  packages that deal with type declarations, data declarations and
 --  function/procedure definitions.
 
-with Types;   use Types;
-with Why.Ids; use Why.Ids;
-with Alfa.Filter; use Alfa.Filter;
+with Types;     use Types;
+with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Driver is
 

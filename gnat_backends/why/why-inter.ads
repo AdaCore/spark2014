@@ -69,6 +69,25 @@ package Why.Inter is
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
+   Types_In_Spec_File   : Why_File;
+   Types_In_Body_File   : Why_File;
+   Variables_File       : Why_File;
+   Context_In_Spec_File : Why_File;
+   Context_In_Body_File : Why_File;
+   Main_File            : Why_File;
+
+   Types_In_Spec_Suffix   : constant String := "__types_in_spec";
+   Types_In_Body_Suffix   : constant String := "__types_in_body";
+   Variables_Suffix       : constant String := "__variables";
+   Context_In_Spec_Suffix : constant String := "__context_in_spec";
+   Context_In_Body_Suffix : constant String := "__context_in_body";
+   Main_Suffix            : constant String := "__package";
+
+   Standard_Why_Package_Name : constant String := "_standard";
+
+   procedure Init_Why_Files (N : Node_Id);
+   --  Call this procedure to initialize the predefined Why_Files
+
    function Make_Empty_Why_File (S : String) return Why_File
      with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Build an empty Why_File with the given name.

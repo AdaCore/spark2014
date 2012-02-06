@@ -25,7 +25,6 @@
 with AA_Util;             use AA_Util;
 with Ada.Characters.Handling;
 with Alfa.Common;         use Alfa.Common;
-with Alfa.Filter;         use Alfa.Filter;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
 with Sem_Util;            use Sem_Util;
@@ -432,6 +431,28 @@ package body Why.Inter is
             return EW_Abstract;
       end case;
    end Get_EW_Term_Type;
+
+   --------------------
+   -- Init_Why_Files --
+   --------------------
+
+   procedure Init_Why_Files (N : Node_Id)
+   is
+      Prefix                 : constant String :=
+                                 File_Name_Without_Suffix (Sloc (N));
+   begin
+      Types_In_Spec_File :=
+        Make_Empty_Why_File (Prefix & Types_In_Spec_Suffix);
+      Types_In_Body_File :=
+        Make_Empty_Why_File (Prefix & Types_In_Body_Suffix);
+      Variables_File := Make_Empty_Why_File (Prefix & Variables_Suffix);
+      Context_In_Spec_File :=
+        Make_Empty_Why_File (Prefix & Context_In_Spec_Suffix);
+      Context_In_Body_File :=
+        Make_Empty_Why_File (Prefix & Context_In_Body_Suffix);
+      Main_File :=
+        Make_Empty_Why_File (Prefix & Main_Suffix);
+   end Init_Why_Files;
 
    ---------
    -- LCA --

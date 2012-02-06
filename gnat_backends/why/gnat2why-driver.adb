@@ -62,7 +62,6 @@ with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Inter;             use Why.Inter;
 with Why.Sinfo;             use Why.Sinfo;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
@@ -253,7 +252,7 @@ package body Gnat2Why.Driver is
 
    --  Start the translation to Why
 
-      Filter_Compilation_Unit (GNAT_Root);
+      Init_Why_Files (GNAT_Root);
 
       Translate_CUnit;
    end GNAT_To_Why;
@@ -410,7 +409,7 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
-      F : Why_File := Make_Empty_Why_File ("_standard");
+      F : Why_File := Make_Empty_Why_File (Standard_Why_Package_Name);
 
       procedure Add_Standard_Type (T : Entity_Id);
       --  Add declaration for type in Standard not declared in Standard
@@ -500,7 +499,7 @@ package body Gnat2Why.Driver is
          end loop;
       end;
 
-      Open_Current_File ("_standard.mlw");
+      Open_Current_File (Standard_Why_Package_Name & ".mlw");
       Close_Theory (F, No_Imports => True);
       Sprint_Why_Node (+F.File, Current_File);
       Close_Current_File;
