@@ -123,6 +123,10 @@ package Why.Inter is
                                  S : Name_Set.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
+   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum;
+   --  Given an Ada Entity, return the appropriate Why File to insert the
+   --  entity
+
    EW_Bool_Type : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Bool);
    EW_Int_Type  : constant W_Base_Type_Id :=

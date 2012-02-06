@@ -216,46 +216,12 @@ package body Why.Inter is
       -----------------
 
       function File_Suffix (E : Entity_Id) return String is
-         Kind : Why_File_Enum;
       begin
          if Is_In_Standard_Package (E) then
             return "";
          end if;
-         case Ekind (E) is
-            when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
-               if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (Node_Id (Unique (E))) then
-                  Kind := WF_Context_In_Body;
-               else
-                  Kind := WF_Context_In_Spec;
-               end if;
 
-            when Object_Kind =>
-               if not Is_Mutable (E) then
-                  if Is_In_Current_Unit (E) and then
-                    Body_Entities.Contains (Node_Id (Unique (E))) then
-                     Kind := WF_Context_In_Body;
-                  else
-                     Kind := WF_Context_In_Spec;
-                  end if;
-               else
-                  Kind := WF_Variables;
-               end if;
-
-            when Type_Kind =>
-               if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (Node_Id (Unique (E))) then
-                  Kind := WF_Types_In_Body;
-               else
-                  Kind := WF_Types_In_Spec;
-               end if;
-
-            when others =>
-               raise Program_Error;
-
-         end case;
-
-         return Why_File_Suffix (Kind);
+         return Why_File_Suffix (Dispatch_Entity (E));
       end File_Suffix;
 
       -----------------
@@ -306,6 +272,48 @@ package body Why.Inter is
       File_Append_To_Theories (P.File, P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
    end Close_Theory;
+
+   ---------------------
+   -- Dispatch_Entity --
+   ---------------------
+
+   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum
+   is
+   begin
+      case Ekind (E) is
+         when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+            if Is_In_Current_Unit (E) and then
+              Body_Entities.Contains (Node_Id (Unique (E))) then
+               return WF_Context_In_Body;
+            else
+               return WF_Context_In_Spec;
+            end if;
+
+         when Object_Kind =>
+            if not Is_Mutable (E) then
+               if Is_In_Current_Unit (E) and then
+                 Body_Entities.Contains (Node_Id (Unique (E))) then
+                  return WF_Context_In_Body;
+               else
+                  return WF_Context_In_Spec;
+               end if;
+            else
+               return WF_Variables;
+            end if;
+
+         when Type_Kind =>
+            if Is_In_Current_Unit (E) and then
+              Body_Entities.Contains (Node_Id (Unique (E))) then
+               return WF_Types_In_Body;
+            else
+               return WF_Types_In_Spec;
+            end if;
+
+         when others =>
+            raise Program_Error;
+
+      end case;
+   end Dispatch_Entity;
 
    --------
    -- Eq --
