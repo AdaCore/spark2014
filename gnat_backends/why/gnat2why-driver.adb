@@ -304,35 +304,29 @@ package body Gnat2Why.Driver is
       --  Translate Ada entities into Why3
 
       for E of Spec_Entities loop
-         Translate_Entity (E, Types_In_Spec_File,
-                           Variables_File,
-                           Context_In_Spec_File,
-                           Main_File);
+         Translate_Entity (E, Why_Files (WF_Types_In_Spec),
+                           Why_Files (WF_Variables),
+                           Why_Files (WF_Context_In_Spec),
+                           Why_Files (WF_Main));
       end loop;
 
       for E of Body_Entities loop
-         Translate_Entity (E, Types_In_Body_File,
-                           Variables_File,
-                           Context_In_Body_File,
-                           Main_File);
+         Translate_Entity (E, Why_Files (WF_Types_In_Body),
+                           Why_Files (WF_Variables),
+                           Why_Files (WF_Context_In_Body),
+                           Why_Files (WF_Main));
       end loop;
 
       --  Generate Why3 files
 
-      Print_Why_File (Types_In_Spec_File);
-      Print_Why_File (Types_In_Body_File);
-      Print_Why_File (Variables_File);
-      Print_Why_File (Context_In_Spec_File);
-      Print_Why_File (Context_In_Body_File);
-      Print_Why_File (Main_File);
+      for Kind in Why_File_Enum loop
+         Print_Why_File (Why_Files (Kind));
+      end loop;
 
       if Print_Generated_Code then
-         wpg (+Types_In_Spec_File.Cur_Theory);
-         wpg (+Types_In_Body_File.Cur_Theory);
-         wpg (+Variables_File.Cur_Theory);
-         wpg (+Context_In_Spec_File.Cur_Theory);
-         wpg (+Context_In_Body_File.Cur_Theory);
-         wpg (+Main_File.Cur_Theory);
+         for Kind in Why_File_Enum loop
+            wpg (+Why_Files (Kind).File);
+         end loop;
       end if;
    end Translate_CUnit;
 
@@ -475,7 +469,7 @@ package body Gnat2Why.Driver is
 
       Emit (F.Cur_Theory, New_Type ("standard___renaming_type"));
 
-      Add_With_Clause (F, "", "Standard__character", EW_Import);
+      Add_With_Clause (F, "", "Standard__character");
 
       --  We also need to define the ASCII entities
 

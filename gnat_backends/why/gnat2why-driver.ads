@@ -53,7 +53,7 @@ package Gnat2Why.Driver is
    end record;
 
    function Body_Params return Translation_Params is
-     (Translation_Params'(Theory      => Main_File.Cur_Theory,
+     (Translation_Params'(Theory      => Why_Files (WF_Main).Cur_Theory,
                           Phase       => Generate_VCs_For_Body,
                           Ref_Allowed => True));
 

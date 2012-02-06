@@ -49,7 +49,7 @@ package body Why.Inter is
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Export);
+                              Use_Kind : EW_Clone_Type := EW_Import);
 
    ------------------------
    -- Add_Effect_Imports --
@@ -69,9 +69,8 @@ package body Why.Inter is
 
                Add_With_Clause (T,
                                 File_Name_Without_Suffix (F.all) &
-                                  Variables_Suffix,
-                                S,
-                                EW_Import);
+                                  Why_File_Suffix (WF_Variables),
+                                S);
             end;
          end if;
       end loop;
@@ -91,7 +90,7 @@ package body Why.Inter is
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Export) is
+                              Use_Kind : EW_Clone_Type := EW_Import) is
       File_Ident : constant W_Identifier_Id :=
         (if File = "" then Why_Empty else New_Identifier (Name => File));
    begin
@@ -106,14 +105,14 @@ package body Why.Inter is
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Export) is
+                              Use_Kind : EW_Clone_Type := EW_Import) is
    begin
       Add_With_Clause (P.Cur_Theory, File, T_Name, Use_Kind);
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : in out Why_File;
                               Other    : Why_File;
-                              Use_Kind : EW_Clone_Type := EW_Export) is
+                              Use_Kind : EW_Clone_Type := EW_Import) is
    begin
       Add_With_Clause (P, Other.Name.all, "Main", Use_Kind);
    end Add_With_Clause;
@@ -217,6 +216,7 @@ package body Why.Inter is
       -----------------
 
       function File_Suffix (E : Entity_Id) return String is
+         Kind : Why_File_Enum;
       begin
          if Is_In_Standard_Package (E) then
             return "";
@@ -224,36 +224,38 @@ package body Why.Inter is
          case Ekind (E) is
             when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
                if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (E) then
-                  return Context_In_Body_Suffix;
+                 Body_Entities.Contains (Node_Id (Unique (E))) then
+                  Kind := WF_Context_In_Body;
                else
-                  return Context_In_Spec_Suffix;
+                  Kind := WF_Context_In_Spec;
                end if;
 
             when Object_Kind =>
                if not Is_Mutable (E) then
                   if Is_In_Current_Unit (E) and then
-                    Body_Entities.Contains (E) then
-                     return Context_In_Body_Suffix;
+                    Body_Entities.Contains (Node_Id (Unique (E))) then
+                     Kind := WF_Context_In_Body;
                   else
-                     return Context_In_Spec_Suffix;
+                     Kind := WF_Context_In_Spec;
                   end if;
                else
-                  return Variables_Suffix;
+                  Kind := WF_Variables;
                end if;
 
             when Type_Kind =>
                if Is_In_Current_Unit (E) and then
                  Body_Entities.Contains (Node_Id (Unique (E))) then
-                  return Types_In_Body_Suffix;
+                  Kind := WF_Types_In_Body;
                else
-                  return Types_In_Spec_Suffix;
+                  Kind := WF_Types_In_Spec;
                end if;
 
             when others =>
                raise Program_Error;
 
          end case;
+
+         return Why_File_Suffix (Kind);
       end File_Suffix;
 
       -----------------
@@ -270,9 +272,9 @@ package body Why.Inter is
       S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
    begin
       if not No_Imports then
-         Add_With_Clause (P, "_gnatprove_standard", "Main", EW_Import);
+         Add_With_Clause (P, "_gnatprove_standard", "Main");
          if not Standard_Mode then
-            Add_With_Clause (P, Standard_Why_Package_Name, "Main", EW_Import);
+            Add_With_Clause (P, Standard_Why_Package_Name, "Main");
          end if;
 
          --  S contains all mentioned Ada entities; for each, we get the
@@ -292,9 +294,9 @@ package body Why.Inter is
                   T (T'First) :=
                     Ada.Characters.Handling.To_Upper (T (T'First));
                   if File_Name /= P.Name.all then
-                     Add_With_Clause (P, File_Name, T, EW_Import);
+                     Add_With_Clause (P, File_Name, T);
                   else
-                     Add_With_Clause (P, "", T, EW_Import);
+                     Add_With_Clause (P, "", T);
                   end if;
                end;
             end if;
@@ -330,6 +332,21 @@ package body Why.Inter is
       return Left_Kind /= EW_Abstract
         or else Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
    end Eq;
+
+   -----------------
+   -- EW_Abstract --
+   -----------------
+
+   function EW_Abstract (N : Node_Id) return W_Base_Type_Id is
+   begin
+      if N = Standard_Boolean then
+         return EW_Bool_Type;
+      elsif N = Universal_Fixed then
+         return EW_Real_Type;
+      else
+         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+      end if;
+   end EW_Abstract;
 
    ---------------
    -- Full_Name --
@@ -441,17 +458,10 @@ package body Why.Inter is
       Prefix                 : constant String :=
                                  File_Name_Without_Suffix (Sloc (N));
    begin
-      Types_In_Spec_File :=
-        Make_Empty_Why_File (Prefix & Types_In_Spec_Suffix);
-      Types_In_Body_File :=
-        Make_Empty_Why_File (Prefix & Types_In_Body_Suffix);
-      Variables_File := Make_Empty_Why_File (Prefix & Variables_Suffix);
-      Context_In_Spec_File :=
-        Make_Empty_Why_File (Prefix & Context_In_Spec_Suffix);
-      Context_In_Body_File :=
-        Make_Empty_Why_File (Prefix & Context_In_Body_Suffix);
-      Main_File :=
-        Make_Empty_Why_File (Prefix & Main_Suffix);
+      for Kind in Why_File_Enum loop
+         Why_Files (Kind) :=
+           Make_Empty_Why_File (Prefix & Why_File_Suffix (Kind));
+      end loop;
    end Init_Why_Files;
 
    ---------
@@ -525,20 +535,28 @@ package body Why.Inter is
       end if;
    end Up;
 
-   -----------------
-   -- EW_Abstract --
-   -----------------
+   ---------------------
+   -- Why_File_Suffix --
+   ---------------------
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id is
+   function Why_File_Suffix (Kind : Why_File_Enum) return String
+   is
    begin
-      if N = Standard_Boolean then
-         return EW_Bool_Type;
-      elsif N = Universal_Fixed then
-         return EW_Real_Type;
-      else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
-      end if;
-   end EW_Abstract;
+      case Kind is
+         when WF_Types_In_Spec =>
+            return "__types_in_spec";
+         when WF_Types_In_Body =>
+            return "__types_in_body";
+         when WF_Variables =>
+            return "__variables";
+         when WF_Context_In_Spec =>
+            return "__context_in_spec";
+         when WF_Context_In_Body =>
+            return "__context_in_body";
+         when WF_Main =>
+            return "__package";
+      end case;
+   end Why_File_Suffix;
 
 begin
    Type_Hierarchy.Move_Child (EW_Array, EW_Array);  --  Special self loop

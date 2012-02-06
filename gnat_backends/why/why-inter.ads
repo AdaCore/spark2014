@@ -69,19 +69,17 @@ package Why.Inter is
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
-   Types_In_Spec_File   : Why_File;
-   Types_In_Body_File   : Why_File;
-   Variables_File       : Why_File;
-   Context_In_Spec_File : Why_File;
-   Context_In_Body_File : Why_File;
-   Main_File            : Why_File;
+   type Why_File_Enum is
+     (WF_Types_In_Spec,
+      WF_Types_In_Body,
+      WF_Variables,
+      WF_Context_In_Spec,
+      WF_Context_In_Body,
+      WF_Main);
 
-   Types_In_Spec_Suffix   : constant String := "__types_in_spec";
-   Types_In_Body_Suffix   : constant String := "__types_in_body";
-   Variables_Suffix       : constant String := "__variables";
-   Context_In_Spec_Suffix : constant String := "__context_in_spec";
-   Context_In_Body_Suffix : constant String := "__context_in_body";
-   Main_Suffix            : constant String := "__package";
+   Why_Files : array (Why_File_Enum) of Why_File;
+
+   function Why_File_Suffix (Kind : Why_File_Enum) return String;
 
    Standard_Why_Package_Name : constant String := "_standard";
 
@@ -110,12 +108,12 @@ package Why.Inter is
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Export);
+                              Use_Kind : EW_Clone_Type := EW_Import);
    --  Add a package name to the context of a Why package.
 
    procedure Add_With_Clause (P        : in out Why_File;
                               Other    : Why_File;
-                              Use_Kind : EW_Clone_Type := EW_Export);
+                              Use_Kind : EW_Clone_Type := EW_Import);
    --  Add a package name to the context of a Why package.
 
    procedure Add_Effect_Imports (P : in out Why_File;
