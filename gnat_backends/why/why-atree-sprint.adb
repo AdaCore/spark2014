@@ -1749,6 +1749,7 @@ package body Why.Atree.Sprint is
       NL (O);
       Traverse (State, +Get_Content (Node));
       NL (O);
+      State.Control := Abandon_Children;
    end Custom_Declaration_Pre_Op;
 
    -----------------
