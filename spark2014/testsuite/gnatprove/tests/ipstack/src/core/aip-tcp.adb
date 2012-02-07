@@ -730,19 +730,22 @@ is
          Saved_Payload := Buffers.Buffer_Payload (D_Buf);
 
          --  Note: here we expect the application to know about chained buffers
-         --  and retrieve all data from the delivered buffer chain.
+         --  and retrieve all data from the delivered buffer chain. We do
+         --  not signal the application if we get an empty segment.
 
          D_Len := AIP.M32_T (Buffers.Buffer_Tlen (D_Buf));
-         TCP_Event
-           (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
-                                 Len  => D_Len,
-                                 Buf  => D_Buf,
-                                 Addr => IPaddrs.IP_ADDR_ANY,
-                                 Port => PCBs.NOPORT,
-                                 Err  => AIP.NOERR),
-            PCB  => PCB,
-            Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
-            Err  => Err);
+         if D_Len > 0 then
+            TCP_Event
+              (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
+                                    Len  => D_Len,
+                                    Buf  => D_Buf,
+                                    Addr => IPaddrs.IP_ADDR_ANY,
+                                    Port => PCBs.NOPORT,
+                                    Err  => AIP.NOERR),
+               PCB  => PCB,
+               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
+               Err  => Err);
+         end if;
 
          if AIP.No (Err) then
             if D_Buf = TPCBs (PCB).Refused_Packet then
@@ -757,20 +760,18 @@ is
                pragma Assert (D_Buf = Buf);
 
                --  Got FIN: signal end of stream to the application by
-               --  delivering an empty buffer, unless already done above
+               --  delivering a RECV event with no buffer.
 
-               if D_Len /= 0 then
-                  TCP_Event
-                    (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
-                                          Len  => 0,
-                                          Buf  => Buffers.NOBUF,
-                                          Addr => IPaddrs.IP_ADDR_ANY,
-                                          Port => PCBs.NOPORT,
-                                          Err  => AIP.NOERR),
-                     PCB  => PCB,
-                     Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
-                     Err  => Err);
-               end if;
+               TCP_Event
+                 (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
+                                       Len  => 0,
+                                       Buf  => Buffers.NOBUF,
+                                       Addr => IPaddrs.IP_ADDR_ANY,
+                                       Port => PCBs.NOPORT,
+                                       Err  => AIP.NOERR),
+                  PCB  => PCB,
+                  Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
+                  Err  => Err);
             end if;
 
             if D_Buf /= Buf then
