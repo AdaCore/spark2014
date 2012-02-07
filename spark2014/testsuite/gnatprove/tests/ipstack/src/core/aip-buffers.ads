@@ -216,7 +216,7 @@ is
    procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
    --# global in out State;
    --  Append Tail at the end of the chain starting at Head, taking over
-   --  the caller's reference to Tail
+   --  the caller's reference to Tail.
    pragma Export (C, Buffer_Cat, "AIP_buffer_cat");
 
    procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
