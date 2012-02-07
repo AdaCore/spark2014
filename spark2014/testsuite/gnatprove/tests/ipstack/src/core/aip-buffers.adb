@@ -351,7 +351,7 @@ is
          else
             --  Stop the iteration
 
-            Next_Buf                       := NOBUF;
+            Next_Buf := NOBUF;
          end if;
       end loop;
    end Buffer_Free;
