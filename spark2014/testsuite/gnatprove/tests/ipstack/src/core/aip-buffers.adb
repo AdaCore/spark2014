@@ -511,9 +511,11 @@ is
    --# global in out Common.Buf_List;
    is
    begin
-      Buffer_Cat (Head, Tail);
-      --  Tail is now referenced by Head
       Buffer_Ref (Tail);
+      Buffer_Cat (Head, Tail);
+
+      --  Tail is now referenced by Head
+
    end Buffer_Chain;
 
    -----------
