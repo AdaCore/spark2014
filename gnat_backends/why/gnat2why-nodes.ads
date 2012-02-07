@@ -27,9 +27,13 @@ with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 
+with AA_Util;  use AA_Util;
 with Atree;    use Atree;
+with Einfo;    use Einfo;
+with Namet;    use Namet;
 with Sem_Util; use Sem_Util;
 with Sinfo;    use Sinfo;
+with Sinput;   use Sinput;
 with Stand;    use Stand;
 with Types;    use Types;
 
@@ -85,5 +89,12 @@ package Gnat2Why.Nodes is
    function In_Standard_Scope (Id : Unique_Entity_Id) return Boolean is
       (Scope (+Id) = Standard_Standard
         or else Scope (+Id) = Standard_ASCII);
+
+   function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
+     (Ekind (Scope (E)) = E_Package);
+
+   function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
+      (File_Name_Without_Suffix
+         (Get_Name_String (File_Name (Get_Source_File_Index (Loc)))));
 
 end Gnat2Why.Nodes;

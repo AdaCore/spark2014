@@ -24,10 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Alfa;                  use Alfa;
-with Alfa.Common;           use Alfa.Common;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
@@ -272,7 +270,6 @@ package body Gnat2Why.Subprograms is
                              E    : Entity_Id) return W_Effects_Id is
       Read_Names      : Name_Set.Set;
       Write_Names     : Name_Set.Set;
-      Write_All_Names : UString_Set.Set;
       Eff             : constant W_Effects_Id := New_Effects;
 
       Ada_Binders : constant List_Id :=
@@ -284,22 +281,11 @@ package body Gnat2Why.Subprograms is
       Read_Names  := Get_Reads (E);
       Write_Names := Get_Writes (E);
 
-      --  Workaround for K526-008 and K525-019
-
-      --  for Name of Write_Names loop
-      --     Write_All_Names.Include (To_Unbounded_String (Name.all));
-      --  end loop;
-
-      declare
-         use Name_Set;
-
-         C : Cursor := Write_Names.First;
-      begin
-         while C /= No_Element loop
-            Write_All_Names.Include (To_Unbounded_String (Element (C).all));
-            Next (C);
-         end loop;
-      end;
+      for Name of Write_Names loop
+         Effects_Append_To_Writes
+           (Eff,
+            New_Identifier (Name => Name.all));
+      end loop;
 
       --  Add all OUT and IN OUT parameters as potential writes
 
@@ -313,8 +299,9 @@ package body Gnat2Why.Subprograms is
                Id := Defining_Identifier (Arg);
 
                if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
-                  Write_All_Names.Include
-                    (To_Unbounded_String (Full_Name (Id)));
+                  Effects_Append_To_Writes
+                    (Eff,
+                     New_Identifier (Name => Full_Name (Id)));
                end if;
 
                Next (Arg);
@@ -324,11 +311,6 @@ package body Gnat2Why.Subprograms is
 
       for Name of Read_Names loop
          Effects_Append_To_Reads (Eff, New_Identifier (Name => Name.all));
-      end loop;
-
-      for Name of Write_All_Names loop
-         Effects_Append_To_Writes (Eff,
-                                   New_Identifier (Name => To_String (Name)));
       end loop;
 
       Add_Effect_Imports (File, Read_Names);

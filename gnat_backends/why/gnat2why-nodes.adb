@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;  use Einfo;
 with Lib;    use Lib;
 
 package body Gnat2Why.Nodes is

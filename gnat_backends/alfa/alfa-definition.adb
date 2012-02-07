@@ -42,7 +42,6 @@ with Stand;                 use Stand;
 with Table;
 
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
-with Alfa.Common; use Alfa.Common;
 
 with Alfa_Violations; use all type Alfa_Violations.Vkind;
 
@@ -51,6 +50,8 @@ package body Alfa.Definition is
    Output_File : Ada.Text_IO.File_Type;
    --  <file>.alfa in which this pass generates information about subprograms
    --  in Alfa and subprograms not in Alfa.
+
+   Name_GNATprove : constant String := "gnatprove";
 
    ---------------------
    -- Local Constants --
@@ -95,7 +96,7 @@ package body Alfa.Definition is
    Inside_Expression_With_Actions : Boolean := False;
    --  True during the analysis of an expression-with-actions
 
-   All_Types : Id_Set.Set;
+   All_Types : Node_Sets.Set;
    --  Set of all types whose declaration has been analyzed so far
 
    procedure Mark_Type_Declaration (Id : Unique_Entity_Id);
@@ -108,8 +109,8 @@ package body Alfa.Definition is
    -- Pragma Annotate (GNATprove, Force/Disable) --
    ------------------------------------------------
 
-   Formal_Proof_On  : Id_Set.Set;
-   Formal_Proof_Off : Id_Set.Set;
+   Formal_Proof_On  : Node_Sets.Set;
+   Formal_Proof_Off : Node_Sets.Set;
 
    function Formal_Proof_Currently_Disabled return Boolean;
    --  Determine the most top-level scope to have formal proof forced or
@@ -137,7 +138,7 @@ package body Alfa.Definition is
    -- Alfa Marks --
    ----------------
 
-   type Violations is array (Alfa_Violations.Vkind) of Id_Set.Set;
+   type Violations is array (Alfa_Violations.Vkind) of Node_Sets.Set;
 
    Spec_Violations : Violations;
    --  Sets of entities which violate Alfa restrictions, per violation kind
@@ -146,19 +147,19 @@ package body Alfa.Definition is
    --  Sets of subprogram entities whose body violate Alfa restrictions, per
    --  violation kind.
 
-   Standard_In_Alfa : Id_Set.Set;
+   Standard_In_Alfa : Node_Sets.Set;
    --  Entities from package Standard which are in Alfa
 
-   Specs_In_Alfa    : Id_Set.Set;
+   Specs_In_Alfa    : Node_Sets.Set;
    --  Subprogram entities whose spec is in Alfa
 
-   Bodies_In_Alfa   : Id_Set.Set;
+   Bodies_In_Alfa   : Node_Sets.Set;
    --  Subprogram entities whose body is in Alfa
 
-   Types_In_Alfa    : Id_Set.Set;
+   Types_In_Alfa    : Node_Sets.Set;
    --  Type entities in Alfa
 
-   Objects_In_Alfa  : Id_Set.Set;
+   Objects_In_Alfa  : Node_Sets.Set;
    --  Object entities in Alfa
 
    function Complete_Error_Msg
@@ -507,19 +508,19 @@ package body Alfa.Definition is
    end Mark_Type_In_Alfa;
 
    function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
-     (Id_Set.Contains (Bodies_In_Alfa, +Id));
+     (Node_Sets.Contains (Bodies_In_Alfa, +Id));
 
    function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
    begin
       if In_Standard_Scope (Id) then
          return Standard_In_Alfa.Contains (+Id);
       else
-         return (Id_Set.Contains (Objects_In_Alfa, +Id));
+         return (Node_Sets.Contains (Objects_In_Alfa, +Id));
       end if;
    end Object_Is_In_Alfa;
 
    function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
-     (Id_Set.Contains (Specs_In_Alfa, +Id));
+     (Node_Sets.Contains (Specs_In_Alfa, +Id));
 
    function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean is
       Id : constant Unique_Entity_Id := Unique (Ent);
@@ -548,7 +549,7 @@ package body Alfa.Definition is
 --           return True;
 --        end if;
 
-      return Id_Set.Contains (Types_In_Alfa, +Id);
+      return Node_Sets.Contains (Types_In_Alfa, +Id);
    end Type_Is_In_Alfa;
 
    procedure Mark_Type_Declaration (Id : Unique_Entity_Id) is
@@ -601,10 +602,10 @@ package body Alfa.Definition is
       --  Set to False if a call to something else than an expression
       --  function is seen.
 
-      Already_Seen : Id_Set.Set;
+      Already_Seen : Node_Sets.Set;
       --  Set of functions already seen
 
-      use Id_Set;
+      use Node_Sets;
 
       function Mark_Regular_Call (N : Node_Id) return Traverse_Result;
       --  Basic marking function

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 with AA_Util;             use AA_Util;
-with Alfa.Common;         use Alfa.Common;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
 with Sem_Util;            use Sem_Util;

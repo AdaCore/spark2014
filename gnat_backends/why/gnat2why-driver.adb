@@ -49,8 +49,6 @@ with Stand;                 use Stand;
 with Switch;                use Switch;
 with String_Utils;          use String_Utils;
 
-with Alfa;
-with Alfa.Common;           use Alfa.Common;
 with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
