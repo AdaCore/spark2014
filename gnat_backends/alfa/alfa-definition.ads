@@ -22,23 +22,10 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Atree;    use Atree;
-with Sem_Util; use Sem_Util;
 
-with Why.Inter; use Why.Inter;
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package Alfa.Definition is
-
-   type Unique_Entity_Id is new Entity_Id;
-   --  Type of unique entities shared between different views, in contrast to
-   --  GNAT entities which may be different between views in GNAT AST:
-   --  * package spec and body have different entities;
-   --  * subprogram declaration, subprogram stub and subprogram body all have
-   --    a different entity;
-   --  * private view and full view have a different entity.
-
-   function Unique (E : Entity_Id) return Unique_Entity_Id is
-      (Unique_Entity_Id (Unique_Entity (E)));
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all
@@ -78,14 +65,6 @@ package Alfa.Definition is
    --  which has only view over the private declaration, may still be in Alfa,
    --  while an operation in the package over non-Alfa fields may not be in
    --  Alfa.
-
-   function Is_In_Current_Unit (N : Node_Id) return Boolean;
-   --  Return True when the node belongs to the Spec or Body of the current
-   --  unit.
-
-   function Is_In_Standard_Package (N : Node_Id) return Boolean is
-     (Sloc (N) = Standard_Location or else
-        Sloc (N) = Standard_ASCII_Location);
 
    type Alfa_Decl is
      (Alfa_Object,

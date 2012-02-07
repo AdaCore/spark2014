@@ -22,19 +22,20 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Snames;    use Snames;
-with Types;     use Types;
+with Snames;         use Snames;
+with Types;          use Types;
 pragma Warnings (Off);
 --  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
 --  with the same name ("Types"). Maybe we should think of renaming it to
 --  "Why.W_Types".
-with Why.Types; use Why.Types;
+with Why.Types;      use Why.Types;
 pragma Warnings (On);
-with VC_Kinds;  use VC_Kinds;
-with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
-with Why.Sinfo; use Why.Sinfo;
+with VC_Kinds;       use VC_Kinds;
+
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Why.Ids;        use Why.Ids;
+with Why.Sinfo;      use Why.Sinfo;
 
 package Why.Gen.Expr is
 

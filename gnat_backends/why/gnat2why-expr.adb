@@ -41,7 +41,6 @@ with Eval_Fat;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
-with Why.Inter;             use Why.Inter;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
@@ -700,14 +699,15 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (Theory        : W_Theory_Declaration_Id;
+     (File          : Why_File;
       Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id
    is
       Params : constant Translation_Params :=
-                 (Theory      => Theory,
-                  Phase       => Translation,
-                  Ref_Allowed => True);
+        (Theory      => File.Cur_Theory,
+         File        => File.File,
+         Phase       => Translation,
+         Ref_Allowed => True);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -1240,9 +1240,10 @@ package body Gnat2Why.Expr is
       --  Predicate used to define the aggregate
 
       Params_No_Ref : constant Translation_Params :=
-                        (Theory      => Params.Theory,
-                         Phase       => Params.Phase,
-                         Ref_Allowed => False);
+        (Theory      => Params.Theory,
+         File        => Params.File,
+         Phase       => Params.Phase,
+         Ref_Allowed => False);
       Pred : constant W_Pred_Id :=
                Transform_Array_Component_Associations
                  (Expr,
@@ -1253,9 +1254,10 @@ package body Gnat2Why.Expr is
       --  Compute the list of references used in the aggregate
 
       Params_Ref : constant Translation_Params :=
-                     (Theory      => Params.Theory,
-                      Phase       => Params.Phase,
-                      Ref_Allowed => True);
+        (Theory      => Params.Theory,
+         File        => Params.File,
+         Phase       => Params.Phase,
+         Ref_Allowed => True);
       Pred_With_Refs : constant W_Pred_Id :=
                          Transform_Array_Component_Associations
                            (Expr,

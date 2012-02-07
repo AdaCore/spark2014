@@ -486,7 +486,8 @@ package body Gnat2Why.Subprograms is
 
       --  Generate code to detect possible run-time errors in the postcondition
 
-      Params := (Theory      => File.Cur_Theory,
+      Params := (File        => File.File,
+                 Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Post,
                  Ref_Allowed => True);
       Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
@@ -494,7 +495,8 @@ package body Gnat2Why.Subprograms is
       --  Set the phase to Generate_VCs_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
 
-      Params := (Theory      => File.Cur_Theory,
+      Params := (File        => File.File,
+                 Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Ref_Allowed => True);
 
@@ -548,7 +550,8 @@ package body Gnat2Why.Subprograms is
    begin
       Open_Theory (File, Name & "__pre");
       Params :=
-        (Theory        => File.Cur_Theory,
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
          Ref_Allowed => True);
 
@@ -623,7 +626,8 @@ package body Gnat2Why.Subprograms is
       Params : Translation_Params;
    begin
       Params :=
-        (Theory      => File.Cur_Theory,
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
          Phase       => Translation,
          Ref_Allowed => False);
 
@@ -680,7 +684,8 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File, Name);
 
       Params :=
-        (Theory      => File.Cur_Theory,
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
          Phase       => Translation,
          Ref_Allowed => True);
 

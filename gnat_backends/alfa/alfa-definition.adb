@@ -28,12 +28,13 @@ with Ada.Text_IO;           use Ada.Text_IO;
 
 with AA_Util;               use AA_Util;
 with Alloc;                 use Alloc;
+with Atree;                 use Atree;
 with Debug;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
-with Lib;                   use Lib;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
+with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
@@ -103,17 +104,6 @@ package body Alfa.Definition is
    function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the declaration for Id was analyzed so far
 
-   function Is_Main_Cunit (N : Node_Id) return Boolean is
-     (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
-
-   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
-     (Present (Corresponding_Body (N))
-       and then Is_Main_Cunit
-         (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
-
-   function In_Main_Unit_Body (N : Node_Id) return Boolean;
-   function In_Main_Unit_Spec (N : Node_Id) return Boolean;
-
    ------------------------------------------------
    -- Pragma Annotate (GNATprove, Force/Disable) --
    ------------------------------------------------
@@ -171,9 +161,6 @@ package body Alfa.Definition is
    Objects_In_Alfa  : Id_Set.Set;
    --  Object entities in Alfa
 
-   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
-   --  Safe conversion from unique entity to entity
-
    function Complete_Error_Msg
      (Msg : String;
       V   : Alfa_Violations.Vkind) return String;
@@ -186,10 +173,6 @@ package body Alfa.Definition is
 
    function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
       (Standard_In_Alfa.Contains (+Id));
-
-   function In_Standard_Scope (Id : Unique_Entity_Id) return Boolean is
-      (Scope (+Id) = Standard_Standard
-        or else Scope (+Id) = Standard_ASCII);
 
    function Body_Is_Computed_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether a violation of Alfa was detected while analyzing the body
@@ -517,7 +500,7 @@ package body Alfa.Definition is
       end if;
 
       if not Type_Entity_Marked (+Id)
-        and then not Is_In_Standard_Package (+Id)
+        and then not In_Standard_Scope (Id)
       then
          Filter_In_Alfa (+Id, Alfa_Status);
       end if;
@@ -882,111 +865,6 @@ package body Alfa.Definition is
          Put_Line (Output_File, C1 & C2 & ' ' & Location & Suffix);
       end if;
    end Generate_Output_In_Out_Alfa;
-
-   -----------------------
-   -- In_Main_Unit_Body --
-   -----------------------
-
-   function In_Main_Unit_Body (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
-      Root : Node_Id;
-
-   begin
-      if No (CU) then
-         return False;
-      end if;
-
-      Root := Unit (CU);
-
-      case Nkind (Root) is
-         when N_Package_Body    |
-              N_Subprogram_Body =>
-
-            return Is_Main_Cunit (Root);
-
-         --  The only way a node in a subunit can be seen is when this subunit
-         --  is part of the main unit.
-
-         when N_Subunit =>
-            return True;
-
-         when N_Package_Declaration            |
-              N_Generic_Package_Declaration    |
-              N_Subprogram_Declaration         |
-              N_Generic_Subprogram_Declaration =>
-
-            return False;
-
-         when N_Package_Renaming_Declaration           |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Subprogram_Renaming_Declaration        |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Procedure_Renaming_Declaration =>
-
-            return False;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end In_Main_Unit_Body;
-
-   -----------------------
-   -- In_Main_Unit_Spec --
-   -----------------------
-
-   function In_Main_Unit_Spec (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
-      Root : Node_Id;
-
-   begin
-      if No (CU) then
-         return False;
-      end if;
-
-      Root := Unit (CU);
-
-      case Nkind (Root) is
-         when N_Package_Body    |
-              N_Subprogram_Body |
-              N_Subunit         =>
-
-            return False;
-
-         when N_Package_Declaration            |
-              N_Generic_Package_Declaration    |
-              N_Subprogram_Declaration         |
-              N_Generic_Subprogram_Declaration =>
-
-            return Is_Main_Cunit (Root)
-              or else Is_Spec_Unit_Of_Main_Unit (Root);
-
-         when N_Package_Renaming_Declaration           |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Subprogram_Renaming_Declaration        |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Procedure_Renaming_Declaration =>
-
-            return False;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end In_Main_Unit_Spec;
-
-   ------------------------
-   -- Is_In_Current_Unit --
-   ------------------------
-
-   function Is_In_Current_Unit (N : Node_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
-   begin
-
-      --  ??? Should be made more efficient
-
-      return In_Main_Unit_Spec (Real_Node) or else
-        In_Main_Unit_Body (Real_Node);
-   end Is_In_Current_Unit;
 
    ------------------------
    -- Inherit_Violations --

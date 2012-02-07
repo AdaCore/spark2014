@@ -38,8 +38,9 @@ with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Types;            use Why.Types;
 
-with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
+with Gnat2Why.Types;       use Gnat2Why.Types;
 
 package body Gnat2Why.Decls is
 
@@ -236,7 +237,7 @@ package body Gnat2Why.Decls is
                Domain => EW_Term,
                Def    => (if Present (Def) then
                           Get_Pure_Logic_Term_If_Possible
-                            (File.Cur_Theory, Def, Type_Of_Node (E))
+                            (File, Def, Type_Of_Node (E))
                           else Why_Empty),
                others => <>)));
       Close_Theory (File);

@@ -35,6 +35,7 @@ with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Progs;        use Why.Gen.Progs;
 with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Expr is
 

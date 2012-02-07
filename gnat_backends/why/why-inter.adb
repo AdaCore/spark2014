@@ -38,6 +38,7 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 
 with Gnat2Why.Decls;      use Gnat2Why.Decls;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Why.Inter is
 

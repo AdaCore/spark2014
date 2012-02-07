@@ -28,6 +28,7 @@ with Sinfo;         use Sinfo;
 with Types;         use Types;
 with Why.Types;     use Why.Types;
 with Why.Ids;       use Why.Ids;
+with Why.Inter;     use Why.Inter;
 with Why.Sinfo;     use Why.Sinfo;
 with Gnat2Why.Driver; use Gnat2Why.Driver;
 
@@ -46,7 +47,7 @@ package Gnat2Why.Expr is
       N      : Node_Id) return W_Prog_Id;
 
    function Get_Pure_Logic_Term_If_Possible
-     (Theory        : W_Theory_Declaration_Id;
+     (File          : Why_File;
       Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),

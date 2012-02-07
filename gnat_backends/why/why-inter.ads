@@ -23,10 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;                     use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Hashed_Sets;
-
 with Alfa.Frame_Conditions;              use Alfa.Frame_Conditions;
 
 with Atree;                              use Atree;
@@ -46,17 +42,6 @@ with Why.Types;                          use Why.Types;
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
    --  phases of the translation process.
-
-   package List_Of_Nodes is new Doubly_Linked_Lists (Node_Id);
-   --  Standard list of nodes. It is better to use these, as a Node_Id can be
-   --  in any number of these lists, while it can be only in one List_Id.
-
-   function Node_Hash (X : Node_Id) return Hash_Type is (Hash_Type (X));
-
-   package Node_Sets is new Hashed_Sets (Element_Type        => Node_Id,
-                                         Hash                => Node_Hash,
-                                         Equivalent_Elements => "=",
-                                         "="                 => "=");
 
    type Why_File is
       record
