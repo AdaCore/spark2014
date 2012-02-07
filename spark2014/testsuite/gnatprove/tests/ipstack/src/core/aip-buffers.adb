@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
@@ -85,11 +85,13 @@ is
                Common.Buffer'(Next        => NOBUF,
                               Next_Packet =>
                                 Common.Packet_Queue_Ptrs'(others => NOBUF),
-                              Packet_Info => System.Null_Address,
-                              Len         => 0,
-                              Tot_Len     => 0,
-                              Poffset     => 0,
-                              Ref         => 0));
+                              Packet_Info   => System.Null_Address,
+                              Len           => 0,
+                              Tot_Len       => 0,
+                              Alloc_Len     => 0,
+                              Alloc_Tot_Len => 0,
+                              Poffset       => 0,
+                              Ref           => 0));
 
       --  Construct a singly linked chain of common buffer structures,
       --  then Initialize data/no-data specific structures
@@ -144,6 +146,23 @@ is
          Buf      => Rbuf);
       Buf := No_Data.To_Common_Id (Rbuf);
    end Ref_Buffer_Alloc;
+
+   ---------------------
+   -- Buffer_Get_Kind --
+   ---------------------
+
+   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind
+   --# global in Data.State;
+   is
+      Kind : Buffer_Kind;
+   begin
+      if Common.Is_Data_Buffer (Buf) then
+         Kind := Data.Buffer_Get_Kind (Data.To_Dbuf_Id (Buf));
+      else
+         Kind := REF_BUF;
+      end if;
+      return Kind;
+   end Buffer_Get_Kind;
 
    ----------------
    -- Buffer_Len --
@@ -280,6 +299,64 @@ is
         AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
       Buffer_Header (Buf, -Pload_Shift, Err);
    end Buffer_Set_Payload;
+
+   ---------------------------
+   -- Buffer_Set_Paylod_Len --
+   ---------------------------
+
+   procedure Buffer_Set_Payload_Len
+     (Buf : Buffer_Id;
+      Len : AIP.U16_T;
+      Err : out AIP.Err_T)
+   --# global in out Common.Buf_List; in Data.State;
+   is
+      Kind    : Buffer_Kind;
+      Cur_Buf : Buffer_Id;
+      New_Len : AIP.U16_T;
+   begin
+      Kind    := Buffer_Get_Kind (Buf);
+      New_Len := Len;
+
+      if Len > Common.Buf_List (Buf).Alloc_Tot_Len then
+         Err     := AIP.ERR_MEM;
+         Cur_Buf := NOBUF;
+
+      else
+         Err     := AIP.NOERR;
+         Cur_Buf := Buf;
+      end if;
+
+      while Cur_Buf /= NOBUF
+              and then New_Len /= Common.Buf_List (Cur_Buf).Tot_Len
+      loop
+         Common.Buf_List (Cur_Buf).Tot_Len := New_Len;
+
+         --# accept F, 41, "Expression is stable";
+         case Kind is
+            when SPLIT_BUF =>
+               Common.Buf_List (Cur_Buf).Len := New_Len;
+               if New_Len > Config.Data_Buffer_Size then
+                  New_Len := New_Len - Config.Data_Buffer_Size;
+               else
+                  New_Len := 0;
+               end if;
+
+            when REF_BUF =>
+               Common.Buf_List (Cur_Buf).Len := New_Len;
+               New_Len := 0;
+               pragma Assert (Common.Buf_List (Cur_Buf).Next = NOBUF);
+
+            when LINK_BUF =>
+               Common.Buf_List (Cur_Buf).Len :=
+                 AIP.U16_T'Min (Common.Buf_List (Cur_Buf).Alloc_Len,
+                                New_Len);
+               New_Len := New_Len - Common.Buf_List (Cur_Buf).Len;
+         end case;
+         --# end accept;
+
+         Cur_Buf := Common.Buf_List (Cur_Buf).Next;
+      end loop;
+   end Buffer_Set_Payload_Len;
 
    ----------------
    -- Buffer_Ref --

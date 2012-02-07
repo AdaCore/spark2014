@@ -121,6 +121,9 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
+   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind;
+   --# global in State;
+
    --  Note: Buffer_Len and Buffer_Tlen names are too close. We should rename
    --        them after reimplementing the rest of the TCP/IP stack.
 
@@ -140,6 +143,16 @@ is
    --  - referenced by buffer Buf for Kind = REF_BUF
    --    Tlen = Len is an invariant in this case.
    pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
+
+   procedure Buffer_Set_Payload_Len
+     (Buf : Buffer_Id;
+      Len : AIP.U16_T;
+      Err : out AIP.Err_T);
+   --# global in out State;
+   --  Set the payload length of the buffer chain starting at Buf to Len.
+   --  Len must be no greater than Buffer_Tlen (Buf).
+   --  Note that no memory deallocation occurs.
+   pragma Export (C, Buffer_Set_Payload_Len, "AIP_buffer_set_payload_len");
 
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
    --# global in State;
@@ -173,6 +186,7 @@ is
    procedure Buffer_Ref (Buf : Buffer_Id);
    --# global in out State;
    --  Increase reference count of Buffer Buf, with influence on Buffer_Free
+   pragma Export (C, Buffer_Ref, "AIP_buffer_ref");
 
    procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T);
    --# global in out State;

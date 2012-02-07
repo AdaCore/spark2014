@@ -44,11 +44,17 @@ AIP_buffer_alloc
    Buffer_Kind   Kind,
    Buffer_Id    *Buf);
 
+extern void
+AIP_buffer_ref (Buffer_Id Buf);
+
 extern U16_T
 AIP_buffer_len (Buffer_Id Buf);
 
 extern U16_T
 AIP_buffer_tlen (Buffer_Id Buf);
+
+extern void
+AIP_buffer_set_payload_len (Buffer_Id Buf, U16_T Len, Err_T *Err);
 
 extern Buffer_Id
 AIP_buffer_next (Buffer_Id Buf);

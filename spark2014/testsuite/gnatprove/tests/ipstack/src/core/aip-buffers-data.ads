@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management, for
@@ -49,6 +49,9 @@ is
    --------------------------------------------
 
    function Buffer_Payload (Buf : Dbuf_Id) return System.Address;
+   --# global in State;
+
+   function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind;
    --# global in State;
 
    procedure Buffer_Link (Buf : Dbuf_Id; Next : Dbuf_Id);

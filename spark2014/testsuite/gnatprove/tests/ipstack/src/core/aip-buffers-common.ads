@@ -42,6 +42,11 @@ is
       --  Tot_Len = Len + (if Buffers (Last).Next /= 0 then
       --                      Buffers (Buffers (Last).Next).Tot_Len else 0)
 
+      Alloc_Len     : Buffers.Data_Length;
+      Alloc_Tot_Len : Buffers.Data_Length;
+      --  Initial value of Len and Tot_Len at buffer allocation time.
+      --  Used to control later adjustments of Len and Tot_Len.
+
       Poffset     : Buffers.Buffer_Length;
       --  Offset to payload from start of data block
 

@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---         Copyright (C) 2010-2012, Free Software Foundation, Inc.          --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Support;
@@ -202,6 +202,13 @@ is
          end case;
          --# end accept;
 
+         --  Save allocated lengths to limit later adjustments
+
+         Common.Buf_List (Cur_Cbuf).Alloc_Len :=
+           Common.Buf_List (Cur_Cbuf).Len;
+         Common.Buf_List (Cur_Cbuf).Alloc_Tot_Len :=
+           Common.Buf_List (Cur_Cbuf).Tot_Len;
+
          --  Remaining size decreases by buffer size until last buffer
 
          if Remaining /= 1 then
@@ -220,6 +227,17 @@ is
       Common.Buf_List (Cur_Cbuf).Next := Buffers.NOBUF;
       Free_List                       := Next_Buf;
    end Buffer_Alloc;
+
+   -----------------
+   -- Buffer_Kind --
+   -----------------
+
+   function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind
+   --# global in Buf_List;
+   is
+   begin
+      return Buf_List (Buf).Kind;
+   end Buffer_Get_Kind;
 
    --------------------
    -- Buffer_Payload --

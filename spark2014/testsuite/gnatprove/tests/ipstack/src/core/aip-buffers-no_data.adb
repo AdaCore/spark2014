@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
@@ -93,11 +93,13 @@ is
 
       --  Set common fields and reference count, then specific fields
 
-      Common.Buf_List (Cbuf).Next    := Buffers.NOBUF;
-      Common.Buf_List (Cbuf).Len     := Size;
-      Common.Buf_List (Cbuf).Tot_Len := Size;
-      Common.Buf_List (Cbuf).Poffset := Offset;
-      Common.Buf_List (Cbuf).Ref     := 1;
+      Common.Buf_List (Cbuf).Next          := Buffers.NOBUF;
+      Common.Buf_List (Cbuf).Len           := Size;
+      Common.Buf_List (Cbuf).Tot_Len       := Size;
+      Common.Buf_List (Cbuf).Alloc_Len     := Size;
+      Common.Buf_List (Cbuf).Alloc_Tot_Len := Size;
+      Common.Buf_List (Cbuf).Poffset       := Offset;
+      Common.Buf_List (Cbuf).Ref           := 1;
 
       Buf_List (Buf).Data_Ref := Data_Ref;
    end Buffer_Alloc;
