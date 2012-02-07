@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -13,6 +13,7 @@ with RAW_UDP_Callbacks;
 
 package body RAW_UDP_Syslog is
    use type AIP.EID;
+   use type AIP.Buffers.Buffer_Id;
 
    procedure Memcpy (Dst : System.Address; Src : String; Len : Integer);
    pragma Import (C, Memcpy, "memcpy");
@@ -29,9 +30,9 @@ package body RAW_UDP_Syslog is
       --  to listen.
 
       Logheader : constant String
-        := "<15>1 2010-04-20T12:30:00.00Z 192.168.0.2 msglogger - 666";
+        := "<15>Feb  7 12:00:00 ";
       --  Syslog header per se ...
-      --  PRI VERSION SP STAMP SP HOSTNAME SP APPNAME SP PROCID SP MSGID
+      --  PRI STAMP HOSTNAME SP APPNAME SP PROCID SP MSGID
       --
       --  Fake everything except PRI, user.debug, 1*8 + 7
 
@@ -66,15 +67,22 @@ package body RAW_UDP_Syslog is
          Kind   => AIP.Buffers.SPLIT_BUF,
          Buf    => Logbuf);
 
+      if Logbuf = AIP.Buffers.NOBUF then
+
+         --  Out of memory
+
+         return;
+      end if;
+
       --  Fill the buffer and catenate the incoming one. We won't free the
       --  latter on its own so use 'cat' and not 'chain' here.
 
       Memcpy (AIP.Buffers.Buffer_Payload (Logbuf),
               Logmsgstart, Logmsgstart'Length);
 
-      AIP.Buffers.Buffer_Cat (Logbuf, Ev.Buf);
+      AIP.Buffers.Buffer_Chain (Logbuf, Ev.Buf);
 
-      --  Connect our PCB to the intended destination and send.
+      --  Connect our PCB to the intended destination and send
 
       Syslogd_IP := AIP.IPaddrs.IP4 (192, 168, 0, 1);
       AIP.UDP.UDP_Connect (Pcb, Syslogd_IP, 514, Err);
@@ -83,8 +91,7 @@ package body RAW_UDP_Syslog is
       AIP.UDP.UDP_Send (Pcb, Logbuf, Err);
       pragma Assert (AIP.No (Err));
 
-      AIP.UDP.UDP_Send (Pcb, Logbuf, Err);
-      pragma Assert (AIP.No (Err));
+      AIP.Buffers.Buffer_Blind_Free (Logbuf);
 
       --  Release the Buffer chain we have processed and disconnect our PCB so
       --  that it accepts further incoming messages from other endpoints.
