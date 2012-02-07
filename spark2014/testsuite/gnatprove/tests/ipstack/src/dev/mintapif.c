@@ -70,7 +70,7 @@
 #define IFNAME0 'e'
 #define IFNAME1 't'
 
-typedef enum { MODE_TAP, MODE_MCAST } mode_t;
+typedef enum { MODE_INVALID, MODE_TAP, MODE_MCAST } mode_t;
 
 struct mintapif {
   Ethernet_Address *ethaddr;
@@ -81,6 +81,8 @@ struct mintapif {
 
   struct sockaddr_in dst_addr;
   /* For mode == MODE_MCAST */
+
+  Buffer_Id prealloc;
 };
 
 /* Forward declarations. */
@@ -97,10 +99,14 @@ static void
 low_level_init(char *Params, struct netif *netif)
 {
   struct mintapif *mintapif;
+  char *pstart, *pend, *next_pstart;
+
   pid_t pid = getpid ();
 
   mintapif = netif->Dev;
   mintapif->fd = -1;
+  mintapif->mode = MODE_INVALID;
+  mintapif->prealloc = NOBUF;
 
   /* Obtain MAC address from network interface. */
 
@@ -118,100 +124,126 @@ low_level_init(char *Params, struct netif *netif)
     goto bailout;
   }
 
-  if (!strncmp (Params, "tap:", 4)) {
-    mintapif->mode = MODE_TAP;
-    mintapif->fd = open(DEVTAP, O_RDWR);
-    if (mintapif->fd < 0) {
-      perror("tapif: tapif_init: open");
-      goto bailout;
-    }
+  /* Params is a comma-separated list of parameters */
+
+  pstart = Params;
+  while (*pstart) {
+    /* Identify end of this parameter*/
+
+    for (pend = pstart; *pend != 0 && *pend != ','; pend++);
+    if (*pend == ',')
+      next_pstart = pend + 1;
+    else
+      next_pstart = pend;
+
+    if (!strncmp (pstart, "tap:", 4)) {
+      mintapif->mode = MODE_TAP;
+      mintapif->fd = open(DEVTAP, O_RDWR);
+      if (mintapif->fd < 0) {
+        perror("tapif: tapif_init: open");
+        goto bailout;
+      }
 
 #ifdef linux
-    {
-      struct ifreq ifr;
-      memset(&ifr, 0, sizeof(ifr));
-      ifr.ifr_flags = IFF_TAP|IFF_NO_PI;
-      if (ioctl(mintapif->fd, TUNSETIFF, (void *) &ifr) < 0) {
+      {
+        struct ifreq ifr;
+        memset(&ifr, 0, sizeof(ifr));
+        ifr.ifr_flags = IFF_TAP|IFF_NO_PI;
+        if (ioctl(mintapif->fd, TUNSETIFF, (void *) &ifr) < 0) {
 	perror("ioctl");
 	goto bailout;
+        }
       }
-    }
 #endif /* Linux */
 
-  } else if (!strncmp (Params, "mcast:", 6)) {
-    struct hostent *h = NULL;
-    char *p;
-    int rc, val;
-    struct ip_mreq imr;
+    } else if (!strncmp (pstart, "mcast:", 6)) {
+      struct hostent *h = NULL;
+      char *p;
+      int rc, val;
+      struct ip_mreq imr;
 
-    mintapif->mode = MODE_MCAST;
-    Params += 6;
-    p = strchr (Params, ':');
-    if (p) {
-      *(p++) = '\0';
-      rc = inet_aton (Params, &mintapif->dst_addr.sin_addr);
-      if (rc == 0) {
+      mintapif->mode = MODE_MCAST;
+      pstart += 6;
+      p = strchr (pstart, ':');
+      if (p) {
+        *(p++) = '\0';
+        rc = inet_aton (pstart, &mintapif->dst_addr.sin_addr);
+        if (rc == 0) {
 	perror ("inet_aton");
 	goto bailout;
-      }
-      mintapif->dst_addr.sin_port = htons (atoi (p));
-      printf ("Multicast: %s:%d\n",
+        }
+        mintapif->dst_addr.sin_port = htons (atoi (p));
+        printf ("Multicast: %s:%d\n",
 	      inet_ntoa (mintapif->dst_addr.sin_addr),
 	      ntohs (mintapif->dst_addr.sin_port));
-    }
+      }
 
-    if (!IN_MULTICAST(ntohl (mintapif->dst_addr.sin_addr.s_addr))
+      if (!IN_MULTICAST(ntohl (mintapif->dst_addr.sin_addr.s_addr))
 	|| !mintapif->dst_addr.sin_port) {
-      perror ("mcast params");
-      goto bailout;
-    }
+        perror ("mcast params");
+        goto bailout;
+      }
 
-    if ((mintapif->fd = socket (AF_INET, SOCK_DGRAM, 0)) < 0) {
-      perror ("socket");
-      goto bailout;
-    }
+      if ((mintapif->fd = socket (AF_INET, SOCK_DGRAM, 0)) < 0) {
+        perror ("socket");
+        goto bailout;
+      }
 
-    val = 1;
-    rc = setsockopt (mintapif->fd, SOL_SOCKET, SO_REUSEADDR,
+      val = 1;
+      rc = setsockopt (mintapif->fd, SOL_SOCKET, SO_REUSEADDR,
 		     (const char *)&val, sizeof val);
-    if (rc < 0) {
-      perror ("setsockopt(SO_REUSEADDR)");
-      goto bailout;
-    }
+      if (rc < 0) {
+        perror ("setsockopt(SO_REUSEADDR)");
+        goto bailout;
+      }
 
-    mintapif->dst_addr.sin_family = AF_INET;
-    rc = bind (mintapif->fd,
+      mintapif->dst_addr.sin_family = AF_INET;
+      rc = bind (mintapif->fd,
 	       (const struct sockaddr *) &mintapif->dst_addr,
 	       sizeof mintapif->dst_addr);
-    if (rc < 0) {
-      perror ("bind");
+      if (rc < 0) {
+        perror ("bind");
+        goto bailout;
+      }
+
+      imr.imr_multiaddr = mintapif->dst_addr.sin_addr;
+      imr.imr_interface.s_addr = htonl (INADDR_ANY);
+
+      rc = setsockopt(mintapif->fd, IPPROTO_IP, IP_ADD_MEMBERSHIP,
+                       (const char *)&imr, sizeof (struct ip_mreq));
+      if (rc < 0) {
+          perror("setsockopt(IP_ADD_MEMBERSHIP)");
+          goto bailout;
+      }
+
+      /* Force mcast msgs to loopback (support for several guests on one host) */
+      val = 1;
+      rc = setsockopt (mintapif->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
+		     (const char *)&val, sizeof(val));
+      if (rc < 0) {
+        perror("setsockopt(IP_MULTICAST_LOOP)");
+        goto bailout;
+      }
+
+    } else if (!strcmp (pstart, "prealloc")) {
+      AIP_buffer_alloc (0, 1514, SPLIT_BUF, &mintapif->prealloc);
+      if (mintapif->prealloc == NOBUF) {
+        fprintf (stderr, "mintapif: failed to preallocate buffer");
+        goto bailout;
+      }
+
+    } else {
+      fprintf (stderr, "mintapif: bad parameter: %s\n", pstart);
       goto bailout;
     }
 
-    imr.imr_multiaddr = mintapif->dst_addr.sin_addr;
-    imr.imr_interface.s_addr = htonl (INADDR_ANY);
-
-    rc = setsockopt(mintapif->fd, IPPROTO_IP, IP_ADD_MEMBERSHIP,
-                     (const char *)&imr, sizeof (struct ip_mreq));
-    if (rc < 0) {
-        perror("setsockopt(IP_ADD_MEMBERSHIP)");
-        goto bailout;
-    }
-
-    /* Force mcast msgs to loopback (support for several guests on one host) */
-    val = 1;
-    rc = setsockopt (mintapif->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
-		     (const char *)&val, sizeof(val));
-    if (rc < 0) {
-        perror("setsockopt(IP_MULTICAST_LOOP)");
-        goto bailout;
-    }
-
-  } else {
-    fprintf (stderr, "mintapif: bad parameters: %s\n", Params);
-    goto bailout;
+    pstart = next_pstart;
   }
 
+  if (mintapif->mode == MODE_INVALID) {
+    fprintf (stderr, "mintapif: mode not set\n");
+    goto bailout;
+  }
   mintapif->lasttime = 0;
   return;
 
@@ -244,19 +276,28 @@ low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
 
   mintapif = netif->Dev;
 
+  /* Should use sendmsg() to do scatter/gather, instead of doing it ourselves
+   * in buf???
+   */
+
   /* initiate transfer(); */
 
   bufptr = &buf[0];
+  written = 0;
 
-  for(q = p; q != NOBUF; q = AIP_buffer_next (q)) {
+  for(q = p; written < AIP_buffer_tlen (p); q = AIP_buffer_next (q)) {
     U16_T len = AIP_buffer_len (q);
     /* Send the data from the pbuf to the interface, one pbuf at a
        time. The size of the data in each pbuf is kept in the ->len
        variable. */
+
     /* send data from(q->payload, q->len); */
     memcpy(bufptr, AIP_buffer_payload (q), len);
+
     bufptr += len;
     /* Check that bufptr does not overflow??? */
+
+    written += len;
   }
 
   /* signal that packet should be sent(); */
@@ -304,8 +345,8 @@ low_level_input(struct netif *netif)
 
   mintapif = netif->Dev;
 
-  /* Obtain the size of the packet and put it into the "len"
-     variable. */
+  /* Obtain the size of the packet and put it into the "len" variable. */
+  /* In prealloc mode we should avoid using the intermediate buffer buf??? */
   len = read(mintapif->fd, buf, sizeof(buf));
 
   /*  if (((double)rand()/(double)RAND_MAX) < 0.1) {
@@ -323,9 +364,18 @@ low_level_input(struct netif *netif)
       return NOBUF;
     }
 
-  /* We allocate a pbuf chain of pbufs from the pool. */
-  AIP_buffer_alloc (0, len, LINK_BUF, &p);
-  /* Check Err ??? */
+  if (mintapif->prealloc != NOBUF) {
+    p = mintapif->prealloc;
+    AIP_buffer_set_payload_len (p, len, &Err);
+    AIP_buffer_ref (p);
+    if (Err != NOERR)
+      p = NOBUF;
+
+  } else {
+    /* We allocate a pbuf chain of pbufs from the pool. */
+    AIP_buffer_alloc (0, len, LINK_BUF, &p);
+    /* Check Err ??? */
+  }
 
   if (p != NOBUF) {
     /* We iterate over the pbuf chain until we have read the entire

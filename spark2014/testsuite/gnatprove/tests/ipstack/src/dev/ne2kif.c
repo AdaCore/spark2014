@@ -8,7 +8,7 @@
 * Reference: YangYe's source code for SkyEye project
 *
 * Port for AIP
-* Copyright (C) 2010, AdaCore
+* Copyright (C) 2010-2012, AdaCore
 *
 *********************************************************************************************************
 */
@@ -203,7 +203,7 @@ static void low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
 {
   struct netif *netif = AIP_get_netif (Nid);
   Buffer_Id q;
-  U16_T packetLength,remote_Addr,Count;
+  U16_T packetLength,remote_Addr,Count,Written;
   U8_T *buf;
 
   packetLength = AIP_buffer_tlen (p);
@@ -225,15 +225,16 @@ static void low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
   /*
    * Write packet to ring buffers.
    */
-  for(q = p; q != NOBUF; q = AIP_buffer_next (q)) {
+  Written = 0;
+  for(q = p; Written < AIP_buffer_tlen (p); q = AIP_buffer_next (q)) {
     /* Send the data from the pbuf to the interface, one pbuf at a
-       time. The size of the data in each pbuf is kept in the ->len
-       variable. */
+       time. */
     Count = AIP_buffer_len (q);
     buf = AIP_buffer_payload (q);
 
     /* Write data to AX88796*/
     remote_Addr = write_AX88796(buf, remote_Addr, Count);
+    Written += Count;
   }
 
   /* Just send it, and does not check */
