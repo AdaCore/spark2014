@@ -101,7 +101,7 @@ is
       Kind   : Data_Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out State;
-   --  Allocate and return a new Buf of kind Kind, aimed at holding or Size
+   --  Allocate and return a new Buf of kind Kind, suitable to hold Size
    --  elements of payload data preceded by Offset bytes of room (initial
    --  payload offset).
    pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
@@ -112,7 +112,7 @@ is
       Data_Ref : System.Address;
       Buf      : out Buffer_Id);
    --# global in out State;
-   --  Allocate and return a new REF_BUF Buf, aimed at referencing Size
+   --  Allocate and return a new REF_BUF Buf, suitable to reference Size
    --  elements of payload data located at Ref, preceded by Offset bytes of
    --  room (initial payload offset).
    pragma Export (C, Ref_Buffer_Alloc, "AIP_ref_buffer_alloc");
