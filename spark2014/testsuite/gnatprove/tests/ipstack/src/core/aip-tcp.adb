@@ -745,6 +745,9 @@ is
                PCB  => PCB,
                Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
                Err  => Err);
+
+         else
+            Err := AIP.NOERR;
          end if;
 
          if AIP.No (Err) then
