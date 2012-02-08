@@ -22,12 +22,15 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-
-with Einfo; use Einfo;
+with Atree;  use Atree;
+with Einfo;  use Einfo;
+with Sinput; use Sinput;
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
 with Why.Inter;           use Why.Inter;
+
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Why.Gen.Names is
 
@@ -296,6 +299,21 @@ package body Why.Gen.Names is
       return New_Identifier
         (Name => "_temp_" & To_String (New_Temp_Identifier_Suffix) & "_"
          & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
+   end New_Temp_Identifier;
+
+   function New_Temp_Identifier (N : Node_Id) return String is
+      Loc    : constant Source_Ptr := Sloc (N);
+      File   : constant String := File_Name (Loc);
+      Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
+      Column : constant Column_Number := Get_Column_Number (Loc);
+   begin
+      return File & "__" & Physical_Line_Number'Image (Line) & "__" &
+        Column_Number'Image (Column);
+   end New_Temp_Identifier;
+
+   function New_Temp_Identifier (N : Node_Id) return W_Identifier_Id is
+   begin
+      return New_Identifier (Name => New_Temp_Identifier (N));
    end New_Temp_Identifier;
 
    --------------

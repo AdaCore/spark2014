@@ -93,7 +93,12 @@ package Why.Gen.Names is
    --  Return a prog identified by the given name
 
    function New_Temp_Identifier return W_Identifier_Id;
-   --  Create a new unique identifier and return the result
+   --  Return a new unique identifier
+
+   function New_Temp_Identifier (N : Node_Id) return W_Identifier_Id;
+   function New_Temp_Identifier (N : Node_Id) return String;
+   --  Return a new unique identifier whose name only depends on the node that
+   --  is passed
 
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given
