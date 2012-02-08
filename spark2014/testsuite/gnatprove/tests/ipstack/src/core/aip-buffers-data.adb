@@ -18,8 +18,9 @@ is
    --  Data_Array array to a single buffer, so as to simulate the allocation
    --  of a single chunk of memory, which is required for SPLIT_BUF buffers.
 
-   subtype Data_Index is Buffers.Data_Length range
-     1 .. Config.Data_Buffer_Size * Config.Data_Buffer_Num;
+   type Data_Offset is range AIP.S32_T'First .. AIP.S32_T'Last;
+   subtype Data_Index is Data_Offset
+     range 1 .. Config.Data_Buffer_Size * Config.Data_Buffer_Num;
    type Data_Array_Type is array (Data_Index) of Buffers.Elem;
 
    Data_Array : Data_Array_Type;
@@ -247,8 +248,8 @@ is
    --# global in Data_Array, Buf_List;
    is
       --# hide Buffer_Payload;  --  Using 'Address
-      Buf_Start_Offset : constant Data_Length :=
-        Data_Length (Buf - Dbuf_Index'First) * Config.Data_Buffer_Size;
+      Buf_Start_Offset : constant Data_Offset :=
+        Data_Offset (Buf - Dbuf_Index'First) * Config.Data_Buffer_Size;
    begin
       return Conversions.Ofs
         (Data_Array (Data_Array'First + Buf_Start_Offset)'Address,
