@@ -181,7 +181,7 @@ is
             Common.Buf_List (Cur_Cbuf).Poffset := 0;
          end if;
 
-         Common.Buf_List (Cur_Cbuf).Tot_Len   :=
+         Common.Buf_List (Cur_Cbuf).Tot_Len :=
            Remaining_Size - Common.Buf_List (Cur_Cbuf).Poffset;
 
          --# accept F, 41, "Expression is stable";
