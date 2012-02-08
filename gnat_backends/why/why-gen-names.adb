@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 with Atree;  use Atree;
 with Einfo;  use Einfo;
-with Sinfo;  use Sinfo;
+with Lib;    use Lib;
 with Sinput; use Sinput;
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -302,7 +302,7 @@ package body Why.Gen.Names is
 
    function New_Temp_Identifier (N : Node_Id) return String is
       Loc    : constant Source_Ptr := Sloc (N);
-      File   : constant String := Full_Name (Scope (N));
+      File   : constant String := Full_Name (Main_Unit_Entity);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
    begin
