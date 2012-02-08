@@ -112,28 +112,6 @@ package body Alfa.Definition is
    Formal_Proof_On  : Node_Sets.Set;
    Formal_Proof_Off : Node_Sets.Set;
 
-   function Formal_Proof_Currently_Disabled return Boolean;
-   --  Determine the most top-level scope to have formal proof forced or
-   --  disabled, and return True if formal proof is disabled. Return False in
-   --  all other cases.
-
-   function Formal_Proof_Currently_Forced return Boolean;
-   --  Determine the most top-level scope to have formal proof forced or
-   --  disabled, and return True if formal proof is forced. Return False in all
-   --  other cases. This is useful to notify the user about Alfa violations in
-   --  a scope where formal proof is forced.
-
-   function Force_Alfa (N : Node_Id) return Boolean is
-     ((Debug.Debug_Flag_Dot_EE
-        and then (In_Main_Unit_Spec (N)
-                   or else In_Main_Unit_Body (N)))
-       or else
-         Formal_Proof_Currently_Forced);
-   --  Return whether Alfa rules should be enforced in the current scope,
-   --  either because option -gnatd.E was passed to gnat2why (which only
-   --  applies to user source code), or because the current scope is forcing
-   --  formal proof.
-
    ----------------
    -- Alfa Marks --
    ----------------
@@ -248,69 +226,206 @@ package body Alfa.Definition is
    --  Subprogram Pack.H has both its spec and body not implemented in Alfa,
    --  due to the use of slices, plus some other not precised constructs.
 
-   -----------------
-   -- Scope Stack --
-   -----------------
+   package Scope_Stack is
 
-   --  A stack of scopes records scopes currently open. The entity referenced
-   --  can be:
-   --    . a package spec
-   --    . a package body
-   --    . a subprogram spec (even when treating the subprogram body)
-   --    . a variable (when treating initializing expression)
-   --    . a type (when treating a type declaration)
+      -----------------
+      -- Scope Stack --
+      -----------------
 
-   --  Is_Logic is True for assertions, pre- and postconditions
-   type Scope_Record (Is_Logic : Boolean := False) is record
-      case Is_Logic is
+      --  A stack of scopes records scopes currently open. The entity
+      --  referenced can be:
+      --    . a package spec
+      --    . a package body
+      --    . a subprogram spec (even when treating the subprogram body)
+      --    . a variable (when treating initializing expression)
+      --    . a type (when treating a type declaration)
+
+      --  Is_Logic is True for assertions, pre- and postconditions
+
+      type Scope_Record (Is_Logic : Boolean := False) is record
+         case Is_Logic is
          when False =>
             Entity  : Unique_Entity_Id;
             Is_Body : Boolean;  --  True for a package/subprogram body
          when True =>
             null;
-      end case;
-   end record;
+         end case;
+      end record;
 
-   First_Scope_Index : constant := 0;
+      function Current_Scope return Scope_Record;
+      --  Return the top-most scope that is not null
 
-   package Scope_Stack is new Table.Table (
-     Table_Component_Type => Scope_Record,
-     Table_Index_Type     => Int,
-     Table_Low_Bound      => First_Scope_Index,
-     Table_Initial        => Alloc.Scope_Stack_Initial,
-     Table_Increment      => Alloc.Scope_Stack_Increment,
-     Table_Name           => "Alfa.Definition.Scope_Stack");
+      procedure Pop_Scope (E : Unique_Entity_Id);
+      --  Remove the top scope in the stack, which should match with entity E
 
-   function Current_Scope return Scope_Record;
-   --  Return the top-most scope that is not null
+      procedure Push_Scope
+        (E       : Unique_Entity_Id;
+         Is_Body : Boolean := False);
+      --  Set entity S as the top scope in the stack
 
-   function In_Logic_Scope return Boolean is
-     (for some S in First_Scope_Index .. Scope_Stack.Last =>
-        Scope_Stack.Table (S).Is_Logic);
-   pragma Unreferenced (In_Logic_Scope);
-   --  Return True if there is a logic scope in the current scope stack
+      procedure Push_Logic_Scope;
+      --  Push a logic scope as the top scope in the stack
 
-   procedure Pop_Scope (E : Unique_Entity_Id);
-   --  Remove the top scope in the stack, which should match with entity E
+      procedure Pop_Logic_Scope;
+      --  Remove the top scope in the stack, which should be a logic scope
 
-   procedure Push_Scope
-     (E       : Unique_Entity_Id;
-      Is_Body : Boolean := False);
+      function Formal_Proof_Currently_Disabled return Boolean;
+      --  Determine the most top-level scope to have formal proof forced or
+      --  disabled, and return True if formal proof is disabled. Return False
+      --  in all other cases.
 
-   --  Set entity S as the top scope in the stack
+      function Formal_Proof_Currently_Forced return Boolean;
+      --  Determine the most top-level scope to have formal proof forced or
+      --  disabled, and return True if formal proof is forced. Return False
+      --  in all other cases. This is useful to notify the user about Alfa
+      --  violations in a scope where formal proof is forced.
 
-   procedure Push_Logic_Scope;
-   --  Push a logic scope as the top scope in the stack
+      generic
+         with procedure Iterator (S : Scope_Record);
+      procedure Iterate;
 
-   procedure Pop_Logic_Scope;
-   --  Remove the top scope in the stack, which should be a logic scope
+   end Scope_Stack;
+
+   package body Scope_Stack is
+
+      First_Scope_Index : constant := 0;
+
+      package Scope_Table is
+        new Table.Table
+          (Table_Component_Type => Scope_Record,
+           Table_Index_Type     => Int,
+           Table_Low_Bound      => First_Scope_Index,
+           Table_Initial        => Alloc.Scope_Stack_Initial,
+           Table_Increment      => Alloc.Scope_Stack_Increment,
+           Table_Name           => "Alfa.Definition.Scope_Stack");
+
+      -------------------
+      -- Current_Scope --
+      -------------------
+
+      function Current_Scope return Scope_Record is
+        (Scope_Table.Table (Scope_Table.Last));
+
+      -------------------------------------
+      -- Formal_Proof_Currently_Disabled --
+      -------------------------------------
+
+      function Formal_Proof_Currently_Disabled return Boolean is
+      begin
+         for Idx in reverse Scope_Table.First .. Scope_Table.Last loop
+            declare
+               E : constant Unique_Entity_Id := Scope_Table.Table (Idx).Entity;
+            begin
+               if Formal_Proof_Off.Contains (+E) then
+                  return True;
+               elsif Formal_Proof_On.Contains (+E) then
+                  return False;
+               end if;
+            end;
+         end loop;
+         return False;
+      end Formal_Proof_Currently_Disabled;
+
+      -----------------------------------
+      -- Formal_Proof_Currently_Forced --
+      -----------------------------------
+
+      function Formal_Proof_Currently_Forced return Boolean is
+      begin
+         for Idx in reverse Scope_Table.First .. Scope_Table.Last loop
+            if not Scope_Table.Table (Idx).Is_Logic then
+               declare
+                  E : constant Unique_Entity_Id :=
+                    Scope_Table.Table (Idx).Entity;
+               begin
+                  if Formal_Proof_On.Contains (+E) then
+                     return True;
+                  elsif Formal_Proof_Off.Contains (+E) then
+                     return False;
+                  end if;
+               end;
+            end if;
+         end loop;
+         return False;
+      end Formal_Proof_Currently_Forced;
+
+      -------------
+      -- Iterate --
+      -------------
+
+      procedure Iterate is
+      begin
+         for Scope in First_Scope_Index .. Scope_Table.Last loop
+            Iterator (Scope_Table.Table (Scope));
+         end loop;
+      end Iterate;
+
+      ---------------------
+      -- Pop_Logic_Scope --
+      ---------------------
+
+      procedure Pop_Logic_Scope is
+         Cur_Scop : Scope_Record renames Scope_Table.Table (Scope_Table.Last);
+      begin
+         pragma Assert (Cur_Scop.Is_Logic);
+         Scope_Table.Decrement_Last;
+      end Pop_Logic_Scope;
+
+      ---------------
+      -- Pop_Scope --
+      ---------------
+
+      procedure Pop_Scope (E : Unique_Entity_Id) is
+         Cur_Scop : Scope_Record renames Scope_Table.Table (Scope_Table.Last);
+      begin
+         pragma Assert (Cur_Scop.Entity = E);
+         Scope_Table.Decrement_Last;
+      end Pop_Scope;
+
+      ----------------------
+      -- Push_Logic_Scope --
+      ----------------------
+
+      procedure Push_Logic_Scope is
+      begin
+         Scope_Table.Increment_Last;
+         Scope_Table.Table (Scope_Table.Last) :=
+           Scope_Record'(Is_Logic => True);
+      end Push_Logic_Scope;
+
+      ----------------
+      -- Push_Scope --
+      ----------------
+
+      procedure Push_Scope
+        (E          : Unique_Entity_Id;
+         Is_Body    : Boolean := False) is
+      begin
+         Scope_Table.Increment_Last;
+         Scope_Table.Table (Scope_Table.Last) :=
+           Scope_Record'(Entity     => E,
+                         Is_Body    => Is_Body,
+                         Is_Logic   => False);
+      end Push_Scope;
+
+   end Scope_Stack;
+
+   use Scope_Stack;
+
+   function Force_Alfa (N : Node_Id) return Boolean is
+     ((Debug.Debug_Flag_Dot_EE
+        and then (In_Main_Unit_Spec (N)
+                   or else In_Main_Unit_Body (N)))
+       or else
+         Formal_Proof_Currently_Forced);
+   --  Return whether Alfa rules should be enforced in the current scope,
+   --  either because option -gnatd.E was passed to gnat2why (which only
+   --  applies to user source code), or because the current scope is forcing
+   --  formal proof.
 
    -----------------------
    -- Local Subprograms --
    -----------------------
-
-   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
-   --  Compute the instantiation Depth of Id
 
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code as in Alfa / not in Alfa
@@ -585,13 +700,6 @@ package body Alfa.Definition is
       end case;
    end Complete_Error_Msg;
 
-   -------------------
-   -- Current_Scope --
-   -------------------
-
-   function Current_Scope return Scope_Record is
-     (Scope_Stack.Table (Scope_Stack.Last));
-
    --------------------------------------
    -- Expression_Functions_All_The_Way --
    --------------------------------------
@@ -687,48 +795,6 @@ package body Alfa.Definition is
       Traverse_Expression_Function (E);
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
-
-   -------------------------------------
-   -- Formal_Proof_Currently_Disabled --
-   -------------------------------------
-
-   function Formal_Proof_Currently_Disabled return Boolean is
-   begin
-      for Idx in reverse Scope_Stack.First .. Scope_Stack.Last loop
-         declare
-            E : constant Unique_Entity_Id := Scope_Stack.Table (Idx).Entity;
-         begin
-            if Formal_Proof_Off.Contains (+E) then
-               return True;
-            elsif Formal_Proof_On.Contains (+E) then
-               return False;
-            end if;
-         end;
-      end loop;
-      return False;
-   end Formal_Proof_Currently_Disabled;
-
-   -----------------------------------
-   -- Formal_Proof_Currently_Forced --
-   -----------------------------------
-
-   function Formal_Proof_Currently_Forced return Boolean is
-   begin
-      for Idx in reverse Scope_Stack.First .. Scope_Stack.Last loop
-         if not Scope_Stack.Table (Idx).Is_Logic then
-            declare
-               E : constant Unique_Entity_Id := Scope_Stack.Table (Idx).Entity;
-            begin
-               if Formal_Proof_On.Contains (+E) then
-                  return True;
-               elsif Formal_Proof_Off.Contains (+E) then
-                  return False;
-               end if;
-            end;
-         end if;
-      end loop;
-      return False;
-   end Formal_Proof_Currently_Forced;
 
    ---------------------------------
    -- Generate_Output_In_Out_Alfa --
@@ -2773,73 +2839,10 @@ package body Alfa.Definition is
 
    procedure Mark_Violations_For_All_Scopes is
       procedure Mark_Scope is new Mark_Violations;
+      procedure Iterate_Scope is new Iterate (Mark_Scope);
    begin
-      for S in First_Scope_Index .. Scope_Stack.Last loop
-         Mark_Scope (Scope_Stack.Table (S));
-      end loop;
+      Iterate_Scope;
    end Mark_Violations_For_All_Scopes;
-
-   ---------------------
-   -- Pop_Logic_Scope --
-   ---------------------
-
-   procedure Pop_Logic_Scope is
-      Cur_Scop : Scope_Record renames Scope_Stack.Table (Scope_Stack.Last);
-   begin
-      pragma Assert (Cur_Scop.Is_Logic);
-      Scope_Stack.Decrement_Last;
-   end Pop_Logic_Scope;
-
-   ---------------
-   -- Pop_Scope --
-   ---------------
-
-   procedure Pop_Scope (E : Unique_Entity_Id) is
-      Cur_Scop : Scope_Record renames Scope_Stack.Table (Scope_Stack.Last);
-   begin
-      pragma Assert (Cur_Scop.Entity = E);
-      Scope_Stack.Decrement_Last;
-   end Pop_Scope;
-
-   ----------------------
-   -- Push_Logic_Scope --
-   ----------------------
-
-   procedure Push_Logic_Scope is
-   begin
-      Scope_Stack.Increment_Last;
-      Scope_Stack.Table (Scope_Stack.Last) := Scope_Record'(Is_Logic => True);
-   end Push_Logic_Scope;
-
-   ----------------
-   -- Push_Scope --
-   ----------------
-
-   procedure Push_Scope
-     (E          : Unique_Entity_Id;
-      Is_Body    : Boolean := False) is
-   begin
-      Scope_Stack.Increment_Last;
-      Scope_Stack.Table (Scope_Stack.Last) :=
-        Scope_Record'(Entity     => E,
-                      Is_Body    => Is_Body,
-                      Is_Logic   => False);
-   end Push_Scope;
-
-   ------------------------------
-   -- Safe_Instantiation_Depth --
-   ------------------------------
-
-   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int
-   is
-      S : constant Source_Ptr := Sloc (+Id);
-   begin
-      if S /= Standard_ASCII_Location then
-         return Instantiation_Depth (S);
-      else
-         return 0;
-      end if;
-   end Safe_Instantiation_Depth;
 
    -----------------------------
    -- Create_Alfa_Output_File --

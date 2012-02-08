@@ -140,4 +140,19 @@ package body Gnat2Why.Nodes is
         In_Main_Unit_Body (Real_Node);
    end Is_In_Current_Unit;
 
+   ------------------------------
+   -- Safe_Instantiation_Depth --
+   ------------------------------
+
+   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int
+   is
+      S : constant Source_Ptr := Sloc (+Id);
+   begin
+      if S /= Standard_ASCII_Location then
+         return Instantiation_Depth (S);
+      else
+         return 0;
+      end if;
+   end Safe_Instantiation_Depth;
+
 end Gnat2Why.Nodes;

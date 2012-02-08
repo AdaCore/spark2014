@@ -93,6 +93,9 @@ package Gnat2Why.Nodes is
    function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
      (Ekind (Scope (E)) = E_Package);
 
+   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
+   --  Compute the instantiation Depth of Id
+
    function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
       (File_Name_Without_Suffix
          (Get_Name_String (File_Name (Get_Source_File_Index (Loc)))));
