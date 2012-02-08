@@ -72,7 +72,7 @@ package body Why.Gen.Expr is
             case Nkind (A) is
                when N_Identifier | N_Expanded_Name =>
                   N := Entity (A);
-               when N_String_Literal =>
+               when N_String_Literal | N_Aggregate =>
                   N := A;
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);

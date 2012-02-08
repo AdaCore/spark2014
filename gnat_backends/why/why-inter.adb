@@ -212,7 +212,7 @@ package body Why.Inter is
 
       function Name_of_Node (N : Node_Id) return String is
       begin
-         if Nkind (N) = N_String_Literal then
+         if Nkind (N) = N_String_Literal or else Nkind (N) = N_Aggregate then
             return Capitalize_First (New_Temp_Identifier (N));
          end if;
          return Capitalize_First (Full_Name (N));
@@ -265,7 +265,7 @@ package body Why.Inter is
    function Dispatch_Entity (E : Entity_Id) return Why_File_Enum
    is
    begin
-      if Nkind (E) = N_String_Literal then
+      if Nkind (E) = N_String_Literal or else Nkind (E) = N_Aggregate then
          return WF_Context_In_Spec;
       end if;
       case Ekind (E) is

@@ -1252,7 +1252,9 @@ package body Gnat2Why.Expr is
    is
       use Why_Node_Sets;
 
-      Func : constant W_Identifier_Id := New_Temp_Identifier;
+      Name : constant String := New_Temp_Identifier (Expr);
+      Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
+                                                         Ada_Node => Expr);
 
       --  Predicate used to define the aggregate
 
@@ -1315,9 +1317,9 @@ package body Gnat2Why.Expr is
                       (1 .. 0 => <>)
                     else
                       (1 .. Integer (Refs.Length) => <>));
-      Cnt      : Positive;
-      Cursor   : Why_Node_Sets.Cursor;
-
+      Cnt       : Positive;
+      Cursor    : Why_Node_Sets.Cursor;
+      Decl_File : Why_File := Why_Files (WF_Context_In_Spec);
    begin
       --  Compute the parameters/arguments for the function call and axiom
 
@@ -1356,9 +1358,12 @@ package body Gnat2Why.Expr is
       Ada_To_Why_Term (False).Include (Expr, +Call);
 
       --  Generate the necessary logic function and axiom declarations
-
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Why_Empty;
+      end if;
+      Open_Theory (Decl_File, Name);
       Emit
-        (Params.Theory,
+        (Decl_File.Cur_Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Func,
@@ -1371,12 +1376,16 @@ package body Gnat2Why.Expr is
                                  Arg_Types => +Ret_Type,
                                  Domain    => EW_Pred);
       Emit
-        (Params.Theory,
+        (Decl_File.Cur_Theory,
          New_Guarded_Axiom
            (Name        => Logic_Func_Axiom.Id (Func),
             Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
             Pre         => +Id_Expr,
             Def         => Pred));
+      Close_Theory (Decl_File, Filter_Entity => Expr);
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Params.Theory;
+      end if;
    end Transform_Array_Aggregate;
 
    --------------------------------------------

@@ -24,13 +24,12 @@
 ------------------------------------------------------------------------------
 with Atree;  use Atree;
 with Einfo;  use Einfo;
+with Sinfo;  use Sinfo;
 with Sinput; use Sinput;
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
 with Why.Inter;           use Why.Inter;
-
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Why.Gen.Names is
 
@@ -303,7 +302,7 @@ package body Why.Gen.Names is
 
    function New_Temp_Identifier (N : Node_Id) return String is
       Loc    : constant Source_Ptr := Sloc (N);
-      File   : constant String := File_Name_Without_Suffix (Loc);
+      File   : constant String := Full_Name (Scope (N));
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
    begin

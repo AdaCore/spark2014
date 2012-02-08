@@ -9,7 +9,7 @@ database.adb:123:13: info: index check proved
 database.adb:124:13: index check not proved
 database.adb:124:20: info: index check proved
 database.adb:124:50: info: index check proved
-database.adb:130:13: index check not proved
+database.adb:130:13: info: index check proved
 database.adb:130:37: index check not proved
 database.adb:132:10: index check not proved
 database.adb:133:10: index check not proved
