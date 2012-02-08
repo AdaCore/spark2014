@@ -303,12 +303,12 @@ package body Why.Gen.Names is
 
    function New_Temp_Identifier (N : Node_Id) return String is
       Loc    : constant Source_Ptr := Sloc (N);
-      File   : constant String := File_Name (Loc);
+      File   : constant String := File_Name_Without_Suffix (Loc);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
    begin
-      return File & "__" & Physical_Line_Number'Image (Line) & "__" &
-        Column_Number'Image (Column);
+      return File & "__" & Int_Image (Integer (Line)) & "__" &
+        Int_Image (Integer (Column));
    end New_Temp_Identifier;
 
    function New_Temp_Identifier (N : Node_Id) return W_Identifier_Id is

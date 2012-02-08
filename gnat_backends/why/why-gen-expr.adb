@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;                use Atree;
-with Namet;                use Namet;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
@@ -73,6 +72,8 @@ package body Why.Gen.Expr is
             case Nkind (A) is
                when N_Identifier | N_Expanded_Name =>
                   N := Entity (A);
+               when N_String_Literal =>
+                  N := A;
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);
                when N_Defining_Identifier =>
@@ -575,8 +576,7 @@ package body Why.Gen.Expr is
       --  can easily recognize the label as coming from gnatprove.
 
       Loc    : constant Source_Ptr := Sloc (N);
-      File   : constant String :=
-         Get_Name_String (File_Name (Get_Source_File_Index (Loc)));
+      File   : constant String := File_Name (Loc);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
       Label : constant String :=

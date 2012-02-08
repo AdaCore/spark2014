@@ -174,6 +174,10 @@ package body Why.Inter is
       --  return the base name of the unit in which the entity is
       --  defined
 
+      function Name_of_Node (N : Node_Id) return String;
+      --  return the name which needs to be used to include the Why entity for
+      --  that node
+
       ------------------------------
       -- File_Base_Name_Of_Entity --
       ------------------------------
@@ -202,6 +206,18 @@ package body Why.Inter is
          return File_Name_Without_Suffix (Sloc (U));
       end File_Base_Name_Of_Entity;
 
+      ------------------
+      -- Name_of_Node --
+      ------------------
+
+      function Name_of_Node (N : Node_Id) return String is
+      begin
+         if Nkind (N) = N_String_Literal then
+            return Capitalize_First (New_Temp_Identifier (N));
+         end if;
+         return Capitalize_First (Full_Name (N));
+      end Name_of_Node;
+
       use Node_Sets;
 
       S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
@@ -215,15 +231,18 @@ package body Why.Inter is
          for N of S loop
 
             --  Loop parameters may appear, but they do not have a Why
-            --  declaration; we skip them here.
+            --  declaration; we skip them here. We also need to protect against
+            --  nodes that are not entities, such as string literals
 
-            if N /= Filter_Entity and then Ekind (N) /= E_Loop_Parameter then
+            if N /= Filter_Entity and then
+              (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
+            then
                declare
                   File_Name   : constant String :=
                     File_Base_Name_Of_Entity (N) &
                     Why_File_Suffix (Dispatch_Entity (N));
                   Theory_Name : constant String :=
-                    Capitalize_First (Full_Name (N));
+                    Name_of_Node (N);
                begin
                   if File_Name /= P.Name.all then
                      Add_With_Clause (P, File_Name, Theory_Name);
@@ -246,6 +265,9 @@ package body Why.Inter is
    function Dispatch_Entity (E : Entity_Id) return Why_File_Enum
    is
    begin
+      if Nkind (E) = N_String_Literal then
+         return WF_Context_In_Spec;
+      end if;
       case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
             if Is_In_Current_Unit (E) and then

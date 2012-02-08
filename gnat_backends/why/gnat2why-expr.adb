@@ -67,17 +67,34 @@ package body Gnat2Why.Expr is
    ---------------------
 
    function Node_Hash (X : Node_Id) return Hash_Type is (Hash_Type (X));
+   function Str_Hash (X : String_Id) return Hash_Type is (Hash_Type (X));
 
    package Ada_To_Why is new Hashed_Maps (Key_Type        => Node_Id,
                                           Element_Type    => Why_Node_Id,
                                           Hash            => Node_Hash,
                                           Equivalent_Keys => "=",
                                           "="             => "=");
+   package Strlit_To_Why is new Hashed_Maps (Key_Type        => String_Id,
+                                             Element_Type    => Why_Node_Id,
+                                             Hash            => Str_Hash,
+                                             Equivalent_Keys => "=",
+                                             "="             => "=");
+
+   package Strlit_To_Type is new
+     Hashed_Maps (Key_Type        => String_Id,
+                  Element_Type    => W_Base_Type_Id,
+                  Hash            => Str_Hash,
+                  Equivalent_Keys => "=",
+                  "="             => "=");
 
    Ada_To_Why_Term : array (Boolean) of Ada_To_Why.Map;
    --  Mappings from Ada nodes to their Why translation as a term, with the
    --  Boolean index of the array denoting whether Ref_Allowed was True or
    --  False when building the term.
+   Strlit_To_Why_Term : Strlit_To_Why.Map;
+   Strlit_To_Why_Type : Strlit_To_Type.Map;
+   --  Idem for string literals, where the Ref_Allowed information is not
+   --  needed.
 
    -----------------------
    -- Local Subprograms --
@@ -2281,10 +2298,15 @@ package body Gnat2Why.Expr is
          --  * loop parameters are always mutable, and of type int
 
          when N_String_Literal =>
-            if not (Ada_To_Why_Term (Params.Ref_Allowed).Contains (Expr)) then
-               Transform_String_Literal (Params, Expr);
-            end if;
-            T := +Ada_To_Why_Term (Params.Ref_Allowed).Element (Expr);
+            declare
+               Val : constant String_Id := Strval (Expr);
+            begin
+               if not (Strlit_To_Why_Term.Contains (Val)) then
+                  Transform_String_Literal (Params, Expr);
+               end if;
+               T := +Strlit_To_Why_Term.Element (Val);
+               Current_Type := Strlit_To_Why_Type.Element (Val);
+            end;
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -3231,21 +3253,32 @@ package body Gnat2Why.Expr is
      (Params : Translation_Params;
       N      : Node_Id)
    is
-      Id       : constant W_Identifier_Id := New_Temp_Identifier;
-      Ty       : constant Entity_Id := Type_Of_Node (N);
-      Why_Type : constant W_Primitive_Type_Id :=
-         +Why_Logic_Type_Of_Ada_Type (Ty);
+      Name      : constant String := New_Temp_Identifier (N);
+      Id        : constant W_Identifier_Id :=
+        New_Identifier (Ada_Node => N, Name => Name);
+      Ty        : constant Entity_Id := Type_Of_Node (N);
+      Why_Type  : constant W_Base_Type_Id :=
+        New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+      Decl_File : Why_File := Why_Files (WF_Context_In_Spec);
    begin
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Why_Empty;
+      end if;
+      Open_Theory (Decl_File, Name);
       Emit
-        (Params.Theory,
+        (Decl_File.Cur_Theory,
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
             Binders     => (1 .. 0 => <>),
-            Return_Type => Why_Type));
+            Return_Type => +Why_Type));
+      Close_Theory (Decl_File, Filter_Entity => N);
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Params.Theory;
+      end if;
 
-      Ada_To_Why_Term (True).Include (N, +Id);
-      Ada_To_Why_Term (False).Include (N, +Id);
+      Strlit_To_Why_Term.Include (Strval (N), +Id);
+      Strlit_To_Why_Type.Include (Strval (N), Why_Type);
    end Transform_String_Literal;
 
    ------------------
