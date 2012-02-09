@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  AIP configuration parameters
@@ -62,7 +62,7 @@ package AIP.Config is
    -- UDP configuration --
    -----------------------
 
-   MAX_UDP_PCB : constant := 20;
+   Max_UDP_PCB : constant := 20;
    --  Maximum number of UDP PCBs in use at a time
    --  [N (UDP_New) - N(UDP_Release)]
 
@@ -76,7 +76,7 @@ package AIP.Config is
    -- TCP configuration --
    -----------------------
 
-   MAX_TCP_PCB : constant := 20;
+   Max_TCP_PCB : constant := 20;
    --  Maximum number for TCP PCBs in use at any time
 
    TCP_TTL : constant := 64;

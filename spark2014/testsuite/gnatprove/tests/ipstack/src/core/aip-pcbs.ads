@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Protocol Control Blocks (shared between UDP and TCP)
@@ -15,7 +15,8 @@ with AIP.NIF;
 
 package AIP.PCBs is
 
-   subtype PCB_Id is AIP.EID range AIP.NULID .. Config.MAX_UDP_PCB;
+   subtype PCB_Id is AIP.EID
+     range AIP.NULID .. AIP.EID'Max (Config.Max_UDP_PCB, Config.Max_TCP_PCB);
    PCB_Unused : constant AIP.EID := AIP.NULID - 1;
    --  Not in range of PCB_Id (see IP_PCB.Link below)
 
