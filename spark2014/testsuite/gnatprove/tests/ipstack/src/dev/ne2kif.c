@@ -328,7 +328,7 @@ ne2k_input (Netif_Id Nid)
   lwip_stats.link.recv++;
 #endif /* LINK_STATS */
 
-  switch (AIP_etherh_frame_type (ethhdr)) {
+  switch (AIP_EtherH_Frame_Type (ethhdr)) {
     /* IP packet? */
   case Ether_Type_IP:
       /* update ARP table */

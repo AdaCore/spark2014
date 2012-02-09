@@ -444,7 +444,7 @@ mintapif_input (Netif_Id nid)
 
     ethhdr = AIP_buffer_payload (p);
 
-    switch (AIP_etherh_frame_type (ethhdr)) {
+    switch (AIP_EtherH_Frame_Type (ethhdr)) {
     case Ether_Type_IP:
       /* AIP_arpip_input(Nid, p); */
 

@@ -4,12 +4,14 @@ project IPStack_Config is
    Lib_Prefix := "../build/lib/";
    ALI_Prefix := "../build/ali/";
 
+   Project_Dir := external ("Project_Dir", ".");
+
    package Compiler is
       Common_Switches := ("-g");
       for Default_Switches ("Ada")
         use Common_Switches & ("-gnat05", "-gnatwa", "-gnatyg", "-gnata");
       for Default_Switches ("C")
-        use Common_Switches;
+        use Common_Switches & ("-I" & Project_Dir & "/" & Gen_Prefix);
    end Compiler;
 
    for Source_Dirs use ();

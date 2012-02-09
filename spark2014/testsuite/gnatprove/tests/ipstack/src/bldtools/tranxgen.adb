@@ -1,19 +1,21 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 pragma Ada_2005;
 
-with Ada.Command_Line;       use Ada.Command_Line;
 with Ada.containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with ada.Exceptions;
+with Ada.Directories;        use Ada.Directories;
+with Ada.Exceptions;
+with Ada.Streams.Stream_IO;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Ada.Text_IO;            use Ada.Text_IO;
 
-with GNAT.IO;
-with GNAT.OS_Lib;
+with GNAT.Command_Line;      use GNAT.Command_Line;
+with GNAT.OS_Lib;            use GNAT.OS_Lib;
 
 with DOM.Core.Documents;     use DOM.Core, DOM.Core.Documents;
 with DOM.Core.Elements;      use DOM.Core.Elements;
@@ -27,6 +29,9 @@ procedure Tranxgen is
    use Ada.Strings.Fixed;
 
    use type Ada.Containers.Count_Type;
+
+   procedure Usage;
+   --  Display usage information and exit
 
    ------------------------------------
    -- Messages, fields and subfields --
@@ -71,6 +76,9 @@ procedure Tranxgen is
       --  Subfields (always at least one). The ranges First_Bit ..
       --  First_Bit + Length - 1 of successive subfields are contiguous within
       --  the message, and the sum of the lengths of these ranges is Length.
+
+      Export : Boolean;
+      --  True if C accessors should be generated
    end record;
 
    package Field_Vectors is new Ada.Containers.Vectors
@@ -100,8 +108,8 @@ procedure Tranxgen is
       procedure DI (U : in out Unit);
       --  Decrement indentation level
 
-      procedure Dump (U : Unit);
-      --  Display text of unit to standard output
+      procedure Dump (U : Unit; F : Ada.Streams.Stream_IO.File_Type);
+      --  Display text of unit U to F
 
    private
       type Unit is record
@@ -110,6 +118,18 @@ procedure Tranxgen is
          At_BOL : Boolean := True;
       end record;
    end Output;
+
+   Input_Name    : GNAT.OS_Lib.String_Access;
+   --  Name of input file
+
+   Output_Dir    : GNAT.OS_Lib.String_Access;
+   --  Output directory
+
+   Output_Prefix : GNAT.OS_Lib.String_Access;
+   --  Prefix for output file names (includes Output_Dir)
+
+   Export_Prefix : GNAT.OS_Lib.String_Access;
+   --  If not null, all message accessors are exported with the given prefix
 
    ------------
    -- Output --
@@ -130,12 +150,21 @@ procedure Tranxgen is
       -- Dump --
       ----------
 
-      procedure Dump (U : Unit) is
+      procedure Dump (U : Unit; F : Ada.Streams.Stream_IO.File_Type) is
       begin
-         GNAT.IO.Put (To_String (U.Text));
-         if not U.At_BOL then
-            GNAT.IO.New_Line;
-         end if;
+         declare
+            use Ada.Streams, Ada.Streams.Stream_IO;
+
+            Contents     : constant String := To_String (U.Text);
+            Contents_SEA : Stream_Element_Array (1 .. Contents'Length);
+            for Contents_SEA'Address use Contents'Address;
+            pragma Import (Ada, Contents_SEA);
+         begin
+            Write (F, Contents_SEA);
+            if not U.At_BOL then
+               Write (F, Stream_Element_Array'(1 => Character'Pos (ASCII.LF)));
+            end if;
+         end;
       end Dump;
 
       --------
@@ -188,10 +217,14 @@ procedure Tranxgen is
    -- Utility subprograms --
    -------------------------
 
-   function Img (N : Integer; Base : Integer := 10) return String;
-   --  Trimmed image of N
+   type Lang is (Lang_Ada, Lang_C);
+   function Img
+     (N    : Integer;
+      Base : Integer := 10;
+      L    : Lang := Lang_Ada) return String;
+   --  Trimmed image of N in L's syntax
 
-   procedure Box (U : in out Unit; S : String);
+   procedure Box (U : in out Unit; S : String; L : Lang := Lang_Ada);
    --  Add box comment with text S to U
 
    function First_Element_Child (N : Node) return Node;
@@ -225,6 +258,10 @@ procedure Tranxgen is
       P_Spec    : Output.Unit;
       P_Private : Output.Unit;
       P_Body    : Output.Unit;
+      --  Ada source
+
+      P_C       : Output.Unit;
+      --  C binding
 
       Subfield_Sizes : Natural_Sets.Set;
       Types_Unit : Unbounded_String;
@@ -246,12 +283,27 @@ procedure Tranxgen is
    -- Box --
    ---------
 
-   procedure Box (U : in out Unit; S : String) is
-      Hyphens : constant String := (1 .. S'Length + 6 => '-');
+   procedure Box (U : in out Unit; S : String; L : Lang := Lang_Ada) is
    begin
-      PL (U, Hyphens);
-      PL (U, "-- " & S & " --");
-      PL (U, Hyphens);
+      case L is
+         when Lang_Ada =>
+            declare
+               Hyphens : constant String := (1 .. S'Length + 6 => '-');
+            begin
+               PL (U, Hyphens);
+               PL (U, "-- " & S & " --");
+               PL (U, Hyphens);
+            end;
+
+         when Lang_C =>
+            declare
+               Stars : constant String := (1 .. S'Length + 6 => '*');
+            begin
+               PL (U, "/" & Stars);
+               PL (U, " ** " & S & " **");
+               PL (U, " " & Stars & "/");
+            end;
+      end case;
    end Box;
 
    -------------------------
@@ -289,7 +341,11 @@ procedure Tranxgen is
    -- Img --
    ---------
 
-   function Img (N : Integer; Base : Integer := 10) return String is
+   function Img
+     (N    : Integer;
+      Base : Integer := 10;
+      L    : Lang := Lang_Ada) return String
+   is
       NN : Integer := N;
       Digit  : constant array (0 .. 15) of Character := "0123456789abcdef";
       Result : Unbounded_String;
@@ -303,8 +359,22 @@ procedure Tranxgen is
          NN := NN / Base;
          exit when NN = 0;
       end loop;
+
       if Base /= 10 then
-         Result := Trim (Integer'Image (Base), Both) & "#" & Result & "#";
+         if L = Lang_Ada then
+            Result := Trim (Integer'Image (Base), Both) & "#" & Result & "#";
+         else
+            case Base is
+               when 8 =>
+                  Result := "0" & Result;
+               when 16 =>
+                  Result := "0x" & Result;
+               when others =>
+                  raise Program_Error with
+                    "base" & Base'Img & " not supported for "
+                      & L'Img & " output";
+            end case;
+         end if;
       end if;
       return To_String (Result);
    end Img;
@@ -354,12 +424,19 @@ procedure Tranxgen is
       --------------------
 
       procedure Output_Literal (LC : Literal_Vectors.Cursor) is
-         L : Literal renames Literal_Vectors.Element (LC);
+         L      : Literal renames Literal_Vectors.Element (LC);
+         L_Name : constant String :=
+                    Prefix &
+                      Head (To_String (L.Name), Max_Literal_Name_Length);
       begin
-         PL (Ctx.P_Spec, Prefix
-                           & Head (To_String (L.Name), Max_Literal_Name_Length)
+         PL (Ctx.P_Spec, L_Name
                            & " : constant := "
                            & Img (L.Value, Base => L.Base) & ";");
+
+         if Export_Prefix /= null then
+            PL (Ctx.P_C, "#define " & L_Name
+                & " " & Img (L.Value, Base => L.Base, L => Lang_C));
+         end if;
       end Output_Literal;
 
       ---------------------
@@ -395,9 +472,15 @@ procedure Tranxgen is
    begin
       Walk_Siblings (First_Element_Child (N), Process_Literal'Access);
 
-      NL (Ctx.P_Spec);
+      NL  (Ctx.P_Spec);
       Box (Ctx.P_Spec, Enum_Name);
-      NL (Ctx.P_Spec);
+      NL  (Ctx.P_Spec);
+
+      if Export_Prefix /= null then
+         NL  (Ctx.P_C);
+         Box (Ctx.P_C, Enum_Name, Lang_C);
+         NL  (Ctx.P_C);
+      end if;
 
       Literals.Iterate (Output_Literal'Access);
    end Process_Enum;
@@ -419,7 +502,7 @@ procedure Tranxgen is
 
       Fields : Field_Vectors.Vector;
 
-      function Field_Type (F : Field) return String;
+      function Field_Type (F : Field; L : Lang := Lang_Ada) return String;
       --  Return type name for field F (used in accessors)
 
       function Subfield_Type (F : Field; SF : Subfield) return String;
@@ -513,16 +596,22 @@ procedure Tranxgen is
              Class     => Field_Class,
              F_Type    => To_Unbounded_String (Get_Attribute (N, "type")),
              Length    => Field_Length,
-             Subfields => Subfields));
+             Subfields => Subfields,
+             Export    => Field_Length <= 32));
       end Process_Field;
 
       ----------------
       -- Field_Type --
       ----------------
 
-      function Field_Type (F : Field) return String is
-         Prefix : Unbounded_String := Ctx.Types_Unit;
+      function Field_Type (F : Field; L : Lang := Lang_Ada) return String
+      is
+         Prefix : Unbounded_String;
       begin
+         if L = Lang_Ada then
+            Prefix := Ctx.Types_Unit;
+         end if;
+
          if Length (Prefix) > 0 then
             Append (Prefix, ".");
          end if;
@@ -572,9 +661,19 @@ procedure Tranxgen is
       Box (Ctx.P_Spec, Message_Name);
 
       NL (Ctx.P_Spec);
-      PL (Ctx.P_Spec, "type " & Message_Name & " is private;");
+         PL (Ctx.P_Spec, "type " & Message_Name & " is private;");
+
       PL (Ctx.P_Spec, Message_Name & "_Size : constant := "
           & Img (Current_Bit_Offset) & ";");
+
+      if Export_Prefix /= null then
+         NL (Ctx.P_C);
+         Box (Ctx.P_C, Message_Name, Lang_C);
+
+         NL (Ctx.P_C);
+         PL (Ctx.P_C, "#define " & Message_Name & "_Size"
+             & " " & Img (Current_Bit_Offset, L => Lang_C));
+      end if;
 
       --  Generate accessor declarations and bodies
 
@@ -644,6 +743,30 @@ procedure Tranxgen is
             NL (Ctx.P_Spec);
             PL (Ctx.P_Spec, Get_Profile & ";");
             PL (Ctx.P_Spec, Set_Profile & ";");
+            if Export_Prefix /= null and then F.Export then
+               declare
+                  C_Get_Name : constant String :=
+                                 Export_Prefix.all & Field_Name;
+                  C_Set_Name : constant String  :=
+                                 Export_Prefix.all & "Set_" & Field_Name;
+                  C_Field_Type : constant String := Field_Type (F, Lang_C);
+               begin
+                  PL (Ctx.P_Spec,
+                      "pragma Export (C, " & Field_Name
+                      & ", """ & C_Get_Name & """);");
+                  PL (Ctx.P_Spec,
+                      "pragma Export (C, Set_" & Field_Name
+                      & ", """ & C_Set_Name & """);");
+
+                  NL (Ctx.P_C);
+                  PL (Ctx.P_C, "extern " & C_Field_Type);
+                  PL (Ctx.P_C,
+                      C_Get_Name & " (void *p);");
+                  PL (Ctx.P_C, "extern void");
+                  PL (Ctx.P_C,
+                      C_Set_Name & " (void *p, " & C_Field_Type & " v);");
+               end;
+            end if;
 
             NL (Ctx.P_Body);
             PL (Ctx.P_Body, Get_Profile & " is");
@@ -890,23 +1013,45 @@ procedure Tranxgen is
       procedure Process_Child (N : Node);
       --  Call Process_<element>
 
-      procedure Prelude (U : in out Unit);
+      procedure Prelude (U : in out Unit; L : Lang := Lang_Ada);
       --  Output standard text at the top of every unit
 
       -------------
       -- Prelude --
       -------------
 
-      procedure Prelude (U : in out Unit) is
+      procedure Prelude (U : in out Unit; L : Lang := Lang_Ada) is
+         procedure Comment (S : String);
+         --  Output S as a comment
+
+         -------------
+         -- Comment --
+         -------------
+
+         procedure Comment (S : String) is
+         begin
+            case L is
+               when Lang_Ada =>
+                  PL (U, "-- " & S);
+               when Lang_C =>
+                  PL (U, "/* " & S & (1 .. 78 - S'Length - 5 => ' ') & "*/");
+            end case;
+         end Comment;
+
+         --  Start of processing for Prelude
+
       begin
-         PL (U, "--  This file has been automatically generated from "
-             & Argument (1));
-         PL (U, "--  DO NOT EDIT!!!");
-         NL (U);
-         PL (U, "pragma Warnings (Off);");
-         PL (U, "pragma Style_Checks (""NM32766"");");
-         PL (U, "pragma Ada_2005;");
-         NL (U);
+         Comment ("This file has been automatically generated from "
+                  & Input_Name.all);
+         Comment ("DO NOT EDIT!!!");
+
+         if L = Lang_Ada then
+            NL (U);
+            PL (U, "pragma Warnings (Off);");
+            PL (U, "pragma Style_Checks (""NM32766"");");
+            PL (U, "pragma Ada_2005;");
+            NL (U);
+         end if;
       end Prelude;
 
       -------------------
@@ -940,6 +1085,10 @@ procedure Tranxgen is
 
       Prelude (Ctx.P_Spec);
       Prelude (Ctx.P_Body);
+
+      if Export_Prefix /= null then
+         Prelude (Ctx.P_C, Lang_C);
+      end if;
 
       PL (Ctx.P_Spec, "with System;");
 
@@ -1025,9 +1174,23 @@ procedure Tranxgen is
          Ctx.Subfield_Sizes.Iterate (Declare_Subfield_Type'Access);
       end Subfield_Types;
 
-      Dump (Ctx.P_Spec);
-      Dump (Ctx.P_Private);
-      Dump (Ctx.P_Body);
+      Generate_Output : declare
+         use Ada.Streams.Stream_IO;
+
+         Out_F : Ada.Streams.Stream_IO.File_Type;
+      begin
+         Create (Out_F, Out_File, Output_Prefix.all & ".ada");
+         Dump (Ctx.P_Spec,    Out_F);
+         Dump (Ctx.P_Private, Out_F);
+         Dump (Ctx.P_Body,    Out_F);
+         Close (Out_F);
+
+         if Export_Prefix /= null then
+            Create (Out_F, Out_File, Output_Prefix.all & ".h");
+            Dump (Ctx.P_C, Out_F);
+            Close (Out_F);
+         end if;
+      end Generate_Output;
    end Process_Package;
 
    ------------------------
@@ -1055,6 +1218,18 @@ procedure Tranxgen is
       end loop;
    end Walk_Siblings;
 
+   -----------
+   -- Usage --
+   -----------
+
+   procedure Usage is
+   begin
+      Put_Line
+        (Standard_Error,
+         "Usage: tranxgen [-o OUTPUT_DIR] [-x EXPORT_PREFIX] [-h] INPUT.xml");
+      OS_Exit (0);
+   end Usage;
+
    Input : File_Input;
    Read  : DOM.Readers.Tree_Reader;
    Doc   : Document;
@@ -1063,7 +1238,44 @@ procedure Tranxgen is
 --  Start of processing for Tranxgen
 
 begin
-   Open (Argument (1), Input);
+   loop
+      case Getopt ("o: x: h") is
+         when ASCII.NUL =>
+            exit;
+
+         when 'o' =>
+            Output_Dir := new String'(Parameter);
+
+         when 'x' =>
+            Export_Prefix := new String'(Parameter);
+
+         when 'h' =>
+            Usage;
+
+         when others =>
+            raise Program_Error;
+            --  Cannot occur
+      end case;
+   end loop;
+
+   if Output_Dir = null then
+      Output_Dir := new String'(".");
+   end if;
+
+   Input_Name := new String'(Get_Argument);
+
+   if Index (Input_Name.all, ".xml") /= Input_Name'Last - 3 then
+      Put_Line (Standard_Error, "input file name must end with "".xml""");
+      OS_Exit (1);
+   end if;
+   Output_Prefix :=
+     new String'(Output_Dir.all & '/'
+                 & Simple_Name
+                   (Input_Name
+                      (Input_Name'First .. Input_Name'Last - 4)));
+
+   Open (Input_Name.all, Input);
+
    Parse (Read, Input);
 
    Doc  := Get_Tree (Read);
@@ -1074,11 +1286,4 @@ begin
    Free (Read);
    Close (Input);
 
-exception
-
-   when E : others =>
-      GNAT.IO.Set_Output (GNAT.IO.Standard_Error);
-      GNAT.IO.Put_Line
-        ("Exception raised: " & Ada.Exceptions.Exception_Information (E));
-      GNAT.OS_Lib.OS_Exit (1);
 end Tranxgen;

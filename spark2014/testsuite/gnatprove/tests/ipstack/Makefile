@@ -21,7 +21,7 @@ endif
 
 PROCESSORS=4
 GNATPRJ_FLAGS+=-aPprojects:projects.$(TARGET)
-GNATMAKE_FLAGS=-j$(PROCESSORS) $(RTSFLAG) $(GNATPRJ_FLAGS)
+GNATMAKE_FLAGS=-j$(PROCESSORS) $(RTSFLAG) $(GNATPRJ_FLAGS) -XProject_Dir="`cd projects && pwd`"
 GNATCLEAN_FLAGS=$(GNATPRJ_FLAGS)
 
 #BUILDER=$(GCC_PREFIX)gnatmake
@@ -57,7 +57,7 @@ build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
 	mkdir -p build/gen
 	adaf=build/gen/$(notdir $<).ada && \
-	build/bldtools/tranxgen $< > $$adaf && \
+	build/bldtools/tranxgen -o build/gen -x AIP_ $< && \
 	gnatchop -w $$adaf build/gen
 
 build/gen/aip_constants.ads: src/bldtools/constants.adb
