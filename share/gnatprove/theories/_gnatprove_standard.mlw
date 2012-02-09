@@ -1,26 +1,177 @@
 module Main
-  use export int.Int
-  use export module ref.Ref
-  use export int.Abs
-  use int.MinMax
-  use int.ComputerDivision
-  use int.EuclideanDivision
-  use real.Real
-  use export real.RealInfix
-  use real.Abs as AbsReal
-  use import bool.Bool
-  use export bool.Ite
-  use floating_point.Rounding
-  use floating_point.Single
-  use floating_point.Double
-  (* This exception is used to simulate return statements *)
+  (* that's the only module which is absolutely necessary *)
 
+  use export module ref.Ref
+
+  (* This exception is used to simulate return statements *)
   exception Gnatprove_Exception___result_exc
 
   (* ignore blocks of code *)
   function ___ignore 'a : ()
 
+  (* The type for the heap, and the heap variable. This variable represents
+     all effects that we cannot describe more precisely, and that do not
+     interfere with other variables, i.e., writes through pointers, aliased
+     variables etc. *)
+  type _type_of______HEAP
+
+  val __HEAP : ref _type_of______HEAP
+end
+
+module Integer
+  use export int.Int
+  use export int.Abs
+  use int.MinMax
+  use int.ComputerDivision
+  use int.EuclideanDivision
+
+  function int_max (x y : int) : int = MinMax.max x y
+
+  function int_min (x y : int) : int = MinMax.min x y
+
+  function computer_div (x y : int) : int = ComputerDivision.div x y
+
+  function computer_mod (x y : int) : int = ComputerDivision.mod x y
+
+  function math_div (x y : int) : int = EuclideanDivision.div x y
+
+  function math_mod (x y : int) : int = EuclideanDivision.mod x y
+
+  val computer_div_ : x:int -> y:int ->
+    { y<>0 } int { result = computer_div x y }
+
+  val computer_mod_ : x:int -> y:int ->
+    { y<>0 } int { result = computer_mod x y }
+
+  val math_mod_ : x:int -> y:int ->
+    { y<>0 } int { result = math_mod x y }
+
+  function bool_int__eq int int : bool
+
+  axiom Bool_int__eq_axiom:
+    forall x:int.
+    forall y:int.
+      bool_int__eq x y = True <-> x = y
+
+  function bool_int__ne int int : bool
+
+  axiom Bool_int__ne_axiom:
+    forall x:int.
+      forall y:int.
+        bool_int__ne x y = True <-> x <> y
+
+  function bool_int__lt int int : bool
+
+  axiom Bool_int__lt_axiom:
+    forall x:int.
+    forall y:int.
+        bool_int__lt x y = True <-> x < y
+
+  function bool_int__le int int : bool
+
+  axiom Bool_int__le_axiom:
+    forall x:int.  forall y:int.  bool_int__le x y = True <-> x <= y
+
+  function bool_int__gt int int : bool
+
+  axiom Bool_int__gt_axiom:
+    forall x:int.
+    forall y:int.
+        bool_int__gt x y = True <-> x > y
+
+  function bool_int__ge int int : bool
+
+  axiom Bool_int__ge_axiom:
+    forall x:int.
+    forall y:int.
+        bool_int__ge x y = True <-> x >= y
+end
+
+module Floating
+  use real.Real
+  use export real.RealInfix
+  use real.Abs as AbsReal
+  use floating_point.Rounding
+  use floating_point.Single
+  use floating_point.Double
+
+  use real.FromInt
+
+  function real_of_int (x : int) : real = FromInt.from_int x
+
+  (* Boolean comparison functions for reals *)
+
+  function bool_real__lt real real : bool
+
+  function bool_real__le real real : bool
+
+  function bool_real__gt real real : bool
+
+  function bool_real__ge real real : bool
+
+  function bool_real__eq real real : bool
+
+  function bool_real__neq real real : bool
+
+  axiom Bool_real__lt_axiom:
+    forall x:real.
+    forall y:real.
+      bool_real__lt x y = True <-> x <. y
+
+  axiom Bool_real__le_axiom:
+    forall x:real.
+    forall y:real.
+      bool_real__le x y = True <-> x <=. y
+
+  axiom Bool_real__gt_axiom:
+    forall x:real.
+    forall y:real.
+        bool_real__gt x y = True <-> x >. y
+
+  axiom Bool_real__ge_axiom:
+    forall x:real.
+    forall y:real.
+      bool_real__ge x y = True <-> x >=. y
+
+  axiom Bool_real__eq_axiom:
+    forall x:real.
+    forall y:real.
+      bool_real__eq x y = True <-> x = y
+
+  axiom Bool_real__neq_axiom:
+    forall x:real.
+    forall y:real.
+       bool_real__neq x y = True <-> x <> y
+
+  function div_real (x : real) (y : real) : real = x /. y
+
+  val div_real_ : x:real -> y:real ->
+    { y<>0.0 } real { result = div_real x y }
+
+end
+
+module Boolean
+  use import bool.Bool
+  use export bool.Ite
+  use import int.Int
+
+  (* Boolean logical connectors, functions for conversion of booleans, etc *)
+
+  function int_of_bool (b : bool) : int =
+   if b = True then 1 else 0
+
+  function bool_of_int (i : int) : bool =
+   if i = 0 then False else True
+
+   function bool___attr___ATTRIBUTE_LAST : int = 1
+   function bool___attr___ATTRIBUTE_FIRST : int = 0
+
+end
+
+module Array_Dim1
   (* The theory of Ada arrays of one dimension *)
+  use import int.Int
+  use import bool.Bool
 
   type t__ada_array 'a
 
@@ -36,78 +187,83 @@ module Main
 
   function t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array 'a) : int
 
-val t__ada_array___access_ :
- i : int -> a : t__ada_array 'a ->
-{ (t__ada_array___attr___ATTRIBUTE_FIRST a) <= i <= (t__ada_array___attr___ATTRIBUTE_LAST a) }'a
- { result = t__ada_array___access i a }
+   val t__ada_array___access_ :
+    i : int -> a : t__ada_array 'a ->
+   { (t__ada_array___attr___ATTRIBUTE_FIRST a) <= i <= (t__ada_array___attr___ATTRIBUTE_LAST a) }'a
+    { result = t__ada_array___access i a }
 
-val t__ada_array___update_ :
- i : int -> a : t__ada_array 'a -> v : 'a ->
-{ t__ada_array___attr___ATTRIBUTE_FIRST (a) <= i <= t__ada_array___attr___ATTRIBUTE_LAST (a) } t__ada_array 'a
- { result = t__ada_array___update i a v }
+   val t__ada_array___update_ :
+    i : int -> a : t__ada_array 'a -> v : 'a ->
+   { t__ada_array___attr___ATTRIBUTE_FIRST (a) <= i <= t__ada_array___attr___ATTRIBUTE_LAST (a) } t__ada_array 'a
+    { result = t__ada_array___update i a v }
 
-  axiom T__ada_array___accupd_eq:
-    forall a:t__ada_array 'a.
-    forall i:int.
-    forall v:'a [t__ada_array___update i a v].
-       t__ada_array___access i (t__ada_array___update i a v) = v
+   axiom T__ada_array___accupd_eq:
+     forall a:t__ada_array 'a.
+     forall i:int.
+     forall v:'a [t__ada_array___update i a v].
+        t__ada_array___access i (t__ada_array___update i a v) = v
 
-  axiom T__ada_array___accupd_neq:
-    forall a:t__ada_array 'a.
-    forall i:int.
-    forall j:int.
-    forall v:'a [t__ada_array___access j (t__ada_array___update i a v ) |
-                  t__ada_array___update i a v,
-                  t__ada_array___access j a].
-      i <> j ->
-       t__ada_array___access j (t__ada_array___update i a v ) = t__ada_array___access j a
+   axiom T__ada_array___accupd_neq:
+     forall a:t__ada_array 'a.
+     forall i:int.
+     forall j:int.
+     forall v:'a [t__ada_array___access j (t__ada_array___update i a v ) |
+                   t__ada_array___update i a v,
+                   t__ada_array___access j a].
+       i <> j ->
+        t__ada_array___access j (t__ada_array___update i a v ) = t__ada_array___access j a
 
-  axiom T__ada_array___first_update:
-    forall a:t__ada_array 'a.
-    forall i:int.
-    forall v:'a.
-      t__ada_array___attr___ATTRIBUTE_FIRST a =
-      t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array___update i a v)
+   axiom T__ada_array___first_update:
+     forall a:t__ada_array 'a.
+     forall i:int.
+     forall v:'a.
+       t__ada_array___attr___ATTRIBUTE_FIRST a =
+       t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array___update i a v)
 
-  axiom T__ada_array___last_update:
-    forall a:t__ada_array 'a.
-    forall i:int.
-    forall v:'a.
-      t__ada_array___attr___ATTRIBUTE_LAST a =
-      t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array___update i a v )
+   axiom T__ada_array___last_update:
+     forall a:t__ada_array 'a.
+     forall i:int.
+     forall v:'a.
+       t__ada_array___attr___ATTRIBUTE_LAST a =
+       t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array___update i a v )
 
-  axiom T__ada_array___length_update:
-    forall a:t__ada_array 'a.
-    forall i:int.
-    forall v:'a.
-       t__ada_array___attr___ATTRIBUTE_LENGTH a =
-       t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array___update i a v)
+   axiom T__ada_array___length_update:
+     forall a:t__ada_array 'a.
+     forall i:int.
+     forall v:'a.
+        t__ada_array___attr___ATTRIBUTE_LENGTH a =
+        t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array___update i a v)
 
-  axiom T__ada_array___length_non_zero:
-    forall a:t__ada_array 'a.
-      t__ada_array___attr___ATTRIBUTE_LAST a >= t__ada_array___attr___ATTRIBUTE_FIRST a ->
-       t__ada_array___attr___ATTRIBUTE_LENGTH a =
-       t__ada_array___attr___ATTRIBUTE_LAST a -
-       t__ada_array___attr___ATTRIBUTE_FIRST a + 1
+   axiom T__ada_array___length_non_zero:
+     forall a:t__ada_array 'a.
+       t__ada_array___attr___ATTRIBUTE_LAST a >= t__ada_array___attr___ATTRIBUTE_FIRST a ->
+        t__ada_array___attr___ATTRIBUTE_LENGTH a =
+        t__ada_array___attr___ATTRIBUTE_LAST a -
+        t__ada_array___attr___ATTRIBUTE_FIRST a + 1
 
-  axiom T__ada_array___length_zero:
-    forall a:t__ada_array 'a.
-      t__ada_array___attr___ATTRIBUTE_LAST a < t__ada_array___attr___ATTRIBUTE_FIRST a ->
-      t__ada_array___attr___ATTRIBUTE_LENGTH a = 0
+   axiom T__ada_array___length_zero:
+     forall a:t__ada_array 'a.
+       t__ada_array___attr___ATTRIBUTE_LAST a < t__ada_array___attr___ATTRIBUTE_FIRST a ->
+       t__ada_array___attr___ATTRIBUTE_LENGTH a = 0
 
-  axiom T__ada_array___equal_def:
-    forall a:t__ada_array 'a.
-    forall b:t__ada_array 'a.
-        ((t__ada_array___attr___ATTRIBUTE_LENGTH a =
-           t__ada_array___attr___ATTRIBUTE_LENGTH b)
-         /\ (forall i:int.
-               (t__ada_array___attr___ATTRIBUTE_FIRST a <= i <=
-                  t__ada_array___attr___ATTRIBUTE_LAST a)
-                ->
-               (t__ada_array___access i a =
-                  t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
-        <-> t__ada_array___equal a b = True
+   axiom T__ada_array___equal_def:
+     forall a:t__ada_array 'a.
+     forall b:t__ada_array 'a.
+         ((t__ada_array___attr___ATTRIBUTE_LENGTH a =
+            t__ada_array___attr___ATTRIBUTE_LENGTH b)
+          /\ (forall i:int.
+                (t__ada_array___attr___ATTRIBUTE_FIRST a <= i <=
+                   t__ada_array___attr___ATTRIBUTE_LAST a)
+                 ->
+                (t__ada_array___access i a =
+                   t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
+         <-> t__ada_array___equal a b = True
+end
 
+module Array_Dim2
+
+  use import int.Int
+  use import bool.Bool
   (* The theory of Ada arrays of two dimensions *)
 
   type t__ada_array_2 'a
@@ -128,21 +284,21 @@ val t__ada_array___update_ :
   function t__ada_array_2___attr___ATTRIBUTE_LAST (t__ada_array_2 'a) : int
   function t__ada_array_2___attr___ATTRIBUTE_LAST_2 (t__ada_array_2 'a) : int
 
-val t__ada_array_2___access_ :
- i : int -> j : int -> a : t__ada_array_2 'a ->
- { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
-   t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
- }
- 'a
- { result = t__ada_array_2___access i j a }
+   val t__ada_array_2___access_ :
+    i : int -> j : int -> a : t__ada_array_2 'a ->
+    { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
+    }
+    'a
+    { result = t__ada_array_2___access i j a }
 
-val t__ada_array_2___update_ :
- i : int -> j : int -> a : t__ada_array_2 'a -> v : 'a ->
- { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
-   t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
- }
- t__ada_array_2 'a
- { result = t__ada_array_2___update i j a v }
+   val t__ada_array_2___update_ :
+    i : int -> j : int -> a : t__ada_array_2 'a -> v : 'a ->
+    { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
+      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
+    }
+    t__ada_array_2 'a
+    { result = t__ada_array_2___update i j a v }
 
   axiom T__ada_array_2___accupd_eq:
     forall a:t__ada_array_2 'a.
@@ -252,140 +408,4 @@ val t__ada_array_2___update_ :
                   b)))
         <-> t__ada_array_2___equal a b = True
 
-  (* The type for the heap, and the heap variable. This variable represents
-     all effects that we cannot describe more precisely, and that do not
-     interfere with other variables, i.e., writes through pointers, aliased
-     variables etc. *)
-
-  type _type_of______HEAP
-
-  val __HEAP : ref _type_of______HEAP
-
-
-  (* Boolean logical connectors, functions for conversion of booleans, etc *)
-
-  function int_of_bool (b : bool) : int =
-   if b = True then 1 else 0
-
-  function bool_of_int (i : int) : bool =
-   if i = 0 then False else True
-
-   function bool___attr___ATTRIBUTE_LAST : int = 1
-   function bool___attr___ATTRIBUTE_FIRST : int = 0
-
-  function bool_int__eq int int : bool
-
-  axiom Bool_int__eq_axiom:
-    forall x:int.
-    forall y:int.
-      bool_int__eq x y = True <-> x = y
-
-  function bool_int__ne int int : bool
-
-  axiom Bool_int__ne_axiom:
-    forall x:int.
-      forall y:int.
-        bool_int__ne x y = True <-> x <> y
-
-  function bool_int__lt int int : bool
-
-  axiom Bool_int__lt_axiom:
-    forall x:int.
-    forall y:int.
-        bool_int__lt x y = True <-> x < y
-
-  function bool_int__le int int : bool
-
-  axiom Bool_int__le_axiom:
-    forall x:int.  forall y:int.  bool_int__le x y = True <-> x <= y
-
-  function bool_int__gt int int : bool
-
-  axiom Bool_int__gt_axiom:
-    forall x:int.
-    forall y:int.
-        bool_int__gt x y = True <-> x > y
-
-  function bool_int__ge int int : bool
-
-  axiom Bool_int__ge_axiom:
-    forall x:int.
-    forall y:int.
-        bool_int__ge x y = True <-> x >= y
-
-  function int_max (x y : int) : int = MinMax.max x y
-
-  function int_min (x y : int) : int = MinMax.min x y
-
-  function computer_div (x y : int) : int = ComputerDivision.div x y
-
-  function computer_mod (x y : int) : int = ComputerDivision.mod x y
-
-  function math_div (x y : int) : int = EuclideanDivision.div x y
-
-  function math_mod (x y : int) : int = EuclideanDivision.mod x y
-
-  function div_real (x : real) (y : real) : real = x /. y
-
-  val computer_div_ : x:int -> y:int ->
-    { y<>0 } int { result = computer_div x y }
-
-  val computer_mod_ : x:int -> y:int ->
-    { y<>0 } int { result = computer_mod x y }
-
-  val math_mod_ : x:int -> y:int ->
-    { y<>0 } int { result = math_mod x y }
-
-  val div_real_ : x:real -> y:real ->
-    { y<>0.0 } real { result = div_real x y }
-
-  use real.FromInt
-
-  function real_of_int (x : int) : real = FromInt.from_int x
-
-  (* Boolean comparison functions for reals *)
-
-  function bool_real__lt real real : bool
-
-  function bool_real__le real real : bool
-
-  function bool_real__gt real real : bool
-
-  function bool_real__ge real real : bool
-
-  function bool_real__eq real real : bool
-
-  function bool_real__neq real real : bool
-
-  axiom Bool_real__lt_axiom:
-    forall x:real.
-    forall y:real.
-      bool_real__lt x y = True <-> x <. y
-
-  axiom Bool_real__le_axiom:
-    forall x:real.
-    forall y:real.
-      bool_real__le x y = True <-> x <=. y
-
-  axiom Bool_real__gt_axiom:
-    forall x:real.
-    forall y:real.
-        bool_real__gt x y = True <-> x >. y
-
-  axiom Bool_real__ge_axiom:
-    forall x:real.
-    forall y:real.
-      bool_real__ge x y = True <-> x >=. y
-
-  axiom Bool_real__eq_axiom:
-    forall x:real.
-    forall y:real.
-      bool_real__eq x y = True <-> x = y
-
-  axiom Bool_real__neq_axiom:
-    forall x:real.
-    forall y:real.
-       bool_real__neq x y = True <-> x <> y
-
 end
-

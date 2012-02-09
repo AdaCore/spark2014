@@ -51,6 +51,120 @@ package body Why.Inter is
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type := EW_Import);
 
+   package Standard_Imports is
+
+      --  This package serves to trigger the necessary imports on the
+      --  _gnatprove_standard file.
+
+      type Standard_Imports_Enum is (SI_Integer,
+                                     SI_Float,
+                                     SI_Boolean,
+                                     SI_Array1,
+                                     SI_Array2);
+
+      Imports : array (Standard_Imports_Enum) of Boolean;
+      --  This array records whether a standard import is necessary
+
+      procedure Clear;
+      --  Reset the import information
+
+      procedure Set_SI (E : Entity_Id);
+      --  Depending on the entity, set a required import
+
+      function To_String (E : Standard_Imports_Enum) return String;
+
+   end Standard_Imports;
+
+   package body Standard_Imports is
+
+      -----------
+      -- Clear --
+      -----------
+
+      procedure Clear is
+      begin
+         for I in Imports'Range loop
+            Imports (I) := False;
+         end loop;
+      end Clear;
+
+      ------------
+      -- Set_SI --
+      ------------
+
+      procedure Set_SI (E : Entity_Id) is
+      begin
+         if not (Nkind (E) in N_Entity) then
+            Set_SI (Etype (E));
+         elsif Is_Boolean_Type (E) then
+            Imports (SI_Boolean) := True;
+            Imports (SI_Integer) := True;
+         else
+            case Ekind (E) is
+            when Discrete_Kind | E_Named_Integer =>
+               Imports (SI_Integer) := True;
+
+            when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
+               Imports (SI_Float) := True;
+
+            when Array_Kind =>
+               Imports (SI_Integer) := True;
+               Set_SI (Component_Type (E));
+               case Number_Dimensions (E) is
+                  when 1 =>
+                     Imports (SI_Array1) := True;
+                  when 2 =>
+                     Imports (SI_Array2) := True;
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+            when Private_Kind =>
+               Set_SI (Underlying_Type (E));
+
+            when E_Class_Wide_Subtype .. E_Record_Subtype =>
+
+               --  We would like to use "Record_Kind" here, but there is some
+               --  overlap with "Private_Kind"
+
+               declare
+                  Field            : Node_Id := First_Entity (E);
+               begin
+                  while Present (Field) loop
+                     Set_SI (Field);
+                     Next_Entity (Field);
+                  end loop;
+               end;
+
+            when Object_Kind =>
+               Set_SI ((Etype (E)));
+
+            when Subprogram_Kind | Access_Kind =>
+               null;
+
+            when others =>
+               raise Program_Error;
+            end case;
+         end if;
+      end Set_SI;
+
+      ---------------
+      -- To_String --
+      ---------------
+
+      function To_String (E : Standard_Imports_Enum) return String is
+      begin
+         case E is
+            when SI_Integer => return "Integer";
+            when SI_Float   => return "Floating";
+            when SI_Boolean => return "Boolean";
+            when SI_Array1  => return "Array_Dim1";
+            when SI_Array2  => return "Array_Dim2";
+         end case;
+      end To_String;
+
+   end Standard_Imports;
+
    ------------------------
    -- Add_Effect_Imports --
    ------------------------
@@ -221,12 +335,21 @@ package body Why.Inter is
       use Node_Sets;
 
       S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+
+      Gnatprove_Standard : constant String := "_gnatprove_standard";
    begin
+
+      Standard_Imports.Clear;
+
       if not No_Imports then
-         Add_With_Clause (P, "_gnatprove_standard", "Main");
+         Add_With_Clause (P, Gnatprove_Standard, "Main");
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
+
+         if Present (Filter_Entity) then
+            Standard_Imports.Set_SI (Filter_Entity);
+         end if;
 
          for N of S loop
 
@@ -244,6 +367,7 @@ package body Why.Inter is
                   Theory_Name : constant String :=
                     Name_of_Node (N);
                begin
+                  Standard_Imports.Set_SI (N);
                   if File_Name /= P.Name.all then
                      Add_With_Clause (P, File_Name, Theory_Name);
                   else
@@ -252,6 +376,19 @@ package body Why.Inter is
                end;
             end if;
          end loop;
+
+         --  We add the dependencies to Gnatprove_Standard theories that may
+         --  have been triggered
+
+         declare
+            use Standard_Imports;
+         begin
+            for Index in Imports'Range loop
+               if Imports (Index) then
+                  Add_With_Clause (P, Gnatprove_Standard, To_String (Index));
+               end if;
+            end loop;
+         end;
       end if;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);

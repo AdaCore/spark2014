@@ -53,6 +53,10 @@ package body Why.Gen.Expr is
         (State : in out Search_State;
          Node  : W_Identifier_Id);
 
+      procedure Literal_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Literal_Id);
+
       procedure Base_Type_Pre_Op
         (State : in out Search_State;
          Node  : W_Base_Type_Id);
@@ -72,12 +76,10 @@ package body Why.Gen.Expr is
             case Nkind (A) is
                when N_Identifier | N_Expanded_Name =>
                   N := Entity (A);
-               when N_String_Literal | N_Aggregate =>
+               when N_String_Literal | N_Aggregate | N_Defining_Identifier =>
                   N := A;
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);
-               when N_Defining_Identifier =>
-                  N := A;
                when others =>
                   null;
             end case;
@@ -98,6 +100,18 @@ package body Why.Gen.Expr is
       begin
          Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
       end Identifier_Pre_Op;
+
+      --------------------
+      -- Literal_Pre_Op --
+      --------------------
+
+      procedure Literal_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Literal_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Literal_Pre_Op;
 
       ----------------------
       -- Base_Type_Pre_Op --

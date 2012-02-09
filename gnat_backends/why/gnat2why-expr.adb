@@ -2153,12 +2153,16 @@ package body Gnat2Why.Expr is
 
       if Entity (Enum) = Standard_True then
          Current_Type := Why_Types (EW_Bool);
-         return New_Literal (Value => EW_True, Domain => Domain);
+         return New_Literal (Value => EW_True,
+                             Domain => Domain,
+                             Ada_Node => Standard_Boolean);
       end if;
 
       if Entity (Enum) = Standard_False then
          Current_Type := Why_Types (EW_Bool);
-         return New_Literal (Value => EW_False, Domain => Domain);
+         return New_Literal (Value => EW_False,
+                             Domain => Domain,
+                             Ada_Node => Standard_Boolean);
       end if;
 
       --  In the case of a subtype of an enumeration, we need to insert a
