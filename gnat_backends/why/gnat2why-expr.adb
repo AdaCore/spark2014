@@ -2691,15 +2691,14 @@ package body Gnat2Why.Expr is
 
          when N_Function_Call =>
             declare
-               Ident      : constant W_Identifier_Id :=
-                              Transform_Ident (Name (Expr));
+               Subp       : constant Entity_Id := Entity (Name (Expr));
+               Ident      : constant W_Identifier_Id := Transform_Ident (Subp);
 
                --  Retrieve type of function result from function called
 
                Result_Typ : constant Entity_Id :=
                               Unique_Entity
-                                (Entity (Result_Definition
-                                   (Parent (Entity (Name (Expr))))));
+                                (Entity (Result_Definition (Parent (Subp))));
                Name       : constant W_Identifier_Id :=
                               (if Domain = EW_Prog then
                                  To_Program_Space (Ident)
@@ -2811,7 +2810,7 @@ package body Gnat2Why.Expr is
                              return W_Identifier_Id
    is
       Ent    : constant Entity_Id :=
-        (if Nkind (Id) = N_Defining_Identifier then Id else Entity (Id));
+        (if Nkind (Id) in N_Entity then Id else Entity (Id));
       Origin : constant Entity_Id :=
         (if Ada_Node /= Empty then Ada_Node else Id);
    begin
