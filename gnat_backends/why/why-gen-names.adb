@@ -26,6 +26,7 @@ with Atree;  use Atree;
 with Einfo;  use Einfo;
 with Lib;    use Lib;
 with Sinput; use Sinput;
+with Stand;  use Stand;
 
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
@@ -102,9 +103,9 @@ package body Why.Gen.Names is
                   if From_Kind = EW_Int and then To_Kind = EW_Real then
                      return Real_Of_Int.Id;
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
-                     return Int_Of_Bool.Id;
+                     return Int_Of_Bool.Id (Ada_Node => Standard_Boolean);
                   elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
-                     return Bool_Of_Int.Id;
+                     return Bool_Of_Int.Id (Ada_Node => Standard_Boolean);
 
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
