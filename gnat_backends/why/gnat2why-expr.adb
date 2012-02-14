@@ -29,6 +29,7 @@ with Ada.Containers.Hashed_Maps;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
+with Sem_Aux;            use Sem_Aux;
 with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Snames;             use Snames;
@@ -2323,16 +2324,26 @@ package body Gnat2Why.Expr is
 
          when N_Identifier | N_Expanded_Name =>
             declare
-               Id : constant W_Identifier_Id := Transform_Ident (Expr);
+               Id  : constant W_Identifier_Id := Transform_Ident (Expr);
+               Ent : constant Entity_Id := Entity (Expr);
             begin
-               case Ekind (Entity (Expr)) is
+               case Ekind (Ent) is
                   --  First treat special cases
 
                   when E_Enumeration_Literal =>
                      T := Transform_Enum_Literal (Expr, Current_Type, Domain);
 
                   when others =>
-                     if Is_Mutable (Entity (Expr))
+
+                     --  First, check for entities of Standard.ASCII
+
+                     if Sloc (Ent) = Standard_ASCII_Location then
+                        T :=
+                          New_Integer_Constant
+                            (Value =>
+                                 Char_Literal_Value (Constant_Value (Ent)));
+                        Current_Type := EW_Int_Type;
+                     elsif Is_Mutable (Ent)
                        and then Params.Ref_Allowed
                      then
                         T :=
@@ -2343,7 +2354,7 @@ package body Gnat2Why.Expr is
                         T := +Id;
                      end if;
 
-                     if Ekind (Entity (Expr)) = E_Loop_Parameter then
+                     if Ekind (Ent) = E_Loop_Parameter then
                         Current_Type := EW_Int_Type;
                      end if;
 
