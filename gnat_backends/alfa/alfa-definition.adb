@@ -2054,7 +2054,8 @@ package body Alfa.Definition is
    begin
       --  Ignore exact value of deferred constants, so that these can be
       --  used for a parametrized proof. This is detected here by noting that
-      --  the object is already explicitly in or out of Alfa. Not adding the
+      --  the object is already explicitly in or out of Alfa, because in this
+      --  case we already have seen the declaration. Not adding the
       --  declaration to the set of Alfa declarations is also crucial to avoid
       --  a redundant declaration in Why.
 
