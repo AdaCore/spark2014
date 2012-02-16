@@ -13,13 +13,14 @@ module Main
      all effects that we cannot describe more precisely, and that do not
      interfere with other variables, i.e., writes through pointers, aliased
      variables etc. *)
-  type _type_of______HEAP
 
-  val __HEAP : ref _type_of______HEAP
+  type __type_of_heap
+
+  val __HEAP : ref __type_of_heap
 end
 
 module Integer
-  use export int.Int
+  use import int.Int
   use export int.Abs
   use int.MinMax
   use int.ComputerDivision
@@ -46,50 +47,47 @@ module Integer
   val math_mod_ : x:int -> y:int ->
     { y<>0 } int { result = math_mod x y }
 
-  function bool_int__eq int int : bool
+  function bool_eq int int : bool
+  function bool_ne int int : bool
+  function bool_lt int int : bool
+  function bool_le int int : bool
+  function bool_gt int int : bool
+  function bool_ge int int : bool
 
-  axiom Bool_int__eq_axiom:
+  axiom bool_eq_axiom:
     forall x:int.
     forall y:int.
-      bool_int__eq x y = True <-> x = y
+      bool_eq x y = True <-> x = y
 
-  function bool_int__ne int int : bool
-
-  axiom Bool_int__ne_axiom:
-    forall x:int.
-      forall y:int.
-        bool_int__ne x y = True <-> x <> y
-
-  function bool_int__lt int int : bool
-
-  axiom Bool_int__lt_axiom:
+  axiom bool_ne_axiom:
     forall x:int.
     forall y:int.
-        bool_int__lt x y = True <-> x < y
+      bool_ne x y = True <-> x <> y
 
-  function bool_int__le int int : bool
+  axiom bool_lt_axiom:
+    forall x:int.
+    forall y:int.
+      bool_lt x y = True <-> x < y
 
   axiom Bool_int__le_axiom:
-    forall x:int.  forall y:int.  bool_int__le x y = True <-> x <= y
-
-  function bool_int__gt int int : bool
-
-  axiom Bool_int__gt_axiom:
     forall x:int.
     forall y:int.
-        bool_int__gt x y = True <-> x > y
+      bool_le x y = True <-> x <= y
 
-  function bool_int__ge int int : bool
-
-  axiom Bool_int__ge_axiom:
+  axiom bool_gt_axiom:
     forall x:int.
     forall y:int.
-        bool_int__ge x y = True <-> x >= y
+        bool_gt x y = True <-> x > y
+
+  axiom bool_ge_axiom:
+    forall x:int.
+    forall y:int.
+        bool_ge x y = True <-> x >= y
 end
 
 module Floating
   use real.Real
-  use export real.RealInfix
+  use import real.RealInfix
   use real.Abs as AbsReal
   use floating_point.Rounding
   use floating_point.Single
@@ -157,255 +155,220 @@ module Boolean
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
 
-  function int_of_bool (b : bool) : int =
+  function to_int (b : bool) : int =
    if b = True then 1 else 0
 
-  function bool_of_int (i : int) : bool =
+  function of_int (i : int) : bool =
    if i = 0 then False else True
 
-   function bool___attr___ATTRIBUTE_LAST : int = 1
-   function bool___attr___ATTRIBUTE_FIRST : int = 0
+  function attr__ATTRIBUTE_LAST : int = 1
+  function attr__ATTRIBUTE_FIRST : int = 0
 
 end
 
-module Array_Dim1
+module Array__1
   (* The theory of Ada arrays of one dimension *)
   use import int.Int
   use import bool.Bool
 
-  type t__ada_array 'a
+  type t 'a
 
-  function t__ada_array___access int (t__ada_array 'a) : 'a
+  function access int (t 'a) : 'a
+  function update int (t 'a) 'a : (t 'a)
 
-  function t__ada_array___update int (t__ada_array 'a) 'a : (t__ada_array 'a)
+  function bool_eq (t 'a) (t 'a) : bool
 
-  function t__ada_array___equal (t__ada_array 'a) (t__ada_array 'a) : bool
+  function attr__ATTRIBUTE_LENGTH (t 'a) : int
+  function attr__ATTRIBUTE_FIRST (t 'a) : int
+  function attr__ATTRIBUTE_LAST (t 'a) : int
 
-  function t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array 'a) : int
+   val access_ :
+    i : int -> a : t 'a ->
+   { (attr__ATTRIBUTE_FIRST a) <= i <= (attr__ATTRIBUTE_LAST a) }
+   'a
+    { result = access i a }
 
-  function t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array 'a) : int
+   val update_ :
+    i : int -> a : t 'a -> v : 'a ->
+   { attr__ATTRIBUTE_FIRST (a) <= i <= attr__ATTRIBUTE_LAST (a) }
+   t 'a
+   { result = update i a v }
 
-  function t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array 'a) : int
-
-   val t__ada_array___access_ :
-    i : int -> a : t__ada_array 'a ->
-   { (t__ada_array___attr___ATTRIBUTE_FIRST a) <= i <= (t__ada_array___attr___ATTRIBUTE_LAST a) }'a
-    { result = t__ada_array___access i a }
-
-   val t__ada_array___update_ :
-    i : int -> a : t__ada_array 'a -> v : 'a ->
-   { t__ada_array___attr___ATTRIBUTE_FIRST (a) <= i <= t__ada_array___attr___ATTRIBUTE_LAST (a) } t__ada_array 'a
-    { result = t__ada_array___update i a v }
-
-   axiom T__ada_array___accupd_eq:
-     forall a:t__ada_array 'a.
+   axiom accupd_eq:
+     forall a:t 'a.
      forall i:int.
-     forall v:'a [t__ada_array___update i a v].
-        t__ada_array___access i (t__ada_array___update i a v) = v
+     forall v:'a [update i a v].
+        access i (update i a v) = v
 
-   axiom T__ada_array___accupd_neq:
-     forall a:t__ada_array 'a.
+   axiom accupd_neq:
+     forall a:t 'a.
      forall i:int.
      forall j:int.
-     forall v:'a [t__ada_array___access j (t__ada_array___update i a v ) |
-                   t__ada_array___update i a v,
-                   t__ada_array___access j a].
-       i <> j ->
-        t__ada_array___access j (t__ada_array___update i a v ) = t__ada_array___access j a
+     forall v:'a [access j (update i a v ) | update i a v, access j a].
+       i <> j -> access j (update i a v ) = access j a
 
-   axiom T__ada_array___first_update:
-     forall a:t__ada_array 'a.
+   axiom first_update:
+     forall a:t 'a.
      forall i:int.
      forall v:'a.
-       t__ada_array___attr___ATTRIBUTE_FIRST a =
-       t__ada_array___attr___ATTRIBUTE_FIRST (t__ada_array___update i a v)
+       attr__ATTRIBUTE_FIRST a = attr__ATTRIBUTE_FIRST (update i a v)
 
-   axiom T__ada_array___last_update:
-     forall a:t__ada_array 'a.
+   axiom last_update:
+     forall a:t 'a.
      forall i:int.
      forall v:'a.
-       t__ada_array___attr___ATTRIBUTE_LAST a =
-       t__ada_array___attr___ATTRIBUTE_LAST (t__ada_array___update i a v )
+       attr__ATTRIBUTE_LAST a = attr__ATTRIBUTE_LAST (update i a v )
 
-   axiom T__ada_array___length_update:
-     forall a:t__ada_array 'a.
+   axiom length_update:
+     forall a:t 'a.
      forall i:int.
      forall v:'a.
-        t__ada_array___attr___ATTRIBUTE_LENGTH a =
-        t__ada_array___attr___ATTRIBUTE_LENGTH (t__ada_array___update i a v)
+        attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH (update i a v)
 
-   axiom T__ada_array___length_non_zero:
-     forall a:t__ada_array 'a.
-       t__ada_array___attr___ATTRIBUTE_LAST a >= t__ada_array___attr___ATTRIBUTE_FIRST a ->
-        t__ada_array___attr___ATTRIBUTE_LENGTH a =
-        t__ada_array___attr___ATTRIBUTE_LAST a -
-        t__ada_array___attr___ATTRIBUTE_FIRST a + 1
+   axiom length_non_zero:
+     forall a:t 'a.
+       attr__ATTRIBUTE_LAST a >= attr__ATTRIBUTE_FIRST a ->
+        attr__ATTRIBUTE_LENGTH a =
+        attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1
 
-   axiom T__ada_array___length_zero:
-     forall a:t__ada_array 'a.
-       t__ada_array___attr___ATTRIBUTE_LAST a < t__ada_array___attr___ATTRIBUTE_FIRST a ->
-       t__ada_array___attr___ATTRIBUTE_LENGTH a = 0
+   axiom length_zero:
+     forall a:t 'a.
+       attr__ATTRIBUTE_LAST a < attr__ATTRIBUTE_FIRST a -> attr__ATTRIBUTE_LENGTH a = 0
 
    axiom T__ada_array___equal_def:
-     forall a:t__ada_array 'a.
-     forall b:t__ada_array 'a.
-         ((t__ada_array___attr___ATTRIBUTE_LENGTH a =
-            t__ada_array___attr___ATTRIBUTE_LENGTH b)
+     forall a:t 'a.
+     forall b:t 'a.
+         ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
           /\ (forall i:int.
-                (t__ada_array___attr___ATTRIBUTE_FIRST a <= i <=
-                   t__ada_array___attr___ATTRIBUTE_LAST a)
+                (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
                  ->
-                (t__ada_array___access i a =
-                   t__ada_array___access (t__ada_array___attr___ATTRIBUTE_FIRST b - t__ada_array___attr___ATTRIBUTE_FIRST a + i) b)))
-         <-> t__ada_array___equal a b = True
+                (access i a = access (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i) b)))
+         <-> bool_eq a b = True
 end
 
-module Array_Dim2
+module Array__2
 
   use import int.Int
   use import bool.Bool
   (* The theory of Ada arrays of two dimensions *)
 
-  type t__ada_array_2 'a
+  type t 'a
 
-  function t__ada_array_2___access int int (t__ada_array_2 'a) : 'a
+  function access int int (t 'a) : 'a
 
-  function t__ada_array_2___update int int (t__ada_array_2 'a) 'a
-     : (t__ada_array_2 'a)
+  function update int int (t 'a) 'a : (t 'a)
 
-  function t__ada_array_2___equal (t__ada_array_2 'a) (t__ada_array_2 'a) : bool
+  function bool_eq (t 'a) (t 'a) : bool
 
-  function t__ada_array_2___attr___ATTRIBUTE_LENGTH (t__ada_array_2 'a) : int
-  function t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 (t__ada_array_2 'a) : int
+  function attr__ATTRIBUTE_LENGTH (t 'a) : int
+  function attr__ATTRIBUTE_LENGTH_2 (t 'a) : int
 
-  function t__ada_array_2___attr___ATTRIBUTE_FIRST (t__ada_array_2 'a) : int
-  function t__ada_array_2___attr___ATTRIBUTE_FIRST_2 (t__ada_array_2 'a) : int
+  function attr__ATTRIBUTE_FIRST (t 'a) : int
+  function attr__ATTRIBUTE_FIRST_2 (t 'a) : int
 
-  function t__ada_array_2___attr___ATTRIBUTE_LAST (t__ada_array_2 'a) : int
-  function t__ada_array_2___attr___ATTRIBUTE_LAST_2 (t__ada_array_2 'a) : int
+  function attr__ATTRIBUTE_LAST (t 'a) : int
+  function attr__ATTRIBUTE_LAST_2 (t 'a) : int
 
-   val t__ada_array_2___access_ :
-    i : int -> j : int -> a : t__ada_array_2 'a ->
-    { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
-    }
+   val access_ :
+    i : int -> j : int -> a : t 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
     'a
-    { result = t__ada_array_2___access i j a }
+    { result = access i j a }
 
-   val t__ada_array_2___update_ :
-    i : int -> j : int -> a : t__ada_array_2 'a -> v : 'a ->
-    { t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <= t__ada_array_2___attr___ATTRIBUTE_LAST a /\
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <= t__ada_array_2___attr___ATTRIBUTE_LAST_2 a
-    }
-    t__ada_array_2 'a
-    { result = t__ada_array_2___update i j a v }
+   val update_ :
+    i : int -> j : int -> a : t 'a -> v : 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
+    t 'a
+    { result = update i j a v }
 
-  axiom T__ada_array_2___accupd_eq:
-    forall a:t__ada_array_2 'a.
+  axiom accupd_eq:
+    forall a:t 'a.
     forall i:int. forall j :int.
-    forall v:'a [t__ada_array_2___update i j a v].
-       t__ada_array_2___access i j (t__ada_array_2___update i j a v) = v
+    forall v:'a [update i j a v].
+       access i j (update i j a v) = v
 
-  axiom T__ada_array_2___accupd_neq:
-    forall a:t__ada_array_2 'a.
+  axiom accupd_neq:
+    forall a:t 'a.
     forall i1:int.
     forall i2:int.
     forall j1:int.
     forall j2:int.
-    forall v:'a [t__ada_array_2___access i2 j2 (t__ada_array_2___update i1 j1 a v ) |
-                  t__ada_array_2___update i1 j1 a v,
-                  t__ada_array_2___access i2 j2 a].
+    forall v:'a [access i2 j2 (update i1 j1 a v ) | update i1 j1 a v, access i2 j2 a].
       (i1 <> i2 \/ j1 <> j2) ->
-       t__ada_array_2___access i2 j2 (t__ada_array_2___update i1 j1 a v ) =
-       t__ada_array_2___access i2 j2 a
+       access i2 j2 (update i1 j1 a v ) = access i2 j2 a
 
-  axiom T__ada_array_2___first_update:
-    forall a:t__ada_array_2 'a.
+  axiom first_update:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-      t__ada_array_2___attr___ATTRIBUTE_FIRST a =
-      t__ada_array_2___attr___ATTRIBUTE_FIRST (t__ada_array_2___update i j a v)
+      attr__ATTRIBUTE_FIRST a = attr__ATTRIBUTE_FIRST (update i j a v)
 
-  axiom T__ada_array_2___first_update_2:
-    forall a:t__ada_array_2 'a.
+  axiom first_update_2:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a =
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 (t__ada_array_2___update i j a v)
+      attr__ATTRIBUTE_FIRST_2 a = attr__ATTRIBUTE_FIRST_2 (update i j a v)
 
-  axiom T__ada_array_2___last_update:
-    forall a:t__ada_array_2 'a.
+  axiom last_update:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST a =
-      t__ada_array_2___attr___ATTRIBUTE_LAST (t__ada_array_2___update i j a v )
+      attr__ATTRIBUTE_LAST a = attr__ATTRIBUTE_LAST (update i j a v )
 
-  axiom T__ada_array_2___last_update_2:
-    forall a:t__ada_array_2 'a.
+  axiom last_update_2:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a =
-      t__ada_array_2___attr___ATTRIBUTE_LAST_2 (t__ada_array_2___update i j a v )
+      attr__ATTRIBUTE_LAST_2 a = attr__ATTRIBUTE_LAST_2 (update i j a v )
 
-  axiom T__ada_array_2___length_update:
-    forall a:t__ada_array_2 'a.
+  axiom length_update:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH a =
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH (t__ada_array_2___update i j a v)
+       attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH (update i j a v)
 
-  axiom T__ada_array_2___length_update_2:
-    forall a:t__ada_array_2 'a.
+  axiom length_update_2:
+    forall a:t 'a.
     forall i:int. forall j : int.
     forall v:'a.
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a =
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 (t__ada_array_2___update i j a v)
+       attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 (update i j a v)
 
-  axiom T__ada_array_2___length_non_zero:
-    forall a:t__ada_array_2 'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST a >= t__ada_array_2___attr___ATTRIBUTE_FIRST a ->
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH a =
-       t__ada_array_2___attr___ATTRIBUTE_LAST a -
-       t__ada_array_2___attr___ATTRIBUTE_FIRST a + 1
+  axiom length_non_zero:
+    forall a:t 'a.
+      attr__ATTRIBUTE_LAST a >= attr__ATTRIBUTE_FIRST a ->
+       attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1
 
-  axiom T__ada_array_2___length_zero:
-    forall a:t__ada_array_2 'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST a < t__ada_array_2___attr___ATTRIBUTE_FIRST a ->
-      t__ada_array_2___attr___ATTRIBUTE_LENGTH a = 0
+  axiom length_zero:
+    forall a:t 'a.
+      attr__ATTRIBUTE_LAST a < attr__ATTRIBUTE_FIRST a -> attr__ATTRIBUTE_LENGTH a = 0
 
-  axiom T__ada_array_2___length_non_zero_2:
-    forall a:t__ada_array_2 'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a >=
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a ->
-       t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a =
-       t__ada_array_2___attr___ATTRIBUTE_LAST_2 a -
-       t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a + 1
+  axiom length_non_zero_2:
+    forall a:t 'a.
+      attr__ATTRIBUTE_LAST_2 a >= attr__ATTRIBUTE_FIRST_2 a ->
+       attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LAST_2 a - attr__ATTRIBUTE_FIRST_2 a + 1
 
-  axiom T__ada_array_2___length_zero_2:
-    forall a:t__ada_array_2 'a.
-      t__ada_array_2___attr___ATTRIBUTE_LAST_2 a <
-      t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a ->
-      t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a = 0
+  axiom length_zero_2:
+    forall a:t 'a.
+      attr__ATTRIBUTE_LAST_2 a < attr__ATTRIBUTE_FIRST_2 a ->
+      attr__ATTRIBUTE_LENGTH_2 a = 0
 
   axiom T__ada_array_2___equal_def:
-    forall a:t__ada_array_2 'a.
-    forall b:t__ada_array_2 'a.
-        ((t__ada_array_2___attr___ATTRIBUTE_LENGTH a = t__ada_array_2___attr___ATTRIBUTE_LENGTH b)
-         /\
-         (t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 a = t__ada_array_2___attr___ATTRIBUTE_LENGTH_2 b)
+    forall a:t 'a.
+    forall b:t 'a.
+        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
+         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
          /\
          (forall i:int. forall j : int.
-               (t__ada_array_2___attr___ATTRIBUTE_FIRST a <= i <=
-                  t__ada_array_2___attr___ATTRIBUTE_LAST a)
+               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
                 ->
-               (t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a <= j <=
-                  t__ada_array_2___attr___ATTRIBUTE_LAST_2 a)
+               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
                 ->
-               (t__ada_array_2___access i j a =
-                  t__ada_array_2___access
-                  (t__ada_array_2___attr___ATTRIBUTE_FIRST b - t__ada_array_2___attr___ATTRIBUTE_FIRST a + i)
-                  (t__ada_array_2___attr___ATTRIBUTE_FIRST_2 b - t__ada_array_2___attr___ATTRIBUTE_FIRST_2 a + j)
+               (access i j a = access
+                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
+                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
                   b)))
-        <-> t__ada_array_2___equal a b = True
+        <-> bool_eq a b = True
 
 end

@@ -266,9 +266,7 @@ package body Why.Gen.Expr is
                  New_Located_Call
                    (Domain   => Domain,
                     Ada_Node => Ada_Node,
-                    Name     =>
-                      Overflow_Check_Name.Id (Ada_Node => A,
-                                              Name     => Full_Name (A)),
+                    Name     => Prefix (Full_Name (A), WNE_Overflow, A),
                     Progs    => (1 => +Expr),
                     Reason   => VC_Overflow_Check);
             end;
@@ -420,7 +418,7 @@ package body Why.Gen.Expr is
             return
               New_Call
                 (Domain => Domain,
-                 Name   => Bool_And.Id,
+                 Name   => To_Ident (WNE_Bool_And),
                  Args   => (1 => +Left, 2 => +Right));
          end if;
       end if;
@@ -460,9 +458,9 @@ package body Why.Gen.Expr is
      return W_Expr_Id
    is
    begin
-      return +Attr_Name.Id (Ada_Node => Ty,
-                            L_Name   => Full_Name (Ty),
-                            R_Name   => Attribute_Id'Image (Attr));
+      return +Prefix (Ada_Node => Ty,
+                      S        => Full_Name (Ty),
+                      W        => Attr_To_Why_Name (Attr));
    end New_Attribute_Expr;
 
    --------------------
@@ -625,7 +623,7 @@ package body Why.Gen.Expr is
          else
             return New_Call
               (Domain => Domain,
-               Name => Bool_Or.Id,
+               Name => To_Ident (WNE_Bool_Or),
                Args => (1 => +Left, 2 => +Right));
          end if;
       end if;
@@ -767,7 +765,7 @@ package body Why.Gen.Expr is
          return
            New_Call
              (Domain => Domain,
-              Name   => Bool_Xor.Id,
+              Name   => To_Ident (WNE_Bool_Xor),
               Args   => (1 => +Left, 2 => +Right));
       end if;
    end New_Xor_Expr;

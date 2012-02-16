@@ -66,11 +66,6 @@ package Gnat2Why.Expr is
    --  place (e.g. int, real). If it is not set, it is deduced from
    --  the bounds' type.
 
-   function Transform_Ident (Id : Node_Id;
-                             Ada_Node : Node_Id := Empty)
-                             return W_Identifier_Id;
-   --  Build a Why identifier out of an Ada Node.
-
    function Transform_Pragma_Check (Stmt : Node_Id; Runtime : out W_Prog_Id)
       return W_Pred_Id;
    --  Translate a pragma check into a predicate; also, generate an expression

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;           use Types;
 with Why.Ids;   use Why.Ids;
 with Why.Gen.Binders; use Why.Gen.Binders;
 
@@ -32,8 +31,6 @@ package Why.Gen.Records is
 
    procedure Define_Ada_Record
      (Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id;
-      Name    : String;
       Binders : Binder_Array);
 
 end Why.Gen.Records;

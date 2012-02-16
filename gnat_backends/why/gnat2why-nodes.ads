@@ -26,16 +26,21 @@
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Hashed_Maps;
 
-with AA_Util;  use AA_Util;
-with Atree;    use Atree;
-with Einfo;    use Einfo;
-with Namet;    use Namet;
-with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
-with Sinput;   use Sinput;
-with Stand;    use Stand;
-with Types;    use Types;
+with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+
+with AA_Util;               use AA_Util;
+with Atree;                 use Atree;
+with Einfo;                 use Einfo;
+with Namet;                 use Namet;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with Stand;                 use Stand;
+with Types;                 use Types;
+
+with Why.Types;             use Why.Types;
 
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the
@@ -56,6 +61,73 @@ package Gnat2Why.Nodes is
       Equivalent_Elements => "=",
       "="                 => "=");
    --  Sets of nodes
+
+   package Ada_To_Why is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Why_Node_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   package Ada_Ent_To_Why is
+
+      --  This package is a map from Ada names to Why nodes. Ada names can have
+      --  the form of Entity_Ids or Entity_Names.
+
+      type Map is private;
+      type Cursor is private;
+
+      Empty_Map : constant Map;
+
+      procedure Insert (M : in out Map;
+                        E : Entity_Id;
+                        W : Why_Node_Id);
+
+      procedure Insert (M : in out Map;
+                        E : String;
+                        W : Why_Node_Id);
+
+      function Element (M : Map; E : Entity_Id) return Why_Node_Id;
+      function Element (C : Cursor) return Why_Node_Id;
+
+      function Find (M : Map; E : Entity_Id) return Cursor;
+
+      function Has_Element (M : Map; E : Entity_Id) return Boolean;
+      function Has_Element (C : Cursor) return Boolean;
+
+   private
+
+      package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
+        (Key_Type => Entity_Name,
+         Element_Type    => Why_Node_Id,
+         Hash            => Name_Hash,
+         Equivalent_Keys => Name_Equal,
+         "="             => "=");
+
+      type Map is record
+         Entity_Ids   : Ada_To_Why.Map;
+         Entity_Names : Name_To_Why_Map.Map;
+      end record;
+
+      Empty_Map : constant Map :=
+        Map'(Entity_Ids    => Ada_To_Why.Empty_Map,
+             Entity_Names => Name_To_Why_Map.Empty_Map);
+
+      type Cursor_Kind is (CK_Ent, CK_Str);
+
+      type Cursor is record
+
+         --  This should be a variant record, but then it could not be a
+         --  completion of the private type above, so here we have the
+         --  invariant that when Kind = CK_Ent, then Ent_Cursor is valid,
+         --  otherwise, Name_Cursor is valid.
+
+         Kind        : Cursor_Kind;
+         Ent_Cursor  : Ada_To_Why.Cursor;
+         Name_Cursor : Name_To_Why_Map.Cursor;
+      end record;
+
+   end Ada_Ent_To_Why;
 
    type Unique_Entity_Id is new Entity_Id;
    --  Type of unique entities shared between different views, in contrast to

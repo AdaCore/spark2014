@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -39,9 +39,6 @@ package Why.Gen.Terms is
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.
-
-   function New_Result_Term return W_Term_Id;
-   --  return the term containing the ident "result"
 
    function New_Simpl_Epsilon_Term
      (T : W_Primitive_Type_Id) return W_Term_Id;

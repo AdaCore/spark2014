@@ -58,7 +58,6 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Types;             use Why.Types;
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 

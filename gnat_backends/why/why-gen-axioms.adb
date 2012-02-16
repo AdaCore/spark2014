@@ -36,14 +36,14 @@ package body Why.Gen.Axioms is
 
    procedure Define_Coerce_Axiom
      (Theory       : W_Theory_Declaration_Id;
-      Type_Name    : W_Identifier_Id;
       Base_Type    : W_Primitive_Type_Id;
       From         : W_Identifier_Id;
       To           : W_Identifier_Id;
       Hypothesis   : W_Pred_Id := Why_Empty;
       Modulus      : W_Term_OId := Why_Empty)
    is
-      Arg_S                : constant W_Term_Id := New_Term ("x");
+      Arg_S                : constant W_Identifier_Id :=
+        New_Identifier (Name => "x");
       X_To_Type_Op         : constant W_Term_Id :=
                                New_Call
                                  (Name => From,
@@ -54,18 +54,18 @@ package body Why.Gen.Axioms is
                                   Args => (1 => +X_To_Type_Op));
       Normalized_Result    : constant W_Term_Id :=
                                (if Modulus = Why_Empty then
-                                  Arg_S
+                                  +Arg_S
                                 else
                                   New_Call
-                                    (Name => New_Integer_Mod.Id,
+                                    (Name => To_Ident (WNE_Integer_Mod),
                                      Args => (+Arg_S, +Modulus)));
       Equality             : constant W_Pred_Id :=
-                              New_Relation
-                                (Op_Type => EW_Abstract,
-                                 Left    => +Back_To_Base_Type_Op,
-                                 Op      => EW_Eq,
-                                 Right   => +Normalized_Result);
-      Formula              : constant W_Pred_Id :=
+        New_Relation
+          (Op_Type => EW_Abstract,
+           Left    => +Back_To_Base_Type_Op,
+           Op      => EW_Eq,
+           Right   => +Normalized_Result);
+      Formula           : constant W_Pred_Id :=
                                  (if Hypothesis = Why_Empty then
                                     Equality
                                   else
@@ -85,24 +85,21 @@ package body Why.Gen.Axioms is
                   (1 => +Hypothesis,
                    2 => +X_To_Type_Op)))));
       Quantif_On_X         : constant W_Pred_Id :=
-                               New_Universal_Quantif
-                                 (Var_Type  => Base_Type,
-                                  Variables =>
-                                    (1 => New_Identifier (Domain => EW_Term,
-                                                          Name   => "x")),
-                                  Triggers  => Enhanced_Triggers,
-                                  Pred      => Formula);
+        New_Universal_Quantif
+          (Var_Type  => Base_Type,
+           Variables => (1 => Arg_S),
+           Triggers  => Enhanced_Triggers,
+           Pred      => Formula);
    begin
       Emit
         (Theory,
          New_Axiom
-           (Name => Coerce_Axiom.Id (Type_Name),
+           (Name => To_Ident (WNE_Coerce),
             Def  => Quantif_On_X));
    end Define_Coerce_Axiom;
 
    procedure Define_Coerce_Axiom
      (Theory    : W_Theory_Declaration_Id;
-      Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty)
    is
@@ -117,17 +114,14 @@ package body Why.Gen.Axioms is
                             Why_Empty
                           else
                             New_Call
-                              (Name => Range_Pred_Name.Id (Type_Name),
-                               Args => (1 => +New_Term ("x"))));
-      Base_Type_Name : constant W_Identifier_Id :=
-         New_Identifier (Name => EW_Base_Type_Name (Base_Type));
+                              (Name => To_Ident (WNE_Range_Pred),
+                               Args => (1 => +New_Identifier (Name => "x"))));
    begin
       Define_Coerce_Axiom
         (Theory     => Theory,
-         Type_Name  => Type_Name,
          Base_Type  => New_Base_Type (Base_Type => Base_Type),
-         From       => Conversion_From.Id (Type_Name, Base_Type_Name),
-         To         => Conversion_To.Id (Type_Name, Base_Type_Name),
+         From       => To_Ident (Convert_From (Base_Type)),
+         To         => To_Ident (Convert_To (Base_Type)),
          Hypothesis => In_Range,
          Modulus    => Modulus);
    end Define_Coerce_Axiom;
@@ -141,28 +135,27 @@ package body Why.Gen.Axioms is
       Type_Name  : W_Identifier_Id;
       Conversion : W_Identifier_Id)
    is
-      Arg_S              : constant String := "x";
+      Arg_S              : constant W_Identifier_Id :=
+        New_Identifier (Name => "x");
       Call_To_Conversion : constant W_Term_Id :=
                              New_Call
                                (Name => Conversion,
-                                Args => (1 => +New_Term (Arg_S)));
+                                Args => (1 => +Arg_S));
       Formula            : constant W_Pred_Id :=
                              New_Call
-                               (Name => Range_Pred_Name.Id (Type_Name),
+                               (Name => To_Ident (WNE_Range_Pred),
                                 Args => (1 => +Call_To_Conversion));
       Quantif_On_X       : constant W_Pred_Id :=
                              New_Universal_Quantif
-                               (Var_Type =>
+                               (Var_Type  =>
                                   New_Abstract_Type (Name => Type_Name),
-                                Variables =>
-                                  (1 => New_Identifier (Name => Arg_S)),
-                                Pred =>
-                                  Formula);
+                                Variables => (1 => Arg_S),
+                                Pred      => Formula);
    begin
       Emit
         (Theory,
          New_Axiom
-           (Name => Range_Axiom.Id (Type_Name),
+           (Name => To_Ident (WNE_Range_Axiom),
             Def  => Quantif_On_X));
    end Define_Range_Axiom;
 
@@ -176,16 +169,18 @@ package body Why.Gen.Axioms is
       Var_Type   : W_Primitive_Type_Id;
       Conversion : W_Identifier_Id)
    is
-      X_S               : constant String := "x";
-      Y_S               : constant String := "y";
+      X_S               : constant W_Identifier_Id :=
+        New_Identifier (Name => "x");
+      Y_S               : constant W_Identifier_Id :=
+        New_Identifier (Name => "y");
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
                               (Name => Conversion,
-                               Args => (1 => +New_Term (X_S)));
+                               Args => (1 => +X_S));
       Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Call
                               (Name => Conversion,
-                               Args => (1 => +New_Term (Y_S)));
+                               Args => (1 => +Y_S));
       Formula           : constant W_Pred_Id :=
                             New_Connection
                               (Op    => EW_Imply,
@@ -200,15 +195,13 @@ package body Why.Gen.Axioms is
                                  New_Relation
                                    (Domain  => EW_Pred,
                                     Op_Type => EW_Abstract,
-                                    Left    => +New_Term (X_S),
+                                    Left    => +X_S,
                                     Op      => EW_Eq,
-                                    Right   => +New_Term (Y_S)));
+                                    Right   => +Y_S));
       Quantif_On_XY     : constant W_Pred_Id :=
                             New_Universal_Quantif
                               (Var_Type => Var_Type,
-                               Variables =>
-                                 (New_Identifier (Name => X_S),
-                                  New_Identifier (Name => Y_S)),
+                               Variables => (X_S, Y_S),
                                Triggers =>
                                  New_Triggers (Triggers =>
                                     (1 => New_Trigger (Terms =>
@@ -227,25 +220,13 @@ package body Why.Gen.Axioms is
    procedure Define_Unicity_Axiom
      (Theory    : W_Theory_Declaration_Id;
       Type_Name : W_Identifier_Id;
-      Base_Type : W_Identifier_Id)
-   is
-   begin
-      Define_Unicity_Axiom
-         (Theory     => Theory,
-          Axiom_Name => Unicity_Axiom.Id (Type_Name),
-          Var_Type   => New_Abstract_Type (Name => Type_Name),
-          Conversion => Conversion_To.Id (Type_Name, Base_Type));
-   end Define_Unicity_Axiom;
-
-   procedure Define_Unicity_Axiom
-     (Theory    : W_Theory_Declaration_Id;
-      Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar) is
    begin
       Define_Unicity_Axiom
-        (Theory    => Theory,
-         Type_Name => Type_Name,
-         Base_Type => New_Identifier (Name => EW_Base_Type_Name (Base_Type)));
+            (Theory    => Theory,
+             Axiom_Name => To_Ident (WNE_Unicity),
+             Var_Type => New_Abstract_Type (Name => Type_Name),
+             Conversion => To_Ident (Convert_To (Base_Type)));
    end Define_Unicity_Axiom;
 
 end Why.Gen.Axioms;

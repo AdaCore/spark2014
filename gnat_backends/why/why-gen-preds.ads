@@ -32,7 +32,6 @@ package Why.Gen.Preds is
 
    procedure Define_Range_Predicate
      (Theory    : W_Theory_Declaration_Id;
-      Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the range predicate for an abstract type
    --  whose base type is given in parameters. This predicate is True when
@@ -40,7 +39,6 @@ package Why.Gen.Preds is
 
    procedure Define_Eq_Predicate
      (Theory    : W_Theory_Declaration_Id;
-      Name      : String;
       Base_Type : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type
    --  whose base type is given in parameters. This predicate is True when

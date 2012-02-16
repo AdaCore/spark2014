@@ -27,12 +27,12 @@ with Atree;              use Atree;
 with Einfo;              use Einfo;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
+with Gnat2Why.Types;     use Gnat2Why.Types;
 --  ??? because of Get_Range, which should be moved
 
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
-with String_Utils;       use String_Utils;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -47,7 +47,6 @@ package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
      (Theory       : W_Theory_Declaration_Id;
-      Ty_Entity    : Entity_Id;
       Index_Entity : Entity_Id;
       Dimension    : Pos;
       Argument     : Uint);
@@ -58,22 +57,18 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Array
      (Theory   : W_Theory_Declaration_Id;
-      Name     : String;
-      Orig_Ent : Entity_Id;
       Und_Ent  : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Ar        : constant W_Term_Id := New_Term ("a");
+      Ar        : constant W_Identifier_Id := New_Identifier (Name => "a");
       Ar_Binder : constant Binder_Type :=
-                    (B_Name => New_Identifier (Name => "a"),
-                     B_Type =>
-                       New_Abstract_Type
-                         (Name => (New_Identifier (Name => Name))),
+                    (B_Name => Ar,
+                     B_Type => New_Abstract_Type (Name => To_Ident (WNE_Type)),
                      others => <>);
       Index     : Node_Id := First_Index (Und_Ent);
       Count     : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array (Theory, Name, Und_Ent);
+      Declare_Ada_Unconstrained_Array (Theory, Und_Ent);
 
       if Is_Constrained (Und_Ent) then
          --  State axioms about fixed 'First, 'Last and 'Length
@@ -88,8 +83,7 @@ package body Why.Gen.Arrays is
                   Emit
                     (Theory,
                      New_Guarded_Axiom
-                       (Name =>
-                          Array_First_Static.Id (Add_Int_Suffix (Name, Count)),
+                       (Name => Append_Num (WNE_First_Static, Count),
                         Binders => (1 => Ar_Binder),
                         Def =>
                           New_Relation
@@ -98,7 +92,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_First,
-                                  Orig_Ent,
+                                  Empty,
                                   +Ar,
                                   EW_Term,
                                   Dimension,
@@ -111,8 +105,7 @@ package body Why.Gen.Arrays is
                   Emit
                     (Theory,
                      New_Guarded_Axiom
-                       (Name =>
-                          Array_Last_Static.Id (Add_Int_Suffix (Name, Count)),
+                       (Name => Append_Num (WNE_Last_Static, Count),
                         Binders => (1 => Ar_Binder),
                         Def =>
                           New_Relation
@@ -121,7 +114,7 @@ package body Why.Gen.Arrays is
                              Left    =>
                                +New_Array_Attr
                                  (Attribute_Last,
-                                  Orig_Ent,
+                                  Empty,
                                   +Ar,
                                   EW_Term,
                                   Dimension,
@@ -143,20 +136,14 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (Theory : W_Theory_Declaration_Id;
-      Name   : String;
       Entity : Entity_Id)
    is
-      Comp_Entity : constant Entity_Id := Component_Type (Entity);
-      Component   : constant String := Full_Name (Comp_Entity);
       Dimension   : constant Pos := Number_Dimensions (Entity);
-      Type_Id     : constant W_Identifier_Id := New_Identifier (Name => Name);
-      BT_Str      : constant String := New_Ada_Array_Name (Dimension);
+      Type_Id     : constant W_Identifier_Id := To_Ident (WNE_Type);
       BT_Id       : constant W_Identifier_Id :=
-        New_Identifier (Name => BT_Str);
+        Prefix (To_String (Ada_Array_Name (Dimension)), WNE_Type);
       Comp_Type   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type
-          (Name => (New_Identifier (Ada_Node => Comp_Entity,
-                                    Name => Component)));
+        Why_Logic_Type_Of_Ada_Type (Component_Type (Entity));
       Ar_Type     : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
@@ -167,10 +154,8 @@ package body Why.Gen.Arrays is
                       (B_Name => New_Identifier (Name => "a"),
                        B_Type => Ar_Type,
                        others => <>);
-      Conv_From   : constant W_Identifier_Id :=
-                      Conversion_From.Id (Name, BT_Str);
-      Conv_To     : constant W_Identifier_Id :=
-                      Conversion_To.Id (Name, BT_Str);
+      Conv_From   : constant W_Identifier_Id := To_Ident (WNE_Of_Array);
+      Conv_To     : constant W_Identifier_Id := To_Ident (WNE_To_Array);
    begin
       --  generate the theory:
       --  type t
@@ -178,7 +163,7 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      Emit (Theory, New_Type (Name));
+      Emit (Theory, New_Type (To_String (WNE_Type)));
       Emit
         (Theory,
          New_Function_Decl
@@ -195,15 +180,14 @@ package body Why.Gen.Arrays is
             Return_Type => Name_Type));
       Define_Coerce_Axiom
          (Theory    => Theory,
-          Type_Name => Type_Id,
           Base_Type => Ar_Type,
           From      => Conv_From,
           To        => Conv_To);
       Define_Unicity_Axiom
         (Theory     => Theory,
-         Axiom_Name => Unicity_Axiom.Id (Name),
+         Axiom_Name => To_Ident (WNE_Unicity),
          Var_Type   => Ar_Type,
-         Conversion => Conversion_From.Id (Name, BT_Str));
+         Conversion => To_Ident (WNE_Of_Array));
 
       if not (Is_Constrained (Entity)) then
          declare
@@ -217,7 +201,6 @@ package body Why.Gen.Arrays is
                   if Index_Entity /= Standard_Boolean then
                      Define_In_Range_Axiom
                        (Theory       => Theory,
-                        Ty_Entity    => Entity,
                         Index_Entity => Index_Entity,
                         Dimension    => Dimension,
                         Argument     => Arg);
@@ -237,31 +220,29 @@ package body Why.Gen.Arrays is
 
    procedure Define_In_Range_Axiom
      (Theory       : W_Theory_Declaration_Id;
-      Ty_Entity    : Entity_Id;
       Index_Entity : Entity_Id;
       Dimension    : Pos;
       Argument     : Uint)
    is
-      Type_Name      : constant String := Full_Name (Ty_Entity);
       Index_Name     : constant String := Full_Name (Index_Entity);
       Var            : constant W_Identifier_Id :=
                          New_Identifier (Name => "x");
       First_Term     : constant W_Term_Id :=
-                         +New_Array_Attr
-                           (Attribute_First,
-                            Ty_Entity,
-                            +Var,
-                            EW_Term,
-                            Dimension,
-                            Argument);
+          +New_Array_Attr
+             (Attribute_First,
+              Empty,
+              +Var,
+              EW_Term,
+              Dimension,
+              Argument);
       Last_Term      : constant W_Term_Id :=
-                         +New_Array_Attr
-                           (Attribute_Last,
-                            Ty_Entity,
-                            +Var,
-                            EW_Term,
-                            Dimension,
-                            Argument);
+          +New_Array_Attr
+             (Attribute_Last,
+              Empty,
+              +Var,
+              EW_Term,
+              Dimension,
+              Argument);
       Precond        : constant W_Pred_Id :=
                          New_Relation
                            (Op_Type => EW_Bool,
@@ -270,15 +251,15 @@ package body Why.Gen.Arrays is
                             Op      => EW_Le);
       First_In_Range : constant W_Pred_Id :=
         New_Call
-          (Name =>
-               Range_Pred_Name.Id (Ada_Node => Index_Entity,
-                                   Name => Index_Name),
+          (Name => Prefix (Ada_Node => Index_Entity,
+                           S        => Index_Name,
+                           W        => WNE_Range_Pred),
            Args => (1 => +First_Term));
       Last_In_Range  : constant W_Pred_Id :=
         New_Call
-          (Name =>
-               Range_Pred_Name.Id (Ada_Node => Index_Entity,
-                                   Name => Index_Name),
+          (Name => Prefix (Ada_Node => Index_Entity,
+                           S        => Index_Name,
+                           W        => WNE_Range_Pred),
            Args => (1 => +Last_Term));
       Conclusion     : constant W_Pred_Id :=
                          New_Connection
@@ -293,21 +274,14 @@ package body Why.Gen.Arrays is
       Quantif        : constant W_Pred_Id :=
                          New_Universal_Quantif
                            (Var_Type  =>
-                              New_Abstract_Type
-                                (Name => New_Identifier (Name => Type_Name)),
+                              New_Abstract_Type (Name => To_Ident (WNE_Type)),
                             Variables => (1 => Var),
                             Pred => Formula);
-      Axiom_Base     : constant String := Type_Name & "__index_in_range";
-      Axiom_Name     : constant String :=
-                         (if Argument = Uint_1 then
-                            Axiom_Base
-                          else
-                            Axiom_Base & "_" & Uint_Image (Argument));
    begin
       Emit
         (Theory,
          New_Axiom
-           (Name => New_Identifier (Name => Axiom_Name),
+           (Name => Append_Num (WNE_Range_Axiom, Argument),
             Def  => Quantif));
    end Define_In_Range_Axiom;
 
@@ -323,22 +297,23 @@ package body Why.Gen.Arrays is
       Domain    : EW_Domain;
       Dimension : Pos) return W_Expr_Id
    is
-      BT_Str    : constant String := New_Ada_Array_Name (Dimension);
-      Name      : constant W_Identifier_Id := Array_Access_Name.Id (BT_Str);
+      Name      : constant W_Identifier_Id :=
+        Prefix (S => To_String (Ada_Array_Name (Dimension)),
+                W => WNE_Array_Access);
       Used_Name : constant W_Identifier_Id :=
                     (if Domain = EW_Prog then
                        To_Program_Space (Name)
                      else
                        Name);
       Progs     : constant W_Expr_Array :=
-                    Index & (1 => New_Call
-                                    (Domain => Domain,
-                                     Name   =>
-                                       Conversion_To.Id
-                                         (Ada_Node => Ty_Entity,
-                                          L_Name   => Full_Name (Ty_Entity),
-                                          R_Name   => BT_Str),
-                                     Args   => (1 => +Ar)));
+        Index & (1 =>
+                   New_Call
+                     (Domain => Domain,
+                      Name   =>
+                        Prefix (Ada_Node => Ty_Entity,
+                                S        => Full_Name (Ty_Entity),
+                                W        => WNE_To_Array),
+                      Args   => (1 => +Ar)));
    begin
       return
         +New_Located_Call
@@ -361,33 +336,26 @@ package body Why.Gen.Arrays is
        Dimension : Pos;
        Argument  : Uint) return W_Expr_Id
    is
-      Attr_Str  : constant String := Attribute_Id'Image (Attr);
-
-      --  ??? The logic to obtain the right suffix (_2, _3 etc) is duplicated
-      --  here because of the usage of Uint. Should be fixed.
-
-      Attr_Suff : constant String :=
-                    (if Argument = Uint_1 then
-                       Attr_Str
-                     else
-                       Attr_Str & "_" & Uint_Image (Argument));
-      BT_Str    : constant String := New_Ada_Array_Name (Dimension);
+      Name : constant W_Identifier_Id :=
+        (if Present (Ty_Entity) then
+         Prefix (Ada_Node => Ty_Entity,
+                 S        => Full_Name (Ty_Entity),
+                 W        => WNE_To_Array)
+         else
+         To_Ident (WNE_To_Array));
    begin
       return
         New_Call
           (Domain => Domain,
            Name   =>
-             Attr_Name.Id (Ada_Node => Ty_Entity,
-                           L_Name   => BT_Str,
-                           R_Name   => Attr_Suff),
+             Attr_To_Why_Name (A     => Attr,
+                               Dim   => Dimension,
+                               Count => Argument),
            Args   =>
             (1 =>
                New_Call
                  (Domain => Domain,
-                  Name   => Conversion_To.Id
-                    (Ada_Node => Ty_Entity,
-                     L_Name   => Full_Name (Ty_Entity),
-                     R_Name   => BT_Str),
+                  Name   => Name,
                   Args   => (1 => +Ar))));
    end New_Array_Attr;
 
@@ -404,23 +372,23 @@ package body Why.Gen.Arrays is
        Domain    : EW_Domain;
        Dimension : Pos) return W_Expr_Id
    is
-      BT_Str    : constant String := New_Ada_Array_Name (Dimension);
-      Name      : constant W_Identifier_Id := Array_Update_Name.Id (BT_Str);
+      Name      : constant W_Identifier_Id :=
+        Prefix (S => To_String (Ada_Array_Name (Dimension)),
+                W => WNE_Array_Update);
       Used_Name : constant W_Identifier_Id :=
-                    (if Domain = EW_Prog then
-                       To_Program_Space (Name)
-                     else
-                       Name);
+        (if Domain = EW_Prog then
+         To_Program_Space (Name)
+         else
+         Name);
       Args      : constant W_Expr_Array :=
-                    Index & (1 => New_Call
-                                    (Domain => Domain,
-                                     Name   =>
-                                       Conversion_To.Id
-                                         (Ada_Node => Ty_Entity,
-                                          L_Name   => Full_Name (Ty_Entity),
-                                          R_Name   => BT_Str),
+        Index & (1 => New_Call
+                 (Domain => Domain,
+                  Name   =>
+                    Prefix (Ada_Node => Ty_Entity,
+                            S        => Full_Name (Ty_Entity),
+                            W        => WNE_To_Array),
                                      Args   => (1 => +Ar)),
-                             2 => +Value);
+                 2 => +Value);
       Array_Upd : constant W_Expr_Id :=
                     New_Located_Call
                       (Ada_Node => Ada_Node,
@@ -432,9 +400,9 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Name   =>
-               Conversion_From.Id (Ada_Node => Ty_Entity,
-                                   L_Name   => Full_Name (Ty_Entity),
-                                   R_Name   => BT_Str),
+               Prefix (Ada_Node => Ty_Entity,
+                       S        => Full_Name (Ty_Entity),
+                       W        => WNE_Of_Array),
            Args   => (1 => Array_Upd),
            Domain => Domain);
    end New_Array_Update;

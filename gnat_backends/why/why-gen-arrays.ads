@@ -40,8 +40,6 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Array
      (Theory   : W_Theory_Declaration_Id;
-      Name     : String;
-      Orig_Ent : Entity_Id;
       Und_Ent  : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  Name is the full name of the entity to be translated
@@ -51,7 +49,6 @@ package Why.Gen.Arrays is
 
    procedure Declare_Ada_Unconstrained_Array
      (Theory : W_Theory_Declaration_Id;
-      Name   : String;
       Entity : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form

@@ -23,10 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
+with Ada.Containers;      use Ada.Containers;
 
-with Namet;  use Namet;
-with Uintp;  use Uintp;
+with Namet;               use Namet;
+with String_Utils;        use String_Utils;
+with Uintp;               use Uintp;
 
 with Why.Inter;           use Why.Inter;
 with Why.Images;          use Why.Images;
@@ -113,7 +114,7 @@ package body Why.Atree.Sprint is
       Base_Type : constant EW_Type := Get_Base_Type (Node);
    begin
       if Base_Type = EW_Abstract then
-         P (O, Full_Name (Get_Ada_Node (+Node)));
+         P (O, Capitalize_First (Full_Name (Get_Ada_Node (+Node))) & ".t");
       else
          P (O, Base_Type);
       end if;

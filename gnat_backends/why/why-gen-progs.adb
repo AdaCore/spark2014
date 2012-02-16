@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -153,7 +153,7 @@ package body Why.Gen.Progs is
       return
         New_Call
           (Ada_Node => Ada_Node,
-           Name     => New_Ignore_Name.Id,
+           Name     => To_Ident (WNE_Ignore),
            Args     => (1 => +Prog));
    end New_Ignore;
 
@@ -187,7 +187,7 @@ package body Why.Gen.Progs is
    begin
       return New_Binder
         (Domain   => EW_Term,
-         Name     => New_Result_Identifier.Id,
+         Name     => To_Ident (WNE_Result),
          Arg_Type => T);
    end New_Result;
 

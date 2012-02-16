@@ -26,8 +26,9 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Namet;        use Namet;
-with String_Utils; use String_Utils;
+with Snames;       use Snames;
 with Types;        use Types;
+with Uintp;        use Uintp;
 with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
@@ -86,12 +87,6 @@ package Why.Gen.Names is
      return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
-   function New_Term (Name : String) return W_Term_Id;
-   --  Return a term identified by the given name
-
-   function New_Prog (Name : String) return W_Prog_Id;
-   --  Return a prog identified by the given name
-
    function New_Temp_Identifier return W_Identifier_Id;
    --  Return a new unique identifier
 
@@ -104,35 +99,93 @@ package Why.Gen.Names is
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
 
-   Ada_Array                : constant String := "t__ada_array";
-   Array_Access             : constant String := "access";
-   Array_Update             : constant String := "update";
-   Array_Equal              : constant String := "equal";
-   Array_First_Static_Name  : constant String := "static_first";
-   Array_Last_Static_Name   : constant String := "static_last";
-   Array_Length_Static_Name : constant String := "static_length";
+   type Why_Name_Enum is
+     (WNE_Range_Pred,
+      WNE_To_Int,
+      WNE_Of_Int,
+      WNE_To_Real,
+      WNE_Of_Real,
+      WNE_To_Array,
+      WNE_Of_Array,
+      WNE_Attr_First,
+      WNE_Attr_Last,
+      WNE_Attr_Modulus,
+      WNE_Attr_Length,
+      WNE_Type,
+      WNE_Result,
+      WNE_Overflow,
+      WNE_Eq,
+      WNE_Unicity,
+      WNE_Coerce,
+      WNE_Range_Axiom,
+      WNE_Ignore,
+      WNE_Bool_And,
+      WNE_Bool_Or,
+      WNE_Bool_Xor,
+      WNE_Result_Exc,
+      WNE_Integer_Div,
+      WNE_Integer_Rem,
+      WNE_Integer_Mod,
+      WNE_Integer_Abs,
+      WNE_Real_Div,
+      WNE_Real_Abs,
+      WNE_Real_Of_Int,
+      WNE_Array_1,
+      WNE_Array_2,
+      WNE_Array_Access,
+      WNE_Array_Update,
+      WNE_First_Static,
+      WNE_Last_Static,
+      WNE_Bool_Eq,
+      WNE_Bool_Ne,
+      WNE_Bool_Le,
+      WNE_Bool_Lt,
+      WNE_Bool_Ge,
+      WNE_Bool_Gt);
+
+   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
+
+   function Attr_To_Why_Name (A     : Attribute_Id;
+                              Dim   : Pos;
+                              Count : Positive) return W_Identifier_Id;
+
+   function Attr_To_Why_Name (A     : Attribute_Id;
+                              Dim   : Pos;
+                              Count : Uint) return W_Identifier_Id;
+
+   function Append_Num (W : Why_Name_Enum; Count : Positive)
+                        return W_Identifier_Id;
+
+   function Append_Num (W : Why_Name_Enum; Count : Uint)
+                        return W_Identifier_Id;
+
+   function To_String (W : Why_Name_Enum) return String;
+
+   function To_Ident (W        : Why_Name_Enum;
+                      Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
+   function Prefix (S        : String;
+                    W        : Why_Name_Enum;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
+   function Prefix (P        : String;
+                    N        : String;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
+   function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
+   with Pre => (Kind in EW_Int | EW_Real);
+
+   function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
+   with Pre => (Kind in EW_Int | EW_Real);
+
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";
    Assume                   : constant String := "assume";
-   Coerce                   : constant String := "coerce";
-   Boolean_Eq               : constant String := "eq_bool";
-   Eq_Pred                  : constant String := "eq";
    Of_Int                   : constant String := "of_int";
    Int_Of                   : constant String := "to_int";
    Definition               : constant String := "def";
    Logic_Def_Axiom          : constant String := "logic_def_axiom";
    Pre_Check                : constant String := "pre_check";
-   Range_Name               : constant String := "range";
-   In_Range                 : constant String := "in_range";
-   Unicity                  : constant String := "unicity";
-
-   package Array_Access_Name is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Access);
-   --  From the name of an array type, return the name of its access function.
-
-   package Array_Equal_Name is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Equal);
-   --  From the name of an array type, return the name of its equal function.
 
    package Array_Conv_Idem is
      new Name_Gen.Arity_1 (EW_Term, "", Array_Conv_Idemp);
@@ -140,122 +193,10 @@ package Why.Gen.Names is
    package Array_Conv_Idem_2 is
      new Name_Gen.Arity_1 (EW_Term, "", Array_Conv_Idemp_2);
 
-   package Array_Update_Name is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Update);
-   --  From the name of an array type, return the name of its update function
-
-   package Array_First_Static is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_First_Static_Name);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'First is static.
-
-   package Array_Last_Static is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Last_Static_Name);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'Last is static.
-
-   package Array_Length_Static is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Length_Static_Name);
-   --  From the name of an array type, return the name of the axiom that
-   --  states that 'Length is static.
-
-   package Attr_Name is
-     new Name_Gen.Arity_2 (EW_Term, "", "attr", "");
-   --  From the prefix and the attribute, return the name of the corresponding
-   --  logic function in Why.
-
-   package Coerce_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Coerce);
-   --  From the name of an abstract type, return the name of
-   --  its coerce axiom.
-
-   package Conversion_To is
-     new Name_Gen.Arity_2 (EW_Term, "", "to", "");
-   --  From two type names, return the name of the logic function
-   --  of the conversion from left to right.
-
-   package Conversion_From is
-     new Name_Gen.Arity_2 (EW_Term, "", "from", "");
-   --  From two type names, return the name of the logic function
-   --  of the conversion to left from right.
-
-   package Eq_Param_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "", "___" & Boolean_Eq & "_", "");
-   --  From the name of an abstract type, return the name of
-   --  its equality parameter.
-
-   package Eq_Pred_Name is
-     new Name_Gen.Arity_1 (EW_Pred, "", Eq_Pred);
-   --  From the name of an abstract type, return the name of
-   --  its equality predicate.
-
-   package Real_Of_Int is
-     new Name_Gen.Arity_0 (EW_Term, "real_of_int");
-   --  Return the name of the conversions from int to real
-
-   package Int_Of_Bool is
-     new Name_Gen.Arity_0 (EW_Term, "int_of_bool");
-   --  Return the name of the conversions from bool to int
-
-   package Bool_Of_Int is
-     new Name_Gen.Arity_0 (EW_Term, "bool_of_int");
-   --  Return the name of the conversions from int to bool
-
-   package New_Conversion_To_Int is
-     new Name_Gen.Arity_1 (EW_Term, "", Int_Of);
-   --  Create a new identifier for a conversion from an abstract type
-   --  to int. The name of the abstract type is given in parameter.
-
-   package New_Conversion_From_Int is
-     new Name_Gen.Arity_1 (EW_Term, "", Of_Int);
-   --  Create a new identifier for a conversion from int to an abstract type.
-   --  The name of the abstract type is given in parameter.
-
    package New_Definition_Name is
      new Name_Gen.Arity_1 (EW_Prog, "", Definition);
    --  Create a new identifier for the "definition only" version of a
    --  subprogram, which is not meant to be called.
-
-   package New_Exit_Identifier is
-     new Name_Gen.Arity_0 (EW_Term, "Exit");
-   --  Return an new identifier for the exception "Exit".
-
-   package New_Ignore_Name is
-     new Name_Gen.Arity_0 (EW_Term, "___ignore");
-
-   package New_Integer_Division is
-     new Name_Gen.Arity_0 (EW_Term, "computer_div");
-   --  Return an identifier that corresponds to integer division in Why
-
-   package New_Integer_Rem is
-     new Name_Gen.Arity_0 (EW_Term, "computer_mod");
-   --  Return an identifier that corresponds to computer modulo in Why
-
-   package New_Integer_Mod is
-     new Name_Gen.Arity_0 (EW_Term, "math_mod");
-   --  Return an identifier that corresponds to Enclidian modulo in Why
-
-   package New_Real_Division is
-     new Name_Gen.Arity_0 (EW_Term, "div_real");
-   --  Return an identifier that corresponds to real division in Why
-
-   package New_Integer_Abs is
-     new Name_Gen.Arity_0 (EW_Term, "abs");
-   --  Return an identifier that corresponds to integer abs in Why
-
-   package New_Real_Abs is
-     new Name_Gen.Arity_0 (EW_Term, "AbsReal.abs");
-   --  Return an identifier that corresponds to real abs in Why
-
-   package New_Result_Exc_Identifier is
-     new Name_Gen.Arity_0 (EW_Prog, "_result_exc");
-   --  Return a new identifier for the exception used for returning from a
-   --  subprogram.
-
-   package New_Result_Identifier is
-     new Name_Gen.Arity_0 (EW_Term, "result");
-   --  Return a new identifier for a function result as it
-   --  would be used into a postcondition.
 
    package New_Result_Temp_Identifier is
      new Name_Gen.Arity_1 (EW_Term, "", "result");
@@ -281,51 +222,13 @@ package Why.Gen.Names is
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
-   package Object_Type_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "_type_of_", "");
-   --  From the name of an object, return the name of its type
-
-   package Overflow_Check_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "", "overflow_check_");
-   --  From the name of an abstract type, return the name of
-   --  its overflow check.
-
    package Program_Func_Name is
      new Name_Gen.Arity_1 (EW_Prog, "", "_", "");
    --  Create a new identifier for the program version of a
    --  subprogram.
-
-   package Range_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Range_Name);
-   --  From the name of an abstract type, return the name of
-   --  its range axiom.
-
-   package Range_Pred_Name is
-     new Name_Gen.Arity_1 (EW_Pred, "", In_Range);
-   --  From the name of an abstract type, return the name of
-   --  its range predicate.
-
-   package Unicity_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Unicity);
-   --  From the name of an abstract type, return the name of
-   --  its unicity axiom.
-
-   package Bool_And is
-     new Name_Gen.Arity_0 (EW_Term, "andb");
-
-   package Bool_Or is
-     new Name_Gen.Arity_0 (EW_Term, "orb");
-
-   package Bool_Xor is
-     new Name_Gen.Arity_0 (EW_Term, "xorb");
-
    package Assume_Name is
       new Name_Gen.Arity_1 (EW_Term, "", Assume);
 
-   function Add_Int_Suffix (Name : String; I : Integer) return String is
-      (if I = 1 then Name else Name & "_" & Int_Image (I));
-
-   function New_Ada_Array_Name (Dimension : Pos) return String is
-      (Add_Int_Suffix (Ada_Array, Integer (Dimension)));
+   function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum;
 
 end Why.Gen.Names;

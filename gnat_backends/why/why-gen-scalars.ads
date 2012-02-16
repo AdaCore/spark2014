@@ -34,7 +34,6 @@ package Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Signed_Int
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
       Is_Base : Boolean);
@@ -46,7 +45,6 @@ package Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Modular
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       Modulus : Uint;
       Is_Base : Boolean);
    --  Declare the whole theory for a unsigned int of the given size,
@@ -57,7 +55,6 @@ package Why.Gen.Scalars is
 
    procedure Declare_Ada_Real
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
       Is_Base : Boolean);
@@ -69,7 +66,6 @@ package Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
-      Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;

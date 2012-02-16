@@ -43,7 +43,6 @@ package Why.Gen.Axioms is
 
    procedure Define_Coerce_Axiom
      (Theory       : W_Theory_Declaration_Id;
-      Type_Name    : W_Identifier_Id;
       Base_Type    : W_Primitive_Type_Id;
       From         : W_Identifier_Id;
       To           : W_Identifier_Id;
@@ -52,7 +51,6 @@ package Why.Gen.Axioms is
 
    procedure Define_Coerce_Axiom
      (Theory    : W_Theory_Declaration_Id;
-      Type_Name : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty);
    --  Define a coerce axiom; it asserts that conversion from the base
@@ -70,11 +68,6 @@ package Why.Gen.Axioms is
       Axiom_Name : W_Identifier_Id;
       Var_Type   : W_Primitive_Type_Id;
       Conversion : W_Identifier_Id);
-
-   procedure Define_Unicity_Axiom
-     (Theory    : W_Theory_Declaration_Id;
-      Type_Name : W_Identifier_Id;
-      Base_Type : W_Identifier_Id);
 
    procedure Define_Unicity_Axiom
      (Theory    : W_Theory_Declaration_Id;

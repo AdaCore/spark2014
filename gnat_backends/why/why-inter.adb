@@ -25,6 +25,7 @@
 with AA_Util;             use AA_Util;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
+with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
@@ -49,7 +50,8 @@ package body Why.Inter is
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Import);
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
 
    package Standard_Imports is
 
@@ -122,7 +124,7 @@ package body Why.Inter is
             when Private_Kind =>
                Set_SI (Underlying_Type (E));
 
-            when E_Class_Wide_Subtype .. E_Record_Subtype =>
+            when E_Record_Type | E_Record_Subtype =>
 
                --  We would like to use "Record_Kind" here, but there is some
                --  overlap with "Private_Kind"
@@ -139,7 +141,8 @@ package body Why.Inter is
             when Object_Kind =>
                Set_SI ((Etype (E)));
 
-            when Subprogram_Kind | Access_Kind =>
+            when Subprogram_Kind | Access_Kind | Protected_Kind | Task_Kind
+               | Class_Wide_Kind =>
                null;
 
             when others =>
@@ -158,8 +161,8 @@ package body Why.Inter is
             when SI_Integer => return "Integer";
             when SI_Float   => return "Floating";
             when SI_Boolean => return "Boolean";
-            when SI_Array1  => return "Array_Dim1";
-            when SI_Array2  => return "Array_Dim2";
+            when SI_Array1  => return "Array__1";
+            when SI_Array2  => return "Array__2";
          end case;
       end To_String;
 
@@ -182,7 +185,8 @@ package body Why.Inter is
                Add_With_Clause (T,
                                 File_Name_Without_Suffix (F.all) &
                                   Why_File_Suffix (WF_Variables),
-                                S);
+                                S,
+                                EW_Clone_Default);
             end;
          end if;
       end loop;
@@ -202,7 +206,8 @@ package body Why.Inter is
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Import) is
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module) is
       File_Ident : constant W_Identifier_Id :=
         (if File = "" then Why_Empty else New_Identifier (Name => File));
    begin
@@ -211,20 +216,21 @@ package body Why.Inter is
          New_Include_Declaration (File     => File_Ident,
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
-                                  Kind     => EW_Module));
+                                  Kind     => Th_Type));
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Import) is
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (P.Cur_Theory, File, T_Name, Use_Kind);
+      Add_With_Clause (P.Cur_Theory, File, T_Name, Use_Kind, Th_Type);
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : in out Why_File;
                               Other    : Why_File;
-                              Use_Kind : EW_Clone_Type := EW_Import) is
+                              Use_Kind : EW_Clone_Type) is
    begin
       Add_With_Clause (P, Other.Name.all, "Main", Use_Kind);
    end Add_With_Clause;
@@ -288,6 +294,9 @@ package body Why.Inter is
       --  return the base name of the unit in which the entity is
       --  defined
 
+      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
+      --  return the import type that is used for such an entity
+
       function Name_of_Node (N : Node_Id) return String;
       --  return the name which needs to be used to include the Why entity for
       --  that node
@@ -320,6 +329,18 @@ package body Why.Inter is
          return File_Name_Without_Suffix (Sloc (U));
       end File_Base_Name_Of_Entity;
 
+      ---------------------------
+      -- Import_Type_Of_Entity --
+      ---------------------------
+
+      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
+      begin
+         if Nkind (E) = N_String_Literal or else Nkind (E) = N_Aggregate then
+            return EW_Import;
+         end if;
+         return EW_Clone_Default;
+      end Import_Type_Of_Entity;
+
       ------------------
       -- Name_of_Node --
       ------------------
@@ -342,7 +363,7 @@ package body Why.Inter is
       Standard_Imports.Clear;
 
       if not No_Imports then
-         Add_With_Clause (P, Gnatprove_Standard, "Main");
+         Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
@@ -366,12 +387,14 @@ package body Why.Inter is
                     Why_File_Suffix (Dispatch_Entity (N));
                   Theory_Name : constant String :=
                     Name_of_Node (N);
+                  Import      : constant EW_Clone_Type :=
+                    Import_Type_Of_Entity (N);
                begin
                   Standard_Imports.Set_SI (N);
                   if File_Name /= P.Name.all then
-                     Add_With_Clause (P, File_Name, Theory_Name);
+                     Add_With_Clause (P, File_Name, Theory_Name, Import);
                   else
-                     Add_With_Clause (P, "", Theory_Name);
+                     Add_With_Clause (P, "", Theory_Name, Import);
                   end if;
                end;
             end if;
@@ -385,7 +408,29 @@ package body Why.Inter is
          begin
             for Index in Imports'Range loop
                if Imports (Index) then
-                  Add_With_Clause (P, Gnatprove_Standard, To_String (Index));
+                  Add_With_Clause (P,
+                                   Gnatprove_Standard,
+                                   To_String (Index),
+                                   EW_Clone_Default);
+
+                  --  Two special cases for infix symbols; these are the only
+                  --  theories (as opposed to modules) that are used, and the
+                  --  only ones to be "use import"ed
+
+                  if Index = SI_Integer then
+                     Add_With_Clause (P,
+                                      "int",
+                                      "Int",
+                                      EW_Import,
+                                      EW_Theory);
+                  elsif Index = SI_Float then
+                     Add_With_Clause (P,
+                                      "real",
+                                      "RealInfix",
+                                      EW_Import,
+                                      EW_Theory);
+
+                  end if;
                end if;
             end loop;
          end;
@@ -636,6 +681,91 @@ package body Why.Inter is
         New_Theory_Declaration (Name => New_Identifier (Name => S),
                                 Kind => Kind);
    end Open_Theory;
+
+   ---------------
+   -- To_Why_Id --
+   ---------------
+
+   function To_Why_Id (E      : Entity_Id;
+                       Domain : EW_Domain := EW_Prog;
+                       Local  : Boolean := False) return W_Identifier_Id
+   is
+      Suffix : constant String :=
+        (case Ekind (E) is
+         when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+           (if Domain = EW_Prog then "func" else "log"),
+         when Object_Kind => "obj",
+         when Type_Kind => "t",
+         when others => "");
+   begin
+
+      --  The component case is sufficiently different to treat it
+      --  independently
+
+      if Ekind (E) = E_Component then
+         declare
+            Field : constant String := Get_Name_String (Chars (E));
+            Ada_N : constant Node_Id := Scope (E);
+         begin
+            if Local then
+               return New_Identifier (Ada_Node => Ada_N,
+                                      Name     => Field);
+            else
+               return New_Identifier (Ada_Node => Ada_N,
+                                      Name     =>
+                                        Capitalize_First (Full_Name (Ada_N)) &
+                                        "." & Field);
+            end if;
+         end;
+      elsif Local then
+         return New_Identifier (Ada_Node => E, Name => Suffix);
+      elsif Suffix = "" then
+         return New_Identifier (Ada_Node => E,
+                                Name     => Full_Name (E));
+      else
+         return
+           New_Identifier (Ada_Node => E,
+                           Name     =>
+                             Capitalize_First (Full_Name (E)) & "." & Suffix);
+      end if;
+   end To_Why_Id;
+
+   function To_Why_Id (Obj : String) return W_Identifier_Id
+   is
+   begin
+      if Obj = Alfa.Name_Of_Heap_Variable then
+         return New_Identifier (Name => Alfa.Name_Of_Heap_Variable);
+      else
+         return New_Identifier (Name => Capitalize_First (Obj) & ".obj");
+      end if;
+   end To_Why_Id;
+
+   -----------------
+   -- To_Why_Type --
+   -----------------
+
+   function To_Why_Type (E      : Entity_Id;
+                         Local  : Boolean := False) return W_Identifier_Id
+   is
+   begin
+      if Local then
+         return New_Identifier (Name => "t");
+      else
+         return New_Identifier
+                 (Ada_Node => E,
+                  Name     => Capitalize_First (Full_Name (E)) & ".t");
+      end if;
+   end To_Why_Type;
+
+   function To_Why_Type (T : String) return W_Identifier_Id
+   is
+   begin
+      if T = Alfa.Name_Of_Heap_Variable then
+         return New_Identifier (Name => "__type_of_heap");
+      else
+         return New_Identifier (Name => Capitalize_First (T) & ".t");
+      end if;
+   end To_Why_Type;
 
    --------
    -- Up --

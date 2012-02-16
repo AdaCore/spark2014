@@ -89,12 +89,13 @@ package Why.Inter is
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
                               T_Name   : String;
-                              Use_Kind : EW_Clone_Type := EW_Import);
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
    --  Add a package name to the context of a Why package.
 
    procedure Add_With_Clause (P        : in out Why_File;
                               Other    : Why_File;
-                              Use_Kind : EW_Clone_Type := EW_Import);
+                              Use_Kind : EW_Clone_Type);
    --  Add a package name to the context of a Why package.
 
    procedure Add_Effect_Imports (P : in out Why_File;
@@ -107,6 +108,21 @@ package Why.Inter is
    function Dispatch_Entity (E : Entity_Id) return Why_File_Enum;
    --  Given an Ada Entity, return the appropriate Why File to insert the
    --  entity
+
+   function To_Why_Id (E      : Entity_Id;
+                       Domain : EW_Domain := EW_Prog;
+                       Local  : Boolean := False) return W_Identifier_Id;
+   --  The one and only way to transform an Ada Entity to a Why identifier.
+   --  However, sometimes the exact way differs between program and logic world
+   --  There is also a local and a global name of each identifier
+
+   function To_Why_Id (Obj : String) return W_Identifier_Id;
+   --  This function should only be called for object references for effects
+
+   function To_Why_Type (E      : Entity_Id;
+                         Local  : Boolean := False) return W_Identifier_Id;
+
+   function To_Why_Type (T : String) return W_Identifier_Id;
 
    EW_Bool_Type : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Bool);

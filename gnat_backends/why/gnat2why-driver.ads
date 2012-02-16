@@ -30,9 +30,11 @@
 --  packages that deal with type declarations, data declarations and
 --  function/procedure definitions.
 
-with Types;     use Types;
-with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
+with Types;          use Types;
+with Why.Ids;        use Why.Ids;
+with Why.Inter;      use Why.Inter;
+
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package Gnat2Why.Driver is
 
@@ -51,13 +53,24 @@ package Gnat2Why.Driver is
       Theory      : W_Theory_Declaration_Id;
       Phase       : Translation_Phase;
       Ref_Allowed : Boolean;
+      Name_Map    : Ada_Ent_To_Why.Map;
    end record;
+   --  File        - the current File_id which is populated by theories;
+   --                this is used to insert new theories on the fly, e.g. for
+   --                string literals
+   --  Theory      - the current theory, used to emit declarations
+   --  Phase       - the phase, changes some translations
+   --  Ref_Allowed - if references are allowed in the term to be generated
+   --  Name_Map    - A map from Ada entities to Why entities; this is used
+   --                for subprogram parameters in specs, which should be
+   --                translated differently from global variables
 
    function Body_Params return Translation_Params is
      (Translation_Params'(File        => Why_Files (WF_Main).File,
                           Theory      => Why_Files (WF_Main).Cur_Theory,
                           Phase       => Generate_VCs_For_Body,
-                          Ref_Allowed => True));
+                          Ref_Allowed => True,
+                          Name_Map    => Ada_Ent_To_Why.Empty_Map));
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id);
    --  Translates an entire GNAT tree for a compilation unit into

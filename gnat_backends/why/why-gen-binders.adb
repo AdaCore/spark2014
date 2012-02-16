@@ -26,7 +26,6 @@
 with Why.Conversions; use Why.Conversions;
 with Why.Gen.Names;   use Why.Gen.Names;
 with Why.Gen.Decl;    use Why.Gen.Decl;
-with Why.Gen.Terms;   use Why.Gen.Terms;
 with Why.Gen.Preds;   use Why.Gen.Preds;
 with Why.Gen.Progs;   use Why.Gen.Progs;
 with Why.Inter;          use Why.Inter;
@@ -518,7 +517,7 @@ package body Why.Gen.Binders is
                                      Name    => Spec (S).Name,
                                      Binders => Binders),
                                 Op      => EW_Eq,
-                                Right   => +New_Result_Term);
+                                Right   => +To_Ident (WNE_Result));
                         else
                            Spec (S).Post := New_Literal (Value => EW_True);
                         end if;

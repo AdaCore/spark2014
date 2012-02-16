@@ -121,16 +121,6 @@ package body Why.Gen.Terms is
       end case;
    end New_Ifb;
 
-   ---------------------
-   -- New_Result_Term --
-   ---------------------
-
-   function New_Result_Term return W_Term_Id
-   is
-   begin
-      return +New_Result_Identifier.Id;
-   end New_Result_Term;
-
    ----------------------------
    -- New_Simpl_Epsilon_Term --
    ----------------------------

@@ -139,9 +139,9 @@ package body Gnat2Why.Decls is
          else
             return True;
          end if;
-      elsif Is_Constant_Object (N) then
-         return False;
-      elsif Ekind (N) in Named_Kind then
+      elsif Ekind (N) = E_Enumeration_Literal or else
+        Is_Constant_Object (N) or else
+        Ekind (N) in Named_Kind then
          return False;
       else
          return True;
@@ -160,11 +160,11 @@ package body Gnat2Why.Decls is
       Decl : constant W_Declaration_Id :=
         (if Object_Is_In_Alfa (Unique (E)) then
             New_Type
-              (Name  => Object_Type_Name.Id (Name),
+              (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))
          else
             New_Type
-              (Name => Object_Type_Name.Id (Name),
+              (Name => To_Ident (WNE_Type),
                Args => 0));
       Typ  : constant W_Primitive_Type_Id :=
                New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
@@ -184,10 +184,10 @@ package body Gnat2Why.Decls is
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration
-           (Name     => New_Identifier (Name => Name),
+           (Name     => To_Why_Id (E, Local => True),
             Ref_Type => Typ));
 
-      Close_Theory (File);
+      Close_Theory (File, Filter_Entity => E);
    end Translate_Variable;
 
    ------------------------
@@ -228,7 +228,7 @@ package body Gnat2Why.Decls is
 
       Emit_Top_Level_Declarations
         (Theory      => File.Cur_Theory,
-         Name        => New_Identifier (Name => Name),
+         Name        => To_Why_Id (E, Local => True),
          Binders     => (1 .. 0 => <>),
          Return_Type => Typ,
          Spec        =>
@@ -240,7 +240,7 @@ package body Gnat2Why.Decls is
                             (File, Def, Type_Of_Node (E))
                           else Why_Empty),
                others => <>)));
-      Close_Theory (File);
+      Close_Theory (File, Filter_Entity => E);
    end Translate_Constant;
 
 end Gnat2Why.Decls;

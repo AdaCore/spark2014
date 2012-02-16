@@ -32,6 +32,7 @@ with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
@@ -39,6 +40,7 @@ with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
 with Why;                   use Why;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Gen.Binders;       use Why.Gen.Binders;
@@ -46,7 +48,6 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;             use Why.Types;
@@ -54,6 +55,7 @@ with Why.Types;             use Why.Types;
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
@@ -105,8 +107,11 @@ package body Gnat2Why.Subprograms is
    function Compute_Args
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array;
-   --  Compute arguments corresponding to logical parameters Binders for
-   --  subprogram E.
+   --  Given a function entity, and an array of logical binders,
+   --  compute a call of the logical Why function corresponding to E.
+   --  In general, the binder array has *more* arguments than the Ada entity,
+   --  because of effects. Note that these effect variables are not bound here,
+   --  they refer to the global variables
 
    function Compute_Binders (E : Entity_Id) return Binder_Array;
    --  Return Why binders for the parameters of subprogram E. The array is
@@ -177,7 +182,10 @@ package body Gnat2Why.Subprograms is
 
       while Cnt <= Binders'Last loop
          Result (Cnt) :=
-           New_Deref (Right => Binders (Cnt).B_Name);
+           New_Deref
+             (Right =>
+                  To_Why_Id (Get_Name_String
+                     (Get_Symbol (Binders (Cnt).B_Name))));
          Cnt := Cnt + 1;
       end loop;
 
@@ -222,7 +230,7 @@ package body Gnat2Why.Subprograms is
          Raise_Stmt : constant W_Prog_Id :=
                         New_Raise
                           (Ada_Node => Node,
-                           Name     => New_Result_Exc_Identifier.Id);
+                           Name     => To_Ident (WNE_Result_Exc));
          Result_Var : constant W_Prog_Id :=
                         (if Ekind (E) = E_Function then
                          New_Deref
@@ -236,7 +244,7 @@ package body Gnat2Why.Subprograms is
               Handler =>
                 (1 =>
                    New_Handler
-                     (Name => New_Result_Exc_Identifier.Id,
+                     (Name => To_Ident (WNE_Result_Exc),
                       Def  => Sequence (Post_Check, Result_Var))));
       end;
 
@@ -284,7 +292,7 @@ package body Gnat2Why.Subprograms is
       for Name of Write_Names loop
          Effects_Append_To_Writes
            (Eff,
-            New_Identifier (Name => Name.all));
+            To_Why_Id (Obj => Name.all));
       end loop;
 
       --  Add all OUT and IN OUT parameters as potential writes
@@ -310,7 +318,7 @@ package body Gnat2Why.Subprograms is
       end;
 
       for Name of Read_Names loop
-         Effects_Append_To_Reads (Eff, New_Identifier (Name => Name.all));
+         Effects_Append_To_Reads (Eff, To_Why_Id (Obj => Name.all));
       end loop;
 
       Add_Effect_Imports (File, Read_Names);
@@ -359,7 +367,7 @@ package body Gnat2Why.Subprograms is
                  (Ada_Node => Empty,
                   B_Name   => New_Identifier (Name => R.all),
                   B_Type   =>
-                    New_Abstract_Type (Name => Object_Type_Name.Id (R.all)),
+                    New_Abstract_Type (Name => To_Why_Type (R.all)),
                   Modifier => None);
                Count := Count + 1;
             end loop;
@@ -386,7 +394,8 @@ package body Gnat2Why.Subprograms is
       while Present (Param) loop
          declare
             Id   : constant Node_Id := Defining_Identifier (Param);
-            Name : constant W_Identifier_Id := Transform_Ident (Id);
+            Name : constant W_Identifier_Id :=
+              New_Identifier (Ada_Node => Id, Name => Full_Name (Id));
          begin
             Result (Count) :=
               (Ada_Node => Param,
@@ -471,7 +480,8 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Post,
-                 Ref_Allowed => True);
+                 Ref_Allowed => True,
+                 Name_Map    => Ada_Ent_To_Why.Empty_Map);
       Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
 
       --  Set the phase to Generate_VCs_For_Body from now on, so that
@@ -480,7 +490,8 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
-                 Ref_Allowed => True);
+                 Ref_Allowed => True,
+                 Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
       --  Translate contract of E
 
@@ -535,7 +546,8 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
       Emit
         (File.Cur_Theory,
@@ -599,11 +611,12 @@ package body Gnat2Why.Subprograms is
      (File   : in out Why_File;
       E      : Entity_Id)
    is
-      Name       : constant String := Full_Name (E);
       Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
       pragma Assert (Present (Expr_Fun_N));
       Logic_Func_Binders : constant Binder_Array :=
-                             Compute_Logic_Binders (E);
+        Compute_Logic_Binders (E);
+      Logic_Id           : constant W_Identifier_Id :=
+        To_Why_Id (E, Domain => EW_Term, Local => True);
 
       Params : Translation_Params;
    begin
@@ -611,7 +624,31 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Translation,
-         Ref_Allowed => False);
+         Ref_Allowed => False,
+         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+
+      for Binder of Logic_Func_Binders loop
+         declare
+            A : constant Node_Id := Get_Ada_Node (+Binder.B_Name);
+         begin
+            if Present (A) then
+               Ada_Ent_To_Why.Insert (Params.Name_Map,
+                                      Unique_Entity (A),
+                                      +Binder.B_Name);
+            else
+
+               --  if there is no Ada_Node, this in a binder generated from
+               --  an effect; we add the parameter in the name map using its
+               --  unique name
+
+               Ada_Ent_To_Why.Insert
+                 (Params.Name_Map,
+                  Get_Name_String (Get_Symbol (Binder.B_Name)),
+                  +Binder.B_Name);
+
+            end if;
+         end;
+      end loop;
 
       --  Given an expression function F with expression E, define an axiom
       --  that states that: "for all <args> => F(<args>) = E".
@@ -622,7 +659,7 @@ package body Gnat2Why.Subprograms is
          Emit
            (File.Cur_Theory,
             New_Defining_Bool_Axiom
-              (Name    => Logic_Func_Name.Id (Name),
+              (Name    => Logic_Id,
                Binders => Logic_Func_Binders,
                Def     => +Transform_Expr (Expression (Expr_Fun_N),
                                            EW_Pred,
@@ -632,7 +669,7 @@ package body Gnat2Why.Subprograms is
          Emit
            (File.Cur_Theory,
             New_Defining_Axiom
-              (Name        => Logic_Func_Name.Id (Name),
+              (Name        => Logic_Id,
                Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
                Binders     => Logic_Func_Binders,
                Def         =>
@@ -662,6 +699,8 @@ package body Gnat2Why.Subprograms is
       Params       : Translation_Params;
       Pre          : W_Pred_Id;
       Post         : W_Pred_Id;
+      Prog_Id      : constant W_Identifier_Id :=
+        To_Why_Id (E, Domain => EW_Prog, Local => True);
    begin
       Open_Theory (File, Name);
 
@@ -669,7 +708,27 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Translation,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+
+      --  We fill the map of parameters, so that in the pre and post, we use
+      --  local names of the parameters, instead of the global names
+
+      for Binder of Func_Binders loop
+         declare
+            A : constant Node_Id := Get_Ada_Node (+Binder.B_Name);
+         begin
+
+            --  If the Ada_Node is empty, it's not an interesting binder (e.g.
+            --  void_param)
+
+            if Present (A) then
+               Ada_Ent_To_Why.Insert (Params.Name_Map,
+                                      Unique_Entity (A),
+                                      +Binder.B_Name);
+            end if;
+         end;
+      end loop;
 
       Effects := Compute_Effects (File, E);
 
@@ -678,8 +737,10 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          declare
-            Logic_Func_Args    : constant W_Expr_Array :=
-                                   Compute_Args (E, Logic_Func_Binders);
+            Logic_Func_Args : constant W_Expr_Array :=
+              Compute_Args (E, Logic_Func_Binders);
+            Logic_Id        : constant W_Identifier_Id :=
+              To_Why_Id (E, Domain => EW_Term, Local => True);
 
             --  Each function has in its postcondition that its result is equal
             --  to the application of the corresponding logic function to the
@@ -692,12 +753,11 @@ package body Gnat2Why.Subprograms is
                                     Op_Type =>
                                       Get_EW_Type (+Why_Logic_Type_Of_Ada_Type
                                       (Etype (E))),
-                                    Left    => +New_Result_Term,
+                                    Left    => +To_Ident (WNE_Result),
                                     Right   =>
                                     New_Call
                                       (Domain  => EW_Term,
-                                       Name    =>
-                                         Logic_Func_Name.Id (Name),
+                                       Name    => Logic_Id,
                                        Args    => Logic_Func_Args),
                                     Domain => EW_Pred),
                                Right  => +Post,
@@ -710,7 +770,7 @@ package body Gnat2Why.Subprograms is
               (File.Cur_Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => Logic_Func_Name.Id (Name),
+                  Name        => Logic_Id,
                   Binders     => Logic_Func_Binders,
                   Return_Type =>
                      +Why_Logic_Type_Of_Ada_Type
@@ -720,7 +780,7 @@ package body Gnat2Why.Subprograms is
               (File.Cur_Theory,
                New_Function_Decl
                  (Domain      => EW_Prog,
-                  Name        => Program_Func_Name.Id (Name),
+                  Name        => Prog_Id,
                   Binders     => Func_Binders,
                   Return_Type => +Why_Logic_Type_Of_Ada_Type (Etype (E)),
                   Effects     => Effects,
@@ -732,7 +792,7 @@ package body Gnat2Why.Subprograms is
            (File.Cur_Theory,
             New_Function_Decl
               (Domain      => EW_Prog,
-               Name        => Program_Func_Name.Id (Name),
+               Name        => Prog_Id,
                Binders     => Func_Binders,
                Return_Type => New_Base_Type (Base_Type => EW_Unit),
                Effects     => Effects,
@@ -742,7 +802,7 @@ package body Gnat2Why.Subprograms is
       if Is_Expr_Fun then
          Translate_Expression_Function_Body (File, E);
       end if;
-      Close_Theory (File);
+      Close_Theory (File, Filter_Entity => E);
    end Translate_Subprogram_Spec;
 
 end Gnat2Why.Subprograms;

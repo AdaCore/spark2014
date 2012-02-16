@@ -22,59 +22,91 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Atree;  use Atree;
-with Einfo;  use Einfo;
-with Lib;    use Lib;
-with Sinput; use Sinput;
-with Stand;  use Stand;
+with Atree;              use Atree;
+with Lib;                use Lib;
+with Sinput;             use Sinput;
+with Stand;              use Stand;
+with String_Utils;       use String_Utils;
 
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Conversions;     use Why.Conversions;
-with Why.Inter;           use Why.Inter;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Conversions;    use Why.Conversions;
+with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Names is
 
-   function Bool_Cmp_String
-     (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id) return String;
-   --  Return the name of a boolean integer comparison operator
+   function Uint_To_Positive (U : Uint) return Positive;
+   --  Limited version of conversion that only works for 1 and 2
 
-   ---------------------
-   -- Bool_Cmp_String --
-   ---------------------
+   --------------------
+   -- Ada_Array_Name --
+   --------------------
 
-   function Bool_Cmp_String
-     (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id) return String
+   function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum
    is
-      Kind : constant EW_Type := Get_Base_Type (Arg_Types);
-      Name : constant String :=
-               (if Kind = EW_Abstract then
-                  Full_Name (Get_Ada_Node (+Arg_Types))
-                else
-                  EW_Base_Type_Name (Kind));
    begin
-      pragma Assert
-        (Kind /= EW_Abstract or else Rel = EW_Eq or else Rel = EW_Ne);
-
-      case Rel is
-         when EW_None =>
-            pragma Assert (False);
-            return "always_true_" & Name & "_bool";
-         when EW_Eq =>
-            return "bool_" & Name & "__eq";
-         when EW_Ne =>
-            return "bool_" & Name & "__ne";
-         when EW_Lt =>
-            return "bool_" & Name & "__lt";
-         when EW_Le =>
-            return "bool_" & Name & "__le";
-         when EW_Gt =>
-            return "bool_" & Name & "__gt";
-         when EW_Ge =>
-            return "bool_" & Name & "__ge";
+      case Dimension is
+         when 1 => return WNE_Array_1;
+         when 2 => return WNE_Array_2;
+         when others => raise Program_Error;
       end case;
-   end Bool_Cmp_String;
+   end Ada_Array_Name;
+
+   ----------------------
+   -- Append_Num --
+   ----------------------
+
+   function Append_Num (W : Why_Name_Enum; Count : Positive)
+                        return W_Identifier_Id
+   is
+      S : constant String := To_String (W);
+   begin
+      return New_Identifier (Name => S & "_" & Int_Image (Count));
+   end Append_Num;
+
+   function Append_Num (W : Why_Name_Enum; Count : Uint)
+                        return W_Identifier_Id
+   is
+   begin
+      return Append_Num (W, Uint_To_Positive (Count));
+   end Append_Num;
+
+   ----------------------
+   -- Attr_To_Why_Name --
+   ----------------------
+
+   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum
+   is
+   begin
+      case A is
+         when Attribute_First   => return WNE_Attr_First;
+         when Attribute_Last    => return WNE_Attr_Last;
+         when Attribute_Modulus => return WNE_Attr_Modulus;
+         when Attribute_Length  => return WNE_Attr_Length;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Attr_To_Why_Name;
+
+   function Attr_To_Why_Name (A     : Attribute_Id;
+                              Dim   : Pos;
+                              Count : Positive) return W_Identifier_Id
+   is
+      Attr_Name : constant String :=
+        (if Count = 1 then To_String (Attr_To_Why_Name (A))
+         else To_String (Attr_To_Why_Name (A)) & "_" & Int_Image (Count));
+   begin
+      return
+        New_Identifier (Name =>
+                          To_String (Ada_Array_Name (Dim)) & "." & Attr_Name);
+   end Attr_To_Why_Name;
+
+   function Attr_To_Why_Name (A     : Attribute_Id;
+                              Dim   : Pos;
+                              Count : Uint) return W_Identifier_Id is
+      C : constant Positive := Uint_To_Positive (Count);
+   begin
+      return Attr_To_Why_Name (A, Dim, C);
+   end Attr_To_Why_Name;
 
    ---------------------
    -- Conversion_Name --
@@ -101,11 +133,15 @@ package body Why.Gen.Names is
                   --  Only certain conversions are OK
 
                   if From_Kind = EW_Int and then To_Kind = EW_Real then
-                     return Real_Of_Int.Id;
+                     return To_Ident (WNE_Real_Of_Int);
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
-                     return Int_Of_Bool.Id (Ada_Node => Standard_Boolean);
+                     return Prefix (Ada_Node => Standard_Boolean,
+                                    S        => "Boolean",
+                                    W        => WNE_To_Int);
                   elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
-                     return Bool_Of_Int.Id (Ada_Node => Standard_Boolean);
+                     return Prefix (Ada_Node => Standard_Boolean,
+                                    S        => "Boolean",
+                                    W        => WNE_Of_Int);
 
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
@@ -121,10 +157,9 @@ package body Why.Gen.Names is
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
                      return
-                       Conversion_From.Id (Ada_Node => A,
-                                           L_Name   => Full_Name (A),
-                                           R_Name   =>
-                                             Why_Scalar_Type_Name (From_Kind));
+                       Prefix (Ada_Node => A,
+                               S        => Full_Name (A),
+                               W        => Convert_From (From_Kind));
                   end;
             end case;
 
@@ -134,12 +169,7 @@ package body Why.Gen.Names is
                A : constant Node_Id := Get_Ada_Node (+To);
             begin
                return
-                 Conversion_From.Id
-                   (Ada_Node => A,
-                    L_Name   => Full_Name (A),
-                    R_Name   =>
-                      New_Ada_Array_Name
-                        (Number_Dimensions (Underlying_Type (A))));
+                 Prefix (Ada_Node => A, S => Full_Name (A), W => WNE_Of_Array);
             end;
 
          when EW_Abstract =>
@@ -152,22 +182,18 @@ package body Why.Gen.Names is
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
                      return
-                       Conversion_To.Id (Ada_Node => A,
-                                         L_Name   => Full_Name (A),
-                                         R_Name   =>
-                                           Why_Scalar_Type_Name (To_Kind));
+                       Prefix (Ada_Node => A,
+                               S => Full_Name (A),
+                               W => Convert_To (To_Kind));
                   end;
                when EW_Array =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
                      return
-                       Conversion_To.Id
-                         (Ada_Node => A,
-                          L_Name   => Full_Name (A),
-                          R_Name   =>
-                            New_Ada_Array_Name
-                              (Number_Dimensions (Underlying_Type (A))));
+                       Prefix (Ada_Node => A,
+                               S        => Full_Name (A),
+                               W        => WNE_To_Array);
                   end;
 
                when EW_Abstract =>
@@ -176,6 +202,36 @@ package body Why.Gen.Names is
             end case;
       end case;
    end Conversion_Name;
+
+   ------------------
+   -- Convert_From --
+   ------------------
+
+   function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
+   is
+   begin
+      case Kind is
+         when EW_Int => return WNE_Of_Int;
+         when EW_Real => return WNE_Of_Real;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Convert_From;
+
+   ----------------
+   -- Convert_To --
+   ----------------
+
+   function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
+   is
+   begin
+      case Kind is
+         when EW_Int => return WNE_To_Int;
+         when EW_Real => return WNE_To_Real;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Convert_To;
 
    -----------------------
    -- EW_Base_Type_Name --
@@ -205,9 +261,9 @@ package body Why.Gen.Names is
    begin
       case Kind is
          when EW_Real =>
-            return New_Real_Abs.Id;
+            return To_Ident (WNE_Real_Abs);
          when EW_Int =>
-            return New_Integer_Abs.Id;
+            return To_Ident (WNE_Integer_Abs);
       end case;
    end New_Abs;
 
@@ -223,10 +279,27 @@ package body Why.Gen.Names is
       A    : constant Node_Id :=
         (if Kind = EW_Abstract then Get_Ada_Node (+Arg_Types)
          else Empty);
+      R : constant Why_Name_Enum :=
+        (case Rel is
+         when EW_Eq   => WNE_Bool_Eq,
+         when EW_Ne   => WNE_Bool_Ne,
+         when EW_Le   => WNE_Bool_Le,
+         when EW_Lt   => WNE_Bool_Lt,
+         when EW_Gt   => WNE_Bool_Gt,
+         when EW_Ge   => WNE_Bool_Ge,
+         when EW_None => WNE_Bool_Eq
+        );
+      S : constant String :=
+        (case Kind is
+         when EW_Int  => "Integer",
+         when EW_Real => "Floating",
+         when EW_Bool => "Boolean",
+         when EW_Unit .. EW_Prop | EW_Array => "Main",
+         when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
    begin
-      return New_Identifier (Ada_Node => A,
-                             Domain   => EW_Pred,
-                             Name     => Bool_Cmp_String (Rel, Arg_Types));
+      return Prefix (Ada_Node => A,
+                     S        => S,
+                     W        => R);
    end New_Bool_Cmp;
 
    ------------------
@@ -237,9 +310,9 @@ package body Why.Gen.Names is
    begin
       case Kind is
          when EW_Real =>
-            return New_Real_Division.Id;
+            return To_Ident (WNE_Real_Div);
          when EW_Int =>
-            return New_Integer_Division.Id;
+            return To_Ident (WNE_Integer_Div);
       end case;
    end New_Division;
 
@@ -275,16 +348,6 @@ package body Why.Gen.Names is
       return Name_Find;
    end NID;
 
-   --------------
-   -- New_Prog --
-   --------------
-
-   function New_Prog (Name : String) return W_Prog_Id is
-   begin
-      return +New_Identifier (Domain => EW_Prog,
-                              Name   => Name);
-   end New_Prog;
-
    -------------------------
    -- New_Temp_Identifier --
    -------------------------
@@ -316,14 +379,98 @@ package body Why.Gen.Names is
       return New_Identifier (Name => New_Temp_Identifier (N));
    end New_Temp_Identifier;
 
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (W : Why_Name_Enum) return String
+   is
+   begin
+      case W is
+         when WNE_Range_Pred   => return "in_range";
+         when WNE_To_Int       => return "to_int";
+         when WNE_Of_Int       => return "of_int";
+         when WNE_To_Real      => return "to_real";
+         when WNE_Of_Real      => return "of_real";
+         when WNE_To_Array     => return "to_array";
+         when WNE_Of_Array     => return "of_array";
+         when WNE_Type         => return "t";
+         when WNE_Ignore       => return "___ignore";
+         when WNE_Result       => return "result";
+         when WNE_Result_Exc   => return "_result_exc";
+         when WNE_Overflow     => return "overflow_check_";
+         when WNE_Eq           => return "eq";
+         when WNE_Range_Axiom  => return "range_axiom";
+         when WNE_Unicity      => return "unicity_axiom";
+         when WNE_Coerce       => return "coerce_axiom";
+         when WNE_Bool_And     => return "andb";
+         when WNE_Bool_Or      => return "orb";
+         when WNE_Bool_Xor     => return "xorb";
+         when WNE_Integer_Div  => return "Integer.computer_div";
+         when WNE_Integer_Rem  => return "Integer.computer_mod";
+         when WNE_Integer_Mod  => return "Integer.math_mod";
+         when WNE_Real_Div     => return "Floating.div_real";
+         when WNE_Integer_Abs  => return "Integer.abs";
+         when WNE_Real_Abs     => return "Floating.AbsReal.abs";
+         when WNE_Real_Of_Int  => return "Floating.real_of_int";
+         when WNE_Array_1      => return "Array__1";
+         when WNE_Array_2      => return "Array__2";
+         when WNE_First_Static => return "first_static";
+         when WNE_Last_Static  => return "last_static";
+         when WNE_Array_Access => return "access";
+         when WNE_Array_Update => return "update";
+         when WNE_Bool_Eq      => return "bool_eq";
+         when WNE_Bool_Ne      => return "bool_ne";
+         when WNE_Bool_Lt      => return "bool_lt";
+         when WNE_Bool_Le      => return "bool_le";
+         when WNE_Bool_Gt      => return "bool_gt";
+         when WNE_Bool_Ge      => return "bool_ge";
+         when WNE_Attr_First   =>
+            return "attr__" & Attribute_Id'Image (Attribute_First);
+         when WNE_Attr_Last    =>
+            return "attr__" & Attribute_Id'Image (Attribute_Last);
+         when WNE_Attr_Length  =>
+            return "attr__" & Attribute_Id'Image (Attribute_Length);
+         when WNE_Attr_Modulus =>
+            return "attr__" & Attribute_Id'Image (Attribute_Modulus);
+
+      end case;
+   end To_String;
+
    --------------
-   -- New_Term --
+   -- To_Ident --
    --------------
 
-   function New_Term (Name : String) return W_Term_Id is
+   function To_Ident (W        : Why_Name_Enum;
+                      Ada_Node : Node_Id := Empty) return W_Identifier_Id
+   is
    begin
-      return +New_Identifier (Name => Name);
-   end New_Term;
+      return New_Identifier (Ada_Node => Ada_Node, Name => To_String (W));
+   end To_Ident;
+
+   ------------
+   -- Prefix --
+   ------------
+
+   function Prefix (S        : String;
+                    W        : Why_Name_Enum;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier
+        (Name     => Capitalize_First (S) & "." & To_String (W),
+         Ada_Node => Ada_Node);
+   end Prefix;
+
+   function Prefix (P        : String;
+                    N        : String;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier
+        (Name     => Capitalize_First (P) & "." & N,
+         Ada_Node => Ada_Node);
+   end Prefix;
 
    ----------------------
    -- To_Program_Space --
@@ -336,6 +483,22 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Get_Ada_Node (+Name), EW_Prog, Img & Suffix);
    end To_Program_Space;
+
+   ----------------------
+   -- Uint_To_Positive --
+   ----------------------
+
+   function Uint_To_Positive (U : Uint) return Positive
+   is
+   begin
+      if U = Uint_1 then
+         return 1;
+      elsif U = Uint_2 then
+         return 2;
+      else
+         raise Program_Error;
+      end if;
+   end Uint_To_Positive;
 
    --------------------------
    -- Why_Scalar_Type_Name --

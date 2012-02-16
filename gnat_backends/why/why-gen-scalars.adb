@@ -28,10 +28,8 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Types;          use Why.Types;
@@ -40,12 +38,17 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
      (Theory    : W_Theory_Declaration_Id;
-      Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
       Is_Base   : Boolean := False);
    --  Given a type name, assuming that it ranges between First and Last,
    --  define conversions from this type to base type.
+
+   procedure New_Boolean_Equality_Parameter
+      (Theory        : W_Theory_Declaration_Id);
+      --  Create a parameter of the form
+      --     parameter <eq_param_name> : (m : type) -> (n : type) ->
+      --        {} bool { if result then m = n else m <> n }
 
    ----------------------------------
    -- Declare_Ada_Abstract_Modular --
@@ -53,22 +56,19 @@ package body Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Modular
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       Modulus : Uint;
       Is_Base : Boolean)
    is
    begin
-      Emit (Theory, New_Type (Name));
+      Emit (Theory, New_Type (To_String (WNE_Type)));
       Define_Scalar_Attributes
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Int,
          First     => New_Constant (Uint_0),
          Last      => New_Constant (Modulus - 1),
          Modulus   => New_Constant (Modulus));
       Define_Scalar_Conversions
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Int,
          Modulus   => New_Constant (Modulus),
          Is_Base   => Is_Base);
@@ -80,23 +80,20 @@ package body Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Signed_Int
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
-      Emit (Theory, New_Type (Name));
+      Emit (Theory, New_Type (To_String (WNE_Type)));
       Define_Scalar_Attributes
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Int,
          First     => +First,
          Last      => +Last,
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Int,
          Is_Base   => Is_Base);
    end Declare_Ada_Abstract_Signed_Int;
@@ -107,22 +104,19 @@ package body Why.Gen.Scalars is
 
    procedure Declare_Ada_Real
      (Theory  : W_Theory_Declaration_Id;
-      Name    : String;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
       Is_Base : Boolean) is
    begin
-      Emit (Theory, New_Type (Name));
+      Emit (Theory, New_Type (To_String (WNE_Type)));
       Define_Scalar_Attributes
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Real,
          First     => +First,
          Last      => +Last,
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (Theory    => Theory,
-         Name      => Name,
          Base_Type => EW_Real,
          Is_Base   => Is_Base);
    end Declare_Ada_Real;
@@ -133,56 +127,48 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
      (Theory    : W_Theory_Declaration_Id;
-      Name      : String;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
       Is_Base   : Boolean := False)
    is
-      Arg_S   : constant String := "n";
-      Arg_T   : constant W_Term_Id := New_Term (Arg_S);
-      BT      : constant W_Primitive_Type_Id :=
-                  New_Base_Type (Base_Type => Base_Type);
-      BT_Name : constant String := EW_Base_Type_Name (Base_Type);
+      Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
+      BT       : constant W_Primitive_Type_Id :=
+        New_Base_Type (Base_Type => Base_Type);
+      Ty_Ident : constant W_Identifier_Id := To_Ident (WNE_Type);
+      To_Id    : constant W_Identifier_Id := To_Ident (Convert_To (Base_Type));
    begin
-      Define_Range_Predicate (Theory, Name, Base_Type);
+      Define_Range_Predicate (Theory, Base_Type);
 
       --  to base type:
       Emit
         (Theory,
          New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Conversion_To.Id (Name, BT_Name),
+            Name        => To_Id,
             Binders        =>
-              New_Binders
-                ((1 => New_Abstract_Type
-                         (Name => New_Identifier (Name => Name)))),
+              New_Binders ((1 => New_Abstract_Type (Name => Ty_Ident))),
             Return_Type => BT));
 
       --  from base type:
       declare
          Return_Type  : constant W_Primitive_Type_Id :=
-           New_Abstract_Type (Name =>
-                                New_Identifier (Domain => EW_Term,
-                                                Name   => Name));
+           New_Abstract_Type (Name => Ty_Ident);
          --  precondition: { <name>___in_range (n) }
          Range_Check  : constant W_Pred_OId :=
                           New_Call
-                            (Name   => Range_Pred_Name.Id (Name),
-                             Args   => (1 => +Arg_T));
+                            (Name   => To_Ident (WNE_Range_Pred),
+                             Args   => (1 => +Arg_S));
          --  postcondition: { <name>___of_<base_type> (result) = n }
          Base_Result  : constant W_Term_Id :=
                           New_Call
-                            (Name   =>
-                               Conversion_To.Id (Name,
-                                                 BT_Name),
-                             Args   =>
-                               (1 => +New_Result_Term));
+                            (Name   => To_Id,
+                             Args   => (1 => +To_Ident (WNE_Result)));
          Post         : constant W_Pred_Id :=
                           New_Relation
                             (Op_Type => Base_Type,
                              Left    => +Base_Result,
                              Op      => EW_Eq,
-                             Right   => +Arg_T);
+                             Right   => +Arg_S);
          Spec         : constant Declaration_Spec_Array :=
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
@@ -196,9 +182,9 @@ package body Why.Gen.Scalars is
       begin
          Emit_Top_Level_Declarations
            (Theory => Theory,
-            Name => Conversion_From.Id (Name, BT_Name),
+            Name => To_Ident (Convert_From (Base_Type)),
             Binders =>
-              (1 => (B_Name => New_Identifier (Name => Arg_S),
+              (1 => (B_Name => Arg_S,
                      B_Type => BT,
                      others => <>)),
             Return_Type => Return_Type,
@@ -215,16 +201,15 @@ package body Why.Gen.Scalars is
                                        New_Relation
                                          (Op_Type => Base_Type,
                                           Op      => EW_Eq,
-                                          Left    => +New_Result_Term,
-                                          Right   => +New_Term (Arg_S));
+                                          Left    => +To_Ident (WNE_Result),
+                                          Right   => +Arg_S);
             begin
                Emit
                  (Theory,
                   New_Function_Decl
                     (Domain      => EW_Prog,
-                     Name        => Overflow_Check_Name.Id (Name),
-                     Binders     => (1 => (B_Name =>
-                                             New_Identifier (Name => Arg_S),
+                     Name        => To_Ident (WNE_Overflow),
+                     Binders     => (1 => (B_Name => Arg_S,
                                            B_Type => BT,
                                            others => <>)),
                      Return_Type => BT,
@@ -233,19 +218,18 @@ package body Why.Gen.Scalars is
             end;
          end if;
 
-         Define_Eq_Predicate (Theory, Name, Base_Type);
+         Define_Eq_Predicate (Theory, Base_Type);
          Define_Range_Axiom (Theory,
-                             New_Identifier (Name => Name),
-                             Conversion_To.Id (Name, BT_Name));
+                             Ty_Ident,
+                             To_Ident (Convert_To (Base_Type)));
          Define_Coerce_Axiom (Theory,
-                              New_Identifier (Name => Name),
                               Base_Type,
                               Modulus);
          Define_Unicity_Axiom (Theory,
-                               New_Identifier (Name => Name),
+                               Ty_Ident,
                                Base_Type);
       end;
-      New_Boolean_Equality_Parameter (Theory, Name);
+      New_Boolean_Equality_Parameter (Theory);
    end Define_Scalar_Conversions;
 
    ------------------------------
@@ -254,7 +238,6 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
-      Name       : String;
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;
@@ -289,14 +272,70 @@ package body Why.Gen.Scalars is
             Emit_Top_Level_Declarations
               (Theory      => Theory,
                Name        =>
-                 Attr_Name.Id
-                   (Name,
-                    Attribute_Id'Image (Attr_Values (J).Attr_Id)),
+                 To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
                Binders     => (1 .. 0 => <>),
                Return_Type => New_Base_Type (Base_Type => Base_Type),
                Spec        => (1 => Spec));
          end;
       end loop;
    end Define_Scalar_Attributes;
+
+   ------------------------------------
+   -- New_Boolean_Equality_Parameter --
+   ------------------------------------
+
+   procedure New_Boolean_Equality_Parameter
+      (Theory        : W_Theory_Declaration_Id)
+   is
+      Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
+      Arg_T    : constant W_Identifier_Id := New_Identifier (Name => "m");
+      True_Term : constant W_Term_Id :=
+                  New_Literal (Value => EW_True);
+      Cond     : constant W_Pred_Id :=
+                  New_Relation
+                     (Left    => +To_Ident (WNE_Result),
+                      Op_Type => EW_Bool,
+                      Right   => +True_Term,
+                      Op      => EW_Eq);
+      Then_Rel : constant W_Pred_Id :=
+                 New_Relation
+                   (Op      => EW_Eq,
+                    Op_Type => EW_Bool,
+                    Left    => +Arg_S,
+                    Right   => +Arg_T);
+      Else_Rel : constant W_Pred_Id :=
+                 New_Relation
+                   (Op      => EW_Ne,
+                    Op_Type => EW_Bool,
+                    Left    => +Arg_S,
+                    Right   => +Arg_T);
+      Post    : constant W_Pred_Id :=
+                  New_Conditional
+                    (Condition => +Cond,
+                     Then_Part => +Then_Rel,
+                     Else_Part => +Else_Rel);
+      Pre     : constant W_Pred_Id :=
+                  New_Literal (Value => EW_True);
+      Arg_Type : constant W_Primitive_Type_Id :=
+        New_Abstract_Type (Name => To_Ident (WNE_Type));
+   begin
+      Emit
+        (Theory,
+         New_Function_Decl
+           (Domain      => EW_Prog,
+            Name        => To_Program_Space (To_Ident (WNE_Bool_Eq)),
+            Binders     =>
+              (1 =>
+                 (B_Name => Arg_S,
+                  B_Type => Arg_Type,
+                  others => <>),
+               2 =>
+                 (B_Name => Arg_T,
+                  B_Type => Arg_Type,
+                  others => <>)),
+            Return_Type => New_Base_Type (Base_Type => EW_Bool),
+            Pre         => Pre,
+            Post        => Post));
+   end New_Boolean_Equality_Parameter;
 
 end Why.Gen.Scalars;

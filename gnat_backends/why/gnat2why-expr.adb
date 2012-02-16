@@ -58,6 +58,7 @@ with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
@@ -67,14 +68,8 @@ package body Gnat2Why.Expr is
    -- Local Variables --
    ---------------------
 
-   function Node_Hash (X : Node_Id) return Hash_Type is (Hash_Type (X));
    function Str_Hash (X : String_Id) return Hash_Type is (Hash_Type (X));
 
-   package Ada_To_Why is new Hashed_Maps (Key_Type        => Node_Id,
-                                          Element_Type    => Why_Node_Id,
-                                          Hash            => Node_Hash,
-                                          Equivalent_Keys => "=",
-                                          "="             => "=");
    package Strlit_To_Why is new Hashed_Maps (Key_Type        => String_Id,
                                              Element_Type    => Why_Node_Id,
                                              Hash            => Str_Hash,
@@ -196,6 +191,14 @@ package body Gnat2Why.Expr is
    --  For an expression Expr of a type EW_Int and a discrete Choice, build
    --  the expression that Expr belongs to the range expressed by Choice.
 
+   function Transform_Identifier (Params       : Translation_Params;
+                                  Expr         : Node_Id;
+                                  Domain       : EW_Domain;
+                                  Current_Type : out W_Base_Type_Id)
+                                  return W_Expr_Id;
+   --  Transform an Ada identifier to a Why item (take care of enumeration
+   --  literals, boolean values etc)
+
    function Transform_Quantified_Expression
      (Expr         : Node_Id;
       Domain       : EW_Domain;
@@ -283,7 +286,7 @@ package body Gnat2Why.Expr is
    begin
       if Is_Modular_Integer_Type (E) then
          return
-            New_Call (Name => New_Integer_Mod.Id,
+            New_Call (Name => To_Ident (WNE_Integer_Mod),
                       Domain => Domain,
                       Args =>
                        (1 => T,
@@ -325,8 +328,7 @@ package body Gnat2Why.Expr is
                                           EW_Prog,
                                           Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
-            L_Id     : constant W_Identifier_Id :=
-              New_Identifier (N, L_Name);
+            L_Id     : constant W_Identifier_Id := To_Why_Id (Lvalue);
          begin
             if Is_Mutable (Lvalue) then
                return New_Assignment
@@ -628,7 +630,9 @@ package body Gnat2Why.Expr is
                   --  is needed, it can be translated "as is".
 
                   if not Needs_Temporary_Ref (Actual, Formal) then
-                     Why_Args (Cnt) := +Transform_Ident (Actual);
+                     Why_Args (Cnt) :=
+                       +New_Identifier (Ada_Node => Actual,
+                                        Name     => Full_Name (Actual));
 
                   --  If a conversion or a component indexing is needed,
                   --  it can only be done for a value. That is to say,
@@ -642,7 +646,9 @@ package body Gnat2Why.Expr is
                   --  parameters by incrementing Nb_Of_Refs.
 
                   else
-                     Why_Args (Cnt) := +Transform_Ident (Formal);
+                     Why_Args (Cnt) :=
+                       +New_Identifier (Ada_Node => Formal,
+                                        Name     => Full_Name (Formal));
                      Nb_Of_Refs := Nb_Of_Refs + 1;
                   end if;
 
@@ -667,9 +673,9 @@ package body Gnat2Why.Expr is
             for Elt of Read_Names loop
                if Params.Ref_Allowed then
                   Why_Args (Cnt) :=
-                    New_Deref (Right => New_Identifier (Name => Elt.all));
+                    New_Deref (Right => To_Why_Id (Elt.all));
                else
-                  Why_Args (Cnt) := +New_Identifier (Name => Elt.all);
+                  Why_Args (Cnt) := +To_Why_Id (Elt.all);
                end if;
                Cnt := Cnt + 1;
             end loop;
@@ -725,7 +731,8 @@ package body Gnat2Why.Expr is
         (Theory      => File.Cur_Theory,
          File        => File.File,
          Phase       => Translation,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Name_Map    => Ada_Ent_To_Why.Empty_Map);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -826,7 +833,8 @@ package body Gnat2Why.Expr is
                --  Variables:
 
                Tmp_Var       : constant W_Identifier_Id :=
-                                 Transform_Ident (Formal);
+                 New_Identifier (Ada_Node => Formal,
+                                 Name     => Full_Name (Formal));
                Tmp_Var_Deref : constant W_Prog_Id :=
                                  New_Deref (Right => Tmp_Var);
 
@@ -1067,7 +1075,7 @@ package body Gnat2Why.Expr is
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
-               return Transform_Ident (N);
+               return To_Why_Id (Entity (N));
 
             when N_Indexed_Component | N_Selected_Component =>
                return Why_Lvalue (Prefix (N));
@@ -1104,15 +1112,10 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
-            declare
-               E : constant Entity_Id := Type_Of_Node (Prefix (N));
-            begin
-               return
-                 New_Record_Access
-                   (Name   => Expr,
-                    Field  => Transform_Ident (Ada_Node => E,
-                                               Id       => Selector_Name (N)));
-            end;
+            return
+              New_Record_Access
+                (Name   => Expr,
+                 Field  => To_Why_Id (Entity (Selector_Name (N))));
 
          when N_Indexed_Component =>
 
@@ -1165,12 +1168,10 @@ package body Gnat2Why.Expr is
       case Nkind (N) is
          when N_Selected_Component =>
             return
-              New_Record_Update (Name  => Pref,
-                                 Field =>
-                                 Transform_Ident
-                                   (Selector_Name (N),
-                                    Ada_Node => Type_Of_Node (Prefix (N))),
-                                 Value => Value);
+              New_Record_Update
+                (Name  => Pref,
+                 Field => To_Why_Id (Entity (Selector_Name (N))),
+                 Value => Value);
 
          when N_Indexed_Component =>
             declare
@@ -1263,7 +1264,8 @@ package body Gnat2Why.Expr is
         (Theory      => Params.Theory,
          File        => Params.File,
          Phase       => Params.Phase,
-         Ref_Allowed => False);
+         Ref_Allowed => False,
+         Name_Map    => Params.Name_Map);
       Pred : constant W_Pred_Id :=
                Transform_Array_Component_Associations
                  (Expr,
@@ -1277,7 +1279,8 @@ package body Gnat2Why.Expr is
         (Theory      => Params.Theory,
          File        => Params.File,
          Phase       => Params.Phase,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Name_Map    => Params.Name_Map);
       Pred_With_Refs : constant W_Pred_Id :=
                          Transform_Array_Component_Associations
                            (Expr,
@@ -1333,7 +1336,7 @@ package body Gnat2Why.Expr is
             Modifier => None,
             B_Type   =>
               New_Abstract_Type
-                (Name => Object_Type_Name.Id
+                (Name => To_Why_Type
                      (Get_Name_String (Get_Symbol (+Element (Cursor))))));
 
          Args (Cnt) := +Element (Cursor);
@@ -1732,7 +1735,7 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Expr,
                     Right    => Name_For_Result);
             else
-               T := +New_Result_Term;
+               T := +To_Ident (WNE_Result);
             end if;
 
          when Attribute_Old =>
@@ -1878,7 +1881,7 @@ package body Gnat2Why.Expr is
             T :=
               New_Call (Ada_Node => Expr,
                         Domain   => Domain,
-                        Name     => New_Integer_Mod.Id,
+                        Name     => To_Ident (WNE_Integer_Mod),
                         Args     =>
                           (1 => Transform_Expr (First (Expressions (Expr)),
                                                 EW_Int_Type,
@@ -2237,7 +2240,7 @@ package body Gnat2Why.Expr is
                      Id : constant W_Identifier_Id :=
                             (if Domain = EW_Term then
                                New_Temp_Identifier
-                             else New_Result_Identifier.Id);
+                             else To_Ident (WNE_Result));
                      BT : constant W_Base_Type_Id :=
                                    +Why_Logic_Type_Of_Ada_Type (Expr_Type);
                   begin
@@ -2323,43 +2326,8 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Identifier | N_Expanded_Name =>
-            declare
-               Id  : constant W_Identifier_Id := Transform_Ident (Expr);
-               Ent : constant Entity_Id := Entity (Expr);
-            begin
-               case Ekind (Ent) is
-                  --  First treat special cases
 
-                  when E_Enumeration_Literal =>
-                     T := Transform_Enum_Literal (Expr, Current_Type, Domain);
-
-                  when others =>
-
-                     --  First, check for entities of Standard.ASCII
-
-                     if Sloc (Ent) = Standard_ASCII_Location then
-                        T :=
-                          New_Integer_Constant
-                            (Value =>
-                                 Char_Literal_Value (Constant_Value (Ent)));
-                        Current_Type := EW_Int_Type;
-                     elsif Is_Mutable (Ent)
-                       and then Params.Ref_Allowed
-                     then
-                        T :=
-                          New_Deref
-                            (Ada_Node => Expr,
-                             Right    => Id);
-                     else
-                        T := +Id;
-                     end if;
-
-                     if Ekind (Ent) = E_Loop_Parameter then
-                        Current_Type := EW_Int_Type;
-                     end if;
-
-               end case;
-            end;
+            T := Transform_Identifier (Params, Expr, Domain, Current_Type);
 
          when N_Op_Compare =>
             declare
@@ -2377,12 +2345,17 @@ package body Gnat2Why.Expr is
                                              Params);
             begin
                if Is_Array_Type (Etype (Left)) then
-                  T := New_Call (Ada_Node => Expr,
-                                 Domain   => Subdomain,
-                                 Name     =>
-                                   Array_Equal_Name.Id
-                                    (New_Ada_Array_Name
-                                    (Number_Dimensions (Type_Of_Node (Left)))),
+                  T := New_Call
+                    (Ada_Node => Expr,
+                     Domain   => Subdomain,
+                     Name     =>
+                       Prefix
+                         (Ada_Node => Etype (Left),
+                          S        =>
+                            To_String
+                              (Ada_Array_Name
+                                   (Number_Dimensions (Type_Of_Node (Left)))),
+                          W        => WNE_Bool_Eq),
                                  Args     =>
                                    (1 => Left_Arg,
                                     2 => Right_Arg));
@@ -2522,9 +2495,9 @@ package body Gnat2Why.Expr is
             begin
                Current_Type := Base_Why_Type (Left, Right);
                Name := (if Nkind (Expr) = N_Op_Rem then
-                          New_Integer_Rem.Id
+                          To_Ident (WNE_Integer_Rem)
                         else
-                          New_Integer_Mod.Id);
+                          To_Ident (WNE_Integer_Mod));
                Name := (if Domain = EW_Prog then
                           To_Program_Space (Name)
                         else
@@ -2703,18 +2676,13 @@ package body Gnat2Why.Expr is
          when N_Function_Call =>
             declare
                Subp       : constant Entity_Id := Entity (Name (Expr));
-               Ident      : constant W_Identifier_Id := Transform_Ident (Subp);
-
                --  Retrieve type of function result from function called
 
                Result_Typ : constant Entity_Id :=
                               Unique_Entity
                                 (Entity (Result_Definition (Parent (Subp))));
                Name       : constant W_Identifier_Id :=
-                              (if Domain = EW_Prog then
-                                 To_Program_Space (Ident)
-                              else
-                                 Logic_Func_Name.Id (Ident));
+                 To_Why_Id (Subp, Domain, Local => False);
                Nb_Of_Refs : Natural;
             begin
                Current_Type := +Why_Logic_Type_Of_Ada_Type (Result_Typ);
@@ -2812,21 +2780,52 @@ package body Gnat2Why.Expr is
       return Transform_Expr (Expr, Type_Of_Node (Expr), Domain, Params);
    end Transform_Expr;
 
-   ---------------------
-   -- Transform_Ident --
-   ---------------------
+   --------------------------
+   -- Transform_Identifier --
+   --------------------------
 
-   function Transform_Ident (Id : Node_Id;
-                             Ada_Node : Node_Id := Empty)
-                             return W_Identifier_Id
+   function Transform_Identifier (Params       : Translation_Params;
+                                  Expr         : Node_Id;
+                                  Domain       : EW_Domain;
+                                  Current_Type : out W_Base_Type_Id)
+                                  return W_Expr_Id
    is
-      Ent    : constant Entity_Id :=
-        (if Nkind (Id) in N_Entity then Id else Entity (Id));
-      Origin : constant Entity_Id :=
-        (if Ada_Node /= Empty then Ada_Node else Id);
+      Ent : constant Entity_Id := Unique_Entity (Entity (Expr));
+      C   : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Params.Name_Map, Ent);
+      T   : W_Expr_Id;
    begin
-      return New_Identifier (Origin, Full_Name (Ent));
-   end Transform_Ident;
+
+      --  The special cases of this function are:
+      --  * parameters, whose names are stored in Params.Name_Map (these can
+      --    also be refs)
+      --  * enumeration literals (we have a separate function)
+      --  * ids of Standard.ASCII (transform to integer)
+      --  * loop parameters (set type to integer)
+
+      Current_Type := Type_Of_Node (Expr);
+
+      if Ada_Ent_To_Why.Has_Element (C) then
+         T := +Ada_Ent_To_Why.Element (C);
+      elsif Ekind (Ent) = E_Enumeration_Literal then
+         T := Transform_Enum_Literal (Expr, Current_Type, Domain);
+      elsif Sloc (Ent) = Standard_ASCII_Location then
+         T :=
+           New_Integer_Constant
+             (Value => Char_Literal_Value (Constant_Value (Ent)));
+         Current_Type := EW_Int_Type;
+      elsif Ekind (Ent) = E_Loop_Parameter then
+         T := +New_Identifier (Name => Full_Name (Ent));
+         Current_Type := EW_Int_Type;
+      else
+         T := +To_Why_Id (Ent);
+      end if;
+      if Is_Mutable (Ent) and then Params.Ref_Allowed then
+         T := New_Deref (Ada_Node => Expr, Right => +T);
+      end if;
+
+      return T;
+   end Transform_Identifier;
 
    ----------------------------
    -- Transform_Pragma_Check --
@@ -2952,7 +2951,7 @@ package body Gnat2Why.Expr is
                            New_Relation
                              (Domain   => EW_Pred,
                               Op_Type  => EW_Bool,
-                              Left     => +New_Result_Identifier.Id,
+                              Left     => +To_Ident (WNE_Result),
                               Op       => EW_Eq,
                               Right    => New_Literal (Value  => EW_True,
                                                        Domain => EW_Term)),
@@ -3050,7 +3049,7 @@ package body Gnat2Why.Expr is
             Result (J) :=
                New_Field_Association
                   (Domain => Domain,
-                   Field  => New_Identifier (Typ, Full_Name (Component)),
+                   Field  => To_Why_Id (Component),
                    Value  => Expr);
             J := J + 1;
             Component := Next_Component (Component);
@@ -3084,7 +3083,7 @@ package body Gnat2Why.Expr is
                Raise_Stmt  : constant W_Prog_Id :=
                                New_Raise
                                  (Ada_Node => Stmt,
-                                  Name     => New_Result_Exc_Identifier.Id);
+                                  Name     => To_Ident (WNE_Result_Exc));
                Result_Stmt : W_Prog_Id;
             begin
                if Expression (Stmt) /= Empty then
@@ -3116,8 +3115,7 @@ package body Gnat2Why.Expr is
                               +New_Located_Call
                                 (Ada_Node => Stmt,
                                  Name     =>
-                                   To_Program_Space
-                                     (Transform_Ident (Name (Stmt))),
+                                   To_Why_Id (Entity (Name (Stmt)), EW_Prog),
                                  Progs    =>
                                    Compute_Call_Args
                                      (Stmt, EW_Prog, Nb_Of_Refs,
