@@ -93,12 +93,15 @@ is
                               Poffset       => 0,
                               Ref           => 0));
 
-      --  Construct a singly linked chain of common buffer structures,
-      --  then Initialize data/no-data specific structures
+      --  Construct two singly linked chains of common buffer structures, one
+      --  for data buffers and another for no-data buffers. Then Initialize
+      --  data/no-data specific structures.
 
       for Buf in Common.Buffer_Index range 1 .. Common.Buffer_Index'Last - 1
       loop
-         Common.Buf_List (Buf).Next := Buf + 1;
+         if Buf /= Config.Data_Buffer_Num then
+            Common.Buf_List (Buf).Next := Buf + 1;
+         end if;
       end loop;
 
       No_Data.Buffer_Init;
@@ -377,18 +380,17 @@ is
    --# global in out Common.Buf_List, Data.State,
    --#               Data.Free_List, No_Data.Free_List;
    is
-      Cur_Buf, Next_Buf : Buffer_Id;
-      Free_List         : Buffer_Id;
+      Cur_Buf, Next_Buf, Last_Buf : Buffer_Id;
+      Free_List                   : Buffer_Id;
+      Cur_Deallocs                : AIP.U8_T;
+
    begin
       Next_Buf   := Buf;
       N_Deallocs := 0;
 
       while Next_Buf /= NOBUF loop
 
-         --  Update iterators
-
          Cur_Buf  := Next_Buf;
-         Next_Buf := Common.Buf_List (Cur_Buf).Next;
 
          --  Store head of appropriate free-list in Free_List
 
@@ -405,18 +407,30 @@ is
          --  If reference count reaches zero, deallocate buffer
 
          if Common.Buf_List (Cur_Buf).Ref = 0 then
-            N_Deallocs := N_Deallocs + 1;
-
-            --  Link to the head of the free-list
-
-            Common.Buf_List (Cur_Buf).Next := Free_List;
-
             --  Perform link actions specific to data buffers
 
             if Common.Is_Data_Buffer (Cur_Buf) then
                Data.Buffer_Link
-                 (Data.To_Dbuf_Id (Cur_Buf), Data.To_Dbuf_Id (Free_List));
+                 (Buf      => Data.To_Dbuf_Id (Cur_Buf),
+                  Next     => Data.To_Dbuf_Id (Free_List),
+                  Last_Buf => Last_Buf,
+                  Num      => Cur_Deallocs);
+            else
+               Last_Buf     := Cur_Buf;
+               Cur_Deallocs := 1;
             end if;
+
+            --  Update the iterator
+
+            Next_Buf   := Common.Buf_List (Last_Buf).Next;
+
+            --  Update the count
+
+            N_Deallocs := N_Deallocs + Cur_Deallocs;
+
+            --  Link to the head of the free-list
+
+            Common.Buf_List (Last_Buf).Next := Free_List;
 
             --  Push to the head of the appropriate free-list
 

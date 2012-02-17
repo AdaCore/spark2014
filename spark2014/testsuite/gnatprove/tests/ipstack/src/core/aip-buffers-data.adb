@@ -60,6 +60,15 @@ is
       return Buffers.Buffer_Id (Buf);
    end To_Common_Id;
 
+   -------------------
+   -- Next_Data_Buf --
+   -------------------
+
+   function Next_Data_Buf (Buf : Dbuf_Id) return Dbuf_Id is
+   begin
+      return To_Dbuf_Id (Common.Buf_List (To_Common_Id (Buf)).Next);
+   end Next_Data_Buf;
+
    -----------------
    -- Buffer_Init --
    -----------------
@@ -84,7 +93,7 @@ is
 
       --  Make the head of the free-list point to the first buffer
 
-      Free_List := 1;
+      Free_List := Buf_List'First;
 
       --  Intentionally leave Data_Array not initialized
       --# accept F, 32, Data_Array,
@@ -229,9 +238,9 @@ is
       Free_List                       := Next_Buf;
    end Buffer_Alloc;
 
-   -----------------
-   -- Buffer_Kind --
-   -----------------
+   ---------------------
+   -- Buffer_Get_Kind --
+   ---------------------
 
    function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind
    --# global in Buf_List;
@@ -260,17 +269,64 @@ is
    -- Buffer_Link --
    -----------------
 
-   procedure Buffer_Link (Buf : Dbuf_Id; Next : Dbuf_Id)
-   --# global in out Buf_List;
+   procedure Buffer_Link
+     (Buf      :     Dbuf_Id;
+      Next     :     Dbuf_Id;
+      Last_Buf : out Buffers.Buffer_Id;
+      Num      : out AIP.U8_T)
+   --# global in     Common.Buf_List;
+   --#        in out Buf_List;
    is
-   begin
-      --  Update Num and Num_No_Jump fields only
+      Cur_Buf : Dbuf_Id;
+      Cur_Num : Dbuf_Count;
 
-      Buf_List (Buf).Num            := Buf_List (Next).Num + 1;
-      if Next = Buf + 1 then
-         Buf_List (Buf).Num_No_Jump := Buf_List (Next).Num_No_Jump + 1;
-      else
-         Buf_List (Buf).Num_No_Jump := 1;
+   begin
+      --  Retrieve last buffer in linked list *for this buffer*. This may not
+      --  be the last buffer in the complete linked list, since the link is
+      --  also used for chaining buffers in a packet.
+
+      Cur_Buf := Buf;
+      Num     := 1;
+      while Buf_List (Cur_Buf).Num /= 1 loop
+         Cur_Buf := Next_Data_Buf (Cur_Buf);
+         Num     := Num + 1;
+      end loop;
+
+      Last_Buf := To_Common_Id (Cur_Buf);
+
+      --  There is nothing else to do when linking with a null buffer. The
+      --  caller takes care of chaining Last_Buf appropriately.
+
+      if Next /= Buffers.NOBUF then
+         --  For SPLIT_BUF buffers, start with updating the number of
+         --  contiguous buffers in the linked list, if the last buffer and the
+         --  next buffer are contiguous. This must be done before updating the
+         --  number of buffers in the linked chain, as this number is used to
+         --  stop the iteration.
+
+         if Buf_List (Buf).Kind = Buffers.SPLIT_BUF
+           and then To_Common_Id (Next) = Last_Buf + 1
+         then
+            Cur_Buf := Buf;
+            loop
+               Buf_List (Cur_Buf).Num_No_Jump :=
+                 Buf_List (Cur_Buf).Num_No_Jump + Buf_List (Next).Num_No_Jump;
+               exit when Buf_List (Cur_Buf).Num = 1;
+               Cur_Buf := Next_Data_Buf (Cur_Buf);
+            end loop;
+         end if;
+
+         --  For both LINK_BUF and SPLIT_BUF buffers, update the number of
+         --  buffers in the linked chain.
+
+         Cur_Buf := Buf;
+         loop
+            Cur_Num := Buf_List (Cur_Buf).Num;
+            Buf_List (Cur_Buf).Num :=
+              Buf_List (Cur_Buf).Num + Buf_List (Next).Num;
+            exit when Cur_Num = 1;
+            Cur_Buf := Next_Data_Buf (Cur_Buf);
+         end loop;
       end if;
    end Buffer_Link;
 

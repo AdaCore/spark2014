@@ -342,8 +342,17 @@ private
    --  We use functions to abstract the common/specific id mapping both ways.
 
    --  Both the Data and No_Data management units maintain a free list of the
-   --  corresponding kinds of buffers. The links are local (kind specific) Id
-   --  values stored in the common part of each buffer, using the common
-   --  Buffer_Id type.
+   --  corresponding kinds of buffers. The heads of the free lists are local
+   --  (kind specific) Id values stored in Data and No_Data packages, while the
+   --  links are stored using the common Buffer_Id type in the common part of
+   --  each buffer.
+
+   --  The link is used both to:
+   --  * chain more than one buffers that form a complete buffer;
+   --  * chain buffers (that might be of different kinds) that form a packet.
+   --  No_Data buffers are not linked to form complete buffers, only Data
+   --  buffers are. In that case, the internal data structure of Data buffers
+   --  holds the number of buffers that form the complete buffer. This number
+   --  should be used to test for the end of the buffer (not the link!).
 
 end AIP.Buffers;
