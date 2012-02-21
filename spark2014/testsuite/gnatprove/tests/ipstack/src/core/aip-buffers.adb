@@ -15,6 +15,22 @@ package body AIP.Buffers
 --#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
 
+   --  procedure Packet_Reset (Buf : Buffer_Id);
+   --  Reset packet information and packet chaining pointers for Buf
+
+   ------------------
+   -- Packet_Reset --
+   ------------------
+
+   procedure Packet_Reset (Buf : Buffer_Id)
+   --# global in out Common.Buf_List;
+   is
+   begin
+      Common.Buf_List (Buf).Next_Packet :=
+                              Common.Packet_Queue_Ptrs'(others => NOBUF);
+      Common.Buf_List (Buf).Packet_Info := System.Null_Address;
+   end Packet_Reset;
+
    -------------------
    -- Append_Packet --
    -------------------
@@ -26,6 +42,12 @@ is
    --# global in out Common.Buf_List;
    is
    begin
+      --  Make sure Buf is marked as last packet in its list
+
+      Common.Buf_List (Buf).Next_Packet (Layer) := NOBUF;
+
+      --  Append it after Queue.Tail
+
       if Queue.Tail /= NOBUF then
          Common.Buf_List (Queue.Tail).Next_Packet (Layer) := Buf;
          Queue.Tail := Buf;
@@ -127,6 +149,7 @@ is
          Kind   => Kind,
          Buf    => Dbuf);
       Buf := Data.To_Common_Id (Dbuf);
+      Packet_Reset (Buf);
    end Buffer_Alloc;
 
    ----------------------
@@ -148,6 +171,7 @@ is
          Data_Ref => Data_Ref,
          Buf      => Rbuf);
       Buf := No_Data.To_Common_Id (Rbuf);
+      Packet_Reset (Buf);
    end Ref_Buffer_Alloc;
 
    ---------------------
@@ -578,13 +602,15 @@ is
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : out Buffer_Id)
-   --# global in Common.Buf_List;
+   --# global in out Common.Buf_List;
    is
    begin
       Buf := Queue.Head;
-      if Queue.Head /= NOBUF then
+      if Buf /= NOBUF then
          Queue.Head := Common.Buf_List (Buf).Next_Packet (Layer);
+         Common.Buf_List (Buf).Next_Packet (Layer) := NOBUF;
       end if;
+
       if Queue.Head = NOBUF then
          Queue.Tail := NOBUF;
       end if;

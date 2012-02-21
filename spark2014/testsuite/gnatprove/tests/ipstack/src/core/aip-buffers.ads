@@ -280,7 +280,7 @@ is
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : out Buffer_Id);
-   --# global in State;
+   --# global in out State;
    --  Detach (pop) head packet from Queue and return its id in Buf
 
    function Empty (Queue : Packet_Queue) return Boolean;
