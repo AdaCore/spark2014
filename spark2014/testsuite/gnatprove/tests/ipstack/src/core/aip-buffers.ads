@@ -299,7 +299,7 @@ private
    end record;
 
    Empty_Packet_Queue : constant Packet_Queue :=
-                         Packet_Queue'(Head => NOBUF, Tail => NOBUF);
+                          Packet_Queue'(Head => NOBUF, Tail => NOBUF);
 
    --------------------------------------------------------------
    -- General notes on internal data structures and buffer Ids --
