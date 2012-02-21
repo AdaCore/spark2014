@@ -82,8 +82,8 @@ is
       Common.Buf_List :=
         Common.Buffer_Array'
           (others =>
-               Common.Buffer'(Next        => NOBUF,
-                              Next_Packet =>
+               Common.Buffer'(Next          => NOBUF,
+                              Next_Packet   =>
                                 Common.Packet_Queue_Ptrs'(others => NOBUF),
                               Packet_Info   => System.Null_Address,
                               Len           => 0,
