@@ -42,12 +42,6 @@ is
    --# global in out Common.Buf_List;
    is
    begin
-      --  Make sure Buf is marked as last packet in its list
-
-      Common.Buf_List (Buf).Next_Packet (Layer) := NOBUF;
-
-      --  Append it after Queue.Tail
-
       if Queue.Tail /= NOBUF then
          Common.Buf_List (Queue.Tail).Next_Packet (Layer) := Buf;
          Queue.Tail := Buf;
