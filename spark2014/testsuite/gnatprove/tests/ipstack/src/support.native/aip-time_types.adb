@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Real_Time;
@@ -16,7 +16,8 @@ package body AIP.Time_Types is
       use type Ada.Real_Time.Time;
    begin
       return Time
-        (Ada.Real_Time.To_Duration (Ada.Real_Time.Clock - Start) * 1000);
+        (Ada.Real_Time.To_Duration (Ada.Real_Time.Clock - Start)
+           * Integer (Hz));
    end Now;
 
 end AIP.Time_Types;
