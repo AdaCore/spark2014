@@ -39,7 +39,6 @@ AIP.Support         specification is in ../core/aip-support.ads
 AIP.Support         body          is in ../core/aip-support.adb
 AIP.TCP             specification is in ../core/aip-tcp.ads
 AIP.TCP             body          is in ../core/aip-tcp.adb
-AIP.Time_Types      specification is in ../support/aip-time_types.ads
 AIP.Timers          specification is in ../core/aip-timers.ads
 AIP.Timers          body          is in ../core/aip-timers.adb
 AIP.IP              specification is in ../core/aip-ip.ads

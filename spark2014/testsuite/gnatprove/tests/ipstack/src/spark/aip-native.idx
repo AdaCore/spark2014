@@ -1,0 +1,4 @@
+superindex                        is in aip.idx
+
+AIP.Time_Types      specification is in ../support.native/aip-time_types.ads
+AIP.Time_Types      body          is in ../support.native/aip-time_types.adb
