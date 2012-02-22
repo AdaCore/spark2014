@@ -9,27 +9,13 @@ with AIP.Buffers.No_Data;
 with AIP.Conversions;
 with AIP.Support;
 
+use type AIP.Buffers.Common.Packet_Queue_Ptrs;
+
 package body AIP.Buffers
 --# own State is AIP.Buffers.Common.Buf_List,
 --#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
 --#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
-
-   --  procedure Packet_Reset (Buf : Buffer_Id);
-   --  Reset packet information and packet chaining pointers for Buf
-
-   ------------------
-   -- Packet_Reset --
-   ------------------
-
-   procedure Packet_Reset (Buf : Buffer_Id)
-   --# global in out Common.Buf_List;
-   is
-   begin
-      Common.Buf_List (Buf).Next_Packet :=
-                              Common.Packet_Queue_Ptrs'(others => NOBUF);
-      Common.Buf_List (Buf).Packet_Info := System.Null_Address;
-   end Packet_Reset;
 
    -------------------
    -- Append_Packet --
@@ -49,6 +35,12 @@ is
          Queue.Head := Buf;
          Queue.Tail := Buf;
       end if;
+
+      --  Buf may be followed by other packets, so advance Tail as needed
+
+      while Common.Buf_List (Queue.Tail).Next_Packet (Layer) /= NOBUF loop
+         Queue.Tail := Common.Buf_List (Queue.Tail).Next_Packet (Layer);
+      end loop;
    end Append_Packet;
 
    -----------------
@@ -135,6 +127,7 @@ is
       Buf    : out Buffer_Id)
    --# global in out Common.Buf_List, Data.State, Data.Free_List;
    is
+
       Dbuf : Data.Dbuf_Id;
    begin
       Data.Buffer_Alloc
@@ -143,7 +136,8 @@ is
          Kind   => Kind,
          Buf    => Dbuf);
       Buf := Data.To_Common_Id (Dbuf);
-      Packet_Reset (Buf);
+      pragma Assert (Common.Buf_List (Buf).Next_Packet =
+                       Common.Packet_Queue_Ptrs'(others => NOBUF));
    end Buffer_Alloc;
 
    ----------------------
@@ -165,7 +159,8 @@ is
          Data_Ref => Data_Ref,
          Buf      => Rbuf);
       Buf := No_Data.To_Common_Id (Rbuf);
-      Packet_Reset (Buf);
+      pragma Assert (Common.Buf_List (Buf).Next_Packet =
+                       Common.Packet_Queue_Ptrs'(others => NOBUF));
    end Ref_Buffer_Alloc;
 
    ---------------------
@@ -425,6 +420,12 @@ is
          --  If reference count reaches zero, deallocate buffer
 
          if Common.Buf_List (Cur_Buf).Ref = 0 then
+
+            --  Cur_Buf should not be on a packet queue anymore
+
+            pragma Assert (Common.Buf_List (Cur_Buf).Next_Packet =
+                             Common.Packet_Queue_Ptrs'(others => NOBUF));
+
             --  Perform link actions specific to data buffers
 
             if Common.Is_Data_Buffer (Cur_Buf) then
@@ -602,6 +603,9 @@ is
       Buf := Queue.Head;
       if Buf /= NOBUF then
          Queue.Head := Common.Buf_List (Buf).Next_Packet (Layer);
+
+         --  Packet is detached from list: clear its Next_Packet pointer
+
          Common.Buf_List (Buf).Next_Packet (Layer) := NOBUF;
       end if;
 

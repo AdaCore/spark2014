@@ -2868,12 +2868,21 @@ is
 
       TPCBs (PCB).RTT_Ticks := 0;
 
-      --  Move all packets from Unack_Queue to head of Send_Queue
+      --  Move all packets from Unack_Queue to head of Send_Queue:
+      --  first concatenate Send_Queue at end of Unack_Queue, then move
+      --  Unack_Queue to Send_Queue.
 
-      Buffers.Append_Packet
-        (Layer => Buffers.Transport,
-         Queue => TPCBs (PCB).Unack_Queue,
-         Buf   => Buffers.Head_Packet (TPCBs (PCB).Send_Queue));
+      if not Buffers.Empty (TPCBs (PCB).Send_Queue) then
+
+         --  Concatenate Send_Queue at end of Unack_Queue
+
+         Buffers.Append_Packet
+           (Layer => Buffers.Transport,
+            Queue => TPCBs (PCB).Unack_Queue,
+            Buf   => Buffers.Head_Packet (TPCBs (PCB).Send_Queue));
+
+      end if;
+
       TPCBs (PCB).Send_Queue := TPCBs (PCB).Unack_Queue;
       TPCBs (PCB).Unack_Queue := Buffers.Empty_Packet_Queue;
 
