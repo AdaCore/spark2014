@@ -41,6 +41,9 @@ $(APP_IMAGE): ipstack force
 test: ipstack force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P test
 
+build-test: force
+	@$(BUILDER) $(GNATMAKE_FLAGS) -q -p -P $(TEST_GPR)
+
 ipstack: build/gen/aip_constants.ads  \
          $(foreach proto,             \
            ether arp ip icmp udp tcp, \
