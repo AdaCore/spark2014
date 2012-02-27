@@ -469,7 +469,7 @@ procedure Gnatprove is
       Put_Keyval ("loadpath", Stdlib_Dir);
       Put_Keyval ("loadpath", Theories_Dir);
       Put_Keyval ("loadpath", Gnatprove_Subdir);
-      Put_Keyval ("magic", 8);
+      Put_Keyval ("magic", 11);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
       Put_Keyval ("timelimit", 10);  --  Limit used when no explicit --timeout
@@ -479,6 +479,7 @@ procedure Gnatprove is
                   Ada.Directories.Compose (Why3_Drivers_Dir,
                                            "alt_ergo_trunk.drv"));
       Put_Keyval ("name", "Alt-Ergo");
+      Put_Keyval ("version", "0.94");
       Close (File);
    end Generate_Why3_Conf_File;
 
