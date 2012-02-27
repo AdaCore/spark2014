@@ -10,7 +10,7 @@ const.adb:18:22: info: index check proved
 const.adb:18:7: assertion not proved
 const.adb:19:22: info: index check proved
 const.adb:19:7: assertion not proved
-const.adb:23:7: assertion not proved
+const.adb:23:7: info: assertion proved
 const.adb:24:7: info: assertion proved
 const.adb:25:7: info: assertion proved
 const.adb:26:7: info: assertion proved
