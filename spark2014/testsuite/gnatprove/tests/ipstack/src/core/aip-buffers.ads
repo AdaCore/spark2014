@@ -123,6 +123,7 @@ is
 
    function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind;
    --# global in State;
+   pragma Export (C, Buffer_Get_Kind, "AIP_buffer_get_kind");
 
    --  Note: Buffer_Len and Buffer_Tlen names are too close. We should rename
    --        them after reimplementing the rest of the TCP/IP stack.
