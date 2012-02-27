@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Callback oriented low level access to the UDP services.
@@ -94,8 +94,8 @@ is
    -- Event/callback interface --
    ------------------------------
 
-   --  Event kinds and descriptor used to communicate with the
-   --  applicative handler (UDP_Event).
+   --  Event kinds and descriptor used to communicate with the applicative
+   --  handler (UDP_Event).
 
    type UDP_Event_Kind is
      (UDP_EVENT_RECV);   -- UDP Datagram received
