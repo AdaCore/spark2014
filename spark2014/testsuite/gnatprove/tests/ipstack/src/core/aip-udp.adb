@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -31,8 +31,7 @@ is
    end record;
 
    UDP_PCB_Initializer : constant UDP_PCB :=
-     UDP_PCB'(Callbacks =>
-                UDP_Callbacks'(others => Callbacks.NOCB));
+     UDP_PCB'(Callbacks => UDP_Callbacks'(others => Callbacks.NOCB));
 
    subtype UDP_PCB_Index is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
