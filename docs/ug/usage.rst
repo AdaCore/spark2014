@@ -27,8 +27,16 @@ GNATprove accepts the following options::
                    not proved
 
    -u            Unique compilation, only consider the given files
+   -q            Be quiet/terse
+   -f            Fore recompilation/proving of all units and all VCs
+   -jnnn         Use nnn parallel processes (default: 1)
+   -v, --verbose Output extra verbose information
 
    --pedantic    Use a strict interpretation of the Ada standard
+   --no-proof    Disable proof of VCs, only generate VCs
+   --steps=nnn   Set the maximum number of proof steps to nnn for Alt-Ergo
+   --timeout=s   Set the timeout for Alt-Ergo in seconds (default: 10)
+   --help        Display the list of options
 
 In modes ``detect`` and ``force``, GNATprove does not compute an accurate set
 of global variables read and written in each subprogram. Hence, its detection
@@ -43,9 +51,20 @@ its dependencies correctly. With option ``-u``, the dependencies are not
 considered, only the given files themselves.
 
 With option ``--pedantic``, some compiler choices are forced to a worst-case
-interpretation of the Ada standard. For example, ranges for integer base types 
-are reduced to the minimum guaranteed, not to the matching machine 
+interpretation of the Ada standard. For example, ranges for integer base types
+are reduced to the minimum guaranteed, not to the matching machine
 integer type as done in practice on all compilers.
+
+The options ``--steps`` and ``--timeout`` can be used to influence the
+behavior of the prover Alt-Ergo. The option ``-j`` activates parallel
+compilation, but not parallel proofs; parallel proofs will be available in a
+future version of gnatprove. With the option ``--no-proof``, the prover is not
+actually called, and gnatprove reports that it has skipped the VCs. With the
+option ``-q``, gnatprove does give the minimum of messages, while with option
+``-v``, on the contrary, all details are given.
+
+By default, gnatprove avoids recompiling/reproving unchanged files, on a
+per-unit basis. This mechanism can be disabled with the option ``-f``.
 
 Output
 ------
