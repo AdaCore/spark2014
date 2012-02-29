@@ -103,7 +103,7 @@ options ``--mode=prove --report=all``::
 
    gnatprove -P %PP --mode=prove --report=all
 
-We recommand that you enable the option ``Draw current line as a thin line`` 
+We recommend that you enable the option ``Draw current line as a thin line`` 
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that it does not
 hide the status of the checks on the current line (all proved in green / 
 otherwise in red).
