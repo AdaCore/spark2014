@@ -92,11 +92,21 @@ object directory.
 Integration in GPS
 ------------------
 
-Although there is currently no specific support for ``gnatprove`` in GPS, it is
+Although there is currently no specific support for GNATprove in GPS, it is
 already possible to take advantage of GPS error/warnings browsing as if the
-``gnatprove`` errors and warning were coming from a compiler. For this, you
+errors and warning produced by GNATprove were coming from a compiler. 
+For this, you
 simply need to load the project you would like to examine in GPS and launch the
 ``gnatprove`` command from the ``Build --> Project --> Custom Build`` menu.
+For example, the following command runs GNATprove on the current project with 
+options ``--mode=prove --report=all``::
+
+   gnatprove -P %PP --mode=prove --report=all
+
+We recommand that you enable the option ``Draw current line as a thin line`` 
+(in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that it does not
+hide the status of the checks on the current line (all proved in green / 
+otherwise in red).
 
 Integration in GNATbench
 ------------------------
