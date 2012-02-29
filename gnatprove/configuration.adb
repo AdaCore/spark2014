@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -43,7 +43,7 @@ package body Configuration is
    --  called for unknown switches and for switches in section -cargs
 
    Usage_Message : constant String :=
-      "gnatprove switches [files] [-cargs switches]";
+      "switches [files] [-cargs switches]";
 
    Help_Message : constant String :=
 "files is one or more file names, must be used with option -u" &
@@ -172,6 +172,23 @@ ASCII.LF &
    procedure Read_Command_Line
    is
       Config : Command_Line_Configuration;
+
+      procedure Abort_With_Help (Msg : String);
+      --  Stop the program, output the message and the help message, then exit
+
+      ---------------------
+      -- Abort_With_Help --
+      ---------------------
+
+      procedure Abort_With_Help (Msg : String)
+      is
+      begin
+         Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+         Ada.Text_IO.New_Line;
+         Display_Help (Config);
+         GNAT.OS_Lib.OS_Exit (1);
+      end Abort_With_Help;
+
    begin
       --  Install command line config
 
@@ -281,7 +298,7 @@ ASCII.LF &
       elsif MMode_Input.all = "prove" then
          MMode := GPM_Prove;
       else
-         Abort_With_Message ("mode should be one of (detect | force | check)");
+         Abort_With_Help ("mode should be one of (detect | force | check)");
       end if;
 
       if Report_Input.all = "fail" or else Report_Input.all = "" then
@@ -291,7 +308,7 @@ ASCII.LF &
       elsif Report_Input.all = "detailed" then
          Report := GPR_Detailed;
       else
-         Abort_With_Message
+         Abort_With_Help
            ("report should be one of (fail | all | detailed)");
       end if;
 
@@ -300,7 +317,7 @@ ASCII.LF &
 
       if Argument_Present then
          if not (MMode in GP_Alfa_Detection_Mode) then
-            Abort_With_Message ("mode should be one of (detect | force)");
+            Abort_With_Help ("mode should be one of (detect | force)");
          end if;
          if Project_File.all = "" then
             Call_Mode := GPC_Only_Files;
@@ -309,7 +326,7 @@ ASCII.LF &
          end if;
       else
          if Project_File.all = "" then
-            Abort_With_Message ("No project and no source file given.");
+            Abort_With_Help ("No project and no source file given.");
          else
             Call_Mode := GPC_Project;
          end if;
@@ -347,10 +364,7 @@ ASCII.LF &
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
       when Invalid_Parameter =>
-         Ada.Text_IO.Put_Line
-           (Ada.Text_IO.Standard_Error,
-            "No parameter given to switch -" & Full_Switch);
-         GNAT.OS_Lib.OS_Exit (1);
+         Abort_With_Help ("No parameter given to switch -" & Full_Switch);
    end Read_Command_Line;
 
 end Configuration;
