@@ -1,18 +1,18 @@
 funcs.adb:101:26: info: range check proved
-funcs.adb:101:35: range check not proved
-funcs.adb:102:16: range check not proved
+funcs.adb:101:35: info: range check proved
+funcs.adb:102:16: info: range check proved
 funcs.adb:102:20: assertion not proved
-funcs.adb:102:43: range check not proved
-funcs.adb:105:26: range check not proved
-funcs.adb:105:35: range check not proved
-funcs.adb:106:16: range check not proved
+funcs.adb:102:43: info: range check proved
+funcs.adb:105:26: info: range check proved
+funcs.adb:105:35: info: range check proved
+funcs.adb:106:16: info: range check proved
 funcs.adb:106:20: assertion not proved
-funcs.adb:106:43: range check not proved
-funcs.adb:107:26: range check not proved
-funcs.adb:107:35: range check not proved
-funcs.adb:108:16: range check not proved
+funcs.adb:106:43: info: range check proved
+funcs.adb:107:26: info: range check proved
+funcs.adb:107:35: info: range check proved
+funcs.adb:108:16: info: range check proved
 funcs.adb:108:20: assertion not proved
-funcs.adb:108:43: range check not proved
+funcs.adb:108:43: info: range check proved
 funcs.adb:53:68: info: postcondition proved
 funcs.adb:64:26: info: range check proved
 funcs.adb:64:7: info: assertion proved
@@ -37,7 +37,7 @@ funcs.adb:71:43: info: range check proved
 funcs.adb:72:26: info: range check proved
 funcs.adb:72:35: info: range check proved
 funcs.adb:73:16: info: range check proved
-funcs.adb:73:20: assertion not proved
+funcs.adb:73:20: info: assertion proved
 funcs.adb:73:43: info: range check proved
 funcs.adb:75:12: info: range check proved
 funcs.adb:77:26: info: range check proved
