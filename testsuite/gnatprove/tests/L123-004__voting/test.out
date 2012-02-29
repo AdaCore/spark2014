@@ -37,7 +37,7 @@ evoting.adb:79:34: info: loop invariant initialization proved
 evoting.adb:79:34: info: loop invariant preservation proved
 evoting.adb:81:40: info: range check proved
 evoting.ads:104:24: info: index check proved
-evoting.ads:104:48: info: index check proved
+evoting.ads:104:48: index check not proved
 evoting.ads:105:21: index check not proved
 evoting.ads:105:40: index check not proved
 evoting.ads:107:23: info: index check proved
