@@ -213,10 +213,6 @@ procedure Gnatprove is
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
       end if;
-      if Steps /= 0 then
-         Args.Append ("--steps");
-         Args.Append (Int_Image (Steps));
-      end if;
       if Verbose then
          Args.Append ("--verbose");
       end if;
@@ -474,7 +470,17 @@ procedure Gnatprove is
       Put_Keyval ("running_provers_max", 2);
       Put_Keyval ("timelimit", 10);  --  Limit used when no explicit --timeout
       Start_Section ("prover alt-ergo");
-      Put_Keyval ("command", "why3-cpulimit %t %m -s alt-ergo -proof %f");
+      declare
+         Altergo_Command : constant String :=
+           "why3-cpulimit %t %m -s alt-ergo %f";
+      begin
+         if Steps /= 0 then
+            Put_Keyval ("command",
+                        Altergo_Command & " -steps " & Int_Image (Steps));
+         else
+            Put_Keyval ("command", Altergo_Command);
+         end if;
+      end;
       Put_Keyval ("driver",
                   Ada.Directories.Compose (Why3_Drivers_Dir,
                                            "alt_ergo.drv"));
