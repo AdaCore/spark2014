@@ -477,7 +477,7 @@ procedure Gnatprove is
       Put_Keyval ("command", "why3-cpulimit %t %m -s alt-ergo -proof %f");
       Put_Keyval ("driver",
                   Ada.Directories.Compose (Why3_Drivers_Dir,
-                                           "alt_ergo_trunk.drv"));
+                                           "alt_ergo.drv"));
       Put_Keyval ("name", "Alt-Ergo");
       Put_Keyval ("version", "0.94");
       Close (File);
