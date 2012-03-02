@@ -1,0 +1,15 @@
+package body A is
+
+   procedure P (X, Y : Integer) is
+   begin
+      pragma Assert (X < Y);
+      pragma Assert (X + 1 < Y);
+      pragma Assert (X + 2 < Y);
+   end P;
+
+   procedure Q (X, Y : Integer) is
+   begin
+      pragma Assert (X < Y);
+      pragma Assert (X + 1 < Y);
+   end Q;
+end A;
