@@ -118,7 +118,7 @@ package body Why.Inter is
                   when 2 =>
                      Imports (SI_Array2) := True;
                   when others =>
-                     raise Program_Error;
+                     null;
                end case;
 
             when Private_Kind =>
