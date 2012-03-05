@@ -26,6 +26,7 @@
 with Atree;                use Atree;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
+with Stand;                use Stand;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Tables;     use Why.Atree.Tables;
@@ -457,9 +458,12 @@ package body Why.Gen.Expr is
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
      return W_Expr_Id
    is
+      S : constant String :=
+        (if Ty = Standard_Boolean then "Boolean"
+         else Full_Name (Ty));
    begin
       return +Prefix (Ada_Node => Ty,
-                      S        => Full_Name (Ty),
+                      S        => S,
                       W        => Attr_To_Why_Name (Attr));
    end New_Attribute_Expr;
 
