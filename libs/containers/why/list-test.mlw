@@ -2,124 +2,27 @@ module Main
 
   use import int.Int
   use import module ref.Ref
-  use import module list.Main
-
-
-(*** REDONDANT AXIOMS (for Alt-Ergo) *)
-
-
-lemma left_length :
-      forall s:list, cu:cursor, e:element_t [length (left_ s (next_ s cu))].
-      	     has_element s cu ->
-	     (length (left_ s cu)) + 1 = length (left_ s (next_ s cu))
-
-lemma right_equal :
-     forall s:list. forall cu:cursor. forall s2:list [strict_equal (right_ s (next_ s cu)) (right_ s2 (next_ s cu))].
-     	  has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
-	  strict_equal (right_ s (next_ s cu)) (right_ s2 (next_ s cu))
-
-lemma right_equal_next :
-     forall s:list. forall cu:cursor. forall s2:list [strict_equal (right_ s cu) (right_ s2 cu), next_ s cu].
-     	  has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
-	  next_ s cu = next_ s2 cu
-
-lemma right_insert :
-     forall l1:list. forall l2:list. forall cu1:cursor.
-     forall e:element_t [insert_ l1 cu1 e l2, strict_equal (right_ l1 cu1) (right_ l2 cu1)].
-     	    insert_ l1 cu1 e l2 -> strict_equal (right_ l1 cu1) (right_ l2 cu1)
-
-lemma next_insert :
-     forall l1:list. forall l2:list. forall cu1:cursor.
-     forall e:element_t [insert_ l1 cu1 e l2, next_ l2 cu1].
-      	    has_element l1 cu1 ->
-     	    insert_ l1 cu1 e l2 -> next_ l1 cu1 = next_ l2 cu1
-
-lemma insert_has_element :
-     forall l1:list, l2:list, cu1:cursor, cu2:cursor,
-     e:element_t [insert_ l1 cu1 e l2, has_element l2 cu2].
-     	    insert_ l1 cu1 e l2 -> has_element l1 cu2 -> has_element l2 cu2
-
-lemma right_delete :
-     forall l1:list, l2:list, cu1:cursor
-     [delete_ l1 cu1 l2, strict_equal (right_ l1 (next_ l1 cu1)) (right_ l2 (next_ l1 cu1))].
-      	    has_element l1 cu1 ->
-     	    delete_ l1 cu1 l2 -> strict_equal (right_ l1 (next_ l1 cu1)) (right_ l2 (next_ l1 cu1))
-
-lemma left_contains :
-      forall s:list, cu:cursor, e:element_t [contains (left_ s (next_ s cu)) e].
-      	     has_element s cu ->
-	     contains (left_ s (next_ s cu)) e -> contains (left_ s cu) e \/ equal_elements e (element_ s cu) = True
-
-lemma containsinsert :
-     forall l1:list, l2:list, cu:cursor. forall e:element_t.
-     forall el:element_t [insert_ l1 cu e l2, contains l1 el].
-     	    insert_ l1 cu e l2 -> contains l2 el -> equal_elements e el = True \/ contains l1 el
-
-goal interm1 :
-     forall l1:list, l2:list, cu:cursor. forall e:element_t.
-	insert_ l1 cu e l2 -> position_ l1 cu > 0 ->
-	position_ l2 (previous_ l2 cu) = position_ l1 cu
-
-goal interm2 :
-     forall l1:list, l2:list, cu:cursor. forall e:element_t.
-	insert_ l1 cu e l2 -> position_ l2 (last l2) = length l2
-
-goal interm3 :
-     forall l1:list, l2:list, cu:cursor. forall e:element_t.
-	insert_ l1 cu e l2 -> (position_ l1 cu > 0 ->
-	position_ l2 (previous_ l2 cu) = position_ l1 cu) ->
-        (position_ l2 (last l2) = length l2) -> contains l2 e
-
-axiom containsinsert_inv :
-     forall l1:list, l2:list, cu:cursor. forall e:element_t [insert_ l1 cu e l2, contains l2 e].
-	insert_ l1 cu e l2 -> contains l2 e
-
-lemma containsdelete :
-     forall l1:list, l2:list, cu:cursor.
-     forall el:element_t [delete_ l1 cu l2, contains l1 el].
-     	    delete_ l1 cu l2 -> contains l2 el -> contains l1 el
-
-lemma equal_refl :
-      forall l1:list. forall l2:list [strict_equal l1 l2 | strict_equal l2 l1].
-      	     strict_equal l1 l2 -> strict_equal l2 l1
-
-lemma equal_trans :
-      forall l1:list. forall l2:list. forall l3:list [strict_equal l2 l3, strict_equal l1 l3 | strict_equal l1 l2, strict_equal l1 l3].
-      	     strict_equal l1 l2 -> strict_equal l2 l3 -> strict_equal l1 l3
-
-goal interm4 :
-     forall l1:list. forall l2:list. forall cu1:cursor.
-     forall e:element_t.
-     	    replace_element_ l1 cu1 e l2 -> position_ l1 (next_ l1 cu1) = position_ l1 (next_ l2 cu1)
-
-goal interm5 :
-     forall l1:list. forall l2:list. forall cu1:cursor.
-     forall e:element_t.
-	replace_element_ l1 cu1 e l2 -> position_ l1 (next_ l1 cu1) = position_ l1 (next_ l2 cu1) ->
-	 next_ l1 cu1 = next_ l2 cu1
-
-axiom next_replace :
-     forall l1:list. forall l2:list. forall cu1:cursor.
-     forall e:element_t [replace_element_ l1 cu1 e l2, next_ l2 cu1].
-     	    replace_element_ l1 cu1 e l2 -> next_ l1 cu1 = next_ l2 cu1
-
-lemma right_replace :
-     forall l1:list. forall l2:list. forall cu1:cursor. forall e : element_t
-     [replace_element_ l1 cu1 e l2, right_ l2 (next_ l2 cu1)].
-     	    replace_element_ l1 cu1 e l2 -> strict_equal (right_ l2 (next_ l2 cu1)) (right_ l1 (next_ l2 cu1))
-
-lemma has_elementleft :
-     forall l:list. forall cu:cursor. forall cun:cursor
-     [has_element (left_ l (next_ l cu)) cun].
-      	    has_element l cu -> has_element (left_ l (next_ l cu)) cun -> has_element (left_ l cu) cun \/ cu = cun
+  use import module "list".Main
 
 (*** UNIT-TESTS ***)
 
+goal test_comp1:
+forall l1 l2 l3 l4 : list. forall e : element_t.
+insert_ l1 (first l1) e l2 ->
+delete_ l2 (first l1) l3 ->
+position_ l4 (previous_ l2 (first l1)) > 0 ->
+left_ l4 (previous_ l2 (first l1)) = l1 ->
+right_ l4 (previous_ l2 (first l1)) = l3 ->
+length l1 > 1 -> position_ l4 (last l1) = -1 /\ false
+
 predicate p element_t
 
-predicate p_forall_cont (co:list) =
-	  forall cu:cursor.
-	  	 has_element co cu -> p (element_ co cu)
+predicate p_forall_cont list
+
+axiom p_forall_cont_c:
+forall co:list [p_forall_cont co]. p_forall_cont co <->
+	  (forall cu:cursor [has_element co cu | element_ co cu].
+	  	 has_element co cu -> p (element_ co cu))
 
 let test_replace_element1 (co:ref list) (cu:cursor) (cun:cursor) (e:element_t) =
     { has_element !co cu /\ has_element !co cun /\ not cu = cun }
@@ -198,7 +101,7 @@ let test_right1 (co:list) (cu:cursor) (l:list) =
 let test_right2 (co1:list) (co2:list) (cu:cursor) =
     { has_element co2 cu /\ right_ co1 cu = right_ co2 cu }
     ()
-    { has_element co1 cu }
+    { cu <> no_element }
 
 let test_find (co:list) (cu:cursor) (e:element_t) =
     { has_element co cu /\ element_ co cu = e }
@@ -248,7 +151,7 @@ let test2 (li : ref list) (e : element_t) =
 
 (* adding elements to a list does not invalidate an existing cursor *)
 let test3 (li : ref list) (c d f g h : cursor) (e : element_t) =
-  { position_ !li c = 4 /\ has_element !li f /\ position_ !li h <> 0 }
+  { position_ !li c = 4 /\ has_element !li f /\ has_element !li h }
   insert li c e;
   append li e;
   if has_element !li d then
@@ -319,8 +222,10 @@ let test6 (li:ref list) (removed:ref list) =
 	(length (left_ !li !c)) + (length !removed) = length (left_ (at !li 'Init) !c) /\
       	strict_equal (right_ !li !c) (right_ (at !li 'Init) !c))
     }
+  'Iloop:
     if fun_test(element !li !c) then
-    interm6 li removed c
+    (interm6 li removed c(*;
+     assert {!c = next_ (at !li 'Init) (at !c 'Iloop)}*))
   done
    { (length !li) + (length !removed) = length (old !li) }
 
@@ -352,7 +257,7 @@ let my_find (s : list) (e : element_t) (f : cursor) =
     while has_element s !c do
       invariant {
         (has_element (right_ s f) !c \/ !c = no_element) /\
-        find (left_ (right_ s  f) !c) e f = no_element
+        find (left_ (right_ s  f) !c) e no_element = no_element
       }
       if equal_elements e (element s !c) then
         raise Return
@@ -365,7 +270,7 @@ let my_find (s : list) (e : element_t) (f : cursor) =
 function f element_t : element_t
 
 (* after map l s, every element in s has been transformed through f *)
-let map_f (s : ref list) =
+let map_f (s : ref list) (cu : cursor) =
   { }
   'Init :
   let c = ref (first !s) in
@@ -377,7 +282,7 @@ let map_f (s : ref list) =
      strict_equal (right_ (at !s 'Init) !c) (right_ !s !c)
     }
     replace_element s !c (f(element !s !c));
-    c := next !s !c   
+    c := next !s !c
   done
   { forall cu : cursor. has_element !s cu -> element_ !s cu = f (element_ (old !s) cu) }
 
@@ -393,8 +298,10 @@ predicate is_max (v:list) (cu:cursor) =
 function max_ list : cursor
 
 axiom is_max_max :
-      forall v:list.
-      	     (not (is_empty_ v) -> is_max v (max_ v))
+      forall v:list [max_ v].
+      	     (not (is_empty_ v) -> has_element v (max_ v) /\
+             (forall e:element_t [contains v e | compare_ (element_ v (max_ v)) e].
+                contains v e -> compare_ (element_ v (max_ v)) e >= 0))
 
 val max :
 	  v:list ->
