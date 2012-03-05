@@ -79,6 +79,13 @@ package body Why.Inter is
 
    package body Standard_Imports is
 
+      procedure Set_SI_Internal (E : Entity_Id);
+      --  Internal version of Set_SI doing all the work, with protection
+      --  against infinite recursion; is called by Set_SI
+
+      SI_Seen : Node_Sets.Set := Node_Sets.Empty_Set;
+      --  "Seen"-Set to infinite recursion of Set_SI_Internal
+
       -----------
       -- Clear --
       -----------
@@ -90,65 +97,91 @@ package body Why.Inter is
          end loop;
       end Clear;
 
+      ---------------------
+      -- Set_SI_Internal --
+      ---------------------
+
+      procedure Set_SI_Internal (E : Entity_Id) is
+      begin
+         if not (Nkind (E) in N_Entity) then
+            Set_SI_Internal (Etype (E));
+            return;
+         end if;
+         declare
+            UE : constant Unique_Entity_Id := Unique (E);
+         begin
+            if SI_Seen.Contains (+UE) then
+               return;
+            end if;
+            SI_Seen.Include (+UE);
+            if Ekind (+UE) in Object_Kind and then
+              not Object_Is_In_Alfa (UE) then
+               return;
+            end if;
+            if Ekind (+UE) in Type_Kind and then not Type_Is_In_Alfa (+UE) then
+               return;
+            end if;
+            if Is_Boolean_Type (+UE) then
+               Imports (SI_Boolean) := True;
+               Imports (SI_Integer) := True;
+            else
+               case Ekind (+UE) is
+               when Discrete_Kind | E_Named_Integer =>
+                  Imports (SI_Integer) := True;
+
+               when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
+                  Imports (SI_Float) := True;
+
+               when Array_Kind =>
+                  Imports (SI_Integer) := True;
+                  Set_SI_Internal (Component_Type (+UE));
+                  case Number_Dimensions (+UE) is
+                  when 1 =>
+                     Imports (SI_Array1) := True;
+                  when 2 =>
+                     Imports (SI_Array2) := True;
+                  when others =>
+                     raise Program_Error;
+                  end case;
+
+               when Private_Kind =>
+                  Set_SI_Internal (Underlying_Type (+UE));
+
+               when E_Record_Type | E_Record_Subtype =>
+
+                  --  We would like to use "Record_Kind" here, but there is
+                  --  some overlap with "Private_Kind"
+
+                  declare
+                     Field            : Node_Id := First_Entity (+UE);
+                  begin
+                     while Present (Field) loop
+                        Set_SI_Internal (Field);
+                        Next_Entity (Field);
+                     end loop;
+                  end;
+
+               when Object_Kind =>
+                  Set_SI (Etype (+UE));
+
+               when Subprogram_Kind =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+               end case;
+            end if;
+         end;
+      end Set_SI_Internal;
+
       ------------
       -- Set_SI --
       ------------
 
       procedure Set_SI (E : Entity_Id) is
       begin
-         if not (Nkind (E) in N_Entity) then
-            Set_SI (Etype (E));
-         elsif Is_Boolean_Type (E) then
-            Imports (SI_Boolean) := True;
-            Imports (SI_Integer) := True;
-         else
-            case Ekind (E) is
-            when Discrete_Kind | E_Named_Integer =>
-               Imports (SI_Integer) := True;
-
-            when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
-               Imports (SI_Float) := True;
-
-            when Array_Kind =>
-               Imports (SI_Integer) := True;
-               Set_SI (Component_Type (E));
-               case Number_Dimensions (E) is
-                  when 1 =>
-                     Imports (SI_Array1) := True;
-                  when 2 =>
-                     Imports (SI_Array2) := True;
-                  when others =>
-                     null;
-               end case;
-
-            when Private_Kind =>
-               Set_SI (Underlying_Type (E));
-
-            when E_Record_Type | E_Record_Subtype =>
-
-               --  We would like to use "Record_Kind" here, but there is some
-               --  overlap with "Private_Kind"
-
-               declare
-                  Field            : Node_Id := First_Entity (E);
-               begin
-                  while Present (Field) loop
-                     Set_SI (Field);
-                     Next_Entity (Field);
-                  end loop;
-               end;
-
-            when Object_Kind =>
-               Set_SI ((Etype (E)));
-
-            when Subprogram_Kind | Access_Kind | Protected_Kind | Task_Kind
-               | Class_Wide_Kind =>
-               null;
-
-            when others =>
-               raise Program_Error;
-            end case;
-         end if;
+         Set_SI_Internal (E);
+         SI_Seen.Clear;
       end Set_SI;
 
       ---------------
