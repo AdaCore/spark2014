@@ -268,13 +268,13 @@ package body Gnat2Why.Expr.Loops is
             LParam_Spec  : constant Node_Id :=
                              Loop_Parameter_Specification (Scheme);
             Loop_Range   : constant Node_Id :=
-                             Discrete_Subtype_Definition
-                               (LParam_Spec);
+              Discrete_Subtype_Definition (LParam_Spec);
+            Ent          : constant Entity_Id :=
+              Defining_Identifier (LParam_Spec);
             Loop_Index   : constant W_Identifier_Id :=
-                             New_Identifier
-                               (Name => Full_Name
-                                  (Defining_Identifier
-                                    (LParam_Spec)));
+              New_Identifier
+                (Ada_Node => Etype (Ent),
+                 Name => Full_Name (Ent));
             Index_Deref  : constant W_Prog_Id :=
                              New_Deref
                                (Ada_Node => Stmt,
