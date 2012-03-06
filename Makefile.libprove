@@ -30,7 +30,7 @@ EXCLUDE_OBJ:= \
 ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
 ALL_ALIS:=$(ALL_OBJS:.o=.ali)
 ALL_WHYPACK:=$(ALL_ALIS:.ali=__package.mlw)
-WHY_STANDARD:= _standard.mlw
+WHY_STANDARD:= _standard__package.mlw
 DUMMYFILE:= dummyfile
 
 all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
