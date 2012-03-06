@@ -468,7 +468,6 @@ is
          end if;
       end if;
 
-      Buffers.Buffer_Set_Payload (Buf, Buf_Entry_Pload, Lerr);
       if AIP.No (Err) then
          Err := Lerr;
       end if;
