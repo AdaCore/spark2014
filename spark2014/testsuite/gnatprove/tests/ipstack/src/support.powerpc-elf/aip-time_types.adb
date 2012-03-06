@@ -76,14 +76,8 @@ package body AIP.Time_Types is
    function Now return Time is
       use type PPC_Clock.Cycle_Type;
 
-      function Shift_Right
-        (Value  : PPC_Clock.Cycle_Type;
-         Amount : Natural) return PPC_Clock.Cycle_Type;
-      pragma Import (Intrinsic, Shift_Right);
-
    begin
-      return Time (Shift_Right (PPC_Clock.Get_Cycle_Counter, 16));
-      --  Approximation: the PPC clock runs at 66 MHz, not 65.536
+      return Time (PPC_Clock.Get_Cycle_Counter / (Clock_Hz / 1_000));
    end Now;
 
 end AIP.Time_Types;
