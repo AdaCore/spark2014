@@ -71,9 +71,10 @@ is
    --# global in out Buffers.State, IP.State, State; in IP.FIB;
    --  Send BUF data to the current destination endpoint of PCB, as
    --  established by UDP_Connect. Force a local binding on PCB if none is
-   --  setup already. BUF is not deallocated and its payload pointer is
-   --  preserved. However, the room available in front of the payload might
-   --  be clobbered for protocol headers if it is wide enough.
+   --  setup already. Buf is not deallocated, however its payload pointer
+   --  is moved (and must not be changed by the caller), and the room available
+   --  in front of the payload might be clobbered for protocol headers if it is
+   --  wide enough.
    --
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
