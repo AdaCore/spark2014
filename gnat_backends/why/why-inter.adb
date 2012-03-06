@@ -147,16 +147,15 @@ package body Why.Inter is
                when Private_Kind =>
                   Set_SI_Internal (Underlying_Type (+UE));
 
-               when E_Record_Type | E_Record_Subtype =>
-
-                  --  We would like to use "Record_Kind" here, but there is
-                  --  some overlap with "Private_Kind"
+               when E_Record_Type =>
 
                   declare
                      Field            : Node_Id := First_Entity (+UE);
                   begin
                      while Present (Field) loop
-                        Set_SI_Internal (Field);
+                        if Ekind (Field) in Object_Kind then
+                           Set_SI_Internal (Etype (Field));
+                        end if;
                         Next_Entity (Field);
                      end loop;
                   end;
