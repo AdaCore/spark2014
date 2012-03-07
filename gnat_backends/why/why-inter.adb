@@ -318,8 +318,7 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory (P             : in out Why_File;
-                           No_Imports    : Boolean := False;
-                           Filter_Entity : Entity_Id := Empty)
+                           Filter_Entity : Entity_Id)
    is
 
       function File_Base_Name_Of_Entity (E : Entity_Id) return String;
@@ -394,79 +393,79 @@ package body Why.Inter is
 
       Standard_Imports.Clear;
 
-      if not No_Imports then
-         Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
+      Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
 
-         --  S contains all mentioned Ada entities; for each, we get the
-         --  unit where it was defined and add it to the unit set
+      --  S contains all mentioned Ada entities; for each, we get the
+      --  unit where it was defined and add it to the unit set
 
-         if Present (Filter_Entity) then
-            Standard_Imports.Set_SI (Filter_Entity);
+      if Present (Filter_Entity) then
+         Standard_Imports.Set_SI (Filter_Entity);
+      end if;
+
+      for N of S loop
+
+         --  Loop parameters may appear, but they do not have a Why
+         --  declaration; we skip them here. We also need to protect against
+         --  nodes that are not entities, such as string literals
+
+         if N /= Filter_Entity and then
+           (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
+           and then
+             (if Nkind (N) in N_Entity then Unique_Entity (N) /= Filter_Entity)
+         then
+            declare
+               File_Name   : constant String :=
+                 File_Base_Name_Of_Entity (N) &
+                 Why_File_Suffix (Dispatch_Entity (N));
+               Theory_Name : constant String :=
+                 Name_of_Node (N);
+               Import      : constant EW_Clone_Type :=
+                 Import_Type_Of_Entity (N);
+            begin
+               Standard_Imports.Set_SI (N);
+               if File_Name /= P.Name.all then
+                  Add_With_Clause (P, File_Name, Theory_Name, Import);
+               else
+                  Add_With_Clause (P, "", Theory_Name, Import);
+               end if;
+            end;
          end if;
+      end loop;
 
-         for N of S loop
+      --  We add the dependencies to Gnatprove_Standard theories that may
+      --  have been triggered
 
-            --  Loop parameters may appear, but they do not have a Why
-            --  declaration; we skip them here. We also need to protect against
-            --  nodes that are not entities, such as string literals
+      declare
+         use Standard_Imports;
+      begin
+         for Index in Imports'Range loop
+            if Imports (Index) then
+               Add_With_Clause (P,
+                                Gnatprove_Standard,
+                                To_String (Index),
+                                EW_Clone_Default);
 
-            if N /= Filter_Entity and then
-              (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
-            then
-               declare
-                  File_Name   : constant String :=
-                    File_Base_Name_Of_Entity (N) &
-                    Why_File_Suffix (Dispatch_Entity (N));
-                  Theory_Name : constant String :=
-                    Name_of_Node (N);
-                  Import      : constant EW_Clone_Type :=
-                    Import_Type_Of_Entity (N);
-               begin
-                  Standard_Imports.Set_SI (N);
-                  if File_Name /= P.Name.all then
-                     Add_With_Clause (P, File_Name, Theory_Name, Import);
-                  else
-                     Add_With_Clause (P, "", Theory_Name, Import);
-                  end if;
-               end;
+               --  Two special cases for infix symbols; these are the only
+               --  theories (as opposed to modules) that are used, and the
+               --  only ones to be "use import"ed
+
+               if Index = SI_Integer then
+                  Add_With_Clause (P,
+                                   "int",
+                                   "Int",
+                                   EW_Import,
+                                   EW_Theory);
+               elsif Index = SI_Float then
+                  Add_With_Clause (P,
+                                   "real",
+                                   "RealInfix",
+                                   EW_Import,
+                                   EW_Theory);
+
+               end if;
             end if;
          end loop;
-
-         --  We add the dependencies to Gnatprove_Standard theories that may
-         --  have been triggered
-
-         declare
-            use Standard_Imports;
-         begin
-            for Index in Imports'Range loop
-               if Imports (Index) then
-                  Add_With_Clause (P,
-                                   Gnatprove_Standard,
-                                   To_String (Index),
-                                   EW_Clone_Default);
-
-                  --  Two special cases for infix symbols; these are the only
-                  --  theories (as opposed to modules) that are used, and the
-                  --  only ones to be "use import"ed
-
-                  if Index = SI_Integer then
-                     Add_With_Clause (P,
-                                      "int",
-                                      "Int",
-                                      EW_Import,
-                                      EW_Theory);
-                  elsif Index = SI_Float then
-                     Add_With_Clause (P,
-                                      "real",
-                                      "RealInfix",
-                                      EW_Import,
-                                      EW_Theory);
-
-                  end if;
-               end if;
-            end loop;
-         end;
-      end if;
+      end;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
@@ -736,7 +735,8 @@ package body Why.Inter is
 
       if Ekind (E) = E_Component then
          declare
-            Field : constant String := Get_Name_String (Chars (E));
+            Field : constant String :=
+              "rec__" & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id := Scope (E);
          begin
             if Local then

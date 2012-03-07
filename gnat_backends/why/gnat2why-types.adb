@@ -26,7 +26,6 @@
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
-with Namet;              use Namet;
 with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
@@ -37,7 +36,6 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
-with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Sinfo;          use Why.Sinfo;
@@ -245,17 +243,12 @@ package body Gnat2Why.Types is
                   begin
                      while Present (Field) loop
                         if Ekind (Field) in Object_Kind then
-                           declare
-                              C_Name : constant String :=
-                                Get_Name_String (Chars (Field));
-                           begin
-                              J := J + 1;
-                              Binders (J) :=
-                                (B_Name => New_Identifier (Name => C_Name),
-                                 B_Type =>
-                                   Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                                 others => <>);
-                           end;
+                           J := J + 1;
+                           Binders (J) :=
+                             (B_Name => To_Why_Id (Field, Local => True),
+                              B_Type =>
+                                Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                              others => <>);
                         end if;
 
                         Next_Entity (Field);

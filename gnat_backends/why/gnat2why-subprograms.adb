@@ -526,7 +526,7 @@ package body Gnat2Why.Subprograms is
                   (Statements
                      (Handled_Statement_Sequence (Body_N))),
               New_Ignore (Prog => Post_Check))));
-      Close_Theory (File);
+      Close_Theory (File, Filter_Entity => E);
    end Generate_VCs_For_Subprogram_Body;
 
    --------------------------------------
@@ -556,7 +556,7 @@ package body Gnat2Why.Subprograms is
             Name    => New_Pre_Check_Name.Id (Name),
             Binders => Binders,
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
-      Close_Theory (File);
+      Close_Theory (File, Filter_Entity => E);
    end Generate_VCs_For_Subprogram_Spec;
 
    ------------------------------------

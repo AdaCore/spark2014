@@ -328,13 +328,11 @@ package body Gnat2Why.Driver is
             if Type_Is_In_Alfa (E) then
                Translate_Type (File, E);
             else
-               declare
-                  Name : constant String := Full_Name (E);
-               begin
-                  Open_Theory (File, Name);
-                  Emit (File.Cur_Theory, New_Type (Name));
-                  Close_Theory (File);
-               end;
+               Open_Theory (File, Full_Name (E));
+               Emit (File.Cur_Theory,
+                     New_Type (Name => To_Why_Id (E, Local => True),
+                               Args => 0));
+               Close_Theory (File, Filter_Entity => E);
             end if;
 
          when Named_Kind =>
