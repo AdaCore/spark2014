@@ -749,8 +749,7 @@ package body Alfa.Frame_Conditions is
                               Alfa_Scope_Table.Table (S);
                      Xref : Alfa_Xref_Record renames Alfa_Xref_Table.Table (X);
 
-                     File_Entity : constant Entity_Name :=
-                                     Make_Entity_Name (Frec.File_Name);
+                     File_Entity : Entity_Name;
                      Ref_Entity : constant Entity_Name :=
                                      Make_Entity_Name (Xref.Entity_Name);
 
@@ -762,6 +761,16 @@ package body Alfa.Frame_Conditions is
                   --  Start of processing for Do_One_Xref
 
                   begin
+                     --  For a subunit, retrieve the file name of the unit
+                     --  instead of the file name of the subunit, as only unit
+                     --  names are relevant in the generated Why code.
+
+                     if Frec.Unit_File_Name /= null then
+                        File_Entity := Make_Entity_Name (Frec.Unit_File_Name);
+                     else
+                        File_Entity := Make_Entity_Name (Frec.File_Name);
+                     end if;
+
                      --  Compute the entity for the scope being referenced
 
                      Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
