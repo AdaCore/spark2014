@@ -35,6 +35,7 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Binders;    use Why.Gen.Binders;
@@ -166,7 +167,6 @@ package body Gnat2Why.Types is
    is
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
-         Name   : String;
          E      : Entity_Id);
       --  Translate a non-private type entity E
 
@@ -176,7 +176,6 @@ package body Gnat2Why.Types is
 
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
-         Name   : String;
          E      : Entity_Id) is
       begin
          if E = Standard_Boolean or else
@@ -232,7 +231,7 @@ package body Gnat2Why.Types is
                   --  empty records to type unit in Why?
 
                   if Number_Of_Fields = 0 then
-                     Emit (Theory, New_Type (Name));
+                     Emit (Theory, New_Type (To_String (WNE_Type)));
                      return;
                   end if;
 
@@ -274,7 +273,7 @@ package body Gnat2Why.Types is
       end loop;
 
       Open_Theory (File, Name);
-      Translate_Underlying_Type (File.Cur_Theory, Name, Underlying_E);
+      Translate_Underlying_Type (File.Cur_Theory, Underlying_E);
       Close_Theory (File, Filter_Entity => E);
    end Translate_Type;
 
