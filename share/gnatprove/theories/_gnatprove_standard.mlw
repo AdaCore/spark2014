@@ -99,47 +99,47 @@ module Floating
 
   (* Boolean comparison functions for reals *)
 
-  function bool_real__lt real real : bool
+  function bool_lt real real : bool
 
-  function bool_real__le real real : bool
+  function bool_le real real : bool
 
-  function bool_real__gt real real : bool
+  function bool_gt real real : bool
 
-  function bool_real__ge real real : bool
+  function bool_ge real real : bool
 
-  function bool_real__eq real real : bool
+  function bool_eq real real : bool
 
-  function bool_real__neq real real : bool
+  function bool_neq real real : bool
 
   axiom Bool_real__lt_axiom:
     forall x:real.
     forall y:real.
-      bool_real__lt x y = True <-> x <. y
+      bool_lt x y = True <-> x <. y
 
   axiom Bool_real__le_axiom:
     forall x:real.
     forall y:real.
-      bool_real__le x y = True <-> x <=. y
+      bool_le x y = True <-> x <=. y
 
   axiom Bool_real__gt_axiom:
     forall x:real.
     forall y:real.
-        bool_real__gt x y = True <-> x >. y
+        bool_gt x y = True <-> x >. y
 
   axiom Bool_real__ge_axiom:
     forall x:real.
     forall y:real.
-      bool_real__ge x y = True <-> x >=. y
+      bool_ge x y = True <-> x >=. y
 
   axiom Bool_real__eq_axiom:
     forall x:real.
     forall y:real.
-      bool_real__eq x y = True <-> x = y
+      bool_eq x y = True <-> x = y
 
   axiom Bool_real__neq_axiom:
     forall x:real.
     forall y:real.
-       bool_real__neq x y = True <-> x <> y
+       bool_neq x y = True <-> x <> y
 
   function div_real (x : real) (y : real) : real = x /. y
 
