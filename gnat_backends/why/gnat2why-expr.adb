@@ -236,6 +236,20 @@ package body Gnat2Why.Expr is
    --  Translate an assignment of the form "Lvalue := Expr",
    --  using Ada_Node for its source location.
 
+   function Transform_Actions
+     (Actions : List_Id;
+      Expr    : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Translation_Params) return W_Expr_Id;
+   --  Translate a list of Actions, that should consist only in declarations of
+   --  constants used in Expr.
+
+   procedure Transform_Actions_Preparation
+     (Actions : List_Id;
+      Params  : in out Translation_Params);
+   --  Update the map in Params for taking into account the names for
+   --  declarations of constants in Actions.
+
    function Transform_Attr
      (Expr          : Node_Id;
       Domain        : EW_Domain;
@@ -1241,6 +1255,69 @@ package body Gnat2Why.Expr is
                                          Params),
            Expr      => T);
    end Range_Expr;
+
+   -----------------------
+   -- Transform_Actions --
+   -----------------------
+
+   function Transform_Actions
+     (Actions : List_Id;
+      Expr    : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Translation_Params) return W_Expr_Id
+   is
+      T : W_Expr_Id;
+      N : Node_Id;
+
+      Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Pred then EW_Term else Domain);
+
+   begin
+      T := Expr;
+      N := First (Actions);
+      while Present (N) loop
+         pragma Assert (Nkind (N) = N_Object_Declaration
+                         and then Constant_Present (N));
+
+         T := New_Binding
+           (Domain   => Subdomain,
+            Name     =>
+              New_Identifier (Name => Full_Name (Defining_Identifier (N))),
+            Def      => +Transform_Expr (Expression (N), Subdomain, Params),
+            Context  => T);
+
+         Next (N);
+      end loop;
+
+      return T;
+   end Transform_Actions;
+
+   -----------------------------------
+   -- Transform_Actions_Preparation --
+   -----------------------------------
+
+   procedure Transform_Actions_Preparation
+     (Actions : List_Id;
+      Params  : in out Translation_Params)
+   is
+      N  : Node_Id;
+      Id : W_Identifier_Id;
+
+   begin
+      N := First (Actions);
+      while Present (N) loop
+         pragma Assert (Nkind (N) = N_Object_Declaration
+                         and then Constant_Present (N));
+
+         Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
+
+         Ada_Ent_To_Why.Insert (Params.Name_Map,
+                                Defining_Identifier (N),
+                                +Id);
+
+         Next (N);
+      end loop;
+   end Transform_Actions_Preparation;
 
    -------------------------------
    -- Transform_Array_Aggregate --
@@ -2585,18 +2662,35 @@ package body Gnat2Why.Expr is
             Current_Type := EW_Bool_Type;
 
          when N_And_Then =>
-            T :=
-               New_And_Then_Expr
-                 (Left   => Transform_Expr (Left_Opnd (Expr),
-                                            Current_Type,
-                                            Domain,
-                                            Params),
-                  Right  => Transform_Expr (Right_Opnd (Expr),
-                                            Current_Type,
-                                            Domain,
-                                            Params),
-                  Domain => Domain);
-            Current_Type := EW_Bool_Type;
+            declare
+               Local_Params : Translation_Params := Params;
+
+            begin
+               if Present (Actions (Expr)) then
+                  Transform_Actions_Preparation (Actions (Expr), Local_Params);
+               end if;
+
+               T :=
+                 New_And_Then_Expr
+                   (Left   => Transform_Expr (Left_Opnd (Expr),
+                    Current_Type,
+                    Domain,
+                    Local_Params),
+                    Right  => Transform_Expr (Right_Opnd (Expr),
+                      Current_Type,
+                      Domain,
+                      Local_Params),
+                    Domain => Domain);
+
+               if Present (Actions (Expr)) then
+                  T := Transform_Actions (Actions (Expr),
+                                          T,
+                                          Domain,
+                                          Local_Params);
+               end if;
+
+               Current_Type := EW_Bool_Type;
+            end;
 
          when N_Or_Else =>
             T :=

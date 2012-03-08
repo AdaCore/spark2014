@@ -427,6 +427,10 @@ package body Alfa.Definition is
    -- Local Subprograms --
    -----------------------
 
+   function Acceptable_Actions (L : List_Id) return Boolean;
+   --  Return whether L is a list of acceptable actions, which can be
+   --  translated into Why.
+
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code as in Alfa / not in Alfa
 
@@ -674,6 +678,31 @@ package body Alfa.Definition is
 
    function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean is
      (All_Types.Contains (+Id));
+
+   ------------------------
+   -- Acceptable_Actions --
+   ------------------------
+
+   function Acceptable_Actions (L : List_Id) return Boolean is
+      N : Node_Id;
+
+   begin
+      N := First (L);
+      while Present (N) loop
+         --  Only actions that consist in N_Object_Declaration nodes for
+         --  constants are translated.
+
+         if Nkind (N) /= N_Object_Declaration
+           or else not Constant_Present (N)
+         then
+            return False;
+         end if;
+
+         Next (N);
+      end loop;
+
+      return True;
+   end Acceptable_Actions;
 
    ----------------------------
    -- Close_Alfa_Output_File --
@@ -1250,8 +1279,11 @@ package body Alfa.Definition is
 
          when N_Short_Circuit =>
             if Present (Actions (N)) then
-               Mark_Non_Alfa
-                 ("expression with action", N, NYI_Expr_With_Action);
+               Mark_List (Actions (N));
+               if not Acceptable_Actions (Actions (N)) then
+                  Mark_Non_Alfa
+                    ("expression with action", N, NYI_Expr_With_Action);
+               end if;
             end if;
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
