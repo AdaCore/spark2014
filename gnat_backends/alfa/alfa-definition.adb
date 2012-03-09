@@ -269,6 +269,9 @@ package body Alfa.Definition is
       procedure Pop_Logic_Scope;
       --  Remove the top scope in the stack, which should be a logic scope
 
+      function In_Logic_Scope return Boolean;
+      --  Return whether the top scope in the stack is a logic scope
+
       function Formal_Proof_Currently_Disabled return Boolean;
       --  Determine the most top-level scope to have formal proof forced or
       --  disabled, and return True if formal proof is disabled. Return False
@@ -348,6 +351,16 @@ package body Alfa.Definition is
          end loop;
          return False;
       end Formal_Proof_Currently_Forced;
+
+      --------------------
+      -- In_Logic_Scope --
+      --------------------
+
+      function In_Logic_Scope return Boolean is
+         Cur_Scop : Scope_Record renames Scope_Table.Table (Scope_Table.Last);
+      begin
+         return Cur_Scop.Is_Logic;
+      end In_Logic_Scope;
 
       -------------
       -- Iterate --
@@ -679,6 +692,119 @@ package body Alfa.Definition is
 
    function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean is
      (All_Types.Contains (+Id));
+
+   ------------------------------------
+   -- Aggregate_Is_Fully_Initialized --
+   ------------------------------------
+
+   function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean is
+
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean;
+      --  Return whether Association matches Component
+
+      ------------------------------------
+      -- Matching_Component_Association --
+      ------------------------------------
+
+      function Matching_Component_Association
+        (Component   : Entity_Id;
+         Association : Node_Id) return Boolean
+      is
+         CL : constant List_Id := Choices (Association);
+      begin
+         pragma Assert (List_Length (CL) = 1);
+         return Component = Entity (First (CL));
+      end Matching_Component_Association;
+
+      Typ         : constant Entity_Id := Etype (N);
+      Assocs      : List_Id;
+      Component   : Entity_Id;
+      Association : Node_Id;
+
+   --  Start of Aggregate_Is_Fully_Initialized
+
+   begin
+      if Is_Record_Type (Typ) then
+         pragma Assert (No (Expressions (N)));
+
+         Assocs      := Component_Associations (N);
+         Component   := First_Component (Typ);
+         Association := First (Assocs);
+
+         while Component /= Empty loop
+            if Present (Association)
+              and then Matching_Component_Association (Component, Association)
+            then
+               if Box_Present (Association) then
+                  return False;
+               end if;
+               Next (Association);
+            else
+               return False;
+            end if;
+            Component := Next_Component (Component);
+         end loop;
+
+      else
+         pragma Assert (Is_Array_Type (Typ) or else Is_String_Type (Typ));
+
+         Assocs := Component_Associations (N);
+
+         if Present (Assocs) then
+            Association := First (Assocs);
+
+            while Present (Association) loop
+               if Box_Present (Association) then
+                  return False;
+               end if;
+               Next (Association);
+            end loop;
+         end if;
+      end if;
+
+      return True;
+   end Aggregate_Is_Fully_Initialized;
+
+   ------------------------------------------
+   -- All_Aggregates_Are_Fully_Initialized --
+   ------------------------------------------
+
+   function All_Aggregates_Are_Fully_Initialized
+     (N : Node_Id) return Boolean
+   is
+      Aggregate_Not_Fully_Initialized : Boolean := False;
+
+      function Check_Aggregate (N : Node_Id) return Traverse_Result;
+      --  Set Aggregate_Not_Fully_Initialized to True if N is an aggregate not
+      --  fully initialized.
+
+      ---------------------
+      -- Check_Aggregate --
+      ---------------------
+
+      function Check_Aggregate (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Aggregate
+           and then not Aggregate_Is_Fully_Initialized (N)
+         then
+            Aggregate_Not_Fully_Initialized := False;
+            return Abandon;
+         else
+            return OK;
+         end if;
+      end Check_Aggregate;
+
+      function Traverse_Aggregate is new Traverse_Func (Check_Aggregate);
+
+      Ignored : Traverse_Final_Result;
+      pragma Unreferenced (Ignored);
+
+   begin
+      Ignored := Traverse_Aggregate (N);
+      return not Aggregate_Not_Fully_Initialized;
+   end All_Aggregates_Are_Fully_Initialized;
 
    ----------------------------
    -- Close_Alfa_Output_File --
@@ -1045,6 +1171,18 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
+            --  In logic scopes (pre/post and assertions), aggregates should
+            --  be completely initialized to be in Alfa, otherwise they do not
+            --  have a logic interpretation. In that latter case, mark N as non
+            --  Alfa.
+
+            if In_Logic_Scope
+              and then not Aggregate_Is_Fully_Initialized (N)
+            then
+               Mark_Non_Alfa ("aggregate in logic not fully initialized",
+                              N, NIR_Uninit_Logic_Expr);
+            end if;
+
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
 

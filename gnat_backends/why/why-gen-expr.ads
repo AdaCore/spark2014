@@ -100,13 +100,6 @@ package Why.Gen.Expr is
    --  This means: associate a fresh Why Identifier to the source location of
    --  the Ada Node, and return the identifier.
 
-   function New_Simpl_Any_Expr
-     (Domain   : EW_Domain;
-      Arg_Type : W_Primitive_Type_Id) return W_Expr_Id;
-   --  Build a "any" expression whose type is a simple type. In Prog domain,
-   --  this is translated into an "any", and in the Term domain as an
-   --  "epsilon".
-
    function New_Range_Expr
      (Domain    : EW_Domain;
       Base_Type : W_Base_Type_Id;
@@ -114,12 +107,6 @@ package Why.Gen.Expr is
       Expr      : W_Expr_Id) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
-
-   function New_Simpl_Any_Expr
-     (Domain   : EW_Domain;
-      Arg_Type : W_Primitive_Type_Id;
-      Id       : W_Identifier_OId;
-      Pred     : W_Pred_Id) return W_Expr_Id;
 
    function Insert_Conversion
       (Domain   : EW_Domain;

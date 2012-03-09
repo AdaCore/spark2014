@@ -2341,10 +2341,9 @@ package body Gnat2Why.Expr is
                         T := +Ada_To_Why_Term (Params.Ref_Allowed).
                           Element (Expr);
                      else
-                        T := New_Simpl_Any_Expr
-                          (Domain   => Domain,
-                           Arg_Type => +BT,
-                           Id       => Id,
+                        pragma Assert (Domain = EW_Prog);
+                        T := +New_Simpl_Any_Prog
+                          (T => +BT,
                            Pred     =>
                              Transform_Array_Component_Associations
                                (Expr,
@@ -3201,18 +3200,18 @@ package body Gnat2Why.Expr is
                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)),
                      Domain, Params);
                else
+                  pragma Assert (Domain = EW_Prog);
                   Expr :=
-                     New_Simpl_Any_Expr
-                         (Domain => Domain,
-                          Arg_Type =>
+                     +New_Simpl_Any_Prog
+                         (T =>
                             +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
                end if;
                Next (Association);
             else
+               pragma Assert (Domain = EW_Prog);
                Expr :=
-                 New_Simpl_Any_Expr
-                   (Domain => Domain,
-                    Arg_Type =>
+                 +New_Simpl_Any_Prog
+                   (T =>
                       +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
             end if;
             Result (J) :=

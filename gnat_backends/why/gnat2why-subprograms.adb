@@ -26,6 +26,7 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
 with Alfa;                  use Alfa;
+with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Atree;                 use Atree;
@@ -101,8 +102,10 @@ package body Gnat2Why.Subprograms is
    procedure Translate_Expression_Function_Body
      (File   : in out Why_File;
       E      : Entity_Id);
-   --  Generate a Why axiom that, given a function F with expression E,
-   --  states that: "for all <args> => F(<args>) = E".
+   --  Generate a Why axiom that, given a function F with expression E, states
+   --  that: "for all <args> => F(<args>) = E". The axiom is only generated if
+   --  the body of the expression function only contains aggregates that are
+   --  fully initialized.
 
    function Compute_Args
      (E       : Entity_Id;
@@ -619,7 +622,18 @@ package body Gnat2Why.Subprograms is
         To_Why_Id (E, Domain => EW_Term, Local => True);
 
       Params : Translation_Params;
+
    begin
+      --  If the body of the expression function contains aggregates that are
+      --  not fully initialized, skip the definition of an axiom for this
+      --  expression function.
+
+      if not
+        All_Aggregates_Are_Fully_Initialized (Expression (Expr_Fun_N))
+      then
+         return;
+      end if;
+
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,

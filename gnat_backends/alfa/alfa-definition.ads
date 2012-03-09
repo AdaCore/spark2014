@@ -27,6 +27,14 @@ with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package Alfa.Definition is
 
+   function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
+   --  Return whether aggregate N is fully initialized
+
+   function All_Aggregates_Are_Fully_Initialized
+     (N : Node_Id) return Boolean;
+   --  Return whether all aggregates in node N (recursively) are fully
+   --  initialized.
+
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all
    --  compilation units on which it depends have been marked.
