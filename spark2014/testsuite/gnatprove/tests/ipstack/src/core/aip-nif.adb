@@ -35,6 +35,11 @@ package body AIP.NIF is
       Remote            : IPaddrs.IPaddr;
       --  Remote address (case of a point-to-point interface)
 
+      Offload_Checksums : Boolean;
+      --  True for devices that support checksum offloading. In that case,
+      --  TCP, UDP, and IP checksums are set to 0 on output and ignored on
+      --  input.
+
       Configured_CB     : System.Address;
       --  Low-level configuration callback (called by If_Config)
       --  procedure C (Nid; Err : out Err_T);
@@ -178,6 +183,7 @@ package body AIP.NIF is
                           Mask              => IPaddrs.IP_ADDR_ANY,
                           Broadcast         => IPaddrs.IP_ADDR_ANY,
                           Remote            => IPaddrs.IP_ADDR_ANY,
+                          Offload_Checksums => False,
                           Configured_CB     => System.Null_Address,
                           Input_CB          => System.Null_Address,
                           Output_CB         => System.Null_Address,
@@ -270,6 +276,15 @@ package body AIP.NIF is
    begin
       return NIFs (Nid).MTU;
    end NIF_MTU;
+
+   -----------------------
+   -- Offload_Checksums --
+   -----------------------
+
+   function Offload_Checksums (Nid : Netif_Id) return Boolean is
+   begin
+      return NIFs (Nid).Offload_Checksums;
+   end Offload_Checksums;
 
    ------------
    -- Output --

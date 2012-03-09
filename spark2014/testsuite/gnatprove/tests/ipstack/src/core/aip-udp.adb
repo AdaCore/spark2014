@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -90,8 +90,6 @@ is
       --# global in out Buffers.State; in Bound_PCBs, IPCBs, UPCBs;
 
    is
-      pragma Unreferenced (Netif);
-      --# accept F,30,Netif,"Unreferenced formal";
       Ihdr, Uhdr, PUhdr : System.Address;
 
       PUH_Buf  : Buffers.Buffer_Id;
@@ -129,8 +127,9 @@ is
 
          Buffers.Buffer_Chain (PUH_Buf, Buf);
 
-         if Checksum.Sum (PUH_Buf, Buffers.Buffer_Tlen (PUH_Buf))
-              /= 16#ffff#
+         if not NIF.Offload_Checksums (Netif)
+              and then Checksum.Sum (PUH_Buf, Buffers.Buffer_Tlen (PUH_Buf))
+                         /= 16#ffff#
          then
             Err := AIP.ERR_VAL;
          end if;
@@ -363,40 +362,47 @@ is
             UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
             UDPH.Set_UDPH_Length   (Uhdr, Ulen);
 
-            --  Checksum computation and assignment.
-
-            --  Expose room for a temporary pseudo-header and fill it in. The
-            --  length we store here is that of the original dgram. We expect
-            --  room to be available already, anticipated for the IP and link
-            --  layers downstack and not yet filled with anything of use.
-
-            --# accept F, 10, Err, "Assignment is ineffective";
-            Buffers.Buffer_Header
-              (Ubuf, UDPH.UDP_Pseudo_Header_Size / 8, Err);
-            pragma Assert (No (Err));
-            --# end accept;
-
-            PUhdr := Buffers.Buffer_Payload (Ubuf);
-            UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
-            UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
-            UDPH.Set_UDPP_Zero        (PUhdr, 0);
-            UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
-            UDPH.Set_UDPP_Length      (PUhdr, Ulen);
-
-            --  Compute the actual checksum, including pseudo-header. This
-            --  relies on a preliminary initialization of the checksum field.
+            --  Checksum computation and assignment
 
             UDPH.Set_UDPH_Checksum (Uhdr, 0);
-            UDPH.Set_UDPH_Checksum
-              (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
 
-            --  Remove pseudo-header
+            if not NIF.Offload_Checksums (Netif) then
 
-            --# accept F, 10, Err, "Assignment is ineffective";
-            Buffers.Buffer_Header
-              (Ubuf, -UDPH.UDP_Pseudo_Header_Size / 8, Err);
-            pragma Assert (No (Err));
-            --# end accept;
+               --  Expose room for a temporary pseudo-header and fill it in.
+               --  The length we store here is that of the original datagram.
+               --  We expect room to be available already, anticipated for the
+               --  IP and link layers downstack and not yet filled with
+               --  anything of use.
+
+               --# accept F, 10, Err, "Assignment is ineffective";
+               Buffers.Buffer_Header
+                 (Ubuf, UDPH.UDP_Pseudo_Header_Size / 8, Err);
+               pragma Assert (No (Err));
+               --# end accept;
+
+               PUhdr := Buffers.Buffer_Payload (Ubuf);
+               UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
+               UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
+               UDPH.Set_UDPP_Zero        (PUhdr, 0);
+               UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
+               UDPH.Set_UDPP_Length      (PUhdr, Ulen);
+
+               --  Compute the actual checksum, including pseudo-header. This
+               --  relies on the above initialization of the checksum field to
+               --  zero.
+
+               UDPH.Set_UDPH_Checksum
+                 (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
+
+               --  Remove pseudo-header
+
+               --# accept F, 10, Err, "Assignment is ineffective";
+               Buffers.Buffer_Header
+                 (Ubuf, -UDPH.UDP_Pseudo_Header_Size / 8, Err);
+               pragma Assert (No (Err));
+               --# end accept;
+
+            end if;
 
             --  Now ready to pass to IP
 

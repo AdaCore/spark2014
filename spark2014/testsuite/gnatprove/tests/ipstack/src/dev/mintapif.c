@@ -531,6 +531,9 @@ mintapif_init (char *Params, Err_T *Err, Netif_Id *Nid)
 
   netif->Name[0] = IFNAME0;
   netif->Name[1] = IFNAME1;
+
+  netif->Offload_Checksums = 0;
+
   netif->Configured_CB  = mintapif_configured;
   netif->Input_CB       = AIP_ip_input;
   netif->Output_CB      = AIP_arp_output;

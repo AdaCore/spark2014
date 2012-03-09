@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Network Interface abstraction
@@ -56,6 +56,9 @@ package AIP.NIF is
      (Nid  : Netif_Id;
       Addr : IPaddrs.IPaddr) return Boolean;
    --  True if Addr is a broadcast address for Nid
+
+   function Offload_Checksums (Nid : Netif_Id) return Boolean;
+   --  True if the driver for Nid supports checksum offloading
 
    procedure Get_Netif_By_Address
      (Addr : IPaddrs.IPaddr;

@@ -102,6 +102,8 @@ typedef struct netif {
   IPaddr      Broadcast;
   IPaddr      Remote;
 
+  char        Offload_Checksums;
+
   void      (*Configured_CB) (Netif_Id, Err_T *);
   void      (*Input_CB) (Netif_Id, Buffer_Id);
   void      (*Output_CB) (Netif_Id, Buffer_Id, IPaddr);

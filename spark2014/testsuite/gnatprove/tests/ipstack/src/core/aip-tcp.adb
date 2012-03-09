@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -538,8 +538,11 @@ is
       --  a preliminary initialization of the checksum field.
 
       TCPH.Set_TCPH_Checksum (Thdr, 0);
-      TCPH.Set_TCPH_Checksum
-        (Thdr, not Checksum.Sum (Tbuf, Buffers.Buffer_Tlen (Tbuf)));
+
+      if not NIF.Offload_Checksums (TPCB.Next_Hop_Netif) then
+         TCPH.Set_TCPH_Checksum
+           (Thdr, not Checksum.Sum (Tbuf, Buffers.Buffer_Tlen (Tbuf)));
+      end if;
 
       --  Remove pseudo-header
 
@@ -2577,9 +2580,6 @@ is
    --# global in out All_PCBs, TPCBs, IPCBs, IP.State, Buffers.State;
    --#        in IP.FIB, Boot_Time, TCP_Ticks;
    is
-      pragma Unreferenced (Netif);
-      --# accept F,30,Netif,"Unreferenced formal";
-
       Seg : Segment;
 
       PThdr : System.Address;
@@ -2694,8 +2694,9 @@ is
 
          Buffers.Buffer_Chain (PTH_Buf, Buf);
 
-         if Checksum.Sum (PTH_Buf, Buffers.Buffer_Tlen (PTH_Buf))
-              /= 16#ffff#
+         if not NIF.Offload_Checksums (Netif)
+              and then Checksum.Sum (PTH_Buf, Buffers.Buffer_Tlen (PTH_Buf))
+                         /= 16#ffff#
          then
             Err := AIP.ERR_VAL;
          end if;

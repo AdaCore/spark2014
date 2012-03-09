@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -155,6 +155,7 @@ is
                   < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4
         or else IPH.IPH_Version (Ihdr) /= 4
         or else (IPH.IPH_Checksum (Ihdr) /= 0
+                   and then not NIF.Offload_Checksums (Netif)
                    and then Checksum.Sum
                             (Buf     => Buf,
                              Length  => AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
@@ -251,8 +252,10 @@ is
          end if;
          IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
 
-         IPH.Set_IPH_Checksum    (Ihdr,
-           not Checksum.Sum (Buf, 4 * AIP.U16_T (IPH.IPH_IHL (Ihdr))));
+         if not NIF.Offload_Checksums (Netif) then
+            IPH.Set_IPH_Checksum    (Ihdr,
+              not Checksum.Sum (Buf, 4 * AIP.U16_T (IPH.IPH_IHL (Ihdr))));
+         end if;
 
          NIF.Output (Netif, Buf, NH_IP);
       end if;
