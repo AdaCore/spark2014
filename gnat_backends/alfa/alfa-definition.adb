@@ -427,12 +427,13 @@ package body Alfa.Definition is
    -- Local Subprograms --
    -----------------------
 
-   function Acceptable_Actions (L : List_Id) return Boolean;
-   --  Return whether L is a list of acceptable actions, which can be
-   --  translated into Why.
-
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code as in Alfa / not in Alfa
+
+   procedure Mark_Actions (N : Node_Id; L : List_Id);
+   --  Mark a possibly null list of actions L from expression N. It should be
+   --  called before the expression to which the actions apply is marked, so
+   --  that declarations of constants in actions are possibly marked in Alfa.
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
@@ -678,31 +679,6 @@ package body Alfa.Definition is
 
    function Type_Entity_Marked (Id : Unique_Entity_Id) return Boolean is
      (All_Types.Contains (+Id));
-
-   ------------------------
-   -- Acceptable_Actions --
-   ------------------------
-
-   function Acceptable_Actions (L : List_Id) return Boolean is
-      N : Node_Id;
-
-   begin
-      N := First (L);
-      while Present (N) loop
-         --  Only actions that consist in N_Object_Declaration nodes for
-         --  constants are translated.
-
-         if Nkind (N) /= N_Object_Declaration
-           or else not Constant_Present (N)
-         then
-            return False;
-         end if;
-
-         Next (N);
-      end loop;
-
-      return True;
-   end Acceptable_Actions;
 
    ----------------------------
    -- Close_Alfa_Output_File --
@@ -1000,6 +976,49 @@ package body Alfa.Definition is
       end if;
    end Inherit_Violations;
 
+   ------------------
+   -- Mark_Actions --
+   ------------------
+
+   procedure Mark_Actions (N : Node_Id; L : List_Id) is
+      function Acceptable_Actions (L : List_Id) return Boolean;
+      --  Return whether L is a list of acceptable actions, which can be
+      --  translated into Why.
+
+      ------------------------
+      -- Acceptable_Actions --
+      ------------------------
+
+      function Acceptable_Actions (L : List_Id) return Boolean is
+         N : Node_Id;
+
+      begin
+         N := First (L);
+         while Present (N) loop
+            --  Only actions that consist in N_Object_Declaration nodes for
+            --  constants are translated.
+
+            if Nkind (N) /= N_Object_Declaration
+              or else not Constant_Present (N)
+            then
+               return False;
+            end if;
+
+            Next (N);
+         end loop;
+
+         return True;
+      end Acceptable_Actions;
+
+   begin
+      if Present (L) then
+         Mark_List (L);
+         if not Acceptable_Actions (L) then
+            Mark_Non_Alfa ("expression with action", N, NYI_Expr_With_Action);
+         end if;
+      end if;
+   end Mark_Actions;
+
    ----------
    -- Mark --
    ----------
@@ -1067,10 +1086,7 @@ package body Alfa.Definition is
             Mark_List (Alternatives (N));
 
          when N_Case_Expression_Alternative =>
-            if Present (Actions (N)) then
-               Mark_Non_Alfa
-                 ("expression with action", N, NYI_Expr_With_Action);
-            end if;
+            Mark_Actions (N, Actions (N));
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
@@ -1080,7 +1096,13 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("code statement", N, NIR_Assembly_Lang);
 
          when N_Component_Association =>
+
+            --  ??? We need to find in which cases these Loop_Actions are
+            --  generated, if they are generated at all, and then apply the
+            --  same translation as for other actions.
+
             if Present (Loop_Actions (N)) then
+               Mark_List (Loop_Actions (N));
                Mark_Non_Alfa
                  ("expression with action", N, NYI_Expr_With_Action);
             end if;
@@ -1113,6 +1135,9 @@ package body Alfa.Definition is
 
          when N_Explicit_Dereference =>
             Mark_Non_Alfa ("explicit dereference", N, NIR_Access);
+
+         --  ??? Can we generate these? Should we complete the translation
+         --  towards terms and predicates in gnat2why-expr?
 
          when N_Expression_With_Actions =>
             declare
@@ -1278,13 +1303,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("reference", N, NIR_Access);
 
          when N_Short_Circuit =>
-            if Present (Actions (N)) then
-               Mark_List (Actions (N));
-               if not Acceptable_Actions (Actions (N)) then
-                  Mark_Non_Alfa
-                    ("expression with action", N, NYI_Expr_With_Action);
-               end if;
-            end if;
+            Mark_Actions (N, Actions (N));
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
 
@@ -1695,11 +1714,8 @@ package body Alfa.Definition is
       Else_Expr : Node_Id;
 
    begin
-      if Present (Then_Actions (N))
-        or else Present (Else_Actions (N))
-      then
-         Mark_Non_Alfa ("expression with action", N, NYI_Expr_With_Action);
-      end if;
+      Mark_Actions (N, Then_Actions (N));
+      Mark_Actions (N, Else_Actions (N));
 
       Else_Expr := Next (Then_Expr);
 
@@ -1858,14 +1874,9 @@ package body Alfa.Definition is
          begin
             Part := First (Elsif_Parts (N));
             while Present (Part) loop
+               Mark_Actions (N, Condition_Actions (Part));
                Mark (Condition (Part));
                Mark_List (Then_Statements (Part));
-
-               if Present (Condition_Actions (Part)) then
-                  Mark_Non_Alfa
-                    ("expression with action", N, NYI_Expr_With_Action);
-               end if;
-
                Next (Part);
             end loop;
          end;
@@ -1882,19 +1893,18 @@ package body Alfa.Definition is
 
    procedure Mark_Iteration_Scheme (N : Node_Id) is
    begin
-      if Present (Condition_Actions (N)) then
-         Mark_Non_Alfa ("expression with action", N, NYI_Expr_With_Action);
-      end if;
-
       if Present (Condition (N)) then
+         Mark_Actions (N, Condition_Actions (N));
          Mark (Condition (N));
 
       elsif Present (Loop_Parameter_Specification (N)) then
+         pragma Assert (No (Condition_Actions (N)));
          --  The entity for iterating over a loop is always in Alfa
          Mark (Discrete_Subtype_Definition
                  (Loop_Parameter_Specification (N)));
 
       else
+         pragma Assert (No (Condition_Actions (N)));
          pragma Assert (Present (Iterator_Specification (N)));
          Mark_Non_Alfa ("loop with iterator", N, NYI_Iterators);
       end if;

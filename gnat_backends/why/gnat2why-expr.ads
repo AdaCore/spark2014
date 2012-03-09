@@ -90,6 +90,23 @@ package Gnat2Why.Expr is
       Params      : Translation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
+   function Transform_Expr_With_Actions
+     (Expr          : Node_Id;
+      Actions       : List_Id;
+      Expected_Type : W_Base_Type_Id;
+      Domain        : EW_Domain;
+      Params        : Translation_Params) return W_Expr_Id;
+   --  Same as Transform_Expr, but takes into account the declarations of
+   --  constants in Actions, to create a suitable variable map for translating
+   --  Expr.
+
+   function Transform_Expr_With_Actions
+     (Expr          : Node_Id;
+      Actions       : List_Id;
+      Domain        : EW_Domain;
+      Params        : Translation_Params) return W_Expr_Id;
+   --  Same as above, but derive the Expected_Type from the Ada Expr
+
    function Transform_Statements
      (Stmts      : List_Id;
       Start_From : Node_Id := Empty)

@@ -517,25 +517,36 @@ package body Gnat2Why.Expr is
       --  Return the expression that corresponds to a branch; decide which
       --  function to call depending on the type of the branch.
 
-      function Branch_Expr (N : Node_Id) return W_Expr_Id
-      is
+      function Branch_Expr (N : Node_Id) return W_Expr_Id is
+         Local_Params : Translation_Params := Params;
+         T : W_Expr_Id;
+
       begin
          case Nkind (N) is
             when N_Case_Expression_Alternative =>
-               if Expected_Type = Why_Empty then
-                  return
-                    Transform_Expr
-                       (Expression (N),
-                        Domain,
-                        Params);
-               else
-                  return
-                    Transform_Expr
-                       (Expression (N),
-                        Expected_Type,
-                        Domain,
-                        Params);
+               if Present (Actions (N)) then
+                  Transform_Actions_Preparation (Actions (N), Local_Params);
                end if;
+
+               if Expected_Type = Why_Empty then
+                  T := Transform_Expr (Expression (N),
+                                       Domain,
+                                       Local_Params);
+               else
+                  T := Transform_Expr (Expression (N),
+                                       Expected_Type,
+                                       Domain,
+                                       Local_Params);
+               end if;
+
+               if Present (Actions (N)) then
+                  T := Transform_Actions (Actions (N),
+                                          T,
+                                          Domain,
+                                          Local_Params);
+               end if;
+
+               return T;
 
             when N_Case_Statement_Alternative =>
                --  ??? Maybe we should merge the code for statements?
@@ -2661,9 +2672,32 @@ package body Gnat2Why.Expr is
                   Domain   => Domain);
             Current_Type := EW_Bool_Type;
 
-         when N_And_Then =>
-            declare
+         when N_Short_Circuit =>
+            Short_Circuit : declare
                Local_Params : Translation_Params := Params;
+
+               function New_Short_Circuit_Expr
+                 (Left, Right : W_Expr_Id;
+                  Domain      : EW_Domain) return W_Expr_Id;
+               --  Dispatch over functions to create a short-circuit Why expr
+
+               ----------------------------
+               -- New_Short_Circuit_Expr --
+               ----------------------------
+
+               function New_Short_Circuit_Expr
+                 (Left, Right : W_Expr_Id;
+                  Domain      : EW_Domain) return W_Expr_Id
+               is
+               begin
+                  if Nkind (Expr) = N_And_Then then
+                     return New_And_Then_Expr (Left, Right, Domain);
+                  else
+                     return New_Or_Else_Expr (Left, Right, Domain);
+                  end if;
+               end New_Short_Circuit_Expr;
+
+            --  Start of Short_Circuit
 
             begin
                if Present (Actions (Expr)) then
@@ -2671,15 +2705,15 @@ package body Gnat2Why.Expr is
                end if;
 
                T :=
-                 New_And_Then_Expr
+                 New_Short_Circuit_Expr
                    (Left   => Transform_Expr (Left_Opnd (Expr),
-                    Current_Type,
-                    Domain,
-                    Local_Params),
+                                              Current_Type,
+                                              Domain,
+                                              Local_Params),
                     Right  => Transform_Expr (Right_Opnd (Expr),
-                      Current_Type,
-                      Domain,
-                      Local_Params),
+                                              Current_Type,
+                                              Domain,
+                                              Local_Params),
                     Domain => Domain);
 
                if Present (Actions (Expr)) then
@@ -2690,21 +2724,7 @@ package body Gnat2Why.Expr is
                end if;
 
                Current_Type := EW_Bool_Type;
-            end;
-
-         when N_Or_Else =>
-            T :=
-               New_Or_Else_Expr
-                 (Left   => Transform_Expr (Left_Opnd (Expr),
-                                            Current_Type,
-                                            Domain,
-                                            Params),
-                  Right  => Transform_Expr (Right_Opnd (Expr),
-                                            Current_Type,
-                                            Domain,
-                                            Params),
-                  Domain => Domain);
-            Current_Type := EW_Bool_Type;
+            end Short_Circuit;
 
          when N_In =>
             declare
@@ -2734,6 +2754,7 @@ package body Gnat2Why.Expr is
                Else_Part   : constant Node_Id := Next (Then_Part);
                Cond_Domain : constant EW_Domain :=
                                (if Domain = EW_Term then EW_Pred else Domain);
+
             begin
                T :=
                   New_Conditional
@@ -2743,14 +2764,18 @@ package body Gnat2Why.Expr is
                                                     EW_Bool_Type,
                                                     Cond_Domain,
                                                     Params),
-                      Then_Part => Transform_Expr (Then_Part,
-                                                   Current_Type,
-                                                   Domain,
-                                                   Params),
-                      Else_Part => Transform_Expr (Else_Part,
-                                                   Current_Type,
-                                                   Domain,
-                                                   Params));
+                      Then_Part =>
+                        Transform_Expr_With_Actions (Then_Part,
+                                                     Then_Actions (Expr),
+                                                     Current_Type,
+                                                     Domain,
+                                                     Params),
+                      Else_Part =>
+                        Transform_Expr_With_Actions (Else_Part,
+                                                     Else_Actions (Expr),
+                                                     Current_Type,
+                                                     Domain,
+                                                     Params));
             end;
 
          when N_Type_Conversion =>
@@ -2867,12 +2892,62 @@ package body Gnat2Why.Expr is
    end Transform_Expr;
 
    function Transform_Expr
-     (Expr        : Node_Id;
-      Domain      : EW_Domain;
-      Params      : Translation_Params) return W_Expr_Id is
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Translation_Params) return W_Expr_Id is
    begin
-      return Transform_Expr (Expr, Type_Of_Node (Expr), Domain, Params);
+      return Transform_Expr (Expr,
+                             Type_Of_Node (Expr),
+                             Domain,
+                             Params);
    end Transform_Expr;
+
+   ---------------------------------
+   -- Transform_Expr_With_Actions --
+   ---------------------------------
+
+   function Transform_Expr_With_Actions
+     (Expr          : Node_Id;
+      Actions       : List_Id;
+      Expected_Type : W_Base_Type_Id;
+      Domain        : EW_Domain;
+      Params        : Translation_Params) return W_Expr_Id
+   is
+      Local_Params : Translation_Params := Params;
+      T            : W_Expr_Id;
+
+   begin
+      if Present (Actions) then
+         Transform_Actions_Preparation (Actions, Local_Params);
+      end if;
+
+      T := Transform_Expr (Expr,
+                           Expected_Type,
+                           Domain,
+                           Local_Params);
+
+      if Present (Actions) then
+         T := Transform_Actions (Actions,
+                                 T,
+                                 Domain,
+                                 Local_Params);
+      end if;
+
+      return T;
+   end Transform_Expr_With_Actions;
+
+   function Transform_Expr_With_Actions
+     (Expr    : Node_Id;
+      Actions : List_Id;
+      Domain  : EW_Domain;
+      Params  : Translation_Params) return W_Expr_Id is
+   begin
+      return Transform_Expr_With_Actions (Expr,
+                                          Actions,
+                                          Type_Of_Node (Expr),
+                                          Domain,
+                                          Params);
+   end Transform_Expr_With_Actions;
 
    --------------------------
    -- Transform_Identifier --
@@ -3244,8 +3319,9 @@ package body Gnat2Why.Expr is
                         Tail :=
                           +New_Simpl_Conditional
                             (Condition =>
-                               Transform_Expr
+                               Transform_Expr_With_Actions
                                  (Condition (Cur),
+                                  Condition_Actions (Cur),
                                   EW_Bool_Type,
                                   EW_Prog,
                                   Params => Body_Params),

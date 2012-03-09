@@ -212,9 +212,10 @@ package body Gnat2Why.Expr.Loops is
            (Stmts      => Loop_Body,
             Start_From => Split_Node);
 
+      --  No iteration scheme, we have a simple loop. Generate condition
+      --  "true".
+
       if Nkind (Scheme) = N_Empty then
-         --  No iteration scheme, we have a simple loop. Generate
-         --  condition "true".
          return
             Wrap_Loop
                (Loop_Body => Loop_Content,
@@ -224,19 +225,22 @@ package body Gnat2Why.Expr.Loops is
                 Inv_Check => Inv_Check,
                 Inv_Node  => Split_Node);
 
+      --  A while loop
+
       elsif
         Nkind (Iterator_Specification (Scheme)) = N_Empty
           and then
         Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
       then
-         --  A while loop
-         declare
+         While_Loop : declare
             Enriched_Inv : constant W_Pred_Id :=
                              +New_And_Expr
                                (Left   => +Invariant,
                                 Right  =>
-                                  Transform_Expr
-                                    (Condition (Scheme), EW_Pred,
+                                  Transform_Expr_With_Actions
+                                    (Condition (Scheme),
+                                     Condition_Actions (Scheme),
+                                     EW_Pred,
                                      Params => Body_Params),
                                 Domain => EW_Pred);
             --  We have enriched the invariant, so even if there was
@@ -249,22 +253,23 @@ package body Gnat2Why.Expr.Loops is
               Wrap_Loop
               (Loop_Body    => Loop_Content,
                Condition    =>
-               +Transform_Expr (Condition (Scheme), EW_Prog,
-                                Params => Body_Params),
+                 +Transform_Expr_With_Actions (Condition (Scheme),
+                                               Condition_Actions (Scheme),
+                                               EW_Prog,
+                                               Params => Body_Params),
                Loop_Name    => Loop_Name,
                Invariant    => Enriched_Inv,
                Inv_Check    => Inv_Check,
                Inv_Node     => Inv_Node);
-         end;
+         end While_Loop;
+
+      --  A for loop. Here, we set the condition to express that the index is
+      --  in the range of the loop. We need to evaluate the range expression
+      --  once at the beginning of the loop, to get potential checks in that
+      --  expression only once.
 
       elsif Nkind (Condition (Scheme)) = N_Empty then
-
-         --  A for loop. Here, we set the condition to express that the index
-         --  is in the range of the loop. We need to evaluate the range
-         --  expression once at the beginning of the loop, to get potential
-         --  checks in that expression only once.
-
-         declare
+         Plain_Loop : declare
             LParam_Spec  : constant Node_Id :=
                              Loop_Parameter_Specification (Scheme);
             Loop_Range   : constant Node_Id :=
@@ -345,6 +350,9 @@ package body Gnat2Why.Expr.Loops is
                                High_Ident
                              else
                                Low_Ident);
+
+         --  Start of Plain_Loop
+
          begin
             Entire_Loop := New_Binding_Ref
                              (Name    => Loop_Index,
@@ -370,7 +378,7 @@ package body Gnat2Why.Expr.Loops is
               Sequence
                 (Assume_Of_Subtype_Indication (Body_Params, Loop_Range),
                  Entire_Loop);
-         end;
+         end Plain_Loop;
 
       else
          --  Some other kind of loop
