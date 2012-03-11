@@ -1,0 +1,11 @@
+{
+  "VCS" :
+[{"NAME" : "VC11", "STATUS" : "OK",      "LINES" : {"LOW" : 12, "HIGH" : 13}},
+ {"NAME" : "VC12", "STATUS" : "OK",      "LINES" : {"LOW" : 13, "HIGH" : 14}},
+ {"NAME" : "VC21", "STATUS" : "OK",      "LINES" : {"LOW" : 22, "HIGH" : 23}},
+ {"NAME" : "VC22", "STATUS" : "UNKNOWN", "LINES" : {"LOW" : 23, "HIGH" : 24}},
+ {"NAME" : "VC31", "STATUS" : "UNKNOWN", "LINES" : {"LOW" : 31, "HIGH" : 32}},
+ {"NAME" : "VC32", "STATUS" : "UNKNOWN", "LINES" : {"LOW" : 32, "HIGH" : 33}},
+ {"NAME" : "VC41", "STATUS" : "UNKNOWN", "LINES" : {"LOW" : 41, "HIGH" : 42}},
+ {"NAME" : "VC42", "STATUS" : "UNKNOWN", "LINES" : {"LOW" : 42, "HIGH" : 43}}]
+}

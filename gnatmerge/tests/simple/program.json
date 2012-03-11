@@ -1,0 +1,9 @@
+{
+ "SUBPROGRAMS" : 
+    [{"NAME" : "P1", "LINES" : {"LOW" : 10, "HIGH" : 19}},
+     {"NAME" : "P2", "LINES" : {"LOW" : 20, "HIGH" : 29}},
+     {"NAME" : "P3", "LINES" : {"LOW" : 30, "HIGH" : 39}},
+     {"NAME" : "P4", "LINES" : {"LOW" :  4, "HIGH" : 79}},
+     {"NAME" : "P5", "LINES" : {"LOW" : 50, "HIGH" : 59}},
+     {"NAME" : "P6", "LINES" : {"LOW" : 60, "HIGH" : 69}}]
+}
