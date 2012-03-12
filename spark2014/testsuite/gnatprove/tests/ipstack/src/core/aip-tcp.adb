@@ -539,7 +539,7 @@ is
 
       TCPH.Set_TCPH_Checksum (Thdr, 0);
 
-      if not NIF.Offload_Checksums (TPCB.Next_Hop_Netif) then
+      if not NIF.Offload (TPCB.Next_Hop_Netif, NIF.TCP_CS) then
          TCPH.Set_TCPH_Checksum
            (Thdr, not Checksum.Sum (Tbuf, Buffers.Buffer_Tlen (Tbuf)));
       end if;
@@ -2694,7 +2694,7 @@ is
 
          Buffers.Buffer_Chain (PTH_Buf, Buf);
 
-         if not NIF.Offload_Checksums (Netif)
+         if not NIF.Offload (Netif, NIF.TCP_CS)
               and then Checksum.Sum (PTH_Buf, Buffers.Buffer_Tlen (PTH_Buf))
                          /= 16#ffff#
          then

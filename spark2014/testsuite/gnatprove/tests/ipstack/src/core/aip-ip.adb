@@ -155,7 +155,7 @@ is
                   < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4
         or else IPH.IPH_Version (Ihdr) /= 4
         or else (IPH.IPH_Checksum (Ihdr) /= 0
-                   and then not NIF.Offload_Checksums (Netif)
+                   and then not NIF.Offload (Netif, NIF.IP_CS)
                    and then Checksum.Sum
                             (Buf     => Buf,
                              Length  => AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
@@ -252,7 +252,7 @@ is
          end if;
          IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
 
-         if not NIF.Offload_Checksums (Netif) then
+         if not NIF.Offload (Netif, NIF.IP_CS) then
             IPH.Set_IPH_Checksum    (Ihdr,
               not Checksum.Sum (Buf, 4 * AIP.U16_T (IPH.IPH_IHL (Ihdr))));
          end if;

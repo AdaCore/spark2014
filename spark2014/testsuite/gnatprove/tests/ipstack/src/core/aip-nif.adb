@@ -7,6 +7,9 @@ with Ada.Unchecked_Conversion;
 
 package body AIP.NIF is
 
+   type Offload_Checksums_Array is array (Checksum_Type) of Boolean;
+   pragma Convention (C, Offload_Checksums_Array);
+
    type Netif is record
       Name              : Netif_Name;
       --  Unique name of interface
@@ -35,10 +38,10 @@ package body AIP.NIF is
       Remote            : IPaddrs.IPaddr;
       --  Remote address (case of a point-to-point interface)
 
-      Offload_Checksums : Boolean;
-      --  True for devices that support checksum offloading. In that case,
-      --  TCP, UDP, and IP checksums are set to 0 on output and ignored on
-      --  input.
+      Offload_Checksums : Offload_Checksums_Array;
+      --  Each component of the array is set True for devices that support
+      --  offloading of the corresponding checksum. In that case, checksums
+      --  are set to 0 on output and ignored on input.
 
       Configured_CB     : System.Address;
       --  Low-level configuration callback (called by If_Config)
@@ -183,7 +186,7 @@ package body AIP.NIF is
                           Mask              => IPaddrs.IP_ADDR_ANY,
                           Broadcast         => IPaddrs.IP_ADDR_ANY,
                           Remote            => IPaddrs.IP_ADDR_ANY,
-                          Offload_Checksums => False,
+                          Offload_Checksums => (others => False),
                           Configured_CB     => System.Null_Address,
                           Input_CB          => System.Null_Address,
                           Output_CB         => System.Null_Address,
@@ -277,14 +280,17 @@ package body AIP.NIF is
       return NIFs (Nid).MTU;
    end NIF_MTU;
 
-   -----------------------
-   -- Offload_Checksums --
-   -----------------------
+   -------------
+   -- Offload --
+   -------------
 
-   function Offload_Checksums (Nid : Netif_Id) return Boolean is
+   function Offload
+     (Nid      : Netif_Id;
+      Checksum : Checksum_Type) return Boolean
+   is
    begin
-      return NIFs (Nid).Offload_Checksums;
-   end Offload_Checksums;
+      return NIFs (Nid).Offload_Checksums (Checksum);
+   end Offload;
 
    ------------
    -- Output --

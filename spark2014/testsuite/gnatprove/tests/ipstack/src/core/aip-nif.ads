@@ -30,6 +30,9 @@ package AIP.NIF is
    subtype Netif_Id is AIP.EID range 1 .. Config.MAX_NETIF;
    IF_NOID : constant AIP.EID := 0;
 
+   type Checksum_Type is (IP_CS, ICMP_CS, UDP_CS, TCP_CS);
+   pragma Convention (C, Checksum_Type);
+
    function NIF_Addr      (Nid : Netif_Id) return IPaddrs.IPaddr;
    function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
    function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr;
@@ -57,8 +60,11 @@ package AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean;
    --  True if Addr is a broadcast address for Nid
 
-   function Offload_Checksums (Nid : Netif_Id) return Boolean;
-   --  True if the driver for Nid supports checksum offloading
+   function Offload
+     (Nid      : Netif_Id;
+      Checksum : Checksum_Type) return Boolean;
+   --  True if the driver for Nid supports checksum offloading for the given
+   --  checksum.
 
    procedure Get_Netif_By_Address
      (Addr : IPaddrs.IPaddr;

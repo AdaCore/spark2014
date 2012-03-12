@@ -127,7 +127,7 @@ is
 
          Buffers.Buffer_Chain (PUH_Buf, Buf);
 
-         if not NIF.Offload_Checksums (Netif)
+         if not NIF.Offload (Netif, NIF.UDP_CS)
               and then Checksum.Sum (PUH_Buf, Buffers.Buffer_Tlen (PUH_Buf))
                          /= 16#ffff#
          then
@@ -366,7 +366,7 @@ is
 
             UDPH.Set_UDPH_Checksum (Uhdr, 0);
 
-            if not NIF.Offload_Checksums (Netif) then
+            if not NIF.Offload (Netif, NIF.UDP_CS) then
 
                --  Expose room for a temporary pseudo-header and fill it in.
                --  The length we store here is that of the original datagram.

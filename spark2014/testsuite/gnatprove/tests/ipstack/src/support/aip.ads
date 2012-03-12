@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  This is the root of the Ada IP stack package hierarchy.
@@ -147,7 +147,7 @@ package AIP is
    ERR_VAL    : constant Err_T := -8;  -- Illegal Value
    ERR_USE    : constant Err_T := -10; -- API use error
    ERR_RTE    : constant Err_T := -3;  -- Routing Error
-   ERR_ISCONN : constant Err_T := -12; --  Already connected
+   ERR_ISCONN : constant Err_T := -12; -- Already connected
 
    function No (Err : Err_T) return Boolean;
    --  True when Err is NOERR

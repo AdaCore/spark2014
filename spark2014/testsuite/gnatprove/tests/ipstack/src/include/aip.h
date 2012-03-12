@@ -86,6 +86,8 @@ typedef enum { Invalid, Down, Up } Netif_State;
 typedef EID Netif_Id;
 #define IF_NOID (-1)
 
+typedef enum { IP_CS, ICMP_CS, UDP_CS, TCP_CS } Checsum_Type;
+
 #define MAX_LL_ADDRESS_LENGTH 6
 
 typedef struct netif {
@@ -102,7 +104,7 @@ typedef struct netif {
   IPaddr      Broadcast;
   IPaddr      Remote;
 
-  char        Offload_Checksums;
+  char        Offload[4];
 
   void      (*Configured_CB) (Netif_Id, Err_T *);
   void      (*Input_CB) (Netif_Id, Buffer_Id);
