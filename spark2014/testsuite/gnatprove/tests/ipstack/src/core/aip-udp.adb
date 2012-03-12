@@ -417,6 +417,11 @@ is
                Netif,
                Err);
 
+            --  Note: once the packet has been passed to the link layer,
+            --  we should not touch it anymore (in particular we should not
+            --  clobber the payload pointer, which now points to the link
+            --  level header).
+
             if Ubuf /= Buf then
                Buffers.Buffer_Blind_Free (Ubuf);
             end if;
