@@ -1,6 +1,10 @@
 Names and Expressions
 =====================
 
+We denote by *assertion expression* an expression that appears inside an
+assertion, which can be a pragma Assert, a precondition or postcondition, a
+type invariant or predicate, or a contract case.
+
 Names
 -----
 
@@ -19,7 +23,10 @@ The literal **null** is not in Alfa.
 Aggregates
 ----------
 
-An aggregate is in Alfa only if its type is in Alfa and it is pure.
+Outside of assertion expressions, an aggregate is in Alfa only if its type is
+in Alfa and it is pure. Inside assertion expressions, aggregates in Alfa must
+additionally be fully defined. An aggregate which leaves subcomponents
+uninitialized is not in Alfa if it appears inside an assertion expression.
 
 Expressions
 -----------
@@ -29,7 +36,7 @@ An expression is in Alfa only if its type is in Alfa and it is pure.
 Operators and Expression Evaluation
 -----------------------------------
 
-In Alfa, there can be no sequence of operators of the same precedence level. 
+In Alfa, there can be no sequence of operators of the same precedence level.
 Parentheses must be used to impose specific associations.
 
 Type Conversions
