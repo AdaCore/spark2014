@@ -202,10 +202,6 @@ private
      (State : in out Printer_State;
       Node  : W_Array_Access_Id);
 
-   procedure Epsilon_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Epsilon_Id);
-
    procedure Record_Access_Pre_Op
      (State : in out Printer_State;
       Node  : W_Record_Access_Id);

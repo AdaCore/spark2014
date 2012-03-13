@@ -120,7 +120,6 @@ package Why.Sinfo is
       W_Deref,
       W_Match,
       W_Array_Access,
-      W_Epsilon,
       W_Record_Access,
       W_Record_Update,
       W_Record_Aggregate,

@@ -504,15 +504,6 @@ package body Xtree_Sinfo is
       New_Field (W_Array_Access,
                  "Index", "W_Prog", Id_One);
 
-      ---------------
-      -- W_Epsilon --
-      ---------------
-
-      New_Field (W_Epsilon,
-                 "Binder", "W_Binder", Id_One);
-      New_Field (W_Epsilon,
-                 "Pred", "W_Pred", Id_One);
-
       ---------------------
       -- W_Record_Access --
       ---------------------

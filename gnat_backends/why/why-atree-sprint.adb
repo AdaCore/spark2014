@@ -1010,23 +1010,6 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Array_Access_Pre_Op;
 
-   --------------------
-   -- Epsilon_Pre_Op --
-   --------------------
-
-   procedure Epsilon_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Epsilon_Id)
-   is
-   begin
-      P (O, "(epsilon ");
-      Traverse (State, +Get_Binder (Node));
-      P (O, " . ");
-      Traverse (State, +Get_Pred (Node));
-      P (O, ") ");
-      State.Control := Abandon_Children;
-   end Epsilon_Pre_Op;
-
    --------------------------
    -- Record_Access_Pre_Op --
    --------------------------

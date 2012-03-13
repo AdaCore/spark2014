@@ -40,14 +40,4 @@ package Why.Gen.Terms is
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.
 
-   function New_Simpl_Epsilon_Term
-     (T : W_Primitive_Type_Id) return W_Term_Id;
-   --  Build an epsilon term "epsilon _ : T . true"
-
-   function New_Simpl_Epsilon_Term
-     (T    : W_Primitive_Type_Id;
-      Id   : W_Identifier_Id;
-      Pred : W_Pred_Id) return W_Term_Id;
-   --  Build an epsilon term "epsilon Id : T . Pred"
-
 end Why.Gen.Terms;

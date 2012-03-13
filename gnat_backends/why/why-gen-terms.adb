@@ -121,34 +121,4 @@ package body Why.Gen.Terms is
       end case;
    end New_Ifb;
 
-   ----------------------------
-   -- New_Simpl_Epsilon_Term --
-   ----------------------------
-
-   function New_Simpl_Epsilon_Term
-     (T : W_Primitive_Type_Id) return W_Term_Id is
-   begin
-      return
-        New_Epsilon
-          (Binder =>
-               New_Binder (Domain   => EW_Term,
-                           Name     => New_Identifier (Name => "x"),
-                           Arg_Type => +T),
-           Pred   => New_Literal (Value => EW_True));
-   end New_Simpl_Epsilon_Term;
-
-   function New_Simpl_Epsilon_Term
-     (T    : W_Primitive_Type_Id;
-      Id   : W_Identifier_Id;
-      Pred : W_Pred_Id) return W_Term_Id is
-   begin
-      return
-        New_Epsilon
-          (Binder =>
-               New_Binder (Domain   => EW_Term,
-                           Name     => Id,
-                           Arg_Type => +T),
-           Pred   => Pred);
-   end New_Simpl_Epsilon_Term;
-
 end Why.Gen.Terms;
