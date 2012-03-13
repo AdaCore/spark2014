@@ -3128,7 +3128,27 @@ package body Gnat2Why.Expr is
                            +Transform_Expr (Expr, EW_Pred, Params)))));
          end;
       else
-         raise Not_Implemented;
+
+         --  It is trivial to promote a predicate to a term, by doing
+         --    if pred then True else False
+
+         declare
+            Pred : constant W_Expr_Id :=
+              Transform_Quantified_Expression
+                (Expr, EW_Pred, Params, Current_Type);
+         begin
+            return
+              New_Conditional (Domain    => EW_Term,
+                               Condition => Pred,
+                               Then_Part =>
+                                 New_Literal (Value => EW_True,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean),
+                               Else_Part =>
+                                 New_Literal (Value => EW_False,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean));
+         end;
       end if;
    end Transform_Quantified_Expression;
 
