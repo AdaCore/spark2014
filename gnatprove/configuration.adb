@@ -23,16 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
+with Ada.Command_Line;
+with Ada.Text_IO;       use Ada.Text_IO;
 
 with Hilitevsn; use Hilitevsn;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.Strings;      use GNAT.Strings;
 with GNAT.OS_Lib;
 
 with Call;              use Call;
 
 package body Configuration is
+
+   procedure Do_Nothing (Switch    : String;
+                         Parameter : String;
+                         Section   : String);
+   --  Dummy procedure.
 
    procedure Handle_Switch
      (Switch    : String;
@@ -41,6 +48,10 @@ package body Configuration is
    --  Deal with all switches that are not automatic. In gnatprove, all
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs
+
+   function Init return Project_Tree;
+   --  Load the project file; This function requires the project file to be
+   --  present.
 
    Usage_Message : constant String :=
       "switches [files] [-cargs switches]";
@@ -85,6 +96,17 @@ ASCII.LF &
 ASCII.LF &
 "     --timeout=s   Set the timeout for Alt-Ergo in seconds (default: 10)";
 
+   ----------------
+   -- Do_Nothing --
+   ----------------
+
+   procedure Do_Nothing (Switch    : String;
+                         Parameter : String;
+                         Section   : String) is
+   begin
+      null;
+   end Do_Nothing;
+
    -------------------
    -- Handle_Switch --
    -------------------
@@ -115,10 +137,11 @@ ASCII.LF &
    -- Init --
    ----------
 
-   procedure Init (Tree : out Project_Tree)
+   function Init return Project_Tree
    is
       Proj_Env  : Project_Environment_Access;
       GNAT_Version : GNAT.Strings.String_Access;
+      Tree      : Project_Tree;
 
       function Is_File_Of_Project (S : String) return Boolean;
 
@@ -139,6 +162,14 @@ ASCII.LF &
       Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, Subdir_Name);
       Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
+      declare
+         S : constant String :=
+           Register_New_Attribute ("Switches", "Prove", Is_List => True);
+      begin
+         if S /= "" then
+            Abort_With_Message (S);
+         end if;
+      end;
       Tree.Load
         (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
          Proj_Env);
@@ -163,13 +194,14 @@ ASCII.LF &
          end;
       end if;
 
+      return Tree;
    end Init;
 
    -----------------------
    -- Read_Command_Line --
    -----------------------
 
-   procedure Read_Command_Line
+   procedure Read_Command_Line (Tree : out Project_Tree)
    is
       Config : Command_Line_Configuration;
 
@@ -189,7 +221,36 @@ ASCII.LF &
          GNAT.OS_Lib.OS_Exit (1);
       end Abort_With_Help;
 
+      First_Config : Command_Line_Configuration;
+      Com_Lin : aliased String_List :=
+        (1 .. Ada.Command_Line.Argument_Count => <>);
    begin
+
+      --  First, copy the command line
+
+      for Index in 1 .. Com_Lin'Last loop
+         Com_Lin (Index) :=
+           new String'(Ada.Command_Line.Argument (Index));
+      end loop;
+
+      --  Let's do a first parse to get the project file, if any:
+
+      Set_Usage
+        (First_Config,
+         Usage     => Usage_Message,
+         Help_Msg  => Help_Message);
+
+      Define_Switch
+        (First_Config, Project_File'Access,
+         "-P:",
+         Help => "The name of the project file");
+
+      Define_Switch (First_Config, "*", Help => "list of source files");
+
+      Getopt (First_Config,
+              Callback => Do_Nothing'Access,
+              Concatenate => False);
+
       --  Install command line config
 
       Set_Usage
@@ -202,6 +263,11 @@ ASCII.LF &
           Debug'Access,
           "-d", Long_Switch => "--debug",
           Help => "Debug mode");
+
+      Define_Switch
+        (Config, Project_File'Access,
+         "-P:",
+         Help => "The name of the project file");
 
       Define_Switch
         (Config,
@@ -225,11 +291,6 @@ ASCII.LF &
          No_Proof'Access,
          Long_Switch => "--no-proof",
          Help => "Disable proof of VCs, only generate VCs");
-
-      Define_Switch
-        (Config, Project_File'Access,
-         "-P:",
-         Help => "The name of the project file");
 
       Define_Switch
         (Config,
@@ -282,7 +343,38 @@ ASCII.LF &
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
-      Getopt (Config, Callback => Handle_Switch'Access, Concatenate => False);
+      if Project_File.all /= "" then
+         Tree := Init;
+         declare
+            Proj_Type      : constant Project_Type := Root_Project (Tree);
+            Extra_Switches : constant String_List_Access :=
+              Attribute_Value (Proj_Type, Build ("Prove", "Switches"));
+         begin
+            if Extra_Switches /= null then
+               declare
+                  All_Switches   : aliased constant String_List :=
+                    Extra_Switches.all & Com_Lin;
+                  All_Access     : constant String_List_Access :=
+                    new String_List'(All_Switches);
+                  Parser         : Opt_Parser;
+               begin
+                  Initialize_Option_Scan (Parser, All_Access);
+                  Getopt (Config,
+                          Callback => Handle_Switch'Access,
+                          Parser   => Parser,
+                          Concatenate => False);
+               end;
+            else
+               Getopt (Config,
+                       Callback => Handle_Switch'Access,
+                       Concatenate => False);
+            end if;
+         end;
+      else
+         Getopt (Config,
+                 Callback => Handle_Switch'Access,
+                 Concatenate => False);
+      end if;
 
       if Version then
          Ada.Text_IO.Put_Line (Hilite_Version_String);

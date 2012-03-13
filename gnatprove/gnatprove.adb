@@ -38,7 +38,6 @@ with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 
 with String_Utils;      use String_Utils;
-with System.OS_Lib;
 
 procedure Gnatprove is
 
@@ -314,7 +313,7 @@ procedure Gnatprove is
       ------------------------
 
       function Append_To_Dir_Name (Dirname, Filename : String) return String is
-         use System.OS_Lib;
+         use GNAT.OS_Lib;
       begin
          if Dirname = "" then
             return Filename;
@@ -614,13 +613,12 @@ procedure Gnatprove is
    --  begin processing for Gnatprove
 
 begin
-   Read_Command_Line;
+   Read_Command_Line (Tree);
+
    if Call_Mode = GPC_Only_Files then
       Simple_Detection_Step;
       GNAT.OS_Lib.OS_Exit (0);
    end if;
-
-   Init (Tree);
 
    Proj_Type := Root_Project (Tree);
 

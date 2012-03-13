@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -174,9 +174,6 @@ package Configuration is
    Alfa_Suffix    : constant String := ".alfa";
    --  Suffix for raw Alfa information files
 
-   procedure Init (Tree : out Project_Tree);
-   --  Initialize the project tree.
-
-   procedure Read_Command_Line;
+   procedure Read_Command_Line (Tree : out Project_Tree);
 
 end Configuration;
