@@ -228,13 +228,13 @@ package body Gnat2Why.Decls is
 
       Emit_Top_Level_Declarations
         (Theory      => File.Cur_Theory,
-         Name        => To_Why_Id (E, Local => True),
          Binders     => (1 .. 0 => <>),
          Return_Type => Typ,
          Spec        =>
            (1 =>
               (Kind   => W_Function_Decl,
                Domain => EW_Term,
+               Name   => To_Why_Id (E, Local => True),
                Def    => (if Present (Def) then
                           Get_Pure_Logic_Term_If_Possible
                             (File, Def, Type_Of_Node (E))

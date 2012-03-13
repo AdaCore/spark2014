@@ -172,17 +172,21 @@ package body Why.Gen.Scalars is
          Spec         : constant Declaration_Spec_Array :=
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
+                                 Name   => To_Ident (Convert_From (Base_Type)),
                                  others => <>),
                            2 => (Kind   => W_Function_Decl,
                                  Domain => EW_Prog,
                                  Pre    => Range_Check,
+                                 Name   =>
+                                   To_Program_Space
+                                     (To_Ident (Convert_From (Base_Type))),
                                  Post   => Post,
                                  others => <>));
 
       begin
+
          Emit_Top_Level_Declarations
            (Theory => Theory,
-            Name => To_Ident (Convert_From (Base_Type)),
             Binders =>
               (1 => (B_Name => Arg_S,
                      B_Type => BT,
@@ -269,10 +273,9 @@ package body Why.Gen.Scalars is
                         Domain => EW_Term,
                         others => <>);
             end if;
+            Spec.Name := To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id));
             Emit_Top_Level_Declarations
               (Theory      => Theory,
-               Name        =>
-                 To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
                Binders     => (1 .. 0 => <>),
                Return_Type => New_Base_Type (Base_Type => Base_Type),
                Spec        => (1 => Spec));

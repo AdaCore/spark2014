@@ -218,7 +218,6 @@ package Why.Gen.Binders is
    procedure Set_Top_Level_Declarations
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Spec        : in out Declaration_Spec_Array);
@@ -226,7 +225,6 @@ package Why.Gen.Binders is
    procedure Emit_Top_Level_Declarations
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Spec        : Declaration_Spec_Array);

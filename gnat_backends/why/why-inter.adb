@@ -724,9 +724,10 @@ package body Why.Inter is
       Suffix : constant String :=
         (case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
-           (if Domain = EW_Prog then "func" else "log"),
-         when Object_Kind => "obj",
-         when Type_Kind => "t",
+           (if Domain = EW_Prog then To_String (WNE_Func)
+            else To_String (WNE_Log)),
+         when Object_Kind => To_String (WNE_Obj),
+         when Type_Kind => To_String (WNE_Type),
          when others => "");
    begin
 

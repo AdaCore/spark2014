@@ -100,48 +100,56 @@ package Why.Gen.Names is
    --  the name of the corresponding entity in logic space.
 
    type Why_Name_Enum is
-     (WNE_Range_Pred,
-      WNE_To_Int,
-      WNE_Of_Int,
-      WNE_To_Real,
-      WNE_Of_Real,
-      WNE_To_Array,
-      WNE_Of_Array,
-      WNE_Attr_First,
-      WNE_Attr_Last,
-      WNE_Attr_Modulus,
-      WNE_Attr_Length,
-      WNE_Type,
-      WNE_Result,
-      WNE_Overflow,
-      WNE_Eq,
-      WNE_Unicity,
-      WNE_Coerce,
-      WNE_Range_Axiom,
-      WNE_Ignore,
-      WNE_Bool_And,
-      WNE_Bool_Or,
-      WNE_Bool_Xor,
-      WNE_Result_Exc,
-      WNE_Integer_Div,
-      WNE_Integer_Rem,
-      WNE_Integer_Mod,
-      WNE_Integer_Abs,
-      WNE_Real_Div,
-      WNE_Real_Abs,
-      WNE_Real_Of_Int,
+     (
       WNE_Array_1,
       WNE_Array_2,
       WNE_Array_Access,
       WNE_Array_Update,
-      WNE_First_Static,
-      WNE_Last_Static,
+      WNE_Attr_First,
+      WNE_Attr_Last,
+      WNE_Attr_Length,
+      WNE_Attr_Modulus,
+      WNE_Bool_And,
       WNE_Bool_Eq,
-      WNE_Bool_Ne,
+      WNE_Bool_Ge,
+      WNE_Bool_Gt,
       WNE_Bool_Le,
       WNE_Bool_Lt,
-      WNE_Bool_Ge,
-      WNE_Bool_Gt);
+      WNE_Bool_Ne,
+      WNE_Bool_Or,
+      WNE_Bool_Xor,
+      WNE_Coerce,
+      WNE_Def,
+      WNE_Def_Axiom,
+      WNE_Eq,
+      WNE_First_Static,
+      WNE_Func,
+      WNE_Ignore,
+      WNE_Integer_Abs,
+      WNE_Integer_Div,
+      WNE_Integer_Mod,
+      WNE_Integer_Rem,
+      WNE_Last_Static,
+      WNE_Log,
+      WNE_Obj,
+      WNE_Of_Array,
+      WNE_Of_Int,
+      WNE_Of_Real,
+      WNE_Overflow,
+      WNE_Pre_Check,
+      WNE_Range_Axiom,
+      WNE_Range_Pred,
+      WNE_Real_Abs,
+      WNE_Real_Div,
+      WNE_Real_Of_Int,
+      WNE_Result,
+      WNE_Result_Exc,
+      WNE_To_Array,
+      WNE_To_Int,
+      WNE_To_Real,
+      WNE_Type,
+      WNE_Unicity
+     );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
 
@@ -187,45 +195,11 @@ package Why.Gen.Names is
    Logic_Def_Axiom          : constant String := "logic_def_axiom";
    Pre_Check                : constant String := "pre_check";
 
-   package Array_Conv_Idem is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Conv_Idemp);
-
-   package Array_Conv_Idem_2 is
-     new Name_Gen.Arity_1 (EW_Term, "", Array_Conv_Idemp_2);
-
-   package New_Definition_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "", Definition);
-   --  Create a new identifier for the "definition only" version of a
-   --  subprogram, which is not meant to be called.
-
    package New_Result_Temp_Identifier is
      new Name_Gen.Arity_1 (EW_Term, "", "result");
    --  Return a new identifier for the temporary used to store a function's
    --  result.
 
-   package New_Conversion_Axiom is
-     new Name_Gen.Arity_2 (EW_Term, "", "of", "in_range");
-   --  Create a new identifier for a conversion between to abstract types
-
-   package Logic_Func_Name is
-     new Name_Gen.Arity_1 (EW_Term, "", "", "");
-   --  Create a new identifier for the logic version of a
-   --  subprogram, which is used in annotations.
-
-   package Logic_Func_Axiom is
-     new Name_Gen.Arity_1 (EW_Term, "", Logic_Def_Axiom);
-   --  Create a new name for the axiom that states equivalence of
-   --  a subprogram and its logic definition.
-
-   package New_Pre_Check_Name is
-     new Name_Gen.Arity_1 (EW_Prog, Pre_Check, "");
-   --  Return an identifier for the subprogram that checks whether a
-   --  precondition is properly guarded
-
-   package Program_Func_Name is
-     new Name_Gen.Arity_1 (EW_Prog, "", "_", "");
-   --  Create a new identifier for the program version of a
-   --  subprogram.
    package Assume_Name is
       new Name_Gen.Arity_1 (EW_Term, "", Assume);
 

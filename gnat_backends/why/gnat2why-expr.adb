@@ -1470,7 +1470,7 @@ package body Gnat2Why.Expr is
       Emit
         (Decl_File.Cur_Theory,
          New_Guarded_Axiom
-           (Name        => Logic_Func_Axiom.Id (Func),
+           (Name        => To_Ident (WNE_Def_Axiom),
             Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
             Pre         => +Id_Expr,
             Def         => Pred));

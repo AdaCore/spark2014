@@ -61,7 +61,6 @@ package body Why.Gen.Binders is
    procedure Emit_Top_Level_Declarations
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Spec        : Declaration_Spec_Array)
@@ -69,7 +68,7 @@ package body Why.Gen.Binders is
       Spec0 : Declaration_Spec_Array := Spec;
    begin
       Set_Top_Level_Declarations
-        (Theory, Ada_Node, Name, Binders, Return_Type, Spec0);
+        (Theory, Ada_Node, Binders, Return_Type, Spec0);
    end Emit_Top_Level_Declarations;
 
    -----------------
@@ -123,7 +122,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => Logic_Func_Axiom.Id (Name),
+         Name     => To_Ident (WNE_Def_Axiom),
          Binders  => Binders,
          Pre      => Pre,
          Def      => Equality);
@@ -153,7 +152,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => Logic_Func_Axiom.Id (Name),
+         Name     => To_Ident (WNE_Def_Axiom),
          Binders  => Binders,
          Pre      => Pre,
          Def      => Equality);
@@ -451,7 +450,6 @@ package body Why.Gen.Binders is
    procedure Set_Top_Level_Declarations
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Spec        : in out Declaration_Spec_Array)
@@ -466,7 +464,7 @@ package body Why.Gen.Binders is
                      pragma Assert (not Logic_Def_Emitted);
 
                      if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := Logic_Func_Name.Id (Name);
+                        Spec (S).Name := To_Ident (WNE_Log);
                      end if;
 
                      Emit
@@ -498,7 +496,7 @@ package body Why.Gen.Binders is
 
                   when EW_Prog =>
                      if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := Program_Func_Name.Id (Name);
+                        Spec (S).Name := To_Ident (WNE_Func);
                      end if;
 
                      if Spec (S).Pre = Why_Empty then
@@ -543,7 +541,7 @@ package body Why.Gen.Binders is
                      pragma Assert (Spec (S).Term /= Why_Empty);
 
                      if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := Logic_Func_Name.Id (Name);
+                        Spec (S).Name := To_Ident (WNE_Log);
                      end if;
 
                      Emit
@@ -559,7 +557,7 @@ package body Why.Gen.Binders is
 
                   when EW_Pred =>
                      if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := Logic_Func_Name.Id (Name);
+                        Spec (S).Name := To_Ident (WNE_Log);
                      end if;
 
                      Emit
@@ -573,7 +571,7 @@ package body Why.Gen.Binders is
 
                   when EW_Prog =>
                      if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := New_Definition_Name.Id (Name);
+                        Spec (S).Name := To_Ident (WNE_Def);
                      end if;
 
                      if Spec (S).Pre = Why_Empty then

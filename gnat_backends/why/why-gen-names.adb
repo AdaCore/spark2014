@@ -425,6 +425,13 @@ package body Why.Gen.Names is
          when WNE_Bool_Le      => return "bool_le";
          when WNE_Bool_Gt      => return "bool_gt";
          when WNE_Bool_Ge      => return "bool_ge";
+         when WNE_Def          => return "def";
+         when WNE_Pre_Check    => return "pre_check";
+         when WNE_Def_Axiom    => return "def_axiom";
+         when WNE_Obj          => return "obj";
+         when WNE_Log          => return "log";
+         when WNE_Func         => return "func";
+
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);
          when WNE_Attr_Last    =>
