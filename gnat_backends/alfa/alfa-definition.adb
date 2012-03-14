@@ -786,7 +786,7 @@ package body Alfa.Definition is
          if Nkind (N) = N_Aggregate
            and then not Aggregate_Is_Fully_Initialized (N)
          then
-            Aggregate_Not_Fully_Initialized := False;
+            Aggregate_Not_Fully_Initialized := True;
             return Abandon;
          else
             return OK;
