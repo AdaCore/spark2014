@@ -15,6 +15,10 @@ default_vc_timeout = 120
 parallel_procs = 1
 #  Change directory
 
+# global flag for quick mode, so that the fake output is generated only once,
+# even if original test calls gnatprove more than once
+fake_output_generated = False
+
 TEST = sys.modules['__main__']
 TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
@@ -30,6 +34,16 @@ def vc_timeout():
         return int(os.environ["vc_timeout"])
     else:
         return default_vc_timeout
+
+def xfail_test():
+    if os.path.exists("test.opt"):
+        p = re.compile("XFAIL")
+        with open("test.opt", 'r') as f:
+            for line in f:
+                m = re.search(p, line)
+                if m:
+                    return True
+    return False
 
 def cat(filename, force_in_quick_mode=False):
     """Dump the content of a file on stdout
@@ -97,18 +111,34 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     PARAMETERS
     opt: options to give to gnatprove
     """
+    global fake_output_generated
     cmd = ["gnatprove"]
     if quick_mode():
       cmd += ["--no-proof"]
     cmd += to_list(opt)
     process = Run(cmd)
-    if process.status:
+
+    # In quick mode, ignore xfail tests by simply generating a dummy output
+    if quick_mode() and xfail_test():
+        if not fake_output_generated:
+            fake_output_generated = True
+            print "dummy output for XFAIL test"
+        return []
+
+    # If the command returned with an error, print the command output
+    elif process.status:
         print process.out
         return []
+
+    # Otherwise, in quick mode, ignore test output and copy instead the
+    # expected output.
     elif quick_mode():
-        if os.path.exists("test.out"):
+        if os.path.exists("test.out") and not fake_output_generated:
+            fake_output_generated = True
             cat("test.out", True)
         return []
+
+    # Otherwise, print the command output sorted
     else:
         strlist = str.splitlines(process.out)
         strlist.sort()
