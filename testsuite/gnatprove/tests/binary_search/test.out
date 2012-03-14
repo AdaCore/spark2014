@@ -3,19 +3,18 @@ binary_search.adb:13:18: info: range check proved
 binary_search.adb:15:10: info: index check proved
 binary_search.adb:15:31: info: index check proved
 binary_search.adb:16:17: info: range check proved
-binary_search.adb:19:26: info: loop invariant initialization proved
-binary_search.adb:19:26: info: loop invariant preservation proved
-binary_search.adb:20:10: assertion not proved
-binary_search.adb:21:50: info: index check proved
-binary_search.adb:22:66: info: index check proved
+binary_search.adb:20:10: loop invariant initialization not proved
+binary_search.adb:20:10: loop invariant preservation not proved
+binary_search.adb:21:50: index check not proved
+binary_search.adb:22:66: index check not proved
 binary_search.adb:23:22: overflow check not proved
 binary_search.adb:23:22: range check not proved
 binary_search.adb:23:31: overflow check not proved
 binary_search.adb:23:39: info: division check proved
-binary_search.adb:23:39: overflow check not proved
+binary_search.adb:23:39: info: overflow check proved
 binary_search.adb:24:13: index check not proved
 binary_search.adb:26:16: info: index check proved
-binary_search.adb:29:20: range check not proved
+binary_search.adb:29:20: info: range check proved
 binary_search.adb:32:14: info: range check proved
 binary_search.ads:11:20: info: index check proved
 binary_search.ads:11:30: info: index check proved
