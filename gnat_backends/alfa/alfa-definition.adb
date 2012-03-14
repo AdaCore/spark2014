@@ -93,9 +93,6 @@ package body Alfa.Definition is
    Current_Unit_Is_Main_Body : Boolean;
    Current_Unit_Is_Main_Spec : Boolean;
 
-   Inside_Expression_With_Actions : Boolean := False;
-   --  True during the analysis of an expression-with-actions
-
    All_Types : Node_Sets.Set;
    --  Set of all types whose declaration has been analyzed so far
 
@@ -1234,16 +1231,7 @@ package body Alfa.Definition is
             Mark_Non_Alfa ("code statement", N, NIR_Assembly_Lang);
 
          when N_Component_Association =>
-
-            --  ??? We need to find in which cases these Loop_Actions are
-            --  generated, if they are generated at all, and then apply the
-            --  same translation as for other actions.
-
-            if Present (Loop_Actions (N)) then
-               Mark_List (Loop_Actions (N));
-               Mark_Non_Alfa
-                 ("expression with action", N, NYI_Expr_With_Action);
-            end if;
+            pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
             if not Box_Present (N) then
                Mark (Expression (N));
@@ -1273,26 +1261,6 @@ package body Alfa.Definition is
 
          when N_Explicit_Dereference =>
             Mark_Non_Alfa ("explicit dereference", N, NIR_Access);
-
-         --  ??? Can we generate these? Should we complete the translation
-         --  towards terms and predicates in gnat2why-expr?
-
-         when N_Expression_With_Actions =>
-            declare
-               Already_In_EWA : constant Boolean :=
-                                  Inside_Expression_With_Actions;
-            begin
-               if not Already_In_EWA then
-                  Inside_Expression_With_Actions := True;
-               end if;
-
-               Mark_List (Actions (N));
-               Mark (Expression (N));
-
-               if not Already_In_EWA then
-                  Inside_Expression_With_Actions := False;
-               end if;
-            end;
 
          when N_Extended_Return_Statement =>
             Mark_Non_Alfa ("extended RETURN", N, NYI_Extended_Return);
@@ -1574,6 +1542,11 @@ package body Alfa.Definition is
 
          when N_Expression_Function |
               N_Subunit             =>
+            raise Program_Error;
+
+         --  The following kind is never generated in Alfa mode
+
+         when N_Expression_With_Actions =>
             raise Program_Error;
 
          --  Mark should not be called on other kinds
