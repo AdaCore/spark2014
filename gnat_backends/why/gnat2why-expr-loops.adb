@@ -101,6 +101,9 @@ package body Gnat2Why.Expr.Loops is
                   end;
                end if;
 
+            when N_Object_Declaration =>
+               null;
+
             when others =>
                exit;
          end case;
