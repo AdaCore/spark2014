@@ -3044,16 +3044,16 @@ package body Gnat2Why.Expr is
             Conclusion : constant W_Pred_Id :=
                            +Transform_Expr (Condition (Expr),
                                             EW_Pred, Params);
-            Hypothesis : W_Pred_Id;
-            Quant_Body : W_Pred_Id;
-         begin
-            Hypothesis := +Range_Expr (Range_E, +Index, EW_Pred, Params);
-            Quant_Body :=
-               New_Connection
-                (Op     => EW_Imply,
-                 Left   => +Hypothesis,
+            Constraint : constant W_Pred_Id :=
+              +Range_Expr (Range_E, +Index, EW_Pred, Params);
+            Connector  : constant EW_Connector :=
+              (if All_Present (Expr) then EW_Imply else EW_And);
+            Quant_Body : constant W_Pred_Id :=
+              New_Connection
+                (Op     => Connector,
+                 Left   => +Constraint,
                  Right  => +Conclusion);
-
+         begin
             if All_Present (Expr) then
                return
                   New_Universal_Quantif
