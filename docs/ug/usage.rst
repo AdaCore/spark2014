@@ -89,23 +89,39 @@ For each unit ``<name>``, GNATprove generates a :ref:`summary file`
 ``<name>.alfa`` in the sub-directory ``gnatprove`` of the corresponding
 object directory.
 
+Package in Project Files
+------------------------
+
+GNATprove reads the package ``Prove`` in the given project file. This package
+is allowed to contain an attribute ``Switches``, which defines additional
+command line switches that are used for the invokation of GNATprove. As an
+example, the following package in the project file sets the default mode of
+GNATprove to ``prove``::
+
+    package Prove is
+       for Switches use ("--mode=prove");
+    end Prove;
+
+Switches given on the command line have priority over switches given in the
+project file.
+
 Integration in GPS
 ------------------
 
 Although there is currently no specific support for GNATprove in GPS, it is
 already possible to take advantage of GPS error/warnings browsing as if the
-errors and warning produced by GNATprove were coming from a compiler. 
+errors and warning produced by GNATprove were coming from a compiler.
 For this, you
 simply need to load the project you would like to examine in GPS and launch the
 ``gnatprove`` command from the ``Build --> Project --> Custom Build`` menu.
-For example, the following command runs GNATprove on the current project with 
+For example, the following command runs GNATprove on the current project with
 options ``--mode=prove --report=all``::
 
    gnatprove -P %PP --mode=prove --report=all
 
-We recommend that you enable the option ``Draw current line as a thin line`` 
+We recommend that you enable the option ``Draw current line as a thin line``
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that it does not
-hide the status of the checks on the current line (all proved in green / 
+hide the status of the checks on the current line (all proved in green /
 otherwise in red).
 
 Integration in GNATbench
