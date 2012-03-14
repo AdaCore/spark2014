@@ -202,8 +202,7 @@ package body Gnat2Why.Expr is
    function Transform_Quantified_Expression
      (Expr         : Node_Id;
       Domain       : EW_Domain;
-      Params       : Translation_Params;
-      Current_Type : out W_Base_Type_Id) return W_Expr_Id;
+      Params       : Translation_Params) return W_Expr_Id;
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
@@ -2743,8 +2742,8 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Quantified_Expression =>
-            T := Transform_Quantified_Expression
-              (Expr, Domain, Params, Current_Type);
+            T := Transform_Quantified_Expression (Expr, Domain, Params);
+            Current_Type := EW_Bool_Type;
 
          when N_Conditional_Expression =>
             declare
@@ -3034,13 +3033,11 @@ package body Gnat2Why.Expr is
    function Transform_Quantified_Expression
      (Expr         : Node_Id;
       Domain       : EW_Domain;
-      Params       : Translation_Params;
-      Current_Type : out W_Base_Type_Id) return W_Expr_Id
+      Params       : Translation_Params) return W_Expr_Id
    is
       Index      : W_Identifier_Id;
       Range_E    : Node_Id;
    begin
-      Current_Type := Type_Of_Node (Expr);
       Extract_From_Quantified_Expression (Expr, Index, Range_E);
       if Domain = EW_Pred then
          declare
@@ -3096,7 +3093,6 @@ package body Gnat2Why.Expr is
             Range_Cond : W_Prog_Id;
          begin
             Range_Cond := +Range_Expr (Range_E, +Index, EW_Prog, Params);
-            Current_Type := EW_Bool_Type;
             return
               +Sequence
                 (New_Binding
@@ -3134,8 +3130,7 @@ package body Gnat2Why.Expr is
 
          declare
             Pred : constant W_Expr_Id :=
-              Transform_Quantified_Expression
-                (Expr, EW_Pred, Params, Current_Type);
+              Transform_Quantified_Expression (Expr, EW_Pred, Params);
          begin
             return
               New_Conditional (Domain    => EW_Term,
