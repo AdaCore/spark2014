@@ -1,0 +1,9 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("--mode=prove", "--report=all", "--timeout=120", "--steps=100", "--quiet");
+   end Prove;
+end Test;
