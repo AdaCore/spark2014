@@ -1,13 +1,13 @@
 search.adb:10:57: info: overflow check proved
 search.adb:10:64: info: index check proved
 search.adb:12:16: index check not proved
-search.adb:13:68: info: index check proved
+search.adb:13:68: index check not proved
 search.adb:14:13: info: index check proved
 search.adb:15:20: info: range check proved
 search.adb:4:24: info: range check proved
-search.adb:8:10: info: loop invariant initialization proved
+search.adb:8:10: loop invariant initialization not proved
 search.adb:8:10: loop invariant preservation not proved
-search.ads:10:13: info: index check proved
+search.ads:10:13: index check not proved
 search.ads:11:34: info: range check proved
 search.ads:11:54: info: overflow check proved
 search.ads:11:54: range check not proved

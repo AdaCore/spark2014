@@ -431,6 +431,7 @@ package body Why.Gen.Names is
          when WNE_Obj          => return "obj";
          when WNE_Log          => return "log";
          when WNE_Func         => return "func";
+         when WNE_Sandbox      => return "sandbox";
 
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);

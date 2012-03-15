@@ -144,6 +144,7 @@ package Why.Gen.Names is
       WNE_Real_Of_Int,
       WNE_Result,
       WNE_Result_Exc,
+      WNE_Sandbox,
       WNE_To_Array,
       WNE_To_Int,
       WNE_To_Real,

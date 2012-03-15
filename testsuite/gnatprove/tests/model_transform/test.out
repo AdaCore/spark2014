@@ -17,7 +17,7 @@ model.adb:78:20: index check not proved
 model.adb:78:26: info: index check proved
 model.adb:80:20: info: index check proved
 model.adb:81:38: info: range check proved
-model.adb:81:43: index check not proved
+model.adb:81:43: info: index check proved
 model.adb:82:18: info: index check proved
 model.adb:83:36: info: range check proved
 model.adb:83:39: info: index check proved
@@ -29,7 +29,7 @@ model.ads:149:7: postcondition not proved
 model.ads:151:17: index check not proved
 model.ads:151:38: index check not proved
 model.ads:152:19: index check not proved
-model.ads:153:27: index check not proved
+model.ads:153:27: info: index check proved
 model.ads:155:17: index check not proved
 model.ads:155:36: info: index check proved
 model.ads:156:19: index check not proved

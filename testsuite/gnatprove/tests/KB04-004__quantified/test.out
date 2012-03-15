@@ -4,16 +4,16 @@ data.adb:17:10: info: loop invariant initialization proved
 data.adb:17:10: loop invariant preservation not proved
 data.adb:17:51: info: overflow check proved
 data.adb:17:57: info: index check proved
-data.adb:17:69: index check not proved
+data.adb:17:69: info: index check proved
 data.adb:19:58: info: index check proved
-data.adb:19:66: index check not proved
+data.adb:19:66: info: index check proved
 data.adb:20:10: info: index check proved
 data.adb:20:22: info: index check proved
 data.adb:9:24: info: loop invariant initialization proved
 data.adb:9:24: info: loop invariant preservation proved
 data.ads:14:15: postcondition not proved
 data.ads:14:39: info: index check proved
-data.ads:14:51: index check not proved
+data.ads:14:51: info: index check proved
 data.ads:7:15: postcondition not proved
 data.ads:7:39: info: index check proved
 data.ads:7:51: info: index check proved

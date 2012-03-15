@@ -14,9 +14,9 @@ s.adb:36:10: info: loop invariant initialization proved
 s.adb:36:10: loop invariant preservation not proved
 s.adb:36:59: info: overflow check proved
 s.adb:37:27: info: index check proved
-s.adb:37:41: index check not proved
+s.adb:37:41: info: index check proved
 s.adb:39:27: info: index check proved
-s.adb:39:40: index check not proved
+s.adb:39:40: info: index check proved
 s.adb:41:10: info: index check proved
 s.adb:41:26: info: index check proved
 s.adb:42:10: info: index check proved
@@ -25,9 +25,9 @@ s.adb:49:10: info: loop invariant initialization proved
 s.adb:49:10: loop invariant preservation not proved
 s.adb:49:45: info: overflow check proved
 s.adb:50:27: info: index check proved
-s.adb:50:41: index check not proved
+s.adb:50:41: info: index check proved
 s.adb:52:27: info: index check proved
-s.adb:52:40: index check not proved
+s.adb:52:40: info: index check proved
 s.adb:54:10: info: index check proved
 s.adb:54:26: info: index check proved
 s.adb:55:10: info: index check proved
@@ -39,10 +39,10 @@ s.adb:7:27: info: index check proved
 s.adb:9:13: info: index check proved
 s.ads:14:15: postcondition not proved
 s.ads:14:42: info: index check proved
-s.ads:14:56: index check not proved
+s.ads:14:56: info: index check proved
 s.ads:17:15: postcondition not proved
 s.ads:17:42: info: index check proved
-s.ads:17:56: index check not proved
+s.ads:17:56: info: index check proved
 s.ads:8:15: info: postcondition proved
 s.ads:8:69: info: index check proved
 s.ads:9:43: info: index check proved

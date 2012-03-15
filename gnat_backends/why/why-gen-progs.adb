@@ -153,8 +153,13 @@ package body Why.Gen.Progs is
       return
         New_Call
           (Ada_Node => Ada_Node,
-           Name     => To_Ident (WNE_Ignore),
-           Args     => (1 => +Prog));
+           Name     => To_Ident (WNE_Sandbox),
+           Args     => (1 =>
+                          New_Call
+                            (Ada_Node => Ada_Node,
+                             Domain   => EW_Prog,
+                             Name     => To_Ident (WNE_Ignore),
+                             Args     => (1 => +Prog))));
    end New_Ignore;
 
    ------------------------
