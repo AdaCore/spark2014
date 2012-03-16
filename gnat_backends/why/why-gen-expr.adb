@@ -591,7 +591,10 @@ package body Why.Gen.Expr is
       --  reason for a VC. with prefix the text with "gnatprove:" so that Why3
       --  can easily recognize the label as coming from gnatprove.
 
-      Loc    : constant Source_Ptr := Sloc (N);
+      --  For a node inside an instantiation, we use the location of the
+      --  top-level instantiation. This could be refined in the future.
+
+      Loc    : constant Source_Ptr := Translate_Location (Sloc (N));
       File   : constant String := File_Name (Loc);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);

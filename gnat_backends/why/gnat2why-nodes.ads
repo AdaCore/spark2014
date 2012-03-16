@@ -168,8 +168,15 @@ package Gnat2Why.Nodes is
    function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
    --  Compute the instantiation Depth of Id
 
+   function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
+     (if Instantiation_Location (Loc) /= No_Location then
+        Instantiation_Location (Loc)
+      else
+        Loc);
+
    function File_Name (Loc : Source_Ptr) return String is
-      (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));
+     (Get_Name_String (File_Name
+       (Get_Source_File_Index (Translate_Location (Loc)))));
 
    function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
       (File_Name_Without_Suffix (File_Name (Loc)));
