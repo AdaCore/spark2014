@@ -5,7 +5,7 @@ configuration project Gnat2why is
       for Required_Switches ("Ada") use ("-gnatd.F");
       for Object_File_Suffix ("Ada") use "__package.mlw";
       For Language_Kind ("Ada") use "unit_based";
-      For Dependency_Kind ("Ada") use "Makefile";
+      For Dependency_Kind ("Ada") use "ALI_Closure";
       for Dependency_Switches ("Ada") use ();
       for Mapping_File_Switches    ("Ada") use ("-gnatem=");
       for Mapping_Spec_Suffix      ("Ada") use "%s";
@@ -13,7 +13,7 @@ configuration project Gnat2why is
       for Config_File_Switches     ("Ada") use ("-gnatec=");
       for Include_Path_File     ("Ada") use "ADA_PRJ_INCLUDE_FILE";
 
-      for Driver ("C") use "gnat2why";
+      for Driver ("C") use "";
    end Compiler;
 
    package Naming is

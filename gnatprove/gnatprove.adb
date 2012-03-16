@@ -154,7 +154,6 @@ procedure Gnatprove is
       Args.Append ("-P");
       Args.Append (Project_File);
       Args.Append ("--subdirs=" & String (Subdir_Name));
-      Args.Append ("-U");
       if Force then
          Args.Append ("-f");
       end if;
@@ -585,8 +584,6 @@ procedure Gnatprove is
                Next (Cur);
             end loop;
          end;
-      else
-         Args.Append ("-U");
       end if;
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
