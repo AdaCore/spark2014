@@ -1,0 +1,3 @@
+pack.adb:7:53: info: range check proved
+pack.adb:8:38: info: range check proved
+pack.ads:6:4: info: range check proved
