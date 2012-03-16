@@ -5,7 +5,7 @@ package body P is
       Tmp : Integer;
    begin
       Tmp := X;
-      Tmp := Tmp + F1 (Y) + Z + T;
+      Tmp := (Tmp + F1 (Y)) + (Z + T);
       P1 (Tmp);
       Result := (A, B, C, Tmp);
       return Result;
