@@ -45,7 +45,6 @@ with Why;                   use Why;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Binders;       use Why.Gen.Binders;
@@ -1339,7 +1338,6 @@ package body Gnat2Why.Expr is
       Id     : W_Identifier_Id;
       Expr   : Node_Id)
    is
-      use Why_Node_Sets;
 
       Name : constant String := New_Temp_Identifier (Expr);
       Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
@@ -1347,18 +1345,12 @@ package body Gnat2Why.Expr is
 
       --  Predicate used to define the aggregate
 
-      Params_No_Ref : constant Translation_Params :=
+      Params_No_Ref : Translation_Params :=
         (Theory      => Params.Theory,
          File        => Params.File,
          Phase       => Params.Phase,
          Ref_Allowed => False,
          Name_Map    => Params.Name_Map);
-      Pred : constant W_Pred_Id :=
-               Transform_Array_Component_Associations
-                 (Expr,
-                  Typ,
-                  Id,
-                  Params_No_Ref);
 
       --  Compute the list of references used in the aggregate
 
@@ -1374,7 +1366,7 @@ package body Gnat2Why.Expr is
                             Typ,
                             Id,
                             Params_Ref);
-      Refs           : constant Why_Node_Sets.Set :=
+      Refs           : constant Node_Sets.Set :=
                          Get_All_Dereferences (+Pred_With_Refs);
 
       --  Values used in calls to the aggregate function
@@ -1409,7 +1401,10 @@ package body Gnat2Why.Expr is
                     else
                       (1 .. Integer (Refs.Length) => <>));
       Cnt       : Positive;
-      Cursor    : Why_Node_Sets.Cursor;
+
+      use Node_Sets;
+
+      Cursor    : Node_Sets.Cursor;
       Decl_File : Why_File := Why_Files (WF_Context_In_Spec);
    begin
       --  Compute the parameters/arguments for the function call and axiom
@@ -1417,20 +1412,26 @@ package body Gnat2Why.Expr is
       Cnt := 1;
       Cursor := Refs.First;
       while Cursor /= No_Element loop
-         Other_Params (Cnt) :=
-           (Ada_Node => Empty,
-            B_Name   => +Element (Cursor),
-            Modifier => None,
-            B_Type   =>
-              New_Abstract_Type
-                (Name => To_Why_Type
-                     (Get_Name_String (Get_Symbol (+Element (Cursor))))));
-
-         Args (Cnt) := +Element (Cursor);
-         Deref_Args (Cnt) :=
-           New_Deref (Right => +Element (Cursor));
-         Next (Cursor);
-         Cnt := Cnt + 1;
+         declare
+            Ent  : constant Entity_Id := Element (Cursor);
+            Name : constant String := Full_Name (Ent);
+            Ident : constant W_Identifier_Id :=
+              New_Identifier (Ada_Node => Ent, Name => Name);
+         begin
+            Other_Params (Cnt) :=
+              (Ada_Node => Empty,
+               B_Name   => Ident,
+               Modifier => None,
+               B_Type   =>
+                 New_Abstract_Type
+                   (Name => To_Why_Type (Name)));
+            Args (Cnt) := +Ident;
+            Deref_Args (Cnt) :=
+              New_Deref (Right => +To_Why_Id (Ent));
+            Next (Cursor);
+            Cnt := Cnt + 1;
+            Ada_Ent_To_Why.Insert (Params_No_Ref.Name_Map, Ent, +Ident);
+         end;
       end loop;
 
       --  Compute and store the translation of aggregate into Why terms, both
@@ -1472,7 +1473,12 @@ package body Gnat2Why.Expr is
            (Name        => To_Ident (WNE_Def_Axiom),
             Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
             Pre         => +Id_Expr,
-            Def         => Pred));
+            Def         =>
+              Transform_Array_Component_Associations
+                (Expr,
+                 Typ,
+                 Id,
+                 Params_No_Ref)));
       Close_Theory (Decl_File, Filter_Entity => Expr);
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;

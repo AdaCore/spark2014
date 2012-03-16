@@ -23,14 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Tables; use Why.Atree.Tables;
 with Why.Ids;          use Why.Ids;
 with Why.Types;        use Why.Types;
+with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
 
-   function Get_All_Dereferences (W : Why_Node_Id) return Why_Node_Sets.Set;
+   function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set;
    --  Return a list of the variables dereferenced in T
 
    function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean;

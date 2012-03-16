@@ -26,15 +26,16 @@
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Terms is
 
-   function Get_All_Dereferences (W : Why_Node_Id) return Why_Node_Sets.Set is
+   function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set is
       type Collect_State is new Traversal_State with record
-         Found : Why_Node_Sets.Set;
+         Found : Node_Sets.Set;
       end record;
 
       procedure Deref_Pre_Op
@@ -45,11 +46,11 @@ package body Why.Gen.Terms is
         (State : in out Collect_State;
          Node  : W_Deref_Id) is
       begin
-         State.Found.Include (+Get_Right (Node));
+         State.Found.Include (Get_Ada_Node (+Get_Right (Node)));
       end Deref_Pre_Op;
 
       SS : Collect_State :=
-             (Control => Continue, Found => Why_Node_Sets.Empty_Set);
+             (Control => Continue, Found => Node_Sets.Empty_Set);
    begin
       Traverse (SS, W);
       return SS.Found;
