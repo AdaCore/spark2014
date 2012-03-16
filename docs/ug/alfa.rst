@@ -157,7 +157,6 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * dispatch: dispatching;
 * expression with action: expression with action;
 * float: float;
-* generic: generic;
 * multi dim array: multi-dimensional array of dimention > 2;
 * pragma: not yet implemented pragma;
 * representation clause: representation clause;
@@ -362,13 +361,13 @@ Compiler Permissions
 
 Ada standard defines various ways in which a compiler is allowed to compute a
 correct result for a computation instead of raising a run-time error. In Alfa,
-we adopt by default the choices made by GNAT on the platform, except when 
-option ``--pedantic`` is used, in which case we reject all such permissions 
+we adopt by default the choices made by GNAT on the platform, except when
+option ``--pedantic`` is used, in which case we reject all such permissions
 and interpret all computations with the strictest meaning.
 
-For example, the bounds of base types for user-defined types, which define 
+For example, the bounds of base types for user-defined types, which define
 which computations overflow, may vary depending on the compiler and host/target
-architectures. With option ``--pedantic``, all bounds should be set to their 
+architectures. With option ``--pedantic``, all bounds should be set to their
 minimum range
 guaranteed by the Ada standard (worst case). For example, the following type
 should have a base type ranging from -10 to 10 (standard requires a symmetric
@@ -380,7 +379,7 @@ This other type should have a base type ranging from -10 to 9::
 
     type T is -10 .. 1;
 
-The bounds of standard scalar types are still defined by the GNAT compiler 
+The bounds of standard scalar types are still defined by the GNAT compiler
 for every host/target architecture, even with option ``--pedantic``.
 
 Pure Contract Specifications
@@ -521,7 +520,6 @@ Features Not Yet Implemented
 The major features not yet implemented are:
 
 * OO programming: tagged types, dispatching
-* generics
 * formal containers
 * invariants on types (invariants and predicates)
 
@@ -529,6 +527,5 @@ Other important features not yet implemented are:
 
 * discriminant / variant records
 * array slices
-* declare block statements
 * elaboration code
 * attribute ``'Loop_Entry``

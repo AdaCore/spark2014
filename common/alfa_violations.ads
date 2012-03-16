@@ -47,7 +47,6 @@ package Alfa_Violations is
       NYI_Dispatch,         --  dispatching
       NYI_Expr_With_Action, --  expression with action
       NYI_Float,            --  float
-      NYI_Generic,          --  generics
       NYI_Invariant,        --  type invariant
       NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
       NYI_Pragma,           --  pragma
@@ -71,7 +70,7 @@ package Alfa_Violations is
       NIR_Dealloc,          --  deallocation
       NIR_Dynamic_Alloc,    --  dynamic allocation
       NIR_Exception,        --  exception
-      NIR_Goto,             --  goto
+      NIR_Goto,             --  gotoGen
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
@@ -113,7 +112,6 @@ package Alfa_Violations is
       NYI_Dispatch         => To_Unbounded_String ("dispatch"),
       NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),
       NYI_Float            => To_Unbounded_String ("float"),
-      NYI_Generic          => To_Unbounded_String ("generic"),
       NYI_Invariant        => To_Unbounded_String ("type invariant"),
       NYI_Multi_Dim_Array  => To_Unbounded_String ("multi dim array"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),

@@ -1078,14 +1078,6 @@ package body Alfa.Definition is
                   A (V).Include (+To);
                end if;
             end loop;
-
-         --  If From is from a generic instantiation, then mark the violation
-         --  as being the current lack of support for generics.
-
-         elsif Is_Generic_Instance (+From)
-           or else Safe_Instantiation_Depth (From) > 0
-         then
-            A (NYI_Generic).Include (+To);
          elsif From = To then
             A (NIR_Recursive).Include (+To);
          else
@@ -1263,13 +1255,6 @@ package body Alfa.Definition is
          when N_Extension_Aggregate =>
             Mark_Non_Alfa ("extension aggregate", N, NYI_Aggregate);
 
-         when N_Formal_Object_Declaration |
-              N_Formal_Package_Declaration |
-              N_Formal_Subprogram_Declaration |
-              N_Formal_Type_Declaration =>
-            Mark_Non_Alfa_Declaration
-              ("formal generic parameter", N, NYI_Generic);
-
          when N_Free_Statement =>
             Mark_Non_Alfa ("free statement", N, NIR_Dealloc);
 
@@ -1286,16 +1271,6 @@ package body Alfa.Definition is
 
          when N_Function_Call =>
             Mark_Call (N);
-
-         when N_Function_Instantiation =>
-            Mark_Non_Alfa ("function instantiation", N, NYI_Generic);
-
-         when N_Generic_Function_Renaming_Declaration |
-              N_Generic_Package_Declaration |
-              N_Generic_Package_Renaming_Declaration |
-              N_Generic_Procedure_Renaming_Declaration |
-              N_Generic_Subprogram_Declaration =>
-            Mark_Non_Alfa ("generic declaration", N, NYI_Generic);
 
          when N_Goto_Statement =>
             Mark_Non_Alfa ("goto statement", N, NIR_Goto);
@@ -1350,15 +1325,6 @@ package body Alfa.Definition is
          when N_Package_Declaration =>
             Mark_Package_Declaration (N);
 
-         when N_Package_Instantiation =>
-
-            --  Even though we are interested in the object declarations that
-            --  stem from a package instantiation, we can safely ignore this
-            --  node, as the frontend also generates a corresponding package
-            --  declaration.
-
-            Mark_Non_Alfa ("package instantiation", N, NYI_Generic);
-
          when N_Package_Specification =>
             Mark_Package_Specification (N);
 
@@ -1370,9 +1336,6 @@ package body Alfa.Definition is
 
          when N_Procedure_Call_Statement =>
             Mark_Call (N);
-
-         when N_Procedure_Instantiation =>
-            Mark_Non_Alfa ("procedure instantiation", N, NYI_Generic);
 
          when N_Qualified_Expression =>
             Mark (Subtype_Mark (N));
@@ -1510,21 +1473,33 @@ package body Alfa.Definition is
 
          --  The following kinds can be safely ignored by marking
 
-         when N_Character_Literal               |
-              N_Implicit_Label_Declaration      |
-              N_Incomplete_Type_Declaration     |
-              N_Integer_Literal                 |
-              N_Itype_Reference                 |
-              N_Label                           |
-              N_Null_Statement                  |
-              N_Operator_Symbol                 |
-              N_Others_Choice                   |
-              N_Package_Renaming_Declaration    |
-              N_Subprogram_Info                 |
-              N_Subprogram_Renaming_Declaration |
-              N_Use_Package_Clause              |
-              N_With_Clause                     |
-              N_Use_Type_Clause                 =>
+         when N_Character_Literal                      |
+              N_Formal_Object_Declaration              |
+              N_Formal_Package_Declaration             |
+              N_Formal_Subprogram_Declaration          |
+              N_Formal_Type_Declaration                |
+              N_Function_Instantiation                 |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Package_Declaration            |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Generic_Procedure_Renaming_Declaration |
+              N_Generic_Subprogram_Declaration         |
+              N_Implicit_Label_Declaration             |
+              N_Incomplete_Type_Declaration            |
+              N_Integer_Literal                        |
+              N_Itype_Reference                        |
+              N_Label                                  |
+              N_Null_Statement                         |
+              N_Operator_Symbol                        |
+              N_Others_Choice                          |
+              N_Package_Instantiation                  |
+              N_Package_Renaming_Declaration           |
+              N_Procedure_Instantiation                |
+              N_Subprogram_Info                        |
+              N_Subprogram_Renaming_Declaration        |
+              N_Use_Package_Clause                     |
+              N_With_Clause                            |
+              N_Use_Type_Clause                        =>
             null;
 
          --  Object renamings are rewritten by expansion, but they are kept in
@@ -2119,14 +2094,6 @@ package body Alfa.Definition is
                end if;
             end loop;
 
-         --  If From is from a generic instantiation, then mark the violation
-         --  as being the current lack of support for generics.
-
-         elsif Is_Generic_Instance (+From)
-           or else Safe_Instantiation_Depth (From) > 0
-         then
-            Error_Msg_F (Complete_Error_Msg (Msg, NYI_Generic), N);
-
          else
             Error_Msg_F (Complete_Error_Msg (Msg, NIR_XXX), N);
          end if;
@@ -2246,10 +2213,9 @@ package body Alfa.Definition is
       Id  : constant Unique_Entity_Id := Unique (Defining_Entity (N));
 
    begin
-      --  Currently do not analyze generic bodies
+      --  Do not analyze generic bodies
 
       if Ekind (Unique_Defining_Entity (N)) = E_Generic_Package then
-         Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
 
@@ -2493,10 +2459,9 @@ package body Alfa.Definition is
          return;
       end if;
 
-      --  Currently do not analyze generic bodies
+      --  Do not analyze generic bodies
 
       if Ekind (+Id) in Generic_Subprogram_Kind then
-         Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
 
@@ -2560,7 +2525,6 @@ package body Alfa.Definition is
       --  Do not analyze generics
 
       if Ekind (+Id) in Generic_Subprogram_Kind then
-         Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
 
