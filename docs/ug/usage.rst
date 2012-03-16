@@ -138,9 +138,6 @@ limitations:
    * It only accepts projects with a single object directory; it will stop
      with an error message if run on projects with more than one object
      directory.
-   * All units in the project must compile. We recommend to rename files that
-     do not compile (such as alternate bodies) to names that do not constitute
-     a valid Ada file name, for example using "__".
 
 Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is
 not supported. Instead, use ``for Local_Configuration_Pragmas use
