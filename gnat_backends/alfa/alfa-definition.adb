@@ -536,11 +536,6 @@ package body Alfa.Definition is
    procedure Mark_Type_Definition             (Id : Unique_Entity_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
-   procedure Mark_Object_Declarations_In_List (L : List_Id);
-   --  Mark all objects in list and sub-packages as non Alfa, so that they are
-   --  declared for effects. This is a workaround until generic instantiations
-   --  are treated like non-generic code.
-
    ------------------------------
    -- Alfa marking of entities --
    ------------------------------
@@ -2243,29 +2238,6 @@ package body Alfa.Definition is
       Mark_Object_In_Alfa (Id, N, In_Alfa => Object_Is_Computed_In_Alfa (Id));
    end Mark_Object_Declaration;
 
-   --------------------------------------
-   -- Mark_Object_Declarations_In_List --
-   --------------------------------------
-
-   procedure Mark_Object_Declarations_In_List (L : List_Id) is
-      Cur : Node_Id := First (L);
-   begin
-      while Present (Cur) loop
-
-         --  Pick any node that IS an object declaration or may CONTAIN one
-
-         if Nkind (Cur) = N_Object_Declaration then
-            Mark_Object_In_Alfa (Unique (Defining_Entity (Cur)), Cur,
-                                 In_Alfa => False);
-         elsif Nkind (Cur) = N_Package_Declaration then
-            Mark_Object_Declarations_In_List
-              (Visible_Declarations (Specification (Cur)));
-         end if;
-
-         Next (Cur);
-      end loop;
-   end Mark_Object_Declarations_In_List;
-
    -----------------------
    -- Mark_Package_Body --
    -----------------------
@@ -2298,21 +2270,6 @@ package body Alfa.Definition is
       Id : constant Unique_Entity_Id := Unique (Defining_Entity (N));
 
    begin
-      --  Rewriting of a package should only occur for a package instantiation,
-      --  in which case Is_Rewrite_Insertion return True. Currently do not
-      --  analyze generic package instantiations. However, we still mark the
-      --  object declarations inside the generic, as we do for
-      --  N_Package_Instantiations.
-
-      if Is_Rewrite_Insertion (N)
-        or else Nkind (Original_Node (N)) = N_Package_Instantiation
-      then
-         Mark_Object_Declarations_In_List
-            (Visible_Declarations (Specification (N)));
-         Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
-         return;
-      end if;
-
       Push_Scope (Id);
       Mark (Specification (N));
       Pop_Scope (Id);
@@ -2600,11 +2557,9 @@ package body Alfa.Definition is
       Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
 
    begin
-      --  Currently do not analyze generic instantiations
+      --  Do not analyze generics
 
-      if Nkind (Original_Node (N)) in N_Subprogram_Instantiation
-        or else Ekind (+Id) in Generic_Subprogram_Kind
-      then
+      if Ekind (+Id) in Generic_Subprogram_Kind then
          Mark_Non_Alfa_Declaration ("generic", N, NYI_Generic);
          return;
       end if;
