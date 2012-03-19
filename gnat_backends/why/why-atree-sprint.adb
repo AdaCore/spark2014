@@ -41,9 +41,10 @@ package body Why.Atree.Sprint is
    procedure Print_List
      (State     : in out Printer_State'Class;
       List_Id   : Why_Node_List;
-      Separator : String := ", ");
+      Separator : String := ", ";
+      Newline   : Boolean := False);
    --  Print a node list on current output, separating each element
-   --  by a given separator.
+   --  by a given separator, optionally followed by a new line.
 
    ----------------
    -- Print_List --
@@ -52,7 +53,8 @@ package body Why.Atree.Sprint is
    procedure Print_List
      (State     : in out Printer_State'Class;
       List_Id   : Why_Node_List;
-      Separator : String := ", ")
+      Separator : String := ", ";
+      Newline   : Boolean := False)
    is
       use Node_Lists;
 
@@ -70,6 +72,9 @@ package body Why.Atree.Sprint is
 
          if Position /= No_Element then
             P (O, Separator);
+            if Newline then
+               NL (O);
+            end if;
          end if;
       end loop;
    end Print_List;
@@ -217,7 +222,7 @@ package body Why.Atree.Sprint is
       case Domain is
          when EW_Prog =>
             if not (Is_Empty (+Binders)) then
-               Print_List (State, +Binders, " ->" & ASCII.LF);
+               Print_List (State, +Binders, " ->", Newline => True);
                PL (O, " ->");
             end if;
 
@@ -441,7 +446,7 @@ package body Why.Atree.Sprint is
       if not Is_Empty (+Handlers) then
          NL (O);
          Relative_Indent (O, 1);
-         Print_List (State, +Handlers, "" & ASCII.LF);
+         Print_List (State, +Handlers, "", Newline => True);
          Relative_Indent (O, -1);
       end if;
 
@@ -478,7 +483,7 @@ package body Why.Atree.Sprint is
       if Invariant /= Why_Empty then
          P (O, "invariant ");
          PL (O, "{ ");
-         Relative_Indent (O, -1);
+         Relative_Indent (O, 1);
          Traverse (State, +Invariant);
          NL (O);
          Relative_Indent (O, -1);
@@ -1176,7 +1181,7 @@ package body Why.Atree.Sprint is
       end if;
 
       Traverse (State, +Loop_Content);
-      Relative_Indent (O, 1);
+      Relative_Indent (O, -1);
       NL (O);
       P (O, "done");
       State.Control := Abandon_Children;
@@ -1191,7 +1196,7 @@ package body Why.Atree.Sprint is
       Node  : W_Statement_Sequence_Id)
    is
    begin
-      Print_List (State, +Get_Statements (Node), ";" & ASCII.LF);
+      Print_List (State, +Get_Statements (Node), ";", Newline => True);
       State.Control := Abandon_Children;
    end Statement_Sequence_Pre_Op;
 
@@ -1283,7 +1288,7 @@ package body Why.Atree.Sprint is
       Print_List
         (State,
          +Get_Handler (Node),
-         ", Gnatprove_Exception__" & ASCII.LF);
+         ", Gnatprove_Exception__", Newline => True);
 
       Relative_Indent (O, -1);
       NL (O);
@@ -1694,7 +1699,7 @@ package body Why.Atree.Sprint is
       end if;
       if not Is_Empty (+Subst_List) then
          P (O, " with ");
-         Print_List (State, +Subst_List, ", " & ASCII.LF);
+         Print_List (State, +Subst_List, ", ", Newline => True);
       end if;
       State.Control := Abandon_Children;
    end Clone_Declaration_Pre_Op;
@@ -1731,8 +1736,8 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
-      Print_List (State, +Get_Includes (Node), "" & ASCII.LF);
-      Print_List (State, +Get_Declarations (Node), "" & ASCII.LF);
+      Print_List (State, +Get_Includes (Node), "", Newline => True);
+      Print_List (State, +Get_Declarations (Node), "", Newline => True);
       Relative_Indent (O, -1);
       PL (O, "end");
       State.Control := Abandon_Children;
@@ -1762,7 +1767,7 @@ package body Why.Atree.Sprint is
       Node  : W_File_Id)
    is
    begin
-      Print_List (State, +Get_Theories (Node), "" & ASCII.LF);
+      Print_List (State, +Get_Theories (Node), "", Newline => True);
       State.Control := Abandon_Children;
    end File_Pre_Op;
 
