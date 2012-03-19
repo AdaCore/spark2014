@@ -90,8 +90,8 @@ package Why.Gen.Names is
    function New_Temp_Identifier return W_Identifier_Id;
    --  Return a new unique identifier
 
-   function New_Temp_Identifier (N : Node_Id) return W_Identifier_Id;
-   function New_Temp_Identifier (N : Node_Id) return String;
+   function New_Str_Lit_Ident (N : Node_Id) return W_Identifier_Id;
+   function New_Str_Lit_Ident (N : Node_Id) return String;
    --  Return a new unique identifier whose name only depends on the node that
    --  is passed
 

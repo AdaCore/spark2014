@@ -379,7 +379,7 @@ package body Why.Inter is
       function Name_of_Node (N : Node_Id) return String is
       begin
          if Nkind (N) = N_String_Literal or else Nkind (N) = N_Aggregate then
-            return Capitalize_First (New_Temp_Identifier (N));
+            return Capitalize_First (New_Str_Lit_Ident (N));
          end if;
          return Capitalize_First (Full_Name (N));
       end Name_of_Node;

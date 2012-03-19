@@ -24,11 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Uintp; use Uintp;
+with Uintp;                      use Uintp;
 
 package String_Utils is
    package String_Lists is new
-      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
+     Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
    function Ends_With (Str, Suffix : String) return Boolean;
    --  return True when Str ends with Suffix

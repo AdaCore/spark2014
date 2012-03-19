@@ -22,6 +22,10 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
+
+with Ada.Containers.Hashed_Maps;
+with Ada.Strings.Unbounded.Hash;
+
 with Atree;              use Atree;
 with Lib;                use Lib;
 with Sinput;             use Sinput;
@@ -33,6 +37,25 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Names is
+
+   package String_Int_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Unbounded_String,
+        Element_Type    => Positive,
+        Equivalent_Keys => "=",
+        "="             => "=",
+        Hash            => Ada.Strings.Unbounded.Hash);
+
+   package String_String_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Unbounded_String,
+        Element_Type    => Unbounded_String,
+        Equivalent_Keys => "=",
+        "="             => "=",
+        Hash            => Ada.Strings.Unbounded.Hash);
+
+   Unit_Loc_Map : String_Int_Maps.Map := String_Int_Maps.Empty_Map;
+   File_Loc_Map : String_String_Maps.Map := String_String_Maps.Empty_Map;
 
    function Uint_To_Positive (U : Uint) return Positive;
    --  Limited version of conversion that only works for 1 and 2
@@ -364,20 +387,76 @@ package body Why.Gen.Names is
          & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
    end New_Temp_Identifier;
 
-   function New_Temp_Identifier (N : Node_Id) return String is
-      Loc    : constant Source_Ptr := Sloc (N);
-      File   : constant String := Full_Name (Main_Unit_Entity);
-      Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
-      Column : constant Column_Number := Get_Column_Number (Loc);
-   begin
-      return File & "__" & Int_Image (Integer (Line)) & "__" &
-        Int_Image (Integer (Column));
-   end New_Temp_Identifier;
+   -----------------------
+   -- New_Str_Lit_Ident --
+   -----------------------
 
-   function New_Temp_Identifier (N : Node_Id) return W_Identifier_Id is
+   function New_Str_Lit_Ident (N : Node_Id) return String is
+      Loc     : constant Source_Ptr := Sloc (N);
+      File    : constant String :=
+        Get_Name_String (File_Name (Get_Source_File_Index (Loc)));
+      Line    : constant String :=
+        Int_Image (Integer (Get_Physical_Line_Number (Loc)));
+      Column  : constant String :=
+        Int_Image (Integer (Get_Column_Number (Loc)));
+      Loc_Str : constant Unbounded_String :=
+        To_Unbounded_String (File & "__" & Line & "__" & Column);
+      C1      : constant String_String_Maps.Cursor :=
+        File_Loc_Map.Find (Loc_Str);
+
+      function Register (Key : Unbounded_String; Value : String) return String;
+
+      --------------
+      -- Register --
+      --------------
+
+      function Register (Key : Unbounded_String; Value : String) return String
+      is
+      begin
+         File_Loc_Map.Insert (Key,
+                              To_Unbounded_String (Value));
+         return Value;
+      end Register;
+
    begin
-      return New_Identifier (Name => New_Temp_Identifier (N));
-   end New_Temp_Identifier;
+
+      --  For a given location (we concatenate filename, line and column), we
+      --  always generate the same name
+
+      if String_String_Maps.Has_Element (C1) then
+         return To_String (String_String_Maps.Element (C1));
+      else
+
+         --  We have not yet seen this particular aggregate; we generate a new
+         --  name. If we have already generated the given name, we add a suffix
+         --  which is incremented each time.
+
+         declare
+            Unit   : constant String := Full_Name (Main_Unit_Entity);
+            Full_S : constant String := Unit & "__" & Line & "__" & Column;
+            Unb    : constant Unbounded_String := To_Unbounded_String (Full_S);
+            C2     : constant String_Int_Maps.Cursor :=
+              Unit_Loc_Map.Find (Unb);
+         begin
+            if String_Int_Maps.Has_Element (C2) then
+               declare
+                  V : constant Positive := String_Int_Maps.Element (C2) + 1;
+               begin
+                  Unit_Loc_Map.Replace_Element (C2, V);
+                  return Register (Loc_Str, Full_S & "__" & Int_Image (V));
+               end;
+            else
+               Unit_Loc_Map.Insert (Unb, 1);
+               return Register (Loc_Str, Full_S);
+            end if;
+         end;
+      end if;
+   end New_Str_Lit_Ident;
+
+   function New_Str_Lit_Ident (N : Node_Id) return W_Identifier_Id is
+   begin
+      return New_Identifier (Name => New_Str_Lit_Ident (N));
+   end New_Str_Lit_Ident;
 
    ---------------
    -- To_String --

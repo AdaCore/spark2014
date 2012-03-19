@@ -1339,7 +1339,7 @@ package body Gnat2Why.Expr is
       Expr   : Node_Id)
    is
 
-      Name : constant String := New_Temp_Identifier (Expr);
+      Name : constant String := New_Str_Lit_Ident (Expr);
       Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
                                                          Ada_Node => Expr);
 
@@ -3464,7 +3464,7 @@ package body Gnat2Why.Expr is
      (Params : Translation_Params;
       N      : Node_Id)
    is
-      Name      : constant String := New_Temp_Identifier (N);
+      Name      : constant String := New_Str_Lit_Ident (N);
       Id        : constant W_Identifier_Id :=
         New_Identifier (Ada_Node => N, Name => Name);
       Ty        : constant Entity_Id := Type_Of_Node (N);
