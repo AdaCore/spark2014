@@ -1610,12 +1610,14 @@ package body Alfa.Definition is
       case Attr_Id is
          when Attribute_Result  |
               Attribute_First   |
+              Attribute_Image   |
               Attribute_Last    |
               Attribute_Length  |
               Attribute_Range   |
               Attribute_Succ    |
               Attribute_Pred    |
               Attribute_Val     |
+              Attribute_Value   |
               Attribute_Pos     |
               Attribute_Old     |
               Attribute_Mod     |

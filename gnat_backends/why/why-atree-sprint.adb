@@ -1385,8 +1385,25 @@ package body Why.Atree.Sprint is
             NL (O);
 
          when EW_Pred =>
-            pragma Assert (False);
-            null;
+            P (O, "predicate ");
+
+            Traverse (State, +Name);
+
+            NL (O);
+            Relative_Indent (O, 1);
+
+            declare
+               Binders : constant W_Binder_OList := Get_Binders (Func_Type);
+            begin
+               if not Is_Empty (+Binders) then
+                  P (O, " (");
+                  Print_List (State, +Binders, ") (");
+                  P (O, ") ");
+               end if;
+            end;
+
+            Relative_Indent (O, -1);
+            NL (O);
       end case;
 
       State.Control := Abandon_Children;

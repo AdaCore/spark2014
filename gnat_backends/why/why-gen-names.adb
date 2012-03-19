@@ -102,9 +102,11 @@ package body Why.Gen.Names is
    begin
       case A is
          when Attribute_First   => return WNE_Attr_First;
+         when Attribute_Image   => return WNE_Attr_Image;
          when Attribute_Last    => return WNE_Attr_Last;
          when Attribute_Modulus => return WNE_Attr_Modulus;
          when Attribute_Length  => return WNE_Attr_Length;
+         when Attribute_Value   => return WNE_Attr_Value;
          when others =>
             raise Program_Error;
       end case;
@@ -514,12 +516,19 @@ package body Why.Gen.Names is
 
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);
+         when WNE_Attr_Image   =>
+            return "attr__" & Attribute_Id'Image (Attribute_Image);
          when WNE_Attr_Last    =>
             return "attr__" & Attribute_Id'Image (Attribute_Last);
          when WNE_Attr_Length  =>
             return "attr__" & Attribute_Id'Image (Attribute_Length);
          when WNE_Attr_Modulus =>
             return "attr__" & Attribute_Id'Image (Attribute_Modulus);
+         when WNE_Attr_Value   =>
+            return "attr__" & Attribute_Id'Image (Attribute_Value);
+         when WNE_Attr_Value_Pre_Check =>
+            return "attr__" & Attribute_Id'Image (Attribute_Value)
+              & "__pre_check";
 
       end case;
    end To_String;

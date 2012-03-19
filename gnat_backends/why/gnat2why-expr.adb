@@ -1985,6 +1985,47 @@ package body Gnat2Why.Expr is
                               (Etype (Var), Attribute_Modulus)));
             Current_Type := EW_Int_Type;
 
+         when Attribute_Image =>
+            T := New_Call (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Name     => +New_Attribute_Expr
+                             (Etype (Var), Attr_Id),
+                           Args     =>
+                             (1 => Transform_Expr (First (Expressions (Expr)),
+                                                   Base_Why_Type (Var),
+                                                   Domain,
+                                                   Params)));
+            Current_Type := +Why_Logic_Type_Of_Ada_Type (Standard_String);
+
+         when Attribute_Value =>
+            declare
+               Why_Str : constant W_Base_Type_Id :=
+                           +Why_Logic_Type_Of_Ada_Type (Standard_String);
+               Arg     : constant W_Expr_Id :=
+                           Transform_Expr (First (Expressions (Expr)),
+                                           Why_Str,
+                                           Domain,
+                                           Params);
+               Func    : constant W_Identifier_Id :=
+                           +New_Attribute_Expr (Etype (Var), Attr_Id);
+            begin
+               if Domain = EW_Prog then
+                  T := New_Located_Call
+                    (Ada_Node => Expr,
+                     Domain   => Domain,
+                     Name     => To_Program_Space (Func),
+                     Progs    => (1 => Arg),
+                     Reason   => VC_Precondition);
+               else
+                  T := New_Call
+                    (Ada_Node => Expr,
+                     Domain   => Domain,
+                     Name     => Func,
+                     Args     => (1 => Arg));
+               end if;
+               Current_Type := Base_Why_Type (Var);
+            end;
+
          when others =>
             raise Not_Implemented;
       end case;
