@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Snames;             use Snames;
-with Stand;              use Stand;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -35,9 +34,6 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Types;          use Why.Types;
-
---  for calling Why_Logic_Type_Of_Ada_Type
-with Gnat2Why.Types;     use Gnat2Why.Types;
 
 package body Why.Gen.Scalars is
 
@@ -292,7 +288,7 @@ package body Why.Gen.Scalars is
          BT         : constant W_Primitive_Type_Id :=
                         New_Base_Type (Base_Type => Base_Type);
          Why_Str    : constant W_Primitive_Type_Id :=
-                        Why_Logic_Type_Of_Ada_Type (Standard_String);
+                        New_Abstract_Type (Name => To_Ident (WNE_String));
       begin
          Emit (Theory,
                New_Function_Decl

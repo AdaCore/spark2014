@@ -1,21 +1,21 @@
 module Main
-  (* that's the only module which is absolutely necessary *)
-
+  (* the module of references is the only compulsory module *)
   use export module ref.Ref
 
-  (* This exception is used to simulate return statements *)
+  (* exception used to simulate return statements *)
   exception Gnatprove_Exception___result_exc
 
   (* ignore blocks of code *)
   function ___ignore 'a : ()
 
+  (* type of standard strings *)
+  type __string
+
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
      interfere with other variables, i.e., writes through pointers, aliased
      variables etc. *)
-
   type __type_of_heap
-
   val __HEAP : ref __type_of_heap
 end
 

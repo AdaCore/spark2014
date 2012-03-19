@@ -163,7 +163,17 @@ package body Why.Gen.Arrays is
       --  logic from_ : comp ada_array -> t
       --  axiom 1 : forall x, to_ (from_ (x)) = x
       --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
-      Emit (Theory, New_Type (To_String (WNE_Type)));
+
+      --  For standard strings, t is an alias of the predefined __string
+
+      if Entity = Standard_String then
+         Emit (Theory,
+               New_Type (To_Ident (WNE_Type),
+                 Alias => New_Abstract_Type (Name => To_Ident (WNE_String))));
+      else
+         Emit (Theory, New_Type (To_String (WNE_Type)));
+      end if;
+
       Emit
         (Theory,
          New_Function_Decl
