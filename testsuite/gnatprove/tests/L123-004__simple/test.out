@@ -4,6 +4,20 @@ evoting_simple.adb:147:34: info: loop invariant preservation proved
 evoting_simple.adb:148:13: info: index check proved
 evoting_simple.adb:148:27: info: index check proved
 evoting_simple.adb:149:23: info: range check proved
+evoting_simple.adb:157:32: info: range check proved
+evoting_simple.adb:163:34: info: loop invariant initialization proved
+evoting_simple.adb:163:34: info: loop invariant preservation proved
+evoting_simple.adb:164:25: info: overflow check proved
+evoting_simple.adb:164:25: range check not proved
+evoting_simple.adb:164:41: info: index check proved
+evoting_simple.adb:167:28: info: overflow check proved
+evoting_simple.adb:167:28: range check not proved
+evoting_simple.adb:167:44: info: index check proved
+evoting_simple.adb:169:34: info: loop invariant initialization proved
+evoting_simple.adb:169:34: info: loop invariant preservation proved
+evoting_simple.adb:170:36: info: index check proved
+evoting_simple.adb:172:40: info: range check proved
+evoting_simple.adb:45:14: info: index check proved
 evoting_simple.adb:51:34: info: loop invariant initialization proved
 evoting_simple.adb:51:34: info: loop invariant preservation proved
 evoting_simple.adb:53:40: info: range check proved

@@ -1,4 +1,3 @@
-
 evoting.adb:147:24: info: range check proved
 evoting.adb:149:33: info: loop invariant initialization proved
 evoting.adb:149:33: info: loop invariant preservation proved
@@ -25,6 +24,24 @@ evoting.adb:215:32: info: overflow check proved
 evoting.adb:215:62: info: loop invariant initialization proved
 evoting.adb:215:62: info: loop invariant preservation proved
 evoting.adb:216:10: info: index check proved
+evoting.adb:224:32: info: range check proved
+evoting.adb:230:34: info: loop invariant initialization proved
+evoting.adb:230:34: info: loop invariant preservation proved
+evoting.adb:231:25: info: overflow check proved
+evoting.adb:231:25: range check not proved
+evoting.adb:231:41: info: index check proved
+evoting.adb:234:28: info: overflow check proved
+evoting.adb:234:28: range check not proved
+evoting.adb:234:44: info: index check proved
+evoting.adb:236:34: info: loop invariant initialization proved
+evoting.adb:236:34: info: loop invariant preservation proved
+evoting.adb:237:36: info: index check proved
+evoting.adb:239:40: info: range check proved
+evoting.adb:251:7: info: precondition proved
+evoting.adb:254:41: info: loop invariant initialization proved
+evoting.adb:254:41: info: loop invariant preservation proved
+evoting.adb:255:13: info: index check proved
+evoting.adb:256:43: info: range check proved
 evoting.adb:265:46: info: range check proved
 evoting.adb:266:36: info: range check proved
 evoting.adb:270:18: info: range check proved
@@ -33,9 +50,11 @@ evoting.adb:272:14: info: range check proved
 evoting.adb:272:7: info: precondition proved
 evoting.adb:274:29: info: range check proved
 evoting.adb:274:7: info: precondition proved
+evoting.adb:73:14: info: index check proved
 evoting.adb:79:34: info: loop invariant initialization proved
 evoting.adb:79:34: info: loop invariant preservation proved
 evoting.adb:81:40: info: range check proved
+evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
 evoting.ads:104:48: index check not proved
 evoting.ads:105:21: index check not proved

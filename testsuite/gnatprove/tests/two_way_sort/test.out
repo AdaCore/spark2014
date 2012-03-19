@@ -23,7 +23,7 @@ p1.adb:5:14: index check not proved
 p1.adb:5:21: info: index check proved
 p1.adb:6:25: info: index check proved
 p1.adb:6:32: info: index check proved
-p1.adb:7:26: postcondition not proved
+p1.adb:7:26: info: postcondition proved
 p1.adb:8:55: info: index check proved
 p1.adb:8:63: info: index check proved
 p1.ads:6:16: postcondition not proved

@@ -1,5 +1,0 @@
-
-
-gen.ads:1:01: warning: generic declaration is not yet implemented in Alfa
-p.adb:3:04: warning: package instantiation is not yet implemented in Alfa
-p.adb:7:09: warning: subprogram called is not yet implemented in Alfa
