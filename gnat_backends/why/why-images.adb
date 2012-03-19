@@ -366,7 +366,7 @@ package body Why.Images is
          when EW_Export        =>
             P (O, "export");
          when EW_Clone_Default =>
-            null;
+            P (O, "      ");  --  for alignment of include declarations
       end case;
    end P;
 
@@ -376,7 +376,9 @@ package body Why.Images is
    begin
       case Value is
          when EW_Theory =>
-            if not Empty_For_Theory then
+            if Empty_For_Theory then
+               P (O, "      ");  --  for alignment of include declarations
+            else
                P (O, "theory");
             end if;
          when EW_Module =>

@@ -1736,7 +1736,8 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
-      Print_List (State, +Get_Includes (Node), "", Newline => True);
+      Print_List (State, +Get_Includes (Node), "", Newline => False);
+      NL (O);
       Print_List (State, +Get_Declarations (Node), "", Newline => True);
       Relative_Indent (O, -1);
       PL (O, "end");
