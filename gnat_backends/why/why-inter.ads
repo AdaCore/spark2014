@@ -149,15 +149,18 @@ package Why.Inter is
    --  conversions in gnat2why.
    EW_Array_Type : constant W_Base_Type_Id :=
                      New_Base_Type (Base_Type => EW_Array);
+   EW_Private_Type : constant W_Base_Type_Id :=
+                       New_Base_Type (Base_Type => EW_Private);
 
    type Why_Scalar_Or_Array_Type_Array is
-     array (EW_Scalar_Or_Array) of W_Base_Type_Id;
+     array (EW_Scalar_Or_Array_Or_Private) of W_Base_Type_Id;
 
    Why_Types : constant Why_Scalar_Or_Array_Type_Array :=
-                 (EW_Bool  => EW_Bool_Type,
-                  EW_Int   => EW_Int_Type,
-                  EW_Real  => EW_Real_Type,
-                  EW_Array => EW_Array_Type);
+                 (EW_Bool    => EW_Bool_Type,
+                  EW_Int     => EW_Int_Type,
+                  EW_Real    => EW_Real_Type,
+                  EW_Array   => EW_Array_Type,
+                  EW_Private => EW_Private_Type);
 
    function EW_Abstract (N : Node_Id) return W_Base_Type_Id;
 

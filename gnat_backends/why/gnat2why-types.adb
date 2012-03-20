@@ -27,9 +27,11 @@ with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Sem_Eval;           use Sem_Eval;
-with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
+
+with Alfa.Definition;    use Alfa.Definition;
+
 with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -141,19 +143,28 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Type
      (Ty : Node_Id)
-     return W_Primitive_Type_Id
-   is
-      T : constant Entity_Id := Unique_Entity (Ty);
+     return W_Primitive_Type_Id is
    begin
+      --  For a private type or record subtype, use the most underlying type if
+      --  it is in Alfa. Otherwise, return the special private type.
+
+      if Ekind (Ty) in Private_Kind | E_Record_Subtype then
+         if Type_Is_In_Alfa (Most_Underlying_Type (Ty)) then
+            return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
+         else
+            return New_Base_Type (Base_Type => EW_Private);
+         end if;
+
       --  Standard.Boolean is modeled as bool; any other boolean subtype
       --  is modeled as an abstract type to have range checks.
 
-      if T = Standard_Boolean then
+      elsif Ty = Standard_Boolean then
          return New_Base_Type (Base_Type => EW_Bool);
-      elsif T = Universal_Fixed then
+
+      elsif Ty = Universal_Fixed then
          return New_Base_Type (Base_Type => EW_Real);
       else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => T);
+         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
       end if;
    end  Why_Logic_Type_Of_Ada_Type;
 
@@ -256,24 +267,24 @@ package body Gnat2Why.Types is
                   end;
                end;
 
+            --  No private type or record subtype should be translated
+
+            when Private_Kind | E_Record_Subtype =>
+               raise Program_Error;
+
             when others =>
                raise Not_Implemented;
             end case;
          end if;
       end Translate_Underlying_Type;
 
-      Name         : constant String := Full_Name (E);
-      Underlying_E : Entity_Id := E;
+      Name : constant String := Full_Name (E);
 
    --  Start of Translate_Type
 
    begin
-      while Ekind (Underlying_E) in Private_Kind loop
-         Underlying_E := Underlying_Type (E);
-      end loop;
-
       Open_Theory (File, Name);
-      Translate_Underlying_Type (File.Cur_Theory, Underlying_E);
+      Translate_Underlying_Type (File.Cur_Theory, E);
       Close_Theory (File, Filter_Entity => E);
    end Translate_Type;
 

@@ -62,6 +62,14 @@ package Gnat2Why.Nodes is
       "="                 => "=");
    --  Sets of nodes
 
+   package Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   --  Maps of nodes
+
    package Ada_To_Why is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Why_Node_Id,
@@ -129,7 +137,7 @@ package Gnat2Why.Nodes is
 
    end Ada_Ent_To_Why;
 
-   type Unique_Entity_Id is new Entity_Id;
+   subtype Unique_Entity_Id is Entity_Id;
    --  Type of unique entities shared between different views, in contrast to
    --  GNAT entities which may be different between views in GNAT AST:
    --  * package spec and body have different entities;

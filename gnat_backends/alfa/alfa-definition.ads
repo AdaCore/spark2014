@@ -65,7 +65,7 @@ package Alfa.Definition is
    function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the spec of subprogram Id is in Alfa
 
-   function Type_Is_In_Alfa (Ent : Entity_Id) return Boolean;
+   function Type_Is_In_Alfa (Id : Entity_Id) return Boolean;
    --  Return whether a type Ent is in Alfa. Contrary to other .._Is_In_Alfa
    --  functions, it takes an entity rather than a unique entity. Indeed,
    --  private types are always in Alfa, even when the corresponding full type
@@ -93,12 +93,22 @@ package Alfa.Definition is
    All_Entities : Node_Sets.Set;
    --  Set of all entities in list Entities
 
-   Full_View_Entities : Node_Sets.Set;
-   --  Set of all entities which complete a previously seen entity: deferred
-   --  constant completion.
+   Full_To_Partial_Entities : Node_Maps.Map;
+   --  Map from full views of entities to their partial views, for deferred
+   --  constants and private types.
 
    function Is_Full_View (E : Entity_Id) return Boolean is
-      (Full_View_Entities.Contains (E));
+      (Full_To_Partial_Entities.Contains (E));
    --  Return whether E is the full view of another entity
+
+   function Partial_View (E : Entity_Id) return Entity_Id is
+      (Full_To_Partial_Entities.Element (E));
+   --  Return the partial view for entity E
+
+   function Most_Underlying_Type (E : Entity_Id) return Entity_Id;
+   --  Takes a type E in parameter. If E is a private type or a record subtype,
+   --  follow the chain of underlying types (for a private type) and base types
+   --  (for a record subtype) to return the first non-private type which is not
+   --  also a record subtype. Otherwise, return E.
 
 end Alfa.Definition;

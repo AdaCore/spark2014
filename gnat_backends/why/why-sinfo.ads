@@ -188,6 +188,10 @@ package Why.Sinfo is
       --  gnat2why, this is fine. Using it to declare objects is not possible.
       EW_Array,
 
+      --  This is the set of all private types whose most underlying type is
+      --  not in Alfa.
+      EW_Private,
+
       EW_Abstract);
 
    subtype EW_Not_Null_Type is EW_Type range
@@ -196,6 +200,7 @@ package Why.Sinfo is
    --  EW_Int
    --  EW_Real
    --  EW_Array
+   --  EW_Private
        EW_Abstract;
 
    subtype EW_Term_Type is EW_Not_Null_Type range
@@ -203,6 +208,7 @@ package Why.Sinfo is
    --  EW_Int
    --  EW_Real
    --  EW_Array
+   --  EW_Private
        EW_Abstract;
 
    subtype EW_Base_Type is EW_Type range
@@ -220,11 +226,12 @@ package Why.Sinfo is
    --  EW_Int
        EW_Real;
 
-   subtype EW_Scalar_Or_Array is EW_Base_Type range
+   subtype EW_Scalar_Or_Array_Or_Private is EW_Type range
        EW_Bool ..
    --  EW_Int
    --  EW_Real
-       EW_Array;
+   --  EW_Array
+       EW_Private;
 
    subtype EW_Scalar is EW_Base_Type range
        EW_Bool ..

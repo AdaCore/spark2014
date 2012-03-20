@@ -52,8 +52,8 @@ package Why.Gen.Names is
        To   : W_Base_Type_Id) return W_Identifier_Id
       with Pre =>
         (From /= To and then
-         (Get_Base_Type (From) in EW_Scalar_Or_Array
-          or else Get_Base_Type (To) in EW_Scalar_Or_Array));
+         (Get_Base_Type (From) in EW_Scalar_Or_Array_Or_Private
+          or else Get_Base_Type (To) in EW_Scalar_Or_Array_Or_Private));
    --  Return the name of the conversion function between the two types
 
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
@@ -141,6 +141,7 @@ package Why.Gen.Names is
       WNE_Of_Real,
       WNE_Overflow,
       WNE_Pre_Check,
+      WNE_Private,
       WNE_Range_Axiom,
       WNE_Range_Pred,
       WNE_Real_Abs,

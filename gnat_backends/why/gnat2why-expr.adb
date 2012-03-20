@@ -39,6 +39,7 @@ with Urealp;             use Urealp;
 with VC_Kinds;           use VC_Kinds;
 with Eval_Fat;
 
+with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 
 with Why;                   use Why;
@@ -2804,8 +2805,7 @@ package body Gnat2Why.Expr is
                --  Retrieve type of function result from function called
 
                Result_Typ : constant Entity_Id :=
-                              Unique_Entity
-                                (Entity (Result_Definition (Parent (Subp))));
+                              Entity (Result_Definition (Parent (Subp)));
                Name       : constant W_Identifier_Id :=
                  To_Why_Id (Subp, Domain, Local => False);
                Nb_Of_Refs : Natural;
@@ -3541,17 +3541,28 @@ package body Gnat2Why.Expr is
    ------------------
 
    function Type_Of_Node (N : Node_Id) return Entity_Id is
+      T : Entity_Id;
    begin
       if Nkind (N) in N_Entity then
          if Ekind (N) in Type_Kind then
-            return N;
+            T := N;
          else
-            return Unique_Entity (Etype (N));
+            T := Etype (N);
          end if;
       elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         return Unique_Entity (Etype (Entity (N)));
+         T := Etype (Entity (N));
       else
-         return Unique_Entity (Etype (N));
+         T := Etype (N);
+      end if;
+
+      --  The type of a node is either its most underlying type, or else the
+      --  special private type in all other cases, represented in the AST by
+      --  its type.
+
+      if Type_Is_In_Alfa (Most_Underlying_Type (T)) then
+         return Most_Underlying_Type (T);
+      else
+         return T;
       end if;
    end Type_Of_Node;
 

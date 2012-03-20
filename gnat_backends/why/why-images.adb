@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Gen.Names; use Why.Gen.Names;
+
 package body Why.Images is
 
    function Img (Node : Node_Id) return String;
@@ -237,6 +239,8 @@ package body Why.Images is
             P (O, "bool");
          when EW_Array =>
             P (O, "[from Ada array]");
+         when EW_Private =>
+            P (O, To_String (WNE_Private));
          when EW_Abstract =>
             P (O, "[from Ada node]");
       end case;

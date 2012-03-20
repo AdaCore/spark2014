@@ -109,24 +109,24 @@ package body Why.Inter is
             return;
          end if;
          declare
-            UE : constant Unique_Entity_Id := Unique (E);
+            UE : constant Entity_Id := E;  --  ??? remove indirection
          begin
-            if SI_Seen.Contains (+UE) then
+            if SI_Seen.Contains (UE) then
                return;
             end if;
-            SI_Seen.Include (+UE);
-            if Ekind (+UE) in Object_Kind and then
-              not Object_Is_In_Alfa (+UE) then
+            SI_Seen.Include (UE);
+            if Ekind (UE) in Object_Kind and then
+              not Object_Is_In_Alfa (UE) then
                return;
             end if;
-            if Ekind (+UE) in Type_Kind and then not Type_Is_In_Alfa (+UE) then
+            if Ekind (UE) in Type_Kind and then not Type_Is_In_Alfa (UE) then
                return;
             end if;
-            if Is_Boolean_Type (+UE) then
+            if Is_Boolean_Type (UE) then
                Imports (SI_Boolean) := True;
                Imports (SI_Integer) := True;
             else
-               case Ekind (+UE) is
+               case Ekind (UE) is
                when Discrete_Kind | E_Named_Integer =>
                   Imports (SI_Integer) := True;
 
@@ -135,8 +135,8 @@ package body Why.Inter is
 
                when Array_Kind =>
                   Imports (SI_Integer) := True;
-                  Set_SI_Internal (Component_Type (+UE));
-                  case Number_Dimensions (+UE) is
+                  Set_SI_Internal (Component_Type (UE));
+                  case Number_Dimensions (UE) is
                   when 1 =>
                      Imports (SI_Array1) := True;
                   when 2 =>
@@ -145,13 +145,14 @@ package body Why.Inter is
                      raise Program_Error;
                   end case;
 
-               when Private_Kind =>
-                  Set_SI_Internal (Underlying_Type (+UE));
+               when Private_Kind | E_Record_Subtype =>
+                  if Type_Is_In_Alfa (Most_Underlying_Type (UE)) then
+                     Set_SI_Internal (Most_Underlying_Type (UE));
+                  end if;
 
                when E_Record_Type =>
-
                   declare
-                     Field            : Node_Id := First_Entity (+UE);
+                     Field            : Node_Id := First_Entity (UE);
                   begin
                      while Present (Field) loop
                         if Ekind (Field) in Object_Kind then
@@ -162,7 +163,7 @@ package body Why.Inter is
                   end;
 
                when Object_Kind =>
-                  Set_SI (Etype (+UE));
+                  Set_SI (Etype (UE));
 
                when Subprogram_Kind =>
                   null;
@@ -634,6 +635,12 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
+      elsif Ekind (N) in Private_Kind | E_Record_Subtype then
+         if Type_Is_In_Alfa (Most_Underlying_Type (N)) then
+            return EW_Abstract (Most_Underlying_Type (N));
+         else
+            return New_Base_Type (Base_Type => EW_Private);
+         end if;
       else
          return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
       end if;
@@ -701,10 +708,6 @@ package body Why.Inter is
          Ty := Etype (N);
       end if;
 
-      --  Get to the unique type, to skip private type
-
-      Ty := Unique_Entity (Ty);
-
       case Ekind (Ty) is
          when Real_Kind =>
             return EW_Real;
@@ -729,11 +732,12 @@ package body Why.Inter is
                return EW_Int;
             end if;
 
-         when Private_Kind =>
-            --  We can only be in this case if Ty is *derived* from a private
-            --  type. We go up one step to go the the base type.
-
-            return Get_EW_Term_Type (Etype (Ty));
+         when Private_Kind | E_Record_Subtype =>
+            if Type_Is_In_Alfa (Most_Underlying_Type (Ty)) then
+               return Get_EW_Term_Type (Most_Underlying_Type (Ty));
+            else
+               return EW_Private;
+            end if;
 
          when others =>
             return EW_Abstract;
@@ -758,14 +762,14 @@ package body Why.Inter is
    ---------
 
    function  LCA (Left, Right : W_Base_Type_Id) return W_Base_Type_Id is
+      Left_Base, Right_Base : EW_Type;
    begin
       if Eq (Left, Right) then
          return Left;
       else
-         return Why_Types
-           (Type_Hierarchy.LCA
-             (Get_Base_Type (Base_Why_Type (Left)),
-              Get_Base_Type (Base_Why_Type (Right))));
+         Left_Base := Get_Base_Type (Base_Why_Type (Left));
+         Right_Base := Get_Base_Type (Base_Why_Type (Right));
+         return Why_Types (Type_Hierarchy.LCA (Left_Base, Right_Base));
       end if;
    end LCA;
 
