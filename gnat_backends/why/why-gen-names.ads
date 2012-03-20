@@ -112,6 +112,7 @@ package Why.Gen.Names is
       WNE_Attr_Modulus,
       WNE_Attr_Value,
       WNE_Attr_Value_Pre_Check,
+      WNE_AutoGen,
       WNE_Bool_And,
       WNE_Bool_Eq,
       WNE_Bool_Ge,
@@ -194,11 +195,6 @@ package Why.Gen.Names is
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";
    Assume                   : constant String := "assume";
-   Of_Int                   : constant String := "of_int";
-   Int_Of                   : constant String := "to_int";
-   Definition               : constant String := "def";
-   Logic_Def_Axiom          : constant String := "logic_def_axiom";
-   Pre_Check                : constant String := "pre_check";
 
    package New_Result_Temp_Identifier is
      new Name_Gen.Arity_1 (EW_Term, "", "result");

@@ -423,31 +423,42 @@ package body Gnat2Why.Subprograms is
       Kind   : Name_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Cur_Spec : W_Expr_Id := New_Literal (Value  => EW_True,
-                                           Domain => Domain);
-      PPC      : Node_Id;
-
+      Cur_Spec    : W_Expr_Id := Why_Empty;
+      PPC         : Node_Id;
    begin
       PPC := Spec_PPC_List (Contract (E));
       while Present (PPC) loop
          if Pragma_Name (PPC) = Kind then
             declare
                Expr : constant Node_Id :=
-                        Expression
-                          (First (Pragma_Argument_Associations (PPC)));
+                 Expression (First (Pragma_Argument_Associations (PPC)));
+               Why_Expr : constant W_Expr_Id :=
+                 Transform_Expr (Expr, Domain, Params);
             begin
-               Cur_Spec :=
-                 New_And_Then_Expr
-                   (Left   => Transform_Expr (Expr, Domain, Params),
-                    Right  => Cur_Spec,
-                    Domain => Domain);
+               if Cur_Spec /= Why_Empty then
+                  Cur_Spec :=
+                    New_And_Then_Expr
+                      (Left   => Why_Expr,
+                       Right  => Cur_Spec,
+                       Domain => Domain);
+               else
+                  Cur_Spec := Why_Expr;
+               end if;
             end;
          end if;
 
          PPC := Next_Pragma (PPC);
       end loop;
 
-      return Cur_Spec;
+      if Cur_Spec /= Why_Empty then
+         return Cur_Spec;
+      else
+         return New_Label (Domain => Domain,
+                           Name   => To_Ident (WNE_AutoGen),
+                           Def    =>
+                             New_Literal (Value  => EW_True,
+                                          Domain => Domain));
+      end if;
    end Compute_Spec;
 
    --------------------------------------

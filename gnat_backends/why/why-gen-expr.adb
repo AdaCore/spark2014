@@ -555,12 +555,7 @@ package body Why.Gen.Expr is
        Domain   : EW_Domain) return W_Expr_Id
    is
    begin
-      if Domain /= EW_Term
-        and then Present (Ada_Node)
-        and then
-           not (Get_Kind (+Expr) = W_Literal
-                and then Get_Value (+Expr) = EW_True)
-      then
+      if Domain /= EW_Term and then Present (Ada_Node) then
          return
             New_Label
               (Ada_Node => Ada_Node,
@@ -599,9 +594,10 @@ package body Why.Gen.Expr is
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
       Label : constant String :=
-         "#""" & File & """" & Physical_Line_Number'Image (Line) &
-         Column_Number'Image (Column) & " 0# " &
-         """gnatprove:" & VC_Kind'Image (Reason) & """";
+        "#""" & File & """" & Physical_Line_Number'Image (Line) &
+        Column_Number'Image (Column) & " 0# " &
+        """gnatprove:" & VC_Kind'Image (Reason) & """" &
+        " ""keep_on_simp""";
    begin
       return New_Identifier (Name => Label);
    end New_Located_Label;
