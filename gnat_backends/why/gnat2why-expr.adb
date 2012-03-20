@@ -2752,11 +2752,11 @@ package body Gnat2Why.Expr is
                T :=
                  New_Short_Circuit_Expr
                    (Left   => Transform_Expr (Left_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Local_Params),
                     Right  => Transform_Expr (Right_Opnd (Expr),
-                                              Current_Type,
+                                              EW_Bool_Type,
                                               Domain,
                                               Local_Params),
                     Domain => Domain);
