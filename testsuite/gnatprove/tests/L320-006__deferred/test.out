@@ -1,22 +1,7 @@
-actions.adb:15:12: info: range check proved
-actions.adb:15:4: info: index check proved
-actions.adb:18:59: info: overflow check proved
-actions.adb:18:66: info: index check proved
-actions.adb:18:7: assertion not proved
-actions.adb:21:7: assertion not proved
-actions.adb:22:69: info: overflow check proved
-actions.adb:22:76: info: index check proved
-actions.adb:25:69: info: overflow check proved
-actions.adb:25:76: info: index check proved
-actions.adb:25:7: assertion not proved
-actions.adb:28:58: info: overflow check proved
-actions.adb:28:65: info: index check proved
-actions.adb:28:7: assertion not proved
-actions.adb:33:35: info: overflow check proved
-actions.adb:33:42: info: index check proved
-actions.adb:37:10: assertion not proved
-actions.adb:41:35: info: overflow check proved
-actions.adb:41:42: info: index check proved
-actions.adb:41:53: info: loop invariant initialization proved
-actions.adb:47:25: info: range check proved
-actions.adb:51:22: info: overflow check proved
+pack.adb:10:34: info: postcondition proved
+pack.adb:5:34: info: postcondition proved
+pack.ads:10:30: postcondition not proved
+pack.ads:13:30: postcondition not proved
+user.adb:5:7: assertion not proved
+user.adb:8:7: assertion not proved
+user.adb:9:7: assertion not proved
