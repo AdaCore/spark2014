@@ -479,7 +479,12 @@ package body Why.Inter is
    is
    begin
       if Nkind (E) = N_String_Literal or else Nkind (E) = N_Aggregate then
-         return WF_Context_In_Spec;
+         if In_Main_Unit_Spec (E) then
+            return WF_Context_In_Spec;
+         else
+            pragma Assert (In_Main_Unit_Body (E));
+            return WF_Context_In_Body;
+         end if;
       end if;
       case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>

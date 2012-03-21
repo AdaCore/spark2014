@@ -1405,7 +1405,7 @@ package body Gnat2Why.Expr is
       use Node_Sets;
 
       Cursor    : Node_Sets.Cursor;
-      Decl_File : Why_File := Why_Files (WF_Context_In_Spec);
+      Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
    begin
       --  Compute the parameters/arguments for the function call and axiom
 
@@ -3511,7 +3511,7 @@ package body Gnat2Why.Expr is
       Ty        : constant Entity_Id := Type_Of_Node (N);
       Why_Type  : constant W_Base_Type_Id :=
         New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-      Decl_File : Why_File := Why_Files (WF_Context_In_Spec);
+      Decl_File : Why_File := Why_Files (Dispatch_Entity (N));
    begin
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Why_Empty;
