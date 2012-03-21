@@ -124,6 +124,8 @@ package body Why.Gen.Binders is
         (Ada_Node => Ada_Node,
          Name     => To_Ident (WNE_Def_Axiom),
          Binders  => Binders,
+         Triggers => New_Triggers (Triggers =>
+                          (1 => New_Trigger (Terms => (1 => +Left)))),
          Pre      => Pre,
          Def      => Equality);
    end New_Defining_Axiom;
@@ -154,6 +156,8 @@ package body Why.Gen.Binders is
         (Ada_Node => Ada_Node,
          Name     => To_Ident (WNE_Def_Axiom),
          Binders  => Binders,
+         Triggers => New_Triggers (Triggers =>
+                          (1 => New_Trigger (Terms => (1 => +Left)))),
          Pre      => Pre,
          Def      => Equality);
    end New_Defining_Bool_Axiom;
@@ -378,6 +382,7 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
+      Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Pred_Id)
      return W_Declaration_Id
@@ -397,6 +402,7 @@ package body Why.Gen.Binders is
          Def      =>
            New_Universal_Quantif
              (Binders => Binders,
+              Triggers => Triggers,
               Pred    => Ax_Body));
    end New_Guarded_Axiom;
 
@@ -425,21 +431,30 @@ package body Why.Gen.Binders is
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
+      Triggers : W_Triggers_OId := Why_Empty;
       Pred     : W_Pred_Id)
      return W_Pred_Id is
    begin
       if Binders'Length = 0 then
          return Pred;
+      elsif Binders'Length = 1 then
+         return New_Universal_Quantif
+           (Ada_Node  => Ada_Node,
+            Variables => (1 => Binders (Binders'First).B_Name),
+            Var_Type  => Binders (Binders'First).B_Type,
+            Triggers  => Triggers,
+            Pred      => Pred);
       else
          return New_Universal_Quantif
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
             Var_Type  => Binders (Binders'First).B_Type,
             Pred      =>
-              New_Universal_Quantif (Empty,
-                                     Binders (Binders'First + 1
-                                              .. Binders'Last),
-                                     Pred));
+              New_Universal_Quantif (Ada_Node  => Empty,
+                                     Binders => Binders (Binders'First + 1
+                                       .. Binders'Last),
+                                     Triggers  => Triggers,
+                                     Pred => Pred));
       end if;
    end New_Universal_Quantif;
 

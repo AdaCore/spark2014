@@ -57,6 +57,7 @@ package Why.Gen.Binders is
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
+      Triggers : W_Triggers_OId := Why_Empty;
       Pred     : W_Pred_Id)
      return W_Pred_Id;
 
@@ -118,6 +119,7 @@ package Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
+      Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Pred_Id)
      return W_Declaration_Id;
