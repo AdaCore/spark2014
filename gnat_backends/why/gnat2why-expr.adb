@@ -1928,7 +1928,7 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_First | Attribute_Last | Attribute_Length =>
-            case Ekind (Etype (Var)) is
+            case Ekind (Unique_Entity (Etype (Var))) is
                when Array_Kind =>
 
                   --  Array_Type'First
