@@ -46,16 +46,27 @@ package body Why.Gen.Names is
         "="             => "=",
         Hash            => Ada.Strings.Unbounded.Hash);
 
-   package String_String_Maps is new
+   function Source_Ptr_Hash (X : Source_Ptr) return Ada.Containers.Hash_Type;
+
+   ---------------------
+   -- Source_Ptr_Hash --
+   ---------------------
+
+   function Source_Ptr_Hash (X : Source_Ptr) return Ada.Containers.Hash_Type is
+   begin
+      return Ada.Containers.Hash_Type (X);
+   end Source_Ptr_Hash;
+
+   package Loc_String_Maps is new
      Ada.Containers.Hashed_Maps
-       (Key_Type        => Unbounded_String,
+       (Key_Type        => Source_Ptr,
         Element_Type    => Unbounded_String,
         Equivalent_Keys => "=",
-        "="             => "=",
-        Hash            => Ada.Strings.Unbounded.Hash);
+        Hash            => Source_Ptr_Hash,
+        "="             => "=");
 
    Unit_Loc_Map : String_Int_Maps.Map := String_Int_Maps.Empty_Map;
-   File_Loc_Map : String_String_Maps.Map := String_String_Maps.Empty_Map;
+   File_Loc_Map : Loc_String_Maps.Map := Loc_String_Maps.Empty_Map;
 
    function Uint_To_Positive (U : Uint) return Positive;
    --  Limited version of conversion that only works for 1 and 2
@@ -395,24 +406,40 @@ package body Why.Gen.Names is
 
    function New_Str_Lit_Ident (N : Node_Id) return String is
       Loc     : constant Source_Ptr := Sloc (N);
-      File    : constant String :=
-        Get_Name_String (File_Name (Get_Source_File_Index (Loc)));
-      Line    : constant String :=
-        Int_Image (Integer (Get_Physical_Line_Number (Loc)));
-      Column  : constant String :=
-        Int_Image (Integer (Get_Column_Number (Loc)));
-      Loc_Str : constant Unbounded_String :=
-        To_Unbounded_String (File & "__" & Line & "__" & Column);
-      C1      : constant String_String_Maps.Cursor :=
-        File_Loc_Map.Find (Loc_Str);
+      C1      : constant Loc_String_Maps.Cursor :=
+        File_Loc_Map.Find (Loc);
 
-      function Register (Key : Unbounded_String; Value : String) return String;
+      function Register (Key : Source_Ptr; Value : String) return String;
+
+      function Loc_To_String (Loc : Source_Ptr) return Unbounded_String;
+
+      -------------------
+      -- Loc_To_String --
+      -------------------
+
+      function Loc_To_String (Loc : Source_Ptr) return Unbounded_String
+      is
+         Buf : Unbounded_String;
+         Ptr : Source_Ptr := Loc;
+      begin
+         loop
+            Append (Buf, Full_Name (Cunit_Entity (Get_Code_Unit (Ptr))));
+            Append (Buf, "__");
+            Append (Buf, Int_Image (Integer (Get_Physical_Line_Number (Ptr))));
+            Append (Buf, "__");
+            Append (Buf, Int_Image (Integer (Get_Column_Number (Ptr))));
+            Ptr := Instantiation_Location (Ptr);
+            exit when Ptr = No_Location;
+            Append (Buf, "__");
+         end loop;
+         return Buf;
+      end Loc_To_String;
 
       --------------
       -- Register --
       --------------
 
-      function Register (Key : Unbounded_String; Value : String) return String
+      function Register (Key : Source_Ptr; Value : String) return String
       is
       begin
          File_Loc_Map.Insert (Key,
@@ -422,11 +449,10 @@ package body Why.Gen.Names is
 
    begin
 
-      --  For a given location (we concatenate filename, line and column), we
-      --  always generate the same name
+      --  For a given location, we always generate the same name
 
-      if String_String_Maps.Has_Element (C1) then
-         return To_String (String_String_Maps.Element (C1));
+      if Loc_String_Maps.Has_Element (C1) then
+         return To_String (Loc_String_Maps.Element (C1));
       else
 
          --  We have not yet seen this particular aggregate; we generate a new
@@ -434,9 +460,8 @@ package body Why.Gen.Names is
          --  which is incremented each time.
 
          declare
-            Unit   : constant String := Full_Name (Main_Unit_Entity);
-            Full_S : constant String := Unit & "__" & Line & "__" & Column;
-            Unb    : constant Unbounded_String := To_Unbounded_String (Full_S);
+            Unb    : constant Unbounded_String := Loc_To_String (Loc);
+            Full_S : constant String := To_String (Unb);
             C2     : constant String_Int_Maps.Cursor :=
               Unit_Loc_Map.Find (Unb);
          begin
@@ -445,11 +470,11 @@ package body Why.Gen.Names is
                   V : constant Positive := String_Int_Maps.Element (C2) + 1;
                begin
                   Unit_Loc_Map.Replace_Element (C2, V);
-                  return Register (Loc_Str, Full_S & "__" & Int_Image (V));
+                  return Register (Loc, Full_S & "__" & Int_Image (V));
                end;
             else
                Unit_Loc_Map.Insert (Unb, 1);
-               return Register (Loc_Str, Full_S);
+               return Register (Loc, Full_S);
             end if;
          end;
       end if;
