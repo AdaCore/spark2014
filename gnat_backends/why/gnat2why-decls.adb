@@ -39,7 +39,6 @@ with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Types;            use Why.Types;
 
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
 package body Gnat2Why.Decls is
@@ -158,7 +157,7 @@ package body Gnat2Why.Decls is
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
-        (if Object_Is_In_Alfa (Unique (E)) then
+        (if Object_Is_In_Alfa (E) then
             New_Type
               (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))
@@ -198,49 +197,86 @@ package body Gnat2Why.Decls is
      (File   : in out Why_File;
       E      : Entity_Id)
    is
-      Name : constant String := Full_Name (E);
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String :=
+                    (if Is_Full_View (E) then
+                       Base_Name & "__full_view"
+                     else
+                       Base_Name);
       Typ  : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
       Decl : constant Node_Id := Parent (E);
-      Def  : Node_Id;
+      Def  : W_Term_Id;
 
    begin
-      Open_Theory (File, Name);
-      --  We do not currently translate the definition of delayed constants,
-      --  in order to support parameterized verification not depending on the
-      --  value of a delayed constant. This could be modified to give access to
-      --  the definition only in the package where the constant is defined.
+      --  Start with opening the theory to define, as the creation of a
+      --  function for the logic term needs the current theory to insert an
+      --  include declaration.
 
-      if Is_Public (E) and then In_Private_Part (E) then
-         Def := Empty;
+      Open_Theory (File, Name);
 
       --  Default values of parameters are not considered as the value of the
       --  constant representing the parameter.
 
-      elsif Ekind (E) = E_In_Parameter then
-         Def := Empty;
-
+      if Ekind (E) /= E_In_Parameter
+        and then Present (Expression (Decl))
+      then
+         Def := Get_Pure_Logic_Term_If_Possible
+           (File, Expression (Decl), Type_Of_Node (E));
       else
-         Def := Expression (Decl);
+         Def := Why_Empty;
       end if;
 
-      --  We generate a "logic", with a defining axiom if
+      --  The definition of deferred constants is done in a separate theory, so
+      --  that only code in the unit defining the deferred constant has access
+      --  to its value. This allows supporting parameterized verification of
+      --  client units not depending on the value of a delayed constant. This
+      --  theory is added as a completion of the base theory defining the
+      --  constant, so that further modules including the base theory also
+      --  include the completion, for modules defined in this unit. Theories
+      --  defined in other units only have access to the base theory. Note
+      --  that modules in the same unit may also have access to the base
+      --  theory only, if they are defined before this point.
+
+      if Is_Full_View (E) then
+         if Def = Why_Empty then
+            Discard_Theory (File);
+
+         else
+            Emit
+              (File.Cur_Theory,
+               New_Defining_Axiom
+                 (Name        => To_Why_Id (E, Local => False),
+                  Return_Type => Get_EW_Type (Typ),
+                  Binders     => (1 .. 0 => <>),
+                  Def         => Def));
+            Close_Theory (File, Filter_Entity => Empty);
+            Add_Completion (Base_Name, Name);
+         end if;
+
+      --  In the general case, we generate a "logic", with a defining axiom if
       --  necessary and possible.
 
-      Emit_Top_Level_Declarations
-        (Theory      => File.Cur_Theory,
-         Binders     => (1 .. 0 => <>),
-         Return_Type => Typ,
-         Spec        =>
-           (1 =>
-              (Kind   => W_Function_Decl,
-               Domain => EW_Term,
-               Name   => To_Why_Id (E, Local => True),
-               Def    => (if Present (Def) then
-                          Get_Pure_Logic_Term_If_Possible
-                            (File, Def, Type_Of_Node (E))
-                          else Why_Empty),
-               others => <>)));
-      Close_Theory (File, Filter_Entity => E);
+      else
+         Emit
+           (File.Cur_Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Why_Id (E, Local => True),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => Typ));
+
+         if Def /= Why_Empty then
+            Emit
+              (File.Cur_Theory,
+               New_Defining_Axiom
+                 (Name        => To_Why_Id (E, Local => True),
+                  Return_Type => Get_EW_Type (Typ),
+                  Binders     => (1 .. 0 => <>),
+                  Def         => Def));
+         end if;
+
+         Close_Theory (File, Filter_Entity => E);
+      end if;
    end Translate_Constant;
 
 end Gnat2Why.Decls;

@@ -59,7 +59,7 @@ package Alfa.Definition is
    function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the body of subprogram Id is in Alfa
 
-   function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
+   function Object_Is_In_Alfa (Id : Entity_Id) return Boolean;
    --  Return whether an object Id is in Alfa
 
    function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
@@ -92,5 +92,13 @@ package Alfa.Definition is
 
    All_Entities : Node_Sets.Set;
    --  Set of all entities in list Entities
+
+   Full_View_Entities : Node_Sets.Set;
+   --  Set of all entities which complete a previously seen entity: deferred
+   --  constant completion.
+
+   function Is_Full_View (E : Entity_Id) return Boolean is
+      (Full_View_Entities.Contains (E));
+   --  Return whether E is the full view of another entity
 
 end Alfa.Definition;

@@ -22,6 +22,7 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
+
 with AA_Util;             use AA_Util;
 with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
@@ -115,7 +116,7 @@ package body Why.Inter is
             end if;
             SI_Seen.Include (+UE);
             if Ekind (+UE) in Object_Kind and then
-              not Object_Is_In_Alfa (UE) then
+              not Object_Is_In_Alfa (+UE) then
                return;
             end if;
             if Ekind (+UE) in Type_Kind and then not Type_Is_In_Alfa (+UE) then
@@ -199,6 +200,57 @@ package body Why.Inter is
       end To_String;
 
    end Standard_Imports;
+
+   --------------------
+   -- Add_Completion --
+   --------------------
+
+   procedure Add_Completion (Name, Completion_Name : String) is
+      Unb_Name : Unbounded_String := To_Unbounded_String (Name);
+      Unb_Comp : constant Unbounded_String :=
+                   To_Unbounded_String (Completion_Name);
+   begin
+      --  Find the last completion for Name
+
+      while Why_File_Completion.Contains (Unb_Name) loop
+         Unb_Name := Why_File_Completion.Element (Unb_Name);
+      end loop;
+
+      --  Make Completion_Name a completion of the previous last one
+
+      Why_File_Completion.Insert (Unb_Name, Unb_Comp);
+   end Add_Completion;
+
+   ---------------------
+   -- Get_Completions --
+   ---------------------
+
+   function Get_Completions (Name : String) return Why_Completions is
+      Unb_Name : Unbounded_String := To_Unbounded_String (Name);
+      Count : Natural;
+   begin
+      --  Find the number of completions for Name
+
+      Count := 0;
+      while Why_File_Completion.Contains (Unb_Name) loop
+         Count    := Count + 1;
+         Unb_Name := Why_File_Completion.Element (Unb_Name);
+      end loop;
+
+      --  Return all completions
+
+      Unb_Name := To_Unbounded_String (Name);
+      declare
+         Compl : Why_Completions (1 .. Count);
+      begin
+         for J in Compl'Range loop
+            Unb_Name  := Why_File_Completion.Element (Unb_Name);
+            Compl (J) := Unb_Name;
+         end loop;
+
+         return Compl;
+      end;
+   end Get_Completions;
 
    ------------------------
    -- Add_Effect_Imports --
@@ -328,9 +380,9 @@ package body Why.Inter is
       function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
       --  return the import type that is used for such an entity
 
-      function Name_of_Node (N : Node_Id) return String;
-      --  return the name which needs to be used to include the Why entity for
-      --  that node
+      function Name_Of_Node (N : Node_Id) return String;
+      --  Return the uncapitalized name which needs to be used to include the
+      --  Why entity for that node (after capitalization).
 
       ------------------------------
       -- File_Base_Name_Of_Entity --
@@ -373,16 +425,16 @@ package body Why.Inter is
       end Import_Type_Of_Entity;
 
       ------------------
-      -- Name_of_Node --
+      -- Name_Of_Node --
       ------------------
 
-      function Name_of_Node (N : Node_Id) return String is
+      function Name_Of_Node (N : Node_Id) return String is
       begin
          if Nkind (N) = N_String_Literal or else Nkind (N) = N_Aggregate then
-            return Capitalize_First (New_Str_Lit_Ident (N));
+            return New_Str_Lit_Ident (N);
          end if;
-         return Capitalize_First (Full_Name (N));
-      end Name_of_Node;
+         return Full_Name (N);
+      end Name_Of_Node;
 
       use Node_Sets;
 
@@ -417,17 +469,33 @@ package body Why.Inter is
                File_Name   : constant String :=
                  File_Base_Name_Of_Entity (N) &
                  Why_File_Suffix (Dispatch_Entity (N));
-               Theory_Name : constant String :=
-                 Name_of_Node (N);
+               Raw_Name    : constant String := Name_Of_Node (N);
+               Theory_Name : constant String := Capitalize_First (Raw_Name);
                Import      : constant EW_Clone_Type :=
                  Import_Type_Of_Entity (N);
+               Completions : constant Why_Completions :=
+                 Get_Completions (Raw_Name);
             begin
                Standard_Imports.Set_SI (N);
+
                if File_Name /= P.Name.all then
                   Add_With_Clause (P, File_Name, Theory_Name, Import);
                else
                   Add_With_Clause (P, "", Theory_Name, Import);
                end if;
+
+               for J in Completions'Range loop
+                  declare
+                     Compl_Name : constant String :=
+                       Capitalize_First (To_String (Completions (J)));
+                  begin
+                     if File_Name /= P.Name.all then
+                        Add_With_Clause (P, File_Name, Compl_Name, Import);
+                     else
+                        Add_With_Clause (P, "", Compl_Name, Import);
+                     end if;
+                  end;
+               end loop;
             end;
          end if;
       end loop;
@@ -470,6 +538,15 @@ package body Why.Inter is
       File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
    end Close_Theory;
+
+   --------------------
+   -- Discard_Theory --
+   --------------------
+
+   procedure Discard_Theory (P : in out Why_File) is
+   begin
+      P.Cur_Theory := Why_Empty;
+   end Discard_Theory;
 
    ---------------------
    -- Dispatch_Entity --

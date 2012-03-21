@@ -154,7 +154,7 @@ package body Alfa.Definition is
    --  Return whether a violation of Alfa was detected while analyzing the body
    --  of subprogram Id.
 
-   function Object_Is_Computed_In_Alfa (Id : Unique_Entity_Id) return Boolean;
+   function Object_Is_Computed_In_Alfa (Id : Entity_Id) return Boolean;
    --  Return whether a violation of Alfa was detected while analyzing the
    --  definition of object Id.
 
@@ -172,10 +172,7 @@ package body Alfa.Definition is
    procedure Mark_Body_In_Alfa (Id : Unique_Entity_Id; N : Node_Id);
    --  Mark subprogram body Id as being in Alfa
 
-   procedure Mark_Object_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean);
+   procedure Mark_Object_In_Alfa (Id : Entity_Id; In_Alfa : Boolean);
    --  Mark object Id as being in Alfa if In_Alfa is set, or not being in Alfa
    --  otherwise.
 
@@ -544,9 +541,9 @@ package body Alfa.Definition is
      (for all S of Body_Violations => not S.Contains (+Id));
 
    function Object_Is_Computed_In_Alfa
-     (Id : Unique_Entity_Id) return Boolean
+     (Id : Entity_Id) return Boolean
    is
-     (for all S of Spec_Violations => not S.Contains (+Id));
+     (for all S of Spec_Violations => not S.Contains (Id));
 
    function Spec_Is_Computed_In_Alfa (Id : Unique_Entity_Id) return Boolean is
      (for all S of Spec_Violations => not S.Contains (+Id));
@@ -562,7 +559,7 @@ package body Alfa.Definition is
             (if Nkind (N) = N_Defining_Identifier then
                N
              else
-               Unique_Defining_Entity (N));
+               +Unique (Defining_Entity (N)));
    begin
       if not All_Entities.Contains (E) then
          All_Entities.Insert (E);
@@ -591,19 +588,16 @@ package body Alfa.Definition is
       Filter_In_Alfa (N, Alfa_Subprogram_Body);
    end Mark_Body_In_Alfa;
 
-   procedure Mark_Object_In_Alfa
-     (Id      : Unique_Entity_Id;
-      N       : Node_Id;
-      In_Alfa : Boolean) is
+   procedure Mark_Object_In_Alfa (Id : Entity_Id; In_Alfa : Boolean) is
    begin
       if In_Alfa then
-         Objects_In_Alfa.Include (+Id);
+         Objects_In_Alfa.Include (Id);
       end if;
 
       if In_Alfa then
-         Filter_In_Alfa (N, Alfa_Object);
+         Filter_In_Alfa (Id, Alfa_Object);
       else
-         Filter_In_Alfa (+Id, Non_Alfa_Object);
+         Filter_In_Alfa (Id, Non_Alfa_Object);
       end if;
    end Mark_Object_In_Alfa;
 
@@ -635,12 +629,12 @@ package body Alfa.Definition is
    function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
      (Node_Sets.Contains (Bodies_In_Alfa, +Id));
 
-   function Object_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean is
+   function Object_Is_In_Alfa (Id : Entity_Id) return Boolean is
    begin
-      if In_Standard_Scope (Id) then
-         return Standard_In_Alfa.Contains (+Id);
+      if In_Standard_Scope (Unique_Entity_Id (Id)) then
+         return Standard_In_Alfa.Contains (Id);
       else
-         return (Node_Sets.Contains (Objects_In_Alfa, +Id));
+         return (Node_Sets.Contains (Objects_In_Alfa, Id));
       end if;
    end Object_Is_In_Alfa;
 
@@ -1878,13 +1872,13 @@ package body Alfa.Definition is
             when Object_Kind =>
                if (Ekind_In (+E, E_Variable, E_Constant)
                     or else Ekind (+E) in Formal_Kind)
-                 and then not (Object_Is_In_Alfa (E))
+                 and then not (Object_Is_In_Alfa (Entity (N)))
                then
                   Mark_Non_Alfa ("object", N, From => Unique (Entity (N)));
                end if;
 
             when Named_Kind =>
-               if not (Object_Is_In_Alfa (E)) then
+               if not (Object_Is_In_Alfa (Entity (N))) then
                   Mark_Non_Alfa ("object", N, From => Unique (Entity (N)));
                end if;
 
@@ -2114,7 +2108,7 @@ package body Alfa.Definition is
       V      : Alfa_Violations.Vkind;
       Silent : Boolean        := False) is
    begin
-      Spec_Violations (V).Include (Unique_Defining_Entity (N));
+      Spec_Violations (V).Include (+Unique (Defining_Entity (N)));
       Mark_Non_Alfa (Msg, N, V, Silent);
    end Mark_Non_Alfa_Declaration;
 
@@ -2134,15 +2128,15 @@ package body Alfa.Definition is
 
    procedure Mark_Number_Declaration (N : Node_Id) is
 
-      Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-      Expr : constant Node_Id          := Expression (N);
-      T    : constant Entity_Id        := Etype (+Id);
+      Id   : constant Entity_Id := Defining_Entity (N);
+      Expr : constant Node_Id   := Expression (N);
+      T    : constant Entity_Id := Etype (Id);
 
    begin
       --  The number declaration is in Alfa if-and-only-if its base type is
       --  in Alfa.
 
-      Push_Scope (Id);
+      Push_Scope (Unique_Entity_Id (Id));
 
       if not Type_Is_In_Alfa (T) then
          Mark_Non_Alfa ("type", N, From => Unique (T));
@@ -2152,11 +2146,11 @@ package body Alfa.Definition is
          Mark (Expr);
       end if;
 
-      Pop_Scope (Id);
+      Pop_Scope (Unique_Entity_Id (Id));
 
       --  If decl is in Alfa, store this information explicitly
 
-      Mark_Object_In_Alfa (Id, N, In_Alfa => Object_Is_Computed_In_Alfa (Id));
+      Mark_Object_In_Alfa (Id, In_Alfa => Object_Is_Computed_In_Alfa (Id));
    end Mark_Number_Declaration;
 
    -----------------------------
@@ -2164,30 +2158,27 @@ package body Alfa.Definition is
    -----------------------------
 
    procedure Mark_Object_Declaration (N : Node_Id) is
-      Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-      Def  : constant Node_Id          := Object_Definition (N);
-      Expr : constant Node_Id          := Expression (N);
-      T    : constant Entity_Id        := Etype (+Id);
+      Id   : constant Entity_Id := Defining_Entity (N);
+      Def  : constant Node_Id   := Object_Definition (N);
+      Expr : constant Node_Id   := Expression (N);
+      T    : constant Entity_Id := Etype (+Id);
 
+      Deferred_Constant : constant Boolean :=
+                            Ekind (Id) = E_Constant
+                              and then Present (Full_View (Id));
    begin
-      --  Ignore exact value of deferred constants, so that these can be
-      --  used for a parametrized proof. This is detected here by noting that
-      --  the object is already explicitly in or out of Alfa, because in this
-      --  case we already have seen the declaration. Not adding the
-      --  declaration to the set of Alfa declarations is also crucial to avoid
-      --  a redundant declaration in Why.
+      --  Mark completions of deferred constants, so that generation of Why can
+      --  use this information.
 
-      if Present (Expr) and then
-         (Object_Is_In_Alfa (Id) or else not Object_Is_Computed_In_Alfa (Id))
-      then
-         Mark (Expr);
-         return;
+      if Deferred_Constant then
+         Full_View_Entities.Insert (Full_View (Id));
       end if;
 
-      --  The object is in Alfa if-and-only-if its type is in Alfa, it is
-      --  not aliased, and its initialization expression, if any, is in Alfa.
+      --  The object is in Alfa if-and-only-if its type is in Alfa, it is not
+      --  aliased, and its initialization expression, if any, is in Alfa.
 
-      Push_Scope (Id);
+      Push_Scope (Unique_Entity_Id (Id));
+
       if not Type_Is_In_Alfa (T) then
          Mark_Non_Alfa ("type", Def, From => Unique (T));
       end if;
@@ -2200,11 +2191,14 @@ package body Alfa.Definition is
          Mark (Expr);
       end if;
 
-      Pop_Scope (Id);
+      Pop_Scope (Unique_Entity_Id (Id));
 
-      --  If object is in Alfa, store this information explicitly
+      --  If object is in Alfa, store this information explicitly. Note that a
+      --  deferred constant and its completion are separately marked in Alfa.
+      --  A completion should never be in Alfa if the corresponding deferred
+      --  constant is not in Alfa.
 
-      Mark_Object_In_Alfa (Id, N, In_Alfa => Object_Is_Computed_In_Alfa (Id));
+      Mark_Object_In_Alfa (Id, In_Alfa => Object_Is_Computed_In_Alfa (Id));
    end Mark_Object_Declaration;
 
    -----------------------
@@ -2583,8 +2577,8 @@ package body Alfa.Definition is
             --  If parameter is in Alfa, store this information explicitly
 
             Mark_Object_In_Alfa
-              (Formal, Param_Spec,
-               In_Alfa => Object_Is_Computed_In_Alfa (Formal));
+              (+Formal,
+               In_Alfa => Object_Is_Computed_In_Alfa (+Formal));
 
             Next (Param_Spec);
          end loop;

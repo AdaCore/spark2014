@@ -135,10 +135,11 @@ package Gnat2Why.Nodes is
    --  * package spec and body have different entities;
    --  * subprogram declaration, subprogram stub and subprogram body all have
    --    a different entity;
-   --  * private view and full view have a different entity.
+   --  * private view and full view have a different entity
+   --  * deferred constant and completion have a different entity
 
    function Unique (E : Entity_Id) return Unique_Entity_Id is
-     (Unique_Entity_Id (Unique_Entity (E)));
+      (Unique_Entity_Id (Unique_Entity (E)));
    --  Compute the unique entity of an entity
 
    function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));

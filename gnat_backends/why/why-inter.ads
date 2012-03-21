@@ -23,6 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded.Hash;
+
 with Alfa.Frame_Conditions;              use Alfa.Frame_Conditions;
 
 with Atree;                              use Atree;
@@ -60,6 +64,15 @@ package Why.Inter is
 
    Why_Files : array (Why_File_Enum) of Why_File;
 
+   type Why_Completions is array (Positive range <>) of Unbounded_String;
+   --  Return type of Get_Completions, to get all completions of a theory
+
+   procedure Add_Completion (Name, Completion_Name : String);
+   --  Add the completion Completion_Name to theory Name
+
+   function Get_Completions (Name : String) return Why_Completions;
+   --  Return the completions for the theory called Name
+
    function Why_File_Suffix (Kind : Why_File_Enum) return String;
 
    Standard_Why_Package_Name : constant String := "_standard";
@@ -78,6 +91,9 @@ package Why.Inter is
    --  Close the current theory by adding all necessary imports and adding the
    --  theory to the file
    --  Skip computing imports when No_Imports is set.
+
+   procedure Discard_Theory (P : in out Why_File);
+   --  Remove the current theory from P
 
    procedure Open_Theory (P    : in out Why_File;
                           Name : String;
@@ -181,5 +197,20 @@ package Why.Inter is
 
    function Eq (Left, Right : Entity_Id) return Boolean;
    --  Return True if Left and Right corresponds to the same Why identifier
+
+private
+
+   package Why_File_Completions is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Unbounded_String,
+      Element_Type    => Unbounded_String,
+      Hash            => Ada.Strings.Unbounded.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   --  Data type storing chained completions of theories
+
+   use Why_File_Completions;
+
+   Why_File_Completion : Why_File_Completions.Map;
+   --  Global variable storing completions of theories
 
 end Why.Inter;
