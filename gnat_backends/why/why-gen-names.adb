@@ -423,7 +423,7 @@ package body Why.Gen.Names is
          Ptr : Source_Ptr := Loc;
       begin
          loop
-            Append (Buf, Full_Name (Cunit_Entity (Get_Code_Unit (Ptr))));
+            Append (Buf, Full_Name (Cunit_Entity (Get_Source_Unit (Ptr))));
             Append (Buf, "__");
             Append (Buf, Int_Image (Integer (Get_Physical_Line_Number (Ptr))));
             Append (Buf, "__");
