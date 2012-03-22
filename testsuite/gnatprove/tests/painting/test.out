@@ -6,7 +6,7 @@ p.adb:21:7: info: precondition proved
 p.adb:8:10: info: loop invariant initialization proved
 p.adb:8:10: loop invariant preservation not proved
 p.ads:17:39: info: index check proved
-p.ads:18:15: postcondition not proved
+p.ads:18:15: info: postcondition proved
 p.ads:19:28: info: index check proved
 p.ads:19:46: info: index check proved
 p.ads:21:65: info: index check proved

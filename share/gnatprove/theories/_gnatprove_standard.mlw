@@ -237,9 +237,9 @@ module Array__1
 
    axiom T__ada_array___equal_def:
      forall a:t 'a.
-     forall b:t 'a.
+     forall b:t 'a [bool_eq a b].
          ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
-          /\ (forall i:int.
+          /\ (forall i:int[access i a].
                 (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
                  ->
                 (access i a = access (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i) b)))
@@ -356,11 +356,11 @@ module Array__2
 
   axiom T__ada_array_2___equal_def:
     forall a:t 'a.
-    forall b:t 'a.
+    forall b:t 'a [bool_eq a b].
         ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
          /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
          /\
-         (forall i:int. forall j : int.
+         (forall i:int. forall j : int [access i j a].
                (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
                 ->
                (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)

@@ -13,8 +13,8 @@ main.adb:53:25: info: range check proved
 main.adb:58:32: info: range check proved
 main.adb:58:32: overflow check not proved
 main.adb:63:16: info: range check proved
-main.adb:69:4: assertion not proved
-main.adb:70:4: assertion not proved
+main.adb:69:4: info: assertion proved
+main.adb:70:4: info: assertion proved
 main.adb:71:4: info: assertion proved
 main.adb:72:4: info: assertion proved
 main.adb:73:4: info: assertion proved
