@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,9 +32,11 @@ with Why.Types;           use Why.Types;
 package Why.Gen.Progs is
 
    function New_Assume_Statement
-      (Ada_Node    : Node_Id;
-       Pred        : W_Pred_Id;
-       Return_Type : W_Primitive_Type_Id :=
+     (Ada_Node    : Node_Id;
+      Pre         : W_Pred_Id := New_Literal (Value  => EW_True);
+
+      Post        : W_Pred_Id;
+      Return_Type : W_Primitive_Type_Id :=
                        New_Base_Type (Base_Type => EW_Unit))
        return W_Prog_Id;
    --  Generate an assumption statement. There is no such thing in Why2, so it

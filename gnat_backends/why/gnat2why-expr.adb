@@ -375,7 +375,7 @@ package body Gnat2Why.Expr is
                        Context  =>
                          +New_Assume_Statement
                            (Ada_Node => N,
-                            Pred     => Eq));
+                            Post     => Eq));
                end;
             end if;
          end;
@@ -443,26 +443,22 @@ package body Gnat2Why.Expr is
                  (Domain => EW_Pred,
                   Left   => +First_In_Range,
                   Right => +Last_In_Range));
-      Any_Expr        : constant W_Prog_Id :=
-         New_Any_Expr
-           (Any_Type =>
-              New_Computation_Type
-                 (Domain => EW_Prog,
-                  Result =>
-                     New_Result (New_Base_Type (Base_Type => EW_Unit)),
-                  Pre   => +Precond,
-                  Post   =>
-                    +New_And_Expr
-                      (Domain => EW_Pred,
-                       Left   => +Rel_First,
-                       Right  => +Rel_Last)));
+      Assuming        : constant W_Prog_Id :=
+        New_Assume_Statement
+          (Ada_Node => N,
+           Pre      => Precond,
+           Post     =>
+           +New_And_Expr
+             (Domain => EW_Pred,
+              Left   => +Rel_First,
+              Right  => +Rel_Last));
    begin
       return
         +New_Located_Expr
-          (Ada_Node => N,
-           Domain   => EW_Prog,
-           Reason   => VC_Range_Check,
-           Expr     => +Any_Expr);
+        (Ada_Node => N,
+         Domain   => EW_Prog,
+         Reason   => VC_Range_Check,
+         Expr     => +Assuming);
    end Assume_of_Scalar_Subtype;
 
    ----------------------------------
@@ -3155,7 +3151,7 @@ package body Gnat2Why.Expr is
                  New_Assume_Statement
                    (Ada_Node    => Expr,
                     Return_Type => New_Base_Type (Base_Type => EW_Bool),
-                    Pred        =>
+                    Post        =>
                       +W_Expr_Id'(New_Connection
                         (Domain   => EW_Pred,
                          Left     =>

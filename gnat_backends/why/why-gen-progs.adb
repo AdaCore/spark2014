@@ -40,12 +40,12 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Assume_Statement
-      (Ada_Node    : Node_Id;
-       Pred        : W_Pred_Id;
-       Return_Type : W_Primitive_Type_Id :=
-                       New_Base_Type (Base_Type => EW_Unit))
-      return W_Prog_Id
-   is
+     (Ada_Node    : Node_Id;
+      Pre         : W_Pred_Id := New_Literal (Value  => EW_True);
+      Post        : W_Pred_Id;
+      Return_Type : W_Primitive_Type_Id :=
+        New_Base_Type (Base_Type => EW_Unit))
+      return W_Prog_Id is
    begin
       return
         New_Any_Expr
@@ -56,7 +56,8 @@ package body Why.Gen.Progs is
                 Ada_Node => Ada_Node,
                 Result   => New_Result (+Return_Type),
                 Effects  => New_Effects,
-                Post     => Pred));
+                Pre      => Pre,
+                Post     => Post));
    end New_Assume_Statement;
 
    ------------------
