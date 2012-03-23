@@ -127,13 +127,9 @@ package body Gnat2Why.Decls is
       --  quantified expression.
 
       if Ekind (N) = E_Loop_Parameter then
-         if Present (Parent (N)) and then
-            Nkind (Parent (N)) = N_Loop_Parameter_Specification and then
-            Present (Parent (Parent (N))) and then
-            Nkind (Parent (Parent (N))) = N_Iteration_Scheme and then
-            Present (Parent (Parent (Parent (N)))) and then
-            Nkind (Parent (Parent (Parent (N)))) = N_Quantified_Expression
-         then
+         if Present (Scope (N)) and then
+           Present (Parent (Scope (N))) and then
+           Nkind (Parent (Scope (N))) = N_Quantified_Expression then
             return False;
          else
             return True;
