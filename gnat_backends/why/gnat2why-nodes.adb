@@ -238,6 +238,18 @@ package body Gnat2Why.Nodes is
    end Is_In_Current_Unit;
 
    ------------------------------
+   -- Is_Quantified_Loop_Param --
+   ------------------------------
+
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean is
+   begin
+      return
+        (Present (Scope (E)) and then
+         Present (Parent (Scope (E))) and then
+         Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+   end Is_Quantified_Loop_Param;
+
+   ------------------------------
    -- Safe_Instantiation_Depth --
    ------------------------------
 

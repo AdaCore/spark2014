@@ -39,6 +39,7 @@ with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Types;            use Why.Types;
 
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
 package body Gnat2Why.Decls is
@@ -127,13 +128,7 @@ package body Gnat2Why.Decls is
       --  quantified expression.
 
       if Ekind (N) = E_Loop_Parameter then
-         if Present (Scope (N)) and then
-           Present (Parent (Scope (N))) and then
-           Nkind (Parent (Scope (N))) = N_Quantified_Expression then
-            return False;
-         else
-            return True;
-         end if;
+         return not (Is_Quantified_Loop_Param (N));
       elsif Ekind (N) = E_Enumeration_Literal or else
         Is_Constant_Object (N) or else
         Ekind (N) in Named_Kind then

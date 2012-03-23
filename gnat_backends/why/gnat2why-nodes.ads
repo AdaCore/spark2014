@@ -166,6 +166,11 @@ package Gnat2Why.Nodes is
    function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
      (Ekind (Scope (E)) = E_Package);
 
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
+   with Pre => (Ekind (E) = E_Loop_Parameter);
+   --  check whether the E_Loop_Parameter in argument comes from a quantifier
+   --  or not
+
    function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
    --  Compute the instantiation Depth of Id
 
