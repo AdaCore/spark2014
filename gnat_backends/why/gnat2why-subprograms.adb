@@ -89,11 +89,13 @@ package body Gnat2Why.Subprograms is
    Old_List : Old_Nodes.List;
    --  List of all expressions whose 'Old attribute is used in the current
    --  postcondition, together with the translation of the corresponding
-   --  expression in Why.
+   --  expression in Why. Until 'Old is forbidden in the body, this is also
+   --  used to translate occurrences of 'Old that are left by the frontend (for
+   --  example, inside quntified expressions that are only preanalyzed).
    --
-   --  The list is cleared before generating Why code for a postcondition,
-   --  filled during the translation, and used afterwards to generate necessary
-   --  the copy instructions.
+   --  The list is cleared before generating Why code for VC generation for the
+   --  body and postcondition, filled during the translation, and used
+   --  afterwards to generate the necessary copy instructions.
 
    -----------------------
    -- Local Subprograms --
@@ -498,19 +500,21 @@ package body Gnat2Why.Subprograms is
                  Name_Map    => Ada_Ent_To_Why.Empty_Map);
       Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
 
-      --  Set the phase to Generate_VCs_For_Body from now on, so that
+      --  Set the phase to Generate_Contract_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
 
-      Params := (File        => File.File,
-                 Theory      => File.Cur_Theory,
-                 Phase       => Generate_VCs_For_Body,
-                 Ref_Allowed => True,
-                 Name_Map    => Ada_Ent_To_Why.Empty_Map);
+      Params.Phase := Generate_Contract_For_Body;
 
       --  Translate contract of E
 
       Pre  := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
       Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+
+      --  Set the phase to Generate_VCs_For_Body from now on, so that
+      --  occurrences of X'Old are properly translated as reference to the
+      --  corresponding binder.
+
+      Params.Phase := Generate_VCs_For_Body;
 
       --  Declare a global variable to hold the result of a function
 

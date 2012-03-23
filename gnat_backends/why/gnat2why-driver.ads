@@ -40,13 +40,18 @@ package Gnat2Why.Driver is
 
    type Translation_Phase is (Translation,
                               Generate_VCs_For_Pre,
+                              Generate_VCs_For_Post,
                               Generate_VCs_For_Body,
-                              Generate_VCs_For_Post);
+                              Generate_Contract_For_Body);
 
    subtype Generate_VCs is Translation_Phase range
      Generate_VCs_For_Pre ..
-     --  Generate_VCs_For_Body,
-     Generate_VCs_For_Post;
+     --  Generate_VCs_For_Post
+     Generate_VCs_For_Body;
+
+   subtype Generate_For_Body is Translation_Phase range
+     Generate_VCs_For_Body ..
+       Generate_Contract_For_Body;
 
    type Translation_Params is record
       File        : W_File_Id;

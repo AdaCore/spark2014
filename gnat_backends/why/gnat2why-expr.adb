@@ -1783,7 +1783,7 @@ package body Gnat2Why.Expr is
       Current_Type := Type_Of_Node (Expr);
       case Attr_Id is
          when Attribute_Result =>
-            if Params.Phase in Generate_VCs then
+            if Params.Phase in Generate_VCs | Generate_For_Body then
                T :=
                  New_Deref
                    (Ada_Node => Expr,
@@ -1793,7 +1793,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Old =>
-            if Params.Phase = Generate_VCs_For_Post then
+            if Params.Phase in Generate_VCs then
                T := +Name_For_Old (Var);
             else
                T :=
