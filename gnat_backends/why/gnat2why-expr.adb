@@ -149,13 +149,6 @@ package body Gnat2Why.Expr is
    --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
-   procedure Extract_From_Quantified_Expression
-      (N       : Node_Id;
-       Index   : out W_Identifier_Id;
-       Range_E : out Node_Id);
-   --  Extract the loop index and the range expression node from a
-   --  QUANTIFIED_EXPRESSION
-
    generic
       with procedure Handle_Argument (Formal, Actual : Node_Id);
    procedure Iterate_Call_Arguments (Call : Node_Id);
@@ -708,34 +701,6 @@ package body Gnat2Why.Expr is
          return Why_Args;
       end;
    end Compute_Call_Args;
-
-   ----------------------------------------
-   -- Extract_From_Quantified_Expression --
-   ----------------------------------------
-
-   procedure Extract_From_Quantified_Expression
-      (N       : Node_Id;
-       Index   : out W_Identifier_Id;
-       Range_E : out Node_Id)
-   is
-      Spec : Node_Id;
-   begin
-      if Present (Loop_Parameter_Specification (N)) then
-         Spec := Loop_Parameter_Specification (N);
-         Range_E := Discrete_Subtype_Definition (Spec);
-
-      elsif Present (Iterator_Specification (N)) then
-         Spec := Iterator_Specification (N);
-         Range_E := Name (Spec);
-
-      else
-         --  None of Loop_Parameter_Specification and
-         --  Iterator_Specification is present in the node; abort
-         raise Program_Error;
-      end if;
-
-      Index := New_Identifier (N, Full_Name (Defining_Identifier (Spec)));
-   end Extract_From_Quantified_Expression;
 
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
@@ -3078,17 +3043,59 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Params       : Translation_Params) return W_Expr_Id
    is
-      Index      : W_Identifier_Id;
-      Range_E    : Node_Id;
+
+      function Extract_Range_Node (N : Node_Id) return Node_Id;
+
+      function Extract_Index_Entity (N : Node_Id) return Entity_Id;
+
+      ------------------------
+      -- Extract_Range_Node --
+      ------------------------
+
+      function Extract_Range_Node (N : Node_Id) return Node_Id is
+      begin
+         if Present (Loop_Parameter_Specification (N)) then
+            return
+              Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
+         elsif Present (Iterator_Specification (N)) then
+            return Name (Iterator_Specification (N));
+         else
+            raise Program_Error;
+         end if;
+      end Extract_Range_Node;
+
+      --------------------------
+      -- Extract_Index_Entity --
+      --------------------------
+
+      function Extract_Index_Entity (N : Node_Id) return Entity_Id
+      is
+      begin
+         if Present (Loop_Parameter_Specification (N)) then
+            return
+              Defining_Identifier (Loop_Parameter_Specification (N));
+         elsif Present (Iterator_Specification (N)) then
+            return Defining_Identifier (Iterator_Specification (N));
+         else
+            raise Program_Error;
+         end if;
+      end Extract_Index_Entity;
+
+      Index_Ent  : constant Entity_Id :=
+        Extract_Index_Entity (Expr);
+      Range_E    : constant Node_Id   :=
+        Extract_Range_Node (Expr);
+      Index_Type : constant Entity_Id := Etype (Index_Ent);
+      Why_Id     : constant W_Identifier_Id :=
+        New_Identifier (Ada_Node => Index_Type, Name => Full_Name (Index_Ent));
    begin
-      Extract_From_Quantified_Expression (Expr, Index, Range_E);
       if Domain = EW_Pred then
          declare
             Conclusion : constant W_Pred_Id :=
                            +Transform_Expr (Condition (Expr),
                                             EW_Pred, Params);
             Constraint : constant W_Pred_Id :=
-              +Range_Expr (Range_E, +Index, EW_Pred, Params);
+              +Range_Expr (Range_E, +Why_Id, EW_Pred, Params);
             Connector  : constant EW_Connector :=
               (if All_Present (Expr) then EW_Imply else EW_And);
             Quant_Body : constant W_Pred_Id :=
@@ -3101,14 +3108,14 @@ package body Gnat2Why.Expr is
                return
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => Index),
+                      Variables => (1 => Why_Id),
                       Var_Type  => New_Base_Type (Base_Type => EW_Int),
                       Pred      => Quant_Body);
             else
                return
                   New_Existential_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => Index),
+                      Variables => (1 => Why_Id),
                       Var_Type  => New_Base_Type (Base_Type => EW_Int),
                       Pred      => Quant_Body);
             end if;
@@ -3135,11 +3142,11 @@ package body Gnat2Why.Expr is
                                                  EW_Prog, Params));
             Range_Cond : W_Prog_Id;
          begin
-            Range_Cond := +Range_Expr (Range_E, +Index, EW_Prog, Params);
+            Range_Cond := +Range_Expr (Range_E, +Why_Id, EW_Prog, Params);
             return
               +Sequence
                 (New_Binding
-                   (Name    => Index,
+                   (Name    => Why_Id,
                     Def     =>
                       +New_Simpl_Any_Prog
                         (New_Base_Type (Base_Type => EW_Int)),
