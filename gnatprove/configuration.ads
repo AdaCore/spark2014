@@ -75,13 +75,10 @@ package Configuration is
    --
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
-   type GP_Call_Mode is (GPC_Project, GPC_Only_Files, GPC_Project_Files);
+   type GP_Call_Mode is (GPC_Project, GPC_Project_Files);
    --  GNATprove has three different call modes:
    --    * GPC_Project - The project file mode: In this mode, GNATprove uses
    --      the provided project file to determine what to compile
-   --    * GPC_OnlyFiles - The files only mode: In this mode, GNATprove does
-   --      not read any project file, and simply compiles the files that have
-   --      been given on the command line
    --    * GPC_Project_Files - The files with project mode: In this mode,
    --      GNATprove compiles the files that have been given on the command
    --      line, but also uses the project file to extract information such as
@@ -92,9 +89,6 @@ package Configuration is
    --      source files that belong to the project defined by the project file
    --    * In GPC_OnlyFiles and GPC_Project_Files call mode, only the feature
    --    modes GPM_Detect and GPM_Force are available
-
-   subtype GP_Files_Given is
-      GP_Call_Mode range GPC_Only_Files .. GPC_Project_Files;
 
    MMode        : GP_Mode := GPM_Detect;
    Call_Mode    : GP_Call_Mode;

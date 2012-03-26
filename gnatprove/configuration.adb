@@ -170,9 +170,13 @@ ASCII.LF &
             Abort_With_Message (S);
          end if;
       end;
-      Tree.Load
-        (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
-         Proj_Env);
+      if Project_File.all /= "" then
+         Tree.Load
+           (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+            Proj_Env);
+      else
+         Abort_With_Message ("No project file is given, aborting");
+      end if;
 
       --  Check if the files given on the command line are part of the project
 
@@ -343,38 +347,32 @@ ASCII.LF &
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
-      if Project_File.all /= "" then
-         Tree := Init;
-         declare
-            Proj_Type      : constant Project_Type := Root_Project (Tree);
-            Extra_Switches : constant String_List_Access :=
-              Attribute_Value (Proj_Type, Build ("Prove", "Switches"));
-         begin
-            if Extra_Switches /= null then
-               declare
-                  All_Switches   : aliased constant String_List :=
-                    Extra_Switches.all & Com_Lin;
-                  All_Access     : constant String_List_Access :=
-                    new String_List'(All_Switches);
-                  Parser         : Opt_Parser;
-               begin
-                  Initialize_Option_Scan (Parser, All_Access);
-                  Getopt (Config,
-                          Callback => Handle_Switch'Access,
-                          Parser   => Parser,
-                          Concatenate => False);
-               end;
-            else
+      Tree := Init;
+      declare
+         Proj_Type      : constant Project_Type := Root_Project (Tree);
+         Extra_Switches : constant String_List_Access :=
+           Attribute_Value (Proj_Type, Build ("Prove", "Switches"));
+      begin
+         if Extra_Switches /= null then
+            declare
+               All_Switches   : aliased constant String_List :=
+                 Extra_Switches.all & Com_Lin;
+               All_Access     : constant String_List_Access :=
+                 new String_List'(All_Switches);
+               Parser         : Opt_Parser;
+            begin
+               Initialize_Option_Scan (Parser, All_Access);
                Getopt (Config,
                        Callback => Handle_Switch'Access,
+                       Parser   => Parser,
                        Concatenate => False);
-            end if;
-         end;
-      else
-         Getopt (Config,
-                 Callback => Handle_Switch'Access,
-                 Concatenate => False);
-      end if;
+            end;
+         else
+            Getopt (Config,
+                    Callback => Handle_Switch'Access,
+                    Concatenate => False);
+         end if;
+      end;
 
       if Version then
          Ada.Text_IO.Put_Line (Hilite_Version_String);
@@ -408,50 +406,9 @@ ASCII.LF &
       --  feature mode
 
       if Argument_Present then
-         if not (MMode in GP_Alfa_Detection_Mode) then
-            Abort_With_Help ("mode should be one of (detect | force)");
-         end if;
-         if Project_File.all = "" then
-            Call_Mode := GPC_Only_Files;
-         else
-            Call_Mode := GPC_Project_Files;
-         end if;
-      else
-         if Project_File.all = "" then
-            Abort_With_Help ("No project and no source file given.");
-         else
-            Call_Mode := GPC_Project;
-         end if;
+         Call_Mode := GPC_Project_Files;
       end if;
 
-      --  If files are given on command line (mode GPC_Only_Files or
-      --  GPC_Project_Files), we need to check if they exist. When the mode is
-      --  GPC_Project_Files, this is done when charging the project.
-      --  Otherwise, we do it here.
-
-      if Call_Mode = GPC_Only_Files then
-         declare
-            use String_Lists;
-            Cur : Cursor := First (File_List);
-         begin
-            while Has_Element (Cur) loop
-               declare
-                  S : constant String := Element (Cur);
-               begin
-                  if not (Ada.Directories.Exists (S)) then
-                     Abort_With_Message ("file does not exist: " & S);
-                  end if;
-               end;
-               Next (Cur);
-            end loop;
-         end;
-      end if;
-
-      if Call_Mode in GP_Files_Given and then not Only_Given then
-         Abort_With_Message
-            ("Proving files with dependencies is unsupported - " &
-             "pass option '-u' to compile/prove only the given files");
-      end if;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
