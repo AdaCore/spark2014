@@ -75,23 +75,7 @@ package Configuration is
    --
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
-   type GP_Call_Mode is (GPC_Project, GPC_Project_Files);
-   --  GNATprove has three different call modes:
-   --    * GPC_Project - The project file mode: In this mode, GNATprove uses
-   --      the provided project file to determine what to compile
-   --    * GPC_Project_Files - The files with project mode: In this mode,
-   --      GNATprove compiles the files that have been given on the command
-   --      line, but also uses the project file to extract information such as
-   --      compilation arguments, object directories etc.
-   --
-   --  Current restrictions:
-   --    * In GPC_Project mode, GNATprove will attempt to treat all
-   --      source files that belong to the project defined by the project file
-   --    * In GPC_OnlyFiles and GPC_Project_Files call mode, only the feature
-   --    modes GPM_Detect and GPM_Force are available
-
    MMode        : GP_Mode := GPM_Detect;
-   Call_Mode    : GP_Call_Mode;
    MMode_Input  : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
@@ -110,8 +94,6 @@ package Configuration is
    --  The number of steps to try to prove each VC. Specified with --steps=.
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
-   Argument_Present : Boolean := False;
-   --  Set to True when there is at least one file argument
    File_List    : String_Lists.List;
    --  The list of files to be compiled
 

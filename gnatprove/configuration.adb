@@ -124,7 +124,6 @@ ASCII.LF &
          --  We assume that the "switch" is actually an argument and put it in
          --  the file list
 
-         Argument_Present := True;
          File_List.Append (Switch);
       else
          raise Invalid_Switch;
@@ -142,20 +141,6 @@ ASCII.LF &
       Proj_Env  : Project_Environment_Access;
       GNAT_Version : GNAT.Strings.String_Access;
       Tree      : Project_Tree;
-
-      function Is_File_Of_Project (S : String) return Boolean;
-
-      ------------------------
-      -- Is_File_Of_Project --
-      ------------------------
-
-      function Is_File_Of_Project (S : String) return Boolean
-      is
-         F : constant Virtual_File :=
-            GNATCOLL.VFS.Create_From_Base (Filesystem_String (S));
-      begin
-         return (Info (Tree, F).Project /= No_Project);
-      end Is_File_Of_Project;
 
    begin
       Initialize (Proj_Env);
@@ -176,26 +161,6 @@ ASCII.LF &
             Proj_Env);
       else
          Abort_With_Message ("No project file is given, aborting");
-      end if;
-
-      --  Check if the files given on the command line are part of the project
-
-      if Call_Mode = GPC_Project_Files then
-         declare
-            use String_Lists;
-            Cur : Cursor := First (File_List);
-         begin
-            while Has_Element (Cur) loop
-               declare
-                  S : constant String := Element (Cur);
-               begin
-                  if not (Is_File_Of_Project (S)) then
-                     Abort_With_Message ("not a file of this project: " & S);
-                  end if;
-                  Next (Cur);
-               end;
-            end loop;
-         end;
       end if;
 
       return Tree;
@@ -404,10 +369,6 @@ ASCII.LF &
 
       --  Detect the call mode of GNATprove and check for compatibility with
       --  feature mode
-
-      if Argument_Present then
-         Call_Mode := GPC_Project_Files;
-      end if;
 
    exception
       when Invalid_Switch | Exit_From_Command_Line =>

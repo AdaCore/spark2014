@@ -173,6 +173,10 @@ procedure Gnatprove is
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--no-object-check");
 
+      for File of File_List loop
+         Args.Append (File);
+      end loop;
+
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  only generate ALI
       Args.Append ("-gnatd.F");     --  ALFA section in ALI
@@ -527,17 +531,9 @@ procedure Gnatprove is
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("-k");
-      if Call_Mode = GPC_Project_Files then
-         declare
-            Cur : Cursor := First (File_List);
-         begin
-            Args.Append ("-u");
-            while Has_Element (Cur) loop
-               Args.Append (Element (Cur));
-               Next (Cur);
-            end loop;
-         end;
-      end if;
+      for File of File_List loop
+         Args.Append (File);
+      end loop;
       Args.Append ("-cargs:Ada");
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
@@ -582,10 +578,7 @@ begin
             ("There is more than one object directory, aborting.");
       end if;
 
-      if not (Call_Mode = GPC_Project_Files) then
-         Execute_Step (GS_ALI, Project_File.all, Tree);
-      end if;
-
+      Execute_Step (GS_ALI, Project_File.all, Tree);
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
       Generate_Alfa_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
