@@ -63,9 +63,9 @@ $(DOC):
 	$(MAKE) -C docs/$@ latexpdf
 	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
-	mkdir -p $(DOCDIR)/html
+	mkdir -p $(DOCDIR)/html/$@
 	$(CP) docs/$@/_build/latex/*.pdf $(DOCDIR)/pdf
-	$(CP) docs/$@/_build/html $(DOCDIR)/html/$@
+	$(CP) docs/$@/_build/html/* $(DOCDIR)/html/$@
 	$(MAKE) -C docs/$@ clean
 
 gnat1why:
