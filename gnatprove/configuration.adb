@@ -77,6 +77,9 @@ ASCII.LF &
 ASCII.LF &
 " -u                Unique compilation, only prove the given files" &
 ASCII.LF &
+" -U                Prove all files of all projects" &
+
+ASCII.LF &
 " -v, --verbose     Output extra verbose information" &
 ASCII.LF &
 "     --version     Output version of the tool" &

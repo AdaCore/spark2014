@@ -26,7 +26,8 @@ GNATprove accepts the following options::
        detailed    Report all results of proving VCs, including a reason when
                    not proved
 
-   -u            Unique compilation, only consider the given files
+   -u            Unique compilation, only prove the given files
+   -U            Prove all files of all projects
    -q            Be quiet/terse
    -f            Fore recompilation/proving of all units and all VCs
    -jnnn         Use nnn parallel processes (default: 1)
@@ -46,9 +47,11 @@ using mode ``check`` or ``prove`` on the contrary, the detection is accurate.
 Although --report has only some effect in mode ``check``, all combinations of
 options are allowed.
 
-When given a list of files, GNATprove will consider this list of files and all
-its dependencies correctly. With option ``-u``, the dependencies are not
-considered, only the given files themselves.
+When given a list of files, GNATprove will consider them as entry points of
+the program and prove these units and all units on which they depend. With
+option ``-u``, the dependencies are not considered, only the given files
+themselves are proved. With option ``-U``, all files of all projects are
+proved.
 
 With option ``--pedantic``, some compiler choices are forced to a worst-case
 interpretation of the Ada standard. For example, ranges for integer base types
@@ -145,6 +148,3 @@ not supported. Instead, use ``for Local_Configuration_Pragmas use
 
 Defining multiple units in the same file is not supported. Instead, define each
 unit in a separate file.
-
-Specifying files explicitly when calling GNATprove is only supported in
-combination with switch ``-u``, and only in modes ``detect`` and ``force``.
