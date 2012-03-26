@@ -75,7 +75,7 @@ ASCII.LF &
 ASCII.LF &
 "     --report=r    Set the report mode of GNATprove (r=fail*, all, detailed)"&
 ASCII.LF &
-" -u                Unique compilation, only compile/prove the given files" &
+" -u                Unique compilation, only prove the given files" &
 ASCII.LF &
 " -v, --verbose     Output extra verbose information" &
 ASCII.LF &

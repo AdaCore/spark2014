@@ -245,6 +245,14 @@ procedure Gnatprove is
 
       Args.Prepend ("-f");
 
+      if Only_Given then
+         for File of File_List loop
+            Args.Prepend
+              (File (File'First .. File'Last - 4) & "__package.mlw");
+         end loop;
+         Args.Prepend ("-u");
+      end if;
+
       Set ("TEMP", Obj_Dir);
       Set ("TMPDIR", Obj_Dir);
       Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
