@@ -14,7 +14,7 @@ function may be:
 
     function After_Tax
       (Before_Tax : Natural;
-       Rate       : Natural) return Natural 
+       Rate       : Natural) return Natural
     with
       Pre  => (Rate <= 100),
       Post => (After_Tax'Result <= Before_Tax);
@@ -46,7 +46,7 @@ a GNAT project should be created::
 
 This project should be in file ``taxes.gpr``. It specifies that the
 source code to inspect is in the current directory; as this particular
-example uses an Ada 2012 feature (aspects), it is also necessary to 
+example uses an Ada 2012 feature (aspects), it is also necessary to
 define the compiler option ``-gnat12``. GNAT projects are used by
 most tools in the GNAT Pro toolsuite; for an in-depth documentation of this
 technology, you may consult the GNAT Pro user's guide.
@@ -55,12 +55,14 @@ You can then invoke GNATprove on this project::
 
     gnatprove -P taxes.gpr
 
-By default, GNATprove is in ``detect`` mode, which consists in detecting 
+By default, GNATprove is in ``detect`` mode, which consists in detecting
 which parts of the application it can handle. It generates a set of files:
-   * a file ``gnatprove.out`` that contains project statistics; this
-     information also shows up on the standard output.
-   * a directory ``gnatprove`` containing per-unit information (in files with
-     extension ``.alfa``)
+
+* a file ``gnatprove.out`` that contains project statistics; this
+  information also shows up on the standard output.
+
+* a directory ``gnatprove`` containing per-unit information (in files with
+  extension ``.alfa``)
 
 In this simple case, the one and only subprogram is not supported::
 
@@ -130,7 +132,7 @@ It could not prove either that the postcondition holds::
 
 The contract or implementation of ``After_Tax`` should be modified to correct
 these problems (for more information about the ``prove`` mode,
-please consult the sections :ref:`absence of run-time errors` and 
+please consult the sections :ref:`absence of run-time errors` and
 :ref:`functional verification`).
 
 This concludes our quick tour of GNATprove; the following chapters
