@@ -296,6 +296,12 @@ ASCII.LF &
           Help => "Unique compilation - only compile/prove the given files");
 
       Define_Switch
+         (Config,
+          All_Projects'Access,
+          "-U",
+          Help => "Unique compilation for all sources of all projects");
+
+      Define_Switch
         (Config,
          Verbose'Access,
          "-v", Long_Switch => "--verbose",

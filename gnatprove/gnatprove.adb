@@ -118,12 +118,17 @@ procedure Gnatprove is
       if Force then
          Compiler_Args.Prepend ("-f");
       end if;
+      if All_Projects then
+         Compiler_Args.Prepend ("-U");
+      end if;
       Compiler_Args.Prepend ("-c");
       if Project_File /= "" then
          Compiler_Args.Prepend (Project_File);
          Compiler_Args.Prepend ("-P");
       end if;
-      Compiler_Args.Prepend ("--config=" & Config_File);
+      if Config_File /= "" then
+         Compiler_Args.Prepend ("--config=" & Config_File);
+      end if;
 
       if Debug then
          Compiler_Args.Prepend ("-dn");
@@ -146,22 +151,13 @@ procedure Gnatprove is
    is
       use String_Lists;
       Args : List := Empty_List;
-      Cur  : Cursor := First (Cargs_List);
    begin
-      Args.Append ("-P");
-      Args.Append (Project_File);
       Args.Append ("--subdirs=" & String (Subdir_Name));
-      if Force then
-         Args.Append ("-f");
-      end if;
+      Args.Append ("--restricted-to-languages=ada");
+      Args.Append ("--no-object-check");
 
-      if not Verbose then
-         Args.Append ("-q");
-      end if;
-
-      while Has_Element (Cur) loop
-         Args.Append (Element (Cur));
-         Next (Cur);
+      for Arg of Cargs_List loop
+         Args.Append (Arg);
       end loop;
 
       --  Keep going after a compilation error in 'detect' and 'force' modes
@@ -169,9 +165,6 @@ procedure Gnatprove is
       if MMode in GP_Alfa_Detection_Mode then
          Args.Append ("-k");
       end if;
-
-      Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("--no-object-check");
 
       for File of File_List loop
          Args.Append (File);
@@ -184,11 +177,7 @@ procedure Gnatprove is
          Args.Append ("-gnatd.D");
       end if;
 
-      Call_With_Status
-        (Command   => "gprbuild",
-         Arguments => Args,
-         Status    => Status,
-         Verbose   => Verbose);
+      Call_Gprbuild (Project_File, "", Args, Status);
    end Compute_ALI_Information;
 
    -----------------
@@ -536,8 +525,8 @@ procedure Gnatprove is
       Cur    : Cursor := First (Cargs_List);
       Args   : String_Lists.List := Empty_List;
    begin
-      Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--subdirs=" & String (Subdir_Name));
+      Args.Append ("--restricted-to-languages=ada");
       Args.Append ("-k");
       for File of File_List loop
          Args.Append (File);

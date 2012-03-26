@@ -52,6 +52,8 @@ package Configuration is
    --  True if -d is present. Do not remove temporary files.
    Only_Given   : aliased Boolean;
    --  True if -u is present. Only compile/prove given files
+   All_Projects : aliased Boolean;
+   --  True if -U is present. compile/prove all files of all projects
    Pedantic       : aliased Boolean;
    --  True if --strict switch is present. Stricter interpretation of language.
 
