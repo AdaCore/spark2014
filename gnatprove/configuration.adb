@@ -36,6 +36,12 @@ with Call;              use Call;
 
 package body Configuration is
 
+   MMode_Input  : aliased GNAT.Strings.String_Access;
+   --  The mode of gnatprove, and the input variable for command line parsing
+   --  set by option --mode=
+   Report_Input   : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --report=
+
    procedure Do_Nothing (Switch    : String;
                          Parameter : String;
                          Section   : String);
@@ -315,6 +321,12 @@ ASCII.LF &
          Version'Access,
          Long_Switch => "--version",
          Help => "Output version of the tool");
+
+      Define_Switch
+        (Config,
+         Limit_Line'Access,
+         Long_Switch => "--limit-line=",
+         Help => "Limit proofs to given file and line");
 
       Define_Switch (Config, "*", Help => "list of source files");
 

@@ -54,8 +54,10 @@ package Configuration is
    --  True if -u is present. Only compile/prove given files
    All_Projects : aliased Boolean;
    --  True if -U is present. compile/prove all files of all projects
-   Pedantic       : aliased Boolean;
+   Pedantic     : aliased Boolean;
    --  True if --strict switch is present. Stricter interpretation of language.
+   Limit_Line   : aliased GNAT.Strings.String_Access;
+   --  Set when option --limit-line= was given
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
    --  The four feature modes of GNATprove:
@@ -78,11 +80,6 @@ package Configuration is
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    MMode        : GP_Mode := GPM_Detect;
-   MMode_Input  : aliased GNAT.Strings.String_Access;
-   --  The mode of gnatprove, and the input variable for command line parsing
-   --  set by option --mode=
-   Report_Input   : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --report=
    Report      : Report_Mode := GPR_Fail;
    --  Silent Reporting is the Default
    No_Proof     : aliased Boolean;

@@ -37,6 +37,7 @@ with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 
 with String_Utils;      use String_Utils;
+with GNAT.Strings;      use GNAT.Strings;
 
 procedure Gnatprove is
 
@@ -224,6 +225,10 @@ procedure Gnatprove is
       end if;
       if No_Proof then
          Args.Append ("--no-proof");
+      end if;
+      if Limit_Line /= null and then Limit_Line.all /= "" then
+         Args.Append ("--limit-line");
+         Args.Append (Limit_Line.all);
       end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
