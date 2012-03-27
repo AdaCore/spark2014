@@ -388,9 +388,39 @@ ASCII.LF &
            ("report should be one of (fail | all | detailed)");
       end if;
 
-      --  Detect the call mode of GNATprove and check for compatibility with
-      --  feature mode
+      if Limit_Line /= null and then Limit_Line.all /= "" then
 
+         --  Limit_Line implies -u for the file. We realize this here, but we
+         --  take care to only add a body to the list for -u
+
+         declare
+            Index : Integer := Limit_Line.all'Last;
+         begin
+            while Index > Limit_Line.all'First and then
+              Limit_Line.all (Index) /= ':' loop
+               Index := Index - 1;
+            end loop;
+            if Index = Limit_Line.all'First then
+               Abort_With_Message
+                 ("limit-line: incorrect line specification - missing ':'");
+            end if;
+            declare
+               Limit_File : constant String :=
+                 Limit_Line.all (Limit_Line.all'First .. Index - 1);
+               Limit_VF : constant Virtual_File :=
+                 Create_From_Base (Filesystem_String (Limit_File));
+               Restrict : Virtual_File;
+            begin
+               if Unit_Part (Tree.Info (Limit_VF)) = Unit_Body then
+                  Restrict := Limit_VF;
+               else
+                  Restrict := Tree.Other_File (Limit_VF);
+               end if;
+               File_List.Append (String (Base_Name (Restrict)));
+            end;
+         end;
+         Only_Given := True;
+      end if;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
