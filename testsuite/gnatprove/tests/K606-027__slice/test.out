@@ -1,9 +1,11 @@
+
 fb20a00.adb:15:28: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:21:29: info: loop invariant initialization proved
 fb20a00.adb:21:29: info: loop invariant preservation proved
 fb20a00.adb:22:18: info: index check proved
 fb20a00.adb:23:47: info: overflow check proved
+fb20a00.adb:24:30: info: range check proved
 fb20a00.adb:24:36: info: index check proved
 fb20a00.adb:24:44: info: overflow check proved
 fb20a00.adb:25:16: index check not proved

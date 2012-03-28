@@ -1,5 +1,8 @@
+
 twodim.adb:11:16: info: range check proved
+twodim.adb:13:15: range check not proved
 twodim.adb:13:27: overflow check not proved
+twodim.adb:13:30: range check not proved
 twodim.adb:8:16: division check not proved
 twodim.adb:8:16: overflow check not proved
 twodim.adb:8:19: index check not proved
