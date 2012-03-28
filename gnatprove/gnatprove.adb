@@ -573,17 +573,6 @@ begin
       Obj_Path : constant File_Array :=
          Object_Path (Proj_Type, Recursive => True);
    begin
-
-      --  ??? Why version 2 only reads files in the current directory. As Why
-      --  works in the object directory, this means that we only support a
-      --  single object directory.
-      --  Here we check that this is the case, and fail gracefully if not.
-
-      if not (MMode = GPM_Detect) and then Obj_Path'Length > 1 then
-         Abort_With_Message
-            ("There is more than one object directory, aborting.");
-      end if;
-
       Execute_Step (GS_ALI, Project_File.all, Tree);
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
