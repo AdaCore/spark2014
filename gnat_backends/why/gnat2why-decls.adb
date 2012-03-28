@@ -36,6 +36,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Types;            use Why.Types;
 
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
@@ -232,7 +233,20 @@ package body Gnat2Why.Decls is
          if Def = Why_Empty then
             Discard_Theory (File);
 
-         else
+            --  It may be the case that the full view has a more precise type
+            --  than the partial view, for example when the type of the partial
+            --  view is an indefinite array. In that case, convert back to the
+            --  expected type for the constant.
+
+            if Etype (Partial_View (E)) /= Etype (E) then
+               Def := W_Term_Id (Insert_Conversion
+                        (Domain   => EW_Term,
+                         Ada_Node => Expression (Decl),
+                         Expr     => W_Expr_Id (Def),
+                         From     => Type_Of_Node (E),
+                         To       => Type_Of_Node (Partial_View (E))));
+            end if;
+
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
