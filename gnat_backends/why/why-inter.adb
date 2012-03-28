@@ -566,12 +566,19 @@ package body Why.Inter is
       end if;
       case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
-            if Is_In_Current_Unit (E) and then
-              Body_Entities.Contains (Node_Id (Unique (E))) then
-               return WF_Context_In_Body;
-            else
-               return WF_Context_In_Spec;
-            end if;
+            declare
+               Decl : constant Node_Id := Parent (Unique_Entity (E));
+               U    : constant Node_Id :=
+                        Unit (Enclosing_Lib_Unit_Node (Decl));
+            begin
+               if Nkind (U) in N_Unit_Body
+                 or else Nkind (U) = N_Subunit
+               then
+                  return WF_Context_In_Body;
+               else
+                  return WF_Context_In_Spec;
+               end if;
+            end;
 
          when Object_Kind =>
             if not Is_Mutable (E) then

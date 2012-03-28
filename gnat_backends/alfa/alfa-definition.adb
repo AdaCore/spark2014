@@ -553,6 +553,7 @@ package body Alfa.Definition is
      (for all S of Spec_Violations => not S.Contains (Id));
 
    procedure Filter_In_Alfa (N : Node_Id; Kind : Alfa_Decl) is
+      pragma Unreferenced (Kind);
       --  Temporary case distinction, while N can be both an entity or a
       --  declaration.
 
@@ -565,16 +566,7 @@ package body Alfa.Definition is
       if not All_Entities.Contains (E) then
          All_Entities.Insert (E);
 
-         if Current_Unit_Is_Main_Spec
-
-           --  When dealing with the subprogram spec for a subprogram
-           --  compilation unit, always declare the subprogram in the "spec"
-           --  file, for inclusion by other generated Why units.
-
-           or else (Current_Unit_Is_Main_Body
-                     and then Kind = Alfa_Subprogram_Spec
-                     and then Nkind (Parent (N)) = N_Compilation_Unit)
-         then
+         if Current_Unit_Is_Main_Spec then
             Spec_Entities.Append (E);
 
          elsif Current_Unit_Is_Main_Body then
