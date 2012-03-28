@@ -159,7 +159,9 @@ package body Gnat2Why.Expr.Loops is
          return
            New_Conditional
              (Ada_Node  => Stmt,
-              Condition => +Transform_Expr (Condition (Stmt), EW_Prog,
+              Condition => +Transform_Expr (Condition (Stmt),
+                                            EW_Bool_Type,
+                                            EW_Prog,
                                             Params => Body_Params),
               Then_Part => +Raise_Stmt);
       end if;
@@ -258,6 +260,7 @@ package body Gnat2Why.Expr.Loops is
                Condition    =>
                  +Transform_Expr_With_Actions (Condition (Scheme),
                                                Condition_Actions (Scheme),
+                                               EW_Bool_Type,
                                                EW_Prog,
                                                Params => Body_Params),
                Loop_Name    => Loop_Name,
