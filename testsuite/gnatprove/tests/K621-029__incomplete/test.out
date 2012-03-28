@@ -1,10 +1,18 @@
-compilation of x.ads failed
-... already supported   : 100% (1/1)
-... not yet supported   :   0% (0/1)
-(none)
-(none)
-(none)
-y                        : 100% (1/1)
+
+
+
+
+
+
+
+
+
+  ... already supported   : 100% (1/1)
+  ... not yet supported   :   0% (0/1)
+ (none)
+ (none)
+ (none)
+ y                        : 100% (1/1)
 **********************************
 **********************************
 Phase 1 of 2: frame condition computation ...
@@ -18,4 +26,3 @@ Units with the largest number of subprograms in Alfa:
 Units with the largest number of subprograms not in Alfa:
 cannot generate code for file x.ads (package spec)
 cannot generate code for file x.ads (package spec)
-gprbuild: *** compilation phase failed
