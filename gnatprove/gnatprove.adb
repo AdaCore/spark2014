@@ -63,13 +63,16 @@ procedure Gnatprove is
        Status : out Integer);
    --  Compute ALI information for all source units, using gnatmake.
 
-   procedure Compute_VCs (Proj : Project_Tree; Status : out Integer);
+   procedure Compute_VCs (Proj     : Project_Tree;
+                          Obj_Path : File_Array;
+                          Status   : out Integer);
    --  Compute Verification conditions using Why, driven by gprbuild.
 
    procedure Execute_Step
       (Step         : Gnatprove_Step;
        Project_File : String;
-       Proj         : Project_Tree);
+       Proj         : Project_Tree;
+       Obj_Path     : File_Array);
 
    procedure Generate_Alfa_Report
      (Obj_Dir : String;
@@ -87,7 +90,9 @@ procedure Gnatprove is
    --  Generate project file with the given source dir. Write the file to disk
    --  and return the file name.
 
-   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String);
+   procedure Generate_Why3_Conf_File
+     (Gnatprove_Subdir : String;
+      Obj_Path         : File_Array);
 
    procedure Translate_To_Why
       (Project_File : String;
@@ -186,8 +191,9 @@ procedure Gnatprove is
    -----------------
 
    procedure Compute_VCs
-     (Proj   : Project_Tree;
-      Status : out Integer)
+     (Proj      : Project_Tree;
+      Obj_Path  : File_Array;
+      Status    : out Integer)
    is
       use Ada.Environment_Variables;
       Proj_Type     : constant Project_Type := Proj.Root_Project;
@@ -197,7 +203,7 @@ procedure Gnatprove is
          Generate_Why_Project_File (Obj_Dir);
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
-      Generate_Why3_Conf_File (Obj_Dir);
+      Generate_Why3_Conf_File (Obj_Dir, Obj_Path);
       if Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
@@ -259,7 +265,8 @@ procedure Gnatprove is
    procedure Execute_Step
      (Step         : Gnatprove_Step;
       Project_File : String;
-      Proj         : Project_Tree)
+      Proj         : Project_Tree;
+      Obj_Path     : File_Array)
    is
       Status : Integer;
 
@@ -288,7 +295,7 @@ procedure Gnatprove is
             end if;
 
          when GS_Why =>
-            Compute_VCs (Proj, Status);
+            Compute_VCs (Proj,  Obj_Path, Status);
 
       end case;
 
@@ -415,7 +422,8 @@ procedure Gnatprove is
    -- Generate_Why3_Conf_File --
    -----------------------------
 
-   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String)
+   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String;
+                                      Obj_Path         : File_Array)
    is
       File : File_Type;
       Filename : constant String :=
@@ -469,7 +477,9 @@ procedure Gnatprove is
       Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "modules"));
       Put_Keyval ("loadpath", Stdlib_Dir);
       Put_Keyval ("loadpath", Theories_Dir);
-      Put_Keyval ("loadpath", Gnatprove_Subdir);
+      for File of Obj_Path loop
+         Put_Keyval ("loadpath", File.Display_Full_Name);
+      end loop;
       Put_Keyval ("magic", 11);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
@@ -573,20 +583,17 @@ begin
       Obj_Path : constant File_Array :=
          Object_Path (Proj_Type, Recursive => True);
    begin
-      Execute_Step (GS_ALI, Project_File.all, Tree);
-      Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
+      Execute_Step (GS_ALI, Project_File.all, Tree, Obj_Path);
+      Execute_Step (GS_Gnat2Why, Project_File.all, Tree, Obj_Path);
 
       Generate_Alfa_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
 
       if MMode in GP_Alfa_Detection_Mode then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
+      Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+      Execute_Step (GS_Why, Project_File.all, Tree, Obj_Path);
    end;
-
-   Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-
-   Execute_Step (GS_Why, Project_File.all, Tree);
-
 exception
    when Invalid_Project =>
       Abort_With_Message
