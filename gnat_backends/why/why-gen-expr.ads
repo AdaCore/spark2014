@@ -109,18 +109,22 @@ package Why.Gen.Expr is
    --  comparisons being in Base_Type (int or real)
 
    function Insert_Conversion
-      (Domain   : EW_Domain;
-       Ada_Node : Node_Id := Empty;
-       Expr     : W_Expr_Id;
-       To       : W_Base_Type_Id;
-       From     : W_Base_Type_Id;
-       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
-
-   --  We expect Expr to be of the type that corresponds to the type
-   --  "From". We insert a conversion so that its type corresponds to "To".
-   --  if "By" is non empty, then it specifies that the operation in expr
-   --  is done in the corresponding base type and that its overflow check
-   --  should be inserted.
+     (Domain        : EW_Domain;
+      Ada_Node      : Node_Id := Empty;
+      Expr          : W_Expr_Id;
+      To            : W_Base_Type_Id;
+      From          : W_Base_Type_Id;
+      Overflow_Type : W_Base_Type_OId := Why_Empty;
+      Range_Type    : W_Base_Type_OId := Why_Empty) return W_Expr_Id
+   with
+     Pre => Overflow_Type = Why_Empty or else Range_Type = Why_Empty;
+   --  We expect Expr to be of the type that corresponds to the type "From".
+   --  We insert a conversion so that its type corresponds to "To". If
+   --  Overflow_Type is non empty, then it specifies that the operation in
+   --  expr is done in the corresponding base type and that its overflow check
+   --  should be inserted. If Range_Type is non empty, then a range check
+   --  should be inserted that the result is in the bounds of this type. Both
+   --  of Overflow_Type and Range_Type should not be set at the same time.
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;

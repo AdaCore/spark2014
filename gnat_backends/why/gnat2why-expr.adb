@@ -243,10 +243,14 @@ package body Gnat2Why.Expr is
    --  declarations of constants in Actions.
 
    function Transform_Attr
-     (Expr          : Node_Id;
-      Domain        : EW_Domain;
-      Current_Type  : out W_Base_Type_Id;
-      Params        : Translation_Params) return W_Expr_Id;
+     (Expr               : Node_Id;
+      Domain             : EW_Domain;
+      Current_Type       : out W_Base_Type_Id;
+      Range_Check_Needed : in out Boolean;
+      Params             : Translation_Params) return W_Expr_Id;
+   --  Range_Check_Needed is set to True for some attributes (like 'Pos,
+   --  'Length, 'Modulus) which return a universal integer, so that we check
+   --  the result fits in the actual type used for the node.
 
    procedure Transform_String_Literal
      (Params : Translation_Params;
@@ -1771,10 +1775,11 @@ package body Gnat2Why.Expr is
    --------------------
 
    function Transform_Attr
-     (Expr          : Node_Id;
-      Domain        : EW_Domain;
-      Current_Type  : out W_Base_Type_Id;
-      Params        : Translation_Params) return W_Expr_Id
+     (Expr               : Node_Id;
+      Domain             : EW_Domain;
+      Current_Type       : out W_Base_Type_Id;
+      Range_Check_Needed : in out Boolean;
+      Params             : Translation_Params) return W_Expr_Id
    is
       Aname   : constant Name_Id := Attribute_Name (Expr);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
@@ -1877,6 +1882,7 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             Current_Type := EW_Int_Type;
+            Range_Check_Needed := True;
 
          when Attribute_Val =>
             declare
@@ -1928,9 +1934,14 @@ package body Gnat2Why.Expr is
                   null;
             end case;
 
+            if Attr_Id = Attribute_Length then
+               Range_Check_Needed := True;
+            end if;
+
          when Attribute_Modulus =>
             T := New_Attribute_Expr (Etype (Var), Attr_Id);
             Current_Type := EW_Int_Type;
+            Range_Check_Needed := True;
 
          when Attribute_Mod =>
             T :=
@@ -2288,6 +2299,7 @@ package body Gnat2Why.Expr is
       T                     : W_Expr_Id;
       Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
       Overflow_Check_Needed : Boolean := False;
+      Range_Check_Needed    : Boolean := False;
    begin
 
       --  Expressions that cannot be translated to predicates directly are
@@ -2837,6 +2849,7 @@ package body Gnat2Why.Expr is
             T := Transform_Attr (Expr,
                                  Domain,
                                  Current_Type,
+                                 Range_Check_Needed,
                                  Params);
 
          when N_Case_Expression =>
@@ -2873,22 +2886,28 @@ package body Gnat2Why.Expr is
       end case;
 
       declare
-         By    : constant W_Base_Type_Id :=
-                   (if Overflow_Check_Needed then
-                      EW_Abstract (Etype (Expr))
-                    else
-                      Why_Empty);
+         Overflow_Type : constant W_Base_Type_Id :=
+                           (if Overflow_Check_Needed then
+                              EW_Abstract (Etype (Expr))
+                            else
+                              Why_Empty);
+         Range_Type    : constant W_Base_Type_Id :=
+                           (if Range_Check_Needed then
+                              EW_Abstract (Etype (Expr))
+                            else
+                              Why_Empty);
       begin
          case Domain is
             when EW_Term | EW_Prog =>
                return
                  Insert_Conversion
-                   (Domain   => Domain,
-                    Ada_Node => Expr,
-                    Expr     => T,
-                    From     => Current_Type,
-                    To       => Expected_Type,
-                    By       => By);
+                   (Domain        => Domain,
+                    Ada_Node      => Expr,
+                    Expr          => T,
+                    From          => Current_Type,
+                    To            => Expected_Type,
+                    Overflow_Type => Overflow_Type,
+                    Range_Type    => Range_Type);
 
             when EW_Pred =>
                return T;

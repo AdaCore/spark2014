@@ -253,12 +253,13 @@ package body Why.Gen.Expr is
    -----------------------
 
    function Insert_Conversion
-      (Domain   : EW_Domain;
-       Ada_Node : Node_Id := Empty;
-       Expr     : W_Expr_Id;
-       To       : W_Base_Type_Id;
-       From     : W_Base_Type_Id;
-       By       : W_Base_Type_OId := Why_Empty) return W_Expr_Id
+     (Domain        : EW_Domain;
+      Ada_Node      : Node_Id := Empty;
+      Expr          : W_Expr_Id;
+      To            : W_Base_Type_Id;
+      From          : W_Base_Type_Id;
+      Overflow_Type : W_Base_Type_OId := Why_Empty;
+      Range_Type    : W_Base_Type_OId := Why_Empty) return W_Expr_Id
    is
       Base   : constant W_Base_Type_Id := LCA (To, From);
 
@@ -271,15 +272,21 @@ package body Why.Gen.Expr is
       --  to To; a counterexample would be two abstract types whose base
       --  types differ), insert the corresponding conversion.
 
-      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id;
-      --  If it makes sense in the context, insert an overflow check
-      --  on the top of Expr
+      function Insert_Check
+        (Expr : W_Expr_Id;
+         By   : W_Base_Type_OId;
+         Kind : VC_Kind) return W_Expr_Id;
+      --  If it makes sense in the context, insert an overflow check or a range
+      --  check on the top of Expr.
 
-      ---------------------------
-      -- Insert_Overflow_Check --
-      ---------------------------
+      ------------------
+      -- Insert_Check --
+      ------------------
 
-      function Insert_Overflow_Check (Expr : W_Expr_Id) return W_Expr_Id is
+      function Insert_Check
+        (Expr : W_Expr_Id;
+         By   : W_Base_Type_OId;
+         Kind : VC_Kind) return W_Expr_Id is
       begin
          if Domain /= EW_Prog
            or else Get_Base_Type (By) /= EW_Abstract
@@ -293,7 +300,7 @@ package body Why.Gen.Expr is
          --  change the label of the next conversion.
 
          if Eq (To, By) then
-            Conversion_Reason.Set_Next (VC_Overflow_Check);
+            Conversion_Reason.Set_Next (Kind);
             return Expr;
 
          --  Otherwise, this is the regular case: the range check and the
@@ -310,10 +317,10 @@ package body Why.Gen.Expr is
                     Ada_Node => Ada_Node,
                     Name     => Prefix (Full_Name (A), WNE_Overflow, A),
                     Progs    => (1 => +Expr),
-                    Reason   => VC_Overflow_Check);
+                    Reason   => Kind);
             end;
          end if;
-      end Insert_Overflow_Check;
+      end Insert_Check;
 
       ------------------------------
       -- Insert_Single_Conversion --
@@ -364,24 +371,43 @@ package body Why.Gen.Expr is
    --  Start of processing for Insert_Conversion
 
    begin
-      if By /= Why_Empty then
+      if Overflow_Type /= Why_Empty then
          return
            Insert_Conversion
              (Domain   => Domain,
               Ada_Node => Ada_Node,
               To       => To,
               From     => Base,
-              By       => Why_Empty,
               Expr     =>
-                Insert_Overflow_Check
+                Insert_Check
                   (Expr =>
                      Insert_Conversion
                        (Domain   => Domain,
                         Ada_Node => Ada_Node,
                         To       => Base,
                         From     => From,
-                        By       => Why_Empty,
-                        Expr     => Expr)));
+                        Expr     => Expr),
+                   By   => Overflow_Type,
+                   Kind => VC_Overflow_Check));
+
+      elsif Range_Type /= Why_Empty then
+         return
+           Insert_Conversion
+             (Domain   => Domain,
+              Ada_Node => Ada_Node,
+              To       => To,
+              From     => Base,
+              Expr     =>
+                Insert_Check
+                  (Expr =>
+                     Insert_Conversion
+                       (Domain   => Domain,
+                        Ada_Node => Ada_Node,
+                        To       => Base,
+                        From     => From,
+                        Expr     => Expr),
+                   By   => Range_Type,
+                   Kind => VC_Range_Check));
       end if;
 
       if Eq (To, From) then
@@ -402,7 +428,6 @@ package body Why.Gen.Expr is
                    Ada_Node => Ada_Node,
                    To       => Up_To,
                    From     => Up_From,
-                   By       => Why_Empty,
                    Expr     =>
                      Insert_Single_Conversion
                        (To   => Up_From,
