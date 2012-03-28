@@ -484,6 +484,7 @@ package body Gnat2Why.Subprograms is
       --  subprogram
 
       Open_Theory (File, Name & "__def");
+      Current_Subp := E;
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -564,6 +565,7 @@ package body Gnat2Why.Subprograms is
       Params  : Translation_Params;
    begin
       Open_Theory (File, Name & "__pre");
+      Current_Subp := E;
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,

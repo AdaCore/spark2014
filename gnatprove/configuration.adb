@@ -95,15 +95,19 @@ ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
-" -d, --debug       Debug mode" &
+" -d, --debug        Debug mode" &
 ASCII.LF &
-"     --no-proof    Disable proof of VCs, only generate VCs" &
+"     --no-proof     Disable proof of VCs, only generate VCs" &
 ASCII.LF &
-"     --pedantic    Use a strict interpretation of the Ada standard" &
+"     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
-"     --steps=nnn   Set the maximum number of proof steps to nnn for Alt-Ergo"&
+"     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"
+& ASCII.LF &
+"     --timeout=s    Set the timeout for Alt-Ergo in seconds (default: 10)" &
 ASCII.LF &
-"     --timeout=s   Set the timeout for Alt-Ergo in seconds (default: 10)";
+"     --limit-line=s Limit proofs to given file and line" &
+ASCII.LF &
+"     --limit-subp=s Limit proofs to subprogram defined by file and line";
 
    ----------------
    -- Do_Nothing --
@@ -330,6 +334,12 @@ ASCII.LF &
 
       Define_Switch (Config, "*", Help => "list of source files");
 
+      Define_Switch
+        (Config,
+         Limit_Subp'Access,
+         Long_Switch => "--limit-subp=",
+         Help => "limit proofs to subp defined by given file and line");
+
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
@@ -388,39 +398,52 @@ ASCII.LF &
            ("report should be one of (fail | all | detailed)");
       end if;
 
-      if Limit_Line /= null and then Limit_Line.all /= "" then
+      declare
+         Limit_String : GNAT.Strings.String_Access := null;
+      begin
 
-         --  Limit_Line implies -u for the file. We realize this here, but we
-         --  take care to only add a body to the list for -u
+         --  Limit_Line and Limit_Subp both imply -u for the corresponding
+         --  file. We take care of that using the Limit_String variable, note
+         --  that "Limit_Line" is stronger naturally.
 
-         declare
-            Index : Integer := Limit_Line.all'Last;
-         begin
-            while Index > Limit_Line.all'First and then
-              Limit_Line.all (Index) /= ':' loop
-               Index := Index - 1;
-            end loop;
-            if Index = Limit_Line.all'First then
-               Abort_With_Message
-                 ("limit-line: incorrect line specification - missing ':'");
-            end if;
+         if Limit_Subp /= null and then Limit_Subp.all /= "" then
+            Limit_String := Limit_Subp;
+         end if;
+
+         if Limit_Line /= null and then Limit_Line.all /= "" then
+            Limit_String := Limit_Line;
+         end if;
+
+         if Limit_String /= null then
             declare
-               Limit_File : constant String :=
-                 Limit_Line.all (Limit_Line.all'First .. Index - 1);
-               Limit_VF : constant Virtual_File :=
-                 Create_From_Base (Filesystem_String (Limit_File));
-               Restrict : Virtual_File;
+               Index : Integer := Limit_String.all'Last;
             begin
-               if Unit_Part (Tree.Info (Limit_VF)) = Unit_Body then
-                  Restrict := Limit_VF;
-               else
-                  Restrict := Tree.Other_File (Limit_VF);
+               while Index > Limit_String.all'First and then
+                 Limit_String.all (Index) /= ':' loop
+                  Index := Index - 1;
+               end loop;
+               if Index = Limit_String.all'First then
+                  Abort_With_Message
+                    ("limit-line: incorrect line specification - missing ':'");
                end if;
-               File_List.Append (String (Base_Name (Restrict)));
+               declare
+                  Limit_File : constant String :=
+                    Limit_String.all (Limit_String.all'First .. Index - 1);
+                  Limit_VF : constant Virtual_File :=
+                    Create_From_Base (Filesystem_String (Limit_File));
+                  Restrict : Virtual_File;
+               begin
+                  if Unit_Part (Tree.Info (Limit_VF)) = Unit_Body then
+                     Restrict := Limit_VF;
+                  else
+                     Restrict := Tree.Other_File (Limit_VF);
+                  end if;
+                  File_List.Append (String (Base_Name (Restrict)));
+               end;
             end;
-         end;
-         Only_Given := True;
-      end if;
+            Only_Given := True;
+         end if;
+      end;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);

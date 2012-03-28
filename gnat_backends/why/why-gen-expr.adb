@@ -23,9 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
+
 with Atree;                use Atree;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
+with String_Utils;         use String_Utils;
 with Stand;                use Stand;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
@@ -35,7 +38,20 @@ with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Inter;            use Why.Inter;
 
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+
 package body Why.Gen.Expr is
+
+   package Node_String_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => String,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Subp_Sloc_Map : Node_String_Maps.Map := Node_String_Maps.Empty_Map;
+
+   function Cur_Subp_Sloc return String;
 
    --------------------------
    -- Compute_Ada_Node_Set --
@@ -204,6 +220,33 @@ package body Why.Gen.Expr is
       end Set_Next;
 
    end Conversion_Reason;
+
+   -------------------
+   -- Cur_Subp_Sloc --
+   -------------------
+
+   function Cur_Subp_Sloc return String is
+      Uniq : constant Entity_Id := Unique (Current_Subp);
+      Cur : constant Node_String_Maps.Cursor :=
+        Subp_Sloc_Map.Find (Uniq);
+   begin
+      if Node_String_Maps.Has_Element (Cur) then
+         return Node_String_Maps.Element (Cur);
+      else
+         declare
+            Loc  : constant Source_Ptr :=
+              Translate_Location (Sloc (Uniq));
+            File : constant String := File_Name (Loc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Loc);
+            Result : constant String :=
+              File & ":" & Int_Image (Integer (Line));
+         begin
+            Subp_Sloc_Map.Insert (Uniq, Result);
+            return Result;
+         end;
+      end if;
+   end Cur_Subp_Sloc;
 
    -----------------------
    -- Insert_Conversion --
@@ -577,7 +620,8 @@ package body Why.Gen.Expr is
 
       --  A gnatprove label in Why3 has the following form
       --
-      --  #"<filename>" linenumber columnnumber 0# "gnatprove:<VC_Kind>"
+      --  #"<filename>" linenumber columnnumber 0#
+      --   "gnatprove:<VC_Kind>:<Subp_Sloc>" "keep_on_simp"
       --
       --  The first part, between the #, is a location label, indicating an
       --  Ada source location. The trailing 0 is needed because Why requires
@@ -596,7 +640,7 @@ package body Why.Gen.Expr is
       Label : constant String :=
         "#""" & File & """" & Physical_Line_Number'Image (Line) &
         Column_Number'Image (Column) & " 0# " &
-        """gnatprove:" & VC_Kind'Image (Reason) & """" &
+        """gnatprove:" & VC_Kind'Image (Reason) & ":" & Cur_Subp_Sloc & """" &
         " ""keep_on_simp""";
    begin
       return New_Identifier (Name => Label);

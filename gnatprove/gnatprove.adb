@@ -230,6 +230,10 @@ procedure Gnatprove is
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);
       end if;
+      if Limit_Subp /= null and then Limit_Subp.all /= "" then
+         Args.Append ("--limit-subp");
+         Args.Append (Limit_Subp.all);
+      end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
       end if;

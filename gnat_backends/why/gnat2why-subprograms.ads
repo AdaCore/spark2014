@@ -58,6 +58,8 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
+   Current_Subp : Entity_Id := Empty;
+
    procedure Generate_VCs_For_Subprogram_Body
      (File : in out Why_File;
       E    : Entity_Id);
