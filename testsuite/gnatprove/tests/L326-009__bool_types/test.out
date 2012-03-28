@@ -1,0 +1,18 @@
+
+p.adb:7:10: info: range check proved
+p.adb:8:4: info: precondition proved
+pack.adb:5:27: info: range check proved
+pack.adb:6:22: info: range check proved
+test.adb:16:16: info: loop invariant initialization proved
+test.adb:16:16: info: loop invariant preservation proved
+test.adb:21:16: info: loop invariant initialization proved
+test.adb:21:16: info: loop invariant preservation proved
+test.adb:48:16: info: range check proved
+test.adb:50:16: info: range check proved
+test.adb:56:16: info: range check proved
+test.adb:59:16: info: range check proved
+test.adb:5:35: info: loop invariant initialization proved
+test.adb:5:35: info: loop invariant preservation proved
+test.adb:66:16: info: range check proved
+test.adb:9:35: info: loop invariant initialization proved
+test.adb:9:35: info: loop invariant preservation proved
