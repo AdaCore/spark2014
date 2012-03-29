@@ -123,12 +123,11 @@ install-stdlib:
 	mkdir -p $(ALI_DIR)
 	mkdir -p $(GNATLIBDIR)
 	$(CP) $(STDLIB_TMP)/*.ali $(ALI_DIR)
-	$(CP) $(STDLIB_TMP)/*__types_in_spec.mlw \
-              $(STDLIB_TMP)/*__types_in_body.mlw \
-              $(STDLIB_TMP)/*__variables.mlw \
-	      $(STDLIB_TMP)/*__context_in_spec.mlw \
-	      $(STDLIB_TMP)/*__context_in_body.mlw \
-	      $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*__types_in_spec.mlw $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*__types_in_body.mlw $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*__variables.mlw $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*__context_in_spec.mlw $(GNATLIBDIR)
+	$(CP) $(STDLIB_TMP)/*__context_in_body.mlw $(GNATLIBDIR)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
