@@ -1770,6 +1770,36 @@ package body Gnat2Why.Expr is
                               Params => Body_Params));
    end Transform_Assignment_Statement;
 
+   -----------------------------
+   -- Transform_Attribute_Old --
+   -----------------------------
+
+   function Transform_Attribute_Old
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Translation_Params) return W_Expr_Id
+   is
+   begin
+      --  Expressions that cannot be translated to predicates directly are
+      --  translated to (boolean) terms, and compared to "True"
+
+      if Domain = EW_Pred then
+         return New_Relation
+           (Ada_Node => Expr,
+            Domain   => EW_Pred,
+            Op_Type  => EW_Bool,
+            Left     => +Transform_Attribute_Old (Expr, EW_Term, Params),
+            Right    => New_Literal (Value => EW_True, Domain => EW_Term),
+            Op       => EW_Eq);
+      elsif Params.Phase in Generate_VCs then
+         return +Name_For_Old (Expr);
+      else
+         return New_Tagged (Def    => Transform_Expr (Expr, Domain, Params),
+                            Tag    => NID (""),
+                            Domain => Domain);
+      end if;
+   end Transform_Attribute_Old;
+
    --------------------
    -- Transform_Attr --
    --------------------
@@ -1799,15 +1829,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Old =>
-            if Params.Phase in Generate_VCs then
-               T := +Name_For_Old (Var);
-            else
-               T :=
-                 New_Tagged (Def    => Transform_Expr
-                             (Var, Domain, Params),
-                             Tag    => NID (""),
-                             Domain => Domain);
-            end if;
+            T := Transform_Attribute_Old (Var, Domain, Params);
 
          when Attribute_Pred | Attribute_Succ =>
             declare

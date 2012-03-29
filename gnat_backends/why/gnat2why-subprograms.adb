@@ -91,7 +91,7 @@ package body Gnat2Why.Subprograms is
    --  postcondition, together with the translation of the corresponding
    --  expression in Why. Until 'Old is forbidden in the body, this is also
    --  used to translate occurrences of 'Old that are left by the frontend (for
-   --  example, inside quntified expressions that are only preanalyzed).
+   --  example, inside quantified expressions that are only preanalyzed).
    --
    --  The list is cleared before generating Why code for VC generation for the
    --  body and postcondition, filled during the translation, and used
@@ -133,6 +133,16 @@ package body Gnat2Why.Subprograms is
    --  globally.
    --  For local variables that are introduced by the compiler, add a "let"
    --  binding to Why body for each local variable of the procedure.
+
+   function Compute_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Prog_Id;
+   --  Generate checks that:
+   --  * the Requires clauses do not raise exceptions when the precondition is
+   --    True;
+   --  * the Ensures clauses do not raise exceptions when reaching the end of
+   --    the subprogram;
+   --  * the contracts are satisfied when reaching the end of the subprogram.
 
    function Compute_Effects (File : in out Why_File;
                              E    : Entity_Id) return W_Effects_Id;
@@ -415,6 +425,68 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Compute_Raw_Binders;
 
+   ---------------------------
+   -- Compute_Contract_Case --
+   ---------------------------
+
+   function Compute_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Prog_Id
+   is
+      CTC : Node_Id;
+      Cur : W_Prog_Id := New_Void;
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Prog_Id;
+      --  Generate checks for the contract case CTC
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Prog_Id
+      is
+         Req : constant Node_Id :=
+                 Expression (Get_Requires_From_CTC_Pragma (CTC));
+         Ens : constant Node_Id :=
+                 Expression (Get_Ensures_From_CTC_Pragma (CTC));
+         W   : constant W_Expr_Id :=
+                 New_Conditional
+                   (Ada_Node  => CTC,
+                    Domain    => Domain,
+                    Condition =>
+                      Transform_Attribute_Old (Req, Domain, Params),
+                    Then_Part =>
+                      Transform_Expr (Ens, Domain, Params),
+                    Else_Part =>
+                      New_Literal
+                        (Domain => Domain, Value => EW_True));
+      begin
+         if Domain = EW_Prog then
+            return New_Ignore (Prog => +W);
+         else
+            return New_Assert
+              (Pred => +New_Located_Expr (CTC, W, VC_Postcondition, EW_Pred));
+         end if;
+      end One_Contract_Case;
+
+   begin
+      CTC := Spec_CTC_List (Contract (E));
+      while Present (CTC) loop
+         if Pragma_Name (CTC) = Name_Contract_Case then
+            declare
+               W_RE   : constant W_Prog_Id := One_Contract_Case (CTC, EW_Prog);
+               W_Post : constant W_Prog_Id := One_Contract_Case (CTC, EW_Pred);
+            begin
+               Cur := Sequence (Cur, Sequence (W_RE, W_Post));
+            end;
+         end if;
+
+         CTC := Next_Pragma (CTC);
+      end loop;
+
+      return Cur;
+   end Compute_Contract_Case;
+
    ------------------
    -- Compute_Spec --
    ------------------
@@ -425,8 +497,8 @@ package body Gnat2Why.Subprograms is
       Kind   : Name_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Cur_Spec    : W_Expr_Id := Why_Empty;
-      PPC         : Node_Id;
+      Cur_Spec : W_Expr_Id := Why_Empty;
+      PPC      : Node_Id;
    begin
       PPC := Spec_PPC_List (Contract (E));
       while Present (PPC) loop
@@ -499,7 +571,11 @@ package body Gnat2Why.Subprograms is
                  Phase       => Generate_VCs_For_Post,
                  Ref_Allowed => True,
                  Name_Map    => Ada_Ent_To_Why.Empty_Map);
-      Post_Check := +Compute_Spec (Params, E, Name_Postcondition, EW_Prog);
+      Post_Check :=
+        Sequence
+          (New_Ignore (Prog =>
+                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
+           Compute_Contract_Case (Params, E));
 
       --  Set the phase to Generate_Contract_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
@@ -544,7 +620,7 @@ package body Gnat2Why.Subprograms is
                 Transform_Statements
                   (Statements
                      (Handled_Statement_Sequence (Body_N))),
-              New_Ignore (Prog => Post_Check))));
+              Post_Check)));
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
