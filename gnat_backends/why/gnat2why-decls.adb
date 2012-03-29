@@ -233,6 +233,7 @@ package body Gnat2Why.Decls is
          if Def = Why_Empty then
             Discard_Theory (File);
 
+         else
             --  It may be the case that the full view has a more precise type
             --  than the partial view, for example when the type of the partial
             --  view is an indefinite array. In that case, convert back to the
