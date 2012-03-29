@@ -61,6 +61,10 @@ with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
+pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
+with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
+pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
+
 package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why back-end
