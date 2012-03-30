@@ -2258,7 +2258,7 @@ package body Gnat2Why.Expr is
       end case;
 
       if Is_Range then
-         return Range_Expr (Choice, Expr, Domain, Params);
+         return Range_Expr (Choice, Expr, Domain, Params, EW_Int_Type);
       else
          return New_Comparison
            (Cmp       => EW_Eq,
