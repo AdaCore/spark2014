@@ -2204,7 +2204,7 @@ package body Gnat2Why.Expr is
                               end loop;
                            end;
 
-                        when E_Record_Type =>
+                        when Record_Kind =>
                            null;
 
                         when others =>
