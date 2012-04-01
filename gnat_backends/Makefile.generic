@@ -79,14 +79,14 @@ GNAT_RTS=$(shell if [ -d $(OBJ)/rts-native ]; then echo $(OBJ)/rts-native; else 
 GNAT1_C_OBJS=$(OBJ)/adadecode.o $(OBJ)/adaint.o $(OBJ)/cstreams.o \
  $(OBJ)/cio.o $(OBJ)/targtyps.o $(OBJ)/decl.o $(OBJ)/misc.o $(OBJ)/utils.o \
  $(OBJ)/utils2.o $(OBJ)/trans.o $(OBJ)/cuintp.o $(OBJ)/argv.o $(OBJ)/raise.o \
- $(OBJ)/init.o $(OBJ)/tracebak.o $(OBJ)/initialize.o $(OBJ)/env.o \
+ $(OBJ)/init.o $(OBJ)/initialize.o $(OBJ)/env.o \
  $(OBJ)/targext.o $(OBJ)/seh_init.o $(OBJ)/final.o \
  $(OBJ)/../attribs.o $(OBJ)/../prefix.o $(OBJ)/../main.o
 
 RTS:=$(GNAT_RTS)
 
 GNAT1_RTS_OBJS=$(RTS)/mkdir.o $(RTS)/errno.o $(RTS)/ctrl_c.o \
-  $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o
+  $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o $(RTS)/tracebak.o
 
 ifeq ($(filter-out Linux,$(uname)),)
   EXTRA_LIBS=-rdynamic -ldl -lelf
