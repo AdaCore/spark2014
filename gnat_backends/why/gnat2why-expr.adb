@@ -2648,6 +2648,43 @@ package body Gnat2Why.Expr is
                     Reason   => VC_Division_Check);
             end;
 
+         when N_Op_Expon =>
+            declare
+               Left    : constant Node_Id := Left_Opnd (Expr);
+               Right   : constant Node_Id := Right_Opnd (Expr);
+               Name    : W_Identifier_Id;
+               T_Right : constant W_Base_Type_Id := Type_Of_Node (Right);
+               W_Right : W_Expr_Id := Transform_Expr (Right,
+                                                      EW_Int_Type,
+                                                      Domain,
+                                                      Params);
+            begin
+               Current_Type := Base_Why_Type (Left);
+               Name := New_Exp (Get_Base_Type (Current_Type));
+
+               if Is_Discrete_Type (Most_Underlying_Type (Etype (Left))) then
+                  W_Right := Insert_Conversion (Domain     => Domain,
+                                                Ada_Node   => Right,
+                                                Expr       => W_Right,
+                                                From       => EW_Int_Type,
+                                                To         => EW_Int_Type,
+                                                Range_Type => T_Right);
+               end if;
+
+               T := New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => Name,
+                       Args     =>
+                         (1 => Transform_Expr (Left,
+                                               Current_Type,
+                                               Domain,
+                                               Params),
+                          2 => W_Right));
+
+               Overflow_Check_Needed := True;
+            end;
+
          when N_Op_Not =>
             Current_Type := EW_Bool_Type;
             if Domain = EW_Term then

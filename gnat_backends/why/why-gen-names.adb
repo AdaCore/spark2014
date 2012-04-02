@@ -352,6 +352,20 @@ package body Why.Gen.Names is
       end case;
    end New_Division;
 
+   -------------
+   -- New_Exp --
+   -------------
+
+   function New_Exp (Kind : EW_Numeric) return W_Identifier_Id is
+   begin
+      case Kind is
+         when EW_Real =>
+            return To_Ident (WNE_Real_Exp);
+         when EW_Int =>
+            return To_Ident (WNE_Integer_Exp);
+      end case;
+   end New_Exp;
+
    --------------------
    -- New_Identifier --
    --------------------
@@ -513,11 +527,13 @@ package body Why.Gen.Names is
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
          when WNE_Integer_Div  => return "Integer.computer_div";
+         when WNE_Integer_Exp  => return "Integer.power";
          when WNE_Integer_Rem  => return "Integer.computer_mod";
          when WNE_Integer_Mod  => return "Integer.math_mod";
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
+         when WNE_Real_Exp     => return "Floating.power";
          when WNE_Real_Of_Int  => return "Floating.real_of_int";
          when WNE_Array_1      => return "Array__1";
          when WNE_Array_2      => return "Array__2";

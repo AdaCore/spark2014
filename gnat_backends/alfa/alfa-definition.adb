@@ -1619,7 +1619,7 @@ package body Alfa.Definition is
                  ("ordering operator on array type", N, NYI_Array_Operation);
             end if;
 
-         when N_Op_Eq | N_Op_Ne =>
+         when N_Op_Eq | N_Op_Ne | N_Op_Expon =>
             null;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
@@ -1668,8 +1668,7 @@ package body Alfa.Definition is
                   Right_Opnd (N), NIR_Ambiguous_Expr);
             end if;
 
-         when N_Op_Expon |
-              N_Op_Shift =>
+         when N_Op_Shift =>
             Mark_Non_Alfa ("operator", N, NYI_Arith_Operation);
       end case;
 

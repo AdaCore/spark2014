@@ -73,6 +73,9 @@ package Why.Gen.Names is
    function New_Division (Kind : EW_Numeric) return W_Identifier_Id;
    --  Return the name of the division for the given kind
 
+   function New_Exp (Kind : EW_Numeric) return W_Identifier_Id;
+   --  Return the name of the exponential for the given kind
+
    function New_Abs (Kind : EW_Numeric) return W_Identifier_Id;
    --  Return the name of the absolute value operator for the given kind
 
@@ -131,6 +134,7 @@ package Why.Gen.Names is
       WNE_Ignore,
       WNE_Integer_Abs,
       WNE_Integer_Div,
+      WNE_Integer_Exp,
       WNE_Integer_Mod,
       WNE_Integer_Rem,
       WNE_Last_Static,
@@ -146,6 +150,7 @@ package Why.Gen.Names is
       WNE_Range_Pred,
       WNE_Real_Abs,
       WNE_Real_Div,
+      WNE_Real_Exp,
       WNE_Real_Of_Int,
       WNE_Result,
       WNE_Result_Exc,
