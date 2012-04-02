@@ -422,15 +422,16 @@ package body Alfa.Definition is
    use Scope_Stack;
 
    function Force_Alfa (N : Node_Id) return Boolean is
-     ((Debug.Debug_Flag_Dot_EE
+     (((Debug.Debug_Flag_Dot_KK
+         or else Debug.Debug_Flag_Dot_EE)
         and then (In_Main_Unit_Spec (N)
                    or else In_Main_Unit_Body (N)))
        or else
          Formal_Proof_Currently_Forced);
    --  Return whether Alfa rules should be enforced in the current scope,
-   --  either because option -gnatd.E was passed to gnat2why (which only
-   --  applies to user source code), or because the current scope is forcing
-   --  formal proof.
+   --  either because option -gnatd.K or -gnatd.E was passed to gnat2why (which
+   --  only applies to user source code), or because the current scope is
+   --  forcing formal proof.
 
    -----------------------
    -- Local Subprograms --
@@ -785,9 +786,26 @@ package body Alfa.Definition is
    begin
       case V is
          when Alfa_Violations.Not_In_Roadmap =>
-            return Msg & " is not in Alfa";
+
+            --  In mode 'detect', only issue a warning when a construct is not
+            --  in Alfa.
+
+            if Debug.Debug_Flag_Dot_KK then
+               return Msg & "? is not in Alfa";
+            else
+               return Msg & " is not in Alfa";
+            end if;
+
          when Alfa_Violations.Not_Yet_Implemented =>
-            return Msg & "? is not yet implemented in Alfa";
+
+            --  In mode 'detect', only issue an info message when a construct
+            --  is not yet supported.
+
+            if Debug.Debug_Flag_Dot_KK then
+               return "?info: " & Msg & " is not yet supported";
+            else
+               return Msg & "? is not yet supported";
+            end if;
       end case;
    end Complete_Error_Msg;
 
