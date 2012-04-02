@@ -131,7 +131,6 @@ global :ref:`project statistics`.
 GNATprove outputs which features not in Alfa are used (using parentheses):
 
 * access: access types and dereferences;
-* ambiguous expr: ambiguous expression;
 * assembly language: assembly language;
 * deallocation: unchecked deallocation;
 * dynamic allocation: dynamic allocation;
@@ -347,7 +346,7 @@ Parenthesized Arithmetic Operations
 In Ada, non-parenthesized arithmetic operations can be re-ordered by the
 compiler, which may result in a failing computation (due to overflow checking)
 becoming a successful one, and vice-versa. In Alfa, all such operations should
-be parenthesized. (SPARK issues a warning on such cases.)
+be parenthesized, otherwise a warning is emitted.
 
 More specifically:
 
