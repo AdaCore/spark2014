@@ -2840,9 +2840,6 @@ package body Alfa.Definition is
       then
          Mark_Non_Alfa
            ("type conversion not between scalar types", N, NYI_Conversion);
-      elsif Is_Real_Type (Etype (Expr)) /= Is_Real_Type (Etype (N)) then
-         Mark_Non_Alfa
-           ("type conversion between real and integer", N, NYI_Conversion);
       end if;
 
       Mark (Expr);

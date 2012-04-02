@@ -170,6 +170,13 @@ package body Why.Gen.Names is
 
                   if From_Kind = EW_Int and then To_Kind = EW_Real then
                      return To_Ident (WNE_Real_Of_Int);
+
+                  --  Conversions from int to real in Ada round to the nearest
+                  --  integer, and away from zero in case of tie, exactly like
+                  --  'Rounding attribute.
+
+                  elsif From_Kind = EW_Real and then To_Kind = EW_Int then
+                     return To_Ident (WNE_Real_Round);
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     S        => "Boolean",
