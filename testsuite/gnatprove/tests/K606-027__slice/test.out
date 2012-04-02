@@ -12,3 +12,6 @@ fb20a00.adb:25:16: index check not proved
 fb20a00.adb:25:38: info: range check proved
 fb20a00.adb:27:16: index check not proved
 fb20a00.adb:27:27: info: index check proved
+fb20a00.adb:37:22: warning: possible re-ordering due to missing parentheses
+fb20a00.adb:39:28: warning: possible re-ordering due to missing parentheses
+fb20a00.adb:45:18: warning: possible re-ordering due to missing parentheses
