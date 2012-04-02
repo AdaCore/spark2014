@@ -3576,9 +3576,13 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
 
+               when Pragma_Export   |
+                    Pragma_Import   |
+                    Pragma_Warnings =>
+                  return New_Void (Stmt);
+
                when others =>
                   raise Not_Implemented;
-
             end case;
 
          when others =>

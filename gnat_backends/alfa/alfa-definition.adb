@@ -2526,11 +2526,6 @@ package body Alfa.Definition is
                end;
             end if;
 
-         --  Pragma Pre/Postconditions are ignored
-
-         when Pragma_Precondition | Pragma_Postcondition =>
-            null;
-
          --  pragma Check ([Name    =>] Identifier,
          --                [Check   =>] Boolean_Expression
          --              [,[Message =>] String_Expression]);
@@ -2546,6 +2541,20 @@ package body Alfa.Definition is
                Mark (Get_Pragma_Arg (Arg2));
                Pop_Logic_Scope;
             end if;
+
+         --  Ignored pragmas, either because they are already taken into
+         --  account (Precondition and Postcondition), or because they have no
+         --  effect on verification (Export, Import, Preelaborate, Pure,
+         --  Warnings).
+
+         when Pragma_Export        |
+              Pragma_Import        |
+              Pragma_Precondition  |
+              Pragma_Preelaborate  |
+              Pragma_Postcondition |
+              Pragma_Pure          |
+              Pragma_Warnings      =>
+            null;
 
          when others =>
             Mark_Non_Alfa ("pragma", N, NYI_Pragma);
