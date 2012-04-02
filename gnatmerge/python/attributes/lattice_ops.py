@@ -64,7 +64,7 @@ In this case, '(inv(A)[a] . P(A)[a]) (nesting)' will also contain
   inv(A)[a] . P(A)[a] . inv(A)[a] = inv(A)[a]
   P(A)[a] . inv(A)[a] . P(A)[a] = P(A)[a]
 
-inv(A)[a] is the adjoint of P(A[a]), meaning that it returns the
+inv(A)[a] is the right adjoint of P(A[a]), meaning that it returns the
 minimal superset of nesting.
 
 We now consider two objects 'From', 'To' having a lattice attribute 'a' and
