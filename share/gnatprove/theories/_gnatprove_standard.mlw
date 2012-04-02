@@ -104,12 +104,29 @@ module Floating
   use real.Real
   use import real.RealInfix
   use real.Abs as AbsReal
+  use export real.Truncate
 
   use export FloatingExp
 
   use real.FromInt
 
   function real_of_int (x : int) : real = FromInt.from_int x
+
+  function round real : int
+
+  axiom Round_down:
+    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
+
+  axiom Round_up:
+    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
+
+  axiom Round_neg_tie:
+    forall x:real.
+      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
+
+  axiom Round_pos_tie:
+    forall x:real.
+      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
 
   (* Boolean comparison functions for reals *)
 

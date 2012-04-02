@@ -1574,20 +1574,24 @@ package body Alfa.Definition is
 
    begin
       case Attr_Id is
-         when Attribute_Result  |
-              Attribute_First   |
-              Attribute_Image   |
-              Attribute_Last    |
-              Attribute_Length  |
-              Attribute_Range   |
-              Attribute_Succ    |
-              Attribute_Pred    |
-              Attribute_Val     |
-              Attribute_Value   |
-              Attribute_Pos     |
-              Attribute_Old     |
-              Attribute_Mod     |
-              Attribute_Modulus =>
+         when Attribute_Ceiling    |
+              Attribute_First      |
+              Attribute_Floor      |
+              Attribute_Image      |
+              Attribute_Last       |
+              Attribute_Length     |
+              Attribute_Mod        |
+              Attribute_Modulus    |
+              Attribute_Old        |
+              Attribute_Pos        |
+              Attribute_Pred       |
+              Attribute_Range      |
+              Attribute_Result     |
+              Attribute_Rounding   |
+              Attribute_Truncation |
+              Attribute_Succ       |
+              Attribute_Val        |
+              Attribute_Value      =>
             null;
 
          when others =>

@@ -533,8 +533,12 @@ package body Why.Gen.Names is
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
+         when WNE_Real_Ceil    => return "Floating.ceil";
          when WNE_Real_Exp     => return "Floating.power";
+         when WNE_Real_Floor   => return "Floating.floor";
          when WNE_Real_Of_Int  => return "Floating.real_of_int";
+         when WNE_Real_Round   => return "Floating.round";
+         when WNE_Real_Truncate => return "Floating.truncate";
          when WNE_Array_1      => return "Array__1";
          when WNE_Array_2      => return "Array__2";
          when WNE_First_Static => return "first_static";

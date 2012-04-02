@@ -2021,6 +2021,33 @@ package body Gnat2Why.Expr is
                Current_Type := Base_Why_Type (Var);
             end;
 
+         when Attribute_Ceiling    |
+              Attribute_Floor      |
+              Attribute_Rounding   |
+              Attribute_Truncation =>
+            declare
+               Arg  : constant W_Expr_Id :=
+                        Transform_Expr (First (Expressions (Expr)),
+                                        EW_Real_Type,
+                                        Domain,
+                                        Params);
+               Attr_Name : constant Why_Name_Enum :=
+                             (if Attr_Id = Attribute_Ceiling then
+                                WNE_Real_Ceil
+                              elsif Attr_Id = Attribute_Floor then
+                                WNE_Real_Floor
+                              elsif Attr_Id = Attribute_Rounding then
+                                WNE_Real_Round
+                              else WNE_Real_Truncate);
+               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+            begin
+               T := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => Func,
+                              Args     => (1 => Arg));
+               Current_Type := EW_Int_Type;
+            end;
+
          when others =>
             raise Not_Implemented;
       end case;
