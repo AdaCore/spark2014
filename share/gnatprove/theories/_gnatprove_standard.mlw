@@ -104,9 +104,6 @@ module Floating
   use real.Real
   use import real.RealInfix
   use real.Abs as AbsReal
-  use floating_point.Rounding
-  use floating_point.Single
-  use floating_point.Double
 
   use export FloatingExp
 
