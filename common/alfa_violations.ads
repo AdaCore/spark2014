@@ -65,7 +65,6 @@ package Alfa_Violations is
       --  These constructs are not in Alfa in the foreseeable future
 
       NIR_Access,           --  access types
-      NIR_Ambiguous_Expr,   --  ambiguous expr
       NIR_Assembly_Lang,    --  assembly language
       NIR_Dealloc,          --  deallocation
       NIR_Dynamic_Alloc,    --  dynamic allocation
@@ -127,7 +126,6 @@ package Alfa_Violations is
       NYI_Extended_Return  => To_Unbounded_String ("extended return"),
 
       NIR_Access           => To_Unbounded_String ("access"),
-      NIR_Ambiguous_Expr   => To_Unbounded_String ("ambiguous expr"),
       NIR_Assembly_Lang    => To_Unbounded_String ("assembly language"),
       NIR_Dealloc          => To_Unbounded_String ("deallocation"),
       NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),

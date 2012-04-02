@@ -1634,42 +1634,44 @@ package body Alfa.Definition is
                  ("binary operator on array type", N, NYI_Array_Operation);
             end if;
 
-         --  Do not allow arithmetic operations which could be reordered by the
-         --  compiler, like "A + B - C", as a given ordering may overflow and
-         --  another may not.
+         --  Issue a warning whenever an arithmetic operation could be
+         --  reordered by the compiler, like "A + B - C", as a given
+         --  ordering may overflow and another may not. Not that a warning is
+         --  issued even on operations like "A * B / C" which are not reordered
+         --  by GNAT, as they could be reordered according to RM 4.5/13.
 
          when N_Op_Add | N_Op_Subtract =>
             if Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
               and then Paren_Count (Left_Opnd (N)) = 0
             then
-               Mark_Non_Alfa
-                 ("possible re-ordering due to missing parentheses",
-                  Left_Opnd (N), NIR_Ambiguous_Expr);
+               Error_Msg_F
+                 ("?possible re-ordering due to missing parentheses",
+                  Left_Opnd (N));
             end if;
 
             if Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
               and then Paren_Count (Right_Opnd (N)) = 0
             then
-               Mark_Non_Alfa
-                 ("possible re-ordering due to missing parentheses",
-                  Right_Opnd (N), NIR_Ambiguous_Expr);
+               Error_Msg_F
+                 ("?possible re-ordering due to missing parentheses",
+                  Right_Opnd (N));
             end if;
 
          when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
             if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
               and then Paren_Count (Left_Opnd (N)) = 0
             then
-               Mark_Non_Alfa
-                 ("possible re-ordering due to missing parentheses",
-                  Left_Opnd (N), NIR_Ambiguous_Expr);
+               Error_Msg_F
+                 ("?possible re-ordering due to missing parentheses",
+                  Left_Opnd (N));
             end if;
 
             if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
               and then Paren_Count (Right_Opnd (N)) = 0
             then
-               Mark_Non_Alfa
-                 ("possible re-ordering due to missing parentheses",
-                  Right_Opnd (N), NIR_Ambiguous_Expr);
+               Error_Msg_F
+                 ("?possible re-ordering due to missing parentheses",
+                  Right_Opnd (N));
             end if;
 
          when N_Op_Shift =>
