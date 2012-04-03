@@ -2843,7 +2843,7 @@ package body Alfa.Definition is
                null;
 
             when N_Delta_Constraint =>
-               Mark_Non_Alfa ("delta constraint", N, NYI_Float);
+               null;
 
             when others =>  --  TO DO ???
                raise Program_Error;

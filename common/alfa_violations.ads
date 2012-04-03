@@ -46,7 +46,6 @@ package Alfa_Violations is
       NYI_Discriminant,     --  discriminant record
       NYI_Dispatch,         --  dispatching
       NYI_Expr_With_Action, --  expression with action
-      NYI_Float,            --  float
       NYI_Invariant,        --  type invariant
       NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
       NYI_Pragma,           --  pragma
@@ -110,7 +109,6 @@ package Alfa_Violations is
       NYI_Discriminant     => To_Unbounded_String ("discriminant"),
       NYI_Dispatch         => To_Unbounded_String ("dispatch"),
       NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),
-      NYI_Float            => To_Unbounded_String ("float"),
       NYI_Invariant        => To_Unbounded_String ("type invariant"),
       NYI_Multi_Dim_Array  => To_Unbounded_String ("multi dim array"),
       NYI_Pragma           => To_Unbounded_String ("pragma"),

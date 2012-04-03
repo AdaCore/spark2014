@@ -22,21 +22,21 @@ allow specifying and verifying data-and-control coupling properties. In
 the absence of functional property definitions, the parts of an Ada program
 that are in the Alfa subset can still be proven free of run-time errors.
 
-Alfa is supported in the tools GNATtest and GNATprove, aiming respectively at
-unit testing and unit proof of Ada subprograms. Annotations that specify the
-functional behavior of the program can be executed, or not, during a run of the
-program, and a failure to match the expected behavior results then in an error
-being reported at run time through the exception mechanism. The tool GNATtest
-automates the generation of a test harness and the verification that a
-user-provided test procedure implements a specified formal test-case. The same
-annotations can be analyzed statically with GNATprove to show that the program
-is free from run-time errors and that it follows its expected behavior. A
-crucial feature of GNATprove is that it interprets annotations
-exactly like they are interpreted at run time during tests. In particular,
-their executable semantics includes the verification of run-time checks, which
-can be verified statically with GNATprove.  GNATprove can perform additional
-verifications on the specification of the expected behavior itself, and its
-correspondence to the code.
+Alfa is supported in the GNAT compiler, as well as tools GNATtest and
+GNATprove, aiming respectively at unit testing and unit proof of Ada
+subprograms.  Annotations that specify the functional behavior of the program
+can be executed, or not, during a run of the program, and a failure to match
+the expected behavior results then in an error being reported at run time
+through the exception mechanism. The tool GNATtest automates the generation of
+a test harness and the verification that a user-provided test procedure
+implements a specified formal test-case. The same annotations can be analyzed
+statically with GNATprove to show that the program is free from run-time errors
+and that it follows its expected behavior. A crucial feature of GNATprove is
+that it interprets annotations exactly like they are interpreted at run time
+during tests. In particular, their executable semantics includes the
+verification of run-time checks, which can be verified statically with
+GNATprove.  GNATprove can perform additional verifications on the specification
+of the expected behavior itself, and its correspondence to the code.
 
 Currently, Alfa is only concerned with sequential execution of subprograms. A
 future version of Alfa could include support of tasking with restrictions
@@ -78,6 +78,14 @@ implemented.
 Provable and unprovable code can be combined at a fine-grain level. Provable
 code can call unprovable code, and vice-versa.
 
+Features of Ada for object-oriented programming and generic programming are
+included in Alfa: tagged types, dispatching, generics. Restrictions in Alfa do
+not target increase in readability, so use-clause, overloading and renamings
+are allowed for example. Also restrictions in Alfa do not constrain control
+flow, so arbitrary exits from loops and returns in subprograms are
+allowed. Note that, if desired, these restrictions can be detected with a
+coding style checker like GNATcheck.
+
 Combining Alfa and Full Ada Code
 --------------------------------
 
@@ -99,8 +107,7 @@ subprograms at least partially in Alfa.
 
 A consequence of this definition is that a subprogram fully in Alfa can only
 call subprograms that are themselves partially or fully in Alfa. A subprogram
-partially or not in Alfa can call any kind of subprogram. Further restrictions
-apply to calls in annotations.
+partially or not in Alfa can call any kind of subprogram.
 
 Most formal verification activities performed with GNATprove address
 subprograms that are fully in Alfa. Some activities, which apply to the
@@ -146,16 +153,15 @@ GNATprove outputs which features not in Alfa are used (using parentheses):
 GNATprove outputs which features in Alfa but not yet implemented are used
 [using brackets]:
 
-* aggregate: array or record aggregate;
-* arithmetic operation: arithmetic operation;
+* aggregate: aggregate extension;
+* arithmetic operation: not yet implemented arithmetic operation;
 * attribute: not yet implemented attribute;
 * concatenation: array concatenation;
-* conversion: type conversion;
+* conversion: not yet implemented type conversion;
 * container: formal container;
 * discriminant: discriminant record;
 * dispatch: dispatching;
 * expression with action: expression with action;
-* float: float;
 * multi dim array: multi-dimensional array of dimention > 2;
 * pragma: not yet implemented pragma;
 * representation clause: representation clause;
@@ -391,19 +397,80 @@ violation). This is guaranteed in Alfa by the restriction that functions should
 not perform writes to global variables since a function call is the only
 possible way of generating side effects within an expression.
 
-Current Definition of Alfa
---------------------------
+Recommended Use
+---------------
 
-As indicated before, tasking is excluded from Alfa, as well as exceptions,
-pointers (access types), controlled types and interfaces. Features of Ada for
-object-oriented programming and generic programming are included in Alfa:
-tagged types, dispatching, generics. Restrictions in Alfa do
-not target increase in readability, so use-clause, overloading and renamings
-are allowed for example. Also restrictions in Alfa do not
-constrain control flow, so arbitrary exits from loops and returns in
-subprograms are allowed. Note that, if desired, these restrictions can be
-detected with a coding style checker like GNATcheck. The following sections
-go into more details about what is or not in Alfa.
+Formal verification can be greatly facilitated by the way the program and its
+desired properties are expressed. In the following section, we give some advice
+to get as many automatic proofs as possible.
+
+.. _contract cases:
+
+Subprogram Contracts
+^^^^^^^^^^^^^^^^^^^^
+
+The proof of each subprogram is carried over independently of the
+implementation of other subprograms, so the contract of a subprogram should be
+strong enough to prove its callers. The contract of a subprogram can be
+expressed either as a pair of a precondition and a postcondition:
+
+.. code-block:: ada
+
+    procedure Incr_Threshold (X : in out Integer) with
+      Pre  => X >= 0,
+      Post => X = Integer'Min (X'Old + 1, Threshold);
+
+or as a set of contract cases:
+
+.. code-block:: ada
+
+    procedure Incr_Threshold (X : in out Integer) with
+      Contract_Case => (Name     => "increment",
+                        Mode     => Nominal,
+                        Requires => X >= 0 and then X < Threshold,
+                        Ensures  => X = X'Old + 1),
+      Contract_Case => (Name     => "saturate",
+                        Mode     => Nominal,
+                        Requires => X >= 0 and then X = Threshold,
+                        Ensures  => X = X'Old);
+
+or, finally, as a combination of both:
+
+.. code-block:: ada
+
+    procedure Incr_Threshold (X : in out Integer) with
+      Pre  => X >= 0,
+      Post => X >= X'Old,
+      Contract_Case => (Name     => "increment",
+                        Mode     => Nominal,
+                        Requires => X < Threshold,
+                        Ensures  => X = X'Old + 1),
+      Contract_Case => (Name     => "saturate",
+                        Mode     => Nominal,
+                        Requires => X = Threshold,
+                        Ensures  => X = X'Old);
+
+Note that these are not equivalent: contract cases only provide a convenient
+way to express complex postconditions, but they do not restrict the calling
+context of the subprogram (the precondition).
+
+Contract cases can be expressed both as pragmas and aspects. The syntax of
+contract case pragmas is the following:
+
+.. code-block:: ada
+
+   pragma Contract_Case (
+      [Name     =>] static_string_Expression
+     ,[Mode     =>] (Nominal | Robustness)
+    [, Requires =>  Boolean_Expression]
+    [, Ensures  =>  Boolean_Expression]);
+
+The compiler checks the validity of this pragma or aspect, and, depending on
+the assertion policy at the point of declaration of the pragma, it may insert a
+check in the executable, corresponding informally to the postcondition ``if
+Requires'Old then Ensures``. Attributes ``'Old`` and ``'Result`` can only be
+used within the ``Ensures`` expression.  See the GNAT Reference Manual for more
+details.
 
 Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -411,10 +478,11 @@ Function Calls in Annotations
 The contracts of functions called in annotations are essential for automatic
 proofs. Currently, the knowledge that a function call in an annotation respects
 its postcondition (when called in a context where the precondition is
-satisfied) is only available for expression functions. The syntax of expression
-functions, introduced in Ada 2012, allows defining functions whose
-implementation simply returns an expression, such as ``Even``, ``Odd`` and
-``Is_Prime`` below.
+satisfied) is only available for expression functions. Thus, expression
+functions should be used whenever possible for these functions called in
+annotations.  The syntax of expression functions, introduced in Ada 2012,
+allows defining functions whose implementation simply returns an expression,
+such as ``Even``, ``Odd`` and ``Is_Prime`` below.
 
 .. code-block:: ada
 
@@ -496,7 +564,7 @@ outside of postconditions will be deprecated, once attribute ``'Loop_Entry`` is
 supported.
 
 Quantified Expressions
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Ada 2012 quantified expressions are a special case with respect to run-time
 errors: the enclosed expression must be run-time error free over the *entire

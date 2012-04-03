@@ -10,7 +10,7 @@ Command-line Usage
 
 GNATprove is executed with the following command line::
 
-   gnatprove -P <project_file>.gpr <optional_list_of_files>
+   gnatprove -P <project_file>.gpr <switches> <optional_list_of_files>
 
 GNATprove accepts the following options::
 
@@ -39,14 +39,16 @@ GNATprove accepts the following options::
    --timeout=s            Set the timeout for Alt-Ergo in seconds (default: 10)
    --help                 Display the list of options
    --limit-line=file:line Limit proofs to the specified file and line
+   --limit-subp=file:line Limit proofs to the specified subprogram declared at
+                          the location given by file and line
 
 In modes ``detect`` and ``force``, GNATprove does not compute an accurate set
 of global variables read and written in each subprogram. Hence, its detection
 of subprograms in Alfa might be slightly more optimistic than the reality. When
 using mode ``check`` or ``prove`` on the contrary, the detection is accurate.
 
-Although --report has only some effect in mode ``check``, all combinations of
-options are allowed.
+Although ``--report`` has only some effect in modes ``check`` and ``prove``,
+all combinations of options are allowed.
 
 When given a list of files, GNATprove will consider them as entry points of
 the program and prove these units and all units on which they depend. With
@@ -59,18 +61,18 @@ interpretation of the Ada standard. For example, ranges for integer base types
 are reduced to the minimum guaranteed, not to the matching machine
 integer type as done in practice on all compilers.
 
-The options ``--steps`` and ``--timeout`` can be used to influence the
-behavior of the prover Alt-Ergo. The option ``-j`` activates parallel
-compilation, but not parallel proofs; parallel proofs will be available in a
-future version of gnatprove. With the option ``--no-proof``, the prover is not
-actually called, and gnatprove reports that it has skipped the VCs. With the
-option ``-q``, gnatprove does give the minimum of messages, while with option
-``-v``, on the contrary, all details are given.
+The options ``--steps`` and ``--timeout`` can be used to influence the behavior
+of the prover Alt-Ergo. The option ``-j`` activates parallel compilation and
+parallel proofs.  With the option ``--no-proof``, the prover is not actually
+called, and gnatprove reports that it has skipped the VCs. With the option
+``-q``, gnatprove does give the minimum of messages, while with option ``-v``,
+on the contrary, all details are given.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only the file 12 of
-file ``example.adb``, you can add the option ``--limit-line=example.adb:12``
-to the call to GNATprove.
+file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
+the call to GNATprove. Using the option ``--limit-subp=`` one can limit proofs
+to a subprogram declared in a particular file at a particular line.
 
 By default, gnatprove avoids recompiling/reproving unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
@@ -78,9 +80,10 @@ per-unit basis. This mechanism can be disabled with the option ``-f``.
 Output
 ------
 
-In mode ``detect``, GNATprove prints only the :ref:`project statistics` on
-the standard output. All other detection information is to be found in the
-``<name>.alfa`` files mentioned below.
+In mode ``detect``, GNATprove prints on the standard output warning messages
+for Alfa subset violations, and information messages for unimplemented
+features, as well as the :ref:`project statistics`. Detection information is
+also to be found in the ``<name>.alfa`` files mentioned below.
 
 In mode ``force``, GNATprove prints on the standard output error messages for
 Alfa subset violations, and warning messages for unimplemented features.
@@ -119,19 +122,22 @@ Integration in GPS
 
 GNATprove can be run from GPS. There is a menu ``Prove`` with the following
 entries:
-   * Prove Root Project   This runs GNATprove on the entire project
-   * Prove File           This runs GNATprove on the current unit
+   * Prove Root Project:   This runs GNATprove on the entire project.
+   * Prove File:           This runs GNATprove on the current unit.
+   * Show Unprovable Code: This runs GNATprove on the entire project in mode ``detect``.
 
 When editing an Ada file, GNATprove can also be run from the context menu,
 which can be obtained by a right click:
-   * Prove File           This runs GNATprove on the current unit
-   * Prove Line           This runs proofs on the VCs of the current line of
-                          the current file
+   * Prove File:           This runs GNATprove on the current unit.
+   * Prove Line:           This runs proofs on the VCs of the current line of
+                           the current file.
+   * Prove Subprogram:     This runs proofs on the VCs of the current
+                           subprogram whose declaration is pointed to.
 
 We recommend that you enable the option ``Draw current line as a thin line``
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that GPS does not
 hide the status of the checks on the current line (all proved in green /
-otherwise in red).
+otherwise in red). This is the default on recent versions of GPS.
 
 Integration in GNATbench
 ------------------------
@@ -147,6 +153,9 @@ limitations:
    * It only accepts projects with a single object directory; it will stop
      with an error message if run on projects with more than one object
      directory.
+
+   * It uses the location of the top-level instantiation for all VCs in
+     instances of generics.
 
 Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is
 not supported. Instead, use ``for Local_Configuration_Pragmas use
