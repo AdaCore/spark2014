@@ -6,7 +6,7 @@
 --                                                                          --
 --                                   S p e c                                --
 --                                                                          --
---                         Copyright (C) 2011, AdaCore                      --
+--                       Copyright (C) 2011-2012, AdaCore                   --
 --                                                                          --
 -- Hi-Lite is free software; you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -24,7 +24,7 @@
 
 package Hilitevsn is
 
-   Hilite_Static_Version_String : constant String := "0.1w";
+   Hilite_Static_Version_String : constant String := "0.2w";
    --  Static string identifying this version, that can be used as an argument
    --  to e.g. pragma Ident.
    --
