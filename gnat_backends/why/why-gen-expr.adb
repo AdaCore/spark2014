@@ -64,36 +64,46 @@ package body Why.Gen.Expr is
          S : Set;
       end record;
 
+      procedure Base_Type_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Base_Type_Id);
+
       procedure Identifier_Pre_Op
         (State : in out Search_State;
          Node  : W_Identifier_Id);
+
+      procedure Integer_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Integer_Constant_Id);
+      --  Integer constants may require the use of integer infix + or -
 
       procedure Literal_Pre_Op
         (State : in out Search_State;
          Node  : W_Literal_Id);
 
-      procedure Base_Type_Pre_Op
+      procedure Real_Constant_Pre_Op
         (State : in out Search_State;
-         Node  : W_Base_Type_Id);
+         Node  : W_Real_Constant_Id);
+      --  Real constants may require the use of real infix + or -
 
-      procedure Analyze_Ada_Node (S : in out Set;
-                                  A : Node_Id);
+      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id);
+      --  Include if necessary node A or a node derived from A to the set S
 
       ----------------------
       -- Analyze_Ada_Node --
       ----------------------
 
-      procedure Analyze_Ada_Node (S : in out Set;
-                                  A : Node_Id) is
+      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id) is
          N : Node_Id := Empty;
       begin
          if Present (A) then
             case Nkind (A) is
-               when N_Identifier | N_Expanded_Name =>
+               when N_Identifier         |
+                    N_Expanded_Name      =>
                   N := Entity (A);
-               when N_String_Literal |
-                    N_Aggregate      |
-                    N_Entity         =>
+               when N_String_Literal     |
+                    N_Aggregate          |
+                    N_Entity             =>
                   N := A;
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);
@@ -105,30 +115,6 @@ package body Why.Gen.Expr is
             end if;
          end if;
       end Analyze_Ada_Node;
-
-      -----------------------
-      -- Identifier_Pre_Op --
-      -----------------------
-
-      procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id)
-      is
-      begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-      end Identifier_Pre_Op;
-
-      --------------------
-      -- Literal_Pre_Op --
-      --------------------
-
-      procedure Literal_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Literal_Id)
-      is
-      begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-      end Literal_Pre_Op;
 
       ----------------------
       -- Base_Type_Pre_Op --
@@ -144,7 +130,68 @@ package body Why.Gen.Expr is
          end if;
       end Base_Type_Pre_Op;
 
+      -----------------------
+      -- Identifier_Pre_Op --
+      -----------------------
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Identifier_Pre_Op;
+
+      -----------------------------
+      -- Integer_Constant_Pre_Op --
+      -----------------------------
+
+      procedure Integer_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Integer_Constant_Id)
+      is
+         N : constant Node_Id := Get_Ada_Node (+Node);
+      begin
+         if Present (N)
+           and then Nkind (N) in N_Has_Etype
+         then
+            Analyze_Ada_Node (State.S, Etype (N));
+         end if;
+      end Integer_Constant_Pre_Op;
+
+      --------------------
+      -- Literal_Pre_Op --
+      --------------------
+
+      procedure Literal_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Literal_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Literal_Pre_Op;
+
+      --------------------------
+      -- Real_Constant_Pre_Op --
+      --------------------------
+
+      procedure Real_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Real_Constant_Id)
+      is
+         N : constant Node_Id := Get_Ada_Node (+Node);
+      begin
+         if Present (N)
+           and then Nkind (N) in N_Has_Etype
+         then
+            Analyze_Ada_Node (State.S, Etype (N));
+         end if;
+      end Real_Constant_Pre_Op;
+
       SS : Search_State := (Control => Continue, S => Empty_Set);
+
+   --  Start of Compute_Ada_Nodeset
+
    begin
       Traverse (SS, +W);
       return SS.S;
