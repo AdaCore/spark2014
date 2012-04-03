@@ -103,7 +103,7 @@ ASCII.LF &
 ASCII.LF &
 "     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"
 & ASCII.LF &
-"     --timeout=s    Set the timeout for Alt-Ergo in seconds (default: 10)" &
+"     --timeout=s    Set the timeout for Alt-Ergo in seconds (default: 1)" &
 ASCII.LF &
 "     --limit-line=s Limit proofs to given file and line" &
 ASCII.LF &
@@ -300,7 +300,7 @@ ASCII.LF &
       Define_Switch
          (Config, Timeout'Access,
           Long_Switch => "--timeout=",
-          Help => "Set the timeout for Alt-Ergo in seconds (default is 10)");
+          Help => "Set the timeout for Alt-Ergo in seconds (default is 1)");
 
       Define_Switch
          (Config,

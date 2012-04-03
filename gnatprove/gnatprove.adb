@@ -483,7 +483,7 @@ procedure Gnatprove is
       Put_Keyval ("magic", 11);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
-      Put_Keyval ("timelimit", 10);  --  Limit used when no explicit --timeout
+      Put_Keyval ("timelimit", 1);  --  Limit used when no explicit --timeout
       Start_Section ("prover alt-ergo");
       declare
          Altergo_Command : constant String :=
