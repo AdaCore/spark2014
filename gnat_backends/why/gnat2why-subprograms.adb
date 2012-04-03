@@ -407,13 +407,18 @@ package body Gnat2Why.Subprograms is
       Param := First (Params);
       Count := 1;
       while Present (Param) loop
+
+         --  We do not want to add a dependency to the Id entity here, so we
+         --  set the ada node to empty. However, we still need the entity for
+         --  the Name_Map of the translation, so we store it in the binder.
+
          declare
             Id   : constant Node_Id := Defining_Identifier (Param);
             Name : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => Id, Name => Full_Name (Id));
+              New_Identifier (Ada_Node => Empty, Name => Full_Name (Id));
          begin
             Result (Count) :=
-              (Ada_Node => Param,
+              (Ada_Node => Id,
                B_Name   => Name,
                Modifier => (if Is_Mutable (Id) then Ref_Modifier else None),
                B_Type   => +Why_Prog_Type_Of_Ada_Obj (Id, True));
@@ -740,7 +745,7 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Logic_Func_Binders loop
          declare
-            A : constant Node_Id := Get_Ada_Node (+Binder.B_Name);
+            A : constant Node_Id := Binder.Ada_Node;
          begin
             if Present (A) then
                Ada_Ent_To_Why.Insert (Params.Name_Map,
@@ -827,7 +832,7 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Func_Binders loop
          declare
-            A : constant Node_Id := Get_Ada_Node (+Binder.B_Name);
+            A : constant Node_Id := Binder.Ada_Node;
          begin
 
             --  If the Ada_Node is empty, it's not an interesting binder (e.g.
