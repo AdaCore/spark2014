@@ -54,9 +54,12 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
+       Parallel      : Integer;
        Compiler_Args : in out String_Lists.List;
        Status        : out Integer);
-   --  Call gprbuild with the given arguments
+   --  Call gprbuild with the given arguments. Pass in explicitly a number of
+   --  parallel processes, so that we can force sequential execution when
+   --  needed.
 
    procedure Compute_ALI_Information
       (Project_File : String;
@@ -108,6 +111,7 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File  : String;
        Config_File   : String;
+       Parallel      : Integer;
        Compiler_Args : in out String_Lists.List;
        Status        : out Integer)
    is
@@ -183,7 +187,7 @@ procedure Gnatprove is
          Args.Append ("-gnatd.D");
       end if;
 
-      Call_Gprbuild (Project_File, "", Args, Status);
+      Call_Gprbuild (Project_File, "", Parallel, Args, Status);
    end Compute_ALI_Information;
 
    -----------------
@@ -235,6 +239,10 @@ procedure Gnatprove is
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");
       end if;
+      if Parallel > 1 then
+         Args.Append ("-j");
+         Args.Append (Int_Image (Parallel));
+      end if;
       if Limit_Line /= null and then Limit_Line.all /= "" then
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);
@@ -260,9 +268,16 @@ procedure Gnatprove is
          Args.Prepend ("-u");
       end if;
 
+      --  Force sequential execution of gprbuild, so that gnatwhy3 can run
+      --  prover in parallel.
+
       Set ("TEMP", Obj_Dir);
       Set ("TMPDIR", Obj_Dir);
-      Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args, Status);
+      Call_Gprbuild (Why_Proj_File,
+                     Gpr_Why_Cnf_File,
+                     Parallel      => 1,
+                     Compiler_Args => Args,
+                     Status        => Status);
    end Compute_VCs;
 
    procedure Execute_Step
@@ -572,7 +587,7 @@ procedure Gnatprove is
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
-      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args, Status);
+      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Parallel, Args, Status);
    end Translate_To_Why;
 
    --  begin processing for Gnatprove
