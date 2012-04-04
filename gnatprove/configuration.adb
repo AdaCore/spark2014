@@ -55,43 +55,40 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs
 
-   function Init return Project_Tree;
-   --  Load the project file; This function requires the project file to be
-   --  present.
-
    Usage_Message : constant String :=
-      "switches [files] [-cargs switches]";
+      "-Pproj [files] [switches] [-cargs switches]";
 
    --  Hidden switches: --ide-progress-bar
    Help_Message : constant String :=
+"proj is a GNAT project file" &
+ASCII.LF &
 "files is one or more file names, must be used with option -u" &
 ASCII.LF &
 "-cargs switches are passed to gcc" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove basic switches:" & ASCII.LF &
-" -f                Force recompilation/proving of all units and all VCs" &
+" -f                 Force recompilation/proving of all units and all VCs" &
 ASCII.LF &
-" -jnnn             Use nnn parallel processes (default: 1)" &
+" -jnnn              Use nnn parallel processes (default: 1)" &
 ASCII.LF &
-"     --mode=m      Set the mode of GNATprove (m=detect*,force,check,prove)" &
+"     --mode=m       Set the mode of GNATprove (m=detect*,force,check,prove)" &
 ASCII.LF &
-" -Pproj            Use GNAT project file proj" &
+" -q, --quiet        Be quiet/terse" &
 ASCII.LF &
-" -q, --quiet       Be quiet/terse" &
+"     --report=r     Set the report mode of GNATprove (r=fail*, all, detailed)"
+&
 ASCII.LF &
-"     --report=r    Set the report mode of GNATprove (r=fail*, all, detailed)"&
+" -u                 Unique compilation, only prove the given files" &
 ASCII.LF &
-" -u                Unique compilation, only prove the given files" &
-ASCII.LF &
-" -U                Prove all files of all projects" &
+" -U                 Prove all files of all projects" &
 
 ASCII.LF &
-" -v, --verbose     Output extra verbose information" &
+" -v, --verbose      Output extra verbose information" &
 ASCII.LF &
-"     --version     Output version of the tool" &
+"     --version      Output version of the tool" &
 ASCII.LF &
-" -h, --help        Display this usage information" &
+" -h, --help         Display this usage information" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
@@ -146,40 +143,6 @@ ASCII.LF &
 
    end Handle_Switch;
 
-   ----------
-   -- Init --
-   ----------
-
-   function Init return Project_Tree
-   is
-      Proj_Env  : Project_Environment_Access;
-      GNAT_Version : GNAT.Strings.String_Access;
-      Tree      : Project_Tree;
-
-   begin
-      Initialize (Proj_Env);
-      Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
-      Set_Object_Subdir (Proj_Env.all, Subdir_Name);
-      Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
-      declare
-         S : constant String :=
-           Register_New_Attribute ("Switches", "Prove", Is_List => True);
-      begin
-         if S /= "" then
-            Abort_With_Message (S);
-         end if;
-      end;
-      if Project_File.all /= "" then
-         Tree.Load
-           (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
-            Proj_Env);
-      else
-         Abort_With_Message ("No project file is given, aborting");
-      end if;
-
-      return Tree;
-   end Init;
-
    -----------------------
    -- Read_Command_Line --
    -----------------------
@@ -190,6 +153,10 @@ ASCII.LF &
 
       procedure Abort_With_Help (Msg : String);
       --  Stop the program, output the message and the help message, then exit
+
+      function Init return Project_Tree;
+      --  Load the project file; This function requires the project file to be
+      --  present.
 
       ---------------------
       -- Abort_With_Help --
@@ -203,6 +170,41 @@ ASCII.LF &
          Display_Help (Config);
          GNAT.OS_Lib.OS_Exit (1);
       end Abort_With_Help;
+
+      ----------
+      -- Init --
+      ----------
+
+      function Init return Project_Tree
+      is
+         Proj_Env     : Project_Environment_Access;
+         GNAT_Version : GNAT.Strings.String_Access;
+         Tree         : Project_Tree;
+
+      begin
+         Initialize (Proj_Env);
+         Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
+         Set_Object_Subdir (Proj_Env.all, Subdir_Name);
+         Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
+         declare
+            S : constant String :=
+                  Register_New_Attribute ("Switches", "Prove",
+                                          Is_List => True);
+         begin
+            if S /= "" then
+               Abort_With_Help (S);
+            end if;
+         end;
+         if Project_File.all /= "" then
+            Tree.Load
+              (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+               Proj_Env);
+         else
+            Abort_With_Help ("No project file is given, aborting");
+         end if;
+
+         return Tree;
+      end Init;
 
       First_Config : Command_Line_Configuration;
       Com_Lin : aliased String_List :=
