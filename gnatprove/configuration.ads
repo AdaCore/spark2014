@@ -56,6 +56,9 @@ package Configuration is
    --  True if -U is present. compile/prove all files of all projects
    Pedantic     : aliased Boolean;
    --  True if --strict switch is present. Stricter interpretation of language.
+   IDE_Progress_Bar : aliased Boolean;
+   --  True if --ide-progress-bar switch is present. Generate information on
+   --  progress for display in IDE.
    Limit_Line   : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp   : aliased GNAT.Strings.String_Access;

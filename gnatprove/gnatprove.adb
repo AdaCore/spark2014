@@ -232,6 +232,9 @@ procedure Gnatprove is
       if No_Proof then
          Args.Append ("--no-proof");
       end if;
+      if IDE_Progress_Bar then
+         Args.Append ("--ide-progress-bar");
+      end if;
       if Limit_Line /= null and then Limit_Line.all /= "" then
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);

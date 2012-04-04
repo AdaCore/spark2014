@@ -62,6 +62,7 @@ package body Configuration is
    Usage_Message : constant String :=
       "switches [files] [-cargs switches]";
 
+   --  Hidden switches: --ide-progress-bar
    Help_Message : constant String :=
 "files is one or more file names, must be used with option -u" &
 ASCII.LF &
@@ -279,6 +280,12 @@ ASCII.LF &
          Pedantic'Access,
          Long_Switch => "--pedantic",
          Help => "Use a strict interpretation of the Ada standard");
+
+      Define_Switch
+        (Config,
+         IDE_Progress_Bar'Access,
+         Long_Switch => "--ide-progress-bar",
+         Help => "Generate information on progress for display in IDE");
 
       Define_Switch
          (Config,
