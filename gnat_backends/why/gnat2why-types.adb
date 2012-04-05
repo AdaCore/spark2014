@@ -31,6 +31,7 @@ with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 
 with Alfa.Definition;    use Alfa.Definition;
+with Alfa.Util;          use Alfa.Util;
 
 with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
@@ -149,7 +150,7 @@ package body Gnat2Why.Types is
       --  it is in Alfa. Otherwise, return the special private type.
 
       if Ekind (Ty) in Private_Kind | E_Record_Subtype then
-         if Type_Is_In_Alfa (Most_Underlying_Type (Ty)) then
+         if In_Alfa (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
          else
             return New_Base_Type (Base_Type => EW_Private);
@@ -285,7 +286,15 @@ package body Gnat2Why.Types is
    begin
       Open_Theory (File, Name);
       Translate_Underlying_Type (File.Cur_Theory, E);
-      Close_Theory (File, Filter_Entity => E);
+
+      --  If E is the full view of a private type, use its partial view as the
+      --  filtering entity, as it is the entity used everywhere in AST.
+
+      if Is_Full_View (E) then
+         Close_Theory (File, Filter_Entity => Partial_View (E));
+      else
+         Close_Theory (File, Filter_Entity => E);
+      end if;
    end Translate_Type;
 
    -------------------------------

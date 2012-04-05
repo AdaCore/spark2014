@@ -34,7 +34,6 @@ with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
@@ -137,22 +136,6 @@ package Gnat2Why.Nodes is
 
    end Ada_Ent_To_Why;
 
-   subtype Unique_Entity_Id is Entity_Id;
-   --  Type of unique entities shared between different views, in contrast to
-   --  GNAT entities which may be different between views in GNAT AST:
-   --  * package spec and body have different entities;
-   --  * subprogram declaration, subprogram stub and subprogram body all have
-   --    a different entity;
-   --  * private view and full view have a different entity
-   --  * deferred constant and completion have a different entity
-
-   function Unique (E : Entity_Id) return Unique_Entity_Id is
-      (Unique_Entity_Id (Unique_Entity (E)));
-   --  Compute the unique entity of an entity
-
-   function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
-   --  Safe conversion from unique entity to entity
-
    function In_Main_Unit_Body (N : Node_Id) return Boolean;
    function In_Main_Unit_Spec (N : Node_Id) return Boolean;
    --  Check whether N is in the Body, respectively in the Spec of the current
@@ -167,9 +150,9 @@ package Gnat2Why.Nodes is
         Sloc (N) = Standard_ASCII_Location);
    --  Return true if the given node is defined in the standard package
 
-   function In_Standard_Scope (Id : Unique_Entity_Id) return Boolean is
-      (Scope (+Id) = Standard_Standard
-        or else Scope (+Id) = Standard_ASCII);
+   function In_Standard_Scope (Id : Entity_Id) return Boolean is
+      (Scope (Id) = Standard_Standard
+        or else Scope (Id) = Standard_ASCII);
 
    function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
      (Ekind (Scope (E)) = E_Package);
@@ -178,9 +161,6 @@ package Gnat2Why.Nodes is
    with Pre => (Ekind (E) = E_Loop_Parameter);
    --  check whether the E_Loop_Parameter in argument comes from a quantifier
    --  or not
-
-   function Safe_Instantiation_Depth (Id : Unique_Entity_Id) return Int;
-   --  Compute the instantiation Depth of Id
 
    function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
      (if Instantiation_Location (Loc) /= No_Location then

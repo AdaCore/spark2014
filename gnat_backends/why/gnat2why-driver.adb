@@ -90,12 +90,6 @@ package body Gnat2Why.Driver is
       N         : constant Node_Id := Unit (GNAT_Root);
       Base_Name : constant String := File_Name_Without_Suffix (Sloc (N));
 
-      Detect_Or_Force_Mode : constant Boolean :=
-                               Debug_Flag_Dot_KK or Debug_Flag_Dot_EE;
-      --  Flag is true if gnatprove is called in mode 'detect' or 'force',
-      --  which do not involve translation to Why, so that ALI files need not
-      --  be available for all units, and Alfa detection is only approximate.
-
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
       --  the combination of generics and inlining, as well as child units
@@ -131,113 +125,108 @@ package body Gnat2Why.Driver is
          Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
       end if;
 
-      if Detect_Or_Force_Mode then
-         Alfa.Frame_Conditions.Set_Ignore_Errors (True);
+      --  Compute the frame condition. This starts with identifying ALI
+      --  files for the current unit and all dependent (with'ed) units.
+      --  Then Alfa information is loaded from all these files. Finally the
+      --  local Alfa information is propagated to get the frame condition.
 
-      else
-         --  Compute the frame condition. This starts with identifying ALI
-         --  files for the current unit and all dependent (with'ed) units.
-         --  Then Alfa information is loaded from all these files. Finally the
-         --  local Alfa information is propagated to get the frame condition.
+      Initialize_ALI;
+      Initialize_ALI_Source;
 
-         Initialize_ALI;
-         Initialize_ALI_Source;
+      --  Fill in table ALIs with all dependent units
 
-         --  Fill in table ALIs with all dependent units
+      Read_Library_Info (Main_Lib_File, Text);
 
-         Read_Library_Info (Main_Lib_File, Text);
+      if Text = null then
+         --  No such ALI file
 
-         if Text = null then
-            --  No such ALI file
+         Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
+                      " does not exist");
+         Write_Eol;
 
-            Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
-                         " does not exist");
-            Write_Eol;
-
-            raise Terminate_Program;
-         end if;
-
-         Main_Lib_Id := Scan_ALI
-           (F                => Main_Lib_File,
-            T                => Text,
-            Ignore_ED        => False,
-            Err              => False,
-            Ignore_Errors    => Debug_Flag_I,
-            Directly_Scanned => True);
-         Free (Text);
-         Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => False);
-
-         --  Quit if some ALI files are missing
-
-         if Binderr.Errors_Detected > 0 then
-            raise Terminate_Program;
-         end if;
-
-         --  Load Alfa information from ALIs for all dependent units
-
-         for Index in ALIs.First .. ALIs.Last loop
-            Load_Alfa (Name_String (Name_Id
-              (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
-         end loop;
-
-         --  Write Dependency file
-         Open_Current_File (Base_Name & ".d");
-         P (Current_File, Base_Name & "__package.mlw: ");
-         for Index in ALIs.First .. ALIs.Last loop
-            P (Current_File, " ");
-            P (Current_File,
-                (Name_String (Name_Id (Full_Lib_File_Name
-                   (ALIs.Table (Index).Afile)))));
-         end loop;
-         --  Write dependencies to all other units
-         declare
-            AR : constant ALIs_Record := ALIs.Table (Main_Lib_Id);
-         begin
-            for Id in AR.First_Sdep .. AR.Last_Sdep loop
-               declare
-                  S : constant Sdep_Record := Sdep.Table (Id);
-               begin
-                  if not S.Dummy_Entry then
-                     declare
-                        Name : constant String :=
-                                Get_Name_String (Full_Source_Name (S.Sfile));
-                     begin
-                        if not Ends_With (Name, "system.ads") then
-                           P (Current_File, " ");
-                           P (Current_File, Name);
-                        end if;
-                     end;
-                  end if;
-               end;
-            end loop;
-         end;
-
-         NL (Current_File);
-         Close_Current_File;
-
-         --  Compute the frame condition from raw Alfa information
-
-         --        Put_Line ("");
-         --        Put_Line ("## Before propagation ##");
-         --        Put_Line ("");
-         --        Display_Maps;
-
-         Propagate_Through_Call_Graph (Ignore_Errors => False);
-
-         --        Put_Line ("");
-         --        Put_Line ("## After propagation ##");
-         --        Put_Line ("");
-         --        Display_Maps;
+         raise Terminate_Program;
       end if;
+
+      Main_Lib_Id := Scan_ALI
+        (F                => Main_Lib_File,
+         T                => Text,
+         Ignore_ED        => False,
+         Err              => False,
+         Ignore_Errors    => Debug_Flag_I,
+         Directly_Scanned => True);
+      Free (Text);
+      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => False);
+
+      --  Quit if some ALI files are missing
+
+      if Binderr.Errors_Detected > 0 then
+         raise Terminate_Program;
+      end if;
+
+      --  Load Alfa information from ALIs for all dependent units
+
+      for Index in ALIs.First .. ALIs.Last loop
+         Load_Alfa (Name_String (Name_Id
+           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
+      end loop;
+
+      --  Write Dependency file
+      Open_Current_File (Base_Name & ".d");
+      P (Current_File, Base_Name & "__package.mlw: ");
+      for Index in ALIs.First .. ALIs.Last loop
+         P (Current_File, " ");
+         P (Current_File,
+           (Name_String (Name_Id (Full_Lib_File_Name
+            (ALIs.Table (Index).Afile)))));
+      end loop;
+      --  Write dependencies to all other units
+      declare
+         AR : constant ALIs_Record := ALIs.Table (Main_Lib_Id);
+      begin
+         for Id in AR.First_Sdep .. AR.Last_Sdep loop
+            declare
+               S : constant Sdep_Record := Sdep.Table (Id);
+            begin
+               if not S.Dummy_Entry then
+                  declare
+                     Name : constant String :=
+                              Get_Name_String (Full_Source_Name (S.Sfile));
+                  begin
+                     if not Ends_With (Name, "system.ads") then
+                        P (Current_File, " ");
+                        P (Current_File, Name);
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+      end;
+
+      NL (Current_File);
+      Close_Current_File;
+
+      --  Compute the frame condition from raw Alfa information
+
+      --        Put_Line ("");
+      --        Put_Line ("## Before propagation ##");
+      --        Put_Line ("");
+      --        Display_Maps;
+
+      Propagate_Through_Call_Graph (Ignore_Errors => False);
+
+      --        Put_Line ("");
+      --        Put_Line ("## After propagation ##");
+      --        Put_Line ("");
+      --        Display_Maps;
 
       --  Mark all compilation units with "in Alfa / not in Alfa" marks, in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
-      Create_Alfa_Output_File (Base_Name & ".alfa");
+      Before_Marking (Base_Name & ".alfa");
       Mark_All_Compilation_Units;
-      Close_Alfa_Output_File;
+      After_Marking;
 
       if Compilation_Errors or else Debug_Flag_Dot_KK then
          return;
@@ -329,8 +318,17 @@ package body Gnat2Why.Driver is
 
       case Ekind (E) is
          when Type_Kind =>
-            if Type_Is_In_Alfa (E) then
+
+            --  Private types and record subtypes are not translated in Why3
+
+            if Ekind (E) in Private_Kind
+              or else Ekind (E) in E_Record_Subtype
+            then
+               null;
+
+            elsif In_Alfa (E) then
                Translate_Type (File, E);
+
             else
                Open_Theory (File, Full_Name (E));
                Emit (File.Cur_Theory,
@@ -340,13 +338,13 @@ package body Gnat2Why.Driver is
             end if;
 
          when Named_Kind =>
-            if Object_Is_In_Alfa (E) then
+            if In_Alfa (E) then
                Translate_Constant (File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable (E) then
-               if Object_Is_In_Alfa (E) then
+               if In_Alfa (E) then
                   Translate_Constant (File, E);
                end if;
             else
@@ -356,14 +354,14 @@ package body Gnat2Why.Driver is
          when Subprogram_Kind   |
               E_Subprogram_Body =>
 
-            if Spec_Is_In_Alfa (Unique (E)) then
+            if In_Alfa (E) then
 
                --  Bodies of expression functions are put in the same theory as
                --  the spec
 
                declare
                   Is_Expr_Fun : constant Boolean :=
-                    Body_Is_In_Alfa (Unique (E)) and then
+                    Body_In_Alfa (E) and then
                     Present (Get_Expression_Function (E));
                begin
                   Translate_Subprogram_Spec (File, E, Is_Expr_Fun);
@@ -371,7 +369,7 @@ package body Gnat2Why.Driver is
                end;
             end if;
 
-            if Body_Is_In_Alfa (Unique (E))
+            if Body_In_Alfa (E)
               and then not Debug.Debug_Flag_Dot_GG
             then
                Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
@@ -413,7 +411,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate_Entity (Unique_Defining_Entity (Decl));
+               Translate_Entity (Defining_Entity (Decl));
             when others =>
                null;
          end case;

@@ -28,6 +28,7 @@ with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
 
 with Alfa.Definition;      use Alfa.Definition;
+with Alfa.Util;            use Alfa.Util;
 
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -149,7 +150,7 @@ package body Gnat2Why.Decls is
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
-        (if Object_Is_In_Alfa (E) then
+        (if In_Alfa (E) then
             New_Type
               (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))

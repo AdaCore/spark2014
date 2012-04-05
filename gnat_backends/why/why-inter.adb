@@ -24,13 +24,16 @@
 ------------------------------------------------------------------------------
 
 with AA_Util;             use AA_Util;
-with Alfa.Definition;     use Alfa.Definition;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 with Constant_Tree;
+
+with Alfa.Definition;     use Alfa.Definition;
+with Alfa.Util;           use Alfa.Util;
+
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -116,10 +119,10 @@ package body Why.Inter is
             end if;
             SI_Seen.Include (UE);
             if Ekind (UE) in Object_Kind and then
-              not Object_Is_In_Alfa (UE) then
+              not In_Alfa (UE) then
                return;
             end if;
-            if Ekind (UE) in Type_Kind and then not Type_Is_In_Alfa (UE) then
+            if Ekind (UE) in Type_Kind and then not In_Alfa (UE) then
                return;
             end if;
             if Is_Boolean_Type (UE) then
@@ -146,7 +149,7 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind | E_Record_Subtype =>
-                  if Type_Is_In_Alfa (Most_Underlying_Type (UE)) then
+                  if In_Alfa (Most_Underlying_Type (UE)) then
                      Set_SI_Internal (Most_Underlying_Type (UE));
                   end if;
 
@@ -341,7 +344,7 @@ package body Why.Inter is
       --  because the private view has another base type (possibly itself).
 
       E   : constant EW_Type := Get_EW_Term_Type (N);
-      Typ : constant Entity_Id := Unique_Entity (Etype (N));
+      Typ : constant Entity_Id := Etype (N);
    begin
       case E is
          when EW_Abstract =>
@@ -464,7 +467,7 @@ package body Why.Inter is
          if N /= Filter_Entity and then
            (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
            and then
-             (if Nkind (N) in N_Entity then Unique_Entity (N) /= Filter_Entity)
+             (if Nkind (N) in N_Entity then N /= Filter_Entity)
          then
             declare
                File_Name   : constant String :=
@@ -567,7 +570,7 @@ package body Why.Inter is
       case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
             declare
-               Decl : constant Node_Id := Parent (Unique_Entity (E));
+               Decl : constant Node_Id := Parent (E);
                U    : constant Node_Id :=
                         Unit (Enclosing_Lib_Unit_Node (Decl));
             begin
@@ -583,7 +586,8 @@ package body Why.Inter is
          when Object_Kind =>
             if not Is_Mutable (E) then
                if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (Node_Id (Unique (E))) then
+                 Body_Entities.Contains (E)
+               then
                   return WF_Context_In_Body;
                else
                   return WF_Context_In_Spec;
@@ -594,7 +598,8 @@ package body Why.Inter is
 
          when Type_Kind =>
             if Is_In_Current_Unit (E) and then
-              Body_Entities.Contains (Node_Id (Unique (E))) then
+              Body_Entities.Contains (E)
+            then
                return WF_Types_In_Body;
             else
                return WF_Types_In_Spec;
@@ -643,7 +648,7 @@ package body Why.Inter is
       elsif N = Universal_Fixed then
          return EW_Real_Type;
       elsif Ekind (N) in Private_Kind | E_Record_Subtype then
-         if Type_Is_In_Alfa (Most_Underlying_Type (N)) then
+         if In_Alfa (Most_Underlying_Type (N)) then
             return EW_Abstract (Most_Underlying_Type (N));
          else
             return New_Base_Type (Base_Type => EW_Private);
@@ -740,7 +745,7 @@ package body Why.Inter is
             end if;
 
          when Private_Kind | E_Record_Subtype =>
-            if Type_Is_In_Alfa (Most_Underlying_Type (Ty)) then
+            if In_Alfa (Most_Underlying_Type (Ty)) then
                return Get_EW_Term_Type (Most_Underlying_Type (Ty));
             else
                return EW_Private;

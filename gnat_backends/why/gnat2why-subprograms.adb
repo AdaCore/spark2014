@@ -26,8 +26,8 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
 with Alfa;                  use Alfa;
-with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with Alfa.Util;             use Alfa.Util;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;

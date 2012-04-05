@@ -68,7 +68,8 @@ package Alfa_Violations is
       NIR_Dealloc,          --  deallocation
       NIR_Dynamic_Alloc,    --  dynamic allocation
       NIR_Exception,        --  exception
-      NIR_Goto,             --  gotoGen
+      NIR_Forward_Reference, --  forward reference
+      NIR_Goto,             --  goto
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
@@ -128,6 +129,7 @@ package Alfa_Violations is
       NIR_Dealloc          => To_Unbounded_String ("deallocation"),
       NIR_Dynamic_Alloc    => To_Unbounded_String ("dynamic allocation"),
       NIR_Exception        => To_Unbounded_String ("exception"),
+      NIR_Forward_Reference => To_Unbounded_String ("forward reference"),
       NIR_Goto             => To_Unbounded_String ("goto"),
       NIR_Impure_Function  => To_Unbounded_String ("impure function"),
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),

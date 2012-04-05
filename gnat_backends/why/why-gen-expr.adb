@@ -273,7 +273,7 @@ package body Why.Gen.Expr is
    -------------------
 
    function Cur_Subp_Sloc return String is
-      Uniq : constant Entity_Id := Unique (Current_Subp);
+      Uniq : constant Entity_Id := Current_Subp;
       Cur : constant Node_String_Maps.Cursor :=
         Subp_Sloc_Map.Find (Uniq);
    begin

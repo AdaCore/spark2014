@@ -23,64 +23,65 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--------------------------------
+-- Detection of Alfa entities --
+--------------------------------
+
+--  All entities from the program are marked as being in Alfa or not in Alfa,
+--  so that the translation to Why3 processes adequately the entity depending
+--  on its status.
+
+--  All entities except Itypes are marked at the point where they are declared.
+--  Forward references to an entity (such as a call to a subprogram in a
+--  contract before this subprogram is declared) are not in Alfa. Itypes
+--  (implicit types introduced by the frontend) and class-wide types are
+--  treated differently, as they may not have an explicit declaration.
+--  Therefore, Itypes and class-wide types are marked the first time they
+--  are referenced.
+
+--  Marking of an entity works as follows:
+--    * A scope for the entity is pushed on a stack, and the definition of the
+--      entity is marked. Any violation of Alfa during marking is recorded as
+--      a violation for all entities on the stack. For example, the use of a
+--      feature not in Alfa in the body of a local subprogram results in the
+--      violation being attached to both subprograms.
+--    * After marking, if no violation is attached to the entity, it is marked
+--      as in Alfa. In any case, it is marked as being treated from now on, so
+--      that future references are not counted as forward references.
+--    * If the entity is defined in the spec or the body of the current
+--      compiled unit, it is added to one of the list of entities Spec_Entities
+--      or Body_Entities, which will be translated to Why3. The translation
+--      will depend on the status (in Alfa or not) of each entity.
+
+--  Subprogram specs and subprogram bodies are treated as two different scopes,
+--  so that a subprogram spec can be in Alfa even if its body is not in Alfa.
+
+--  Except for private types and deferred constants, a unique entity is used
+--  for multiple views of the same entity. For example, the entity attached to
+--  a subprogram body or a body stub is not used.
+
+--  Private types are always in Alfa (except currently record (sub)type with
+--  private part), even if the underlying type is not in Alfa. This allows
+--  operations which do not depend on the underlying type to be in Alfa, which
+--  is the case in client code that does not have access to the underlying
+--  type. Since only the partial view of a private type is used in the AST
+--  (except at the point of declaration of the full view), even when visibility
+--  over the full view is needed, the nodes that need this full view are
+--  treated specially, so that they are in Alfa only if the most underlying
+--  type is in Alfa. This most underlying type is the last type obtained by
+--  taking:
+--  . for a private type, its underlying type
+--  . for a record subtype, its base type
+--  . for all other types, itself
+--  until reaching a non-private type that is not a record subtype.
+
+--  Partial views of deferred constants may be in Alfa even if their full view
+--  is not in Alfa. This is the case if the type of the constant is in Alfa,
+--  while its initializing expression is not.
+
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package Alfa.Definition is
-
-   function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
-   --  Return whether aggregate N is fully initialized
-
-   function All_Aggregates_Are_Fully_Initialized
-     (N : Node_Id) return Boolean;
-   --  Return whether all aggregates in node N (recursively) are fully
-   --  initialized.
-
-   procedure Mark_Compilation_Unit (N : Node_Id);
-   --  Put marks on a compilation unit. This should be called after all
-   --  compilation units on which it depends have been marked.
-
-   procedure Mark_Standard_Package;
-   --  Put marks on package Standard
-
-   function Standard_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether standard entity Id is in Alfa or not
-
-   procedure Create_Alfa_Output_File (Filename : String);
-   --  Create the file in which to generate output about subprogram in/out of
-   --  the Alfa subset.
-
-   procedure Close_Alfa_Output_File;
-   --  Close the file created by Create_Alfa_Output_File
-
-   function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
-   --  Given the entity E for a function, determine whether E is an expression
-   --  function that only calls expression functions, directly or indirectly.
-
-   function Body_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether the body of subprogram Id is in Alfa
-
-   function Object_Is_In_Alfa (Id : Entity_Id) return Boolean;
-   --  Return whether an object Id is in Alfa
-
-   function Spec_Is_In_Alfa (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether the spec of subprogram Id is in Alfa
-
-   function Type_Is_In_Alfa (Id : Entity_Id) return Boolean;
-   --  Return whether a type Ent is in Alfa. Contrary to other .._Is_In_Alfa
-   --  functions, it takes an entity rather than a unique entity. Indeed,
-   --  private types are always in Alfa, even when the corresponding full type
-   --  is not in Alfa. This corresponds to cases where a client of the package,
-   --  which has only view over the private declaration, may still be in Alfa,
-   --  while an operation in the package over non-Alfa fields may not be in
-   --  Alfa.
-
-   type Alfa_Decl is
-     (Alfa_Object,
-      Alfa_Type,
-      Non_Alfa_Object,  --  Entities, not declarations
-      Non_Alfa_Type,    --  Entities, not declarations
-      Alfa_Subprogram_Spec,
-      Alfa_Subprogram_Body);
 
    Spec_Entities : List_Of_Nodes.List;
    Body_Entities : List_Of_Nodes.List;
@@ -90,25 +91,26 @@ package Alfa.Definition is
    --  entities in Alfa and entities not in Alfa. Each entity may be
    --  attached to a declaration or not (for Itypes).
 
-   All_Entities : Node_Sets.Set;
-   --  Set of all entities in list Entities
+   procedure Before_Marking (Filename : String);
+   --  Create a file to store detailed information about the Alfa status of
+   --  subprograms (spec/body in Alfa or not). Set a flag that allows marking
+   --  of entities.
 
-   Full_To_Partial_Entities : Node_Maps.Map;
-   --  Map from full views of entities to their partial views, for deferred
-   --  constants and private types.
+   procedure After_Marking;
+   --  Close the file created by Before_Marking and unset the flag that allows
+   --  marking of entities.
 
-   function Is_Full_View (E : Entity_Id) return Boolean is
-      (Full_To_Partial_Entities.Contains (E));
-   --  Return whether E is the full view of another entity
+   procedure Mark_Compilation_Unit (N : Node_Id);
+   --  Put marks on a compilation unit. This should be called after all
+   --  compilation units on which it depends have been marked.
 
-   function Partial_View (E : Entity_Id) return Entity_Id is
-      (Full_To_Partial_Entities.Element (E));
-   --  Return the partial view for entity E
+   procedure Mark_Standard_Package;
+   --  Put marks on package Standard
 
-   function Most_Underlying_Type (E : Entity_Id) return Entity_Id;
-   --  Takes a type E in parameter. If E is a private type or a record subtype,
-   --  follow the chain of underlying types (for a private type) and base types
-   --  (for a record subtype) to return the first non-private type which is not
-   --  also a record subtype. Otherwise, return E.
+   function In_Alfa (Id : Entity_Id) return Boolean;
+   --  Return whether the entity Id is in Alfa
+
+   function Body_In_Alfa (Id : Entity_Id) return Boolean;
+   --  Return whether the body of subprogram Id is in Alfa
 
 end Alfa.Definition;

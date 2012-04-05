@@ -41,6 +41,7 @@ with Eval_Fat;
 
 with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with Alfa.Util;             use Alfa.Util;
 
 with Why;                   use Why;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
@@ -3668,7 +3669,7 @@ package body Gnat2Why.Expr is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if Type_Is_In_Alfa (Most_Underlying_Type (T)) then
+      if In_Alfa (Most_Underlying_Type (T)) then
          return Most_Underlying_Type (T);
       else
          return T;
