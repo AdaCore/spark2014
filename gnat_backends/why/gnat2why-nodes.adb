@@ -62,8 +62,7 @@ package body Gnat2Why.Nodes is
       -- Find --
       ----------
 
-      function Find (M : Map; E : Entity_Id)
-                     return Cursor is
+      function Find (M : Map; E : Entity_Id) return Cursor is
          C : constant Ada_To_Why.Cursor := M.Entity_Ids.Find (E);
       begin
          if Ada_To_Why.Has_Element (C) then
@@ -83,6 +82,29 @@ package body Gnat2Why.Nodes is
          else
             declare
                S   : Entity_Name := new String'(Unique_Name (E));
+               Res : constant Cursor := Cursor'(CK_Str, Ada_To_Why.No_Element,
+                                                M.Entity_Names.Find (S));
+            begin
+               Free (S);
+               return Res;
+            end;
+         end if;
+      end Find;
+
+      function Find (M : Map; E : String) return Cursor is
+      begin
+         --  We need to check the name map, but before generating a string to
+         --  look up, let's check if the map is empty.
+
+         if Name_To_Why_Map.Is_Empty (M.Entity_Names) then
+
+               --  The dummy cursor
+
+               return Cursor'(CK_Ent, Ada_To_Why.No_Element,
+                              Name_To_Why_Map.No_Element);
+         else
+            declare
+               S   : Entity_Name := new String'(E);
                Res : constant Cursor := Cursor'(CK_Str, Ada_To_Why.No_Element,
                                                 M.Entity_Names.Find (S));
             begin

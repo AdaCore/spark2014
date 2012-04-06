@@ -689,12 +689,26 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Term then
             for Elt of Read_Names loop
-               if Params.Ref_Allowed then
-                  Why_Args (Cnt) :=
-                    New_Deref (Right => To_Why_Id (Elt.all));
-               else
-                  Why_Args (Cnt) := +To_Why_Id (Elt.all);
-               end if;
+               declare
+                  C : constant Ada_Ent_To_Why.Cursor :=
+                        Ada_Ent_To_Why.Find (Params.Name_Map, Elt.all);
+                  T : W_Expr_Id;
+               begin
+                  --  If the effect parameter is found in the map, use the name
+                  --  stored.
+
+                  if Ada_Ent_To_Why.Has_Element (C) then
+                     T := +Ada_Ent_To_Why.Element (C);
+                  else
+                     T := +To_Why_Id (Elt.all);
+                  end if;
+
+                  if Params.Ref_Allowed then
+                     Why_Args (Cnt) := New_Deref (Right => +T);
+                  else
+                     Why_Args (Cnt) := T;
+                  end if;
+               end;
                Cnt := Cnt + 1;
             end loop;
 
@@ -1105,7 +1119,7 @@ package body Gnat2Why.Expr is
             return
               New_Record_Access
                 (Name   => Expr,
-                 Field  => To_Why_Id (Entity (Selector_Name (N))));
+                 Field  => To_Why_Id (Entity (Selector_Name (N)), Domain));
 
          when N_Indexed_Component =>
 
@@ -1160,7 +1174,7 @@ package body Gnat2Why.Expr is
             return
               New_Record_Update
                 (Name  => Pref,
-                 Field => To_Why_Id (Entity (Selector_Name (N))),
+                 Field => To_Why_Id (Entity (Selector_Name (N)), Domain),
                  Value => Value);
 
          when N_Indexed_Component =>
@@ -1394,7 +1408,7 @@ package body Gnat2Why.Expr is
                    (Name => To_Why_Type (Name)));
             Args (Cnt) := +Ident;
             Deref_Args (Cnt) :=
-              New_Deref (Right => +To_Why_Id (Ent));
+              New_Deref (Right => +To_Why_Id (Ent, EW_Term));
             Next (Cursor);
             Cnt := Cnt + 1;
             Ada_Ent_To_Why.Insert (Params_No_Ref.Name_Map, Ent, +Ident);
@@ -3099,7 +3113,7 @@ package body Gnat2Why.Expr is
          T := +New_Identifier (Name => Full_Name (Ent));
          Current_Type := EW_Int_Type;
       else
-         T := +To_Why_Id (Ent);
+         T := +To_Why_Id (Ent, Domain);
       end if;
       if Is_Mutable (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Expr, Right => +T);

@@ -98,6 +98,7 @@ package Gnat2Why.Nodes is
       function Element (C : Cursor) return Why_Node_Id;
 
       function Find (M : Map; E : Entity_Id) return Cursor;
+      function Find (M : Map; E : String) return Cursor;
 
       function Has_Element (M : Map; E : Entity_Id) return Boolean;
       function Has_Element (C : Cursor) return Boolean;
