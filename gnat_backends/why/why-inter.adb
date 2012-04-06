@@ -209,36 +209,43 @@ package body Why.Inter is
    -- Add_Completion --
    --------------------
 
-   procedure Add_Completion (Name, Completion_Name : String) is
+   procedure Add_Completion
+     (Name            : String;
+      Completion_Name : String;
+      Kind            : Why_Context_File_Enum)
+   is
       Unb_Name : Unbounded_String := To_Unbounded_String (Name);
       Unb_Comp : constant Unbounded_String :=
                    To_Unbounded_String (Completion_Name);
    begin
       --  Find the last completion for Name
 
-      while Why_File_Completion.Contains (Unb_Name) loop
-         Unb_Name := Why_File_Completion.Element (Unb_Name);
+      while Why_File_Completion (Kind).Contains (Unb_Name) loop
+         Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
       end loop;
 
       --  Make Completion_Name a completion of the previous last one
 
-      Why_File_Completion.Insert (Unb_Name, Unb_Comp);
+      Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
    end Add_Completion;
 
    ---------------------
    -- Get_Completions --
    ---------------------
 
-   function Get_Completions (Name : String) return Why_Completions is
+   function Get_Completions
+     (Name : String;
+      Kind : Why_Context_File_Enum) return Why_Completions
+   is
       Unb_Name : Unbounded_String := To_Unbounded_String (Name);
       Count : Natural;
    begin
       --  Find the number of completions for Name
 
       Count := 0;
-      while Why_File_Completion.Contains (Unb_Name) loop
+      while Why_File_Completion (Kind).Contains (Unb_Name) loop
          Count    := Count + 1;
-         Unb_Name := Why_File_Completion.Element (Unb_Name);
+         Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
       end loop;
 
       --  Return all completions
@@ -248,7 +255,7 @@ package body Why.Inter is
          Compl : Why_Completions (1 .. Count);
       begin
          for J in Compl'Range loop
-            Unb_Name  := Why_File_Completion.Element (Unb_Name);
+            Unb_Name  := Why_File_Completion (Kind).Element (Unb_Name);
             Compl (J) := Unb_Name;
          end loop;
 
@@ -471,14 +478,12 @@ package body Why.Inter is
          then
             declare
                File_Name   : constant String :=
-                 File_Base_Name_Of_Entity (N) &
-                 Why_File_Suffix (Dispatch_Entity (N));
+                               File_Base_Name_Of_Entity (N)
+                                 & Why_File_Suffix (Dispatch_Entity (N));
                Raw_Name    : constant String := Name_Of_Node (N);
                Theory_Name : constant String := Capitalize_First (Raw_Name);
                Import      : constant EW_Clone_Type :=
-                 Import_Type_Of_Entity (N);
-               Completions : constant Why_Completions :=
-                 Get_Completions (Raw_Name);
+                               Import_Type_Of_Entity (N);
             begin
                Standard_Imports.Set_SI (N);
 
@@ -488,16 +493,27 @@ package body Why.Inter is
                   Add_With_Clause (P, "", Theory_Name, Import);
                end if;
 
-               for J in Completions'Range loop
+               for Kind in Why_Context_File_Enum loop
                   declare
-                     Compl_Name : constant String :=
-                       Capitalize_First (To_String (Completions (J)));
+                     Compl_Fname  : constant String :=
+                                      File_Base_Name_Of_Entity (N)
+                                        & Why_File_Suffix (Kind);
+                     Completions  : constant Why_Completions :=
+                                      Get_Completions (Raw_Name, Kind);
                   begin
-                     if File_Name /= P.Name.all then
-                        Add_With_Clause (P, File_Name, Compl_Name, Import);
-                     else
-                        Add_With_Clause (P, "", Compl_Name, Import);
-                     end if;
+                     for J in Completions'Range loop
+                        declare
+                           Compl_Name : constant String :=
+                             Capitalize_First (To_String (Completions (J)));
+                        begin
+                           if Compl_Fname /= P.Name.all then
+                              Add_With_Clause
+                                (P, Compl_Fname, Compl_Name, Import);
+                           else
+                              Add_With_Clause (P, "", Compl_Name, Import);
+                           end if;
+                        end;
+                     end loop;
                   end;
                end loop;
             end;
@@ -569,19 +585,11 @@ package body Why.Inter is
       end if;
       case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
-            declare
-               Decl : constant Node_Id := Parent (E);
-               U    : constant Node_Id :=
-                        Unit (Enclosing_Lib_Unit_Node (Decl));
-            begin
-               if Nkind (U) in N_Unit_Body
-                 or else Nkind (U) = N_Subunit
-               then
-                  return WF_Context_In_Body;
-               else
-                  return WF_Context_In_Spec;
-               end if;
-            end;
+            if In_Some_Unit_Body (Parent (E)) then
+               return WF_Context_In_Body;
+            else
+               return WF_Context_In_Spec;
+            end if;
 
          when Object_Kind =>
             if not Is_Mutable (E) then

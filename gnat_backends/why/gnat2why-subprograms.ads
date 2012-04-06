@@ -89,10 +89,19 @@ package Gnat2Why.Subprograms is
    --  postcondition of F, return the name to use for occurrences of F'Result.
 
    procedure Translate_Subprogram_Spec
-     (File        : in out Why_File;
-      E           : Entity_Id;
-      Is_Expr_Fun : Boolean);
+     (File : in out Why_File;
+      E    : Entity_Id);
    --  Generate a Why declaration that corresponds to an Ada subprogram
    --  Node is a N_Subprogram_Body
+
+   procedure Translate_Expression_Function_Body
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean);
+   --  Generate a Why axiom that, given a function F with expression E, states
+   --  that: "for all <args> => F(<args>) = E". The axiom is only generated if
+   --  the body of the expression function only contains aggregates that are
+   --  fully initialized. In_Body is True if the body of the expression
+   --  function is defined in the body of the current unit.
 
 end Gnat2Why.Subprograms;

@@ -51,6 +51,7 @@ with String_Utils;          use String_Utils;
 
 with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with Alfa.Util;             use Alfa.Util;
 
 with Why;                   use Why;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
@@ -67,7 +68,10 @@ pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
 
 package body Gnat2Why.Driver is
 
-   --   This is the main driver for the Ada-to-Why back-end
+   --  This is the main driver for the Ada-to-Why back-end
+
+   procedure Do_Generate_VCs (E : Entity_Id);
+   --  Generate VCs for E (currently only for subprograms)
 
    procedure Translate_Entity (E : Entity_Id);
    --  Take an Ada entity and translate it to Why. The procedure decides in
@@ -77,6 +81,25 @@ package body Gnat2Why.Driver is
    --  Translate an Ada unit into Why declarations
 
    procedure Print_Why_File (File : in out Why_File);
+
+   ------------------
+   -- Generate_VCs --
+   ------------------
+
+   procedure Do_Generate_VCs (E : Entity_Id) is
+   begin
+      if Ekind (E) in Subprogram_Kind then
+         if In_Alfa (E) then
+            Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
+         end if;
+
+         if Body_In_Alfa (E)
+           and then not Debug.Debug_Flag_Dot_GG
+         then
+            Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
+         end if;
+      end if;
+   end Do_Generate_VCs;
 
    -----------------
    -- GNAT_To_Why --
@@ -284,6 +307,27 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
    begin
+      --  For all expression functions from other units (whose status as
+      --  expression is visible at this point, meaning they are defined as such
+      --  in a spec), make their definition available for proofs by declaring a
+      --  completion of their base theory. This does not distinguish
+      --  definitions which are visible at this point from those that are not.
+      --  (To be distinguished later ???)
+
+      for E of All_Entities loop
+         if Ekind (E) = E_Function
+           and then Present (Get_Expression_Function (E))
+           and then not Is_In_Current_Unit (E)
+         then
+            declare
+               Base_Name : constant String := Full_Name (E);
+               Name      : constant String := Base_Name & "__expr_fun";
+            begin
+               Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+            end;
+         end if;
+      end loop;
+
       --  Translate Ada entities into Why3
 
       for E of Spec_Entities loop
@@ -292,6 +336,18 @@ package body Gnat2Why.Driver is
 
       for E of Body_Entities loop
          Translate_Entity (E);
+      end loop;
+
+      --  Generate VCs for entities of unit. This must follow the generation of
+      --  modules for entities, so that all completions for deferred constants
+      --  and expression functions are defined.
+
+      for E of Spec_Entities loop
+         Do_Generate_VCs (E);
+      end loop;
+
+      for E of Body_Entities loop
+         Do_Generate_VCs (E);
       end loop;
 
       --  Generate Why3 files
@@ -351,29 +407,28 @@ package body Gnat2Why.Driver is
                Translate_Variable (File, E);
             end if;
 
-         when Subprogram_Kind   |
-              E_Subprogram_Body =>
-
+         when Subprogram_Kind =>
             if In_Alfa (E) then
-
-               --  Bodies of expression functions are put in the same theory as
-               --  the spec
-
-               declare
-                  Is_Expr_Fun : constant Boolean :=
-                    Body_In_Alfa (E) and then
-                    Present (Get_Expression_Function (E));
-               begin
-                  Translate_Subprogram_Spec (File, E, Is_Expr_Fun);
-                  Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
-               end;
+               Translate_Subprogram_Spec (File, E);
             end if;
 
-            if Body_In_Alfa (E)
-              and then not Debug.Debug_Flag_Dot_GG
-            then
-               Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
-            end if;
+         --  An entity E_Subprogram_Body should be present only for expression
+         --  functions. This allows a separate definition of theories in Why3
+         --  for declaring the logic function and its axiom. This is necessary
+         --  so that they are defined with the proper visibility over
+         --  previously defined entities.
+
+         when E_Subprogram_Body =>
+            declare
+               Decl_E : constant Entity_Id := Unique_Entity (E);
+            begin
+               pragma Assert (Present (Get_Expression_Function (Decl_E)));
+
+               if Body_In_Alfa (Decl_E) then
+                  Translate_Expression_Function_Body
+                    (File, Decl_E, In_Body => In_Main_Unit_Body (E));
+               end if;
+            end;
 
          when others =>
             raise Program_Error;

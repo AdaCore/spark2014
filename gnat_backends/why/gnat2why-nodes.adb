@@ -245,6 +245,25 @@ package body Gnat2Why.Nodes is
       end case;
    end In_Main_Unit_Spec;
 
+   -----------------------
+   -- In_Some_Unit_Body --
+   -----------------------
+
+   function In_Some_Unit_Body (N : Node_Id) return Boolean is
+      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      Root : Node_Id;
+
+   begin
+      if No (CU) then
+         return False;
+      end if;
+
+      Root := Unit (CU);
+
+      return Nkind (Root) in N_Unit_Body
+        or else Nkind (Root) = N_Subunit;
+   end In_Some_Unit_Body;
+
    ------------------------
    -- Is_In_Current_Unit --
    ------------------------

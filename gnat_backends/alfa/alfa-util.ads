@@ -33,6 +33,16 @@ package Alfa.Util is
    --  Return whether all aggregates in node N (recursively) are fully
    --  initialized.
 
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   --  If E is the entity of an expression function, return the corresponding
+   --  N_Expression_Function original node. Otherwise, return Empty.
+
+   function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
+   --  Return the N_Subprogram_Body node for a subprogram entity E
+
+   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
+   --  Return the N_Specification node for a subprogram entity E
+
    function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
    --  Given the entity E for a function, determine whether E is an expression
    --  function that only calls expression functions, directly or indirectly.

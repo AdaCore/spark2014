@@ -62,15 +62,23 @@ package Why.Inter is
       WF_Context_In_Body,
       WF_Main);
 
+   subtype Why_Context_File_Enum is Why_File_Enum range
+     WF_Context_In_Spec .. WF_Context_In_Body;
+
    Why_Files : array (Why_File_Enum) of Why_File;
 
    type Why_Completions is array (Positive range <>) of Unbounded_String;
    --  Return type of Get_Completions, to get all completions of a theory
 
-   procedure Add_Completion (Name, Completion_Name : String);
+   procedure Add_Completion
+     (Name            : String;
+      Completion_Name : String;
+      Kind            : Why_Context_File_Enum);
    --  Add the completion Completion_Name to theory Name
 
-   function Get_Completions (Name : String) return Why_Completions;
+   function Get_Completions
+     (Name : String;
+      Kind : Why_Context_File_Enum) return Why_Completions;
    --  Return the completions for the theory called Name
 
    function Why_File_Suffix (Kind : Why_File_Enum) return String;
@@ -213,7 +221,10 @@ private
 
    use Why_File_Completions;
 
-   Why_File_Completion : Why_File_Completions.Map;
+   type Completion_Array is array (Why_Context_File_Enum) of
+     Why_File_Completions.Map;
+
+   Why_File_Completion : Completion_Array;
    --  Global variable storing completions of theories
 
 end Why.Inter;

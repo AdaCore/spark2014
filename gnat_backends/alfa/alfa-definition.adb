@@ -94,9 +94,6 @@ package body Alfa.Definition is
    --  <file>.alfa in which this pass generates information about subprograms
    --  in Alfa and subprograms not in Alfa.
 
-   All_Entities : Node_Sets.Set;
-   --  Set of all entities marked so far
-
    Current_Unit_Is_Main_Body : Boolean;
    --  Flag set when marking the body for the current compiled unit
 
@@ -1882,7 +1879,6 @@ package body Alfa.Definition is
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
 
    begin
-
       if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body) then
          return;
       end if;
@@ -2505,25 +2501,50 @@ package body Alfa.Definition is
 
       procedure Pop_Scope (E : Entity_Id) is
          Cur_Scope : Scope_Record renames Scope_Table.Table (Scope_Table.Last);
+         Body_N    : Node_Id;
+         Insert_E  : Entity_Id;
       begin
          pragma Assert (Cur_Scope.Entity = E);
          Scope_Table.Decrement_Last;
 
-         if not All_Entities.Contains (E) then
-            All_Entities.Insert (E);
+         --  For the special case of an expression function, the frontend
+         --  generates a distinct body if not already in source code. Use as
+         --  entity for the body the distinct E_Subprogram_Body entity. This
+         --  allows a separate definition of theories in Why3 for declaring
+         --  the logic function and its axiom. This is necessary so that they
+         --  are defined with the proper visibility over previously defined
+         --  entities.
+
+         Insert_E := E;
+
+         if Cur_Scope.Is_Body
+           and then Ekind (E) = E_Function
+           and then Present (Get_Expression_Function (E))
+         then
+            Body_N   := Alfa.Util.Get_Subprogram_Body (E);
+            Insert_E := Defining_Entity (Body_N);
+            pragma Assert (Ekind (Insert_E) = E_Subprogram_Body);
+         end if;
+
+         --  Now insert the entity Insert_E if not already done
+
+         if not All_Entities.Contains (Insert_E) then
+            All_Entities.Insert (Insert_E);
 
             --  Package scopes do not lead to a translation to Why3
 
-            if Ekind (E) = E_Package then
+            if Ekind (Insert_E) = E_Package then
                null;
 
             elsif Current_Unit_Is_Main_Spec then
-               Spec_Entities.Append (E);
+               Spec_Entities.Append (Insert_E);
 
             elsif Current_Unit_Is_Main_Body then
-               Body_Entities.Append (E);
+               Body_Entities.Append (Insert_E);
             end if;
          end if;
+
+         --  Finally mark the entity (body) in Alfa if appropriate
 
          if Cur_Scope.Is_Body then
             if not Has_Body_Violations (E) then

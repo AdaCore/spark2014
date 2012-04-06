@@ -28,7 +28,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Alfa;                  use Alfa;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Alfa.Util;             use Alfa.Util;
-
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
@@ -100,14 +99,6 @@ package body Gnat2Why.Subprograms is
    -----------------------
    -- Local Subprograms --
    -----------------------
-
-   procedure Translate_Expression_Function_Body
-     (File   : in out Why_File;
-      E      : Entity_Id);
-   --  Generate a Why axiom that, given a function F with expression E, states
-   --  that: "for all <args> => F(<args>) = E". The axiom is only generated if
-   --  the body of the expression function only contains aggregates that are
-   --  fully initialized.
 
    function Compute_Args
      (E       : Entity_Id;
@@ -233,8 +224,8 @@ package body Gnat2Why.Subprograms is
       Initial_Body : W_Prog_Id;
       Post_Check   : W_Prog_Id) return W_Prog_Id
    is
-      R        : W_Prog_Id := Initial_Body;
-      Node : constant Node_Id := Decls.Get_Subprogram_Body (E);
+      R    : W_Prog_Id        := Initial_Body;
+      Node : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
    begin
       R := Transform_Declarations_Block (Declarations (Node), R);
 
@@ -548,8 +539,8 @@ package body Gnat2Why.Subprograms is
      (File   : in out Why_File;
       E      : Entity_Id)
    is
-      Name       : constant String := Full_Name (E);
-      Body_N     : constant Node_Id := Decls.Get_Subprogram_Body (E);
+      Name       : constant String  := Full_Name (E);
+      Body_N     : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
       Post_N     : constant Node_Id := Get_Location_For_Postcondition (E);
       Pre        : W_Pred_Id;
       Post       : W_Pred_Id;
@@ -713,15 +704,20 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (File   : in out Why_File;
-      E      : Entity_Id)
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean)
    is
-      Expr_Fun_N : constant Node_Id := Get_Expression_Function (E);
+      Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
       pragma Assert (Present (Expr_Fun_N));
       Logic_Func_Binders : constant Binder_Array :=
-        Compute_Logic_Binders (E);
+                             Compute_Logic_Binders (E);
       Logic_Id           : constant W_Identifier_Id :=
-        To_Why_Id (E, Domain => EW_Term, Local => True);
+                             To_Why_Id (E, Domain => EW_Term, Local => False);
+      Read_Names         : constant Name_Set.Set := Get_Reads (E);
+
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String := Base_Name & "__expr_fun";
 
       Params : Translation_Params;
 
@@ -735,6 +731,10 @@ package body Gnat2Why.Subprograms is
       then
          return;
       end if;
+
+      Open_Theory (File, Name);
+
+      Add_Effect_Imports (File, Read_Names);
 
       Params :=
         (File        => File.File,
@@ -761,7 +761,6 @@ package body Gnat2Why.Subprograms is
                  (Params.Name_Map,
                   Get_Name_String (Get_Symbol (Binder.B_Name)),
                   +Binder.B_Name);
-
             end if;
          end;
       end loop;
@@ -795,6 +794,18 @@ package body Gnat2Why.Subprograms is
                   Domain        => EW_Term,
                   Params        => Params)));
       end if;
+
+      --  No filtering is necessary here, as the theory should on the contrary
+      --  use the previously defined theory for the function declaration.
+      --  Attach the newly created theory as a completion of the existing one.
+
+      Close_Theory (File, Filter_Entity => Empty);
+
+      if In_Body then
+         Add_Completion (Base_Name, Name, WF_Context_In_Body);
+      else
+         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+      end if;
    end Translate_Expression_Function_Body;
 
    -------------------------------
@@ -802,9 +813,8 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (File        : in out Why_File;
-      E           : Entity_Id;
-      Is_Expr_Fun : Boolean)
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
       Effects      : W_Effects_Id;
@@ -914,9 +924,6 @@ package body Gnat2Why.Subprograms is
                Effects     => Effects,
                Pre         => Pre,
                Post        => Post));
-      end if;
-      if Is_Expr_Fun then
-         Translate_Expression_Function_Body (File, E);
       end if;
       Close_Theory (File, Filter_Entity => E);
    end Translate_Subprogram_Spec;

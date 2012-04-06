@@ -142,6 +142,9 @@ package Gnat2Why.Nodes is
    --  Check whether N is in the Body, respectively in the Spec of the current
    --  Unit
 
+   function In_Some_Unit_Body (N : Node_Id) return Boolean;
+   --  Return whether N is in a body
+
    function Is_In_Current_Unit (N : Node_Id) return Boolean;
    --  Return True when the node belongs to the Spec or Body of the current
    --  unit.

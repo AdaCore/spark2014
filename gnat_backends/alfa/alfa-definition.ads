@@ -91,6 +91,10 @@ package Alfa.Definition is
    --  entities in Alfa and entities not in Alfa. Each entity may be
    --  attached to a declaration or not (for Itypes).
 
+   All_Entities : Node_Sets.Set;
+   --  Set of all entities marked so far. This contains both entities from the
+   --  current compiled unit, and also entities from other units.
+
    procedure Before_Marking (Filename : String);
    --  Create a file to store detailed information about the Alfa status of
    --  subprograms (spec/body in Alfa or not). Set a flag that allows marking

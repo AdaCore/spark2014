@@ -46,77 +46,6 @@ with Gnat2Why.Types;       use Gnat2Why.Types;
 
 package body Gnat2Why.Decls is
 
-   -----------------------------
-   -- Get_Expression_Function --
-   -----------------------------
-
-   function Get_Expression_Function (E : Entity_Id) return Node_Id is
-      Decl_N : constant Node_Id := Parent (Get_Subprogram_Spec (E));
-      Body_N : constant Node_Id := Get_Subprogram_Body (E);
-      Orig_N : Node_Id;
-   begin
-      --  Get the original node either from the declaration for E, or from the
-      --  subprogram body for E, which may be different if E is attached to a
-      --  subprogram declaration.
-
-      if Present (Original_Node (Decl_N)) then
-         Orig_N := Original_Node (Decl_N);
-      else
-         Orig_N := Original_Node (Body_N);
-      end if;
-
-      if Nkind (Orig_N) = N_Expression_Function then
-         return Orig_N;
-      else
-         return Empty;
-      end if;
-   end Get_Expression_Function;
-
-   -------------------------
-   -- Get_Subprogram_Body --
-   -------------------------
-
-   function Get_Subprogram_Body (E : Entity_Id) return Node_Id is
-      Body_E : Entity_Id;
-      N      : Node_Id;
-
-   begin
-      --  Retrieve the declaration for E
-
-      N := Parent (Get_Subprogram_Spec (E));
-
-      --  If this declaration is not a subprogram body, then it must be a
-      --  subprogram declaration, from which we can retrieve the entity
-      --  for the corresponding subprogram body.
-
-      if Nkind (N) = N_Subprogram_Body then
-         Body_E := E;
-      else
-         Body_E := Corresponding_Body (N);
-      end if;
-
-      --  Retrieve the subprogram body
-
-      return Parent (Get_Subprogram_Spec (Body_E));
-   end Get_Subprogram_Body;
-
-   -------------------------
-   -- Get_Subprogram_Spec --
-   -------------------------
-
-   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-
-   begin
-      N := Parent (E);
-
-      if Nkind (N) = N_Defining_Program_Unit_Name then
-         N := Parent (N);
-      end if;
-
-      return N;
-   end Get_Subprogram_Spec;
-
    ----------------
    -- Is_Mutable --
    ----------------
@@ -252,12 +181,19 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Name        => To_Why_Id (E, Local => False),
+                 (Name        =>
+                    To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
+
+            --  No filtering is necessary here, as the theory should on the
+            --  contrary use the previously defined theory for the partial
+            --  view. Attach the newly created theory as a completion of the
+            --  existing one.
+
             Close_Theory (File, Filter_Entity => Empty);
-            Add_Completion (Base_Name, Name);
+            Add_Completion (Base_Name, Name, WF_Context_In_Spec);
          end if;
 
       --  In the general case, we generate a "logic", with a defining axiom if
@@ -268,7 +204,7 @@ package body Gnat2Why.Decls is
            (File.Cur_Theory,
             New_Function_Decl
               (Domain      => EW_Term,
-               Name        => To_Why_Id (E, Local => True),
+               Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
 
@@ -276,7 +212,8 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Name        => To_Why_Id (E, Local => True),
+                 (Name        =>
+                    To_Why_Id (E, Domain => EW_Term, Local => True),
                   Return_Type => Get_EW_Type (Typ),
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
