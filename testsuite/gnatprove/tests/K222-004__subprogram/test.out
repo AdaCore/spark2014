@@ -1,12 +1,12 @@
 sub.adb:3:07: annotation is placed after violation of Alfa
 sub.adb:4:11: type is not in Alfa
-sub.adb:6:07: object is not in Alfa
-sub.adb:6:12: allocator is not in Alfa
+sub.adb:6:07: type used is not in Alfa
+sub.adb:6:12: type used is not in Alfa
 sub.adb:7:07: explicit dereference is not in Alfa
 sub.adb:8:14: explicit dereference is not in Alfa
 sub.adb:15:14: type is not in Alfa
-sub.adb:17:10: object is not in Alfa
-sub.adb:17:15: allocator is not in Alfa
+sub.adb:17:10: type used is not in Alfa
+sub.adb:17:15: type used is not in Alfa
 sub.adb:18:10: explicit dereference is not in Alfa
 sub.adb:19:13: explicit dereference is not in Alfa
 

@@ -1,7 +1,6 @@
 pack.adb:5:11: type is not in Alfa
-pack.adb:7:07: object is not in Alfa
-pack.adb:7:12: allocator is not in Alfa
+pack.adb:7:07: type used is not in Alfa
+pack.adb:7:12: type used is not in Alfa
 pack.adb:8:07: explicit dereference is not in Alfa
 pack.adb:9:14: explicit dereference is not in Alfa
-pack.ads:2:13: function with side-effect is not in Alfa
 
