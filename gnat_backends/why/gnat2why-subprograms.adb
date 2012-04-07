@@ -25,9 +25,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Alfa;                  use Alfa;
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
-with Alfa.Util;             use Alfa.Util;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
@@ -38,6 +35,11 @@ with Snames;                use Snames;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
+
+with Alfa;                  use Alfa;
+with Alfa.Definition;       use Alfa.Definition;
+with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with Alfa.Util;             use Alfa.Util;
 
 with Why;                   use Why;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
@@ -722,6 +724,15 @@ package body Gnat2Why.Subprograms is
       Params : Translation_Params;
 
    begin
+      Open_Theory (File, Name);
+
+      --  If the entity's body is not in Alfa, generate an empty module.
+
+      if not Body_In_Alfa (E) then
+         Close_Theory (File, Filter_Entity => Empty);
+         return;
+      end if;
+
       --  If the body of the expression function contains aggregates that are
       --  not fully initialized, skip the definition of an axiom for this
       --  expression function.
@@ -729,10 +740,9 @@ package body Gnat2Why.Subprograms is
       if not
         All_Aggregates_Are_Fully_Initialized (Expression (Expr_Fun_N))
       then
+         Close_Theory (File, Filter_Entity => Empty);
          return;
       end if;
-
-      Open_Theory (File, Name);
 
       Add_Effect_Imports (File, Read_Names);
 

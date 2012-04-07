@@ -424,10 +424,11 @@ package body Gnat2Why.Driver is
             begin
                pragma Assert (Present (Get_Expression_Function (Decl_E)));
 
-               if Body_In_Alfa (Decl_E) then
-                  Translate_Expression_Function_Body
-                    (File, Decl_E, In_Body => In_Main_Unit_Body (E));
-               end if;
+               --  Always generate a module, so that units which depend on this
+               --  one can rely on the presence of the completion.
+
+               Translate_Expression_Function_Body
+                 (File, Decl_E, In_Body => In_Main_Unit_Body (E));
             end;
 
          when others =>
