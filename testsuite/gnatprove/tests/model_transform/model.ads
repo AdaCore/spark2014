@@ -147,13 +147,15 @@ package Model is
      (SM : UML_State_Machine) return UML_Activity
    with Post =>
      (for all T in Owned_Transition(SM)'Range =>
-        (for some K in Owned_Flow(Transform'Result)'Range =>
+--        (for some K in Owned_Flow(Transform'Result)'Range =>
            Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) =
              Name(Owned_Action(Transform'Result)
-                    (From(Owned_Flow(Transform'Result)(K))))
+               (From(Owned_Flow(Transform'Result)
+                 (UML_Control_Flow_Access(T)))))
            and then
            Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) =
              Name(Owned_Action(Transform'Result)
-                    (To(Owned_Flow(Transform'Result)(K))))));
+               (To(Owned_Flow(Transform'Result)
+                 (UML_Control_Flow_Access(T))))));
 
 end Model;
