@@ -1,3 +1,4 @@
+
 database.adb:111:21: info: range check proved
 database.adb:112:10: info: index check proved
 database.adb:113:29: info: index check proved
@@ -32,7 +33,7 @@ database.adb:208:55: info: range check proved
 database.adb:214:8: info: index check proved
 database.adb:221:8: info: index check proved
 database.adb:236:21: info: range check proved
-database.adb:240:19: precondition not proved
+database.adb:240:19: info: precondition proved
 database.adb:241:7: info: index check proved
 database.adb:243:56: info: range check proved
 database.adb:244:7: info: index check proved
@@ -42,15 +43,15 @@ database.adb:261:10: info: precondition proved
 database.adb:268:10: info: index check proved
 database.adb:269:18: info: index check proved
 database.adb:271:10: info: index check proved
-database.adb:272:22: precondition not proved
+database.adb:272:22: info: precondition proved
 database.adb:285:17: info: precondition proved
 database.adb:285:39: info: overflow check proved
 database.adb:290:7: info: index check proved
-database.adb:291:42: precondition not proved
+database.adb:291:42: info: precondition proved
 database.adb:291:9: info: index check proved
 database.adb:303:27: info: precondition proved
 database.adb:308:7: info: index check proved
-database.adb:309:42: precondition not proved
+database.adb:309:42: info: precondition proved
 database.adb:309:9: info: index check proved
 database.adb:38:10: info: index check proved
 database.adb:44:18: info: postcondition proved
@@ -61,18 +62,18 @@ database.adb:54:23: info: index check proved
 database.adb:54:52: index check not proved
 database.ads:111:25: info: precondition proved
 database.ads:112:14: info: precondition proved
-database.ads:112:32: postcondition not proved
+database.ads:112:32: info: postcondition proved
 database.ads:112:34: info: precondition proved
-database.ads:112:56: precondition not proved
+database.ads:112:56: info: precondition proved
 database.ads:53:30: postcondition not proved
 database.ads:53:41: info: precondition proved
 database.ads:74:41: info: precondition proved
 database.ads:93:14: info: precondition proved
 database.ads:93:36: info: overflow check proved
 database.ads:94:14: info: precondition proved
-database.ads:94:32: postcondition not proved
+database.ads:94:32: info: postcondition proved
 database.ads:94:34: info: precondition proved
-database.ads:94:56: precondition not proved
+database.ads:94:56: info: precondition proved
 money.adb:4:33: info: overflow check proved
 money.adb:4:33: info: range check proved
 money.adb:7:33: info: overflow check proved
