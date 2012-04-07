@@ -833,10 +833,25 @@ package body Alfa.Definition is
             Mark_Violation ("slice", N, NYI_Slice);
 
          when N_Subprogram_Body =>
-            if Acts_As_Spec (N) then
-               Mark_Subprogram_Declaration (N);
+
+            --  For expression functions that have a unique declaration, the
+            --  body inserted by the frontend may be far from the original
+            --  point of declaration, after the private declarations of the
+            --  package (to avoid premature freezing.) In those cases, mark the
+            --  subprogram body at the same point as the subprogram
+            --  declaration, so that entities declared afterwards have access
+            --  to the axiom defining the expression function.
+
+            if Present (Get_Expression_Function (Unique_Defining_Entity (N)))
+              and then not Comes_From_Source (Original_Node (N))
+            then
+               null;
+            else
+               if Acts_As_Spec (N) then
+                  Mark_Subprogram_Declaration (N);
+               end if;
+               Mark_Subprogram_Body (N);
             end if;
-            Mark_Subprogram_Body (N);
 
          when N_Subprogram_Body_Stub =>
             if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
@@ -846,6 +861,25 @@ package body Alfa.Definition is
 
          when N_Subprogram_Declaration =>
             Mark_Subprogram_Declaration (N);
+
+            --  For expression functions that have a unique declaration, the
+            --  body inserted by the frontend may be far from the original
+            --  point of declaration, after the private declarations of the
+            --  package (to avoid premature freezing.) In those cases, mark the
+            --  subprogram body at the same point as the subprogram
+            --  declaration, so that entities declared afterwards have access
+            --  to the axiom defining the expression function.
+
+            declare
+               E      : constant Entity_Id := Defining_Entity (N);
+               Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+            begin
+               if Present (Get_Expression_Function (E))
+                 and then not Comes_From_Source (Original_Node (Body_N))
+               then
+                  Mark_Subprogram_Body (Body_N);
+               end if;
+            end;
 
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
