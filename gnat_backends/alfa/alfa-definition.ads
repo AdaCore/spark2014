@@ -29,15 +29,24 @@
 
 --  All entities from the program are marked as being in Alfa or not in Alfa,
 --  so that the translation to Why3 processes adequately the entity depending
---  on its status.
+--  on its status. The order of definition in Why3 follows the order in which
+--  marking is applied to entities.
 
---  All entities except Itypes are marked at the point where they are declared.
+--  All entities except types are marked at the point where they are declared.
 --  Forward references to an entity (such as a call to a subprogram in a
---  contract before this subprogram is declared) are not in Alfa. Itypes
---  (implicit types introduced by the frontend) and class-wide types are
---  treated differently, as they may not have an explicit declaration.
---  Therefore, Itypes and class-wide types are marked the first time they
---  are referenced.
+--  contract before this subprogram is declared) are not in Alfa. Types are
+--  treated differently for two reasons:
+--    * Itypes (implicit types introduced by the frontend) and class-wide types
+--      may not have an explicit declaration, or one that is not attached to
+--      the AST.
+--    * Type definitions may refer to private types whose full view has not
+--      been declared yet. It is this full view declaration which is translated
+--      into Why3 when the type is in Alfa.
+--  Therefore, to avoid forward references to types not yet defined in Why3:
+--    * Itypes and class-wide types are marked the first time they are
+--      referenced.
+--    * All necessary types for a type definition (e.g. components of a record
+--      type) are marked before the type itself.
 
 --  Marking of an entity works as follows:
 --    * A scope for the entity is pushed on a stack, and the definition of the
