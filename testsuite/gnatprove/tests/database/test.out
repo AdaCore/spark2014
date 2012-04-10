@@ -7,11 +7,11 @@ database.adb:121:13: info: index check proved
 database.adb:121:20: info: index check proved
 database.adb:121:50: info: index check proved
 database.adb:123:13: info: index check proved
-database.adb:124:13: index check not proved
+database.adb:124:13: info: index check proved
 database.adb:124:20: info: index check proved
 database.adb:124:50: info: index check proved
 database.adb:130:13: info: index check proved
-database.adb:130:37: index check not proved
+database.adb:130:37: info: index check proved
 database.adb:132:10: info: index check proved
 database.adb:133:10: info: index check proved
 database.adb:134:29: info: range check proved
@@ -57,15 +57,15 @@ database.adb:38:10: info: index check proved
 database.adb:44:18: info: postcondition proved
 database.adb:46:23: info: index check proved
 database.adb:46:52: info: index check proved
-database.adb:52:18: postcondition not proved
+database.adb:52:18: info: postcondition proved
 database.adb:54:23: info: index check proved
-database.adb:54:52: index check not proved
+database.adb:54:52: info: index check proved
 database.ads:111:25: info: precondition proved
 database.ads:112:14: info: precondition proved
 database.ads:112:32: info: postcondition proved
 database.ads:112:34: info: precondition proved
 database.ads:112:56: info: precondition proved
-database.ads:53:30: postcondition not proved
+database.ads:53:30: info: postcondition proved
 database.ads:53:41: info: precondition proved
 database.ads:74:41: info: precondition proved
 database.ads:93:14: info: precondition proved
