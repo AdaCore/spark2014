@@ -99,11 +99,11 @@ package Model is
    procedure Set_From
      (Self : in out UML_Control_Flow; Val : UML_Action_Access)
    with
-     Post => From(Self) = Val;
+     Post => From(Self) = Val and To(Self) = To(Self)'Old;
    procedure Set_To
      (Self : in out UML_Control_Flow; Val : UML_Action_Access)
    with
-     Post => To(Self) = Val;
+     Post => To(Self) = Val and From(Self) = From(Self)'Old;
 
    --------------
    -- Activity --

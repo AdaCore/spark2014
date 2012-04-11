@@ -23,8 +23,8 @@ model.adb:80:43: info: index check proved
 model.adb:81:18: info: index check proved
 model.adb:82:36: info: range check proved
 model.adb:82:39: info: index check proved
-model.ads:102:25: info: postcondition proved
-model.ads:106:23: info: postcondition proved
+model.ads:102:31: info: postcondition proved
+model.ads:106:29: info: postcondition proved
 model.ads:129:33: info: postcondition proved
 model.ads:134:31: info: postcondition proved
 model.ads:149:7: postcondition not proved
