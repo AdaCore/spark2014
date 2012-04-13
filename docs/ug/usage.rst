@@ -122,6 +122,7 @@ Integration in GPS
 
 GNATprove can be run from GPS. There is a menu ``Prove`` with the following
 entries:
+   * Prove All:            This runs GNATprove on all files in the project.
    * Prove Root Project:   This runs GNATprove on the entire project.
    * Prove File:           This runs GNATprove on the current unit.
    * Show Unprovable Code: This runs GNATprove on the entire project in mode ``detect``.
@@ -133,6 +134,9 @@ which can be obtained by a right click:
                            the current file.
    * Prove Subprogram:     This runs proofs on the VCs of the current
                            subprogram whose declaration is pointed to.
+
+GNATprove project switches can be edited from the panel ``GNATprove`` (in
+``Project --> Edit Project Properties --> Switches``).
 
 We recommend that you enable the option ``Draw current line as a thin line``
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that GPS does not
