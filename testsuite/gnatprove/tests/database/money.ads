@@ -14,7 +14,7 @@ package Money is
 
    type Amount is record
       Currency : CUR;
-      Raw    : Raw_Amount;
+      Raw      : Raw_Amount;
    end record;
 
    No_Amount : constant Amount := Amount'(Currency => None,
