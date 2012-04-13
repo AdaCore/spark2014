@@ -1,5 +1,6 @@
 
 import sets
+import readers
 import attributes.lattices
 import attributes.lattice_ops
 
@@ -34,7 +35,7 @@ subp.new_arrow("STATUS",
 
 # Instanciate sketch from inputs
 
-m.loads("proofs.json")
+vcs.load(readers.Listing("VC", "proofs.out"))
 m.loads("program.json")
 
 # Output results
