@@ -63,6 +63,8 @@ package Configuration is
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp   : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-subp= was given
+   Alter_Prover : aliased GNAT.Strings.String_Access;
+   --  Set to non-empty string when option --prover= was given
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
    --  The four feature modes of GNATprove:

@@ -251,6 +251,10 @@ procedure Gnatprove is
          Args.Append ("--limit-subp");
          Args.Append (Limit_Subp.all);
       end if;
+      if Alter_Prover /= null and then Alter_Prover.all /= "" then
+         Args.Append ("--prover");
+         Args.Append (Alter_Prover.all);
+      end if;
       if Integer (Args.Length) > 0 then
          Args.Prepend ("-cargs:Why");
       end if;

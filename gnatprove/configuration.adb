@@ -105,7 +105,9 @@ ASCII.LF &
 ASCII.LF &
 "     --limit-line=s Limit proofs to given file and line" &
 ASCII.LF &
-"     --limit-subp=s Limit proofs to subprogram defined by file and line";
+"     --limit-subp=s Limit proofs to subprogram defined by file and line" &
+  ASCII.LF &
+"     --prover=s     Use given prover instead of default prover";
 
    ----------------
    -- Do_Nothing --
@@ -348,6 +350,12 @@ ASCII.LF &
          Limit_Subp'Access,
          Long_Switch => "--limit-subp=",
          Help => "limit proofs to subp defined by given file and line");
+
+      Define_Switch
+        (Config,
+         Alter_Prover'Access,
+         Long_Switch => "--prover=",
+         Help => "Use given prover instead of default prover");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
