@@ -11,6 +11,18 @@ def to_set(e):
     else:
         return { e }
 
+def to_list(e):
+    if e is None:
+        return []
+    elif isinstance(e, list):
+        return e
+    elif isinstance(e, (basestring,dict)):
+        return [ e ]
+    elif isinstance(e, (set,tuple)):
+        return list(e)
+    else:
+        return { e }
+
 def to_dict(e):
     if e is None:
         return {}

@@ -5,7 +5,8 @@ import attributes.lattice_ops
 
 # Build attribute domains
 
-lines = attributes.lattices.RangeAttribute("LINES", "LOW", "HIGH")
+lines = attributes.lattices.RangeAttribute( attributes.lattices.Sloc,
+                                            "SLOCS", "LOW", "HIGH")
 status = attributes.lattices.PartialOrderAttribute("STATUS",
                                                    {"OK", "KO", "UNKNOWN"})
 status.assume_stronger("UNKNOWN", "KO")
