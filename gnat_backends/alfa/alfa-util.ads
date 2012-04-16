@@ -54,6 +54,9 @@ package Alfa.Util is
    function Is_Full_View (E : Entity_Id) return Boolean;
    --  Return whether E is the full view of another entity
 
+   function Is_Instantiation_Of_Formal_Container (N : Node_Id) return Boolean;
+   --  Return whether N is the package instantiation of a formal container
+
    function Partial_View (E : Entity_Id) return Entity_Id;
    --  Return the partial view for entity E
 
@@ -62,5 +65,11 @@ package Alfa.Util is
    --  follow the chain of underlying types (for a private type) and base types
    --  (for a record subtype) to return the first non-private type which is not
    --  also a record subtype. Otherwise, return E.
+
+   function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
+   --  Return whether a location Loc is in the formal container sources
+
+   function Type_In_Container (Id : Entity_Id) return Boolean;
+   --  Return whether a type Id is in the formal container sources
 
 end Alfa.Util;

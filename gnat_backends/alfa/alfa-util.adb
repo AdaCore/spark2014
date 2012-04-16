@@ -25,8 +25,10 @@
 
 with Atree;          use Atree;
 with Einfo;          use Einfo;
+with Namet;          use Namet;
 with Nlists;         use Nlists;
 with Sinfo;          use Sinfo;
+with Sinput;         use Sinput;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
@@ -340,6 +342,38 @@ package body Alfa.Util is
    function Is_Full_View (E : Entity_Id) return Boolean is
       (Full_To_Partial_Entities.Contains (E));
 
+   ------------------------------------------
+   -- Is_Instantiation_Of_Formal_Container --
+   ------------------------------------------
+
+   function Is_Instantiation_Of_Formal_Container (N : Node_Id) return Boolean
+   is ((Is_Rewrite_Insertion (N)
+          or else Nkind (Original_Node (N)) = N_Package_Instantiation)
+
+       --  The Generic_Parent component is not set in some cases, so test its
+       --  presence before looking at its source location.
+
+       and then Present (Generic_Parent (Specification (N)))
+       and then Location_In_Formal_Containers
+                  (Sloc (Generic_Parent (Specification (N)))));
+
+   -----------------------------------
+   -- Location_In_Formal_Containers --
+   -----------------------------------
+
+   function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean is
+      Name : constant String :=
+               Get_Name_String (Reference_Name (Get_Source_File_Index (Loc)));
+   begin
+      return
+        Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
+        Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
+        Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
+        Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
+        Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
+        Name = "a-cofove.ads" or else Name = "a-cofove.adb";
+   end Location_In_Formal_Containers;
+
    --------------------------
    -- Most_Underlying_Type --
    --------------------------
@@ -348,7 +382,12 @@ package body Alfa.Util is
       Typ : Entity_Id := E;
    begin
       loop
-         if Ekind (Typ) in Private_Kind then
+         --  For types in formal container instantiations, do not consider the
+         --  underlying type.
+
+         if Type_In_Container (Typ) then
+            return Typ;
+         elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
          elsif Ekind (Typ) = E_Record_Subtype then
             Typ := Base_Type (Typ);
@@ -364,5 +403,25 @@ package body Alfa.Util is
 
    function Partial_View (E : Entity_Id) return Entity_Id is
       (Full_To_Partial_Entities.Element (E));
+
+   -----------------------
+   -- Type_In_Container --
+   -----------------------
+
+   function Type_In_Container (Id : Entity_Id) return Boolean is
+      N : Node_Id := Parent (Id);
+   begin
+      if Present (N) then
+         N := Parent (N);
+      end if;
+
+      if Present (N) then
+         N := Parent (N);
+      end if;
+
+      return Present (N)
+        and then Nkind (N) = N_Package_Declaration
+        and then Is_Instantiation_Of_Formal_Container (N);
+   end Type_In_Container;
 
 end Alfa.Util;

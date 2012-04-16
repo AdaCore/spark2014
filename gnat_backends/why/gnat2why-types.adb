@@ -150,7 +150,9 @@ package body Gnat2Why.Types is
       --  it is in Alfa. Otherwise, return the special private type.
 
       if Ekind (Ty) in Private_Kind | E_Record_Subtype then
-         if In_Alfa (Most_Underlying_Type (Ty)) then
+         if Type_In_Container (Ty) then
+            return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+         elsif In_Alfa (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
          else
             return New_Base_Type (Base_Type => EW_Private);

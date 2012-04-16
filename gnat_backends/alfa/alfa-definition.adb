@@ -221,8 +221,10 @@ package body Alfa.Definition is
    procedure Mark_Type_Conversion             (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
-   procedure Mark_Type_Entity                 (Id : Entity_Id);
-   --  Types are special, we represent them by entities
+   procedure Mark_Type_Entity (Id : Entity_Id; In_Container : Boolean);
+   --  Types are special, we represent them by entities. In_Container is True
+   --  for a type defined in a formal container package instance, which should
+   --  be marked in Alfa or not, but not translated into Why3.
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
@@ -563,7 +565,7 @@ package body Alfa.Definition is
         and then (Is_Itype (Id)
                    or else Ekind (Id) = E_Class_Wide_Type)
       then
-         Mark_Type_Entity (Id);
+         Mark_Type_Entity (Id, In_Container => False);
       end if;
 
       return Entities_In_Alfa.Contains (Id);
@@ -923,9 +925,9 @@ package body Alfa.Definition is
                T  : constant Entity_Id := Defining_Identifier (N);
                BT : constant Entity_Id := Base_Type (T);
             begin
-               Mark_Type_Entity (T);
+               Mark_Type_Entity (T, In_Container => False);
                if Is_Itype (BT) then
-                  Mark_Type_Entity (BT);
+                  Mark_Type_Entity (BT, In_Container => False);
                end if;
             end;
 
@@ -1664,12 +1666,19 @@ package body Alfa.Definition is
    -----------------------
 
    procedure Mark_Package_Body (N : Node_Id) is
-      Id  : constant Entity_Id := Unique_Defining_Entity (N);
+      Id     : constant Entity_Id := Unique_Defining_Entity (N);
+      Decl_N : constant Node_Id   := Parent (Parent (Id));
 
    begin
       --  Do not analyze generic bodies
 
       if Ekind (Id) = E_Generic_Package then
+         return;
+      end if;
+
+      --  Do not analyze bodies for instantiations of the formal containers
+
+      if Is_Instantiation_Of_Formal_Container (Decl_N) then
          return;
       end if;
 
@@ -1687,12 +1696,74 @@ package body Alfa.Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
+
+      procedure Declare_In_Container (Decls : List_Id);
+      --  Mark types and subprograms from formal container instantiations
+
+      --------------------------
+      -- Declare_In_Container --
+      --------------------------
+
+      procedure Declare_In_Container (Decls : List_Id) is
+         Decl : Node_Id;
+         Id   : Entity_Id;
+      begin
+         Decl := First (Decls);
+
+         while Present (Decl) loop
+            if Nkind (Decl) in N_Full_Type_Declaration         |
+                               N_Private_Type_Declaration      |
+                               N_Private_Extension_Declaration |
+                               N_Subtype_Declaration           |
+                               N_Subprogram_Declaration
+            then
+               Id := Defining_Entity (Decl);
+
+               if Ekind (Id) in Type_Kind then
+                  pragma Assert (Type_In_Container (Id));
+                  Mark_Type_Entity (Id, In_Container => True);
+
+               elsif Ekind (Id) in Subprogram_Kind then
+                  Entities_In_Alfa.Include (Id);
+               end if;
+            end if;
+
+            Next (Decl);
+         end loop;
+      end Declare_In_Container;
+
       Id         : constant Entity_Id := Defining_Entity (N);
       Vis_Decls  : constant List_Id :=
                      Visible_Declarations (Specification (N));
       Priv_Decls : constant List_Id :=
                      Private_Declarations (Specification (N));
+
    begin
+      --  Do not analyze specs for instantiations of the formal containers.
+      --  Only mark types in Alfa or not, and mark all subprograms in Alfa,
+      --  but none should be scheduled for translation into Why3.
+
+      if Is_Instantiation_Of_Formal_Container (N) then
+
+         --  Explicitly add the package declaration to the entities to
+         --  translate into Why3.
+
+         if Current_Unit_Is_Main_Spec then
+            Spec_Entities.Append (Id);
+
+         elsif Current_Unit_Is_Main_Body then
+            Body_Entities.Append (Id);
+         end if;
+
+         --  Mark types and subprograms from the formal container instantiation
+         --  as in Alfa or not.
+
+         Declare_In_Container (Vis_Decls);
+         Declare_In_Container (Priv_Decls);
+
+         return;
+      end if;
+
       Push_Scope (Id);
 
       if Present (Vis_Decls) then
@@ -1914,6 +1985,12 @@ package body Alfa.Definition is
 
    begin
       if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body) then
+         return;
+      end if;
+
+      --  Content of formal containers is not to be proved
+
+      if Location_In_Formal_Containers (Sloc (Id)) then
          return;
       end if;
 
@@ -2175,7 +2252,46 @@ package body Alfa.Definition is
    -- Mark_Type_Entity --
    ----------------------
 
-   procedure Mark_Type_Entity (Id : Entity_Id) is
+   procedure Mark_Type_Entity (Id : Entity_Id; In_Container : Boolean) is
+
+      procedure Mark_Violation
+        (Msg : String;
+         N   : Node_Id;
+         V   : Alfa_Violations.Vkind);
+      --  Local wrapper which does not issue violation when In_Container is
+      --  True.
+
+      procedure Mark_Violation
+        (Msg  : String;
+         N    : Node_Id;
+         From : Entity_Id);
+      --  Local wrapper which does not issue violation when In_Container is
+      --  True.
+
+      --------------------
+      -- Mark_Violation --
+      --------------------
+
+      procedure Mark_Violation
+        (Msg : String;
+         N   : Node_Id;
+         V   : Alfa_Violations.Vkind) is
+      begin
+         if not In_Container then
+            Alfa.Definition.Mark_Violation (Msg, N, V);
+         end if;
+      end Mark_Violation;
+
+      procedure Mark_Violation
+        (Msg  : String;
+         N    : Node_Id;
+         From : Entity_Id) is
+      begin
+         if not In_Container then
+            Alfa.Definition.Mark_Violation (Msg, N, From);
+         end if;
+      end Mark_Violation;
+
    begin
       --  Nothing to do if type was already marked
 
@@ -2196,17 +2312,17 @@ package body Alfa.Definition is
                Index         : Node_Id := First_Index (Id);
             begin
                if Present (Component_Typ) then
-                  Mark_Type_Entity (Component_Typ);
+                  Mark_Type_Entity (Component_Typ, In_Container);
                end if;
 
                while Present (Index) loop
-                  Mark_Type_Entity (Etype (Index));
+                  Mark_Type_Entity (Etype (Index), In_Container);
                   Next_Index (Index);
                end loop;
             end;
 
          when E_Record_Subtype =>
-            Mark_Type_Entity (Base_Type (Id));
+            Mark_Type_Entity (Base_Type (Id), In_Container);
 
          --  Itypes may be generated by the frontend for component types.
          --  Mark them here, to avoid multiple definitions of the same type
@@ -2218,7 +2334,7 @@ package body Alfa.Definition is
             begin
                while Present (Field) loop
                   if Ekind (Field) in Object_Kind then
-                     Mark_Type_Entity (Etype (Field));
+                     Mark_Type_Entity (Etype (Field), In_Container);
                   end if;
                   Next_Entity (Field);
                end loop;
@@ -2229,7 +2345,7 @@ package body Alfa.Definition is
          --  marked here.
 
          when Private_Kind =>
-            Mark_Type_Entity (Underlying_Type (Id));
+            Mark_Type_Entity (Underlying_Type (Id), In_Container);
 
          when others =>
             null;
@@ -2357,6 +2473,15 @@ package body Alfa.Definition is
          when others =>
             raise Program_Error;
       end case;
+
+      --  If the type is in a formal container package instance, insert it in
+      --  the set of entities already treated before calling Pop_Scope, so that
+      --  it is only marked in Alfa if necessary, but it is not marked for
+      --  translation into Why3.
+
+      if In_Container then
+         All_Entities.Insert (Id);
+      end if;
 
       Pop_Scope (Id);
    end Mark_Type_Entity;

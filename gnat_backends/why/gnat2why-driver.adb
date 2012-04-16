@@ -431,6 +431,16 @@ package body Gnat2Why.Driver is
                  (File, Decl_E, In_Body => In_Main_Unit_Body (E));
             end;
 
+            --  Given to the handler for packages with an associated theory
+         when E_Package =>
+            if Dispatch_Entity (E) = WF_Context_In_Body then
+               Translate_Container_Package (Why_Files (WF_Types_In_Body),
+                                            File, E);
+            else
+               Translate_Container_Package (Why_Files (WF_Types_In_Spec),
+                                            File, E);
+            end if;
+
          when others =>
             raise Program_Error;
       end case;

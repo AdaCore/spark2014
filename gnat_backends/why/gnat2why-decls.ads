@@ -43,4 +43,10 @@ package Gnat2Why.Decls is
       E      : Entity_Id);
    --  Called for IN parameters, named numbers and constant objects
 
+   procedure Translate_Container_Package
+     (File_Type    : in out Why_File;
+      File_Context : in out Why_File;
+      E              : Entity_Id);
+   --  Translate a package with a Why3 axiomatization
+
 end Gnat2Why.Decls;

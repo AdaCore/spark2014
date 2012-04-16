@@ -584,7 +584,7 @@ package body Why.Inter is
          end if;
       end if;
       case Ekind (E) is
-         when Subprogram_Kind | E_Subprogram_Body | Named_Kind =>
+         when Subprogram_Kind | E_Subprogram_Body | Named_Kind | E_Package =>
             if In_Some_Unit_Body (Parent (E)) then
                return WF_Context_In_Body;
             else
@@ -613,6 +613,13 @@ package body Why.Inter is
                   return WF_Types_In_Spec;
                end if;
             end;
+--  =======
+--              if In_Main_Unit_Body (E) then
+--                 return WF_Types_In_Body;
+--              else
+--                 return WF_Types_In_Spec;
+--              end if;
+--  >>>>>>> for containers
 
          when others =>
             raise Program_Error;
@@ -657,7 +664,9 @@ package body Why.Inter is
       elsif N = Universal_Fixed then
          return EW_Real_Type;
       elsif Ekind (N) in Private_Kind | E_Record_Subtype then
-         if In_Alfa (Most_Underlying_Type (N)) then
+         if Type_In_Container (N) then
+            return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+         elsif In_Alfa (Most_Underlying_Type (N)) then
             return EW_Abstract (Most_Underlying_Type (N));
          else
             return New_Base_Type (Base_Type => EW_Private);
@@ -754,7 +763,9 @@ package body Why.Inter is
             end if;
 
          when Private_Kind | E_Record_Subtype =>
-            if In_Alfa (Most_Underlying_Type (Ty)) then
+            if Type_In_Container (Ty) then
+               return EW_Abstract;
+            elsif In_Alfa (Most_Underlying_Type (Ty)) then
                return Get_EW_Term_Type (Most_Underlying_Type (Ty));
             else
                return EW_Private;
