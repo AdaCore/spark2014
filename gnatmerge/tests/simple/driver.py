@@ -9,9 +9,8 @@ import attributes.lattice_ops
 lines = attributes.lattices.RangeAttribute( attributes.lattices.Sloc,
                                             "SLOCS", "LOW", "HIGH")
 status = attributes.lattices.PartialOrderAttribute("STATUS",
-                                                   {"OK", "KO", "UNKNOWN"})
-status.assume_stronger("UNKNOWN", "KO")
-status.assume_stronger("UNKNOWN", "OK")
+                                                   {"OK", "KO"})
+status.name_meet("PARTIAL OK", {"OK", "KO"})
 
 # Build sketch of inputs
 

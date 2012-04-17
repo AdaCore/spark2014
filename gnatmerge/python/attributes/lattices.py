@@ -105,9 +105,17 @@ class PartialOrderAttribute(common.Attribute):
     def __init__(self, name, values):
         self.name = name
         self.values = values
+        self.named_meets = {}
         self.weaker_classes = {None : []}
         for value in values:
             self.weaker_classes[value] = {None,}
+
+    def name_meet(self, value, content):
+        self.values.add(value)
+        for elt in content:
+            self.assume_stronger(elt, value)
+        self.weaker_classes[value] = {None,}
+        self.named_meets[value] = content
 
     def assume_stronger(self, left, right):
         # add left > right
@@ -142,6 +150,11 @@ class PartialOrderAttribute(common.Attribute):
         result = v
         for elt in v:
             result = result.difference(self.weaker_classes[elt])
+        for name in self.named_meets:
+            if self.named_meets[name].issubset(result):
+                result = result.difference(self.named_meets[name])
+                result.add(name)
+
         if len(result) == 1:
             return result.pop()
         else:
