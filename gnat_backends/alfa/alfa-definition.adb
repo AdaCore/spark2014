@@ -989,8 +989,7 @@ package body Alfa.Definition is
 
          --  The following kinds are rewritten by expansion
 
-         when N_Expression_Function |
-              N_Subunit             =>
+         when N_Expression_Function =>
             raise Program_Error;
 
          --  The following kind is never generated in Alfa mode
@@ -1067,6 +1066,7 @@ package body Alfa.Definition is
               N_SCIL_Membership_Test |
               N_Signed_Integer_Type_Definition |
               N_Single_Protected_Declaration |
+              N_Subunit |
               N_Task_Definition |
               N_Terminate_Alternative |
               N_Triggering_Alternative |
