@@ -26,11 +26,9 @@ package body P1 is
       J := A'Last;
       while I <= J loop
          pragma Assert (I in A'Range
-                          and then J in A'Range);
-         --  currently commented out because generates expression with action
-
-                          --  and then (for all K in A'First .. I => not A(K))
-                          --  and then (for all K in J .. A'Last => A(K)));
+                          and then J in A'Range
+                          and then (for all K in A'First .. I-1 => not A(K))
+                          and then (for all K in J+1 .. A'Last => A(K)));
          if not A(I) then
             I := I+1;
          elsif A(J) then
