@@ -193,7 +193,11 @@ package body Gnat2Why.Decls is
             --  existing one.
 
             Close_Theory (File, Filter_Entity => Empty);
-            Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+            if In_Main_Unit_Body (E) then
+               Add_Completion (Base_Name, Name, WF_Context_In_Body);
+            else
+               Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+            end if;
          end if;
 
       --  In the general case, we generate a "logic", with a defining axiom if
