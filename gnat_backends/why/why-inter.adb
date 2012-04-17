@@ -593,9 +593,7 @@ package body Why.Inter is
 
          when Object_Kind =>
             if not Is_Mutable (E) then
-               if Is_In_Current_Unit (E) and then
-                 Body_Entities.Contains (E)
-               then
+               if In_Main_Unit_Body (E) then
                   return WF_Context_In_Body;
                else
                   return WF_Context_In_Spec;
@@ -605,13 +603,16 @@ package body Why.Inter is
             end if;
 
          when Type_Kind =>
-            if Is_In_Current_Unit (E) and then
-              Body_Entities.Contains (E)
-            then
-               return WF_Types_In_Body;
-            else
-               return WF_Types_In_Spec;
-            end if;
+            declare
+               Real_Node : constant Node_Id :=
+                (if Is_Itype (E) then Associated_Node_For_Itype (E) else E);
+            begin
+               if In_Main_Unit_Body (Real_Node) then
+                  return WF_Types_In_Body;
+               else
+                  return WF_Types_In_Spec;
+               end if;
+            end;
 
          when others =>
             raise Program_Error;
