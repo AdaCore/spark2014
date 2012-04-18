@@ -34,7 +34,7 @@ package body Gnat2Why.Nodes is
    function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
      (Present (Corresponding_Body (N))
        and then Is_Main_Cunit
-        (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
+        (Unit (Enclosing_Comp_Unit_Node (Corresponding_Body (N)))));
 
    package body Ada_Ent_To_Why is
 
@@ -160,7 +160,7 @@ package body Gnat2Why.Nodes is
    -----------------------
 
    function In_Main_Unit_Body (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      CU   : constant Node_Id := Enclosing_Comp_Unit_Node (N);
       Root : Node_Id;
 
    begin
@@ -207,7 +207,7 @@ package body Gnat2Why.Nodes is
    -----------------------
 
    function In_Main_Unit_Spec (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      CU   : constant Node_Id := Enclosing_Comp_Unit_Node (N);
       Root : Node_Id;
 
    begin
@@ -250,7 +250,7 @@ package body Gnat2Why.Nodes is
    -----------------------
 
    function In_Some_Unit_Body (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
+      CU   : constant Node_Id := Enclosing_Comp_Unit_Node (N);
       Root : Node_Id;
 
    begin
