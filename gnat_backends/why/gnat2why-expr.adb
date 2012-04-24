@@ -664,8 +664,13 @@ package body Gnat2Why.Expr is
                   --  parameters by incrementing Nb_Of_Refs.
 
                   else
+
+                     --  We should never use the Formal for the Ada_Node,
+                     --  because there is no real dependency here; We only
+                     --  use the Formal to get a sensible name.
+
                      Why_Args (Cnt) :=
-                       +New_Identifier (Ada_Node => Formal,
+                       +New_Identifier (Ada_Node => Empty,
                                         Name     => Full_Name (Formal));
                      Nb_Of_Refs := Nb_Of_Refs + 1;
                   end if;
@@ -836,8 +841,12 @@ package body Gnat2Why.Expr is
 
                --  Variables:
 
+               --  We should never use the Formal for the Ada_Node,
+               --  because there is no real dependency here; We only
+               --  use the Formal to get a sensible name.
+
                Tmp_Var       : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => Formal,
+                 New_Identifier (Ada_Node => Empty,
                                  Name     => Full_Name (Formal));
                Tmp_Var_Deref : constant W_Prog_Id :=
                                  New_Deref (Right => Tmp_Var);
