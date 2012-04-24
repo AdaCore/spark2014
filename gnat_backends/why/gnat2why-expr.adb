@@ -219,6 +219,12 @@ package body Gnat2Why.Expr is
    --        forall R:<type of aggregate>. forall <params>.
    --           R = F(<params>) -> <predicate for the aggregate R>
 
+   function Transform_Slice_Expr
+     (Domain    : EW_Domain;
+      Expr      : Node_Id;
+      Expr_Type : Entity_Id;
+      Params    : Translation_Params) return W_Expr_Id;
+
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
@@ -2451,79 +2457,9 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
-               Id         : constant W_Identifier_Id :=
-                              (if Domain = EW_Term then
-                                 New_Temp_Identifier
-                               else To_Ident (WNE_Result));
                Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
-               BT         : constant W_Base_Type_Id :=
-                              +Why_Logic_Type_Of_Ada_Type (Expr_Type);
-               Num_Dim    : constant Pos := 1;
-               Indexes    : constant W_Expr_Array (1 .. Positive (Num_Dim)) :=
-                              (others => +New_Temp_Identifier);
-               Binders    : W_Identifier_Array (1 .. Positive (Num_Dim));
-               Range_Pred : constant W_Expr_Id :=
-                              Transform_Discrete_Choice
-                                (Choice => Discrete_Range (Expr),
-                                 Expr   => Indexes (1),
-                                 Domain => EW_Pred,
-                                 Params => Params);
-
-               Comp_Type  : constant Node_Id := Component_Type (Expr_Type);
-               Elmt_Type  : constant W_Base_Type_Id :=
-                              +Why_Logic_Type_Of_Ada_Type (Comp_Type);
-
-               --  ??? May share code with Constrain_Value_At_Index.
-               Left       : constant W_Expr_Id :=
-                              New_Array_Access
-                                (Ada_Node  => Expr,
-                                 Domain    => EW_Term,
-                                 Ty_Entity => Expr_Type,
-                                 Ar        => +Id,
-                                 Index     => Indexes,
-                                 Dimension => Num_Dim);
-               Right      : constant W_Expr_Id :=
-                              New_Array_Access
-                                (Ada_Node  => Expr,
-                                 Domain    => EW_Term,
-                                 Ty_Entity =>
-                                   Type_Of_Node (Prefix (Expr)),
-                                 Ar        =>
-                                   +Transform_Expr
-                                     (Prefix (Expr),
-                                      EW_Prog,
-                                      Params => Params),
-                                 Index     => Indexes,
-                                 Dimension => Num_Dim);
-               Then_Part  : constant W_Expr_Id :=
-                              New_Comparison
-                                (Cmp       => EW_Eq,
-                                 Left      => Left,
-                                 Right     => Right,
-                                 Arg_Types => Elmt_Type,
-                                 Domain    => EW_Pred);
-
-               Else_Part  : constant W_Expr_Id :=
-                              New_Literal (Value  => EW_True,
-                                           Domain => EW_Pred);
-               Elt_Pred   : constant W_Pred_OId :=
-                              New_Conditional
-                                (Condition => Range_Pred,
-                                 Then_Part => Then_Part,
-                                 Else_Part => Else_Part);
             begin
-               for J in Indexes'Range loop
-                  Binders (J) := +Indexes (J);
-               end loop;
-
-               T :=
-                 +New_Simpl_Any_Prog
-                   (T    => +BT,
-                    Pred =>
-                      New_Universal_Quantif
-                        (Variables => Binders,
-                         Var_Type  => +EW_Int_Type,
-                         Pred      => Elt_Pred));
+               T := Transform_Slice_Expr (Domain, Expr, Expr_Type, Params);
                Current_Type := EW_Abstract (Expr_Type);
             end;
 
@@ -3498,6 +3434,87 @@ package body Gnat2Why.Expr is
       pragma Assert (No (Association));
       return Result;
    end Transform_Record_Component_Associations;
+
+   --------------------------
+   -- Transform_Slice_Expr --
+   --------------------------
+
+   function Transform_Slice_Expr
+     (Domain    : EW_Domain;
+      Expr      : Node_Id;
+      Expr_Type : Entity_Id;
+      Params    : Translation_Params) return W_Expr_Id
+   is
+      Slice_Type : constant Entity_Id := Type_Of_Node (Prefix (Expr));
+      Id         : constant W_Identifier_Id :=
+                     (if Domain = EW_Term then
+                        New_Temp_Identifier
+                      else To_Ident (WNE_Result));
+      BT         : constant W_Base_Type_Id :=
+                     +Why_Logic_Type_Of_Ada_Type (Expr_Type);
+      Num_Dim    : constant Pos  := Number_Dimensions (Expr_Type);
+      Indexes    : constant W_Expr_Array (1 .. Positive (Num_Dim)) :=
+                     (others => +New_Temp_Identifier);
+      Binders    : W_Identifier_Array (1 .. Positive (Num_Dim));
+      Range_Pred : constant W_Expr_Id :=
+                     Transform_Discrete_Choice
+                       (Choice => Discrete_Range (Expr),
+                        Expr   => Indexes (1),
+                        Domain => EW_Pred,
+                        Params => Params);
+
+      Comp_Type  : constant Node_Id := Component_Type (Expr_Type);
+      Elmt_Type  : constant W_Base_Type_Id :=
+                     +Why_Logic_Type_Of_Ada_Type (Comp_Type);
+
+      Left       : constant W_Expr_Id :=
+                     New_Array_Access
+                       (Ada_Node  => Expr,
+                        Domain    => EW_Term,
+                        Ty_Entity => Expr_Type,
+                        Ar        => +Id,
+                        Index     => Indexes,
+                        Dimension => Num_Dim);
+      Right      : constant W_Expr_Id :=
+                     New_Array_Access
+                       (Ada_Node  => Expr,
+                        Domain    => EW_Term,
+                        Ty_Entity => Slice_Type,
+                        Ar        =>
+                          +Transform_Expr
+                            (Prefix (Expr),
+                             EW_Prog,
+                             Params => Params),
+                        Index     => Indexes,
+                        Dimension => Num_Dim);
+      Then_Part  : constant W_Expr_Id :=
+                     New_Comparison
+                       (Cmp       => EW_Eq,
+                        Left      => Left,
+                        Right     => Right,
+                        Arg_Types => Elmt_Type,
+                        Domain    => EW_Pred);
+      Else_Part  : constant W_Expr_Id :=
+                     New_Literal (Value  => EW_True,
+                                  Domain => EW_Pred);
+      Elt_Pred   : constant W_Pred_OId :=
+                     New_Conditional
+                       (Condition => Range_Pred,
+                        Then_Part => Then_Part,
+                        Else_Part => Else_Part);
+   begin
+      for J in Indexes'Range loop
+         Binders (J) := +Indexes (J);
+      end loop;
+
+      return +New_Simpl_Any_Prog
+        (T    => +BT,
+         Pred =>
+           New_Universal_Quantif
+             (Variables => Binders,
+              Var_Type  => +EW_Int_Type,
+              Pred      => Elt_Pred));
+   end Transform_Slice_Expr;
 
    -------------------------
    -- Transform_Statement --
