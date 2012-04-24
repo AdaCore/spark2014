@@ -200,17 +200,18 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
-   procedure Transform_Array_Aggregate
+   procedure Transform_Array_Value
      (Params : Translation_Params;
       Typ    : Entity_Id;
       Id   : W_Identifier_Id;
       Expr : Node_Id);
-   --  Transform an aggregate Expr into the equivalent Why terms, both with and
-   --  w/o references allowed. The results of this translation are stored in
-   --  Ada_To_Why_Term, so that the necessary function and axiom are generated
-   --  only once per source aggregate.
+   --  Transform an expression Expr that specifies an array value
+   --  (either a slice or an aggregrate) into the equivalent Why terms,
+   --  both with and w/o references allowed. The results of this translation
+   --  are stored in Ada_To_Why_Term, so that the necessary function and
+   --  axiom are generated only once per source aggregate.
    --
-   --  A logic function F is generated to replace the aggregate with a call. It
+   --  A logic function F is generated to replace the value with a call. It
    --  takes in parameters all values of references used in the aggregate:
    --     function F (<params>) : <type of aggregate>
    --
@@ -1330,11 +1331,11 @@ package body Gnat2Why.Expr is
       end loop;
    end Transform_Actions_Preparation;
 
-   -------------------------------
-   -- Transform_Array_Aggregate --
-   -------------------------------
+   ---------------------------
+   -- Transform_Array_Value --
+   ---------------------------
 
-   procedure Transform_Array_Aggregate
+   procedure Transform_Array_Value
      (Params : Translation_Params;
       Typ    : Entity_Id;
       Id     : W_Identifier_Id;
@@ -1485,7 +1486,7 @@ package body Gnat2Why.Expr is
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;
       end if;
-   end Transform_Array_Aggregate;
+   end Transform_Array_Value;
 
    --------------------------------------------
    -- Transform_Array_Component_Associations --
@@ -2442,7 +2443,7 @@ package body Gnat2Why.Expr is
       end if;
 
       case Nkind (Expr) is
-         when N_Aggregate =>
+         when N_Aggregate | N_Slice =>
             declare
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
             begin
@@ -2466,12 +2467,12 @@ package body Gnat2Why.Expr is
                                New_Temp_Identifier
                              else To_Ident (WNE_Result));
                      BT : constant W_Base_Type_Id :=
-                                   +Why_Logic_Type_Of_Ada_Type (Expr_Type);
+                            +Why_Logic_Type_Of_Ada_Type (Expr_Type);
                   begin
                      if Domain = EW_Term then
                         if not (Ada_To_Why_Term (Params.Ref_Allowed).
                                    Contains (Expr)) then
-                           Transform_Array_Aggregate
+                           Transform_Array_Value
                              (Params, Expr_Type, Id, Expr);
                         end if;
                         T := +Ada_To_Why_Term (Params.Ref_Allowed).
@@ -2481,7 +2482,7 @@ package body Gnat2Why.Expr is
                         T := +New_Simpl_Any_Prog
                           (T => +BT,
                            Pred     =>
-                             Transform_Array_Component_Associations
+                             New_Array_Pred
                                (Expr,
                                 Expr_Type,
                                 Id,
@@ -2489,34 +2490,6 @@ package body Gnat2Why.Expr is
                      end if;
                      Current_Type := EW_Abstract (Expr_Type);
                   end;
-               end if;
-            end;
-
-         when N_Slice =>
-            declare
-               Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
-               BT        : constant W_Base_Type_Id :=
-                             +Why_Logic_Type_Of_Ada_Type (Expr_Type);
-               Id        : constant W_Identifier_Id :=
-                             (if Domain = EW_Term then
-                                New_Temp_Identifier
-                             else To_Ident (WNE_Result));
-            begin
-               if Domain = EW_Term then
-                  if not (Ada_To_Why_Term (Params.Ref_Allowed).
-                          Contains (Expr)) then
-                     Transform_Array_Aggregate (Params, Expr_Type, Id, Expr);
-                  end if;
-
-                  T := +Ada_To_Why_Term (Params.Ref_Allowed).Element (Expr);
-               else
-                  pragma Assert (Domain = EW_Prog);
-                  T :=
-                    +New_Simpl_Any_Prog
-                      (T    => +BT,
-                       Pred =>
-                         New_Slice_Pred (Expr, Expr_Type, Id, Params));
-                  Current_Type := EW_Abstract (Expr_Type);
                end if;
             end;
 
