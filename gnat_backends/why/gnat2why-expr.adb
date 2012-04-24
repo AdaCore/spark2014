@@ -200,7 +200,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
-   procedure Transform_Array_Value
+   procedure Transform_Array_Value_To_Term
      (Params : Translation_Params;
       Typ    : Entity_Id;
       Id   : W_Identifier_Id;
@@ -220,17 +220,20 @@ package body Gnat2Why.Expr is
    --        forall R:<type of aggregate>. forall <params>.
    --           R = F(<params>) -> <predicate for the aggregate R>
 
-   function New_Slice_Pred
-     (Expr      : Node_Id;
-      Expr_Type : Entity_Id;
-      Id        : W_Identifier_Id;
-      Params    : Translation_Params) return W_Pred_Id;
-
-   function New_Array_Pred
+   function Transform_Array_Value_To_Pred
      (Expr        : Node_Id;
       Typ         : Entity_Id;
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id;
+   --  Same as Transform_Array_Value_To_Term, but for generating a predicate
+   --  that expresses the value.
+
+   function Transform_Slice_To_Pred
+     (Expr      : Node_Id;
+      Expr_Type : Entity_Id;
+      Id        : W_Identifier_Id;
+      Params    : Translation_Params) return W_Pred_Id;
+   --  Specialization of Transform_Array_Value_To_Pred for slices
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
@@ -1331,11 +1334,11 @@ package body Gnat2Why.Expr is
       end loop;
    end Transform_Actions_Preparation;
 
-   ---------------------------
-   -- Transform_Array_Value --
-   ---------------------------
+   -----------------------------------
+   -- Transform_Array_Value_To_Term --
+   -----------------------------------
 
-   procedure Transform_Array_Value
+   procedure Transform_Array_Value_To_Term
      (Params : Translation_Params;
       Typ    : Entity_Id;
       Id     : W_Identifier_Id;
@@ -1364,7 +1367,7 @@ package body Gnat2Why.Expr is
          Ref_Allowed => True,
          Name_Map    => Params.Name_Map);
       Pred_With_Refs : constant W_Pred_Id :=
-                         New_Array_Pred
+                         Transform_Array_Value_To_Pred
                            (Expr,
                             Typ,
                             Id,
@@ -1477,7 +1480,7 @@ package body Gnat2Why.Expr is
             Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
             Pre         => +Id_Expr,
             Def         =>
-              New_Array_Pred
+              Transform_Array_Value_To_Pred
                 (Expr,
                  Typ,
                  Id,
@@ -1486,7 +1489,7 @@ package body Gnat2Why.Expr is
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;
       end if;
-   end Transform_Array_Value;
+   end Transform_Array_Value_To_Term;
 
    --------------------------------------------
    -- Transform_Array_Component_Associations --
@@ -1754,11 +1757,11 @@ package body Gnat2Why.Expr is
          Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
    end Transform_Array_Component_Associations;
 
-   --------------------
-   -- New_Array_Pred --
-   --------------------
+   -----------------------------------
+   -- Transform_Array_Value_To_Pred --
+   -----------------------------------
 
-   function New_Array_Pred
+   function Transform_Array_Value_To_Pred
      (Expr        : Node_Id;
       Typ         : Entity_Id;
       Id          : W_Identifier_Id;
@@ -1768,7 +1771,7 @@ package body Gnat2Why.Expr is
       case Nkind (Expr) is
          when N_Slice =>
             return
-              New_Slice_Pred
+              Transform_Slice_To_Pred
                 (Expr,
                  Typ,
                  Id,
@@ -1783,7 +1786,7 @@ package body Gnat2Why.Expr is
          when others =>
             raise Not_Implemented;
       end case;
-   end New_Array_Pred;
+   end Transform_Array_Value_To_Pred;
 
    ------------------------------------
    -- Transform_Assignment_Statement --
@@ -2472,7 +2475,7 @@ package body Gnat2Why.Expr is
                      if Domain = EW_Term then
                         if not (Ada_To_Why_Term (Params.Ref_Allowed).
                                    Contains (Expr)) then
-                           Transform_Array_Value
+                           Transform_Array_Value_To_Term
                              (Params, Expr_Type, Id, Expr);
                         end if;
                         T := +Ada_To_Why_Term (Params.Ref_Allowed).
@@ -2482,7 +2485,7 @@ package body Gnat2Why.Expr is
                         T := +New_Simpl_Any_Prog
                           (T => +BT,
                            Pred     =>
-                             New_Array_Pred
+                             Transform_Array_Value_To_Pred
                                (Expr,
                                 Expr_Type,
                                 Id,
@@ -3465,11 +3468,11 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Record_Component_Associations;
 
-   --------------------
-   -- New_Slice_Pred --
-   --------------------
+   -----------------------------
+   -- Transform_Slice_To_Pred --
+   -----------------------------
 
-   function New_Slice_Pred
+   function Transform_Slice_To_Pred
      (Expr      : Node_Id;
       Expr_Type : Entity_Id;
       Id        : W_Identifier_Id;
@@ -3489,7 +3492,6 @@ package body Gnat2Why.Expr is
       Comp_Type  : constant Node_Id := Component_Type (Expr_Type);
       Elmt_Type  : constant W_Base_Type_Id :=
                      +Why_Logic_Type_Of_Ada_Type (Comp_Type);
-
       Left       : constant W_Expr_Id :=
                      New_Array_Access
                        (Ada_Node  => Expr,
@@ -3517,14 +3519,10 @@ package body Gnat2Why.Expr is
                         Right     => Right,
                         Arg_Types => Elmt_Type,
                         Domain    => EW_Pred);
-      Else_Part  : constant W_Expr_Id :=
-                     New_Literal (Value  => EW_True,
-                                  Domain => EW_Pred);
       Elt_Pred   : constant W_Pred_OId :=
                      New_Conditional
                        (Condition => Range_Pred,
-                        Then_Part => Then_Part,
-                        Else_Part => Else_Part);
+                        Then_Part => Then_Part);
    begin
       for J in Indexes'Range loop
          Binders (J) := +Indexes (J);
@@ -3535,7 +3533,7 @@ package body Gnat2Why.Expr is
           (Variables => Binders,
            Var_Type  => +EW_Int_Type,
            Pred      => Elt_Pred);
-   end New_Slice_Pred;
+   end Transform_Slice_To_Pred;
 
    -------------------------
    -- Transform_Statement --
