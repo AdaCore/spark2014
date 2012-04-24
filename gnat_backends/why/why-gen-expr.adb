@@ -103,6 +103,7 @@ package body Why.Gen.Expr is
                   N := Entity (A);
                when N_String_Literal     |
                     N_Aggregate          |
+                    N_Slice              |
                     N_Entity             =>
                   N := A;
                when N_Object_Declaration =>

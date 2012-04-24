@@ -429,7 +429,9 @@ package body Why.Inter is
 
       function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
       begin
-         if Nkind (E) = N_String_Literal or else Nkind (E) = N_Aggregate then
+         if Nkind (E) = N_String_Literal
+           or else Nkind (E) = N_Aggregate
+           or else Nkind (E) = N_Slice then
             return EW_Import;
          end if;
          return EW_Clone_Default;
@@ -441,7 +443,9 @@ package body Why.Inter is
 
       function Name_Of_Node (N : Node_Id) return String is
       begin
-         if Nkind (N) = N_String_Literal or else Nkind (N) = N_Aggregate then
+         if Nkind (N) = N_String_Literal
+           or else Nkind (N) = N_Aggregate
+           or else Nkind (N) = N_Slice then
             return New_Str_Lit_Ident (N);
          end if;
          return Full_Name (N);
@@ -575,7 +579,10 @@ package body Why.Inter is
    function Dispatch_Entity (E : Entity_Id) return Why_File_Enum
    is
    begin
-      if Nkind (E) = N_String_Literal or else Nkind (E) = N_Aggregate then
+      if Nkind (E) = N_String_Literal
+        or else Nkind (E) = N_Aggregate
+        or else Nkind (E) = N_Slice
+      then
          if In_Main_Unit_Spec (E) then
             return WF_Context_In_Spec;
          else
