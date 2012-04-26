@@ -7,6 +7,18 @@ evoting.adb:152:27: info: index check proved
 evoting.adb:155:21: info: overflow check proved
 evoting.adb:155:21: info: range check proved
 evoting.adb:155:31: info: index check proved
+evoting.adb:171:54: overflow check not proved
+evoting.adb:171:73: info: loop invariant initialization proved
+evoting.adb:171:73: info: loop invariant preservation proved
+evoting.adb:174:13: info: index check proved
+evoting.adb:175:13: info: precondition proved
+evoting.adb:177:16: info: index check proved
+evoting.adb:178:16: info: index check proved
+evoting.adb:178:41: info: index check proved
+evoting.adb:178:63: info: overflow check proved
+evoting.adb:178:63: info: range check proved
+evoting.adb:179:51: info: overflow check proved
+evoting.adb:179:51: info: range check proved
 evoting.adb:202:7: info: index check proved
 evoting.adb:204:56: info: range check proved
 evoting.adb:205:7: info: index check proved
@@ -55,6 +67,22 @@ evoting.adb:284:14: info: range check proved
 evoting.adb:284:7: info: precondition proved
 evoting.adb:286:29: info: range check proved
 evoting.adb:286:7: info: precondition proved
+evoting.adb:38:74: info: range check proved
+evoting.adb:45:33: info: loop invariant initialization proved
+evoting.adb:45:33: info: loop invariant preservation proved
+evoting.adb:46:42: info: loop invariant initialization proved
+evoting.adb:46:42: info: loop invariant preservation proved
+evoting.adb:47:13: info: index check proved
+evoting.adb:47:33: info: range check proved
+evoting.adb:52:7: info: index check proved
+evoting.adb:53:34: info: range check proved
+evoting.adb:56:53: info: loop invariant initialization proved
+evoting.adb:56:53: info: loop invariant preservation proved
+evoting.adb:58:10: index check not proved
+evoting.adb:60:49: info: overflow check proved
+evoting.adb:60:49: info: range check proved
+evoting.adb:64:43: info: overflow check proved
+evoting.adb:64:43: info: range check proved
 evoting.adb:73:14: info: index check proved
 evoting.adb:79:34: info: loop invariant initialization proved
 evoting.adb:79:34: info: loop invariant preservation proved
@@ -71,4 +99,8 @@ evoting.ads:108:43: index check not proved
 evoting.ads:110:13: postcondition not proved
 evoting.ads:111:45: info: overflow check proved
 evoting.ads:112:19: index check not proved
+evoting.ads:54:14: postcondition not proved
+evoting.ads:56:29: index check not proved
 evoting.ads:88:53: info: index check proved
+evoting.ads:93:11: info: index check proved
+evoting.ads:94:7: postcondition not proved
