@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;

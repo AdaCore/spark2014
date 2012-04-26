@@ -26,7 +26,6 @@
 with Why.Conversions; use Why.Conversions;
 with Why.Gen.Names;   use Why.Gen.Names;
 with Why.Gen.Decl;    use Why.Gen.Decl;
-with Why.Gen.Preds;   use Why.Gen.Preds;
 with Why.Gen.Progs;   use Why.Gen.Progs;
 with Why.Inter;          use Why.Inter;
 
@@ -38,10 +37,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Computation_Type_Id;
 
    function New_Binders
@@ -242,10 +239,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Computation_Type_Id is
    begin
       return New_Computation_Type
@@ -316,10 +311,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id is
    begin
       return New_Function_Decl
@@ -347,10 +340,8 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id
    is
       RT : constant W_Primitive_Type_Id :=
@@ -515,7 +506,7 @@ package body Why.Gen.Binders is
                      end if;
 
                      if Spec (S).Pre = Why_Empty then
-                        Spec (S).Pre := New_Literal (Value => EW_True);
+                        Spec (S).Pre := True_Pred;
                      end if;
 
                      if Spec (S).Post = Why_Empty then
@@ -532,7 +523,7 @@ package body Why.Gen.Binders is
                                 Op      => EW_Eq,
                                 Right   => +To_Ident (WNE_Result));
                         else
-                           Spec (S).Post := New_Literal (Value => EW_True);
+                           Spec (S).Post := True_Pred;
                         end if;
                      end if;
 
@@ -590,11 +581,11 @@ package body Why.Gen.Binders is
                      end if;
 
                      if Spec (S).Pre = Why_Empty then
-                        Spec (S).Pre := New_Literal (Value => EW_True);
+                        Spec (S).Pre := True_Pred;
                      end if;
 
                      if Spec (S).Post = Why_Empty then
-                        Spec (S).Post := New_Literal (Value => EW_True);
+                        Spec (S).Post := True_Pred;
                      end if;
 
                      Emit

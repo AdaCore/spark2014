@@ -28,13 +28,16 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
+with Why.Gen.Preds;       use Why.Gen.Preds;
 
 package Why.Gen.Progs is
 
+   True_Prog  : constant W_Prog_Id := New_Literal (Value => EW_True);
+   False_Prog : constant W_Prog_Id := New_Literal (Value => EW_False);
+
    function New_Assume_Statement
      (Ada_Node    : Node_Id;
-      Pre         : W_Pred_Id := New_Literal (Value  => EW_True);
-
+      Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Primitive_Type_Id :=
                        New_Base_Type (Base_Type => EW_Unit))

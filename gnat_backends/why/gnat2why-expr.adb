@@ -55,6 +55,7 @@ with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
@@ -1542,8 +1543,7 @@ package body Gnat2Why.Expr is
          if Nkind (Expr_Or_Association) = N_Component_Association
            and then Box_Present (Expr_Or_Association)
          then
-            return New_Literal (Value  => EW_True,
-                                Domain => EW_Pred);
+            return +True_Pred;
          else
             Expr :=
               (if Nkind (Expr_Or_Association) =
@@ -1626,8 +1626,7 @@ package body Gnat2Why.Expr is
         (Dim : Pos;
          L   : List_Id) return W_Expr_Id
       is
-         Result : W_Expr_Id := New_Literal (Value  => EW_False,
-                                            Domain => EW_Pred);
+         Result : W_Expr_Id := +False_Pred;
          Choice : Node_Id   := First (L);
       begin
          while Present (Choice) loop
@@ -1657,8 +1656,7 @@ package body Gnat2Why.Expr is
          Assocs      : constant List_Id := Component_Associations (Expr);
          Association : Node_Id;
          Expression  : Node_Id;
-         Else_Part   : W_Expr_Id := New_Literal (Value  => EW_True,
-                                                 Domain => EW_Pred);
+         Else_Part   : W_Expr_Id := +True_Pred;
          Assocs_Len  : Nat;
 
       begin
@@ -1851,7 +1849,7 @@ package body Gnat2Why.Expr is
             Domain   => EW_Pred,
             Op_Type  => EW_Bool,
             Left     => +Transform_Attribute_Old (Expr, EW_Term, Params),
-            Right    => New_Literal (Value => EW_True, Domain => EW_Term),
+            Right    => +True_Term,
             Op       => EW_Eq);
       elsif Params.Phase in Generate_VCs then
          return +Name_For_Old (Expr);
@@ -2432,7 +2430,7 @@ package body Gnat2Why.Expr is
               Op_Type  => EW_Bool,
               Left     =>
               +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Params),
-              Right    => New_Literal (Value => EW_True, Domain => EW_Prog),
+              Right    => +True_Prog,
               Op       => EW_Eq);
       end if;
 
@@ -3188,7 +3186,7 @@ package body Gnat2Why.Expr is
          Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
       then
          Runtime := New_Void (Stmt);
-         return New_Literal (Value => EW_True);
+         return True_Pred;
       end if;
 
       if Present (Expr) then
@@ -3333,8 +3331,7 @@ package body Gnat2Why.Expr is
                               Op_Type  => EW_Bool,
                               Left     => +To_Ident (WNE_Result),
                               Op       => EW_Eq,
-                              Right    => New_Literal (Value  => EW_True,
-                                                       Domain => EW_Term)),
+                              Right    => +True_Term),
                          Op       => EW_Equivalent,
                          Right    =>
                            +Transform_Expr (Expr, EW_Pred, Params)))));

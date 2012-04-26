@@ -41,7 +41,7 @@ package body Why.Gen.Progs is
 
    function New_Assume_Statement
      (Ada_Node    : Node_Id;
-      Pre         : W_Pred_Id := New_Literal (Value  => EW_True);
+      Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Primitive_Type_Id :=
         New_Base_Type (Base_Type => EW_Unit))

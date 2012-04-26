@@ -28,6 +28,7 @@ with Why.Conversions;           use Why.Conversions;
 with Why.Gen.Decl;              use Why.Gen.Decl;
 with Why.Gen.Names;             use Why.Gen.Names;
 with Why.Sinfo;                 use Why.Sinfo;
+with Why.Gen.Terms;             use Why.Gen.Terms;
 
 package body Why.Gen.Records is
 
@@ -61,10 +62,8 @@ package body Why.Gen.Records is
       Def         : constant W_Term_Id :=
                       New_Conditional
                         (Condition   => +Cond,
-                         Then_Part   => New_Literal (Value  => EW_True,
-                                                     Domain => EW_Term),
-                         Else_Part   => New_Literal (Value  => EW_False,
-                                                     Domain => EW_Term));
+                         Then_Part   => +True_Term,
+                         Else_Part   => +False_Term);
    begin
       Emit (Theory,
         New_Record_Definition (Name    => Ty_Ident,

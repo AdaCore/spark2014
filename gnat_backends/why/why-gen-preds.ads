@@ -23,12 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Atree.Builders; use Why.Atree.Builders;
 
 package Why.Gen.Preds is
 
    --  This package provides facilities to manipulate Why predicates
+
+   False_Pred : constant W_Pred_Id := New_Literal (Value  => EW_False);
+   True_Pred  : constant W_Pred_Id := New_Literal (Value  => EW_True);
 
    procedure Define_Range_Predicate
      (Theory    : W_Theory_Declaration_Id;

@@ -35,6 +35,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
 
@@ -83,7 +84,7 @@ package body Gnat2Why.Expr.Loops is
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
    begin
-      Pred := New_Literal (Value => EW_True);
+      Pred := True_Pred;
       Inv_Check := New_Void;
       Split_Node := Empty;
 
@@ -224,7 +225,7 @@ package body Gnat2Why.Expr.Loops is
          return
             Wrap_Loop
                (Loop_Body => Loop_Content,
-                Condition => New_Literal (Value => EW_True),
+                Condition => True_Prog,
                 Loop_Name => Loop_Name,
                 Invariant => Invariant,
                 Inv_Check => Inv_Check,
@@ -429,7 +430,7 @@ package body Gnat2Why.Expr.Loops is
                                 (Name => New_Identifier (Name => Loop_Name))));
       Loop_Stmt   : constant W_Prog_Id :=
                       New_While_Loop
-                        (Condition   => New_Literal (Value => EW_True),
+                        (Condition   => True_Prog,
                          Annotation  =>
                            New_Loop_Annot
                              (Invariant =>

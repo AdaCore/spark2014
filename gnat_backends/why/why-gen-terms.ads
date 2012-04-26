@@ -23,12 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;          use Why.Ids;
-with Why.Types;        use Why.Types;
-with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
+with Why.Ids;            use Why.Ids;
+with Why.Types;          use Why.Types;
+with Why.Sinfo;          use Why.Sinfo;
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Why.Atree.Builders; use Why.Atree.Builders;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
+
+   True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
+   False_Term : constant W_Term_Id := New_Literal (Value => EW_False);
 
    function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set;
    --  Return a list of the variables dereferenced in T

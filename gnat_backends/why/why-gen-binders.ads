@@ -34,6 +34,7 @@ pragma Warnings (On);
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Ids;            use Why.Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Preds;      use Why.Gen.Preds;
 
 package Why.Gen.Binders is
    --  This package provides operations to build binders in program space
@@ -91,10 +92,8 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id;
 
    function New_Function_Def
@@ -104,10 +103,8 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Pre         : W_Pred_Id :=
-                      New_Literal (Value => EW_True);
-      Post        : W_Pred_Id :=
-                      New_Literal (Value => EW_True))
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id;
 
    function New_Record_Definition

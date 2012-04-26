@@ -23,9 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
