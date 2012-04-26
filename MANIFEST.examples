@@ -6,6 +6,7 @@ intro
 invert_injection
 max_and_sum
 model_transform
+natural
 n_queens
 painting
 ring_buffer
