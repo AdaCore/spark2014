@@ -613,13 +613,6 @@ package body Why.Inter is
                   return WF_Types_In_Spec;
                end if;
             end;
---  =======
---              if In_Main_Unit_Body (E) then
---                 return WF_Types_In_Body;
---              else
---                 return WF_Types_In_Spec;
---              end if;
---  >>>>>>> for containers
 
          when others =>
             raise Program_Error;
