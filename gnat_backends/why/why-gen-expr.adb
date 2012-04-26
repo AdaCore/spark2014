@@ -675,7 +675,7 @@ package body Why.Gen.Expr is
          return
             New_Label
               (Ada_Node => Ada_Node,
-               Name     => New_Located_Label (Ada_Node, Reason),
+               Labels     => New_Located_Label (Ada_Node, Reason),
                Def      => Expr,
                Domain   => Domain);
       else
@@ -688,7 +688,7 @@ package body Why.Gen.Expr is
    -----------------------
 
    function New_Located_Label (N : Node_Id; Reason : VC_Kind)
-      return W_Identifier_Id
+      return W_Identifier_Array
    is
 
       --  A gnatprove label in Why3 has the following form
@@ -716,7 +716,7 @@ package body Why.Gen.Expr is
         """gnatprove:" & VC_Kind'Image (Reason) & ":" & Cur_Subp_Sloc & """" &
         " ""keep_on_simp""";
    begin
-      return New_Identifier (Name => Label);
+      return (1 => New_Identifier (Name => Label));
    end New_Located_Label;
 
    -----------------

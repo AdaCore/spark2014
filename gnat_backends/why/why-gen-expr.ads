@@ -94,7 +94,7 @@ package Why.Gen.Expr is
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
    function New_Located_Label (N : Node_Id; Reason : VC_Kind)
-      return W_Identifier_Id;
+      return W_Identifier_Array;
    --  Generate a label for the given Ada node.
    --
    --  This means: associate a fresh Why Identifier to the source location of

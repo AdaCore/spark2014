@@ -526,7 +526,7 @@ package body Gnat2Why.Subprograms is
          return Cur_Spec;
       else
          return New_Label (Domain => Domain,
-                           Name   => To_Ident (WNE_AutoGen),
+                           Labels => (1 => To_Ident (WNE_AutoGen)),
                            Def    =>
                              New_Literal (Value  => EW_True,
                                           Domain => Domain));

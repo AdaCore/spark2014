@@ -374,7 +374,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Label,
-                 "Name", "W_Identifier", Id_One);
+                 "Labels", "W_Identifier", Id_Some);
       New_Field (W_Label,
                  "Def", "W_Expr", Id_One);
 
