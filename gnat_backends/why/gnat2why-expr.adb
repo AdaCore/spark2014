@@ -3530,7 +3530,7 @@ package body Gnat2Why.Expr is
    is
       Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
       Slice_Type : constant Entity_Id := Type_Of_Node (Prefix (Expr));
-      Num_Dim    : constant Pos  := Number_Dimensions (Expr_Type);
+      Num_Dim    : constant Pos := Number_Dimensions (Expr_Type);
       Indexes    : constant W_Expr_Array (1 .. Positive (Num_Dim)) :=
                      (others => +New_Temp_Identifier);
       Binders    : W_Identifier_Array (1 .. Positive (Num_Dim));
