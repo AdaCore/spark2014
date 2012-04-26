@@ -202,7 +202,6 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Array_Value_To_Term
      (Params : Translation_Params;
-      Typ    : Entity_Id;
       Id   : W_Identifier_Id;
       Expr : Node_Id);
    --  Transform an expression Expr that specifies an array value
@@ -222,7 +221,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Array_Value_To_Pred
      (Expr        : Node_Id;
-      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id;
    --  Same as Transform_Array_Value_To_Term, but for generating a predicate
@@ -230,7 +228,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Slice_To_Pred
      (Expr      : Node_Id;
-      Expr_Type : Entity_Id;
       Id        : W_Identifier_Id;
       Params    : Translation_Params) return W_Pred_Id;
    --  Specialization of Transform_Array_Value_To_Pred for slices
@@ -275,7 +272,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Array_Component_Associations
      (Expr        : Node_Id;
-      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id;
 
@@ -1340,11 +1336,11 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Array_Value_To_Term
      (Params : Translation_Params;
-      Typ    : Entity_Id;
       Id     : W_Identifier_Id;
       Expr   : Node_Id)
    is
 
+      Typ  : constant Entity_Id := Type_Of_Node (Expr);
       Name : constant String := New_Str_Lit_Ident (Expr);
       Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
                                                          Ada_Node => Expr);
@@ -1369,7 +1365,6 @@ package body Gnat2Why.Expr is
       Pred_With_Refs : constant W_Pred_Id :=
                          Transform_Array_Value_To_Pred
                            (Expr,
-                            Typ,
                             Id,
                             Params_Ref);
       Refs           : constant Node_Sets.Set :=
@@ -1482,7 +1477,6 @@ package body Gnat2Why.Expr is
             Def         =>
               Transform_Array_Value_To_Pred
                 (Expr,
-                 Typ,
                  Id,
                  Params_No_Ref)));
       Close_Theory (Decl_File, Filter_Entity => Expr);
@@ -1497,10 +1491,10 @@ package body Gnat2Why.Expr is
 
    function Transform_Array_Component_Associations
      (Expr        : Node_Id;
-      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id
    is
+      Typ     : constant Entity_Id := Type_Of_Node (Expr);
       T_Name  : constant Entity_Id := Type_Of_Node (Typ);
       Num_Dim : constant Pos := Number_Dimensions (Typ);
       Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
@@ -1763,7 +1757,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Array_Value_To_Pred
      (Expr        : Node_Id;
-      Typ         : Entity_Id;
       Id          : W_Identifier_Id;
       Params      : Translation_Params) return W_Pred_Id
    is
@@ -1773,14 +1766,12 @@ package body Gnat2Why.Expr is
             return
               Transform_Slice_To_Pred
                 (Expr,
-                 Typ,
                  Id,
                  Params);
          when N_Aggregate =>
             return
               Transform_Array_Component_Associations
                 (Expr,
-                 Typ,
                  Id,
                  Params);
          when others =>
@@ -2476,7 +2467,7 @@ package body Gnat2Why.Expr is
                         if not (Ada_To_Why_Term (Params.Ref_Allowed).
                                    Contains (Expr)) then
                            Transform_Array_Value_To_Term
-                             (Params, Expr_Type, Id, Expr);
+                             (Params, Id, Expr);
                         end if;
                         T := +Ada_To_Why_Term (Params.Ref_Allowed).
                           Element (Expr);
@@ -2487,7 +2478,6 @@ package body Gnat2Why.Expr is
                            Pred     =>
                              Transform_Array_Value_To_Pred
                                (Expr,
-                                Expr_Type,
                                 Id,
                                 Params));
                      end if;
@@ -3474,10 +3464,10 @@ package body Gnat2Why.Expr is
 
    function Transform_Slice_To_Pred
      (Expr      : Node_Id;
-      Expr_Type : Entity_Id;
       Id        : W_Identifier_Id;
       Params    : Translation_Params) return W_Pred_Id
    is
+      Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
       Slice_Type : constant Entity_Id := Type_Of_Node (Prefix (Expr));
       Num_Dim    : constant Pos  := Number_Dimensions (Expr_Type);
       Indexes    : constant W_Expr_Array (1 .. Positive (Num_Dim)) :=
