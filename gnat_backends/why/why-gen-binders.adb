@@ -340,6 +340,7 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
+      Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id
@@ -354,6 +355,7 @@ package body Why.Gen.Binders is
       return New_Function_Def
         (Ada_Node  => Ada_Node,
          Domain    => Domain,
+         Labels    => Labels,
          Spec      =>
            +New_Function_Decl
              (Domain      => Domain,

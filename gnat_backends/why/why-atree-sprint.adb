@@ -1437,6 +1437,9 @@ package body Why.Atree.Sprint is
             P (O, "predicate ");
             Traverse (State, +Name);
 
+            P (O, " ");
+            Print_List (State, +Get_Labels (Node), " ");
+
             P (O, " (");
             Print_List (State, +Binders, ") (");
             PL (O, ") =");
@@ -1449,6 +1452,9 @@ package body Why.Atree.Sprint is
          when EW_Term =>
             P (O, "function ");
             Traverse (State, +Name);
+
+            P (O, " ");
+            Print_List (State, +Get_Labels (Node), " ");
 
             if not Is_Empty (+Binders) then
                P (O, " (");

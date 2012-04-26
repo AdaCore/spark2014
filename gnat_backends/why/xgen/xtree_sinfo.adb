@@ -647,6 +647,8 @@ package body Xtree_Sinfo is
                  "Spec", "W_Function_Decl", Id_One);
       New_Field (W_Function_Def,
                  "Def", "W_Expr", Id_One);
+      New_Field (W_Function_Def,
+                 "Labels", "W_Identifier", Id_Set);
 
       -------------
       -- W_Axiom --
