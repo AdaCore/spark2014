@@ -421,6 +421,17 @@ package body Why.Gen.Names is
          & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
    end New_Temp_Identifier;
 
+   --------------------------
+   -- New_Temp_Identifiers --
+   --------------------------
+
+   function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array is
+      Result : constant W_Identifier_Array (1 .. Num) :=
+                 (others => +New_Temp_Identifier);
+   begin
+      return Result;
+   end New_Temp_Identifiers;
+
    -----------------------
    -- New_Str_Lit_Ident --
    -----------------------
@@ -505,6 +516,20 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Name => New_Str_Lit_Ident (N));
    end New_Str_Lit_Ident;
+
+   --------------
+   -- To_Exprs --
+   --------------
+
+   function To_Exprs (Ids : W_Identifier_Array) return W_Expr_Array is
+      Result : W_Expr_Array (Ids'Range);
+   begin
+      for J in Result'Range loop
+         Result (J) := +Ids (J);
+      end loop;
+
+      return Result;
+   end To_Exprs;
 
    ---------------
    -- To_String --

@@ -369,6 +369,49 @@ package body Why.Gen.Arrays is
                   Args   => (1 => +Ar))));
    end New_Array_Attr;
 
+   ---------------------------
+   --  New_Element_Equality --
+   ---------------------------
+
+   function New_Element_Equality
+     (Ada_Node   : Node_Id := Empty;
+      Left_Arr   : W_Expr_Id;
+      Left_Type  : Entity_Id;
+      Right_Arr  : W_Expr_Id;
+      Right_Type : Entity_Id;
+      Index      : W_Expr_Array;
+      Dimension  : Pos) return W_Pred_Id
+   is
+      Comp_Type  : constant Node_Id := Component_Type (Left_Type);
+      Elmt_Type  : constant W_Base_Type_Id :=
+                     +Why_Logic_Type_Of_Ada_Type (Comp_Type);
+      Left       : constant W_Expr_Id :=
+                     New_Array_Access
+                       (Ada_Node  => Ada_Node,
+                        Domain    => EW_Term,
+                        Ty_Entity => Left_Type,
+                        Ar        => Left_Arr,
+                        Index     => Index,
+                        Dimension => Dimension);
+      Right      : constant W_Expr_Id :=
+                     New_Array_Access
+                       (Ada_Node  => Ada_Node,
+                        Domain    => EW_Term,
+                        Ty_Entity => Right_Type,
+                        Ar        => Right_Arr,
+                        Index     => Index,
+                        Dimension => Dimension);
+      Result     : constant W_Pred_Id :=
+                     +New_Comparison
+                       (Domain    => EW_Pred,
+                        Cmp       => EW_Eq,
+                        Left      => Left,
+                        Right     => Right,
+                        Arg_Types => Elmt_Type);
+   begin
+      return Result;
+   end New_Element_Equality;
+
    ----------------------
    -- New_Array_Update --
    ----------------------

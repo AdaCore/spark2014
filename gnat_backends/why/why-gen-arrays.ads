@@ -83,4 +83,16 @@ package Why.Gen.Arrays is
        Domain    : EW_Domain;
        Dimension : Pos) return W_Expr_Id;
 
+   function New_Element_Equality
+     (Ada_Node   : Node_Id := Empty;
+      Left_Arr   : W_Expr_Id;
+      Left_Type  : Entity_Id;
+      Right_Arr  : W_Expr_Id;
+      Right_Type : Entity_Id;
+      Index      : W_Expr_Array;
+      Dimension  : Pos) return W_Pred_Id;
+   --  Return a predicate of the form:
+   --
+   --    <left_arr>[<index>] = <right_arr>[<index>]
+
 end Why.Gen.Arrays;

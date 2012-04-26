@@ -1074,7 +1074,7 @@ package body Gnat2Why.Expr is
 
                return Update_Expr;
 
-            when N_Selected_Component | N_Indexed_Component =>
+            when N_Selected_Component | N_Indexed_Component | N_Slice =>
                return
                   Compute_Rvalue
                     (Prefix (N),
@@ -1103,7 +1103,7 @@ package body Gnat2Why.Expr is
             when N_Identifier | N_Expanded_Name =>
                return To_Why_Id (Entity (N));
 
-            when N_Indexed_Component | N_Selected_Component =>
+            when N_Indexed_Component | N_Selected_Component | N_Slice =>
                return Why_Lvalue (Prefix (N));
 
             when others =>
@@ -1115,14 +1115,25 @@ package body Gnat2Why.Expr is
 
       --  begin processing for Transform_Assignment_Statement
 
-      W_Lvalue : constant W_Identifier_Id := Why_Lvalue (Lvalue);
+      W_Lvalue   : constant W_Identifier_Id := Why_Lvalue (Lvalue);
+      Value_Name : constant W_Identifier_Id := New_Temp_Identifier;
+      --  In the case of slices, the update operation is the construction
+      --  of an Any_Expr. To be able to use the value in the postcondition
+      --  of this Any_Expr, it needs to be valid in the logic space.
+      --  It is not the case in general. So it is binded to an identifier
+      --  Value_Name, which will be usable in the logic space.
    begin
       return
-         New_Assignment
-            (Ada_Node => Ada_Node,
-             Name     => W_Lvalue,
-             Value    =>
-               Compute_Rvalue (Lvalue, Expr));
+        New_Binding
+          (Ada_Node => Ada_Node,
+           Name     => Value_Name,
+           Def      => +Expr,
+           Context  =>
+             New_Assignment
+               (Ada_Node => Ada_Node,
+                Name     => W_Lvalue,
+                Value    =>
+                  Compute_Rvalue (Lvalue, +Value_Name)));
    end New_Assignment;
 
    ----------------------
@@ -1222,6 +1233,56 @@ package body Gnat2Why.Expr is
                                     Value     => Value,
                                     Domain    => Domain,
                                     Dimension => Dim);
+            end;
+
+         when N_Slice =>
+            declare
+               Expr_Type   : constant Entity_Id :=
+                               Type_Of_Node (Entity (Prefix (N)));
+               Dim         : constant Pos := Number_Dimensions (Expr_Type);
+               BT          : constant W_Base_Type_Id :=
+                               +Why_Logic_Type_Of_Ada_Type (Expr_Type);
+               Result_Id   : constant W_Identifier_Id := To_Ident (WNE_Result);
+               Binders     : constant W_Identifier_Array :=
+                               New_Temp_Identifiers (Positive (Dim));
+               Indexes     : constant W_Expr_Array := To_Exprs (Binders);
+               Range_Pred  : constant W_Expr_Id :=
+                               Transform_Discrete_Choice
+                                 (Choice => Discrete_Range (N),
+                                  Expr   => Indexes (1),
+                                  Domain => EW_Pred,
+                                  Params => Params);
+               In_Slice_Eq : constant W_Pred_Id :=
+                               New_Element_Equality
+                                 (Left_Arr   => +Result_Id,
+                                  Left_Type  => Expr_Type,
+                                  Right_Arr  => Value,
+                                  Right_Type => Expr_Type,
+                                  Index      => Indexes,
+                                  Dimension  => Dim);
+               Unchanged   : constant W_Pred_Id :=
+                               New_Element_Equality
+                                 (Left_Arr   => +Result_Id,
+                                  Left_Type  => Expr_Type,
+                                  Right_Arr  => Pref,
+                                  Right_Type => Expr_Type,
+                                  Index      => Indexes,
+                                  Dimension  => Dim);
+               Def         : constant W_Pred_Id :=
+                               New_Conditional
+                                 (Condition => Range_Pred,
+                                  Then_Part => +In_Slice_Eq,
+                                  Else_Part => +Unchanged);
+               Quantif     : constant W_Expr_Id :=
+                               New_Universal_Quantif
+                                 (Variables => Binders,
+                                  Var_Type  => +EW_Int_Type,
+                                  Pred      => Def);
+            begin
+               return
+                 +New_Simpl_Any_Prog
+                   (T => +BT,
+                    Pred => +Quantif);
             end;
 
          when others =>
@@ -1802,6 +1863,9 @@ package body Gnat2Why.Expr is
          case Nkind (Lvalue) is
             when N_Identifier | N_Expanded_Name =>
                return Type_Of_Node (Lvalue);
+
+            when N_Slice =>
+               return Type_Of_Node (Entity (Prefix (Lvalue)));
 
             when N_Indexed_Component =>
                return Type_Of_Node
@@ -3476,40 +3540,19 @@ package body Gnat2Why.Expr is
                         Expr   => Indexes (1),
                         Domain => EW_Pred,
                         Params => Params);
-      Comp_Type  : constant Node_Id := Component_Type (Expr_Type);
-      Elmt_Type  : constant W_Base_Type_Id :=
-                     +Why_Logic_Type_Of_Ada_Type (Comp_Type);
-      Left       : constant W_Expr_Id :=
-                     New_Array_Access
-                       (Ada_Node  => Expr,
-                        Domain    => EW_Term,
-                        Ty_Entity => Expr_Type,
-                        Ar        => +Id,
-                        Index     => Indexes,
-                        Dimension => Num_Dim);
-      Right      : constant W_Expr_Id :=
-                     New_Array_Access
-                       (Ada_Node  => Expr,
-                        Domain    => EW_Term,
-                        Ty_Entity => Slice_Type,
-                        Ar        =>
+      Elt_Equal  : constant W_Pred_Id :=
+                     New_Element_Equality
+                       (Ada_Node   => Expr,
+                        Left_Arr   => +Id,
+                        Left_Type  => Expr_Type,
+                        Right_Arr  =>
                           +Transform_Expr
                             (Prefix (Expr),
                              EW_Prog,
                              Params => Params),
-                        Index     => Indexes,
-                        Dimension => Num_Dim);
-      Then_Part  : constant W_Expr_Id :=
-                     New_Comparison
-                       (Cmp       => EW_Eq,
-                        Left      => Left,
-                        Right     => Right,
-                        Arg_Types => Elmt_Type,
-                        Domain    => EW_Pred);
-      Elt_Pred   : constant W_Pred_OId :=
-                     New_Conditional
-                       (Condition => Range_Pred,
-                        Then_Part => Then_Part);
+                        Right_Type => Slice_Type,
+                        Index      => Indexes,
+                        Dimension  => Num_Dim);
    begin
       for J in Indexes'Range loop
          Binders (J) := +Indexes (J);
@@ -3519,7 +3562,10 @@ package body Gnat2Why.Expr is
         New_Universal_Quantif
           (Variables => Binders,
            Var_Type  => +EW_Int_Type,
-           Pred      => Elt_Pred);
+           Pred      =>
+             New_Conditional
+               (Condition => Range_Pred,
+                Then_Part => +Elt_Equal));
    end Transform_Slice_To_Pred;
 
    -------------------------

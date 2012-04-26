@@ -93,6 +93,12 @@ package Why.Gen.Names is
    function New_Temp_Identifier return W_Identifier_Id;
    --  Return a new unique identifier
 
+   function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array;
+   --  Return an array of new unique identifiers with Num elements
+
+   function To_Exprs (Ids : W_Identifier_Array) return W_Expr_Array;
+   --  Conversion each element of Ids to exprs and return the result
+
    function New_Str_Lit_Ident (N : Node_Id) return W_Identifier_Id;
    function New_Str_Lit_Ident (N : Node_Id) return String;
    --  Return a new unique identifier whose name only depends on the node that
