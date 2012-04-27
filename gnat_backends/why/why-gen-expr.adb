@@ -288,7 +288,7 @@ package body Why.Gen.Expr is
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Loc);
             Result : constant String :=
-              File & ":" & Int_Image (Integer (Line));
+              """GP_Subp:" & File & ":" & Int_Image (Integer (Line)) & """";
          begin
             Subp_Sloc_Map.Insert (Uniq, Result);
             return Result;
@@ -693,16 +693,12 @@ package body Why.Gen.Expr is
 
       --  A gnatprove label in Why3 has the following form
       --
-      --  #"<filename>" linenumber columnnumber 0#
-      --   "gnatprove:<VC_Kind>:<Subp_Sloc>" "keep_on_simp"
+      --  "GP_Reason:VC_Kind"     - the kind of the VC
+      --  "GP_Subp:<Subp_Sloc>"   - the sloc of the subprogram
+      --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
+      --  VC
+      --  "keep_on_simp"          - tag that disallows simplifying this VC away
       --
-      --  The first part, between the #, is a location label, indicating an
-      --  Ada source location. The trailing 0 is needed because Why requires
-      --  an end column, but we don't need one.
-      --  The second part is a text label, which is used here to indicate the
-      --  reason for a VC. with prefix the text with "gnatprove:" so that Why3
-      --  can easily recognize the label as coming from gnatprove.
-
       --  For a node inside an instantiation, we use the location of the
       --  top-level instantiation. This could be refined in the future.
 
@@ -710,13 +706,16 @@ package body Why.Gen.Expr is
       File   : constant String := File_Name (Loc);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
       Column : constant Column_Number := Get_Column_Number (Loc);
-      Label : constant String :=
-        "#""" & File & """" & Physical_Line_Number'Image (Line) &
-        Column_Number'Image (Column) & " 0# " &
-        """gnatprove:" & VC_Kind'Image (Reason) & ":" & Cur_Subp_Sloc & """" &
-        " ""keep_on_simp""";
+      Sloc_S : constant String :=
+        File & ":" & Int_Image (Integer (Line)) & ":" &
+        Int_Image (Integer (Column));
    begin
-      return (1 => New_Identifier (Name => Label));
+      return
+        (1 => New_Identifier
+           (Name => """GP_Reason:" & VC_Kind'Image (Reason) & """"),
+         2 => New_Identifier (Name => Cur_Subp_Sloc),
+         3 => New_Identifier (Name => """GP_Sloc:" & Sloc_S & """"),
+         4 => New_Identifier (Name => """keep_on_simp"""));
    end New_Located_Label;
 
    -----------------
