@@ -1238,7 +1238,8 @@ package body Gnat2Why.Expr is
          when N_Slice =>
             declare
                Expr_Type   : constant Entity_Id :=
-                               Type_Of_Node (Entity (Prefix (N)));
+                               Type_Of_Node
+                                 (Unique_Entity (Etype (Prefix (N))));
                Dim         : constant Pos := Number_Dimensions (Expr_Type);
                BT          : constant W_Base_Type_Id :=
                                +Why_Logic_Type_Of_Ada_Type (Expr_Type);
@@ -1865,7 +1866,7 @@ package body Gnat2Why.Expr is
                return Type_Of_Node (Lvalue);
 
             when N_Slice =>
-               return Type_Of_Node (Entity (Prefix (Lvalue)));
+               return Type_Of_Node (Unique_Entity (Etype (Prefix (Lvalue))));
 
             when N_Indexed_Component =>
                return Type_Of_Node
