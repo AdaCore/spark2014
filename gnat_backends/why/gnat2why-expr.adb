@@ -1265,7 +1265,11 @@ package body Gnat2Why.Expr is
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
                                   Left_Type  => Expr_Type,
-                                  Right_Arr  => Pref,
+                                  Right_Arr  =>
+                                    +Transform_Expr
+                                      (Prefix (N),
+                                       EW_Term,
+                                       Params => Params),
                                   Right_Type => Expr_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
