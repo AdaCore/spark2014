@@ -1,0 +1,24 @@
+
+pack.adb:16:7: info: assertion proved
+pack.adb:17:7: assertion not proved
+pack.adb:18:7: assertion not proved
+pack.adb:27:7: info: assertion proved
+pack.adb:28:7: info: assertion proved
+pack.adb:29:7: assertion not proved
+pack.adb:38:7: info: assertion proved
+pack.adb:39:7: assertion not proved
+pack.adb:48:7: info: assertion proved
+pack.adb:49:7: assertion not proved
+pack.adb:64:22: info: index check proved
+pack.adb:64:34: info: index check proved
+pack.adb:64:7: info: assertion proved
+pack.adb:65:22: info: index check proved
+pack.adb:65:35: info: index check proved
+pack.adb:65:7: assertion not proved
+pack.adb:77:20: info: postcondition proved
+pack.adb:77:44: info: index check proved
+pack.adb:79:14: info: range check proved
+pack.adb:88:22: info: index check proved
+pack.adb:88:7: info: assertion proved
+pack.adb:89:22: info: index check proved
+pack.adb:89:7: assertion not proved
