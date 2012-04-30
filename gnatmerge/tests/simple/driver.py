@@ -34,7 +34,7 @@ subp.new_arrow("STATUS",
 
 # Instanciate sketch from inputs
 
-vcs.load(readers.Listing("VC", "proofs.out"))
+vcs.load(readers.ErrorListing("VC", "proofs.out"))
 m.loads("program.json")
 
 # Output results
