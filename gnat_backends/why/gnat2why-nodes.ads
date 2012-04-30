@@ -40,6 +40,7 @@ with Stand;                 use Stand;
 with Types;                 use Types;
 
 with Why.Types;             use Why.Types;
+with Why.Ids;               use Why.Ids;
 
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the
@@ -75,6 +76,22 @@ package Gnat2Why.Nodes is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
+
+   type Partial_Why_Call is record
+      Func : W_Identifier_Id;
+      Args : Node_Sets.Set;
+   end record;
+   --  Call that is partially translated to Why. The function called is
+   --  translated, but not yet the arguments, which must be translated in a
+   --  given context to generate the complete translated call.
+
+   package Ada_To_Partial_Why_Call is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Partial_Why_Call,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   --  Maps of nodes to partially translated calls
 
    package Ada_Ent_To_Why is
 

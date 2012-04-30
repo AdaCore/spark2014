@@ -85,10 +85,8 @@ package body Gnat2Why.Expr is
                   Equivalent_Keys => "=",
                   "="             => "=");
 
-   Ada_To_Why_Term : array (Boolean) of Ada_To_Why.Map;
-   --  Mappings from Ada nodes to their Why translation as a term, with the
-   --  Boolean index of the array denoting whether Ref_Allowed was True or
-   --  False when building the term.
+   Ada_To_Why_Term : Ada_To_Partial_Why_Call.Map;
+   --  Mappings from Ada nodes to their partial Why translation as a term
    Strlit_To_Why_Term : Strlit_To_Why.Map;
    Strlit_To_Why_Type : Strlit_To_Type.Map;
    --  Idem for string literals, where the Ref_Allowed information is not
@@ -188,6 +186,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Identifier (Params       : Translation_Params;
                                   Expr         : Node_Id;
+                                  Ent          : Entity_Id;
                                   Domain       : EW_Domain;
                                   Current_Type : out W_Base_Type_Id)
                                   return W_Expr_Id;
@@ -201,15 +200,17 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
-   procedure Transform_Array_Value_To_Term
+   function Transform_Array_Value_To_Term
      (Params : Translation_Params;
-      Id   : W_Identifier_Id;
-      Expr : Node_Id);
-   --  Transform an expression Expr that specifies an array value
-   --  (either a slice or an aggregrate) into the equivalent Why terms,
-   --  both with and w/o references allowed. The results of this translation
-   --  are stored in Ada_To_Why_Term, so that the necessary function and
-   --  axiom are generated only once per source aggregate.
+      Id     : W_Identifier_Id;
+      Expr   : Node_Id) return W_Expr_Id;
+   --  Transform an expression Expr that specifies an array value (either a
+   --  slice or an aggregrate) into the equivalent Why term, both with and w/o
+   --  references allowed. The first time this is called on an Ada node, the
+   --  results of the partial translation are stored in Ada_To_Why_Term, so
+   --  that the necessary function and axiom are generated only once per source
+   --  aggregate. It is those partial results that are used for generating each
+   --  translation of this node.
    --
    --  A logic function F is generated to replace the value with a call. It
    --  takes in parameters all values of references used in the aggregate:
@@ -286,7 +287,8 @@ package body Gnat2Why.Expr is
    --  Convert an Ada binary operator to a Why term symbol
 
    function Transform_Enum_Literal
-     (Enum         : Node_Id;
+     (Expr         : Node_Id;
+      Enum         : Entity_Id;
       Current_Type : out W_Base_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id;
@@ -1401,155 +1403,218 @@ package body Gnat2Why.Expr is
    -- Transform_Array_Value_To_Term --
    -----------------------------------
 
-   procedure Transform_Array_Value_To_Term
+   function Transform_Array_Value_To_Term
      (Params : Translation_Params;
       Id     : W_Identifier_Id;
-      Expr   : Node_Id)
+      Expr   : Node_Id) return W_Expr_Id
    is
+      -----------------------
+      -- Local subprograms --
+      -----------------------
 
-      Typ  : constant Entity_Id := Type_Of_Node (Expr);
-      Name : constant String := New_Str_Lit_Ident (Expr);
-      Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
-                                                         Ada_Node => Expr);
+      function Complete_Translation
+        (Params : Translation_Params;
+         Func   : W_Identifier_Id;
+         Refs   : Node_Sets.Set) return W_Expr_Id;
+      --  Given a partial translation (Func,Refs) previously computed, generate
+      --  the actual call to Func by translating arguments Refs in the given
+      --  context given by Params.
 
-      --  Predicate used to define the aggregate
+      procedure Generate_And_Store_Partial_Translation;
+      --  Generate and store the partial translation for Expr
 
-      Params_No_Ref : Translation_Params :=
-        (Theory      => Params.Theory,
-         File        => Params.File,
-         Phase       => Params.Phase,
-         Ref_Allowed => False,
-         Name_Map    => Params.Name_Map);
+      --------------------------
+      -- Complete_Translation --
+      --------------------------
 
-      --  Compute the list of references used in the aggregate
+      function Complete_Translation
+        (Params : Translation_Params;
+         Func   : W_Identifier_Id;
+         Refs   : Node_Sets.Set) return W_Expr_Id
+      is
+         use Node_Sets;
 
-      Params_Ref : constant Translation_Params :=
-        (Theory      => Params.Theory,
-         File        => Params.File,
-         Phase       => Params.Phase,
-         Ref_Allowed => True,
-         Name_Map    => Params.Name_Map);
-      Pred_With_Refs : constant W_Pred_Id :=
-                         Transform_Array_Value_To_Pred
-                           (Expr,
-                            Id,
-                            Params_Ref);
-      Refs           : constant Node_Sets.Set :=
-                         Get_All_Dereferences (+Pred_With_Refs);
-
-      --  Values used in calls to the aggregate function
-
-      Ret_Type : constant W_Primitive_Type_Id :=
-                   +Why_Logic_Type_Of_Ada_Type (Typ);
-      Id_Binder : constant Binder_Type :=
-                    (Ada_Node => Empty,
-                     B_Name   => Id,
-                     Modifier => None,
-                     B_Type   => Ret_Type);
-      Deref_Args : W_Expr_Array :=
+         Cnt    : Positive;
+         Cursor : Node_Sets.Cursor;
+         Args   : W_Expr_Array :=
                     (if Refs.Length = 0 then
-                      (1 => New_Void)
-                    else
-                      (1 .. Integer (Refs.Length) => <>));
-      Args : W_Expr_Array :=
-                    (if Refs.Length = 0 then
-                      (1 => New_Void)
-                    else
+                       (1 => New_Void)
+                     else
                        (1 .. Integer (Refs.Length) => <>));
-      Call, Deref_Call : W_Expr_Id;
-      Id_Expr          : W_Expr_Id;
-      Unique_Param     : constant Binder_Array :=
-                   (if Refs.Length = 0 then
-                      (1 => Unit_Param)
-                    else
-                      (1 .. 0 => <>));
-      Other_Params   : Binder_Array :=
-                   (if Refs.Length = 0 then
-                      (1 .. 0 => <>)
-                    else
-                      (1 .. Integer (Refs.Length) => <>));
-      Cnt       : Positive;
+      begin
+         --  Compute the parameters/arguments for the function call and axiom
 
-      use Node_Sets;
+         Cnt := 1;
+         Cursor := Refs.First;
+         while Cursor /= No_Element loop
+            declare
+               Ent          : constant Entity_Id := Element (Cursor);
+               Current_Type : W_Base_Type_Id;
+               pragma Unreferenced (Current_Type);
+            begin
+               Args (Cnt) :=
+                 Transform_Identifier
+                   (Params, Expr, Ent, EW_Term, Current_Type);
+               Next (Cursor);
+               Cnt := Cnt + 1;
+            end;
+         end loop;
 
-      Cursor    : Node_Sets.Cursor;
-      Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
+         return New_Call (Ada_Node => Expr,
+                          Domain   => EW_Term,
+                          Name     => Func,
+                          Args     => Args);
+      end Complete_Translation;
+
+      --------------------------------------------
+      -- Generate_And_Store_Partial_Translation --
+      --------------------------------------------
+
+      procedure Generate_And_Store_Partial_Translation is
+         Typ  : constant Entity_Id := Type_Of_Node (Expr);
+         Name : constant String := New_Str_Lit_Ident (Expr);
+         Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
+                                                            Ada_Node => Expr);
+
+         --  Predicate used to define the aggregate
+
+         Params_No_Ref : Translation_Params :=
+                           (Theory      => Params.Theory,
+                            File        => Params.File,
+                            Phase       => Params.Phase,
+                            Ref_Allowed => False,
+                            Name_Map    => Ada_Ent_To_Why.Empty_Map);
+
+         --  Compute the list of references used in the aggregate, in a context
+         --  were we ignore the existing mapping of entities to names, as the
+         --  same array (aggregate or slice) might be translated in different
+         --  contexts.
+
+         Params_Ref : constant Translation_Params :=
+                        (Theory      => Params.Theory,  --  ??? no theory
+                         File        => Params.File,
+                         Phase       => Params.Phase,  --  ??? Make special one
+                         Ref_Allowed => True,
+                         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Pred_With_Refs : constant W_Pred_Id :=
+                            Transform_Array_Value_To_Pred
+                              (Expr,
+                               Id,
+                               Params_Ref);
+         Refs           : constant Node_Sets.Set :=
+                            Get_All_Dereferences (+Pred_With_Refs);
+
+         --  Values used in calls to the aggregate function
+
+         Ret_Type : constant W_Primitive_Type_Id :=
+                      +Why_Logic_Type_Of_Ada_Type (Typ);
+         Id_Binder : constant Binder_Type :=
+                       (Ada_Node => Empty,
+                        B_Name   => Id,
+                        Modifier => None,
+                        B_Type   => Ret_Type);
+         Id_Expr          : W_Expr_Id;
+         Unique_Param     : constant Binder_Array :=
+                              (if Refs.Length = 0 then
+                                 (1 => Unit_Param)
+                               else
+                                 (1 .. 0 => <>));
+         Other_Params   : Binder_Array :=
+                            (if Refs.Length = 0 then
+                               (1 .. 0 => <>)
+                             else
+                               (1 .. Integer (Refs.Length) => <>));
+         Cnt       : Positive;
+
+         use Node_Sets;
+
+         Cursor    : Node_Sets.Cursor;
+         Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
+         Call      : W_Expr_Id;
+
+      --  Start of Generate_And_Store_Partial_Translation
+
+      begin
+         --  Store the partial translations
+
+         Ada_To_Why_Term.Include (Expr, (Func => Func, Args => Refs));
+
+         --  Compute the parameters/arguments for the axiom
+
+         Cnt := 1;
+         Cursor := Refs.First;
+         while Cursor /= No_Element loop
+            declare
+               Ent   : constant Entity_Id := Element (Cursor);
+               Name  : constant String := Full_Name (Ent);
+               Ident : constant W_Identifier_Id :=
+                         New_Identifier (Ada_Node => Ent, Name => Name);
+            begin
+               Other_Params (Cnt) :=
+                 (Ada_Node => Empty,
+                  B_Name   => Ident,
+                  Modifier => None,
+                  B_Type   =>
+                    New_Abstract_Type
+                      (Name => To_Why_Type (Name)));
+               Next (Cursor);
+               Cnt := Cnt + 1;
+               Ada_Ent_To_Why.Insert (Params_No_Ref.Name_Map, Ent, +Ident);
+            end;
+         end loop;
+
+         --  Compute the call for the axiom
+
+         Call := Complete_Translation (Params_No_Ref, Func, Refs);
+
+         --  Generate the necessary logic function and axiom declarations
+
+         if Params.File = Decl_File.File then
+            Decl_File.Cur_Theory := Why_Empty;
+         end if;
+         Open_Theory (Decl_File, Name);
+         Emit
+           (Decl_File.Cur_Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => Func,
+               Binders     => Unique_Param & Other_Params,
+               Return_Type => Ret_Type));
+
+         Id_Expr := New_Comparison (Cmp       => EW_Eq,
+                                    Left      => +Id,
+                                    Right     => Call,
+                                    Arg_Types => +Ret_Type,
+                                    Domain    => EW_Pred);
+         Emit
+           (Decl_File.Cur_Theory,
+            New_Guarded_Axiom
+              (Name        => To_Ident (WNE_Def_Axiom),
+               Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
+               Pre         => +Id_Expr,
+               Def         =>
+                 Transform_Array_Value_To_Pred
+                   (Expr,
+                    Id,
+                    Params_No_Ref)));
+         Close_Theory (Decl_File, Filter_Entity => Expr);
+         if Params.File = Decl_File.File then
+            Decl_File.Cur_Theory := Params.Theory;
+         end if;
+      end Generate_And_Store_Partial_Translation;
+
+   --  Start of Transform_Array_Value_To_Term
+
    begin
-      --  Compute the parameters/arguments for the function call and axiom
-
-      Cnt := 1;
-      Cursor := Refs.First;
-      while Cursor /= No_Element loop
-         declare
-            Ent  : constant Entity_Id := Element (Cursor);
-            Name : constant String := Full_Name (Ent);
-            Ident : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => Ent, Name => Name);
-         begin
-            Other_Params (Cnt) :=
-              (Ada_Node => Empty,
-               B_Name   => Ident,
-               Modifier => None,
-               B_Type   =>
-                 New_Abstract_Type
-                   (Name => To_Why_Type (Name)));
-            Args (Cnt) := +Ident;
-            Deref_Args (Cnt) :=
-              New_Deref (Right => +To_Why_Id (Ent, EW_Term));
-            Next (Cursor);
-            Cnt := Cnt + 1;
-            Ada_Ent_To_Why.Insert (Params_No_Ref.Name_Map, Ent, +Ident);
-         end;
-      end loop;
-
-      --  Compute and store the translation of aggregate into Why terms, both
-      --  w/ and w/o references allowed.
-
-      Call := New_Call (Ada_Node => Empty,
-                        Domain   => EW_Term,
-                        Name     => Func,
-                        Args     => Args);
-      Deref_Call := New_Call (Ada_Node => Empty,
-                              Domain   => EW_Term,
-                              Name     => Func,
-                              Args     => Deref_Args);
-
-      Ada_To_Why_Term (True).Include (Expr, +Deref_Call);
-      Ada_To_Why_Term (False).Include (Expr, +Call);
-
-      --  Generate the necessary logic function and axiom declarations
-      if Params.File = Decl_File.File then
-         Decl_File.Cur_Theory := Why_Empty;
+      if not Ada_To_Why_Term.Contains (Expr) then
+         Generate_And_Store_Partial_Translation;
       end if;
-      Open_Theory (Decl_File, Name);
-      Emit
-        (Decl_File.Cur_Theory,
-         New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => Func,
-            Binders     => Unique_Param & Other_Params,
-            Return_Type => Ret_Type));
 
-      Id_Expr := New_Comparison (Cmp       => EW_Eq,
-                                 Left      => +Id,
-                                 Right     => Call,
-                                 Arg_Types => +Ret_Type,
-                                 Domain    => EW_Pred);
-      Emit
-        (Decl_File.Cur_Theory,
-         New_Guarded_Axiom
-           (Name        => To_Ident (WNE_Def_Axiom),
-            Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
-            Pre         => +Id_Expr,
-            Def         =>
-              Transform_Array_Value_To_Pred
-                (Expr,
-                 Id,
-                 Params_No_Ref)));
-      Close_Theory (Decl_File, Filter_Entity => Expr);
-      if Params.File = Decl_File.File then
-         Decl_File.Cur_Theory := Params.Theory;
-      end if;
+      declare
+         Partial : constant Partial_Why_Call := Ada_To_Why_Term.Element (Expr);
+      begin
+         return Complete_Translation (Params, Partial.Func, Partial.Args);
+      end;
    end Transform_Array_Value_To_Term;
 
    --------------------------------------------
@@ -2433,21 +2498,22 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    function Transform_Enum_Literal
-     (Enum         : Node_Id;
+     (Expr         : Node_Id;
+      Enum         : Entity_Id;
       Current_Type : out W_Base_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id is
    begin
       --  Deal with special cases: True/False for boolean values
 
-      if Entity (Enum) = Standard_True then
+      if Enum = Standard_True then
          Current_Type := Why_Types (EW_Bool);
          return New_Literal (Value => EW_True,
                              Domain => Domain,
                              Ada_Node => Standard_Boolean);
       end if;
 
-      if Entity (Enum) = Standard_False then
+      if Enum = Standard_False then
          Current_Type := Why_Types (EW_Bool);
          return New_Literal (Value => EW_False,
                              Domain => Domain,
@@ -2460,8 +2526,8 @@ package body Gnat2Why.Expr is
 
       Current_Type := EW_Int_Type;
       return New_Integer_Constant
-               (Ada_Node => Enum,
-                Value    => Enumeration_Pos (Entity (Enum)));
+               (Ada_Node => Expr,
+                Value    => Enumeration_Pos (Enum));
    end Transform_Enum_Literal;
 
    --------------------
@@ -2531,13 +2597,7 @@ package body Gnat2Why.Expr is
                             +Why_Logic_Type_Of_Ada_Type (Expr_Type);
                   begin
                      if Domain = EW_Term then
-                        if not (Ada_To_Why_Term (Params.Ref_Allowed).
-                                   Contains (Expr)) then
-                           Transform_Array_Value_To_Term
-                             (Params, Id, Expr);
-                        end if;
-                        T := +Ada_To_Why_Term (Params.Ref_Allowed).
-                          Element (Expr);
+                        T := Transform_Array_Value_To_Term (Params, Id, Expr);
                      else
                         pragma Assert (Domain = EW_Prog);
                         T := +New_Simpl_Any_Prog
@@ -2610,8 +2670,9 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Identifier | N_Expanded_Name =>
-
-            T := Transform_Identifier (Params, Expr, Domain, Current_Type);
+            T := Transform_Identifier (Params, Expr,
+                                       Unique_Entity (Entity (Expr)),
+                                       Domain, Current_Type);
 
          when N_Op_Compare =>
             declare
@@ -3194,11 +3255,11 @@ package body Gnat2Why.Expr is
 
    function Transform_Identifier (Params       : Translation_Params;
                                   Expr         : Node_Id;
+                                  Ent          : Entity_Id;
                                   Domain       : EW_Domain;
                                   Current_Type : out W_Base_Type_Id)
                                   return W_Expr_Id
    is
-      Ent : constant Entity_Id := Unique_Entity (Entity (Expr));
       C   : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Params.Name_Map, Ent);
       T   : W_Expr_Id;
@@ -3216,7 +3277,7 @@ package body Gnat2Why.Expr is
       if Ada_Ent_To_Why.Has_Element (C) then
          T := +Ada_Ent_To_Why.Element (C);
       elsif Ekind (Ent) = E_Enumeration_Literal then
-         T := Transform_Enum_Literal (Expr, Current_Type, Domain);
+         T := Transform_Enum_Literal (Expr, Ent, Current_Type, Domain);
       elsif Sloc (Ent) = Standard_ASCII_Location then
          T :=
            New_Integer_Constant
