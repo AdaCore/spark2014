@@ -93,12 +93,12 @@ package Why.Gen.Expr is
        Domain   : EW_Domain) return W_Expr_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
-   function New_Located_Label (N : Node_Id; Reason : VC_Kind)
+   function New_Located_Label (N : Node_Id) return W_Identifier_Id;
+   --  Return a label that contains the Ada Sloc of the node
+
+   function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Array;
-   --  Generate a label for the given Ada node.
-   --
-   --  This means: associate a fresh Why Identifier to the source location of
-   --  the Ada Node, and return the identifier.
+   --  Generate a VC label for the given Ada node, with the given VC reason
 
    function New_Range_Expr
      (Domain    : EW_Domain;

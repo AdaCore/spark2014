@@ -3844,7 +3844,10 @@ package body Gnat2Why.Expr is
                              First (Stmts));
    begin
       while Present (Cur_Stmt) loop
-         Result := Sequence (Result, Transform_Statement (Cur_Stmt));
+         Result :=
+           Sequence (Result,
+                     New_Label (Labels => (1 => New_Located_Label (Cur_Stmt)),
+                                Def    => +Transform_Statement (Cur_Stmt)));
          Next (Cur_Stmt);
       end loop;
       return Result;

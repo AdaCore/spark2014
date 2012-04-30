@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Hashed_Maps;
-
 with Atree;                use Atree;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
@@ -42,16 +40,9 @@ with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 package body Why.Gen.Expr is
 
-   package Node_String_Maps is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => String,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   Subp_Sloc_Map : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
-   Subp_Sloc_Map : Node_String_Maps.Map := Node_String_Maps.Empty_Map;
-
-   function Cur_Subp_Sloc return String;
+   function Cur_Subp_Sloc return W_Identifier_Id;
 
    --------------------------
    -- Compute_Ada_Node_Set --
@@ -273,13 +264,13 @@ package body Why.Gen.Expr is
    -- Cur_Subp_Sloc --
    -------------------
 
-   function Cur_Subp_Sloc return String is
+   function Cur_Subp_Sloc return W_Identifier_Id is
       Uniq : constant Entity_Id := Current_Subp;
-      Cur : constant Node_String_Maps.Cursor :=
+      Cur : constant Ada_To_Why.Cursor :=
         Subp_Sloc_Map.Find (Uniq);
    begin
-      if Node_String_Maps.Has_Element (Cur) then
-         return Node_String_Maps.Element (Cur);
+      if Ada_To_Why.Has_Element (Cur) then
+         return +Ada_To_Why.Element (Cur);
       else
          declare
             Loc  : constant Source_Ptr :=
@@ -289,9 +280,11 @@ package body Why.Gen.Expr is
               Get_Physical_Line_Number (Loc);
             Result : constant String :=
               """GP_Subp:" & File & ":" & Int_Image (Integer (Line)) & """";
+            Res_Id : constant W_Identifier_Id :=
+              New_Identifier (Name => Result);
          begin
-            Subp_Sloc_Map.Insert (Uniq, Result);
-            return Result;
+            Subp_Sloc_Map.Insert (Uniq, +Res_Id);
+            return Res_Id;
          end;
       end if;
    end Cur_Subp_Sloc;
@@ -675,7 +668,7 @@ package body Why.Gen.Expr is
          return
             New_Label
               (Ada_Node => Ada_Node,
-               Labels     => New_Located_Label (Ada_Node, Reason),
+               Labels   => New_VC_Labels (Ada_Node, Reason),
                Def      => Expr,
                Domain   => Domain);
       else
@@ -687,21 +680,7 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label (N : Node_Id; Reason : VC_Kind)
-      return W_Identifier_Array
-   is
-
-      --  A gnatprove label in Why3 has the following form
-      --
-      --  "GP_Reason:VC_Kind"     - the kind of the VC
-      --  "GP_Subp:<Subp_Sloc>"   - the sloc of the subprogram
-      --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
-      --  VC
-      --  "keep_on_simp"          - tag that disallows simplifying this VC away
-      --
-      --  For a node inside an instantiation, we use the location of the
-      --  top-level instantiation. This could be refined in the future.
-
+   function New_Located_Label (N : Node_Id) return W_Identifier_Id is
       Loc    : constant Source_Ptr := Translate_Location (Sloc (N));
       File   : constant String := File_Name (Loc);
       Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
@@ -709,13 +688,9 @@ package body Why.Gen.Expr is
       Sloc_S : constant String :=
         File & ":" & Int_Image (Integer (Line)) & ":" &
         Int_Image (Integer (Column));
+
    begin
-      return
-        (1 => New_Identifier
-           (Name => """GP_Reason:" & VC_Kind'Image (Reason) & """"),
-         2 => New_Identifier (Name => Cur_Subp_Sloc),
-         3 => New_Identifier (Name => """GP_Sloc:" & Sloc_S & """"),
-         4 => New_Identifier (Name => """keep_on_simp"""));
+      return New_Identifier (Name => """GP_Sloc:" & Sloc_S & """");
    end New_Located_Label;
 
    -----------------
@@ -827,6 +802,34 @@ package body Why.Gen.Expr is
               Domain    => Domain);
       end if;
    end New_Simpl_Conditional;
+
+   -------------------
+   -- New_VC_Labels --
+   -------------------
+
+   function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
+      return W_Identifier_Array
+   is
+
+      --  A gnatprove label in Why3 has the following form
+      --
+      --  "GP_Reason:VC_Kind"     - the kind of the VC
+      --  "GP_Subp:<Subp_Sloc>"   - the sloc of the subprogram
+      --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
+      --  VC
+      --  "keep_on_simp"          - tag that disallows simplifying this VC away
+      --
+      --  For a node inside an instantiation, we use the location of the
+      --  top-level instantiation. This could be refined in the future.
+
+   begin
+      return
+        (1 => New_Identifier
+           (Name => """GP_Reason:" & VC_Kind'Image (Reason) & """"),
+         2 => Cur_Subp_Sloc,
+         3 => New_Located_Label (N),
+         4 => To_Ident (WNE_Keep_On_Simp));
+   end New_VC_Labels;
 
    ------------------
    -- New_Xor_Expr --
