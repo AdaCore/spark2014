@@ -3614,7 +3614,7 @@ package body Gnat2Why.Expr is
                         Right_Arr  =>
                           +Transform_Expr
                             (Prefix (Expr),
-                             EW_Prog,
+                             EW_Term,
                              Params => Params),
                         Right_Type => Slice_Type,
                         Index      => Indexes,
