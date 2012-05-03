@@ -10,6 +10,30 @@ Example driver code is adapted from original LWIP code:
  Copyright (C) 2001, 2002 Georges Menie
 and is licensed under the GNU General Public License.
 
+FEATURES
+--------
+
+The AdaCore TCP/IP stack is targeted to embedded applications in certifiable systems.
+It is implemented in SPARK; information flow annotations are provided.
+
+API:
+  * Event/callbacks based interface to application code
+
+Supported protocols:
+  * IPv4
+  * ARP
+  * UDP
+  * TCP
+  * UCMP
+
+Environment:
+  * No threads used
+  * For threading applications, user must ensure mutual exclusion
+  * User supplies link level driver (examples in C included: Linux socket/TAP interface, NE2k)
+
+Limitations:
+  * No IP fragmentation
+
 SUPPORTED TARGETS
 -----------------
 
