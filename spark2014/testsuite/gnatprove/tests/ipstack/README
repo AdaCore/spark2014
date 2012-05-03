@@ -13,11 +13,13 @@ and is licensed under the GNU General Public License.
 FEATURES
 --------
 
-The AdaCore TCP/IP stack is targeted to embedded applications in certifiable systems.
-It is implemented in SPARK; information flow annotations are provided.
+AdaCore TCP/IP stack:
+  * Targeted to bare-board embedded applications in certifiable systems.
+  * Implemented in SPARK (information flow annotations included)
 
 API:
-  * Event/callbacks based interface to application code
+  * Event driven architecture (based on LWIP design)
+  * Application interface based on callbacks
 
 Supported protocols:
   * IPv4
@@ -27,9 +29,11 @@ Supported protocols:
   * UCMP
 
 Environment:
+  * No requirement for an underlying OS
   * No threads used
   * For threading applications, user must ensure mutual exclusion
-  * User supplies link level driver (examples in C included: Linux socket/TAP interface, NE2k)
+  * Support for multiple user supplied link level drivers
+    (examples in C included: Linux socket/TAP interface, NE2k)
 
 Limitations:
   * No IP fragmentation
