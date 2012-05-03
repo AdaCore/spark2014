@@ -138,6 +138,11 @@ which can be obtained by a right click:
 GNATprove project switches can be edited from the panel ``GNATprove`` (in
 ``Project --> Edit Project Properties --> Switches``).
 
+For unproved VCs, you can see in GPS a path for which gnatprove does not
+manage to prove the VC. This can be achieved by right-clicking on the message
+for the unproved VC in the location view, and choosing ``Prove --> Show
+Path``.
+
 We recommend that you enable the option ``Draw current line as a thin line``
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that GPS does not
 hide the status of the checks on the current line (all proved in green /
