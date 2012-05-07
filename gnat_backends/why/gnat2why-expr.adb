@@ -1077,16 +1077,30 @@ package body Gnat2Why.Expr is
                return Update_Expr;
 
             when N_Selected_Component | N_Indexed_Component | N_Slice =>
-               return
-                  Compute_Rvalue
-                    (Prefix (N),
-                     +One_Level_Update
-                       (N,
-                        +Transform_Expr
-                         (Prefix (N), EW_Prog, Params => Body_Params),
-                        +Update_Expr,
-                        EW_Prog,
-                        Params => Body_Params));
+               declare
+                  Prefix_Expr : constant W_Value_Id :=
+                                  +Transform_Expr
+                                    (Prefix (N),
+                                     EW_Prog,
+                                     Params => Body_Params);
+                  Update_Name : constant W_Identifier_Id :=
+                                  New_Temp_Identifier;
+                  One_Update  : constant W_Value_Id :=
+                                  +One_Level_Update
+                                    (N,
+                                     +Prefix_Expr,
+                                     +Update_Expr,
+                                     EW_Prog,
+                                     Params => Body_Params);
+
+               begin
+                  return
+                    New_Binding
+                      (Name    => Update_Name,
+                       Def     => One_Update,
+                       Context =>
+                         +Compute_Rvalue (Prefix (N), +Update_Name));
+               end;
 
             when others =>
                raise Not_Implemented;
@@ -1239,6 +1253,12 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
+               Prefix_Name : constant W_Identifier_Id := New_Temp_Identifier;
+               Prefix_Expr : constant W_Value_Id :=
+                               +Transform_Expr
+                                 (Prefix (N),
+                                  EW_Term,
+                                  Params => Params);
                Expr_Type   : constant Entity_Id :=
                                Type_Of_Node
                                  (Unique_Entity (Etype (Prefix (N))));
@@ -1267,11 +1287,7 @@ package body Gnat2Why.Expr is
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
                                   Left_Type  => Expr_Type,
-                                  Right_Arr  =>
-                                    +Transform_Expr
-                                      (Prefix (N),
-                                       EW_Term,
-                                       Params => Params),
+                                  Right_Arr  => +Prefix_Name,
                                   Right_Type => Expr_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
@@ -1287,9 +1303,14 @@ package body Gnat2Why.Expr is
                                   Pred      => Def);
             begin
                return
-                 +New_Simpl_Any_Prog
-                   (T => +BT,
-                    Pred => +Quantif);
+                 New_Binding
+                   (Domain => EW_Prog,
+                    Name   => Prefix_Name,
+                    Def    => Prefix_Expr,
+                    Context =>
+                      +New_Simpl_Any_Prog
+                        (T => +BT,
+                         Pred => +Quantif));
             end;
 
          when others =>
