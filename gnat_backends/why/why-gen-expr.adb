@@ -23,20 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                use Atree;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with String_Utils;         use String_Utils;
-with Stand;                use Stand;
-with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Tables;     use Why.Atree.Tables;
-with Why.Atree.Traversal;  use Why.Atree.Traversal;
-with Why.Conversions;      use Why.Conversions;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Inter;            use Why.Inter;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Atree;                 use Atree;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with String_Utils;          use String_Utils;
+with Stand;                 use Stand;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Atree.Traversal;   use Why.Atree.Traversal;
+with Why.Conversions;       use Why.Conversions;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Inter;             use Why.Inter;
+
+with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 
 package body Why.Gen.Expr is
 
@@ -681,16 +683,34 @@ package body Why.Gen.Expr is
    -----------------------
 
    function New_Located_Label (N : Node_Id) return W_Identifier_Id is
-      Loc    : constant Source_Ptr := Translate_Location (Sloc (N));
-      File   : constant String := File_Name (Loc);
-      Line   : constant Physical_Line_Number := Get_Physical_Line_Number (Loc);
-      Column : constant Column_Number := Get_Column_Number (Loc);
-      Sloc_S : constant String :=
-        File & ":" & Int_Image (Integer (Line)) & ":" &
-        Int_Image (Integer (Column));
 
+      Buf : Unbounded_String := Null_Unbounded_String;
+
+      procedure Generate_Loc_String (Loc : Source_Ptr);
+
+      -----------------------------
+      -- Prepend_Simple_Location --
+      -----------------------------
+
+      procedure Generate_Loc_String (Loc : Source_Ptr) is
+         File   : constant String := File_Name (Loc);
+         Line   : constant Physical_Line_Number :=
+           Get_Physical_Line_Number (Loc);
+         Column : constant Column_Number := Get_Column_Number (Loc);
+         Child : constant Source_Ptr := Instantiation_Location (Loc);
+      begin
+         if Child /= No_Location then
+            Generate_Loc_String (Child);
+         end if;
+         Append (Buf, File);
+         Append (Buf, ':');
+         Append (Buf, Int_Image (Integer (Line)));
+         Append (Buf, ':');
+         Append (Buf, Int_Image (Integer (Column)));
+      end Generate_Loc_String;
    begin
-      return New_Identifier (Name => """GP_Sloc:" & Sloc_S & """");
+      Generate_Loc_String (Sloc (N));
+      return New_Identifier (Name => """GP_Sloc:" & To_String (Buf) & """");
    end New_Located_Label;
 
    -----------------
