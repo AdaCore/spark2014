@@ -62,7 +62,7 @@ package body Configuration is
    Help_Message : constant String :=
 "proj is a GNAT project file" &
 ASCII.LF &
-"files is one or more file names, must be used with option -u" &
+"files is one or more file names" &
 ASCII.LF &
 "-cargs switches are passed to gcc" &
 ASCII.LF &
@@ -86,7 +86,7 @@ ASCII.LF &
 ASCII.LF &
 " -v, --verbose      Output extra verbose information" &
 ASCII.LF &
-"     --version      Output version of the tool" &
+"     --version      Output version of the tool and exit" &
 ASCII.LF &
 " -h, --help         Display this usage information" &
 ASCII.LF &
@@ -232,6 +232,12 @@ ASCII.LF &
          "-P:",
          Help => "The name of the project file");
 
+      Define_Switch
+        (First_Config,
+         Version'Access,
+         Long_Switch => "--version",
+         Help => "Output version of the tool");
+
       Define_Switch (First_Config, "*", Help => "list of source files");
 
       Getopt (First_Config,
@@ -333,12 +339,6 @@ ASCII.LF &
 
       Define_Switch
         (Config,
-         Version'Access,
-         Long_Switch => "--version",
-         Help => "Output version of the tool");
-
-      Define_Switch
-        (Config,
          Limit_Line'Access,
          Long_Switch => "--limit-line=",
          Help => "Limit proofs to given file and line");
@@ -359,6 +359,11 @@ ASCII.LF &
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
+
+      if Version then
+         Ada.Text_IO.Put_Line (Hilite_Version_String);
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
 
       Tree := Init;
       declare
@@ -386,11 +391,6 @@ ASCII.LF &
                     Concatenate => False);
          end if;
       end;
-
-      if Version then
-         Ada.Text_IO.Put_Line (Hilite_Version_String);
-         GNAT.OS_Lib.OS_Exit (0);
-      end if;
 
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
