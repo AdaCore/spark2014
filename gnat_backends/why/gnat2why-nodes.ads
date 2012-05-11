@@ -174,9 +174,16 @@ package Gnat2Why.Nodes is
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name
-       (Get_Source_File_Index (Translate_Location (Loc)))));
+                       (Get_Source_File_Index (Loc))));
+
+   --  This function returns the file name of the source pointer (will return
+   --  the file of the generic in case of instances)
 
    function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
-      (File_Name_Without_Suffix (File_Name (Loc)));
+     (File_Name_Without_Suffix (File_Name (Translate_Location (Loc))));
+
+   --  This function will return the file name of the source pointer of the
+   --  suffix. Contrary to the File_Name function, this one returns the file
+   --  name of the instance.
 
 end Gnat2Why.Nodes;

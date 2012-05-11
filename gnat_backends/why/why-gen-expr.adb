@@ -688,9 +688,9 @@ package body Why.Gen.Expr is
 
       procedure Generate_Loc_String (Loc : Source_Ptr);
 
-      -----------------------------
-      -- Prepend_Simple_Location --
-      -----------------------------
+      -------------------------
+      -- Generate_Loc_String --
+      -------------------------
 
       procedure Generate_Loc_String (Loc : Source_Ptr) is
          File   : constant String := File_Name (Loc);
@@ -699,8 +699,15 @@ package body Why.Gen.Expr is
          Column : constant Column_Number := Get_Column_Number (Loc);
          Child : constant Source_Ptr := Instantiation_Location (Loc);
       begin
+
+         --  The Sloc of the more "generic" part comes first, but we want to
+         --  have the instance first in the encoded SLOC. We realize that by
+         --  first doing the recursive call, and then adding the current sloc
+         --  to the string buffer.
+
          if Child /= No_Location then
             Generate_Loc_String (Child);
+            Append (Buf, ':');
          end if;
          Append (Buf, File);
          Append (Buf, ':');
