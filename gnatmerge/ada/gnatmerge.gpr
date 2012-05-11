@@ -1,0 +1,12 @@
+with "gnatcoll_python";
+project GNATMerge is
+   for Object_Dir use "obj";
+   for Exec_Dir use ".";
+   for Main use ("gnatmerge.adb");
+   for Source_Dirs use (".");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat05");
+   end Compiler;
+
+end GNATMerge;
