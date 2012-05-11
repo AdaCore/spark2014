@@ -127,6 +127,8 @@ ASCII.LF &
       Obj_Dir   : constant GNATCOLL.VFS.Virtual_File := Proj_Type.Object_Dir;
    begin
       GNAT.Directory_Operations.Remove_Dir (Obj_Dir.Display_Full_Name, True);
+      Put_Line ("GNATprove directory " & Obj_Dir.Display_Full_Name &
+                  " has been removed.");
    end Clean_Up;
 
    ----------------

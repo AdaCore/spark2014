@@ -37,3 +37,5 @@ natural_set.ads:45:53: info: index check proved
 natural_set.ads:46:45: info: overflow check proved
 natural_set.ads:47:14: info: index check proved
 natural_set.ads:52:43: info: index check proved
+GNATprove directory gnatprove/ has been removed.
+GNATprove directory obj/gnatprove/ has been removed.
