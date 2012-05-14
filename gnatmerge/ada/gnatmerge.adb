@@ -23,6 +23,7 @@
 
 with Ada.Text_IO;        use Ada.Text_IO;
 with GNATCOLL.Scripts;   use GNATCOLL.Scripts;
+with GNATCOLL.VFS;       use GNATCOLL.VFS;
 with Common;             use Common;
 with TextConsole;        use TextConsole;
 with Configuration;      use Configuration;
@@ -36,10 +37,9 @@ procedure GNATMerge is
    Script  : Scripting_Language := Lookup_Scripting_Language (Repo, "python");
 begin
    Put_Line ("Look for python in " & Python_Dir);
-   GNATCOLL.Scripts.Execute_File
-     (Script   => Script,
-      Filename => Public_API,
-      Errors   => Errors);
+   GNATCOLL.Scripts.Load_Directory
+     (Script    => Script,
+      Directory => Create (Filesystem_String (Python_Dir)));
    Put_Line ("Please type python commands:");
 
    Set_Default_Console (Script, Console'Unchecked_Access);
