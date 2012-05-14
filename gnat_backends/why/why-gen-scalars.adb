@@ -146,6 +146,9 @@ package body Why.Gen.Scalars is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => To_Id,
+            Labels      => (1 =>
+                              New_Identifier
+                                (Name => """GP_Kind:Conversion""")),
             Binders        =>
               New_Binders ((1 => New_Abstract_Type (Name => Ty_Ident))),
             Return_Type => BT));
