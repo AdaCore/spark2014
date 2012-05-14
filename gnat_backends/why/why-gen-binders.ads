@@ -91,6 +91,7 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Primitive_Type_Id;
+      Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)

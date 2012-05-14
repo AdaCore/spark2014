@@ -186,4 +186,7 @@ package Gnat2Why.Nodes is
    --  suffix. Contrary to the File_Name function, this one returns the file
    --  name of the instance.
 
+   function Short_Name (E : Entity_Id) return String is
+      (Get_Name_String (Chars (E)));
+
 end Gnat2Why.Nodes;
