@@ -24,12 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-
 with GNAT.Strings;
-
-with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
 package Configuration is
 

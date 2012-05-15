@@ -6,7 +6,7 @@ project GNATMerge is
    for Source_Dirs use (".");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat05");
+      for Default_Switches ("Ada") use ("-gnat05", "-gnaty", "-gnatwae");
    end Compiler;
 
 end GNATMerge;

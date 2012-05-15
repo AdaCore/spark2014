@@ -27,7 +27,6 @@ with GNATCOLL.VFS;       use GNATCOLL.VFS;
 with Common;             use Common;
 with TextConsole;        use TextConsole;
 with Configuration;      use Configuration;
-with GNAT.Strings;       use GNAT.Strings;
 
 procedure GNATMerge is
    Repo    : Scripts_Repository := Common.Register_Scripts_And_Functions;
@@ -35,7 +34,8 @@ procedure GNATMerge is
    Last    : Integer;
    Errors  : Boolean;
    Console : aliased Text_Console;
-   Script  : Scripting_Language := Lookup_Scripting_Language (Repo, "python");
+   Script  : constant Scripting_Language :=
+               Lookup_Scripting_Language (Repo, "python");
 begin
    Read_Command_Line;
 
