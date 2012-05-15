@@ -1,3 +1,4 @@
+
 vectors.adb:102:11: info: range check proved
 vectors.adb:103:7: info: loop invariant initialization proved
 vectors.adb:103:7: info: loop invariant preservation proved
@@ -19,6 +20,7 @@ vectors.adb:17:38: info: range check proved
 vectors.adb:17:38: overflow check not proved
 vectors.adb:22:28: info: range check proved
 vectors.adb:22:31: info: range check proved
+vectors.adb:22:60: info: range check proved
 vectors.adb:22:64: info: range check proved
 vectors.adb:28:36: info: overflow check proved
 vectors.adb:28:56: info: overflow check proved

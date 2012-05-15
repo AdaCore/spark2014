@@ -59,6 +59,7 @@ evoting.adb:266:41: info: loop invariant initialization proved
 evoting.adb:266:41: info: loop invariant preservation proved
 evoting.adb:267:13: index check not proved
 evoting.adb:268:43: info: range check proved
+evoting.adb:276:43: info: range check proved
 evoting.adb:277:46: info: range check proved
 evoting.adb:278:36: info: range check proved
 evoting.adb:282:18: info: range check proved

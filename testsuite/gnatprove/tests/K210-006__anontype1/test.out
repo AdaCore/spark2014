@@ -1,5 +1,8 @@
+
 anon_type.adb:19:44: info: range check proved
 anon_type.adb:21:49: info: range check proved
+anon_type.adb:26:54: info: range check proved
+anon_type.adb:32:27: info: range check proved
 anon_type.adb:33:26: overflow check not proved
 anon_type.adb:33:26: range check not proved
 anon_type.adb:33:37: info: overflow check proved

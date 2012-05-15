@@ -22,8 +22,8 @@ fb20a00.adb:39:28: warning: possible re-ordering due to missing parentheses
 fb20a00.adb:39:31: overflow check not proved
 fb20a00.adb:39:39: range check not proved
 fb20a00.adb:39:46: overflow check not proved
-fb20a00.adb:41:7: info: loop invariant preservation proved
 fb20a00.adb:41:7: loop invariant initialization not proved
+fb20a00.adb:41:7: loop invariant preservation not proved
 fb20a00.adb:42:21: overflow check not proved
 fb20a00.adb:45:18: warning: possible re-ordering due to missing parentheses
 fb20a00.adb:45:30: info: overflow check proved
