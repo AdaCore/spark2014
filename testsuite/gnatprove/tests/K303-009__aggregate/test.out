@@ -27,7 +27,7 @@ arr_aggregate.ads:11:40: info: index check proved
 arr_aggregate.ads:12:66: info: index check proved
 arr_aggregate.ads:16:15: postcondition not proved
 arr_aggregate.ads:16:35: info: index check proved
-arr_aggregate.ads:16:53: info: index check proved
+arr_aggregate.ads:16:61: info: index check proved
 arr_aggregate.ads:17:61: info: index check proved
 arr_aggregate.ads:18:61: info: index check proved
 arr_aggregate.ads:19:35: info: index check proved
@@ -42,7 +42,7 @@ arr_aggregate.ads:26:87: info: index check proved
 arr_aggregate.ads:27:62: info: index check proved
 arr_aggregate.ads:27:82: info: index check proved
 arr_aggregate.ads:28:67: info: index check proved
-arr_aggregate.ads:28:89: info: index check proved
+arr_aggregate.ads:28:97: info: index check proved
 arr_aggregate.ads:32:15: postcondition not proved
 arr_aggregate.ads:37:15: postcondition not proved
 arr_aggregate.ads:37:45: info: range check proved
@@ -66,15 +66,16 @@ rec_aggregate.adb:38:38: info: range check proved
 rec_aggregate.adb:40:24: info: range check proved
 rec_aggregate.adb:40:38: info: range check proved
 rec_aggregate.ads:26:15: info: postcondition proved
-rec_aggregate.ads:31:15: info: postcondition proved
-rec_aggregate.ads:31:45: info: range check proved
-rec_aggregate.ads:34:45: info: range check proved
-rec_aggregate.ads:35:50: info: range check proved
+rec_aggregate.ads:33:14: info: postcondition proved
 rec_aggregate.ads:39:15: info: postcondition proved
-rec_aggregate.ads:39:45: info: range check proved
-rec_aggregate.ads:39:54: info: range check proved
-rec_aggregate.ads:41:51: info: range check proved
+rec_aggregate.ads:39:47: info: overflow check proved
 rec_aggregate.ads:42:45: info: range check proved
-rec_aggregate.ads:42:59: info: range check proved
 rec_aggregate.ads:43:50: info: range check proved
-rec_aggregate.ads:43:64: info: range check proved
+rec_aggregate.ads:47:15: info: postcondition proved
+rec_aggregate.ads:47:45: info: range check proved
+rec_aggregate.ads:47:54: info: range check proved
+rec_aggregate.ads:49:51: info: range check proved
+rec_aggregate.ads:50:45: info: range check proved
+rec_aggregate.ads:50:59: info: range check proved
+rec_aggregate.ads:51:50: info: range check proved
+rec_aggregate.ads:51:64: info: range check proved

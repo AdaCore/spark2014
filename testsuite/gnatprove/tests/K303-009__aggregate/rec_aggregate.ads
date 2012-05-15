@@ -23,12 +23,20 @@ package Rec_Aggregate is
 
    procedure P1 (R : in out R1; B : Integer) with
      Pre => One = 1,
-     Post => (case B is when 1      => R = (X => One),
-	                when others => R = (others => One));
+     Post => (case B is when 1      => R = (X => One'Old),
+	                when others => R = (others => One'Old));
+
+   function F1 (R : R1) return R1 with
+     Pre => One = 1,
+     Post => F1'Result = (X => R.X) and then
+            (X => F1'Result.X) = R and then
+            (if R.X = One'Old then R1'(X => F1'Result.X) = (X => One'Old));
+
+   function F1 (R : R1) return R1 is (R);
 
    procedure P2 (R : in out R2; B : Integer) with
      Pre => One = 1,
-     Post => (case B is when 1 => R = (One, 2),
+     Post => (case B is when 1 => R = (One, 2 * One'Old),
 	                when 2 => R = (others => One),
 	                when 3 => R = (One, others => One),
 	                when 4 => R = (X => 2, others => One),
@@ -50,6 +58,6 @@ package Rec_Aggregate is
 	                when 2 => Ignore ((others => <>)),
 	                when 3 => R.X = One,
 --	                when 4 => R.Y = True,
-	                when others => Ignore((Y => <>, others => <>)));
+	                when others => Ignore((Y => (for all K in False .. True => K or not K), others => <>)));
 
 end Rec_Aggregate;
