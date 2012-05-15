@@ -1,5 +1,5 @@
 {
- "SUBPROGRAMS" : 
+ "SUBPROGRAM" : 
     [{"NAME" : "P1", "SLOCS" : [{"LOW"  : "pack.ads:10:1",
                                  "HIGH" : "pack.ads:13:1"},
                                 {"LOW"  : "pack.adb:10:1",
