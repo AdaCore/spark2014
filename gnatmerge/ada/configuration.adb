@@ -2,6 +2,8 @@
 --                                                                          --
 --                            G N A T M E R G E                             --
 --                                                                          --
+--                        C O N F I G U R A T I O N                         --
+--                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
 --                        Copyright (C) 2012, AdaCore                       --
@@ -21,53 +23,52 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;        use Ada.Text_IO;
-with GNATCOLL.Scripts;   use GNATCOLL.Scripts;
-with GNATCOLL.VFS;       use GNATCOLL.VFS;
-with Common;             use Common;
-with TextConsole;        use TextConsole;
-with Configuration;      use Configuration;
-with GNAT.Strings;       use GNAT.Strings;
+with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.OS_Lib;       use GNAT.OS_Lib;
+with Ada.Text_IO;       use Ada.Text_IO;
 
-procedure GNATMerge is
-   Repo    : Scripts_Repository := Common.Register_Scripts_And_Functions;
-   Buffer  : String (1 .. 1000);
-   Last    : Integer;
-   Errors  : Boolean;
-   Console : aliased Text_Console;
-   Script  : Scripting_Language := Lookup_Scripting_Language (Repo, "python");
-begin
-   Read_Command_Line;
+package body Configuration is
 
-   GNATCOLL.Scripts.Load_Directory
-     (Script    => Script,
-      Directory => Create (Filesystem_String (Public_API)));
-   GNATCOLL.Scripts.Load_Directory
-     (Script    => Script,
-      Directory => Create (Filesystem_String (Plug_Ins)));
+   -----------------------
+   -- Read_Command_Line --
+   -----------------------
 
-   if User_Script'Length /= 0 then
-      GNATCOLL.Scripts.Execute_File
-        (Script   => Script,
-         Filename => User_Script.all,
-         Errors   => Errors);
-   end if;
+   procedure Read_Command_Line is
+      Config : Command_Line_Configuration;
 
-   if Run_Console then
-      Put_Line ("Please type python commands:");
-      Set_Default_Console (Script, Console'Unchecked_Access);
-      loop
-         Get_Line (Buffer, Last);
-         Execute_Command
-           (Script       => Lookup_Scripting_Language (Repo, "python"),
-            Command      => Buffer (1 .. Last),
-            Show_Command => False,
-            Hide_Output  => False,
-            Errors       => Errors);
-      end loop;
-   end if;
+      procedure Abort_With_Help (Msg : String);
 
-exception
-   when End_Error =>
-      Destroy (Repo);
-end GNATMerge;
+      ---------------------
+      -- Abort_With_Help --
+      ---------------------
+
+      procedure Abort_With_Help (Msg : String) is
+      begin
+         Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+         Ada.Text_IO.New_Line;
+         Display_Help (Config);
+         GNAT.OS_Lib.OS_Exit (1);
+      end Abort_With_Help;
+
+   begin
+      Define_Switch (Config,
+                     User_Script'Access,
+                     "-e:",
+                     Long_Switch => "--execute=",
+                     Argument    => "SCRIPT",
+                     Help        => "Execute a python script");
+      Define_Switch (Config,
+                     Run_Console'Access,
+                     "-c",
+                     "--console",
+                     Help     => "Run the command-line interpreter");
+
+      Getopt (Config);
+   exception
+      when Invalid_Switch | Exit_From_Command_Line =>
+         GNAT.OS_Lib.OS_Exit (1);
+      when Invalid_Parameter =>
+         Abort_With_Help ("No parameter given to switch -" & Full_Switch);
+   end Read_Command_Line;
+
+end Configuration;
