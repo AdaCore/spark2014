@@ -4,8 +4,8 @@ Attributes such as sloc ranges or coverage status can naturally be
 seen as object of a lattice; this module allow this identification.
 """
 
-import common
-import conversions
+from internal.attributes import common
+from internal import conversions
 
 class Sloc:
     def __init__(self, spec):

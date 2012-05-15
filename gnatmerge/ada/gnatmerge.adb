@@ -36,10 +36,12 @@ procedure GNATMerge is
    Console : aliased Text_Console;
    Script  : Scripting_Language := Lookup_Scripting_Language (Repo, "python");
 begin
-   Put_Line ("Look for python in " & Python_Dir);
    GNATCOLL.Scripts.Load_Directory
      (Script    => Script,
-      Directory => Create (Filesystem_String (Python_Dir)));
+      Directory => Create (Filesystem_String (Public_API)));
+   GNATCOLL.Scripts.Load_Directory
+     (Script    => Script,
+      Directory => Create (Filesystem_String (Plug_Ins)));
    Put_Line ("Please type python commands:");
 
    Set_Default_Console (Script, Console'Unchecked_Access);

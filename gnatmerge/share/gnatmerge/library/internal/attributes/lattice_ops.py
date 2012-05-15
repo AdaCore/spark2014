@@ -1,4 +1,3 @@
-import sets
 """Manage lattices attributes
 
 This package allows to handle sets with attributes taking values
@@ -91,6 +90,8 @@ each solution
 * F: (maximal) inclusion and (minimal) superset.
 
 """
+
+from internal import sets
 
 class Inclusion(sets.Arrow):
     """Build the maximal inclusion from attribute values in a common lattice
