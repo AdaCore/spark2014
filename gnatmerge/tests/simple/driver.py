@@ -4,11 +4,7 @@ import readers
 from internal.attributes import lattices
 from internal.attributes import lattice_ops
 
-# Build attribute domains
-
-lines = lattices.RangeAttribute(lattices.Sloc, "SLOCS", "LOW", "HIGH")
-status = lattices.PartialOrderAttribute("STATUS", {"OK", "KO"})
-status.name_meet("PARTIAL OK", {"OK", "KO"})
+from tools import *
 
 # Build sketch of inputs
 
@@ -16,22 +12,23 @@ m = sets.Objects()
 
 # subp = new_entity("SUBPROGRAM")
 subp = m.new_object("SUBPROGRAMS")
-subp.new_attribute(lines)
+subp.new_attribute(slocs())
 
 # subp = new_entity("VC")
 # ...then will disappear when new_child is implemented
 vcs = m.new_object("VCS")
-vcs.new_attribute(lines)
+vcs.new_attribute(slocs())
 
 # Decorate sketch with the spec of results
 
 # vc = subp.new_child("VC", inherits=proved)
-vcs.new_arrow("SUBPROGRAM", lattice_ops.Inclusion(lattice=lines, object=subp))
-subp.new_arrow("STATUS", lattice_ops.Join(lattice=status,
+vcs.new_arrow("SUBPROGRAM", lattice_ops.Inclusion(lattice=slocs(),
+                                                  object=subp))
+subp.new_arrow("STATUS", lattice_ops.Join(lattice=tristate(),
                                           subobject=vcs,
                                           in_object_key="SUBPROGRAM"))
 # ...move status attribute down...
-vcs.new_attribute(status)
+vcs.new_attribute(tristate())
 
 
 # Instanciate sketch from inputs
