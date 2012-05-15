@@ -355,7 +355,7 @@ package body Why.Gen.Expr is
                A : constant Node_Id := Get_Ada_Node (+By);
             begin
                return
-                 New_Located_Call
+                 New_VC_Call
                    (Domain   => Domain,
                     Ada_Node => Ada_Node,
                     Name     => Prefix (Full_Name (A), WNE_Overflow, A),
@@ -389,7 +389,7 @@ package body Why.Gen.Expr is
                  and then not (Get_Base_Type (To) in EW_Scalar)
                then
                   return
-                    New_Located_Call
+                    New_VC_Call
                       (Domain   => Domain,
                        Ada_Node => Ada_Node,
                        Name     => To_Program_Space (Name),
@@ -631,51 +631,18 @@ package body Why.Gen.Expr is
    end New_Comparison;
 
    ----------------------
-   -- New_Located_Call --
-   ----------------------
-
-   function New_Located_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Expr_Array;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
-   is
-   begin
-      return
-        +New_Located_Expr
-          (Ada_Node => Ada_Node,
-           Reason   => Reason,
-           Expr     =>
-             New_Call
-               (Ada_Node => Ada_Node,
-                Name     => Name,
-                Args     => Progs,
-                Domain   => Domain),
-           Domain  => Domain);
-   end New_Located_Call;
-
-   ----------------------
    -- New_Located_Expr --
    ----------------------
 
-   function New_Located_Expr
-      (Ada_Node : Node_Id;
-       Expr     : W_Expr_Id;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
+   function New_Located_Expr (Ada_Node : Node_Id;
+                              Expr     : W_Expr_Id;
+                              Domain   : EW_Domain) return W_Expr_Id
    is
    begin
-      if Domain /= EW_Term and then Present (Ada_Node) then
-         return
-            New_Label
-              (Ada_Node => Ada_Node,
-               Labels   => New_VC_Labels (Ada_Node, Reason),
-               Def      => Expr,
-               Domain   => Domain);
-      else
-         return Expr;
-      end if;
+      return
+        New_Label (Labels => (1 => New_Located_Label (Ada_Node)),
+                   Def    => Expr,
+                   Domain => Domain);
    end New_Located_Expr;
 
    -----------------------
@@ -816,6 +783,54 @@ package body Why.Gen.Expr is
               Domain    => Domain);
       end if;
    end New_Simpl_Conditional;
+
+   -----------------
+   -- New_VC_Call --
+   -----------------
+
+   function New_VC_Call
+      (Ada_Node : Node_Id;
+       Name     : W_Identifier_Id;
+       Progs    : W_Expr_Array;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
+   is
+   begin
+      return
+        +New_VC_Expr
+          (Ada_Node => Ada_Node,
+           Reason   => Reason,
+           Expr     =>
+             New_Call
+               (Ada_Node => Ada_Node,
+                Name     => Name,
+                Args     => Progs,
+                Domain   => Domain),
+           Domain  => Domain);
+   end New_VC_Call;
+
+   -----------------
+   -- New_VC_Expr --
+   -----------------
+
+   function New_VC_Expr
+      (Ada_Node : Node_Id;
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
+   is
+   begin
+      if Domain /= EW_Term and then Present (Ada_Node) then
+         return
+            New_Label
+              (Ada_Node => Ada_Node,
+               Labels   => New_VC_Labels (Ada_Node, Reason),
+               Def      => Expr,
+               Domain   => Domain);
+      else
+         return Expr;
+      end if;
+   end New_VC_Expr;
 
    -------------------
    -- New_VC_Labels --

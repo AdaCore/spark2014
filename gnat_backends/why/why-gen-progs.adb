@@ -135,7 +135,7 @@ package body Why.Gen.Progs is
                  Annotation   =>
                    New_Loop_Annot
                      (Invariant =>
-                        +New_Located_Expr
+                        +New_VC_Expr
                           (Ada_Node => Ada_Node,
                            Expr     => +Enriched_Inv,
                            Reason   => VC_Loop_Invariant,
@@ -176,7 +176,7 @@ package body Why.Gen.Progs is
         New_Assert
           (Ada_Node => Ada_Node,
            Pred     =>
-             +New_Located_Expr
+             +New_VC_Expr
                (Ada_Node => Ada_Node,
                 Expr     => +Pred,
                 Reason   => VC_Assert,

@@ -474,7 +474,7 @@ package body Gnat2Why.Expr is
               Right  => +Rel_Last));
    begin
       return
-        +New_Located_Expr
+        +New_VC_Expr
         (Ada_Node => N,
          Domain   => EW_Prog,
          Reason   => VC_Range_Check,
@@ -2690,7 +2690,7 @@ package body Gnat2Why.Expr is
                            +New_Attribute_Expr (Etype (Var), Attr_Id);
             begin
                if Domain = EW_Prog then
-                  T := New_Located_Call
+                  T := New_VC_Call
                     (Ada_Node => Expr,
                      Domain   => Domain,
                      Name     => To_Program_Space (Func),
@@ -3290,7 +3290,7 @@ package body Gnat2Why.Expr is
                end if;
 
                T :=
-                 New_Located_Call
+                 New_VC_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
                     Name     => Name,
@@ -3327,7 +3327,7 @@ package body Gnat2Why.Expr is
                         else
                           Name);
                T :=
-                 New_Located_Call
+                 New_VC_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
                     Name     => Name,
@@ -3578,7 +3578,7 @@ package body Gnat2Why.Expr is
             begin
                Current_Type := +Why_Logic_Type_Of_Ada_Type (Result_Typ);
                T :=
-                 +New_Located_Call
+                 +New_VC_Call
                    (Name     => Name,
                     Progs    => Compute_Call_Args (Expr,
                                                    Domain,
@@ -4120,7 +4120,7 @@ package body Gnat2Why.Expr is
             declare
                Nb_Of_Refs : Natural;
                Call       : constant W_Prog_Id :=
-                              +New_Located_Call
+                              +New_VC_Call
                                 (Ada_Node => Stmt,
                                  Name     =>
                                    To_Why_Id (Entity (Name (Stmt)), EW_Prog),
@@ -4231,7 +4231,7 @@ package body Gnat2Why.Expr is
                   begin
                      if Is_False_Boolean (+Pred) then
                         return
-                          +New_Located_Expr
+                          +New_VC_Expr
                             (Ada_Node => Stmt,
                              Expr     => +New_Identifier (Name => "absurd"),
                              Reason   => VC_Assert,

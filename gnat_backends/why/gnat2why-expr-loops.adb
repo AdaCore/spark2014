@@ -115,7 +115,7 @@ package body Gnat2Why.Expr.Loops is
          Nlists.Next (Cur_Stmt);
       end loop;
       Pred :=
-        +New_Located_Expr
+        +New_VC_Expr
           (Ada_Node => Split_Node,
            Expr     => +Pred,
            Reason   => VC_Loop_Invariant,

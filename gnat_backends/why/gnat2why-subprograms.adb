@@ -463,7 +463,7 @@ package body Gnat2Why.Subprograms is
             return New_Ignore (Prog => +W);
          else
             return New_Assert
-              (Pred => +New_Located_Expr (CTC, W, VC_Postcondition, EW_Pred));
+              (Pred => +New_VC_Expr (CTC, W, VC_Postcondition, EW_Pred));
          end if;
       end One_Contract_Case;
 
@@ -610,7 +610,7 @@ package body Gnat2Why.Subprograms is
            Binders => (1 => Unit_Param),
            Pre     => Pre,
            Post    =>
-             +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
+             +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
            Def     =>
              +Compute_Context
                (Params,
