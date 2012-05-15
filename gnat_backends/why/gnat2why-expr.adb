@@ -85,8 +85,8 @@ package body Gnat2Why.Expr is
                   Equivalent_Keys => "=",
                   "="             => "=");
 
-   Ada_To_Why_Term : Ada_To_Partial_Why_Call.Map;
-   --  Mappings from Ada nodes to their partial Why translation as a term
+   Ada_To_Why_Func : Ada_To_Why.Map;
+   --  Mappings from Ada nodes to Why logic functions for their translation
    Strlit_To_Why_Term : Strlit_To_Why.Map;
    Strlit_To_Why_Type : Strlit_To_Type.Map;
    --  Idem for string literals, where the Ref_Allowed information is not
@@ -200,39 +200,47 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
-   function Transform_Array_Value_To_Term
+   function Transform_Aggregate
      (Params : Translation_Params;
-      Id     : W_Identifier_Id;
+      Domain : EW_Domain;
       Expr   : Node_Id) return W_Expr_Id;
-   --  Transform an expression Expr that specifies an array value (either a
-   --  slice or an aggregrate) into the equivalent Why term, both with and w/o
-   --  references allowed. The first time this is called on an Ada node, the
-   --  results of the partial translation are stored in Ada_To_Why_Term, so
-   --  that the necessary function and axiom are generated only once per source
-   --  aggregate. It is those partial results that are used for generating each
-   --  translation of this node.
+   --  Transform an aggregate Expr. It may be called multiple times on the
+   --  same Ada node, corresponding to different phases of the translation. The
+   --  first time it is called on an Ada node, a logic function is generated
+   --  and stored in Ada_To_Why_Func, so that the function and axiom are
+   --  generated only once per source aggregate. This function F is used
+   --  for generating each translation of this node. It takes in parameters
+   --  all components passed to the aggregate. This is simply the list of
+   --  components for a one-dimensional aggregate, and it takes into account
+   --  sub-components for multi-dimensional aggregates.
    --
-   --  A logic function F is generated to replace the value with a call. It
-   --  takes in parameters all values of references used in the aggregate:
    --     function F (<params>) : <type of aggregate>
    --
-   --  An axiom A gives the value of the function:
    --     axiom A:
    --        forall R:<type of aggregate>. forall <params>.
-   --           R = F(<params>) -> <predicate for the aggregate R>
+   --           R = F(<params>) -> <proposition for the aggregate R>
+   --
+   --  On the aggregate (1 => X, others => Y), components are {X, Y}.
+   --  On the aggregate (1 => (1 => X, others => Y), 2 => Z), components are
+   --  {X, Y, Z}.
 
-   function Transform_Array_Value_To_Pred
-     (Expr        : Node_Id;
-      Id          : W_Identifier_Id;
-      Params      : Translation_Params) return W_Pred_Id;
-   --  Same as Transform_Array_Value_To_Term, but for generating a predicate
-   --  that expresses the value.
-
-   function Transform_Slice_To_Pred
-     (Expr      : Node_Id;
-      Id        : W_Identifier_Id;
-      Params    : Translation_Params) return W_Pred_Id;
-   --  Specialization of Transform_Array_Value_To_Pred for slices
+   function Transform_Slice
+     (Params : Translation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id) return W_Expr_Id;
+   --  Transform a slice Expr. It may be
+   --  called multiple times on the same Ada node, corresponding to different
+   --  phases of the translation. The first time it is called on an Ada node,
+   --  a logic function is generated and stored in Ada_To_Why_Func, so that the
+   --  function and axiom are generated only once per source slice. This
+   --  function F is used for generating each translation of this node. It
+   --  takes in parameters the prefix and bounds of the slice.
+   --
+   --     function F (prefix:<type>, low:int, high:int) : <type>
+   --
+   --     axiom A:
+   --        forall id:<type>. forall low:int. forall high:int.
+   --           R = F(id,low,high) -> <proposition for the slice R>
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
@@ -271,11 +279,6 @@ package body Gnat2Why.Expr is
    procedure Transform_String_Literal
      (Params : Translation_Params;
       N      : Node_Id);
-
-   function Transform_Array_Component_Associations
-     (Expr        : Node_Id;
-      Id          : W_Identifier_Id;
-      Params      : Translation_Params) return W_Pred_Id;
 
    function Transform_Record_Component_Associations
      (Domain      : EW_Domain;
@@ -1420,29 +1423,58 @@ package body Gnat2Why.Expr is
       end loop;
    end Transform_Actions_Preparation;
 
-   -----------------------------------
-   -- Transform_Array_Value_To_Term --
-   -----------------------------------
+   -------------------------
+   -- Transform_Aggregate --
+   -------------------------
 
-   function Transform_Array_Value_To_Term
+   function Transform_Aggregate
      (Params : Translation_Params;
-      Id     : W_Identifier_Id;
+      Domain : EW_Domain;
       Expr   : Node_Id) return W_Expr_Id
    is
       -----------------------
       -- Local subprograms --
       -----------------------
 
+      procedure Get_Aggregate_Elements
+        (Expr   : Node_Id;
+         Values : out List_Of_Nodes.List;
+         Types  : out List_Of_Nodes.List);
+      --  Extract elements of the aggregate Expr that will be passed in
+      --  parameter. Each element of Values is an element of the (possibly
+      --  multi-dimensional) aggregate, with the corresponding type stored at
+      --  the same position in Types.
+
+      procedure Generate_Logic_Function
+        (Expr   : Node_Id;
+         Values : List_Of_Nodes.List;
+         Types  : List_Of_Nodes.List);
+      --  Generate the logic function definition for the aggregate Expr, with a
+      --  suitable defining axiom:
+      --
+      --     function F (<params>) : <type of aggregate>
+      --
+      --     axiom A:
+      --       forall id:<type of aggregate>. forall <params>.
+      --         R = F(<params>) -> <proposition for the aggregate R>
+
+      function Transform_Array_Component_Associations
+        (Expr   : Node_Id;
+         Id     : W_Identifier_Id;
+         Args   : Ada_Ent_To_Why.Map;
+         Params : Translation_Params) return W_Pred_Id;
+      --  Generates the proposition defining the aggregate Id, based on a
+      --  mapping between Ada nodes and corresponding Why identifiers.
+
       function Complete_Translation
         (Params : Translation_Params;
+         Domain : EW_Domain;
          Func   : W_Identifier_Id;
-         Refs   : Node_Sets.Set) return W_Expr_Id;
-      --  Given a partial translation (Func,Refs) previously computed, generate
-      --  the actual call to Func by translating arguments Refs in the given
-      --  context given by Params.
-
-      procedure Generate_And_Store_Partial_Translation;
-      --  Generate and store the partial translation for Expr
+         Values : List_Of_Nodes.List;
+         Types  : List_Of_Nodes.List) return W_Expr_Id;
+      --  Given a logic function Func previously defined for the aggregate,
+      --  generate the actual call to Func by translating arguments Values
+      --  of type Types in the context given by Params.
 
       --------------------------
       -- Complete_Translation --
@@ -1450,143 +1482,163 @@ package body Gnat2Why.Expr is
 
       function Complete_Translation
         (Params : Translation_Params;
+         Domain : EW_Domain;
          Func   : W_Identifier_Id;
-         Refs   : Node_Sets.Set) return W_Expr_Id
+         Values : List_Of_Nodes.List;
+         Types  : List_Of_Nodes.List) return W_Expr_Id
       is
-         use Node_Sets;
+         pragma Assert (Values.Length /= 0);
 
-         Cnt    : Positive;
-         Cursor : Node_Sets.Cursor;
-         Args   : W_Expr_Array :=
-                    (if Refs.Length = 0 then
-                       (1 => New_Void)
-                     else
-                       (1 .. Integer (Refs.Length) => <>));
+         use List_Of_Nodes;
+
+         Cnt   : Positive;
+         Value : List_Of_Nodes.Cursor;
+         Typ   : List_Of_Nodes.Cursor;
+         Args  : W_Expr_Array (1 .. Integer (Values.Length));
+
       begin
-         --  Compute the parameters/arguments for the function call and axiom
+         --  Compute the arguments for the function call
 
-         Cnt := 1;
-         Cursor := Refs.First;
-         while Cursor /= No_Element loop
-            declare
-               Ent          : constant Entity_Id := Element (Cursor);
-               Current_Type : W_Base_Type_Id;
-               pragma Unreferenced (Current_Type);
-            begin
-               Args (Cnt) :=
-                 Transform_Identifier
-                   (Params, Expr, Ent, EW_Term, Current_Type);
-               Next (Cursor);
-               Cnt := Cnt + 1;
-            end;
+         Cnt   := 1;
+         Value := Values.First;
+         Typ   := Types.First;
+         while Value /= No_Element loop
+            Args (Cnt) :=
+              Transform_Expr
+                (Element (Value),
+                 +Why_Logic_Type_Of_Ada_Type (Element (Typ)),
+                 Domain,
+                 Params);
+            Next (Value);
+            Next (Typ);
+            Cnt := Cnt + 1;
          end loop;
 
+         --  Return the call
+
          return New_Call (Ada_Node => Expr,
-                          Domain   => EW_Term,
+                          Domain   => Domain,
                           Name     => Func,
                           Args     => Args);
       end Complete_Translation;
 
-      --------------------------------------------
-      -- Generate_And_Store_Partial_Translation --
-      --------------------------------------------
+      -----------------------------
+      -- Generate_Logic_Function --
+      -----------------------------
 
-      procedure Generate_And_Store_Partial_Translation is
-         Typ  : constant Entity_Id := Type_Of_Node (Expr);
-         Name : constant String := New_Str_Lit_Ident (Expr);
-         Func : constant W_Identifier_Id := New_Identifier (Name     => Name,
-                                                            Ada_Node => Expr);
+      procedure Generate_Logic_Function
+        (Expr   : Node_Id;
+         Values : List_Of_Nodes.List;
+         Types  : List_Of_Nodes.List)
+      is
+         pragma Assert (Values.Length /= 0);
+
+         use List_Of_Nodes;
+
+         Expr_Typ      : constant Entity_Id := Type_Of_Node (Expr);
+
+         --  Generate name for the function based on the location of the
+         --  aggregate.
+
+         Name          : constant String := New_Str_Lit_Ident (Expr);
+         Func          : constant W_Identifier_Id :=
+                           New_Identifier (Name     => Name,
+                                           Ada_Node => Expr);
 
          --  Predicate used to define the aggregate
 
-         Params_No_Ref : Translation_Params :=
+         Params_No_Ref : constant Translation_Params :=
                            (Theory      => Params.Theory,
                             File        => Params.File,
                             Phase       => Params.Phase,
                             Ref_Allowed => False,
                             Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
-         --  Compute the list of references used in the aggregate, in a context
-         --  were we ignore the existing mapping of entities to names, as the
-         --  same array (aggregate or slice) might be translated in different
-         --  contexts.
-
-         Params_Ref : constant Translation_Params :=
-                        (Theory      => Params.Theory,  --  ??? no theory
-                         File        => Params.File,
-                         Phase       => Params.Phase,  --  ??? Make special one
-                         Ref_Allowed => True,
-                         Name_Map    => Ada_Ent_To_Why.Empty_Map);
-         Pred_With_Refs : constant W_Pred_Id :=
-                            Transform_Array_Value_To_Pred
-                              (Expr,
-                               Id,
-                               Params_Ref);
-         Refs           : constant Node_Sets.Set :=
-                            Get_All_Dereferences (+Pred_With_Refs);
-
          --  Values used in calls to the aggregate function
 
-         Ret_Type : constant W_Primitive_Type_Id :=
-                      +Why_Logic_Type_Of_Ada_Type (Typ);
-         Id_Binder : constant Binder_Type :=
-                       (Ada_Node => Empty,
-                        B_Name   => Id,
-                        Modifier => None,
-                        B_Type   => Ret_Type);
-         Id_Expr          : W_Expr_Id;
-         Unique_Param     : constant Binder_Array :=
-                              (if Refs.Length = 0 then
-                                 (1 => Unit_Param)
-                               else
-                                 (1 .. 0 => <>));
-         Other_Params   : Binder_Array :=
-                            (if Refs.Length = 0 then
-                               (1 .. 0 => <>)
-                             else
-                               (1 .. Integer (Refs.Length) => <>));
-         Cnt       : Positive;
+         Id            : constant W_Identifier_Id := New_Temp_Identifier;
+         Ret_Type      : constant W_Primitive_Type_Id :=
+                           +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
+         Id_Param      : constant Binder_Array :=
+                           (1 => (Ada_Node => Empty,
+                                  B_Name   => Id,
+                                  Modifier => None,
+                                  B_Type   => Ret_Type));
 
-         use Node_Sets;
+         --  Arrays of binders and arguments, and mapping of nodes to names
 
-         Cursor    : Node_Sets.Cursor;
-         Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
-         Call      : W_Expr_Id;
+         Call_Params   : Binder_Array (1 .. Integer (Values.Length));
+         Call_Args     : W_Expr_Array (1 .. Integer (Values.Length));
+         Args_Map      : Ada_Ent_To_Why.Map;
 
-      --  Start of Generate_And_Store_Partial_Translation
+         --  Counter and iterators
+
+         Cnt           : Positive;
+         Value         : List_Of_Nodes.Cursor;
+         Typ           : List_Of_Nodes.Cursor;
+
+         --  Variables for the call, guard and proposition for the axiom
+
+         Call          : W_Expr_Id;
+         Id_Expr       : W_Expr_Id;
+         Def_Pred      : W_Pred_Id;
+
+         --  Select file for the declarations
+
+         Decl_File     : Why_File := Why_Files (Dispatch_Entity (Expr));
+
+      --  Start of Generate_Logic_Function
 
       begin
-         --  Store the partial translations
+         --  Store the logic function
 
-         Ada_To_Why_Term.Include (Expr, (Func => Func, Args => Refs));
+         Ada_To_Why_Func.Include (Expr, +Func);
 
-         --  Compute the parameters/arguments for the axiom
+         --  Compute the parameters/arguments for the axiom/call
 
-         Cnt := 1;
-         Cursor := Refs.First;
-         while Cursor /= No_Element loop
+         Cnt   := 1;
+         Value := Values.First;
+         Typ := Types.First;
+         while Value /= No_Element loop
             declare
-               Ent   : constant Entity_Id := Element (Cursor);
-               Name  : constant String := Full_Name (Ent);
-               Ident : constant W_Identifier_Id :=
-                         New_Identifier (Ada_Node => Ent, Name => Name);
+               Ident : constant W_Identifier_Id := New_Temp_Identifier;
             begin
-               Other_Params (Cnt) :=
+               Call_Params (Cnt) :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
                   Modifier => None,
-                  B_Type   =>
-                    New_Abstract_Type
-                      (Name => To_Why_Type (Name)));
-               Next (Cursor);
+                  B_Type   => Why_Logic_Type_Of_Ada_Type (Element (Typ)));
+               Call_Args (Cnt) := +Ident;
+
+               --  Fill in mapping from Ada nodes to Why identifiers for the
+               --  generation of the proposition in the defining axiom.
+
+               Ada_Ent_To_Why.Insert (Args_Map, Element (Value), +Ident);
+
+               Next (Typ);
+               Next (Value);
                Cnt := Cnt + 1;
-               Ada_Ent_To_Why.Insert (Params_No_Ref.Name_Map, Ent, +Ident);
             end;
          end loop;
 
-         --  Compute the call for the axiom
+         --  Compute the call, guard and proposition for the axiom
 
-         Call := Complete_Translation (Params_No_Ref, Func, Refs);
+         Call := New_Call (Ada_Node => Expr,
+                           Domain   => EW_Term,
+                           Name     => Func,
+                           Args     => Call_Args);
+
+         Id_Expr := New_Comparison (Cmp       => EW_Eq,
+                                    Left      => +Id,
+                                    Right     => Call,
+                                    Arg_Types => +Ret_Type,
+                                    Domain    => EW_Pred);
+
+         Def_Pred :=
+           Transform_Array_Component_Associations (Expr   => Expr,
+                                                   Id     => Id,
+                                                   Args   => Args_Map,
+                                                   Params => Params_No_Ref);
 
          --  Generate the necessary logic function and axiom declarations
 
@@ -1594,340 +1646,701 @@ package body Gnat2Why.Expr is
             Decl_File.Cur_Theory := Why_Empty;
          end if;
          Open_Theory (Decl_File, Name);
-         Emit
-           (Decl_File.Cur_Theory,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => Func,
-               Binders     => Unique_Param & Other_Params,
-               Return_Type => Ret_Type));
 
-         Id_Expr := New_Comparison (Cmp       => EW_Eq,
-                                    Left      => +Id,
-                                    Right     => Call,
-                                    Arg_Types => +Ret_Type,
-                                    Domain    => EW_Pred);
-         Emit
-           (Decl_File.Cur_Theory,
-            New_Guarded_Axiom
-              (Name        => To_Ident (WNE_Def_Axiom),
-               Binders     => Binder_Array'(1 => Id_Binder) & Other_Params,
-               Pre         => +Id_Expr,
-               Def         =>
-                 Transform_Array_Value_To_Pred
-                   (Expr,
-                    Id,
-                    Params_No_Ref)));
+         Emit (Decl_File.Cur_Theory,
+               New_Function_Decl (Domain      => EW_Term,
+                                  Name        => Func,
+                                  Binders     => Call_Params,
+                                  Return_Type => Ret_Type));
+         Emit (Decl_File.Cur_Theory,
+               New_Guarded_Axiom
+                 (Name        => To_Ident (WNE_Def_Axiom),
+                  Binders     => Id_Param & Call_Params,
+                  Pre         => +Id_Expr,
+                  Def         => Def_Pred));
+
          Close_Theory (Decl_File, Filter_Entity => Expr);
          if Params.File = Decl_File.File then
             Decl_File.Cur_Theory := Params.Theory;
          end if;
-      end Generate_And_Store_Partial_Translation;
+      end Generate_Logic_Function;
 
-   --  Start of Transform_Array_Value_To_Term
+      ----------------------------
+      -- Get_Aggregate_Elements --
+      ----------------------------
+
+      procedure Get_Aggregate_Elements
+        (Expr   : Node_Id;
+         Values : out List_Of_Nodes.List;
+         Types  : out List_Of_Nodes.List)
+      is
+         Typ     : constant Entity_Id := Type_Of_Node (Expr);
+         Num_Dim : constant Pos       := Number_Dimensions (Typ);
+
+         -----------------------
+         -- Local subprograms --
+         -----------------------
+
+         procedure Traverse_Value_At_Index
+           (Dim                 : Pos;
+            Expr_Or_Association : Node_Id);
+         --  Traverse the value Expr_Or_Association to collect desired elements
+
+         procedure Traverse_Rec_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id);
+         --  Main recursive function operating over multi-dimensional array
+         --  aggregates.
+
+         -----------------------------
+         -- Traverse_Value_At_Index --
+         -----------------------------
+
+         procedure Traverse_Value_At_Index
+           (Dim                 : Pos;
+            Expr_Or_Association : Node_Id)
+         is
+            Expr : Node_Id;
+         begin
+            if Nkind (Expr_Or_Association) = N_Component_Association
+              and then Box_Present (Expr_Or_Association)
+            then
+               null;
+            else
+               Expr :=
+                 (if Nkind (Expr_Or_Association) =
+                    N_Component_Association
+                  then
+                  Expression (Expr_Or_Association)
+                  else
+                  Expr_Or_Association);
+
+               if Dim < Num_Dim then
+                  pragma Assert (Nkind (Expr) = N_Aggregate);
+                  Traverse_Rec_Aggregate (Dim + 1, Expr);
+               else
+                  declare
+                     Exp_Type  : constant Node_Id := Component_Type (Typ);
+                  begin
+                     Values.Append (Expr);
+                     Types.Append (Exp_Type);
+                  end;
+               end if;
+            end if;
+         end Traverse_Value_At_Index;
+
+         ----------------------------
+         -- Traverse_Rec_Aggregate --
+         ----------------------------
+
+         procedure Traverse_Rec_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id)
+         is
+            Exprs       : constant List_Id := Expressions (Expr);
+            Assocs      : constant List_Id := Component_Associations (Expr);
+            Expression  : Node_Id := Nlists.First (Exprs);
+            Association : Node_Id := Nlists.First (Assocs);
+
+         begin
+            while Present (Expression) loop
+               Traverse_Value_At_Index (Dim, Expression);
+               Next (Expression);
+            end loop;
+
+            --  Although named association is not allowed after positional
+            --  association, an "others" case is allowed, and this is included
+            --  in the list of associations, so we always do the following.
+
+            while Present (Association) loop
+               Traverse_Value_At_Index (Dim, Association);
+               Next (Association);
+            end loop;
+         end Traverse_Rec_Aggregate;
+
+         --  Start of Get_Aggregate_Elements
+
+      begin
+         Traverse_Rec_Aggregate (Dim => 1, Expr => Expr);
+      end Get_Aggregate_Elements;
+
+      --------------------------------------------
+      -- Transform_Array_Component_Associations --
+      --------------------------------------------
+
+      function Transform_Array_Component_Associations
+        (Expr   : Node_Id;
+         Id     : W_Identifier_Id;
+         Args   : Ada_Ent_To_Why.Map;
+         Params : Translation_Params) return W_Pred_Id
+      is
+         Typ     : constant Entity_Id := Type_Of_Node (Expr);
+         T_Name  : constant Entity_Id := Type_Of_Node (Typ);
+         Num_Dim : constant Pos := Number_Dimensions (Typ);
+         Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
+         Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
+
+         -----------------------
+         -- Local subprograms --
+         -----------------------
+
+         function Constrain_Value_At_Index
+           (Dim                 : Pos;
+            Expr_Or_Association : Node_Id) return W_Expr_Id;
+         --  Return the proposition that the array at the given indices is
+         --  equal to the value given in Expr_Or_Association, or else "true"
+         --  for box association.
+
+         function Select_Nth_Index
+           (Dim    : Pos;
+            Offset : Nat) return W_Expr_Id;
+         --  Return the proposition that Index is at Offset from Id'First
+
+         function Select_These_Choices
+           (Dim : Pos;
+            L   : List_Id) return W_Expr_Id;
+         --  Return a proposition that expresses that Index satisfies one
+         --  choice in the list of choices L.
+
+         function Transform_Rec_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return W_Expr_Id;
+         --  Main recursive function operating over multi-dimensional array
+         --  aggregates.
+
+         ------------------------------
+         -- Constrain_Value_At_Index --
+         ------------------------------
+
+         function Constrain_Value_At_Index
+           (Dim                 : Pos;
+            Expr_Or_Association : Node_Id) return W_Expr_Id
+         is
+            Expr : Node_Id;
+
+         begin
+            if Nkind (Expr_Or_Association) = N_Component_Association
+              and then Box_Present (Expr_Or_Association)
+            then
+               return +True_Pred;
+            else
+               Expr :=
+                 (if Nkind (Expr_Or_Association) =
+                    N_Component_Association
+                  then
+                     Expression (Expr_Or_Association)
+                  else
+                     Expr_Or_Association);
+
+               if Dim < Num_Dim then
+                  pragma Assert (Nkind (Expr) = N_Aggregate);
+                  return Transform_Rec_Aggregate (Dim + 1, Expr);
+               else
+                  declare
+                     Exp_Type  : constant Node_Id := Component_Type (Typ);
+                     Elmt_Type : constant W_Base_Type_Id :=
+                                   +Why_Logic_Type_Of_Ada_Type (Exp_Type);
+                     Value     : constant W_Expr_Id :=
+                                   +Ada_Ent_To_Why.Element (Args, Expr);
+                     Read      : constant W_Expr_Id :=
+                                   New_Array_Access
+                                     (Ada_Node  => Expr_Or_Association,
+                                      Domain    => EW_Term,
+                                      Ty_Entity => T_Name,
+                                      Ar        => +Id,
+                                      Index     => Indexes,
+                                      Dimension => Num_Dim);
+                  begin
+                     return New_Comparison
+                       (Cmp       => EW_Eq,
+                        Left      => Read,
+                        Right     => Value,
+                        Arg_Types => Elmt_Type,
+                        Domain    => EW_Pred);
+                  end;
+               end if;
+            end if;
+         end Constrain_Value_At_Index;
+
+         ----------------------
+         -- Select_Nth_Index --
+         ----------------------
+
+         function Select_Nth_Index
+           (Dim    : Pos;
+            Offset : Nat) return W_Expr_Id
+         is
+            First : constant W_Expr_Id :=
+                      New_Array_Attr
+                        (Attribute_First,
+                         T_Name,
+                         +Id,
+                         EW_Term,
+                         Num_Dim,
+                         UI_From_Int (Dim));
+            Nth   : constant W_Expr_Id :=
+                      New_Binary_Op
+                        (Left     => First,
+                         Right    =>
+                          New_Integer_Constant (Value => UI_From_Int (Offset)),
+                         Op       => EW_Add,
+                         Op_Type  => EW_Int);
+         begin
+            return New_Comparison
+              (Cmp       => EW_Eq,
+               Left      => Indexes (Integer (Dim)),
+               Right     => Nth,
+               Arg_Types => EW_Int_Type,
+               Domain    => EW_Pred);
+         end Select_Nth_Index;
+
+         --------------------------
+         -- Select_These_Choices --
+         --------------------------
+
+         function Select_These_Choices
+           (Dim : Pos;
+            L   : List_Id) return W_Expr_Id
+         is
+            Result : W_Expr_Id := +False_Pred;
+            Choice : Node_Id   := First (L);
+         begin
+            while Present (Choice) loop
+               Result := New_Or_Expr
+                 (Left   => Result,
+                  Right  =>
+                    Transform_Discrete_Choice
+                      (Choice      => Choice,
+                       Expr        => Indexes (Integer (Dim)),
+                       Domain      => EW_Pred,
+                       Params => Params),
+                  Domain => EW_Pred);
+               Next (Choice);
+            end loop;
+            return Result;
+         end Select_These_Choices;
+
+         -----------------------------
+         -- Transform_Rec_Aggregate --
+         -----------------------------
+
+         function Transform_Rec_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return W_Expr_Id
+         is
+            Exprs       : constant List_Id := Expressions (Expr);
+            Assocs      : constant List_Id := Component_Associations (Expr);
+            Association : Node_Id;
+            Expression  : Node_Id;
+            Else_Part   : W_Expr_Id := +True_Pred;
+            Assocs_Len  : Nat;
+
+         begin
+            Assocs_Len := List_Length (Assocs);
+            Association :=
+              (if Nlists.Is_Empty_List (Assocs) then Empty
+               else Nlists.Last (Assocs));
+
+            --  Special case for "others" choice, which must appear alone as
+            --  last association.
+
+            if Present (Association)
+              and then List_Length (Choices (Association)) = 1
+              and then Nkind (First (Choices (Association))) = N_Others_Choice
+            then
+               if not Box_Present (Association) then
+                  Else_Part := Constrain_Value_At_Index (Dim, Association);
+               end if;
+               Prev (Association);
+               Assocs_Len := Assocs_Len - 1;
+            end if;
+
+            Expression :=
+              (if Nlists.Is_Empty_List (Exprs) then
+                  Empty
+               else
+                  Nlists.Last (Exprs));
+
+            if Present (Expression) then
+               pragma Assert (No (Association));
+
+               declare
+                  Elsif_Parts : W_Expr_Array
+                    (1 .. Integer (List_Length (Exprs)) - 1);
+               begin
+                  for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
+                     Elsif_Parts (Integer (Offset)) := New_Elsif
+                       (Domain    => EW_Pred,
+                        Condition => +Select_Nth_Index (Dim, Offset),
+                        Then_Part =>
+                          Constrain_Value_At_Index (Dim, Expression));
+                     Prev (Expression);
+                  end loop;
+
+                  return New_Conditional
+                    (Domain      => EW_Pred,
+                     Condition   => +Select_Nth_Index (Dim, 0),
+                     Then_Part   => Constrain_Value_At_Index (Dim, Expression),
+                     Elsif_Parts => Elsif_Parts,
+                     Else_Part   => Else_Part);
+               end;
+
+            elsif Present (Association) then
+               declare
+                  Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
+               begin
+                  for Offset in reverse 1 .. Assocs_Len - 1 loop
+                     Elsif_Parts (Integer (Offset)) := New_Elsif
+                       (Domain    => EW_Pred,
+                        Condition =>
+                          +Select_These_Choices (Dim, Choices (Association)),
+                        Then_Part =>
+                          Constrain_Value_At_Index (Dim, Association));
+                     Prev (Association);
+                  end loop;
+
+                  return New_Conditional
+                    (Domain      => EW_Pred,
+                     Condition   =>
+                       +Select_These_Choices (Dim, Choices (Association)),
+                     Then_Part   =>
+                       Constrain_Value_At_Index (Dim, Association),
+                     Elsif_Parts => Elsif_Parts,
+                     Else_Part   => Else_Part);
+               end;
+
+            else
+               return Else_Part;
+            end if;
+         end Transform_Rec_Aggregate;
+
+      --  Start of Transform_Array_Component_Associations
+
+      begin
+         for J in 1 .. Integer (Num_Dim) loop
+            Binders (J) := New_Temp_Identifier;
+            Indexes (J) := +Binders (J);
+         end loop;
+
+         return New_Universal_Quantif
+           (Variables => Binders,
+            Var_Type  => +EW_Int_Type,
+            Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
+      end Transform_Array_Component_Associations;
+
+      --  Elements of the aggregate
+
+      Values : List_Of_Nodes.List;
+      Types  : List_Of_Nodes.List;
+
+   --  Start of Transform_Aggregate
 
    begin
-      if not Ada_To_Why_Term.Contains (Expr) then
-         Generate_And_Store_Partial_Translation;
+      --  Get the aggregate elements that should be passed in parameter
+
+      Get_Aggregate_Elements (Expr, Values, Types);
+
+      --  If not done already, generate the logic function
+
+      if not Ada_To_Why_Func.Contains (Expr) then
+         Generate_Logic_Function (Expr, Values, Types);
       end if;
 
+      --  Retrieve the logic function previously generated, and call it on the
+      --  appropriate parameters.
+
       declare
-         Partial : constant Partial_Why_Call := Ada_To_Why_Term.Element (Expr);
+         Func : constant W_Identifier_Id := +Ada_To_Why_Func.Element (Expr);
       begin
-         return Complete_Translation (Params, Partial.Func, Partial.Args);
+         return Complete_Translation (Params, Domain, Func, Values, Types);
       end;
-   end Transform_Array_Value_To_Term;
+   end Transform_Aggregate;
 
-   --------------------------------------------
-   -- Transform_Array_Component_Associations --
-   --------------------------------------------
+   ---------------------
+   -- Transform_Slice --
+   ---------------------
 
-   function Transform_Array_Component_Associations
-     (Expr        : Node_Id;
-      Id          : W_Identifier_Id;
-      Params      : Translation_Params) return W_Pred_Id
+   function Transform_Slice
+     (Params : Translation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id) return W_Expr_Id
    is
-      Typ     : constant Entity_Id := Type_Of_Node (Expr);
-      T_Name  : constant Entity_Id := Type_Of_Node (Typ);
-      Num_Dim : constant Pos := Number_Dimensions (Typ);
-      Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
-      Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
-
       -----------------------
       -- Local subprograms --
       -----------------------
 
-      function Constrain_Value_At_Index
-        (Dim                 : Pos;
-         Expr_Or_Association : Node_Id) return W_Expr_Id;
-      --  Return the proposition that the array at the given indices is equal
-      --  to the value given in Expr_Or_Association, or else "true" for box
-      --  association.
+      procedure Get_Slice_Elements
+        (Expr   : Node_Id;
+         Prefix : out Node_Id;
+         Low    : out Node_Id;
+         High   : out Node_Id);
+      --  Extract elements of the slice Expr that will be passed in parameter:
+      --  the prefix, low bound and high bound of the slice.
 
-      function Select_Nth_Index
-        (Dim    : Pos;
-         Offset : Nat) return W_Expr_Id;
-      --  Return the proposition that Index is at Offset from Id'First
+      procedure Generate_Logic_Function
+        (Expr       : Node_Id;
+         Prefix_Typ : Entity_Id);
+      --  Generate the logic function definition for the slice Expr, with a
+      --  suitable defining axiom:
+      --
+      --    function F (prefix:<type>, low:int, high:int) : <type>
+      --
+      --    axiom A:
+      --      forall id:<type>. forall low:int. forall high:int.
+      --        R = F(id,low,high) -> <proposition for the slice R>
 
-      function Select_These_Choices
-        (Dim : Pos;
-         L   : List_Id) return W_Expr_Id;
-      --  Return a proposition that expresses that Index satisfies one choice
-      --  in the list of choices L.
+      function Transform_Slice_To_Pred
+        (Expr   : Node_Id;
+         Id     : W_Identifier_Id;
+         Prefix : W_Identifier_Id;
+         Low    : W_Identifier_Id;
+         High   : W_Identifier_Id) return W_Pred_Id;
+      --  Generates the proposition defining the slice Id, based on elements
+      --  Prefix, Low and High.
 
-      function Transform_Rec_Aggregate
-        (Dim  : Pos;
-         Expr : Node_Id) return W_Expr_Id;
-      --  Main recursive function operating over multi-dimensional array
-      --  aggregates.
-
-      ------------------------------
-      -- Constrain_Value_At_Index --
-      ------------------------------
-
-      function Constrain_Value_At_Index
-        (Dim                 : Pos;
-         Expr_Or_Association : Node_Id) return W_Expr_Id
-      is
-         Expr : Node_Id;
-
-      begin
-         if Nkind (Expr_Or_Association) = N_Component_Association
-           and then Box_Present (Expr_Or_Association)
-         then
-            return +True_Pred;
-         else
-            Expr :=
-              (if Nkind (Expr_Or_Association) =
-                 N_Component_Association
-               then
-                  Expression (Expr_Or_Association)
-               else
-                  Expr_Or_Association);
-
-            if Dim < Num_Dim then
-               pragma Assert (Nkind (Expr) = N_Aggregate);
-               return Transform_Rec_Aggregate (Dim + 1, Expr);
-            else
-               declare
-                  Exp_Type  : constant Node_Id := Component_Type (Typ);
-                  Elmt_Type : constant W_Base_Type_Id :=
-                                +Why_Logic_Type_Of_Ada_Type (Exp_Type);
-                  Value     : constant W_Expr_Id :=
-                                Transform_Expr (Expr          => Expr,
-                                                Expected_Type => Elmt_Type,
-                                                Domain        => EW_Term,
-                                                Params        => Params);
-                  Read      : constant W_Expr_Id :=
-                                New_Array_Access
-                                  (Ada_Node  => Expr_Or_Association,
-                                   Domain    => EW_Term,
-                                   Ty_Entity => T_Name,
-                                   Ar        => +Id,
-                                   Index     => Indexes,
-                                   Dimension => Num_Dim);
-               begin
-                  return New_Comparison
-                    (Cmp       => EW_Eq,
-                     Left      => Read,
-                     Right     => Value,
-                     Arg_Types => Elmt_Type,
-                     Domain    => EW_Pred);
-               end;
-            end if;
-         end if;
-      end Constrain_Value_At_Index;
-
-      ----------------------
-      -- Select_Nth_Index --
-      ----------------------
-
-      function Select_Nth_Index
-        (Dim    : Pos;
-         Offset : Nat) return W_Expr_Id
-      is
-         First : constant W_Expr_Id :=
-                   New_Array_Attr
-                     (Attribute_First,
-                      T_Name,
-                      +Id,
-                      EW_Term,
-                      Num_Dim,
-                      UI_From_Int (Dim));
-         Nth   : constant W_Expr_Id :=
-                   New_Binary_Op
-                     (Left     => First,
-                      Right    =>
-                        New_Integer_Constant (Value  => UI_From_Int (Offset)),
-                      Op       => EW_Add,
-                      Op_Type  => EW_Int);
-      begin
-         return New_Comparison
-           (Cmp       => EW_Eq,
-            Left      => Indexes (Integer (Dim)),
-            Right     => Nth,
-            Arg_Types => EW_Int_Type,
-            Domain    => EW_Pred);
-      end Select_Nth_Index;
+      function Complete_Translation
+        (Params : Translation_Params;
+         Domain : EW_Domain;
+         Func   : W_Identifier_Id;
+         Prefix : Node_Id;
+         Low    : Node_Id;
+         High   : Node_Id) return W_Expr_Id;
+      --  Given a logic function Func previously defined for the slice,
+      --  generate the actual call to Func by translating parameters
+      --  Prefix, Low and High in the context given by Params.
 
       --------------------------
-      -- Select_These_Choices --
+      -- Complete_Translation --
       --------------------------
 
-      function Select_These_Choices
-        (Dim : Pos;
-         L   : List_Id) return W_Expr_Id
+      function Complete_Translation
+        (Params : Translation_Params;
+         Domain : EW_Domain;
+         Func   : W_Identifier_Id;
+         Prefix : Node_Id;
+         Low    : Node_Id;
+         High   : Node_Id) return W_Expr_Id
       is
-         Result : W_Expr_Id := +False_Pred;
-         Choice : Node_Id   := First (L);
+         --  Compute the arguments for the function call
+
+         Args : constant W_Expr_Array :=
+                  (1 => Transform_Expr (Prefix,
+                                        Domain,
+                                        Params),
+                   2 => Transform_Expr (Low,
+                                        EW_Int_Type,
+                                        Domain,
+                                        Params),
+                   3 => Transform_Expr (High,
+                                        EW_Int_Type,
+                                        Domain,
+                                        Params));
       begin
-         while Present (Choice) loop
-            Result := New_Or_Expr
-              (Left   => Result,
-               Right  =>
-                 Transform_Discrete_Choice
-                   (Choice      => Choice,
-                    Expr        => Indexes (Integer (Dim)),
-                    Domain      => EW_Pred,
-                    Params => Params),
-               Domain => EW_Pred);
-            Next (Choice);
-         end loop;
-         return Result;
-      end Select_These_Choices;
+         --  Return the call
+
+         return New_Call (Ada_Node => Expr,
+                          Domain   => Domain,
+                          Name     => Func,
+                          Args     => Args);
+      end Complete_Translation;
 
       -----------------------------
-      -- Transform_Rec_Aggregate --
+      -- Generate_Logic_Function --
       -----------------------------
 
-      function Transform_Rec_Aggregate
-        (Dim  : Pos;
-         Expr : Node_Id) return W_Expr_Id
+      procedure Generate_Logic_Function
+        (Expr       : Node_Id;
+         Prefix_Typ : Entity_Id)
       is
-         Exprs       : constant List_Id := Expressions (Expr);
-         Assocs      : constant List_Id := Component_Associations (Expr);
-         Association : Node_Id;
-         Expression  : Node_Id;
-         Else_Part   : W_Expr_Id := +True_Pred;
-         Assocs_Len  : Nat;
+         Expr_Typ    : constant Entity_Id := Type_Of_Node (Expr);
+
+         --  Generate name for the function based on the location of the slice
+
+         Name        : constant String := New_Str_Lit_Ident (Expr);
+         Func        : constant W_Identifier_Id :=
+                         New_Identifier (Name     => Name,
+                                         Ada_Node => Expr);
+
+         --  Compute the parameters/arguments for the axiom/call
+
+         Prefix_Arg  : constant W_Identifier_Id := New_Temp_Identifier;
+         Low_Arg     : constant W_Identifier_Id := New_Temp_Identifier;
+         High_Arg    : constant W_Identifier_Id := New_Temp_Identifier;
+
+         Call_Args   : constant W_Expr_Array :=
+                         (1 => +Prefix_Arg,
+                          2 => +Low_Arg,
+                          3 => +High_Arg);
+
+         Id          : constant W_Identifier_Id := New_Temp_Identifier;
+         Ret_Type    : constant W_Primitive_Type_Id :=
+                         +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
+         Id_Param    : constant Binder_Array :=
+                         (1 => (Ada_Node => Empty,
+                                B_Name   => Id,
+                                Modifier => None,
+                                B_Type   => Ret_Type));
+
+         Call_Params : constant Binder_Array :=
+                         (1 => (Ada_Node => Empty,
+                                B_Name   => Prefix_Arg,
+                                Modifier => None,
+                                B_Type   =>
+                                  Why_Logic_Type_Of_Ada_Type (Prefix_Typ)),
+                          2 => (Ada_Node => Empty,
+                                B_Name   => Low_Arg,
+                                Modifier => None,
+                                B_Type   => +EW_Int_Type),
+                          3 => (Ada_Node => Empty,
+                                B_Name   => High_Arg,
+                                Modifier => None,
+                                B_Type   => +EW_Int_Type));
+
+         --  Compute the call, guard and proposition for the axiom
+
+         Call       : constant W_Expr_Id :=
+                        New_Call (Ada_Node => Expr,
+                                  Domain   => EW_Term,
+                                  Name     => Func,
+                                  Args     => Call_Args);
+         Id_Expr    : constant W_Expr_Id :=
+                        New_Comparison (Cmp       => EW_Eq,
+                                        Left      => +Id,
+                                        Right     => Call,
+                                        Arg_Types => +Ret_Type,
+                                        Domain    => EW_Pred);
+         Def_Pred   : constant W_Pred_Id :=
+                        Transform_Slice_To_Pred (Expr   => Expr,
+                                                 Id     => Id,
+                                                 Prefix => Prefix_Arg,
+                                                 Low    => Low_Arg,
+                                                 High   => High_Arg);
+
+         --  Select file for the declarations
+
+         Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
+
+      --  Start of Generate_Logic_Function
 
       begin
-         Assocs_Len := List_Length (Assocs);
-         Association :=
-           (if Nlists.Is_Empty_List (Assocs) then Empty
-            else Nlists.Last (Assocs));
+         --  Store the logic function
 
-         --  Special case for "others" choice, which must appear alone as
-         --  last association.
+         Ada_To_Why_Func.Include (Expr, +Func);
 
-         if Present (Association)
-           and then List_Length (Choices (Association)) = 1
-           and then Nkind (First (Choices (Association))) = N_Others_Choice
-         then
-            if not Box_Present (Association) then
-               Else_Part := Constrain_Value_At_Index (Dim, Association);
-            end if;
-            Prev (Association);
-            Assocs_Len := Assocs_Len - 1;
+         --  Generate the necessary logic function and axiom declarations
+
+         if Params.File = Decl_File.File then
+            Decl_File.Cur_Theory := Why_Empty;
          end if;
+         Open_Theory (Decl_File, Name);
 
-         Expression :=
-           (if Nlists.Is_Empty_List (Exprs) then
-               Empty
-            else
-               Nlists.Last (Exprs));
+         Emit (Decl_File.Cur_Theory,
+               New_Function_Decl (Domain      => EW_Term,
+                                  Name        => Func,
+                                  Binders     => Call_Params,
+                                  Return_Type => Ret_Type));
 
-         if Present (Expression) then
-            pragma Assert (No (Association));
+         Emit (Decl_File.Cur_Theory,
+               New_Guarded_Axiom
+                 (Name        => To_Ident (WNE_Def_Axiom),
+                  Binders     => Id_Param & Call_Params,
+                  Pre         => +Id_Expr,
+                  Def         => Def_Pred));
 
-            declare
-               Elsif_Parts : W_Expr_Array
-                 (1 .. Integer (List_Length (Exprs)) - 1);
-            begin
-               for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
-                  Elsif_Parts (Integer (Offset)) := New_Elsif
-                    (Domain    => EW_Pred,
-                     Condition => +Select_Nth_Index (Dim, Offset),
-                     Then_Part => Constrain_Value_At_Index (Dim, Expression));
-                  Prev (Expression);
-               end loop;
-
-               return New_Conditional
-                 (Domain      => EW_Pred,
-                  Condition   => +Select_Nth_Index (Dim, 0),
-                  Then_Part   => Constrain_Value_At_Index (Dim, Expression),
-                  Elsif_Parts => Elsif_Parts,
-                  Else_Part   => Else_Part);
-            end;
-
-         elsif Present (Association) then
-            declare
-               Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
-            begin
-               for Offset in reverse 1 .. Assocs_Len - 1 loop
-                  Elsif_Parts (Integer (Offset)) := New_Elsif
-                    (Domain    => EW_Pred,
-                     Condition =>
-                       +Select_These_Choices (Dim, Choices (Association)),
-                     Then_Part => Constrain_Value_At_Index (Dim, Association));
-                  Prev (Association);
-               end loop;
-
-               return New_Conditional
-                 (Domain      => EW_Pred,
-                  Condition   =>
-                    +Select_These_Choices (Dim, Choices (Association)),
-                  Then_Part   => Constrain_Value_At_Index (Dim, Association),
-                  Elsif_Parts => Elsif_Parts,
-                  Else_Part   => Else_Part);
-            end;
-
-         else
-            return Else_Part;
+         Close_Theory (Decl_File, Filter_Entity => Expr);
+         if Params.File = Decl_File.File then
+            Decl_File.Cur_Theory := Params.Theory;
          end if;
-      end Transform_Rec_Aggregate;
+      end Generate_Logic_Function;
 
-   --  Start of Transform_Array_Component_Associations
+      ------------------------
+      -- Get_Slice_Elements --
+      ------------------------
+
+      procedure Get_Slice_Elements
+        (Expr   : Node_Id;
+         Prefix : out Node_Id;
+         Low    : out Node_Id;
+         High   : out Node_Id)
+      is
+         Range_N : constant Node_Id := Get_Range (Discrete_Range (Expr));
+      begin
+         Prefix := Sinfo.Prefix (Expr);
+         Low    := Low_Bound (Range_N);
+         High   := High_Bound (Range_N);
+      end Get_Slice_Elements;
+
+      -----------------------------
+      -- Transform_Slice_To_Pred --
+      -----------------------------
+
+      function Transform_Slice_To_Pred
+        (Expr   : Node_Id;
+         Id     : W_Identifier_Id;
+         Prefix : W_Identifier_Id;
+         Low    : W_Identifier_Id;
+         High   : W_Identifier_Id) return W_Pred_Id
+      is
+         Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
+         Slice_Type : constant Entity_Id := Type_Of_Node (Sinfo.Prefix (Expr));
+
+         Index      : constant W_Identifier_Id := New_Temp_Identifier;
+         Indexes    : constant W_Expr_Array := (1 => +Index);
+         Binders    : constant W_Identifier_Array := (1 => Index);
+
+         Range_Pred : constant W_Expr_Id :=
+                        New_Range_Expr
+                          (Domain    => EW_Pred,
+                           Base_Type => EW_Int_Type,
+                           Low       => +Low,
+                           High      => +High,
+                           Expr      => +Index);
+         Elt_Equal  : constant W_Pred_Id :=
+                        New_Element_Equality
+                          (Ada_Node   => Expr,
+                           Left_Arr   => +Id,
+                           Left_Type  => Expr_Type,
+                           Right_Arr  => +Prefix,
+                           Right_Type => Slice_Type,
+                           Index      => Indexes,
+                           Dimension  => 1);
+      begin
+         return New_Universal_Quantif (Variables => Binders,
+                                       Var_Type  => +EW_Int_Type,
+                                       Pred      =>
+                                         New_Conditional
+                                           (Condition => Range_Pred,
+                                            Then_Part => +Elt_Equal));
+      end Transform_Slice_To_Pred;
+
+      --  Elements of the slice
+
+      Prefix : Node_Id;
+      Low    : Node_Id;
+      High   : Node_Id;
+
+   --  Start of Transform_Slice
 
    begin
-      for J in 1 .. Integer (Num_Dim) loop
-         Binders (J) := New_Temp_Identifier;
-         Indexes (J) := +Binders (J);
-      end loop;
+      --  Get the slice elements that should be passed in parameter
 
-      return New_Universal_Quantif
-        (Variables => Binders,
-         Var_Type  => +EW_Int_Type,
-         Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
-   end Transform_Array_Component_Associations;
+      Get_Slice_Elements (Expr, Prefix, Low, High);
 
-   -----------------------------------
-   -- Transform_Array_Value_To_Pred --
-   -----------------------------------
+      --  If not done already, generate the logic function
 
-   function Transform_Array_Value_To_Pred
-     (Expr        : Node_Id;
-      Id          : W_Identifier_Id;
-      Params      : Translation_Params) return W_Pred_Id
-   is
-   begin
-      case Nkind (Expr) is
-         when N_Slice =>
-            return
-              Transform_Slice_To_Pred
-                (Expr,
-                 Id,
-                 Params);
-         when N_Aggregate =>
-            return
-              Transform_Array_Component_Associations
-                (Expr,
-                 Id,
-                 Params);
-         when others =>
-            raise Not_Implemented;
-      end case;
-   end Transform_Array_Value_To_Pred;
+      if not Ada_To_Why_Func.Contains (Expr) then
+         Generate_Logic_Function (Expr, Type_Of_Node (Prefix));
+      end if;
+
+      --  Retrieve the logic function previously generated, and call it on the
+      --  appropriate parameters.
+
+      declare
+         Func : constant W_Identifier_Id := +Ada_To_Why_Func.Element (Expr);
+      begin
+         return Complete_Translation (Params, Domain, Func, Prefix, Low, High);
+      end;
+   end Transform_Slice;
 
    ------------------------------------
    -- Transform_Assignment_Statement --
@@ -2609,28 +3022,12 @@ package body Gnat2Why.Expr is
                   pragma Assert
                      (Is_Array_Type (Expr_Type) or else
                       Is_String_Type (Expr_Type));
-                  declare
-                     Id : constant W_Identifier_Id :=
-                            (if Domain = EW_Term then
-                               New_Temp_Identifier
-                             else To_Ident (WNE_Result));
-                     BT : constant W_Base_Type_Id :=
-                            +Why_Logic_Type_Of_Ada_Type (Expr_Type);
-                  begin
-                     if Domain = EW_Term then
-                        T := Transform_Array_Value_To_Term (Params, Id, Expr);
-                     else
-                        pragma Assert (Domain = EW_Prog);
-                        T := +New_Simpl_Any_Prog
-                          (T => +BT,
-                           Pred     =>
-                             Transform_Array_Value_To_Pred
-                               (Expr,
-                                Id,
-                                Params));
-                     end if;
-                     Current_Type := EW_Abstract (Expr_Type);
-                  end;
+                  if Nkind (Expr) = N_Aggregate then
+                     T := Transform_Aggregate (Params, Domain, Expr);
+                  else
+                     T := Transform_Slice (Params, Domain, Expr);
+                  end if;
+                  Current_Type := EW_Abstract (Expr_Type);
                end if;
             end;
 
@@ -3605,55 +4002,6 @@ package body Gnat2Why.Expr is
       pragma Assert (No (Association));
       return Result;
    end Transform_Record_Component_Associations;
-
-   -----------------------------
-   -- Transform_Slice_To_Pred --
-   -----------------------------
-
-   function Transform_Slice_To_Pred
-     (Expr      : Node_Id;
-      Id        : W_Identifier_Id;
-      Params    : Translation_Params) return W_Pred_Id
-   is
-      Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
-      Slice_Type : constant Entity_Id := Type_Of_Node (Prefix (Expr));
-      Num_Dim    : constant Pos := Number_Dimensions (Expr_Type);
-      Indexes    : constant W_Expr_Array (1 .. Positive (Num_Dim)) :=
-                     (others => +New_Temp_Identifier);
-      Binders    : W_Identifier_Array (1 .. Positive (Num_Dim));
-      Range_Pred : constant W_Expr_Id :=
-                     Transform_Discrete_Choice
-                       (Choice => Discrete_Range (Expr),
-                        Expr   => Indexes (1),
-                        Domain => EW_Pred,
-                        Params => Params);
-      Elt_Equal  : constant W_Pred_Id :=
-                     New_Element_Equality
-                       (Ada_Node   => Expr,
-                        Left_Arr   => +Id,
-                        Left_Type  => Expr_Type,
-                        Right_Arr  =>
-                          +Transform_Expr
-                            (Prefix (Expr),
-                             EW_Term,
-                             Params => Params),
-                        Right_Type => Slice_Type,
-                        Index      => Indexes,
-                        Dimension  => Num_Dim);
-   begin
-      for J in Indexes'Range loop
-         Binders (J) := +Indexes (J);
-      end loop;
-
-      return
-        New_Universal_Quantif
-          (Variables => Binders,
-           Var_Type  => +EW_Int_Type,
-           Pred      =>
-             New_Conditional
-               (Condition => Range_Pred,
-                Then_Part => +Elt_Equal));
-   end Transform_Slice_To_Pred;
 
    -------------------------
    -- Transform_Statement --
