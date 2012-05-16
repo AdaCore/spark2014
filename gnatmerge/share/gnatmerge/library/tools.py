@@ -86,4 +86,4 @@ class Merge:
 
     def loads(self, filename):
         """Load a set of results to be used for this merge"""
-        self.repository.loads("program.json")
+        self.repository.loads(filename)
