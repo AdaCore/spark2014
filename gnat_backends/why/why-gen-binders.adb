@@ -23,11 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions; use Why.Conversions;
-with Why.Gen.Names;   use Why.Gen.Names;
-with Why.Gen.Decl;    use Why.Gen.Decl;
-with Why.Gen.Progs;   use Why.Gen.Progs;
-with Why.Inter;          use Why.Inter;
+with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Conversions;  use Why.Conversions;
+with Why.Gen.Names;    use Why.Gen.Names;
+with Why.Gen.Decl;     use Why.Gen.Decl;
+with Why.Gen.Progs;    use Why.Gen.Progs;
+with Why.Inter;        use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -442,54 +443,80 @@ package body Why.Gen.Binders is
             Pred      => Pred);
 
       else
-         --  Count all the binders that have the same type as the first one
+         --  Count all the binders that have the same type as the first one. We
+         --  only do that when we can compare equal types using the
+         --  Eq_Base_Type function, which excludes currently types which are
+         --  not of kind W_Base_Type.
 
-         Cnt := 0;
          Typ := Binders (Binders'First).B_Type;
-         for B of Binders loop
-            if Eq_Base_Type (B.B_Type, Typ) then
-               Cnt := Cnt + 1;
-            end if;
-         end loop;
 
-         pragma Assert (Cnt >= 1);
+         if Get_Kind (+Binders (Binders'First).B_Type) /= W_Base_Type then
+            declare
+               Vars          : constant W_Identifier_Array :=
+                                 (1 => Binders (Binders'First).B_Name);
+               Other_Binders : constant Binder_Array :=
+                                 Binders (Binders'First + 1 .. Binders'Last);
+            begin
+               return New_Universal_Quantif
+                 (Ada_Node  => Ada_Node,
+                  Variables => Vars,
+                  Var_Type  => Typ,
+                  Pred      =>
+                    New_Universal_Quantif (Ada_Node  => Empty,
+                                           Binders   => Other_Binders,
+                                           Triggers  => Triggers,
+                                           Pred      => Pred));
 
-         declare
-            Vars          : W_Identifier_Array (1 .. Cnt);
-            Other_Binders : Binder_Array (1 .. Binders'Length - Cnt);
-            Vars_Cnt      : Natural;
-            Others_Cnt    : Natural;
-         begin
-            --  Separate binders that have the same type as the first one from
-            --  the remaining binders.
+            end;
 
-            Vars_Cnt   := 0;
-            Others_Cnt := 0;
-            Typ        := Binders (Binders'First).B_Type;
+         else
+            Cnt := 0;
             for B of Binders loop
                if Eq_Base_Type (B.B_Type, Typ) then
-                  Vars_Cnt := Vars_Cnt + 1;
-                  Vars (Vars_Cnt) := B.B_Name;
-               else
-                  Others_Cnt := Others_Cnt + 1;
-                  Other_Binders (Others_Cnt) := B;
+                  Cnt := Cnt + 1;
                end if;
             end loop;
 
-            --  Quantify at the same time over all binders that have the same
-            --  type as the first one. This avoids the generation of very deep
-            --  Why3 expressions, whose traversal may lead to stack overflow.
+            pragma Assert (Cnt >= 1);
 
-            return New_Universal_Quantif
-              (Ada_Node  => Ada_Node,
-               Variables => Vars,
-               Var_Type  => Typ,
-               Pred      =>
-                 New_Universal_Quantif (Ada_Node  => Empty,
-                                        Binders   => Other_Binders,
-                                        Triggers  => Triggers,
-                                        Pred      => Pred));
-         end;
+            declare
+               Vars          : W_Identifier_Array (1 .. Cnt);
+               Other_Binders : Binder_Array (1 .. Binders'Length - Cnt);
+               Vars_Cnt      : Natural;
+               Others_Cnt    : Natural;
+            begin
+               --  Separate binders that have the same type as the first one
+               --  from the remaining binders.
+
+               Vars_Cnt   := 0;
+               Others_Cnt := 0;
+               Typ        := Binders (Binders'First).B_Type;
+               for B of Binders loop
+                  if Eq_Base_Type (B.B_Type, Typ) then
+                     Vars_Cnt := Vars_Cnt + 1;
+                     Vars (Vars_Cnt) := B.B_Name;
+                  else
+                     Others_Cnt := Others_Cnt + 1;
+                     Other_Binders (Others_Cnt) := B;
+                  end if;
+               end loop;
+
+               --  Quantify at the same time over all binders that have the
+               --  same type as the first one. This avoids the generation of
+               --  very deep Why3 expressions, whose traversal may lead to
+               --  stack overflow.
+
+               return New_Universal_Quantif
+                 (Ada_Node  => Ada_Node,
+                  Variables => Vars,
+                  Var_Type  => Typ,
+                  Pred      =>
+                    New_Universal_Quantif (Ada_Node  => Empty,
+                                           Binders   => Other_Binders,
+                                           Triggers  => Triggers,
+                                           Pred      => Pred));
+            end;
+         end if;
       end if;
    end New_Universal_Quantif;
 
