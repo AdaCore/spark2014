@@ -202,6 +202,10 @@ package Why.Inter is
       with Pre => (Nkind (N) in N_Entity);
    --  Given an N_Entity, return its Full Name, as used in Why.
 
+   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean;
+   --  Return True if Left and Right are both W_Base_Type_Id nodes, and Eq
+   --  returns True on these seen as W_Base_Type_Id nodes.
+
    function Eq (Left, Right : W_Base_Type_Id) return Boolean;
    --  Extensional equality (i.e. returns True if Left and Right are of
    --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
