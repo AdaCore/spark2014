@@ -1,5 +1,3 @@
-constr.adb:5:24: info: loop invariant initialization proved
-constr.adb:5:24: info: loop invariant preservation proved
 constr.adb:6:10: info: index check proved
 constr.adb:6:19: info: index check proved
 constr.adb:6:24: overflow check not proved

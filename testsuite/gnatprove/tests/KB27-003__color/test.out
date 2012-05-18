@@ -1,7 +1,5 @@
 p.adb:12:18: info: range check proved
 p.adb:17:18: info: range check proved
-p.adb:4:22: info: loop invariant initialization proved
-p.adb:4:22: info: loop invariant preservation proved
 p.adb:5:10: info: index check proved
 p.adb:5:18: info: index check proved
 p.ads:10:15: postcondition not proved

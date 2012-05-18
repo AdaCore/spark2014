@@ -44,11 +44,10 @@ with Why.Inter;             use Why.Inter;
 
 package body Gnat2Why.Expr.Loops is
 
-   procedure Compute_Invariant
+   function Compute_Invariant
       (Loop_Body  : List_Id;
-       Pred       : out W_Pred_Id;
        Inv_Check  : out W_Prog_Id;
-       Split_Node : out Node_Id);
+       Split_Node : out Node_Id) return W_Pred_Id;
    --  Given a list of statements (a loop body), construct a predicate that
    --  corresponds to the conjunction of all assertions at the beginning of
    --  the list. The out parameter Split_Node is set to the last node that is
@@ -64,11 +63,11 @@ package body Gnat2Why.Expr.Loops is
 
    function Wrap_Loop
       (Loop_Body : W_Prog_Id;
-       Condition : W_Prog_Id;
+       Cond_Prog : W_Prog_Id;
+       Cond_Pred : W_Pred_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
-       Inv_Check : W_Prog_Id;
-       Inv_Node  : Node_Id)
+       Inv_Check : W_Prog_Id)
       return W_Prog_Id;
    --  Given a loop body, the loop condition, the loop name, the invariant,
    --  the check_expression for the invariant, generate the entire loop
@@ -79,15 +78,15 @@ package body Gnat2Why.Expr.Loops is
    -- Compute_Invariant --
    -----------------------
 
-   procedure Compute_Invariant
+   function Compute_Invariant
       (Loop_Body  : List_Id;
-       Pred       : out W_Pred_Id;
        Inv_Check  : out W_Prog_Id;
        Split_Node : out Node_Id)
+     return W_Pred_Id
    is
       Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
+      Pred : W_Pred_Id := True_Pred;
    begin
-      Pred := True_Pred;
       Inv_Check := New_Void;
       Split_Node := Empty;
 
@@ -115,6 +114,13 @@ package body Gnat2Why.Expr.Loops is
          Split_Node := Cur_Stmt;
          Nlists.Next (Cur_Stmt);
       end loop;
+      Pred :=
+        +New_Located_Expr
+          (Ada_Node => Split_Node,
+           Expr     => +Pred,
+           Reason   => VC_Loop_Invariant,
+           Domain   => EW_Pred);
+      return Pred;
    end Compute_Invariant;
 
    -----------------------------------
@@ -179,48 +185,15 @@ package body Gnat2Why.Expr.Loops is
    is
       Loop_Body    : constant List_Id := Statements (Stmt);
       Split_Node   : Node_Id;
-      Invariant    : W_Pred_Id;
       Inv_Check    : W_Prog_Id;
-      Loop_Content : W_Prog_Id;
+      Invariant    : constant W_Pred_Id :=
+        Compute_Invariant (Loop_Body, Inv_Check, Split_Node);
+      Loop_Content : constant W_Prog_Id :=
+         Transform_Statements (Stmts => Loop_Body, Start_From => Split_Node);
       Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
       Loop_Entity  : constant Entity_Id := Entity (Identifier (Stmt));
       Loop_Name    : constant String := Full_Name (Loop_Entity);
    begin
-      --  We have to take into consideration
-      --    * We simulate loop *assertions* by Hoare loop *invariants*;
-      --      A Hoare invariant must be initially true whether we enter
-      --      the loop or not; it must also be true at the exit of the
-      --      loop.
-      --      This means that we have to protect the loop to avoid
-      --      encountering it if the condition is false; also we exit
-      --      the loop at the end (instead of the beginning) when the
-      --      condition becomes false:
-      --      if cond then
-      --          loop
-      --             <loop body>
-      --             exit when not cond
-      --          end loop
-      --       end if
-      --    * We need to model exit statements; we use Why exceptions
-      --      for this:
-      --       (at toplevel)
-      --         exception Loop_Name
-      --       (in statement sequence)
-      --         try
-      --           loop
-      --             <loop_body>
-      --           done
-      --         with Loop_Name -> void
-      --
-      --     The exception is necessary to deal with N_Exit_Statements
-      --     (see also the corresponding case). The exception has to be
-      --     declared at the toplevel.
-      Compute_Invariant (Loop_Body, Invariant, Inv_Check, Split_Node);
-      Loop_Content :=
-         Transform_Statements
-           (Stmts      => Loop_Body,
-            Start_From => Split_Node);
-
       --  No iteration scheme, we have a simple loop. Generate condition
       --  "true".
 
@@ -228,11 +201,11 @@ package body Gnat2Why.Expr.Loops is
          return
             Wrap_Loop
                (Loop_Body => Loop_Content,
-                Condition => True_Prog,
+                Cond_Prog => True_Prog,
+                Cond_Pred => True_Pred,
                 Loop_Name => Loop_Name,
                 Invariant => Invariant,
-                Inv_Check => Inv_Check,
-                Inv_Node  => Split_Node);
+                Inv_Check => Inv_Check);
 
       --  A while loop
 
@@ -242,35 +215,26 @@ package body Gnat2Why.Expr.Loops is
         Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
       then
          While_Loop : declare
-            Enriched_Inv : constant W_Pred_Id :=
-                             +New_And_Expr
-                               (Left   => +Invariant,
-                                Right  =>
-                                  Transform_Expr_With_Actions
-                                    (Condition (Scheme),
-                                     Condition_Actions (Scheme),
-                                     EW_Pred,
-                                     Params => Body_Params),
-                                Domain => EW_Pred);
-            --  We have enriched the invariant, so even if there was
-            --  none at the beginning, we need to put a location here.
-            Inv_Node : constant Node_Id :=
-                         (if Present (Split_Node) then Split_Node
-                          else Stmt);
+            Cond_Prog : constant W_Prog_Id :=
+              +Transform_Expr_With_Actions (Condition (Scheme),
+                                            Condition_Actions (Scheme),
+                                            EW_Bool_Type,
+                                            EW_Prog,
+                                            Params => Body_Params);
+            Cond_Pred : constant W_Pred_Id :=
+              +Transform_Expr_With_Actions (Condition (Scheme),
+                                            Condition_Actions (Scheme),
+                                            EW_Pred,
+                                            Params => Body_Params);
          begin
             return
               Wrap_Loop
-              (Loop_Body    => Loop_Content,
-               Condition    =>
-                 +Transform_Expr_With_Actions (Condition (Scheme),
-                                               Condition_Actions (Scheme),
-                                               EW_Bool_Type,
-                                               EW_Prog,
-                                               Params => Body_Params),
-               Loop_Name    => Loop_Name,
-               Invariant    => Enriched_Inv,
-               Inv_Check    => Inv_Check,
-               Inv_Node     => Inv_Node);
+                (Loop_Body => Loop_Content,
+                 Cond_Prog => Cond_Prog,
+                 Cond_Pred => Cond_Pred,
+                 Loop_Name => Loop_Name,
+                 Invariant => Invariant,
+                 Inv_Check => Inv_Check);
          end While_Loop;
 
       --  A for loop. Here, we set the condition to express that the index is
@@ -320,41 +284,30 @@ package body Gnat2Why.Expr.Loops is
             --  Standard.Boolean, where bounds and index are of
             --  different base types (bool for bounds, int for index).
 
-            Enriched_Inv : constant W_Pred_Id :=
-                             +New_And_Expr
-                               (Left  => +Invariant,
-                                Right =>
-                                  Range_Expr
-                                   (Loop_Range,
-                                    New_Deref (Right => Loop_Index),
-                                    EW_Pred,
-                                    Params => Body_Params,
-                                    T_Type      => EW_Int_Type),
-                                Domain => EW_Pred);
-            --  We have enriched the invariant, so even if there was
-            --  none at the beginning, we need to put a location here.
-            Inv_Node     : constant Node_Id :=
-                             (if Present (Split_Node) then Split_Node
-                              else Stmt);
+            Cond_Pred    : constant W_Pred_Id :=
+              +Range_Expr (Loop_Range,
+                           New_Deref (Right => Loop_Index),
+                           EW_Pred,
+                           Params => Body_Params,
+                           T_Type => EW_Int_Type);
             Actual_Range : constant Node_Id := Get_Range (Loop_Range);
             Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
             High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
-            Condition    : constant W_Prog_Id :=
-                             +New_Range_Expr
-                               (Domain    => EW_Prog,
-                                Base_Type => EW_Int_Type,
-                                Low       => +Low_Ident,
-                                High      => +High_Ident,
-                                Expr      => +Index_Deref);
+            Cond_Prog    : constant W_Prog_Id :=
+              +New_Range_Expr (Domain    => EW_Prog,
+                               Base_Type => EW_Int_Type,
+                               Low       => +Low_Ident,
+                               High      => +High_Ident,
+                               Expr      => +Index_Deref);
             Entire_Loop  : W_Prog_Id :=
                              Wrap_Loop
                                (Loop_Body    =>
                                   Sequence (Loop_Content, Update_Stmt),
-                                Condition    => Condition,
+                                Cond_Prog    => Cond_Prog,
+                                Cond_Pred    => Cond_Pred,
                                 Loop_Name    => Loop_Name,
-                                Invariant    => Enriched_Inv,
-                                Inv_Check    => Inv_Check,
-                                Inv_Node     => Inv_Node);
+                                Invariant    => Invariant,
+                                Inv_Check    => Inv_Check);
             Init_Index  : constant W_Identifier_Id :=
                             (if Reverse_Present (LParam_Spec) then
                                High_Ident
@@ -403,11 +356,11 @@ package body Gnat2Why.Expr.Loops is
 
    function Wrap_Loop
       (Loop_Body : W_Prog_Id;
-       Condition : W_Prog_Id;
+       Cond_Prog : W_Prog_Id;
+       Cond_Pred : W_Pred_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
-       Inv_Check : W_Prog_Id;
-       Inv_Node  : Node_Id)
+       Inv_Check : W_Prog_Id)
       return W_Prog_Id
    is
 
@@ -416,6 +369,7 @@ package body Gnat2Why.Expr.Loops is
       --    ignore (inv);
       --    try
       --      loop {inv}
+      --         assume {condition};
       --         <loop body>
       --         if <condition> then ignore (inv)
       --         else raise <loop_name>;
@@ -424,25 +378,21 @@ package body Gnat2Why.Expr.Loops is
       --  end if
 
       Entire_Body : constant W_Prog_Id :=
-                      Sequence
-                        (Loop_Body,
-                         New_Conditional
-                           (Condition => +Condition,
-                            Then_Part => +Inv_Check,
-                            Else_Part =>
-                              New_Raise
-                                (Name => New_Identifier (Name => Loop_Name))));
+        Sequence
+          (New_Assume_Statement (Ada_Node => Empty, Post => Cond_Pred),
+           Sequence
+             (Loop_Body,
+              New_Conditional
+                (Condition => +Cond_Prog,
+                 Then_Part => +Inv_Check,
+                 Else_Part =>
+                   New_Raise
+                     (Name => New_Identifier (Name => Loop_Name)))));
       Loop_Stmt   : constant W_Prog_Id :=
                       New_While_Loop
                         (Condition   => True_Prog,
                          Annotation  =>
-                           New_Loop_Annot
-                             (Invariant =>
-                                +New_Located_Expr
-                                  (Ada_Node => Inv_Node,
-                                   Expr     => +Invariant,
-                                   Reason   => VC_Loop_Invariant,
-                                   Domain   => EW_Pred)),
+                           New_Loop_Annot (Invariant => Invariant),
                          Loop_Content => Entire_Body);
    begin
       Emit
@@ -453,7 +403,7 @@ package body Gnat2Why.Expr.Loops is
 
       return
         New_Conditional
-          (Condition => +Condition,
+          (Condition => +Cond_Prog,
            Then_Part =>
              +Sequence
                (Inv_Check,

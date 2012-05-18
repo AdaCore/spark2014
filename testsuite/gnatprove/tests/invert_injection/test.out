@@ -2,7 +2,7 @@ invertinjection.adb:10:7: info: assertion proved
 invertinjection.adb:11:25: info: index check proved
 invertinjection.adb:11:28: info: index check proved
 invertinjection.adb:6:10: info: loop invariant initialization proved
-invertinjection.adb:6:10: info: loop invariant preservation proved
+invertinjection.adb:6:10: loop invariant preservation not proved
 invertinjection.adb:6:57: info: overflow check proved
 invertinjection.adb:7:28: index check not proved
 invertinjection.adb:7:31: info: index check proved

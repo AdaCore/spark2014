@@ -15,16 +15,10 @@ subar.adb:40:16: info: range check proved
 subar.adb:40:7: index check not proved
 subar.adb:46:22: info: range check proved
 subar.adb:48:11: info: range check proved
-subar.adb:48:32: info: loop invariant initialization proved
-subar.adb:48:32: info: loop invariant preservation proved
 subar.adb:51:14: info: overflow check proved
 subar.adb:52:11: info: range check proved
-subar.adb:52:32: info: loop invariant initialization proved
-subar.adb:52:32: info: loop invariant preservation proved
 subar.adb:55:14: info: overflow check proved
 subar.adb:57:11: range check not proved
-subar.adb:57:32: info: loop invariant initialization proved
-subar.adb:57:32: info: loop invariant preservation proved
 subar.adb:5:22: info: index check proved
 subar.adb:5:7: info: assertion proved
 subar.ads:22:20: info: index check proved
