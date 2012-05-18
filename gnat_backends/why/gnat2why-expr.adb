@@ -1984,11 +1984,22 @@ package body Gnat2Why.Expr is
                else Nlists.Last (Assocs));
 
             --  Special case for "others" choice, which must appear alone as
-            --  last association.
+            --  last association. This case also deals with a single
+            --  association, wich may be useful when an "others" dynamic range
+            --  is represented using X'Range or X'First..X'Last, which should
+            --  not be translated as such. Indeed, these reference variable X
+            --  which is not known in the context of the proposition generated
+            --  here.
 
             if Present (Association)
-              and then List_Length (Choices (Association)) = 1
-              and then Nkind (First (Choices (Association))) = N_Others_Choice
+              and then
+                --  case of "others" choice
+                ((List_Length (Choices (Association)) = 1
+                    and then
+                  Nkind (First (Choices (Association))) = N_Others_Choice)
+                    or else
+                  --  case of a single association
+                  Assocs_Len = 1)
             then
                if not Box_Present (Association) then
                   Else_Part := Constrain_Value_At_Index (Dim, Association);
