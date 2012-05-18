@@ -514,19 +514,29 @@ package body Gnat2Why.Expr is
       --       when others => S
       --    end case;
       --
-      --  We generate nested if expressions:
+      --  We generate a single if expression, with a list of elsif cases, to
+      --  avoid the generation of deep Why3 expressions, which may lead to
+      --  stack overflow when traversing recursively the expression:
+      --
       --    if X = Case_1 then S1
-      --    else if ...
-      --    else if X = Case_N then Sn
+      --    elsif ...
+      --    elsif X = Case_N then Sn
       --    else S
-
-      -----------------
-      -- Branch_Expr --
-      -----------------
 
       function Branch_Expr (N : Node_Id) return W_Expr_Id;
       --  Return the expression that corresponds to a branch; decide which
       --  function to call depending on the type of the branch.
+
+      function Discrete_Choices
+        (Case_N       : Node_Id;
+         Matched_Expr : W_Expr_Id;
+         Cond_Domain  : EW_Domain;
+         Params       : Translation_Params) return W_Expr_Id;
+      --  Return the guard that corresponds to a branch
+
+      -----------------
+      -- Branch_Expr --
+      -----------------
 
       function Branch_Expr (N : Node_Id) return W_Expr_Id is
          Local_Params : Translation_Params := Params;
@@ -569,53 +579,78 @@ package body Gnat2Why.Expr is
          end  case;
       end Branch_Expr;
 
-      Match_Domain  : constant EW_Domain :=
+      ----------------------
+      -- Discrete_Choices --
+      ----------------------
+
+      function Discrete_Choices
+        (Case_N       : Node_Id;
+         Matched_Expr : W_Expr_Id;
+         Cond_Domain  : EW_Domain;
+         Params       : Translation_Params) return W_Expr_Id
+      is
+         Cur_Choice : Node_Id   := First (Sinfo.Discrete_Choices (Case_N));
+         C          : W_Expr_Id := New_Literal (Domain => Cond_Domain,
+                                                Value  => EW_False);
+      begin
+         while Present (Cur_Choice) loop
+            C := New_Or_Else_Expr
+              (C,
+               Transform_Discrete_Choice (Choice      => Cur_Choice,
+                                          Expr        => Matched_Expr,
+                                          Domain      => Cond_Domain,
+                                          Params      => Params),
+               Cond_Domain);
+            Next (Cur_Choice);
+         end loop;
+         return C;
+      end Discrete_Choices;
+
+      Match_Domain : constant EW_Domain :=
          (if Domain = EW_Pred then EW_Term else Domain);
       Cond_Domain  : constant EW_Domain :=
          (if Domain = EW_Term then EW_Pred else Domain);
 
-      Cur_Case     : Node_Id := Last (Alternatives (N));
+      Cases        : constant List_Id := Alternatives (N);
+      First_Case   : constant Node_Id := First (Cases);
+      Last_Case    : constant Node_Id := Last (Cases);
+      Cur_Case     : Node_Id;
       Matched_Expr : constant W_Expr_Id :=
                        Transform_Expr (Expression (N),
                                        EW_Int_Type,
                                        Match_Domain,
                                        Params);
-
-      --  We always take the last branch as the default value
-      T            : W_Expr_Id := Branch_Expr (Cur_Case);
+      Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
 
       --  beginning of processing for Case_Expr_Of_Ada_Node
    begin
-      Cur_Case := Prev (Cur_Case);
-      while Present (Cur_Case) loop
-         declare
-            Cur_Choice : Node_Id := First (Discrete_Choices (Cur_Case));
-            C          : W_Expr_Id :=
-                           New_Literal
-                             (Domain => Cond_Domain,
-                              Value  => EW_False);
-         begin
-            while Present (Cur_Choice) loop
-               C := New_Or_Else_Expr
-                      (C,
-                       Transform_Discrete_Choice (Choice      => Cur_Choice,
-                                                  Expr        => Matched_Expr,
-                                                  Domain      => Cond_Domain,
-                                                  Params      => Params),
-                       Cond_Domain);
-               Next (Cur_Choice);
-            end loop;
+      if List_Length (Cases) = 1 then
+         return Branch_Expr (First_Case);
 
-            T :=
-               New_Simpl_Conditional
-                  (Condition => C,
-                   Then_Part => Branch_Expr (Cur_Case),
-                   Else_Part => T,
-                   Domain    => Domain);
-         end;
-         Prev (Cur_Case);
-      end loop;
-      return T;
+      else
+         Cur_Case := Next (First_Case);
+         for Offset in 1 .. List_Length (Cases) - 2 loop
+            Elsif_Parts (Integer (Offset)) :=
+              New_Elsif
+                (Domain    => Domain,
+                 Condition => Discrete_Choices (Case_N       => Cur_Case,
+                                                Matched_Expr => Matched_Expr,
+                                                Cond_Domain  => Cond_Domain,
+                                                Params       => Params),
+                 Then_Part => Branch_Expr (Cur_Case));
+            Next (Cur_Case);
+         end loop;
+
+         return New_Conditional
+           (Domain      => Domain,
+            Condition   => Discrete_Choices (Case_N       => First_Case,
+                                             Matched_Expr => Matched_Expr,
+                                             Cond_Domain  => Cond_Domain,
+                                             Params       => Params),
+            Then_Part   => Branch_Expr (First_Case),
+            Elsif_Parts => Elsif_Parts,
+            Else_Part   => Branch_Expr (Last_Case));
+      end if;
    end Case_Expr_Of_Ada_Node;
 
    -----------------------
