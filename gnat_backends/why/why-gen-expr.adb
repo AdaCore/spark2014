@@ -684,39 +684,26 @@ package body Why.Gen.Expr is
 
    function New_Located_Label (N : Node_Id) return W_Identifier_Id is
 
+      Slc : Source_Ptr := Sloc (N);
       Buf : Unbounded_String := Null_Unbounded_String;
-
-      procedure Generate_Loc_String (Loc : Source_Ptr);
-
-      -------------------------
-      -- Generate_Loc_String --
-      -------------------------
-
-      procedure Generate_Loc_String (Loc : Source_Ptr) is
-         File   : constant String := File_Name (Loc);
-         Line   : constant Physical_Line_Number :=
-           Get_Physical_Line_Number (Loc);
-         Column : constant Column_Number := Get_Column_Number (Loc);
-         Child : constant Source_Ptr := Instantiation_Location (Loc);
-      begin
-
-         --  The Sloc of the more "generic" part comes first, but we want to
-         --  have the instance first in the encoded SLOC. We realize that by
-         --  first doing the recursive call, and then adding the current sloc
-         --  to the string buffer.
-
-         if Child /= No_Location then
-            Generate_Loc_String (Child);
-            Append (Buf, ':');
-         end if;
-         Append (Buf, File);
-         Append (Buf, ':');
-         Append (Buf, Int_Image (Integer (Line)));
-         Append (Buf, ':');
-         Append (Buf, Int_Image (Integer (Column)));
-      end Generate_Loc_String;
    begin
-      Generate_Loc_String (Sloc (N));
+      loop
+         declare
+            File   : constant String := File_Name (Slc);
+            Line   : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Slc);
+            Column : constant Column_Number := Get_Column_Number (Slc);
+         begin
+            Append (Buf, File);
+            Append (Buf, ':');
+            Append (Buf, Int_Image (Integer (Line)));
+            Append (Buf, ':');
+            Append (Buf, Int_Image (Integer (Column)));
+            Slc := Instantiation_Location (Slc);
+            exit when Slc = No_Location;
+            Append (Buf, ':');
+         end;
+      end loop;
       return New_Identifier (Name => """GP_Sloc:" & To_String (Buf) & """");
    end New_Located_Label;
 
