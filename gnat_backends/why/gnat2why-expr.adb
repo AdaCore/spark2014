@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  For debugging, to print info on the output before raising an exception
+with Ada.Text_IO;
+
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
@@ -1141,8 +1144,9 @@ package body Gnat2Why.Expr is
                end;
 
             when others =>
+               Ada.Text_IO.Put_Line ("[Compute_Rvalue] kind ="
+                                     & Node_Kind'Image (Nkind (N)));
                raise Not_Implemented;
-
          end case;
       end Compute_Rvalue;
 
@@ -1161,8 +1165,9 @@ package body Gnat2Why.Expr is
                return Why_Lvalue (Prefix (N));
 
             when others =>
+               Ada.Text_IO.Put_Line ("[Why_Lvalue] kind ="
+                                     & Node_Kind'Image (Nkind (N)));
                raise Not_Implemented;
-
          end case;
 
       end Why_Lvalue;
@@ -1240,8 +1245,9 @@ package body Gnat2Why.Expr is
             end;
 
          when others =>
+            Ada.Text_IO.Put_Line ("[One_Level_Access] kind ="
+                                  & Node_Kind'Image (Nkind (N)));
             raise Not_Implemented;
-
       end case;
    end One_Level_Access;
 
@@ -1352,8 +1358,9 @@ package body Gnat2Why.Expr is
             end;
 
          when others =>
+            Ada.Text_IO.Put_Line ("[One_Level_Update] kind ="
+                                  & Node_Kind'Image (Nkind (N)));
             raise Not_Implemented;
-
       end case;
 
    end One_Level_Update;
@@ -2414,8 +2421,9 @@ package body Gnat2Why.Expr is
                return Type_Of_Node (Selector_Name (Lvalue));
 
             when others =>
+               Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
+                                     & Node_Kind'Image (Nkind (Lvalue)));
                raise Not_Implemented;
-
          end case;
       end Expected_Type;
 
@@ -2510,6 +2518,9 @@ package body Gnat2Why.Expr is
                   when Discrete_Kind =>
                      if A_Type = Standard_Boolean then
                         W_Type := EW_Bool;
+                        Ada.Text_IO.Put_Line
+                          ("[Transform_Attr] boolean"
+                           & Attribute_Id'Image (Attr_Id));
                         raise Not_Implemented;
                      else
                         W_Type := EW_Int;
@@ -2712,6 +2723,8 @@ package body Gnat2Why.Expr is
             end;
 
          when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
+                                  & Attribute_Id'Image (Attr_Id));
             raise Not_Implemented;
       end case;
       return T;
@@ -2898,8 +2911,10 @@ package body Gnat2Why.Expr is
                            null;
 
                         when others =>
+                           Ada.Text_IO.Put_Line
+                             ("[Transform_Declarations_Block] ekind ="
+                              & Entity_Kind'Image (Ekind (Ent)));
                            raise Not_Implemented;
-
                      end case;
                   end if;
                end;
@@ -3590,6 +3605,8 @@ package body Gnat2Why.Expr is
 
          when N_Expression_With_Actions =>
             if not (Domain = EW_Prog) then
+               Ada.Text_IO.Put_Line
+                 ("[Transform_Expr] expression with action");
                raise Not_Implemented;
             end if;
 
@@ -3609,8 +3626,9 @@ package body Gnat2Why.Expr is
                                  Params);
 
          when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
+                                  & Node_Kind'Image (Nkind (Expr)));
             raise Not_Implemented;
-
       end case;
 
       declare
@@ -4159,6 +4177,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Raise_xxx_Error =>
+            Ada.Text_IO.Put_Line ("[Transform_Statement] raise xxx error");
             raise Not_Implemented;
 
          when N_Object_Declaration =>
@@ -4223,10 +4242,15 @@ package body Gnat2Why.Expr is
                   return New_Void (Stmt);
 
                when others =>
+                  Ada.Text_IO.Put_Line
+                    ("[Transform_Statement] pragma kind ="
+                     & Pragma_Id'Image (Get_Pragma_Id (Pragma_Name (Stmt))));
                   raise Not_Implemented;
             end case;
 
          when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
+                                  & Node_Kind'Image (Nkind (Stmt)));
             raise Not_Implemented;
       end case;
    end Transform_Statement;

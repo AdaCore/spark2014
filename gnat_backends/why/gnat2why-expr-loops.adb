@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  For debugging, to print info on the output before raising an exception
+with Ada.Text_IO;
+
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Nlists;                use Nlists;
 with Snames;                use Snames;
@@ -389,6 +392,7 @@ package body Gnat2Why.Expr.Loops is
 
       else
          --  Some other kind of loop
+         Ada.Text_IO.Put_Line ("[Transform_Loop_Statement] other loop");
          raise Not_Implemented;
       end if;
    end Transform_Loop_Statement;
