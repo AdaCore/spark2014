@@ -9,6 +9,7 @@ RTSFLAG=--RTS=zfp
 GCC_PREFIX=$(TARGET)-
 GNATPRJ_FLAGS=-XVARIANT="$(ZFP_VARIANT)"
 ZFP_VARIANT=powerpc-elf-qemu
+APP_IMAGE_SUFFIX=.bin
 
 else
 $(error Please define TARGET)
@@ -31,11 +32,12 @@ BUILDER=gprbuild $(if $(filter $(TARGET), native),,--target=$(TARGET))
 .PHONY: app ipstack clean force spark
 
 APP=echop
-APP_IMAGE=build/app/$(APP)
+APP_EXEC=build/app/$(APP)
+APP_IMAGE=$(APP_EXEC)$(APP_IMAGE_SUFFIX)
 
 app: $(APP_IMAGE)
 
-$(APP_IMAGE): ipstack force
+$(APP_EXEC): ipstack force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P app
 
 test: ipstack force
@@ -80,10 +82,12 @@ clean:
 	$(GCC_PREFIX)gnatclean $(GNATPRJ_FLAGS) -q -r -P ipstack
 	rm -fr spark build
 
-$(APP_IMAGE).bin: $(APP_IMAGE)
-	powerpc-elf-objcopy -O binary $< $@
+ifneq ($(APP_IMAGE),$(APP_EXEC))
+$(APP_IMAGE): $(APP_EXEC)
+	$(TARGET)-objcopy -O binary $< $@
+endif
 
-run: $(APP_IMAGE).bin
+run: $(APP_IMAGE)
 	qemu-system-ppc -nographic -s -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=testsuite/qemu/qemu-ifup
 	
 spark: force
