@@ -558,6 +558,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(forall ");
       Print_List (State, +Variables, " ");
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
       P (O, " : ");
       Traverse (State, +Var_Type);
 
@@ -597,6 +599,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "exists ");
       Print_List (State, +Variables, " ");
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
 
       P (O, " : ");
       Traverse (State, +Var_Type);
