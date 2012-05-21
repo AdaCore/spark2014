@@ -201,17 +201,9 @@ module Array__1
   (* The theory of Ada arrays of one dimension *)
   use import int.Int
   use import bool.Bool
-
-  type t 'a
-
-  function access int (t 'a) : 'a
-  function update int (t 'a) 'a : (t 'a)
+  use export _gnatprove_standard_th.Array__1__Func
 
   function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_LAST (t 'a) : int
 
    val access_ :
     i : int -> a : t 'a ->

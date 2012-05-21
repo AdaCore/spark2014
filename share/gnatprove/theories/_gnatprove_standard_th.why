@@ -1,0 +1,12 @@
+theory Array__1__Func
+
+  type t 'a
+
+  function attr__ATTRIBUTE_LENGTH (t 'a) : int
+  function attr__ATTRIBUTE_FIRST (t 'a) : int
+  function attr__ATTRIBUTE_LAST (t 'a) : int
+
+  function access int (t 'a) : 'a
+  function update int (t 'a) 'a : (t 'a)
+
+end
