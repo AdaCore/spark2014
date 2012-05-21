@@ -1,2 +1,2 @@
 
-p.adb:8:21: range check not proved
+p.adb:8:21: range check not proved, requires in_range a

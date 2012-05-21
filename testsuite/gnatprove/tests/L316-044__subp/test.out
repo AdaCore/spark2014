@@ -1,16 +1,44 @@
+
+            database__availability__linksX3 (account) with
+            end)))
+            | Mk_t _ xcl03 xcl13 -> (if (database__availability__linksX3'First <= account) and (account <= database__availability__linksX3'Last) then forall database__availability__linksX4: t. (if (database__availability__linksX4 = of_array (update account database__availability__linksX3 (Mk_t True xcl03 xcl13))) then (if in_range account then forall result2: t1. (if (result2 = account) then forall database__availability__first_availableX1: t1. (if (database__availability__first_availableX1 = result2) then (if true then forall result3: Boolean. (if (result3 = log account database__availability__linksX4) then (if (result3 = True) then forall result4: int. (if (1 <= result4) and (result4 <= 200000) then (if not (result4 = account) then (if (database__availability__linksX4'First <= result4) and (result4 <= database__availability__linksX4'Last) then (database__availability__linksX'First <= result4) and (result4 <= database__availability__linksX'Last))))))))))))
+        database__availability__linksX2 (account) with
+        database__availability__linksX2 (account) with
+        end)))
+        end)))
+        | Mk_t _ xcl02 xcl12 -> (if (database__availability__linksX2'First <= account) and (account <= database__availability__linksX2'Last) then forall database__availability__linksX3: t. (if (database__availability__linksX3 = of_array (update account database__availability__linksX2 (Mk_t True xcl02 xcl12))) then (if in_range account then forall result: t1. (if (result = account) then forall database__availability__first_availableX1: t1. (if (database__availability__first_availableX1 = result) then (log account database__availability__linksX3 = True) and (forall act: int. (if (1 <= act) and (act <= 200000) then (if not (act = account) then (rec__available database__availability__linksX3 (act) = rec__available database__availability__linksX (act))))))))))
+        | Mk_t xcl02 xcl12 _ -> (if (database__availability__linksX2'First <= account) and (account <= database__availability__linksX2'Last) then forall database__availability__linksX3: t. (if (database__availability__linksX3 = of_array (update account database__availability__linksX2 (Mk_t xcl02 xcl12 database__availability__first_availableX))) then (if (database__availability__linksX3'First <= account) and (account <= database__availability__linksX3'Last) then match 
+    database__availability__linksX (account) in (if (database__availability__linksX'First <= rec__next result1) and (rec__next result1 <= database__availability__linksX'Last) then forall database__availability__linksX1: t. (if (database__availability__linksX1 = of_array (update (rec__next result1) database__availability__linksX (Mk_t xcl0 (rec__prev database__availability__linksX (account)) xcl1))) then (if not (database__availability__first_availableX = database__no_account_num) then (database__availability__linksX1'First <= database__availability__first_availableX) and (database__availability__first_availableX <= database__availability__linksX1'Last)))))
+    database__availability__linksX (account) in (if (database__availability__linksX'First <= rec__prev result1) and (rec__prev result1 <= database__availability__linksX'Last) then forall database__availability__linksX1: t. (if (database__availability__linksX1 = of_array (update (rec__prev result1) database__availability__linksX (Mk_t xcl0 xcl1 (rec__next database__availability__linksX (account))))) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then (if not (rec__next database__availability__linksX1 (account) = database__no_account_num) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then let result2 = 
+    database__availability__linksX (account) in (if (database__availability__linksX'First <= rec__prev result1) and (rec__prev result1 <= database__availability__linksX'Last) then forall database__availability__linksX1: t. (if (database__availability__linksX1 = of_array (update (rec__prev result1) database__availability__linksX (Mk_t xcl0 xcl1 (rec__next database__availability__linksX (account))))) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then (if not not (rec__next database__availability__linksX1 (account) = database__no_account_num) then (if not (database__availability__first_availableX = database__no_account_num) then (if (database__availability__linksX1'First <= database__availability__first_availableX) and (database__availability__first_availableX <= database__availability__linksX1'Last) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then match 
+    database__availability__linksX1 (account) in (database__availability__linksX1'First <= rec__next result2) and (rec__next result2 <= database__availability__linksX1'Last))))))))
+    database__availability__linksX1 (account) with
+    database__availability__linksX1 (account) with
+    end)))
+    end))))))))
+    | Mk_t xcl01 _ xcl11 -> (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then forall database__availability__linksX2: t. (if (database__availability__linksX2 = of_array (update account database__availability__linksX1 (Mk_t xcl01 (rec__prev database__availability__linksX1 (database__availability__first_availableX)) xcl11))) then (if (database__availability__linksX2'First <= account) and (account <= database__availability__linksX2'Last) then match 
+    | Mk_t xcl01 xcl11 _ -> (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then forall database__availability__linksX2: t. (if (database__availability__linksX2 = of_array (update account database__availability__linksX1 (Mk_t xcl01 xcl11 database__availability__first_availableX))) then (if (database__availability__linksX2'First <= account) and (account <= database__availability__linksX2'Last) then match 
 database.adb:120:13: info: index check proved
 database.adb:121:13: info: index check proved
 database.adb:121:20: info: index check proved
 database.adb:121:50: info: index check proved
 database.adb:123:13: info: index check proved
-database.adb:124:13: index check not proved
+database.adb:124:13: index check not proved, requires match database__availability__linksX (rec__prev result) with
 database.adb:124:20: info: index check proved
 database.adb:124:50: info: index check proved
 database.adb:130:13: info: index check proved
-database.adb:130:37: index check not proved
+database.adb:130:37: index check not proved, requires match database__availability__linksX (rec__next result) with
 database.adb:132:10: info: index check proved
 database.adb:133:10: info: index check proved
 database.adb:134:29: info: range check proved
-database.adb:52:18: postcondition not proved
+database.adb:52:18: postcondition not proved, requires match database__availability__linksX (account) with
 database.adb:54:23: info: index check proved
-database.adb:54:52: index check not proved
+database.adb:54:52: index check not proved, requires match database__availability__linksX (rec__prev result) with
+end
+end
+end
+end
+| Mk_t xcl0 _ xcl1 -> (if (database__availability__linksX'First <= account) and (account <= database__availability__linksX'Last) then forall database__availability__linksX1: t. (if (database__availability__linksX1 = of_array (update account database__availability__linksX (Mk_t xcl0 (rec__prev database__availability__linksX (database__availability__first_availableX)) xcl1))) then (if (database__availability__linksX1'First <= account) and (account <= database__availability__linksX1'Last) then match 
+| Mk_t xcl0 _ xcl1 -> (if (database__availability__linksX'First <= account) and (account <= database__availability__linksX'Last) then let result1 = 
+| Mk_t xcl0 xcl1 _ -> (if (database__availability__linksX'First <= account) and (account <= database__availability__linksX'Last) then let result1 = 
+| Mk_t xcl0 xcl1 _ -> (if (database__availability__linksX'First <= account) and (account <= database__availability__linksX'Last) then let result1 = 

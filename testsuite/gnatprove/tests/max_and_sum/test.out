@@ -1,16 +1,18 @@
+
+(sum <= ((maxandsum__maxandsum__L_1__i - 1) * max))
 maxandsum.adb:10:21: info: range check proved
-maxandsum.adb:10:21: overflow check not proved
+maxandsum.adb:10:21: overflow check not proved, requires in_range (sum + result)
 maxandsum.adb:10:23: info: index check proved
 maxandsum.adb:11:19: info: index check proved
 maxandsum.adb:12:20: info: index check proved
-maxandsum.adb:12:20: range check not proved
-maxandsum.adb:14:10: assertion not proved
+maxandsum.adb:12:20: range check not proved, requires in_range result
+maxandsum.adb:14:10: assertion not proved, requires (sum <= (maxandsum__maxandsum__L_1__i * max))
 maxandsum.adb:14:33: info: overflow check proved
 maxandsum.adb:6:14: info: range check proved
 maxandsum.adb:7:14: info: range check proved
 maxandsum.adb:9:10: info: loop invariant initialization proved
-maxandsum.adb:9:10: loop invariant preservation not proved
+maxandsum.adb:9:10: loop invariant preservation not proved, requires 
 maxandsum.adb:9:34: info: overflow check proved
-maxandsum.adb:9:37: overflow check not proved
+maxandsum.adb:9:37: overflow check not proved, requires in_range ((maxandsum__maxandsum__L_1__i - 1) * max)
 maxandsum.ads:8:21: info: postcondition proved
-maxandsum.ads:8:25: overflow check not proved
+maxandsum.ads:8:25: overflow check not proved, requires in_range (maxandsum__n * max)

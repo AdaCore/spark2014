@@ -1,11 +1,12 @@
+
 divide.adb:10:10: info: loop invariant initialization proved
-divide.adb:10:10: loop invariant preservation not proved
+divide.adb:10:10: loop invariant preservation not proved, requires ((q <= (m - r)) and (m = ((q * n) + r))) and (r >= 0)
 divide.adb:11:17: info: overflow check proved
 divide.adb:12:17: info: overflow check proved
 divide.adb:5:12: info: range check proved
 divide.adb:8:32: info: overflow check proved
-divide.adb:9:31: overflow check not proved
-divide.adb:9:35: overflow check not proved
-divide.ads:4:27: overflow check not proved
-divide.ads:4:31: overflow check not proved
-divide.ads:4:61: postcondition not proved
+divide.adb:9:31: overflow check not proved, requires in_range (q * n)
+divide.adb:9:35: overflow check not proved, requires in_range ((q * n) + r)
+divide.ads:4:27: overflow check not proved, requires in_range (q * n)
+divide.ads:4:31: overflow check not proved, requires in_range ((q * n) + r)
+divide.ads:4:61: postcondition not proved, requires (m = ((q * n) + r)) and (r <  n) and (r >= 0)

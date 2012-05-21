@@ -14,7 +14,7 @@ main.adb:46:28: info: index check proved
 main.adb:49:28: info: index check proved
 main.adb:53:25: info: range check proved
 main.adb:58:32: info: range check proved
-main.adb:58:32: overflow check not proved
+main.adb:58:32: overflow check not proved, requires in_range (rec__comp result + 1)
 main.adb:63:16: info: range check proved
 main.adb:69:4: info: assertion proved
 main.adb:70:4: info: assertion proved
@@ -22,6 +22,6 @@ main.adb:71:4: info: assertion proved
 main.adb:72:4: info: assertion proved
 main.adb:73:4: info: assertion proved
 main.adb:74:4: info: assertion proved
-main.adb:83:4: assertion not proved
-main.adb:84:4: assertion not proved
-main.adb:85:4: assertion not proved
+main.adb:83:4: assertion not proved, requires (rec__comp arr_obj (1) = 9012)
+main.adb:84:4: assertion not proved, requires (rec__comp arr_obj (R12b) = 9012)
+main.adb:85:4: assertion not proved, requires (rec_obj = 5678)

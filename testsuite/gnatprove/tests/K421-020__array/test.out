@@ -1,4 +1,5 @@
-p.adb:15:16: range check not proved
+
+p.adb:15:16: range check not proved, requires in_range x
 p.adb:15:4: info: index check proved
 p.adb:17:16: info: range check proved
 p.adb:17:4: info: index check proved

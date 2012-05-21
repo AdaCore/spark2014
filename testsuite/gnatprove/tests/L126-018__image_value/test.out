@@ -1,5 +1,6 @@
+
 p.adb:4:13: info: range check proved
-p.adb:5:18: range check not proved
+p.adb:5:18: range check not proved, requires in_range result'Last
 p.adb:5:4: info: range check proved
-p.adb:8:10: precondition not proved
-p.adb:8:10: range check not proved
+p.adb:8:10: precondition not proved, requires attr__ATTRIBUTE_VALUE__pre_check (of_array s)
+p.adb:8:10: range check not proved, requires in_range result

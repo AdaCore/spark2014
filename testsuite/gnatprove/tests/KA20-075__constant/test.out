@@ -23,6 +23,6 @@ const.adb:34:7: info: assertion proved
 const.adb:35:7: info: assertion proved
 const.adb:36:7: info: assertion proved
 const.adb:37:7: info: assertion proved
-const.adb:41:7: assertion not proved
-const.adb:42:7: assertion not proved
+const.adb:41:7: assertion not proved, requires (const__o = 1)
+const.adb:42:7: assertion not proved, requires (const__p = 1)
 const.ads:22:35: info: range check proved

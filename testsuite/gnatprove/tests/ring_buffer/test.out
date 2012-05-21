@@ -1,11 +1,11 @@
 
 harness.adb:10:4: info: precondition proved
-harness.adb:11:4: assertion not proved
+harness.adb:11:4: assertion not proved, requires (h = x)
 harness.adb:12:4: info: precondition proved
 harness.adb:13:4: info: precondition proved
-harness.adb:14:4: assertion not proved
+harness.adb:14:4: assertion not proved, requires (h = y)
 harness.adb:15:4: info: precondition proved
-harness.adb:16:4: assertion not proved
+harness.adb:16:4: assertion not proved, requires (h = z)
 harness.adb:8:4: info: precondition proved
 harness.adb:9:4: info: precondition proved
 ring_buf.adb:11:24: info: overflow check proved

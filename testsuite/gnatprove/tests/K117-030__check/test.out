@@ -1,5 +1,6 @@
+
 check.ads:3:37: info: division check proved
 check.ads:3:37: info: overflow check proved
 check.ads:3:70: info: division check proved
 check.ads:3:70: info: overflow check proved
-check.ads:4:32: postcondition not proved
+check.ads:4:32: postcondition not proved, requires (check__div___result >  0)

@@ -1,3 +1,3 @@
-ext_pack.adb:7:14: overflow check not proved
-ext_pack.adb:8:20: overflow check not proved
 
+ext_pack.adb:7:14: overflow check not proved, requires in_range (ext_pack__c + ext_pack__step)
+ext_pack.adb:8:20: overflow check not proved, requires in_range (ext_pack__step + 1)

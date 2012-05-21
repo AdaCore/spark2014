@@ -1,18 +1,18 @@
 
-flight_manager.adb:16:21: overflow check not proved
+flight_manager.adb:16:21: overflow check not proved, requires in_range (f * distance_to_target)
 flight_manager.adb:16:43: info: division check proved
 flight_manager.adb:16:43: info: overflow check proved
-flight_manager.adb:23:20: overflow check not proved
+flight_manager.adb:23:20: overflow check not proved, requires in_range (-i)
 flight_manager.adb:31:28: info: range check proved
 flight_manager.adb:33:28: info: range check proved
 flight_manager.adb:37:29: info: range check proved
 flight_manager.adb:39:29: info: range check proved
-flight_manager.adb:42:56: overflow check not proved
-flight_manager.adb:43:56: overflow check not proved
-flight_manager.ads:13:27: overflow check not proved
-flight_manager.ads:13:62: overflow check not proved
+flight_manager.adb:42:56: overflow check not proved, requires in_range (position_x - target_x)
+flight_manager.adb:43:56: overflow check not proved, requires in_range (position_y - target_y)
+flight_manager.ads:13:27: overflow check not proved, requires in_range (position_x + flight_manager__set_engine_speed___result)
+flight_manager.ads:13:62: overflow check not proved, requires in_range ((position_x + flight_manager__set_engine_speed___result) - target_x)
 flight_manager.ads:14:18: info: overflow check proved
-flight_manager.ads:15:23: overflow check not proved
-flight_manager.ads:15:58: overflow check not proved
-flight_manager.ads:15:6: postcondition not proved
+flight_manager.ads:15:23: overflow check not proved, requires in_range (position_y + flight_manager__set_engine_speed___result)
+flight_manager.ads:15:58: overflow check not proved, requires in_range ((position_y + flight_manager__set_engine_speed___result) - target_y)
+flight_manager.ads:15:6: postcondition not proved, requires (((position_x + flight_manager__set_engine_speed___result) - target_x) <  (position_x + flight_manager__set_engine_speed___result)) and (((position_y + flight_manager__set_engine_speed___result1) - target_y) <  (position_y + flight_manager__set_engine_speed___result1))
 flight_manager.ads:16:18: info: overflow check proved

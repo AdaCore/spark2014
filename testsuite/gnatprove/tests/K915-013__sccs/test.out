@@ -1,4 +1,4 @@
 
-sccs.adb:22:4: assertion not proved
-sccs.adb:24:4: assertion not proved
-sccs.adb:26:4: assertion not proved
+sccs.adb:22:4: assertion not proved, requires (b = True)
+sccs.adb:24:4: assertion not proved, requires (b = True)
+sccs.adb:26:4: assertion not proved, requires (b = True)

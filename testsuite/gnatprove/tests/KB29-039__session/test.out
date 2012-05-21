@@ -1,11 +1,13 @@
-a.adb:5:7: assertion not proved
+
+a.adb:5:7: assertion not proved, requires (x <  y)
 a.adb:6:24: info: overflow check proved
-a.adb:6:7: assertion not proved
-a.adb:12:7: assertion not proved
+a.adb:6:7: assertion not proved, requires ((x + 1) <  y)
+
+a.adb:12:7: assertion not proved, requires (x <  y)
 a.adb:13:24: info: overflow check proved
-a.adb:13:7: assertion not proved
-a.adb:5:7: assertion not proved
+a.adb:13:7: assertion not proved, requires ((x + 1) <  y)
+a.adb:5:7: assertion not proved, requires (x <  y)
 a.adb:6:24: info: overflow check proved
-a.adb:6:7: assertion not proved
+a.adb:6:7: assertion not proved, requires ((x + 1) <  y)
 a.adb:7:24: info: overflow check proved
-a.adb:7:7: assertion not proved
+a.adb:7:7: assertion not proved, requires ((x + 2) <  y)
