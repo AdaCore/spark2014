@@ -491,16 +491,41 @@ ASCII.LF &
                declare
                   Limit_File : constant String :=
                     Limit_String.all (Limit_String.all'First .. Index - 1);
-                  Limit_VF : constant Virtual_File :=
+                  Limit_VF : Virtual_File :=
                     Create_From_Base (Filesystem_String (Limit_File));
-                  Restrict : Virtual_File;
+                  Info     : constant File_Info := Tree.Info (Limit_VF);
                begin
-                  if Unit_Part (Tree.Info (Limit_VF)) = Unit_Body then
-                     Restrict := Limit_VF;
-                  else
-                     Restrict := Tree.Other_File (Limit_VF);
-                  end if;
-                  File_List.Append (String (Base_Name (Restrict)));
+                  case Unit_Part (Info) is
+                  when Unit_Body =>
+                     null;
+                  when Unit_Spec =>
+                     declare
+                        Other_VF : constant Virtual_File :=
+                          Tree.Other_File (Limit_VF);
+                     begin
+                        if Is_Regular_File (Other_VF) then
+                           Limit_VF := Other_VF;
+                        end if;
+                     end;
+                  when Unit_Separate =>
+                     declare
+                        Ptype : constant Project_Type := Tree.Root_Project;
+                     begin
+                        Limit_VF :=
+                          Create_From_Base
+                            (Ptype.File_From_Unit (Unit_Name (Info),
+                                                   Unit_Body,
+                                                   "Ada"));
+                        if not Is_Regular_File (Limit_VF) then
+                           Limit_VF :=
+                             Create_From_Base
+                               (Ptype.File_From_Unit (Unit_Name (Info),
+                                                      Unit_Spec,
+                                                      "Ada"));
+                        end if;
+                     end;
+                  end case;
+                  File_List.Append (String (Base_Name (Limit_VF)));
                end;
             end;
             Only_Given := True;
