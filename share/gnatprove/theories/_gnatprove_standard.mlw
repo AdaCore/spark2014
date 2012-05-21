@@ -30,6 +30,8 @@ module Integer
   use int.ComputerDivision
   use int.EuclideanDivision
 
+  use export _gnatprove_standard_th.Integer_Func
+
   function int_max (x y : int) : int = MinMax.max x y
 
   function int_min (x y : int) : int = MinMax.min x y
@@ -51,42 +53,6 @@ module Integer
   val math_mod_ : x:int -> y:int ->
     { y<>0 } int { result = math_mod x y }
 
-  function bool_eq int int : bool
-  function bool_ne int int : bool
-  function bool_lt int int : bool
-  function bool_le int int : bool
-  function bool_gt int int : bool
-  function bool_ge int int : bool
-
-  axiom bool_eq_axiom:
-    forall x:int.
-    forall y:int.
-      bool_eq x y = True <-> x = y
-
-  axiom bool_ne_axiom:
-    forall x:int.
-    forall y:int.
-      bool_ne x y = True <-> x <> y
-
-  axiom bool_lt_axiom:
-    forall x:int.
-    forall y:int.
-      bool_lt x y = True <-> x < y
-
-  axiom Bool_int__le_axiom:
-    forall x:int.
-    forall y:int.
-      bool_le x y = True <-> x <= y
-
-  axiom bool_gt_axiom:
-    forall x:int.
-    forall y:int.
-        bool_gt x y = True <-> x > y
-
-  axiom bool_ge_axiom:
-    forall x:int.
-    forall y:int.
-        bool_ge x y = True <-> x >= y
 end
 
 (* Define real exponentiation as a separate theory until problem with cloning
@@ -201,9 +167,8 @@ module Array__1
   (* The theory of Ada arrays of one dimension *)
   use import int.Int
   use import bool.Bool
-  use export _gnatprove_standard_th.Array__1__Func
 
-  function bool_eq (t 'a) (t 'a) : bool
+  use export _gnatprove_standard_th.Array__1__Func
 
    val access_ :
     i : int -> a : t 'a ->
