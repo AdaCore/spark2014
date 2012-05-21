@@ -26,23 +26,8 @@ module Integer
   use import int.Int
   use export int.Abs
   use export int.Power
-  use int.MinMax
-  use int.ComputerDivision
-  use int.EuclideanDivision
 
   use export _gnatprove_standard_th.Integer_Func
-
-  function int_max (x y : int) : int = MinMax.max x y
-
-  function int_min (x y : int) : int = MinMax.min x y
-
-  function computer_div (x y : int) : int = ComputerDivision.div x y
-
-  function computer_mod (x y : int) : int = ComputerDivision.mod x y
-
-  function math_div (x y : int) : int = EuclideanDivision.div x y
-
-  function math_mod (x y : int) : int = EuclideanDivision.mod x y
 
   val computer_div_ : x:int -> y:int ->
     { y<>0 } int { result = computer_div x y }
