@@ -76,5 +76,8 @@ package Gnat2Why is
    --  "GP_Kind:Conversion"
    --     Mark this declaration as a conversion function; it will not be
    --     printed in pretty printed VCs.
+   --  "GP_Ada_Name:<name>"
+   --     Give the name that will be used in pretty printing for that variable,
+   --     instead of its name in Why3
 
 end Gnat2Why;

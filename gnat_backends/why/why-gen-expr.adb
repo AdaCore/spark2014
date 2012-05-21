@@ -674,6 +674,16 @@ package body Why.Gen.Expr is
       return New_Identifier (Name => """GP_Sloc:" & To_String (Buf) & """");
    end New_Located_Label;
 
+   --------------------
+   -- New_Name_Label --
+   --------------------
+
+   function New_Name_Label (E : Entity_Id) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (Name => """GP_Ada_Name:" & Short_Name (E) & """");
+   end New_Name_Label;
+
    -----------------
    -- New_Or_Expr --
    -----------------
