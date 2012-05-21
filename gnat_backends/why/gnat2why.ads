@@ -69,4 +69,12 @@ package Gnat2Why is
    --  "keep_on_simp"
    --     Disallows simplification of that node. Required for all VC nodes.
 
+   --  -------------------------
+   --  - Labels for declarations
+   --  -------------------------
+
+   --  "GP_Kind:Conversion"
+   --     Mark this declaration as a conversion function; it will not be
+   --     printed in pretty printed VCs.
+
 end Gnat2Why;

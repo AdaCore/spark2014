@@ -132,6 +132,7 @@ package Why.Gen.Names is
       WNE_Bool_Or,
       WNE_Bool_Xor,
       WNE_Coerce,
+      WNE_Conversion_Label,
       WNE_Def,
       WNE_Def_Axiom,
       WNE_Eq,

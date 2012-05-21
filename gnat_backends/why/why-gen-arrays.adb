@@ -179,9 +179,7 @@ package body Why.Gen.Arrays is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_To,
-            Labels      => (1 =>
-                              New_Identifier
-                                (Name => """GP_Kind:Conversion""")),
+            Labels      => (1 => To_Ident (WNE_Conversion_Label)),
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit

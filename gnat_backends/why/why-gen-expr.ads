@@ -58,7 +58,7 @@ package Why.Gen.Expr is
       Left, Right : W_Expr_Id;
       Arg_Types   : W_Base_Type_Id;
       Domain      : EW_Domain)
-     return W_Expr_Id;
+      return W_Expr_Id;
 
    function New_Or_Expr
       (Left, Right : W_Expr_Id;
