@@ -907,6 +907,7 @@ package body Gnat2Why.Subprograms is
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
+                  Labels      => (1 => New_Name_Label (E)),
                   Binders     => Logic_Func_Binders,
                   Return_Type =>
                      +Why_Logic_Type_Of_Ada_Type
@@ -917,6 +918,7 @@ package body Gnat2Why.Subprograms is
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
+                  Labels      => (1 => New_Name_Label (E)),
                   Binders     => Func_Binders,
                   Return_Type => +Why_Logic_Type_Of_Ada_Type (Etype (E)),
                   Effects     => Effects,
@@ -929,6 +931,7 @@ package body Gnat2Why.Subprograms is
             New_Function_Decl
               (Domain      => EW_Prog,
                Name        => Prog_Id,
+               Labels      => (1 => New_Name_Label (E)),
                Binders     => Func_Binders,
                Return_Type => New_Base_Type (Base_Type => EW_Unit),
                Effects     => Effects,
