@@ -1,11 +1,11 @@
 
 twodim.adb:11:16: info: range check proved
-twodim.adb:13:15: range check not proved, requires in_range (attr__ATTRIBUTE_LENGTH m)
-twodim.adb:13:27: overflow check not proved, requires in_range (attr__ATTRIBUTE_LENGTH m + attr__ATTRIBUTE_LENGTH_2 m)
-twodim.adb:13:30: range check not proved, requires in_range (attr__ATTRIBUTE_LENGTH_2 m)
+twodim.adb:13:15: range check not proved, requires in_range m'Length
+twodim.adb:13:27: overflow check not proved, requires in_range (m'Length + m'Length(2))
+twodim.adb:13:30: range check not proved, requires in_range m'Length(2)
 twodim.adb:8:16: division check not proved, requires not ((result + 1) = 0)
 twodim.adb:8:16: overflow check not proved, requires in_range (1 / (result + 1))
-twodim.adb:8:19: index check not proved, requires ((attr__ATTRIBUTE_FIRST m <= i) and (i <= attr__ATTRIBUTE_LAST m)) and (attr__ATTRIBUTE_FIRST_2 m <= (k + 1)) and ((k + 1) <= attr__ATTRIBUTE_LAST_2 m)
+twodim.adb:8:19: index check not proved, requires ((m'First <= i) and (i <= m'Last)) and (m'First(2) <= (k + 1)) and ((k + 1) <= m'Last(2))
 twodim.adb:8:25: info: overflow check proved
 twodim.adb:8:29: overflow check not proved, requires in_range (result + 1)
 twodim.ads:11:20: info: index check proved
