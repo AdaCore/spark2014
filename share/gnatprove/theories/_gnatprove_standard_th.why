@@ -73,3 +73,28 @@ theory Array__1__Func
   function bool_eq (t 'a) (t 'a) : bool
 
 end
+
+theory Array__2__Func
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of two dimensions *)
+
+  type t 'a
+
+  function access int int (t 'a) : 'a
+
+  function update int int (t 'a) 'a : (t 'a)
+
+  function bool_eq (t 'a) (t 'a) : bool
+
+  function attr__ATTRIBUTE_LENGTH (t 'a) : int
+  function attr__ATTRIBUTE_LENGTH_2 (t 'a) : int
+
+  function attr__ATTRIBUTE_FIRST (t 'a) : int
+  function attr__ATTRIBUTE_FIRST_2 (t 'a) : int
+
+  function attr__ATTRIBUTE_LAST (t 'a) : int
+  function attr__ATTRIBUTE_LAST_2 (t 'a) : int
+
+end

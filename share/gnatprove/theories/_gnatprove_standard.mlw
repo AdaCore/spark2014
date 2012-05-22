@@ -225,22 +225,7 @@ module Array__2
   use import bool.Bool
   (* The theory of Ada arrays of two dimensions *)
 
-  type t 'a
-
-  function access int int (t 'a) : 'a
-
-  function update int int (t 'a) 'a : (t 'a)
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_LENGTH_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_FIRST_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_LAST (t 'a) : int
-  function attr__ATTRIBUTE_LAST_2 (t 'a) : int
+  use export _gnatprove_standard_th.Array__2__Func
 
    val access_ :
     i : int -> j : int -> a : t 'a ->
