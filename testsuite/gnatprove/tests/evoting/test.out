@@ -1,6 +1,6 @@
 
-(((if (evoting__compute_print_results__L_12__i >  0) then (total >= counters (0))) and (last_candidate <= 20)) and (0 <= evoting__compute_print_results__L_12__i) and (evoting__compute_print_results__L_12__i <= 20)) and (total <= (evoting__compute_print_results__L_12__i * 10000))
-((sum <= (10000 * evoting__counters_sum__L_7__i)) and (counters (evoting__counters_sum__L_7__i) <= 10000)) and (0 <= evoting__counters_sum__L_7__i) and (evoting__counters_sum__L_7__i <= 20)
+(((if (i >  0) then (total >= counters (0))) and (last_candidate <= 20)) and (0 <= i) and (i <= 20)) and (total <= (i * 10000))
+((sum <= (10000 * i)) and (counters (i) <= 10000)) and (0 <= i) and (i <= 20)
 evoting.adb:147:24: info: range check proved
 evoting.adb:150:10: info: loop invariant initialization proved
 evoting.adb:150:10: loop invariant preservation not proved, requires 
@@ -47,7 +47,7 @@ evoting.adb:246:44: info: index check proved
 evoting.adb:249:36: info: index check proved
 evoting.adb:251:40: info: range check proved
 evoting.adb:263:7: info: precondition proved
-evoting.adb:267:13: index check not proved, requires (winners'First <= evoting__compute_print_results__L_14__i) and (evoting__compute_print_results__L_14__i <= winners'Last)
+evoting.adb:267:13: index check not proved, requires (winners'First <= i) and (i <= winners'Last)
 evoting.adb:268:43: info: range check proved
 evoting.adb:276:43: info: range check proved
 evoting.adb:277:46: info: range check proved
