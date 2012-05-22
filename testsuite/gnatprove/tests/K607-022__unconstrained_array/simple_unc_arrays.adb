@@ -23,13 +23,14 @@ package body Simple_Unc_Arrays is
    -------------
 
   procedure Inverse (A : in out Table) is
+      AV_Old : constant Values := A.V;
       Low  : Positive := 1;
       High : Natural := A.Last;
 
    begin
       while Low < High loop
          pragma Assert
-           ((for all J in 1 .. Low - 1  => (A.V (J) = A.V'Old (A.Last - J + 1)))
+           ((for all J in 1 .. Low - 1  => (A.V (J) = AV_Old (A.Last - J + 1)))
 --            and then
 --              (for all J in Low -1 .. A.Last => (A.V (J) = A.V'Old (J)))
             );

@@ -1,11 +1,11 @@
 
-p.adb:11:21: info: index check proved
-p.adb:11:42: info: index check proved
-p.adb:13:14: info: index check proved
+p.adb:12:21: info: index check proved
+p.adb:12:42: info: index check proved
 p.adb:14:14: info: index check proved
-p.adb:21:7: info: precondition proved
-p.adb:8:10: info: loop invariant initialization proved
-p.adb:8:10: loop invariant preservation not proved, requires ((p = T3b) = True) and (forall j: int. (if (0 <= j) and (j <= (c - 1)) then (if (p (j) = d) then (p1 (j) = d))))
+p.adb:15:14: info: index check proved
+p.adb:22:7: info: precondition proved
+p.adb:9:10: info: loop invariant initialization proved
+p.adb:9:10: loop invariant preservation not proved, requires ((p = rec__plain p_old) = True) and (forall j: int. (if (0 <= j) and (j <= (c - 1)) then (if (p (j) = d) then (p1 (j) = d))))
 p.ads:17:39: info: index check proved
 p.ads:18:15: info: postcondition proved
 p.ads:19:28: info: index check proved

@@ -31,12 +31,13 @@ package body S is
    end Test_Index;
 
    procedure Move (Dest, Src : out IntArray) is
+      Src_Old : constant IntArray := Src;
    begin
       for Index in Dest'Range loop
          pragma Assert ((for all J in Dest'First .. Index - 1 =>
-                          Dest (J) = Src'Old (J)) and
+                          Dest (J) = Src_Old (J)) and
                         (for all J in Index .. Dest'Last =>
-                          Src (J) = Src'Old (J)));
+                          Src (J) = Src_Old (J)));
 
          Dest (Index) := Src (Index);
          Src (Index) := 0;
@@ -44,12 +45,13 @@ package body S is
    end Move;
 
    procedure Move2 (Dest, Src : out IntArray) is
+      Src_Old : constant IntArray := Src;
    begin
       for Index in reverse Dest'Range loop
          pragma Assert ((for all J in Index + 1 .. Dest'Last =>
-                          Dest (J) = Src'Old (J)) and
+                          Dest (J) = Src_Old (J)) and
                         (for all J in Dest'First .. Index =>
-                          Src (J) = Src'Old (J)));
+                          Src (J) = Src_Old (J)));
 
          Dest (Index) := Src (Index);
          Src (Index) := 0;
