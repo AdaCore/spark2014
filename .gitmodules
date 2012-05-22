@@ -1,0 +1,3 @@
+[submodule "why3"]
+	path = why3
+	url = ssh://git.eu.adacore.com/scmrepos/git/why3
