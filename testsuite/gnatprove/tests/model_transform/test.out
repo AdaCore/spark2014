@@ -7,7 +7,7 @@ model.adb:64:20: info: index check proved
 model.adb:66:10: info: index check proved
 model.adb:67:42: info: index check proved
 model.adb:71:10: info: loop invariant initialization proved
-model.adb:71:10: loop invariant preservation not proved, requires (log log1 sm (log2 log3 sm (t)) = log4 av (log5 cfv (t))) and (log log1 sm (log6 log3 sm (t)) = log4 av (log7 cfv (t)))
+model.adb:71:10: loop invariant preservation not proved, requires (model__name model__owned_state sm (model__from model__owned_transition sm (t)) = model__name__2 av (model__from__2 cfv (t))) and (model__name model__owned_state sm (model__to model__owned_transition sm (t)) = model__name__2 av (model__to__2 cfv (t)))
 model.adb:72:57: info: overflow check proved
 model.adb:73:20: info: index check proved
 model.adb:73:41: info: index check proved
@@ -27,7 +27,7 @@ model.ads:102:31: info: postcondition proved
 model.ads:106:29: info: postcondition proved
 model.ads:129:33: info: postcondition proved
 model.ads:134:31: info: postcondition proved
-model.ads:149:7: postcondition not proved, requires (log log1 sm (log2 log3 sm (t)) = log4 log5 (mk_t model__transform___result model__transform___result1) (log6 log7 (mk_t model__transform___result model__transform___result1) (t))) and (log log1 sm (log8 log3 sm (t)) = log4 log5 (mk_t model__transform___result model__transform___result1) (log9 log7 (mk_t model__transform___result model__transform___result1) (t)))
+model.ads:149:7: postcondition not proved, requires (model__name model__owned_state sm (model__from model__owned_transition sm (t)) = model__name__2 model__owned_action (mk_t model__transform___result model__transform___result1) (model__from__2 model__owned_flow (mk_t model__transform___result model__transform___result1) (t))) and (model__name model__owned_state sm (model__to model__owned_transition sm (t)) = model__name__2 model__owned_action (mk_t model__transform___result model__transform___result1) (model__to__2 model__owned_flow (mk_t model__transform___result model__transform___result1) (t)))
 model.ads:151:17: info: index check proved
 model.ads:151:38: info: index check proved
 model.ads:152:19: info: index check proved

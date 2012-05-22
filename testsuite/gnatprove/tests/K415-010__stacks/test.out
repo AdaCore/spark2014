@@ -5,8 +5,8 @@ stacks.adb:5:18: info: overflow check proved
 stacks.adb:5:18: info: range check proved
 stacks.adb:6:7: index check not proved, requires (data'First <= top) and (top <= data'Last)
 stacks.ads:14:69: info: index check proved
-stacks.ads:18:31: postcondition not proved, requires (log top data = (log top1 data1 + 1))
+stacks.ads:18:31: postcondition not proved, requires (stacks__size top data = (stacks__size top1 data1 + 1))
 stacks.ads:18:58: info: overflow check proved
-stacks.ads:22:43: postcondition not proved, requires (log top data = (log top1 data - 1))
+stacks.ads:22:43: postcondition not proved, requires (stacks__size top data = (stacks__size top1 data - 1))
 stacks.ads:22:70: info: overflow check proved
 stacks.ads:8:69: info: range check proved

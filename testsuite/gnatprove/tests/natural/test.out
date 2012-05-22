@@ -6,8 +6,8 @@ natural_set.adb:18:11: index check not proved, requires (s'First <= s1) and (s1 
 natural_set.adb:18:25: info: range check proved
 natural_set.adb:7:22: info: range check proved
 natural_set.ads:11:50: info: postcondition proved
-natural_set.ads:16:63: postcondition not proved, requires (log (mk_t s s1) = True) and (log1 (mk_t s s1) = 0) and not (log2 (mk_t s s1) = True)
-natural_set.ads:25:15: postcondition not proved, requires (log (mk_t s s1) value = True)
+natural_set.ads:16:63: postcondition not proved, requires (natural_set__valid (mk_t s s1) = True) and (natural_set__members (mk_t s s1) = 0) and not (natural_set__full (mk_t s s1) = True)
+natural_set.ads:25:15: postcondition not proved, requires (natural_set__contains (mk_t s s1) value = True)
 natural_set.ads:42:51: info: range check proved
 natural_set.ads:45:53: info: index check proved
 natural_set.ads:46:45: info: overflow check proved

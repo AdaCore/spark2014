@@ -76,4 +76,4 @@ evoting.ads:54:14: postcondition not proved, requires (candidates (i) (j) = 32)
 evoting.ads:56:29: index check not proved, requires (result'First <= result1) and (result1 <= result'Last)
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:94:7: postcondition not proved, requires (forall i: int. (if (last_candidate <= i) and (i <= 20) then (counters (i) = 0))) and (log counters = number_of_votes)
+evoting.ads:94:7: postcondition not proved, requires (forall i: int. (if (last_candidate <= i) and (i <= 20) then (counters (i) = 0))) and (evoting__counters_sum counters = number_of_votes)

@@ -1,3 +1,3 @@
 
-database.ads:53:30: postcondition not proved, requires (log account database__availability__linksX = True) and (log1 account customer id database__accounts = True) and (log2 (log3 account database__accounts_balance) = True)
+database.ads:53:30: postcondition not proved, requires (database__existing account database__availability__linksX = True) and (database__belongs_to account customer id database__accounts = True) and (money__is_empty database__balance account database__accounts_balance = True)
 database.ads:53:41: info: precondition proved

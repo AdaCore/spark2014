@@ -16,4 +16,4 @@ search.ads:11:54: range check not proved, requires in_range (search__search___re
 search.ads:5:53: info: index check proved
 search.ads:8:57: info: range check proved
 search.ads:8:65: info: range check proved
-search.ads:9:10: postcondition not proved, requires (search__search___result = 0) and (log t v (of_int 1) (of_int 10) = True) or (t (search__search___result) = v) and (log t v (of_int 1) (of_int (search__search___result - 1)) = True)
+search.ads:9:10: postcondition not proved, requires (search__search___result = 0) and (search__no_v_in_range t v (of_int 1) (of_int 10) = True) or (t (search__search___result) = v) and (search__no_v_in_range t v (of_int 1) (of_int (search__search___result - 1)) = True)
