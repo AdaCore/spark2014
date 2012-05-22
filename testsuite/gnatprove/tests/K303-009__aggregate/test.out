@@ -1,16 +1,14 @@
 
-(b = 2) then ((a = arr_aggregate__38__39 arr_aggregate__one arr_aggregate__one) = True) else if 
-(b = 2) then ((a = arr_aggregate__46__39 (of_array (arr_aggregate__46__40 arr_aggregate__one arr_aggregate__one)) (of_array (arr_aggregate__46__52 arr_aggregate__one arr_aggregate__one))) = True) else if 
-(b = 2) then forall j1: int. (if (1 <= j1) and (j1 <= 2) then forall k: int. (if (1 <= k) and (k <= 2) then (a (j1) (k) = arr_aggregate__one))) else if 
-(b = 2) then forall k: int. (if (1 <= k) and (k <= 2) then (a (k) = arr_aggregate__one)) else if 
-(b = 3) then ((a = arr_aggregate__39__39 arr_aggregate__one arr_aggregate__one) = True) else if 
-(b = 3) then ((a = arr_aggregate__47__39 (of_array (arr_aggregate__47__40 arr_aggregate__one arr_aggregate__one)) (of_array (arr_aggregate__47__52 arr_aggregate__one arr_aggregate__one))) = True) else if 
-(b = 3) then forall j2: int. (if (1 <= j2) and (j2 <= 2) then forall k1: int. (if (1 <= k1) and (k1 <= 2) then (a (j2) (k1) = arr_aggregate__one))) else if 
-(b = 3) then forall k1: int. (if (1 <= k1) and (k1 <= 2) then (a (k1) = arr_aggregate__one)) else if 
-(b = 4) then ((a = arr_aggregate__40__39 (of_int 2) arr_aggregate__one) = True) else ((a = arr_aggregate__41__44 arr_aggregate__one (of_int 2)) = True)
-(b = 4) then ((a = arr_aggregate__48__39 (of_array (arr_aggregate__48__40 (of_int 2) arr_aggregate__one)) (of_array (arr_aggregate__48__50 (of_int 2) arr_aggregate__one))) = True) else ((a = arr_aggregate__49__44 (of_array (arr_aggregate__49__45 arr_aggregate__one (of_int 2))) (of_array (arr_aggregate__49__55 arr_aggregate__one (of_int 2)))) = True)
-(b = 4) then (a (arr_aggregate__one) = 2) and (a (2) = arr_aggregate__one) else (a (arr_aggregate__one) = arr_aggregate__one) and (a (2) = 2)
-(b = 4) then forall j3: int. (if (1 <= j3) and (j3 <= 2) then (a (j3) (arr_aggregate__one) = 2) and (a (j3) (2) = arr_aggregate__one)) else forall j4: int. (if (1 <= j4) and (j4 <= 2) then (a (j4) (arr_aggregate__one) = arr_aggregate__one) and (a (j4) (2) = 2))
+(b = 2) then ((a = arr_aggregate__38__39 one one) = True) else if (b = 3) then ((a = arr_aggregate__39__39 one one) = True) else if 
+(b = 2) then ((a = arr_aggregate__46__39 (of_array (arr_aggregate__46__40 one one)) (of_array (arr_aggregate__46__52 one one))) = True) else if 
+(b = 2) then forall j1: int. (if (1 <= j1) and (j1 <= 2) then forall k: int. (if (1 <= k) and (k <= 2) then (a (j1) (k) = one))) else if 
+(b = 3) then ((a = arr_aggregate__47__39 (of_array (arr_aggregate__47__40 one one)) (of_array (arr_aggregate__47__52 one one))) = True) else if 
+(b = 3) then forall j2: int. (if (1 <= j2) and (j2 <= 2) then forall k1: int. (if (1 <= k1) and (k1 <= 2) then (a (j2) (k1) = one))) else if 
+(b = 3) then forall k1: int. (if (1 <= k1) and (k1 <= 2) then (a (k1) = one)) else if 
+(b = 4) then ((a = arr_aggregate__40__39 (of_int 2) one) = True) else ((a = arr_aggregate__41__44 one (of_int 2)) = True)
+(b = 4) then ((a = arr_aggregate__48__39 (of_array (arr_aggregate__48__40 (of_int 2) one)) (of_array (arr_aggregate__48__50 (of_int 2) one))) = True) else ((a = arr_aggregate__49__44 (of_array (arr_aggregate__49__45 one (of_int 2))) (of_array (arr_aggregate__49__55 one (of_int 2)))) = True)
+(b = 4) then (a (one) = 2) and (a (2) = one) else (a (one) = one) and (a (2) = 2)
+(b = 4) then forall j3: int. (if (1 <= j3) and (j3 <= 2) then (a (j3) (one) = 2) and (a (j3) (2) = one)) else forall j4: int. (if (1 <= j4) and (j4 <= 2) then (a (j4) (one) = one) and (a (j4) (2) = 2))
 aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:28: info: overflow check proved
 aggregate.adb:5:45: info: overflow check proved
@@ -37,7 +35,7 @@ arr_aggregate.adb:56:7: info: precondition proved
 arr_aggregate.ads:11:15: info: postcondition proved
 arr_aggregate.ads:11:40: info: index check proved
 arr_aggregate.ads:12:66: info: index check proved
-arr_aggregate.ads:16:15: postcondition not proved, requires if (b = 1) then (a (arr_aggregate__one) = arr_aggregate__one) and (a (2) = 2) else if 
+arr_aggregate.ads:16:15: postcondition not proved, requires if (b = 1) then (a (one) = one) and (a (2) = 2) else if (b = 2) then forall k: int. (if (1 <= k) and (k <= 2) then (a (k) = one)) else if 
 arr_aggregate.ads:16:35: info: index check proved
 arr_aggregate.ads:16:61: info: index check proved
 arr_aggregate.ads:17:61: info: index check proved
@@ -46,7 +44,7 @@ arr_aggregate.ads:19:35: info: index check proved
 arr_aggregate.ads:19:51: info: index check proved
 arr_aggregate.ads:20:40: info: index check proved
 arr_aggregate.ads:20:58: info: index check proved
-arr_aggregate.ads:24:15: postcondition not proved, requires if (b = 1) then forall j: int. (if (1 <= j) and (j <= 2) then (a (j) (arr_aggregate__one) = arr_aggregate__one) and (a (j) (2) = 2)) else if 
+arr_aggregate.ads:24:15: postcondition not proved, requires if (b = 1) then forall j: int. (if (1 <= j) and (j <= 2) then (a (j) (one) = one) and (a (j) (2) = 2)) else if 
 arr_aggregate.ads:24:62: info: index check proved
 arr_aggregate.ads:24:84: info: index check proved
 arr_aggregate.ads:25:87: info: index check proved
@@ -55,12 +53,12 @@ arr_aggregate.ads:27:62: info: index check proved
 arr_aggregate.ads:27:82: info: index check proved
 arr_aggregate.ads:28:67: info: index check proved
 arr_aggregate.ads:28:97: info: index check proved
-arr_aggregate.ads:32:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__32__44 arr_aggregate__one) = True) else ((a = arr_aggregate__33__44 arr_aggregate__one) = True)
-arr_aggregate.ads:37:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__37__39 arr_aggregate__one (of_int 2)) = True) else if 
+arr_aggregate.ads:32:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__32__44 one) = True) else ((a = arr_aggregate__33__44 one) = True)
+arr_aggregate.ads:37:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__37__39 one (of_int 2)) = True) else if 
 arr_aggregate.ads:37:45: info: range check proved
 arr_aggregate.ads:40:40: info: range check proved
 arr_aggregate.ads:41:50: info: range check proved
-arr_aggregate.ads:45:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 arr_aggregate__one (of_int 2))) (of_array (arr_aggregate__45__50 arr_aggregate__one (of_int 2)))) = True) else if 
+arr_aggregate.ads:45:15: postcondition not proved, requires if (b = 1) then ((a = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 one (of_int 2))) (of_array (arr_aggregate__45__50 one (of_int 2)))) = True) else if 
 arr_aggregate.ads:45:46: info: range check proved
 arr_aggregate.ads:45:56: info: range check proved
 arr_aggregate.ads:48:41: info: range check proved

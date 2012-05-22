@@ -1,2 +1,2 @@
 
-glob.ads:6:14: postcondition not proved, requires not (glob__g = True)
+glob.ads:6:14: postcondition not proved, requires not (g = True)

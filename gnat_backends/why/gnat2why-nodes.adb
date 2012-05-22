@@ -291,4 +291,14 @@ package body Gnat2Why.Nodes is
          Nkind (Parent (Scope (E))) = N_Quantified_Expression);
    end Is_Quantified_Loop_Param;
 
+   ----------------
+   -- Short_Name --
+   ----------------
+
+   function Short_Name (E : Entity_Id) return String is
+   begin
+      Get_Unqualified_Name_String (Chars (E));
+      return Name_Buffer (1 .. Name_Len);
+   end Short_Name;
+
 end Gnat2Why.Nodes;

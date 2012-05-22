@@ -1,2 +1,2 @@
 
-qack.ads:6:21: postcondition not proved, requires (qack__x = qack__x1)
+qack.ads:6:21: postcondition not proved, requires (x = x1)

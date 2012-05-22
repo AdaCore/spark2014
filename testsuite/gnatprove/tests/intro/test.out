@@ -1,6 +1,6 @@
 
 pricing.adb:10:10: info: loop invariant initialization proved
-pricing.adb:10:10: loop invariant preservation not proved, requires (total >= pricing__price_of_item bk (k))
+pricing.adb:10:10: loop invariant preservation not proved, requires (total >= price_of_item bk (k))
 pricing.adb:10:68: info: overflow check proved
 pricing.adb:11:52: info: index check proved
 pricing.adb:12:50: info: index check proved
@@ -8,7 +8,7 @@ pricing.adb:6:13: info: range check proved
 pricing.adb:7:29: info: range check proved
 pricing.adb:9:11: info: range check proved
 pricing.ads:11:35: info: postcondition proved
-pricing.ads:16:15: postcondition not proved, requires (pricing__price_of_basket___result >= pricing__price_of_item bk (it))
+pricing.ads:16:15: postcondition not proved, requires (pricing__price_of_basket___result >= price_of_item bk (it))
 pricing.ads:17:58: info: index check proved
 sat.adb:10:12: info: overflow check proved
 sat.adb:11:12: info: overflow check proved

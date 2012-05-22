@@ -5,6 +5,6 @@ buf_read.adb:45:10: range check not proved, requires in_range T10b
 buf_read.adb:46:27: info: range check proved
 buf_read.adb:48:29: info: overflow check proved
 buf_read.adb:48:29: info: range check proved
-buf_read.adb:52:7: assertion not proved, requires (buf_read__pointer <= buf_read__max_read) and (forall index: int. (if (1 <= index) and (index <= buf_read__max_read) then (buf_read__valid buf_read__buffer (index) = True)))
+buf_read.adb:52:7: assertion not proved, requires (pointer <= max_read) and (forall index: int. (if (1 <= index) and (index <= max_read) then (valid buffer (index) = True)))
 buf_read.adb:54:21: info: index check proved
 buf_read.ads:9:40: info: postcondition proved
