@@ -1,6 +1,6 @@
 
 vectors.adb:102:11: info: range check proved
-vectors.adb:104:19: index check not proved, requires (container'First <= (j + 1)) and ((j + 1) <= container'Last)
+vectors.adb:104:19: index check not proved, requires ((j + 1) <= container'Last)
 vectors.adb:104:32: info: overflow check proved
 vectors.adb:104:49: info: index check proved
 vectors.adb:106:16: info: index check proved
@@ -8,7 +8,7 @@ vectors.adb:107:52: info: overflow check proved
 vectors.adb:107:52: range check not proved, requires in_range (container + 1)
 vectors.adb:115:11: info: range check proved
 vectors.adb:117:19: info: index check proved
-vectors.adb:117:45: index check not proved, requires (container'First <= (j + 1)) and ((j + 1) <= container'Last)
+vectors.adb:117:45: index check not proved, requires ((j + 1) <= container'Last)
 vectors.adb:117:58: info: overflow check proved
 vectors.adb:119:52: info: overflow check proved
 vectors.adb:119:52: range check not proved, requires in_range (container - 1)

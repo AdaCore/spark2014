@@ -2,10 +2,10 @@
 tab.adb:10:58: info: range check proved
 tab.adb:11:20: info: index check proved
 tab.adb:12:53: overflow check not proved, requires in_range (cur - 1)
-tab.adb:12:60: index check not proved, requires (a'First <= result) and (result <= a'Last)
+tab.adb:12:60: index check not proved, requires (a'First <= result)
 tab.adb:12:65: info: index check proved
 tab.adb:13:14: info: index check proved
-tab.adb:14:13: index check not proved, requires (a'First <= cur) and (cur <= a'Last)
+tab.adb:14:13: index check not proved, requires (a'First <= cur)
 tab.adb:14:23: info: index check proved
 tab.adb:15:24: info: overflow check proved
 tab.adb:4:24: info: range check proved

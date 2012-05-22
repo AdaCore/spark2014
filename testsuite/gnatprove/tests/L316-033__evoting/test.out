@@ -59,7 +59,7 @@ evoting.adb:47:13: info: index check proved
 evoting.adb:47:33: info: range check proved
 evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
-evoting.adb:58:10: index check not proved, requires (candidates'First <= current_candidate) and (current_candidate <= candidates'Last)
+evoting.adb:58:10: info: index check proved
 evoting.adb:60:49: info: overflow check proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: overflow check proved
@@ -68,18 +68,18 @@ evoting.adb:73:14: info: index check proved
 evoting.adb:81:40: info: range check proved
 evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
-evoting.ads:104:48: index check not proved, requires (winners'First <= result) and (result <= winners'Last)
-evoting.ads:105:21: index check not proved, requires (counters'First <= result) and (result <= counters'Last)
-evoting.ads:105:40: index check not proved, requires (counters'First <= result) and (result <= counters'Last)
+evoting.ads:104:48: index check not proved, requires (winners'First <= result)
+evoting.ads:105:21: info: index check proved
+evoting.ads:105:40: info: index check proved
 evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
-evoting.ads:108:39: index check not proved, requires (counters'First <= result) and (result <= counters'Last)
-evoting.ads:109:13: postcondition not proved, requires (forall winner: int. (if (0 <= winner) and (winner <= 20) then forall i: int. (if (0 <= i) and (i <= 20) then (if (winners (winner) = True) and not (winners (i) = True) then (counters (winner) >  counters (i))) and (if (winners (winner) = True) and (winners (i) = True) then (counters (winner) = counters (i)))))) and (forall i1: int. (if ((last_candidate + 1) <= i1) and (i1 <= 20) then not (winners (i1) = True)))
+evoting.ads:108:39: info: index check proved
+evoting.ads:109:13: postcondition not proved, requires (counters (winner) >  counters (i))
 evoting.ads:110:45: info: overflow check proved
-evoting.ads:111:19: index check not proved, requires (winners'First <= result) and (result <= winners'Last)
+evoting.ads:111:19: index check not proved, requires (winners'First <= result)
 evoting.ads:54:14: postcondition not proved, requires (candidates (i) (j) = 32)
-evoting.ads:56:29: index check not proved, requires (result'First <= result1) and (result1 <= result'Last)
+evoting.ads:56:29: info: index check proved
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:94:7: postcondition not proved, requires (forall i: int. (if (last_candidate <= i) and (i <= 20) then (counters (i) = 0))) and (counters_sum counters = number_of_votes)
+evoting.ads:94:7: postcondition not proved, requires (counters (i) = 0)

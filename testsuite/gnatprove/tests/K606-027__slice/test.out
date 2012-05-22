@@ -8,9 +8,9 @@ fb20a00.adb:23:47: info: overflow check proved
 fb20a00.adb:24:30: info: range check proved
 fb20a00.adb:24:36: info: index check proved
 fb20a00.adb:24:44: info: overflow check proved
-fb20a00.adb:25:16: index check not proved, requires (ret'First <= i) and (i <= ret'Last)
+fb20a00.adb:25:16: index check not proved, requires (ret'First <= i)
 fb20a00.adb:25:38: info: range check proved
-fb20a00.adb:27:16: index check not proved, requires (ret'First <= i) and (i <= ret'Last)
+fb20a00.adb:27:16: index check not proved, requires (ret'First <= i)
 fb20a00.adb:27:27: info: index check proved
 fb20a00.adb:37:22: warning: possible re-ordering due to missing parentheses
 fb20a00.adb:37:34: overflow check not proved, requires in_range (new_str'Last - new_sub'Length)

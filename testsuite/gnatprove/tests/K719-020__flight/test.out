@@ -14,5 +14,5 @@ flight_manager.ads:13:62: overflow check not proved, requires in_range ((positio
 flight_manager.ads:14:18: info: overflow check proved
 flight_manager.ads:15:23: overflow check not proved, requires in_range (position_y + set_engine_speed'Result)
 flight_manager.ads:15:58: overflow check not proved, requires in_range ((position_y + set_engine_speed'Result) - target_y)
-flight_manager.ads:15:6: postcondition not proved, requires (((position_x + set_engine_speed'Result) - target_x) <  (position_x + set_engine_speed'Result)) and (((position_y + set_engine_speed'Result1) - target_y) <  (position_y + set_engine_speed'Result1))
+flight_manager.ads:15:6: postcondition not proved, requires (((position_x + set_engine_speed'Result) - target_x) <  (position_x + set_engine_speed'Result))
 flight_manager.ads:16:18: info: overflow check proved

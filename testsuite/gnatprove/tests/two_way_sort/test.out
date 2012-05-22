@@ -8,7 +8,7 @@ p1.adb:17:14: info: range check proved
 p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:28:10: info: loop invariant initialization proved
-p1.adb:28:10: loop invariant preservation not proved, requires ((((a'First <= i) and (i <= a'Last)) and (a'First <= j) and (j <= a'Last)) and (forall k: int. (if (a'First <= k) and (k <= (i - 1)) then not (a (k) = True)))) and (forall k1: int. (if ((j + 1) <= k1) and (k1 <= a'Last) then (a (k1) = True)))
+p1.adb:28:10: loop invariant preservation not proved, requires (j <= a'Last)
 p1.adb:30:62: info: overflow check proved
 p1.adb:30:72: info: index check proved
 p1.adb:31:51: info: overflow check proved
@@ -24,11 +24,11 @@ p1.adb:38:19: info: overflow check proved
 p1.adb:38:19: info: range check proved
 p1.adb:39:19: info: overflow check proved
 p1.adb:39:19: info: range check proved
-p1.adb:5:14: index check not proved, requires (a'First <= i) and (i <= a'Last)
+p1.adb:5:14: info: index check proved
 p1.adb:5:21: info: index check proved
 p1.adb:6:25: info: index check proved
 p1.adb:6:32: info: index check proved
-p1.adb:7:26: postcondition not proved, requires (a (i) = a1 (j)) and (a (j) = a1 (i)) and (forall k: int. (if (a'First <= k) and (k <= a'Last) then (if not (k = i) and not (k = j) then (a (k) = a1 (k)))))
+p1.adb:7:26: info: postcondition proved
 p1.adb:8:55: info: index check proved
 p1.adb:8:63: info: index check proved
 p1.ads:6:16: postcondition not proved, requires (a'Last <  a'First) or (exists k: int. ((a'First <= k) and (k <= a'Last)) and (forall j: int. (if (a'First <= j) and (j <= k) then not (a (j) = True))) and (forall j1: int. (if ((k + 1) <= j1) and (j1 <= a'Last) then (a (j1) = True))))

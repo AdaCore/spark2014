@@ -12,7 +12,7 @@ s.adb:27:35: info: overflow check proved
 s.adb:28:15: info: range check proved
 s.adb:30:7: info: assertion proved
 s.adb:37:10: info: loop invariant initialization proved
-s.adb:37:10: loop invariant preservation not proved, requires (forall j: int. (if (1 <= j) and (j <= (index - 1)) then (dest (j) = src_old (j)))) and (forall j1: int. (if (index <= j1) and (j1 <= 10) then (src (j1) = src_old (j1))))
+s.adb:37:10: loop invariant preservation not proved, requires (dest (j) = src_old (j))
 s.adb:37:59: info: overflow check proved
 s.adb:38:27: info: index check proved
 s.adb:38:38: info: index check proved
@@ -23,7 +23,7 @@ s.adb:42:26: info: index check proved
 s.adb:43:10: info: index check proved
 s.adb:43:25: info: range check proved
 s.adb:51:10: info: loop invariant initialization proved
-s.adb:51:10: loop invariant preservation not proved, requires (forall j: int. (if ((index + 1) <= j) and (j <= 10) then (dest (j) = src_old (j)))) and (forall j1: int. (if (1 <= j1) and (j1 <= index) then (src (j1) = src_old (j1))))
+s.adb:51:10: loop invariant preservation not proved, requires (dest (j) = src_old (j))
 s.adb:51:45: info: overflow check proved
 s.adb:52:27: info: index check proved
 s.adb:52:38: info: index check proved

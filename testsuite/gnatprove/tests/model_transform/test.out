@@ -7,7 +7,7 @@ model.adb:64:20: info: index check proved
 model.adb:66:10: info: index check proved
 model.adb:67:42: info: index check proved
 model.adb:71:10: info: loop invariant initialization proved
-model.adb:71:10: loop invariant preservation not proved, requires (name owned_state sm (from owned_transition sm (t)) = name1 av (from1 cfv (t))) and (name owned_state sm (to owned_transition sm (t)) = name1 av (to1 cfv (t)))
+model.adb:71:10: loop invariant preservation not proved, requires (name owned_state sm (from owned_transition sm (t)) = name1 av (from1 cfv (t)))
 model.adb:72:57: info: overflow check proved
 model.adb:73:20: info: index check proved
 model.adb:73:41: info: index check proved
@@ -27,7 +27,7 @@ model.ads:102:31: info: postcondition proved
 model.ads:106:29: info: postcondition proved
 model.ads:129:33: info: postcondition proved
 model.ads:134:31: info: postcondition proved
-model.ads:149:7: postcondition not proved, requires (name owned_state sm (from owned_transition sm (t)) = name1 owned_action (mk_t transform'Result transform'Result1) (from1 owned_flow (mk_t transform'Result transform'Result1) (t))) and (name owned_state sm (to owned_transition sm (t)) = name1 owned_action (mk_t transform'Result transform'Result1) (to1 owned_flow (mk_t transform'Result transform'Result1) (t)))
+model.ads:149:7: postcondition not proved, requires (name owned_state sm (from owned_transition sm (t)) = name1 owned_action (mk_t transform'Result transform'Result1) (from1 owned_flow (mk_t transform'Result transform'Result1) (t)))
 model.ads:151:17: info: index check proved
 model.ads:151:38: info: index check proved
 model.ads:152:19: info: index check proved
