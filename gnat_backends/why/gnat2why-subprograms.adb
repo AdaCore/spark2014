@@ -598,6 +598,9 @@ package body Gnat2Why.Subprograms is
            (File.Cur_Theory,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
+               Labels =>
+                 (1 => New_Identifier
+                    (Name => """GP_Ada_Name:" & Short_Name (E) & "'Result""")),
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
       end if;
 

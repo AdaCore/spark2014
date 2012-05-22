@@ -9,5 +9,5 @@ search.adb:9:13: info: index check proved
 search.ads:10:54: info: overflow check proved
 search.ads:10:61: info: index check proved
 search.ads:7:48: info: index check proved
-search.ads:9:13: postcondition not proved, requires (if (search__search___result = 0) then forall pos: int. (if (1 <= pos) and (pos <= 10) then not (t (pos) = v))) and (if (t (search__search___result) = v) then forall pos1: int. (if (1 <= pos1) and (pos1 <= (search__search___result - 1)) then not (t (pos1) = v)))
-search.ads:9:16: index check not proved, requires (t'First <= search__search___result) and (search__search___result <= t'Last)
+search.ads:9:13: postcondition not proved, requires (if (search'Result = 0) then forall pos: int. (if (1 <= pos) and (pos <= 10) then not (t (pos) = v))) and (if (t (search'Result) = v) then forall pos1: int. (if (1 <= pos1) and (pos1 <= (search'Result - 1)) then not (t (pos1) = v)))
+search.ads:9:16: index check not proved, requires (t'First <= search'Result) and (search'Result <= t'Last)

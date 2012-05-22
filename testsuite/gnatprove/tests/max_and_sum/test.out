@@ -15,4 +15,4 @@ maxandsum.adb:9:10: loop invariant preservation not proved, requires
 maxandsum.adb:9:34: info: overflow check proved
 maxandsum.adb:9:37: overflow check not proved, requires in_range ((maxandsum__maxandsum__L_1__i - 1) * max)
 maxandsum.ads:8:21: info: postcondition proved
-maxandsum.ads:8:25: overflow check not proved, requires in_range (maxandsum__n * max)
+maxandsum.ads:8:25: overflow check not proved, requires in_range (n * max)

@@ -9,11 +9,11 @@ search.adb:15:20: info: range check proved
 search.adb:4:24: info: range check proved
 search.adb:8:10: info: loop invariant initialization proved
 search.adb:8:10: loop invariant preservation not proved, requires (pos = 0) and (forall j: int. (if (1 <= j) and (j <= (search__search__L_1__i - 1)) then not (t (j) = v))) or (t (pos) = v) and (forall j1: int. (if (1 <= j1) and (j1 <= (pos - 1)) then not (t (j1) = v)))
-search.ads:10:13: index check not proved, requires (t'First <= search__search___result) and (search__search___result <= t'Last)
+search.ads:10:13: index check not proved, requires (t'First <= search'Result) and (search'Result <= t'Last)
 search.ads:11:34: info: range check proved
 search.ads:11:54: info: overflow check proved
-search.ads:11:54: range check not proved, requires in_range (search__search___result - 1)
+search.ads:11:54: range check not proved, requires in_range (search'Result - 1)
 search.ads:5:53: info: index check proved
 search.ads:8:57: info: range check proved
 search.ads:8:65: info: range check proved
-search.ads:9:10: postcondition not proved, requires (search__search___result = 0) and (no_v_in_range t v (of_int 1) (of_int 10) = True) or (t (search__search___result) = v) and (no_v_in_range t v (of_int 1) (of_int (search__search___result - 1)) = True)
+search.ads:9:10: postcondition not proved, requires (search'Result = 0) and (no_v_in_range t v (of_int 1) (of_int 10) = True) or (t (search'Result) = v) and (no_v_in_range t v (of_int 1) (of_int (search'Result - 1)) = True)
