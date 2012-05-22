@@ -571,6 +571,8 @@ package body Xtree_Sinfo is
       New_Field (W_Binding_Ref,
                  "Def", "W_Prog", Id_One);
       New_Field (W_Binding_Ref,
+                 "Labels", "W_Identifier", Id_Set);
+      New_Field (W_Binding_Ref,
                  "Context", "W_Prog", Id_One);
 
       ------------------
