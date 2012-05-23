@@ -600,7 +600,8 @@ package body Gnat2Why.Subprograms is
               (Name     => Result_Name,
                Labels =>
                  (1 => New_Identifier
-                    (Name => """GP_Ada_Name:" & Short_Name (E) & "'Result""")),
+                    (Name =>
+                       """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
       end if;
 
