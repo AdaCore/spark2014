@@ -536,143 +536,154 @@ package body Why.Gen.Binders is
       Logic_Def_Emitted : Boolean := False;
    begin
       for S in Spec'Range loop
-         case Spec (S).Kind is
-            when W_Function_Decl =>
-               case Spec (S).Domain is
-                  when EW_Term =>
-                     pragma Assert (not Logic_Def_Emitted);
+         declare
+            Label_Array : constant W_Identifier_Array :=
+               (if Spec (S).Label = Why_Empty then (1 .. 0 => <>) else
+                (1 => Spec (S).Label));
+         begin
+            case Spec (S).Kind is
+               when W_Function_Decl =>
+                  case Spec (S).Domain is
+                     when EW_Term =>
+                        pragma Assert (not Logic_Def_Emitted);
 
-                     if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := To_Ident (WNE_Log);
-                     end if;
+                        if Spec (S).Name = Why_Empty then
+                           Spec (S).Name := To_Ident (WNE_Log);
+                        end if;
 
-                     Emit
-                       (Theory,
-                        New_Function_Decl
-                          (Ada_Node    => Ada_Node,
-                           Domain      => Spec (S).Domain,
-                           Name        => Spec (S).Name,
-                           Binders     => Binders,
-                           Return_Type => Return_Type));
-                     Logic_Def_Emitted := True;
-
-                     if Spec (S).Def /= Why_Empty then
                         Emit
                           (Theory,
-                           New_Defining_Axiom
+                           New_Function_Decl
                              (Ada_Node    => Ada_Node,
+                              Domain      => Spec (S).Domain,
                               Name        => Spec (S).Name,
-                              Return_Type => Get_EW_Type (Return_Type),
+                              Labels      => Label_Array,
                               Binders     => Binders,
-                              Pre         => Spec (S).Pre,
-                              Def         => Spec (S).Def));
-                     end if;
+                              Return_Type => Return_Type));
+                        Logic_Def_Emitted := True;
 
-                  when EW_Pred =>
-                     --  Invalid
-                     pragma Assert (False);
-                     null;
+                        if Spec (S).Def /= Why_Empty then
+                           Emit
+                             (Theory,
+                              New_Defining_Axiom
+                                (Ada_Node    => Ada_Node,
+                                 Name        => Spec (S).Name,
+                                 Return_Type => Get_EW_Type (Return_Type),
+                                 Binders     => Binders,
+                                 Pre         => Spec (S).Pre,
+                                 Def         => Spec (S).Def));
+                        end if;
 
-                  when EW_Prog =>
-                     if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := To_Ident (WNE_Func);
-                     end if;
+                     when EW_Pred =>
+                        --  Invalid
+                        pragma Assert (False);
+                        null;
 
-                     if Spec (S).Pre = Why_Empty then
-                        Spec (S).Pre := True_Pred;
-                     end if;
+                     when EW_Prog =>
+                        if Spec (S).Name = Why_Empty then
+                           Spec (S).Name := To_Ident (WNE_Func);
+                        end if;
 
-                     if Spec (S).Post = Why_Empty then
-                        if Logic_Def_Emitted then
-                           Spec (S).Post :=
-                             New_Relation
-                               (Op_Type =>
-                                  Get_EW_Type (Return_Type),
-                                Left    =>
-                                  +New_Call
-                                    (Domain  => EW_Term,
-                                     Name    => Spec (S).Name,
-                                     Binders => Binders),
-                                Op      => EW_Eq,
-                                Right   => +To_Ident (WNE_Result));
-                        else
+                        if Spec (S).Pre = Why_Empty then
+                           Spec (S).Pre := True_Pred;
+                        end if;
+
+                        if Spec (S).Post = Why_Empty then
+                           if Logic_Def_Emitted then
+                              Spec (S).Post :=
+                                New_Relation
+                                  (Op_Type =>
+                                     Get_EW_Type (Return_Type),
+                                   Left    =>
+                                     +New_Call
+                                       (Domain  => EW_Term,
+                                        Name    => Spec (S).Name,
+                                        Binders => Binders),
+                                   Op      => EW_Eq,
+                                   Right   => +To_Ident (WNE_Result));
+                           else
+                              Spec (S).Post := True_Pred;
+                           end if;
+                        end if;
+
+                        Emit
+                          (Theory,
+                           New_Function_Decl
+                           (Ada_Node    => Ada_Node,
+                            Domain      => EW_Prog,
+                            Name        => Spec (S).Name,
+                            Binders     => Binders,
+                            Labels      => Label_Array,
+                            Return_Type => Return_Type,
+                            Pre         => Spec (S).Pre,
+                            Effects     => Spec (S).Effects,
+                            Post        => Spec (S).Post));
+                  end case;
+
+               when W_Function_Def =>
+                  case Spec (S).Domain is
+                     when EW_Term =>
+                        pragma Assert (not Logic_Def_Emitted);
+                        pragma Assert (Spec (S).Term /= Why_Empty);
+
+                        if Spec (S).Name = Why_Empty then
+                           Spec (S).Name := To_Ident (WNE_Log);
+                        end if;
+
+                        Emit
+                          (Theory,
+                           New_Function_Def
+                             (Ada_Node    => Ada_Node,
+                              Domain      => Spec (S).Domain,
+                              Name        => Spec (S).Name,
+                              Binders     => Binders,
+                              Labels      => Label_Array,
+                              Return_Type => Return_Type,
+                              Def         => +Spec (S).Term));
+                        Logic_Def_Emitted := True;
+
+                     when EW_Pred =>
+                        if Spec (S).Name = Why_Empty then
+                           Spec (S).Name := To_Ident (WNE_Log);
+                        end if;
+
+                        Emit
+                          (Theory,
+                           New_Function_Def
+                             (Ada_Node    => Ada_Node,
+                              Domain      => Spec (S).Domain,
+                              Name        => Spec (S).Name,
+                              Labels      => Label_Array,
+                              Binders     => Binders,
+                              Def         => +Spec (S).Pred));
+
+                     when EW_Prog =>
+                        if Spec (S).Name = Why_Empty then
+                           Spec (S).Name := To_Ident (WNE_Def);
+                        end if;
+
+                        if Spec (S).Pre = Why_Empty then
+                           Spec (S).Pre := True_Pred;
+                        end if;
+
+                        if Spec (S).Post = Why_Empty then
                            Spec (S).Post := True_Pred;
                         end if;
-                     end if;
 
-                     Emit
-                       (Theory,
-                        New_Function_Decl
-                        (Ada_Node    => Ada_Node,
-                         Domain      => EW_Prog,
-                         Name        => Spec (S).Name,
-                         Binders     => Binders,
-                         Return_Type => Return_Type,
-                         Pre         => Spec (S).Pre,
-                         Effects     => Spec (S).Effects,
-                         Post        => Spec (S).Post));
-               end case;
-
-            when W_Function_Def =>
-               case Spec (S).Domain is
-                  when EW_Term =>
-                     pragma Assert (not Logic_Def_Emitted);
-                     pragma Assert (Spec (S).Term /= Why_Empty);
-
-                     if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := To_Ident (WNE_Log);
-                     end if;
-
-                     Emit
-                       (Theory,
-                        New_Function_Def
-                          (Ada_Node    => Ada_Node,
-                           Domain      => Spec (S).Domain,
-                           Name        => Spec (S).Name,
-                           Binders     => Binders,
-                           Return_Type => Return_Type,
-                           Def         => +Spec (S).Term));
-                     Logic_Def_Emitted := True;
-
-                  when EW_Pred =>
-                     if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := To_Ident (WNE_Log);
-                     end if;
-
-                     Emit
-                       (Theory,
-                        New_Function_Def
-                          (Ada_Node    => Ada_Node,
-                           Domain      => Spec (S).Domain,
-                           Name        => Spec (S).Name,
-                           Binders     => Binders,
-                           Def         => +Spec (S).Pred));
-
-                  when EW_Prog =>
-                     if Spec (S).Name = Why_Empty then
-                        Spec (S).Name := To_Ident (WNE_Def);
-                     end if;
-
-                     if Spec (S).Pre = Why_Empty then
-                        Spec (S).Pre := True_Pred;
-                     end if;
-
-                     if Spec (S).Post = Why_Empty then
-                        Spec (S).Post := True_Pred;
-                     end if;
-
-                     Emit
-                       (Theory,
-                        New_Function_Def
-                          (Ada_Node    => Ada_Node,
-                           Domain      => Spec (S).Domain,
-                           Name        => Spec (S).Name,
-                           Binders     => Binders,
-                           Pre         => Spec (S).Pre,
-                           Def         => +Spec (S).Prog,
-                           Post        => Spec (S).Post));
-               end case;
-         end case;
+                        Emit
+                          (Theory,
+                           New_Function_Def
+                             (Ada_Node    => Ada_Node,
+                              Domain      => Spec (S).Domain,
+                              Name        => Spec (S).Name,
+                              Labels      => Label_Array,
+                              Binders     => Binders,
+                              Pre         => Spec (S).Pre,
+                              Def         => +Spec (S).Prog,
+                              Post        => Spec (S).Post));
+                  end case;
+            end case;
+         end;
       end loop;
    end Set_Top_Level_Declarations;
 

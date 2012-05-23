@@ -166,6 +166,8 @@ package Why.Gen.Binders is
 
         Pre  : W_Pred_OId := Why_Empty;
 
+        Label : W_Identifier_OId := Why_Empty;
+
         Post : W_Pred_OId := Why_Empty;
         --  If no postcondition is given, and if a logic declaration
         --  is provided, one will be generated that will use this

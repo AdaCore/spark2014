@@ -4,9 +4,9 @@ pack.adb:13:52: info: range check proved
 pack.adb:16:40: info: range check proved
 pack.adb:16:7: info: assertion proved
 pack.adb:17:40: info: range check proved
-pack.adb:17:7: assertion not proved, requires ((my_b = standard__pack__17__29 (of_int 42)) = True)
+pack.adb:17:7: assertion not proved, requires ((my_b = standard__pack__17__29 42) = True)
 pack.adb:18:41: info: range check proved
-pack.adb:18:7: assertion not proved, requires not ((my_b = standard__pack__18__30 (of_int 42)) = True)
+pack.adb:18:7: assertion not proved, requires not ((my_b = standard__pack__18__30 42) = True)
 pack.adb:24:52: info: range check proved
 pack.adb:27:7: info: assertion proved
 pack.adb:28:7: info: assertion proved

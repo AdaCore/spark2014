@@ -48,7 +48,7 @@ arr_aggregate.ads:37:15: info: postcondition proved
 arr_aggregate.ads:37:45: info: range check proved
 arr_aggregate.ads:40:40: info: range check proved
 arr_aggregate.ads:41:50: info: range check proved
-arr_aggregate.ads:45:15: postcondition not proved, requires ((a = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 one (of_int 2))) (of_array (arr_aggregate__45__50 one (of_int 2)))) = True)
+arr_aggregate.ads:45:15: postcondition not proved, requires ((a = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 one 2)) (of_array (arr_aggregate__45__50 one 2))) = True)
 arr_aggregate.ads:45:46: info: range check proved
 arr_aggregate.ads:45:56: info: range check proved
 arr_aggregate.ads:48:41: info: range check proved

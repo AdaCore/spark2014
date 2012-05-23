@@ -175,6 +175,7 @@ package body Why.Gen.Scalars is
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
                                  Name   => To_Ident (Convert_From (Base_Type)),
+                                 Label  => To_Ident (WNE_Conversion_Label),
                                  others => <>),
                            2 => (Kind   => W_Function_Decl,
                                  Domain => EW_Prog,
