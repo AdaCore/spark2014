@@ -1,13 +1,13 @@
 
-p.adb:10:20: overflow check not proved, requires in_range (f + 10.e-1)
-p.adb:10:4: assertion not proved, requires ((f + 10.e-1) >  x)
-p.adb:11:4: assertion not proved, requires (r = c) or (r = f)
-p.adb:12:4: assertion not proved, requires (t = c) or (t = f)
-p.adb:2:22: range check not proved, requires in_range (real_of_int (ceil x))
-p.adb:3:22: range check not proved, requires in_range (real_of_int (floor x))
-p.adb:4:22: range check not proved, requires in_range (real_of_int (round x))
-p.adb:5:22: range check not proved, requires in_range (real_of_int (truncate x))
+p.adb:10:20: overflow check not proved, requires in_range (F + 10.e-1)
+p.adb:10:4: assertion not proved, requires ((F + 10.e-1) >  X)
+p.adb:11:4: assertion not proved, requires (R = C) or (R = F)
+p.adb:12:4: assertion not proved, requires (T = C) or (T = F)
+p.adb:2:22: range check not proved, requires in_range (real_of_int (ceil X))
+p.adb:3:22: range check not proved, requires in_range (real_of_int (floor X))
+p.adb:4:22: range check not proved, requires in_range (real_of_int (round X))
+p.adb:5:22: range check not proved, requires in_range (real_of_int (truncate X))
 p.adb:7:4: info: assertion proved
-p.adb:8:20: overflow check not proved, requires in_range (c - 10.e-1)
+p.adb:8:20: overflow check not proved, requires in_range (C - 10.e-1)
 p.adb:8:4: info: assertion proved
 p.adb:9:4: info: assertion proved

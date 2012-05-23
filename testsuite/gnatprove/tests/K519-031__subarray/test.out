@@ -3,7 +3,7 @@ subar.adb:12:17: info: range check proved
 subar.adb:12:7: info: index check proved
 subar.adb:13:7: info: precondition proved
 subar.adb:16:14: info: range check proved
-subar.adb:18:22: index check not proved, requires (x'First <= x'Last)
+subar.adb:18:22: index check not proved, requires (X'First <= X'Last)
 subar.adb:18:7: info: assertion proved
 subar.adb:25:17: info: range check proved
 subar.adb:25:7: info: index check proved
@@ -13,7 +13,7 @@ subar.adb:32:7: info: index check proved
 subar.adb:33:7: info: precondition proved
 subar.adb:37:7: info: range check proved
 subar.adb:40:16: info: range check proved
-subar.adb:40:7: index check not proved, requires (z'First <= x)
+subar.adb:40:7: index check not proved, requires (Z'First <= X)
 subar.adb:46:22: info: range check proved
 subar.adb:48:11: info: range check proved
 subar.adb:51:14: info: overflow check proved
@@ -23,4 +23,4 @@ subar.adb:57:11: range check not proved, requires (R6b <= attr__ATTRIBUTE_LAST)
 subar.adb:5:22: info: index check proved
 subar.adb:5:7: info: assertion proved
 subar.ads:22:20: info: index check proved
-subar.ads:25:20: index check not proved, requires (x'First <= x'Last)
+subar.ads:25:20: index check not proved, requires (X'First <= X'Last)

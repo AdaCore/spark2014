@@ -1,6 +1,6 @@
 
-(i <= a (index))
-(i <= a (index))
+(I <= A (Index))
+(I <= A (Index))
 binary_search.adb:12:18: info: range check proved
 binary_search.adb:13:18: info: range check proved
 binary_search.adb:15:10: info: index check proved
@@ -8,10 +8,10 @@ binary_search.adb:15:31: info: index check proved
 binary_search.adb:16:17: info: range check proved
 binary_search.adb:20:10: loop invariant initialization not proved, requires 
 binary_search.adb:20:10: loop invariant preservation not proved, requires 
-binary_search.adb:21:50: index check not proved, requires (result <= a'Last)
-binary_search.adb:22:66: index check not proved, requires (result <= a'Last)
-binary_search.adb:23:22: overflow check not proved, requires in_range (left + result)
-binary_search.adb:23:22: range check not proved, requires in_range (left + result)
+binary_search.adb:21:50: index check not proved, requires (result <= A'Last)
+binary_search.adb:22:66: index check not proved, requires (result <= A'Last)
+binary_search.adb:23:22: overflow check not proved, requires in_range (Left + result)
+binary_search.adb:23:22: range check not proved, requires in_range (Left + result)
 binary_search.adb:23:31: info: overflow check proved
 binary_search.adb:23:39: info: division check proved
 binary_search.adb:23:39: info: overflow check proved
@@ -21,6 +21,6 @@ binary_search.adb:29:20: info: range check proved
 binary_search.adb:32:14: info: range check proved
 binary_search.ads:11:20: info: index check proved
 binary_search.ads:11:30: info: index check proved
-binary_search.ads:12:15: postcondition not proved, requires not (a (index) = i)
+binary_search.ads:12:15: postcondition not proved, requires not (A (Index) = I)
 binary_search.ads:12:48: info: index check proved
 binary_search.ads:13:49: info: index check proved

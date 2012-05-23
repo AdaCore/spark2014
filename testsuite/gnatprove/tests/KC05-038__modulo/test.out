@@ -2,7 +2,7 @@
 p.adb:10:22: info: range check proved
 p.adb:11:22: info: range check proved
 p.adb:12:27: info: range check proved
-p.adb:6:24: range check not proved, requires in_range x
-p.adb:7:24: range check not proved, requires in_range y
+p.adb:6:24: range check not proved, requires in_range X
+p.adb:7:24: range check not proved, requires in_range Y
 p.adb:8:26: info: range check proved
 p.adb:9:25: info: range check proved

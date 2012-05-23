@@ -1,13 +1,13 @@
 
 p.adb:16:14: range check not proved, requires (1 >= attr__ATTRIBUTE_FIRST)
-p.adb:16:34: overflow check not proved, requires in_range (y - x)
-p.adb:17:28: overflow check not proved, requires in_range (tmp_s + 1)
+p.adb:16:34: overflow check not proved, requires in_range (Y - X)
+p.adb:17:28: overflow check not proved, requires in_range (Tmp_S + 1)
 p.adb:21:16: info: range check proved
-p.adb:23:11: range check not proved, requires ((y - x) <= attr__ATTRIBUTE_LAST)
+p.adb:23:11: range check not proved, requires ((Y - X) <= attr__ATTRIBUTE_LAST)
 p.adb:23:37: info: overflow check proved
-p.adb:24:25: overflow check not proved, requires in_range (tmp_s + 1)
-p.adb:24:25: range check not proved, requires in_range (tmp_s + 1)
-p.adb:33:11: range check not proved, requires ((y - x) <= attr__ATTRIBUTE_LAST)
-p.adb:33:37: overflow check not proved, requires in_range (y - x)
-p.adb:34:25: overflow check not proved, requires in_range (tmp_s + 1)
+p.adb:24:25: overflow check not proved, requires in_range (Tmp_S + 1)
+p.adb:24:25: range check not proved, requires in_range (Tmp_S + 1)
+p.adb:33:11: range check not proved, requires ((Y - X) <= attr__ATTRIBUTE_LAST)
+p.adb:33:37: overflow check not proved, requires in_range (Y - X)
+p.adb:34:25: overflow check not proved, requires in_range (Tmp_S + 1)
 p.adb:8:15: info: range check proved

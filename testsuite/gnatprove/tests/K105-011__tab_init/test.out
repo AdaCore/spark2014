@@ -8,4 +8,4 @@ tab_init.adb:7:53: info: overflow check proved
 tab_init.adb:8:32: info: index check proved
 tab_init.adb:8:40: info: overflow check proved
 tab_init.adb:9:11: info: index check proved
-tab_init.adb:9:20: overflow check not proved, requires in_range (a * i)
+tab_init.adb:9:20: overflow check not proved, requires in_range (A * I)

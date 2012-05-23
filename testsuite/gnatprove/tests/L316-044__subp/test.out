@@ -1,35 +1,35 @@
 
+                Links4 (Account) with
                 end)))
-                links4 (account) with
-                | Mk_t _ xcl04 xcl14 -> (if (links4'First <= account) and (account <= links4'Last) then forall links5: t. (if (links5 = of_array (update account links4 (Mk_t True xcl04 xcl14))) then (if in_range account then forall result4: t1. (if (result4 = account) then forall first_available1: t1. (if (first_available1 = result4) then (if true then forall result5: Boolean. (if (result5 = is_available account links5) then (if (result5 = True) then forall result6: int. (if (1 <= result6) and (result6 <= 200000) then (if not (result6 = account) then (if (links5'First <= result6) and (result6 <= links5'Last) then (links'First <= result6))))))))))))
+                | Mk_t _ xcl04 xcl14 -> (if (Links4'First <= Account) and (Account <= Links4'Last) then forall Links5: t. (if (Links5 = of_array (update Account Links4 (Mk_t True xcl04 xcl14))) then (if in_range Account then forall result4: t1. (if (result4 = Account) then forall First_Available1: t1. (if (First_Available1 = result4) then (if true then forall result5: Boolean. (if (result5 = Is_Available Account Links5) then (if (result5 = True) then forall result6: int. (if (1 <= result6) and (result6 <= 200000) then (if not (result6 = Account) then (if (Links5'First <= result6) and (result6 <= Links5'Last) then (Links'First <= result6))))))))))))
+            Links3 (Account) with
+            Links3 (Account) with
             end)))
             end)))
-            links3 (account) with
-            links3 (account) with
-            | Mk_t _ xcl03 xcl13 -> (if (links3'First <= account) and (account <= links3'Last) then forall links4: t. (if (links4 = of_array (update account links3 (Mk_t True xcl03 xcl13))) then (if in_range account then forall result2: t1. (if (result2 = account) then forall first_available1: t1. (if (first_available1 = result2) then (is_available account links4 = True))))))
-            | Mk_t xcl03 xcl13 _ -> (if (links3'First <= account) and (account <= links3'Last) then forall links4: t. (if (links4 = of_array (update account links3 (Mk_t xcl03 xcl13 first_available))) then (if (links4'First <= account) and (account <= links4'Last) then match 
+            | Mk_t _ xcl03 xcl13 -> (if (Links3'First <= Account) and (Account <= Links3'Last) then forall Links4: t. (if (Links4 = of_array (update Account Links3 (Mk_t True xcl03 xcl13))) then (if in_range Account then forall result2: t1. (if (result2 = Account) then forall First_Available1: t1. (if (First_Available1 = result2) then (Is_Available Account Links4 = True))))))
+            | Mk_t xcl03 xcl13 _ -> (if (Links3'First <= Account) and (Account <= Links3'Last) then forall Links4: t. (if (Links4 = of_array (update Account Links3 (Mk_t xcl03 xcl13 First_Available))) then (if (Links4'First <= Account) and (Account <= Links4'Last) then match 
+        Links1 (Account) in (if (Links1'First <= rec__next result3) and (rec__next result3 <= Links1'Last) then forall Links2: t. (if (Links2 = of_array (update (rec__next result3) Links1 (Mk_t xcl01 (rec__prev Links1 (Account)) xcl11))) then (if not (First_Available = No_Account_Num) then (Links2'First <= First_Available)))))
+        Links1 (Account) in (if (Links1'First <= rec__next result3) and (rec__next result3 <= Links1'Last) then forall Links2: t. (if (Links2 = of_array (update (rec__next result3) Links1 (Mk_t xcl01 (rec__prev Links1 (Account)) xcl11))) then (if not (First_Available = No_Account_Num) then (if (Links2'First <= First_Available) and (First_Available <= Links2'Last) then (if (Links2'First <= Account) and (Account <= Links2'Last) then match 
+        Links2 (Account) with
+        Links2 (Account) with
         end)))
         end))))))
-        links1 (account) in (if (links1'First <= rec__next result3) and (rec__next result3 <= links1'Last) then forall links2: t. (if (links2 = of_array (update (rec__next result3) links1 (Mk_t xcl01 (rec__prev links1 (account)) xcl11))) then (if not (first_available = no_account_num) then (if (links2'First <= first_available) and (first_available <= links2'Last) then (if (links2'First <= account) and (account <= links2'Last) then match 
-        links1 (account) in (if (links1'First <= rec__next result3) and (rec__next result3 <= links1'Last) then forall links2: t. (if (links2 = of_array (update (rec__next result3) links1 (Mk_t xcl01 (rec__prev links1 (account)) xcl11))) then (if not (first_available = no_account_num) then (links2'First <= first_available)))))
-        links2 (account) with
-        links2 (account) with
-        | Mk_t xcl02 _ xcl12 -> (if (links2'First <= account) and (account <= links2'Last) then forall links3: t. (if (links3 = of_array (update account links2 (Mk_t xcl02 (rec__prev links2 (first_available)) xcl12))) then (if (links3'First <= account) and (account <= links3'Last) then match 
-        | Mk_t xcl02 xcl12 _ -> (if (links2'First <= account) and (account <= links2'Last) then forall links3: t. (if (links3 = of_array (update account links2 (Mk_t xcl02 xcl12 first_available))) then (if (links3'First <= account) and (account <= links3'Last) then match 
+        | Mk_t xcl02 _ xcl12 -> (if (Links2'First <= Account) and (Account <= Links2'Last) then forall Links3: t. (if (Links3 = of_array (update Account Links2 (Mk_t xcl02 (rec__prev Links2 (First_Available)) xcl12))) then (if (Links3'First <= Account) and (Account <= Links3'Last) then match 
+        | Mk_t xcl02 xcl12 _ -> (if (Links2'First <= Account) and (Account <= Links2'Last) then forall Links3: t. (if (Links3 = of_array (update Account Links2 (Mk_t xcl02 xcl12 First_Available))) then (if (Links3'First <= Account) and (Account <= Links3'Last) then match 
+    Links (Account) in (if (Links'First <= rec__next result1) and (rec__next result1 <= Links'Last) then forall Links1: t. (if (Links1 = of_array (update (rec__next result1) Links (Mk_t xcl0 (rec__prev Links (Account)) xcl1))) then (if not (First_Available = No_Account_Num) then (if (Links1'First <= First_Available) and (First_Available <= Links1'Last) then (if (Links1'First <= Account) and (Account <= Links1'Last) then match 
+    Links (Account) in (if (Links'First <= rec__prev result1) and (rec__prev result1 <= Links'Last) then forall Links1: t. (if (Links1 = of_array (update (rec__prev result1) Links (Mk_t xcl0 xcl1 (rec__next Links (Account))))) then (if (Links1'First <= Account) and (Account <= Links1'Last) then (if not (rec__next Links1 (Account) = No_Account_Num) then (if (Links1'First <= Account) and (Account <= Links1'Last) then (if (Links1'First <= Account) and (Account <= Links1'Last) then let result2 = 
+    Links (Account) in (if (Links'First <= rec__prev result1) and (rec__prev result1 <= Links'Last) then forall Links1: t. (if (Links1 = of_array (update (rec__prev result1) Links (Mk_t xcl0 xcl1 (rec__next Links (Account))))) then (if (Links1'First <= Account) and (Account <= Links1'Last) then (if not (rec__next Links1 (Account) = No_Account_Num) then (if (Links1'First <= Account) and (Account <= Links1'Last) then (if (Links1'First <= Account) and (Account <= Links1'Last) then let result2 = 
+    Links1 (Account) in (if (Links1'First <= rec__next result2) and (rec__next result2 <= Links1'Last) then match 
+    Links1 (Account) in (if (Links1'First <= rec__next result2) and (rec__next result2 <= Links1'Last) then match 
+    Links1 (Account) with
+    Links1 (rec__next result2) with
+    Links1 (rec__next result2) with
     end))))))
     end))))))))
     end))))))))
-    links (account) in (if (links'First <= rec__next result1) and (rec__next result1 <= links'Last) then forall links1: t. (if (links1 = of_array (update (rec__next result1) links (Mk_t xcl0 (rec__prev links (account)) xcl1))) then (if not (first_available = no_account_num) then (if (links1'First <= first_available) and (first_available <= links1'Last) then (if (links1'First <= account) and (account <= links1'Last) then match 
-    links (account) in (if (links'First <= rec__prev result1) and (rec__prev result1 <= links'Last) then forall links1: t. (if (links1 = of_array (update (rec__prev result1) links (Mk_t xcl0 xcl1 (rec__next links (account))))) then (if (links1'First <= account) and (account <= links1'Last) then (if not (rec__next links1 (account) = no_account_num) then (if (links1'First <= account) and (account <= links1'Last) then (if (links1'First <= account) and (account <= links1'Last) then let result2 = 
-    links (account) in (if (links'First <= rec__prev result1) and (rec__prev result1 <= links'Last) then forall links1: t. (if (links1 = of_array (update (rec__prev result1) links (Mk_t xcl0 xcl1 (rec__next links (account))))) then (if (links1'First <= account) and (account <= links1'Last) then (if not (rec__next links1 (account) = no_account_num) then (if (links1'First <= account) and (account <= links1'Last) then (if (links1'First <= account) and (account <= links1'Last) then let result2 = 
-    links1 (account) in (if (links1'First <= rec__next result2) and (rec__next result2 <= links1'Last) then match 
-    links1 (account) in (if (links1'First <= rec__next result2) and (rec__next result2 <= links1'Last) then match 
-    links1 (account) with
-    links1 (rec__next result2) with
-    links1 (rec__next result2) with
-    | Mk_t xcl01 _ xcl11 -> (if (links1'First <= account) and (account <= links1'Last) then forall links2: t. (if (links2 = of_array (update account links1 (Mk_t xcl01 (rec__prev links1 (first_available)) xcl11))) then (if (links2'First <= account) and (account <= links2'Last) then match 
-    | Mk_t xcl01 _ xcl11 -> (if (links1'First <= account) and (account <= links1'Last) then let result3 = 
-    | Mk_t xcl01 _ xcl11 -> (if (links1'First <= account) and (account <= links1'Last) then let result3 = 
+    | Mk_t xcl01 _ xcl11 -> (if (Links1'First <= Account) and (Account <= Links1'Last) then forall Links2: t. (if (Links2 = of_array (update Account Links1 (Mk_t xcl01 (rec__prev Links1 (First_Available)) xcl11))) then (if (Links2'First <= Account) and (Account <= Links2'Last) then match 
+    | Mk_t xcl01 _ xcl11 -> (if (Links1'First <= Account) and (Account <= Links1'Last) then let result3 = 
+    | Mk_t xcl01 _ xcl11 -> (if (Links1'First <= Account) and (Account <= Links1'Last) then let result3 = 
 database.adb:120:13: info: index check proved
 database.adb:121:13: info: index check proved
 database.adb:121:20: info: index check proved
@@ -39,16 +39,16 @@ database.adb:124:13: info: index check proved
 database.adb:124:20: info: index check proved
 database.adb:124:50: info: index check proved
 database.adb:130:13: info: index check proved
-database.adb:130:37: index check not proved, requires match links (rec__prev result) with
+database.adb:130:37: index check not proved, requires match Links (rec__prev result) with
 database.adb:132:10: info: index check proved
 database.adb:133:10: info: index check proved
 database.adb:134:29: info: range check proved
-database.adb:52:18: postcondition not proved, requires match links (rec__next result) with
+database.adb:52:18: postcondition not proved, requires match Links (rec__next result) with
 database.adb:54:23: info: index check proved
-database.adb:54:52: index check not proved, requires match links (rec__prev result) with
+database.adb:54:52: index check not proved, requires match Links (rec__prev result) with
 end
 end
 end
-| Mk_t xcl0 _ xcl1 -> (if (links'First <= account) and (account <= links'Last) then let result1 = 
-| Mk_t xcl0 xcl1 _ -> (if (links'First <= account) and (account <= links'Last) then let result1 = 
-| Mk_t xcl0 xcl1 _ -> (if (links'First <= account) and (account <= links'Last) then let result1 = 
+| Mk_t xcl0 _ xcl1 -> (if (Links'First <= Account) and (Account <= Links'Last) then let result1 = 
+| Mk_t xcl0 xcl1 _ -> (if (Links'First <= Account) and (Account <= Links'Last) then let result1 = 
+| Mk_t xcl0 xcl1 _ -> (if (Links'First <= Account) and (Account <= Links'Last) then let result1 = 

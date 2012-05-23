@@ -8,7 +8,7 @@ aggregate.adb:6:7: info: index check proved
 aggregate.ads:10:21: info: index check proved
 aggregate.ads:10:40: info: index check proved
 aggregate.ads:10:60: info: index check proved
-aggregate.ads:10:66: postcondition not proved, requires (k (1) = 2)
+aggregate.ads:10:66: postcondition not proved, requires (K (1) = 2)
 arr_aggregate.adb:16:24: info: range check proved
 arr_aggregate.adb:22:24: info: range check proved
 arr_aggregate.adb:24:24: info: range check proved
@@ -34,7 +34,7 @@ arr_aggregate.ads:19:35: info: index check proved
 arr_aggregate.ads:19:51: info: index check proved
 arr_aggregate.ads:20:40: info: index check proved
 arr_aggregate.ads:20:58: info: index check proved
-arr_aggregate.ads:24:15: postcondition not proved, requires (a (j) (one) = one)
+arr_aggregate.ads:24:15: postcondition not proved, requires (A (J) (One) = One)
 arr_aggregate.ads:24:62: info: index check proved
 arr_aggregate.ads:24:84: info: index check proved
 arr_aggregate.ads:25:87: info: index check proved
@@ -48,7 +48,7 @@ arr_aggregate.ads:37:15: info: postcondition proved
 arr_aggregate.ads:37:45: info: range check proved
 arr_aggregate.ads:40:40: info: range check proved
 arr_aggregate.ads:41:50: info: range check proved
-arr_aggregate.ads:45:15: postcondition not proved, requires ((a = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 one 2)) (of_array (arr_aggregate__45__50 one 2))) = True)
+arr_aggregate.ads:45:15: postcondition not proved, requires ((A = arr_aggregate__45__39 (of_array (arr_aggregate__45__40 One 2)) (of_array (arr_aggregate__45__50 One 2))) = True)
 arr_aggregate.ads:45:46: info: range check proved
 arr_aggregate.ads:45:56: info: range check proved
 arr_aggregate.ads:48:41: info: range check proved

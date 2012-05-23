@@ -7,7 +7,7 @@ natural_set.adb:18:25: info: range check proved
 natural_set.adb:7:22: info: range check proved
 natural_set.ads:11:50: info: postcondition proved
 natural_set.ads:16:63: info: postcondition proved
-natural_set.ads:25:15: postcondition not proved, requires (contains (mk_t s s1) value = True)
+natural_set.ads:25:15: postcondition not proved, requires (Contains (mk_t S S1) Value = True)
 natural_set.ads:42:51: info: range check proved
 natural_set.ads:45:53: info: index check proved
 natural_set.ads:46:45: info: overflow check proved

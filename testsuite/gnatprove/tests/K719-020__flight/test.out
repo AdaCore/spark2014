@@ -1,18 +1,18 @@
 
-flight_manager.adb:16:21: overflow check not proved, requires in_range (f * distance_to_target)
+flight_manager.adb:16:21: overflow check not proved, requires in_range (F * Distance_To_Target)
 flight_manager.adb:16:43: info: division check proved
 flight_manager.adb:16:43: info: overflow check proved
-flight_manager.adb:23:20: overflow check not proved, requires in_range (-i)
+flight_manager.adb:23:20: overflow check not proved, requires in_range (-I)
 flight_manager.adb:31:28: info: range check proved
 flight_manager.adb:33:28: info: range check proved
 flight_manager.adb:37:29: info: range check proved
 flight_manager.adb:39:29: info: range check proved
-flight_manager.adb:42:56: overflow check not proved, requires in_range (position_x - target_x)
-flight_manager.adb:43:56: overflow check not proved, requires in_range (position_y - target_y)
-flight_manager.ads:13:27: overflow check not proved, requires in_range (position_x + set_engine_speed'Result)
-flight_manager.ads:13:62: overflow check not proved, requires in_range ((position_x + set_engine_speed'Result) - target_x)
+flight_manager.adb:42:56: overflow check not proved, requires in_range (Position_X - Target_X)
+flight_manager.adb:43:56: overflow check not proved, requires in_range (Position_Y - Target_Y)
+flight_manager.ads:13:27: overflow check not proved, requires in_range (Position_X + Set_Engine_Speed'Result)
+flight_manager.ads:13:62: overflow check not proved, requires in_range ((Position_X + Set_Engine_Speed'Result) - Target_X)
 flight_manager.ads:14:18: info: overflow check proved
-flight_manager.ads:15:23: overflow check not proved, requires in_range (position_y + set_engine_speed'Result)
-flight_manager.ads:15:58: overflow check not proved, requires in_range ((position_y + set_engine_speed'Result) - target_y)
-flight_manager.ads:15:6: postcondition not proved, requires (((position_x + set_engine_speed'Result) - target_x) <  (position_x + set_engine_speed'Result))
+flight_manager.ads:15:23: overflow check not proved, requires in_range (Position_Y + Set_Engine_Speed'Result)
+flight_manager.ads:15:58: overflow check not proved, requires in_range ((Position_Y + Set_Engine_Speed'Result) - Target_Y)
+flight_manager.ads:15:6: postcondition not proved, requires (((Position_X + Set_Engine_Speed'Result) - Target_X) <  (Position_X + Set_Engine_Speed'Result))
 flight_manager.ads:16:18: info: overflow check proved

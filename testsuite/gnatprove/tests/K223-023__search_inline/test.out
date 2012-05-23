@@ -9,5 +9,5 @@ search.adb:9:13: info: index check proved
 search.ads:10:54: info: overflow check proved
 search.ads:10:61: info: index check proved
 search.ads:7:48: info: index check proved
-search.ads:9:13: postcondition not proved, requires not (t (pos) = v)
-search.ads:9:16: index check not proved, requires (t'First <= search'Result)
+search.ads:9:13: postcondition not proved, requires not (T (Pos) = V)
+search.ads:9:16: index check not proved, requires (T'First <= Search'Result)

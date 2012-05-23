@@ -1,2 +1,2 @@
 
-prepost.ads:4:23: postcondition not proved, requires (x <  0)
+prepost.ads:4:23: postcondition not proved, requires (X <  0)

@@ -3,4 +3,4 @@ forall.adb:6:14: info: index check proved
 forall.ads:5:45: division check not proved, requires not (result = 0)
 forall.ads:5:45: info: overflow check proved
 forall.ads:5:46: info: index check proved
-forall.ads:6:36: postcondition not proved, requires (get_one'Result >  1)
+forall.ads:6:36: postcondition not proved, requires (Get_One'Result >  1)
