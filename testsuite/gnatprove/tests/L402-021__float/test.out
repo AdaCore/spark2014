@@ -1,6 +1,6 @@
 
 p.adb:10:20: overflow check not proved, requires in_range (F + 10.e-1)
-p.adb:10:4: assertion not proved, requires ((F + 10.e-1) >  X)
+p.adb:10:4: info: assertion proved
 p.adb:11:4: assertion not proved, requires (R = C) or (R = F)
 p.adb:12:4: assertion not proved, requires (T = C) or (T = F)
 p.adb:2:22: range check not proved, requires in_range (real_of_int (ceil X))

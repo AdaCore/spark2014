@@ -77,7 +77,7 @@ evoting.ads:108:20: info: index check proved
 evoting.ads:108:39: info: index check proved
 evoting.ads:109:13: postcondition not proved, requires (counters (winner) >  counters (i))
 evoting.ads:110:45: info: overflow check proved
-evoting.ads:111:19: index check not proved, requires (winners'First <= result)
+evoting.ads:111:19: info: index check proved
 evoting.ads:54:14: postcondition not proved, requires (candidates (i) (j) = 32)
 evoting.ads:56:29: info: index check proved
 evoting.ads:88:53: info: index check proved
