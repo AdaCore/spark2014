@@ -681,11 +681,11 @@ package body Xtree_Sinfo is
       ------------
 
       New_Field (W_Type,
-                 "External", "Boolean", "False");
-      New_Field (W_Type,
                  "Args", "W_Identifier", Id_Set);
       New_Field (W_Type,
                  "Name", "W_Identifier", Id_One);
+      New_Field (W_Type,
+                 "Labels", "W_Identifier", Id_Set);
       New_Field (W_Type,
                  "Definition", "W_Type_Definition", Id_Lone);
       Set_Domain (W_Type, EW_Term);

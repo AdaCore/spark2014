@@ -1567,20 +1567,18 @@ package body Why.Atree.Sprint is
    is
       use Node_Lists;
 
-      External   : constant Boolean := Get_External (Node);
       Args       : constant List := Get_List (+Get_Args (Node));
       Nb_Args    : constant Count_Type := Length (Args);
       Position   : Cursor := First (Args);
       Name       : constant W_Identifier_Id := Get_Name (Node);
       Definition : constant W_Type_Definition_Id := Get_Definition (Node);
    begin
-      if External then
-         P (O, "external ");
-      end if;
-
       P (O, "type ");
 
       Traverse (State, +Name);
+
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
 
       if Nb_Args > 1 then
          P (O, " (");
