@@ -51,12 +51,6 @@ package body Why.Inter is
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
-                              T_Name   : String;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
-
    package Standard_Imports is
 
       --  This package serves to trigger the necessary imports on the
@@ -553,7 +547,6 @@ package body Why.Inter is
                                    "RealInfix",
                                    EW_Import,
                                    EW_Theory);
-
                end if;
             end if;
          end loop;

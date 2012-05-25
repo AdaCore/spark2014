@@ -25,18 +25,17 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Sem_Eval;           use Sem_Eval;
+with Sinfo;              use Sinfo;
+with Stand;              use Stand;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Types;     use Gnat2Why.Types;
 --  ??? because of Get_Range, which should be moved
 
-with Sem_Eval;           use Sem_Eval;
-with Sinfo;              use Sinfo;
-with Stand;              use Stand;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -45,11 +44,11 @@ with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Arrays is
 
-   procedure Define_In_Range_Axiom
-     (Theory       : W_Theory_Declaration_Id;
-      Index_Entity : Entity_Id;
-      Dimension    : Pos;
-      Argument     : Uint);
+   procedure Declare_Constrained (Theory : W_Theory_Declaration_Id;
+                                  Und_Ent : Entity_Id);
+
+   procedure Declare_Unconstrained (Theory : W_Theory_Declaration_Id;
+                                    Und_Ent : Entity_Id);
 
    -----------------------
    -- Declare_Ada_Array --
@@ -59,242 +58,484 @@ package body Why.Gen.Arrays is
      (Theory   : W_Theory_Declaration_Id;
       Und_Ent  : Entity_Id)
    is
-      Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Ar        : constant W_Identifier_Id := New_Identifier (Name => "a");
-      Ar_Binder : constant Binder_Type :=
-                    (B_Name => Ar,
-                     B_Type => New_Abstract_Type (Name => To_Ident (WNE_Type)),
-                     others => <>);
-      Index     : Node_Id := First_Index (Und_Ent);
-      Count     : Positive := 1;
    begin
-      Declare_Ada_Unconstrained_Array (Theory, Und_Ent);
-
       if Is_Constrained (Und_Ent) then
-         --  State axioms about fixed 'First, 'Last and 'Length
-
-         while Present (Index) loop
-            declare
-               Rng  : constant Node_Id := Get_Range (Index);
-               Low  : constant Node_Id := Low_Bound (Rng);
-               High : constant Node_Id := High_Bound (Rng);
-            begin
-               if Is_Static_Expression (Low) then
-                  Emit
-                    (Theory,
-                     New_Guarded_Axiom
-                       (Name => Append_Num (WNE_First_Static, Count),
-                        Binders => (1 => Ar_Binder),
-                        Def =>
-                          New_Relation
-                            (Op      => EW_Eq,
-                             Op_Type => EW_Int,
-                             Left    =>
-                               +New_Array_Attr
-                                 (Attribute_First,
-                                  Empty,
-                                  +Ar,
-                                  EW_Term,
-                                  Dimension,
-                                  UI_From_Int (Int (Count))),
-                             Right   => New_Integer_Constant
-                                          (Value => Expr_Value (Low)))));
-               end if;
-
-               if Is_Static_Expression (High) then
-                  Emit
-                    (Theory,
-                     New_Guarded_Axiom
-                       (Name => Append_Num (WNE_Last_Static, Count),
-                        Binders => (1 => Ar_Binder),
-                        Def =>
-                          New_Relation
-                            (Op      => EW_Eq,
-                             Op_Type => EW_Int,
-                             Left    =>
-                               +New_Array_Attr
-                                 (Attribute_Last,
-                                  Empty,
-                                  +Ar,
-                                  EW_Term,
-                                  Dimension,
-                                  UI_From_Int (Int (Count))),
-                             Right   => New_Integer_Constant
-                                          (Value => Expr_Value (High)))));
-               end if;
-
-               Next_Index (Index);
-               Count := Count + 1;
-            end;
-         end loop;
+         Declare_Constrained (Theory, Und_Ent);
+      else
+         Declare_Unconstrained (Theory, Und_Ent);
       end if;
    end Declare_Ada_Array;
 
-   -------------------------------------
-   -- Declare_Ada_Unconstrained_Array --
-   -------------------------------------
+   -------------------------
+   -- Declare_Constrained --
+   -------------------------
 
-   procedure Declare_Ada_Unconstrained_Array
-     (Theory : W_Theory_Declaration_Id;
-      Entity : Entity_Id)
+   procedure Declare_Constrained (Theory : W_Theory_Declaration_Id;
+                                  Und_Ent : Entity_Id)
    is
-      Dimension   : constant Pos := Number_Dimensions (Entity);
+      Dimension : constant Pos := Number_Dimensions (Und_Ent);
       Type_Id     : constant W_Identifier_Id := To_Ident (WNE_Type);
-      BT_Id       : constant W_Identifier_Id :=
-        Prefix (To_String (Ada_Array_Name (Dimension)), WNE_Type);
+      Array_Base  : constant String := To_String (Ada_Array_Name (Dimension));
+      BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
       Comp_Type   : constant W_Primitive_Type_Id :=
-        Why_Logic_Type_Of_Ada_Type (Component_Type (Entity));
+        Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
       Ar_Type     : constant W_Primitive_Type_Id :=
                      New_Generic_Actual_Type_Chain
                        (Type_Chain => (1 => Comp_Type),
                         Name       => BT_Id);
       Name_Type   : constant W_Primitive_Type_Id :=
-                     New_Abstract_Type (Name => Type_Id);
-      Ar_Binder_2 : constant Binder_Type :=
-                      (B_Name => New_Identifier (Name => "a"),
+        New_Abstract_Type (Name => Type_Id);
+      A_Ident     : constant W_Identifier_Id := New_Identifier (Name => "a");
+      Ar_Binder : constant Binder_Type :=
+                      (B_Name => A_Ident,
                        B_Type => Ar_Type,
                        others => <>);
+      Int_Type    : constant W_Primitive_Type_Id :=
+        New_Base_Type (Base_Type => EW_Int);
       Conv_From   : constant W_Identifier_Id := To_Ident (WNE_Of_Array);
       Conv_To     : constant W_Identifier_Id := To_Ident (WNE_To_Array);
+      Index       : Entity_Id := First_Index (Und_Ent);
+
+      procedure Declare_Attribute (Kind : Why_Name_Enum;
+                                   Def  : Node_Id;
+                                   Dim_Count : Positive);
+
+      -----------------------
+      -- Declare_Attribute --
+      -----------------------
+
+      procedure Declare_Attribute (Kind : Why_Name_Enum;
+                                   Def  : Node_Id;
+                                   Dim_Count : Positive)
+      is
+      begin
+         if Present (Def) and then Is_Static_Expression (Def) then
+            Emit (Theory,
+                  New_Function_Def (Domain => EW_Term,
+                                    Name   => Append_Num (Kind, Dim_Count),
+                                    Binders => (1 .. 0 => <>),
+                                    Return_Type => Int_Type,
+                                    Def => New_Integer_Constant
+                                      (Value => Expr_Value (Def))));
+         else
+            Emit (Theory,
+                  New_Function_Decl (Domain => EW_Term,
+                                     Name   => Append_Num (Kind, Dim_Count),
+                                     Binders => (1 .. 0 => <>),
+                                     Return_Type => Int_Type));
+         end if;
+      end Declare_Attribute;
+
+      Rec_Binders : Binder_Array (1 .. Integer (Dimension) + 1);
    begin
-      --  generate the theory:
-      --  type t
-      --  logic to_ : t -> comp ada_array
-      --  logic from_ : comp ada_array -> t
-      --  axiom 1 : forall x, to_ (from_ (x)) = x
-      --  axiom 2 : forall x, y, to_ (x) = to_ (y) -> x = y
+      Rec_Binders (1) :=
+        (B_Name => To_Ident (WNE_Array_Elts),
+         B_Type =>
+           New_Generic_Actual_Type_Chain
+             (Type_Chain => (1 => Comp_Type),
+              Name => New_Identifier (Name => Array_Base & ".map")),
+        others => <>);
+      for Count in 1 .. Integer (Dimension) loop
+         Rec_Binders (Count + 1) :=
+           (B_Name => Append_Num (WNE_Array_Offset, Count),
+            B_Type => Int_Type,
+            others => <>);
+      end loop;
 
-      --  For standard strings, t is an alias of the predefined __string
-
-      if Entity = Standard_String then
-         Emit (Theory,
-               New_Type (To_Ident (WNE_Type),
-                 Alias => New_Abstract_Type (Name => To_Ident (WNE_String))));
+      Emit
+        (Theory,
+         New_Record_Definition
+           (Name    => To_Ident (WNE_Type),
+            Binders => Rec_Binders));
+      if Ekind (Und_Ent) in String_Kind then
+         Declare_Attribute (WNE_Attr_First,
+                            String_Literal_Low_Bound (Und_Ent),
+                            1);
+         Declare_Attribute (WNE_Attr_Last,
+                            Empty,
+                            1);
       else
-         Emit (Theory, New_Type (To_String (WNE_Type)));
-      end if;
-
-      Emit
-        (Theory,
-         New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => Conv_To,
-            Labels      => (1 => To_Ident (WNE_Conversion_Label)),
-            Binders     => New_Binders ((1 => Name_Type)),
-            Return_Type => Ar_Type));
-      Emit
-        (Theory,
-         New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => Conv_From,
-            Binders     => (1 => Ar_Binder_2),
-            Return_Type => Name_Type));
-      Define_Coerce_Axiom
-         (Theory    => Theory,
-          Base_Type => Ar_Type,
-          From      => Conv_From,
-          To        => Conv_To);
-      Define_Unicity_Axiom
-        (Theory     => Theory,
-         Axiom_Name => To_Ident (WNE_Unicity),
-         Var_Type   => Ar_Type,
-         Conversion => To_Ident (WNE_Of_Array));
-
-      if not (Is_Constrained (Entity)) then
          declare
-            Arg   : Uint := Uint_1;
-            Index : Node_Id := First_Index (Entity);
+            Count : Positive := 1;
          begin
             while Present (Index) loop
                declare
-                  Index_Entity : constant Entity_Id := Etype (Index);
+                  Rng   : constant Node_Id := Get_Range (Index);
                begin
-                  if Index_Entity /= Standard_Boolean then
-                     Define_In_Range_Axiom
-                       (Theory       => Theory,
-                        Index_Entity => Index_Entity,
-                        Dimension    => Dimension,
-                        Argument     => Arg);
-                  end if;
+                  Declare_Attribute (WNE_Attr_First,
+                                     Low_Bound (Rng),
+                                     Count);
+                  Declare_Attribute (WNE_Attr_Last,
+                                     High_Bound (Rng),
+                                     Count);
+                  Count := Count + 1;
+                  Next_Index (Index);
                end;
-
-               Arg := Arg + Uint_1;
-               Next_Index (Index);
             end loop;
          end;
       end if;
-   end Declare_Ada_Unconstrained_Array;
+      declare
+         --  in the "to" conversion, we need a field for "elts", and for
+         --  each dimension, fields for first, last, offset
+         To_Aggr : W_Field_Association_Array
+           (1 .. Integer (Dimension) * 3 + 1);
+         --  in the "from" conversion, we need a field for "elts", and for
+         --  each dimension, a field for "offset"
+         From_Aggr : W_Field_Association_Array
+           (1 .. Integer (Dimension) + 1);
+      begin
+         To_Aggr (1) :=
+           New_Field_Association
+             (Field => New_Identifier (Name => Array_Base & ".elts"),
+              Domain => EW_Term,
+              Value =>
+                New_Record_Access
+                  (Name => +A_Ident,
+                   Field => To_Ident (WNE_Array_Elts)));
+         From_Aggr (1) :=
+           New_Field_Association
+             (Field => To_Ident (WNE_Array_Elts),
+              Domain => EW_Term,
+              Value => +New_Identifier
+                (Name => "a." & Array_Base & ".elts"));
+         for Count in 1 .. Integer (Dimension) loop
+            To_Aggr (3 * Count - 1) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".first", Count),
+                 Domain => EW_Term,
+                 Value => +Append_Num (WNE_Attr_First, Count));
+            To_Aggr (3 * Count) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".last", Count),
+                 Domain => EW_Term,
+                 Value => +Append_Num (WNE_Attr_Last, Count));
+            To_Aggr (3 * Count + 1) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".offset", Count),
+                 Domain => EW_Term,
+                 Value =>
+                   New_Record_Access
+                     (Name => +A_Ident,
+                      Field => +Append_Num (WNE_Array_Offset, Count)));
+            From_Aggr (Count + 1) :=
+              New_Field_Association
+                (Field => Append_Num (WNE_Array_Offset, Count),
+                 Domain => EW_Term,
+                 Value =>
+                 +Append_Num ("a." & Array_Base & ".offset", Count));
+         end loop;
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => Conv_To,
+               Labels      => (1 => To_Ident (WNE_Conversion_Label)),
+               Binders     =>
+                 (1 => (B_Name => A_Ident,
+                        B_Type => Name_Type,
+                        others => <>)),
+               Def         =>
+                 New_Record_Aggregate (Associations => To_Aggr),
+               Return_Type => Ar_Type));
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => Conv_From,
+               Binders     => (1 => Ar_Binder),
+               Return_Type => Name_Type,
+               Def         =>
+                 New_Record_Aggregate (Associations => From_Aggr)));
+      end;
+   end Declare_Constrained;
 
    ---------------------------
-   -- Define_In_Range_Axiom --
+   -- Declare_Unconstrained --
    ---------------------------
 
-   procedure Define_In_Range_Axiom
-     (Theory       : W_Theory_Declaration_Id;
-      Index_Entity : Entity_Id;
-      Dimension    : Pos;
-      Argument     : Uint)
+   procedure Declare_Unconstrained (Theory  : W_Theory_Declaration_Id;
+                                    Und_Ent : Entity_Id)
    is
-      Index_Name     : constant String := Full_Name (Index_Entity);
-      Var            : constant W_Identifier_Id :=
-                         New_Identifier (Name => "x");
-      First_Term     : constant W_Term_Id :=
-          +New_Array_Attr
-             (Attribute_First,
-              Empty,
-              +Var,
-              EW_Term,
-              Dimension,
-              Argument);
-      Last_Term      : constant W_Term_Id :=
-          +New_Array_Attr
-             (Attribute_Last,
-              Empty,
-              +Var,
-              EW_Term,
-              Dimension,
-              Argument);
-      Precond        : constant W_Pred_Id :=
-                         New_Relation
-                           (Op_Type => EW_Bool,
-                            Left    => +First_Term,
-                            Right   => +Last_Term,
-                            Op      => EW_Le);
-      First_In_Range : constant W_Pred_Id :=
-        New_Call
-          (Name => Prefix (Ada_Node => Index_Entity,
-                           S        => Index_Name,
-                           W        => WNE_Range_Pred),
-           Args => (1 => +First_Term));
-      Last_In_Range  : constant W_Pred_Id :=
-        New_Call
-          (Name => Prefix (Ada_Node => Index_Entity,
-                           S        => Index_Name,
-                           W        => WNE_Range_Pred),
-           Args => (1 => +Last_Term));
-      Conclusion     : constant W_Pred_Id :=
-                         New_Connection
-                           (Op    => EW_And,
-                            Left  => +First_In_Range,
-                            Right => +Last_In_Range);
-      Formula        : constant W_Pred_Id :=
-                         New_Connection
-                           (Op    => EW_Imply,
-                            Left  => +Precond,
-                            Right => +Conclusion);
-      Quantif        : constant W_Pred_Id :=
-                         New_Universal_Quantif
-                           (Var_Type  =>
-                              New_Abstract_Type (Name => To_Ident (WNE_Type)),
-                            Variables => (1 => Var),
-                            Pred => Formula);
+      Dimension : constant Pos := Number_Dimensions (Und_Ent);
+      Array_Base  : constant String := To_String (Ada_Array_Name (Dimension));
+      BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
+      Comp_Type   : constant W_Primitive_Type_Id :=
+        Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
+      Type_Id     : constant W_Identifier_Id := To_Ident (WNE_Type);
+      Name_Type   : constant W_Primitive_Type_Id :=
+                     New_Abstract_Type (Name => Type_Id);
+      Ar_Type     : constant W_Primitive_Type_Id :=
+                     New_Generic_Actual_Type_Chain
+                       (Type_Chain => (1 => Comp_Type),
+                        Name       => BT_Id);
+      Conv_From   : constant W_Identifier_Id := To_Ident (WNE_Of_Array);
+      Conv_To     : constant W_Identifier_Id := To_Ident (WNE_To_Array);
+      A_Ident     : constant W_Identifier_Id := New_Identifier (Name => "a");
+      Int_Type    : constant W_Primitive_Type_Id :=
+        New_Base_Type (Base_Type => EW_Int);
+      Ar_Binder   : constant Binder_Type :=
+                      (B_Name => New_Identifier (Name => "a"),
+                       B_Type => Ar_Type,
+                       others => <>);
+
+      procedure Declare_Range_Type (Def : Node_Id;
+                                    Count : Positive);
+
+      procedure Declare_Range_Type (Def : Node_Id;
+                                    Count : Positive) is
+         Rng : constant Node_Id := Get_Range (Def);
+         Rng_Type_Id : constant W_Identifier_Id :=
+           Append_Num ("range_type", Count);
+         Rng_Type : constant W_Primitive_Type_Id :=
+           New_Abstract_Type (Name => Rng_Type_Id);
+         First_Term : constant W_Term_Id :=
+           New_Call
+             (Name => Append_Num (WNE_Array_First_Field, Count),
+              Args => (1 => +A_Ident));
+         Last_Term : constant W_Term_Id :=
+           New_Call
+             (Name => Append_Num (WNE_Array_Last_Field, Count),
+              Args => (1 => +A_Ident));
+      begin
+         if Und_Ent /= Standard_String then
+            Emit (Theory, New_Type (Name => Rng_Type_Id));
+         end if;
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Append_Num (WNE_Array_First_Field, Count),
+                  Binders     =>
+                    (1 => (B_Name => A_Ident,
+                           B_Type => Rng_Type,
+                           others => <>)),
+                  Return_Type => Int_Type));
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Append_Num (WNE_Array_Last_Field, Count),
+                  Binders     =>
+                    (1 => (B_Name => A_Ident,
+                           B_Type => Rng_Type,
+                           others => <>)),
+                  Return_Type => Int_Type));
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain => EW_Term,
+                  Name   => Append_Num ("mk", Count),
+                  Binders =>
+                    (1 => (B_Name => To_Ident (WNE_Array_First_Field),
+                           B_Type => Int_Type,
+                           others => <>),
+                     2 => (B_Name => To_Ident (WNE_Array_Last_Field),
+                           B_Type => Int_Type,
+                           others => <>)),
+                  Return_Type => Rng_Type));
+         if Is_Static_Range (Rng) then
+            declare
+               Low_Expr : constant W_Term_Id :=
+                 New_Integer_Constant
+                   (Value => Expr_Value (Low_Bound (Rng)));
+               High_Expr : constant W_Term_Id :=
+                 New_Integer_Constant
+                   (Value => Expr_Value (High_Bound (Rng)));
+            begin
+               Emit
+                 (Theory,
+                  New_Axiom
+                    (Name => Append_Num (WNE_Range_Axiom, Count),
+                     Def  =>
+                       New_Universal_Quantif
+                         (Var_Type  => Rng_Type,
+                          Variables => (1 => A_Ident),
+                          Pred      =>
+                            New_Connection
+                              (Op   => EW_Imply,
+                               Left =>
+                                 New_Relation
+                                   (Domain  => EW_Pred,
+                                    Op_Type => EW_Int,
+                                    Op      => EW_Le,
+                                    Left    => +First_Term,
+                                    Right   => +Last_Term),
+                               Right =>
+                                 New_And_Expr
+                                   (Domain => EW_Pred,
+                                    Left   => New_Range_Expr
+                                      (Domain    => EW_Pred,
+                                       Base_Type => EW_Int_Type,
+                                       Low       => +Low_Expr,
+                                       High      => +High_Expr,
+                                       Expr      => +First_Term),
+                                    Right  => New_Range_Expr
+                                      (Domain    => EW_Pred,
+                                       Base_Type => EW_Int_Type,
+                                       Low       => +Low_Expr,
+                                       High      => +High_Expr,
+                                       Expr      => +Last_Term))))));
+            end;
+         end if;
+      end Declare_Range_Type;
+
    begin
-      Emit
-        (Theory,
-         New_Axiom
-           (Name => Append_Num (WNE_Range_Axiom, Argument),
-            Def  => Quantif));
-   end Define_In_Range_Axiom;
+
+      --  The type of standard strings has already been defined in the
+      --  gnatprove standard files, we just make another alias here to __string
+
+      declare
+         Index : Node_Id := First_Index (Und_Ent);
+         Count : Positive := 1;
+      begin
+         while Present (Index) loop
+            Declare_Range_Type (Index, Count);
+            Next_Index (Index);
+            Count := Count + 1;
+         end loop;
+      end;
+      if Und_Ent = Standard_String then
+         Emit (Theory,
+               New_Type (To_Ident (WNE_Type),
+             Alias => New_Abstract_Type (Name => To_Ident (WNE_String))));
+         Add_With_Clause (Theory,
+                          "_gnatprove_standard_th",
+                          "Main",
+                          EW_Import,
+                          EW_Theory);
+      else
+         declare
+            Rec_Binders : Binder_Array (1 .. 2 * Integer (Dimension) + 1);
+         begin
+            Rec_Binders (1) :=
+              (B_Name => To_Ident (WNE_Array_Elts),
+               B_Type =>
+                 New_Generic_Actual_Type_Chain
+                   (Type_Chain => (1 => Comp_Type),
+                    Name => New_Identifier (Name => Array_Base & ".map")),
+               others => <>);
+            for Count in 1 .. Integer (Dimension) loop
+               Rec_Binders (2 * Count) :=
+                 (B_Name => Append_Num (WNE_Array_Offset, Count),
+                  B_Type => Int_Type,
+                  others => <>);
+               Rec_Binders (2 * Count + 1) :=
+                 (B_Name => Append_Num (WNE_Range_Field, Count),
+                  B_Type =>
+                    New_Abstract_Type (Name =>
+                                         Append_Num (WNE_Range_Type, Count)),
+                  others => <>);
+            end loop;
+            Emit
+              (Theory,
+               New_Record_Definition
+                 (Name    => To_Ident (WNE_Type),
+                  Binders => Rec_Binders));
+         end;
+      end if;
+
+      declare
+         --  in the "to" conversion, we need a field for "elts", and for
+         --  each dimension, fields for first, last, offset
+         To_Aggr : W_Field_Association_Array
+           (1 .. Integer (Dimension) * 3 + 1);
+         --  in the "from" conversion, we need a field for "elts", and for
+         --  each dimension, a field for "offset"
+         From_Aggr : W_Field_Association_Array
+           (1 .. 2 * Integer (Dimension) + 1);
+      begin
+         To_Aggr (1) :=
+           New_Field_Association
+             (Field => New_Identifier (Name => Array_Base & ".elts"),
+              Domain => EW_Term,
+              Value =>
+                New_Record_Access
+                  (Name  => +A_Ident,
+                   Field => To_Ident (WNE_Array_Elts)));
+         From_Aggr (1) :=
+           New_Field_Association
+             (Field => To_Ident (WNE_Array_Elts),
+              Domain => EW_Term,
+              Value => +New_Identifier
+                (Name => "a." & Array_Base & ".elts"));
+         for Count in 1 .. Integer (Dimension) loop
+            To_Aggr (3 * Count - 1) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".first", Count),
+                 Domain => EW_Term,
+                 Value =>
+                   New_Call (Domain => EW_Term,
+                             Name   =>
+                               Append_Num (WNE_Array_First_Field, Count),
+                             Args   =>
+                               (1 =>
+                                  New_Record_Access
+                                    (Name  => +A_Ident,
+                                     Field =>
+                                       Append_Num (WNE_Range_Field, Count)))));
+            To_Aggr (3 * Count) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".last", Count),
+                 Domain => EW_Term,
+                 Value =>
+                   New_Call (Domain => EW_Term,
+                             Name   =>
+                               Append_Num (WNE_Array_Last_Field, Count),
+                             Args   =>
+                               (1 =>
+                                  New_Record_Access
+                                    (Name  => +A_Ident,
+                                     Field =>
+                                       Append_Num (WNE_Range_Field, Count)))));
+            To_Aggr (3 * Count + 1) :=
+              New_Field_Association
+                (Field => Append_Num (Array_Base & ".offset", Count),
+                 Domain => EW_Term,
+                 Value =>
+                   New_Record_Access
+                     (Name  => +A_Ident,
+                      Field => +Append_Num (WNE_Array_Offset, Count)));
+            From_Aggr (2 * Count) :=
+              New_Field_Association
+                (Field => Append_Num (WNE_Array_Offset, Count),
+                 Domain => EW_Term,
+                 Value =>
+                 +Append_Num ("a." & Array_Base & ".offset", Count));
+            From_Aggr (2 * Count + 1) :=
+              New_Field_Association
+                (Field => Append_Num (WNE_Range_Field, Count),
+                 Domain => EW_Term,
+                 Value =>
+                   New_Call
+                     (Domain => EW_Term,
+                      Name   => Append_Num ("mk", Count),
+                      Args   =>
+                        (1 =>
+                         +Append_Num ("a." & Array_Base & ".first", Count),
+                         2 =>
+                         +Append_Num ("a." & Array_Base & ".last", Count))));
+         end loop;
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => Conv_To,
+               Labels      => (1 => To_Ident (WNE_Conversion_Label)),
+               Binders     =>
+                 (1 => (B_Name => A_Ident,
+                        B_Type => Name_Type,
+                        others => <>)),
+               Def         =>
+                 New_Record_Aggregate (Associations => To_Aggr),
+               Return_Type => Ar_Type));
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => Conv_From,
+               Binders     => (1 => Ar_Binder),
+               Return_Type => Name_Type,
+               Def         =>
+                 New_Record_Aggregate (Associations => From_Aggr)));
+      end;
+   end Declare_Unconstrained;
 
    ----------------------
    -- New_Array_Access --

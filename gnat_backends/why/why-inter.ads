@@ -109,6 +109,12 @@ package Why.Inter is
      with Pre => (P.Cur_Theory = Why_Empty);
    --  Open a new theory in the file.
 
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+                              File     : String;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
+
    procedure Add_With_Clause (P        : in out Why_File;
                               File     : String;
                               T_Name   : String;

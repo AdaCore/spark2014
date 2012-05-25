@@ -91,7 +91,7 @@ package body Gnat2Why.Types is
            New_Integer_Constant (Value =>
               Expr_Value (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Abstract_Signed_Int (Theory, First, Last, Is_Base);
+      Declare_Ada_Abstract_Signed_Int (Theory, Rng, First, Last, Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------

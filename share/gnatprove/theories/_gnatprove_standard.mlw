@@ -1,18 +1,10 @@
 module Main
   (* the module of references is the only compulsory module *)
   use export module ref.Ref
+  use export "_gnatprove_standard_th".Main
 
   (* exception used to simulate return statements *)
   exception Gnatprove_Exception___result_exc
-
-  (* ignore blocks of code *)
-  function ___ignore 'a : ()
-
-  (* type of standard strings *)
-  type __string
-
-  (* special private type *)
-  type __private
 
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
@@ -190,6 +182,5 @@ module Array__2
       attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
     t 'a
     { result = update i j a v }
-
 
 end

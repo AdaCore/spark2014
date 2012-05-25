@@ -47,13 +47,6 @@ package Why.Gen.Arrays is
    --  Und_Ent is the entity which contains the relevant type information (the
    --  underlying type)
 
-   procedure Declare_Ada_Unconstrained_Array
-     (Theory : W_Theory_Declaration_Id;
-      Entity : Entity_Id);
-   --  Introduce all the necessary declarations for an Ada array declaration
-   --  of the form
-   --  type A is Array (basetype range <>) of Component
-
    function New_Array_Access
      (Ada_Node  : Node_Id;
       Ty_Entity : Entity_Id;

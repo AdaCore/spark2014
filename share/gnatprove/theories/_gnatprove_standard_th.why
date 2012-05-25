@@ -1,3 +1,40 @@
+theory Array__1__Type
+
+  (* We need to define these types in a special theory, so that the string
+  type can be defined as early as possible. We only define the type here,
+  axioms and functions on that type are defined elsewhere. *)
+
+  type map 'a
+
+  type t 'a =
+   {| elts   : map 'a;
+      offset : int;
+      first  : int;
+      last   : int |}
+
+end
+
+theory Main
+
+  use Array__1__Type
+
+  (* ignore blocks of code *)
+  function ___ignore 'a : ()
+
+  (* type of standard characters *)
+  type __character
+
+  (* special private type *)
+  type __private
+
+  type range_type
+
+  (* Here we define the string type *)
+  type __string = 
+  {| elts : (Array__1__Type.map __character); offset : int; rt : range_type |}
+
+end
+
 theory Integer_Func
   use import int.Int
   use import bool.Bool
@@ -57,61 +94,35 @@ theory Integer_Func
 end
 
 theory Array__1__Func
-
   use import int.Int
   use import bool.Bool
+  use export Array__1__Type
 
-  type t 'a
+  function get (map 'a) int : 'a
+  function set (map 'a) int 'a : map 'a
 
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_LAST (t 'a) : int
+  axiom Select_eq :
+    forall m : map 'a. forall i j : int.
+    forall a : 'a [get (set m i a) j].
+    i = j -> get (set m i a) j = a
 
-  function access int (t 'a) : 'a
-  function update int (t 'a) 'a : (t 'a)
+  axiom Select_neq :
+    forall m : map 'a. forall i j : int.
+    forall a : 'a [get (set m i a) j| set m i a, get m j].
+    i <> j -> get (set m i a) j = get m j
+
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+
+  function access "inline" (i : int) (x : t 'a) : 'a =
+     get x.elts (i + x.offset - x.first)
+  function update "inline" (i : int) (x : t 'a) (v : 'a) : (t 'a) =
+   {| x with elts = set x.elts (i + x.offset - x.first) v |}
 
   function bool_eq (t 'a) (t 'a) : bool
-
-   axiom accupd_eq:
-     forall a:t 'a.
-     forall i:int.
-     forall v:'a [update i a v].
-        access i (update i a v) = v
-
-   axiom accupd_neq:
-     forall a:t 'a.
-     forall i:int.
-     forall j:int.
-     forall v:'a [access j (update i a v ) | update i a v, access j a].
-       i <> j -> access j (update i a v ) = access j a
-
-   axiom first_update:
-     forall a:t 'a.
-     forall i:int.
-     forall v:'a.
-       attr__ATTRIBUTE_FIRST a = attr__ATTRIBUTE_FIRST (update i a v)
-
-   axiom last_update:
-     forall a:t 'a.
-     forall i:int.
-     forall v:'a.
-       attr__ATTRIBUTE_LAST a = attr__ATTRIBUTE_LAST (update i a v )
-
-   axiom length_update:
-     forall a:t 'a.
-     forall i:int.
-     forall v:'a.
-        attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH (update i a v)
-
-   axiom length_non_zero:
-     forall a:t 'a.
-       attr__ATTRIBUTE_LAST a >= attr__ATTRIBUTE_FIRST a ->
-        attr__ATTRIBUTE_LENGTH a =
-        attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1
-
-   axiom length_zero:
-     forall a:t 'a.
-       attr__ATTRIBUTE_LAST a < attr__ATTRIBUTE_FIRST a -> attr__ATTRIBUTE_LENGTH a = 0
 
    axiom T__ada_array___equal_def:
      forall a:t 'a.
@@ -130,93 +141,55 @@ theory Array__2__Func
   use import bool.Bool
   (* The theory of Ada arrays of two dimensions *)
 
-  type t 'a
+  type map 'a
 
-  function access int int (t 'a) : 'a
+  function get int int (map 'a) : 'a
 
-  function update int int (t 'a) 'a : (t 'a)
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_LENGTH_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_FIRST_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_LAST (t 'a) : int
-  function attr__ATTRIBUTE_LAST_2 (t 'a) : int
+  function set int int (map 'a) 'a : (map 'a)
 
   axiom accupd_eq:
-    forall a:t 'a.
+    forall a:map 'a.
     forall i:int. forall j :int.
-    forall v:'a [update i j a v].
-       access i j (update i j a v) = v
+    forall v:'a [set i j a v].
+       get i j (set i j a v) = v
 
   axiom accupd_neq:
-    forall a:t 'a.
+    forall a:map 'a.
     forall i1:int.
     forall i2:int.
     forall j1:int.
     forall j2:int.
-    forall v:'a [access i2 j2 (update i1 j1 a v ) | update i1 j1 a v, access i2 j2 a].
+    forall v:'a [get i2 j2 (set i1 j1 a v ) | set i1 j1 a v, get i2 j2 a].
       (i1 <> i2 \/ j1 <> j2) ->
-       access i2 j2 (update i1 j1 a v ) = access i2 j2 a
+       get i2 j2 (set i1 j1 a v ) = get i2 j2 a
 
-  axiom first_update:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-      attr__ATTRIBUTE_FIRST a = attr__ATTRIBUTE_FIRST (update i j a v)
+  type t 'a =
+   {| elts     : map 'a;
+      offset   : int;
+      offset_2 : int;
+      first    : int;
+      last     : int;
+      first_2  : int;
+      last_2   : int;
+   |}
 
-  axiom first_update_2:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-      attr__ATTRIBUTE_FIRST_2 a = attr__ATTRIBUTE_FIRST_2 (update i j a v)
+  function access (i : int) (j : int) (x : t 'a) : 'a =
+     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts
+  function update (i : int) (j : int) (x : t 'a) (v : 'a) : (t 'a) =
+   {| x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts v |}
 
-  axiom last_update:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-      attr__ATTRIBUTE_LAST a = attr__ATTRIBUTE_LAST (update i j a v )
+  function bool_eq (t 'a) (t 'a) : bool
 
-  axiom last_update_2:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-      attr__ATTRIBUTE_LAST_2 a = attr__ATTRIBUTE_LAST_2 (update i j a v )
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
+      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
 
-  axiom length_update:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-       attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH (update i j a v)
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
 
-  axiom length_update_2:
-    forall a:t 'a.
-    forall i:int. forall j : int.
-    forall v:'a.
-       attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 (update i j a v)
-
-  axiom length_non_zero:
-    forall a:t 'a.
-      attr__ATTRIBUTE_LAST a >= attr__ATTRIBUTE_FIRST a ->
-       attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1
-
-  axiom length_zero:
-    forall a:t 'a.
-      attr__ATTRIBUTE_LAST a < attr__ATTRIBUTE_FIRST a -> attr__ATTRIBUTE_LENGTH a = 0
-
-  axiom length_non_zero_2:
-    forall a:t 'a.
-      attr__ATTRIBUTE_LAST_2 a >= attr__ATTRIBUTE_FIRST_2 a ->
-       attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LAST_2 a - attr__ATTRIBUTE_FIRST_2 a + 1
-
-  axiom length_zero_2:
-    forall a:t 'a.
-      attr__ATTRIBUTE_LAST_2 a < attr__ATTRIBUTE_FIRST_2 a ->
-      attr__ATTRIBUTE_LENGTH_2 a = 0
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
 
   axiom T__ada_array_2___equal_def:
     forall a:t 'a.

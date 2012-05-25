@@ -157,17 +157,9 @@ package body Why.Atree.Sprint is
 
       Traverse (State, +Get_Name (Node));
 
-      if Nb_Args > 1 then
-         P (O, " (");
-      elsif Nb_Args = 1 then
-         P (O, " ");
-      end if;
+      P (O, " ");
 
       Print_List (State, +Get_Type_Chain (Node), " ");
-
-      if Nb_Args > 1 then
-         P (O, ")");
-      end if;
 
       if Nb_Args >= 1 then
          P (O, ")");

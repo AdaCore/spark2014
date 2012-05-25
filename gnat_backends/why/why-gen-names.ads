@@ -113,6 +113,10 @@ package Why.Gen.Names is
       WNE_Array_1,
       WNE_Array_2,
       WNE_Array_Access,
+      WNE_Array_Elts,
+      WNE_Array_First_Field,
+      WNE_Array_Last_Field,
+      WNE_Array_Offset,
       WNE_Array_Update,
       WNE_Attr_First,
       WNE_Attr_Image,
@@ -131,6 +135,7 @@ package Why.Gen.Names is
       WNE_Bool_Ne,
       WNE_Bool_Or,
       WNE_Bool_Xor,
+      WNE_Char_Type,
       WNE_Coerce,
       WNE_Conversion_Label,
       WNE_Def,
@@ -155,7 +160,9 @@ package Why.Gen.Names is
       WNE_Pre_Check,
       WNE_Private,
       WNE_Range_Axiom,
+      WNE_Range_Field,
       WNE_Range_Pred,
+      WNE_Range_Type,
       WNE_Real_Abs,
       WNE_Real_Ceil,
       WNE_Real_Div,
@@ -184,6 +191,8 @@ package Why.Gen.Names is
    function Attr_To_Why_Name (A     : Attribute_Id;
                               Dim   : Pos;
                               Count : Uint) return W_Identifier_Id;
+
+   function Append_Num (S : String; Count : Positive) return W_Identifier_Id;
 
    function Append_Num (W : Why_Name_Enum; Count : Positive)
                         return W_Identifier_Id;

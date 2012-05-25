@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;     use Types;
 with Uintp;     use Uintp;
 
 with Why.Ids;   use Why.Ids;
@@ -34,6 +35,7 @@ package Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Signed_Int
      (Theory  : W_Theory_Declaration_Id;
+      Entity  : Entity_Id;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
       Is_Base : Boolean);

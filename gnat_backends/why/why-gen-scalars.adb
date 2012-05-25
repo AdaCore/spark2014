@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Snames;             use Snames;
+with Stand;              use Stand;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -81,12 +82,21 @@ package body Why.Gen.Scalars is
 
    procedure Declare_Ada_Abstract_Signed_Int
      (Theory  : W_Theory_Declaration_Id;
+      Entity  : Entity_Id;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
-      Emit (Theory, New_Type (To_String (WNE_Type)));
+      if Entity = Standard_Character then
+         Emit (Theory,
+               New_Type (Name => To_Ident (WNE_Type),
+                         Alias =>
+                           New_Abstract_Type
+                             (Name => To_Ident (WNE_Char_Type))));
+      else
+         Emit (Theory, New_Type (To_String (WNE_Type)));
+      end if;
       Define_Scalar_Attributes
         (Theory    => Theory,
          Base_Type => EW_Int,
