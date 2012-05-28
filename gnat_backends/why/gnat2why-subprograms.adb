@@ -137,6 +137,12 @@ package body Gnat2Why.Subprograms is
    --    the subprogram;
    --  * the contracts are satisfied when reaching the end of the subprogram.
 
+   function Compute_Pure_Function_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Pred_Id;
+   --  Generate the proposition for a contract case, to be used in the
+   --  postcondition of the program function.
+
    function Compute_Effects (File : in out Why_File;
                              E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
@@ -484,6 +490,55 @@ package body Gnat2Why.Subprograms is
 
       return Cur;
    end Compute_Contract_Case;
+
+   -----------------------------------------
+   -- Compute_Pure_Function_Contract_Case --
+   -----------------------------------------
+
+   function Compute_Pure_Function_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Pred_Id
+   is
+      CTC : Node_Id;
+      Cur : W_Pred_Id := New_Literal (Value => EW_True);
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Pred_Id;
+      --  Generate proposition for the contract case CTC
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Pred_Id
+      is
+         Req : constant Node_Id :=
+                 Expression (Get_Requires_From_CTC_Pragma (CTC));
+         Ens : constant Node_Id :=
+                 Expression (Get_Ensures_From_CTC_Pragma (CTC));
+      begin
+         return New_Conditional
+                  (Ada_Node  => CTC,
+                   Condition => Transform_Expr (Req, Domain, Params),
+                   Then_Part => Transform_Expr (Ens, Domain, Params),
+                   Else_Part =>
+                     New_Literal (Domain => Domain, Value => EW_True));
+      end One_Contract_Case;
+
+   begin
+      CTC := Spec_CTC_List (Contract (E));
+      while Present (CTC) loop
+         if Pragma_Name (CTC) = Name_Contract_Case then
+            Cur := +New_And_Expr
+                     (Left   => +One_Contract_Case (CTC, EW_Pred),
+                      Right  => +Cur,
+                      Domain => EW_Pred);
+         end if;
+
+         CTC := Next_Pragma (CTC);
+      end loop;
+
+      return Cur;
+   end Compute_Pure_Function_Contract_Case;
 
    ------------------
    -- Compute_Spec --
@@ -873,7 +928,11 @@ package body Gnat2Why.Subprograms is
       Effects := Compute_Effects (File, E);
 
       Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-      Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+      Post :=
+        +New_And_Expr
+          (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+           Right  => +Compute_Pure_Function_Contract_Case (Params, E),
+           Domain => EW_Pred);
 
       if Ekind (E) = E_Function then
          declare
