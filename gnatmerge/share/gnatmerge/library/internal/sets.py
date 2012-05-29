@@ -46,6 +46,12 @@ class Object:
     def new_attribute(self, domain):
         self.new_arrow(domain.name, domain.arrow_from_input())
 
+    def load_element(self, element):
+        self.add(element["NAME"], element)
+
+    def load(self, reader):
+        reader.iterate(lambda x : self.load_element(x))
+
 class Objects:
     def __init__(self):
         self.objects = {}

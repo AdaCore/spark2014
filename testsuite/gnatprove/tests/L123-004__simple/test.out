@@ -1,23 +1,40 @@
+
+evoting_simple.adb:120:54: overflow check not proved, requires in_range (num_candidates * 20)
+evoting_simple.adb:123:13: info: index check proved
+evoting_simple.adb:126:16: info: index check proved
+evoting_simple.adb:127:16: info: index check proved
+evoting_simple.adb:127:41: info: index check proved
+evoting_simple.adb:127:63: info: overflow check proved
+evoting_simple.adb:127:63: info: range check proved
+evoting_simple.adb:128:51: info: overflow check proved
+evoting_simple.adb:128:51: info: range check proved
 evoting_simple.adb:146:17: info: range check proved
-evoting_simple.adb:147:34: info: loop invariant initialization proved
-evoting_simple.adb:147:34: info: loop invariant preservation proved
 evoting_simple.adb:148:13: info: index check proved
 evoting_simple.adb:148:27: info: index check proved
 evoting_simple.adb:149:23: info: range check proved
 evoting_simple.adb:157:32: info: range check proved
-evoting_simple.adb:163:34: info: loop invariant initialization proved
-evoting_simple.adb:163:34: info: loop invariant preservation proved
 evoting_simple.adb:164:25: info: overflow check proved
-evoting_simple.adb:164:25: range check not proved
+evoting_simple.adb:164:25: range check not proved, requires in_range (total + result)
 evoting_simple.adb:164:41: info: index check proved
 evoting_simple.adb:167:28: info: overflow check proved
-evoting_simple.adb:167:28: range check not proved
+evoting_simple.adb:167:28: range check not proved, requires in_range (total - result)
 evoting_simple.adb:167:44: info: index check proved
-evoting_simple.adb:169:34: info: loop invariant initialization proved
-evoting_simple.adb:169:34: info: loop invariant preservation proved
 evoting_simple.adb:170:36: info: index check proved
 evoting_simple.adb:172:40: info: range check proved
+evoting_simple.adb:191:40: info: range check proved
+evoting_simple.adb:192:43: info: range check proved
+evoting_simple.adb:193:33: info: range check proved
+evoting_simple.adb:20:49: info: range check proved
+evoting_simple.adb:25:7: info: index check proved
+evoting_simple.adb:26:34: info: range check proved
+evoting_simple.adb:31:10: info: index check proved
+evoting_simple.adb:32:49: info: overflow check proved
+evoting_simple.adb:32:49: range check not proved, requires in_range (current_candidate + 1)
+evoting_simple.adb:36:43: info: overflow check proved
+evoting_simple.adb:36:43: info: range check proved
 evoting_simple.adb:45:14: info: index check proved
-evoting_simple.adb:51:34: info: loop invariant initialization proved
-evoting_simple.adb:51:34: info: loop invariant preservation proved
 evoting_simple.adb:53:40: info: range check proved
+evoting_simple.adb:89:38: precondition not proved, requires attr__ATTRIBUTE_VALUE__pre_check (of_array (evoting_simple__89__45 buf 1 R26b))
+evoting_simple.adb:89:38: range check not proved, requires in_range result
+evoting_simple.adb:96:16: info: index check proved
+evoting_simple.adb:96:32: info: index check proved

@@ -28,7 +28,8 @@ with Ada.Text_IO;       use Ada.Text_IO;
 
 with Hilitevsn; use Hilitevsn;
 
-with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.Command_Line;         use GNAT.Command_Line;
+with GNAT.Directory_Operations;
 with GNAT.Strings;      use GNAT.Strings;
 with GNAT.OS_Lib;
 
@@ -39,8 +40,14 @@ package body Configuration is
    MMode_Input  : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
-   Report_Input   : aliased GNAT.Strings.String_Access;
+   Report_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
+
+   Clean        : aliased Boolean;
+   --  Set to True when --clean was given. Triggers clean_up of GNATprove
+   --  intermediate files.
+
+   procedure Clean_Up (Tree : Project_Tree);
 
    procedure Do_Nothing (Switch    : String;
                          Parameter : String;
@@ -62,7 +69,7 @@ package body Configuration is
    Help_Message : constant String :=
 "proj is a GNAT project file" &
 ASCII.LF &
-"files is one or more file names, must be used with option -u" &
+"files is one or more file names" &
 ASCII.LF &
 "-cargs switches are passed to gcc" &
 ASCII.LF &
@@ -76,6 +83,8 @@ ASCII.LF &
 ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
 ASCII.LF &
+"     --clean        Remove GNATprove intermediate files, and exit" &
+ASCII.LF &
 "     --report=r     Set the report mode of GNATprove (r=fail*, all, detailed)"
 &
 ASCII.LF &
@@ -86,7 +95,7 @@ ASCII.LF &
 ASCII.LF &
 " -v, --verbose      Output extra verbose information" &
 ASCII.LF &
-"     --version      Output version of the tool" &
+"     --version      Output version of the tool and exit" &
 ASCII.LF &
 " -h, --help         Display this usage information" &
 ASCII.LF &
@@ -108,6 +117,17 @@ ASCII.LF &
 "     --limit-subp=s Limit proofs to subprogram defined by file and line" &
   ASCII.LF &
 "     --prover=s     Use given prover instead of default prover";
+
+   --------------
+   -- Clean_Up --
+   --------------
+
+   procedure Clean_Up (Tree : Project_Tree) is
+      Proj_Type : constant Project_Type := Root_Project (Tree);
+      Obj_Dir   : constant GNATCOLL.VFS.Virtual_File := Proj_Type.Object_Dir;
+   begin
+      GNAT.Directory_Operations.Remove_Dir (Obj_Dir.Display_Full_Name, True);
+   end Clean_Up;
 
    ----------------
    -- Do_Nothing --
@@ -213,14 +233,25 @@ ASCII.LF &
         (1 .. Ada.Command_Line.Argument_Count => <>);
    begin
 
-      --  First, copy the command line
+      --  We parse the command line *twice*.
+
+      --  First parsing recognizes all switches with "immediate"
+      --  behavior that either does not need a project file, or does not need
+      --  the extra switches that may be defined in the project file.
+
+      --  We then concatenate the extra switches to the command line and,
+      --  reparse the whole thing.
+
+      --  As parsing the command line consumes it, we start by copying it.
 
       for Index in 1 .. Com_Lin'Last loop
          Com_Lin (Index) :=
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
-      --  Let's do a first parse to get the project file, if any:
+      --  The first parsing only defines the project file switch, and
+      --  immediately terminating switches such as --version and --clean. We
+      --  also need a wildcard to ignore the other switches.
 
       Set_Usage
         (First_Config,
@@ -232,13 +263,30 @@ ASCII.LF &
          "-P:",
          Help => "The name of the project file");
 
+      Define_Switch
+        (First_Config,
+         Version'Access,
+         Long_Switch => "--version",
+         Help => "Output version of the tool");
+
+      Define_Switch
+         (First_Config,
+          Clean'Access,
+          Long_Switch => "--clean",
+          Help => "Remove GNATprove intermediate files");
+
       Define_Switch (First_Config, "*", Help => "list of source files");
 
       Getopt (First_Config,
               Callback => Do_Nothing'Access,
               Concatenate => False);
 
-      --  Install command line config
+      if Version then
+         Ada.Text_IO.Put_Line (Hilite_Version_String);
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
+
+      --  The second parsing needs the info for all switches
 
       Set_Usage
         (Config,
@@ -333,12 +381,6 @@ ASCII.LF &
 
       Define_Switch
         (Config,
-         Version'Access,
-         Long_Switch => "--version",
-         Help => "Output version of the tool");
-
-      Define_Switch
-        (Config,
          Limit_Line'Access,
          Long_Switch => "--limit-line=",
          Help => "Limit proofs to given file and line");
@@ -360,7 +402,15 @@ ASCII.LF &
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
+      --  Before doing the actual second parsing, we read the project file in
+
       Tree := Init;
+
+      if Clean then
+         Clean_Up (Tree);
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
+
       declare
          Proj_Type      : constant Project_Type := Root_Project (Tree);
          Extra_Switches : constant String_List_Access :=
@@ -386,11 +436,6 @@ ASCII.LF &
                     Concatenate => False);
          end if;
       end;
-
-      if Version then
-         Ada.Text_IO.Put_Line (Hilite_Version_String);
-         GNAT.OS_Lib.OS_Exit (0);
-      end if;
 
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
@@ -446,16 +491,41 @@ ASCII.LF &
                declare
                   Limit_File : constant String :=
                     Limit_String.all (Limit_String.all'First .. Index - 1);
-                  Limit_VF : constant Virtual_File :=
+                  Limit_VF : Virtual_File :=
                     Create_From_Base (Filesystem_String (Limit_File));
-                  Restrict : Virtual_File;
+                  Info     : constant File_Info := Tree.Info (Limit_VF);
                begin
-                  if Unit_Part (Tree.Info (Limit_VF)) = Unit_Body then
-                     Restrict := Limit_VF;
-                  else
-                     Restrict := Tree.Other_File (Limit_VF);
-                  end if;
-                  File_List.Append (String (Base_Name (Restrict)));
+                  case Unit_Part (Info) is
+                  when Unit_Body =>
+                     null;
+                  when Unit_Spec =>
+                     declare
+                        Other_VF : constant Virtual_File :=
+                          Tree.Other_File (Limit_VF);
+                     begin
+                        if Is_Regular_File (Other_VF) then
+                           Limit_VF := Other_VF;
+                        end if;
+                     end;
+                  when Unit_Separate =>
+                     declare
+                        Ptype : constant Project_Type := Tree.Root_Project;
+                     begin
+                        Limit_VF :=
+                          Create_From_Base
+                            (Ptype.File_From_Unit (Unit_Name (Info),
+                                                   Unit_Body,
+                                                   "Ada"));
+                        if not Is_Regular_File (Limit_VF) then
+                           Limit_VF :=
+                             Create_From_Base
+                               (Ptype.File_From_Unit (Unit_Name (Info),
+                                                      Unit_Spec,
+                                                      "Ada"));
+                        end if;
+                     end;
+                  end case;
+                  File_List.Append (String (Base_Name (Limit_VF)));
                end;
             end;
             Only_Given := True;

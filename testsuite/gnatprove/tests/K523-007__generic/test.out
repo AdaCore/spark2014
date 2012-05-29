@@ -1,3 +1,6 @@
+a-timoio.adb:109:49: info: range check proved, in instantiation at pack.ads:6
+a-timoio.adb:128:14: info: range check proved, in instantiation at pack.ads:6
+a-timoio.adb:135:48: info: range check proved, in instantiation at pack.ads:6
+pack.adb:4:41: info: range check proved
 pack.adb:7:53: info: range check proved
 pack.adb:8:38: info: range check proved
-pack.ads:6:4: info: range check proved

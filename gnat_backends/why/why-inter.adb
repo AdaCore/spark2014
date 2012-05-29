@@ -653,6 +653,17 @@ package body Why.Inter is
         or else Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
    end Eq;
 
+   ------------------
+   -- Eq_Base_Type --
+   ------------------
+
+   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean is
+   begin
+      return Get_Kind (+Left) = W_Base_Type
+        and then Get_Kind (+Right) = W_Base_Type
+        and then Eq (+Left, +Right);
+   end Eq_Base_Type;
+
    -----------------
    -- EW_Abstract --
    -----------------

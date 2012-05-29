@@ -1,9 +1,33 @@
 {
- "SUBPROGRAMS" : 
-    [{"NAME" : "P1", "LINES" : {"LOW" : 10, "HIGH" : 19}},
-     {"NAME" : "P2", "LINES" : {"LOW" : 20, "HIGH" : 29}},
-     {"NAME" : "P3", "LINES" : {"LOW" : 30, "HIGH" : 39}},
-     {"NAME" : "P4", "LINES" : {"LOW" :  4, "HIGH" : 79}},
-     {"NAME" : "P5", "LINES" : {"LOW" : 50, "HIGH" : 59}},
-     {"NAME" : "P6", "LINES" : {"LOW" : 60, "HIGH" : 69}}]
+ "SUBPROGRAM" : 
+    [{"NAME" : "P1", "SLOCS" : [{"LOW"  : "pack.ads:10:1",
+                                 "HIGH" : "pack.ads:13:1"},
+                                {"LOW"  : "pack.adb:10:1",
+                                 "HIGH" : "pack.adb:19:1"}]},
+
+     {"NAME" : "P2", "SLOCS" : [{"LOW"  : "pack.ads:20:1",
+                                 "HIGH" : "pack.ads:23:1"},
+                                {"LOW"  : "pack.adb:20:1",
+                                 "HIGH" : "pack.adb:29:1"}]},
+
+     {"NAME" : "P3", "SLOCS" : [{"LOW"  : "pack.ads:30:1",
+                                 "HIGH" : "pack.ads:33:1"},
+                                {"LOW"  : "pack.adb:30:1",
+                                 "HIGH" : "pack.adb:39:1"}]},
+
+     {"NAME" : "P4", "SLOCS" : [{"LOW"  : "pack.ads:40:1",
+                                 "HIGH" : "pack.ads:43:1"},
+                                {"LOW"  : "pack.adb:40:1",
+                                 "HIGH" : "pack.adb:49:1"}]},
+
+     {"NAME" : "P5", "SLOCS" : [{"LOW"  : "pack.ads:50:1",
+                                 "HIGH" : "pack.ads:53:1"},
+                                {"LOW"  : "pack.adb:50:1",
+                                 "HIGH" : "pack.adb:59:1"}]},
+
+     {"NAME" : "P6", "SLOCS" : [{"LOW"  : "pack.ads:60:1",
+                                 "HIGH" : "pack.ads:63:1"},
+                                {"LOW"  : "pack.adb:60:1",
+                                 "HIGH" : "pack.adb:69:1"}]}
+    ]
 }

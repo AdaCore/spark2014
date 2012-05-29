@@ -26,21 +26,8 @@ module Integer
   use import int.Int
   use export int.Abs
   use export int.Power
-  use int.MinMax
-  use int.ComputerDivision
-  use int.EuclideanDivision
 
-  function int_max (x y : int) : int = MinMax.max x y
-
-  function int_min (x y : int) : int = MinMax.min x y
-
-  function computer_div (x y : int) : int = ComputerDivision.div x y
-
-  function computer_mod (x y : int) : int = ComputerDivision.mod x y
-
-  function math_div (x y : int) : int = EuclideanDivision.div x y
-
-  function math_mod (x y : int) : int = EuclideanDivision.mod x y
+  use export _gnatprove_standard_th.Integer_Func
 
   val computer_div_ : x:int -> y:int ->
     { y<>0 } int { result = computer_div x y }
@@ -51,42 +38,6 @@ module Integer
   val math_mod_ : x:int -> y:int ->
     { y<>0 } int { result = math_mod x y }
 
-  function bool_eq int int : bool
-  function bool_ne int int : bool
-  function bool_lt int int : bool
-  function bool_le int int : bool
-  function bool_gt int int : bool
-  function bool_ge int int : bool
-
-  axiom bool_eq_axiom:
-    forall x:int.
-    forall y:int.
-      bool_eq x y = True <-> x = y
-
-  axiom bool_ne_axiom:
-    forall x:int.
-    forall y:int.
-      bool_ne x y = True <-> x <> y
-
-  axiom bool_lt_axiom:
-    forall x:int.
-    forall y:int.
-      bool_lt x y = True <-> x < y
-
-  axiom Bool_int__le_axiom:
-    forall x:int.
-    forall y:int.
-      bool_le x y = True <-> x <= y
-
-  axiom bool_gt_axiom:
-    forall x:int.
-    forall y:int.
-        bool_gt x y = True <-> x > y
-
-  axiom bool_ge_axiom:
-    forall x:int.
-    forall y:int.
-        bool_ge x y = True <-> x >= y
 end
 
 (* Define real exponentiation as a separate theory until problem with cloning
@@ -202,16 +153,7 @@ module Array__1
   use import int.Int
   use import bool.Bool
 
-  type t 'a
-
-  function access int (t 'a) : 'a
-  function update int (t 'a) 'a : (t 'a)
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_LAST (t 'a) : int
+  use export _gnatprove_standard_th.Array__1__Func
 
    val access_ :
     i : int -> a : t 'a ->
@@ -283,22 +225,7 @@ module Array__2
   use import bool.Bool
   (* The theory of Ada arrays of two dimensions *)
 
-  type t 'a
-
-  function access int int (t 'a) : 'a
-
-  function update int int (t 'a) 'a : (t 'a)
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (t 'a) : int
-  function attr__ATTRIBUTE_LENGTH_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_FIRST (t 'a) : int
-  function attr__ATTRIBUTE_FIRST_2 (t 'a) : int
-
-  function attr__ATTRIBUTE_LAST (t 'a) : int
-  function attr__ATTRIBUTE_LAST_2 (t 'a) : int
+  use export _gnatprove_standard_th.Array__2__Func
 
    val access_ :
     i : int -> j : int -> a : t 'a ->

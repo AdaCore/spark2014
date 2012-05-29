@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  For debugging, to print info on the output before raising an exception
+with Ada.Text_IO;
+
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
@@ -276,6 +279,8 @@ package body Gnat2Why.Types is
                raise Program_Error;
 
             when others =>
+               Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
+                                     & Entity_Kind'Image (Ekind (E)));
                raise Not_Implemented;
             end case;
          end if;

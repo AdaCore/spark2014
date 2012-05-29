@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+with Csets;    use Csets;
 with Lib;      use Lib;
 with Sem_Util; use Sem_Util;
 
@@ -290,5 +293,44 @@ package body Gnat2Why.Nodes is
          Present (Parent (Scope (E))) and then
          Nkind (Parent (Scope (E))) = N_Quantified_Expression);
    end Is_Quantified_Loop_Param;
+
+   -----------------
+   -- Source_Name --
+   -----------------
+
+   function Source_Name (E : Entity_Id) return String is
+      function Short_Name (E : Entity_Id) return String;
+
+      ----------------
+      -- Short_Name --
+      ----------------
+
+      function Short_Name (E : Entity_Id) return String is
+      begin
+         Get_Unqualified_Name_String (Chars (E));
+         return Name_Buffer (1 .. Name_Len);
+      end Short_Name;
+
+   begin
+      if not (Comes_From_Source (E)) then
+         return Short_Name (E);
+      else
+         declare
+            Sl   : Source_Ptr := Sloc (E);
+            TBuf : constant Source_Buffer_Ptr :=
+              Source_Text (Get_Source_File_Index (Sl));
+            Buf  : Unbounded_String := Null_Unbounded_String;
+         begin
+            if TBuf (Sl) = '"' then
+               return Short_Name (E);
+            end if;
+            while Identifier_Char (TBuf (Sl)) loop
+               Append (Buf, TBuf (Sl));
+               Sl := Sl + 1;
+            end loop;
+            return To_String (Buf);
+         end;
+      end if;
+   end Source_Name;
 
 end Gnat2Why.Nodes;

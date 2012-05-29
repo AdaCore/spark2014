@@ -58,7 +58,7 @@ package Why.Gen.Expr is
       Left, Right : W_Expr_Id;
       Arg_Types   : W_Base_Type_Id;
       Domain      : EW_Domain)
-     return W_Expr_Id;
+      return W_Expr_Id;
 
    function New_Or_Expr
       (Left, Right : W_Expr_Id;
@@ -79,26 +79,38 @@ package Why.Gen.Expr is
        Domain    : EW_Domain) return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
-   function New_Located_Expr
-      (Ada_Node : Node_Id;
-       Expr     : W_Expr_Id;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
+   function New_Located_Label (N : Node_Id) return W_Identifier_Id;
+   --  Return a label that contains the Ada Sloc of the node
 
-   function New_Located_Call
+   function New_Located_Expr (Ada_Node : Node_Id;
+                              Expr     : W_Expr_Id;
+                              Domain   : EW_Domain) return W_Expr_Id;
+   --  put a location label on the given expression
+
+   function New_Name_Label (E : Entity_Id) return W_Identifier_Id;
+   --  return a label of the form "GP_Ada_Name:<name>"
+
+   function New_VC_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
        Domain   : EW_Domain) return W_Expr_Id;
-   --  Build a program call with a fresh label corresponding to the Ada_Node.
+   --  If we are not in the term domain, build a call with VC and location
+   --  labels.
 
-   function New_Located_Label (N : Node_Id) return W_Identifier_Id;
-   --  Return a label that contains the Ada Sloc of the node
+   function New_VC_Expr
+      (Ada_Node : Node_Id;
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id;
+   --  If we are not in the "term" domain, put VC and location labels on the
+   --  expression.
 
    function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Array;
-   --  Generate a VC label for the given Ada node, with the given VC reason
+   --  Generate VC and location labels for the given Ada node, with the given
+   --  VC reason
 
    function New_Range_Expr
      (Domain    : EW_Domain;

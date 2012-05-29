@@ -558,6 +558,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(forall ");
       Print_List (State, +Variables, " ");
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
       P (O, " : ");
       Traverse (State, +Var_Type);
 
@@ -597,6 +599,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "exists ");
       Print_List (State, +Variables, " ");
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
 
       P (O, " : ");
       Traverse (State, +Var_Type);
@@ -1141,6 +1145,8 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Traverse (State, +Get_Name (Node));
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
       P (O, " = ref (");
       Traverse (State, +Get_Def (Node));
       PL (O, ") in ");
@@ -1344,15 +1350,14 @@ package body Why.Atree.Sprint is
       Name      : constant W_Identifier_Id := Get_Name (Node);
       Func_Type : constant W_Computation_Type_Id := Get_Func_Type (Node);
    begin
-      if Get_External (Node) then
-         P (O, "external ");
-      end if;
-
       case Get_Domain (+Node) is
          when EW_Term =>
             P (O, "function ");
 
             Traverse (State, +Name);
+
+            P (O, " ");
+            Print_List (State, +Get_Labels (Node), " ");
 
             NL (O);
             Relative_Indent (O, 1);
@@ -1628,6 +1633,10 @@ package body Why.Atree.Sprint is
    begin
       P (O, "val ");
       Traverse (State, +Get_Name (Node));
+
+      P (O, " ");
+      Print_List (State, +Get_Labels (Node), " ");
+
       P (O, " : ref ");
       Traverse (State, +Get_Ref_Type (Node));
       NL (O);

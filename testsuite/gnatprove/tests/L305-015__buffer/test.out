@@ -1,10 +1,10 @@
 
 buf_read.adb:25:21: info: index check proved
 buf_read.adb:42:12: info: index check proved
-buf_read.adb:45:10: range check not proved
+buf_read.adb:45:10: range check not proved, requires in_range T10b
 buf_read.adb:46:27: info: range check proved
 buf_read.adb:48:29: info: overflow check proved
 buf_read.adb:48:29: info: range check proved
-buf_read.adb:52:7: assertion not proved
+buf_read.adb:52:7: info: assertion proved
 buf_read.adb:54:21: info: index check proved
 buf_read.ads:9:40: info: postcondition proved

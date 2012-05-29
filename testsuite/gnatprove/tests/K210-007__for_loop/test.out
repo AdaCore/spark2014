@@ -1,3 +1,4 @@
+
 s.adb:18:22: info: range check proved
 s.adb:21:10: info: loop invariant initialization proved
 s.adb:21:10: info: loop invariant preservation proved
@@ -10,37 +11,37 @@ s.adb:27:10: info: loop invariant preservation proved
 s.adb:27:35: info: overflow check proved
 s.adb:28:15: info: range check proved
 s.adb:30:7: info: assertion proved
-s.adb:36:10: info: loop invariant initialization proved
-s.adb:36:10: loop invariant preservation not proved
-s.adb:36:59: info: overflow check proved
-s.adb:37:27: info: index check proved
-s.adb:37:41: info: index check proved
-s.adb:39:27: info: index check proved
-s.adb:39:40: info: index check proved
-s.adb:41:10: info: index check proved
-s.adb:41:26: info: index check proved
+s.adb:37:10: info: loop invariant initialization proved
+s.adb:37:10: loop invariant preservation not proved, requires (Dest (J) = Src_Old (J))
+s.adb:37:59: info: overflow check proved
+s.adb:38:27: info: index check proved
+s.adb:38:38: info: index check proved
+s.adb:40:27: info: index check proved
+s.adb:40:37: info: index check proved
 s.adb:42:10: info: index check proved
-s.adb:42:25: info: range check proved
-s.adb:49:10: info: loop invariant initialization proved
-s.adb:49:10: loop invariant preservation not proved
-s.adb:49:45: info: overflow check proved
-s.adb:50:27: info: index check proved
-s.adb:50:41: info: index check proved
+s.adb:42:26: info: index check proved
+s.adb:43:10: info: index check proved
+s.adb:43:25: info: range check proved
+s.adb:51:10: info: loop invariant initialization proved
+s.adb:51:10: loop invariant preservation not proved, requires (Dest (J) = Src_Old (J))
+s.adb:51:45: info: overflow check proved
 s.adb:52:27: info: index check proved
-s.adb:52:40: info: index check proved
-s.adb:54:10: info: index check proved
-s.adb:54:26: info: index check proved
-s.adb:55:10: info: index check proved
-s.adb:55:25: info: range check proved
+s.adb:52:38: info: index check proved
+s.adb:54:27: info: index check proved
+s.adb:54:37: info: index check proved
+s.adb:56:10: info: index check proved
+s.adb:56:26: info: index check proved
+s.adb:57:10: info: index check proved
+s.adb:57:25: info: range check proved
 s.adb:6:10: info: loop invariant initialization proved
 s.adb:6:10: info: loop invariant preservation proved
 s.adb:6:59: info: overflow check proved
 s.adb:7:27: info: index check proved
 s.adb:9:13: info: index check proved
-s.ads:14:15: postcondition not proved
+s.ads:14:15: postcondition not proved, requires (Dest (J) = Src (J))
 s.ads:14:42: info: index check proved
 s.ads:14:56: info: index check proved
-s.ads:17:15: postcondition not proved
+s.ads:17:15: postcondition not proved, requires (Dest (J) = Src (J))
 s.ads:17:42: info: index check proved
 s.ads:17:56: info: index check proved
 s.ads:8:15: info: postcondition proved

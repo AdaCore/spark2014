@@ -1,5 +1,4 @@
-arraydef.adb:5:24: info: loop invariant initialization proved
-arraydef.adb:5:24: info: loop invariant preservation proved
+
 arraydef.adb:6:10: info: index check proved
 arraydef.adb:6:19: info: index check proved
-arraydef.adb:6:24: overflow check not proved
+arraydef.adb:6:24: overflow check not proved, requires in_range (result + 1)

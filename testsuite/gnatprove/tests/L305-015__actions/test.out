@@ -1,3 +1,4 @@
+
 actions.adb:15:12: info: range check proved
 actions.adb:15:4: info: index check proved
 actions.adb:18:59: info: overflow check proved
@@ -14,9 +15,9 @@ actions.adb:28:65: info: index check proved
 actions.adb:28:7: info: assertion proved
 actions.adb:33:35: info: overflow check proved
 actions.adb:33:42: info: index check proved
-actions.adb:37:10: assertion not proved
+actions.adb:37:10: assertion not proved, requires (X >  6)
+actions.adb:3:24: info: range check proved
 actions.adb:41:35: info: overflow check proved
 actions.adb:41:42: info: index check proved
-actions.adb:41:53: info: loop invariant initialization proved
 actions.adb:47:25: info: range check proved
 actions.adb:51:22: info: overflow check proved

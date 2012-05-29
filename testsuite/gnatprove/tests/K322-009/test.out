@@ -1,3 +1,4 @@
-pack.ads:11:21: postcondition not proved
-pack.ads:16:21: postcondition not proved
-pack.ads:8:21: postcondition not proved
+
+pack.ads:11:21: postcondition not proved, requires (X = X1)
+pack.ads:16:21: postcondition not proved, requires (X = X1)
+pack.ads:8:21: postcondition not proved, requires (X = X1)

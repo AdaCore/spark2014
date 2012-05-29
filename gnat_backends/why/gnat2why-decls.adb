@@ -45,8 +45,6 @@ with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
 with System.OS_Lib;
-with System.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
 with Why.Atree.Mutators;        use Why.Atree.Mutators;
 with Sem_Ch12;                  use Sem_Ch12;
@@ -54,6 +52,7 @@ with String_Utils;              use String_Utils;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sem_Util;                  use Sem_Util;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 --  with Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
@@ -120,6 +119,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
+            Labels   => (1 => New_Name_Label (E)),
             Ref_Type => Typ));
 
       Close_Theory (File, Filter_Entity => E);
@@ -223,6 +223,7 @@ package body Gnat2Why.Decls is
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
+               Labels      => (1 => New_Name_Label (E)),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
 
@@ -257,33 +258,22 @@ package body Gnat2Why.Decls is
          Assoc          : List_Id;
          Labs           : List_Id;
          Type_File_Name : String;
-         Type_Args      : in out System.OS_Lib.Argument_List;
-         Type_Current   : in out Positive;
+         Type_Source       : in out String_Access;
          Context_File_Name : String;
-         Context_Args      : in out System.OS_Lib.Argument_List;
-         Context_Current   : in out Positive;
+         Context_Source   : in out String_Access;
          Append : in out String_Access);
 
       --  Replace each formal parameter by the corresponding concrete parameter
       procedure Parse_Parameters
-        (Assoc        :        List_Id;
-         Labs         :        List_Id;
-         Type_File_Name : String;
-         Type_Args      : in out System.OS_Lib.Argument_List;
-         Type_Current   : in out Positive;
-         Context_File_Name : String;
-         Context_Args      : in out System.OS_Lib.Argument_List;
-         Context_Current   : in out Positive);
+        (Assoc             :        List_Id;
+         Labs              :        List_Id;
+         Type_File_Name    :        String;
+         Type_Source       : in out String_Access;
+         Context_File_Name :        String;
+         Context_Source    : in out String_Access);
 
-      --  Size of the sed command
-      function Args_Length
-        (Decls : List_Id;
-         Labs  : List_Id) return Positive;
-
-      --  Use a sed command with arguments Args to generate a string
-      --  corresponding to a new theory. Then use custom declaration to
-      --  append it to File.
-      procedure Instantiate_Theory (Args : System.OS_Lib.Argument_List;
+      --  Use custom declaration to append Args to File.
+      procedure Instantiate_Theory (Args : String_Access;
                                     File : in out Why_File);
 
       --  Copied from why_inter.adb
@@ -299,34 +289,50 @@ package body Gnat2Why.Decls is
       procedure Make_Replacement
         (Assoc_Name   :        String;
          Theory_Name  :        String;
-         Args         : in out System.OS_Lib.Argument_List;
-         Current      : in out Positive;
+         Source       : in out String_Access;
          File_Name    :        String := "";
          My_File_Name :        String := "");
 
       procedure Make_Replacement
         (Assoc_Name   :        String;
          Theory_Name  :        String;
-         Args         : in out System.OS_Lib.Argument_List;
-         Current      : in out Positive;
+         Source       : in out String_Access;
          File_Name    :        String := "";
          My_File_Name :        String := "") is
+
+         function Replace_All
+           (Source  : String;
+            Pattern : String;
+            By      : String) return String;
+
+         function Replace_All
+           (Source  : String;
+            Pattern : String;
+            By      : String) return String is
+            I : constant Natural := Index (Source, Pattern);
+         begin
+            if I = 0 then
+               return Source;
+            else
+               return Replace_All
+                 (Replace_Slice (Source, I, I + Pattern'Length - 1, By),
+                  Pattern, By);
+            end if;
+         end Replace_All;
       begin
-         Args (Current) := new String'("-e");
          --  Ada.Text_IO.Put (Assoc_Name);
          --  Ada.Text_IO.Put (" => ");
          if File_Name /= My_File_Name then
-            Args (Current + 1) :=
-              new String'("s/"&Assoc_Name&"/"&'"'&File_Name&'"'&"."
-                          &Theory_Name&"/g");
+            Source := new String'(Replace_All
+              (Source.all, Assoc_Name,
+                 '"' & File_Name & '"' & "." & Theory_Name));
             --  Ada.Text_IO.Put_Line
             --    ('"' & File_Name & '"' & "." & Theory_Name);
          else
-            Args (Current + 1) :=
-              new String'("s/"&Assoc_Name&"/"&Theory_Name&"/g");
+            Source := new String'(Replace_All
+              (Source.all, Assoc_Name, Theory_Name));
             --  Ada.Text_IO.Put_Line (Theory_Name);
          end if;
-         Current := Current + 2;
       end Make_Replacement;
 
       function Get_Assoc_From_Param
@@ -371,16 +377,14 @@ package body Gnat2Why.Decls is
       end File_Base_Name_Of_Entity;
 
       procedure Parse_Declarations
-        (Decls          : List_Id;
-         Assoc          : List_Id;
-         Labs           : List_Id;
-         Type_File_Name : String;
-         Type_Args      : in out System.OS_Lib.Argument_List;
-         Type_Current   : in out Positive;
+        (Decls             : List_Id;
+         Assoc             : List_Id;
+         Labs              : List_Id;
+         Type_File_Name    : String;
+         Type_Source       : in out String_Access;
          Context_File_Name : String;
-         Context_Args      : in out System.OS_Lib.Argument_List;
-         Context_Current   : in out Positive;
-         Append : in out String_Access) is
+         Context_Source   : in out String_Access;
+         Append           : in out String_Access) is
 
          --  Generate a renaming of a type parameter module
          procedure Make_Parameter (Theory_Name : String;
@@ -455,14 +459,14 @@ package body Gnat2Why.Decls is
                      return;
                   end if;
                   Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Context_Args, Context_Current,
+                                    Context_Source,
                                     Type_File_Name, Context_File_Name);
                   Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Type_Args, Type_Current);
+                                    Type_Source);
                   Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Context_Args, Context_Current);
+                                    Context_Source);
                   Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Type_Args, Type_Current);
+                                    Type_Source);
                end;
             when N_Subprogram_Declaration
                | N_Subprogram_Renaming_Declaration =>
@@ -490,14 +494,14 @@ package body Gnat2Why.Decls is
                           Ada.Strings.Maps.Constants.Lower_Case_Map);
                   begin
                      Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                       Context_Args, Context_Current);
+                                       Context_Source);
                      Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                       Context_Args, Context_Current);
+                                       Context_Source);
                      Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                       Type_Args, Type_Current,
+                                       Type_Source,
                                        Context_File_Name, Type_File_Name);
                      Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                       Type_Args, Type_Current);
+                                       Type_Source);
                   end;
                end;
 
@@ -519,14 +523,14 @@ package body Gnat2Why.Decls is
                        Ada.Strings.Maps.Constants.Lower_Case_Map);
                begin
                   Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Context_Args, Context_Current);
+                                    Context_Source);
                   Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Context_Args, Context_Current);
+                                    Context_Source);
                   Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Type_Args, Type_Current,
+                                    Type_Source,
                                     Context_File_Name, Type_File_Name);
                   Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Type_Args, Type_Current);
+                                    Type_Source);
                end;
             when others => null;
             end case;
@@ -541,14 +545,12 @@ package body Gnat2Why.Decls is
       end Parse_Declarations;
 
       procedure Parse_Parameters
-        (Assoc        :        List_Id;
-         Labs         :        List_Id;
-         Type_File_Name : String;
-         Type_Args      : in out System.OS_Lib.Argument_List;
-         Type_Current   : in out Positive;
+        (Assoc             :        List_Id;
+         Labs              :        List_Id;
+         Type_File_Name    : String;
+         Type_Source       : in out String_Access;
          Context_File_Name : String;
-         Context_Args      : in out System.OS_Lib.Argument_List;
-         Context_Current   : in out Positive) is
+         Context_Source    : in out String_Access) is
 
          CurAssoc : Node_Id;
          CurLabs  : Node_Id;
@@ -568,97 +570,64 @@ package body Gnat2Why.Decls is
                Why_File_Suffix (Dispatch_Entity (Entity (Param)));
             begin
                Make_Replacement ("$$" & Assoc_Name, Assoc_Theory_Name,
-                                 Type_Args, Type_Current,
+                                 Type_Source,
                                  Assoc_File_Name, Type_File_Name);
                Make_Replacement ("$$" & Assoc_Name, Assoc_Theory_Name,
-                                 Context_Args, Context_Current,
+                                 Context_Source,
                                  Assoc_File_Name, Context_File_Name);
                Make_Replacement ("$" & Assoc_Name, Assoc_Theory_Name,
-                                 Type_Args, Type_Current);
+                                 Type_Source);
                Make_Replacement ("$" & Assoc_Name, Assoc_Theory_Name,
-                                 Context_Args, Context_Current);
+                                 Context_Source);
             end;
             Next (CurAssoc);
             Next (CurLabs);
          end loop;
       end Parse_Parameters;
 
-      function Args_Length
-        (Decls : List_Id;
-         Labs  : List_Id) return Positive is
-         Cur : Node_Id;
-         L : Positive := 3;
-      begin
-         Cur := First (Decls);
-         while Present (Cur) loop
-            case Nkind (Cur) is
-            when N_Subtype_Declaration | N_Private_Type_Declaration
-               | N_Object_Declaration | N_Subprogram_Declaration =>
-               if Comes_From_Source (Cur) then
-                  L := L + 4;
-               end if;
-            when others => null;
-            end case;
-            Next (Cur);
-         end loop;
-         Cur := First (Labs);
-         while Present (Cur) loop
-            Next (Cur);
-            L := L + 4;
-         end loop;
-         return L;
-      end Args_Length;
-
-      procedure Instantiate_Theory (Args : System.OS_Lib.Argument_List;
+      procedure Instantiate_Theory (Args : String_Access;
                                     File : in out Why_File) is
-         Ret  : Integer;
-         FD : System.OS_Lib.File_Descriptor;
-         Name : System.Strings.String_Access;
+         F : Natural;
+         S : constant String := Args.all;
+         Max : constant Natural := 2**15;
+         Cut : Natural := 0;
       begin
-         --  Launches sed
-         System.OS_Lib.Create_Temp_File (FD, Name);
-         System.OS_Lib.Spawn (Program_Name => "/bin/sed",
-                              Output_File_Descriptor => FD,
-                              Return_Code => Ret,
-                              Args => Args);
-         if Ret /= 0 then
-            raise Program_Error;
-         end if;
-         declare
-            L : constant Natural := Natural (System.OS_Lib.File_Length (FD));
-            F : Natural;
-            S : String := (1 .. L => <>);
-            Max : constant Natural := 2**15;
-            Cut : Natural := 0;
-         begin
-            System.OS_Lib.Close (FD);
-            FD := System.OS_Lib.Open_Read
-              (Name.all, System.OS_Lib.Text);
-            Ret := System.OS_Lib.Read (FD, S'Address, L);
-            if Ret /= L then
-               raise Program_Error;
-            end if;
-            --  Ada.Text_IO.Put_Line (S);
-            while L - Cut >= Max loop
-               F := Cut;
-               Cut := Index (Source => S,
-                             Pattern => " ",
-                             From => Cut + Max - 1,
-                             Going => Backward);
-               File_Append_To_Theories
-                 (File.File,
-                  Why.Atree.Builders.New_Custom_Declaration
-                    (Domain => EW_Prog,
-                     Content => New_Identifier
-                       (Name => S (F + 1 .. Cut))));
-            end loop;
+         while S'Length - Cut >= Max loop
+            F := Cut;
+            Cut := Index (Source => S,
+                          Pattern => " ",
+                          From => Cut + Max - 1,
+                          Going => Backward);
             File_Append_To_Theories
               (File.File,
                Why.Atree.Builders.New_Custom_Declaration
                  (Domain => EW_Prog,
-                  Content => New_Identifier (Name => S (Cut + 1 .. L))));
-         end;
+                  Content => New_Identifier
+                    (Name => S (F + 1 .. Cut))));
+         end loop;
+         File_Append_To_Theories
+           (File.File,
+            Why.Atree.Builders.New_Custom_Declaration
+              (Domain => EW_Prog,
+               Content => New_Identifier (Name => S (Cut + 1 .. S'Length))));
       end Instantiate_Theory;
+
+      function Read_File (File_Name : String) return String;
+
+      function Read_File (File_Name : String) return String is
+         FD : constant System.OS_Lib.File_Descriptor :=
+           System.OS_Lib.Open_Read (File_Name, System.OS_Lib.Text);
+         L : constant Natural := Natural (System.OS_Lib.File_Length (FD));
+         S : String := (1 .. L => <>);
+         Ret : Natural;
+      begin
+         Ret := System.OS_Lib.Read (FD, S'Address, L);
+         if Ret /= L then
+            raise Program_Error;
+         end if;
+         System.OS_Lib.Close (FD);
+         return S;
+      end Read_File;
 
       Decls : constant List_Id := Visible_Declarations (Parent (E));
       UName : constant String := Full_Name (E);
@@ -669,43 +638,32 @@ package body Gnat2Why.Decls is
       --  use Parent field to reach N_Genereic_Package_Declaration
       Labs : constant List_Id := Generic_Formal_Declarations (Parent (Parent
         (Parent (Generic_Parent (Parent (E))))));
-      Length : constant Positive := Args_Length (Decls, Labs);
-      Type_Args : System.OS_Lib.Argument_List := (1 .. Length => <>);
-      Type_Current : Positive := 1;
       Type_File_Name : constant String := File_Type.Name.all;
-      Context_Args : System.OS_Lib.Argument_List := (1 .. Length => <>);
-      Context_Current : Positive := 1;
+      Type_Source : String_Access := new String'
+        (Read_File ("../"&Generic_Name & "_types.mlw"));
       Context_File_Name : constant String := File_Context.Name.all;
+      Context_Source : String_Access := new String'
+        (Read_File ("../"&Generic_Name & "_main.mlw"));
       Append : String_Access := new String'("");
    begin
       --  Ada.Text_IO.Put_Line ("---------------------------");
-      Parse_Parameters (Assoc, Labs, Type_File_Name, Type_Args,
-                        Type_Current, Context_File_Name, Context_Args,
-                        Context_Current);
-      Parse_Declarations (Decls, Assoc, Labs, Type_File_Name, Type_Args,
-                          Type_Current, Context_File_Name, Context_Args,
-                          Context_Current, Append);
+      Parse_Parameters (Assoc, Labs, Type_File_Name, Type_Source,
+                        Context_File_Name, Context_Source);
+      Parse_Declarations (Decls, Assoc, Labs, Type_File_Name, Type_Source,
+                          Context_File_Name, Context_Source, Append);
       File_Append_To_Theories
         (File_Type.File,
          Why.Atree.Builders.New_Custom_Declaration
            (Domain => EW_Prog,
             Content => New_Identifier (Name => Append.all)));
-      Type_Args (Type_Current) := new String'("-e");
-      Type_Args (Type_Current + 1) :=
-        new String'("s/$Types/Types_"&UName&"/g");
-      Type_Args (Type_Current + 2) :=
-        new String'("../"&Generic_Name & "_types.mlw");
-      Context_Args (Context_Current) := new String'("-e");
-      Context_Args (Context_Current + 1) :=
-        new String'("s/$Main/Main_"&UName&"/g");
-      Context_Args (Context_Current + 2) :=
-        new String'("../"&Generic_Name & "_main.mlw");
-      Instantiate_Theory (Type_Args, File_Type);
-
-      --  NB. Have a size limit due to the File_Append_To_Theories function
-      --  asking for an W_Generic_Theory_Id *)
-      Instantiate_Theory (Context_Args, File_Context);
-
+      Make_Replacement ("$Types", "Types_"&UName,
+                        Type_Source);
+      Make_Replacement ("$Main", "Main_"&UName,
+                        Context_Source);
+      Instantiate_Theory (Type_Source, File_Type);
+      --  Ada.Text_IO.Put_Line ("----------- THEORY -----------");
+      Instantiate_Theory (Context_Source, File_Context);
+      --  Ada.Text_IO.Put_Line ("----------- CONTEXT ----------");
    end Translate_Container_Package;
 
 end Gnat2Why.Decls;

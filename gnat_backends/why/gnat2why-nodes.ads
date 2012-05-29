@@ -40,7 +40,6 @@ with Stand;                 use Stand;
 with Types;                 use Types;
 
 with Why.Types;             use Why.Types;
-with Why.Ids;               use Why.Ids;
 
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the
@@ -76,22 +75,6 @@ package Gnat2Why.Nodes is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
-
-   type Partial_Why_Call is record
-      Func : W_Identifier_Id;
-      Args : Node_Sets.Set;
-   end record;
-   --  Call that is partially translated to Why. The function called is
-   --  translated, but not yet the arguments, which must be translated in a
-   --  given context to generate the complete translated call.
-
-   package Ada_To_Partial_Why_Call is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Partial_Why_Call,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   --  Maps of nodes to partially translated calls
 
    package Ada_Ent_To_Why is
 
@@ -191,9 +174,18 @@ package Gnat2Why.Nodes is
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name
-       (Get_Source_File_Index (Translate_Location (Loc)))));
+                       (Get_Source_File_Index (Loc))));
+
+   --  This function returns the file name of the source pointer (will return
+   --  the file of the generic in case of instances)
 
    function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
-      (File_Name_Without_Suffix (File_Name (Loc)));
+     (File_Name_Without_Suffix (File_Name (Translate_Location (Loc))));
+
+   --  This function will return the file name of the source pointer of the
+   --  suffix. Contrary to the File_Name function, this one returns the file
+   --  name of the instance.
+
+   function Source_Name (E : Entity_Id) return String;
 
 end Gnat2Why.Nodes;

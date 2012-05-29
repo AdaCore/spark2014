@@ -1,4 +1,3 @@
-import sets
 """Manage lattices attributes
 
 This package allows to handle sets with attributes taking values
@@ -64,7 +63,7 @@ In this case, '(inv(A)[a] . P(A)[a]) (nesting)' will also contain
   inv(A)[a] . P(A)[a] . inv(A)[a] = inv(A)[a]
   P(A)[a] . inv(A)[a] . P(A)[a] = P(A)[a]
 
-inv(A)[a] is the adjoint of P(A[a]), meaning that it returns the
+inv(A)[a] is the right adjoint of P(A[a]), meaning that it returns the
 minimal superset of nesting.
 
 We now consider two objects 'From', 'To' having a lattice attribute 'a' and
@@ -91,6 +90,8 @@ each solution
 * F: (maximal) inclusion and (minimal) superset.
 
 """
+
+from internal import sets
 
 class Inclusion(sets.Arrow):
     """Build the maximal inclusion from attribute values in a common lattice

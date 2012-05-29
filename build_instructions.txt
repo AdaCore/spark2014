@@ -57,6 +57,12 @@ The final directory structure of all related products is:
       where <Developer> denotes your Open-DO Forge user name. This step creates
       directory <Root>/hi-lite.
 
+   2.2) Initialize and get the sources for the Why3 and Alt-Ergo submodules
+
+      $ cd <Root>/hi-lite
+      $ git submodule init
+      $ git submodule update
+
 3) GNAT Pro compiler with sources
    3.1) Check out
 
@@ -161,42 +167,36 @@ The final directory structure of all related products is:
       $ make install
 
 7) Alt-Ergo
-   7.1) Clone the alt-ergo repository
 
-      git clone ssh://git.eu.adacore.com/scmrepos/git/alt-ergo
+   7.1) Configure Alt-Ergo
 
-   7.2) Configure Alt-Ergo
-
-      $ cd alt-ergo
+      $ cd <Root>/hi-lite/alt-ergo
       $ ./configure --prefix=<Root>/hi-lite/install
 
       where <Root> denotes a full path.
 
-   7.3) Build Alt-Ergo
+   7.2) Build Alt-Ergo
 
       $ make
 
-   7.4) Install Alt-Ergo
+   7.3) Install Alt-Ergo
 
       $ make install
 
 8) Why3
-   8.1) Clone the why3 repository
 
-      git clone ssh://git.eu.adacore.com/scmrepos/git/why3
+   8.1) Configure Why3
 
-   8.4) Configure Why3
-
-      $ cd why3
+      $ cd <Root>/hi-lite/why3
       $ ./configure --prefix=<Root>/hi-lite/install --disable-gui
 
       where <Root> denotes a full path.
 
-   8.5) Build Why3
+   8.2) Build Why3
 
-      $ make CC=gcc
+      $ make
 
-   8.6) Install Why3
+   8.3) Install Why3
 
       $ make install
 

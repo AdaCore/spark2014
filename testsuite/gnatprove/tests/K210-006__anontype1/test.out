@@ -1,7 +1,10 @@
+
 anon_type.adb:19:44: info: range check proved
 anon_type.adb:21:49: info: range check proved
-anon_type.adb:33:26: overflow check not proved
-anon_type.adb:33:26: range check not proved
+anon_type.adb:26:54: info: range check proved
+anon_type.adb:32:27: info: range check proved
+anon_type.adb:33:26: overflow check not proved, requires in_range (Var_In + (Var_Out + 1))
+anon_type.adb:33:26: range check not proved, requires in_range (Var_In + (Var_Out + 1))
 anon_type.adb:33:37: info: overflow check proved
 anon_type.adb:34:14: info: range check proved
 anon_type.ads:7:36: info: postcondition proved

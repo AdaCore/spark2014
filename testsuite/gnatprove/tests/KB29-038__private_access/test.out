@@ -1,2 +1,3 @@
-q.adb:6:14: range check not proved
+
+q.adb:6:14: range check not proved, requires in_range Y
 q.adb:8:12: info: range check proved

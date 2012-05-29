@@ -1,18 +1,19 @@
+
 tab.adb:10:58: info: range check proved
 tab.adb:11:20: info: index check proved
-tab.adb:12:53: overflow check not proved
-tab.adb:12:60: index check not proved
+tab.adb:12:53: overflow check not proved, requires in_range (Cur - 1)
+tab.adb:12:60: index check not proved, requires (A'First <= result)
 tab.adb:12:65: info: index check proved
 tab.adb:13:14: info: index check proved
-tab.adb:14:13: index check not proved
+tab.adb:14:13: index check not proved, requires (A'First <= Cur)
 tab.adb:14:23: info: index check proved
 tab.adb:15:24: info: overflow check proved
 tab.adb:4:24: info: range check proved
 tab.adb:6:49: info: overflow check proved
-tab.adb:6:49: range check not proved
-tab.adb:9:10: loop invariant initialization not proved
-tab.adb:9:10: loop invariant preservation not proved
-tab.ads:6:18: postcondition not proved
+tab.adb:6:49: range check not proved, requires in_range (X - 1)
+tab.adb:9:10: loop invariant initialization not proved, requires ((0 <= K) and (K <= (Cur - 1))) and (A (K) = B (J))
+tab.adb:9:10: loop invariant preservation not proved, requires ((0 <= K) and (K <= (Cur - 1))) and (A (K) = B (J))
+tab.ads:6:18: postcondition not proved, requires ((1 <= K) and (K <= 10)) and (A (K) = B (J))
 tab.ads:7:25: info: index check proved
 tab.ads:8:47: info: index check proved
 tab.ads:8:54: info: index check proved

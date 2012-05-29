@@ -21,8 +21,6 @@ database.adb:141:13: info: loop invariant preservation proved
 database.adb:142:30: info: range check proved
 database.adb:143:31: info: overflow check proved
 database.adb:143:31: info: range check proved
-database.adb:153:31: info: loop invariant initialization proved
-database.adb:153:31: info: loop invariant preservation proved
 database.adb:157:30: info: overflow check proved
 database.adb:157:30: info: range check proved
 database.adb:162:30: info: overflow check proved

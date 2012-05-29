@@ -179,6 +179,7 @@ package body Why.Gen.Arrays is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Conv_To,
+            Labels      => (1 => To_Ident (WNE_Conversion_Label)),
             Binders     => New_Binders ((1 => Name_Type)),
             Return_Type => Ar_Type));
       Emit
@@ -326,7 +327,7 @@ package body Why.Gen.Arrays is
                       Args   => (1 => +Ar)));
    begin
       return
-        +New_Located_Call
+        +New_VC_Call
           (Ada_Node => Ada_Node,
            Reason   => VC_Index_Check,
            Name     => Used_Name,
@@ -443,7 +444,7 @@ package body Why.Gen.Arrays is
                                      Args   => (1 => +Ar)),
                  2 => +Value);
       Array_Upd : constant W_Expr_Id :=
-                    New_Located_Call
+                    New_VC_Call
                       (Ada_Node => Ada_Node,
                        Domain   => Domain,
                        Reason   => VC_Index_Check,

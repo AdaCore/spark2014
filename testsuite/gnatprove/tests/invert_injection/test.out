@@ -1,16 +1,18 @@
+
+(B (A (J)) = J)
 invertinjection.adb:10:7: info: assertion proved
 invertinjection.adb:11:25: info: index check proved
 invertinjection.adb:11:28: info: index check proved
 invertinjection.adb:6:10: info: loop invariant initialization proved
-invertinjection.adb:6:10: info: loop invariant preservation proved
+invertinjection.adb:6:10: loop invariant preservation not proved, requires 
 invertinjection.adb:6:57: info: overflow check proved
-invertinjection.adb:7:28: index check not proved
+invertinjection.adb:7:28: info: index check proved
 invertinjection.adb:7:31: info: index check proved
 invertinjection.adb:8:10: info: index check proved
 invertinjection.adb:8:13: info: index check proved
 invertinjection.adb:8:23: info: range check proved
 invertinjection.ads:11:48: info: index check proved
-invertinjection.ads:12:18: postcondition not proved
+invertinjection.ads:12:18: postcondition not proved, requires (I = J)
 invertinjection.ads:13:47: info: index check proved
 invertinjection.ads:13:55: info: index check proved
 invertinjection.ads:9:47: info: index check proved

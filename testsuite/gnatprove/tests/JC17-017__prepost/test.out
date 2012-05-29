@@ -1,6 +1,7 @@
-p.adb:4:15: overflow check not proved
-p.adb:9:15: overflow check not proved
-p.ads:11:54: overflow check not proved
-p.ads:16:54: overflow check not proved
-p.ads:3:27: overflow check not proved
-p.ads:9:27: overflow check not proved
+
+p.adb:4:15: overflow check not proved, requires in_range (X + Y)
+p.adb:9:15: overflow check not proved, requires in_range (X + Y)
+p.ads:11:54: overflow check not proved, requires in_range (X + Y)
+p.ads:16:54: overflow check not proved, requires in_range (X + Y)
+p.ads:3:27: overflow check not proved, requires in_range (X + Y)
+p.ads:9:27: overflow check not proved, requires in_range (X + Y)

@@ -317,6 +317,8 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Universal_Quantif,
+                 "Labels", "W_Identifier", Id_Set);
+      New_Field (W_Universal_Quantif,
                  "Var_Type", "W_Primitive_Type", Id_One);
       New_Field (W_Universal_Quantif,
                  "Triggers", "W_Triggers", Id_Lone);
@@ -329,6 +331,8 @@ package body Xtree_Sinfo is
 
       New_Field (W_Existential_Quantif,
                  "Variables", "W_Identifier", Id_Some);
+      New_Field (W_Existential_Quantif,
+                 "Labels", "W_Identifier", Id_Set);
       New_Field (W_Existential_Quantif,
                  "Var_Type", "W_Primitive_Type", Id_One);
       New_Field (W_Existential_Quantif,
@@ -567,6 +571,8 @@ package body Xtree_Sinfo is
       New_Field (W_Binding_Ref,
                  "Def", "W_Prog", Id_One);
       New_Field (W_Binding_Ref,
+                 "Labels", "W_Identifier", Id_Set);
+      New_Field (W_Binding_Ref,
                  "Context", "W_Prog", Id_One);
 
       ------------------
@@ -633,11 +639,11 @@ package body Xtree_Sinfo is
       ---------------------
 
       New_Field (W_Function_Decl,
-                 "External", "Boolean", "False");
-      New_Field (W_Function_Decl,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Function_Decl,
                  "Func_Type", "W_Computation_Type", Id_One);
+      New_Field (W_Function_Decl,
+                 "Labels", "W_Identifier", Id_Set);
 
       --------------------
       -- W_Function_Def --
@@ -692,6 +698,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Global_Ref_Declaration,
                  "Ref_Type", "W_Primitive_Type", Id_One);
+      New_Field (W_Global_Ref_Declaration,
+                 "Labels", "W_Identifier", Id_Set);
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
 
       -----------------------------

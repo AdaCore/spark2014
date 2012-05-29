@@ -137,6 +137,12 @@ package body Gnat2Why.Subprograms is
    --    the subprogram;
    --  * the contracts are satisfied when reaching the end of the subprogram.
 
+   function Compute_Pure_Function_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Pred_Id;
+   --  Generate the proposition for a contract case, to be used in the
+   --  postcondition of the program function.
+
    function Compute_Effects (File : in out Why_File;
                              E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
@@ -463,7 +469,7 @@ package body Gnat2Why.Subprograms is
             return New_Ignore (Prog => +W);
          else
             return New_Assert
-              (Pred => +New_Located_Expr (CTC, W, VC_Postcondition, EW_Pred));
+              (Pred => +New_VC_Expr (CTC, W, VC_Postcondition, EW_Pred));
          end if;
       end One_Contract_Case;
 
@@ -484,6 +490,55 @@ package body Gnat2Why.Subprograms is
 
       return Cur;
    end Compute_Contract_Case;
+
+   -----------------------------------------
+   -- Compute_Pure_Function_Contract_Case --
+   -----------------------------------------
+
+   function Compute_Pure_Function_Contract_Case
+     (Params : Translation_Params;
+      E      : Entity_Id) return W_Pred_Id
+   is
+      CTC : Node_Id;
+      Cur : W_Pred_Id := New_Literal (Value => EW_True);
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Pred_Id;
+      --  Generate proposition for the contract case CTC
+
+      function One_Contract_Case
+        (CTC    : Node_Id;
+         Domain : EW_Domain) return W_Pred_Id
+      is
+         Req : constant Node_Id :=
+                 Expression (Get_Requires_From_CTC_Pragma (CTC));
+         Ens : constant Node_Id :=
+                 Expression (Get_Ensures_From_CTC_Pragma (CTC));
+      begin
+         return New_Conditional
+                  (Ada_Node  => CTC,
+                   Condition => Transform_Expr (Req, Domain, Params),
+                   Then_Part => Transform_Expr (Ens, Domain, Params),
+                   Else_Part =>
+                     New_Literal (Domain => Domain, Value => EW_True));
+      end One_Contract_Case;
+
+   begin
+      CTC := Spec_CTC_List (Contract (E));
+      while Present (CTC) loop
+         if Pragma_Name (CTC) = Name_Contract_Case then
+            Cur := +New_And_Expr
+                     (Left   => +One_Contract_Case (CTC, EW_Pred),
+                      Right  => +Cur,
+                      Domain => EW_Pred);
+         end if;
+
+         CTC := Next_Pragma (CTC);
+      end loop;
+
+      return Cur;
+   end Compute_Pure_Function_Contract_Case;
 
    ------------------
    -- Compute_Spec --
@@ -598,6 +653,10 @@ package body Gnat2Why.Subprograms is
            (File.Cur_Theory,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
+               Labels =>
+                 (1 => New_Identifier
+                    (Name =>
+                       """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
       end if;
 
@@ -610,7 +669,7 @@ package body Gnat2Why.Subprograms is
            Binders => (1 => Unit_Param),
            Pre     => Pre,
            Post    =>
-             +New_Located_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
+             +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
            Def     =>
              +Compute_Context
                (Params,
@@ -869,7 +928,11 @@ package body Gnat2Why.Subprograms is
       Effects := Compute_Effects (File, E);
 
       Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-      Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+      Post :=
+        +New_And_Expr
+          (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+           Right  => +Compute_Pure_Function_Contract_Case (Params, E),
+           Domain => EW_Pred);
 
       if Ekind (E) = E_Function then
          declare
@@ -907,6 +970,7 @@ package body Gnat2Why.Subprograms is
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
+                  Labels      => (1 => New_Name_Label (E)),
                   Binders     => Logic_Func_Binders,
                   Return_Type =>
                      +Why_Logic_Type_Of_Ada_Type
@@ -917,6 +981,7 @@ package body Gnat2Why.Subprograms is
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
+                  Labels      => (1 => New_Name_Label (E)),
                   Binders     => Func_Binders,
                   Return_Type => +Why_Logic_Type_Of_Ada_Type (Etype (E)),
                   Effects     => Effects,
@@ -929,6 +994,7 @@ package body Gnat2Why.Subprograms is
             New_Function_Decl
               (Domain      => EW_Prog,
                Name        => Prog_Id,
+               Labels      => (1 => New_Name_Label (E)),
                Binders     => Func_Binders,
                Return_Type => New_Base_Type (Base_Type => EW_Unit),
                Effects     => Effects,

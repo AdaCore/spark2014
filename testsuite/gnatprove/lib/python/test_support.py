@@ -57,6 +57,24 @@ def cat(filename, force_in_quick_mode=False):
             with open(filename, 'r') as f:
                 print f.read()
 
+def ls(directory=None):
+    """ls wrapper for the testsuite
+
+    PARAMETERS
+       directory: the name of the directory to list the files of
+    """
+    if directory:
+        cmd = ["ls", directory]
+    else:
+        cmd = ["ls"]
+    process = Run(cmd)
+    strlist = str.splitlines(process.out)
+    strlist.sort()
+    for line in strlist:
+        print line
+
+
+
 def gcc(src, opt=None):
     """Invoke gcc
 

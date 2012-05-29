@@ -1,0 +1,87 @@
+
+evoting.adb:147:24: info: range check proved
+evoting.adb:150:10: info: loop invariant initialization proved
+evoting.adb:150:10: info: loop invariant preservation proved
+evoting.adb:150:62: info: overflow check proved
+evoting.adb:152:27: info: index check proved
+evoting.adb:155:21: info: overflow check proved
+evoting.adb:155:21: info: range check proved
+evoting.adb:155:31: info: index check proved
+evoting.adb:171:54: overflow check not proved, requires in_range (last_candidate * 20)
+evoting.adb:174:13: info: index check proved
+evoting.adb:175:13: info: precondition proved
+evoting.adb:177:16: info: index check proved
+evoting.adb:178:16: info: index check proved
+evoting.adb:178:41: info: index check proved
+evoting.adb:178:63: info: overflow check proved
+evoting.adb:178:63: info: range check proved
+evoting.adb:179:51: info: overflow check proved
+evoting.adb:179:51: info: range check proved
+evoting.adb:202:7: info: index check proved
+evoting.adb:204:56: info: range check proved
+evoting.adb:205:7: info: index check proved
+evoting.adb:208:13: info: index check proved
+evoting.adb:208:27: info: index check proved
+evoting.adb:210:16: info: index check proved
+evoting.adb:212:13: info: index check proved
+evoting.adb:213:37: info: range check proved
+evoting.adb:214:16: info: index check proved
+evoting.adb:214:30: info: index check proved
+evoting.adb:215:13: info: index check proved
+evoting.adb:216:37: info: range check proved
+evoting.adb:220:32: info: overflow check proved
+evoting.adb:221:10: info: index check proved
+evoting.adb:229:32: info: range check proved
+evoting.adb:236:10: info: loop invariant initialization proved
+evoting.adb:236:10: info: loop invariant preservation proved
+evoting.adb:236:62: info: index check proved
+evoting.adb:242:51: info: overflow check proved
+evoting.adb:243:25: info: overflow check proved
+evoting.adb:243:25: range check not proved, requires in_range (total + result)
+evoting.adb:243:41: info: index check proved
+evoting.adb:246:28: info: overflow check proved
+evoting.adb:246:28: info: range check proved
+evoting.adb:246:44: info: index check proved
+evoting.adb:249:36: info: index check proved
+evoting.adb:251:40: info: range check proved
+evoting.adb:263:7: info: precondition proved
+evoting.adb:267:13: info: index check proved
+evoting.adb:268:43: info: range check proved
+evoting.adb:276:43: info: range check proved
+evoting.adb:277:46: info: range check proved
+evoting.adb:278:36: info: range check proved
+evoting.adb:282:18: info: range check proved
+evoting.adb:282:7: info: precondition proved
+evoting.adb:284:14: info: range check proved
+evoting.adb:284:7: info: precondition proved
+evoting.adb:286:29: info: range check proved
+evoting.adb:286:7: info: precondition proved
+evoting.adb:38:74: info: range check proved
+evoting.adb:47:13: info: index check proved
+evoting.adb:47:33: info: range check proved
+evoting.adb:52:7: info: index check proved
+evoting.adb:53:34: info: range check proved
+evoting.adb:58:10: info: index check proved
+evoting.adb:60:49: info: overflow check proved
+evoting.adb:60:49: info: range check proved
+evoting.adb:64:43: info: overflow check proved
+evoting.adb:64:43: info: range check proved
+evoting.adb:73:14: info: index check proved
+evoting.adb:81:40: info: range check proved
+evoting.adb:95:7: info: precondition proved
+evoting.ads:104:25: info: index check proved
+evoting.ads:104:49: info: index check proved
+evoting.ads:105:22: index check not proved, requires (counters'First <= result)
+evoting.ads:105:41: index check not proved, requires (counters'First <= result)
+evoting.ads:107:27: info: index check proved
+evoting.ads:107:47: info: index check proved
+evoting.ads:108:24: index check not proved, requires (result <= counters'Last)
+evoting.ads:108:43: index check not proved, requires (result <= counters'Last)
+evoting.ads:110:13: postcondition not proved, requires (counters (winner) >  counters (i))
+evoting.ads:111:45: info: overflow check proved
+evoting.ads:112:19: info: index check proved
+evoting.ads:54:14: postcondition not proved, requires (candidates (i) (j) = 32)
+evoting.ads:56:29: info: index check proved
+evoting.ads:88:53: info: index check proved
+evoting.ads:93:11: info: index check proved
+evoting.ads:94:7: postcondition not proved, requires (counters (i) = 0)

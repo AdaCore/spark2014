@@ -1,6 +1,6 @@
 """Common utilities for attributes"""
 
-import sets
+from internal import sets
 
 class Attribute:
 
