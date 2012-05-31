@@ -39,6 +39,8 @@ declared using these aspects. The aspects do not have any dynamic semantics.
 Examples
 --------
 
+.. highlight:: ada
+
 The following example illustrates simple and advanced uses of globals and
 parameter aspects::
 

@@ -13,6 +13,7 @@ Contents:
 
    introduction
    globalparam
+   assertcutinv
 
 Indices and tables
 ==================
