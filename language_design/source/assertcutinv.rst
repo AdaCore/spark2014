@@ -14,7 +14,7 @@ Syntax
 
       loop_variant_statement ::= pragma Loop_Variant(variant_list);
 
-      variant_list ::= variant [, variant_list ]
+      variant_list ::= variant {, variant_list }
       variant ::= Increases => discrete_expression | Decreases => discrete_expression
 
 Legality rules

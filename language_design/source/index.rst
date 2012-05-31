@@ -14,6 +14,7 @@ Contents:
    introduction
    globalparam
    assertcutinv
+   expressions
 
 Indices and tables
 ==================
