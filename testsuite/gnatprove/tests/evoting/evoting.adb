@@ -205,21 +205,49 @@ package body eVoting is
       winners(latest_highest_score) := True;
 
       for i in (Candidate_Number_t'First + 2)..last_candidate loop
+         pragma Assert
+           (winners(Candidate_Number_t'First) = False and then
+            Latest_Highest_Score < I and then
+            Winners(Latest_Highest_Score) and then
+              (for all J in Candidate_Number_T
+               range (Candidate_Number_T'First + 1) .. I-1 =>
+                 (if J > Latest_Highest_Score then
+                    (Counters(Latest_Highest_Score) > Counters(J))))
+           and then
+              (for all J in Candidate_Number_T
+               range (Candidate_Number_T'First + 1) .. I - 1 =>
+                 (if Winners(J) then
+                  Counters(Latest_Highest_Score) = Counters(J)
+                  else
+                  Counters(Latest_Highest_Score) > Counters(J))));
          if counters(i) > counters(latest_highest_score) then
-            for j in Candidate_Number_t'First..latest_highest_score loop
-               winners(j) := False;
+            for J in Candidate_Number_T'First..I - 1 loop
+               pragma Assert
+                 (for all K in Candidate_Number_T range 0 .. J - 1 =>
+                  not Winners(K));
+               Winners(J) := False;
             end loop;
             winners(i) := True;
             latest_highest_score := i;
          elsif counters(i) = counters(latest_highest_score) then
             winners(i) := True;
             latest_highest_score := i;
+         else
+            winners(i) := False;
          end if;
       end loop;
 
-      for i in (last_candidate + 1)..Candidate_Number_t'Last loop
-         winners(i) := False;
-      end loop;
+      declare
+         Init_Winners : Election_Result_T := Winners;
+      begin
+         for I in (Last_Candidate + 1)..Candidate_Number_T'Last loop
+            pragma Assert ((for all J in (Last_Candidate + 1)..I-1
+              => not Winners(J)) and
+                (for all J in Candidate_Number_T'First..Last_Candidate
+                 => Winners(J) = Init_Winners(J)));
+            Winners(I) := False;
+         end loop;
+      end;
    end Compute_Winner;
 
    procedure Compute_Print_Results(program_phase : Program_Phase_t;

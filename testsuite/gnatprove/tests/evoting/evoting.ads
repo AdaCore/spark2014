@@ -40,7 +40,7 @@ package eVoting is
    type Candidate_Number_t is range 0..20;
    type Total_Range_t is
      new Integer range
-       0..(Integer(Counter_Range_t'Last) * Integer(Candidate_Number_t'Last));
+       0..(Integer(Counter_Range_t'Last) * Integer(Candidate_Number_T'Last+1));
    type Candidate_Name_Array_t is
      array (Candidate_Number_t) of Candidate_Name_t;
    type Counters_t is array (Candidate_Number_t) of Counter_Range_t;
@@ -100,16 +100,16 @@ package eVoting is
                             winners : out Election_Result_t)
    with Pre => (program_phase = Counting_Phase),
    Post => ((for all winner in Candidate_Number_t'Range
-            => (for all i in Candidate_Number_t'Range
+            => (for all i in Candidate_Number_t range 1 .. Last_Candidate
                 => ((if winners(winner) and not winners(i) then
                      counters(winner) > counters(i))
-                    and
+                    )and
                       (if winners(winner) and winners(i) then
                        counters(winner) = counters(i)))
-               ))
+               )
             and
               (for all i in (last_candidate + 1)..Candidate_Number_t'Last
-               => winners(i) = False));
+               => Winners(I) = False));
 
    procedure Compute_Print_Results(program_phase : Program_Phase_t;
                                    candidates : in Candidate_Name_Array_t;
@@ -119,5 +119,3 @@ package eVoting is
 
    procedure Do_Vote;
 end;
-
-
