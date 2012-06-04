@@ -16,4 +16,4 @@ search.ads:11:54: range check not proved, requires in_range (Search'Result - 1)
 search.ads:5:53: info: index check proved
 search.ads:8:57: info: range check proved
 search.ads:8:65: info: range check proved
-search.ads:9:10: postcondition not proved, requires (No_V_In_Range T V 1 10 = True) or (No_V_In_Range T V 1 (Search'Result - 1) = True)
+search.ads:9:10: postcondition not proved, requires (Search'Result = 0) or (No_V_In_Range T V 1 (Search'Result - 1) = True)

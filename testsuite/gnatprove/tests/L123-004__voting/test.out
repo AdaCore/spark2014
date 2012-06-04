@@ -63,7 +63,7 @@ evoting.adb:81:40: info: range check proved
 evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
 evoting.ads:104:48: info: index check proved
-evoting.ads:105:21: index check not proved, requires (counters'First <= result)
+evoting.ads:105:21: index check not proved, requires (result <= counters'Last)
 evoting.ads:105:40: index check not proved, requires (counters'First <= result)
 evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
