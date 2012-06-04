@@ -65,6 +65,7 @@ package body Gnat2Why.Expr.Loops is
       (Loop_Body : W_Prog_Id;
        Cond_Prog : W_Prog_Id;
        Cond_Pred : W_Pred_Id;
+       Exit_Cond : W_Prog_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
        Inv_Check : W_Prog_Id)
@@ -203,6 +204,7 @@ package body Gnat2Why.Expr.Loops is
                (Loop_Body => Loop_Content,
                 Cond_Prog => True_Prog,
                 Cond_Pred => True_Pred,
+                Exit_Cond => True_Prog,
                 Loop_Name => Loop_Name,
                 Invariant => Invariant,
                 Inv_Check => Inv_Check);
@@ -232,6 +234,7 @@ package body Gnat2Why.Expr.Loops is
                 (Loop_Body => Loop_Content,
                  Cond_Prog => Cond_Prog,
                  Cond_Pred => Cond_Pred,
+                 Exit_Cond => Cond_Prog,
                  Loop_Name => Loop_Name,
                  Invariant => Invariant,
                  Inv_Check => Inv_Check);
@@ -250,6 +253,7 @@ package body Gnat2Why.Expr.Loops is
               Discrete_Subtype_Definition (LParam_Spec);
             Ent          : constant Entity_Id :=
               Defining_Identifier (LParam_Spec);
+            Is_Reverse   : constant Boolean := Reverse_Present (LParam_Spec);
             Loop_Index   : constant W_Identifier_Id :=
               New_Identifier
                 (Ada_Node => Etype (Ent),
@@ -259,10 +263,8 @@ package body Gnat2Why.Expr.Loops is
                                (Ada_Node => Stmt,
                                 Right    => +Loop_Index);
             Update_Op    : constant EW_Binary_Op :=
-                             (if Reverse_Present (LParam_Spec) then
-                                EW_Substract
-                              else
-                                EW_Add);
+                             (if Is_Reverse then EW_Substract
+                              else EW_Add);
             Update_Expr  : constant W_Prog_Id :=
                              New_Binary_Op
                                (Ada_Node => Stmt,
@@ -293,6 +295,18 @@ package body Gnat2Why.Expr.Loops is
             Actual_Range : constant Node_Id := Get_Range (Loop_Range);
             Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
             High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
+            Init_Index   : constant W_Identifier_Id :=
+              (if Is_Reverse then High_Ident else Low_Ident);
+            Exit_Index   : constant W_Identifier_Id :=
+              (if Is_Reverse then Low_Ident else High_Ident);
+            Exit_Cmp     : constant EW_Relation :=
+              (if Is_Reverse then EW_Ge else EW_Le);
+            Exit_Cond    : constant W_Expr_Id :=
+              New_Relation (Domain  => EW_Prog,
+                            Op_Type => EW_Int,
+                            Op      => Exit_Cmp,
+                            Left    => +Index_Deref,
+                            Right   => +Exit_Index);
             Cond_Prog    : constant W_Prog_Id :=
               +New_Range_Expr (Domain    => EW_Prog,
                                Base_Type => EW_Int_Type,
@@ -305,14 +319,10 @@ package body Gnat2Why.Expr.Loops is
                                   Sequence (Loop_Content, Update_Stmt),
                                 Cond_Prog    => Cond_Prog,
                                 Cond_Pred    => Cond_Pred,
+                                Exit_Cond    => +Exit_Cond,
                                 Loop_Name    => Loop_Name,
                                 Invariant    => Invariant,
                                 Inv_Check    => Inv_Check);
-            Init_Index  : constant W_Identifier_Id :=
-                            (if Reverse_Present (LParam_Spec) then
-                               High_Ident
-                             else
-                               Low_Ident);
 
          --  Start of Plain_Loop
 
@@ -359,6 +369,7 @@ package body Gnat2Why.Expr.Loops is
       (Loop_Body : W_Prog_Id;
        Cond_Prog : W_Prog_Id;
        Cond_Pred : W_Pred_Id;
+       Exit_Cond : W_Prog_Id;
        Loop_Name : String;
        Invariant : W_Pred_Id;
        Inv_Check : W_Prog_Id)
@@ -384,7 +395,7 @@ package body Gnat2Why.Expr.Loops is
            Sequence
              (Loop_Body,
               New_Conditional
-                (Condition => +Cond_Prog,
+                (Condition => +Exit_Cond,
                  Then_Part => +Inv_Check,
                  Else_Part =>
                    New_Raise
