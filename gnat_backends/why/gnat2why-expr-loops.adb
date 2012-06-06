@@ -26,8 +26,9 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
-with Gnat2Why.Driver;       use Gnat2Why.Driver;
+with Atree;                 use Atree;
 with Nlists;                use Nlists;
+with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Uintp;                 use Uintp;
 with VC_Kinds;              use VC_Kinds;
@@ -41,6 +42,9 @@ with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
+
+with Gnat2Why.Driver;       use Gnat2Why.Driver;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 
 package body Gnat2Why.Expr.Loops is
 

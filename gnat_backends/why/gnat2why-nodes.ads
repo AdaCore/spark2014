@@ -39,6 +39,7 @@ with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Types;                 use Types;
 
+with Why.Ids;               use Why.Ids;
 with Why.Types;             use Why.Types;
 
 package Gnat2Why.Nodes is
@@ -187,5 +188,22 @@ package Gnat2Why.Nodes is
    --  name of the instance.
 
    function Source_Name (E : Entity_Id) return String;
+
+   function Type_Of_Node (N : Node_Id) return String;
+   --  Get the name of the type of an Ada node, as a string
+
+   function Type_Of_Node (N : Node_Id) return Entity_Id;
+   --  Get the name of the type of an Ada node, as a Node_Id of Kind
+   --  N_Defining_Identifier
+
+   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id;
+   --  Get the name of the type of an Ada node, as a Why Type
+
+   function Get_Range (N : Node_Id) return Node_Id
+      with Post =>
+         (Present (Low_Bound (Get_Range'Result)) and then
+          Present (High_Bound (Get_Range'Result)));
+   --  Get the range of a range constraint or subtype definition.
+   --  The return node is of kind N_Range
 
 end Gnat2Why.Nodes;

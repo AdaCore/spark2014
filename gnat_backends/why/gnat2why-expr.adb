@@ -29,12 +29,14 @@ with Ada.Text_IO;
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
+with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Aux;            use Sem_Aux;
 with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
+with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
@@ -42,7 +44,6 @@ with Urealp;             use Urealp;
 with VC_Kinds;           use VC_Kinds;
 with Eval_Fat;
 
-with Alfa.Definition;       use Alfa.Definition;
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Alfa.Util;             use Alfa.Util;
 
@@ -807,46 +808,6 @@ package body Gnat2Why.Expr is
          return Result;
       end if;
    end Get_Pure_Logic_Term_If_Possible;
-
-   ---------------
-   -- Get_Range --
-   ---------------
-
-   function Get_Range (N : Node_Id) return Node_Id is
-   begin
-      case Nkind (N) is
-         when N_Range
-           | N_Real_Range_Specification
-           | N_Signed_Integer_Type_Definition
-           | N_Modular_Type_Definition
-           | N_Floating_Point_Definition
-           | N_Ordinary_Fixed_Point_Definition
-           | N_Decimal_Fixed_Point_Definition =>
-            return N;
-
-         when N_Subtype_Indication =>
-            return Range_Expression (Constraint (N));
-
-         when N_Identifier | N_Expanded_Name =>
-            return Get_Range (Entity (N));
-
-         when N_Defining_Identifier =>
-            case Ekind (N) is
-               when Scalar_Kind =>
-                  return Get_Range (Scalar_Range (N));
-
-               when Object_Kind =>
-                  return Get_Range (Scalar_Range (Etype (N)));
-
-               when others =>
-                  raise Program_Error;
-
-            end case;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Get_Range;
 
    ------------------------
    -- Insert_Ref_Context --
@@ -4310,61 +4271,5 @@ package body Gnat2Why.Expr is
       Strlit_To_Why_Term.Include (Strval (N), +Id);
       Strlit_To_Why_Type.Include (Strval (N), Why_Type);
    end Transform_String_Literal;
-
-   ------------------
-   -- Type_Of_Node --
-   ------------------
-
-   function Type_Of_Node (N : Node_Id) return Entity_Id is
-      T : Entity_Id;
-   begin
-      if Nkind (N) in N_Entity then
-         if Ekind (N) in Type_Kind then
-            T := N;
-         else
-            T := Etype (N);
-         end if;
-      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         T := Etype (Entity (N));
-      else
-         T := Etype (N);
-      end if;
-
-      --  The type of a node is either its most underlying type, or else the
-      --  special private type in all other cases, represented in the AST by
-      --  its type.
-
-      if In_Alfa (Most_Underlying_Type (T)) then
-         return Most_Underlying_Type (T);
-      else
-         return T;
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return String
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if E = Standard_Boolean then
-         return Why_Scalar_Type_Name (EW_Bool);
-      elsif E = Universal_Fixed then
-         return Why_Scalar_Type_Name (EW_Real);
-      else
-         return Full_Name (E);
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if E = Standard_Boolean then
-         return EW_Bool_Type;
-      elsif E = Universal_Fixed then
-         return EW_Real_Type;
-      else
-         return EW_Abstract (E);
-      end if;
-   end Type_Of_Node;
 
 end Gnat2Why.Expr;

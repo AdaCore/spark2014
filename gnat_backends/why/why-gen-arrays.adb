@@ -29,9 +29,8 @@ with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 
-with Gnat2Why.Expr;      use Gnat2Why.Expr;
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
---  ??? because of Get_Range, which should be moved
 
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
