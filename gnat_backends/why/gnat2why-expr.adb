@@ -1502,10 +1502,10 @@ package body Gnat2Why.Expr is
 
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
-         Id     : W_Identifier_Id;
+         Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
          Params : Translation_Params) return W_Pred_Id;
-      --  Generates the proposition defining the aggregate Id, based on a
+      --  Generates the proposition defining the aggregate Arr, based on a
       --  mapping between Ada nodes and corresponding Why identifiers.
 
       function Complete_Translation
@@ -1598,14 +1598,8 @@ package body Gnat2Why.Expr is
 
          --  Values used in calls to the aggregate function
 
-         Id            : constant W_Identifier_Id := New_Temp_Identifier;
          Ret_Type      : constant W_Primitive_Type_Id :=
                            +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
-         Id_Param      : constant Binder_Array :=
-                           (1 => (Ada_Node => Empty,
-                                  B_Name   => Id,
-                                  Modifier => None,
-                                  B_Type   => Ret_Type));
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -1622,7 +1616,6 @@ package body Gnat2Why.Expr is
          --  Variables for the call, guard and proposition for the axiom
 
          Call          : W_Expr_Id;
-         Id_Expr       : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
 
          --  Select file for the declarations
@@ -1670,15 +1663,9 @@ package body Gnat2Why.Expr is
                            Name     => Func,
                            Args     => Call_Args);
 
-         Id_Expr := New_Comparison (Cmp       => EW_Eq,
-                                    Left      => +Id,
-                                    Right     => Call,
-                                    Arg_Types => +Ret_Type,
-                                    Domain    => EW_Pred);
-
          Def_Pred :=
            Transform_Array_Component_Associations (Expr   => Expr,
-                                                   Id     => Id,
+                                                   Arr    => Call,
                                                    Args   => Args_Map,
                                                    Params => Params_No_Ref);
 
@@ -1695,11 +1682,9 @@ package body Gnat2Why.Expr is
                                   Binders     => Call_Params,
                                   Return_Type => Ret_Type));
          Emit (Decl_File.Cur_Theory,
-               New_Guarded_Axiom
-                 (Name        => To_Ident (WNE_Def_Axiom),
-                  Binders     => Id_Param & Call_Params,
-                  Pre         => +Id_Expr,
-                  Def         => Def_Pred));
+               New_Guarded_Axiom (Name    => To_Ident (WNE_Def_Axiom),
+                                  Binders => Call_Params,
+                                  Def     => Def_Pred));
 
          Close_Theory (Decl_File, Filter_Entity => Expr);
          if Params.File = Decl_File.File then
@@ -1812,7 +1797,7 @@ package body Gnat2Why.Expr is
 
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
-         Id     : W_Identifier_Id;
+         Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
          Params : Translation_Params) return W_Pred_Id
       is
@@ -1889,7 +1874,7 @@ package body Gnat2Why.Expr is
                                      (Ada_Node  => Expr_Or_Association,
                                       Domain    => EW_Term,
                                       Ty_Entity => T_Name,
-                                      Ar        => +Id,
+                                      Ar        => Arr,
                                       Index     => Indexes,
                                       Dimension => Num_Dim);
                   begin
@@ -1914,12 +1899,12 @@ package body Gnat2Why.Expr is
          is
             First : constant W_Expr_Id :=
                       New_Array_Attr
-                        (Attribute_First,
-                         T_Name,
-                         +Id,
-                         EW_Term,
-                         Num_Dim,
-                         UI_From_Int (Dim));
+                        (Attr      => Attribute_First,
+                         Ty_Entity => T_Name,
+                         Ar        => Arr,
+                         Domain    => EW_Term,
+                         Dimension => Num_Dim,
+                         Argument  => UI_From_Int (Dim));
             Nth   : constant W_Expr_Id :=
                       New_Binary_Op
                         (Left     => First,
