@@ -1060,9 +1060,7 @@ package body Why.Atree.Sprint is
       P (O, "{| ");
       Traverse (State, +Get_Name (Node));
       P (O, " with ");
-      Traverse (State, +Get_Field (Node));
-      P (O, " = ");
-      Traverse (State, +Get_Value (Node));
+      Print_List (State, +Get_Updates (Node), "; ");
       P (O, " |}");
       State.Control := Abandon_Children;
    end Record_Update_Pre_Op;

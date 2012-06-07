@@ -526,9 +526,7 @@ package body Xtree_Sinfo is
       New_Field (W_Record_Update,
                  "Name", "W_Expr", Id_One);
       New_Field (W_Record_Update,
-                 "Field", "W_Identifier", Id_One);
-      New_Field (W_Record_Update,
-                 "Value", "W_Expr", Id_One);
+                 "Updates", "W_Field_Association", Id_Some);
 
       ------------------------
       -- W_Record_Aggregate --

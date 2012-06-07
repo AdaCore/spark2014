@@ -1254,9 +1254,13 @@ package body Gnat2Why.Expr is
          when N_Selected_Component =>
             return
               New_Record_Update
-                (Name  => Pref,
-                 Field => To_Why_Id (Entity (Selector_Name (N)), Domain),
-                 Value => Value);
+                (Name    => Pref,
+                 Updates =>
+                   (1 =>
+                    New_Field_Association (
+                      Domain => Domain,
+                      Field  => To_Why_Id (Entity (Selector_Name (N)), Domain),
+                      Value  => Value)));
 
          when N_Indexed_Component =>
             declare
