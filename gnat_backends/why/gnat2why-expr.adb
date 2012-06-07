@@ -128,6 +128,9 @@ package body Gnat2Why.Expr is
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
 
+   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
+   --  Return whether Choice is a range ("others" counts as a range)
+
    function Needs_Temporary_Ref
      (Actual : Node_Id;
       Formal : Node_Id)
@@ -783,6 +786,30 @@ package body Gnat2Why.Expr is
          return Why_Args;
       end;
    end Compute_Call_Args;
+
+   ------------------------------
+   -- Discrete_Choice_Is_Range --
+   ------------------------------
+
+   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean is
+      Is_Range : Boolean;
+   begin
+      case Nkind (Choice) is
+         when N_Subtype_Indication | N_Range =>
+            Is_Range := True;
+         when N_Identifier | N_Expanded_Name =>
+            if Ekind (Entity (Choice)) in Type_Kind then
+               Is_Range := True;
+            else
+               Is_Range := False;
+            end if;
+         when N_Others_Choice =>
+            Is_Range := True;
+         when others =>
+            Is_Range := False;
+      end case;
+      return Is_Range;
+   end Discrete_Choice_Is_Range;
 
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
@@ -1766,24 +1793,48 @@ package body Gnat2Why.Expr is
          T_Name  : constant Entity_Id := Type_Of_Node (Typ);
          Num_Dim : constant Pos := Number_Dimensions (Typ);
          Ind_Arr : array (1 .. Num_Dim) of Node_Id;
-         Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
          Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
+
+         Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
+         --  This array contains either the identifiers for indexes in the
+         --  normal translation, or the actual values of indexes in the
+         --  translation for "simple" aggregates. For example, in the first
+         --  case it could be:
+         --     (tmp1, tmp2, tmp3)
+         --  while in the second case it could be:
+         --     (1, 3, 2)
+         --  This allows using Constrain_Value_At_Index in both cases to get
+         --  the value of the aggregate at the desired indexes.
 
          -----------------------
          -- Local subprograms --
          -----------------------
 
+         type Transform_Rec_Func is access function
+           (Dim  : Pos;
+            Expr : Node_Id) return W_Expr_Id;
+         --  Type of callback used to refer to either one of the recursive
+         --  transformation functions for aggregate defined below, for use in
+         --  Constrain_Value_At_Index.
+
          function Constrain_Value_At_Index
            (Dim                 : Pos;
-            Expr_Or_Association : Node_Id) return W_Expr_Id;
+            Expr_Or_Association : Node_Id;
+            Callback            : Transform_Rec_Func) return W_Expr_Id;
          --  Return the proposition that the array at the given indices is
          --  equal to the value given in Expr_Or_Association, or else "true"
          --  for box association.
 
+         function Is_Simple_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return Boolean;
+         --  Detect whether aggregate Expr has no "others" or range choices, or
+         --  multiple choices in an association.
+
          function Select_Nth_Index
            (Dim    : Pos;
             Offset : Nat) return W_Expr_Id;
-         --  Return the proposition that Index is at Offset from Id'First
+         --  Return the value for Index at Offset from Id'First
 
          function Select_These_Choices
            (Dim : Pos;
@@ -1797,13 +1848,20 @@ package body Gnat2Why.Expr is
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
 
+         function Transform_Rec_Simple_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return W_Expr_Id;
+         --  Specialized version of Transform_Rec_Aggregate when the aggregate
+         --  is simple, as defined by Is_Simple_Aggregate.
+
          ------------------------------
          -- Constrain_Value_At_Index --
          ------------------------------
 
          function Constrain_Value_At_Index
            (Dim                 : Pos;
-            Expr_Or_Association : Node_Id) return W_Expr_Id
+            Expr_Or_Association : Node_Id;
+            Callback            : Transform_Rec_Func) return W_Expr_Id
          is
             Expr : Node_Id;
 
@@ -1823,7 +1881,7 @@ package body Gnat2Why.Expr is
 
                if Dim < Num_Dim then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
-                  return Transform_Rec_Aggregate (Dim + 1, Expr);
+                  return Callback (Dim + 1, Expr);
                else
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
@@ -1850,6 +1908,70 @@ package body Gnat2Why.Expr is
                end if;
             end if;
          end Constrain_Value_At_Index;
+
+         -------------------------
+         -- Is_Simple_Aggregate --
+         -------------------------
+
+         function Is_Simple_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return Boolean
+         is
+            Exprs       : constant List_Id := Expressions (Expr);
+            Assocs      : constant List_Id := Component_Associations (Expr);
+            Association : Node_Id;
+            Expression  : Node_Id;
+
+            Is_Simple : Boolean := True;
+
+            procedure Check_Simple (B : Boolean);
+            --  Take into account the intermediate check B
+
+            ------------------
+            -- Check_Simple --
+            ------------------
+
+            procedure Check_Simple (B : Boolean) is
+            begin
+               Is_Simple := B and Is_Simple;
+            end Check_Simple;
+
+         begin
+            Expression  := Nlists.First (Exprs);
+            Association := Nlists.First (Assocs);
+
+            while Present (Expression) loop
+               --  For multi-dimensional aggregates, recurse
+
+               if Dim < Num_Dim then
+                  pragma Assert (Nkind (Expression) = N_Aggregate);
+                  Check_Simple (Is_Simple_Aggregate (Dim + 1, Expression));
+               end if;
+               Next (Expression);
+            end loop;
+
+            while Present (Association) loop
+
+               --  Check that there is only one choice, and it is not a range
+
+               Check_Simple (List_Length (Choices (Association)) = 1);
+               Check_Simple (not
+                  Discrete_Choice_Is_Range (First (Choices (Association))));
+
+               --  For multi-dimensional aggregates, recurse
+
+               Expression := Sinfo.Expression (Association);
+
+               if Dim < Num_Dim then
+                  pragma Assert (Nkind (Expression) = N_Aggregate);
+                  Check_Simple (Is_Simple_Aggregate (Dim + 1, Expression));
+               end if;
+
+               Next (Association);
+            end loop;
+
+            return Is_Simple;
+         end Is_Simple_Aggregate;
 
          ----------------------
          -- Select_Nth_Index --
@@ -1883,12 +2005,7 @@ package body Gnat2Why.Expr is
                          Op_Type  => EW_Int);
             end if;
 
-            return New_Comparison
-              (Cmp       => EW_Eq,
-               Left      => Indexes (Integer (Dim)),
-               Right     => Val,
-               Arg_Types => EW_Int_Type,
-               Domain    => EW_Pred);
+            return Val;
          end Select_Nth_Index;
 
          --------------------------
@@ -1925,6 +2042,8 @@ package body Gnat2Why.Expr is
            (Dim  : Pos;
             Expr : Node_Id) return W_Expr_Id
          is
+            Callback    : constant Transform_Rec_Func :=
+                            Transform_Rec_Aggregate'Access;
             Exprs       : constant List_Id := Expressions (Expr);
             Assocs      : constant List_Id := Component_Associations (Expr);
             Association : Node_Id;
@@ -1957,7 +2076,8 @@ package body Gnat2Why.Expr is
                   Assocs_Len = 1)
             then
                if not Box_Present (Association) then
-                  Else_Part := Constrain_Value_At_Index (Dim, Association);
+                  Else_Part :=
+                    Constrain_Value_At_Index (Dim, Association, Callback);
                end if;
                Prev (Association);
                Assocs_Len := Assocs_Len - 1;
@@ -1979,16 +2099,30 @@ package body Gnat2Why.Expr is
                   for Offset in reverse 1 .. List_Length (Exprs) - 1 loop
                      Elsif_Parts (Integer (Offset)) := New_Elsif
                        (Domain    => EW_Pred,
-                        Condition => +Select_Nth_Index (Dim, Offset),
+                        Condition =>
+                          +New_Comparison
+                            (Cmp       => EW_Eq,
+                             Left      => Indexes (Integer (Dim)),
+                             Right     => Select_Nth_Index (Dim, Offset),
+                             Arg_Types => EW_Int_Type,
+                             Domain    => EW_Pred),
                         Then_Part =>
-                          Constrain_Value_At_Index (Dim, Expression));
+                          Constrain_Value_At_Index
+                            (Dim, Expression, Callback));
                      Prev (Expression);
                   end loop;
 
                   return New_Conditional
                     (Domain      => EW_Pred,
-                     Condition   => +Select_Nth_Index (Dim, 0),
-                     Then_Part   => Constrain_Value_At_Index (Dim, Expression),
+                     Condition   =>
+                       +New_Comparison
+                         (Cmp       => EW_Eq,
+                          Left      => Indexes (Integer (Dim)),
+                          Right     => Select_Nth_Index (Dim, 0),
+                          Arg_Types => EW_Int_Type,
+                          Domain    => EW_Pred),
+                     Then_Part   =>
+                       Constrain_Value_At_Index (Dim, Expression, Callback),
                      Elsif_Parts => Elsif_Parts,
                      Else_Part   => Else_Part);
                end;
@@ -2003,7 +2137,8 @@ package body Gnat2Why.Expr is
                         Condition =>
                           +Select_These_Choices (Dim, Choices (Association)),
                         Then_Part =>
-                          Constrain_Value_At_Index (Dim, Association));
+                          Constrain_Value_At_Index
+                            (Dim, Association, Callback));
                      Prev (Association);
                   end loop;
 
@@ -2012,7 +2147,8 @@ package body Gnat2Why.Expr is
                      Condition   =>
                        +Select_These_Choices (Dim, Choices (Association)),
                      Then_Part   =>
-                       Constrain_Value_At_Index (Dim, Association),
+                       Constrain_Value_At_Index
+                         (Dim, Association, Callback),
                      Elsif_Parts => Elsif_Parts,
                      Else_Part   => Else_Part);
                end;
@@ -2021,6 +2157,70 @@ package body Gnat2Why.Expr is
                return Else_Part;
             end if;
          end Transform_Rec_Aggregate;
+
+         ------------------------------------
+         -- Transform_Rec_Simple_Aggregate --
+         ------------------------------------
+
+         function Transform_Rec_Simple_Aggregate
+           (Dim  : Pos;
+            Expr : Node_Id) return W_Expr_Id
+         is
+            Callback    : constant Transform_Rec_Func :=
+                            Transform_Rec_Simple_Aggregate'Access;
+            Exprs       : constant List_Id := Expressions (Expr);
+            Assocs      : constant List_Id := Component_Associations (Expr);
+            Association : Node_Id;
+            Expression  : Node_Id;
+
+         begin
+            Expression  := Nlists.First (Exprs);
+            Association := Nlists.First (Assocs);
+
+            if Present (Expression) then
+               pragma Assert (No (Association));
+
+               declare
+                  Conjuncts : W_Expr_Array
+                    (1 .. Integer (List_Length (Exprs)));
+               begin
+                  for Offset in 1 .. List_Length (Exprs) loop
+                     Indexes (Integer (Dim)) :=
+                       Select_Nth_Index (Dim, Offset - 1);
+                     Conjuncts (Integer (Offset)) :=
+                       Constrain_Value_At_Index (Dim, Expression, Callback);
+                     Next (Expression);
+                  end loop;
+
+                  return New_And_Expr (Domain    => EW_Pred,
+                                       Conjuncts => Conjuncts);
+               end;
+
+            else
+               pragma Assert (Present (Association));
+
+               declare
+                  Conjuncts : W_Expr_Array
+                    (1 .. Integer (List_Length (Assocs)));
+               begin
+                  for Offset in 1 .. List_Length (Assocs) loop
+                     pragma Assert (List_Length (Choices (Association)) = 1);
+                     Indexes (Integer (Dim)) :=
+                       Transform_Expr (Expr          =>
+                                         First (Choices (Association)),
+                                       Expected_Type => EW_Int_Type,
+                                       Domain        => EW_Term,
+                                       Params        => Params);
+                     Conjuncts (Integer (Offset)) :=
+                       Constrain_Value_At_Index (Dim, Association, Callback);
+                     Next (Association);
+                  end loop;
+
+                  return New_And_Expr (Domain    => EW_Pred,
+                                       Conjuncts => Conjuncts);
+               end;
+            end if;
+         end Transform_Rec_Simple_Aggregate;
 
       --  Start of Transform_Array_Component_Associations
 
@@ -2041,10 +2241,14 @@ package body Gnat2Why.Expr is
 
          --  Create the proposition defining the aggregate
 
-         return New_Universal_Quantif
-           (Variables => Binders,
-            Var_Type  => +EW_Int_Type,
-            Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
+         if Is_Simple_Aggregate (Dim => 1, Expr => Expr) then
+            return +Transform_Rec_Simple_Aggregate (Dim => 1, Expr => Expr);
+         else
+            return New_Universal_Quantif
+              (Variables => Binders,
+               Var_Type  => +EW_Int_Type,
+               Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
+         end if;
       end Transform_Array_Component_Associations;
 
       --  Elements of the aggregate
@@ -2917,29 +3121,12 @@ package body Gnat2Why.Expr is
    is
       Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
-      Is_Range  : Boolean;
+      Is_Range  : constant Boolean := Discrete_Choice_Is_Range (Choice);
 
    begin
       if Nkind (Choice) = N_Others_Choice then
          return New_Literal (Domain => Domain, Value => EW_True);
-      end if;
-
-      case Nkind (Choice) is
-         when N_Subtype_Indication | N_Range =>
-            Is_Range := True;
-         when N_Identifier | N_Expanded_Name =>
-            if Ekind (Entity (Choice)) in Type_Kind then
-               Is_Range := True;
-            else
-               Is_Range := False;
-            end if;
-         when N_Others_Choice =>
-            raise Program_Error;
-         when others =>
-            Is_Range := False;
-      end case;
-
-      if Is_Range then
+      elsif Is_Range then
          return Range_Expr (Choice, Expr, Domain, Params, EW_Int_Type);
       else
          return New_Comparison

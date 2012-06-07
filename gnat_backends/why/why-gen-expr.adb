@@ -36,6 +36,7 @@ with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Atree.Traversal;   use Why.Atree.Traversal;
 with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
 
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
@@ -531,6 +532,26 @@ package body Why.Gen.Expr is
                  Name   => To_Ident (WNE_Bool_And),
                  Args   => (1 => +Left, 2 => +Right));
          end if;
+      end if;
+   end New_And_Expr;
+
+   function New_And_Expr
+      (Conjuncts : W_Expr_Array;
+       Domain    : EW_Domain) return W_Expr_Id is
+   begin
+      if Conjuncts'Length = 0 then
+         return +False_Pred;
+
+      elsif Conjuncts'Length = 1 then
+         return Conjuncts (Conjuncts'First);
+
+      else
+         return New_Connection
+           (Domain     => Domain,
+            Op         => EW_And,
+            Left       => +Conjuncts (Conjuncts'First),
+            Right      => +Conjuncts (Conjuncts'First + 1),
+            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
       end if;
    end New_And_Expr;
 

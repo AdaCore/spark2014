@@ -667,14 +667,36 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Connection_Id)
    is
+      Left       : constant W_Expr_Id := Get_Left (Node);
+      Op         : constant EW_Connector := Get_Op (Node);
+      Right      : constant W_Expr_Id := Get_Right (Node);
+      More_Right : constant W_Expr_OList := Get_More_Right (Node);
+
    begin
+      if not Is_Empty (+More_Right) then
+         for E of Get_List (Why_Node_List (More_Right)) loop
+            P (O, "( ");
+         end loop;
+      end if;
+
       P (O, "( ");
-      Traverse (State, +Get_Left (Node));
+      Traverse (State, +Left);
       P (O, " ");
-      P (O, Get_Op (Node));
+      P (O, Op);
       P (O, " ");
-      Traverse (State, +Get_Right (Node));
+      Traverse (State, +Right);
       P (O, " )");
+
+      if not Is_Empty (+More_Right) then
+         for E of Get_List (Why_Node_List (More_Right)) loop
+            P (O, " ");
+            P (O, Op);
+            P (O, " ");
+            Traverse (State, +E);
+            P (O, " )");
+         end loop;
+      end if;
+
       State.Control := Abandon_Children;
    end Connection_Pre_Op;
 

@@ -372,6 +372,8 @@ package body Xtree_Sinfo is
                  "Op", "EW_Connector");
       New_Field (W_Connection,
                  "Right", "W_Expr", Id_One);
+      New_Field (W_Connection,
+                 "More_Right", "W_Expr", Id_Set);
 
       -------------
       -- W_Label --
