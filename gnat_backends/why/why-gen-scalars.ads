@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;     use Types;
-with Uintp;     use Uintp;
 
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
@@ -38,21 +37,12 @@ package Why.Gen.Scalars is
       Entity  : Entity_Id;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
+      Modulus : W_Integer_Constant_Id;
       Is_Base : Boolean);
    --  Declare the whole theory for a signed int of the given size,
    --  i.e. whose range is First .. Last. This creates an abstract type
    --  whose name is given in parameter along with a set of axioms and
    --  subprograms for int conversion.  Is_Base is True if the corresponding
-   --  Ada type is an Ada base type.
-
-   procedure Declare_Ada_Abstract_Modular
-     (Theory  : W_Theory_Declaration_Id;
-      Modulus : Uint;
-      Is_Base : Boolean);
-   --  Declare the whole theory for a unsigned int of the given size,
-   --  i.e. whose range is 0 .. Modulus - 1. This creates an abstract
-   --  type whose name is given in parameter along with a set of axioms and
-   --  subprograms for int conversion. Is_Base is True if the corresponding
    --  Ada type is an Ada base type.
 
    procedure Declare_Ada_Real

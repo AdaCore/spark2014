@@ -58,6 +58,7 @@ package body Gnat2Why.Types is
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
      (Theory  : W_Theory_Declaration_Id;
       Rng     : Node_Id;
+      Modulus : W_Integer_Constant_Id := Why_Empty;
       Is_Base : Boolean);
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
@@ -76,6 +77,7 @@ package body Gnat2Why.Types is
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
      (Theory  : W_Theory_Declaration_Id;
       Rng     : Node_Id;
+      Modulus : W_Integer_Constant_Id := Why_Empty;
       Is_Base : Boolean)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
@@ -91,7 +93,8 @@ package body Gnat2Why.Types is
            New_Integer_Constant (Value =>
               Expr_Value (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Abstract_Signed_Int (Theory, Rng, First, Last, Is_Base);
+      Declare_Ada_Abstract_Signed_Int
+        (Theory, Rng, First, Last, Modulus, Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------
@@ -218,8 +221,10 @@ package body Gnat2Why.Types is
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Modular_Integer_Kind =>
-               Declare_Ada_Abstract_Modular
-                 (Theory, Modulus (E),
+               Declare_Ada_Abstract_Signed_Int_From_Range
+                 (Theory,
+                  Scalar_Range (E),
+                  New_Integer_Constant (Value => Modulus (E)),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Real_Kind =>

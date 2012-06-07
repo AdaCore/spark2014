@@ -33,7 +33,6 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
@@ -52,30 +51,6 @@ package body Why.Gen.Scalars is
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->
       --        {} bool { if result then m = n else m <> n }
 
-   ----------------------------------
-   -- Declare_Ada_Abstract_Modular --
-   ----------------------------------
-
-   procedure Declare_Ada_Abstract_Modular
-     (Theory  : W_Theory_Declaration_Id;
-      Modulus : Uint;
-      Is_Base : Boolean)
-   is
-   begin
-      Emit (Theory, New_Type (To_String (WNE_Type)));
-      Define_Scalar_Attributes
-        (Theory    => Theory,
-         Base_Type => EW_Int,
-         First     => New_Constant (Uint_0),
-         Last      => New_Constant (Modulus - 1),
-         Modulus   => New_Constant (Modulus));
-      Define_Scalar_Conversions
-        (Theory    => Theory,
-         Base_Type => EW_Int,
-         Modulus   => New_Constant (Modulus),
-         Is_Base   => Is_Base);
-   end Declare_Ada_Abstract_Modular;
-
    -------------------------------------
    -- Declare_Ada_Abstract_Signed_Int --
    -------------------------------------
@@ -85,6 +60,7 @@ package body Why.Gen.Scalars is
       Entity  : Entity_Id;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
+      Modulus : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
    begin
@@ -102,10 +78,11 @@ package body Why.Gen.Scalars is
          Base_Type => EW_Int,
          First     => +First,
          Last      => +Last,
-         Modulus   => Why_Empty);
+         Modulus   => +Modulus);
       Define_Scalar_Conversions
         (Theory    => Theory,
          Base_Type => EW_Int,
+         Modulus   => +Modulus,
          Is_Base   => Is_Base);
    end Declare_Ada_Abstract_Signed_Int;
 
