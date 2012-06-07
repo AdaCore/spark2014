@@ -996,7 +996,7 @@ package body Why.Atree.Sprint is
       Context          : constant W_Expr_Id := Get_Context (Node);
       Binding_Sequence : constant Boolean := Get_Kind (+Context) = W_Binding;
    begin
-      P (O, "let ");
+      P (O, "(let ");
       Traverse (State, +Name);
       P (O, " = ");
       Traverse (State, +Def);
@@ -1012,7 +1012,7 @@ package body Why.Atree.Sprint is
          Relative_Indent (O, -1);
       end if;
 
-      PL (O, ")");
+      PL (O, "))");
 
       State.Control := Abandon_Children;
    end Binding_Pre_Op;
@@ -1214,7 +1214,9 @@ package body Why.Atree.Sprint is
       Node  : W_Statement_Sequence_Id)
    is
    begin
+      P (O, "( ");
       Print_List (State, +Get_Statements (Node), ";", Newline => True);
+      P (O, " )");
       State.Control := Abandon_Children;
    end Statement_Sequence_Pre_Op;
 

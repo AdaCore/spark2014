@@ -232,9 +232,9 @@ package body Gnat2Why.Expr is
    --  {X, Y, Z}.
 
    function Transform_Slice
-     (Params : Translation_Params;
-      Domain : EW_Domain;
-      Expr   : Node_Id) return W_Expr_Id;
+     (Params       : Translation_Params;
+      Domain       : EW_Domain;
+      Expr         : Node_Id) return W_Expr_Id;
    --  Transform a slice Expr. It may be
    --  called multiple times on the same Ada node, corresponding to different
    --  phases of the translation. The first time it is called on an Ada node,
@@ -2288,285 +2288,67 @@ package body Gnat2Why.Expr is
    ---------------------
 
    function Transform_Slice
-     (Params : Translation_Params;
-      Domain : EW_Domain;
-      Expr   : Node_Id) return W_Expr_Id
+     (Params       : Translation_Params;
+      Domain       : EW_Domain;
+      Expr         : Node_Id) return W_Expr_Id
    is
-      -----------------------
-      -- Local subprograms --
-      -----------------------
-
-      procedure Get_Slice_Elements
-        (Expr   : Node_Id;
-         Prefix : out Node_Id;
-         Low    : out Node_Id;
-         High   : out Node_Id);
-      --  Extract elements of the slice Expr that will be passed in parameter:
-      --  the prefix, low bound and high bound of the slice.
-
-      procedure Generate_Logic_Function
-        (Expr       : Node_Id;
-         Prefix_Typ : Entity_Id);
-      --  Generate the logic function definition for the slice Expr, with a
-      --  suitable defining axiom:
-      --
-      --    function F (prefix:<type>, low:int, high:int) : <type>
-      --
-      --    axiom A:
-      --      forall id:<type>. forall low:int. forall high:int.
-      --        R = F(id,low,high) -> <proposition for the slice R>
-
-      function Transform_Slice_To_Pred
-        (Expr   : Node_Id;
-         Id     : W_Identifier_Id;
-         Prefix : W_Identifier_Id;
-         Low    : W_Identifier_Id;
-         High   : W_Identifier_Id) return W_Pred_Id;
-      --  Generates the proposition defining the slice Id, based on elements
-      --  Prefix, Low and High.
-
-      function Complete_Translation
-        (Params : Translation_Params;
-         Domain : EW_Domain;
-         Func   : W_Identifier_Id;
-         Prefix : Node_Id;
-         Low    : Node_Id;
-         High   : Node_Id) return W_Expr_Id;
-      --  Given a logic function Func previously defined for the slice,
-      --  generate the actual call to Func by translating parameters
-      --  Prefix, Low and High in the context given by Params.
-
-      --------------------------
-      -- Complete_Translation --
-      --------------------------
-
-      function Complete_Translation
-        (Params : Translation_Params;
-         Domain : EW_Domain;
-         Func   : W_Identifier_Id;
-         Prefix : Node_Id;
-         Low    : Node_Id;
-         High   : Node_Id) return W_Expr_Id
-      is
-         --  Compute the arguments for the function call
-
-         Args : constant W_Expr_Array :=
-                  (1 => Transform_Expr (Prefix,
-                                        Domain,
-                                        Params),
-                   2 => Transform_Expr (Low,
-                                        EW_Int_Type,
-                                        Domain,
-                                        Params),
-                   3 => Transform_Expr (High,
-                                        EW_Int_Type,
-                                        Domain,
-                                        Params));
-      begin
-         --  Return the call
-
-         return New_Call (Ada_Node => Expr,
-                          Domain   => Domain,
-                          Name     => Func,
-                          Args     => Args);
-      end Complete_Translation;
-
-      -----------------------------
-      -- Generate_Logic_Function --
-      -----------------------------
-
-      procedure Generate_Logic_Function
-        (Expr       : Node_Id;
-         Prefix_Typ : Entity_Id)
-      is
-         Expr_Typ    : constant Entity_Id := Type_Of_Node (Expr);
-
-         --  Generate name for the function based on the location of the slice
-
-         Name        : constant String := New_Str_Lit_Ident (Expr);
-         Func        : constant W_Identifier_Id :=
-                         New_Identifier (Name     => Name,
-                                         Ada_Node => Expr);
-
-         --  Compute the parameters/arguments for the axiom/call
-
-         Prefix_Arg  : constant W_Identifier_Id := New_Temp_Identifier;
-         Low_Arg     : constant W_Identifier_Id := New_Temp_Identifier;
-         High_Arg    : constant W_Identifier_Id := New_Temp_Identifier;
-
-         Call_Args   : constant W_Expr_Array :=
-                         (1 => +Prefix_Arg,
-                          2 => +Low_Arg,
-                          3 => +High_Arg);
-
-         Id          : constant W_Identifier_Id := New_Temp_Identifier;
-         Ret_Type    : constant W_Primitive_Type_Id :=
-                         +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
-         Id_Param    : constant Binder_Array :=
-                         (1 => (Ada_Node => Empty,
-                                B_Name   => Id,
-                                Modifier => None,
-                                B_Type   => Ret_Type));
-
-         Call_Params : constant Binder_Array :=
-                         (1 => (Ada_Node => Empty,
-                                B_Name   => Prefix_Arg,
-                                Modifier => None,
-                                B_Type   =>
-                                  Why_Logic_Type_Of_Ada_Type (Prefix_Typ)),
-                          2 => (Ada_Node => Empty,
-                                B_Name   => Low_Arg,
-                                Modifier => None,
-                                B_Type   => +EW_Int_Type),
-                          3 => (Ada_Node => Empty,
-                                B_Name   => High_Arg,
-                                Modifier => None,
-                                B_Type   => +EW_Int_Type));
-
-         --  Compute the call, guard and proposition for the axiom
-
-         Call       : constant W_Expr_Id :=
-                        New_Call (Ada_Node => Expr,
-                                  Domain   => EW_Term,
-                                  Name     => Func,
-                                  Args     => Call_Args);
-         Id_Expr    : constant W_Expr_Id :=
-                        New_Comparison (Cmp       => EW_Eq,
-                                        Left      => +Id,
-                                        Right     => Call,
-                                        Arg_Types => +Ret_Type,
-                                        Domain    => EW_Pred);
-         Def_Pred   : constant W_Pred_Id :=
-                        Transform_Slice_To_Pred (Expr   => Expr,
-                                                 Id     => Id,
-                                                 Prefix => Prefix_Arg,
-                                                 Low    => Low_Arg,
-                                                 High   => High_Arg);
-
-         --  Select file for the declarations
-
-         Decl_File : Why_File := Why_Files (Dispatch_Entity (Expr));
-
-      --  Start of Generate_Logic_Function
-
-      begin
-         --  Store the logic function
-
-         Ada_To_Why_Func.Include (Expr, +Func);
-
-         --  Generate the necessary logic function and axiom declarations
-
-         if Params.File = Decl_File.File then
-            Decl_File.Cur_Theory := Why_Empty;
-         end if;
-         Open_Theory (Decl_File, Name);
-
-         Emit (Decl_File.Cur_Theory,
-               New_Function_Decl (Domain      => EW_Term,
-                                  Name        => Func,
-                                  Binders     => Call_Params,
-                                  Return_Type => Ret_Type));
-
-         Emit (Decl_File.Cur_Theory,
-               New_Guarded_Axiom
-                 (Name        => To_Ident (WNE_Def_Axiom),
-                  Binders     => Id_Param & Call_Params,
-                  Pre         => +Id_Expr,
-                  Def         => Def_Pred));
-
-         Close_Theory (Decl_File, Filter_Entity => Expr);
-         if Params.File = Decl_File.File then
-            Decl_File.Cur_Theory := Params.Theory;
-         end if;
-      end Generate_Logic_Function;
-
-      ------------------------
-      -- Get_Slice_Elements --
-      ------------------------
-
-      procedure Get_Slice_Elements
-        (Expr   : Node_Id;
-         Prefix : out Node_Id;
-         Low    : out Node_Id;
-         High   : out Node_Id)
-      is
-         Range_N : constant Node_Id := Get_Range (Discrete_Range (Expr));
-      begin
-         Prefix := Sinfo.Prefix (Expr);
-         Low    := Low_Bound (Range_N);
-         High   := High_Bound (Range_N);
-      end Get_Slice_Elements;
-
-      -----------------------------
-      -- Transform_Slice_To_Pred --
-      -----------------------------
-
-      function Transform_Slice_To_Pred
-        (Expr   : Node_Id;
-         Id     : W_Identifier_Id;
-         Prefix : W_Identifier_Id;
-         Low    : W_Identifier_Id;
-         High   : W_Identifier_Id) return W_Pred_Id
-      is
-         Expr_Type  : constant Entity_Id := Type_Of_Node (Expr);
-         Slice_Type : constant Entity_Id := Type_Of_Node (Sinfo.Prefix (Expr));
-
-         Index      : constant W_Identifier_Id := New_Temp_Identifier;
-         Indexes    : constant W_Expr_Array := (1 => +Index);
-         Binders    : constant W_Identifier_Array := (1 => Index);
-
-         Range_Pred : constant W_Expr_Id :=
-                        New_Range_Expr
-                          (Domain    => EW_Pred,
-                           Base_Type => EW_Int_Type,
-                           Low       => +Low,
-                           High      => +High,
-                           Expr      => +Index);
-         Elt_Equal  : constant W_Pred_Id :=
-                        New_Element_Equality
-                          (Ada_Node   => Expr,
-                           Left_Arr   => +Id,
-                           Left_Type  => Expr_Type,
-                           Right_Arr  => +Prefix,
-                           Right_Type => Slice_Type,
-                           Index      => Indexes,
-                           Dimension  => 1);
-      begin
-         return New_Universal_Quantif (Variables => Binders,
-                                       Var_Type  => +EW_Int_Type,
-                                       Pred      =>
-                                         New_Conditional
-                                           (Condition => Range_Pred,
-                                            Then_Part => +Elt_Equal));
-      end Transform_Slice_To_Pred;
-
-      --  Elements of the slice
-
-      Prefix : Node_Id;
-      Low    : Node_Id;
-      High   : Node_Id;
-
-   --  Start of Transform_Slice
-
+      Prefix      : constant Node_Id := Sinfo.Prefix (Expr);
+      Range_N     : constant Node_Id := Get_Range (Discrete_Range (Expr));
+      Low         : constant Node_Id := Low_Bound (Range_N);
+      High        : constant Node_Id := High_Bound (Range_N);
+      Tmp_Low     : constant W_Identifier_Id := New_Temp_Identifier;
+      Tmp_Pre     : constant W_Identifier_Id := New_Temp_Identifier;
+      Array_Base  : constant String := To_String (Ada_Array_Name (1));
+      Shift       : constant W_Expr_Id :=
+        New_Binary_Op
+          (Op_Type => EW_Int,
+           Op      => EW_Substract,
+           Left    => +Tmp_Low,
+           Right   =>
+             New_Record_Access
+               (Name  => +Tmp_Pre,
+                Field => New_Identifier (Name => Array_Base & ".first")));
+      New_Offset  : constant W_Expr_Id :=
+        New_Binary_Op
+          (Op_Type => EW_Int,
+           Op      => EW_Add,
+           Left    =>
+             New_Record_Access
+               (Name => +Tmp_Pre,
+                Field =>
+                  New_Identifier (Name => Array_Base & ".offset")),
+           Right  => Shift);
+      Updates     : constant W_Field_Association_Array :=
+        (1 =>
+           New_Field_Association
+             (Field  => New_Identifier (Name => Array_Base & ".first"),
+              Value  => +Tmp_Low,
+              Domain => Domain),
+         2 =>
+           New_Field_Association
+             (Field  => New_Identifier (Name => Array_Base & ".last"),
+              Value  => Transform_Expr (High, EW_Int_Type, Domain, Params),
+              Domain => Domain),
+         3 =>
+           New_Field_Association
+             (Field  => New_Identifier (Name => Array_Base & ".offset"),
+              Value  => New_Offset,
+              Domain => Domain));
    begin
-      --  Get the slice elements that should be passed in parameter
-
-      Get_Slice_Elements (Expr, Prefix, Low, High);
-
-      --  If not done already, generate the logic function
-
-      if not Ada_To_Why_Func.Contains (Expr) then
-         Generate_Logic_Function (Expr, Type_Of_Node (Prefix));
-      end if;
-
-      --  Retrieve the logic function previously generated, and call it on the
-      --  appropriate parameters.
-
-      declare
-         Func : constant W_Identifier_Id := +Ada_To_Why_Func.Element (Expr);
-      begin
-         return Complete_Translation (Params, Domain, Func, Prefix, Low, High);
-      end;
+      return
+        New_Binding
+          (Domain  => Domain,
+           Name    => Tmp_Pre,
+           Def     => +Transform_Expr (Prefix, EW_Array_Type, Domain, Params),
+           Context =>
+             New_Binding
+               (Domain  => Domain,
+                Name    => Tmp_Low,
+                Def     => +Transform_Expr (Low, EW_Int_Type, Domain, Params),
+                Context =>
+                  New_Record_Update
+                    (Name    => +Tmp_Pre,
+                     Updates => Updates)));
    end Transform_Slice;
 
    ------------------------------------
@@ -3222,7 +3004,7 @@ package body Gnat2Why.Expr is
       end if;
 
       case Nkind (Expr) is
-         when N_Aggregate | N_Slice =>
+         when N_Aggregate =>
             declare
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
             begin
@@ -3240,14 +3022,14 @@ package body Gnat2Why.Expr is
                   pragma Assert
                      (Is_Array_Type (Expr_Type) or else
                       Is_String_Type (Expr_Type));
-                  if Nkind (Expr) = N_Aggregate then
-                     T := Transform_Aggregate (Params, Domain, Expr);
-                  else
-                     T := Transform_Slice (Params, Domain, Expr);
-                  end if;
+                  T := Transform_Aggregate (Params, Domain, Expr);
                   Current_Type := EW_Abstract (Expr_Type);
                end if;
             end;
+
+         when N_Slice =>
+            T := Transform_Slice (Params, Domain, Expr);
+            Current_Type := EW_Array_Type;
 
          when N_Integer_Literal =>
             T :=
