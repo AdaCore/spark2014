@@ -34,7 +34,7 @@ evoting_simple.adb:36:43: info: overflow check proved
 evoting_simple.adb:36:43: info: range check proved
 evoting_simple.adb:45:14: info: index check proved
 evoting_simple.adb:53:40: info: range check proved
-evoting_simple.adb:89:38: precondition not proved, requires attr__ATTRIBUTE_VALUE__pre_check (of_array (evoting_simple__89__45 buf 1 R26b))
+evoting_simple.adb:89:38: precondition not proved, requires attr__ATTRIBUTE_VALUE__pre_check (mk___string (elts (evoting_simple__89__45 (mk_t buf buf1) 1 R26b)) (offset (evoting_simple__89__45 (mk_t buf buf1) 1 R26b)) (mk attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST))
 evoting_simple.adb:89:38: range check not proved, requires in_range result
 evoting_simple.adb:96:16: info: index check proved
 evoting_simple.adb:96:32: info: index check proved

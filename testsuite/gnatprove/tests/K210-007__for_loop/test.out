@@ -12,7 +12,7 @@ s.adb:27:35: info: overflow check proved
 s.adb:28:15: info: range check proved
 s.adb:30:7: info: assertion proved
 s.adb:37:10: info: loop invariant initialization proved
-s.adb:37:10: loop invariant preservation not proved, requires (Dest (J) = Src_Old (J))
+s.adb:37:10: loop invariant preservation not proved, requires (get Dest ((J + Dest1) - attr__ATTRIBUTE_FIRST) = get (elts Src_Old) ((J + offset Src_Old) - attr__ATTRIBUTE_FIRST))
 s.adb:37:59: info: overflow check proved
 s.adb:38:27: info: index check proved
 s.adb:38:38: info: index check proved
@@ -23,7 +23,7 @@ s.adb:42:26: info: index check proved
 s.adb:43:10: info: index check proved
 s.adb:43:25: info: range check proved
 s.adb:51:10: info: loop invariant initialization proved
-s.adb:51:10: loop invariant preservation not proved, requires (Dest (J) = Src_Old (J))
+s.adb:51:10: loop invariant preservation not proved, requires (get Dest ((J + Dest1) - attr__ATTRIBUTE_FIRST) = get (elts Src_Old) ((J + offset Src_Old) - attr__ATTRIBUTE_FIRST))
 s.adb:51:45: info: overflow check proved
 s.adb:52:27: info: index check proved
 s.adb:52:38: info: index check proved
@@ -38,10 +38,10 @@ s.adb:6:10: info: loop invariant preservation proved
 s.adb:6:59: info: overflow check proved
 s.adb:7:27: info: index check proved
 s.adb:9:13: info: index check proved
-s.ads:14:15: postcondition not proved, requires (Dest (J) = Src (J))
+s.ads:14:15: postcondition not proved, requires (get Dest ((J + Dest1) - attr__ATTRIBUTE_FIRST) = get Src ((J + Src1) - attr__ATTRIBUTE_FIRST))
 s.ads:14:42: info: index check proved
 s.ads:14:56: info: index check proved
-s.ads:17:15: postcondition not proved, requires (Dest (J) = Src (J))
+s.ads:17:15: postcondition not proved, requires (get Dest ((J + Dest1) - attr__ATTRIBUTE_FIRST) = get Src ((J + Src1) - attr__ATTRIBUTE_FIRST))
 s.ads:17:42: info: index check proved
 s.ads:17:56: info: index check proved
 s.ads:8:15: info: postcondition proved

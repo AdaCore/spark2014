@@ -1,16 +1,16 @@
 
 const.adb:10:22: info: index check proved
-const.adb:10:7: info: assertion proved
+const.adb:10:7: assertion not proved, requires (get (elts C) ((1 + offset C) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:11:22: info: index check proved
-const.adb:11:7: info: assertion proved
+const.adb:11:7: assertion not proved, requires (get (elts C) ((2 + offset C) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:12:22: info: index check proved
-const.adb:12:7: info: assertion proved
+const.adb:12:7: assertion not proved, requires (get (elts C2) ((1 + offset C2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:13:22: info: index check proved
-const.adb:13:7: info: assertion proved
+const.adb:13:7: assertion not proved, requires (get (elts C2) ((2 + offset C2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:18:22: info: index check proved
 const.adb:18:7: info: assertion proved
 const.adb:19:22: info: index check proved
-const.adb:19:7: info: assertion proved
+const.adb:19:7: assertion not proved, requires (get (elts D2) ((2 + offset D2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:23:7: info: assertion proved
 const.adb:24:7: info: assertion proved
 const.adb:25:7: info: assertion proved

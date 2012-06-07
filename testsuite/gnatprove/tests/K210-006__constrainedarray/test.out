@@ -4,4 +4,4 @@ constr.adb:6:19: info: index check proved
 constr.adb:6:24: overflow check not proved, requires in_range (result + 1)
 constr.ads:5:20: info: index check proved
 constr.ads:6:21: info: index check proved
-constr.ads:6:26: postcondition not proved, requires (X (1) = 1)
+constr.ads:6:26: postcondition not proved, requires (get X ((1 + X1) - attr__ATTRIBUTE_FIRST) = 1)

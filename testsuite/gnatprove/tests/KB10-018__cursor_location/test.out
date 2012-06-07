@@ -12,7 +12,7 @@ cursor_location.adb:33:21: info: range check proved
 cursor_location.ads:10:23: info: range check proved
 cursor_location.ads:11:24: info: range check proved
 cursor_location.ads:18:10: info: index check proved
-cursor_location.ads:18:30: postcondition not proved, requires (DU_Available (Side) = True)
+cursor_location.ads:18:30: postcondition not proved, requires (get (elts DU_Available) ((Side + offset DU_Available) - attr__ATTRIBUTE_FIRST) = True)
 cursor_location.ads:19:11: info: index check proved
 cursor_location.ads:20:15: info: index check proved
 cursor_location.ads:27:18: info: index check proved

@@ -2,6 +2,6 @@
 unconstr.adb:3:14: info: range check proved
 unconstr.adb:5:22: info: range check proved
 unconstr.adb:5:7: info: index check proved
-unconstr.ads:8:21: range check not proved, requires in_range X'Length
-unconstr.ads:9:21: info: index check proved
-unconstr.ads:9:33: info: postcondition proved
+unconstr.ads:8:21: info: range check proved
+unconstr.ads:9:21: index check not proved, requires (first result <= last result1)
+unconstr.ads:9:33: postcondition not proved, requires (get (elts (mk_t X X1 X2)) ((first (mk_t X X1 X2) + offset (mk_t X X1 X2)) - first (mk_t X X1 X2)) = 0)

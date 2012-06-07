@@ -3,12 +3,12 @@ p1.adb:10:14: info: range check proved
 p1.adb:11:31: info: index check proved
 p1.adb:13:15: info: index check proved
 p1.adb:13:7: info: index check proved
-p1.adb:14:7: info: index check proved
+p1.adb:14:7: index check not proved, requires (J <= last result)
 p1.adb:17:14: info: range check proved
 p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:28:10: info: loop invariant initialization proved
-p1.adb:28:10: loop invariant preservation not proved, requires (J <= A'Last)
+p1.adb:28:10: loop invariant preservation not proved, requires not (get (elts (mk_t A A1 A2)) ((K + offset (mk_t A A1 A2)) - first (mk_t A A1 A2)) = True)
 p1.adb:30:62: info: overflow check proved
 p1.adb:30:72: info: index check proved
 p1.adb:31:51: info: overflow check proved
@@ -24,14 +24,14 @@ p1.adb:38:19: info: overflow check proved
 p1.adb:38:19: info: range check proved
 p1.adb:39:19: info: overflow check proved
 p1.adb:39:19: info: range check proved
-p1.adb:5:14: info: index check proved
+p1.adb:5:14: index check not proved, requires (first result <= I)
 p1.adb:5:21: info: index check proved
-p1.adb:6:25: info: index check proved
+p1.adb:6:25: index check not proved, requires (first result <= J)
 p1.adb:6:32: info: index check proved
-p1.adb:7:26: info: postcondition proved
+p1.adb:7:26: postcondition not proved, requires (get (elts (mk_t A A1 A2)) ((J + offset (mk_t A A1 A2)) - first (mk_t A A1 A2)) = get (elts (mk_t A3 A4 A5)) ((I + offset (mk_t A3 A4 A5)) - first (mk_t A3 A4 A5)))
 p1.adb:8:55: info: index check proved
-p1.adb:8:63: info: index check proved
-p1.ads:6:16: postcondition not proved, requires (A'Last <  A'First) or (exists K: int. ((A'First <= K) and (K <= A'Last)) and (forall J: int. (if (A'First <= J) and (J <= K) then not (A (J) = True))) and (forall J1: int. (if ((K + 1) <= J1) and (J1 <= A'Last) then (A (J1) = True))))
+p1.adb:8:63: index check not proved, requires (result <= last result1)
+p1.ads:6:16: postcondition not proved, requires (last (mk_t A A1 A2) <  first (mk_t A A1 A2)) or (exists K: int. ((first (mk_t A A1 A2) <= K) and (K <= last (mk_t A A1 A2))) and (forall J: int. (if (first (mk_t A A1 A2) <= J) and (J <= K) then not (get (elts (mk_t A A1 A2)) ((J + offset (mk_t A A1 A2)) - first (mk_t A A1 A2)) = True))) and (forall J1: int. (if ((K + 1) <= J1) and (J1 <= last (mk_t A A1 A2)) then (get (elts (mk_t A A1 A2)) ((J1 + offset (mk_t A A1 A2)) - first (mk_t A A1 A2)) = True))))
 p1.ads:7:61: info: index check proved
 p1.ads:8:53: overflow check not proved, requires in_range (result + 1)
 p1.ads:8:69: info: index check proved

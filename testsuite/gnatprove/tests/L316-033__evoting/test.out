@@ -51,7 +51,7 @@ evoting.adb:268:36: info: range check proved
 evoting.adb:272:18: info: range check proved
 evoting.adb:272:7: info: precondition proved
 evoting.adb:274:14: info: range check proved
-evoting.adb:274:7: info: precondition proved
+evoting.adb:274:7: precondition not proved, requires (get counters ((i + counters1) - attr__ATTRIBUTE_FIRST) = 0)
 evoting.adb:276:29: info: range check proved
 evoting.adb:276:7: info: precondition proved
 evoting.adb:38:74: info: range check proved
@@ -59,7 +59,7 @@ evoting.adb:47:13: info: index check proved
 evoting.adb:47:33: info: range check proved
 evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
-evoting.adb:58:10: info: index check proved
+evoting.adb:58:10: index check not proved, requires (attr__ATTRIBUTE_FIRST <= current_candidate)
 evoting.adb:60:49: info: overflow check proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: overflow check proved
@@ -75,11 +75,11 @@ evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
 evoting.ads:108:39: info: index check proved
-evoting.ads:109:13: postcondition not proved, requires (counters (winner) >  counters (i))
+evoting.ads:109:13: postcondition not proved, requires (get (elts counters) ((winner + offset counters) - attr__ATTRIBUTE_FIRST) >  get (elts counters) ((i + offset counters) - attr__ATTRIBUTE_FIRST))
 evoting.ads:110:45: info: overflow check proved
-evoting.ads:111:19: info: index check proved
-evoting.ads:54:14: postcondition not proved, requires (candidates (i) (j) = 32)
+evoting.ads:111:19: index check not proved, requires (attr__ATTRIBUTE_FIRST <= result)
+evoting.ads:54:14: postcondition not proved, requires (get (elts (get candidates ((i + candidates1) - attr__ATTRIBUTE_FIRST))) ((j + offset (get candidates ((i + candidates1) - attr__ATTRIBUTE_FIRST))) - attr__ATTRIBUTE_FIRST1) = 32)
 evoting.ads:56:29: info: index check proved
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:94:7: postcondition not proved, requires (counters (i) = 0)
+evoting.ads:94:7: postcondition not proved, requires (get counters ((i + counters1) - attr__ATTRIBUTE_FIRST) = 0)

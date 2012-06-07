@@ -19,8 +19,8 @@ arrays.ads:12:61: info: index check proved
 arrays.ads:26:32: postcondition not proved, requires (Count_Even'Result <= X'Length)
 arrays.ads:26:36: info: range check proved
 arrays.ads:27:6: info: postcondition proved
-arrays.ads:29:37: range check not proved, requires in_range X'Length
+arrays.ads:29:37: info: range check proved
 arrays.ads:5:25: postcondition not proved, requires (Sum'Result >= X'Length)
 arrays.ads:5:29: info: range check proved
 arrays.ads:6:6: info: postcondition proved
-arrays.ads:8:37: range check not proved, requires in_range X'Length
+arrays.ads:8:37: info: range check proved

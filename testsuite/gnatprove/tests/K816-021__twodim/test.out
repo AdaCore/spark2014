@@ -5,7 +5,7 @@ twodim.adb:13:27: overflow check not proved, requires in_range (M'Length + M'Len
 twodim.adb:13:30: range check not proved, requires in_range M'Length(2)
 twodim.adb:8:16: division check not proved, requires not ((result + 1) = 0)
 twodim.adb:8:16: overflow check not proved, requires in_range (1 / (result + 1))
-twodim.adb:8:19: index check not proved, requires ((K + 1) <= M'Last(2))
+twodim.adb:8:19: index check not proved, requires ((K + 1) <= attr__ATTRIBUTE_LAST_2)
 twodim.adb:8:25: info: overflow check proved
 twodim.adb:8:29: overflow check not proved, requires in_range (result + 1)
 twodim.ads:11:20: info: index check proved

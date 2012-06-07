@@ -7,7 +7,7 @@ model.adb:64:20: info: index check proved
 model.adb:66:10: info: index check proved
 model.adb:67:42: info: index check proved
 model.adb:71:10: info: loop invariant initialization proved
-model.adb:71:10: loop invariant preservation not proved, requires (Name Owned_State SM (From Owned_Transition SM (T)) = Name1 AV (From1 CFV (T)))
+model.adb:71:10: loop invariant preservation not proved, requires (Name (get (elts Owned_State SM) ((From (get (elts1 Owned_Transition SM) ((T + offset Owned_Transition SM) - attr__ATTRIBUTE_FIRST)) + offset1 Owned_State SM) - attr__ATTRIBUTE_FIRST1)) = Name1 (get AV ((From1 (get CFV ((T + CFV1) - attr__ATTRIBUTE_FIRST2)) + AV1) - attr__ATTRIBUTE_FIRST3)))
 model.adb:72:57: info: overflow check proved
 model.adb:73:20: info: index check proved
 model.adb:73:41: info: index check proved
@@ -27,7 +27,7 @@ model.ads:102:31: info: postcondition proved
 model.ads:106:29: info: postcondition proved
 model.ads:129:33: info: postcondition proved
 model.ads:134:31: info: postcondition proved
-model.ads:149:7: postcondition not proved, requires (Name Owned_State SM (From Owned_Transition SM (T)) = Name1 Owned_Action (mk_t Transform'Result Transform'Result1) (From1 Owned_Flow (mk_t Transform'Result Transform'Result1) (T)))
+model.ads:149:7: postcondition not proved, requires (Name (get (elts Owned_State SM) ((From (get (elts1 Owned_Transition SM) ((T + offset Owned_Transition SM) - attr__ATTRIBUTE_FIRST)) + offset1 Owned_State SM) - attr__ATTRIBUTE_FIRST1)) = Name1 (get (elts2 Owned_Action (mk_t (mk_t1 Transform'Result Transform'Result1) (mk_t2 Transform'Result2 Transform'Result3))) ((From1 (get (elts3 Owned_Flow (mk_t (mk_t1 Transform'Result Transform'Result1) (mk_t2 Transform'Result2 Transform'Result3))) ((T + offset2 Owned_Flow (mk_t (mk_t1 Transform'Result Transform'Result1) (mk_t2 Transform'Result2 Transform'Result3))) - attr__ATTRIBUTE_FIRST2)) + offset3 Owned_Action (mk_t (mk_t1 Transform'Result Transform'Result1) (mk_t2 Transform'Result2 Transform'Result3))) - attr__ATTRIBUTE_FIRST3)))
 model.ads:151:17: info: index check proved
 model.ads:151:38: info: index check proved
 model.ads:152:19: info: index check proved

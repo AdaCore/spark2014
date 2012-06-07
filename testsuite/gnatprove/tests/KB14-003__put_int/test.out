@@ -9,9 +9,9 @@ put.adb:17:22: info: overflow check proved
 put.adb:17:22: range check not proved, requires in_range (First - 1)
 put.adb:18:55: overflow check not proved, requires in_range (48 - Val)
 put.adb:18:55: range check not proved, requires in_range (48 - Val)
-put.adb:18:7: index check not proved, requires (S'First <= First)
+put.adb:18:7: index check not proved, requires (attr__ATTRIBUTE_FIRST <= First)
 put.adb:23:22: info: overflow check proved
 put.adb:23:22: info: range check proved
 put.adb:24:20: info: range check proved
-put.adb:24:7: index check not proved, requires (S'First <= First)
+put.adb:24:7: index check not proved, requires (attr__ATTRIBUTE_FIRST <= First)
 put.adb:5:30: info: range check proved
