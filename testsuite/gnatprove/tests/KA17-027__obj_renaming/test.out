@@ -1,7 +1,7 @@
 
 main.adb:12:29: info: postcondition proved
 main.adb:12:44: info: range check proved
-main.adb:15:29: info: postcondition proved
+main.adb:15:29: postcondition not proved, requires ((mk_t Get_Arr'Result Get_Arr'Result1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST = mk_t (elts (main__15__35 (mk_t1 9012))) (offset (main__15__35 (mk_t1 9012))) attr__ATTRIBUTE_FIRST1 attr__ATTRIBUTE_LAST1) = True)
 main.adb:15:59: info: range check proved
 main.adb:18:15: info: postcondition proved
 main.adb:21:45: info: range check proved
