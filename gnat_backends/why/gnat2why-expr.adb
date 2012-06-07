@@ -1459,7 +1459,7 @@ package body Gnat2Why.Expr is
       --
       --     axiom A:
       --       forall id:<type of aggregate>. forall <params>.
-      --         R = F(<params>) -> <proposition for the aggregate R>
+      --         <proposition for the aggregate F(<params>)>
 
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
@@ -1765,6 +1765,7 @@ package body Gnat2Why.Expr is
          Typ     : constant Entity_Id := Type_Of_Node (Expr);
          T_Name  : constant Entity_Id := Type_Of_Node (Typ);
          Num_Dim : constant Pos := Number_Dimensions (Typ);
+         Ind_Arr : array (1 .. Num_Dim) of Node_Id;
          Indexes : W_Expr_Array (1 .. Positive (Num_Dim));
          Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
 
@@ -1858,26 +1859,34 @@ package body Gnat2Why.Expr is
            (Dim    : Pos;
             Offset : Nat) return W_Expr_Id
          is
-            First : constant W_Expr_Id :=
-                      New_Array_Attr
-                        (Attr      => Attribute_First,
-                         Ty_Entity => T_Name,
-                         Ar        => Arr,
-                         Domain    => EW_Term,
-                         Dimension => Num_Dim,
-                         Argument  => UI_From_Int (Dim));
-            Nth   : constant W_Expr_Id :=
-                      New_Binary_Op
+            Rng        : constant Node_Id := Get_Range (Ind_Arr (Dim));
+            Low        : constant Node_Id := Low_Bound (Rng);
+            First, Val : W_Expr_Id;
+
+         begin
+            if Is_Static_Expression (Low) then
+               Val := New_Integer_Constant
+                 (Value => Expr_Value (Low) + UI_From_Int (Offset));
+
+            else
+               First := New_Array_Attr (Attr      => Attribute_First,
+                                        Ty_Entity => T_Name,
+                                        Ar        => Arr,
+                                        Domain    => EW_Term,
+                                        Dimension => Num_Dim,
+                                        Argument  => UI_From_Int (Dim));
+               Val := New_Binary_Op
                         (Left     => First,
                          Right    =>
                           New_Integer_Constant (Value => UI_From_Int (Offset)),
                          Op       => EW_Add,
                          Op_Type  => EW_Int);
-         begin
+            end if;
+
             return New_Comparison
               (Cmp       => EW_Eq,
                Left      => Indexes (Integer (Dim)),
-               Right     => Nth,
+               Right     => Val,
                Arg_Types => EW_Int_Type,
                Domain    => EW_Pred);
          end Select_Nth_Index;
@@ -2016,10 +2025,21 @@ package body Gnat2Why.Expr is
       --  Start of Transform_Array_Component_Associations
 
       begin
+         --  Fill the array of index nodes
+
+         Ind_Arr (1) := First_Index (Typ);
+         for Dim in 2 .. Num_Dim loop
+            Ind_Arr (Dim) := Next_Index (Ind_Arr (Dim - 1));
+         end loop;
+
+         --  Define index variables
+
          for J in 1 .. Integer (Num_Dim) loop
             Binders (J) := New_Temp_Identifier;
             Indexes (J) := +Binders (J);
          end loop;
+
+         --  Create the proposition defining the aggregate
 
          return New_Universal_Quantif
            (Variables => Binders,
