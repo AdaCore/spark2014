@@ -3,7 +3,7 @@ multi.adb:13:25: info: range check proved
 multi.adb:15:25: info: range check proved
 multi.adb:7:25: info: range check proved
 multi.adb:7:35: info: range check proved
-multi.ads:10:15: info: postcondition proved
+multi.ads:10:15: postcondition not proved, requires (get ((K + A) - attr__ATTRIBUTE_FIRST) ((One + A1) - attr__ATTRIBUTE_FIRST_2) A2 = One)
 multi.ads:10:61: info: index check proved
 multi.ads:10:82: info: index check proved
 multi.ads:11:90: info: index check proved

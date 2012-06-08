@@ -8,7 +8,7 @@ const.adb:12:7: assertion not proved, requires (get (elts C2) ((1 + offset C2) -
 const.adb:13:22: info: index check proved
 const.adb:13:7: assertion not proved, requires (get (elts C2) ((2 + offset C2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:18:22: info: index check proved
-const.adb:18:7: info: assertion proved
+const.adb:18:7: assertion not proved, requires (get (elts D2) ((1 + offset D2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:19:22: info: index check proved
 const.adb:19:7: assertion not proved, requires (get (elts D2) ((2 + offset D2) - attr__ATTRIBUTE_FIRST) = 1)
 const.adb:23:7: info: assertion proved

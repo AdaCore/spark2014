@@ -44,7 +44,7 @@ arr_aggregate.ads:27:82: info: index check proved
 arr_aggregate.ads:28:67: info: index check proved
 arr_aggregate.ads:28:97: info: index check proved
 arr_aggregate.ads:32:15: info: postcondition proved
-arr_aggregate.ads:37:15: postcondition not proved, requires ((mk_t A A1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST = mk_t (elts (arr_aggregate__37__39 One 2)) (offset (arr_aggregate__37__39 One 2)) attr__ATTRIBUTE_FIRST1 attr__ATTRIBUTE_LAST1) = True)
+arr_aggregate.ads:37:15: info: postcondition proved
 arr_aggregate.ads:37:45: info: range check proved
 arr_aggregate.ads:40:40: info: range check proved
 arr_aggregate.ads:41:50: info: range check proved
