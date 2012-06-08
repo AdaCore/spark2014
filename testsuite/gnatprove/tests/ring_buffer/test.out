@@ -1,18 +1,18 @@
 
 harness.adb:10:4: info: precondition proved
-harness.adb:11:4: assertion not proved, requires (H = X)
+harness.adb:11:21: assertion not proved, requires h = x
 harness.adb:12:4: info: precondition proved
 harness.adb:13:4: info: precondition proved
-harness.adb:14:4: assertion not proved, requires (H = Y)
+harness.adb:14:21: assertion not proved, requires h = y
 harness.adb:15:4: info: precondition proved
-harness.adb:16:4: assertion not proved, requires (H = Z)
+harness.adb:16:21: assertion not proved, requires h = z
 harness.adb:8:4: info: precondition proved
 harness.adb:9:4: info: precondition proved
 ring_buf.adb:11:24: info: overflow check proved
 ring_buf.adb:11:36: info: division check proved
 ring_buf.adb:11:8: info: index check proved
 ring_buf.adb:12:28: info: overflow check proved
-ring_buf.adb:12:28: range check not proved, requires in_range (R + 1)
+ring_buf.adb:12:28: range check not proved
 ring_buf.adb:18:19: info: index check proved
 ring_buf.adb:19:27: info: overflow check proved
 ring_buf.adb:19:32: info: division check proved
@@ -25,4 +25,4 @@ ring_buf.ads:49:59: info: index check proved
 ring_buf.ads:55:29: info: postcondition proved
 ring_buf.ads:55:44: info: overflow check proved
 ring_buf.ads:60:39: info: overflow check proved
-ring_buf.ads:60:65: postcondition not proved, requires (Head (mk_t (mk_t1 R R1) R2 R3) = Element)
+ring_buf.ads:60:65: postcondition not proved, requires (r.length = r.length'old - 1 and then ring_buf_

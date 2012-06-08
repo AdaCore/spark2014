@@ -1,2 +1,3 @@
+
 p.ads:4:25: info: postcondition proved
-q.adb:6:4: info: assertion proved
+q.adb:6:21: info: assertion proved

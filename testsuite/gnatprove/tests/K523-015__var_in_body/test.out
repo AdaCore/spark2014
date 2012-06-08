@@ -1,5 +1,5 @@
 
 pack.adb:7:22: info: range check proved
 tctouch.adb:8:22: info: range check proved
-tctouch.adb:8:22: overflow check not proved, requires in_range (Finger + 1)
-tctouch.adb:9:5: index check not proved, requires (Finger <= attr__ATTRIBUTE_LAST)
+tctouch.adb:8:22: overflow check not proved
+tctouch.adb:9:5: index check not proved

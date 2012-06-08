@@ -405,10 +405,17 @@ package body Gnat2Why.Nodes is
          Index : Integer := S'First;
       begin
          while Cur <= 47 and then Index in S'Range loop
-            if S (Index) /= ASCII.LF then
-               Buf (Cur) := S (Index);
-               Cur := Cur + 1;
-            end if;
+            case S (Index) is
+               when ASCII.LF =>
+                  null;
+               when '"' =>
+                  Buf (Cur) := '\';
+                  Buf (Cur + 1) := '"';
+                  Cur := Cur + 2;
+               when others =>
+                  Buf (Cur) := S (Index);
+                  Cur := Cur + 1;
+            end case;
             Index := Index + 1;
          end loop;
 

@@ -1,12 +1,13 @@
+
 nested.adb:10:15: info: range check proved
-nested.adb:12:13: info: loop invariant initialization proved
-nested.adb:12:13: info: loop invariant preservation proved
+nested.adb:12:30: info: loop invariant initialization proved
+nested.adb:12:30: info: loop invariant preservation proved
 nested.adb:12:34: info: overflow check proved
 nested.adb:12:39: info: overflow check proved
 nested.adb:13:20: info: overflow check proved
 nested.adb:4:22: info: range check proved
-nested.adb:9:10: info: loop invariant initialization proved
-nested.adb:9:10: info: loop invariant preservation proved
+nested.adb:9:27: info: loop invariant initialization proved
+nested.adb:9:27: info: loop invariant preservation proved
 nested.adb:9:32: info: overflow check proved
 nested.adb:9:37: info: overflow check proved
 nested.ads:4:35: info: postcondition proved

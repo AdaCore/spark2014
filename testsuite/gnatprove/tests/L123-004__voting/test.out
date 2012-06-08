@@ -1,9 +1,9 @@
 
 evoting.adb:147:24: info: range check proved
 evoting.adb:150:21: info: range check proved
-evoting.adb:150:21: overflow check not proved, requires in_range (sum + result)
+evoting.adb:150:21: overflow check not proved
 evoting.adb:150:31: info: index check proved
-evoting.adb:166:54: overflow check not proved, requires in_range (last_candidate * 20)
+evoting.adb:166:54: overflow check not proved
 evoting.adb:169:13: info: index check proved
 evoting.adb:170:13: info: precondition proved
 evoting.adb:172:16: info: index check proved
@@ -26,13 +26,13 @@ evoting.adb:209:30: info: index check proved
 evoting.adb:210:13: info: index check proved
 evoting.adb:211:37: info: range check proved
 evoting.adb:215:32: info: overflow check proved
-evoting.adb:216:10: index check not proved, requires (attr__ATTRIBUTE_FIRST <= i)
+evoting.adb:216:10: index check not proved
 evoting.adb:224:32: info: range check proved
 evoting.adb:231:25: info: overflow check proved
-evoting.adb:231:25: range check not proved, requires in_range (total + result)
+evoting.adb:231:25: range check not proved
 evoting.adb:231:41: info: index check proved
 evoting.adb:234:28: info: overflow check proved
-evoting.adb:234:28: range check not proved, requires in_range (total - result)
+evoting.adb:234:28: range check not proved
 evoting.adb:234:44: info: index check proved
 evoting.adb:237:36: info: index check proved
 evoting.adb:239:40: info: range check proved
@@ -45,7 +45,7 @@ evoting.adb:266:36: info: range check proved
 evoting.adb:270:18: info: range check proved
 evoting.adb:270:7: info: precondition proved
 evoting.adb:272:14: info: range check proved
-evoting.adb:272:7: precondition not proved, requires (get counters ((i + counters1) - attr__ATTRIBUTE_FIRST) = 0)
+evoting.adb:272:7: precondition not proved
 evoting.adb:274:29: info: range check proved
 evoting.adb:274:7: info: precondition proved
 evoting.adb:38:74: info: range check proved
@@ -53,7 +53,7 @@ evoting.adb:47:13: info: index check proved
 evoting.adb:47:33: info: range check proved
 evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
-evoting.adb:58:10: index check not proved, requires (attr__ATTRIBUTE_FIRST <= current_candidate)
+evoting.adb:58:10: index check not proved
 evoting.adb:60:49: info: overflow check proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: overflow check proved
@@ -64,16 +64,16 @@ evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
 evoting.ads:104:48: info: index check proved
 evoting.ads:105:21: info: index check proved
+evoting.ads:105:38: postcondition not proved, requires counters (winner) > counters (i)
 evoting.ads:105:40: info: index check proved
 evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
 evoting.ads:108:39: info: index check proved
-evoting.ads:109:13: postcondition not proved, requires (get (elts counters) ((winner + offset counters) - attr__ATTRIBUTE_FIRST) >  get (elts counters) ((i + offset counters) - attr__ATTRIBUTE_FIRST))
 evoting.ads:110:45: info: overflow check proved
-evoting.ads:111:19: index check not proved, requires (attr__ATTRIBUTE_FIRST <= result)
-evoting.ads:54:14: postcondition not proved, requires (get (elts (get candidates ((i + candidates1) - attr__ATTRIBUTE_FIRST))) ((j + offset (get candidates ((i + candidates1) - attr__ATTRIBUTE_FIRST))) - attr__ATTRIBUTE_FIRST1) = 32)
+evoting.ads:111:19: index check not proved
 evoting.ads:56:29: info: index check proved
+evoting.ads:56:46: postcondition not proved, requires (candidates (i) (j) = ' ')
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:94:7: postcondition not proved, requires (get counters ((i + counters1) - attr__ATTRIBUTE_FIRST) = 0)
+evoting.ads:93:23: postcondition not proved, requires counters (i) = 0

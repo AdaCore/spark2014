@@ -1,32 +1,17 @@
 
-        end)))
-        get Links4 ((Account + Links5) - attr__ATTRIBUTE_FIRST) with
-        | Mk_t _ xcl02 xcl12 -> (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then forall Links6: map t, Links7: int. (if (mk_t Links6 Links7 = mk_t (elts (update Account (mk_t1 Links4 Links5 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t True xcl02 xcl12))) (offset (update Account (mk_t1 Links4 Links5 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t True xcl02 xcl12)))) then (if in_range Account then forall result: t1. (if (result = Account) then forall First_Available1: t1. (if (First_Available1 = result) then (Is_Available Account (mk_t Links6 Links7) = True))))))
-    end)))
-    get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST) in (if (attr__ATTRIBUTE_FIRST <= rec__next result1) and (rec__next result1 <= attr__ATTRIBUTE_LAST) then forall Links2: map t, Links3: int. (if (mk_t Links2 Links3 = mk_t (elts (update (rec__next result1) (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 (rec__prev (get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST))) xcl1))) (offset (update (rec__next result1) (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 (rec__prev (get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST))) xcl1)))) then (if not (First_Available = No_Account_Num) then (attr__ATTRIBUTE_FIRST <= First_Available)))))
-    get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST) in (if (attr__ATTRIBUTE_FIRST <= rec__prev result1) and (rec__prev result1 <= attr__ATTRIBUTE_LAST) then forall Links2: map t, Links3: int. (if (mk_t Links2 Links3 = mk_t (elts (update (rec__prev result1) (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 xcl1 (rec__next (get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST)))))) (offset (update (rec__prev result1) (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 xcl1 (rec__next (get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST))))))) then (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then (if not (rec__next (get Links2 ((Account + Links3) - attr__ATTRIBUTE_FIRST)) = No_Account_Num) then (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then let result2 = 
-    get Links2 ((Account + Links3) - attr__ATTRIBUTE_FIRST) in (attr__ATTRIBUTE_FIRST <= rec__next result2))))))))
-    get Links2 ((Account + Links3) - attr__ATTRIBUTE_FIRST) with
-    | Mk_t xcl01 xcl11 _ -> (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then forall Links4: map t, Links5: int. (if (mk_t Links4 Links5 = mk_t (elts (update Account (mk_t1 Links2 Links3 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl01 xcl11 First_Available))) (offset (update Account (mk_t1 Links2 Links3 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl01 xcl11 First_Available)))) then (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then match 
 database.adb:120:13: info: index check proved
 database.adb:121:13: info: index check proved
 database.adb:121:20: info: index check proved
 database.adb:121:50: info: index check proved
 database.adb:123:13: info: index check proved
-database.adb:124:13: index check not proved, requires match get Links ((rec__prev result + Links1) - attr__ATTRIBUTE_FIRST) with
+database.adb:124:13: index check not proved
 database.adb:124:20: info: index check proved
 database.adb:124:50: info: index check proved
 database.adb:130:13: info: index check proved
-database.adb:130:37: index check not proved, requires match get Links ((rec__next result + Links1) - attr__ATTRIBUTE_FIRST) with
+database.adb:130:37: index check not proved
 database.adb:132:10: info: index check proved
 database.adb:133:10: info: index check proved
 database.adb:134:29: info: range check proved
-database.adb:52:18: postcondition not proved, requires match get Links ((Account + Links1) - attr__ATTRIBUTE_FIRST) with
+database.adb:52:18: postcondition not proved
 database.adb:54:23: info: index check proved
 database.adb:54:52: info: index check proved
-end
-end
-end
-| Mk_t xcl0 _ xcl1 -> (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then forall Links2: map t, Links3: int. (if (mk_t Links2 Links3 = mk_t (elts (update Account (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 (rec__prev (get Links ((First_Available + Links1) - attr__ATTRIBUTE_FIRST))) xcl1))) (offset (update Account (mk_t1 Links Links1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) (Mk_t xcl0 (rec__prev (get Links ((First_Available + Links1) - attr__ATTRIBUTE_FIRST))) xcl1)))) then (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then match 
-| Mk_t xcl0 _ xcl1 -> (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then let result1 = 
-| Mk_t xcl0 xcl1 _ -> (if (attr__ATTRIBUTE_FIRST <= Account) and (Account <= attr__ATTRIBUTE_LAST) then let result1 = 

@@ -1,19 +1,19 @@
 
 search.adb:10:57: info: overflow check proved
 search.adb:10:64: info: index check proved
-search.adb:12:16: index check not proved, requires (attr__ATTRIBUTE_FIRST <= Pos)
+search.adb:11:13: info: loop invariant initialization proved
+search.adb:11:13: loop invariant preservation not proved, requires (pos = 0 and then  for all j in search__positio
+search.adb:12:16: index check not proved
 search.adb:13:61: info: overflow check proved
 search.adb:13:68: info: index check proved
 search.adb:14:13: info: index check proved
 search.adb:15:20: info: range check proved
 search.adb:4:24: info: range check proved
-search.adb:8:10: info: loop invariant initialization proved
-search.adb:8:10: loop invariant preservation not proved, requires (Pos = 0) or (forall J: int. (if (1 <= J) and (J <= (Pos - 1)) then not (get (elts T) ((J + offset T) - attr__ATTRIBUTE_FIRST) = V)))
-search.ads:10:13: index check not proved, requires (attr__ATTRIBUTE_FIRST <= Search'Result)
+search.ads:10:13: index check not proved
 search.ads:11:34: info: range check proved
 search.ads:11:54: info: overflow check proved
-search.ads:11:54: range check not proved, requires in_range (Search'Result - 1)
+search.ads:11:54: range check not proved
 search.ads:5:53: info: index check proved
 search.ads:8:57: info: range check proved
 search.ads:8:65: info: range check proved
-search.ads:9:10: postcondition not proved, requires (No_V_In_Range T V 1 10 = True) or (No_V_In_Range T V 1 (Search'Result - 1) = True)
+search.ads:9:10: postcondition not proved, requires ((search__search'result = 0 and then search__no

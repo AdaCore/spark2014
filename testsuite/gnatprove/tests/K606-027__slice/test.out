@@ -1,6 +1,6 @@
 
 fb20a00.adb:10:7: info: range check proved
-fb20a00.adb:12:27: range check not proved, requires in_range (first Str)
+fb20a00.adb:12:27: range check not proved
 fb20a00.adb:15:28: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:22:18: info: index check proved
@@ -8,19 +8,19 @@ fb20a00.adb:23:47: info: overflow check proved
 fb20a00.adb:24:30: info: range check proved
 fb20a00.adb:24:36: info: index check proved
 fb20a00.adb:24:44: info: overflow check proved
-fb20a00.adb:25:16: index check not proved, requires (attr__ATTRIBUTE_FIRST <= I)
+fb20a00.adb:25:16: index check not proved
 fb20a00.adb:25:38: info: range check proved
-fb20a00.adb:27:16: index check not proved, requires (attr__ATTRIBUTE_FIRST <= I)
+fb20a00.adb:27:16: index check not proved
 fb20a00.adb:27:27: info: index check proved
 fb20a00.adb:37:22: warning: possible re-ordering due to missing parentheses
-fb20a00.adb:37:34: overflow check not proved, requires in_range (attr__ATTRIBUTE_LAST - mk_t New_Sub New_Sub1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST1'Length)
+fb20a00.adb:37:34: overflow check not proved
 fb20a00.adb:37:42: info: range check proved
-fb20a00.adb:37:49: overflow check not proved, requires in_range ((attr__ATTRIBUTE_LAST - mk_t New_Sub New_Sub1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST1'Length) + 1)
+fb20a00.adb:37:49: overflow check not proved
 fb20a00.adb:39:28: warning: possible re-ordering due to missing parentheses
-fb20a00.adb:39:31: overflow check not proved, requires in_range (Pos + mk_t New_Sub New_Sub1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST'Length)
-fb20a00.adb:39:39: range check not proved, requires in_range mk_t New_Sub New_Sub1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST'Length
-fb20a00.adb:39:46: overflow check not proved, requires in_range ((Pos + mk_t New_Sub New_Sub1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST'Length) - 1)
-fb20a00.adb:42:21: overflow check not proved, requires in_range (Pos + 1)
+fb20a00.adb:39:31: overflow check not proved
+fb20a00.adb:39:39: range check not proved
+fb20a00.adb:39:46: overflow check not proved
+fb20a00.adb:42:21: overflow check not proved
 fb20a00.adb:45:18: warning: possible re-ordering due to missing parentheses
 fb20a00.adb:45:30: info: overflow check proved
 fb20a00.adb:45:38: info: range check proved

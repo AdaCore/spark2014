@@ -1,4 +1,5 @@
+
 a1.adb:4:5: info: precondition proved
 a1.adb:4:9: info: range check proved
 b.adb:7:8: info: precondition proved
-c.adb:5:7: info: assertion proved
+c.adb:5:24: info: assertion proved

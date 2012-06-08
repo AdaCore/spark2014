@@ -3,7 +3,7 @@ inrange.adb:14:14: info: overflow check proved
 inrange.adb:14:14: info: range check proved
 inrange.adb:19:23: info: range check proved
 inrange.adb:21:7: info: precondition proved
-inrange.adb:21:7: range check not proved, requires in_range T3b
+inrange.adb:21:7: range check not proved
 inrange.adb:4:16: info: overflow check proved
 inrange.adb:8:16: info: overflow check proved
 inrange.adb:8:18: info: precondition proved

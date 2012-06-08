@@ -2,4 +2,4 @@
 arrays.adb:8:17: info: range check proved
 arrays.adb:8:4: info: index check proved
 arrays.adb:9:19: info: index check proved
-arrays.adb:9:4: assertion not proved, requires (get (elts (get Obj ((1 + Obj1) - attr__ATTRIBUTE_FIRST))) ((1 + offset (get Obj ((1 + Obj1) - attr__ATTRIBUTE_FIRST))) - attr__ATTRIBUTE_FIRST1) = 1)
+arrays.adb:9:29: assertion not proved, requires obj (1) (1) = 1

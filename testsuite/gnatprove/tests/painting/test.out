@@ -1,15 +1,15 @@
 
+p.adb:10:21: loop invariant preservation not proved, requires p.plain = p_old.plain
 p.adb:12:21: info: index check proved
 p.adb:12:42: info: index check proved
 p.adb:14:14: info: index check proved
 p.adb:15:14: info: index check proved
 p.adb:22:7: info: precondition proved
 p.adb:9:10: info: loop invariant initialization proved
-p.adb:9:10: loop invariant preservation not proved, requires ((mk_t P P1 attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST = mk_t (elts (rec__plain P_Old)) (offset (rec__plain P_Old)) attr__ATTRIBUTE_FIRST attr__ATTRIBUTE_LAST) = True)
 p.ads:17:39: info: index check proved
-p.ads:18:15: postcondition not proved, requires (get P ((C + P1) - attr__ATTRIBUTE_FIRST) = D)
 p.ads:19:28: info: index check proved
 p.ads:19:46: info: index check proved
+p.ads:19:57: postcondition not proved, requires p.shadow (c) = d
 p.ads:21:65: info: index check proved
 p.ads:27:46: info: range check proved
 p.ads:33:15: info: postcondition proved

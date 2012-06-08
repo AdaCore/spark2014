@@ -2,33 +2,33 @@
 arith.adb:11:15: info: overflow check proved
 arith.adb:11:20: info: overflow check proved
 arith.adb:12:14: info: overflow check proved
-arith.adb:12:19: overflow check not proved, requires in_range (Y - Z)
+arith.adb:12:19: overflow check not proved
 arith.adb:15:12: warning: possible re-ordering due to missing parentheses
-arith.adb:15:14: overflow check not proved, requires in_range (X * Y)
-arith.adb:15:18: division check not proved, requires not (Z = 0)
+arith.adb:15:14: overflow check not proved
+arith.adb:15:18: division check not proved
 arith.adb:15:18: info: range check proved
 arith.adb:16:12: warning: possible re-ordering due to missing parentheses
-arith.adb:16:14: division check not proved, requires not (Y = 0)
-arith.adb:16:14: overflow check not proved, requires in_range result
-arith.adb:16:18: overflow check not proved, requires in_range (result * Z)
+arith.adb:16:14: division check not proved
+arith.adb:16:14: overflow check not proved
+arith.adb:16:18: overflow check not proved
 arith.adb:19:14: info: overflow check proved
-arith.adb:19:18: overflow check not proved, requires in_range ((X * Y) + Z)
+arith.adb:19:18: overflow check not proved
 arith.adb:20:14: info: division check proved
 arith.adb:20:14: info: overflow check proved
-arith.adb:20:18: overflow check not proved, requires in_range (result - Z)
+arith.adb:20:18: overflow check not proved
 arith.adb:23:12: warning: possible re-ordering due to missing parentheses
-arith.adb:23:14: overflow check not proved, requires in_range (X * ((X - Y) - Z))
+arith.adb:23:14: overflow check not proved
 arith.adb:23:17: warning: possible re-ordering due to missing parentheses
-arith.adb:23:19: overflow check not proved, requires in_range (X - Y)
-arith.adb:23:23: overflow check not proved, requires in_range ((X - Y) - Z)
+arith.adb:23:19: overflow check not proved
+arith.adb:23:23: overflow check not proved
 arith.adb:23:28: info: division check proved
-arith.adb:23:28: range check not proved, requires in_range result
+arith.adb:23:28: range check not proved
 arith.adb:26:11: warning: possible re-ordering due to missing parentheses
-arith.adb:26:16: overflow check not proved, requires in_range (Tmp2 - Tmp1)
-arith.adb:26:23: overflow check not proved, requires in_range ((Tmp2 - Tmp1) + X)
+arith.adb:26:16: overflow check not proved
+arith.adb:26:23: overflow check not proved
 arith.adb:7:12: warning: possible re-ordering due to missing parentheses
-arith.adb:7:14: overflow check not proved, requires in_range (X + Y)
-arith.adb:7:18: overflow check not proved, requires in_range ((X + Y) + Z)
+arith.adb:7:14: overflow check not proved
+arith.adb:7:18: overflow check not proved
 arith.adb:8:12: warning: possible re-ordering due to missing parentheses
 arith.adb:8:14: info: overflow check proved
-arith.adb:8:18: overflow check not proved, requires in_range ((X + Y) - Z)
+arith.adb:8:18: overflow check not proved

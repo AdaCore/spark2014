@@ -1,4 +1,4 @@
 
-add.adb:5:16: overflow check not proved, requires in_range (X + Y)
+add.adb:5:16: overflow check not proved
 add.ads:4:43: info: postcondition proved
 add.ads:4:47: info: overflow check proved
