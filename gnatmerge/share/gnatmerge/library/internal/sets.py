@@ -44,6 +44,11 @@ class Object:
         self.arrows[name] = operation
 
     def new_attribute(self, domain):
+        """Add a new attribute to the object
+
+        PARAMETERS
+          domain: attribute domain, of class attributes.common.Attribute
+        """
         self.new_arrow(domain.name, domain.arrow_from_input())
 
     def load_element(self, element):
