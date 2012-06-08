@@ -27,7 +27,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Csets;           use Csets;
 with Lib;             use Lib;
+with Output;          use Output;
 with Sem_Util;        use Sem_Util;
+with Sprint;          use Sprint;
 
 with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;       use Alfa.Util;
@@ -379,6 +381,58 @@ package body Gnat2Why.Nodes is
          end;
       end if;
    end Source_Name;
+
+   function String_Of_Node (N : Node_Id) return String
+   is
+      --  The buffer contains the string to be constructed, we fill it with
+      --  dots at the beginning. Cur contains the next position to be written.
+
+      Buf : String (1 .. 50) := (others => '.');
+      Cur : Positive := 1;
+      Over_Full : Boolean := False;
+
+      procedure Handle (S : String);
+
+      ------------
+      -- Handle --
+      ------------
+
+      procedure Handle (S : String) is
+
+         --  Add the string S to the buffer. We stop at 47 chars and set the
+         --  overfull flag if there is something left to print.
+
+         Index : Integer := S'First;
+      begin
+         while Cur <= 47 and then Index in S'Range loop
+            if S (Index) /= ASCII.LF then
+               Buf (Cur) := S (Index);
+               Cur := Cur + 1;
+            end if;
+            Index := Index + 1;
+         end loop;
+
+         --  if we stopped at the buffer limit, and there is something left to
+         --  print, we set the over_full flag
+
+         if Cur = 47 and then Index in S'Range then
+            Over_Full := True;
+         end if;
+      end Handle;
+
+   begin
+      Set_Special_Output (Handle'Unrestricted_Access);
+      Sprint_Node (N);
+      Write_Eol;
+      Cancel_Special_Output;
+      if Over_Full then
+         return Buf (1 .. 50);
+      elsif Cur > 1 then
+         return Buf (1 .. Cur - 1);
+      else
+         return "";
+      end if;
+   end String_Of_Node;
 
    ------------------
    -- Type_Of_Node --

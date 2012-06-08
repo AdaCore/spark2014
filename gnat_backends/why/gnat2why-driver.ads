@@ -57,6 +57,7 @@ package Gnat2Why.Driver is
       File        : W_File_Id;
       Theory      : W_Theory_Declaration_Id;
       Phase       : Translation_Phase;
+      Gen_Image   : Boolean;
       Ref_Allowed : Boolean;
       Name_Map    : Ada_Ent_To_Why.Map;
    end record;
@@ -74,6 +75,7 @@ package Gnat2Why.Driver is
      (Translation_Params'(File        => Why_Files (WF_Main).File,
                           Theory      => Why_Files (WF_Main).Cur_Theory,
                           Phase       => Generate_VCs_For_Body,
+                          Gen_Image   => False,
                           Ref_Allowed => True,
                           Name_Map    => Ada_Ent_To_Why.Empty_Map));
 

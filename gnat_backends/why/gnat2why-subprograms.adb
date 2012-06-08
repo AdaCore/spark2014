@@ -622,6 +622,7 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Post,
+                 Gen_Image   => False,
                  Ref_Allowed => True,
                  Name_Map    => Ada_Ent_To_Why.Empty_Map);
       Post_Check :=
@@ -638,7 +639,10 @@ package body Gnat2Why.Subprograms is
       --  Translate contract of E
 
       Pre  := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+
+      Params.Gen_Image := True;
       Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+      Params.Gen_Image := False;
 
       --  Set the phase to Generate_VCs_For_Body from now on, so that
       --  occurrences of X'Old are properly translated as reference to the
@@ -703,6 +707,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
+         Gen_Image   => False,
          Ref_Allowed => True,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
@@ -809,6 +814,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Translation,
+         Gen_Image   => False,
          Ref_Allowed => False,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
@@ -903,6 +909,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Translation,
+         Gen_Image   => False,
          Ref_Allowed => True,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
 

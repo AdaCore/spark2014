@@ -157,6 +157,10 @@ package body Gnat2Why.Expr is
    --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
+   function Is_Pretty_Node (N : Node_Id) return Boolean;
+   --  Decide whether this is a node where we should put a pretty printing
+   --  label, or if we should descend further
+
    generic
       with procedure Handle_Argument (Formal, Actual : Node_Id);
    procedure Iterate_Call_Arguments (Call : Node_Id);
@@ -824,6 +828,7 @@ package body Gnat2Why.Expr is
         (Theory      => File.Cur_Theory,
          File        => File.File,
          Phase       => Translation,
+         Gen_Image   => False,
          Ref_Allowed => True,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
       Result : constant W_Term_Id :=
@@ -981,6 +986,21 @@ package body Gnat2Why.Expr is
 
       return Ref_Context;
    end Insert_Ref_Context;
+
+   --------------------
+   -- Is_Pretty_Node --
+   --------------------
+
+   function Is_Pretty_Node (N : Node_Id) return Boolean
+   is
+   begin
+      case Nkind (N) is
+         when N_Quantified_Expression | N_And_Then |
+              N_Op_And | N_Conditional_Expression
+            => return False;
+         when others => return True;
+      end case;
+   end Is_Pretty_Node;
 
    ----------------------------
    -- Iterate_Call_Arguments --
@@ -1585,6 +1605,7 @@ package body Gnat2Why.Expr is
                            (Theory      => Params.Theory,
                             File        => Params.File,
                             Phase       => Params.Phase,
+                            Gen_Image   => False,
                             Ref_Allowed => False,
                             Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
@@ -2978,7 +2999,20 @@ package body Gnat2Why.Expr is
       Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
       Overflow_Check_Needed : Boolean := False;
       Range_Check_Needed    : Boolean := False;
+      Pretty_Label          : W_Identifier_Id := Why_Empty;
+      Local_Params          : Translation_Params := Params;
    begin
+
+      --  We check whether we need to generate a pretty printing label. If we
+      --  do, we set the corresponding flag to "False" so that the label is not
+      --  printed for subterms.
+
+      if Domain = EW_Pred
+        and then Local_Params.Gen_Image
+        and then Is_Pretty_Node (Expr) then
+         Pretty_Label := New_Pretty_Label (Expr);
+            Local_Params.Gen_Image := False;
+      end if;
 
       --  Expressions that cannot be translated to predicates directly are
       --  translated to (boolean) terms, and compared to "True"
@@ -2998,7 +3032,7 @@ package body Gnat2Why.Expr is
               Domain   => EW_Pred,
               Op_Type  => EW_Bool,
               Left     =>
-              +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Params),
+              +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params),
               Right    => +True_Prog,
               Op       => EW_Eq);
       end if;
@@ -3012,23 +3046,24 @@ package body Gnat2Why.Expr is
                   pragma Assert (No (Expressions (Expr)));
                   T :=
                      New_Record_Aggregate
-                       (Associations => Transform_Record_Component_Associations
-                                          (Domain,
-                                           Expr_Type,
-                                           Component_Associations (Expr),
-                                           Params));
+                      (Associations =>
+                           Transform_Record_Component_Associations
+                         (Domain,
+                          Expr_Type,
+                          Component_Associations (Expr),
+                          Local_Params));
                   Current_Type := EW_Abstract (Expr_Type);
                else
                   pragma Assert
                      (Is_Array_Type (Expr_Type) or else
                       Is_String_Type (Expr_Type));
-                  T := Transform_Aggregate (Params, Domain, Expr);
+                  T := Transform_Aggregate (Local_Params, Domain, Expr);
                   Current_Type := EW_Abstract (Expr_Type);
                end if;
             end;
 
          when N_Slice =>
-            T := Transform_Slice (Params, Domain, Expr);
+            T := Transform_Slice (Local_Params, Domain, Expr);
             Current_Type := EW_Array_Type;
 
          when N_Integer_Literal =>
@@ -3050,7 +3085,7 @@ package body Gnat2Why.Expr is
                T := Transform_Expr (Original_Node (Expr),
                                     EW_Real_Type,
                                     Domain,
-                                    Params);
+                                    Local_Params);
 
             else
                T :=
@@ -3081,14 +3116,14 @@ package body Gnat2Why.Expr is
                Val : constant String_Id := Strval (Expr);
             begin
                if not (Strlit_To_Why_Term.Contains (Val)) then
-                  Transform_String_Literal (Params, Expr);
+                  Transform_String_Literal (Local_Params, Expr);
                end if;
                T := +Strlit_To_Why_Term.Element (Val);
                Current_Type := Strlit_To_Why_Type.Element (Val);
             end;
 
          when N_Identifier | N_Expanded_Name =>
-            T := Transform_Identifier (Params, Expr,
+            T := Transform_Identifier (Local_Params, Expr,
                                        Unique_Entity (Entity (Expr)),
                                        Domain, Current_Type);
 
@@ -3102,10 +3137,10 @@ package body Gnat2Why.Expr is
                              (if Domain = EW_Pred then EW_Term else Domain);
                Left_Arg  : constant W_Expr_Id :=
                              Transform_Expr (Left, BT, Subdomain,
-                                             Params);
+                                             Local_Params);
                Right_Arg : constant W_Expr_Id :=
                              Transform_Expr (Right, BT, Subdomain,
-                                             Params);
+                                             Local_Params);
             begin
                if Is_Array_Type (Etype (Left)) then
                   T := New_Call
@@ -3154,7 +3189,7 @@ package body Gnat2Why.Expr is
                     Op       => EW_Minus,
                     Right    =>
                     +Transform_Expr (Right, Current_Type, Domain,
-                     Params),
+                     Local_Params),
                     Op_Type  => Get_Base_Type (Current_Type));
                T := Apply_Modulus
                       (Etype (Expr),
@@ -3169,7 +3204,7 @@ package body Gnat2Why.Expr is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                Current_Type := Base_Why_Type (Right);
-               T := Transform_Expr (Right, Current_Type, Domain, Params);
+               T := Transform_Expr (Right, Current_Type, Domain, Local_Params);
             end;
 
          when N_Op_Abs =>
@@ -3184,7 +3219,7 @@ package body Gnat2Why.Expr is
                     Name     => New_Abs (Get_Base_Type (Current_Type)),
                     Args    =>
                       (1 => Transform_Expr (Right, Current_Type,
-                       Domain, Params)));
+                       Domain, Local_Params)));
                Overflow_Check_Needed := True;
             end;
 
@@ -3202,11 +3237,11 @@ package body Gnat2Why.Expr is
                     Left     => Transform_Expr (Left,
                                                 Current_Type,
                                                 Domain,
-                                                Params),
+                                                Local_Params),
                     Right    => Transform_Expr (Right,
                                                 Current_Type,
                                                 Domain,
-                                                Params),
+                                                Local_Params),
                     Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Get_Base_Type (Current_Type));
                T := Apply_Modulus
@@ -3237,11 +3272,11 @@ package body Gnat2Why.Expr is
                       (1 => Transform_Expr (Left,
                                             Current_Type,
                                             Domain,
-                                            Params),
+                                            Local_Params),
                        2 => Transform_Expr (Right,
                                             Current_Type,
                                             Domain,
-                                            Params)),
+                                            Local_Params)),
                     Reason   => VC_Division_Check);
                T := Apply_Modulus
                       (Etype (Expr),
@@ -3274,11 +3309,11 @@ package body Gnat2Why.Expr is
                       (1 => Transform_Expr (Left,
                                             Current_Type,
                                             Domain,
-                                            Params),
+                                            Local_Params),
                        2 => Transform_Expr (Right,
                                             Current_Type,
                                             Domain,
-                                            Params)),
+                                            Local_Params)),
                     Reason   => VC_Division_Check);
             end;
 
@@ -3291,7 +3326,7 @@ package body Gnat2Why.Expr is
                W_Right : W_Expr_Id := Transform_Expr (Right,
                                                       EW_Int_Type,
                                                       Domain,
-                                                      Params);
+                                                      Local_Params);
             begin
                Current_Type := Base_Why_Type (Left);
                Name := New_Exp (Get_Base_Type (Current_Type));
@@ -3313,7 +3348,7 @@ package body Gnat2Why.Expr is
                          (1 => Transform_Expr (Left,
                                                Current_Type,
                                                Domain,
-                                               Params),
+                                               Local_Params),
                           2 => W_Right));
 
                Overflow_Check_Needed := True;
@@ -3331,14 +3366,14 @@ package body Gnat2Why.Expr is
                       (1 => Transform_Expr (Right_Opnd (Expr),
                                             EW_Bool_Type,
                                             Domain,
-                                            Params)));
+                                            Local_Params)));
             else
                T :=
                  New_Not
                    (Right  => Transform_Expr (Right_Opnd (Expr),
                                               EW_Bool_Type,
                                               Domain,
-                                              Params),
+                                              Local_Params),
                     Domain => Domain);
             end if;
 
@@ -3348,11 +3383,11 @@ package body Gnat2Why.Expr is
                  (Left   => Transform_Expr (Left_Opnd (Expr),
                                             EW_Bool_Type,
                                             Domain,
-                                            Params),
+                                            Local_Params),
                   Right  => Transform_Expr (Right_Opnd (Expr),
                                             EW_Bool_Type,
                                             Domain,
-                                            Params),
+                                            Local_Params),
                   Domain => Domain);
             Current_Type := EW_Bool_Type;
 
@@ -3362,11 +3397,11 @@ package body Gnat2Why.Expr is
                  (Left     => Transform_Expr (Left_Opnd (Expr),
                                               EW_Bool_Type,
                                               Domain,
-                                              Params),
+                                              Local_Params),
                   Right    => Transform_Expr (Right_Opnd (Expr),
                                               EW_Bool_Type,
                                               Domain,
-                                              Params),
+                                              Local_Params),
                   Domain   => Domain);
             Current_Type := EW_Bool_Type;
 
@@ -3376,17 +3411,16 @@ package body Gnat2Why.Expr is
                  (Left     => Transform_Expr (Left_Opnd (Expr),
                                               EW_Bool_Type,
                                               Domain,
-                                              Params),
+                                              Local_Params),
                   Right    => Transform_Expr (Right_Opnd (Expr),
                                               EW_Bool_Type,
                                               Domain,
-                                              Params),
+                                              Local_Params),
                   Domain   => Domain);
             Current_Type := EW_Bool_Type;
 
          when N_Short_Circuit =>
             Short_Circuit : declare
-               Local_Params : Translation_Params := Params;
 
                function New_Short_Circuit_Expr
                  (Left, Right : W_Expr_Id;
@@ -3450,13 +3484,13 @@ package body Gnat2Why.Expr is
                     Transform_Expr (Var,
                                     Base_Why_Type (Var),
                                     Subdomain,
-                                    Params),
+                                    Local_Params),
                     Domain,
-                    Params);
+                    Local_Params);
             end;
 
          when N_Quantified_Expression =>
-            T := Transform_Quantified_Expression (Expr, Domain, Params);
+            T := Transform_Quantified_Expression (Expr, Domain, Local_Params);
             Current_Type := EW_Bool_Type;
 
          when N_Conditional_Expression =>
@@ -3465,36 +3499,43 @@ package body Gnat2Why.Expr is
                Then_Part   : constant Node_Id := Next (Cond);
                Else_Part   : constant Node_Id := Next (Then_Part);
                Cond_Domain : constant EW_Domain :=
-                               (if Domain = EW_Term then EW_Pred else Domain);
-
+                 (if Domain = EW_Term then EW_Pred else Domain);
+               Then_Expr, Else_Expr : W_Expr_Id;
+               Condition   : W_Expr_Id;
             begin
+               Then_Expr :=
+                 Transform_Expr_With_Actions (Then_Part,
+                                              Then_Actions (Expr),
+                                              Current_Type,
+                                              Domain,
+                                              Local_Params);
+               Else_Expr :=
+                 Transform_Expr_With_Actions (Else_Part,
+                                              Else_Actions (Expr),
+                                              Current_Type,
+                                              Domain,
+                                              Local_Params);
+               Local_Params.Gen_Image := False;
+               Condition :=
+                 +Transform_Expr (Cond,
+                                  EW_Bool_Type,
+                                  Cond_Domain,
+                                  Local_Params);
+
                T :=
                   New_Conditional
                      (Ada_Node  => Expr,
                       Domain    => Domain,
-                      Condition => +Transform_Expr (Cond,
-                                                    EW_Bool_Type,
-                                                    Cond_Domain,
-                                                    Params),
-                      Then_Part =>
-                        Transform_Expr_With_Actions (Then_Part,
-                                                     Then_Actions (Expr),
-                                                     Current_Type,
-                                                     Domain,
-                                                     Params),
-                      Else_Part =>
-                        Transform_Expr_With_Actions (Else_Part,
-                                                     Else_Actions (Expr),
-                                                     Current_Type,
-                                                     Domain,
-                                                     Params));
+                      Condition => Condition,
+                      Then_Part => Then_Expr,
+                      Else_Part => Else_Expr);
             end;
 
          when N_Type_Conversion =>
             return Transform_Expr (Expression (Expr),
                                    Expected_Type,
                                    Domain,
-                                   Params);
+                                   Local_Params);
 
          when N_Unchecked_Type_Conversion =>
             --  Compiler inserted conversions are trusted
@@ -3502,7 +3543,7 @@ package body Gnat2Why.Expr is
             return Transform_Expr (Expression (Expr),
                                    Expected_Type,
                                    Domain,
-                                   Params);
+                                   Local_Params);
 
          when N_Function_Call =>
             declare
@@ -3522,7 +3563,7 @@ package body Gnat2Why.Expr is
                     Progs    => Compute_Call_Args (Expr,
                                                    Domain,
                                                    Nb_Of_Refs,
-                                                   Params),
+                                                   Local_Params),
                     Ada_Node => Expr,
                     Domain   => Domain,
                     Reason   => VC_Precondition);
@@ -3534,23 +3575,23 @@ package body Gnat2Why.Expr is
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
-                                     (Prefix (Expr), Domain, Params),
+                                     (Prefix (Expr), Domain, Local_Params),
                                    Domain,
-                                   Params);
+                                   Local_Params);
 
          when N_Attribute_Reference =>
             T := Transform_Attr (Expr,
                                  Domain,
                                  Current_Type,
                                  Range_Check_Needed,
-                                 Params);
+                                 Local_Params);
 
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node
                    (Expr,
                     Expected_Type,
                     Domain,
-                    Params);
+                    Local_Params);
             Current_Type := Expected_Type;
 
          when N_Expression_With_Actions =>
@@ -3566,20 +3607,31 @@ package body Gnat2Why.Expr is
                   +Transform_Expr (Expression (Expr),
                                    Expected_Type,
                                    EW_Prog,
-                                   Params));
+                                   Local_Params));
 
          when N_Qualified_Expression =>
             Current_Type := Base_Why_Type (Expression (Expr));
             T := Transform_Expr (Expression (Expr),
                                  Current_Type,
                                  Domain,
-                                 Params);
+                                 Local_Params);
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
                                   & Node_Kind'Image (Nkind (Expr)));
             raise Not_Implemented;
       end case;
+
+      --  Add the pretty printing label here, if there is one
+
+      if Pretty_Label /= Why_Empty then
+         T :=
+           New_Label (Labels =>
+                        (1 => Pretty_Label,
+                         2 => New_Located_Label (Expr)),
+                      Def => T,
+                      Domain => Domain);
+      end if;
 
       declare
          Overflow_Type : constant W_Base_Type_Id :=

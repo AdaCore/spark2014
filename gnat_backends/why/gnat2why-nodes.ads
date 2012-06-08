@@ -206,4 +206,7 @@ package Gnat2Why.Nodes is
    --  Get the range of a range constraint or subtype definition.
    --  The return node is of kind N_Range
 
+   function String_Of_Node (N : Node_Id) return String;
+   --  Return the node as pretty printed Ada code, limited to 50 chars
+
 end Gnat2Why.Nodes;

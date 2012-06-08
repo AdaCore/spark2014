@@ -90,6 +90,9 @@ package Why.Gen.Expr is
    function New_Located_Label (N : Node_Id) return W_Identifier_Id;
    --  Return a label that contains the Ada Sloc of the node
 
+   function New_Pretty_Label (N : Node_Id) return W_Identifier_Id;
+   --  Return a label that contains the pretty printing for the given node
+
    function New_Located_Expr (Ada_Node : Node_Id;
                               Expr     : W_Expr_Id;
                               Domain   : EW_Domain) return W_Expr_Id;

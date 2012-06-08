@@ -761,6 +761,23 @@ package body Why.Gen.Expr is
       end if;
    end New_Or_Else_Expr;
 
+   ----------------------
+   -- New_Pretty_Label --
+   ----------------------
+
+   function New_Pretty_Label (N : Node_Id) return W_Identifier_Id
+   is
+      S : constant String := String_Of_Node (N);
+   begin
+      if S /= "" then
+         return
+           New_Identifier
+             (Name => """GP_Pretty_Ada:" & S & """");
+      else
+         return Why_Empty;
+      end if;
+   end New_Pretty_Label;
+
    --------------------
    -- New_Range_Expr --
    --------------------
