@@ -3779,6 +3779,7 @@ package body Gnat2Why.Expr is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
       Arg2 : constant Node_Id := Next (Arg1);
       Expr : constant Node_Id := Expression (Arg2);
+      Params : Translation_Params := Body_Params;
    begin
 
       --  Pragma Check generated for Pre/Postconditions are
@@ -3794,8 +3795,9 @@ package body Gnat2Why.Expr is
 
       if Present (Expr) then
          Runtime := New_Ignore
-           (Prog => +Transform_Expr (Expr, EW_Prog, Params => Body_Params));
-         return +Transform_Expr (Expr, EW_Pred, Params => Body_Params);
+           (Prog => +Transform_Expr (Expr, EW_Prog, Params => Params));
+         Params.Gen_Image := True;
+         return +Transform_Expr (Expr, EW_Pred, Params => Params);
       else
          raise Program_Error;
       end if;
