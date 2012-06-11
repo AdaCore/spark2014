@@ -1220,6 +1220,23 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Statement_Sequence_Pre_Op;
 
+   --------------------------
+   -- Abstract_Expr_Pre_Op --
+   --------------------------
+
+   procedure Abstract_Expr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Abstract_Expr_Id)
+   is
+   begin
+      P (O, "abstract (");
+      Traverse (State, +Get_Expr (Node));
+      P (O, ") {");
+      Traverse (State, +Get_Post (Node));
+      P (O, "}");
+      State.Control := Abandon_Children;
+   end Abstract_Expr_Pre_Op;
+
    ------------------
    -- Label_Pre_Op --
    ------------------

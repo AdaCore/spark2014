@@ -134,6 +134,7 @@ package Why.Sinfo is
       W_Binding_Ref,
       W_While_Loop,
       W_Statement_Sequence,
+      W_Abstract_Expr,
       W_Assert,
       W_Raise,
       W_Try_Block,

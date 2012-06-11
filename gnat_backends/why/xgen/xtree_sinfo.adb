@@ -594,6 +594,16 @@ package body Xtree_Sinfo is
       New_Field (W_Statement_Sequence,
                  "Statements", "W_Prog", Id_Some);
 
+      ---------------------
+      -- W_Abstract_Expr --
+      ---------------------
+
+      Set_Domain (W_Abstract_Expr, EW_Prog);
+      New_Field (W_Abstract_Expr,
+                "Expr", "W_Prog", Id_One);
+      New_Field (W_Abstract_Expr,
+                "Post", "W_Pred", Id_One);
+
       --------------
       -- W_Assert --
       --------------

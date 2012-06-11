@@ -150,17 +150,13 @@ package body Why.Gen.Progs is
    function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
       return W_Prog_Id
    is
-   begin
-      return
+      Call : constant W_Prog_Id :=
         New_Call
           (Ada_Node => Ada_Node,
-           Name     => To_Ident (WNE_Sandbox),
-           Args     => (1 =>
-                          New_Call
-                            (Ada_Node => Ada_Node,
-                             Domain   => EW_Prog,
-                             Name     => To_Ident (WNE_Ignore),
-                             Args     => (1 => +Prog))));
+           Name     => To_Ident (WNE_Ignore),
+           Args     => (1 => +Prog));
+   begin
+      return New_Abstract_Expr (Expr => Call, Post => True_Pred);
    end New_Ignore;
 
    ------------------------

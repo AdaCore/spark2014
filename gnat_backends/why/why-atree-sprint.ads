@@ -242,6 +242,10 @@ private
      (State : in out Printer_State;
       Node  : W_Statement_Sequence_Id);
 
+   procedure Abstract_Expr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Abstract_Expr_Id);
+
    procedure Label_Pre_Op
      (State : in out Printer_State;
       Node  : W_Label_Id);
