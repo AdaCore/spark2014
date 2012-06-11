@@ -1,4 +1,4 @@
-Annotations in subpgrograms
+Annotations in subprograms
 ===========================
 
 This section discusses the pragmas ``Cut``, ``Loop_Invariant`` and ``Loop_Variant``.
@@ -40,8 +40,8 @@ For all the pragmas ``Check``, ``Assert``, ``Cut`` and ``Loop_Invariant``, it
 must be proved that the boolean expression is true. In addition, the pragmas
 ``Cut`` and ``Loop_Invariant`` act as a cut point: for any proofs in the
 remainder of the statement list, *only* the boolean expression is known to be
-true at that point; all information that has been established from the
-statement list before the cut point is forgotten.
+true at that point; all information about modified variables that has been
+established from the statement list before the cut point is forgotten.
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
@@ -85,7 +85,7 @@ The following example describes some pragmas of this section::
       while I < 10 loop
          pragma Loop_Invariant (R >= 100 - 10 * I);
          pragma Loop_Variant (Increases => I,
-                              Decreases => Rem);
+                              Decreases => R);
          R := R - I;
          I := I + 1;
       end loop;

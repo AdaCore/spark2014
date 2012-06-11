@@ -6,8 +6,6 @@
 SPARK 2014 Language Design Document
 =====================================
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
@@ -15,6 +13,11 @@ Contents:
    globalparam
    assertcutinv
    expressions
+   abstraction
+   refinement
+   external
+   proof_fun
+   coming_from
 
 Indices and tables
 ==================
