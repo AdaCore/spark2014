@@ -13,8 +13,8 @@ const.adb:18:22: info: index check proved
 const.adb:18:28: assertion not proved, requires const__d2 (1) = 1
 const.adb:19:22: info: index check proved
 const.adb:19:28: assertion not proved, requires const__d2 (2) = 1
-const.adb:23:26: info: assertion proved
-const.adb:24:26: info: assertion proved
+const.adb:23:26: assertion not proved, requires const__e.x = 1
+const.adb:24:26: assertion not proved, requires const__e.y = 1
 const.adb:25:26: info: assertion proved
 const.adb:26:26: info: assertion proved
 const.adb:27:26: info: assertion proved

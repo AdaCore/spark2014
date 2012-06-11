@@ -1,6 +1,7 @@
+
 int_list.adb:13:12: info: precondition proved
 int_list.adb:13:24: info: precondition proved
-int_list.adb:13:35: info: postcondition proved
+int_list.adb:13:35: postcondition not proved, requires int_list__mylists__element (l, int_list__mylist
 int_list.adb:17:13: info: precondition proved
 int_list.adb:17:13: info: range check proved
 int_list.adb:17:25: info: range check proved

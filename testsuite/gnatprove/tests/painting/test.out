@@ -1,7 +1,7 @@
 
-p.adb:10:21: loop invariant preservation not proved, requires p.plain = p_old.plain
 p.adb:12:21: info: index check proved
 p.adb:12:42: info: index check proved
+p.adb:12:54: loop invariant preservation not proved, requires p.shadow (j) = d
 p.adb:14:14: info: index check proved
 p.adb:15:14: info: index check proved
 p.adb:22:7: info: precondition proved

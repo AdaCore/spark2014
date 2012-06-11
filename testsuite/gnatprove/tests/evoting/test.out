@@ -21,7 +21,6 @@ evoting.adb:202:7: info: index check proved
 evoting.adb:204:56: info: range check proved
 evoting.adb:205:7: info: index check proved
 evoting.adb:209:13: info: index check proved
-evoting.adb:209:47: loop invariant initialization not proved, requires winners (evoting__candidate_number_t'first<<<0>
 evoting.adb:209:47: loop invariant preservation not proved, requires winners (evoting__candidate_number_t'first<<<0>
 evoting.adb:211:13: info: index check proved
 evoting.adb:213:57: info: overflow check proved
@@ -32,6 +31,7 @@ evoting.adb:219:22: info: index check proved
 evoting.adb:220:19: info: index check proved
 evoting.adb:220:52: info: index check proved
 evoting.adb:222:19: info: index check proved
+evoting.adb:222:50: loop invariant initialization not proved, requires counters (latest_highest_score) > counters (j)
 evoting.adb:222:52: info: index check proved
 evoting.adb:223:13: info: index check proved
 evoting.adb:223:27: index check not proved
@@ -49,14 +49,14 @@ evoting.adb:233:13: info: index check proved
 evoting.adb:234:37: info: range check proved
 evoting.adb:236:13: info: index check proved
 evoting.adb:243:35: info: overflow check proved
+evoting.adb:244:13: info: loop invariant initialization proved
 evoting.adb:244:58: info: overflow check proved
 evoting.adb:244:65: info: overflow check proved
 evoting.adb:245:18: loop invariant preservation not proved, requires not winners (j)
 evoting.adb:245:22: index check not proved
 evoting.adb:247:21: info: index check proved
-evoting.adb:247:32: loop invariant initialization not proved, requires winners (j) = init_winners (j)
 evoting.adb:247:34: info: index check proved
-evoting.adb:248:13: index check not proved
+evoting.adb:248:13: info: index check proved
 evoting.adb:257:32: info: range check proved
 evoting.adb:264:10: info: loop invariant initialization proved
 evoting.adb:264:10: info: loop invariant preservation proved

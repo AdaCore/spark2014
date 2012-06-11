@@ -4,5 +4,5 @@ p.adb:11:22: info: range check proved
 p.adb:12:27: info: range check proved
 p.adb:6:24: range check not proved
 p.adb:7:24: range check not proved
-p.adb:8:26: info: range check proved
-p.adb:9:25: info: range check proved
+p.adb:8:26: range check not proved
+p.adb:9:25: range check not proved

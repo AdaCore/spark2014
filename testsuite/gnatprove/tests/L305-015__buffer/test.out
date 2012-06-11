@@ -7,4 +7,4 @@ buf_read.adb:48:29: info: overflow check proved
 buf_read.adb:48:29: info: range check proved
 buf_read.adb:52:7: assertion not proved
 buf_read.adb:54:21: info: index check proved
-buf_read.ads:9:40: info: postcondition proved
+buf_read.ads:9:40: postcondition not proved

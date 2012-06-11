@@ -18,7 +18,7 @@ ring_buf.adb:19:27: info: overflow check proved
 ring_buf.adb:19:32: info: division check proved
 ring_buf.adb:19:32: info: range check proved
 ring_buf.adb:20:28: info: overflow check proved
-ring_buf.adb:20:28: info: range check proved
+ring_buf.adb:20:28: range check not proved
 ring_buf.adb:5:19: info: range check proved
 ring_buf.ads:47:21: info: postcondition proved
 ring_buf.ads:49:59: info: index check proved

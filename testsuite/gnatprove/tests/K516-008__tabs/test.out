@@ -1,6 +1,6 @@
 
 tab.adb:10:58: info: range check proved
-tab.adb:11:20: info: index check proved
+tab.adb:11:20: index check not proved
 tab.adb:12:53: overflow check not proved
 tab.adb:12:60: index check not proved
 tab.adb:12:65: info: index check proved

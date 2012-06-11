@@ -6,7 +6,7 @@ natural_set.adb:18:11: info: index check proved
 natural_set.adb:18:25: info: range check proved
 natural_set.adb:7:22: info: range check proved
 natural_set.ads:11:50: info: postcondition proved
-natural_set.ads:16:63: postcondition not proved
+natural_set.ads:16:63: info: postcondition proved
 natural_set.ads:25:15: postcondition not proved
 natural_set.ads:42:51: info: range check proved
 natural_set.ads:45:53: info: index check proved
@@ -21,7 +21,7 @@ natural_set.adb:18:11: info: index check proved
 natural_set.adb:18:25: info: range check proved
 natural_set.adb:7:22: info: range check proved
 natural_set.ads:11:50: info: postcondition proved
-natural_set.ads:16:63: postcondition not proved
+natural_set.ads:16:63: info: postcondition proved
 natural_set.ads:25:15: postcondition not proved
 natural_set.ads:42:51: info: range check proved
 natural_set.ads:45:53: info: index check proved
