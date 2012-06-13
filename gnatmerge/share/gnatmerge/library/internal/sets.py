@@ -15,6 +15,14 @@ class FunctionArrow(Arrow):
     def follow(self, object, key):
         return self.operation(key, object.elements[key])
 
+class FilteredArrow(Arrow):
+    def __init__(self, arrow, maps):
+        self.arrow = arrow
+        self.maps = maps
+
+    def follow(self, object, key):
+        return self.maps[self.arrow.follow(object, key)]
+
 class Object:
     def __init__(self, name):
         self.name = name

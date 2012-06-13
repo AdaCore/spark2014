@@ -102,15 +102,38 @@ class RangeAttribute(common.Attribute):
         return self.M
 
 class PartialOrderAttribute(common.Attribute):
-    def __init__(self, name, values):
+    """Represents an attribute domain as a partial order
+
+    ATTRIBUTES
+      values: possible values taken by such an attribute
+    """
+
+    def __init__(self, name, values=None):
         self.name = name
-        self.values = values
+        self.values = set([])
         self.named_meets = {}
-        self.weaker_classes = {None : []}
-        for value in values:
-            self.weaker_classes[value] = {None,}
+        self.weaker_classes = {None : set([])}
+        if values is not None:
+            for value in values:
+                self.new_value(value)
+
+    def new_value(self, value):
+        """Add a new possible value in the attribute domain
+
+        PARAMETERS
+          value: unique str used to identify the new value
+        """
+        self.values.add(value)
+        self.weaker_classes[value] = {None,}
+        return value
 
     def name_meet(self, value, content):
+        """Add new value as a meet of several pre-existing ones
+
+        PARAMETERS
+          name:    unique str used to identify the new value
+          content: set that contains the pre-existing values to meet
+        """
         self.values.add(value)
         for elt in content:
             self.assume_stronger(elt, value)
@@ -169,4 +192,5 @@ class PartialOrderAttribute(common.Attribute):
     def join(self, left_object, left_key, right_object, right_key):
         return self.value_join(left_object.element(left_key)[self.name],
                                right_object.element(right_key)[self.name])
+
 

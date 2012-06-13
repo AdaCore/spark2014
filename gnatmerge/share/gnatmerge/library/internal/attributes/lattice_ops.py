@@ -229,7 +229,6 @@ class Join(sets.Arrow):
         self.subobject = subobject
         self.in_object_key = in_object_key
 
-
     def follow(self, object, key):
         result = self.lattice.empty_set()
         for subobj_key in self.subobject.content():

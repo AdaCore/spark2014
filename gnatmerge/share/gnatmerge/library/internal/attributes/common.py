@@ -36,5 +36,5 @@ class AttributeArrow(sets.Arrow):
         self.attribute = attribute
 
     def follow(self, object, key):
-        return attribute.eval(object, key)
+        return self.attribute.eval(object, key)
 
