@@ -8,14 +8,15 @@ Syntax
 
 ::
 
-      cut_statement ::= pragma Cut (boolean_expression);
+      cut_statement          ::= pragma Cut (boolean_expression);
 
-      invariant_statement ::= pragma Loop_Invariant(boolean_expression);
+      invariant_statement    ::= pragma Loop_Invariant(boolean_expression);
 
       loop_variant_statement ::= pragma Loop_Variant(variant_list);
 
-      variant_list ::= variant {, variant_list }
-      variant ::= Increases => discrete_expression | Decreases => discrete_expression
+      variant_list           ::= variant {, variant_list}
+      variant_direction      ::= Increases | Decreases
+      variant                ::= variant_direction => discrete_expression
 
 Legality rules
 --------------

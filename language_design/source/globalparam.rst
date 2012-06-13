@@ -27,40 +27,54 @@ Syntax of a Derives Aspect
 
 ::
 
-   derives_aspect  ::= with Derives => (derives_clauses_list)
-   derives_clause  ::= name_list => data_expression
-   name_list       ::= name | name_paren_list
-   name_paren_list ::= (inner_name_list) | null
-   inner_name_list ::= name {, inner_name_list}
-   data_expression ::=
-      | name_paren_list
-      | + name_paren_list
-      | (if expression then data_expression {elsif data_expression}* {else data_expression})
-      | (case expression then data_expression else data_expression)
+   derives_aspect      ::= with Derives => (derives_clause_list)
+   derives_clause_list ::=
+       derives_clause {, derives_clause_list}
+     | null
+   derives_clause      ::= name_list => data_expression
+   name_list           ::= name | name_paren_list
+   name_paren_list     ::= (inner_name_list) | null
+   inner_name_list     ::= name {, inner_name_list}
+   data_expression     ::=
+        [+] name_list
+      | (if_data_expression)
+      | (case_data_expression)
+   if_data_expression  ::=
+     if condition then data_expression
+     {elsif condition then data_expression}
+     [else data_expression]
+   case_data_expression ::=
+      case selecting_expression is
+      case_expression_alternative {,
+      case_data_expression_alternative}
+   case_data_expression_alternative ::=
+      when discrete_choice_list => data_expression
 
 Legality rules
 --------------
 
-The parameter aspects should refine the regular Ada 2012 parameter modes, for
+The Param aspects should refine the regular Ada 2012 parameter modes, for
 example when a parameter X appears in the Param_In_Out aspect, its parameter
-mode should be ``in out``.
+mode should be ``in out``. Likewise, if a parameter X appears in the Param_In
+and Param_Out aspects (e.g. with different conditions), its parameter mode
+should be ``in out``.
 
 Meaning
 -------
 
-Globals and parameter aspects describe the set of names that is read and/or
+Global and Param aspects describe the set of names that is read and/or
 modified by the subprogram.
 
-A Derives Aspect can be used to describe the information flow of the
+A Derives aspect can be used to describe the information flow of the
 subprogram, that is, from which names a modified name derives its new value. A
 "+" preceding a name list means that the name derives from the given name list
 and itself.
 
-Global and Parameter aspects are never needed when a Derives aspect has been
-given. If an implementation for the subprogram exists, it is checked
-that the actual set of modified names is included in the set of names that is
-declared using these aspects, and that the information flow is correct with
-respect to the implementation.
+Global and Param aspects are never needed when a Derives aspect has been
+given. If an implementation for the subprogram exists, the actual set of
+modified names should match the set of names that is declared using these
+aspects, and the information flow should be correct with respect to the
+implementation.
 
 The aspects discussed in this section do not have any dynamic semantics.
 
@@ -69,8 +83,8 @@ Examples
 
 .. highlight:: ada
 
-The following example illustrates simple and advanced uses of globals and
-parameter aspects::
+The following example illustrates simple and advanced uses of Global and
+Param aspects::
 
     type A is array (Integer range 1 .. 10) of Integer;
 
@@ -91,17 +105,17 @@ parameter aspects::
 
     procedure P (I : in out Integer; R_Arg : in out R)
     with
-      Global_In => (G),
-      Param_In_Out => (I, if I = 0 then R_Arg.F_1 (I)),
+      Global_In => G,
+      Param_In_Out => (I, (if I = 0 then R_Arg.F_1 (I))),
       Derives =>
-         (I => + (G),
-          R_Arg.F_1 (I) => if I = 0 then G);
+         (I => +G,
+          R_Arg.F_1 (I) => (if I = 0 then G));
 
 
 Generative and Declarative mode
 -------------------------------
 
-Global and parameter annotations can be computed automatically when the
+Global and Param aspects can be computed automatically when the
 implementation for a subprogram is given. One can choose on a per-package
 basis whether one wants globals to be computed automatically::
 

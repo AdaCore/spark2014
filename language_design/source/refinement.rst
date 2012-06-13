@@ -22,6 +22,8 @@ postcondition of the declaration.
 Example
 -------
 
+.. highlight:: ada
+
 ::
 
    function F (X : T; Y : Integer) return Integer
