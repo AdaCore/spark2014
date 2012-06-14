@@ -42,7 +42,7 @@ class Entity:
         else:
             self.states = lattices.PartialOrderAttribute(name + ".STATUS")
         self.object.new_attribute(self.states)
-        # ??? Double-check that new state values are actually added...
+        self.object.join_arrow = None
 
     def new_child(self, name, states, maps):
         """Create a new child entity
@@ -69,10 +69,14 @@ class Entity:
                                lattice_ops.Inclusion(lattice=self.merge.slocs,
                                                      object=self.object))
         child.object.new_arrow(self.states.name, inherits)
-        self.object.new_arrow(self.states.name,
-                              lattice_ops.Join(lattice=self.states,
-                                               subobject=child.object,
-                                               in_object_key=self.name))
+        if self.object.join_arrow is not None:
+            self.object.join_arrow.add(child.object)
+        else:
+            self.object.join_arrow = lattice_ops.Join(lattice=self.states,
+                                                      subobject=child.object,
+                                                      in_object_key=self.name)
+            self.object.new_arrow(self.states.name,
+                                  self.object.join_arrow)
 
         return child
 

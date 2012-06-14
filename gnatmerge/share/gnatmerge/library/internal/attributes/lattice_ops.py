@@ -226,16 +226,20 @@ class Join(sets.Arrow):
     """
     def __init__(self, lattice, subobject, in_object_key):
         self.lattice = lattice
-        self.subobject = subobject
+        self.subobjects = [subobject]
         self.in_object_key = in_object_key
+
+    def add(self, subobject):
+        self.subobjects.append(subobject)
 
     def follow(self, object, key):
         result = self.lattice.empty_set()
-        for subobj_key in self.subobject.content():
-            attribute = self.subobject.follow(self.in_object_key, subobj_key)
-            if attribute == key:
-                result = \
-                    self.lattice.value_join \
-                    (result,
-                     self.lattice.eval(self.subobject, subobj_key))
+        for subobject in self.subobjects:
+            for subobj_key in subobject.content():
+                attribute = subobject.follow(self.in_object_key, subobj_key)
+                if attribute == key:
+                    result = \
+                        self.lattice.value_join \
+                        (result,
+                         self.lattice.eval(subobject, subobj_key))
         return result
