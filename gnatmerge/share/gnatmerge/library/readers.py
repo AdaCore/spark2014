@@ -12,7 +12,7 @@ class Reader:
         self.states = lattices.PartialOrderAttribute(name + ".STATUS",
                                                      {"OK", "KO"})
         # ??? name appended to make that attribute unique. Is that needed?
-        self.states.name_meet("PARTIAL OK", {"OK", "KO"})
+        self.states.name_and("PARTIAL OK", {"OK", "KO"})
         self.filenames = []
 
     def load(self, filename):

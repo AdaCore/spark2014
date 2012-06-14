@@ -1,6 +1,7 @@
 
 def to_set(e):
     if e is None:
+        # return set([])
         return set([])
     elif isinstance(e, set):
         return e

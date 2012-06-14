@@ -112,7 +112,7 @@ class PartialOrderAttribute(common.Attribute):
         self.name = name
         self.values = set([])
         self.named_meets = {}
-        self.weaker_classes = {None : set([])}
+        self.weaker_classes = {None : set([]), "UNKNOWN" : set([])}
         if values is not None:
             for value in values:
                 self.new_value(value)
@@ -124,10 +124,11 @@ class PartialOrderAttribute(common.Attribute):
           value: unique str used to identify the new value
         """
         self.values.add(value)
-        self.weaker_classes[value] = {None,}
+        self.weaker_classes[value] = set([])
+        self.weaker_classes["UNKNOWN"].add(value)
         return value
 
-    def name_meet(self, value, content):
+    def name_and(self, value, content):
         """Add new value as a meet of several pre-existing ones
 
         PARAMETERS
@@ -135,9 +136,9 @@ class PartialOrderAttribute(common.Attribute):
           content: set that contains the pre-existing values to meet
         """
         self.values.add(value)
+        self.weaker_classes[value] = set([])
         for elt in content:
             self.assume_stronger(elt, value)
-        self.weaker_classes[value] = {None,}
         self.named_meets[value] = content
 
     def assume_stronger(self, left, right):
@@ -159,7 +160,7 @@ class PartialOrderAttribute(common.Attribute):
                                     right_object.element(right_key)[self.name])
 
     def empty_set(self):
-        return None
+        return set([])
 
     def maximalize(self, value):
         v = conversions.to_set(value)

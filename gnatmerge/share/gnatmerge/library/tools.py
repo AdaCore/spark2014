@@ -62,7 +62,7 @@ class Entity:
         complete_map = maps
         for value in states.values:
             if not maps.has_key(value):
-                complete_map[value] = None
+                complete_map[value] = "UNKNOWN"
         inherits = sets.FilteredArrow(common.AttributeArrow(child.states),
                                       complete_map)
         child.object.new_arrow(self.name,
@@ -105,7 +105,7 @@ class Merge:
                                              "SLOCS", "LOW", "HIGH")
         self.tristate = lattices.PartialOrderAttribute("STATUS",
                                                        {"OK", "KO"})
-        self.tristate.name_meet("PARTIAL OK", {"OK", "KO"})
+        self.tristate.name_and("PARTIAL OK", {"OK", "KO"})
 
     def new_entity(self, name):
         """Create a new entity to be used for this merge"""
