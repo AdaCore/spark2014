@@ -112,6 +112,7 @@ class PartialOrderAttribute(common.Attribute):
         self.name = name
         self.values = set([])
         self.named_meets = {}
+        self.named_joins = {}
         self.weaker_classes = {None : set([]), "UNKNOWN" : set([])}
         if values is not None:
             for value in values:
@@ -135,11 +136,24 @@ class PartialOrderAttribute(common.Attribute):
           name:    unique str used to identify the new value
           content: set that contains the pre-existing values to meet
         """
-        self.values.add(value)
-        self.weaker_classes[value] = set([])
+        self.new_value(value)
         for elt in content:
             self.assume_stronger(elt, value)
         self.named_meets[value] = content
+        return value
+
+    def name_or(self, value, content):
+        """Add new value as a join of several pre-existing ones
+
+        PARAMETERS
+          name:    unique str used to identify the new value
+          content: set that contains the pre-existing values to meet
+        """
+        self.new_value(value)
+        for elt in content:
+            self.assume_stronger(elt, value)
+        self.named_joins[value] = content
+        return value
 
     def assume_stronger(self, left, right):
         # add left > right
@@ -152,8 +166,9 @@ class PartialOrderAttribute(common.Attribute):
                 self.weaker_classes[key].add(right)
 
     def value_less_than(self, left, right):
-        r = conversions.to_set(right)
-        return r in to_set(self.weaker_classes[left])
+        l = conversions.to_set(left)
+        r = self.maximalize(right)
+        return l.issubset(r)
 
     def less_than(self, left_object, left_key, right_object, right_key):
         return self.value_less_than(left_object.element(left_key)[self.name],

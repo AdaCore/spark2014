@@ -40,9 +40,12 @@ class Entity:
         if states is not None:
             self.states = states
         else:
-            self.states = lattices.PartialOrderAttribute(name + ".STATUS")
+            self.states = lattices.PartialOrderAttribute(self.status_name())
         self.object.new_attribute(self.states)
         self.object.join_arrow = None
+
+    def status_name(self):
+        return self.name + ".STATUS"
 
     def new_child(self, name, states, maps):
         """Create a new child entity
@@ -107,9 +110,7 @@ class Merge:
         self.repository = sets.Objects()
         self.slocs = lattices.RangeAttribute(lattices.Sloc,
                                              "SLOCS", "LOW", "HIGH")
-        self.tristate = lattices.PartialOrderAttribute("STATUS",
-                                                       {"OK", "KO"})
-        self.tristate.name_and("PARTIAL OK", {"OK", "KO"})
+        self.goals = {}
 
     def new_entity(self, name):
         """Create a new entity to be used for this merge"""
@@ -119,3 +120,20 @@ class Merge:
     def loads(self, filename):
         """Load a set of results to be used for this merge"""
         self.repository.loads(filename)
+
+    def new_goal(self, name, entity, value):
+        """Set the goal for a given entity
+
+        Any entity of the given type should have a value that is more than
+        (or equal to) value.
+        """
+        self.goals[name] = {"entity" : entity, "value" : value}
+
+    def goal_reached(self, name):
+        entity = self.goals[name]["entity"]
+        goal = self.goals[name]["value"]
+        for elt in entity.object.content():
+            value = entity.object.follow(entity.status_name(), elt)
+            attribute = entity.object.attributes[entity.status_name()]
+            if attribute.value_less_than(goal, value):
+                print "REACHED : " + str(elt)

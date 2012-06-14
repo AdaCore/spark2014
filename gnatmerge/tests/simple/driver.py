@@ -131,6 +131,8 @@ tested    = s.new_value("TESTED")
 not_t     = s.new_value("NOT TESTED")
 partial_t = s.name_and("PARTIALLY TESTED", {tested, not_t})
 
+ok = s.name_or("OK", {tested, proved})
+
 tests = subp.new_input(reader=readers.ErrorListing("TEST"),
                        maps={"OK" : tested,
                              "KO" : not_t})
@@ -143,7 +145,7 @@ m.loads("program.json")
 
 # Output results
 
-# set_goal(ok)
+m.new_goal("OK", subp, ok)
 
 for name in ["SUBPROGRAM.STATUS"]:
     for i in tests.object.content():
@@ -157,3 +159,4 @@ for i in subp.object.content():
     name = "SUBPROGRAM.STATUS"
     print i + " - " + name + " : " + str(subp.object.follow(name, i))
 
+m.goal_reached("OK")

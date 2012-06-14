@@ -28,6 +28,7 @@ class Object:
         self.name = name
         self.elements = {}
         self.arrows = {}
+        self.attributes = {}
 
     def add(self, key, value):
         self.elements[key] = value
@@ -57,6 +58,7 @@ class Object:
         PARAMETERS
           domain: attribute domain, of class attributes.common.Attribute
         """
+        self.attributes[domain.name] = domain
         self.new_arrow(domain.name, domain.arrow_from_input())
 
     def load_element(self, element):
