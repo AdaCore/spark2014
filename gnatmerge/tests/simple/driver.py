@@ -27,12 +27,11 @@ m.loads("program.json")
 for i in vcs.object.content():
     print i + " - SUBPROGRAM : " + str(vcs.object.follow("SUBPROGRAM", i))
 
-for i in vcs.object.content():
-    print i + " - VC.STATUS : " + str(vcs.object.follow("VC.STATUS", i))
-
-for i in vcs.object.content():
-    print i + " - STATUS : " + str(vcs.object.follow("STATUS", i))
+for name in ["VC.STATUS", "SUBPROGRAM.STATUS"]:
+    for i in vcs.object.content():
+        print i + " - " + name + " : " + str(vcs.object.follow(name, i))
 
 for i in subp.object.content():
-    print i + " - STATUS : " + str(subp.object.follow("STATUS", i))
+    name = "SUBPROGRAM.STATUS"
+    print i + " - " + name + " : " + str(subp.object.follow(name, i))
 

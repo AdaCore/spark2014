@@ -40,7 +40,7 @@ class Entity:
         if states is not None:
             self.states = states
         else:
-            self.states = lattices.PartialOrderAttribute("STATUS")
+            self.states = lattices.PartialOrderAttribute(name + ".STATUS")
         self.object.new_attribute(self.states)
         # ??? Double-check that new state values are actually added...
 
@@ -68,8 +68,8 @@ class Entity:
         child.object.new_arrow(self.name,
                                lattice_ops.Inclusion(lattice=self.merge.slocs,
                                                      object=self.object))
-        child.object.new_arrow("STATUS", inherits)
-        self.object.new_arrow("STATUS",
+        child.object.new_arrow(self.states.name, inherits)
+        self.object.new_arrow(self.states.name,
                               lattice_ops.Join(lattice=self.states,
                                                subobject=child.object,
                                                in_object_key=self.name))
