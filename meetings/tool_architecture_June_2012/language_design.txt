@@ -21,8 +21,8 @@ possible different cases when choosing 6:
   switch: switch back to current behavior
   switch: use bignum
 Rod: Rolls-Royce worries about overflows and performance
-Robert: compiler already has most of the code to do overflow check, that could
-  be used for extended machine integers
+Robert: compiler already has most of the code to do overflow check
+        (-gnato), that could be used for extended machine integers
 Robert: what about abstraction (function retuning an unbounded integer)?
 Yannick: we decided that the user can use bignum
 Steve: absence of referential transparency with solution 6 (code is using
@@ -31,6 +31,9 @@ Robert: what is the largest machine integers?
 Arno: answer is 64 bits
 Rod: we have customers doing all combination of modes between amount of proof
   (Robert: also for amount of testing) and keeping assertions at runtime
+Johannes: non-executable semantics still needed (it's a different problem)
+   Arno: it's not even a problem, just don't execute it!
+   Johannes: but need to tell the tools which ones are supposed to be executed
 Rod: do we have a smooth path for newcomers to SPARK?
   Current SPARK semantics is consistent with all Ada compilers?
   Customers like Secunet have a path for high-level assertions?
@@ -42,6 +45,14 @@ AI: bignum library with certification in mind
 AI: Yannick write summary and write tasks for people
 AI: Robert makes -gnato the default
 
+Conclusion:
+   * everybody agreed on solution 6, summarized as:
+        default: executable semantics with extended machine integers
+           when needed
+        switch: switch back to current behavior
+        switch: use bignum when needed
+        switch to disable overflow checks
+
 potential impact of aspects on no-dead-code requirements of DO-178B/C
 ---------------------------------------------------------------------
 (vs. annotations)
@@ -52,6 +63,7 @@ Arno: This is deactivated code, fine with DO-178C.
 Trevor: what about code for test cases?
 Yannick: This is not code, not taken into account.
 
+General conclusion is that this does not pose any problem.
 validation process for new constructs
 -------------------------------------
 
@@ -63,15 +75,17 @@ Rod: Need light process with core team between AdaCore and Praxis to agree.
   Praxis has used both live discussions for smaller issues + design documents
   for bigger issues.
 Trevor: what about language design issues?
-Yannick: discuss on TN, then propose in SPAKR 2014 design document.
+Yannick: discuss on TN, then propose in SPARK 2014 design document.
 Arno: At AdaCore, we use comments to document design (like tool architecture
   for SPARK 2014)
 Rod: Propose a small group of language/technology leaders.
 Yannick: proposed process is
   - discuss in TN on spark2014-discuss@lists.open-do.org
-  - design language feature in the LRM doc under SPARK 2014 git repo
-  - agree on design
-  - only after start implementing in every tool
+  - when the discussion concerns a language feature, put the result in
+    the LRM doc under SPARK 2014 git repo
+  - when the discussion concerns the design of an analysis/implementation:
+     reach agreement, only then start implementing in the tools, put
+     documentation directly in the code
 
 maintaining the ability to perform modular/constructive analysis
 ----------------------------------------------------------------
@@ -80,8 +94,14 @@ Trevor: Many features in SPARK allow modular verification.
   Hi-Lite works on generic instances, with choices made by the compiler.
   There might be problems recovering information after the compilation frontend
   pass.
-Arno: We control the compiler frontend, we can do whatever. Hi-Lite expansion
+Arno: We control the compiler frontend, we can do whatever we want. Hi-Lite expansion
   is already tailored for formal verification instead of execution.
+Trevor: SPARK today is top-down, do analysis before writing any code,
+        can we do that with SPARK 2014?
+we all agree that SPARK 2014 as discussed in Bath is ready for that use
+  case
+minor pitfall: files must be compilable while SPARK can analyse
+  uncompilable files using hide clauses -> need for stub bodies etc
 
 verifying instances of generics or generics themselves
 ------------------------------------------------------
@@ -93,6 +113,10 @@ Trevor: one point is that we cannot analyze code without implementating
   generic bodies.
 Rod: I am going to work on verification of generic packages soon.
 Arno: Do we want to do that? (to be discussed later)
+
+Summary: We should do both. General consensus was that we should first
+provide proof of the instances, because it's so easy and does not put
+restrictions on the code; provide proof of the generic later
 
 need for mathematical types? (real/unbounded arrays/etc?)
 ---------------------------------------------------------
@@ -124,6 +148,12 @@ Rod: For now, we will provide logic types/functions/axioms for user to
   experiment.
 
 AI: Rod must look at the formal container library.
+
+Summary: we will provide support for proofs about floating point
+(possibly using the Alt-Ergo + Gappa integration), proof about numerical
+precision "at some later point", if at all. There was agreement that
+there is no need for built-in mathematical data structures, and that
+logic types/functions/axioms are good enough for now.
 
 need for more complex data refinement?
 --------------------------------------

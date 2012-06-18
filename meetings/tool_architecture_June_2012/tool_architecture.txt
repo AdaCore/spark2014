@@ -25,6 +25,7 @@ Rod: for usability, focus on precise error messages and autofix
 Rod: do we want the user to push the button or to run in background?
   (squiggle mode by Microsoft Research on Spec#)
 Yannick: our users are more interested in deciding when proving things
+Arno: if we really want, it's trivial in GPS to run something in background
 Arno: About interaction between CodePeer and GNATprove, no interaction yet.
   Some plan initially in Hi-Lite:
     - CodePeer to generate loop invariants
