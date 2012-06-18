@@ -1,0 +1,101 @@
+Rod: support for existing SPARK language
+Johannes: this is already scheduled for the tool architecture meeting
+
+mathematical vs executable semantics
+------------------------------------
+
+Rod: customers have the option in SPARK of compiling without checks, because
+  all proofs have been done statically
+Robert: we have many customers that want belt-and-braces
+  we have customers that don't do proofs and nonetheless remove checks at
+  runtime
+Angela: vote for 6
+Trevor: many SPARK contracts not executable
+Robert: impact on compilation is good.
+  Ada language does not require overflow checks.
+  certifiable bignum library may not be so difficult.
+  it may be interesting to have a mode that detects intermediate computations
+  that may overflow base type.
+possible different cases when choosing 6:
+  default: extended machine integers
+  switch: switch back to current behavior
+  switch: use bignum
+Rod: Rolls-Royce worries about overflows and performance
+Robert: compiler already has most of the code to do overflow check, that could
+  be used for extended machine integers
+Robert: what about abstraction (function retuning an unbounded integer)?
+Yannick: we decided that the user can use bignum
+Steve: absence of referential transparency with solution 6 (code is using
+  smaller machine integers than assertions)
+Robert: what is the largest machine integers?
+Arno: answer is 64 bits
+Rod: we have customers doing all combination of modes between amount of proof
+  (Robert: also for amount of testing) and keeping assertions at runtime
+Rod: do we have a smooth path for newcomers to SPARK?
+  Current SPARK semantics is consistent with all Ada compilers?
+  Customers like Secunet have a path for high-level assertions?
+  We have something to cover this ground of users.
+Angela: current solution 6 is much better than original 3 in Hi-Lite.
+
+AI: bignum library with certification in mind
+    Robert opens a TN for the compiler
+AI: Yannick write summary and write tasks for people
+AI: Robert makes -gnato the default
+
+potential impact of aspects on no-dead-code requirements of DO-178B/C
+---------------------------------------------------------------------
+(vs. annotations)
+
+Trevor: what about contracts/functions that are not executed because the user
+  is compiling without assertions enabled?
+Arno: This is deactivated code, fine with DO-178C.
+Trevor: what about code for test cases?
+Yannick: This is not code, not taken into account.
+
+validation process for new constructs
+-------------------------------------
+
+Yannick: Current process of discussing/agreeing in TN before giving the green
+  light for implementation.
+  Need something slightly more formal for SPARK 2014, to have someone from
+  AdaCore and Praxis give the green light.
+Rod: Need light process with core team between AdaCore and Praxis to agree.
+  Praxis has used both live discussions for smaller issues + design documents
+  for bigger issues.
+Trevor: what about language design issues?
+Yannick: discuss on TN, then propose in SPAKR 2014 design document.
+Arno: At AdaCore, we use comments to document design (like tool architecture
+  for SPARK 2014)
+Rod: Propose a small group of language/technology leaders.
+Yannick: proposed process is
+  - discuss in TN on spark2014-discuss@lists.open-do.org
+  - design language feature in the LRM doc under SPARK 2014 git repo
+  - agree on design
+  - only after start implementing in every tool
+
+maintaining the ability to perform modular/constructive analysis
+----------------------------------------------------------------
+
+Trevor: Many features in SPARK allow modular verification.
+  Hi-Lite works on generic instances, with choices made by the compiler.
+  There might be problems recovering information after the compilation frontend
+  pass.
+Arno: We control the compiler frontend, we can do whatever. Hi-Lite expansion
+  is already tailored for formal verification instead of execution.
+
+verifying instances of generics or generics themselves
+------------------------------------------------------
+
+Johannes: Hi-Lite verifies generic instances.
+  Current Examiner verifies generic themselves
+  We could support both.
+Trevor: one point is that we cannot analyze code without implementating
+  generic bodies.
+Rod: I am going to work on verification of generic packages soon.
+Arno: Do we want to do that? (to be discussed later)
+
+need for mathematical types? (real/unbounded arrays/etc?)
+---------------------------------------------------------
+
+
+need for more complex data refinement?
