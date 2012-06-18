@@ -97,5 +97,40 @@ Arno: Do we want to do that? (to be discussed later)
 need for mathematical types? (real/unbounded arrays/etc?)
 ---------------------------------------------------------
 
+Yannick: Do we want specification for real? for logical sets/maps, etc like in
+  JML? This is a request from Patrice Chalin.
+Rod: In the current SPARK tools, contracts talks about floating-point but
+  tools understand real arithmetic.
+Rod: customers interested in absence of runtime errors + precision
+Yannick: What about a way to specify the ideal mathematical counterpart of
+  a function returning a floating-point or fixed-point?
+Ed: We don't want to have to implement all numerical research in SPARK 2014.
+Rod: We don't know any SPARK user using fixed-point.
+Yannick: We could support floating-point in our toolchain.
+Angela: Research interested in real specifications.
+Rod: Worth thinking more before extending the language.
+
+AI: Praxis to contact Rolls-Royce to discuss interest in real specifications.
+AI: Yannick to follow integration of Gappa in Alt-Ergo to experiment in our
+  toolset.
+
+Yannick: What is the need for abstract containers?
+Rod: We have the formal containers that we can use.
+Johannes: Yes, but we don't have infinite containers then.
+Yannick: And we must then add ghost variables and computations to have a value
+  for these executable containers. Not the same as the model containers that
+  Patrice is interested in.
+Rod: For now, we will provide logic types/functions/axioms for user to
+  experiment.
+
+AI: Rod must look at the formal container library.
 
 need for more complex data refinement?
+--------------------------------------
+
+Trevor: If we can define the abstract view, we don't have a good way to
+  refine that down.
+Yannick: This is purely on the logical side.
+Rod: specify the retrieve relation for the correspondance.
+
+AI: Trevor to complete the language design doc with actual proposal.
