@@ -230,6 +230,16 @@ assigning names to tasks
 2: Yannick + Steve
 3: Trevor + ?
 
+Additional things discussed at the last minute
+----------------------------------------------
+
+* scalibility of gnatprove: 
+   - to be tested on large code
+   - implementation of fast WP
+   - implementation of cut points
+
+* backup plan:
+   - Why to FDL to use simplifier, riposte
 
 
 
