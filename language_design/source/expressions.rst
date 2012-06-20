@@ -10,6 +10,10 @@ introduced.
 Legality rules
 --------------
 
+.. todo::
+  Need to discuss 'Loop_Entry execution model, in particular when does the
+  object go out of scope (leading to e.g. finalization call)
+
 All these attributes apply to names. The ``'Loop_Entry`` attribute can only be
 used in assertions in loops (such as ``Loop_Invariant`` or ``Assert``), and
 can not be applied to objects of limited type. It has an optional label
