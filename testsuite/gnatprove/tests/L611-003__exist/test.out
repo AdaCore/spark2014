@@ -6,15 +6,15 @@ stack.adb:15:13: info: index check proved
 stack.adb:16:26: info: overflow check proved
 stack.adb:16:26: info: range check proved
 stack.adb:19:21: info: range check proved
-stack.adb:4:30: precondition not proved, requires ((0 <= S) and (S <= Max_Size)) and (Valid T S = True)
+stack.adb:4:30: precondition not proved
 stack.adb:6:12: info: overflow check proved
 stack.adb:6:20: info: range check proved
 stack.adb:6:7: info: index check proved
-stack.adb:7:12: precondition not proved, requires ((0 <= S) and (S <= Max_Size)) and (Valid T S = True)
+stack.adb:7:12: precondition not proved
 stack.ads:18:51: info: range check proved
-stack.ads:19:12: postcondition not proved, requires (Valid T Size'Result = True)
-stack.ads:22:38: precondition not proved, requires ((0 <= S) and (S <= Max_Size)) and (Valid T S = True)
-stack.ads:23:25: postcondition not proved, requires (Last_Element T S = Value)
+stack.ads:19:12: postcondition not proved
+stack.ads:22:38: precondition not proved
+stack.ads:23:49: postcondition not proved, requires stack__last_element (t, s) = value
 stack.ads:32:21: info: index check proved
 stack.ads:36:8: info: index check proved
 stack.ads:37:39: info: overflow check proved
