@@ -1,9 +1,12 @@
-Globals, Parameter and Derives aspects
-======================================
+Subprogram Contracts
+====================
 
 For a subprogram, the following aspects may be defined with an aspect
 specification:
 
+ Post_Cases
+     Refined postcondition expressed as a set of disjoint cases covering
+     all cases
  Global_In
      The global names that are read by the subprogram
  Global_Out
@@ -22,11 +25,16 @@ specification:
 The definition of the Global and the Param aspects is a comma-separated list
 of names, including own variables, potentially guarded by a condition.
 
+
+
 Syntax of a Derives Aspect
 --------------------------
 
 ::
 
+   post_cases          ::= with Post_Cases => (post_case_list)
+   post_case_list      ::= post_case {, post_case_list}
+   post_case           ::= boolean_expression => boolean_expression
    derives_aspect      ::= with Derives => (derives_clause_list)
    derives_clause_list ::=
        derives_clause {, derives_clause_list}
@@ -52,6 +60,10 @@ Syntax of a Derives Aspect
 
 Legality rules
 --------------
+
+.. todo::
+  Should the post cases be exclusive and should the check that exactly one
+  guard is true be performed at subprogram entry?
 
 The Param aspects should refine the regular Ada 2012 parameter modes, for
 example when a parameter X appears in the Param_In_Out aspect, its parameter

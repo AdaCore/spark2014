@@ -6,6 +6,12 @@ This section discusses the pragmas ``Cut``, ``Loop_Invariant`` and ``Loop_Varian
 Syntax
 ------
 
+.. todo::
+  We need to document the Assume pragma.
+
+.. todo::
+  Do we want to call the cut pragma ``Cut`` or ``Assert_And_Cut``.
+
 ::
 
       cut_statement          ::= pragma Cut (boolean_expression);

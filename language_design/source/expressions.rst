@@ -7,6 +7,12 @@ New Attributes
 The attributes ``'Loop_Entry``, ``'Update``, ``'Valid_Scalars`` are
 introduced.
 
+.. todo::
+  Need to discuss the use/need for ``'Loop_Entry`` that apply to an outer
+  loop, to be used in the expression of an inner loop invariant. If we want
+  to support that, we will need special rules to prevent the use of a name
+  of an object that does not exist at loop entry.
+
 Legality rules
 --------------
 
@@ -20,7 +26,7 @@ can not be applied to objects of limited type. It has an optional label
 as argument which denotes a loop block. If no such label is given,
 ``'Loop_Entry`` is associated to the innermost enclosing loop.
 
-The ``'Update`` attribute only applies to aggregate objects. It expects a
+The ``'Update`` attribute only applies to composite objects. It expects a
 comma-separated list of associations as argument, of the form ``expression =>
 expression``.
 
