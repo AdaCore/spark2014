@@ -58,7 +58,6 @@ Tool architecture
     * good IDE support is important (browsing, slicing)
     * componentwise analysis for later
 
-
 * proof
   features recognized as important:
    * absence of RTE
@@ -88,7 +87,6 @@ Tool architecture
    * dead code detection -> symbolic execution, KSU tools
 
 * Yannick: Praxis folks, please play with gnatprove
-
 
 Existing users, Legacy support
 ==============================
@@ -165,7 +163,6 @@ Tool design
    use case: information flow specified on public subprograms,
    discovered for internal subprograms
 
-
 Additions to existing architecture - and work to be done
 --------------------------------------------------------
 
@@ -233,7 +230,7 @@ assigning names to tasks
 Additional things discussed at the last minute
 ----------------------------------------------
 
-* scalibility of gnatprove: 
+* scalibility of gnatprove:
    - to be tested on large code
    - implementation of fast WP
    - implementation of cut points
