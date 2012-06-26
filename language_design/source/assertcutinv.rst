@@ -1,13 +1,11 @@
 Annotations in subprograms
 ===========================
 
-This section discusses the pragmas ``Cut``, ``Loop_Invariant`` and ``Loop_Variant``.
+This section discusses the pragmas ``Cut``, ``Assume``, ``Loop_Invariant`` and
+``Loop_Variant``.
 
 Syntax
 ------
-
-.. todo::
-  We need to document the Assume pragma.
 
 .. todo::
   Do we want to call the cut pragma ``Cut`` or ``Assert_And_Cut``.
@@ -28,9 +26,8 @@ Legality rules
 --------------
 
 In addition to the assertion statements ``pragma Check`` and ``pragma
-Assert``, a SPARK 2014 subprogram can contain the statement ``pragma Cut``
-with a boolean expression. This boolean property must be true at the point of
-the ``pragma Cut``, as it is the case for the other forms of assertions.
+Assert``, a SPARK 2014 subprogram can contain the statements ``pragma Cut``
+and ``pragma Assume``, both carrying a boolean expression.
 
 Any loop may contain, at any position in the top-level statement list, a
 ``pragma Loop_Invariant``.
@@ -44,11 +41,13 @@ Proof semantics
 ---------------
 
 For all the pragmas ``Check``, ``Assert``, ``Cut`` and ``Loop_Invariant``, it
-must be proved that the boolean expression is true. In addition, the pragmas
-``Cut`` and ``Loop_Invariant`` act as a cut point: for any proofs in the
-remainder of the statement list, *only* the boolean expression is known to be
-true at that point; all information about modified variables that has been
-established from the statement list before the cut point is forgotten.
+must be proved that the boolean expression is true. This is not required for
+pragma ``Assume``. In addition, the pragmas ``Cut`` and ``Loop_Invariant`` act
+as a cut point: for any proofs in the remainder of the statement list, *only*
+the boolean expression is known to be true at that point; all information
+about modified variables that has been established from the statement list
+before the cut point is forgotten. A boolean expression given by pragma
+``Assume`` can be assumed to be true for the remainder of subprogram.
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
