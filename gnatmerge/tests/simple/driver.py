@@ -20,7 +20,7 @@ partial_p = s.name_and("PARTIALLY PROVED", {proved, not_p})
 vcs = subp.new_input(reader=readers.ErrorListing("VC"),
                      maps={"OK" : proved,
                            "KO" : not_p})
-vcs.load("proofs.out")
+vcs.load("gnatprove.out")
 m.loads("program.json")
 
 # Output results
@@ -56,7 +56,7 @@ partial_p = s.name_and("PARTIALLY PROVED", {proved, not_p})
 vcs = subp.new_input(reader=readers.ErrorListing("VC"),
                       maps={"OK" : proved})
 
-vcs.load("proofs2.out")
+vcs.load("gnatprove2.out")
 m.loads("program.json")
 
 # Output results
@@ -92,8 +92,8 @@ vcs = subp.new_input(reader=readers.ErrorListing("VC"),
 vcs2 = subp.new_input(reader=readers.ErrorListing("VCB"),
                       maps={"OK" : proved,
                             "KO" : not_p})
-vcs.load("proofs.out")
-vcs2.load("proofs2.out")
+vcs.load("gnatprove.out")
+vcs2.load("gnatprove2.out")
 m.loads("program.json")
 
 # Output results
@@ -127,20 +127,20 @@ proved    = s.new_value("PROVED")
 not_p     = s.new_value("NOT PROVED")
 partial_p = s.name_and("PARTIALLY PROVED", {proved, not_p})
 
-tested    = s.new_value("TESTED")
-not_t     = s.new_value("NOT TESTED")
+tested    = s.new_value("TEST PASSED")
+not_t     = s.new_value("TEST FAILED")
 partial_t = s.name_and("PARTIALLY TESTED", {tested, not_t})
 
 ok = s.name_or("OK", {tested, proved})
 
-tests = subp.new_input(reader=readers.ErrorListing("TEST"),
+tests = subp.new_input(reader=readers.ErrorListing("TEST", "PASSED"),
                        maps={"OK" : tested,
                              "KO" : not_t})
 vcs = subp.new_input(reader=readers.ErrorListing("VC"),
                      maps={"OK" : proved,
                            "KO" : not_p})
-tests.load("tests.out")
-vcs.load("proofs.out")
+tests.load("gnattest.out")
+vcs.load("gnatprove.out")
 m.loads("program.json")
 
 # Output results
