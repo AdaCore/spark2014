@@ -223,6 +223,9 @@ package Why.Gen.Names is
    function Append_Num (W : Why_Name_Enum; Count : Uint)
                         return W_Identifier_Id;
 
+   function Append_Num (P, W : Why_Name_Enum; Count : Positive)
+                        return W_Identifier_Id;
+
    function To_String (W : Why_Name_Enum) return String;
 
    function To_Ident (W        : Why_Name_Enum;

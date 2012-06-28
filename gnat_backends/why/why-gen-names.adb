@@ -118,6 +118,13 @@ package body Why.Gen.Names is
       return Append_Num (W, Uint_To_Positive (Count));
    end Append_Num;
 
+   function Append_Num (P, W : Why_Name_Enum; Count : Positive)
+                        return W_Identifier_Id
+   is
+   begin
+      return Append_Num (To_String (P) & "." & To_String (W), Count);
+   end Append_Num;
+
    ----------------------
    -- Attr_To_Why_Name --
    ----------------------
