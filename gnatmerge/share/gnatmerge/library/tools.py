@@ -66,8 +66,7 @@ class Entity:
         for value in states.values:
             if not maps.has_key(value):
                 complete_map[value] = "UNKNOWN"
-        inherits = sets.FilteredArrow(common.AttributeArrow(child.states),
-                                      complete_map)
+        inherits = sets.FilteredArrow(child.states, complete_map)
         child.object.new_arrow(self.name,
                                lattice_ops.Inclusion(lattice=self.merge.slocs,
                                                      object=self.object))

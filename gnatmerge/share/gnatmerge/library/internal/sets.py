@@ -59,7 +59,7 @@ class Object:
           domain: attribute domain, of class attributes.common.Attribute
         """
         self.attributes[domain.name] = domain
-        self.new_arrow(domain.name, domain.arrow_from_input())
+        self.new_arrow(domain.name, domain)
 
     def load_element(self, element):
         self.add(element["NAME"], element)

@@ -48,7 +48,7 @@ class ErrorListing(Listing):
         parts = line.split(":")
 
         if len(parts) < 3:
-            print "warning: line with no sloc info: '%s'" % line
+            print "warning: line with no sloc info: '%s'" % line.strip()
             return None
         sloc = parts[0] + ":" + parts[1] + ":" + parts[2]
         element["SLOCS"] = {"LOW" : sloc, "HIGH" : sloc}

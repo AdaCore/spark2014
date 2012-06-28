@@ -179,7 +179,7 @@ class Inclusion(sets.Arrow):
         for outer_key in self.object.content():
             if self.lattice.less_than(object, key, self.object, outer_key):
                 candidate = self.object.follow("NAME", outer_key)
-                candidate_value = self.lattice.eval(self.object, outer_key)
+                candidate_value = self.lattice.follow(self.object, outer_key)
                 if self.lattice.value_less_than(candidate_value, result_value):
                     result_value = candidate_value
                     result = candidate
@@ -241,5 +241,5 @@ class Join(sets.Arrow):
                     result = \
                         self.lattice.value_join \
                         (result,
-                         self.lattice.eval(subobject, subobj_key))
+                         self.lattice.follow(subobject, subobj_key))
         return result
