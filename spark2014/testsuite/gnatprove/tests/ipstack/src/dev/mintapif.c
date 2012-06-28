@@ -70,14 +70,14 @@
 #define IFNAME0 'e'
 #define IFNAME1 't'
 
-typedef enum { MODE_INVALID, MODE_TAP, MODE_MCAST } mode_t;
+typedef enum { MODE_INVALID, MODE_TAP, MODE_MCAST } ifmode_t;
 
 struct mintapif {
   Ethernet_Address *ethaddr;
   /* Add whatever per-interface state that is needed here. */
   unsigned long lasttime;
   int fd;
-  mode_t mode;
+  ifmode_t mode;
 
   struct sockaddr_in dst_addr;
   /* For mode == MODE_MCAST */
