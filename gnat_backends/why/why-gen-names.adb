@@ -408,6 +408,18 @@ package body Why.Gen.Names is
                              Symbol => NID (Name));
    end New_Identifier;
 
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Symbol   : Name_Id)
+     return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Domain   => Domain,
+                             Symbol   => Symbol,
+                             Context  => No_Name);
+   end New_Identifier;
+
    ---------
    -- NID --
    ---------

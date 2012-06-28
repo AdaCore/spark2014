@@ -90,6 +90,13 @@ package Why.Gen.Names is
      return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Symbol   : Name_Id)
+      return W_Identifier_Id;
+   --  Create a new identifier for Name and return the result
+
    function New_Temp_Identifier return W_Identifier_Id;
    --  Return a new unique identifier
 

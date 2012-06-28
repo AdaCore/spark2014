@@ -48,7 +48,8 @@ package body Why.Gen.Name_Gen is
          return New_Identifier
            (Domain   => Domain,
             Ada_Node => Ada_Node,
-            Symbol   => Name_Find);
+            Symbol   => Name_Find,
+            Context  => No_Name);
       end Id;
 
       --------
@@ -95,7 +96,8 @@ package body Why.Gen.Name_Gen is
          return New_Identifier
            (Domain   => Domain,
             Ada_Node => Ada_Node,
-            Symbol   => Name_Find);
+            Symbol   => Name_Find,
+            Context  => No_Name);
       end Id;
 
       --------
@@ -196,7 +198,8 @@ package body Why.Gen.Name_Gen is
          return New_Identifier
            (Domain   => Domain,
             Ada_Node => Ada_Node,
-            Symbol   => Name_Find);
+            Symbol   => Name_Find,
+            Context  => No_Name);
       end Id;
 
       --------

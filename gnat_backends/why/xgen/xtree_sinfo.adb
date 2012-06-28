@@ -389,6 +389,7 @@ package body Xtree_Sinfo is
       ------------------
 
       New_Field (W_Identifier, "Symbol", "Name_Id");
+      New_Field (W_Identifier, "Context", "Name_Id");
 
       --------------
       -- W_Tagged --
