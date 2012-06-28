@@ -263,7 +263,7 @@ package body Why.Gen.Arrays is
                                     Und_Ent : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Array_Base  : constant String := To_String (Ada_Array_Name (Dimension));
+      Array_Base  : constant Why_Name_Enum := Ada_Array_Name (Dimension);
       BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
       Comp_Type   : constant W_Primitive_Type_Id :=
         Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
@@ -415,7 +415,7 @@ package body Why.Gen.Arrays is
                B_Type =>
                  New_Generic_Actual_Type_Chain
                    (Type_Chain => (1 => Comp_Type),
-                    Name => New_Identifier (Name => Array_Base & ".map")),
+                    Name => Prefix (To_String (Array_Base), "map")),
                others => <>);
             for Count in 1 .. Integer (Dimension) loop
                Rec_Binders (2 * Count) :=
@@ -449,7 +449,7 @@ package body Why.Gen.Arrays is
       begin
          To_Aggr (1) :=
            New_Field_Association
-             (Field => New_Identifier (Name => Array_Base & ".elts"),
+             (Field => Prefix (Array_Base, WNE_Array_Elts),
               Domain => EW_Term,
               Value =>
                 New_Record_Access
@@ -459,12 +459,15 @@ package body Why.Gen.Arrays is
            New_Field_Association
              (Field => To_Ident (WNE_Array_Elts),
               Domain => EW_Term,
-              Value => +New_Identifier
-                (Name => "a." & Array_Base & ".elts"));
+              Value =>
+                New_Record_Access
+                  (Name => +A_Ident,
+                   Field => Prefix (Array_Base, WNE_Array_Elts)));
          for Count in 1 .. Integer (Dimension) loop
             To_Aggr (3 * Count - 1) :=
               New_Field_Association
-                (Field => Append_Num (Array_Base & ".first", Count),
+                (Field =>
+                     Append_Num (Array_Base, WNE_Array_First_Field, Count),
                  Domain => EW_Term,
                  Value =>
                    New_Call (Domain => EW_Term,
@@ -478,7 +481,7 @@ package body Why.Gen.Arrays is
                                        Append_Num (WNE_Range_Field, Count)))));
             To_Aggr (3 * Count) :=
               New_Field_Association
-                (Field => Append_Num (Array_Base & ".last", Count),
+                (Field => Append_Num (Array_Base, WNE_Array_Last_Field, Count),
                  Domain => EW_Term,
                  Value =>
                    New_Call (Domain => EW_Term,
@@ -492,18 +495,21 @@ package body Why.Gen.Arrays is
                                        Append_Num (WNE_Range_Field, Count)))));
             To_Aggr (3 * Count + 1) :=
               New_Field_Association
-                (Field => Append_Num (Array_Base & ".offset", Count),
+                (Field => Append_Num (Array_Base, WNE_Array_Offset, Count),
                  Domain => EW_Term,
                  Value =>
                    New_Record_Access
                      (Name  => +A_Ident,
-                      Field => +Append_Num (WNE_Array_Offset, Count)));
+                      Field => Append_Num (WNE_Array_Offset, Count)));
             From_Aggr (2 * Count) :=
               New_Field_Association
                 (Field => Append_Num (WNE_Array_Offset, Count),
                  Domain => EW_Term,
                  Value =>
-                 +Append_Num ("a." & Array_Base & ".offset", Count));
+                   New_Record_Access
+                     (Name => +A_Ident,
+                      Field =>
+                        Append_Num (Array_Base, WNE_Array_Offset, Count)));
             From_Aggr (2 * Count + 1) :=
               New_Field_Association
                 (Field => Append_Num (WNE_Range_Field, Count),
@@ -514,9 +520,21 @@ package body Why.Gen.Arrays is
                       Name   => Append_Num ("mk", Count),
                       Args   =>
                         (1 =>
-                         +Append_Num ("a." & Array_Base & ".first", Count),
+                           New_Record_Access
+                             (Name  => +A_Ident,
+                              Field =>
+                                Append_Num
+                                  (Array_Base,
+                                   WNE_Array_First_Field,
+                                   Count)),
                          2 =>
-                         +Append_Num ("a." & Array_Base & ".last", Count))));
+                           New_Record_Access
+                             (Name  => +A_Ident,
+                              Field =>
+                                Append_Num
+                                  (Array_Base,
+                                   WNE_Array_Last_Field,
+                                   Count)))));
          end loop;
          Emit
            (Theory,
