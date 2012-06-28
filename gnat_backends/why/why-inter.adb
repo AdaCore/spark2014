@@ -868,9 +868,8 @@ package body Why.Inter is
                                       Name     => Field);
             else
                return New_Identifier (Ada_Node => Ada_N,
-                                      Name     =>
-                                        Capitalize_First (Full_Name (Ada_N)) &
-                                        "." & Field);
+                                      Name     => Field,
+                                      Context  => Full_Name (Ada_N));
             end if;
          end;
       elsif Local then
@@ -881,8 +880,8 @@ package body Why.Inter is
       else
          return
            New_Identifier (Ada_Node => E,
-                           Name     =>
-                             Capitalize_First (Full_Name (E)) & "." & Suffix);
+                           Name     => Suffix,
+                           Context => Full_Name (E));
       end if;
    end To_Why_Id;
 

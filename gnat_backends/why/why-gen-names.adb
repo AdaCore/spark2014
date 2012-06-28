@@ -397,6 +397,14 @@ package body Why.Gen.Names is
       return New_Identifier (Ada_Node, EW_Term, Name);
    end New_Identifier;
 
+   function New_Identifier (Ada_Node : Node_Id := Empty;
+                            Name    : String;
+                            Context : String)
+                            return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node, EW_Term, Name, Context);
+   end New_Identifier;
+
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -406,6 +414,19 @@ package body Why.Gen.Names is
       return New_Identifier (Ada_Node => Ada_Node,
                              Domain => Domain,
                              Symbol => NID (Name));
+   end New_Identifier;
+
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : String;
+      Context  : String)
+     return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Domain   => Domain,
+                             Symbol   => NID (Name),
+                             Context  => NID (Capitalize_First (Context)));
    end New_Identifier;
 
    function New_Identifier
