@@ -138,7 +138,7 @@ class PartialOrderAttribute(common.Attribute):
         """
         self.new_value(value)
         for elt in content:
-            self.assume_stronger(elt, value)
+            self.assume_stronger(value, elt)
         self.named_meets[value] = content
         return value
 
