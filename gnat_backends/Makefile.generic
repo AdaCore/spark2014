@@ -105,7 +105,9 @@ ifeq ($(filter-out CYGWIN%,$(uname)),)
   LDFLAGS=-Wl,--stack=0x2000000
 endif
 
-GNAT1_LIBS=$(OBJ)/../libbackend.a $(OBJ)/../../libcpp/libcpp.a \
+GCC47_LIBS=$(shell if [ -f $(OBJ)/../libcommon-target.a ]; then echo $(OBJ)/../libcommon-target.a $(OBJ)/../libcommon.a; fi)
+
+GNAT1_LIBS=$(OBJ)/../libbackend.a $(GCC47_LIBS) $(OBJ)/../../libcpp/libcpp.a \
    $(OBJ)/../../libdecnumber/libdecnumber.a $(OBJ)/../../libiberty/libiberty.a \
    -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
    $(OBJ)/../../zlib/libz.a
