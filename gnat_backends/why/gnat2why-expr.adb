@@ -2313,13 +2313,13 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Expr         : Node_Id) return W_Expr_Id
    is
-      Prefix      : constant Node_Id := Sinfo.Prefix (Expr);
+      Prefx      : constant Node_Id := Sinfo.Prefix (Expr);
       Range_N     : constant Node_Id := Get_Range (Discrete_Range (Expr));
       Low         : constant Node_Id := Low_Bound (Range_N);
       High        : constant Node_Id := High_Bound (Range_N);
       Tmp_Low     : constant W_Identifier_Id := New_Temp_Identifier;
       Tmp_Pre     : constant W_Identifier_Id := New_Temp_Identifier;
-      Array_Base  : constant String := To_String (Ada_Array_Name (1));
+      Array_Base  : constant Why_Name_Enum := Ada_Array_Name (1);
       Shift       : constant W_Expr_Id :=
         New_Binary_Op
           (Op_Type => EW_Int,
@@ -2328,7 +2328,7 @@ package body Gnat2Why.Expr is
            Right   =>
              New_Record_Access
                (Name  => +Tmp_Pre,
-                Field => New_Identifier (Name => Array_Base & ".first")));
+                Field => Prefix (Array_Base, WNE_Array_First_Field)));
       New_Offset  : constant W_Expr_Id :=
         New_Binary_Op
           (Op_Type => EW_Int,
@@ -2337,22 +2337,22 @@ package body Gnat2Why.Expr is
              New_Record_Access
                (Name => +Tmp_Pre,
                 Field =>
-                  New_Identifier (Name => Array_Base & ".offset")),
+                Prefix (Array_Base, WNE_Array_Offset)),
            Right  => Shift);
       Updates     : constant W_Field_Association_Array :=
         (1 =>
            New_Field_Association
-             (Field  => New_Identifier (Name => Array_Base & ".first"),
+             (Field  => Prefix (Array_Base, WNE_Array_First_Field),
               Value  => +Tmp_Low,
               Domain => Domain),
          2 =>
            New_Field_Association
-             (Field  => New_Identifier (Name => Array_Base & ".last"),
+             (Field  => Prefix (Array_Base, WNE_Array_Last_Field),
               Value  => Transform_Expr (High, EW_Int_Type, Domain, Params),
               Domain => Domain),
          3 =>
            New_Field_Association
-             (Field  => New_Identifier (Name => Array_Base & ".offset"),
+             (Field  => Prefix (Array_Base, WNE_Array_Offset),
               Value  => New_Offset,
               Domain => Domain));
    begin
@@ -2360,7 +2360,7 @@ package body Gnat2Why.Expr is
         New_Binding
           (Domain  => Domain,
            Name    => Tmp_Pre,
-           Def     => +Transform_Expr (Prefix, EW_Array_Type, Domain, Params),
+           Def     => +Transform_Expr (Prefx, EW_Array_Type, Domain, Params),
            Context =>
              New_Binding
                (Domain  => Domain,

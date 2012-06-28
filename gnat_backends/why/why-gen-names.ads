@@ -236,6 +236,10 @@ package Why.Gen.Names is
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
+   function Prefix (S        : Why_Name_Enum;
+                    W        : Why_Name_Enum;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
    function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
    with Pre => (Kind in EW_Int | EW_Real);
 

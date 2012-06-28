@@ -734,6 +734,17 @@ package body Why.Gen.Names is
          Ada_Node => Ada_Node);
    end Prefix;
 
+   function Prefix (S        : Why_Name_Enum;
+                    W        : Why_Name_Enum;
+                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier
+        (Context => To_String (S),
+         Name    => To_String (W),
+         Ada_Node => Ada_Node);
+   end Prefix;
+
    ----------------------
    -- To_Program_Space --
    ----------------------
