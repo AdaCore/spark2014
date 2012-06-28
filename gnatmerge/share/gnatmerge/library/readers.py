@@ -29,17 +29,32 @@ class Listing(Reader):
                     element = {"MESSAGE" : line,
                                "NAME" : "%s%d" % (self.name, index)}
                     element = self.read_element(element, line)
-                    proc(element)
+                    if element is not None:
+                        proc(element)
                     index += 1
 
     def read_element(self, element, line):
         return element
 
 class ErrorListing(Listing):
+    def __init__(self, name, ok_pattern="info"):
+        # ??? Use maps instead of patterns? Systematic use of merges?
+        # if ok_pattern is a string, would this mean
+        # {"OK" : ok_pattern, "KO" : others}?
+        self.ok_pattern = ok_pattern
+        Listing.__init__(self, name)
+
     def read_element(self, element, line):
         parts = line.split(":")
+
+        if len(parts) < 3:
+            print "warning: line with no sloc info: '%s'" % line
+            return None
         sloc = parts[0] + ":" + parts[1] + ":" + parts[2]
         element["SLOCS"] = {"LOW" : sloc, "HIGH" : sloc}
-        element[self.name + ".STATUS"] = "OK" if "info" in line else "KO"
+        element[self.name + ".STATUS"] = self.read_status(line)
         # ??? name appended to make that attribute unique. Is that needed?
         return element
+
+    def read_status(self, line):
+        return "OK" if self.ok_pattern in line else "KO"
