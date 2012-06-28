@@ -706,8 +706,14 @@ package body Why.Atree.Sprint is
 
    procedure Identifier_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Identifier_Id) is
+      Node  : W_Identifier_Id)
+   is
+      Context : constant Name_Id := Get_Context (Node);
    begin
+      if Context /= No_Name then
+         P (O, Context);
+         P (O, ".");
+      end if;
       P (O, Get_Symbol (Node));
       State.Control := Abandon_Children;
    end Identifier_Pre_Op;
