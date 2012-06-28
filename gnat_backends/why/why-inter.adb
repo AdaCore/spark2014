@@ -891,7 +891,7 @@ package body Why.Inter is
       if Obj = Alfa.Name_Of_Heap_Variable then
          return New_Identifier (Name => Alfa.Name_Of_Heap_Variable);
       else
-         return New_Identifier (Name => Capitalize_First (Obj) & ".obj");
+         return Prefix (Obj, WNE_Obj);
       end if;
    end To_Why_Id;
 
@@ -904,11 +904,9 @@ package body Why.Inter is
    is
    begin
       if Local then
-         return New_Identifier (Name => "t");
+         return To_Ident (WNE_Type);
       else
-         return New_Identifier
-                 (Ada_Node => E,
-                  Name     => Capitalize_First (Full_Name (E)) & ".t");
+         return Prefix (Full_Name (E), WNE_Type, E);
       end if;
    end To_Why_Type;
 
@@ -918,7 +916,7 @@ package body Why.Inter is
       if T = Alfa.Name_Of_Heap_Variable then
          return New_Identifier (Name => "__type_of_heap");
       else
-         return New_Identifier (Name => Capitalize_First (T) & ".t");
+         return Prefix (T, WNE_Type);
       end if;
    end To_Why_Type;
 

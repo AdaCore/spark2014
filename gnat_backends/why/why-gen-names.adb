@@ -432,6 +432,19 @@ package body Why.Gen.Names is
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
+      Name     : String;
+      Context  : Name_Id)
+     return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Domain   => Domain,
+                             Symbol   => NID (Name),
+                             Context  => Context);
+   end New_Identifier;
+
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
       Symbol   : Name_Id)
      return W_Identifier_Id is
    begin
@@ -705,7 +718,8 @@ package body Why.Gen.Names is
    is
    begin
       return New_Identifier
-        (Name     => Capitalize_First (S) & "." & To_String (W),
+        (Context => S,
+         Name    => To_String (W),
          Ada_Node => Ada_Node);
    end Prefix;
 
@@ -715,7 +729,8 @@ package body Why.Gen.Names is
    is
    begin
       return New_Identifier
-        (Name     => Capitalize_First (P) & "." & N,
+        (Context => P,
+         Name     => N,
          Ada_Node => Ada_Node);
    end Prefix;
 
@@ -727,8 +742,10 @@ package body Why.Gen.Names is
       Suffix : constant String := "_";
       N_Id   : constant Name_Id := Get_Symbol (Name);
       Img    : constant String := Get_Name_String (N_Id);
+      Context : constant Name_Id := Get_Context (Name);
    begin
-      return New_Identifier (Get_Ada_Node (+Name), EW_Prog, Img & Suffix);
+      return New_Identifier
+        (Get_Ada_Node (+Name), EW_Prog, Img & Suffix, Context);
    end To_Program_Space;
 
    ----------------------
