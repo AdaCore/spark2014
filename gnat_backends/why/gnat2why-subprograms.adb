@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
@@ -78,24 +78,23 @@ package body Gnat2Why.Subprograms is
    --  be equal to Why_Empty when we are not generating code for detecting
    --  run-time errors in the postcondition.
 
-   type Old_Node is record
-      Ada_Node : Node_Id;
-      Why_Name : Name_Id;
-   end record;
-   --  Ada_Node is an expression whose 'Old attribute is used in a
-   --  postcondition. Why_Name is the name to use for Ada_Node'Old in Why.
+   package Old_Nodes is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
 
-   package Old_Nodes is new Ada.Containers.Doubly_Linked_Lists (Old_Node);
+   Old_Map : Old_Nodes.Map;
 
-   Old_List : Old_Nodes.List;
-   --  List of all expressions whose 'Old attribute is used in the current
-   --  postcondition, together with the translation of the corresponding
+   --  Mapping of all expressions whose 'Old attribute is used in the current
+   --  postcondition to the translation of the corresponding
    --  expression in Why. Until 'Old is forbidden in the body, this is also
    --  used to translate occurrences of 'Old that are left by the frontend (for
    --  example, inside quantified expressions that are only preanalyzed).
    --
-   --  The list is cleared before generating Why code for VC generation for the
-   --  body and postcondition, filled during the translation, and used
+   --  The mapping is cleared before generating Why code for VC generation for
+   --  the body and postcondition, filled during the translation, and used
    --  afterwards to generate the necessary copy instructions.
 
    -----------------------
@@ -264,19 +263,33 @@ package body Gnat2Why.Subprograms is
 
       declare
          use Old_Nodes;
-         C : Cursor := Old_List.First;
+         C : Cursor := Old_Map.First;
       begin
          while Has_Element (C) loop
             declare
-               N : constant Old_Node := Element (C);
+               N    : constant Node_Id := Key (C);
+               Name : constant Name_Id := Element (C);
+
+               --  Generate a program expression to check absence of run-time
+               --  errors.
+
+               RE_Prog : constant W_Prog_Id :=
+                           New_Ignore
+                             (Prog =>
+                                +Transform_Expr (N, EW_Prog, Params));
+
+               --  Generate a term definition for the value of the object at
+               --  subprogram entry, and link with rest of code.
+
+               Let_Prog : constant W_Prog_Id :=
+                            New_Binding
+                              (Name   => New_Identifier (Symbol => Name,
+                                                         Domain => EW_Prog),
+                               Def    =>
+                                 +Transform_Expr (N, EW_Term, Params),
+                               Context => +R);
             begin
-               R :=
-                 New_Binding
-                   (Name    =>
-                        New_Identifier (Symbol => N.Why_Name,
-                                        Domain => EW_Prog),
-                    Def     => +Transform_Expr (N.Ada_Node, EW_Prog, Params),
-                    Context => +R);
+               R := Sequence (RE_Prog, Let_Prog);
                Next (C);
             end;
          end loop;
@@ -614,7 +627,7 @@ package body Gnat2Why.Subprograms is
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
 
-      Old_List.Clear;
+      Old_Map.Clear;
       Result_Name := New_Result_Temp_Identifier.Id (Name);
 
       --  Generate code to detect possible run-time errors in the postcondition
@@ -746,13 +759,19 @@ package body Gnat2Why.Subprograms is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Cnt : constant Natural := Natural (Old_List.Length);
-      Rec : constant Old_Node :=
-              (Ada_Node => N,
-               Why_Name => NID ("__gnatprove_old___" & Int_Image (Cnt)));
+      Name : Name_Id;
    begin
-      Old_List.Append (Rec);
-      return New_Identifier (Symbol => Rec.Why_Name, Domain => EW_Term);
+      if Old_Map.Contains (N) then
+         Name := Old_Map.Element (N);
+      else
+         declare
+            Cnt : constant Natural := Natural (Old_Map.Length);
+         begin
+            Name := NID ("__gnatprove_old___" & Int_Image (Cnt));
+            Old_Map.Include (N, Name);
+         end;
+      end if;
+      return New_Identifier (Symbol => Name, Domain => EW_Term);
    end Name_For_Old;
 
    ---------------------
