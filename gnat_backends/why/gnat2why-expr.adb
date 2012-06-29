@@ -1977,11 +1977,17 @@ package body Gnat2Why.Expr is
 
             while Present (Association) loop
 
-               --  Check that there is only one choice, and it is not a range
+               --  Check that there is only one choice, and it is neither a
+               --  range not a dynamic value.
 
-               Check_Simple (List_Length (Choices (Association)) = 1);
-               Check_Simple (not
-                  Discrete_Choice_Is_Range (First (Choices (Association))));
+               declare
+                  Only_Choice : constant Node_Id :=
+                                  First (Choices (Association));
+               begin
+                  Check_Simple (List_Length (Choices (Association)) = 1);
+                  Check_Simple (not Discrete_Choice_Is_Range (Only_Choice));
+                  Check_Simple (Compile_Time_Known_Value (Only_Choice));
+               end;
 
                --  For multi-dimensional aggregates, recurse
 
@@ -2085,10 +2091,10 @@ package body Gnat2Why.Expr is
             --  Special case for "others" choice, which must appear alone as
             --  last association. This case also deals with a single
             --  association, wich may be useful when an "others" dynamic range
-            --  is represented using X'Range or X'First..X'Last, which should
-            --  not be translated as such. Indeed, these reference variable X
-            --  which is not known in the context of the proposition generated
-            --  here.
+            --  is represented using X'Range or X'First..X'Last or X, which
+            --  should not be translated as such. Indeed, these reference
+            --  variable X which is not known in the context of the proposition
+            --  generated here.
 
             if Present (Association)
               and then
