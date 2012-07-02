@@ -6,12 +6,6 @@ package body Var_Test is
    function Decision_Eval
      (Root_Id : Node_Id)
      return Tristate is
-      --  ???  Quantifiers in Ada 2012 are not fully designed yet, but
-      --  they would look like that:
-      --  pragma Precondition (for all X in Node_Id'Range |
-      --                       Condition_Values (X) /= T_Unknown);
-      pragma Postcondition (Decision_Eval'Result /= T_Unknown);
-
       D    : Decision      := Decision_Table (Root_Id);
       Kind : Decision_Kind := D.Kind;
    begin
