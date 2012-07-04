@@ -932,7 +932,14 @@ package body Alfa.Definition is
             Mark_Violation ("unchecked conversion", N, NIR_Unchecked_Conv);
 
          when N_Variant_Part =>
-            Mark_Violation ("variant part", N, NYI_Discriminant);
+            declare
+               Var : Node_Id := First (Variants (N));
+            begin
+               while Present (Var) loop
+                  Mark (Var);
+                  Next (Var);
+               end loop;
+            end;
 
          --  Frontend sometimes declares an Itype for the base type of a type
          --  declaration. This Itype should be marked at the point of
@@ -2273,7 +2280,7 @@ package body Alfa.Definition is
                --  name list appears directly as an expression in the tree.
 
                else
-                  Mark_Violation ("discriminant", N, NYI_Discriminant);
+                  null;
                end if;
 
             when N_Digits_Constraint =>
@@ -2489,13 +2496,10 @@ package body Alfa.Definition is
 
             else
                declare
-                  Field : Node_Id := First_Entity (Id);
+                  Field : Node_Id := First_Component_Or_Discriminant (Id);
                   Typ   : Entity_Id;
 
                begin
-                  if Has_Discriminants (Id) then
-                     Mark_Violation ("discriminant", Id, NYI_Discriminant);
-                  end if;
 
                   while Present (Field) loop
                      Typ := Etype (Field);
@@ -2506,7 +2510,7 @@ package body Alfa.Definition is
                         Mark_Violation ("component type", Typ, From => Typ);
                      end if;
 
-                     Next_Entity (Field);
+                     Next_Component_Or_Discriminant (Field);
                   end loop;
                end;
             end if;
@@ -2535,7 +2539,7 @@ package body Alfa.Definition is
             if Ekind_In (Id, E_Record_Type_With_Private,
                          E_Record_Subtype_With_Private)
             then
-               Mark_Violation ("type definition", Id, NYI_Discriminant);
+               Mark_Violation ("type definition", Id, NYI_Tagged);
             end if;
 
          when others =>

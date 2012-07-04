@@ -155,7 +155,7 @@ package body Gnat2Why.Types is
       --  For a private type or record subtype, use the most underlying type if
       --  it is in Alfa. Otherwise, return the special private type.
 
-      if Ekind (Ty) in Private_Kind | E_Record_Subtype then
+      if Ekind (Ty) in Private_Kind then
          if Type_In_Container (Ty) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
          elsif In_Alfa (Most_Underlying_Type (Ty)) then
@@ -238,14 +238,15 @@ package body Gnat2Why.Types is
             when E_Record_Type =>
                declare
                   Number_Of_Fields : Natural := 0;
-                  Field            : Node_Id := First_Entity (E);
+                  Field            : Node_Id :=
+                    First_Component_Or_Discriminant (E);
                begin
                   while Present (Field) loop
                      if Ekind (Field) in Object_Kind then
                         Number_Of_Fields := Number_Of_Fields + 1;
                      end if;
 
-                     Next_Entity (Field);
+                     Next_Component_Or_Discriminant (Field);
                   end loop;
 
                   --  Do nothing if the record is empty.
@@ -258,7 +259,7 @@ package body Gnat2Why.Types is
                   end if;
 
                   declare
-                     Field   : Node_Id := First_Entity (E);
+                     Field   : Node_Id := First_Component_Or_Discriminant (E);
                      Binders : Binder_Array (1 .. Number_Of_Fields);
                      J       : Natural := 0;
                   begin
@@ -272,7 +273,7 @@ package body Gnat2Why.Types is
                               others => <>);
                         end if;
 
-                        Next_Entity (Field);
+                        Next_Component_Or_Discriminant (Field);
                      end loop;
                      Define_Ada_Record (Theory, Binders);
                   end;

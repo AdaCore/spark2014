@@ -142,20 +142,21 @@ package body Why.Inter is
                      raise Program_Error;
                   end case;
 
-               when Private_Kind | E_Record_Subtype =>
+               when Private_Kind =>
                   if In_Alfa (Most_Underlying_Type (UE)) then
                      Set_SI_Internal (Most_Underlying_Type (UE));
                   end if;
 
-               when E_Record_Type =>
+               when E_Record_Type | E_Record_Subtype =>
                   declare
-                     Field            : Node_Id := First_Entity (UE);
+                     Field            : Node_Id :=
+                       First_Component_Or_Discriminant (UE);
                   begin
                      while Present (Field) loop
                         if Ekind (Field) in Object_Kind then
                            Set_SI_Internal (Etype (Field));
                         end if;
-                        Next_Entity (Field);
+                        Next_Component_Or_Discriminant (Field);
                      end loop;
                   end;
 
@@ -456,12 +457,12 @@ package body Why.Inter is
 
       Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
 
-      --  S contains all mentioned Ada entities; for each, we get the
-      --  unit where it was defined and add it to the unit set
-
       if Present (Filter_Entity) then
          Standard_Imports.Set_SI (Filter_Entity);
       end if;
+
+      --  S contains all mentioned Ada entities; for each, we get the
+      --  unit where it was defined and add it to the unit set
 
       for N of S loop
 
@@ -670,7 +671,7 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
-      elsif Ekind (N) in Private_Kind | E_Record_Subtype then
+      elsif Ekind (N) in Private_Kind then
          if Type_In_Container (N) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
          elsif In_Alfa (Most_Underlying_Type (N)) then
@@ -769,7 +770,7 @@ package body Why.Inter is
                return EW_Int;
             end if;
 
-         when Private_Kind | E_Record_Subtype =>
+         when Private_Kind =>
             if Type_In_Container (Ty) then
                return EW_Abstract;
             elsif In_Alfa (Most_Underlying_Type (Ty)) then
@@ -868,7 +869,7 @@ package body Why.Inter is
       --  The component case is sufficiently different to treat it
       --  independently
 
-      if Ekind (E) = E_Component then
+      if Ekind (E) in E_Component | E_Discriminant then
          declare
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));

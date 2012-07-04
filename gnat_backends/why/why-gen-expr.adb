@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
+with Einfo;                 use Einfo;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -105,6 +106,15 @@ package body Why.Gen.Expr is
                when others =>
                   null;
             end case;
+
+            --  We should never depend on discriminants, we add a reference to
+            --  the record instead
+
+            if Nkind (N) = N_Defining_Identifier and then
+              Ekind (N) = E_Discriminant then
+               N := Scope (N);
+            end if;
+
             if Present (N) then
                S.Include (N);
             end if;

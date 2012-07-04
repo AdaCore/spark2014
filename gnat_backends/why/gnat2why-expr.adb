@@ -4157,7 +4157,20 @@ package body Gnat2Why.Expr is
          CL : constant List_Id := Choices (Association);
       begin
          pragma Assert (List_Length (CL) = 1);
-         return Component = Entity (First (CL));
+         declare
+            Assoc : constant Node_Id := Entity (First (CL));
+         begin
+            if Ekind (Component) = E_Discriminant and then
+              Ekind (Assoc) = E_Discriminant then
+               return Discriminal (Component) = Discriminal (Assoc);
+            else
+               if Present (Original_Record_Component (Component)) then
+                  return Original_Record_Component (Component) = Assoc;
+               else
+                  return Component = Assoc;
+               end if;
+            end if;
+         end;
       end Matching_Component_Association;
 
       -----------------------
@@ -4166,16 +4179,16 @@ package body Gnat2Why.Expr is
 
       function Number_Components (Typ : Entity_Id) return Natural is
          Count     : Natural := 0;
-         Component : Entity_Id := First_Component (Typ);
+         Component : Entity_Id := First_Component_Or_Discriminant (Typ);
       begin
          while Component /= Empty loop
             Count := Count + 1;
-            Component := Next_Component (Component);
+            Component := Next_Component_Or_Discriminant (Component);
          end loop;
          return Count;
       end Number_Components;
 
-      Component   : Entity_Id := First_Component (Typ);
+      Component   : Entity_Id := First_Component_Or_Discriminant (Typ);
       Association : Node_Id := Nlists.First (Assocs);
       Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
       J           : Positive := Result'First;
@@ -4216,7 +4229,7 @@ package body Gnat2Why.Expr is
                    Field  => To_Why_Id (Component),
                    Value  => Expr);
             J := J + 1;
-            Component := Next_Component (Component);
+            Component := Next_Component_Or_Discriminant (Component);
          end;
       end loop;
       pragma Assert (No (Association));

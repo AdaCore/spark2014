@@ -461,8 +461,6 @@ package body Alfa.Util is
             return Typ;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
-         elsif Ekind (Typ) = E_Record_Subtype then
-            Typ := Base_Type (Typ);
          else
             return Typ;
          end if;
