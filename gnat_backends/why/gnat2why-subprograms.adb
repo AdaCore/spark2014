@@ -50,6 +50,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
+with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;             use Why.Types;
@@ -286,7 +287,21 @@ package body Gnat2Why.Subprograms is
                               (Name   => New_Identifier (Symbol => Name,
                                                          Domain => EW_Prog),
                                Def    =>
-                                 +Transform_Expr (N, EW_Term, Params),
+                               +New_Simpl_Any_Prog
+                                 (T    => New_Base_Type (Base_Type => EW_Bool),
+                                  Pred =>
+                                  +W_Expr_Id'(New_Connection
+                                    (Domain   => EW_Pred,
+                                     Left     =>
+                                       New_Relation
+                                         (Domain   => EW_Pred,
+                                          Op_Type  => EW_Bool,
+                                          Left     => +To_Ident (WNE_Result),
+                                          Op       => EW_Eq,
+                                          Right    => +True_Term),
+                                     Op       => EW_Equivalent,
+                                     Right    =>
+                                     +Transform_Expr (N, EW_Pred, Params)))),
                                Context => +R);
             begin
                R := Sequence (RE_Prog, Let_Prog);
