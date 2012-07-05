@@ -1,0 +1,3 @@
+p.adb:2:15: info: range check proved
+p.adb:5:20: info: division check proved
+p.adb:5:20: overflow check not proved
