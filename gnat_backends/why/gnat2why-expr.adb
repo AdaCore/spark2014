@@ -181,6 +181,7 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
+      Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Translation_Params) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
@@ -259,6 +260,7 @@ package body Gnat2Why.Expr is
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Lvalue   : Node_Id;
+      Val_Type : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id;
    --  Translate an assignment of the form "Lvalue := Expr",
    --  using Ada_Node for its source location.
@@ -954,6 +956,7 @@ package body Gnat2Why.Expr is
                                  New_Assignment
                                    (Ada_Node => Actual,
                                     Lvalue   => Actual,
+                                    Val_Type => Type_Of_Node (Actual),
                                     Expr     => Arg_Value);
             begin
                Statement_Sequence_Append_To_Statements (Store, Store_Value);
@@ -1076,6 +1079,7 @@ package body Gnat2Why.Expr is
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Lvalue   : Node_Id;
+      Val_Type : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id
    is
 
@@ -1099,7 +1103,10 @@ package body Gnat2Why.Expr is
       --                   (Upd (Prefix.Acc1, Acc2,
       --                         Upd (..., Accn, Expr))));
 
-      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+      function Compute_Rvalue
+        (N : Node_Id;
+         Update_Expr : W_Prog_Id;
+         Expr_Type   : Entity_Id)
          return W_Prog_Id;
 
       function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
@@ -1111,7 +1118,10 @@ package body Gnat2Why.Expr is
       -- Compute_Rvalue --
       --------------------
 
-      function Compute_Rvalue (N : Node_Id; Update_Expr : W_Prog_Id)
+      function Compute_Rvalue
+        (N : Node_Id;
+         Update_Expr : W_Prog_Id;
+         Expr_Type   : Entity_Id)
          return W_Prog_Id is
 
          --  The outermost Access node corresponds to the innermost data
@@ -1139,6 +1149,7 @@ package body Gnat2Why.Expr is
                                     (N,
                                      +Prefix_Expr,
                                      +Update_Expr,
+                                     Expr_Type,
                                      EW_Prog,
                                      Params => Body_Params);
 
@@ -1148,7 +1159,10 @@ package body Gnat2Why.Expr is
                       (Name    => Update_Name,
                        Def     => One_Update,
                        Context =>
-                         +Compute_Rvalue (Prefix (N), +Update_Name));
+                       +Compute_Rvalue
+                         (Prefix (N),
+                          +Update_Name,
+                          Etype (Prefix (N))));
                end;
 
             when others =>
@@ -1200,7 +1214,7 @@ package body Gnat2Why.Expr is
                (Ada_Node => Ada_Node,
                 Name     => W_Lvalue,
                 Value    =>
-                  Compute_Rvalue (Lvalue, +Value_Name)));
+                  Compute_Rvalue (Lvalue, +Value_Name, Val_Type)));
    end New_Assignment;
 
    ----------------------
@@ -1267,6 +1281,7 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
+      Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Translation_Params) return W_Expr_Id is
    begin
@@ -1336,7 +1351,7 @@ package body Gnat2Why.Expr is
                                  (Left_Arr   => +Result_Id,
                                   Left_Type  => Expr_Type,
                                   Right_Arr  => Value,
-                                  Right_Type => Expr_Type,
+                                  Right_Type => Val_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
                Unchanged   : constant W_Pred_Id :=
@@ -2384,7 +2399,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      function Expected_Type return W_Base_Type_Id;
+      function Expected_Type return Entity_Id;
       --  Compute the expected type of the right hand side expression.
 
       Lvalue   : constant Node_Id := Name (Stmt);
@@ -2394,11 +2409,10 @@ package body Gnat2Why.Expr is
       -- Expected_Type --
       --------------------
 
-      function Expected_Type return W_Base_Type_Id
+      function Expected_Type return Entity_Id
       is
-         --  We simply traverse the Lvalue until we find the innermost access;
-         --  the type of the array, or the type of the record field, is the
-         --  expected type.
+         --  The outermost prefix of the Lvalue (which is the innermost
+         --  access) corresponds to the expected type of the assignment.
       begin
          case Nkind (Lvalue) is
             when N_Identifier | N_Expanded_Name =>
@@ -2423,14 +2437,16 @@ package body Gnat2Why.Expr is
 
    --  Start of processing for Transform_Assignment_Statement
 
+      Exp_Entity : constant Entity_Id := Expected_Type;
    begin
       return
         New_Assignment
           (Ada_Node => Stmt,
            Lvalue   => Lvalue,
+           Val_Type => Exp_Entity,
            Expr     =>
              +Transform_Expr (Expression (Stmt),
-                              Expected_Type,
+                              EW_Abstract (Exp_Entity),
                               EW_Prog,
                               Params => Body_Params));
    end Transform_Assignment_Statement;

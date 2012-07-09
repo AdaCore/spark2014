@@ -833,17 +833,6 @@ package body Alfa.Definition is
          when N_Slice =>
             Mark_Most_Underlying_Type_In_Alfa (Etype (Prefix (N)), N);
 
-            --  If the prefix is itself a slice, gnat2why gives an
-            --  invalid translation. Disable this construct for now,
-            --  as it is not very useful.
-
-            if Nkind (Prefix (N)) = N_Slice then
-               Mark_Violation ("slice of a slice", N, NYI_Slice);
-            else
-               Mark (Prefix (N));
-               Mark (Discrete_Range (N));
-            end if;
-
          when N_Subprogram_Body =>
 
             --  For expression functions that have a unique declaration, the
