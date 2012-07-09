@@ -167,7 +167,6 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * multi dim array: multi-dimensional array of dimention > 2;
 * pragma: not yet implemented pragma;
 * representation clause: representation clause;
-* slice: array slice;
 * tagged type: tagged type;
 * type invariant;
 * type predicate;
@@ -595,6 +594,5 @@ The major features not yet implemented are:
 Other important features not yet implemented are:
 
 * discriminant / variant records
-* array slices
 * elaboration code
 * attribute ``'Loop_Entry``
