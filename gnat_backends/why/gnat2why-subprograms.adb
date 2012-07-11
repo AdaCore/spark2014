@@ -50,7 +50,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Gen.Terms;         use Why.Gen.Terms;
+
 with Why.Conversions;       use Why.Conversions;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;             use Why.Types;
@@ -280,7 +280,12 @@ package body Gnat2Why.Subprograms is
                                 +Transform_Expr (N, EW_Prog, Params));
 
                --  Generate a term definition for the value of the object at
-               --  subprogram entry, and link with rest of code.
+               --  subprogram entry, and link with rest of code. This
+               --  definition does not involve lazy boolean operators, so it
+               --  does not lead to more paths being generated in the naive WP,
+               --  contrary to what we would get if directly defining the value
+               --  of the object as a program. This is particularly useful for
+               --  Requires clauses of Contract_Case.
 
                Let_Prog : constant W_Prog_Id :=
                             New_Binding
@@ -288,20 +293,15 @@ package body Gnat2Why.Subprograms is
                                                          Domain => EW_Prog),
                                Def    =>
                                +New_Simpl_Any_Prog
-                                 (T    => New_Base_Type (Base_Type => EW_Bool),
+                                 (T    => Why_Logic_Type_Of_Ada_Obj (N),
                                   Pred =>
-                                  +W_Expr_Id'(New_Connection
+                                  +W_Expr_Id'(New_Relation
                                     (Domain   => EW_Pred,
-                                     Left     =>
-                                       New_Relation
-                                         (Domain   => EW_Pred,
-                                          Op_Type  => EW_Bool,
-                                          Left     => +To_Ident (WNE_Result),
-                                          Op       => EW_Eq,
-                                          Right    => +True_Term),
-                                     Op       => EW_Equivalent,
+                                     Op_Type  => EW_Bool,
+                                     Left     => +To_Ident (WNE_Result),
+                                     Op       => EW_Eq,
                                      Right    =>
-                                     +Transform_Expr (N, EW_Pred, Params)))),
+                                     +Transform_Expr (N, EW_Term, Params)))),
                                Context => +R);
             begin
                R := Sequence (RE_Prog, Let_Prog);
