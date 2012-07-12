@@ -1947,8 +1947,22 @@ package body Alfa.Definition is
    ---------------------------
 
    procedure Mark_Standard_Package is
+
+      procedure Insert_All_And_Alfa (E : Entity_Id);
+
+      -------------------------
+      -- Insert_All_And_Alfa --
+      -------------------------
+
+      procedure Insert_All_And_Alfa (E : Entity_Id) is
+      begin
+         All_Entities.Insert (E);
+         Entities_In_Alfa.Insert (E);
+      end Insert_All_And_Alfa;
+
    begin
       for S in S_Types loop
+         All_Entities.Insert (Standard_Entity (S));
          if Standard_Type_Is_In_Alfa (S) then
             Entities_In_Alfa.Insert (Standard_Entity (S));
             Entities_In_Alfa.Include (Etype (Standard_Entity (S)));
@@ -1968,10 +1982,10 @@ package body Alfa.Definition is
       Entities_In_Alfa.Insert (Universal_Real);
       Entities_In_Alfa.Insert (Universal_Fixed);
 
-      Entities_In_Alfa.Insert (Standard_Integer_8);
-      Entities_In_Alfa.Insert (Standard_Integer_16);
-      Entities_In_Alfa.Insert (Standard_Integer_32);
-      Entities_In_Alfa.Insert (Standard_Integer_64);
+      Insert_All_And_Alfa (Standard_Integer_8);
+      Insert_All_And_Alfa (Standard_Integer_16);
+      Insert_All_And_Alfa (Standard_Integer_32);
+      Insert_All_And_Alfa (Standard_Integer_64);
    end Mark_Standard_Package;
 
    --------------------------
