@@ -1970,17 +1970,17 @@ package body Alfa.Definition is
       end loop;
 
       for S in S_ASCII_Names loop
-         Entities_In_Alfa.Insert (Standard_Entity (S));
+         Insert_All_And_Alfa (Standard_Entity (S));
       end loop;
 
-      Entities_In_Alfa.Insert (Standard_Void_Type);
+      Insert_All_And_Alfa (Standard_Void_Type);
 
-      Entities_In_Alfa.Insert (Standard_False);
-      Entities_In_Alfa.Insert (Standard_True);
+      Insert_All_And_Alfa (Standard_False);
+      Insert_All_And_Alfa (Standard_True);
 
-      Entities_In_Alfa.Insert (Universal_Integer);
-      Entities_In_Alfa.Insert (Universal_Real);
-      Entities_In_Alfa.Insert (Universal_Fixed);
+      Insert_All_And_Alfa (Universal_Integer);
+      Insert_All_And_Alfa (Universal_Real);
+      Insert_All_And_Alfa (Universal_Fixed);
 
       Insert_All_And_Alfa (Standard_Integer_8);
       Insert_All_And_Alfa (Standard_Integer_16);
