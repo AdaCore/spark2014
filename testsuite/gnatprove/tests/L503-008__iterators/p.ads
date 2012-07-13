@@ -1,4 +1,4 @@
-with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Formal_Doubly_Linked_Lists;
 
 package P is
 
@@ -9,7 +9,8 @@ package P is
    procedure Quant_Over_Array(A : in out Ar)
    with Post => (for all X of A => X = 0);
 
-   package My_Lists is new Ada.Containers.Doubly_Linked_Lists (Integer);
+   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer);
+   use My_Lists;
 
    procedure Iter_Over_Lists (X : My_Lists.List);
 
