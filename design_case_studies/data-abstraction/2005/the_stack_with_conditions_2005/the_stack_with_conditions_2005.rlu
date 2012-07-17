@@ -1,0 +1,5 @@
+stack(1): not the_stack_with_conditions_2005__is_empty(State) may_be_replaced_by fld_pointer(State) <> 0 .
+stack(2): not the_stack_with_conditions_2005__is_full(State) may_be_replaced_by 
+          fld_pointer(State) < max_stack_size .
+stack(3): the_stack_with_conditions_2005__top(Initial_State) = x -> Final_State = Initial_State may_be_deduced_from
+             [ fld_pointer(Initial_State) = fld_pointer(Final_State) ] .
