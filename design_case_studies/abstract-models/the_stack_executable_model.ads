@@ -16,7 +16,7 @@
 package The_Stack_Executable_Model
 with
   Abstract_State => State,
-  Initializes => (State => Is_Empty)
+  Initial_Condition => Is_Empty
 is
 
    -- Declare the stack model type

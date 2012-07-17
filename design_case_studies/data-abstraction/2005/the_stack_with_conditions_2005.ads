@@ -31,7 +31,7 @@ is
    --# global in out State;
    --# pre not Is_Empty (State);
 
-   procedure Swap (X: in Integer);
+   procedure Replace (X: in Integer);
    --# global in out State;
    --# pre not Is_Empty (State);
    --# post (Top (State~) = X) -> (State = State~);

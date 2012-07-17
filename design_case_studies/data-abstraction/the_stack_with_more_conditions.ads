@@ -9,7 +9,7 @@
 package The_Stack_With_More_Conditions
 with
    Abstract_State => State,
-   Initializes => (State => Is_Empty)
+   Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
    with Global_In => State;

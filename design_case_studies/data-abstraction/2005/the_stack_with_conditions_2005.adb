@@ -23,14 +23,13 @@ is
    S: Vector;                              -- Declaration of constituents
    Pointer: Pointer_Range;
 
-   -- The functions have to be defined by user rules
-   -- to prove the refinement checks
-   -- stack(1): not the_stack_2__is_empty(State) may_be_replaced_by fld_pointer(State) <> 0 .
-   -- stack(2): not the_stack_2__is_full(State) may_be_replaced_by fld_pointer(State) < max_stack_size .
-
-   -- The meaning of State = State~ has also defined in a user rule
-   -- stack(3): the_stack_2__top(Initial_State) = x -> Final_State = Initial_State may_be_deduced_from
-   --        [ fld_pointer(Initial_State) = fld_pointer(Final_State) ] .
+   -- To prove the refinment integrity check for the refined post condition
+   -- of Replace the following proof function is required:
+   -- stack(1): the_stack_with_conditions_2005__top(Initial_State) = X -> Final_State = Initial_State
+   --               may_be_deduced_from
+   --                 [ fld_pointer(Initial_State) = fld_pointer(Final_State),
+   --                   Initial_S = fld_s(Initial_State),
+   --                   fld_s(Final_State) = update(Initial_S, [fld_pointer(Initial_State)], X)  ] .
 
    function Is_Empty  return Boolean       -- Proof and Ada functions
    --# global Pointer;                     -- refined in terms of constituents
@@ -51,7 +50,7 @@ is
 
    function Top return Integer
    --# global Pointer, S;
-   --# pre Pointer /= 0;
+   --# pre not Is_Empty (Pointer);
    --# return S (Pointer);
    is
    begin
@@ -61,7 +60,7 @@ is
 
    procedure Push(X: in Integer)
    --# global in out S, Pointer;
-   --# pre Pointer < Max_Stack_Size;
+   --# pre not Is_Full (Pointer);
    is
    begin
       Pointer := Pointer + 1;
@@ -71,21 +70,22 @@ is
    procedure Pop(X: out Integer)
    --# global in     S;
    --#        in out Pointer;
-   --# pre Pointer /= 0;
+   --# pre not Is_Empty (Pointer);
    is
    begin
       X := S (Pointer);
       Pointer := Pointer - 1;
    end Pop;
 
-   procedure Swap (X: in Integer)
+   procedure Replace (X: in Integer)
    --# global in     Pointer;
    --#        in out S;
-   --# pre pointer /= 0;
+   --# pre not Is_Empty (Pointer);
+   --# post S = S~[Pointer => X];
    is
    begin
       S (Pointer) := X;
-   end Swap;
+   end Replace;
 
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;

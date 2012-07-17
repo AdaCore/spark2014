@@ -35,29 +35,19 @@ is
    with
      Refined_Global_In => Pointer;
 
-   function Is_Empty return Boolean is (Pointer = 0)
-   with
-     Refined_Global_In => Pointer;
+   function Is_Empty return Boolean is (Pointer = 0);
 
-   function Is_Full return Boolean is (Pointer = Max_Stack_Size)
-   with
-     Refined_Global_In => Pointer;
+   function Is_Full return Boolean is (Pointer = Max_Stack_Size);
 
    -- The definition of the proof function Head is simple (the same as Top)
    function Head return Integer is (S (Pointer))
-   with
-     Refined_Global_In => S;
 
    -- The definition of the proof function Tail; not the conditional expression
    -- to make the function total so that it does not require a precondition.
    function Tail return Stack_Model is
-     (Stack_Model'(Value => Natural ((if Pointer > 0 then Pointer - 1 else 0))))
-   with
-     Refined_Global_In Pointer;
+     (Stack_Model'(Value => Natural ((if Pointer > 0 then Pointer - 1 else 0))));
 
-   function Top return Integer is (S (Pointer))
-   with
-     Refined_Global_In => (Pointer, S);
+   function Top return Integer is (S (Pointer));
 
    -- In the implementation of the procedural operations we need to ensure that
    -- the conditions for the validity of the model described in the package
