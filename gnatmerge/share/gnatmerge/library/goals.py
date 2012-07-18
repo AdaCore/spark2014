@@ -18,5 +18,5 @@ class Goal:
                 self.print_error(elt, sloc, value)
 
     def print_error(self, name, sloc, value):
-        print "%s : goal not reached at %s (%s)" % (sloc, name,
-                                                    to_string(value))
+        print "%s: goal not reached at %s (%s)" % (sloc, name,
+                                                   to_string(value))

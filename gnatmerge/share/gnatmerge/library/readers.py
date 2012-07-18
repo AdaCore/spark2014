@@ -1,3 +1,4 @@
+import re
 from internal.attributes import lattices
 
 class Reader:
@@ -37,16 +38,20 @@ class Listing(Reader):
         return element
 
 class ErrorListing(Listing):
-    def __init__(self, name, ok_pattern="info"):
+    def __init__(self, name, ok_pattern="info", ignore_pattern=None):
         # ??? Use maps instead of patterns? Systematic use of merges?
         # if ok_pattern is a string, would this mean
         # {"OK" : ok_pattern, "KO" : others}?
         self.ok_pattern = ok_pattern
+        self.ignore_pattern = ignore_pattern
         Listing.__init__(self, name)
 
     def read_element(self, element, line):
-        parts = line.split(":")
+        if self.ignore_pattern is not None \
+          and re.search(self.ignore_pattern, line) is not None:
+            return None
 
+        parts = line.split(":")
         if len(parts) < 3:
             print "warning: line with no sloc info: '%s'" % line.strip()
             return None
@@ -57,4 +62,8 @@ class ErrorListing(Listing):
         return element
 
     def read_status(self, line):
-        return "OK" if self.ok_pattern in line else "KO"
+        if self.ok_pattern is not None \
+          and re.search (self.ok_pattern, line) is not None:
+            return "OK"
+        else:
+            return "KO"

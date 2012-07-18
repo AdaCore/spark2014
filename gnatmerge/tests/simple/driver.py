@@ -23,7 +23,8 @@ partial_t = s.name_and("PARTIALLY TESTED", {tested, not_t})
 
 ok = s.name_or("OK", {tested, proved})
 
-tests = subp.new_input(reader=readers.ErrorListing("TEST", "PASSED"),
+tests = subp.new_input(reader=readers.ErrorListing("TEST", "PASSED",
+                                                   "^[0-9]+ tests run"),
                        maps={"OK" : tested,
                              "KO" : not_t})
 vcs = subp.new_input(reader=readers.ErrorListing("VC"),

@@ -3,7 +3,6 @@
 * Merge gnattests/gnatprove results and produce a report *
 **********************************************************
 
-warning: line with no sloc info: '6 tests run: 2 passed; 4 failed; 0 crashed.'
-pack.ads:30:1-37:1 : goal not reached at P3 (TEST FAILED, NOT PROVED)
-pack.ads:60:1-67:1 : goal not reached at P6 (TEST FAILED)
-pack.ads:50:1-57:1 : goal not reached at P5 (TEST FAILED)
+pack.ads:30:1-37:1: goal not reached at P3 (TEST FAILED, NOT PROVED)
+pack.ads:60:1-67:1: goal not reached at P6 (TEST FAILED)
+pack.ads:50:1-57:1: goal not reached at P5 (TEST FAILED)
