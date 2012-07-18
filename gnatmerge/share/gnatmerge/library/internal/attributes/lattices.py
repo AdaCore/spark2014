@@ -7,7 +7,7 @@ seen as object of a lattice; this module allow this identification.
 from internal.attributes import common
 from internal import conversions
 
-class Sloc:
+class SlocBaseType:
     def __init__(self, spec):
         if spec == "MIN" or spec == "MAX":
             self.abstract_spec = spec
@@ -51,6 +51,9 @@ class Sloc:
     def is_extremum(self):
         return False
 
+    def to_string(self, value):
+        return "%s:%s:%s" % (self.file, self.file, self.column)
+
     @staticmethod
     def min():
         return "MIN"
@@ -77,12 +80,12 @@ class RangeAttribute(common.Attribute):
         # point.
 
         for left_range in conversions.to_list(left):
-            left_low = Sloc(left_range[self.low_name])
-            left_high = Sloc(left_range[self.high_name])
+            left_low = self.base_type(left_range[self.low_name])
+            left_high = self.base_type(left_range[self.high_name])
             No_Match = True
             for right_range in conversions.to_list(right):
-                right_low = Sloc(right_range[self.low_name])
-                right_high = Sloc(right_range[self.high_name])
+                right_low = self.base_type(right_range[self.low_name])
+                right_high = self.base_type(right_range[self.high_name])
                 # left <= right iff left's range is in right'range
                 if (right_low.less_than(left_low)
                     and left_high.less_than(right_high)):
@@ -100,6 +103,20 @@ class RangeAttribute(common.Attribute):
 
     def value_max(self):
         return self.M
+
+    def to_string(self, object, key):
+        for range in object.follow(self.name, key):
+            low = self.base_type(range[self.low_name])
+            high = self.base_type(range[self.high_name])
+            if low.file == high.file:
+                return "%s:%s:%s-%s:%s" % (low.file, low.line, low.column,
+                                           high.line, high.column)
+            else:
+                return "%s:%s:%s-%s:%s:%s" % (low.file,
+                                              low.line, low.column,
+                                              high.file,
+                                              high.line, high.column)
+
 
 class PartialOrderAttribute(common.Attribute):
     """Represents an attribute domain as a partial order

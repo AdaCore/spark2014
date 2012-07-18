@@ -7,6 +7,7 @@ Merge that should be used to specify a merge operation.
 from internal.attributes import lattices
 from internal import sets
 import entities
+import goals
 
 class Merge:
     """Represent a set of merge operations
@@ -19,7 +20,7 @@ class Merge:
     def __init__(self):
         """Constructor."""
         self.repository = sets.Objects()
-        self.slocs = lattices.RangeAttribute(lattices.Sloc,
+        self.slocs = lattices.RangeAttribute(lattices.SlocBaseType,
                                              "SLOCS", "LOW", "HIGH")
         self.goals = {}
 
@@ -38,13 +39,6 @@ class Merge:
         Any entity of the given type should have a value that is more than
         (or equal to) value.
         """
-        self.goals[name] = {"entity" : entity, "value" : value}
-
-    def goal_reached(self, name):
-        entity = self.goals[name]["entity"]
-        goal = self.goals[name]["value"]
-        for elt in entity.object.content():
-            value = entity.object.follow(entity.status_name(), elt)
-            attribute = entity.object.attributes[entity.status_name()]
-            if attribute.value_less_than(goal, value):
-                print "REACHED : %s : %s" % (str(elt), str(value))
+        result = goals.Goal(entity, value)
+        self.goals[name] = result
+        return result

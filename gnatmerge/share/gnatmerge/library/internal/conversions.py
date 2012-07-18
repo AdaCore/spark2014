@@ -35,6 +35,20 @@ def to_dict(e):
         result = {}
         for key in e:
             result += { key : None }
+        return result
     else:
         return { e : None }
 
+def to_string(e):
+    if e is None:
+        return ""
+    elif isinstance(e, dict):
+        result = ["%s => %s" % (key, e[key]) for key in e]
+        return ", ".join(result)
+    elif isinstance(e, basestring):
+        return e
+    elif isinstance(e, (list,tuple,set)):
+        result = [key for key in e]
+        return ", ".join(result)
+    else:
+        return str(e)

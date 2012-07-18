@@ -35,6 +35,6 @@ m.loads("program.json")
 
 # Output results
 
-m.new_goal("OK", subp, ok)
+g = m.new_goal("OK", subp, ok)
 
-m.goal_reached("OK")
+g.print_errors()
