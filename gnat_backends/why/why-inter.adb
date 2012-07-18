@@ -592,7 +592,10 @@ package body Why.Inter is
             end if;
 
          when Object_Kind =>
-            if not Is_Mutable (E) then
+            if not Is_Mutable (E)
+              or else (Ekind (E) = E_Discriminant
+                         and then Is_Formal_Container_Capacity (E))
+            then
                if In_Main_Unit_Body (E) then
                   return WF_Context_In_Body;
                else
@@ -849,7 +852,15 @@ package body Why.Inter is
            (if Domain = EW_Prog then To_String (WNE_Func)
             else To_String (WNE_Log)),
          when Named_Kind => To_String (WNE_Log),
-         when Object_Kind => To_String (WNE_Obj),
+         when Object_Kind =>
+           --  The Capacity discriminant of a formal container is translated
+           --  as a function.
+           (if Ekind (E) = E_Discriminant
+              and then Is_Formal_Container_Capacity (E)
+            then
+              To_String (WNE_Log)
+            else
+              To_String (WNE_Obj)),
          when Type_Kind => To_String (WNE_Type),
          when others => "");
    begin

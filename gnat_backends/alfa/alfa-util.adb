@@ -23,11 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;          use Atree;
-with Einfo;          use Einfo;
+with Ada.Strings.Fixed;
+with Ada.Strings.Maps.Constants;
+
 with Namet;          use Namet;
 with Nlists;         use Nlists;
-with Sinfo;          use Sinfo;
+with Sem_Util;       use Sem_Util;
 with Sinput;         use Sinput;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
@@ -260,6 +261,23 @@ package body Alfa.Util is
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
 
+   -------------------------------
+   -- Get_Enclosing_Declaration --
+   -------------------------------
+
+   function Get_Enclosing_Declaration (N : Node_Id) return Node_Id is
+      Decl_N : Node_Id := N;
+   begin
+      while Present (Decl_N)
+        and then not (Nkind (Decl_N) in N_Declaration
+                        or else
+                      Nkind (Decl_N) in N_Later_Decl_Item)
+      loop
+         Decl_N := Parent (Decl_N);
+      end loop;
+      return Decl_N;
+   end Get_Enclosing_Declaration;
+
    -----------------------------
    -- Get_Expression_Function --
    -----------------------------
@@ -357,22 +375,76 @@ package body Alfa.Util is
        and then Location_In_Formal_Containers
                   (Sloc (Generic_Parent (Specification (N)))));
 
+   --------------------------------------------
+   -- Is_Access_To_Formal_Container_Capacity --
+   --------------------------------------------
+
+   function Is_Access_To_Formal_Container_Capacity (N : Node_Id) return Boolean
+   is
+      E : constant Entity_Id := Entity (Selector_Name (N));
+   begin
+      return Ekind (E) = E_Discriminant
+        and then Is_Formal_Container_Capacity (E);
+   end Is_Access_To_Formal_Container_Capacity;
+
+   ----------------------------------
+   -- Is_Formal_Container_Capacity --
+   ----------------------------------
+
+   function Is_Formal_Container_Capacity (E : Entity_Id) return Boolean is
+      Typ : constant Entity_Id :=
+        Most_Underlying_Type
+          (Unique_Defining_Entity (Get_Enclosing_Declaration (E)));
+      Name : constant String :=
+        Ada.Strings.Fixed.Translate
+          (Get_Name_String (Chars (E)),
+           Ada.Strings.Maps.Constants.Lower_Case_Map);
+   begin
+      return Location_In_Formal_Containers (Sloc (Typ))
+        and then Name = Lowercase_Capacity_Name;
+   end Is_Formal_Container_Capacity;
+
    -----------------------------------
    -- Location_In_Formal_Containers --
    -----------------------------------
 
    function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean is
-      Name : constant String :=
-               Get_Name_String (Reference_Name (Get_Source_File_Index (Loc)));
    begin
-      return
-        Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
-        Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
-        Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
-        Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
-        Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
-        Name = "a-cofove.ads" or else Name = "a-cofove.adb";
+      if Loc = Standard_Location then
+         return False;
+      end if;
+
+      declare
+         Name : constant String :=
+           Get_Name_String (Reference_Name (Get_Source_File_Index (Loc)));
+      begin
+         return
+           Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
+           Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
+           Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
+           Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
+           Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
+           Name = "a-cofove.ads" or else Name = "a-cofove.adb";
+      end;
    end Location_In_Formal_Containers;
+
+   -----------------------------
+   -- Lowercase_Capacity_Name --
+   -----------------------------
+
+   function Lowercase_Capacity_Name return String is ("capacity");
+
+   --------------------------------
+   -- Lowercase_Has_Element_Name --
+   --------------------------------
+
+   function Lowercase_Has_Element_Name return String is ("has_element");
+
+   ----------------------------
+   -- Lowercase_Iterate_Name --
+   ----------------------------
+
+   function Lowercase_Iterate_Name return String is ("iterate");
 
    --------------------------
    -- Most_Underlying_Type --

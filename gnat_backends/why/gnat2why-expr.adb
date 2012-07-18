@@ -64,7 +64,6 @@ with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
@@ -206,9 +205,9 @@ package body Gnat2Why.Expr is
    --  literals, boolean values etc)
 
    function Transform_Quantified_Expression
-     (Expr         : Node_Id;
-      Domain       : EW_Domain;
-      Params       : Translation_Params) return W_Expr_Id;
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Translation_Params) return W_Expr_Id;
 
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
@@ -817,6 +816,22 @@ package body Gnat2Why.Expr is
       return Is_Range;
    end Discrete_Choice_Is_Range;
 
+   ---------------------------------------------
+   -- Get_Container_In_Iterator_Specification --
+   ---------------------------------------------
+
+   function Get_Container_In_Iterator_Specification
+     (N : Node_Id) return Node_Id
+   is
+      Iter : constant Node_Id := Name (N);
+   begin
+      pragma Assert
+        (Nkind (Iter) = N_Function_Call
+         and then Is_Entity_Name (Name (Iter))
+         and then Location_In_Formal_Containers (Sloc (Entity (Name (Iter)))));
+      return First (Parameter_Associations (Iter));
+   end Get_Container_In_Iterator_Specification;
+
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
    -------------------------------------
@@ -842,6 +857,41 @@ package body Gnat2Why.Expr is
          return Result;
       end if;
    end Get_Pure_Logic_Term_If_Possible;
+
+   ----------------------
+   -- Has_Element_Expr --
+   ----------------------
+
+   function Has_Element_Expr
+     (Cont   : Node_Id;
+      Cursor : W_Expr_Id;
+      Domain : EW_Domain;
+      Params : Translation_Params) return W_Expr_Id
+   is
+      Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Pred then EW_Term else Domain);
+      Subp : constant Entity_Id :=
+               Container_Type_To_Has_Element_Function.Element (Etype (Cont));
+      Name            : constant W_Identifier_Id :=
+                          To_Why_Id (Subp, Domain, Local => False);
+      Call            : constant W_Expr_Id :=
+                          New_Call
+                            (Domain   => Domain,
+                             Name     => Name,
+                             Args     =>
+                               (1 => Transform_Expr (Cont, Subdomain, Params),
+                                2 => Cursor));
+   begin
+      if Domain = EW_Pred then
+         return New_Relation (Domain  => EW_Pred,
+                              Op_Type => EW_Bool,
+                              Left    => +Call,
+                              Op      => EW_Eq,
+                              Right   => +True_Term);
+      else
+         return Call;
+      end if;
+   end Has_Element_Expr;
 
    ------------------------
    -- Insert_Ref_Context --
@@ -1230,10 +1280,21 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
-            return
-              New_Record_Access
-                (Name   => Expr,
-                 Field  => To_Why_Id (Entity (Selector_Name (N)), Domain));
+            declare
+               Id : constant W_Identifier_Id :=
+                      To_Why_Id (Entity (Selector_Name (N)));
+            begin
+               if Is_Access_To_Formal_Container_Capacity (N) then
+                  return
+                    New_Call (Ada_Node => N,
+                              Domain   => Domain,
+                              Name     => Id,
+                              Args     => (1 => Expr));
+               else
+                  return New_Record_Access (Name   => Expr,
+                                            Field  => Id);
+               end if;
+            end;
 
          when N_Indexed_Component =>
 
@@ -1287,6 +1348,12 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
+            --  The code should never update the capacity of a container by
+            --  assigning to it. This is ensured by making the formal container
+            --  type a private type, but keep the assertion in case.
+
+            pragma Assert (not Is_Access_To_Formal_Container_Capacity (N));
+
             return
               New_Record_Update
                 (Name    => Pref,
@@ -2006,9 +2073,10 @@ package body Gnat2Why.Expr is
                   Only_Choice : constant Node_Id :=
                                   First (Choices (Association));
                begin
-                  Check_Simple (List_Length (Choices (Association)) = 1);
-                  Check_Simple (not Discrete_Choice_Is_Range (Only_Choice));
-                  Check_Simple (Compile_Time_Known_Value (Only_Choice));
+                  Check_Simple
+                    (List_Length (Choices (Association)) = 1
+                      and then not Discrete_Choice_Is_Range (Only_Choice)
+                      and then Compile_Time_Known_Value (Only_Choice));
                end;
 
                --  For multi-dimensional aggregates, recurse
@@ -3787,7 +3855,9 @@ package body Gnat2Why.Expr is
          Current_Type := EW_Int_Type;
       elsif Ekind (Ent) = E_Loop_Parameter then
          T := +New_Identifier (Name => Full_Name (Ent));
-         Current_Type := EW_Int_Type;
+         if not Type_In_Container (Etype (Ent)) then
+            Current_Type := EW_Int_Type;
+         end if;
       else
          T := +To_Why_Id (Ent, Domain);
       end if;
@@ -3837,63 +3907,94 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Transform_Quantified_Expression
-     (Expr         : Node_Id;
-      Domain       : EW_Domain;
-      Params       : Translation_Params) return W_Expr_Id
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Translation_Params) return W_Expr_Id
    is
+      -----------------------
+      -- Local Subprograms --
+      -----------------------
 
-      function Extract_Range_Node (N : Node_Id) return Node_Id;
+      function Extract_Index_Entity
+        (N          : Node_Id;
+         Over_Range : Boolean) return Entity_Id;
+      --  Return the entity used for indexing in the quantification
 
-      function Extract_Index_Entity (N : Node_Id) return Entity_Id;
-
-      ------------------------
-      -- Extract_Range_Node --
-      ------------------------
-
-      function Extract_Range_Node (N : Node_Id) return Node_Id is
-      begin
-         if Present (Loop_Parameter_Specification (N)) then
-            return
-              Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
-         elsif Present (Iterator_Specification (N)) then
-            return Name (Iterator_Specification (N));
-         else
-            raise Program_Error;
-         end if;
-      end Extract_Range_Node;
+      function Extract_Set_Node
+        (N          : Node_Id;
+         Over_Range : Boolean) return Node_Id;
+      --  Return the set over which the quantification is performed
 
       --------------------------
       -- Extract_Index_Entity --
       --------------------------
 
-      function Extract_Index_Entity (N : Node_Id) return Entity_Id
+      function Extract_Index_Entity
+        (N          : Node_Id;
+         Over_Range : Boolean) return Entity_Id
       is
       begin
-         if Present (Loop_Parameter_Specification (N)) then
-            return
-              Defining_Identifier (Loop_Parameter_Specification (N));
-         elsif Present (Iterator_Specification (N)) then
-            return Defining_Identifier (Iterator_Specification (N));
+         if Over_Range then
+            return Defining_Identifier (Loop_Parameter_Specification (N));
          else
-            raise Program_Error;
+            return Defining_Identifier (Iterator_Specification (N));
          end if;
       end Extract_Index_Entity;
 
+      ----------------------
+      -- Extract_Set_Node --
+      ----------------------
+
+      function Extract_Set_Node
+        (N          : Node_Id;
+         Over_Range : Boolean) return Node_Id
+      is
+      begin
+         if Over_Range then
+            return
+              Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
+         else
+            return Get_Container_In_Iterator_Specification
+              (Iterator_Specification (N));
+         end if;
+      end Extract_Set_Node;
+
+      Over_Range : constant Boolean :=
+                     Present (Loop_Parameter_Specification (Expr));
+      --  The quantification is either over a scalar range, in which case
+      --  there is a loop-parameter-specification component, otherwise
+      --  the quantification is over a container and there is an
+      --  iterator-specification component.
+
       Index_Ent  : constant Entity_Id :=
-        Extract_Index_Entity (Expr);
-      Range_E    : constant Node_Id   :=
-        Extract_Range_Node (Expr);
+                     Extract_Index_Entity (Expr, Over_Range);
+      Range_E    : constant Node_Id   := Extract_Set_Node (Expr, Over_Range);
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Why_Id     : constant W_Identifier_Id :=
-        New_Identifier (Ada_Node => Index_Type, Name => Full_Name (Index_Ent));
+                     New_Identifier (Ada_Node => Index_Type,
+                                     Name     => Full_Name (Index_Ent));
+      Index_Base : constant W_Primitive_Type_Id :=
+                     (if Over_Range then
+                        New_Base_Type (Base_Type => EW_Int)
+                      else
+                        Why_Logic_Type_Of_Ada_Type (Index_Type));
+
+   --  Start of Transform_Quantified_Expression
+
    begin
+      --  Simplest case, the quantification in Ada is translated as a
+      --  quantification in Why3.
+
       if Domain = EW_Pred then
          declare
             Conclusion : constant W_Pred_Id :=
                            +Transform_Expr (Condition (Expr),
                                             EW_Pred, Params);
             Constraint : constant W_Pred_Id :=
-              +Range_Expr (Range_E, +Why_Id, EW_Pred, Params);
+              (if Over_Range then
+                 +Range_Expr (Range_E, +Why_Id, EW_Pred, Params)
+               else
+                 +Has_Element_Expr (Range_E, +Why_Id, EW_Pred, Params));
             Connector  : constant EW_Connector :=
               (if All_Present (Expr) then EW_Imply else EW_And);
             Quant_Body : constant W_Pred_Id :=
@@ -3908,7 +4009,7 @@ package body Gnat2Why.Expr is
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
                       Labels    => (1 => New_Name_Label (Index_Ent)),
-                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                      Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             else
                return
@@ -3916,24 +4017,26 @@ package body Gnat2Why.Expr is
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
                       Labels    => (1 => New_Name_Label (Index_Ent)),
-                      Var_Type  => New_Base_Type (Base_Type => EW_Int),
+                      Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             end if;
          end;
+
+      --  We are interested in the checks for the entire range, and
+      --  in the return value of the entire expression, but we are
+      --  not interested in the exact order in which things are
+      --  evaluated. We also do not want to translate the expression
+      --  function by a loop. So our scheme is the following:
+      --    for all I in Cond => Expr
+      --
+      --  becomes:
+      --    (let i = ref [ int ] in
+      --       if cond then ignore (expr));
+      --    [ { } bool { result = true <-> expr } ]
+      --  The condition is a formula that expresses that i is in the
+      --  range given by the quantification.
+
       elsif Domain = EW_Prog then
-         --  We are interested in the checks for the entire range, and
-         --  in the return value of the entire expression, but we are
-         --  not interested in the exact order in which things are
-         --  evaluated. We also do not want to translate the expression
-         --  function by a loop. So our scheme is the following:
-         --    for all I in Cond => Expr
-         --
-         --  becomes:
-         --    (let i = ref [ int ] in
-         --       if cond then ignore (expr));
-         --    [ { } bool { result = true <-> expr } ]
-         --  The condition is a formula that expresses that i is in the
-         --  range given by the quantification.
          declare
             Why_Expr   : constant W_Prog_Id :=
                            New_Ignore
@@ -3942,14 +4045,17 @@ package body Gnat2Why.Expr is
                                                  EW_Prog, Params));
             Range_Cond : W_Prog_Id;
          begin
-            Range_Cond := +Range_Expr (Range_E, +Why_Id, EW_Prog, Params);
+            Range_Cond :=
+              (if Over_Range then
+                 +Range_Expr (Range_E, +Why_Id, EW_Prog, Params)
+               else
+                 +Has_Element_Expr (Range_E, +Why_Id, EW_Prog, Params));
             return
               +Sequence
                 (New_Binding
                    (Name    => Why_Id,
                     Def     =>
-                      +New_Simpl_Any_Prog
-                        (New_Base_Type (Base_Type => EW_Int)),
+                      +New_Simpl_Any_Prog (Index_Base),
                     Context =>
                       New_Conditional
                         (Domain    => EW_Prog,
@@ -3972,14 +4078,15 @@ package body Gnat2Why.Expr is
                          Right    =>
                            +Transform_Expr (Expr, EW_Pred, Params)))));
          end;
+
+      --  It is trivial to promote a predicate to a term, by doing
+      --    if pred then True else False
+
       else
-
-         --  It is trivial to promote a predicate to a term, by doing
-         --    if pred then True else False
-
          declare
             Pred : constant W_Expr_Id :=
-              Transform_Quantified_Expression (Expr, EW_Pred, Params);
+                     Transform_Quantified_Expression
+                       (Expr, EW_Pred, Params);
          begin
             return
               New_Conditional (Domain    => EW_Term,

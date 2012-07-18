@@ -57,7 +57,145 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 --  with Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
 
+with GNAT.OS_Lib;
+with Ada.Command_Line;
+with GNAT.Case_Util;
+with GNAT.Strings;
+with Ada.Directories;
+
 package body Gnat2Why.Decls is
+
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
+
+   --  Both Executable_Location and Is_Directory_Separator are copied from
+   --  GNATcoll. These should be removed when we use clones for the theories of
+   --  formal containers, instead of the ad-hoc copies that we do now.
+
+   function Executable_Location return String;
+   --  Return the name of the parent directory where the executable is stored
+   --  (so if you are running "prefix"/bin/gps, you would get "prefix").
+   --  A special case is done for "bin" directories, which are skipped.
+   --  The returned directory always ends up with a directory separator.
+
+   function Is_Directory_Separator (C : Character) return Boolean;
+   --  Returns True if C is a directory separator
+
+   function Get_Template_Directory return String;
+   --  Returns the directory to use for templates of theories
+
+   -------------------------
+   -- Executable_Location --
+   -------------------------
+
+   function Executable_Location return String is
+      Exec_Name : constant String := Ada.Command_Line.Command_Name;
+
+      function Get_Install_Dir (S : String) return String;
+      --  S is the executable name preceeded by the absolute or relative
+      --  path, e.g. "c:\usr\bin\gcc.exe" or "..\bin\gcc". Returns the absolute
+      --  or relative directory where "bin" lies (in the example "C:\usr"
+      --  or ".."). If the executable is not a "bin" directory, return "".
+
+      ---------------------
+      -- Get_Install_Dir --
+      ---------------------
+
+      function Get_Install_Dir (S : String) return String is
+         Exec      : String  := GNAT.OS_Lib.Normalize_Pathname
+            (S, Resolve_Links => True);
+         Path_Last : Integer := 0;
+
+      begin
+         for J in reverse Exec'Range loop
+            if Is_Directory_Separator (Exec (J)) then
+               Path_Last := J - 1;
+               exit;
+            end if;
+         end loop;
+
+         if Path_Last >= Exec'First + 2 then
+            GNAT.Case_Util.To_Lower (Exec (Path_Last - 2 .. Path_Last));
+         end if;
+
+         --  If we are not in a bin/ directory
+
+         if Path_Last < Exec'First + 2
+           or else Exec (Path_Last - 2 .. Path_Last) /= "bin"
+           or else (Path_Last - 3 >= Exec'First
+                    and then not Is_Directory_Separator (Exec (Path_Last - 3)))
+         then
+            return Exec (Exec'First .. Path_Last)
+               & GNAT.OS_Lib.Directory_Separator;
+
+         else
+            --  Skip bin/, but keep the last directory separator
+            return Exec (Exec'First .. Path_Last - 3);
+         end if;
+      end Get_Install_Dir;
+
+   --  Beginning of Executable_Location
+
+   begin
+      --  First determine if a path prefix was placed in front of the
+      --  executable name.
+
+      for J in reverse Exec_Name'Range loop
+         if Is_Directory_Separator (Exec_Name (J)) then
+            return Get_Install_Dir (Exec_Name);
+         end if;
+      end loop;
+
+      --  If you are here, the user has typed the executable name with no
+      --  directory prefix.
+      --  There is a potential issue here (see K112-046) where GNAT.OS_Lib
+      --  will in fact return any non-executable file found in the PATH,
+      --  whereas shells only consider executable files. As a result, the
+      --  user might end up with a wrong directory, not matching the one
+      --  found by the shell.
+
+      declare
+         Ex  : GNAT.Strings.String_Access :=
+           GNAT.OS_Lib.Locate_Exec_On_Path (Exec_Name);
+         Dir : constant String := Get_Install_Dir (Ex.all);
+      begin
+         GNAT.Strings.Free (Ex);
+         return Dir;
+      end;
+   end Executable_Location;
+
+   ----------------------------
+   -- Get_Template_Directory --
+   ----------------------------
+
+   function Get_Template_Directory return String is
+      Prefix         : constant String := Executable_Location;
+      Share_Dir      : constant String :=
+        Ada.Directories.Compose (Prefix, "share");
+      Gnatprove_Dir  : constant String :=
+        Ada.Directories.Compose (Share_Dir, "gnatprove");
+      Template_Dir   : constant String :=
+        Ada.Directories.Compose (Gnatprove_Dir, "theories");
+   begin
+      return Template_Dir;
+   end Get_Template_Directory;
+
+   ----------------------------
+   -- Is_Directory_Separator --
+   ----------------------------
+
+   function Is_Directory_Separator (C : Character) return Boolean is
+   begin
+      --  In addition to the default directory_separator allow the '/' to
+      --  act as separator since this is allowed in MS-DOS, Windows 95/NT,
+      --  and OS2 ports. On VMS, the situation is more complicated because
+      --  there are two characters to check for. We ignore the case of VMS in
+      --  gnatprove.
+
+      return C = GNAT.OS_Lib.Directory_Separator
+        or else C = '/';
+   end Is_Directory_Separator;
 
    ----------------
    -- Is_Mutable --
@@ -251,6 +389,14 @@ package body Gnat2Why.Decls is
       File_Context : in out Why_File;
       E    : Entity_Id) is
 
+      procedure Do_Capacity
+        (Discr             : Entity_Id;
+         Type_File_Name    : String;
+         Type_Source       : in out String_Access;
+         Context_File_Name : String;
+         Context_Source    : in out String_Access);
+      --  Generate a module for the Capacity discriminant
+
       --  Replace each declaration's name by the appropriate name
       --  Generate a renaming of every type parameter module
       procedure Parse_Declarations
@@ -376,6 +522,28 @@ package body Gnat2Why.Decls is
          return File_Name_Without_Suffix (Sloc (U));
       end File_Base_Name_Of_Entity;
 
+      procedure Do_Capacity
+        (Discr             : Entity_Id;
+         Type_File_Name    : String;
+         Type_Source       : in out String_Access;
+         Context_File_Name : String;
+         Context_Source   : in out String_Access)
+      is
+         Assoc_Name : constant String := Alfa.Util.Lowercase_Capacity_Name;
+         Theory_Name : constant String := Capitalize_First (Full_Name (Discr));
+
+      begin
+         Make_Replacement ("$$" & Assoc_Name, Theory_Name,
+                           Context_Source,
+                           Type_File_Name, Context_File_Name);
+         Make_Replacement ("$$" & Assoc_Name, Theory_Name,
+                           Type_Source);
+         Make_Replacement ("$" & Assoc_Name, Theory_Name,
+                           Context_Source);
+         Make_Replacement ("$" & Assoc_Name, Theory_Name,
+                           Type_Source);
+      end Do_Capacity;
+
       procedure Parse_Declarations
         (Decls             : List_Id;
          Assoc             : List_Id;
@@ -458,6 +626,27 @@ package body Gnat2Why.Decls is
                   if not Comes_From_Source (Node) then
                      return;
                   end if;
+
+                  --  Generate a replacement for the Capacity discriminant
+
+                  if Nkind (Node) = N_Private_Type_Declaration
+                    and then Present (Discriminant_Specifications (Node))
+                    and then
+                      List_Length (Discriminant_Specifications (Node)) = 1
+                  then
+                     declare
+                        Discr : constant Entity_Id :=
+                          Defining_Identifier
+                            (First (Discriminant_Specifications (Node)));
+                     begin
+                        if Is_Formal_Container_Capacity (Discr) then
+                           Do_Capacity (Discr, Type_File_Name,
+                                        Type_Source, Context_File_Name,
+                                        Context_Source);
+                        end if;
+                     end;
+                  end if;
+
                   Make_Replacement ("$$" & Assoc_Name, Theory_Name,
                                     Context_Source,
                                     Type_File_Name, Context_File_Name);
@@ -468,6 +657,7 @@ package body Gnat2Why.Decls is
                   Make_Replacement ("$" & Assoc_Name, Theory_Name,
                                     Type_Source);
                end;
+
             when N_Subprogram_Declaration
                | N_Subprogram_Renaming_Declaration =>
                if not Comes_From_Source (Node) then
@@ -493,6 +683,22 @@ package body Gnat2Why.Decls is
                          (Theory_Name (I .. Theory_Name'Length),
                           Ada.Strings.Maps.Constants.Lower_Case_Map);
                   begin
+                     --  Store the source entity corresponding to the function
+                     --  Has_Element for this particular type of container,
+                     --  for use in translating quantification over this
+                     --  container's type.
+
+                     if Assoc_Name = Alfa.Util.Lowercase_Has_Element_Name then
+                        declare
+                           Container_Type : constant Entity_Id :=
+                             Etype (Defining_Identifier
+                                    (First (Parameter_Specifications (Spec))));
+                        begin
+                           Gnat2Why.Expr.Container_Type_To_Has_Element_Function
+                             .Insert (Container_Type, Defining_Entity (Node));
+                        end;
+                     end if;
+
                      Make_Replacement ("$$" & Assoc_Name, Theory_Name,
                                        Context_Source);
                      Make_Replacement ("$" & Assoc_Name, Theory_Name,
@@ -639,11 +845,14 @@ package body Gnat2Why.Decls is
       Labs : constant List_Id := Generic_Formal_Declarations (Parent (Parent
         (Parent (Generic_Parent (Parent (E))))));
       Type_File_Name : constant String := File_Type.Name.all;
+      Template_Dir : constant String := Get_Template_Directory;
       Type_Source : String_Access := new String'
-        (Read_File ("../"&Generic_Name & "_types.mlw"));
+        (Read_File (Ada.Directories.Compose (Template_Dir,
+         Generic_Name & "_types.mlw")));
       Context_File_Name : constant String := File_Context.Name.all;
       Context_Source : String_Access := new String'
-        (Read_File ("../"&Generic_Name & "_main.mlw"));
+        (Read_File  (Ada.Directories.Compose (Template_Dir,
+         Generic_Name & "_main.mlw")));
       Append : String_Access := new String'("");
    begin
       --  Ada.Text_IO.Put_Line ("---------------------------");

@@ -23,7 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree; use Atree;
+with Einfo; use Einfo;
+with Sinfo; use Sinfo;
+
 package Alfa.Util is
+
+   function Lowercase_Has_Element_Name return String;
+   --  Return the name of the function Has_Element in formal containers
+
+   function Lowercase_Iterate_Name return String;
+   --  Return the name of the function Iterate in formal containers
+
+   function Lowercase_Capacity_Name return String;
+   --  Return the name of the discriminant Capacity in formal containers
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
    --  Return whether aggregate N is fully initialized
@@ -32,6 +45,10 @@ package Alfa.Util is
      (N : Node_Id) return Boolean;
    --  Return whether all aggregates in node N (recursively) are fully
    --  initialized.
+
+   function Get_Enclosing_Declaration (N : Node_Id) return Node_Id;
+   --  Return the declaration node enclosing N, if any, by following the chain
+   --  of Parent's links.
 
    function Get_Expression_Function (E : Entity_Id) return Node_Id;
    --  If E is the entity of an expression function, return the corresponding
@@ -53,6 +70,14 @@ package Alfa.Util is
 
    function Is_Full_View (E : Entity_Id) return Boolean;
    --  Return whether E is the full view of another entity
+
+   function Is_Formal_Container_Capacity (E : Entity_Id) return Boolean
+   with
+     Pre => Ekind (E) = E_Discriminant;
+
+   function Is_Access_To_Formal_Container_Capacity (N : Node_Id) return Boolean
+   with
+     Pre => Nkind (N) = N_Selected_Component;
 
    function Is_Instantiation_Of_Formal_Container (N : Node_Id) return Boolean;
    --  Return whether N is the package instantiation of a formal container

@@ -25,6 +25,8 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Strings.Fixed;
+with Ada.Strings.Maps.Constants;
 
 with AA_Util;               use AA_Util;
 with Alloc;                 use Alloc;
@@ -739,7 +741,32 @@ package body Alfa.Definition is
             Mark_List (Expressions (N));
 
          when N_Iterator_Specification =>
-            Mark_Violation ("iterator specification", N, NYI_Container);
+            if Present (Subtype_Indication (N)) then
+               Mark (Subtype_Indication (N));
+            end if;
+
+            --  Treat specially the case of X.Iterate for X a formal container,
+            --  so that the iterator type is ignored instead of being
+            --  identified as a violation of Alfa.
+
+            declare
+               Iter : constant Node_Id := Name (N);
+            begin
+               if Nkind (Iter) = N_Function_Call
+                 and then Is_Entity_Name (Name (Iter))
+                 and then
+                   Ada.Strings.Fixed.Translate
+                     (Get_Name_String (Chars (Name (Iter))),
+                      Ada.Strings.Maps.Constants.Lower_Case_Map) =
+                   Alfa.Util.Lowercase_Iterate_Name
+                 and then
+                   Location_In_Formal_Containers (Sloc (Entity (Name (Iter))))
+               then
+                  Mark_List (Parameter_Associations (Iter));
+               else
+                  Mark (Name (N));
+               end if;
+            end;
 
          when N_Loop_Statement =>
             if Present (Iteration_Scheme (N)) then
@@ -790,8 +817,7 @@ package body Alfa.Definition is
                Mark (Discrete_Subtype_Definition
                       (Loop_Parameter_Specification (N)));
             else
-               pragma Assert (Present (Iterator_Specification (N)));
-               Mark_Violation ("expression with iterator", N, NYI_Iterators);
+               Mark (Iterator_Specification (N));
             end if;
             Mark (Condition (N));
 
@@ -2388,6 +2414,13 @@ package body Alfa.Definition is
 
       Push_Scope (Id);
 
+      --  Special case to accept subtypes and derived types of formal
+      --  container types.
+
+      if Location_In_Formal_Containers (Sloc (Etype (Id))) then
+         goto Past_Violation_Detection;
+      end if;
+
       if Is_Tagged_Type (Id) then
          Mark_Violation ("tagged type", Id, NYI_Tagged);
       end if;
@@ -2506,6 +2539,8 @@ package body Alfa.Definition is
          when others =>
             raise Program_Error;
       end case;
+
+      << Past_Violation_Detection >>
 
       --  If the type is in a formal container package instance, insert it in
       --  the set of entities already treated before calling Pop_Scope, so that
