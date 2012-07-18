@@ -1,6 +1,6 @@
 
 import readers
-from tools import *
+from merges import *
 
 print
 print "**********************************************************"
