@@ -31,9 +31,7 @@ is
 
    -- Conversion between the abstract state and the model is simple.  The
    -- Pointer is simply the result
-   function Model return Stack_Model is (Stack_Model'(Value => Natural (Pointer)))
-   with
-     Refined_Global_In => Pointer;
+   function Model return Stack_Model is (Stack_Model'(Value => Natural (Pointer)));
 
    function Is_Empty return Boolean is (Pointer = 0);
 

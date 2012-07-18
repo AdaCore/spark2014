@@ -11,7 +11,7 @@
 -- constituent state of each abstraction must be mutually exclusive.
 package The_Stack
 with Abstract_State => State,
-     Initial_Condition => State'Defined
+     Initializes => State
 is
    function Is_Empty return Boolean
    with Global_In => State;

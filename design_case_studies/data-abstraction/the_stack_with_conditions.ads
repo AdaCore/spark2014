@@ -19,6 +19,7 @@
 package The_Stack_With_Conditions
 with
    Abstract_State => State,
+   Initializes => State,
    Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean

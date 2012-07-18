@@ -5,6 +5,7 @@
 private package Actuator.Mirror
 with
   Abstract_State => State,
+  Initializes => State,
   Initial_Condition => Get_State = Actuator.Unknown
 is
    function Get_State return Actuator.Status_T

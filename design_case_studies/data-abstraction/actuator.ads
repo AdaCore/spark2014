@@ -8,6 +8,7 @@
 package Actuator
 with
   Abstract_State => State,
+  Intializes => State,
   Initial_Condition => Status = Unknown
 is
    type Status_T (Off, On, Unknown);

@@ -6,7 +6,7 @@ with Clock;
 package AdvanceButton -- provides an abstraction of the raw advance button settings
 with
   Abstract_State => State,
-  Initial_Condition => State'Defined
+  Initializes => State
 is
 
    type AdvanceModes is (Slow, Fast); -- determines rate of advance when button held down

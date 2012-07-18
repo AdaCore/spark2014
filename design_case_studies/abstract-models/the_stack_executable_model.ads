@@ -16,6 +16,7 @@
 package The_Stack_Executable_Model
 with
   Abstract_State => State,
+  initializes => State,
   Initial_Condition => Is_Empty
 is
 

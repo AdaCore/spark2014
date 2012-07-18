@@ -105,9 +105,9 @@ is
 
    procedure NotPressed (Result :    out Boolean)
    with
-     Global_In  => Raw.Inputs,
-     Global_Out => AdvPressed,
-     Derives => ((Result, AdvPressed) =>  Raw.Inputs)
+     Refined_Global_In  => Raw.Inputs,
+     Refined_Global_Out => AdvPressed,
+     Refined_Derives => ((Result, AdvPressed) =>  Raw.Inputs)
     is
       Pressed : Boolean;
    begin
