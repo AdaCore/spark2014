@@ -14,8 +14,8 @@ ok     = s.name_or("OK", {proofs.ok, tests.ok})
 
 # Load tools results
 
-tests.load("gnattest.mrg")
-proofs.load("gnatprove.mrg")
+tests.run("contracts.gpr")
+proofs.run("contracts.gpr")
 m.loads("program.json")
 
 # Output results

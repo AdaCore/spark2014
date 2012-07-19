@@ -1,6 +1,7 @@
 """This package provide a way to merge GNATtest outputs with other results
 """
 import readers
+from subprocess import Popen
 
 class GNATtest:
     """This class allows to feed GNATtest results into GNATmerge
@@ -33,3 +34,14 @@ class GNATtest:
         """"Load a file containing results"""
         self.input.load(filename)
 
+    def run(self, gpr_filename):
+        results="gnattest.mrg"
+        # ??? Get this info from the gpr file.
+        # ??? Log any tool output.
+        Popen(["gnattest", "-P", gpr_filename]).wait()
+        Popen(["gnatmake", "-P", gpr_filename]).wait()
+        with open(results, 'w') as fd:
+            p = Popen(["./obj/gnattest/harness/test_runner"], stdout=fd)
+            # ??? Get the object dir from the gpr file.
+            p.wait()
+        self.load(results)

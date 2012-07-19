@@ -1,6 +1,7 @@
 """This package provide a way to merge GNATprove outputs with other results
 """
 import readers
+from subprocess import Popen
 
 class GNATprove:
     """This class allows to feed GNATprove results into GNATmerge
@@ -31,3 +32,16 @@ class GNATprove:
     def load(self, filename):
         """"Load a file containing results"""
         self.vcs.load(filename)
+
+    def run(self, gpr_filename):
+        results="gnatprove.mrg"
+        # ??? Get this info from the gpr file.
+        with open(results, 'w') as fd:
+            p = Popen(["gnatprove",
+                       "-q",
+                       "--mode=prove",
+                       "--report=all",
+                       "-P", gpr_filename],
+                      stdout=fd)
+            p.wait()
+        self.load(results)

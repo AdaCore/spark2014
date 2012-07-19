@@ -1,7 +1,0 @@
-pack.ads:21:9: corresponding test PASSED
-pack.ads:41:9: corresponding test PASSED
-pack.ads:11:9: corresponding test FAILED: test case 1 postcondition violated (pack.ads:14:)
-pack.ads:31:9: corresponding test FAILED: Test not implemented. (pack-test_data-tests-test_p3_72ef10_519ea0.adb:11)
-pack.ads:50:4: corresponding test FAILED: Test not implemented. (pack-test_data-tests-test_p5_c00802.adb:9)
-pack.ads:60:4: corresponding test FAILED: Test not implemented. (pack-test_data-tests-test_p6_0371df.adb:9)
-6 tests run: 2 passed; 4 failed; 0 crashed.
