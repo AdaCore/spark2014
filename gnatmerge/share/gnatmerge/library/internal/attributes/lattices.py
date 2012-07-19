@@ -130,6 +130,17 @@ class PartialOrderAttribute(common.Attribute):
         self.values = set([])
         self.named_meets = {}
         self.named_joins = {}
+        # UNKNOWN is different from None:
+        # it marks the case where an entity has been marked by a tool,
+        # but the status has not been recognized. It is not that easy to
+        # to make this work in the current framework:
+        # 1) a join of whatever value X with UNKNOWN should keep UNKNOWN;
+        #    so UNKNOWN should not be inferior to X;
+        # 2) UNKNOWN does not allow to reach whatever goal G;
+        #    so UNKNOWN should not be superior to X.
+        # ??? should any goal be considered as reached if UNKNOWN appears
+        # in the result? Probably not. In which case we may have some
+        # special treatment for it...
         self.weaker_classes = {None : set([]), "UNKNOWN" : set([])}
         if values is not None:
             for value in values:
@@ -143,8 +154,6 @@ class PartialOrderAttribute(common.Attribute):
         """
         self.values.add(value)
         self.weaker_classes[value] = set([])
-        # ??? clarify the status UNKNOWN. Is it any different from None?
-        # self.weaker_classes["UNKNOWN"].add(value)
         return value
 
     def new_tristate(self, maximum, minimum=None, between=None):
