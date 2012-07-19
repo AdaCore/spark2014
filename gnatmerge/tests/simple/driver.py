@@ -1,30 +1,21 @@
 
 import readers
 from merges import *
+from tools import (gnatprove, gnattest)
+
 m = Merge()
 
 subp = m.new_entity("SUBPROGRAM")
 s    = subp.states
 
-proved    = s.new_value("PROVED")
-not_p     = s.new_value("NOT PROVED")
-partial_p = s.name_and("PARTIALLY PROVED", {proved, not_p})
+proofs = gnatprove.GNATprove(subp)
+tests  = gnattest.GNATtest(subp)
+ok     = s.name_or("OK", {proofs.ok, tests.ok})
 
-tested    = s.new_value("TEST PASSED")
-not_t     = s.new_value("TEST FAILED")
-partial_t = s.name_and("PARTIALLY TESTED", {tested, not_t})
+# Load tools results
 
-ok = s.name_or("OK", {tested, proved})
-
-tests = subp.new_input(reader=readers.ErrorListing("TEST", "PASSED",
-                                                   "^[0-9]+ tests run"),
-                       maps={"OK" : tested,
-                             "KO" : not_t})
-vcs = subp.new_input(reader=readers.ErrorListing("VC"),
-                     maps={"OK" : proved,
-                           "KO" : not_p})
-tests.load("gnattest.out")
-vcs.load("gnatprove.out")
+tests.load("gnattest.mrg")
+proofs.load("gnatprove.mrg")
 m.loads("program.json")
 
 # Output results

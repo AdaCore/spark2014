@@ -147,6 +147,30 @@ class PartialOrderAttribute(common.Attribute):
         # self.weaker_classes["UNKNOWN"].add(value)
         return value
 
+    def new_tristate(self, maximum, minimum=None, between=None):
+        """Add a tristate value in the attribute domain
+
+        This adds three new values to be used to represent a tristate
+        e.g PROVED, NOT PROVED, PARTIALLY PROVED. Returns the maximum
+        value (e.g. PROVED).
+
+        PARAMETERS
+           maximum: unique str used to identify a new value in the
+                    attribute domain that stand for the maximum.
+           minimum: same as maximum, but for the minimum. If not
+                    specified, will be "NOT maximum".
+           between: unique str used to identify a value in between.
+                    If not specified, will be "PARTIALLY maximum".
+        """
+        if minimum is None:
+            minimum = "NOT " + maximum
+        if between is None:
+            between = "PARTIALLY " + maximum
+        value_max = self.new_value(maximum)
+        value_min = self.new_value(minimum)
+        value_partial = self.name_and(between, {value_max, value_min})
+        return value_max
+
     def name_and(self, value, content):
         """Add new value as a meet of several pre-existing ones
 
