@@ -1,8 +1,6 @@
-
-**********************************************************
-* Merge gnattests/gnatprove results and produce a report *
-**********************************************************
-
+pack.ads:20:1-27:1: info: goal reached at P2 (PARTIALLY PROVED, TEST PASSED)
 pack.ads:30:1-37:1: goal not reached at P3 (TEST FAILED, NOT PROVED)
+pack.ads:10:1-17:1: info: goal reached at P1 (TEST FAILED, PROVED)
 pack.ads:60:1-67:1: goal not reached at P6 (TEST FAILED)
+pack.ads:40:1-47:1: info: goal reached at P4 (NOT PROVED, TEST PASSED)
 pack.ads:50:1-57:1: goal not reached at P5 (TEST FAILED)

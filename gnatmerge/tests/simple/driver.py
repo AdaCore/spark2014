@@ -1,13 +1,6 @@
 
 import readers
 from merges import *
-
-print
-print "**********************************************************"
-print "* Merge gnattests/gnatprove results and produce a report *"
-print "**********************************************************"
-print
-
 m = Merge()
 
 subp = m.new_entity("SUBPROGRAM")
@@ -38,4 +31,4 @@ m.loads("program.json")
 
 g = m.new_goal("OK", subp, ok)
 
-g.print_errors()
+g.print_errors(verbose=True)

@@ -6,7 +6,7 @@ class Goal:
         self.entity = entity
         self.value = value
 
-    def print_errors(self):
+    def print_errors(self, verbose=False):
         entity = self.entity
         goal = self.value
         attribute = entity.object.attributes[entity.status_name()]
@@ -16,7 +16,14 @@ class Goal:
             sloc = entity.slocs.to_string(entity.object, elt)
             if not attribute.value_less_than(goal, value):
                 self.print_error(elt, sloc, value)
+            elif verbose:
+                self.print_info(elt, sloc, value)
+
+    def print_info(self, name, sloc, value):
+        self.print_msg("info: goal reached", name, sloc, value)
 
     def print_error(self, name, sloc, value):
-        print "%s: goal not reached at %s (%s)" % (sloc, name,
-                                                   to_string(value))
+        self.print_msg("goal not reached", name, sloc, value)
+
+    def print_msg(self, msg, name, sloc, value):
+        print "%s: %s at %s (%s)" % (sloc, msg, name, to_string(value))

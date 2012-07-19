@@ -143,7 +143,8 @@ class PartialOrderAttribute(common.Attribute):
         """
         self.values.add(value)
         self.weaker_classes[value] = set([])
-        self.weaker_classes["UNKNOWN"].add(value)
+        # ??? clarify the status UNKNOWN. Is it any different from None?
+        # self.weaker_classes["UNKNOWN"].add(value)
         return value
 
     def name_and(self, value, content):
