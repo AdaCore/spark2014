@@ -29,15 +29,17 @@ with TextConsole;        use TextConsole;
 with Configuration;      use Configuration;
 
 procedure GNATMerge is
-   Repo    : Scripts_Repository := Common.Register_Scripts_And_Functions;
+   Repo    : Scripts_Repository;
    Buffer  : String (1 .. 1000);
    Last    : Integer;
    Errors  : Boolean;
    Console : aliased Text_Console;
-   Script  : constant Scripting_Language :=
-               Lookup_Scripting_Language (Repo, "python");
+   Script  : Scripting_Language;
+
 begin
    Read_Command_Line;
+   Repo := Common.Register_Scripts_And_Functions;
+   Script := Lookup_Scripting_Language (Repo, "python");
 
    GNATCOLL.Scripts.Load_Directory
      (Script    => Script,

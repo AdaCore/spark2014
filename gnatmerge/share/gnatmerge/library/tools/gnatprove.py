@@ -2,6 +2,7 @@
 """
 import readers
 from subprocess import Popen
+import gpr
 
 class GNATprove:
     """This class allows to feed GNATprove results into GNATmerge
@@ -33,9 +34,12 @@ class GNATprove:
         """"Load a file containing results"""
         self.vcs.load(filename)
 
-    def run(self, gpr_filename):
-        results="gnatprove.mrg"
-        # ??? Get this info from the gpr file.
+    def run(self):
+        """Run GNATProve and load the results
+        """
+        gpr_filename = gpr.path()
+        object_dir = gpr.object_dir()
+        results = object_dir + "/gnatprove.mrg"
         with open(results, 'w') as fd:
             p = Popen(["gnatprove",
                        "-q",

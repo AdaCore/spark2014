@@ -2,6 +2,7 @@
 """
 import readers
 from subprocess import Popen
+import gpr
 
 class GNATtest:
     """This class allows to feed GNATtest results into GNATmerge
@@ -34,14 +35,17 @@ class GNATtest:
         """"Load a file containing results"""
         self.input.load(filename)
 
-    def run(self, gpr_filename):
-        results="gnattest.mrg"
-        # ??? Get this info from the gpr file.
+    def run(self):
+        """Run tests and load the results
+        """
+        gpr_filename = gpr.path()
+        object_dir = gpr.object_dir()
+        test_runner = object_dir + "/gnattest/harness/test_runner"
+        results = object_dir + "/gnattest.mrg"
         # ??? Log any tool output.
         Popen(["gnattest", "-P", gpr_filename]).wait()
         Popen(["gnatmake", "-P", gpr_filename]).wait()
         with open(results, 'w') as fd:
-            p = Popen(["./obj/gnattest/harness/test_runner"], stdout=fd)
-            # ??? Get the object dir from the gpr file.
+            p = Popen([test_runner], stdout=fd)
             p.wait()
         self.load(results)

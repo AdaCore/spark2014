@@ -58,6 +58,11 @@ package body Configuration is
                      Argument    => "SCRIPT",
                      Help        => "Execute a python script");
       Define_Switch (Config,
+                     Project_File'Access,
+                     "-P:",
+                     Argument    => "PROJECT",
+                     Help        => "Load GNAT project file");
+      Define_Switch (Config,
                      Run_Console'Access,
                      "-c",
                      "--console",

@@ -41,6 +41,7 @@ package Configuration is
                       Ada.Directories.Compose (Public_API, "plug-ins");
 
    User_Script    : aliased GNAT.Strings.String_Access := null;
+   Project_File   : aliased GNAT.Strings.String_Access := null;
    Run_Console    : aliased Boolean;
 
    procedure Read_Command_Line;

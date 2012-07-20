@@ -23,17 +23,80 @@
 
 with GNATCOLL.Scripts;        use GNATCOLL.Scripts;
 with GNATCOLL.Scripts.Python; use GNATCOLL.Scripts.Python;
-with GNATCOLL.Scripts.Shell;  use GNATCOLL.Scripts.Shell;
+with GNATCOLL.Projects;       use GNATCOLL.Projects;
+with GNATCOLL.VFS;            use GNATCOLL.VFS;
+with GNAT.Strings;            use GNAT.Strings;
+with Configuration;           use Configuration;
 
 package body Common is
 
-   procedure On_Hello (Data : in out Callback_Data'Class; Command : String);
+   Project : Project_Tree;
 
-   procedure On_Hello (Data : in out Callback_Data'Class; Command : String) is
+   procedure Register_Project_Module (Repo : Scripts_Repository);
+
+   procedure On_GPR_Path
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   procedure On_GPR_Object_Dir
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   procedure On_GPR_Attribute
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   -----------------------
+   -- On_GPR_Object_Dir --
+   -----------------------
+
+   procedure On_GPR_Object_Dir
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
       pragma Unreferenced (Command);
    begin
-      Set_Return_Value (Data, "Hello " & Nth_Arg (Data, 1, "world") & " !");
-   end On_Hello;
+      Set_Return_Value (Data,
+                        Full_Name (Object_Dir (Project.Root_Project)).all);
+   end On_GPR_Object_Dir;
+
+   -----------------
+   -- On_GPR_Path --
+   -----------------
+
+   procedure On_GPR_Path
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+   begin
+      Set_Return_Value (Data,
+                        Full_Name (Project_Path (Project.Root_Project)).all);
+   end On_GPR_Path;
+
+   ----------------------
+   -- On_GPR_Attribute --
+   ----------------------
+
+   procedure On_GPR_Attribute
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+      Package_Name   : constant String := Nth_Arg (Data, 1);
+      Attribute_Name : constant String := Nth_Arg (Data, 2);
+      Index          : constant String := Nth_Arg (Data, 3, "");
+      Value          : String_List_Access :=
+        Attribute_Value (Project.Root_Project,
+                         Build (Package_Name, Attribute_Name),
+                         Index);
+   begin
+      Set_Return_Value_As_List (Data);
+      for J in Value'Range loop
+         Set_Return_Value (Data, Value (J).all);
+      end loop;
+      Free (Value);
+   end On_GPR_Attribute;
 
    ------------------------------------
    -- Register_Scripts_And_Functions --
@@ -46,21 +109,35 @@ package body Common is
       --  register those you intend to support
 
       Repo := new Scripts_Repository_Record;
-      Register_Shell_Scripting  (Repo);
-      Register_Python_Scripting (Repo, "Hello");
+      Register_Project_Module (Repo);
       Register_Standard_Classes (Repo, "Console");
-
-      --  Now register our custom functions. Note that we do not need to
-      --  register them once for every support language, once is enough, they
-      --  are automatically exported to all registered languages.
-
-      --  Available as "Hello.hello("world")" in python,
-      --  and "hello world" in shell script
-      Register_Command
-        (Repo, "hello", 0, 1,
-         Handler => On_Hello'Unrestricted_Access);
-
       return Repo;
    end Register_Scripts_And_Functions;
+
+   -----------------------------
+   -- Register_Project_Module --
+   -----------------------------
+
+   procedure Register_Project_Module (Repo : Scripts_Repository) is
+   begin
+      if Project_File /= null then
+         Project.Load (GNATCOLL.VFS.Create (+(Project_File.all)));
+         --  ??? Add some error handling
+         --  ??? Add support for -X
+      else
+         Project.Load_Empty_Project;
+      end if;
+
+      Register_Python_Scripting (Repo, "gpr");
+      Register_Command
+        (Repo, "path", 0, 0,
+         Handler => On_GPR_Path'Unrestricted_Access);
+      Register_Command
+        (Repo, "object_dir", 0, 0,
+         Handler => On_GPR_Object_Dir'Unrestricted_Access);
+      Register_Command
+        (Repo, "attribute", 2, 3,
+         Handler => On_GPR_Attribute'Unrestricted_Access);
+   end Register_Project_Module;
 
 end Common;
