@@ -49,6 +49,7 @@ with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 
 with Why.Conversions;       use Why.Conversions;
@@ -745,7 +746,10 @@ package body Gnat2Why.Subprograms is
            (Domain  => EW_Prog,
             Name    => To_Ident (WNE_Pre_Check),
             Binders => Binders,
-            Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog)));
+            Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog),
+            Post    =>
+              New_Label (Labels => (1 => To_Ident (WNE_AutoGen)),
+                         Def    => +True_Pred)));
       Close_Theory (File, Filter_Entity => E);
    end Generate_VCs_For_Subprogram_Spec;
 
