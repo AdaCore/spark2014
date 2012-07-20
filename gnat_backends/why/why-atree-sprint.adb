@@ -381,27 +381,6 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Trigger_Pre_Op;
 
-   --------------------
-   -- Pattern_Pre_Op --
-   --------------------
-
-   procedure Pattern_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Pattern_Id)
-   is
-      Args : constant W_Identifier_OList := Get_Args (Node);
-   begin
-      Traverse (State, +Get_Constr (Node));
-
-      if not (Is_Empty (+Args)) then
-         P (O, "(");
-         Print_List (State, +Args);
-         P (O, ")");
-      end if;
-
-      State.Control := Abandon_Children;
-   end Pattern_Pre_Op;
-
    -----------------------
    -- Match_Case_Pre_Op --
    -----------------------

@@ -94,10 +94,6 @@ private
      (State : in out Printer_State;
       Node  : W_Trigger_Id);
 
-   procedure Pattern_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Pattern_Id);
-
    procedure Match_Case_Pre_Op
      (State : in out Printer_State;
       Node  : W_Match_Case_Id);

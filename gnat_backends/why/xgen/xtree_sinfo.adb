@@ -228,22 +228,12 @@ package body Xtree_Sinfo is
                  "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
 
-      ---------------
-      -- W_Pattern --
-      ---------------
-
-      New_Field (W_Pattern,
-                 "Constr", "W_Identifier", Id_One);
-      New_Field (W_Pattern,
-                 "Args", "W_Identifier", Id_Set);
-      Set_Domain (W_Pattern, EW_Term);
-
       ------------------
       -- W_Match_Case --
       ------------------
 
       New_Field (W_Match_Case,
-                 "Pattern", "W_Pattern", Id_One);
+                 "Pattern", "W_Term", Id_One);
       New_Field (W_Match_Case,
                  "Term", "W_Term", Id_One);
       Set_Domain (W_Match_Case, EW_Term);

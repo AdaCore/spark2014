@@ -66,7 +66,6 @@ package Why.Sinfo is
 
       W_Triggers,
       W_Trigger,
-      W_Pattern,
       W_Match_Case,
 
       --------------------
