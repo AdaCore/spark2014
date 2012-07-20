@@ -45,7 +45,7 @@ is
 
    procedure Init_ES_Pool;
    procedure ES_Alloc   (Sid : out ES_Id);
-   procedure ES_Release (Es  : in out Echo_State);
+   procedure ES_Release (PCB : AIP.PCBs.PCB_Id; Es : in out Echo_State);
 
    -----------------------
    -- Local Subprograms --
@@ -126,8 +126,9 @@ is
 
    --  Arrange for the Echo_State entry ES to be free for re-use
 
-   procedure ES_Release (Es : in out Echo_State) is
+   procedure ES_Release (PCB : AIP.PCBs.PCB_Id; Es : in out Echo_State) is
    begin
+      AIP.TCP.TCP_Set_Udata (PCB, System.Null_Address);
       Es.Kind := ES_FREE;
    end ES_Release;
 
@@ -142,7 +143,7 @@ is
    is
       Err : AIP.Err_T;
    begin
-      ES_Release (Es);
+      ES_Release (Pcb, Es);
       AIP.TCP.TCP_Close (Pcb, Err);
       pragma Assert (AIP.No (Err));
    end Echo_Close;
@@ -255,7 +256,7 @@ is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
-      ES_Release (Es);
+      ES_Release (Pcb, Es);
       Err := AIP.NOERR;
    end ECHO_Process_Abort;
 
@@ -295,7 +296,6 @@ is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
-
       if Ev.Buf = AIP.Buffers.NOBUF then
 
          --  Remote host closed connection. Process what is left to be
