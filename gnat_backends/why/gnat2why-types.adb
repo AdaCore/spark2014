@@ -302,7 +302,8 @@ package body Gnat2Why.Types is
 
       --  We declare a default value for all types
 
-      if E /= Standard_Boolean and then E /= Universal_Fixed then
+      if (Comes_From_Source (E) or else Is_In_Standard_Package (E)) and then
+        E /= Standard_Boolean and then E /= Universal_Fixed then
          Emit
            (File.Cur_Theory,
             New_Function_Decl

@@ -105,6 +105,7 @@ package Why.Sinfo is
       W_Literal,
       W_Binding,
       W_Elsif,
+      W_Match,
       W_Conditional,
 
       -------------------------
@@ -117,7 +118,6 @@ package Why.Sinfo is
       W_Binary_Op,
       W_Unary_Op,
       W_Deref,
-      W_Match,
       W_Constr,
       W_Array_Access,
       W_Record_Access,
