@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -41,6 +41,7 @@ package VC_Kinds is
       VC_Index_Check,
       VC_Overflow_Check,
       VC_Range_Check,
+      VC_Discriminant_Check,
 
       --  Assertions
 
