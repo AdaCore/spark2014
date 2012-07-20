@@ -2020,6 +2020,11 @@ is
             Err := AIP.NOERR;
       end case;
 
+      --  Clear user data and do not make any further application callbacks
+
+      IPCBs (PCB).Udata     := System.Null_Address;
+      TPCBs (PCB).Callbacks := TCP_Callbacks'(others => Callbacks.NOCB);
+
       --  Flush control segments on request
 
       if Flush then
