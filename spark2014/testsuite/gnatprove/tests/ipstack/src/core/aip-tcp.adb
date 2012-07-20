@@ -51,6 +51,9 @@ is
       --  For a PCB in Listen state, maxium number of client connections to
       --  be accepted before they are taken by the appplication.
 
+      Parent : PCBs.PCB_Id;
+      --  For a server PCB, Id of the corresponding listening PCB
+
       Active : Boolean;
       --  Set True if connection was initiated with an active open (i.e. went
       --  through the SYN-SENT state).
@@ -157,6 +160,7 @@ is
    TCP_PCB_Initializer : constant TCP_PCB :=
                            TCP_PCB'(State            => Closed,
                                     Backlog          => 0,
+                                    Parent           => PCBs.NOPCB,
 
                                     Active           => False,
 
@@ -1226,8 +1230,10 @@ is
    procedure TCP_Accepted (PCB : PCBs.PCB_Id)
    --# global in out TPCBs;
    is
+      Listening_PCB : PCBs.PCB_Id;
    begin
-      TPCBs (PCB).Backlog := TPCBs (PCB).Backlog + 1;
+      Listening_PCB := TPCBs (PCB).Parent;
+      TPCBs (Listening_PCB).Backlog := TPCBs (Listening_PCB).Backlog + 1;
    end TCP_Accepted;
 
    --------------------------
@@ -2209,6 +2215,8 @@ is
                   if AIP.No (Err) then
                      Setup_Flow_Control (New_PCB);
 
+                     TPCBs (New_PCB).Parent  := PCB;
+                     TPCBs (New_PCB).Backlog := 0;
                      TPCBs (New_PCB).IRS     := Seg.Seq;
                      TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
@@ -2222,6 +2230,7 @@ is
                      TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
                      --  Notify application
+
                      TCP_Event (Ev   =>
                                   TCP_Event_T'(Kind => TCP_EVENT_ACCEPT,
                                                Len  => 0,
@@ -2237,6 +2246,14 @@ is
                                   TPCBs (New_PCB).Callbacks (TCP_EVENT_ACCEPT),
                                 Err  =>
                                   Err);
+
+                     if AIP.Any (Err) then
+
+                        --  Application has dropped this connection and won't
+                        --  be accepting it.
+
+                        TPCBs (PCB).Backlog := TPCBs (PCB).Backlog + 1;
+                     end if;
                   end if;
 
                   if AIP.No (Err) then
