@@ -300,17 +300,22 @@ package body Gnat2Why.Types is
       Open_Theory (File, Name);
       Translate_Underlying_Type (File.Cur_Theory, E);
 
-      --  If E is the full view of a private type, use its partial view as the
-      --  filtering entity, as it is the entity used everywhere in AST.
+      --  We declare a default value for all types
 
-      Emit
-        (File.Cur_Theory,
-         New_Function_Decl
+      if E /= Standard_Boolean and then E /= Universal_Fixed then
+         Emit
+           (File.Cur_Theory,
+            New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Ident (WNE_Dummy),
                Binders     => (1 .. 0 => <>),
                Return_Type =>
                  New_Abstract_Type (Name => To_Ident (WNE_Type))));
+      end if;
+
+      --  If E is the full view of a private type, use its partial view as the
+      --  filtering entity, as it is the entity used everywhere in AST.
+
       if Is_Full_View (E) then
          Close_Theory (File, Filter_Entity => Partial_View (E));
       else

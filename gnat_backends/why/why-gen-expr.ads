@@ -80,6 +80,10 @@ package Why.Gen.Expr is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
 
+   function Why_Default_Value (Domain : EW_Domain; E : Entity_Id)
+                               return W_Expr_Id;
+   --  Return the default value for a given type
+
    function New_Simpl_Conditional
       (Condition : W_Expr_Id;
        Then_Part : W_Expr_Id;

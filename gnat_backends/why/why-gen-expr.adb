@@ -950,4 +950,21 @@ package body Why.Gen.Expr is
       end if;
    end New_Xor_Expr;
 
+   -----------------------
+   -- Why_Default_Value --
+   -----------------------
+
+   function Why_Default_Value (Domain : EW_Domain;
+                               E      : Entity_Id) return W_Expr_Id
+   is
+   begin
+      if E = Standard_Boolean then
+         return New_Literal (Domain => Domain, Value => EW_True);
+      else
+         return +New_Identifier (Domain  => Domain,
+                                 Context => Full_Name (E),
+                                 Name    => To_String (WNE_Dummy));
+      end if;
+   end Why_Default_Value;
+
 end Why.Gen.Expr;
