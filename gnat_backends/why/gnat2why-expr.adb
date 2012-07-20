@@ -539,13 +539,6 @@ package body Gnat2Why.Expr is
       --  Return the expression that corresponds to a branch; decide which
       --  function to call depending on the type of the branch.
 
-      function Discrete_Choices
-        (Case_N       : Node_Id;
-         Matched_Expr : W_Expr_Id;
-         Cond_Domain  : EW_Domain;
-         Params       : Translation_Params) return W_Expr_Id;
-      --  Return the guard that corresponds to a branch
-
       -----------------
       -- Branch_Expr --
       -----------------
@@ -591,33 +584,6 @@ package body Gnat2Why.Expr is
          end  case;
       end Branch_Expr;
 
-      ----------------------
-      -- Discrete_Choices --
-      ----------------------
-
-      function Discrete_Choices
-        (Case_N       : Node_Id;
-         Matched_Expr : W_Expr_Id;
-         Cond_Domain  : EW_Domain;
-         Params       : Translation_Params) return W_Expr_Id
-      is
-         Cur_Choice : Node_Id   := First (Sinfo.Discrete_Choices (Case_N));
-         C          : W_Expr_Id := New_Literal (Domain => Cond_Domain,
-                                                Value  => EW_False);
-      begin
-         while Present (Cur_Choice) loop
-            C := New_Or_Else_Expr
-              (C,
-               Transform_Discrete_Choice (Choice      => Cur_Choice,
-                                          Expr        => Matched_Expr,
-                                          Domain      => Cond_Domain,
-                                          Params      => Params),
-               Cond_Domain);
-            Next (Cur_Choice);
-         end loop;
-         return C;
-      end Discrete_Choices;
-
       Match_Domain : constant EW_Domain :=
          (if Domain = EW_Pred then EW_Term else Domain);
       Cond_Domain  : constant EW_Domain :=
@@ -645,20 +611,22 @@ package body Gnat2Why.Expr is
             Elsif_Parts (Integer (Offset)) :=
               New_Elsif
                 (Domain    => Domain,
-                 Condition => Discrete_Choices (Case_N       => Cur_Case,
-                                                Matched_Expr => Matched_Expr,
-                                                Cond_Domain  => Cond_Domain,
-                                                Params       => Params),
+                 Condition =>
+                   Transform_Discrete_Choices (Case_N       => Cur_Case,
+                                               Matched_Expr => Matched_Expr,
+                                               Cond_Domain  => Cond_Domain,
+                                               Params       => Params),
                  Then_Part => Branch_Expr (Cur_Case));
             Next (Cur_Case);
          end loop;
 
          return New_Conditional
            (Domain      => Domain,
-            Condition   => Discrete_Choices (Case_N       => First_Case,
-                                             Matched_Expr => Matched_Expr,
-                                             Cond_Domain  => Cond_Domain,
-                                             Params       => Params),
+            Condition   =>
+              Transform_Discrete_Choices (Case_N       => First_Case,
+                                          Matched_Expr => Matched_Expr,
+                                          Cond_Domain  => Cond_Domain,
+                                          Params       => Params),
             Then_Part   => Branch_Expr (First_Case),
             Elsif_Parts => Elsif_Parts,
             Else_Part   => Branch_Expr (Last_Case));
@@ -3069,6 +3037,33 @@ package body Gnat2Why.Expr is
             Domain    => Domain);
       end if;
    end Transform_Discrete_Choice;
+
+   --------------------------------
+   -- Transform_Discrete_Choices --
+   --------------------------------
+
+   function Transform_Discrete_Choices
+     (Case_N       : Node_Id;
+      Matched_Expr : W_Expr_Id;
+      Cond_Domain  : EW_Domain;
+      Params       : Translation_Params) return W_Expr_Id
+   is
+      Cur_Choice : Node_Id   := First (Sinfo.Discrete_Choices (Case_N));
+      C          : W_Expr_Id := New_Literal (Domain => Cond_Domain,
+                                             Value  => EW_False);
+   begin
+      while Present (Cur_Choice) loop
+         C := New_Or_Else_Expr
+           (C,
+            Transform_Discrete_Choice (Choice      => Cur_Choice,
+                                       Expr        => Matched_Expr,
+                                       Domain      => Cond_Domain,
+                                       Params      => Params),
+            Cond_Domain);
+         Next (Cur_Choice);
+      end loop;
+      return C;
+   end Transform_Discrete_Choices;
 
    ----------------------------
    -- Transform_Enum_Literal --

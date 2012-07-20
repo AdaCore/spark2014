@@ -236,48 +236,7 @@ package body Gnat2Why.Types is
                Declare_Ada_Array (Theory, E);
 
             when E_Record_Type =>
-               declare
-                  Number_Of_Fields : Natural := 0;
-                  Field            : Node_Id :=
-                    First_Component_Or_Discriminant (E);
-               begin
-                  while Present (Field) loop
-                     if Ekind (Field) in Object_Kind then
-                        Number_Of_Fields := Number_Of_Fields + 1;
-                     end if;
-
-                     Next_Component_Or_Discriminant (Field);
-                  end loop;
-
-                  --  Do nothing if the record is empty.
-                  --  Maybe we have to do something special here? Map all
-                  --  empty records to type unit in Why?
-
-                  if Number_Of_Fields = 0 then
-                     Emit (Theory, New_Type (To_String (WNE_Type)));
-                     return;
-                  end if;
-
-                  declare
-                     Field   : Node_Id := First_Component_Or_Discriminant (E);
-                     Binders : Binder_Array (1 .. Number_Of_Fields);
-                     J       : Natural := 0;
-                  begin
-                     while Present (Field) loop
-                        if Ekind (Field) in Object_Kind then
-                           J := J + 1;
-                           Binders (J) :=
-                             (B_Name => To_Why_Id (Field, Local => True),
-                              B_Type =>
-                                Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                              others => <>);
-                        end if;
-
-                        Next_Component_Or_Discriminant (Field);
-                     end loop;
-                     Define_Ada_Record (Theory, Binders);
-                  end;
-               end;
+               Declare_Ada_Record (File, Theory, E);
 
             --  No private type or record subtype should be translated
 

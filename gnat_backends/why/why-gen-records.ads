@@ -23,14 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;   use Why.Ids;
-with Why.Gen.Binders; use Why.Gen.Binders;
+with Types;           use Types;
+with Why.Ids;         use Why.Ids;
+with Why.Inter;       use Why.Inter;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
 
-   procedure Define_Ada_Record
-     (Theory  : W_Theory_Declaration_Id;
-      Binders : Binder_Array);
+   procedure Declare_Ada_Record
+     (File    : in out Why_File;
+      Theory  : W_Theory_Declaration_Id;
+      E       : Entity_Id);
 
 end Why.Gen.Records;

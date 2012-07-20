@@ -85,6 +85,13 @@ package Gnat2Why.Expr is
    --  Translate a pragma check into a predicate; also, generate an expression
    --  which will make generate the necessary checks for Why
 
+   function Transform_Discrete_Choices
+     (Case_N       : Node_Id;
+      Matched_Expr : W_Expr_Id;
+      Cond_Domain  : EW_Domain;
+      Params       : Translation_Params) return W_Expr_Id;
+      --  Return the guard that corresponds to a branch
+
    function Transform_Attribute_Old
      (Expr   : Node_Id;
       Domain : EW_Domain;
