@@ -762,24 +762,6 @@ is
             --  Note: windows is re-opened once application confirms date
             --  consumption by calling TCP_Recved.
 
-            if TCPH.TCPH_Fin (Buffers.Packet_Info (D_Buf)) = 1 then
-               pragma Assert (D_Buf = Buf);
-
-               --  Got FIN: signal end of stream to the application by
-               --  delivering a RECV event with no buffer.
-
-               TCP_Event
-                 (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
-                                       Len  => 0,
-                                       Buf  => Buffers.NOBUF,
-                                       Addr => IPaddrs.IP_ADDR_ANY,
-                                       Port => PCBs.NOPORT,
-                                       Err  => AIP.NOERR),
-                  PCB  => PCB,
-                  Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
-                  Err  => Err);
-            end if;
-
             if D_Buf /= Buf then
 
                --  More data to deliver
@@ -2979,9 +2961,9 @@ is
    --#               TCP_Ticks, IPCBs, TPCBs, All_PCBs;
    is
       Remove_PCB : Boolean;
-      PCB      : PCBs.PCB_Id;
-      Next_PCB : PCBs.PCB_Id;
-      Err      : AIP.Err_T;
+      PCB        : PCBs.PCB_Id;
+      Next_PCB   : PCBs.PCB_Id;
+      Err        : AIP.Err_T;
    begin
       TCP_Ticks := TCP_Ticks + 1;
 
