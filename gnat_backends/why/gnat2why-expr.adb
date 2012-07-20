@@ -1646,6 +1646,8 @@ package body Gnat2Why.Expr is
          Call          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
 
+         Aggr_Temp     : constant W_Identifier_Id := New_Temp_Identifier;
+
          --  Select file for the declarations
 
          Decl_File     : Why_File := Why_Files (Dispatch_Entity (Expr));
@@ -1692,10 +1694,15 @@ package body Gnat2Why.Expr is
                            Args     => Call_Args);
 
          Def_Pred :=
-           Transform_Array_Component_Associations (Expr   => Expr,
-                                                   Arr    => Call,
-                                                   Args   => Args_Map,
-                                                   Params => Params_No_Ref);
+           New_Binding
+             (Name   => Aggr_Temp,
+              Def    => W_Value_Id (Call),
+              Context =>
+                +Transform_Array_Component_Associations
+                  (Expr   => Expr,
+                   Arr    => +Aggr_Temp,
+                   Args   => Args_Map,
+                   Params => Params_No_Ref));
 
          --  Generate the necessary logic function and axiom declarations
 
