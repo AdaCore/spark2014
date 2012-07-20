@@ -163,6 +163,7 @@ package Why.Gen.Names is
       WNE_Conversion_Label,
       WNE_Def,
       WNE_Def_Axiom,
+      WNE_Dummy,
       WNE_Eq,
       WNE_First_Static,
       WNE_Func,

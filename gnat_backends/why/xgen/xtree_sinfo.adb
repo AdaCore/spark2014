@@ -238,6 +238,16 @@ package body Xtree_Sinfo is
                  "Term", "W_Term", Id_One);
       Set_Domain (W_Match_Case, EW_Term);
 
+      --------------
+      -- W_Constr --
+      --------------
+
+      New_Field (W_Constr,
+                 "Name", "W_Identifier", Id_One);
+      New_Field (W_Constr,
+                 "Args", "W_Expr", Id_Set);
+      Set_Domain (W_Constr, EW_Term);
+
       ---------------------
       -- W_Postcondition --
       ---------------------

@@ -755,6 +755,21 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Call_Pre_Op;
 
+   -------------------
+   -- Constr_Pre_Op --
+   -------------------
+
+   procedure Constr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Constr_Id) is
+   begin
+      Traverse (State, +Get_Name (Node));
+      P (O, "(");
+      Print_List (State, +Get_Args (Node), ", ");
+      P (O, ")");
+      State.Control := Abandon_Children;
+   end Constr_Pre_Op;
+
    --------------------
    -- Literal_Pre_Op --
    --------------------

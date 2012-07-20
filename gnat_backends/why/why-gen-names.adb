@@ -660,6 +660,7 @@ package body Why.Gen.Names is
          when WNE_Pre_Check    => return "pre_check";
          when WNE_Def_Axiom    => return "def_axiom";
          when WNE_Obj          => return "obj";
+         when WNE_Dummy        => return "dummy";
          when WNE_Log          => return "log";
          when WNE_Func         => return "func";
          when WNE_Sandbox      => return "sandbox";

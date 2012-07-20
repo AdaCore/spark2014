@@ -40,11 +40,11 @@ with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Gen.Records;    use Why.Gen.Records;
-with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
@@ -303,6 +303,14 @@ package body Gnat2Why.Types is
       --  If E is the full view of a private type, use its partial view as the
       --  filtering entity, as it is the entity used everywhere in AST.
 
+      Emit
+        (File.Cur_Theory,
+         New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Ident (WNE_Dummy),
+               Binders     => (1 .. 0 => <>),
+               Return_Type =>
+                 New_Abstract_Type (Name => To_Ident (WNE_Type))));
       if Is_Full_View (E) then
          Close_Theory (File, Filter_Entity => Partial_View (E));
       else

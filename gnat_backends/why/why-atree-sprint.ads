@@ -150,6 +150,10 @@ private
      (State : in out Printer_State;
       Node  : W_Call_Id);
 
+   procedure Constr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Constr_Id);
+
    procedure Literal_Pre_Op
      (State : in out Printer_State;
       Node  : W_Literal_Id);
