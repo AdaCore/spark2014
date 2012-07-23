@@ -1321,21 +1321,19 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
+
             --  The code should never update the capacity of a container by
             --  assigning to it. This is ensured by making the formal container
             --  type a private type, but keep the assertion in case.
 
             pragma Assert (not Is_Access_To_Formal_Container_Capacity (N));
 
-            return
-              New_Record_Update
-                (Name    => Pref,
-                 Updates =>
-                   (1 =>
-                    New_Field_Association (
-                      Domain => Domain,
-                      Field  => To_Why_Id (Entity (Selector_Name (N)), Domain),
-                      Value  => Value)));
+            return New_Ada_Record_Update
+              (Ada_Node => N,
+               Domain   => Domain,
+               Name     => Pref,
+               Field    => Entity (Selector_Name (N)),
+               Value    => Value);
 
          when N_Indexed_Component =>
             declare

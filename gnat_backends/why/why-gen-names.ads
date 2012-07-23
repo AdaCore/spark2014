@@ -33,7 +33,6 @@ with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
 with Why.Gen.Name_Gen;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -49,11 +48,7 @@ package Why.Gen.Names is
 
    function Conversion_Name
       (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id
-      with Pre =>
-        (From /= To and then
-         (Get_Base_Type (From) in EW_Scalar_Or_Array_Or_Private
-          or else Get_Base_Type (To) in EW_Scalar_Or_Array_Or_Private));
+       To   : W_Base_Type_Id) return W_Identifier_Id;
    --  Return the name of the conversion function between the two types
 
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
@@ -180,6 +175,7 @@ package Why.Gen.Names is
       WNE_Log,
       WNE_Obj,
       WNE_Of_Array,
+      WNE_Of_Base,
       WNE_Of_Int,
       WNE_Of_Real,
       WNE_Overflow,
@@ -202,6 +198,7 @@ package Why.Gen.Names is
       WNE_Sandbox,
       WNE_String,
       WNE_To_Array,
+      WNE_To_Base,
       WNE_To_Int,
       WNE_To_Real,
       WNE_Type,

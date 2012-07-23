@@ -97,6 +97,10 @@ package body Why.Gen.Records is
       function Is_Others_Choice (N : Node_Id) return Boolean;
       --  Check whether the N_Variant is actually an N_Others_Choice
 
+      procedure Declare_Conversion_Functions;
+      --  Generate conversion functions from this type to the base type, and
+      --  back
+
       function Transform_Discrete_Choices (Case_N : Node_Id;
                                            Expr   : W_Term_Id)
                                            return W_Pred_Id;
@@ -203,6 +207,103 @@ package body Why.Gen.Records is
          end loop;
          return Cnt;
       end Count_Why_Record_Fields;
+
+      ----------------------------------
+      -- Declare_Conversion_Functions --
+      ----------------------------------
+
+      procedure Declare_Conversion_Functions
+      is
+         Base            : constant Entity_Id := Base_Type (E);
+         Num_E_Fields    : constant Natural := Count_Why_Record_Fields (E);
+         Num_Base_Fields : constant Natural := Count_Why_Record_Fields (Base);
+         To_Base_Aggr    : W_Field_Association_Array (1 .. Num_Base_Fields);
+         From_Base_Aggr  : W_Field_Association_Array (1 .. Num_E_Fields);
+         Field           : Entity_Id;
+         Seen            : Node_Sets.Set := Node_Sets.Empty_Set;
+         Index           : Natural := 1;
+      begin
+
+         --  First iterate over the the components of the subtype; this allows
+         --  to fill in the 'from' aggregate and part of the 'to' aggregate. We
+         --  store in 'Seen' the components of the base type which are already
+         --  filled in.
+
+         Field := First_Component_Or_Discriminant (E);
+         while Present (Field) loop
+            declare
+               Orig     : constant Entity_Id :=
+                 Original_Record_Component (Field);
+               Orig_Id  : constant W_Identifier_Id := To_Why_Id (Orig);
+               Field_Id : constant W_Identifier_Id :=
+                 To_Why_Id (Field, Local => True);
+            begin
+               From_Base_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => Field_Id,
+                    Value  =>
+                      New_Record_Access (Name => +A_Ident, Field => Orig_Id));
+               To_Base_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => Orig_Id,
+                    Value  =>
+                      New_Record_Access
+                        (Name  => +A_Ident,
+                         Field => Field_Id));
+               Seen.Include (Orig);
+               Index := Index + 1;
+               Next_Component_Or_Discriminant (Field);
+            end;
+         end loop;
+
+         --  We now iterate over the components of the base type, to fill in
+         --  the missing part of the 'to' aggregate. As the subtype cannot
+         --  provide a value for these fields, we use the dummy value of the
+         --  corresponding type. We use the 'Seen' set to filter the components
+         --  that have been added already.
+
+         Field := First_Component_Or_Discriminant (Base);
+         while Present (Field) loop
+            if not (Seen.Contains (Field)) then
+               To_Base_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => To_Why_Id (Field),
+                    Value  =>
+                      Why_Default_Value (Domain => EW_Term,
+                                         E      => Etype (Field)));
+               Index := Index + 1;
+            end if;
+            Next_Component_Or_Discriminant (Field);
+         end loop;
+
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => To_Ident (WNE_To_Base),
+               Binders     => R_Binder,
+               Return_Type =>
+                 Why_Logic_Type_Of_Ada_Type (Base),
+               Def         =>
+                 New_Record_Aggregate
+                   (Associations => To_Base_Aggr)));
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => To_Ident (WNE_Of_Base),
+               Binders     =>
+                 (1 => (B_Name => A_Ident,
+                        B_Type => Why_Logic_Type_Of_Ada_Type (Base),
+                        others => <>)),
+               Return_Type => New_Abstract_Type (Name => Ty_Ident),
+               Def         =>
+                 New_Record_Aggregate
+                   (Associations => From_Base_Aggr)));
+      end Declare_Conversion_Functions;
 
       ----------------------------------------
       -- Declare_Protected_Access_Functions --
@@ -395,6 +496,9 @@ package body Why.Gen.Records is
       end if;
       Declare_Record_Type;
       Declare_Protected_Access_Functions;
+      if Ekind (E) = E_Record_Subtype then
+         Declare_Conversion_Functions;
+      end if;
    end Declare_Ada_Record;
 
    ---------------------------

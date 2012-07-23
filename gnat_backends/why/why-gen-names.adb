@@ -26,16 +26,18 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded.Hash;
 
-with Atree;              use Atree;
-with Lib;                use Lib;
-with Sinput;             use Sinput;
-with Stand;              use Stand;
-with String_Utils;       use String_Utils;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Lib;                 use Lib;
+with Sinput;              use Sinput;
+with Stand;               use Stand;
+with String_Utils;        use String_Utils;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Conversions;    use Why.Conversions;
-with Why.Inter;          use Why.Inter;
-with Why.Types;          use Why.Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Names is
 
@@ -261,8 +263,35 @@ package body Why.Gen.Names is
                   end;
 
                when EW_Abstract =>
-                  raise Program_Error
-                     with "Conversion between arbitrary types attempted";
+
+                  --  We are in the case of conversion between two record types
+
+                  declare
+                     From_Node : constant Node_Id := Get_Ada_Node (+From);
+                     To_Node   : constant Node_Id := Get_Ada_Node (+To);
+                  begin
+                     if Ekind (From_Node) = E_Record_Subtype then
+                        pragma Assert
+                          (Ekind (To_Node) = E_Record_Type,
+                           "Conversion between incomptabible Ada types");
+                        return
+                          Prefix (Ada_Node => From_Node,
+                                  S        => Full_Name (From_Node),
+                                  W        => WNE_To_Base);
+                     else
+                        pragma Assert
+                          (Ekind (From_Node) = E_Record_Type,
+                           "Conversion from Ada type that is not a record");
+                        pragma Assert
+                          (Ekind (To_Node) = E_Record_Subtype,
+                           "Conversion between incompatible Ada types");
+                        return
+                          Prefix (Ada_Node => To_Node,
+                                  S        => Full_Name (To_Node),
+                                  W        => WNE_Of_Base);
+                     end if;
+                  end;
+
             end case;
       end case;
    end Conversion_Name;
@@ -613,6 +642,8 @@ package body Why.Gen.Names is
          when WNE_Of_Real      => return "of_real";
          when WNE_To_Array     => return "to_array";
          when WNE_Of_Array     => return "of_array";
+         when WNE_To_Base      => return "to_base";
+         when WNE_Of_Base      => return "of_base";
          when WNE_Type         => return "t";
          when WNE_Ignore       => return "___ignore";
          when WNE_Result       => return "result";

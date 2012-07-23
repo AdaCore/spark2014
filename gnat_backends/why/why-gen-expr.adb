@@ -961,7 +961,8 @@ package body Why.Gen.Expr is
       if E = Standard_Boolean then
          return New_Literal (Domain => Domain, Value => EW_True);
       else
-         return +New_Identifier (Domain  => Domain,
+         return +New_Identifier (Ada_Node => E,
+                                 Domain  => Domain,
                                  Context => Full_Name (E),
                                  Name    => To_String (WNE_Dummy));
       end if;
