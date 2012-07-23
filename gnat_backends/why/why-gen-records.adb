@@ -42,6 +42,7 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Types;          use Why.Types;
 
 --  with Why.Gen.Terms;             use Why.Gen.Terms;
@@ -409,5 +410,41 @@ package body Why.Gen.Records is
            Domain   => Domain,
            Reason   => VC_Discriminant_Check);
    end New_Ada_Record_Access;
+
+   ---------------------------
+   -- New_Ada_Record_Update --
+   ---------------------------
+
+   function New_Ada_Record_Update
+     (Ada_Node : Node_Id;
+      Domain : EW_Domain;
+      Name   : W_Expr_Id;
+      Field  : Entity_Id;
+      Value  : W_Expr_Id) return W_Expr_Id
+   is
+      Update_Expr : constant W_Expr_Id :=
+        New_Record_Update
+          (Ada_Node => Ada_Node,
+           Name     => Name,
+           Updates  =>
+             (1 =>
+                New_Field_Association
+                  (Domain => Domain,
+                   Field  => To_Why_Id (Field, Domain),
+                   Value  => Value)));
+
+   begin
+      if Domain = EW_Prog then
+         return
+           +Sequence
+             (+New_Ignore
+                  (Ada_Node => Ada_Node,
+                   Prog     =>
+                     +New_Ada_Record_Access (Ada_Node, Domain, Name, Field)),
+              +Update_Expr);
+      else
+         return Update_Expr;
+      end if;
+   end New_Ada_Record_Update;
 
 end Why.Gen.Records;
