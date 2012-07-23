@@ -34,6 +34,7 @@ with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
 with Sinfo;              use Sinfo;
+with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Binders;    use Why.Gen.Binders;
@@ -41,7 +42,6 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
 --  with Why.Gen.Terms;             use Why.Gen.Terms;
@@ -389,5 +389,25 @@ package body Why.Gen.Records is
       Declare_Record_Type;
       Declare_Protected_Access_Functions;
    end Declare_Ada_Record;
+
+   ---------------------------
+   -- New_Ada_Record_Access --
+   ---------------------------
+
+   function New_Ada_Record_Access
+     (Ada_Node : Node_Id;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id) return W_Expr_Id
+   is
+   begin
+      return
+        New_VC_Call
+          (Ada_Node => Ada_Node,
+           Name     => To_Program_Space (To_Why_Id (Field)),
+           Progs    => (1 => Name),
+           Domain   => Domain,
+           Reason   => VC_Discriminant_Check);
+   end New_Ada_Record_Access;
 
 end Why.Gen.Records;

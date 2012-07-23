@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;           use Types;
-with Why.Ids;         use Why.Ids;
-with Why.Inter;       use Why.Inter;
+with Types;     use Types;
+with Why.Ids;   use Why.Ids;
+with Why.Inter; use Why.Inter;
+with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why.
@@ -34,5 +35,11 @@ package Why.Gen.Records is
      (File    : in out Why_File;
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id);
+
+   function New_Ada_Record_Access
+     (Ada_Node : Node_Id;
+      Domain : EW_Domain;
+      Name   : W_Expr_Id;
+      Field  : Entity_Id) return W_Expr_Id;
 
 end Why.Gen.Records;

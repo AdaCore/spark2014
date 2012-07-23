@@ -29,19 +29,19 @@ with Ada.Text_IO;
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Namet;              use Namet;
-with Nlists;             use Nlists;
-with Sem_Aux;            use Sem_Aux;
-with Sem_Eval;           use Sem_Eval;
-with Sem_Util;           use Sem_Util;
-with Sinfo;              use Sinfo;
-with Snames;             use Snames;
-with Stand;              use Stand;
-with Uintp;              use Uintp;
-with Urealp;             use Urealp;
-with VC_Kinds;           use VC_Kinds;
+with Atree;                 use Atree;
+with Einfo;                 use Einfo;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Sem_Aux;               use Sem_Aux;
+with Sem_Eval;              use Sem_Eval;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Snames;                use Snames;
+with Stand;                 use Stand;
+with Uintp;                 use Uintp;
+with Urealp;                use Urealp;
+with VC_Kinds;              use VC_Kinds;
 with Eval_Fat;
 
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
@@ -58,6 +58,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
+with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Conversions;       use Why.Conversions;
@@ -1259,8 +1260,12 @@ package body Gnat2Why.Expr is
                               Name     => Id,
                               Args     => (1 => Expr));
                else
-                  return New_Record_Access (Name   => Expr,
-                                            Field  => Id);
+                  return
+                    New_Ada_Record_Access
+                      (Ada_Node => N,
+                       Domain   => Domain,
+                       Name     => Expr,
+                       Field    => Entity (Selector_Name (N)));
                end if;
             end;
 
