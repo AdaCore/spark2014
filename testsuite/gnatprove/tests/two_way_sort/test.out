@@ -27,9 +27,9 @@ p1.adb:39:19: info: range check proved
 p1.adb:5:14: index check not proved
 p1.adb:5:21: info: index check proved
 p1.adb:6:25: index check not proved
-p1.adb:6:30: postcondition not proved, requires a (i) = a (j)'old and then a (j) = a (i)'old<<<
 p1.adb:6:32: info: index check proved
 p1.adb:8:55: info: index check proved
+p1.adb:8:60: postcondition not proved, requires a (k) = a'old(k)<<<a'old (k)>>>
 p1.adb:8:63: index check not proved
 p1.ads:6:16: postcondition not proved, requires a'last < a'first or else  for some k in a'range
 p1.ads:7:61: info: index check proved
