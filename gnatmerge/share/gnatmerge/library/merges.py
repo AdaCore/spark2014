@@ -1,6 +1,6 @@
 """This package provides the basic API to merge results
 
-Consider this package as the entry point of GNATMerge. It defines a class
+Consider this package as the entry point of GNATmerge. It defines a class
 Merge that should be used to specify a merge operation.
 """
 

@@ -8,10 +8,10 @@ from internal import sets
 class Entity:
     """Represents a source code entity on which merges should be done
 
-    This class allows to merge results of an entity of a lower level
-    (e.g. child) with entities in entities of a higher level. Typically,
-    to merge proof results on the subprogram level to the package level,
-    one which do:
+    This class allows to merge results of entities of a lower level
+    (e.g. children) to produce results for entities of a higher
+    level. Typically, to merge proof results on the subprogram level to the
+    package level, one should do:
 
         m = Merge()
         pck = m.new_entity("PACKAGE")
