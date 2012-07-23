@@ -83,7 +83,7 @@ package body Why.Gen.Records is
       --  result is the same as the record field access, but there is a
       --  precondition (when needed)
 
-      function Compute_Discriminant_Check (Info  : Component_Info)
+      function Compute_Discriminant_Check (Field : Entity_Id)
                                            return W_Pred_Id;
       --  compute the discriminant check for an access to the given field, as a
       --  predicate which can be used as a precondition
@@ -112,10 +112,6 @@ package body Why.Gen.Records is
       --  Component_Info record. This map is initialized by a call to
       --  Init_Component_Info;
 
-      Decl_Node  : constant Node_Id := Parent (E);
-      Components : constant Node_Id :=
-        Component_List (Type_Definition (Decl_Node));
-
       A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
       R_Binder   : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
@@ -127,16 +123,16 @@ package body Why.Gen.Records is
       -- Compute_Discriminant_Check --
       --------------------------------
 
-      function Compute_Discriminant_Check (Info  : Component_Info)
+      function Compute_Discriminant_Check (Field : Entity_Id)
                                            return W_Pred_Id
       is
-         Local_Info : Component_Info := Info;
-         Cond       : W_Pred_Id := True_Pred;
+         Info : Component_Info := Comp_Info.Element (Field);
+         Cond : W_Pred_Id := True_Pred;
       begin
-         while Present (Local_Info.Parent_Variant) loop
+         while Present (Info.Parent_Variant) loop
             declare
                Ada_Discr : constant Node_Id :=
-                 Entity (Name (Local_Info.Parent_Var_Part));
+                 Entity (Name (Info.Parent_Var_Part));
                Discr : constant W_Term_Id :=
                  +Insert_Conversion
                    (Domain => EW_Term,
@@ -147,18 +143,18 @@ package body Why.Gen.Records is
                     To   => EW_Int_Type,
                     From => EW_Abstract (Etype (Ada_Discr)));
                New_Cond : constant W_Pred_Id :=
-                 (if Is_Others_Choice (Local_Info.Parent_Variant) then
-                  Compute_Others_Choice (Local_Info, Discr)
+                 (if Is_Others_Choice (Info.Parent_Variant) then
+                  Compute_Others_Choice (Info, Discr)
                   else
                   +Transform_Discrete_Choices
-                    (Local_Info.Parent_Variant, Discr));
+                    (Info.Parent_Variant, Discr));
             begin
                Cond :=
                  +New_And_Then_Expr
                  (Domain => EW_Pred,
                   Left   => +Cond,
                   Right  => +New_Cond);
-               Local_Info := Comp_Info.Element (Local_Info.Parent_Var_Part);
+               Info := Comp_Info.Element (Info.Parent_Var_Part);
             end;
          end loop;
          return Cond;
@@ -216,12 +212,18 @@ package body Why.Gen.Records is
       is
          Field : Entity_Id := First_Component_Or_Discriminant (E);
       begin
+         --  TBD: enrich the postcondition of access to discriminant, whenever
+         --  we statically know its value
+
          while Present (Field) loop
             declare
-               Info : constant Component_Info :=
-                 Comp_Info.Element (Key => Field);
+               Why_Name  : constant W_Identifier_Id :=
+                 To_Why_Id (Field, Local => True);
                Prog_Name : constant W_Identifier_Id :=
-                 To_Program_Space (Info.Ident);
+                 To_Program_Space (Why_Name);
+               Pre_Cond  : constant W_Pred_Id :=
+                 (if Ekind (E) = E_Record_Subtype then True_Pred
+                    else Compute_Discriminant_Check (Field));
             begin
                Emit (Theory,
                      New_Function_Decl
@@ -230,8 +232,7 @@ package body Why.Gen.Records is
                         Binders     => R_Binder,
                         Return_Type =>
                           Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                        Pre         =>
-                          Compute_Discriminant_Check (Info),
+                        Pre         => Pre_Cond,
                         Post        =>
                           New_Relation
                             (Left    => +To_Ident (WNE_Result),
@@ -240,7 +241,7 @@ package body Why.Gen.Records is
                              Right   =>
                                New_Record_Access
                                  (Name => +A_Ident,
-                                  Field => Info.Ident))));
+                                  Field => Why_Name))));
                Next_Component_Or_Discriminant (Field);
             end;
          end loop;
@@ -334,7 +335,10 @@ package body Why.Gen.Records is
             end loop;
          end Mark_Variant_Part;
 
+         Decl_Node  : constant Node_Id := Parent (E);
          Field : Node_Id := First (Discriminant_Specifications (Decl_Node));
+         Components : constant Node_Id :=
+           Component_List (Type_Definition (Decl_Node));
       begin
          while Present (Field) loop
             Comp_Info.Insert
@@ -386,7 +390,9 @@ package body Why.Gen.Records is
       end Transform_Discrete_Choices;
 
    begin
-      Init_Component_Info;
+      if Ekind (E) /= E_Record_Subtype then
+         Init_Component_Info;
+      end if;
       Declare_Record_Type;
       Declare_Protected_Access_Functions;
    end Declare_Ada_Record;
