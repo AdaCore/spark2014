@@ -4,40 +4,47 @@ module $Main
   use module $$element_type
   use module $$cursor
   use module $$list
+  use module "a-contai__types_in_spec".Ada__containers__count_type
 
   function oeq (e1:$element_type.t) (e2:$element_type.t) : bool = $oeq.log e1 e2
-  
-  function no_element  : $cursor.t
-  
-  function empty_  : $list.t
-  
+
+  function capacity $list.t : int
+
+  axiom capacity_range:
+    forall co : $list.t [capacity co].
+      Ada__containers__count_type.in_range (capacity co)
+
+  function no_element : $cursor.t
+
+  function empty_ : $list.t
+
   function length $list.t : int
-  
-  axiom length_gte_zero:
-    forall co:$list.t [length co]. length co >= 0
-  
+
+  axiom length_range:
+    forall co:$list.t [length co]. 0 <= length co <= capacity co
+
   function position_ $list.t $cursor.t : int
-  
+
   axiom position_gte_zero:
     forall co:$list.t, cu:$cursor.t [position_ co cu].
         length co >= position_ co cu /\ position_ co cu >= 0
-  
+
   axiom position_no_element:
     forall co:$list.t [position_ co no_element]. position_ co no_element = 0
-  
+
   axiom position_eq:
     forall co:$list.t, cu1 cu2:$cursor.t [position_ co cu1, position_ co cu2].
           position_ co cu1 > 0 -> position_ co cu1 = position_ co cu2 -> cu1 = cu2
-  
+
   predicate is_empty_ $list.t
 
   axiom is_empty:
     forall co:$list.t [is_empty_ (co)]. is_empty_ (co) <-> length co = 0
-  
+
   axiom Empty_is_empty: is_empty_ empty_
-  
+
   function previous_ $list.t $cursor.t : $cursor.t
-  
+
   axiom previous_in:
     forall co:$list.t, cu:$cursor.t [previous_ co cu].
 	(position_ co cu > 1 \/ position_ co (previous_ co cu) > 0) ->
@@ -46,9 +53,9 @@ module $Main
   axiom previous_ext:
     forall co:$list.t, cu:$cursor.t [previous_ co cu].
         (position_ co cu = 1 \/ cu = no_element) -> previous_ co cu = no_element
-  
+
   function next_ $list.t $cursor.t : $cursor.t
-  
+
   axiom next_in:
     forall co:$list.t, cu:$cursor.t [next_ co cu].
 	(length co > position_ co cu > 0 \/ position_ co (next_ co cu) > 0) ->
@@ -57,25 +64,25 @@ module $Main
   axiom next_ext:
     forall co:$list.t, cu:$cursor.t [next_ co cu].
         (position_ co cu = length co \/ cu = no_element) -> next_ co cu = no_element
-  
+
   function last $list.t : $cursor.t
-  
+
   axiom last_empty:
     forall co:$list.t [last co]. length co = 0 <-> last co = no_element
-  
+
   axiom last_gen:
     forall co:$list.t [last co]. length co = position_ co (last co)
-  
+
   function first $list.t : $cursor.t
-  
+
   axiom first_empty:
     forall co:$list.t [first co]. length co = 0 <-> first co = no_element
-  
+
   axiom first_gen:
     forall co:$list.t [first co]. length co > 0 -> position_ co (first co) = 1
-  
+
   function element_ $list.t $cursor.t : $element_type.t
-  
+
   function left_ $list.t $cursor.t : $list.t
 
   axiom left_no_element:
@@ -99,7 +106,7 @@ module $Main
     forall co:$list.t, cu cun:$cursor.t [element_ (left_ co cu) cun | left_ co cu, element_ co cun].
 	(position_ (left_ co cu) cun > 0 \/ 0 < position_ co cun < position_ co cu) ->
 	element_ (left_ co cu) cun = element_ co cun
-  
+
   function right_ $list.t $cursor.t : $list.t
 
   axiom right_no_element:
@@ -122,7 +129,7 @@ module $Main
     forall co:$list.t, cu cun:$cursor.t [element_ (right_ co cu) cun | right_ co cu, element_ co cun].
 	(position_ (right_ co cu) cun > 0 \/ 0 < position_ co cu <= position_ co cun) ->
 	element_ (right_ co cu) cun = element_ co cun
-  
+
   function findfirst $list.t $element_type.t : $cursor.t
 
   axiom find_range:
@@ -143,10 +150,10 @@ module $Main
     forall co:$list.t, e:$element_type.t [findfirst co e].
 	0 < position_ co (findfirst co e) ->
 	oeq (element_ co (findfirst co e)) e = True
-  
+
   function find (l : $list.t) (e : $element_type.t) (cu : $cursor.t) : $cursor.t =
     if cu = no_element then (findfirst (right_ l (first l)) e) else (findfirst (right_ l cu) e)
-  
+
   predicate strict_equal $list.t $list.t
 
   axiom strict_equal_a:
@@ -168,7 +175,7 @@ module $Main
 
   axiom equal_element:
    forall co1 co2 : $list.t [equal_ co1 co2]. equal_ co1 co2 ->
-   forall cu1 : $cursor.t [element_ co1 cu1]. position_ co1 cu1 > 0 -> 
+   forall cu1 : $cursor.t [element_ co1 cu1]. position_ co1 cu1 > 0 ->
 	exists cu2 : $cursor.t. position_ co2 cu2 = position_ co1 cu1 /\ oeq (element_ co2 cu2) (element_ co1 cu1) = True
 
   axiom equal_inv:
@@ -184,7 +191,7 @@ module $Main
   axiom equal_trans :
   forall e1 e2 e3 : $list.t [equal_ e1 e2, equal_ e1 e3 | equal_ e1 e2, equal_ e2 e3].
 	equal_ e1 e2 -> equal_ e2 e3 -> equal_ e1 e3
-  
+
   predicate replace_element_ $list.t $cursor.t $element_type.t $list.t
 
   axiom replace_element_length:
@@ -214,7 +221,7 @@ module $Main
      | replace_element_ co1 cu e co2, element_ co1 cun].
       replace_element_ co1 cu e co2 -> cu <> cun -> position_ co1 cun > 0 ->
         element_ co2 cun = element_ co1 cun
-  
+
   predicate insert_ $list.t $cursor.t $element_type.t $list.t
 
   axiom insert_range:
@@ -271,7 +278,7 @@ module $Main
     forall co1 co2:$list.t, cun:$cursor.t, e:$element_type.t
       [insert_ co1 no_element e co2,  element_ co1 cun
      | insert_ co1 no_element e co2,  element_ co2 cun].
-      insert_ co1 no_element e co2 -> 
+      insert_ co1 no_element e co2 ->
       (position_ co1 cun > 0 \/ 0 < position_ co2 cun < length co2) ->
         element_ co1 cun = element_ co2 cun
 
@@ -357,7 +364,7 @@ module $Main
   axiom has_element_neg:
     forall co:$list.t, cu:$cursor.t [has_element co cu].
     not (has_element co cu) -> position_ co cu = 0
-  
+
   predicate contains $list.t $element_type.t
 
   axiom contains_c:
@@ -393,6 +400,24 @@ module $empty_list
       obj = $Main.empty_
 end
 
+module $capacity
+  use module $Main
+  use module $$list
+  use module "a-contai__types_in_spec".Ada__containers__count_type
+
+  function log $list.t : Ada__containers__count_type.t
+
+  axiom log_def:
+    forall co : $list.t [log co].
+      log co = Ada__containers__count_type.of_int ($Main.capacity co)
+
+  val func:
+	  co:$list.t ->
+	  { }
+	  Ada__containers__count_type.t
+	  { result = Ada__containers__count_type.of_int ($Main.capacity co) }
+end
+
 module $length
   use module $Main
   use module $$list
@@ -402,11 +427,11 @@ module $length
 
   axiom log_def:
     forall co : $list.t [log co].
-      Ada__containers__count_type.in_range ($Main.length co) -> log co = Ada__containers__count_type.of_int ($Main.length co)
+      log co = Ada__containers__count_type.of_int ($Main.length co)
 
   val func:
 	  co:$list.t ->
-	  { Ada__containers__count_type.in_range ($Main.length co) }
+	  { }
 	  Ada__containers__count_type.t
 	  { result = Ada__containers__count_type.of_int ($Main.length co) }
 end
@@ -482,6 +507,7 @@ module $replace_element
 end
 
 module $insert
+  use import int.Int
   use module $Main
   use module $$list
   use module $$cursor
@@ -491,13 +517,14 @@ module $insert
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
-	  { $Main.has_element !co cu \/ cu = $Main.no_element }
+	  { $Main.length !co + (Ada__containers__count_type.to_int c) <= $Main.capacity !co /\ ($Main.has_element !co cu \/ cu = $Main.no_element) }
 	  unit reads co writes co
 	  { $Main.insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co }
 
 end
 
-module $insert2
+module $insert__2
+  use import int.Int
   use module $Main
   use module $$list
   use module $$cursor
@@ -507,7 +534,7 @@ module $insert2
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> e:$element_type.t -> p:ref $cursor.t -> c:Ada__containers__count_type.t ->
-	  { $Main.has_element !co cu \/ cu = $Main.no_element }
+	  { $Main.length !co + (Ada__containers__count_type.to_int c) <= $Main.capacity !co /\ ($Main.has_element !co cu \/ cu = $Main.no_element) }
 	  unit reads co p writes co p
 	  { $Main.insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co /\
             $Main.first_inserted (old !co) cu !co !p }
@@ -515,6 +542,7 @@ module $insert2
 end
 
 module $prepend
+  use import int.Int
   use module $Main
   use module $$list
   use module $$element_type
@@ -523,13 +551,14 @@ module $prepend
 
   val func:
 	  co:ref $list.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
-	  { }
+	  { $Main.length !co + (Ada__containers__count_type.to_int c) <= $Main.capacity !co }
 	  unit reads co writes co
 	  { $Main.insert_mult (old !co) ($Main.first (old !co)) e (Ada__containers__count_type.to_int c) !co }
 
 end
 
 module $append
+  use import int.Int
   use module $Main
   use module $$list
   use module $$element_type
@@ -538,7 +567,7 @@ module $append
 
   val func:
 	  co:ref $list.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
-	  { }
+	  { $Main.length !co + (Ada__containers__count_type.to_int c) <= $Main.capacity !co }
 	  unit reads co writes co
 	  { $Main.insert_mult (old !co) $Main.no_element e (Ada__containers__count_type.to_int c) !co }
 
@@ -622,12 +651,12 @@ module $next
   val func:
 	  co:$list.t -> cu:$cursor.t ->
 	  { cu = $Main.no_element \/ $Main.has_element co cu }
-	  $cursor.t 
+	  $cursor.t
 	  { result = $Main.next_ co cu }
 
 end
 
-module $previous2
+module $previous__2
   use module $Main
   use module $$list
   use module $$cursor
@@ -641,7 +670,7 @@ module $previous2
 
 end
 
-module $next2
+module $next__2
   use module $Main
   use module $$list
   use module $$cursor
@@ -688,7 +717,7 @@ module $last
   val func:
 	  co:$list.t ->
 	  { }
-	  $cursor.t 
+	  $cursor.t
 	  { result = $Main.last co }
 
 end
@@ -728,7 +757,7 @@ module $last_element
   val func:
 	  co:$list.t ->
 	  { not ($Main.is_empty_ co) }
-	  $element_type.t 
+	  $element_type.t
 	  { result = $Main.element_ co ($Main.last co) }
 
 end
@@ -770,5 +799,61 @@ module $find
 	  $cursor.t
 	  { result = $Main.find co e cu }
 
+end
+
+module $left
+  use module $Main
+  use module $$list
+  use module $$cursor
+
+  function log $list.t $cursor.t : $list.t
+
+  axiom log_def:
+    forall co : $list.t, cu : $cursor.t [log co cu].
+      (cu = $Main.no_element \/ $Main.has_element co cu) ->
+          log co cu = $Main.left_ co cu
+
+  val func:
+	  co:$list.t -> cu : $cursor.t ->
+	  {cu = $Main.no_element \/ $Main.has_element co cu }
+	  $list.t
+	  { result = $Main.left_ co cu }
+end
+
+module $right
+  use module $Main
+  use module $$list
+  use module $$cursor
+
+  function log $list.t $cursor.t : $list.t
+
+  axiom log_def:
+    forall co : $list.t, cu : $cursor.t [log co cu].
+      (cu = $Main.no_element \/ $Main.has_element co cu) ->
+          log co cu = $Main.right_ co cu
+
+  val func:
+	  co:$list.t -> cu : $cursor.t ->
+	  {cu = $Main.no_element \/ $Main.has_element co cu }
+	  $list.t
+	  { result = $Main.right_ co cu }
+end
+
+module $strict_equal
+  use module $Main
+  use module $$list
+  use module $$cursor
+
+  function log $list.t $list.t : bool
+
+  axiom log_def:
+    forall co1 co2 : $list.t [log co1 co2].
+      log co1 co2 = True <-> $Main.strict_equal co1 co2
+
+  val func:
+	  co1:$list.t -> co2 : $list.t ->
+	  { }
+	  bool
+	  { result = True <-> $Main.strict_equal co1 co2 }
 end
 
