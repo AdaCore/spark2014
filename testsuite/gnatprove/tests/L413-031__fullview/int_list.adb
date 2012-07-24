@@ -1,25 +1,22 @@
-pragma Ada_2012;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-
-procedure Int_List is
-   function My_Eq (I1 : Integer; I2 : Integer) return Boolean
-   is (I1 = I2);
-
-   package MyLists is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (Integer, "=" => My_Eq);
-   use MyLists;
-
-   procedure Add (L : in out List; I : Integer) with
-     Post => Element (L, First (L)) = I
-       and then (for all C in L'Old => Element (L, C) = Element (L'Old, C));
-
-   procedure Add (L : in out List; I : Integer) is
+package body Int_List is
+   procedure Add (L : in out List; I : My_Int) is
    begin
-      Prepend (L, I);
+      L.Prepend (I);
    end Add;
 
-   L : List (10);
-begin
-   Add (L, 0);
-   Add (L, 1);
+   procedure Incr (L : in out List) is
+      Copy : List := L;
+      C    : Cursor := L.First;
+   begin
+      while L.Has_Element (C) loop
+         pragma Assert
+           (L.Right (C).Strict_Equal (Copy.Right (C))
+              and then
+            (for all D in L.Right (C).Iterate => L.Element (D) = Copy.Element (D))
+              and then
+           (for all D in L.Left (C).Iterate => L.Element (D) = Copy.Element (C) + 1));
+         L.Replace_Element (C, L.Element (C) + 1);
+         L.Next (C);
+      end loop;
+   end Incr;
 end Int_List;
