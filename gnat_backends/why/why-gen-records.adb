@@ -530,14 +530,17 @@ package body Why.Gen.Records is
             Field : Node_Id := First (Component_Items (N));
          begin
             while Present (Field) loop
-               Comp_Info.Insert
-                 (Defining_Identifier (Field),
-                  Component_Info'(
-                    Parent_Variant  => Parent_Variant,
-                    Parent_Var_Part => Parent_Var_Part,
-                    Ident           =>
-                      To_Why_Id (Defining_Identifier (Field),
-                                 Local => True)));
+               if Nkind (Field) /= N_Pragma then
+                  Comp_Info.Insert
+                    (Defining_Identifier (Field),
+                     Component_Info'(
+                       Parent_Variant  => Parent_Variant,
+                       Parent_Var_Part => Parent_Var_Part,
+                       Ident           =>
+                         To_Why_Id
+                           (Defining_Identifier (Field),
+                            Local => True)));
+               end if;
                Next (Field);
             end loop;
             if Present (Variant_Part (N)) then
