@@ -207,10 +207,15 @@ package body Why.Gen.Records is
 
       function Compute_Down_Cast_Check (E : Entity_Id) return W_Pred_Id
       is
-         Discr       : Entity_Id := First_Discriminant (E);
-         Constr_Elmt : Elmt_Id   := First_Elmt (Stored_Constraint (E));
+         Discr       : Entity_Id;
+         Constr_Elmt : Elmt_Id;
          Pred        : W_Pred_Id := True_Pred;
       begin
+         if not Has_Discriminants (E) then
+            return Auto_True;
+         end if;
+         Discr := First_Discriminant (E);
+         Constr_Elmt := First_Elmt (Stored_Constraint (E));
          while Present (Discr) loop
             Pred :=
               +New_And_Then_Expr
@@ -240,6 +245,9 @@ package body Why.Gen.Records is
             Next_Discriminant (Discr);
             Next_Elmt (Constr_Elmt);
          end loop;
+         if Pred = True_Pred then
+            Pred := Auto_True;
+         end if;
          return Pred;
       end Compute_Down_Cast_Check;
 
