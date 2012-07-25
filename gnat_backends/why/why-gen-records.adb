@@ -338,15 +338,27 @@ package body Why.Gen.Records is
                    (Domain => EW_Term,
                     Field  => Field_Id,
                     Value  =>
-                      New_Record_Access (Name => +A_Ident, Field => Orig_Id));
+                      Insert_Conversion
+                        (Domain => EW_Term,
+                         To     => EW_Abstract (Etype (Field)),
+                         From   => EW_Abstract (Etype (Orig)),
+                         Expr   =>
+                           New_Record_Access
+                             (Name => +A_Ident,
+                              Field => Orig_Id)));
                To_Base_Aggr (Index) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => Orig_Id,
                     Value  =>
-                      New_Record_Access
-                        (Name  => +A_Ident,
-                         Field => Field_Id));
+                      Insert_Conversion
+                        (Domain => EW_Term,
+                         To     => EW_Abstract (Etype (Orig)),
+                         From   => EW_Abstract (Etype (Field)),
+                         Expr   =>
+                           New_Record_Access
+                             (Name  => +A_Ident,
+                              Field => Field_Id)));
                Seen.Include (Orig);
                Index := Index + 1;
                Next_Component_Or_Discriminant (Field);
