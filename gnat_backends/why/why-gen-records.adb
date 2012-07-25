@@ -488,12 +488,6 @@ package body Why.Gen.Records is
          Binders    : Binder_Array (1 .. Num_Fields);
          Field      : Entity_Id := First_Component_Or_Discriminant (E);
       begin
-         if Num_Fields = 0 then
-            Emit
-              (Theory,
-               New_Type (To_String (WNE_Type)));
-            return;
-         end if;
          for Index in 1 .. Num_Fields loop
             Binders (Index) :=
               (B_Name => To_Why_Id (Field, Local => True),
@@ -617,6 +611,16 @@ package body Why.Gen.Records is
       end Transform_Discrete_Choices;
 
    begin
+
+      --  Get the empty record case out of the way
+
+      if Count_Why_Record_Fields (E) = 0 then
+         Emit
+           (Theory,
+            New_Type (To_String (WNE_Type)));
+         return;
+      end if;
+
       if Ekind (E) = E_Record_Subtype and then
         Present (Cloned_Subtype (E)) then
 
