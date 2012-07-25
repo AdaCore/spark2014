@@ -389,23 +389,49 @@ package body Why.Gen.Expr is
             return Expr;
          else
             declare
-               Name : constant W_Identifier_Id :=
-                        Conversion_Name (From => From, To => To);
+               Name         : constant W_Identifier_Id :=
+                 Conversion_Name (From => From, To => To);
+               Check_Needed : Boolean;
+               Check_Kind   : VC_Kind;
             begin
-               --  Conversions from a base why type to an Ada type should
-               --  generate a check in program space.
 
-               if Domain = EW_Prog
-                 and then Get_Base_Type (From) in EW_Scalar
+               if Domain /= EW_Prog then
+                  Check_Needed := False;
+               elsif Get_Base_Type (From) in EW_Scalar
                  and then not (Get_Base_Type (To) in EW_Scalar)
                then
+
+                  --  Conversions from a base why type to an Ada type should
+                  --  generate a check in program space.
+
+                  Check_Needed := True;
+                  Check_Kind   := Conversion_Reason.Pop;
+               elsif
+                 Get_Base_Type (From) = EW_Abstract and then
+                 Get_Base_Type (To) = EW_Abstract
+               then
+
+                  --  Conversion between Ada types potentially need a
+                  --  discriminant check. When they don't, the precondition
+                  --  is marked trivial, so there is no danger in inserting a
+                  --  checking call here.
+                  --  Right now the only case where that happens are
+                  --  discriminant records, so we fix the VC Kind here.
+
+                  Check_Needed := True;
+                  Check_Kind := VC_Discriminant_Check;
+               else
+                  Check_Needed := False;
+               end if;
+
+               if Check_Needed then
                   return
                     New_VC_Call
                       (Domain   => Domain,
                        Ada_Node => Ada_Node,
                        Name     => To_Program_Space (Name),
                        Progs    => (1 => +Expr),
-                       Reason   => Conversion_Reason.Pop);
+                       Reason   => Check_Kind);
 
                --  In any other case (logic space, or conversions to a more
                --  general type), no check is needed.

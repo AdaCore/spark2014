@@ -375,6 +375,27 @@ package body Why.Gen.Records is
                          Name   => From_Ident,
                          Args   => (1 => +A_Ident))),
                Pre         => Compute_Down_Cast_Check (E)));
+
+         Emit
+           (Theory,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => To_Program_Space (To_Ident (WNE_To_Base)),
+               Binders     => R_Binder,
+               Return_Type =>
+                 Why_Logic_Type_Of_Ada_Type (Base),
+               Post        =>
+                 New_Relation
+                   (Op_Type => EW_Abstract,
+                    Left    => +To_Ident (WNE_Result),
+                    Op      => EW_Eq,
+                    Right   =>
+                      New_Call
+                        (Domain => EW_Term,
+                         Name   => To_Ident (WNE_To_Base),
+                         Args   => (1 => +A_Ident))),
+               Pre         => Auto_True));
+
       end Declare_Conversion_Functions;
 
       ----------------------------------------
