@@ -810,8 +810,9 @@ package body Why.Inter is
          Left_Base := Get_Base_Type (Base_Why_Type (Left));
          Right_Base := Get_Base_Type (Base_Why_Type (Right));
          if Left_Base = EW_Abstract and then Right_Base = EW_Abstract then
-            pragma Assert (Base_Type (Get_Ada_Node (+Left)) =
-                             Base_Type (Get_Ada_Node (+Right)));
+            pragma Assert
+              (Unique_Entity (Base_Type (Get_Ada_Node (+Left))) =
+                 Unique_Entity (Base_Type (Get_Ada_Node (+Right))));
             return EW_Abstract (Base_Type (Get_Ada_Node (+Left)));
          else
             return Why_Types (Type_Hierarchy.LCA (Left_Base, Right_Base));
