@@ -27,12 +27,14 @@ with Ada.Containers.Hashed_Maps;
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Elists;             use Elists;
 with Nlists;             use Nlists;
 
 with Gnat2Why.Driver;    use Gnat2Why.Driver;
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
+with Sem_Aux;            use Sem_Aux;
 with Sinfo;              use Sinfo;
 with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -43,9 +45,8 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
+with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
-
---  with Why.Gen.Terms;             use Why.Gen.Terms;
 
 package body Why.Gen.Records is
 
@@ -67,8 +68,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Declare_Ada_Record
-     (File    : in out Why_File;
-      Theory  : W_Theory_Declaration_Id;
+     (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id)
    is
 
@@ -87,6 +87,11 @@ package body Why.Gen.Records is
                                            return W_Pred_Id;
       --  compute the discriminant check for an access to the given field, as a
       --  predicate which can be used as a precondition
+
+      function Compute_Down_Cast_Check (E : Entity_Id)
+                                        return W_Pred_Id;
+      --  compute the precondition for the cast from the base type to the
+      --  current entity
 
       function Compute_Others_Choice (Info  : Component_Info;
                                       Discr : W_Term_Id) return W_Pred_Id;
@@ -161,8 +166,53 @@ package body Why.Gen.Records is
                Info := Comp_Info.Element (Info.Parent_Var_Part);
             end;
          end loop;
+         if Cond = True_Pred then
+            Cond := Auto_True;
+         end if;
          return Cond;
       end Compute_Discriminant_Check;
+
+      -----------------------------
+      -- Compute_Down_Cast_Check --
+      -----------------------------
+
+      function Compute_Down_Cast_Check (E : Entity_Id) return W_Pred_Id
+      is
+         Discr       : Entity_Id := First_Discriminant (E);
+         Constr_Elmt : Elmt_Id   := First_Elmt (Stored_Constraint (E));
+         Pred        : W_Pred_Id := True_Pred;
+      begin
+         while Present (Discr) loop
+            Pred :=
+              +New_And_Then_Expr
+                (Domain => EW_Pred,
+                 Left   => +Pred,
+                 Right  =>
+                   New_Relation
+                     (Domain  => EW_Pred,
+                      Op_Type => EW_Abstract,
+                      Op      => EW_Eq,
+                      Left    =>
+                      +Insert_Conversion
+                        (Domain => EW_Term,
+                         Expr =>
+                           New_Record_Access
+                             (Name  => +A_Ident,
+                              Field =>
+                                To_Why_Id (Original_Record_Component (Discr))),
+                         To   => EW_Int_Type,
+                         From => EW_Abstract (Etype (Discr))),
+                      Right   =>
+                        +Transform_Expr
+                          (Domain        => EW_Term,
+                           Params        => Term_Params,
+                           Expected_Type => EW_Int_Type,
+                           Expr          => Node (Constr_Elmt))));
+            Next_Discriminant (Discr);
+            Next_Elmt (Constr_Elmt);
+         end loop;
+         return Pred;
+      end Compute_Down_Cast_Check;
 
       ---------------------------
       -- Compute_Others_Choice --
@@ -222,6 +272,12 @@ package body Why.Gen.Records is
          Field           : Entity_Id;
          Seen            : Node_Sets.Set := Node_Sets.Empty_Set;
          Index           : Natural := 1;
+         From_Binder     : constant Binder_Array :=
+           (1 => (B_Name => A_Ident,
+                  B_Type => Why_Logic_Type_Of_Ada_Type (Base),
+                  others => <>));
+         From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
+
       begin
 
          --  First iterate over the the components of the subtype; this allows
@@ -294,15 +350,31 @@ package body Why.Gen.Records is
            (Theory,
             New_Function_Def
               (Domain      => EW_Term,
-               Name        => To_Ident (WNE_Of_Base),
-               Binders     =>
-                 (1 => (B_Name => A_Ident,
-                        B_Type => Why_Logic_Type_Of_Ada_Type (Base),
-                        others => <>)),
+               Name        => From_Ident,
+               Binders     => From_Binder,
                Return_Type => New_Abstract_Type (Name => Ty_Ident),
                Def         =>
                  New_Record_Aggregate
                    (Associations => From_Base_Aggr)));
+
+         Emit
+           (Theory,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => To_Program_Space (From_Ident),
+               Binders     => From_Binder,
+               Return_Type => New_Abstract_Type (Name => Ty_Ident),
+               Post        =>
+                 New_Relation
+                   (Op_Type => EW_Abstract,
+                    Left    => +To_Ident (WNE_Result),
+                    Op      => EW_Eq,
+                    Right   =>
+                      New_Call
+                        (Domain => EW_Term,
+                         Name   => From_Ident,
+                         Args   => (1 => +A_Ident))),
+               Pre         => Compute_Down_Cast_Check (E)));
       end Declare_Conversion_Functions;
 
       ----------------------------------------
@@ -323,7 +395,7 @@ package body Why.Gen.Records is
                Prog_Name : constant W_Identifier_Id :=
                  To_Program_Space (Why_Name);
                Pre_Cond  : constant W_Pred_Id :=
-                 (if Ekind (E) = E_Record_Subtype then True_Pred
+                 (if Ekind (E) = E_Record_Subtype then Auto_True
                     else Compute_Discriminant_Check (Field));
             begin
                Emit (Theory,
@@ -475,19 +547,12 @@ package body Why.Gen.Records is
                                            Expr   : W_Term_Id)
                                            return W_Pred_Id
       is
-         Params : constant Translation_Params :=
-           (Theory      => File.Cur_Theory,
-            File        => File.File,
-            Phase       => Translation,
-            Gen_Image   => False,
-            Ref_Allowed => True,
-            Name_Map    => Ada_Ent_To_Why.Empty_Map);
       begin
          return +Gnat2Why.Expr.Transform_Discrete_Choices
            (Case_N       => Case_N,
             Matched_Expr => +Expr,
             Cond_Domain  => EW_Pred,
-            Params       => Params);
+            Params       => Term_Params);
       end Transform_Discrete_Choices;
 
    begin
@@ -511,11 +576,15 @@ package body Why.Gen.Records is
       Name     : W_Expr_Id;
       Field    : Entity_Id) return W_Expr_Id
    is
+      Call_Id : constant W_Identifier_Id :=
+        (if Domain = EW_Prog then
+         To_Program_Space (To_Why_Id (Field))
+         else To_Why_Id (Field));
    begin
       return
         New_VC_Call
           (Ada_Node => Ada_Node,
-           Name     => To_Program_Space (To_Why_Id (Field)),
+           Name     => Call_Id,
            Progs    => (1 => Name),
            Domain   => Domain,
            Reason   => VC_Discriminant_Check);

@@ -79,6 +79,14 @@ package Gnat2Why.Driver is
                           Ref_Allowed => True,
                           Name_Map    => Ada_Ent_To_Why.Empty_Map));
 
+   function Term_Params return Translation_Params is
+     (Translation_Params'(File        => Why_Files (WF_Main).File,
+                          Theory      => Why_Files (WF_Main).Cur_Theory,
+                          Phase       => Translation,
+                          Gen_Image   => False,
+                          Ref_Allowed => True,
+                          Name_Map    => Ada_Ent_To_Why.Empty_Map));
+
    procedure GNAT_To_Why (GNAT_Root : Node_Id);
    --  Translates an entire GNAT tree for a compilation unit into
    --  a set of Why sources. This is the main driver for the

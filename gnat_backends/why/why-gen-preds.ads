@@ -34,6 +34,10 @@ package Why.Gen.Preds is
    False_Pred : constant W_Pred_Id := New_Literal (Value  => EW_False);
    True_Pred  : constant W_Pred_Id := New_Literal (Value  => EW_True);
 
+   function Auto_True return W_Pred_Id;
+   --  the predicate 'true', but with a label "auto_generated"; If this
+   --  predicate comes up as a VC, it will be skipped by Why.
+
    procedure Define_Range_Predicate
      (Theory    : W_Theory_Declaration_Id;
       Base_Type : EW_Scalar);

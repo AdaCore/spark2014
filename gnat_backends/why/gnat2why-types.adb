@@ -236,7 +236,7 @@ package body Gnat2Why.Types is
                Declare_Ada_Array (Theory, E);
 
             when E_Record_Type | E_Record_Subtype =>
-               Declare_Ada_Record (File, Theory, E);
+               Declare_Ada_Record (Theory, E);
 
             --  No private type or record subtype should be translated
 
