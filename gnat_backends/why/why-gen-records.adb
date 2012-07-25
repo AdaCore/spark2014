@@ -35,6 +35,7 @@ with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
 with Sem_Aux;            use Sem_Aux;
+with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with VC_Kinds;           use VC_Kinds;
@@ -218,33 +219,42 @@ package body Why.Gen.Records is
          Discr := First_Discriminant (E);
          Constr_Elmt := First_Elmt (Stored_Constraint (E));
          while Present (Discr) loop
-            Pred :=
-              +New_And_Then_Expr
-                (Domain => EW_Pred,
-                 Left   => +Pred,
-                 Right  =>
-                   New_Relation
-                     (Domain  => EW_Pred,
-                      Op_Type => EW_Abstract,
-                      Op      => EW_Eq,
-                      Left    =>
-                      +Insert_Conversion
-                        (Domain => EW_Term,
-                         Expr =>
-                           New_Record_Access
-                             (Name  => +A_Ident,
-                              Field =>
-                                To_Why_Id (Original_Record_Component (Discr))),
-                         To   => EW_Int_Type,
-                         From => EW_Abstract (Etype (Discr))),
-                      Right   =>
-                        +Transform_Expr
-                          (Domain        => EW_Term,
-                           Params        => Term_Params,
-                           Expected_Type => EW_Int_Type,
-                           Expr          => Node (Constr_Elmt))));
-            Next_Discriminant (Discr);
-            Next_Elmt (Constr_Elmt);
+            declare
+               Discr_Val : constant W_Expr_Id :=
+                 (if Is_Static_Expression (Node (Constr_Elmt)) then
+                  New_Integer_Constant
+                    (Value => Expr_Value (Node (Constr_Elmt)))
+                  else
+                  Transform_Expr
+                    (Domain        => EW_Term,
+                     Params        => Term_Params,
+                     Expected_Type => EW_Int_Type,
+                     Expr          => Node (Constr_Elmt)));
+            begin
+               Pred :=
+                 +New_And_Then_Expr
+                 (Domain => EW_Pred,
+                  Left   => +Pred,
+                  Right  =>
+                    New_Relation
+                      (Domain  => EW_Pred,
+                       Op_Type => EW_Abstract,
+                       Op      => EW_Eq,
+                       Left    =>
+                       +Insert_Conversion
+                         (Domain => EW_Term,
+                          Expr =>
+                            New_Record_Access
+                              (Name  => +A_Ident,
+                               Field =>
+                                 To_Why_Id
+                                   (Original_Record_Component (Discr))),
+                          To   => EW_Int_Type,
+                          From => EW_Abstract (Etype (Discr))),
+                       Right   => +Discr_Val));
+               Next_Discriminant (Discr);
+               Next_Elmt (Constr_Elmt);
+            end;
          end loop;
          if Pred = True_Pred then
             Pred := Auto_True;
