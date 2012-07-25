@@ -35,6 +35,7 @@ with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
 with Sem_Aux;            use Sem_Aux;
+with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -177,7 +178,7 @@ package body Why.Gen.Records is
                     Expr =>
                       New_Record_Access
                         (Name  => +A_Ident,
-                         Field => Comp_Info.Element (Ada_Discr).Ident),
+                         Field => To_Why_Id (Ada_Discr, Local => True)),
                     To   => EW_Int_Type,
                     From => EW_Abstract (Etype (Ada_Discr)));
                New_Cond : constant W_Pred_Id :=
@@ -301,7 +302,7 @@ package body Why.Gen.Records is
 
       procedure Declare_Conversion_Functions
       is
-         Base            : constant Entity_Id := Base_Type (E);
+         Base            : constant Entity_Id := Unique_Entity (Base_Type (E));
          Num_E_Fields    : constant Natural := Count_Why_Record_Fields (E);
          Num_Base_Fields : constant Natural := Count_Why_Record_Fields (Base);
          To_Base_Aggr    : W_Field_Association_Array (1 .. Num_Base_Fields);
@@ -316,6 +317,7 @@ package body Why.Gen.Records is
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
       begin
+         pragma Assert (Num_E_Fields <= Num_Base_Fields);
 
          --  First iterate over the the components of the subtype; this allows
          --  to fill in the 'from' aggregate and part of the 'to' aggregate. We
