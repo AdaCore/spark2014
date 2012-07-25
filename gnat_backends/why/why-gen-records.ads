@@ -28,7 +28,8 @@ with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Records is
-   --  This package encapsulates the encoding of Ada records into Why.
+   --  This package encapsulates the encoding of Ada records into Why. This
+   --  also includes records with variant parts.
 
    procedure Declare_Ada_Record
      (Theory  : W_Theory_Declaration_Id;

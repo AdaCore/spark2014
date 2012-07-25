@@ -50,6 +50,35 @@ with Why.Types;          use Why.Types;
 
 package body Why.Gen.Records is
 
+   --  For all Ada record types, we define a Why3 record type which contains
+   --  all components of the Ada type, including discriminants, and including
+   --  components in variant parts.
+
+   --  For all such components, we then declare access program functions, where
+   --  the precondition represents the discriminant check, and the
+   --  postcondition states that the value of this function is just the value
+   --  of the record component.
+
+   --  For subtypes, we also define conversion functions (in logic and program
+   --  space) to and from the base type. The 'from' function has a precondition
+   --  which expresses the discriminant check.
+
+   --  For the implementation details: This is one place where we have to look
+   --  at the declaration node to find which discriminant values imply the
+   --  presence of which components. We traverse the N_Component_List of the
+   --  type declaration, and for each component, and for each N_Variant_Part,
+   --  we store a record of type [Component_Info] which contains the N_Variant
+   --  node to which the component/variant part belongs, and the N_Variant_Part
+   --  to which this N_Variant node belongs. In this way, we can easily access
+   --  the discriminant (the Name of the N_Variant_Part) and the discrete
+   --  choice (the Discrete_Choices of the N_Variant) of that component or
+   --  variant part. For variant parts, the field [Ident] is empty, for
+   --  components it contains the corresponding Why identifier.
+
+   --  The map [Comp_Info] maps the component entities and N_Variant_Part nodes
+   --  to their information record. This map is populated at the beginning of
+   --  [Declare_Ada_Record].
+
    type Component_Info is record
       Parent_Variant  : Node_Id;
       Parent_Var_Part : Node_Id;
@@ -406,8 +435,8 @@ package body Why.Gen.Records is
       is
          Field : Entity_Id := First_Component_Or_Discriminant (E);
       begin
-         --  TBD: enrich the postcondition of access to discriminant, whenever
-         --  we statically know its value
+         --  ??? enrich the postcondition of access to discriminant, whenever
+         --  we statically know its value (in case of E_Record_Subtype)
 
          while Present (Field) loop
             declare
