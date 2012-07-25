@@ -617,6 +617,19 @@ package body Why.Gen.Records is
       end Transform_Discrete_Choices;
 
    begin
+      if Ekind (E) = E_Record_Subtype and then
+        Present (Cloned_Subtype (E)) then
+
+         --  This type is simply a copy of an existing type, we generate the
+         --  alias and return
+
+         Emit (Theory,
+               New_Type (Name => To_Ident (WNE_Type),
+                         Alias =>
+                           New_Abstract_Type
+                             (Name => To_Why_Id (Cloned_Subtype (E)))));
+         return;
+      end if;
       if Ekind (E) /= E_Record_Subtype then
          Init_Component_Info;
       end if;
