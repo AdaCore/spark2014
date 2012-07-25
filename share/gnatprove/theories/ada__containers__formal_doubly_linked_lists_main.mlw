@@ -446,7 +446,7 @@ module $element
 
   axiom log_def:
     forall co : $list.t, cu : $cursor.t [log co cu].
-      $Main.has_element co cu -> log co cu = $Main.element_ co cu
+      log co cu = $Main.element_ co cu
 
   val func:
 	  co:$list.t -> cu:$cursor.t ->
@@ -627,7 +627,7 @@ module $previous
 
   axiom log_def:
     forall co : $list.t, cu : $cursor.t [log co cu].
-      ($Main.has_element co cu \/ $Main.has_element co cu) -> log co cu = $Main.previous_ co cu
+      log co cu = $Main.previous_ co cu
 
   val func:
 	  co:$list.t -> cu:$cursor.t ->
@@ -646,7 +646,7 @@ module $next
 
   axiom log_def:
     forall co : $list.t, cu : $cursor.t [log co cu].
-      ($Main.has_element co cu \/ $Main.has_element co cu) -> log co cu = $Main.next_ co cu
+      log co cu = $Main.next_ co cu
 
   val func:
 	  co:$list.t -> cu:$cursor.t ->
@@ -732,7 +732,7 @@ module $first_element
 
   axiom log_def:
     forall co : $list.t [log co].
-      not ($Main.is_empty_ co) -> log co = $Main.element_ co ($Main.first co)
+      log co = $Main.element_ co ($Main.first co)
 
   val func:
 	  co:$list.t ->
@@ -752,7 +752,7 @@ module $last_element
 
   axiom log_def:
     forall co : $list.t [log co ].
-      not ($Main.is_empty_ co) -> log co = $Main.element_ co ($Main.last co)
+      log co = $Main.element_ co ($Main.last co)
 
   val func:
 	  co:$list.t ->
@@ -790,8 +790,7 @@ module $find
 
   axiom log_def:
     forall co : $list.t, e : $element_type.t, cu : $cursor.t [log co e cu].
-      (cu = $Main.no_element \/ $Main.has_element co cu) ->
-          log co e cu = $Main.find co e cu
+      log co e cu = $Main.find co e cu
 
   val func:
 	  co:$list.t -> e : $element_type.t -> cu : $cursor.t ->
@@ -810,8 +809,7 @@ module $left
 
   axiom log_def:
     forall co : $list.t, cu : $cursor.t [log co cu].
-      (cu = $Main.no_element \/ $Main.has_element co cu) ->
-          log co cu = $Main.left_ co cu
+      log co cu = $Main.left_ co cu
 
   val func:
 	  co:$list.t -> cu : $cursor.t ->
@@ -829,8 +827,7 @@ module $right
 
   axiom log_def:
     forall co : $list.t, cu : $cursor.t [log co cu].
-      (cu = $Main.no_element \/ $Main.has_element co cu) ->
-          log co cu = $Main.right_ co cu
+      log co cu = $Main.right_ co cu
 
   val func:
 	  co:$list.t -> cu : $cursor.t ->
