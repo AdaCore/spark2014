@@ -453,8 +453,9 @@ package body Why.Gen.Records is
                Prog_Name : constant W_Identifier_Id :=
                  To_Program_Space (Why_Name);
                Pre_Cond  : constant W_Pred_Id :=
-                 (if Ekind (E) = E_Record_Subtype then Auto_True
-                    else Compute_Discriminant_Check (Field));
+                 (if Ekind (E) = E_Record_Subtype  or else
+                  Ekind (Field) = E_Discriminant then Auto_True
+                  else Compute_Discriminant_Check (Field));
             begin
                Emit (Theory,
                      New_Function_Decl
