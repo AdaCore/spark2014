@@ -9,5 +9,4 @@ stacks.ads:13:53: warning: type used is not yet supported
 stacks.ads:3:09: warning: tagged type is not yet supported
 stacks.ads:3:09: warning: type definition is not yet supported
 stacks.ads:5:23: warning: type of formal is not yet supported
-stacks.ads:9:09: warning: discriminant is not yet supported
 stacks.ads:9:09: warning: tagged type is not yet supported
