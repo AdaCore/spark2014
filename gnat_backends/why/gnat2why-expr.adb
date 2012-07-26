@@ -4158,15 +4158,15 @@ package body Gnat2Why.Expr is
          declare
             Assoc : constant Node_Id := Entity (First (CL));
          begin
-            if Ekind (Component) = E_Discriminant and then
+            if Component = Assoc then
+               return True;
+            elsif Ekind (Component) = E_Discriminant and then
               Ekind (Assoc) = E_Discriminant then
                return Discriminal (Component) = Discriminal (Assoc);
+            elsif Present (Original_Record_Component (Component)) then
+               return Original_Record_Component (Component) = Assoc;
             else
-               if Present (Original_Record_Component (Component)) then
-                  return Original_Record_Component (Component) = Assoc;
-               else
-                  return Component = Assoc;
-               end if;
+               return False;
             end if;
          end;
       end Matching_Component_Association;

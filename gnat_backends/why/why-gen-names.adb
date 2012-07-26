@@ -271,20 +271,11 @@ package body Why.Gen.Names is
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                   begin
                      if Ekind (From_Node) = E_Record_Subtype then
-                        pragma Assert
-                          (Ekind (To_Node) = E_Record_Type,
-                           "Conversion between incomptabible Ada types");
                         return
                           Prefix (Ada_Node => From_Node,
                                   S        => Full_Name (From_Node),
                                   W        => WNE_To_Base);
                      else
-                        pragma Assert
-                          (Ekind (From_Node) = E_Record_Type,
-                           "Conversion from Ada type that is not a record");
-                        pragma Assert
-                          (Ekind (To_Node) = E_Record_Subtype,
-                           "Conversion between incompatible Ada types");
                         return
                           Prefix (Ada_Node => To_Node,
                                   S        => Full_Name (To_Node),
