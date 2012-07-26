@@ -2807,6 +2807,31 @@ package body Gnat2Why.Expr is
                Current_Type := EW_Int_Type;
             end;
 
+         when Attribute_Min | Attribute_Max =>
+            declare
+               Arg1 : constant W_Expr_Id :=
+                 Transform_Expr (First (Expressions (Expr)),
+                                 EW_Int_Type,
+                                 Domain,
+                                 Params);
+               Arg2 : constant W_Expr_Id :=
+                 Transform_Expr (Next (First (Expressions (Expr))),
+                                 EW_Int_Type,
+                                 Domain,
+                                 Params);
+               Attr_Name : constant Why_Name_Enum :=
+                             (if Attr_Id = Attribute_Min then
+                                WNE_Integer_Min
+                              else WNE_Integer_Max);
+               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+            begin
+               T := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => Func,
+                              Args     => (1 => Arg1, 2 => Arg2));
+               Current_Type := EW_Int_Type;
+            end;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
                                   & Attribute_Id'Image (Attr_Id));

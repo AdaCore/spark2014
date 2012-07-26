@@ -1177,7 +1177,9 @@ package body Alfa.Definition is
               Attribute_Truncation |
               Attribute_Succ       |
               Attribute_Val        |
-              Attribute_Value      =>
+              Attribute_Value      |
+              Attribute_Min        |
+              Attribute_Max        =>
             null;
 
          when others =>

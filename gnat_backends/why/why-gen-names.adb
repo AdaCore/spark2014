@@ -629,6 +629,8 @@ package body Why.Gen.Names is
          when WNE_Integer_Exp  => return "Integer.power";
          when WNE_Integer_Rem  => return "Integer.computer_mod";
          when WNE_Integer_Mod  => return "Integer.math_mod";
+         when WNE_Integer_Max  => return "Integer.int_max";
+         when WNE_Integer_Min  => return "Integer.int_min";
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
