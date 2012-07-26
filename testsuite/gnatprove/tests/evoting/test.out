@@ -59,14 +59,14 @@ evoting.adb:247:34: info: index check proved
 evoting.adb:248:13: info: index check proved
 evoting.adb:257:32: info: range check proved
 evoting.adb:264:10: info: loop invariant initialization proved
-evoting.adb:264:10: info: loop invariant preservation proved
 evoting.adb:264:62: info: index check proved
+evoting.adb:270:31: loop invariant preservation not proved, requires (total <= evoting__total_range_t(i) * evoting__
 evoting.adb:270:51: info: overflow check proved
 evoting.adb:271:25: info: overflow check proved
-evoting.adb:271:25: info: range check proved
+evoting.adb:271:25: range check not proved
 evoting.adb:271:41: info: index check proved
 evoting.adb:274:28: info: overflow check proved
-evoting.adb:274:28: info: range check proved
+evoting.adb:274:28: range check not proved
 evoting.adb:274:44: info: index check proved
 evoting.adb:277:36: info: index check proved
 evoting.adb:279:40: info: range check proved

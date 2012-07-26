@@ -1,5 +1,5 @@
 
-a.adb:11:25: info: overflow check proved
+a.adb:11:25: overflow check not proved
 a.adb:11:35: overflow check not proved
 a.adb:11:49: info: overflow check proved
 a.adb:11:59: overflow check not proved
@@ -27,5 +27,5 @@ a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved
 a.ads:19:6: postcondition not proved, requires a__ppcm'result = 0 or else a__ppcm'result in ab
 a.ads:8:34: overflow check not proved
-a.ads:9:34: info: overflow check proved
-a.ads:9:6: info: postcondition proved
+a.ads:9:34: overflow check not proved
+a.ads:9:6: postcondition not proved, requires a__pgcd'result = 0 or else a__pgcd'result in 1

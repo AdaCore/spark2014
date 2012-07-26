@@ -12,8 +12,8 @@ cursor_location.adb:33:21: info: range check proved
 cursor_location.ads:10:23: info: range check proved
 cursor_location.ads:11:24: info: range check proved
 cursor_location.ads:18:10: info: index check proved
-cursor_location.ads:18:30: postcondition not proved
 cursor_location.ads:19:11: info: index check proved
+cursor_location.ads:19:26: postcondition not proved, requires (request (side) or not du_available (cursor_loc
 cursor_location.ads:20:15: info: index check proved
 cursor_location.ads:27:18: info: index check proved
 cursor_location.ads:27:60: info: postcondition proved

@@ -8,8 +8,8 @@ p1.adb:17:14: info: range check proved
 p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:28:10: info: loop invariant initialization proved
+p1.adb:28:10: loop invariant preservation not proved
 p1.adb:30:62: info: overflow check proved
-p1.adb:30:68: loop invariant preservation not proved, requires not a (k)
 p1.adb:30:72: info: index check proved
 p1.adb:31:51: info: overflow check proved
 p1.adb:31:67: info: index check proved
@@ -25,11 +25,11 @@ p1.adb:38:19: info: range check proved
 p1.adb:39:19: info: overflow check proved
 p1.adb:39:19: info: range check proved
 p1.adb:5:14: index check not proved
+p1.adb:5:19: postcondition not proved, requires a (i) = a (j)'old
 p1.adb:5:21: info: index check proved
 p1.adb:6:25: index check not proved
 p1.adb:6:32: info: index check proved
 p1.adb:8:55: info: index check proved
-p1.adb:8:60: postcondition not proved, requires a (k) = a'old(k)<<<a'old (k)>>>
 p1.adb:8:63: index check not proved
 p1.ads:6:16: postcondition not proved, requires a'last < a'first or else  for some k in a'range
 p1.ads:7:61: info: index check proved
