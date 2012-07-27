@@ -19,7 +19,7 @@ main.adb:63:16: info: range check proved
 main.adb:69:30: assertion not proved, requires obj_1<<<arr_obj (1)>>>.comp = 9012
 main.adb:70:30: assertion not proved, requires obj_2<<<arr_obj (R12b)>>>.comp = 9012
 main.adb:71:30: info: assertion proved
-main.adb:72:25: info: assertion proved
+main.adb:72:25: assertion not proved, requires obj_4<<<rec_obj.comp>>> = 5678
 main.adb:73:25: info: assertion proved
 main.adb:74:25: info: assertion proved
 main.adb:83:30: assertion not proved, requires obj_1<<<arr_obj (1)>>>.comp = 9012

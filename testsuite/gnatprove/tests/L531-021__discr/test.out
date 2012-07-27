@@ -12,7 +12,7 @@ conv.adb:15:24: info: range check proved
 conv.adb:16:17: info: range check proved
 conv.adb:16:20: info: range check proved
 conv.adb:16:23: info: range check proved
-conv.adb:17:17: info: discriminant check proved
+conv.adb:17:17: discriminant check not proved
 conv.adb:19:29: info: assertion proved
 conv.adb:6:30: info: postcondition proved
 special.adb:12:17: info: range check proved
