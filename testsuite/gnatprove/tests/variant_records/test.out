@@ -1,0 +1,20 @@
+tristates.ads:10:24: info: range check proved
+tristates.ads:12:27: info: range check proved
+tristates.ads:16:26: info: range check proved
+tristates.ads:18:28: info: range check proved
+tristates.ads:6:28: info: range check proved
+tristates.ads:6:41: info: range check proved
+var_test.adb:14:20: info: index check proved
+var_test.adb:16:27: info: precondition proved
+var_test.adb:16:43: info: discriminant check proved
+var_test.adb:18:26: info: precondition proved
+var_test.adb:18:42: info: discriminant check proved
+var_test.adb:18:50: info: precondition proved
+var_test.adb:18:66: info: discriminant check proved
+var_test.adb:20:27: info: precondition proved
+var_test.adb:20:43: info: discriminant check proved
+var_test.adb:20:51: info: precondition proved
+var_test.adb:20:67: info: discriminant check proved
+var_test.adb:9:31: info: index check proved
+var_test.ads:12:49: info: index check proved
+var_test.ads:14:41: info: postcondition proved
