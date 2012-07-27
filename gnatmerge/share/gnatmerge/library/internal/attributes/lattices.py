@@ -6,6 +6,7 @@ seen as object of a lattice; this module allow this identification.
 
 from internal.attributes import common
 from internal import conversions
+import os.path
 
 class SlocBaseType:
     def __init__(self, spec):
@@ -37,7 +38,12 @@ class SlocBaseType:
             else:
                 assert(False)
 
-        if self.file != right.file:
+        # ??? Simplistic way to handle different path to the same
+        # source file. This was uncovered by L727-003, but is worth
+        # making this more robust. It so happen that with project files two
+        # Ada source files cannot share the same name; but it is a bit
+        # awkard to rely in that.
+        if os.path.basename(self.file) != os.path.basename(right.file):
             return False
 
         if self.line > right.line:
