@@ -23,10 +23,10 @@ infoflow.adb:149:53: index check not proved
 infoflow.adb:149:63: overflow check not proved
 infoflow.adb:150:43: overflow check not proved
 infoflow.adb:151:34: info: index check proved
+infoflow.adb:151:40: loop invariant initialization not proved, requires h (k) = h_copy (k - m)
 infoflow.adb:151:42: index check not proved
 infoflow.adb:151:52: overflow check not proved
 infoflow.adb:152:36: info: index check proved
-infoflow.adb:152:42: loop invariant initialization not proved, requires h (k) = h_copy (k)
 infoflow.adb:152:44: index check not proved
 infoflow.adb:153:26: index check not proved
 infoflow.adb:154:13: info: index check proved
