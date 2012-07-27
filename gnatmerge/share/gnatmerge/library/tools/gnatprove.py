@@ -31,7 +31,7 @@ class GNATprove:
                                    "PARTIAL OK" : between})
 
     def load(self, filename):
-        """"Load a file containing results"""
+        """Load a file containing results"""
         self.vcs.load(filename)
 
     def run(self):

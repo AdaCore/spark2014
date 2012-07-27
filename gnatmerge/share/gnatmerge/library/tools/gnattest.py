@@ -32,7 +32,7 @@ class GNATtest:
                                    "KO" : ko})
 
     def load(self, filename):
-        """"Load a file containing results"""
+        """Load a file containing results"""
         self.input.load(filename)
 
     def run(self):
@@ -40,11 +40,12 @@ class GNATtest:
         """
         gpr_filename = gpr.path()
         object_dir = gpr.object_dir()
-        test_runner = object_dir + "/gnattest/harness/test_runner"
+        harness_dir = object_dir + "/gnattest/harness"
+        test_runner = harness_dir + "/test_runner"
         results = object_dir + "/gnattest.mrg"
         # ??? Log any tool output.
         Popen(["gnattest", "-P", gpr_filename]).wait()
-        Popen(["gnatmake", "-P", gpr_filename]).wait()
+        Popen(["gnatmake", "-P", harness_dir + "/test_driver.gpr"]).wait()
         with open(results, 'w') as fd:
             p = Popen([test_runner], stdout=fd)
             p.wait()
