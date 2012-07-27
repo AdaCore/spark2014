@@ -184,3 +184,61 @@ module Array__2
     { result = update i j a v }
 
 end
+
+module Array__3
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of three dimensions *)
+
+  use export _gnatprove_standard_th.Array__3__Func
+
+   val access_ :
+    i : int -> j : int -> k : int ->  a : t 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
+      }
+    'a
+    { result = access i j k a }
+
+   val update_ :
+    i : int -> j : int -> k : int -> a : t 'a -> v : 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
+      }
+    t 'a
+    { result = update i j k a v }
+
+end
+
+module Array__4
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of four dimensions *)
+
+  use export _gnatprove_standard_th.Array__4__Func
+
+   val access_ :
+    i : int -> j : int -> k : int -> l : int -> a : t 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
+      attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
+      }
+    'a
+    { result = access i j k l a }
+
+   val update_ :
+    i : int -> j : int -> k : int -> l : int -> a : t 'a -> v : 'a ->
+    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
+      attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
+      }
+    t 'a
+    { result = update i j k l a v }
+
+end

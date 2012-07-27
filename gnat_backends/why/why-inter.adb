@@ -60,7 +60,10 @@ package body Why.Inter is
                                      SI_Float,
                                      SI_Boolean,
                                      SI_Array1,
-                                     SI_Array2);
+                                     SI_Array2,
+                                     SI_Array3,
+                                     SI_Array4
+                                    );
 
       Imports : array (Standard_Imports_Enum) of Boolean;
       --  This array records whether a standard import is necessary
@@ -138,6 +141,10 @@ package body Why.Inter is
                      Imports (SI_Array1) := True;
                   when 2 =>
                      Imports (SI_Array2) := True;
+                  when 3 =>
+                     Imports (SI_Array3) := True;
+                  when 4 =>
+                     Imports (SI_Array4) := True;
                   when others =>
                      raise Program_Error;
                   end case;
@@ -195,6 +202,8 @@ package body Why.Inter is
             when SI_Boolean => return "Boolean";
             when SI_Array1  => return "Array__1";
             when SI_Array2  => return "Array__2";
+            when SI_Array3  => return "Array__3";
+            when SI_Array4  => return "Array__4";
          end case;
       end To_String;
 

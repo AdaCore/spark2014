@@ -88,6 +88,8 @@ package body Why.Gen.Names is
       case Dimension is
          when 1 => return WNE_Array_1;
          when 2 => return WNE_Array_2;
+         when 3 => return WNE_Array_3;
+         when 4 => return WNE_Array_4;
          when others => raise Program_Error;
       end case;
    end Ada_Array_Name;
@@ -664,6 +666,8 @@ package body Why.Gen.Names is
          when WNE_Real_Truncate => return "Floating.truncate";
          when WNE_Array_1      => return "Array__1";
          when WNE_Array_2      => return "Array__2";
+         when WNE_Array_3      => return "Array__3";
+         when WNE_Array_4      => return "Array__4";
          when WNE_First_Static => return "first_static";
          when WNE_Last_Static  => return "last_static";
          when WNE_Array_Access => return "access";

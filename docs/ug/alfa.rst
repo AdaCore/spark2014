@@ -161,10 +161,9 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * concatenation: array concatenation;
 * conversion: not yet implemented type conversion;
 * container: formal container;
-* discriminant: discriminant record;
 * dispatch: dispatching;
 * expression with action: expression with action;
-* multi dim array: multi-dimensional array of dimention > 2;
+* multi dim array: multi-dimensional array of dimention > 4;
 * pragma: not yet implemented pragma;
 * representation clause: representation clause;
 * tagged type: tagged type;

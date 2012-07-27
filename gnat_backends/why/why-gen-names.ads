@@ -130,6 +130,8 @@ package Why.Gen.Names is
      (
       WNE_Array_1,
       WNE_Array_2,
+      WNE_Array_3,
+      WNE_Array_4,
       WNE_Array_Access,
       WNE_Array_Elts,
       WNE_Array_First_Field,

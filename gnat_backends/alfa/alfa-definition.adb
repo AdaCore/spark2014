@@ -2446,9 +2446,9 @@ package body Alfa.Definition is
                Index         : Node_Id := First_Index (Id);
 
             begin
-               --  Currently, array types of dimension 2 at most are supported
+               --  Currently, array types of dimension 4 at most are supported
 
-               if Number_Dimensions (Id) > 2 then
+               if Number_Dimensions (Id) > 4 then
                   Mark_Violation ("array type", Id, NYI_Multi_Dim_Array);
                end if;
 
