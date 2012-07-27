@@ -16,6 +16,12 @@ introduced.
 Legality rules
 --------------
 
+Some valid Ada programs are invalid in SPARK. In particular, a program that
+attempts accessing a component of an object of type ``T`` is invalid in SPARK
+if that composent is absent from ``T`` (while it may be valid in Ada for
+subtypes of discriminant records, although it would raise an exception at run
+time).
+
 .. todo::
   Need to discuss 'Loop_Entry execution model, in particular when does the
   object go out of scope (leading to e.g. finalization call)
