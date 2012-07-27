@@ -120,7 +120,7 @@ package body Common is
 
    procedure Register_Project_Module (Repo : Scripts_Repository) is
    begin
-      if Project_File /= null then
+      if Project_File.all /= "" then
          Project.Load (GNATCOLL.VFS.Create (+(Project_File.all)));
          --  ??? Add some error handling
          --  ??? Add support for -X
