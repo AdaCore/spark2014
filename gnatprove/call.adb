@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -155,8 +155,6 @@ package body Call is
          Print_Command_Line (Command, Arguments);
          Ada.Text_IO.Put_Line (" failed.");
          GNAT.OS_Lib.OS_Exit (1);
-      else
-         Ada.Text_IO.New_Line;
       end if;
       Free_Argument_List (Arguments);
    end Call_Exit_On_Failure;
