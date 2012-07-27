@@ -47,6 +47,7 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
+with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
 
@@ -137,6 +138,9 @@ package body Why.Gen.Records is
       --  Generate conversion functions from this type to the base type, and
       --  back
 
+      procedure Declare_Equality_Function;
+      --  Generate the boolean equality function for the record type
+
       function Transform_Discrete_Choices (Case_N : Node_Id;
                                            Expr   : W_Term_Id)
                                            return W_Pred_Id;
@@ -147,6 +151,8 @@ package body Why.Gen.Records is
       --  record
 
       Ty_Ident   : constant W_Identifier_Id := To_Ident (WNE_Type);
+      Abstr_Ty   : constant W_Primitive_Type_Id :=
+        New_Abstract_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
@@ -155,8 +161,7 @@ package body Why.Gen.Records is
       A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
       R_Binder   : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
-               B_Type =>
-                 New_Abstract_Type (Name => Ty_Ident),
+               B_Type => Abstr_Ty,
                others => <>));
 
       --------------------------------
@@ -413,7 +418,7 @@ package body Why.Gen.Records is
               (Domain      => EW_Term,
                Name        => From_Ident,
                Binders     => From_Binder,
-               Return_Type => New_Abstract_Type (Name => Ty_Ident),
+               Return_Type => Abstr_Ty,
                Def         =>
                  New_Record_Aggregate
                    (Associations => From_Base_Aggr)));
@@ -424,7 +429,7 @@ package body Why.Gen.Records is
               (Domain      => EW_Prog,
                Name        => To_Program_Space (From_Ident),
                Binders     => From_Binder,
-               Return_Type => New_Abstract_Type (Name => Ty_Ident),
+               Return_Type => Abstr_Ty,
                Post        =>
                  New_Relation
                    (Op_Type => EW_Abstract,
@@ -458,6 +463,70 @@ package body Why.Gen.Records is
                Pre         => Auto_True));
 
       end Declare_Conversion_Functions;
+
+      -------------------------------
+      -- Declare_Equality_Function --
+      -------------------------------
+
+      procedure Declare_Equality_Function
+      is
+         B_Ident   : constant W_Identifier_Id := New_Identifier (Name => "b");
+         Condition : W_Pred_Id := True_Pred;
+         Comp      : Entity_Id := First_Component_Or_Discriminant (E);
+      begin
+         while Present (Comp) loop
+            declare
+               Comparison : constant W_Pred_Id :=
+                 New_Relation
+                   (Op_Type => EW_Abstract,
+                    Left    =>
+                      New_Record_Access
+                        (Name  => +A_Ident,
+                         Field => To_Why_Id (Comp, Local => True)),
+                    Right    =>
+                      New_Record_Access
+                        (Name  => +A_Ident,
+                         Field => To_Why_Id (Comp, Local => True)),
+                    Op      => EW_Eq);
+               Always_Present : constant Boolean :=
+                 Ekind (E) = E_Record_Subtype or else
+                 not (Has_Discriminants (E)) or else
+                 Ekind (Comp) = E_Discriminant;
+            begin
+               Condition :=
+                 +New_And_Then_Expr
+                   (Domain => EW_Pred,
+                    Left   => +Condition,
+                    Right  =>
+                    (if Always_Present then +Comparison
+                    else
+                    New_Connection
+                      (Domain => EW_Pred,
+                       Op     => EW_Imply,
+                       Left   => +Compute_Discriminant_Check (Comp),
+                       Right  => +Comparison)));
+            end;
+            Next_Component_Or_Discriminant (Comp);
+         end loop;
+         Emit
+           (Theory,
+            New_Function_Def
+              (Domain      => EW_Term,
+               Name        => To_Ident (WNE_Bool_Eq),
+               Binders     =>
+                 R_Binder &
+               Binder_Array'(1 =>
+                  Binder_Type'(B_Name => B_Ident,
+                                 B_Type => Abstr_Ty,
+                                 others => <>)),
+               Return_Type => New_Base_Type (Base_Type => EW_Bool),
+               Def         =>
+                 New_Conditional
+                   (Domain    => EW_Term,
+                    Condition => +Condition,
+                    Then_Part => +True_Term,
+                    Else_Part => +False_Term)));
+      end Declare_Equality_Function;
 
       ----------------------------------------
       -- Declare_Protected_Access_Functions --
@@ -667,6 +736,7 @@ package body Why.Gen.Records is
       if Ekind (E) = E_Record_Subtype then
          Declare_Conversion_Functions;
       end if;
+      Declare_Equality_Function;
    end Declare_Ada_Record;
 
    ---------------------------

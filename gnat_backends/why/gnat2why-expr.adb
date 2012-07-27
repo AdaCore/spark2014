@@ -3286,6 +3286,26 @@ package body Gnat2Why.Expr is
                         Arg_Types => EW_Bool_Type,
                         Domain    => Domain);
                   end if;
+               elsif Is_Record_Type (Etype (Left)) then
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Subdomain,
+                       Name     =>
+                         Prefix (Ada_Node => Etype (Left),
+                                 S        => Type_Of_Node (Left),
+                                 W        => WNE_Bool_Eq),
+                       Args     => (1 => Left_Arg,
+                                    2 => Right_Arg));
+                  if Domain = EW_Pred then
+                     T := New_Comparison
+                       (Cmp       => EW_Eq,
+                        Left      => T,
+                        Right     => New_Literal (Domain => Subdomain,
+                                                  Value  => EW_True),
+                        Arg_Types => EW_Bool_Type,
+                        Domain    => Domain);
+                  end if;
                else
                   T := New_Comparison
                     (Cmp       => Transform_Compare_Op (Nkind (Expr)),
