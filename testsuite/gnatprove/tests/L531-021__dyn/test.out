@@ -1,0 +1,6 @@
+proc.adb:13:28: info: range check proved
+proc.adb:15:28: info: range check proved
+proc.adb:20:19: range check not proved
+proc.adb:20:22: info: range check proved
+proc.adb:20:7: range check not proved
+proc.adb:21:24: range check not proved
