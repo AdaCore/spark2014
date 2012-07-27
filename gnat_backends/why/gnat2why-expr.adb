@@ -1250,8 +1250,8 @@ package body Gnat2Why.Expr is
       case Nkind (N) is
          when N_Selected_Component =>
             declare
-               Id : constant W_Identifier_Id :=
-                      To_Why_Id (Entity (Selector_Name (N)));
+               Sel_Ent : constant Entity_Id := Entity (Selector_Name (N));
+               Id      : constant W_Identifier_Id := To_Why_Id (Sel_Ent);
             begin
                if Is_Access_To_Formal_Container_Capacity (N) then
                   return
@@ -1261,11 +1261,17 @@ package body Gnat2Why.Expr is
                               Args     => (1 => Expr));
                else
                   return
-                    New_Ada_Record_Access
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Name     => Expr,
-                       Field    => Entity (Selector_Name (N)));
+                    Insert_Conversion
+                      (Domain        => Domain,
+                       Ada_Node      => N,
+                       Expr          =>
+                         New_Ada_Record_Access
+                           (Ada_Node => N,
+                            Domain   => Domain,
+                            Name     => Expr,
+                            Field    => Sel_Ent),
+                       To            => EW_Abstract (Etype (N)),
+                       From          => EW_Abstract (Etype (Sel_Ent)));
                end if;
             end;
 

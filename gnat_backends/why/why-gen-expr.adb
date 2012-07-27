@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
+with Elists;                use Elists;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -40,6 +41,8 @@ with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
 
+with Gnat2Why.Driver;       use Gnat2Why.Driver;
+with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 
 package body Why.Gen.Expr is
@@ -317,6 +320,15 @@ package body Why.Gen.Expr is
    is
       Base   : constant W_Base_Type_Id := LCA (To, From);
 
+      function Generate_Record_Conversion
+        (Ada_Node : Node_Id;
+         Name     : W_Identifier_Id;
+         Expr     : W_Expr_Id;
+         To       : Entity_Id) return W_Expr_Id;
+      --  The entity 'To' is a record subtype. We potentially need to add
+      --  arguments to the conversion function call, this is done in this
+      --  function.
+
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
          From : W_Base_Type_Id;
@@ -332,6 +344,59 @@ package body Why.Gen.Expr is
          Kind : VC_Kind) return W_Expr_Id;
       --  If it makes sense in the context, insert an overflow check or a range
       --  check on the top of Expr.
+
+      function Generate_Record_Conversion
+        (Ada_Node : Node_Id;
+         Name     : W_Identifier_Id;
+         Expr     : W_Expr_Id;
+         To       : Entity_Id) return W_Expr_Id
+      is
+         Count : Natural := 1;
+         Constr_Elmt : Elmt_Id;
+      begin
+         if Has_Discriminants (To) then
+            Constr_Elmt := First_Elmt (Stored_Constraint (To));
+            while Present (Constr_Elmt) loop
+               if not (Is_Static_Expression (Node (Constr_Elmt))) then
+                  Count := Count + 1;
+               end if;
+               Next_Elmt (Constr_Elmt);
+            end loop;
+            declare
+               Args : W_Expr_Array (1 .. Count);
+            begin
+               Args (1) := Expr;
+               Count := 2;
+               Constr_Elmt := First_Elmt (Stored_Constraint (To));
+               while Present (Constr_Elmt) loop
+                  if not (Is_Static_Expression (Node (Constr_Elmt))) then
+                     Args (Count) :=
+                       Transform_Expr
+                         (Domain        => EW_Term,
+                          Params        => Term_Params,
+                          Expr          => Node (Constr_Elmt));
+                     Count := Count + 1;
+                  end if;
+                  Next_Elmt (Constr_Elmt);
+               end loop;
+               return
+                 New_VC_Call
+                   (Domain   => EW_Prog,
+                    Ada_Node => Ada_Node,
+                    Name     => Name,
+                    Progs    => Args,
+                    Reason   => VC_Discriminant_Check);
+            end;
+         else
+            return
+              New_VC_Call
+                (Domain   => EW_Prog,
+                 Ada_Node => Ada_Node,
+                 Name     => Name,
+                 Progs    => (1 => +Expr),
+                 Reason   => VC_Discriminant_Check);
+         end if;
+      end Generate_Record_Conversion;
 
       ------------------
       -- Insert_Check --
@@ -425,6 +490,15 @@ package body Why.Gen.Expr is
                end if;
 
                if Check_Needed then
+                  if Get_Base_Type (To) = EW_Abstract and then
+                    Ekind (Get_Ada_Node (+To)) = E_Record_Subtype then
+                     return
+                       Generate_Record_Conversion
+                         (Ada_Node => Ada_Node,
+                          Name     => To_Program_Space (Name),
+                          Expr     => Expr,
+                          To       => Get_Ada_Node (+To));
+                  end if;
                   return
                     New_VC_Call
                       (Domain   => Domain,
