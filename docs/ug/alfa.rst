@@ -349,17 +349,19 @@ ambiguity.
 Parenthesized Arithmetic Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In Ada, non-parenthesized arithmetic operations can be re-ordered by the
+In Ada, non-parenthesized arithmetic operations could be re-ordered by the
 compiler, which may result in a failing computation (due to overflow checking)
-becoming a successful one, and vice-versa. In Alfa, all such operations should
-be parenthesized, otherwise a warning is emitted.
+becoming a successful one, and vice-versa. In Alfa, we adopt by default the
+choice made by GNAT which is to evaluate all expressions left-to-right, except
+when option ``--pedantic`` is used, in which case a warning is emitted for
+every operation that could be re-ordered.
 
-More specifically:
+More specifically, a warning is emitted when option ``--pedantic`` is set on:
 
 * any operand of a binary adding operation (+,-) that is itself a binary adding
-  operation must be parenthesized;
+  operation;
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
-  binary multiplying operation must be parenthesized.
+  binary multiplying operation.
 
 Compiler Permissions
 ^^^^^^^^^^^^^^^^^^^^
