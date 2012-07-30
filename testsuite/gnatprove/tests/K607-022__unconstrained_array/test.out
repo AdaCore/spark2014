@@ -6,7 +6,6 @@ simple_unc_arrays.adb:124:35: info: index check proved
 simple_unc_arrays.adb:125:25: info: index check proved
 simple_unc_arrays.adb:125:36: info: index check proved
 simple_unc_arrays.adb:125:41: info: overflow check proved
-simple_unc_arrays.adb:147:29: warning: possible re-ordering due to missing parentheses
 simple_unc_arrays.adb:147:35: overflow check not proved
 simple_unc_arrays.adb:147:42: overflow check not proved
 simple_unc_arrays.adb:147:47: info: division check proved
@@ -35,7 +34,6 @@ simple_unc_arrays.adb:33:36: info: overflow check proved
 simple_unc_arrays.adb:33:46: info: index check proved
 simple_unc_arrays.adb:33:53: loop invariant preservation not proved, requires (a.v (j) = av_old (a.last - j + 1))
 simple_unc_arrays.adb:33:55: index check not proved
-simple_unc_arrays.adb:33:63: warning: possible re-ordering due to missing parentheses
 simple_unc_arrays.adb:33:70: info: overflow check proved
 simple_unc_arrays.adb:33:74: overflow check not proved
 simple_unc_arrays.adb:38:17: info: index check proved
@@ -49,7 +47,6 @@ simple_unc_arrays.ads:116:39: info: postcondition proved
 simple_unc_arrays.ads:30:22: index check not proved
 simple_unc_arrays.ads:30:29: postcondition not proved, requires (a.v (j) = a.v'old(a.last - j + 1)<<<a.v'old (a
 simple_unc_arrays.ads:30:34: index check not proved
-simple_unc_arrays.ads:30:40: warning: possible re-ordering due to missing parentheses
 simple_unc_arrays.ads:30:47: overflow check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
 simple_unc_arrays.ads:84:44: info: overflow check proved
