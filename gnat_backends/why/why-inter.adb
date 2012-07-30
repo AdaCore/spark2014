@@ -869,23 +869,25 @@ package body Why.Inter is
            (if Domain = EW_Prog then To_String (WNE_Func)
             else To_String (WNE_Log)),
          when Named_Kind => To_String (WNE_Log),
-         when Object_Kind =>
-           --  The Capacity discriminant of a formal container is translated
-           --  as a function.
-           (if Ekind (E) = E_Discriminant
-              and then Is_Formal_Container_Capacity (E)
-            then
-              To_String (WNE_Log)
-            else
-              To_String (WNE_Obj)),
+         when Object_Kind => To_String (WNE_Obj),
          when Type_Kind => To_String (WNE_Type),
          when others => "");
+
    begin
+      --  Treat specially the Capacity component of formal containers, which is
+      --  translated as a function.
+
+      if Ekind (E) = E_Discriminant
+        and then Is_Formal_Container_Capacity (E)
+      then
+         return New_Identifier (Ada_Node => E,
+                                Name     => To_String (WNE_Log),
+                                Context  => Full_Name (E));
 
       --  The component case is sufficiently different to treat it
       --  independently
 
-      if Ekind (E) in E_Component | E_Discriminant then
+      elsif Ekind (E) in E_Component | E_Discriminant then
          declare
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));

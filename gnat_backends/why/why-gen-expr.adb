@@ -32,6 +32,9 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
 with Stand;                 use Stand;
+
+with Alfa.Util;
+
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
@@ -110,11 +113,14 @@ package body Why.Gen.Expr is
                   null;
             end case;
 
-            --  We should never depend on discriminants, we add a reference to
-            --  the record instead
+            --  We should never depend on discriminants, unless this is the
+            --  special Capacity discriminant of a formal container. In all
+            --  other cases, we add a reference to the record instead.
 
-            if Nkind (N) = N_Defining_Identifier and then
-              Ekind (N) = E_Discriminant then
+            if Nkind (N) = N_Defining_Identifier
+              and then Ekind (N) = E_Discriminant
+              and then not Alfa.Util.Is_Formal_Container_Capacity (N)
+            then
                N := Scope (N);
             end if;
 
