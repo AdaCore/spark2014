@@ -481,8 +481,6 @@ package body Why.Inter is
 
          if N /= Filter_Entity and then
            (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
-           and then
-             (if Nkind (N) in N_Entity then N /= Filter_Entity)
          then
             declare
                File_Name   : constant String :=
