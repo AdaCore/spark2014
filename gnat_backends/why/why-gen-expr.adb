@@ -456,7 +456,17 @@ package body Why.Gen.Expr is
          From : W_Base_Type_Id;
          Expr : W_Expr_Id) return W_Expr_Id is
       begin
-         if Eq (From, To) then
+         if Eq (From, To)
+
+           --  ??? Special trick to ignore conversion on formal container types
+           --  for the time being.
+
+           or else
+             (Present (Ada_Node)
+              and then Ekind (Etype (Ada_Node)) in Record_Kind
+              and then
+                Alfa.Util.Type_Based_On_Formal_Container (Etype (Ada_Node)))
+         then
             return Expr;
          else
             declare

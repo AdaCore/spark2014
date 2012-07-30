@@ -1763,7 +1763,6 @@ package body Alfa.Definition is
                Id := Defining_Entity (Decl);
 
                if Ekind (Id) in Type_Kind then
-                  pragma Assert (Type_In_Container (Id));
                   Mark_Type_Entity (Id, In_Container => True);
 
                elsif Ekind (Id) in Subprogram_Kind then
@@ -2354,9 +2353,7 @@ package body Alfa.Definition is
          N   : Node_Id;
          V   : Alfa_Violations.Vkind) is
       begin
-         if not In_Container then
-            Alfa.Definition.Mark_Violation (Msg, N, V);
-         end if;
+         Alfa.Definition.Mark_Violation (Msg, N, V);
       end Mark_Violation;
 
       procedure Mark_Violation
@@ -2364,9 +2361,7 @@ package body Alfa.Definition is
          N    : Node_Id;
          From : Entity_Id) is
       begin
-         if not In_Container then
-            Alfa.Definition.Mark_Violation (Msg, N, From);
-         end if;
+         Alfa.Definition.Mark_Violation (Msg, N, From);
       end Mark_Violation;
 
    begin
@@ -2432,7 +2427,7 @@ package body Alfa.Definition is
       --  Special case to accept subtypes and derived types of formal
       --  container types.
 
-      if Location_In_Formal_Containers (Sloc (Etype (Id))) then
+      if Type_Based_On_Formal_Container (Id) then
          goto Past_Violation_Detection;
       end if;
 
@@ -2477,9 +2472,17 @@ package body Alfa.Definition is
                   Mark_Violation ("access type", Id, NIR_Access);
                end if;
 
-               --  Check that component type is in Alfa
+               --  Check that component type is in Alfa. There is a special
+               --  case for component types from formal containers, as
+               --  node_type is not in Alfa, but we still want arrays of these
+               --  to be considered in Alfa, as they are implicitly declared by
+               --  the frontend when declaring a subtype of a formal container
+               --  type.
 
-               if not In_Alfa (Component_Typ) then
+               if not In_Alfa (Component_Typ)
+                 and not
+                   Location_In_Formal_Containers (Sloc (Etype (Component_Typ)))
+               then
                   Mark_Violation
                     ("component type", Id, From => Component_Typ);
                end if;
@@ -2500,9 +2503,12 @@ package body Alfa.Definition is
                   Typ   : Entity_Id;
 
                begin
-
                   while Present (Field) loop
                      Typ := Etype (Field);
+
+                     if Is_Aliased (Field) then
+                        Mark_Violation ("ALIASED", Field, NIR_Access);
+                     end if;
 
                      if Ekind (Field) in Object_Kind
                        and then not In_Alfa (Typ)
@@ -2553,7 +2559,7 @@ package body Alfa.Definition is
       --  it is only marked in Alfa if necessary, but it is not marked for
       --  translation into Why3.
 
-      if In_Container then
+      if In_Container and then Type_In_Formal_Container (Id) then
          All_Entities.Insert (Id);
       end if;
 

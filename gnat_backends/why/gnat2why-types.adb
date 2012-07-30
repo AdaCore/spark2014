@@ -156,7 +156,7 @@ package body Gnat2Why.Types is
       --  it is in Alfa. Otherwise, return the special private type.
 
       if Ekind (Ty) in Private_Kind then
-         if Type_In_Container (Ty) then
+         if Type_In_Formal_Container (Ty) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
          elsif In_Alfa (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
@@ -199,7 +199,7 @@ package body Gnat2Why.Types is
          E      : Entity_Id) is
       begin
          if E = Standard_Boolean or else
-           E = Universal_Fixed
+            E = Universal_Fixed
          then
             null;
 
@@ -209,6 +209,13 @@ package body Gnat2Why.Types is
          then
             Declare_Ada_Abstract_Signed_Int_From_Range
               (Theory, E, Is_Base => Is_Ada_Base_Type (E));
+
+         elsif Type_Based_On_Formal_Container (E) then
+            Emit
+              (File.Cur_Theory,
+               New_Type (Name  => To_Ident (WNE_Type),
+                         Alias => Why_Logic_Type_Of_Ada_Type
+                           (Underlying_Formal_Container_Type (E))));
 
          else
             case Ekind (E) is

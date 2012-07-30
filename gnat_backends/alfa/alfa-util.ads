@@ -86,15 +86,21 @@ package Alfa.Util is
    --  Return the partial view for entity E
 
    function Most_Underlying_Type (E : Entity_Id) return Entity_Id;
-   --  Takes a type E in parameter. If E is a private type or a record subtype,
-   --  follow the chain of underlying types (for a private type) and base types
-   --  (for a record subtype) to return the first non-private type which is not
-   --  also a record subtype. Otherwise, return E.
+   --  Takes a type E in parameter. If E is a private type, follow the chain of
+   --  underlying types to return the first non-private type. Otherwise, return
+   --  E. As a special case, return the first type in a formal container found.
 
    function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
    --  Return whether a location Loc is in the formal container sources
 
-   function Type_In_Container (Id : Entity_Id) return Boolean;
+   function Type_Based_On_Formal_Container (E : Entity_Id) return Boolean;
+   --  Return whether a type E is defined in the formal containers, or it is a
+   --  subtype or derived type ultimately based on such a type.
+
+   function Type_In_Formal_Container (Id : Entity_Id) return Boolean;
    --  Return whether a type Id is in the formal container sources
+
+   function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id;
+   --  Return the underlying base type in formal containers, if any
 
 end Alfa.Util;

@@ -3904,7 +3904,7 @@ package body Gnat2Why.Expr is
          Current_Type := EW_Int_Type;
       elsif Ekind (Ent) = E_Loop_Parameter then
          T := +New_Identifier (Name => Full_Name (Ent));
-         if not Type_In_Container (Etype (Ent)) then
+         if not Type_In_Formal_Container (Etype (Ent)) then
             Current_Type := EW_Int_Type;
          end if;
       else

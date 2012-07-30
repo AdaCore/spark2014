@@ -329,7 +329,7 @@ package body Gnat2Why.Driver is
       case Ekind (E) is
          when Type_Kind =>
 
-            --  Private types translated in Why3
+            --  Private types not translated in Why3
 
             if Ekind (E) in Private_Kind then
                null;

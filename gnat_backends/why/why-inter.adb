@@ -682,7 +682,7 @@ package body Why.Inter is
       elsif N = Universal_Fixed then
          return EW_Real_Type;
       elsif Ekind (N) in Private_Kind then
-         if Type_In_Container (N) then
+         if Type_In_Formal_Container (N) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
          elsif In_Alfa (Most_Underlying_Type (N)) then
             return EW_Abstract (Most_Underlying_Type (N));
@@ -781,7 +781,7 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            if Type_In_Container (Ty) then
+            if Type_In_Formal_Container (Ty) then
                return EW_Abstract;
             elsif In_Alfa (Most_Underlying_Type (Ty)) then
                return Get_EW_Term_Type (Most_Underlying_Type (Ty));

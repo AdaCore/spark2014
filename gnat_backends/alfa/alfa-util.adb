@@ -457,7 +457,7 @@ package body Alfa.Util is
          --  For types in formal container instantiations, do not consider the
          --  underlying type.
 
-         if Type_In_Container (Typ) then
+         if Type_In_Formal_Container (Typ) then
             return Typ;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
@@ -474,12 +474,36 @@ package body Alfa.Util is
    function Partial_View (E : Entity_Id) return Entity_Id is
       (Full_To_Partial_Entities.Element (E));
 
-   -----------------------
-   -- Type_In_Container --
-   -----------------------
+   ------------------------------------
+   -- Type_Based_On_Formal_Container --
+   ------------------------------------
 
-   function Type_In_Container (Id : Entity_Id) return Boolean is
+   function Type_Based_On_Formal_Container (E : Entity_Id) return Boolean is
+     (Present (Underlying_Formal_Container_Type (E)));
+
+   ------------------------------
+   -- Type_In_Formal_Container --
+   ------------------------------
+
+   function Type_In_Formal_Container (Id : Entity_Id) return Boolean is
+
+      function Name_Ends_With (N, Suffix : String) return Boolean;
+      --  Return whether N ends with Suffix, as a means to recognize whether
+      --  the full name of entity Id is the completion of a type name which we
+      --  handle specially.
+
+      --------------------
+      -- Name_Ends_With --
+      --------------------
+
+      function Name_Ends_With (N, Suffix : String) return Boolean is
+         (Ada.Strings.Fixed.Tail (N, Suffix'Length) = Suffix);
+
       N : Node_Id := Parent (Id);
+      Name : constant String :=
+        Ada.Strings.Fixed.Translate
+          (Get_Name_String (Chars (Id)),
+           Ada.Strings.Maps.Constants.Lower_Case_Map);
    begin
       if Present (N) then
          N := Parent (N);
@@ -491,7 +515,38 @@ package body Alfa.Util is
 
       return Present (N)
         and then Nkind (N) = N_Package_Declaration
-        and then Is_Instantiation_Of_Formal_Container (N);
-   end Type_In_Container;
+        and then Is_Instantiation_Of_Formal_Container (N)
+        and then (Name_Ends_With (Name, "list") or else
+                  Name_Ends_With (Name, "vector") or else
+                  Name_Ends_With (Name, "set") or else
+                  Name_Ends_With (Name, "map") or else
+                  Name_Ends_With (Name, "key_type") or else
+                  Name_Ends_With (Name, "element_type") or else
+                  Name_Ends_With (Name, "cursor"));
+   end Type_In_Formal_Container;
+
+   --------------------------------------
+   -- Underlying_Formal_Container_Type --
+   --------------------------------------
+
+   function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id
+   is
+      Typ : Entity_Id := E;
+   begin
+      loop
+         if Type_In_Formal_Container (Typ) then
+            return Typ;
+         elsif Ekind (Typ) in Private_Kind then
+            Typ := Underlying_Type (Typ);
+         elsif Ekind (Typ) in Record_Kind then
+            if Typ = Base_Type (Typ) then
+               return Empty;
+            end if;
+            Typ := Base_Type (Typ);
+         else
+            return Empty;
+         end if;
+      end loop;
+   end Underlying_Formal_Container_Type;
 
 end Alfa.Util;

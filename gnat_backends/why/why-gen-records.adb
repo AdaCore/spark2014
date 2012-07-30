@@ -741,6 +741,9 @@ package body Why.Gen.Records is
          return;
       end if;
 
+      --  ??? We probably still need a way to tell that the right conversion
+      --  function from this records subtype should go through the clone.
+
       if Ekind (E) = E_Record_Subtype and then
         Present (Cloned_Subtype (E)) then
 
