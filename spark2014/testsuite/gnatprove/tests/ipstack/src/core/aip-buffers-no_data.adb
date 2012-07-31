@@ -111,7 +111,6 @@ is
    procedure Buffer_Free
      (Buf      : Rbuf_Id;
       Next_Buf : out Buffers.Buffer_Id)
-   --# global in out Common.Buf_List, Free_List;
    is
       Cbuf : Buffers.Buffer_Id;
 
