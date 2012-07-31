@@ -162,8 +162,10 @@ is
             Free_Buf := Next_Data_Buf (Free_Buf);
          end loop;
 
-         --  Set the head of the free list to Buf
+         --  Insert buffers in front of free list
 
+         Common.Buf_List (To_Common_Id (Last_Buf)).Next :=
+           To_Common_Id (Free_List);
          Free_List := Buf;
 
       --  Otherwise, insert in the middle or at the end of the free list
@@ -574,6 +576,33 @@ is
 
       Common.Buf_List (Cur_Cbuf).Next := Buffers.NOBUF;
    end Buffer_Alloc;
+
+   -----------------
+   -- Buffer_Free --
+   -----------------
+
+   procedure Buffer_Free
+     (Buf      : Dbuf_Id;
+      Next_Buf : out Buffers.Buffer_Id)
+   --# global in out Common.Buf_List, Buf_List, Free_List;
+   is
+      Num : Dbuf_Count;
+
+   begin
+      Num := Buf_List (Buf).Num;
+
+      --  Retrieve the next buffer
+
+      Next_Buf := To_Common_Id (Buf);
+      for J in Dbuf_Count range 1 .. Num loop
+         Next_Buf := Common.Buf_List (Next_Buf).Next;
+      end loop;
+
+      --  Update the free list
+
+      Insert_In_Free_List (Buf => Buf,
+                           Num => Num);
+   end Buffer_Free;
 
    ---------------------
    -- Buffer_Get_Kind --

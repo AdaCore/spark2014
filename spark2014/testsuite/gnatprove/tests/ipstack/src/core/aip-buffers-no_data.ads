@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management, for
@@ -38,6 +38,12 @@ is
       Data_Ref : System.Address;
       Buf      : out Rbuf_Id);
    --# global in out Common.Buf_List, State, Free_List;
+
+   procedure Buffer_Free
+     (Buf      : Rbuf_Id;
+      Next_Buf : out Buffers.Buffer_Id);
+   --# global in out Common.Buf_List, Free_List;
+   --  Free buffer Buf, and set the next buffer
 
    --------------------------------------------
    -- Buffer struct accessors and operations --

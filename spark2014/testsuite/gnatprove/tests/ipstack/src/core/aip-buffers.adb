@@ -396,9 +396,7 @@ is
    --# global in out Common.Buf_List, Data.State,
    --#               Data.Free_List, No_Data.Free_List;
    is
-      Cur_Buf, Next_Buf, Last_Buf : Buffer_Id;
-      Free_List                   : Buffer_Id;
-      Cur_Deallocs                : AIP.U8_T;
+      Cur_Buf, Next_Buf : Buffer_Id;
 
    begin
       Next_Buf   := Buf;
@@ -406,15 +404,7 @@ is
 
       while Next_Buf /= NOBUF loop
 
-         Cur_Buf  := Next_Buf;
-
-         --  Store head of appropriate free-list in Free_List
-
-         if Common.Is_Data_Buffer (Cur_Buf) then
-            Free_List := Data.To_Common_Id (Data.Free_List);
-         else
-            Free_List := No_Data.To_Common_Id (No_Data.Free_List);
-         end if;
+         Cur_Buf := Next_Buf;
 
          --  Decrease reference count
 
@@ -429,38 +419,23 @@ is
             pragma Assert (Common.Buf_List (Cur_Buf).Next_Packet =
                              Common.Packet_Queue_Ptrs'(others => NOBUF));
 
-            --  Perform link actions specific to data buffers
+            --  Perform action specific to data buffers
 
             if Common.Is_Data_Buffer (Cur_Buf) then
-               Data.Buffer_Link
+               Data.Buffer_Free
                  (Buf      => Data.To_Dbuf_Id (Cur_Buf),
-                  Next     => Data.To_Dbuf_Id (Free_List),
-                  Last_Buf => Last_Buf,
-                  Num      => Cur_Deallocs);
+                  Next_Buf => Next_Buf);
             else
-               Last_Buf     := Cur_Buf;
-               Cur_Deallocs := 1;
+               No_Data.Buffer_Free
+                 (Buf      => No_Data.To_Rbuf_Id (Cur_Buf),
+                  Next_Buf => Next_Buf);
             end if;
 
-            --  Update the iterator
+            --  Update the count. A single data buffer spanning multiple
+            --  physical buffers still counts as 1.
 
-            Next_Buf   := Common.Buf_List (Last_Buf).Next;
+            N_Deallocs := N_Deallocs + 1;
 
-            --  Update the count
-
-            N_Deallocs := N_Deallocs + Cur_Deallocs;
-
-            --  Link to the head of the free-list
-
-            Common.Buf_List (Last_Buf).Next := Free_List;
-
-            --  Push to the head of the appropriate free-list
-
-            if Common.Is_Data_Buffer (Cur_Buf) then
-               Data.Free_List    := Data.To_Dbuf_Id (Cur_Buf);
-            else
-               No_Data.Free_List := No_Data.To_Rbuf_Id (Cur_Buf);
-            end if;
          else
             --  Stop the iteration
 

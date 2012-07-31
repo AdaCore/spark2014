@@ -63,6 +63,12 @@ is
       Buf    : out Dbuf_Id);
    --# global in out Common.Buf_List, State, Free_List;
 
+   procedure Buffer_Free
+     (Buf      : Dbuf_Id;
+      Next_Buf : out Buffers.Buffer_Id);
+   --# global in out Common.Buf_List, State, Free_List;
+   --  Free buffer Buf, and set the next buffer
+
    --------------------------------------------
    -- Buffer struct accessors and operations --
    --------------------------------------------

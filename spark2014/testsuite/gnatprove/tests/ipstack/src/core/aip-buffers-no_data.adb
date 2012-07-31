@@ -104,6 +104,30 @@ is
       Buf_List (Buf).Data_Ref := Data_Ref;
    end Buffer_Alloc;
 
+   -----------------
+   -- Buffer_Free --
+   -----------------
+
+   procedure Buffer_Free
+     (Buf      : Rbuf_Id;
+      Next_Buf : out Buffers.Buffer_Id)
+   --# global in out Common.Buf_List, Free_List;
+   is
+      Cbuf : Buffers.Buffer_Id;
+
+   begin
+      Cbuf := To_Common_Id (Buf);
+
+      --  Retrieve the next buffer
+
+      Next_Buf := Common.Buf_List (Cbuf).Next;
+
+      --  Update the free list
+
+      Common.Buf_List (Cbuf).Next := To_Common_Id (Free_List);
+      Free_List := Buf;
+   end Buffer_Free;
+
    --------------------
    -- Buffer_Payload --
    --------------------
