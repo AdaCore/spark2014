@@ -107,6 +107,9 @@ is
 
       for Buf in Common.Buffer_Index range 1 .. Common.Buffer_Index'Last - 1
       loop
+         --  Do not link together the free list of data buffers and the free
+         --  list of no-data buffers.
+
          if Buf /= Config.Data_Buffer_Num then
             Common.Buf_List (Buf).Next := Buf + 1;
          end if;
