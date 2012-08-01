@@ -1,4 +1,3 @@
-
 s.adb:18:22: info: range check proved
 s.adb:21:27: info: loop invariant initialization proved
 s.adb:21:27: info: loop invariant preservation proved
@@ -14,7 +13,7 @@ s.adb:30:24: info: assertion proved
 s.adb:37:10: info: loop invariant initialization proved
 s.adb:37:59: info: overflow check proved
 s.adb:38:27: info: index check proved
-s.adb:38:36: loop invariant preservation not proved, requires dest (j) = src_old (j)
+s.adb:38:36: loop invariant preservation not proved, requires Dest (J) = Src_Old (J)
 s.adb:38:38: info: index check proved
 s.adb:40:27: info: index check proved
 s.adb:40:37: info: index check proved
@@ -25,7 +24,7 @@ s.adb:43:25: info: range check proved
 s.adb:51:10: info: loop invariant initialization proved
 s.adb:51:45: info: overflow check proved
 s.adb:52:27: info: index check proved
-s.adb:52:36: loop invariant preservation not proved, requires dest (j) = src_old (j)
+s.adb:52:36: loop invariant preservation not proved, requires Dest (J) = Src_Old (J)
 s.adb:52:38: info: index check proved
 s.adb:54:27: info: index check proved
 s.adb:54:37: info: index check proved
@@ -39,10 +38,10 @@ s.adb:6:59: info: overflow check proved
 s.adb:7:27: info: index check proved
 s.adb:9:13: info: index check proved
 s.ads:14:42: info: index check proved
-s.ads:14:51: postcondition not proved, requires dest (j) = src'old(j)<<<src'old (j)>>>
+s.ads:14:51: postcondition not proved, requires Dest (J) = Src'old
 s.ads:14:56: info: index check proved
 s.ads:17:42: info: index check proved
-s.ads:17:51: postcondition not proved, requires dest (j) = src'old(j)<<<src'old (j)>>>
+s.ads:17:51: postcondition not proved, requires Dest (J) = Src'old
 s.ads:17:56: info: index check proved
 s.ads:8:15: info: postcondition proved
 s.ads:8:69: info: index check proved

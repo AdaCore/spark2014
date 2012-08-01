@@ -20,7 +20,7 @@ special.adb:12:20: info: range check proved
 special.adb:12:23: info: range check proved
 special.adb:14:26: info: assertion proved
 special.adb:15:20: info: range check proved
-special.adb:7:26: assertion not proved, requires v.x = basic__a
+special.adb:7:26: assertion not proved, requires V.X = A
 special.adb:8:20: info: range check proved
 subty.adb:11:30: overflow check not proved
 subty.adb:12:32: info: assertion proved
@@ -33,5 +33,4 @@ subty.adb:4:23: info: range check proved
 subty.adb:6:26: info: assertion proved
 subty.adb:7:29: info: assertion proved
 subty.adb:8:32: info: assertion proved
-subty.adb:9:26: assertion not proved, requires v.x = basic__a
-
+subty.adb:9:26: assertion not proved, requires V.X = A

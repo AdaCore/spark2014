@@ -1,4 +1,3 @@
-
 aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:28: info: overflow check proved
 aggregate.adb:5:45: info: overflow check proved
@@ -6,7 +5,7 @@ aggregate.adb:6:18: info: index check proved
 aggregate.adb:6:26: overflow check not proved
 aggregate.adb:6:7: info: index check proved
 aggregate.ads:10:21: info: index check proved
-aggregate.ads:10:27: postcondition not proved, requires k (1) = 2
+aggregate.ads:10:27: postcondition not proved, requires K (1) = 2
 aggregate.ads:10:40: info: index check proved
 aggregate.ads:10:60: info: index check proved
 arr_aggregate.adb:16:24: info: range check proved

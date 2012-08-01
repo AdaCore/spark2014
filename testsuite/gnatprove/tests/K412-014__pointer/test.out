@@ -1,2 +1,1 @@
-
-pack.adb:19:24: assertion not proved, requires a = b
+pack.adb:19:24: assertion not proved, requires A = B

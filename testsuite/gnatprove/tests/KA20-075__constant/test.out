@@ -1,20 +1,19 @@
-
 const.adb:10:22: info: index check proved
-const.adb:10:27: assertion not proved, requires const__c (1) = 1
+const.adb:10:27: assertion not proved, requires C(1) = 1
 const.adb:11:22: info: index check proved
-const.adb:11:27: assertion not proved, requires const__c (2) = 1
+const.adb:11:27: assertion not proved, requires C(2) = 1
 const.adb:12:22: info: index check proved
-const.adb:12:28: assertion not proved, requires const__c2 (1) = 1
+const.adb:12:28: assertion not proved, requires C2(1) = 1
 const.adb:13:22: info: index check proved
-const.adb:13:28: assertion not proved, requires const__c2 (2) = 1
+const.adb:13:28: assertion not proved, requires C2(2) = 1
 const.adb:16:27: info: assertion proved
 const.adb:17:27: info: assertion proved
 const.adb:18:22: info: index check proved
-const.adb:18:28: assertion not proved, requires const__d2 (1) = 1
+const.adb:18:28: assertion not proved, requires D2(1) = 1
 const.adb:19:22: info: index check proved
-const.adb:19:28: assertion not proved, requires const__d2 (2) = 1
-const.adb:23:26: assertion not proved, requires const__e.x = 1
-const.adb:24:26: assertion not proved, requires const__e.y = 1
+const.adb:19:28: assertion not proved, requires D2(2) = 1
+const.adb:23:26: assertion not proved, requires E.X = 1
+const.adb:24:26: assertion not proved, requires E.Y = 1
 const.adb:25:26: info: assertion proved
 const.adb:26:26: info: assertion proved
 const.adb:27:26: info: assertion proved
@@ -25,8 +24,8 @@ const.adb:34:24: info: assertion proved
 const.adb:35:24: info: assertion proved
 const.adb:36:24: info: assertion proved
 const.adb:37:24: info: assertion proved
-const.adb:41:24: assertion not proved, requires const__o = 1
-const.adb:42:24: assertion not proved, requires const__p = 1
+const.adb:41:24: assertion not proved, requires O = 1
+const.adb:42:24: assertion not proved, requires P = 1
 const.adb:7:24: info: assertion proved
 const.adb:8:24: info: assertion proved
 const.ads:22:35: info: range check proved

@@ -1,4 +1,3 @@
-
 int_list.adb:11:14: info: precondition proved
 int_list.adb:12:10: info: loop invariant initialization proved
 int_list.adb:12:10: loop invariant preservation not proved
@@ -23,7 +22,7 @@ int_list.adb:4:8: info: range check proved
 int_list.adb:9:25: info: precondition proved
 int_list.ads:14:15: info: precondition proved
 int_list.ads:16:20: info: precondition proved
-int_list.ads:16:28: postcondition not proved, requires l.int_list__my_lists__element (l<<<l>>>, l.int_
+int_list.ads:16:28: postcondition not proved, requires L.Element (L.First) = I
 int_list.ads:16:9: info: precondition proved
 int_list.ads:18:24: info: precondition proved
 int_list.ads:18:32: info: overflow check proved
@@ -31,7 +30,7 @@ int_list.ads:18:9: info: precondition proved
 int_list.ads:20:40: precondition not proved
 int_list.ads:20:60: info: precondition proved
 int_list.ads:23:42: info: precondition proved
-int_list.ads:25:17: postcondition not proved, requires l.int_list__my_lists__length<<<int_list__my_lis
+int_list.ads:25:17: postcondition not proved, requires L.Length = L'Old.Length
 int_list.ads:25:24: info: precondition proved
 int_list.ads:25:9: info: precondition proved
 int_list.ads:27:36: info: precondition proved

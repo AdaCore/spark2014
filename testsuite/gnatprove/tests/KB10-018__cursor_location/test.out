@@ -1,4 +1,3 @@
-
 cursor_location.adb:11:14: info: index check proved
 cursor_location.adb:12:15: info: index check proved
 cursor_location.adb:12:42: info: index check proved
@@ -12,8 +11,8 @@ cursor_location.adb:33:21: info: range check proved
 cursor_location.ads:10:23: info: range check proved
 cursor_location.ads:11:24: info: range check proved
 cursor_location.ads:18:10: info: index check proved
-cursor_location.ads:18:30: postcondition not proved
 cursor_location.ads:19:11: info: index check proved
+cursor_location.ads:19:26: postcondition not proved, requires Request (Side) or not DU_Available (Change_Side (Side)
 cursor_location.ads:20:15: info: index check proved
 cursor_location.ads:27:18: info: index check proved
 cursor_location.ads:27:60: info: postcondition proved
