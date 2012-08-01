@@ -2506,7 +2506,9 @@ package body Alfa.Definition is
                   while Present (Field) loop
                      Typ := Etype (Field);
 
-                     if Is_Aliased (Field) then
+                     if Is_Tag (Field) then
+                        Mark_Violation ("tagged type", Id, NYI_Tagged);
+                     elsif Is_Aliased (Field) then
                         Mark_Violation ("ALIASED", Field, NIR_Access);
                      end if;
 
