@@ -27,9 +27,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Csets;           use Csets;
 with Lib;             use Lib;
-with Output;          use Output;
 with Sem_Util;        use Sem_Util;
-with Sprint;          use Sprint;
+with Pprint;          use Pprint;
+with Stringt;         use Stringt;
+with Urealp;          use Urealp;
 
 with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;       use Alfa.Util;
@@ -384,61 +385,64 @@ package body Gnat2Why.Nodes is
 
    function String_Of_Node (N : Node_Id) return String
    is
-      --  The buffer contains the string to be constructed, we fill it with
-      --  dots at the beginning. Cur contains the next position to be written.
 
-      Buf : String (1 .. 50) := (others => '.');
-      Cur : Positive := 1;
-      Over_Full : Boolean := False;
+      function Real_Image (U : Ureal) return String;
+      function String_Image (S : String_Id) return String;
+      function Ident_Image (Expr        : Node_Id;
+                            Orig_Expr   : Node_Id;
+                            Expand_Type : Boolean)
+                            return String;
 
-      procedure Handle (S : String);
+      function Node_To_String is new
+        Expression_Name (Real_Image, String_Image, Ident_Image);
+      --  The actual printing function
 
-      ------------
-      -- Handle --
-      ------------
+      -----------------
+      -- Ident_Image --
+      -----------------
 
-      procedure Handle (S : String) is
-
-         --  Add the string S to the buffer. We stop at 47 chars and set the
-         --  overfull flag if there is something left to print.
-
-         Index : Integer := S'First;
+      function Ident_Image (Expr        : Node_Id;
+                            Orig_Expr   : Node_Id;
+                            Expand_Type : Boolean)
+                            return String
+      is
+         pragma Unreferenced (Orig_Expr, Expand_Type);
       begin
-         while Cur <= 47 and then Index in S'Range loop
-            case S (Index) is
-               when ASCII.LF =>
-                  null;
-               when '"' =>
-                  Buf (Cur) := '\';
-                  Buf (Cur + 1) := '"';
-                  Cur := Cur + 2;
-               when others =>
-                  Buf (Cur) := S (Index);
-                  Cur := Cur + 1;
-            end case;
-            Index := Index + 1;
-         end loop;
-
-         --  if we stopped at the buffer limit, and there is something left to
-         --  print, we set the over_full flag
-
-         if Cur = 47 and then Index in S'Range then
-            Over_Full := True;
+         if Nkind (Expr) = N_Defining_Identifier then
+            return Source_Name (Expr);
+         elsif Present (Entity (Expr)) then
+            return Source_Name (Entity (Expr));
+         else
+            return Get_Name_String (Chars (Expr));
          end if;
-      end Handle;
+      end Ident_Image;
+
+      ----------------
+      -- Real_Image --
+      ----------------
+
+      function Real_Image (U : Ureal) return String is
+      begin
+         pragma Unreferenced (U);
+         --  ??? still to be done
+         return "";
+      end Real_Image;
+
+      ------------------
+      -- String_Image --
+      ------------------
+
+      function String_Image (S : String_Id) return String is
+      begin
+         Name_Len := 0;
+         Add_Char_To_Name_Buffer ('"');
+         Add_String_To_Name_Buffer (S);
+         Add_Char_To_Name_Buffer ('"');
+         return Name_Buffer (1 .. Name_Len);
+      end String_Image;
 
    begin
-      Set_Special_Output (Handle'Unrestricted_Access);
-      Sprint_Node (N);
-      Write_Eol;
-      Cancel_Special_Output;
-      if Over_Full then
-         return Buf (1 .. 50);
-      elsif Cur > 1 then
-         return Buf (1 .. Cur - 1);
-      else
-         return "";
-      end if;
+      return Node_To_String (N, "default");
    end String_Of_Node;
 
    ------------------
