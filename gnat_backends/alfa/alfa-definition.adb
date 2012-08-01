@@ -1251,7 +1251,7 @@ package body Alfa.Definition is
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible re-ordering due to missing parentheses",
+                    ("?possible reassociation due to missing parentheses",
                      Left_Opnd (N));
                end if;
 
@@ -1259,7 +1259,7 @@ package body Alfa.Definition is
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible re-ordering due to missing parentheses",
+                    ("?possible reassociation due to missing parentheses",
                      Right_Opnd (N));
                end if;
 
@@ -1268,7 +1268,7 @@ package body Alfa.Definition is
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible re-ordering due to missing parentheses",
+                    ("?possible reassociation due to missing parentheses",
                      Left_Opnd (N));
                end if;
 
@@ -1276,7 +1276,7 @@ package body Alfa.Definition is
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible re-ordering due to missing parentheses",
+                    ("?possible reassociation due to missing parentheses",
                      Right_Opnd (N));
                end if;
 
