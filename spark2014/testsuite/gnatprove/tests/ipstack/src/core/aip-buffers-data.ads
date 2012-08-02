@@ -132,13 +132,10 @@ private
    --# global in out Common.Buf_List, State, Free_List;
    --  Insert Num contiguous buffers in the free list, starting with buffer
    --  Buf, in a way that preserves the ordering and structure of the free
+   --  list. Inserting those contiguous buffers should not lead to fragmenting
+   --  the free list, which depends on the caller knowing that the buffers
+   --  inserted do not follow or precede other buffers already in the free
    --  list.
-
-   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
-   --# global in out Common.Buf_List, State, Free_List;
-   --  Insert Num buffers in the free list, starting with buffer Buf, in a
-   --  way that preserves the ordering and structure of the free list. The
-   --  Num buffers may not be contiguous.
 
    procedure Remove_From_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
    --# global in out Common.Buf_List, State, Free_List;
@@ -147,5 +144,23 @@ private
    --  the Num buffers starting from Buf may not be contiguous. It is the
    --  responsibility of the caller to ensure that this sequence of buffers is
    --  appropriate.
+
+   procedure Extract_Contiguous_From_Free_List
+     (Buf : in out Dbuf_Id;
+      Num : in out Dbuf_Count);
+   --# global in out Common.Buf_List, State, Free_List;
+   --  Prepare for the insertion of Num contiguous buffers starting at Buf in
+   --  the free list, by removing from the free list those buffers preceding
+   --  and following this contiguous block. Return in Buf and Num the possibly
+   --  larger contiguous block formed by coalescing all these buffers in a
+   --  single chain. Note that this new contiguous block can now be inserted in
+   --  the free list by calling Insert_Contiguous_In_Free_List without
+   --  introducing fragmentation.
+
+   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
+   --# global in out Common.Buf_List, State, Free_List;
+   --  Insert Num buffers in the free list, starting with buffer Buf, in a
+   --  way that preserves the ordering and structure of the free list. The
+   --  Num buffers may not be contiguous.
 
 end AIP.Buffers.Data;

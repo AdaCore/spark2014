@@ -220,63 +220,6 @@ is
       end if;
    end Insert_Contiguous_In_Free_List;
 
-   -------------------------
-   -- Insert_In_Free_List --
-   -------------------------
-
-   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
-   is
-      Free_Buf, First_Buf, Last_Buf : Dbuf_Id;
-      --  Temporary buffers
-
-      Free_Count : Dbuf_Count;
-      --  Number of contiguous buffers to insert
-
-      Num_To_Insert : Dbuf_Count_Or_Null;
-      --  Remaining number of buffers to insert
-
-   begin
-      First_Buf := Buf;
-      Num_To_Insert := Num;
-
-      --  Insert buffers by contiguous blocks
-
-      while Num_To_Insert > 0 loop
-
-         --  Locate the first buffer of the next contiguous block, and count
-         --  the number of buffers in the current block from First_Buf. The
-         --  value assigned to Last_Buf by the call to
-         --  Advance_To_Next_Contiguous_Block is ignored.
-
-         Free_Buf := First_Buf;
-         --# accept F, 10, Last_Buf,
-         --#        "The value assigned to Last_Buf by the call to ",
-         --#        "Advance_To_Next_Contiguous_Block is ignored.";
-         Advance_To_Next_Contiguous_Block (Buf      => Free_Buf,
-                                           Prev_Buf => Last_Buf,
-                                           Num      => Free_Count);
-
-         --  Adjust the number of buffers to insert, which might be smaller
-         --  than the number of contiguous buffers from First_Buf.
-
-         Free_Count := Dbuf_Count'Min (Num_To_Insert, Free_Count);
-
-         --  Actually insert the next contiguous block of buffers
-
-         Insert_Contiguous_In_Free_List (First_Buf, Free_Count);
-
-         --  Update local values for next iteration
-
-         Num_To_Insert := Num_To_Insert - Free_Count;
-         First_Buf := Free_Buf;
-      end loop;
-
-      --# accept F, 33, Last_Buf,
-      --#        "The value assigned to Last_Buf by the call to ",
-      --#        "Advance_To_Next_Contiguous_Block is ignored.";
-   end Insert_In_Free_List;
-
    ---------------------------
    -- Remove_From_Free_List --
    ---------------------------
@@ -393,10 +336,177 @@ is
       --  Continue by inserting the removed buffers in the free list, if any
 
       if Temp_Removed_Buffers > 0 then
-         Insert_In_Free_List (Buf => First_Buf_Not_Removed,
-                              Num => Temp_Removed_Buffers);
+         Insert_Contiguous_In_Free_List (Buf => First_Buf_Not_Removed,
+                                         Num => Temp_Removed_Buffers);
       end if;
    end Remove_From_Free_List;
+
+   ---------------------------------------
+   -- Extract_Contiguous_From_Free_List --
+   ---------------------------------------
+
+   procedure Extract_Contiguous_From_Free_List
+     (Buf : in out Dbuf_Id;
+      Num : in out Dbuf_Count)
+   --# global in out Common.Buf_List, Buf_List, Free_List;
+   is
+      Last_Buf : Dbuf_Id;
+      --  Last buffer to be inserted
+
+      Free_Buf, Start_Buf, End_Buf : Dbuf_Id;
+      --  Temporary buffer
+
+      Free_Count : Dbuf_Count;
+      --  Temporary count
+
+      Prev_Buf, Next_Buf : Dbuf_Id;
+      --  Buffers starting the previous and next contiguous blocks in the free
+      --  list, if any.
+
+      Prev_Num, Next_Num : Dbuf_Count_Or_Null;
+      --  Length of the previous and next contiguous blocks in the free list,
+      --  if any.
+
+   begin
+      --  Identify the last buffer to be inserted, and verify that the buffers
+      --  to insert are indeed contiguous.
+
+      Last_Buf := Buf;
+      for J in Dbuf_Count range 1 .. Num - 1 loop
+         Last_Buf := Next_Data_Buf (Last_Buf);
+         Support.Verify (Last_Buf = Buf + J);
+      end loop;
+
+      --  Locate the previous and next contiguous blocks in the free list, if
+      --  any.
+
+      Free_Buf := Free_List;
+      Prev_Buf := Buffers.NOBUF;
+      Next_Buf := Buffers.NOBUF;
+      Prev_Num := 0;
+      Next_Num := 0;
+      while Free_Buf /= Buffers.NOBUF loop
+         Start_Buf := Free_Buf;
+
+         --  Compute information on contiguous block starting at Start_Buf
+
+         Advance_To_Next_Contiguous_Block (Buf      => Free_Buf,
+                                           Prev_Buf => End_Buf,
+                                           Num      => Free_Count);
+
+         --  Recognize the preceding contiguous block. Note that it is always
+         --  fine to subtract 1 from a Dbuf_Id that is not NOBUF.
+
+         if End_Buf = Buf - 1 then
+            Prev_Buf := Start_Buf;
+            Prev_Num := Free_Count;
+         end if;
+
+         --  Recognize the following contiguous block. Note that it is always
+         --  fine to subtract 1 from a Dbuf_Id that is not NOBUF.
+
+         if Last_Buf = Start_Buf - 1 then
+            Next_Buf := Start_Buf;
+            Next_Num := Free_Count;
+         end if;
+      end loop;
+
+      --  Remove the preceding and following contiguous blocks from the free
+      --  list, if any.
+
+      if Prev_Buf /= Buffers.NOBUF then
+         Remove_From_Free_List (Prev_Buf, Prev_Num);
+      end if;
+
+      if Next_Buf /= Buffers.NOBUF then
+         Remove_From_Free_List (Next_Buf, Next_Num);
+      end if;
+
+      --  Link together the preceding contiguous block, the block to insert and
+      --  the following contiguous block.
+
+      if Prev_Buf /= Buffers.NOBUF then
+         Common.Buf_List (To_Common_Id (Buf - 1)).Next := To_Common_Id (Buf);
+      end if;
+
+      if Next_Buf /= Buffers.NOBUF then
+         Common.Buf_List (To_Common_Id (Last_Buf)).Next :=
+           To_Common_Id (Next_Buf);
+      end if;
+
+      --  Update the parameters
+
+      if Prev_Buf /= Buffers.NOBUF then
+         Buf := Prev_Buf;
+      end if;
+
+      Num := (Prev_Num + Num) + Next_Num;
+   end Extract_Contiguous_From_Free_List;
+
+   -------------------------
+   -- Insert_In_Free_List --
+   -------------------------
+
+   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
+   --# global in out Common.Buf_List, Buf_List, Free_List;
+   is
+      Free_Buf, First_Buf, Last_Buf : Dbuf_Id;
+      --  Temporary buffers
+
+      Free_Count, Extracted_Free_Count : Dbuf_Count;
+      --  Number of contiguous buffers to insert
+
+      Num_To_Insert : Dbuf_Count_Or_Null;
+      --  Remaining number of buffers to insert
+
+   begin
+      First_Buf := Buf;
+      Num_To_Insert := Num;
+
+      --  Insert buffers by contiguous blocks
+
+      while Num_To_Insert > 0 loop
+
+         --  Locate the first buffer of the next contiguous block, and count
+         --  the number of buffers in the current block from First_Buf. The
+         --  value assigned to Last_Buf by the call to
+         --  Advance_To_Next_Contiguous_Block is ignored.
+
+         Free_Buf := First_Buf;
+         --# accept F, 10, Last_Buf,
+         --#        "The value assigned to Last_Buf by the call to ",
+         --#        "Advance_To_Next_Contiguous_Block is ignored.";
+         Advance_To_Next_Contiguous_Block (Buf      => Free_Buf,
+                                           Prev_Buf => Last_Buf,
+                                           Num      => Free_Count);
+
+         --  Adjust the number of buffers to insert, which might be smaller
+         --  than the number of contiguous buffers from First_Buf.
+
+         Free_Count := Dbuf_Count'Min (Num_To_Insert, Free_Count);
+
+         --  Compute a contiguous block that includes the Free_Count buffers
+         --  starting from First_Buf, and possibly preceding and following
+         --  buffers from the free list, so that inserting this contiguous
+         --  block in the modified free list does not lead to fragmentation.
+
+         Extracted_Free_Count := Free_Count;
+         Extract_Contiguous_From_Free_List (First_Buf, Extracted_Free_Count);
+
+         --  Actually insert the next contiguous block of buffers
+
+         Insert_Contiguous_In_Free_List (First_Buf, Extracted_Free_Count);
+
+         --  Update local values for next iteration
+
+         Num_To_Insert := Num_To_Insert - Free_Count;
+         First_Buf := Free_Buf;
+      end loop;
+
+      --# accept F, 33, Last_Buf,
+      --#        "The value assigned to Last_Buf by the call to ",
+      --#        "Advance_To_Next_Contiguous_Block is ignored.";
+   end Insert_In_Free_List;
 
    -----------------
    -- Buffer_Init --
