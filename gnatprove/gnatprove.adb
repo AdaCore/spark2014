@@ -502,11 +502,11 @@ procedure Gnatprove is
       for File of Obj_Path loop
          Put_Keyval ("loadpath", File.Display_Full_Name);
       end loop;
-      Put_Keyval ("magic", 12);
+      Put_Keyval ("magic", 14);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
       Put_Keyval ("timelimit", 1);  --  Limit used when no explicit --timeout
-      Start_Section ("prover alt-ergo");
+      Start_Section ("prover");
       declare
          Altergo_Command : constant String :=
            "why3-cpulimit %t %m -s alt-ergo %f";
@@ -522,6 +522,7 @@ procedure Gnatprove is
                   Ada.Directories.Compose (Why3_Drivers_Dir,
                                            "alt_ergo.drv"));
       Put_Keyval ("name", "Alt-Ergo");
+      Put_Keyval ("shortcut", "altergo");
       Put_Keyval ("version", "0.94");
       Close (File);
    end Generate_Why3_Conf_File;
