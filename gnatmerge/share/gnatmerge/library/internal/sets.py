@@ -8,6 +8,20 @@ class Arrow:
     def follow(self, object, key):
         return key
 
+class IdentityArrow(Arrow):
+    def __init__(self, name):
+        self.name = name
+
+    def follow(self, object, key):
+        return object.follow(self.name, key)
+
+class AttributeArrow(Arrow):
+    def __init__(self, name):
+        self.name = name
+
+    def follow(self, object, key):
+        return object.element(key)[self.name]
+
 class FunctionArrow(Arrow):
     def __init__(self, operation):
         self.operation = operation
@@ -21,7 +35,10 @@ class FilteredArrow(Arrow):
         self.maps = maps
 
     def follow(self, object, key):
-        return self.maps[self.arrow.follow(object, key)]
+        if self.maps is None:
+            return self.arrow.follow(object, key)
+        else:
+            return self.maps[self.arrow.follow(object, key)]
 
 class Object:
     def __init__(self, name):
@@ -31,7 +48,17 @@ class Object:
         self.attributes = {}
 
     def add(self, key, value):
+        if self.elements.has_key(key):
+            print "warning: object %s already has element for %s" \
+                  % (self.name, key)
+            print "warning: %s will be removed" % str(self.elements[key])
+            print "warning: it will be replaced by" % str(value)
         self.elements[key] = value
+
+    def touch(self, key):
+        if not self.elements.has_key(key):
+            element = {"NAME" : key}
+            self.add(key, element)
 
     def follow_all_arrows(self, key):
         for a in self.arrows:
@@ -46,7 +73,7 @@ class Object:
 
         return self.elements[key][arrow]
 
-    def element(self,key):
+    def element(self, key):
         return self.elements[key]
 
     def new_arrow(self, name, operation):
@@ -58,14 +85,19 @@ class Object:
         PARAMETERS
           domain: attribute domain, of class attributes.common.Attribute
         """
-        self.attributes[domain.name] = domain
-        self.new_arrow(domain.name, domain)
+        attribute_name = domain.name
+        self.attributes[attribute_name] = domain
+        self.new_arrow(attribute_name, AttributeArrow(attribute_name))
 
     def load_element(self, element):
         self.add(element["NAME"], element)
 
     def load(self, reader):
         reader.iterate(lambda x : self.load_element(x))
+
+    def str(self):
+        return "{'NAME' : '%s', 'ELEMENTS' : %s}" \
+               % (self.name, str(self.elements))
 
 class Objects:
     def __init__(self):

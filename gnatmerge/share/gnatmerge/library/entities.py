@@ -1,6 +1,7 @@
 """This package provides the basic API to manipulate source code entities
 """
 
+from internal.attributes import common
 from internal.attributes import lattices
 from internal.attributes import lattice_ops
 from internal import sets
@@ -39,14 +40,31 @@ class Entity:
         if states is not None:
             self.states = states
         else:
-            self.states = lattices.PartialOrderAttribute(self.status_name())
+            self.states = lattices.PartialOrderAttribute(self.name + ".STATUS")
+        self.names = lattices.DiscreteSpace(self.name + ".NAME")
         self.object.new_attribute(self.states)
-        self.object.join_arrow = None
+        self.object.new_attribute(self.slocs)
+        self.object.new_attribute(self.names)
+        # By default, entity.name is a renaming of name
+        # ??? Should we do the same for any other attribute?
+        # Not clear... We did so for cases where the attribute domain
+        # is different for the child and the parent... e.g. TEST.STATUS
+        # taking values in {OK, KO}, and SUBPROGRAM.STATUS taking values
+        # in {PROVED, NOT PROVED, PARTIALLY PROVED}
+        name_renaming = sets.IdentityArrow("NAME")
+        self.object.new_arrow(self.names.name, name_renaming)
+        self.object.join_arrow = {}
 
-    def status_name(self):
-        return self.name + ".STATUS"
+    def status_attr_id(self):
+        return self.states.name
 
-    def new_child(self, name, states, maps):
+    def slocs_attr_id(self):
+        return self.slocs.name
+
+    def names_attr_id(self):
+        return self.names.name
+
+    def new_child(self, name, union_name, inclusion, fragments, maps=None):
         """Create a new child entity
 
         Create an entity whose instances are always included in
@@ -55,38 +73,46 @@ class Entity:
 
         PARAMETERS
             name: name of the newly created entity
-            states: state domain for this child
+            union_name: name of the attribute where the child's values join
+            inclusion: lattice that decides if a child element is into
+                       a father element
+            fragments: fragment domain for this child
             maps: map describing how its states maps to its father's states.
                   e.g. {"OK" : "PROVED"} means that OK in the child is proved
-                  in the parent.
+                  in the parent. If None, use the identity function to map
+                  the child's state to the father's state.
         """
-        child = Entity(self.merge, name, states)
+        child = Entity(self.merge, name, fragments)
         complete_map = maps
-        for value in states.values:
-            if not maps.has_key(value):
-                complete_map[value] = "UNKNOWN"
+        if maps is not None:
+            for value in fragments.values:
+                if not maps.has_key(value):
+                    complete_map[value] = "UNKNOWN"
         inherits = sets.FilteredArrow(child.states, complete_map)
         child.object.new_arrow(self.name,
-                               lattice_ops.Inclusion(lattice=self.slocs,
+                               lattice_ops.Inclusion(lattice=inclusion,
                                                      object=self.object))
-        child.object.new_arrow(self.states.name, inherits)
-        if self.object.join_arrow is not None:
-            self.object.join_arrow.add(child.object)
+        child.object.new_arrow(union_name, inherits)
+        if self.object.join_arrow.has_key(union_name):
+            self.object.join_arrow[union_name].add(child.object)
         else:
-            self.object.join_arrow = lattice_ops.Join(lattice=self.states,
-                                                      subobject=child.object,
-                                                      in_object_key=self.name)
-            self.object.new_arrow(self.states.name,
-                                  self.object.join_arrow)
+            self.object.join_arrow[union_name] = \
+              lattice_ops.Join(lattice=self.object.attributes[union_name],
+                               subobject=child.object,
+                               in_object_key=self.name)
+            self.object.new_arrow(union_name,
+                                  self.object.join_arrow[union_name])
 
         return child
 
-    def new_input(self, reader, maps):
-        child = self.new_child(reader.name, reader.states, maps)
+    def new_input(self, reader, union_name, inclusion, maps=None):
+        child = self.new_child(reader.name, union_name, inclusion,
+                               reader.fragments, maps)
+        # In the case of Asistree, inclusion is not self.slocs, it is
+        # the discrete space of names
         child.reader = reader
         return child
 
     def load(self, filename):
         self.reader.load(filename)
         self.object.load(self.reader)
-

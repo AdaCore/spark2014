@@ -26,6 +26,8 @@ class GNATprove:
         self.vcs = \
             entity.new_input(reader=readers.ErrorListing("VC",
                                                          ignore_pattern="^$"),
+                             inclusion=entity.slocs,
+                             union_name=entity.status_attr_id(),
                              maps={"OK" : ok,
                                    "KO" : ko,
                                    "PARTIAL OK" : between})

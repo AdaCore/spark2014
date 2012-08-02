@@ -21,18 +21,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Scripts;        use GNATCOLL.Scripts;
-with GNATCOLL.Scripts.Python; use GNATCOLL.Scripts.Python;
-with GNATCOLL.Projects;       use GNATCOLL.Projects;
-with GNATCOLL.VFS;            use GNATCOLL.VFS;
-with GNAT.Strings;            use GNAT.Strings;
-with Configuration;           use Configuration;
+with Ada.Text_IO;                use Ada.Text_IO;
+with Asis;                       use Asis;
+with GNAT.Strings;               use GNAT.Strings;
+with GNATCOLL.Scripts;           use GNATCOLL.Scripts;
+with GNATCOLL.Scripts.Python;    use GNATCOLL.Scripts.Python;
+with GNATCOLL.Projects;          use GNATCOLL.Projects;
+with GNATCOLL.Any_Types;         use GNATCOLL.Any_Types;
+with GNATCOLL.VFS;               use GNATCOLL.VFS;
+with Configuration;              use Configuration;
+with Json_Tree;                  use Json_Tree;
 
 package body Common is
 
    Project : Project_Tree;
 
    procedure Register_Project_Module (Repo : Scripts_Repository);
+   procedure Register_Asis_Module (Repo : Scripts_Repository);
 
    procedure On_GPR_Path
      (Data    : in out Callback_Data'Class;
@@ -43,6 +48,18 @@ package body Common is
       Command : String);
 
    procedure On_GPR_Attribute
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   procedure On_Sloc_Reader_Constructor
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   procedure On_Sloc_Reader_Map_To_Kind
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
+   procedure On_Sloc_Reader_Iterate
      (Data    : in out Callback_Data'Class;
       Command : String);
 
@@ -98,6 +115,95 @@ package body Common is
       Free (Value);
    end On_GPR_Attribute;
 
+   --------------------------------
+   -- On_Sloc_Reader_Constructor --
+   --------------------------------
+
+   procedure On_Sloc_Reader_Constructor
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+      pragma Unreferenced (Data);
+   begin
+      null;
+   end On_Sloc_Reader_Constructor;
+
+   --------------------------------
+   -- On_Sloc_Reader_Map_To_Kind --
+   --------------------------------
+
+   procedure On_Sloc_Reader_Map_To_Kind
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+      Inst      : constant Class_Instance := Nth_Arg (Data, 1);
+      pragma Unreferenced (Inst);
+      Asis_Name : constant String := Nth_Arg (Data, 2);
+      Kind_Name : constant String := Nth_Arg (Data, 3);
+      Kind      : Declaration_Kinds;
+   begin
+      Kind := Declaration_Kinds'Value (Asis_Name);
+      Json_Tree.Insert (Kind, Kind_Name);
+      exception
+         when Constraint_Error =>
+            Put_Line ("warning: "
+                      & Asis_Name & " is not a valid Asis kind, ignoring it.");
+   end On_Sloc_Reader_Map_To_Kind;
+
+   ----------------------------
+   -- On_Sloc_Reader_Iterate --
+   ----------------------------
+
+   procedure On_Sloc_Reader_Iterate
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+      Script    : constant Scripting_Language := Get_Script (Data);
+      Inst      : constant Class_Instance := Nth_Arg (Data, 1);
+      pragma Unreferenced (Inst);
+      File_Name : constant String := Nth_Arg (Data, 2);
+      Proc      : constant Subprogram_Type := Nth_Arg (Data, 3);
+
+      procedure Execute_Proc
+        (Kind : String;
+         Name : String;
+         Low  : String;
+         High : String);
+      --  Marshall arguments and pass them to Proc
+
+      ------------------
+      -- Execute_Proc --
+      ------------------
+
+      procedure Execute_Proc
+        (Kind : String;
+         Name : String;
+         Low  : String;
+         High : String)
+      is
+         Args   : Callback_Data'Class := Create (Script, 4);
+      begin
+         Set_Nth_Arg (Args, 1, Kind);
+         Set_Nth_Arg (Args, 2, Name);
+         Set_Nth_Arg (Args, 3, Low);
+         Set_Nth_Arg (Args, 4, High);
+         declare
+            Dummy : constant Any_Type := Execute (Proc, Args);
+            pragma Unreferenced (Dummy);
+         begin
+            null;
+         end;
+      end Execute_Proc;
+
+   begin
+      Json_Tree.Open (File_Name);
+      Json_Tree.Iterate (Execute_Proc'Access);
+      Json_Tree.Close;
+   end On_Sloc_Reader_Iterate;
+
    ------------------------------------
    -- Register_Scripts_And_Functions --
    ------------------------------------
@@ -109,7 +215,9 @@ package body Common is
       --  register those you intend to support
 
       Repo := new Scripts_Repository_Record;
+      Register_Python_Scripting (Repo, "gpr");
       Register_Project_Module (Repo);
+      Register_Asis_Module (Repo);
       Register_Standard_Classes (Repo, "Console");
       return Repo;
    end Register_Scripts_And_Functions;
@@ -128,7 +236,6 @@ package body Common is
          Project.Load_Empty_Project;
       end if;
 
-      Register_Python_Scripting (Repo, "gpr");
       Register_Command
         (Repo, "path", 0, 0,
          Handler => On_GPR_Path'Unrestricted_Access);
@@ -139,5 +246,25 @@ package body Common is
         (Repo, "attribute", 2, 3,
          Handler => On_GPR_Attribute'Unrestricted_Access);
    end Register_Project_Module;
+
+   --------------------------
+   -- Register_Asis_Module --
+   --------------------------
+
+   procedure Register_Asis_Module (Repo : Scripts_Repository) is
+      Sloc_Reader_Class : Class_Type;
+   begin
+      Sloc_Reader_Class := GNATCOLL.Scripts.New_Class (Repo, "SlocReader");
+
+      Register_Command
+        (Repo, Constructor_Method, 0, 0,
+         On_Sloc_Reader_Constructor'Access, Sloc_Reader_Class);
+      Register_Command
+        (Repo, "iterate", 2, 2,
+         On_Sloc_Reader_Iterate'Access, Sloc_Reader_Class);
+      Register_Command
+        (Repo, "map_to_kind", 2, 2,
+         On_Sloc_Reader_Map_To_Kind'Access, Sloc_Reader_Class);
+   end Register_Asis_Module;
 
 end Common;

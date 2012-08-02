@@ -8,6 +8,54 @@ from internal.attributes import common
 from internal import conversions
 import os.path
 
+class FreeLatticeAttribute(common.Attribute):
+
+    def __init__(self, name):
+        self.name = name
+        self.M = "MAXIMUM"
+        self.empty = set([])
+
+    def value_less_than(self, left, right):
+        if left == self.M:
+            return False
+        elif right == self.M:
+            return True
+        else:
+            l = self.maximalize(left)
+            r = self.maximalize(right)
+            return l.issubset(r)
+
+    def less_than(self, left_object, left_key, right_object, right_key):
+        l = self.follow(left_object, left_key)
+        r = self.follow(right_object, right_key)
+        return self.value_less_than(l, r)
+
+    def value_max(self):
+        return self.M
+
+    def empty_set(self):
+        return self.empty
+
+    def maximalize(self, value):
+        return conversions.to_set(value)
+
+    def minimalize(self, value):
+        return value
+
+    def value_join(self, left, right):
+        if left == self.M or right == self.M:
+            return self.M
+
+        l = self.maximalize(left)
+        r = self.maximalize(right)
+        result = l.union(l, r)
+        return self.minimalize(result)
+
+    def join(self, left_object, left_key, right_object, right_key):
+        l = self.follow(left_object, left_key)
+        r = self.follow(right_object, right_key)
+        return self.value_join(l, r)
+
 class SlocBaseType:
     def __init__(self, spec):
         if spec == "MIN" or spec == "MAX":
@@ -49,7 +97,7 @@ class SlocBaseType:
         if self.line > right.line:
             return False
 
-        if self.line == right.line and self.column > right.line:
+        if self.line == right.line and self.column > right.column:
             return False
 
         return True
@@ -68,16 +116,15 @@ class SlocBaseType:
     def max():
         return "MAX"
 
-class RangeAttribute(common.Attribute):
+class RangeAttribute(FreeLatticeAttribute):
 
     def __init__(self, base_type, name, low_name, high_name):
+        FreeLatticeAttribute.__init__(self, name)
         self.base_type = base_type
-        self.name = name
         self.low_name = low_name
         self.high_name = high_name
-        # ??? silly implementation for the maximum value,
-        # just for the prototype.
         self.M = {low_name : base_type.min(), high_name : base_type.max()}
+        self.empty = set([])
 
     def value_less_than(self, left, right):
 
@@ -103,28 +150,31 @@ class RangeAttribute(common.Attribute):
 
         return True
 
-    def less_than(self, left_object, left_key, right_object, right_key):
-        return self.value_less_than(left_object.element(left_key)[self.name],
-                                    right_object.element(right_key)[self.name])
-
-    def value_max(self):
-        return self.M
-
     def to_string(self, object, key):
         for range in object.follow(self.name, key):
             low = self.base_type(range[self.low_name])
             high = self.base_type(range[self.high_name])
             if low.file == high.file:
-                return "%s:%s:%s-%s:%s" % (low.file, low.line, low.column,
+                return "%s:%s:%s-%s:%s" % (os.path.basename(low.file),
+                                           low.line, low.column,
                                            high.line, high.column)
             else:
-                return "%s:%s:%s-%s:%s:%s" % (low.file,
+                return "%s:%s:%s-%s:%s:%s" % (os.path.basename(low.file),
                                               low.line, low.column,
-                                              high.file,
+                                              os.path.basename(high.file),
                                               high.line, high.column)
 
+    def value_join(self, left, right):
+        if left == self.M or right == self.M:
+            return self.M
 
-class PartialOrderAttribute(common.Attribute):
+        # Simple implementation.
+        # We may want to consolidate sloc ranges at some point.
+        l = conversions.to_list(left)
+        r = conversions.to_list(right)
+        return l + r
+
+class PartialOrderAttribute(FreeLatticeAttribute):
     """Represents an attribute domain as a partial order
 
     ATTRIBUTES
@@ -132,7 +182,7 @@ class PartialOrderAttribute(common.Attribute):
     """
 
     def __init__(self, name, values=None):
-        self.name = name
+        FreeLatticeAttribute.__init__(self, name)
         self.values = set([])
         self.named_meets = {}
         self.named_joins = {}
@@ -227,13 +277,6 @@ class PartialOrderAttribute(common.Attribute):
         r = self.maximalize(right)
         return l.issubset(r)
 
-    def less_than(self, left_object, left_key, right_object, right_key):
-        return self.value_less_than(left_object.element(left_key)[self.name],
-                                    right_object.element(right_key)[self.name])
-
-    def empty_set(self):
-        return set([])
-
     def maximalize(self, value):
         v = conversions.to_set(value)
         result = v
@@ -256,14 +299,24 @@ class PartialOrderAttribute(common.Attribute):
         else:
             return result
 
+class DiscreteSpace(FreeLatticeAttribute):
+
+    def value_less_than(self, left, right):
+        if left == self.empty:
+            return True
+        elif right == self.M:
+            return True
+        else:
+            return left == right
+
+    def maximalize(self, value):
+        return value
+
+    def minimalize(self, value):
+        return value
+
     def value_join(self, left, right):
-        l = self.maximalize(left)
-        r = self.maximalize(right)
-        result = l.union(l, r)
-        return self.minimalize(result)
-
-    def join(self, left_object, left_key, right_object, right_key):
-        return self.value_join(left_object.element(left_key)[self.name],
-                               right_object.element(right_key)[self.name])
-
-
+        if left == right:
+            return left
+        else:
+            return self.empty

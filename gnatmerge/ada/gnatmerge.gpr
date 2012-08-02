@@ -1,4 +1,6 @@
 with "gnatcoll_python";
+with "asis_gu_bld";
+
 project GNATMerge is
    for Object_Dir use "obj";
    for Exec_Dir use ".";
@@ -6,7 +8,7 @@ project GNATMerge is
    for Source_Dirs use (".");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat05", "-gnaty", "-gnatwae", "-g");
+      for Default_Switches ("Ada") use ("-gnat12", "-gnaty", "-gnatwae", "-g");
    end Compiler;
 
 end GNATMerge;

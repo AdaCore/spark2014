@@ -1,5 +1,6 @@
 import re
 from internal.attributes import lattices
+import gpr
 
 class Reader:
     """Abstract class for readers
@@ -10,16 +11,21 @@ class Reader:
 
     def __init__(self, name):
         self.name = name
-        self.states = lattices.PartialOrderAttribute(name + ".STATUS",
-                                                     {"OK", "KO"})
-        # ??? name appended to make that attribute unique. Is that needed?
-        self.states.name_and("PARTIAL OK", {"OK", "KO"})
         self.filenames = []
 
     def load(self, filename):
         self.filenames.append(filename)
 
-class Listing(Reader):
+class TristateReader(Reader):
+
+    def __init__(self, name):
+        self.fragments = lattices.PartialOrderAttribute(name + ".STATUS",
+                                                     {"OK", "KO"})
+        # ??? name appended to make that attribute unique. Is that needed?
+        self.fragments.name_and("PARTIAL OK", {"OK", "KO"})
+        Reader.__init__(self, name)
+
+class Listing(TristateReader):
 
     def iterate(self, proc):
         for filename in self.filenames:
@@ -67,3 +73,36 @@ class ErrorListing(Listing):
             return "OK"
         else:
             return "KO"
+
+class AsisTreeReader(Reader):
+    def __init__(self, name, sloc_domain, ename, maps):
+        self.index = 0
+        self.name = name
+        self.fragments = sloc_domain
+        self.ename = ename
+        self.maps = maps
+        Reader.__init__(self, name)
+        self.sloc_reader = gpr.SlocReader()
+        # ??? rename module gpr... Improper name
+        for kind in maps:
+            for asis_name in maps[kind]:
+                self.sloc_reader.map_to_kind(asis_name, kind)
+
+    def build_element(self, kind, name, low, high):
+        slocs = {"LOW" : low, "HIGH" : high}
+        element = {"KIND" : kind,
+                   self.ename : name,
+                   "NAME" : self.name + str(self.index) + "." + name,
+                   "SLOCS" : slocs}
+        self.index += 1
+        return element
+
+    def iterate(self, proc):
+        index = 1
+        for filename in self.filenames:
+            self.index = 0
+            self.sloc_reader.iterate(filename,
+                                     lambda kind, name, low, high:
+                                     proc(self.build_element(kind, name,
+                                                             low, high)))
+        return None
