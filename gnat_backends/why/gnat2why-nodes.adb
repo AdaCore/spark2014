@@ -394,7 +394,7 @@ package body Gnat2Why.Nodes is
                             return String;
 
       function Node_To_String is new
-        Expression_Name (Real_Image, String_Image, Ident_Image);
+        Expression_Image (Real_Image, String_Image, Ident_Image);
       --  The actual printing function
 
       -----------------
