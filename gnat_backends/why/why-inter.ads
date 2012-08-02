@@ -62,10 +62,21 @@ package Why.Inter is
       WF_Context_In_Body,
       WF_Main);
 
+   Why_Files : array (Why_File_Enum) of Why_File;
+
+   -----------------
+   -- Completions --
+   -----------------
+
+   --  Some entities are defined in more than one module. There might be one or
+   --  two additional modules, one in the contextual file for the spec, and
+   --  one in the contextual file for the body. For each additional module,
+   --  Add_Completion is called to record that completion. Later, when a
+   --  dependence on this entity is noted, Get_Completions is called to
+   --  retrieve the names of the additional modules to include.
+
    subtype Why_Context_File_Enum is Why_File_Enum range
      WF_Context_In_Spec .. WF_Context_In_Body;
-
-   Why_Files : array (Why_File_Enum) of Why_File;
 
    type Why_Completions is array (Positive range <>) of Unbounded_String;
    --  Return type of Get_Completions, to get all completions of a theory
