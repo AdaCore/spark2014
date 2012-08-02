@@ -79,18 +79,6 @@ is
    function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind;
    --# global in State;
 
-   procedure Buffer_Link
-     (Buf      :     Dbuf_Id;
-      Next     :     Dbuf_Id;
-      Last_Buf : out Buffers.Buffer_Id;
-      Num      : out AIP.U8_T);
-   --# global in     Common.Buf_List;
-   --#        in out State;
-   --  Link buffer Buf to buffer Next. Return the last buffer in the linked
-   --  list starting at Buf, so that the caller can update the global Next
-   --  link. Also return the number Num of buffers that have been prepended to
-   --  Next.
-
    ----------------------------
    -- Buffer id translations --
    ----------------------------
