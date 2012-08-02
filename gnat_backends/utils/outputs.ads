@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -47,8 +47,9 @@ package Outputs is
    --  Increase the indentation level of O by Level (or decrease it
    --  if Level is lesser than zero).
 
-   procedure P  (O : Output_Id; S : String);
-   --  Put S to output O, indenting it if need be
+   procedure P  (O : Output_Id; S : String; As_String : Boolean := False);
+   --  Put S to output O, indenting it if need be. If As_String is true, the
+   --  argument string is interpreted as a string literal.
 
    procedure PL (O : Output_Id; S : String);
    --  Put_Line S to output O, indenting it if need be

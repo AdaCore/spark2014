@@ -235,7 +235,6 @@ package body Why.Gen.Arrays is
             New_Function_Def
               (Domain      => EW_Term,
                Name        => Conv_To,
-               Labels      => (1 => To_Ident (WNE_Conversion_Label)),
                Binders     =>
                  (1 => (B_Name => A_Ident,
                         B_Type => Name_Type,
@@ -576,7 +575,6 @@ package body Why.Gen.Arrays is
             New_Function_Def
               (Domain      => EW_Term,
                Name        => Conv_To,
-               Labels      => (1 => To_Ident (WNE_Conversion_Label)),
                Binders     =>
                  (1 => (B_Name => A_Ident,
                         B_Type => Name_Type,

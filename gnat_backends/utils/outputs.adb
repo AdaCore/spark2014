@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -91,10 +91,22 @@ package body Outputs is
    -- P --
    -------
 
-   procedure P  (O : Output_Id; S : String) is
+   procedure P  (O : Output_Id; S : String; As_String : Boolean := False) is
    begin
       I (O);
-      Put (File_Handle (O), S);
+      if As_String then
+         Put (File_Handle (O), '"');
+         for I in S'Range loop
+            if S (I) = '"' then
+               Put (File_Handle (O), "\""");
+            else
+               Put (File_Handle (O), S (I));
+            end if;
+         end loop;
+         Put (File_Handle (O), '"');
+      else
+         Put (File_Handle (O), S);
+      end if;
    end P;
 
    --------

@@ -64,9 +64,9 @@ package body Why.Images is
    -- P --
    -------
 
-   procedure P (O : Output_Id; Name : Name_Id) is
+   procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False) is
    begin
-      P (O, Img (Name));
+      P (O, Img (Name), As_String);
    end P;
 
    procedure P (O : Output_Id; Node : Why_Node_Id) is

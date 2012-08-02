@@ -1244,12 +1244,25 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Label_Id)
    is
+      use Node_Lists;
+
+      L      : constant List := Get_List (+Get_Labels (Node));
+      Position  : Cursor := First (L);
+      Non_Empty : constant Boolean := Position /= No_Element;
    begin
-      P (O, "( ");
-      Print_List (State, +Get_Labels (Node), " ");
-      P (O, " ");
+      if Non_Empty then
+         P (O, "( ");
+      end if;
+      while Position /= No_Element loop
+
+         P (O, Get_Symbol (+Element (Position)), As_String => True);
+         Position := Next (Position);
+         P (O, " ");
+      end loop;
       Traverse (State, +Get_Def (Node));
-      P (O, " )");
+      if Non_Empty then
+         P (O, " )");
+      end if;
       State.Control := Abandon_Children;
    end Label_Pre_Op;
 

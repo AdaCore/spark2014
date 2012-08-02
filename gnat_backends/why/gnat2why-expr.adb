@@ -4057,7 +4057,6 @@ package body Gnat2Why.Expr is
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
-                      Labels    => (1 => New_Name_Label (Index_Ent)),
                       Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             else
@@ -4065,7 +4064,6 @@ package body Gnat2Why.Expr is
                   New_Existential_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
-                      Labels    => (1 => New_Name_Label (Index_Ent)),
                       Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             end if;

@@ -334,7 +334,6 @@ package body Gnat2Why.Expr.Loops is
             Entire_Loop := New_Binding_Ref
                              (Name    => Loop_Index,
                               Def     => +Init_Index,
-                              Labels  => (1 => New_Name_Label (Ent)),
                               Context => Entire_Loop);
             Entire_Loop :=
                New_Binding

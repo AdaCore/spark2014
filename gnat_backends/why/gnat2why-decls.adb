@@ -257,7 +257,6 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
-            Labels   => (1 => New_Name_Label (E)),
             Ref_Type => Typ));
 
       Close_Theory (File, Filter_Entity => E);
@@ -361,7 +360,6 @@ package body Gnat2Why.Decls is
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
-               Labels      => (1 => New_Name_Label (E)),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
 

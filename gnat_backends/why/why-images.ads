@@ -35,7 +35,7 @@ package Why.Images is
    --  Image functions for the basic entities used in Why's AST.
    --  These output the string image into O.
 
-   procedure P (O : Output_Id; Name : Name_Id);
+   procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False);
 
    procedure P (O : Output_Id; Node : Node_Id);
 

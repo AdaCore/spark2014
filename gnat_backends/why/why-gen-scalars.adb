@@ -133,7 +133,6 @@ package body Why.Gen.Scalars is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => To_Id,
-            Labels      => (1 => To_Ident (WNE_Conversion_Label)),
             Binders        =>
               New_Binders ((1 => New_Abstract_Type (Name => Ty_Ident))),
             Return_Type => BT));
@@ -162,7 +161,6 @@ package body Why.Gen.Scalars is
                           (1 => (Kind   => W_Function_Decl,
                                  Domain => EW_Term,
                                  Name   => To_Ident (Convert_From (Base_Type)),
-                                 Label  => To_Ident (WNE_Conversion_Label),
                                  others => <>),
                            2 => (Kind   => W_Function_Decl,
                                  Domain => EW_Prog,

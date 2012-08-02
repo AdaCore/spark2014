@@ -301,7 +301,7 @@ package body Why.Gen.Expr is
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Loc);
             Result : constant String :=
-              """GP_Subp:" & File & ":" & Int_Image (Integer (Line)) & """";
+              "GP_Subp:" & File & ":" & Int_Image (Integer (Line));
             Res_Id : constant W_Identifier_Id :=
               New_Identifier (Name => Result);
          begin
@@ -818,19 +818,8 @@ package body Why.Gen.Expr is
             Append (Buf, ':');
          end;
       end loop;
-      return New_Identifier (Name => """GP_Sloc:" & To_String (Buf) & """");
+      return New_Identifier (Name => "GP_Sloc:" & To_String (Buf));
    end New_Located_Label;
-
-   --------------------
-   -- New_Name_Label --
-   --------------------
-
-   function New_Name_Label (E : Entity_Id) return W_Identifier_Id
-   is
-   begin
-      return New_Identifier
-        (Name => """GP_Ada_Name:" & Source_Name (E) & """");
-   end New_Name_Label;
 
    -----------------
    -- New_Or_Expr --
@@ -898,7 +887,7 @@ package body Why.Gen.Expr is
       if S /= "" then
          return
            New_Identifier
-             (Name => """GP_Pretty_Ada:" & S & """");
+             (Name => To_String (WNE_Pretty_Ada) & ":" & S);
       else
          return Why_Empty;
       end if;
@@ -1029,7 +1018,7 @@ package body Why.Gen.Expr is
    begin
       return
         (1 => New_Identifier
-           (Name => """GP_Reason:" & VC_Kind'Image (Reason) & """"),
+           (Name => "GP_Reason:" & VC_Kind'Image (Reason)),
          2 => Cur_Subp_Sloc,
          3 => New_Located_Label (N),
          4 => To_Ident (WNE_Keep_On_Simp));

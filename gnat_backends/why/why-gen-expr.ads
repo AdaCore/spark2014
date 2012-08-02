@@ -102,9 +102,6 @@ package Why.Gen.Expr is
                               Domain   : EW_Domain) return W_Expr_Id;
    --  put a location label on the given expression
 
-   function New_Name_Label (E : Entity_Id) return W_Identifier_Id;
-   --  return a label of the form "GP_Ada_Name:<name>"
-
    function New_VC_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
