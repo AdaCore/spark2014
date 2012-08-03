@@ -15,7 +15,7 @@ evoting.adb:174:51: info: range check proved
 evoting.adb:197:7: info: index check proved
 evoting.adb:199:56: info: range check proved
 evoting.adb:200:7: info: index check proved
-evoting.adb:203:13: info: index check proved
+evoting.adb:203:13: index check not proved
 evoting.adb:203:27: info: index check proved
 evoting.adb:205:16: info: index check proved
 evoting.adb:207:13: info: index check proved

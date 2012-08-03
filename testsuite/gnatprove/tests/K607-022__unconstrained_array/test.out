@@ -2,7 +2,7 @@ simple_unc_arrays.adb:119:23: info: discriminant check proved
 simple_unc_arrays.adb:123:33: info: overflow check proved
 simple_unc_arrays.adb:124:19: index check not proved
 simple_unc_arrays.adb:124:25: info: overflow check proved
-simple_unc_arrays.adb:124:35: info: index check proved
+simple_unc_arrays.adb:124:35: index check not proved
 simple_unc_arrays.adb:125:25: info: index check proved
 simple_unc_arrays.adb:125:36: info: index check proved
 simple_unc_arrays.adb:125:41: info: overflow check proved
@@ -50,14 +50,14 @@ simple_unc_arrays.ads:30:34: index check not proved
 simple_unc_arrays.ads:30:47: overflow check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
 simple_unc_arrays.ads:84:44: info: overflow check proved
-simple_unc_arrays.ads:85:34: index check not proved
+simple_unc_arrays.ads:85:34: info: index check proved
 simple_unc_arrays.ads:85:41: postcondition not proved, requires Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
 simple_unc_arrays.ads:85:62: index check not proved
 simple_unc_arrays.ads:85:67: info: overflow check proved
 simple_unc_arrays.ads:88:22: index check not proved
 simple_unc_arrays.ads:88:49: index check not proved
 simple_unc_arrays.ads:96:44: info: overflow check proved
-simple_unc_arrays.ads:96:52: index check not proved
+simple_unc_arrays.ads:96:52: info: index check proved
 simple_unc_arrays.ads:96:59: postcondition not proved, requires A.V (J) <= A.V (J+1)
 simple_unc_arrays.ads:96:63: index check not proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
