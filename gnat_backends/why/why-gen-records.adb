@@ -95,8 +95,11 @@ package body Why.Gen.Records is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   function Needs_Discriminant_Check (E : Entity_Id) return Boolean;
-   --  Decide whether the given Component entity needs a check
+   function Needs_Discriminant_Check_For_Access (E : Entity_Id) return Boolean;
+   --  Decide whether the an access to the given Component entity needs a
+   --  check; this is always false for discriminants and components of
+   --  E_Record_Subtypes. For the rest, it depends on whether the component is
+   --  in a variant part or not.
 
    -----------------------
    -- Define_Ada_Record --
@@ -771,15 +774,17 @@ package body Why.Gen.Records is
       Declare_Equality_Function;
    end Declare_Ada_Record;
 
-   function Needs_Discriminant_Check (E : Entity_Id) return Boolean
+   function Needs_Discriminant_Check_For_Access (E : Entity_Id) return Boolean
    is
    begin
       if Ekind (E) = E_Discriminant then
          return False;
+      elsif Ekind (Scope (E)) = E_Record_Subtype then
+         return False;
       end if;
       return
         Nkind (Parent (Parent (List_Containing (Parent (E))))) = N_Variant;
-   end Needs_Discriminant_Check;
+   end Needs_Discriminant_Check_For_Access;
 
    ---------------------------
    -- New_Ada_Record_Access --
@@ -796,7 +801,7 @@ package body Why.Gen.Records is
          To_Program_Space (To_Why_Id (Field))
          else To_Why_Id (Field));
    begin
-      if Needs_Discriminant_Check (Field) then
+      if Needs_Discriminant_Check_For_Access (Field) then
          return
            New_VC_Call
              (Ada_Node => Ada_Node,
