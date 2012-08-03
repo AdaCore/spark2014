@@ -1,4 +1,3 @@
-
 vectors.adb:102:11: info: range check proved
 vectors.adb:104:19: index check not proved
 vectors.adb:104:32: info: overflow check proved
@@ -25,8 +24,8 @@ vectors.adb:36:56: info: range check proved
 vectors.adb:37:56: range check not proved
 vectors.adb:38:57: info: range check proved
 vectors.adb:50:56: info: range check proved
-vectors.adb:51:56: range check not proved
-vectors.adb:52:56: info: range check proved
+vectors.adb:51:56: info: range check proved
+vectors.adb:52:56: range check not proved
 vectors.adb:77:23: info: index check proved
 vectors.adb:83:43: info: overflow check proved
 vectors.adb:83:43: info: range check proved

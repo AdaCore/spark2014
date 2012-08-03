@@ -1,4 +1,3 @@
-
 database.adb:111:21: info: range check proved
 database.adb:112:10: info: index check proved
 database.adb:113:29: info: index check proved
@@ -55,8 +54,8 @@ database.adb:38:10: info: index check proved
 database.adb:44:18: info: postcondition proved
 database.adb:46:23: info: index check proved
 database.adb:46:52: info: index check proved
-database.adb:52:18: postcondition not proved
 database.adb:54:23: info: index check proved
+database.adb:54:45: postcondition not proved, requires Links (Act).Available = Links'Old (Act).Available
 database.adb:54:52: info: index check proved
 database.ads:111:25: info: precondition proved
 database.ads:112:14: info: precondition proved

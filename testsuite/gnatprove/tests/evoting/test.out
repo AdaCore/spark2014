@@ -32,8 +32,8 @@ evoting.adb:220:52: info: index check proved
 evoting.adb:222:19: info: index check proved
 evoting.adb:222:50: loop invariant initialization not proved, requires Counters(Latest_Highest_Score) > Counters(J)
 evoting.adb:222:52: info: index check proved
-evoting.adb:223:13: info: index check proved
-evoting.adb:223:27: index check not proved
+evoting.adb:223:13: index check not proved
+evoting.adb:223:27: info: index check proved
 evoting.adb:224:50: info: overflow check proved
 evoting.adb:225:16: info: loop invariant initialization proved
 evoting.adb:226:64: info: overflow check proved
