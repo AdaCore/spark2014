@@ -1,6 +1,8 @@
 module Main
-  (* the module of references is the only compulsory module *)
+  (* the module of references is needed in all modules *)
   use export module ref.Ref
+  (* dito for boolean functions *)
+  use export bool.Bool
   use export "_gnatprove_standard_th".Main
 
   (* exception used to simulate return statements *)
