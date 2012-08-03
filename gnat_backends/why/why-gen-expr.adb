@@ -489,16 +489,9 @@ package body Why.Gen.Expr is
                   Check_Kind   := Conversion_Reason.Pop;
                elsif
                  Get_Base_Type (From) = EW_Abstract and then
-                 Get_Base_Type (To) = EW_Abstract
+                 Get_Base_Type (To) = EW_Abstract and then
+                 Ekind (Get_Ada_Node (+To)) = E_Record_Subtype
                then
-
-                  --  Conversion between Ada types potentially need a
-                  --  discriminant check. When they don't, the precondition
-                  --  is marked trivial, so there is no danger in inserting a
-                  --  checking call here.
-                  --  Right now the only case where that happens are
-                  --  discriminant records, so we fix the VC Kind here.
-
                   Check_Needed := True;
                   Check_Kind := VC_Discriminant_Check;
                else
