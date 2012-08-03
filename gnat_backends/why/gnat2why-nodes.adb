@@ -27,8 +27,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Csets;           use Csets;
 with Lib;             use Lib;
-with Sem_Util;        use Sem_Util;
 with Pprint;          use Pprint;
+with Sem_Util;        use Sem_Util;
+with Snames;          use Snames;
 with Stringt;         use Stringt;
 with Urealp;          use Urealp;
 
@@ -207,6 +208,23 @@ package body Gnat2Why.Nodes is
             raise Program_Error;
       end case;
    end Get_Range;
+
+   ----------------------
+   -- Has_Precondition --
+   ----------------------
+
+   function Has_Precondition (E : Entity_Id) return Boolean is
+      PPC      : Node_Id;
+   begin
+      PPC := Spec_PPC_List (Contract (E));
+      while Present (PPC) loop
+         if Pragma_Name (PPC) = Name_Precondition then
+            return True;
+         end if;
+         PPC := Next_Pragma (PPC);
+      end loop;
+      return False;
+   end Has_Precondition;
 
    -----------------------
    -- In_Main_Unit_Body --

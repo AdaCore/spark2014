@@ -138,6 +138,11 @@ package Gnat2Why.Nodes is
 
    end Ada_Ent_To_Why;
 
+   function Has_Precondition (E : Entity_Id) return Boolean
+   with Pre => Is_Overloadable (E);
+   --  Check whether E (which must be the entity for a subprogram) has a
+   --  precondition.
+
    function In_Main_Unit_Body (N : Node_Id) return Boolean;
    function In_Main_Unit_Spec (N : Node_Id) return Boolean;
    --  Check whether N is in the Body, respectively in the Spec of the current

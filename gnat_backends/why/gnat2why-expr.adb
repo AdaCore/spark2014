@@ -3701,19 +3701,26 @@ package body Gnat2Why.Expr is
                Name       : constant W_Identifier_Id :=
                  To_Why_Id (Subp, Domain, Local => False);
                Nb_Of_Refs : Natural;
+               Args       : constant W_Expr_Array :=
+                 Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
             begin
                Current_Type := +Why_Logic_Type_Of_Ada_Type (Result_Typ);
-               T :=
-                 +New_VC_Call
-                   (Name     => Name,
-                    Progs    => Compute_Call_Args (Expr,
-                                                   Domain,
-                                                   Nb_Of_Refs,
-                                                   Local_Params),
-                    Ada_Node => Expr,
-                    Domain   => Domain,
-                    Reason   => VC_Precondition);
-
+               if Has_Precondition (Subp) then
+                  T :=
+                    +New_VC_Call
+                    (Name     => Name,
+                     Progs    => Args,
+                     Ada_Node => Expr,
+                     Domain   => Domain,
+                     Reason   => VC_Precondition);
+               else
+                  T :=
+                    New_Call
+                      (Name     => Name,
+                       Args     => Args,
+                       Ada_Node => Expr,
+                       Domain   => Domain);
+               end if;
                pragma Assert (Nb_Of_Refs = 0,
                               "Only pure functions are in alfa");
             end;
@@ -4310,23 +4317,23 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement =>
             declare
                Nb_Of_Refs : Natural;
-               Call       : constant W_Prog_Id :=
-                              +New_VC_Call
-                                (Ada_Node => Stmt,
-                                 Name     =>
-                                   To_Why_Id (Entity (Name (Stmt)), EW_Prog),
-                                 Progs    =>
-                                   Compute_Call_Args
-                                     (Stmt, EW_Prog, Nb_Of_Refs,
-                                      Params => Body_Params),
-                                 Domain   => EW_Prog,
-                                 Reason   => VC_Precondition);
+               Args       : constant W_Expr_Array :=
+                 Compute_Call_Args
+                   (Stmt, EW_Prog, Nb_Of_Refs, Params => Body_Params);
+               Subp       : constant Entity_Id := Entity (Name (Stmt));
+               Why_Name   : constant W_Identifier_Id :=
+                 To_Why_Id (Subp, EW_Prog);
+               Call       : constant W_Expr_Id :=
+                 (if Has_Precondition (Subp) then
+                  +New_VC_Call (Stmt, Why_Name, Args, VC_Precondition, EW_Prog)
+                  else
+                  New_Call (Stmt, EW_Prog, Why_Name, Args));
             begin
                if Nb_Of_Refs = 0 then
-                  return Call;
+                  return +Call;
                else
                   return
-                    Insert_Ref_Context (Body_Params, Stmt, Call, Nb_Of_Refs);
+                    Insert_Ref_Context (Body_Params, Stmt, +Call, Nb_Of_Refs);
                end if;
             end;
 
