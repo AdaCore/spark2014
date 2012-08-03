@@ -1056,9 +1056,9 @@ package body Why.Atree.Sprint is
       Node  : W_Record_Update_Id)
    is
    begin
-      P (O, "{| ");
+      P (O, "{| ( ");
       Traverse (State, +Get_Name (Node));
-      P (O, " with ");
+      P (O, " ) with ");
       Print_List (State, +Get_Updates (Node), "; ");
       P (O, " |}");
       State.Control := Abandon_Children;
