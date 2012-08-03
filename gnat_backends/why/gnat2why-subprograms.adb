@@ -609,11 +609,7 @@ package body Gnat2Why.Subprograms is
       if Cur_Spec /= Why_Empty then
          return Cur_Spec;
       else
-         return New_Label (Domain => Domain,
-                           Labels => (1 => To_Ident (WNE_AutoGen)),
-                           Def    =>
-                             New_Literal (Value  => EW_True,
-                                          Domain => Domain));
+         return New_Literal (Value => EW_True, Domain => Domain);
       end if;
    end Compute_Spec;
 
@@ -747,9 +743,7 @@ package body Gnat2Why.Subprograms is
             Name    => To_Ident (WNE_Pre_Check),
             Binders => Binders,
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog),
-            Post    =>
-              New_Label (Labels => (1 => To_Ident (WNE_AutoGen)),
-                         Def    => +True_Pred)));
+            Post    => True_Pred));
       Close_Theory (File, Filter_Entity => E);
    end Generate_VCs_For_Subprogram_Spec;
 

@@ -209,9 +209,6 @@ package body Why.Gen.Records is
                Info := Comp_Info.Element (Info.Parent_Var_Part);
             end;
          end loop;
-         if Cond = True_Pred then
-            Cond := Auto_True;
-         end if;
          return Cond;
       end Compute_Discriminant_Check;
 
@@ -227,7 +224,6 @@ package body Why.Gen.Records is
       begin
          Pred := True_Pred;
          if not Has_Discriminants (E) then
-            Pred := Auto_True;
             return (1 .. 0 => <>);
          end if;
          declare
@@ -287,9 +283,6 @@ package body Why.Gen.Records is
                   Next_Elmt (Constr_Elmt);
                end;
             end loop;
-            if Pred = True_Pred then
-               Pred := Auto_True;
-            end if;
             return Discr_Binders (1 .. Dyn_Discr_Count);
          end;
       end Compute_Down_Cast_Check;
@@ -474,26 +467,6 @@ package body Why.Gen.Records is
                   Pre         => Down_Cast));
          end;
 
-         Emit
-           (Theory,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => To_Program_Space (To_Ident (WNE_To_Base)),
-               Binders     => R_Binder,
-               Return_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Base),
-               Post        =>
-                 New_Relation
-                   (Op_Type => EW_Abstract,
-                    Left    => +To_Ident (WNE_Result),
-                    Op      => EW_Eq,
-                    Right   =>
-                      New_Call
-                        (Domain => EW_Term,
-                         Name   => To_Ident (WNE_To_Base),
-                         Args   => (1 => +A_Ident))),
-               Pre         => Auto_True));
-
       end Declare_Conversion_Functions;
 
       -------------------------------
@@ -579,7 +552,7 @@ package body Why.Gen.Records is
                  To_Program_Space (Why_Name);
                Pre_Cond  : constant W_Pred_Id :=
                  (if Ekind (E) = E_Record_Subtype  or else
-                  Ekind (Field) = E_Discriminant then Auto_True
+                  Ekind (Field) = E_Discriminant then True_Pred
                   else Compute_Discriminant_Check (Field));
             begin
                Emit (Theory,

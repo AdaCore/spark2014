@@ -30,11 +30,6 @@ with Why.Conversions;     use Why.Conversions;
 
 package body Why.Gen.Preds is
 
-   function Auto_True return W_Pred_Id is
-   begin
-      return +New_Label (Labels => (1 => To_Ident (WNE_AutoGen)),
-                        Def    => +True_Pred);
-   end Auto_True;
    -------------------------
    -- Define_Eq_Predicate --
    -------------------------

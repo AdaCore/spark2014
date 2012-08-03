@@ -145,7 +145,6 @@ package Why.Gen.Names is
       WNE_Attr_Modulus,
       WNE_Attr_Value,
       WNE_Attr_Value_Pre_Check,
-      WNE_AutoGen,
       WNE_Bool_And,
       WNE_Bool_Eq,
       WNE_Bool_Ge,
