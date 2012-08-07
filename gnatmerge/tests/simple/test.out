@@ -1,6 +1,0 @@
-pack.adb:20:4-23:10: info: goal reached at P2 (PARTIALLY PROVED, TEST PASSED)
-pack.adb:30:4-33:10: goal not reached at P3 (TEST FAILED, NOT PROVED)
-pack.ads:10:4-16:36: info: goal reached at P1 (TEST FAILED, PROVED)
-pack.adb:60:4-63:10: goal not reached at P6 (TEST FAILED)
-pack.adb:40:4-43:10: info: goal reached at P4 (NOT PROVED, TEST PASSED)
-pack.adb:50:4-53:10: goal not reached at P5 (TEST FAILED)

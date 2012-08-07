@@ -1,8 +1,0 @@
-pack.ads:52:1: info: range check proved
-pack.adb:53:1: info: overflow check proved
-pack.ads:62:1: info: range check proved
-pack.adb:63:1: overflow check not proved
-pack.ads:72:1: range check not proved
-pack.adb:73:1: overflow check not proved
-pack.ads:82:1: range check not proved
-pack.adb:83:1: overflow check not proved
