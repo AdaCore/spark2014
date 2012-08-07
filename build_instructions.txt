@@ -99,7 +99,8 @@ The final directory structure of all related products is:
       where <Root> denotes a full path and <machine> denotes the machine name
       (Ex: kwai).
 
-      OR
+      OR, if you don't need to build gnatmerge:
+
       $ ./configure --prefix=<Root>/local --without-python
 
       Make sure that gnatlib is configured with projects support, which can be
@@ -200,7 +201,15 @@ The final directory structure of all related products is:
 
       $ make install
 
-9) Build gnat2why and gnatprove
+9) ASIS
+   Get a source package that has the same version as your installation of GNAT.
+   Then build it and set your GPR_PROJECT_PATH to the root of the source
+   package:
+
+   $ make all gu_tools
+   $ export GPR_PROJECT_PATH=$PWD:$GPR_PROJECT_PATH
+
+10) Build gnat2why, gnatprove, gnatmerge
 
    Detailed information can be found in the main Makefile. The short version
    is:
@@ -210,19 +219,20 @@ The final directory structure of all related products is:
    $ export PATH=<Root>/hi-lite/install/bin:$PATH
    $ make stdlib
    $ make install
+   $ make gnatmerge install-gnatmerge
 
-10) Install AdaCore python
+11) Install AdaCore python
 
    Get the version that corresponds to your system:
 
    svn+ssh://svn.eu.adacore.com/Dev/trunk/binaries/python/2.7/distrib
 
-11) Install gnatpython
+12) Install gnatpython
 
    Follow the instructions at:
    https://www2.adacore.com/internal.auth/gnatpython-docs/introduction.html#installation
 
-12) Run the testsuite
+13) Run the testsuite
 
    $ cd <Root>/hi-lite/testsuite/gnatprove
    $ ./run-tests
@@ -240,25 +250,25 @@ The final directory structure of all related products is:
 
    $ ./run-tests --quick -j n
 
-13) Run the ACATS testsuite on gnatprove
-   13.1) Check out
+14) Run the ACATS testsuite on gnatprove
+   14.1) Check out
 
       $ svn co svn+ssh://svn.us.adacore.com/Dev/trunk/gnatmail/testsuites/acats
 
       in directory <Root>. This step creates directory <Root>/acats
 
-   13.2) Run
+   14.2) Run
 
       $ cd <Root>/acats
       $ ./run_acats_test.py --mode=gnatprove-check
 
-14) Obtain a coverage report
+15) Obtain a coverage report
 
-   14.1) Compile gnat2why with coverage information and run the testsuite
+   15.1) Compile gnat2why with coverage information and run the testsuite
 
       $ make coverage
 
-   14.2) Open up gps and look at the coverage report
+   15.2) Open up gps and look at the coverage report
 
       $ gps
       Tools -> Coverage -> Gcov -> Compute coverage files

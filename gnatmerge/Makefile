@@ -1,3 +1,6 @@
+INSTALLDIR=install
+CP=cp -pr
+
 all: build
 
 build: force
@@ -7,3 +10,8 @@ force:
 
 clean:
 	make -C ada clean 
+install: build
+	mkdir -p $(INSTALLDIR)/share/
+	mkdir -p $(INSTALLDIR)/bin/
+	$(CP) share/gnatmerge/ $(INSTALLDIR)/share/
+	$(CP) ada/gnatmerge $(INSTALLDIR)/bin/

@@ -7,6 +7,9 @@
 # To build gnatprove, you additionnally need an installation of the gnatcoll
 # library.
 #
+# To build gnatmerge, you additionnally need python support in gnatcoll and
+# an installation of ASIS.
+#
 # For gnatprove to work, you also need working installations of Why3 and
 # Alt-Ergo. The files build_instructions*.txt contains information on how to
 # install those.
@@ -33,7 +36,7 @@
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
-INSTALLDIR=install
+INSTALLDIR=$(PWD)/install
 SHAREDIR=$(INSTALLDIR)/share
 EXAMPLESDIR=$(SHAREDIR)/examples/gnatprove
 DOCDIR=$(SHAREDIR)/doc/gnatprove
@@ -83,6 +86,12 @@ coverage:
 
 gnatprove:
 	$(MAKE) -C gnatprove
+
+gnatmerge:
+	$(MAKE) -C gnatmerge
+
+install-gnatmerge: 
+	$(MAKE) -C gnatmerge INSTALLDIR=$(INSTALLDIR) install
 
 # Translating the standard library for GNATprove
 # ==============================================
