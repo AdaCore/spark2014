@@ -29,8 +29,7 @@ with GNATCOLL.Utils;    use GNATCOLL.Utils;
 
 package Configuration is
 
-   Prefix         : constant String :=
-                      Ada.Directories.Compose (Executable_Location, "..");
+   Prefix         : constant String := Executable_Location;
    Share_Dir      : constant String :=
                       Ada.Directories.Compose (Prefix, "share");
    Share_GM_Dir   : constant String :=

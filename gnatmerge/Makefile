@@ -14,4 +14,4 @@ install: build
 	mkdir -p $(INSTALLDIR)/share/
 	mkdir -p $(INSTALLDIR)/bin/
 	$(CP) share/gnatmerge/ $(INSTALLDIR)/share/
-	$(CP) ada/gnatmerge $(INSTALLDIR)/bin/
+	$(CP) bin/gnatmerge $(INSTALLDIR)/bin/
