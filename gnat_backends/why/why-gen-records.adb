@@ -727,9 +727,32 @@ package body Why.Gen.Records is
         Present (Cloned_Subtype (E)) then
 
          --  This type is simply a copy of an existing type, we re-export the
-         --  corresponding module and return
+         --  corresponding module and generate trivial conversion functions,
+         --  then return
 
-         Add_Use_For_Entity (P, Cloned_Subtype (E), EW_Export);
+         declare
+            Clone : constant Entity_Id := Cloned_Subtype (E);
+         begin
+            Add_Use_For_Entity (P, Clone, EW_Export);
+            if Clone = Base_Type (E) then
+               Emit
+                 (Theory,
+                  New_Function_Def
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_To_Base),
+                     Binders     => R_Binder,
+                     Return_Type => Abstr_Ty,
+                     Def         => +A_Ident));
+               Emit
+                 (Theory,
+                  New_Function_Def
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_Of_Base),
+                     Binders     => R_Binder,
+                     Return_Type => Abstr_Ty,
+                     Def         => +A_Ident));
+            end if;
+         end;
          return;
       end if;
       if Ekind (E) /= E_Record_Subtype then
