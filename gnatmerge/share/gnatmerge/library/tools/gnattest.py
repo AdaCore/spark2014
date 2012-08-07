@@ -46,8 +46,9 @@ class GNATtest:
         test_runner = harness_dir + "/test_runner"
         results = object_dir + "/gnattest.mrg"
         # ??? Log any tool output.
-        Popen(["gnattest", "-P", gpr_filename]).wait()
-        Popen(["gnatmake", "-P", harness_dir + "/test_driver.gpr"]).wait()
+        Popen(["gnattest", "-P", gpr_filename, "-q"]).wait()
+        Popen(["gnatmake",
+               "-P", harness_dir + "/test_driver.gpr", "-q"]).wait()
         with open(results, 'w') as fd:
             p = Popen([test_runner], stdout=fd)
             p.wait()

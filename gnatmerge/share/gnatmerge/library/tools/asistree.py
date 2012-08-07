@@ -50,7 +50,7 @@ class AsisTree:
         """
         gpr_filename = gpr.path()
         object_dir = gpr.object_dir()
-        Popen(["gnatmake", "-f", "-gnatct", "-P", gpr_filename]).wait()
+        Popen(["gnatmake", "-f", "-q", "-gnatct", "-P", gpr_filename]).wait()
         # ??? Use an object sub-directory
         for adt in glob.glob(object_dir + "*.adt"):
             self.load(adt)
