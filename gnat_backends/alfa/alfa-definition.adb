@@ -2494,6 +2494,11 @@ package body Alfa.Definition is
             null;
 
          when E_Record_Type | E_Record_Subtype =>
+
+            if Ekind (Id) = E_Record_Subtype and then
+              not In_Alfa (Base_Type (Id)) then
+               Mark_Violation ("base type", Id, From => Base_Type (Id));
+            end if;
             if Is_Interface (Id) then
                Mark_Violation ("interface", Id, NYI_Interface);
 
