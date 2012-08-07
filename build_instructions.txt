@@ -188,7 +188,7 @@ The final directory structure of all related products is:
    8.1) Configure Why3
 
       $ cd <Root>/hi-lite/why3
-      $ ./configure --prefix=<Root>/hi-lite/install --disable-gui
+      $ ./configure --prefix=<Root>/hi-lite/install --enable-relocation --disable-gui
 
       where <Root> denotes a full path.
 
