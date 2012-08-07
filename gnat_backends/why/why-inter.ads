@@ -138,6 +138,14 @@ package Why.Inter is
                               Use_Kind : EW_Clone_Type);
    --  Add a package name to the context of a Why package.
 
+   procedure Add_Use_For_Entity (P        : in out Why_File;
+                                 N        : Entity_Id;
+                                 Use_Kind : EW_Clone_Type := EW_Clone_Default);
+   --  For the given entity, add a use clause to the current theory.
+   --  If Use_Kind is set to EW_Clone_Default, the actual use kind for that
+   --  entity is computed from the entity itself. If another value is given for
+   --  Use_Kind, that value is used.
+
    procedure Add_Effect_Imports (P : in out Why_File;
                                  S : Name_Set.Set);
 

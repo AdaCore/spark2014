@@ -48,7 +48,6 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Terms;      use Why.Gen.Terms;
-with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Records is
@@ -106,7 +105,8 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Declare_Ada_Record
-     (Theory  : W_Theory_Declaration_Id;
+     (P       : in out Why_File;
+      Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id)
    is
 
@@ -726,14 +726,10 @@ package body Why.Gen.Records is
       if Ekind (E) = E_Record_Subtype and then
         Present (Cloned_Subtype (E)) then
 
-         --  This type is simply a copy of an existing type, we generate the
-         --  alias and return
+         --  This type is simply a copy of an existing type, we re-export the
+         --  corresponding module and return
 
-         Emit (Theory,
-               New_Type (Name => To_Ident (WNE_Type),
-                         Alias =>
-                           New_Abstract_Type
-                             (Name => To_Why_Id (Cloned_Subtype (E)))));
+         Add_Use_For_Entity (P, Cloned_Subtype (E), EW_Export);
          return;
       end if;
       if Ekind (E) /= E_Record_Subtype then

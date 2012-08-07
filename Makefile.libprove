@@ -55,5 +55,5 @@ $(WHY_STANDARD):
 	rm $(DUMMYFILE)
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
-	why3ml -L ../share/gnatprove/theories --type-only -L . $< > /dev/null
+	why3 -L ../share/gnatprove/theories --type-only -L . $< > /dev/null
 	touch $@

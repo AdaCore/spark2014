@@ -291,12 +291,131 @@ package body Why.Inter is
       end loop;
    end Add_Effect_Imports;
 
+   ------------------------
+   -- Add_Effect_Imports --
+   ------------------------
+
    procedure Add_Effect_Imports (P : in out Why_File;
                                  S : Name_Set.Set)
    is
    begin
       Add_Effect_Imports (P.Cur_Theory, S);
    end Add_Effect_Imports;
+
+   ------------------------
+   -- Add_Use_For_Entity --
+   ------------------------
+
+   procedure Add_Use_For_Entity (P        : in out Why_File;
+                                 N        : Entity_Id;
+                                 Use_Kind : EW_Clone_Type := EW_Clone_Default)
+   is
+      function File_Base_Name_Of_Entity (E : Entity_Id) return String;
+      --  return the base name of the unit in which the entity is
+      --  defined
+
+      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
+      --  return the import type that is used for such an entity
+
+      function Name_Of_Node (N : Node_Id) return String;
+      --  Return the uncapitalized name which needs to be used to include the
+      --  Why entity for that node (after capitalization).
+
+      ------------------------------
+      -- File_Base_Name_Of_Entity --
+      ------------------------------
+
+      function File_Base_Name_Of_Entity (E : Entity_Id) return String is
+         U : Node_Id;
+      begin
+         if Is_In_Standard_Package (E) then
+            return Standard_Why_Package_Name;
+         end if;
+         U := Enclosing_Comp_Unit_Node (E);
+
+         --  Itypes are not attached to the tree, so we go through the
+         --  associated node
+
+         if not Present (U) and then Is_Itype (E) then
+            U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
+         end if;
+
+         --  Special handling for entities of subunits, we extract the library
+         --  unit
+
+         while Nkind (Unit (U)) = N_Subunit loop
+            U := Library_Unit (U);
+         end loop;
+         return File_Name_Without_Suffix (Sloc (U));
+      end File_Base_Name_Of_Entity;
+
+      ---------------------------
+      -- Import_Type_Of_Entity --
+      ---------------------------
+
+      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
+      begin
+         if Nkind (E) = N_String_Literal
+           or else Nkind (E) = N_Aggregate
+           or else Nkind (E) = N_Slice then
+            return EW_Import;
+         end if;
+         return EW_Clone_Default;
+      end Import_Type_Of_Entity;
+
+      ------------------
+      -- Name_Of_Node --
+      ------------------
+
+      function Name_Of_Node (N : Node_Id) return String is
+      begin
+         if Nkind (N) = N_String_Literal
+           or else Nkind (N) = N_Aggregate
+           or else Nkind (N) = N_Slice then
+            return New_Str_Lit_Ident (N);
+         end if;
+         return Full_Name (N);
+      end Name_Of_Node;
+
+      File_Name   : constant String :=
+        File_Base_Name_Of_Entity (N)
+        & Why_File_Suffix (Dispatch_Entity (N));
+      Raw_Name    : constant String := Name_Of_Node (N);
+      Theory_Name : constant String := Capitalize_First (Raw_Name);
+      Import      : constant EW_Clone_Type :=
+        (if Use_Kind = EW_Clone_Default then Import_Type_Of_Entity (N)
+         else Use_Kind);
+   begin
+      if File_Name /= P.Name.all then
+         Add_With_Clause (P, File_Name, Theory_Name, Import);
+      else
+         Add_With_Clause (P, "", Theory_Name, Import);
+      end if;
+
+      for Kind in Why_Context_File_Enum loop
+         declare
+            Compl_Fname  : constant String :=
+              File_Base_Name_Of_Entity (N)
+              & Why_File_Suffix (Kind);
+            Completions  : constant Why_Completions :=
+              Get_Completions (Raw_Name, Kind);
+         begin
+            for J in Completions'Range loop
+               declare
+                  Compl_Name : constant String :=
+                    Capitalize_First (To_String (Completions (J)));
+               begin
+                  if Compl_Fname /= P.Name.all then
+                     Add_With_Clause
+                       (P, Compl_Fname, Compl_Name, Import);
+                  else
+                     Add_With_Clause (P, "", Compl_Name, Import);
+                  end if;
+               end;
+            end loop;
+         end;
+      end loop;
+   end Add_Use_For_Entity;
 
    ---------------------
    -- Add_With_Clause --
@@ -387,77 +506,9 @@ package body Why.Inter is
    procedure Close_Theory (P             : in out Why_File;
                            Filter_Entity : Entity_Id)
    is
-
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String;
-      --  return the base name of the unit in which the entity is
-      --  defined
-
-      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
-      --  return the import type that is used for such an entity
-
-      function Name_Of_Node (N : Node_Id) return String;
-      --  Return the uncapitalized name which needs to be used to include the
-      --  Why entity for that node (after capitalization).
-
-      ------------------------------
-      -- File_Base_Name_Of_Entity --
-      ------------------------------
-
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String is
-         U : Node_Id;
-      begin
-         if Is_In_Standard_Package (E) then
-            return Standard_Why_Package_Name;
-         end if;
-         U := Enclosing_Comp_Unit_Node (E);
-
-         --  Itypes are not attached to the tree, so we go through the
-         --  associated node
-
-         if not Present (U) and then Is_Itype (E) then
-            U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
-         end if;
-
-         --  Special handling for entities of subunits, we extract the library
-         --  unit
-
-         while Nkind (Unit (U)) = N_Subunit loop
-            U := Library_Unit (U);
-         end loop;
-         return File_Name_Without_Suffix (Sloc (U));
-      end File_Base_Name_Of_Entity;
-
-      ---------------------------
-      -- Import_Type_Of_Entity --
-      ---------------------------
-
-      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
-      begin
-         if Nkind (E) = N_String_Literal
-           or else Nkind (E) = N_Aggregate
-           or else Nkind (E) = N_Slice then
-            return EW_Import;
-         end if;
-         return EW_Clone_Default;
-      end Import_Type_Of_Entity;
-
-      ------------------
-      -- Name_Of_Node --
-      ------------------
-
-      function Name_Of_Node (N : Node_Id) return String is
-      begin
-         if Nkind (N) = N_String_Literal
-           or else Nkind (N) = N_Aggregate
-           or else Nkind (N) = N_Slice then
-            return New_Str_Lit_Ident (N);
-         end if;
-         return Full_Name (N);
-      end Name_Of_Node;
-
       use Node_Sets;
 
-      S        : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+      S : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
 
       Gnatprove_Standard : constant String := "_gnatprove_standard";
    begin
@@ -485,47 +536,8 @@ package body Why.Inter is
              (if Nkind (N) in N_Entity and then Is_Full_View (N) then
               Partial_View (N) /= Filter_Entity)
          then
-            declare
-               File_Name   : constant String :=
-                               File_Base_Name_Of_Entity (N)
-                                 & Why_File_Suffix (Dispatch_Entity (N));
-               Raw_Name    : constant String := Name_Of_Node (N);
-               Theory_Name : constant String := Capitalize_First (Raw_Name);
-               Import      : constant EW_Clone_Type :=
-                               Import_Type_Of_Entity (N);
-            begin
-               Standard_Imports.Set_SI (N);
-
-               if File_Name /= P.Name.all then
-                  Add_With_Clause (P, File_Name, Theory_Name, Import);
-               else
-                  Add_With_Clause (P, "", Theory_Name, Import);
-               end if;
-
-               for Kind in Why_Context_File_Enum loop
-                  declare
-                     Compl_Fname  : constant String :=
-                                      File_Base_Name_Of_Entity (N)
-                                        & Why_File_Suffix (Kind);
-                     Completions  : constant Why_Completions :=
-                                      Get_Completions (Raw_Name, Kind);
-                  begin
-                     for J in Completions'Range loop
-                        declare
-                           Compl_Name : constant String :=
-                             Capitalize_First (To_String (Completions (J)));
-                        begin
-                           if Compl_Fname /= P.Name.all then
-                              Add_With_Clause
-                                (P, Compl_Fname, Compl_Name, Import);
-                           else
-                              Add_With_Clause (P, "", Compl_Name, Import);
-                           end if;
-                        end;
-                     end loop;
-                  end;
-               end loop;
-            end;
+            Standard_Imports.Set_SI (N);
+            Add_Use_For_Entity (P, N);
          end if;
       end loop;
 

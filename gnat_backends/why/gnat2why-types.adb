@@ -243,7 +243,7 @@ package body Gnat2Why.Types is
                Declare_Ada_Array (Theory, E);
 
             when E_Record_Type | E_Record_Subtype =>
-               Declare_Ada_Record (Theory, E);
+               Declare_Ada_Record (File, Theory, E);
 
             --  No private type or record subtype should be translated
 
@@ -266,10 +266,16 @@ package body Gnat2Why.Types is
       Open_Theory (File, Name);
       Translate_Underlying_Type (File.Cur_Theory, E);
 
-      --  We declare a default value for all types
+      --  We declare a default value for all types, in principle. Right now,
+      --  this is limited to types in the source or in the standard package.
+      --  Cloned subtypes are a special case, they do not need such a
+      --  definition.
 
       if (Comes_From_Source (E) or else Is_In_Standard_Package (E)) and then
-        E /= Standard_Boolean and then E /= Universal_Fixed then
+        E /= Standard_Boolean and then E /= Universal_Fixed  and then
+        (if Ekind (E) = E_Record_Subtype then
+           not (Present (Cloned_Subtype (E))))
+      then
          Emit
            (File.Cur_Theory,
             New_Function_Decl

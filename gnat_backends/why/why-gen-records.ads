@@ -26,13 +26,15 @@
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
+with Why.Inter; use Why.Inter;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
    --  also includes records with variant parts.
 
    procedure Declare_Ada_Record
-     (Theory  : W_Theory_Declaration_Id;
+     (P       : in out Why_File;
+      Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records.
