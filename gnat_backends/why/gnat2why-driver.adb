@@ -88,7 +88,7 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
       if Ekind (E) in Subprogram_Kind then
-         if In_Alfa (E) then
+         if In_Alfa (E) and then Has_Precondition (E) then
             Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
          end if;
 
