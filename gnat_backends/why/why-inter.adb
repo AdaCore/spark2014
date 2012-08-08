@@ -504,7 +504,8 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory (P             : in out Why_File;
-                           Filter_Entity : Entity_Id)
+                           Filter_Entity : Entity_Id;
+                           No_Import     : Boolean := False)
    is
       use Node_Sets;
 
@@ -512,68 +513,68 @@ package body Why.Inter is
 
       Gnatprove_Standard : constant String := "_gnatprove_standard";
    begin
-
       Standard_Imports.Clear;
-
       Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
+      if not (No_Import) then
 
-      if Present (Filter_Entity) then
-         Standard_Imports.Set_SI (Filter_Entity);
-      end if;
-
-      --  S contains all mentioned Ada entities; for each, we get the
-      --  unit where it was defined and add it to the unit set
-
-      for N of S loop
-
-         --  Loop parameters may appear, but they do not have a Why
-         --  declaration; we skip them here. We also need to protect against
-         --  nodes that are not entities, such as string literals
-
-         if N /= Filter_Entity and then
-           (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
-           and then
-             (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-              Partial_View (N) /= Filter_Entity)
-         then
-            Standard_Imports.Set_SI (N);
-            Add_Use_For_Entity (P, N);
+         if Present (Filter_Entity) then
+            Standard_Imports.Set_SI (Filter_Entity);
          end if;
-      end loop;
 
-      --  We add the dependencies to Gnatprove_Standard theories that may
-      --  have been triggered
+         --  S contains all mentioned Ada entities; for each, we get the
+         --  unit where it was defined and add it to the unit set
 
-      declare
-         use Standard_Imports;
-      begin
-         for Index in Imports'Range loop
-            if Imports (Index) then
-               Add_With_Clause (P,
-                                Gnatprove_Standard,
-                                To_String (Index),
-                                EW_Clone_Default);
+         for N of S loop
 
-               --  Two special cases for infix symbols; these are the only
-               --  theories (as opposed to modules) that are used, and the
-               --  only ones to be "use import"ed
+            --  Loop parameters may appear, but they do not have a Why
+            --  declaration; we skip them here. We also need to protect against
+            --  nodes that are not entities, such as string literals
 
-               if Index = SI_Integer then
-                  Add_With_Clause (P,
-                                   "int",
-                                   "Int",
-                                   EW_Import,
-                                   EW_Theory);
-               elsif Index = SI_Float then
-                  Add_With_Clause (P,
-                                   "real",
-                                   "RealInfix",
-                                   EW_Import,
-                                   EW_Theory);
-               end if;
+            if N /= Filter_Entity and then
+              (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
+              and then
+                (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                 Partial_View (N) /= Filter_Entity)
+            then
+               Standard_Imports.Set_SI (N);
+               Add_Use_For_Entity (P, N);
             end if;
          end loop;
-      end;
+
+         --  We add the dependencies to Gnatprove_Standard theories that may
+         --  have been triggered
+
+         declare
+            use Standard_Imports;
+         begin
+            for Index in Imports'Range loop
+               if Imports (Index) then
+                  Add_With_Clause (P,
+                                   Gnatprove_Standard,
+                                   To_String (Index),
+                                   EW_Clone_Default);
+
+                  --  Two special cases for infix symbols; these are the only
+                  --  theories (as opposed to modules) that are used, and the
+                  --  only ones to be "use import"ed
+
+                  if Index = SI_Integer then
+                     Add_With_Clause (P,
+                                      "int",
+                                      "Int",
+                                      EW_Import,
+                                      EW_Theory);
+                  elsif Index = SI_Float then
+                     Add_With_Clause (P,
+                                      "real",
+                                      "RealInfix",
+                                      EW_Import,
+                                      EW_Theory);
+                  end if;
+               end if;
+            end loop;
+         end;
+      end if;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;

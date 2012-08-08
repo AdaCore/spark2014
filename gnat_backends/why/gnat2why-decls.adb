@@ -251,6 +251,7 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
+      Add_Use_For_Entity (File, Etype (E));
       --  We generate a global ref
 
       Emit
@@ -259,7 +260,7 @@ package body Gnat2Why.Decls is
            (Name     => To_Why_Id (E, Local => True),
             Ref_Type => Typ));
 
-      Close_Theory (File, Filter_Entity => E);
+      Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
 
    ------------------------
