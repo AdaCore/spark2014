@@ -1740,10 +1740,15 @@ package body Gnat2Why.Expr is
 
          --  Compute the call, guard and proposition for the axiom
 
-         Call := New_Call (Ada_Node => Expr,
-                           Domain   => EW_Term,
-                           Name     => Func,
-                           Args     => Call_Args);
+         Call :=
+           New_Prepared_Array_Access
+             (Ty_Entity => Etype (Expr),
+              Domain    => EW_Term,
+              Ar        =>
+                New_Call (Ada_Node => Expr,
+                          Domain   => EW_Term,
+                          Name     => Func,
+                          Args     => Call_Args));
 
          Def_Pred :=
            New_Binding
@@ -1989,13 +1994,11 @@ package body Gnat2Why.Expr is
                      Value     : constant W_Expr_Id :=
                                    +Ada_Ent_To_Why.Element (Args, Expr);
                      Read      : constant W_Expr_Id :=
-                                   New_Array_Access
-                                     (Ada_Node  => Expr_Or_Association,
-                                      Domain    => EW_Term,
-                                      Ty_Entity => T_Name,
-                                      Ar        => Arr,
-                                      Index     => Indexes,
-                                      Dimension => Num_Dim);
+                       New_Simple_Array_Access
+                         (Ada_Node => Expr_Or_Association,
+                          Domain   => EW_Term,
+                          Dimension => Num_Dim,
+                          Args      => Indexes & (1 => Arr));
                   begin
                      return New_Comparison
                        (Cmp       => EW_Eq,

@@ -606,31 +606,14 @@ package body Why.Gen.Arrays is
       Domain    : EW_Domain;
       Dimension : Pos) return W_Expr_Id
    is
-      Name      : constant W_Identifier_Id :=
-        Prefix (S => To_String (Ada_Array_Name (Dimension)),
-                W => WNE_Array_Access);
-      Used_Name : constant W_Identifier_Id :=
-        (if Domain = EW_Prog then
-         To_Program_Space (Name)
-         else
-         Name);
       Progs     : constant W_Expr_Array :=
-        Index & (1 =>
-                   New_Call
-                     (Domain => Domain,
-                      Name   =>
-                        Prefix (Ada_Node => Ty_Entity,
-                                S        => Full_Name (Ty_Entity),
-                                W        => WNE_To_Array),
-                      Args   => (1 => +Ar)));
+        Index & (1 => New_Prepared_Array_Access (Ty_Entity, Domain, Ar));
    begin
-      return
-        +New_VC_Call
-        (Ada_Node => Ada_Node,
-         Reason   => VC_Index_Check,
-         Name     => Used_Name,
-         Domain   => Domain,
-         Progs    => Progs);
+      return New_Simple_Array_Access
+        (Ada_Node  => Ada_Node,
+         Domain    => Domain,
+         Dimension => Dimension,
+         Args      => Progs);
    end New_Array_Access;
 
    --------------------
@@ -758,5 +741,50 @@ package body Why.Gen.Arrays is
            Args   => (1 => Array_Upd),
            Domain => Domain);
    end New_Array_Update;
+
+   -------------------------------
+   -- New_Prepared_Array_Access --
+   -------------------------------
+
+   function New_Prepared_Array_Access
+     (Ty_Entity : Entity_Id;
+      Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   is
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Entity,
+                     S        => Full_Name (Ty_Entity),
+                     W        => WNE_To_Array),
+           Args   => (1 => +Ar));
+   end New_Prepared_Array_Access;
+
+   -----------------------------
+   -- New_Simple_Array_Access --
+   -----------------------------
+
+   function New_Simple_Array_Access
+     (Ada_Node  : Node_Id;
+      Domain    : EW_Domain;
+      Dimension : Pos;
+      Args      : W_Expr_Array) return W_Expr_Id
+   is
+      Name      : constant W_Identifier_Id :=
+        Prefix (S => To_String (Ada_Array_Name (Dimension)),
+                W => WNE_Array_Access);
+      Used_Name : constant W_Identifier_Id :=
+        (if Domain = EW_Prog then To_Program_Space (Name) else Name);
+   begin
+      return
+        +New_VC_Call
+        (Ada_Node => Ada_Node,
+         Reason   => VC_Index_Check,
+         Name     => Used_Name,
+         Domain   => Domain,
+         Progs    => Args);
+   end New_Simple_Array_Access;
 
 end Why.Gen.Arrays;

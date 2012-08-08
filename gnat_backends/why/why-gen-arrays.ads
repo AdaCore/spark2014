@@ -56,6 +56,17 @@ package Why.Gen.Arrays is
       Dimension : Pos) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
+   function New_Simple_Array_Access
+     (Ada_Node  : Node_Id;
+      Domain    : EW_Domain;
+      Dimension : Pos;
+      Args      : W_Expr_Array) return W_Expr_Id;
+
+   function New_Prepared_Array_Access
+     (Ty_Entity : Entity_Id;
+      Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id;
+
    function New_Array_Attr
       (Attr      : Attribute_Id;
        Ty_Entity : Entity_Id;
