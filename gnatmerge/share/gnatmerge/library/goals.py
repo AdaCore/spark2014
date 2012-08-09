@@ -13,7 +13,8 @@ class Goal:
 
         for elt in entity.object.content():
             value = entity.object.follow(entity.status_attr_id(), elt)
-            sloc = entity.slocs.to_string(entity.object, elt)
+            sloc = entity.spans.to_string(entity.object, elt)
+            # ??? print sloc instead of span here...
             if not attribute.value_less_than(goal, value):
                 self.print_error(elt, sloc, value)
             elif verbose:

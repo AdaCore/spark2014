@@ -28,7 +28,7 @@ class GNATtest:
             entity.new_input(reader=readers.ErrorListing("TEST",
                                                          "PASSED",
                                                          "^[0-9]+ tests run"),
-                             inclusion=entity.slocs,
+                             inclusion=entity.spans,
                              union_name=entity.status_attr_id(),
                              maps={"OK" : ok,
                                    "KO" : ko})

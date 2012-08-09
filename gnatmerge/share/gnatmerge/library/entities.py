@@ -35,7 +35,7 @@ class Entity:
         """
         self.name = name
         self.merge = merge
-        self.slocs = self.merge.slocs
+        self.spans = self.merge.spans
         self.object = self.merge.repository.new_object(name)
         if states is not None:
             self.states = states
@@ -43,7 +43,7 @@ class Entity:
             self.states = lattices.PartialOrderAttribute(self.name + ".STATUS")
         self.names = lattices.DiscreteSpace(self.name + ".NAME")
         self.object.new_attribute(self.states)
-        self.object.new_attribute(self.slocs)
+        self.object.new_attribute(self.spans)
         self.object.new_attribute(self.names)
         # By default, entity.name is a renaming of name
         # ??? Should we do the same for any other attribute?
@@ -58,8 +58,8 @@ class Entity:
     def status_attr_id(self):
         return self.states.name
 
-    def slocs_attr_id(self):
-        return self.slocs.name
+    def spans_attr_id(self):
+        return self.spans.name
 
     def names_attr_id(self):
         return self.names.name
@@ -108,7 +108,7 @@ class Entity:
     def new_input(self, reader, union_name, inclusion, maps=None):
         child = self.new_child(reader.name, union_name, inclusion,
                                reader.fragments, maps)
-        # In the case of Asistree, inclusion is not self.slocs, it is
+        # In the case of Asistree, inclusion is not self.spans, it is
         # the discrete space of names
         child.reader = reader
         return child

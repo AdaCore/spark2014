@@ -28,18 +28,18 @@ class AsisTree:
         # it does not allow to match library-level subprograms (and ignore
         # local subprograms).
         self.asis_kinds = asis_kinds
-        self.slocs = entity.slocs
+        self.spans = entity.spans
         self.entity = entity
         self.ename = entity.names.name
         self.adts = \
             entity.new_input(reader=
-                             readers.AsisTreeReader("SLOC_FRAGMENT",
-                                                    self.slocs,
+                             readers.AsisTreeReader("SPAN_FRAGMENT",
+                                                    self.spans,
                                                     ename=self.ename,
                                                     maps={entity.name :
                                                           asis_kinds}),
                              inclusion=entity.names,
-                             union_name=entity.slocs_attr_id())
+                             union_name=entity.spans_attr_id())
 
     def load(self, filename):
         """Load a file containing results"""

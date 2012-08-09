@@ -14,14 +14,14 @@ class Merge:
 
     ATTRIBUTES
         repository: object repository, of type sets.Objects
-        slocs: RangeAttribute used to represent slocs
+        spans: RangeAttribute used to represent sloc spans
     """
 
     def __init__(self):
         """Constructor."""
         self.repository = sets.Objects()
-        self.slocs = lattices.RangeAttribute(lattices.SlocBaseType,
-                                             "SLOCS", "LOW", "HIGH")
+        self.spans = lattices.RangeAttribute(lattices.SlocBaseType,
+                                             "SPAN", "LOW", "HIGH")
         self.goals = {}
 
     def new_entity(self, name):

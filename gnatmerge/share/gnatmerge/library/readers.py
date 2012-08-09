@@ -62,7 +62,7 @@ class ErrorListing(Listing):
             print "warning: line with no sloc info: '%s'" % line.strip()
             return None
         sloc = parts[0] + ":" + parts[1] + ":" + parts[2]
-        element["SLOCS"] = {"LOW" : sloc, "HIGH" : sloc}
+        element["SPAN"] = {"LOW" : sloc, "HIGH" : sloc}
         element[self.name + ".STATUS"] = self.read_status(line)
         # ??? name appended to make that attribute unique. Is that needed?
         return element
@@ -89,11 +89,11 @@ class AsisTreeReader(Reader):
                 self.sloc_reader.map_to_kind(asis_name, kind)
 
     def build_element(self, kind, name, low, high):
-        slocs = {"LOW" : low, "HIGH" : high}
+        span = {"LOW" : low, "HIGH" : high}
         element = {"KIND" : kind,
                    self.ename : name,
                    "NAME" : self.name + str(self.index) + "." + name,
-                   "SLOCS" : slocs}
+                   "SPAN" : span}
         self.index += 1
         return element
 
