@@ -1,7 +1,7 @@
 all:
 	mkdir -p obj
 	mkdir -p lib
-	gnatmerge -e driver.py -Pcontracts
+	gnatmerge -Pcontracts
 clean:
 	-rm -rf lib/*
 	-rm -rf obj/*

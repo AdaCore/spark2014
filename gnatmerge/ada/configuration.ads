@@ -38,8 +38,12 @@ package Configuration is
                       Ada.Directories.Compose (Share_GM_Dir, "library");
    Plug_Ins       : constant String :=
                       Ada.Directories.Compose (Public_API, "plug-ins");
+   Default_Script : aliased String :=
+                      Ada.Directories.Compose (Public_API,
+                                               "default_driver.py");
 
-   User_Script    : aliased GNAT.Strings.String_Access := null;
+   User_Script    : aliased GNAT.Strings.String_Access :=
+                      Default_Script'Access;
    Project_File   : aliased GNAT.Strings.String_Access := null;
    Run_Console    : aliased Boolean;
 
