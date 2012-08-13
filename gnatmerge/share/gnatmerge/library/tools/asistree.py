@@ -32,14 +32,12 @@ class AsisTree:
         self.entity = entity
         self.ename = entity.names.name
         self.adts = \
-            entity.new_input(reader=
-                             readers.AsisTreeReader("SPAN_FRAGMENT",
-                                                    self.spans,
-                                                    ename=self.ename,
-                                                    maps={entity.name :
-                                                          asis_kinds}),
-                             inclusion=entity.names,
-                             union_name=entity.spans_attr_id())
+            entity.new_span_input(reader=
+                                  readers.AsisTreeReader("SPAN_FRAGMENT",
+                                                         self.spans,
+                                                         ename=self.ename,
+                                                         maps={entity.name :
+                                                               asis_kinds}))
 
     def load(self, filename):
         """Load a file containing results"""

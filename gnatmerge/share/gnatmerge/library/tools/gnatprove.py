@@ -24,13 +24,12 @@ class GNATprove:
         self.between = between
         entity.states.new_tristate(self.ok, self.ko, self.between)
         self.vcs = \
-            entity.new_input(reader=readers.ErrorListing("VC",
+            entity.new_status_input(reader=
+                                    readers.ErrorListing("VC",
                                                          ignore_pattern="^$"),
-                             inclusion=entity.spans,
-                             union_name=entity.status_attr_id(),
-                             maps={"OK" : ok,
-                                   "KO" : ko,
-                                   "PARTIAL OK" : between})
+                                    maps={"OK" : ok,
+                                          "KO" : ko,
+                                          "PARTIAL OK" : between})
 
     def load(self, filename):
         """Load a file containing results"""

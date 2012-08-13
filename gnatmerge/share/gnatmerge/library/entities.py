@@ -35,6 +35,11 @@ class Entity:
         """
         self.name = name
         self.merge = merge
+        # ??? Here spans are under attribute SPAN, not entity.SPAN.
+        # And status is under attribute entity.STATUS, and potentially
+        # father.STATUS, but not just STATUS. And name is under entity.NAME,
+        # NAME and maybe even father.NAME (to be checked). There is clearly
+        # a need to improve the homogeneity.
         self.spans = self.merge.spans
         self.object = self.merge.repository.new_object(name)
         if states is not None:
@@ -42,9 +47,20 @@ class Entity:
         else:
             self.states = lattices.PartialOrderAttribute(self.name + ".STATUS")
         self.names = lattices.DiscreteSpace(self.name + ".NAME")
+        # ??? should attribute domains know local names? Probably not.
+        # If those are supposed to be free from any relation...
+        # but they are not. Products is the counterexample. What shall we
+        # do? Should products be only relations (arrows), not attributes?
+        self.slocs = self.merge.slocs
+        self.centered_spans = self.merge.centered_spans
         self.object.new_attribute(self.states)
-        self.object.new_attribute(self.spans)
         self.object.new_attribute(self.names)
+
+        # spans and slocs are not contributed explicitly as attribute.
+        # But they are implicitely contributed through centered_spans,
+        # which contributes all its projections
+        self.object.new_attribute(self.centered_spans)
+
         # By default, entity.name is a renaming of name
         # ??? Should we do the same for any other attribute?
         # Not clear... We did so for cases where the attribute domain
@@ -53,6 +69,9 @@ class Entity:
         # in {PROVED, NOT PROVED, PARTIALLY PROVED}
         name_renaming = sets.IdentityArrow("NAME")
         self.object.new_arrow(self.names.name, name_renaming)
+        cspan_renaming = sets.IdentityArrow("CENTERED_SPAN")
+        self.object.new_arrow(self.centered_spans.name, cspan_renaming)
+
         self.object.join_arrow = {}
 
     def status_attr_id(self):
@@ -60,6 +79,9 @@ class Entity:
 
     def spans_attr_id(self):
         return self.spans.name
+
+    def centered_spans_attr_id(self):
+        return self.centered_spans.name
 
     def names_attr_id(self):
         return self.names.name
@@ -82,6 +104,8 @@ class Entity:
                   in the parent. If None, use the identity function to map
                   the child's state to the father's state.
         """
+        # ??? It would be good to document which attributes, arrows
+        # and names are inherited from the father
         child = Entity(self.merge, name, fragments)
         complete_map = maps
         if maps is not None:
@@ -112,6 +136,18 @@ class Entity:
         # the discrete space of names
         child.reader = reader
         return child
+
+    def new_status_input(self, reader, maps=None):
+        return self.new_input(reader=reader,
+                              union_name=self.status_attr_id(),
+                              inclusion=self.spans,
+                              maps=maps)
+
+    def new_span_input(self, reader, maps=None):
+        return self.new_input(reader=reader,
+                              union_name=self.centered_spans_attr_id(),
+                              inclusion=self.names,
+                              maps=maps)
 
     def load(self, filename):
         self.reader.load(filename)

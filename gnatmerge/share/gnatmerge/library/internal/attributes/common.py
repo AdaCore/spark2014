@@ -24,6 +24,9 @@ class Attribute:
         # not much more than a shortcut.
         return object.follow(self.name, key)
 
+    def contribute_arrows(self, object):
+        object.new_arrow(self.name, sets.AttributeArrow(self.name))
+
 class RenamedAttribute(Attribute):
 
     def __init__(self, name, attribute):

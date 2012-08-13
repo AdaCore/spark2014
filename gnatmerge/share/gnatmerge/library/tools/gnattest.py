@@ -25,13 +25,12 @@ class GNATtest:
         self.between = between
         entity.states.new_tristate(self.ok, self.ko, self.between)
         self.input = \
-            entity.new_input(reader=readers.ErrorListing("TEST",
+            entity.new_status_input(reader=
+                                    readers.ErrorListing("TEST",
                                                          "PASSED",
                                                          "^[0-9]+ tests run"),
-                             inclusion=entity.spans,
-                             union_name=entity.status_attr_id(),
-                             maps={"OK" : ok,
-                                   "KO" : ko})
+                                    maps={"OK" : ok,
+                                          "KO" : ko})
 
     def load(self, filename):
         """Load a file containing results"""

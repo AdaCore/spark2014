@@ -170,6 +170,7 @@ package body Common is
       procedure Execute_Proc
         (Kind : String;
          Name : String;
+         Sloc : String;
          Low  : String;
          High : String);
       --  Marshall arguments and pass them to Proc
@@ -181,15 +182,17 @@ package body Common is
       procedure Execute_Proc
         (Kind : String;
          Name : String;
+         Sloc : String;
          Low  : String;
          High : String)
       is
-         Args   : Callback_Data'Class := Create (Script, 4);
+         Args : Callback_Data'Class := Create (Script, 5);
       begin
          Set_Nth_Arg (Args, 1, Kind);
          Set_Nth_Arg (Args, 2, Name);
-         Set_Nth_Arg (Args, 3, Low);
-         Set_Nth_Arg (Args, 4, High);
+         Set_Nth_Arg (Args, 3, Sloc);
+         Set_Nth_Arg (Args, 4, Low);
+         Set_Nth_Arg (Args, 5, High);
          declare
             Dummy : constant Any_Type := Execute (Proc, Args);
             pragma Unreferenced (Dummy);

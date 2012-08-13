@@ -102,6 +102,7 @@ package body Json_Tree is
      (Process : not null access procedure
         (Kind : String;
          Name : String;
+         Sloc : String;
          Low  : String;
          High : String))
    is
@@ -168,15 +169,24 @@ package body Json_Tree is
       ---------------------
 
       procedure Process_Element (E : Element; Name : String; Kind : String) is
-         CU   : constant Compilation_Unit :=
+         CU      : constant Compilation_Unit :=
            Enclosing_Compilation_Unit (E);
-         CU_S : constant String :=
+         CU_S    : constant String :=
            Source_File (CU);
-         SP : constant Span :=
+         SP      : constant Span :=
            Element_Span (E);
+         Id      : constant Element :=
+           Corresponding_Declaration (E);
+         Id_CU   : constant Compilation_Unit :=
+           Enclosing_Compilation_Unit (Id);
+         Id_CU_S : constant String :=
+           Source_File (Id_CU);
+         Id_S    : constant Span :=
+           Element_Span (Id);
       begin
          Process (Kind,
                   Name,
+                  Sloc_Image (Id_CU_S, Id_S.First_Line, Id_S.First_Column),
                   Sloc_Image (CU_S, SP.First_Line, SP.First_Column),
                   Sloc_Image (CU_S, SP.Last_Line, SP.Last_Column));
       end Process_Element;

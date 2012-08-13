@@ -40,6 +40,14 @@ class FilteredArrow(Arrow):
         else:
             return self.maps[self.arrow.follow(object, key)]
 
+class ProjectionArrow(Arrow):
+    def __init__(self, name, product):
+        self.name = name
+        self.product = product
+
+    def follow(self, object, key):
+        return self.product.project(self.name, object, key)
+
 class Object:
     def __init__(self, name):
         self.name = name
@@ -87,7 +95,8 @@ class Object:
         """
         attribute_name = domain.name
         self.attributes[attribute_name] = domain
-        self.new_arrow(attribute_name, AttributeArrow(attribute_name))
+        domain.contribute_arrows(self)
+        # self.new_arrow(attribute_name, AttributeArrow(attribute_name))
 
     def load_element(self, element):
         self.add(element["NAME"], element)

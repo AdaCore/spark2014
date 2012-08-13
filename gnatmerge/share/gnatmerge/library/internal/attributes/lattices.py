@@ -6,14 +6,16 @@ seen as object of a lattice; this module allow this identification.
 
 from internal.attributes import common
 from internal import conversions
+from internal import sets
 import os.path
 
 class FreeLatticeAttribute(common.Attribute):
 
-    def __init__(self, name):
+    def __init__(self, name, base_type=None):
         self.name = name
         self.M = "MAXIMUM"
         self.empty = set([])
+        self.base_type = base_type
 
     def value_less_than(self, left, right):
         if left == self.M:
@@ -55,6 +57,19 @@ class FreeLatticeAttribute(common.Attribute):
         l = self.follow(left_object, left_key)
         r = self.follow(right_object, right_key)
         return self.value_join(l, r)
+
+    def to_string(self, object):
+        if object == self.M:
+            return self.M
+        elif object == self.empty:
+            return "empty"
+        elif self.base_type is not None:
+            for obj in object:
+                o = self.base_type(obj)
+            return ", ".join([self.base_type(obj).to_string()
+                              for obj in object])
+        else:
+            return ", ".join([str(obj) for obj in object])
 
 class SlocBaseType:
     def __init__(self, spec):
@@ -105,8 +120,9 @@ class SlocBaseType:
     def is_extremum(self):
         return False
 
-    def to_string(self, value):
-        return "%s:%s:%s" % (self.file, self.file, self.column)
+    def to_string(self):
+        return "%s:%s:%s" % (os.path.basename(self.file),
+                             self.line, self.column)
 
     @staticmethod
     def min():
@@ -320,3 +336,41 @@ class DiscreteSpace(FreeLatticeAttribute):
             return left
         else:
             return self.empty
+
+class Product(FreeLatticeAttribute):
+
+    def __init__(self, name, elements):
+        self.elements = elements
+        self.name = name
+        self.M = {}
+        self.empty = {}
+        for e in elements:
+            self.M[e.name] = e.value_max()
+            self.empty[e.name] = e.empty_set()
+
+    def value_less_than(self, left, right):
+        for e in self.elements:
+            if not e.value_less_than(left[e.name], right[e.name]):
+                return False
+        return True
+
+    def maximalize(self, value):
+        return value
+
+    def minimalize(self, value):
+        return value
+
+    def value_join(self, left, right):
+        result = {}
+        for e in self.elements:
+            result[e.name] = e.value_join(left[e.name], right[e.name])
+        return result
+
+    def project(self, name, object, key):
+        return self.follow(object, key)[name]
+
+    def contribute_arrows(self, object):
+        attr_arrow = sets.AttributeArrow(self.name)
+        object.new_arrow(self.name, attr_arrow)
+        for e in self.elements:
+            object.new_arrow(e.name, sets.ProjectionArrow(e.name, self))

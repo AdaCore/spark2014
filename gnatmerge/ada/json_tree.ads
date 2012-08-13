@@ -31,6 +31,7 @@ package Json_Tree is
      (Process : not null access procedure
         (Kind : String;
          Name : String;
+         Sloc : String;
          Low  : String;
          High : String));
 

@@ -63,6 +63,9 @@ class ErrorListing(Listing):
             return None
         sloc = parts[0] + ":" + parts[1] + ":" + parts[2]
         element["SPAN"] = {"LOW" : sloc, "HIGH" : sloc}
+        element["SLOC"] = sloc
+        element["CENTERED_SPAN"] = {"SPAN" : element["SPAN"],
+                                    "SLOC" : sloc}
         element[self.name + ".STATUS"] = self.read_status(line)
         # ??? name appended to make that attribute unique. Is that needed?
         return element
@@ -88,12 +91,14 @@ class AsisTreeReader(Reader):
             for asis_name in maps[kind]:
                 self.sloc_reader.map_to_kind(asis_name, kind)
 
-    def build_element(self, kind, name, low, high):
+    def build_element(self, kind, name, sloc, low, high):
         span = {"LOW" : low, "HIGH" : high}
         element = {"KIND" : kind,
                    self.ename : name,
                    "NAME" : self.name + str(self.index) + "." + name,
-                   "SPAN" : span}
+                   "SLOC" : sloc,
+                   "SPAN" : span,
+                   "CENTERED_SPAN" : {"SPAN" : span, "SLOC" : sloc}}
         self.index += 1
         return element
 
@@ -102,7 +107,7 @@ class AsisTreeReader(Reader):
         for filename in self.filenames:
             self.index = 0
             self.sloc_reader.iterate(filename,
-                                     lambda kind, name, low, high:
-                                     proc(self.build_element(kind, name,
+                                     lambda kind, name, sloc, low, high:
+                                     proc(self.build_element(kind, name, sloc,
                                                              low, high)))
         return None

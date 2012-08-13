@@ -22,6 +22,10 @@ class Merge:
         self.repository = sets.Objects()
         self.spans = lattices.RangeAttribute(lattices.SlocBaseType,
                                              "SPAN", "LOW", "HIGH")
+        self.slocs = lattices.FreeLatticeAttribute("SLOC",
+                                                   lattices.SlocBaseType)
+        self.centered_spans = lattices.Product("CENTERED_SPAN",
+                                               {self.spans, self.slocs})
         self.goals = {}
 
     def new_entity(self, name):
