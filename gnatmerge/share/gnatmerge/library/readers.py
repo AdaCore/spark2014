@@ -19,10 +19,9 @@ class Reader:
 class TristateReader(Reader):
 
     def __init__(self, name):
-        self.fragments = lattices.PartialOrderAttribute(name + ".STATUS",
-                                                     {"OK", "KO"})
+        self.fragments = lattices.OrderedLattice(name + ".STATUS")
         # ??? name appended to make that attribute unique. Is that needed?
-        self.fragments.name_and("PARTIAL OK", {"OK", "KO"})
+        self.fragments.new_tristate("OK", "KO", "PARTIAL OK")
         Reader.__init__(self, name)
 
 class Listing(TristateReader):

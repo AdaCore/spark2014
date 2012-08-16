@@ -17,7 +17,7 @@ class FreeLatticeAttribute(common.Attribute):
         self.empty = set([])
         self.base_type = base_type
 
-    def value_less_than(self, left, right):
+    def value_is_in(self, left, right):
         if left == self.M:
             return False
         elif right == self.M:
@@ -27,10 +27,10 @@ class FreeLatticeAttribute(common.Attribute):
             r = self.maximalize(right)
             return l.issubset(r)
 
-    def less_than(self, left_object, left_key, right_object, right_key):
+    def is_in(self, left_object, left_key, right_object, right_key):
         l = self.follow(left_object, left_key)
         r = self.follow(right_object, right_key)
-        return self.value_less_than(l, r)
+        return self.value_is_in(l, r)
 
     def value_max(self):
         return self.M
@@ -85,12 +85,12 @@ class SlocBaseType:
             except:
                 self.column = 0
 
-    def less_than(self, right):
+    def is_in(self, right):
         if right.abstract_spec is not None:
             if self.abstract_spec == right.abstract_spec:
                 return True
             else:
-                return not right.less_than(self)
+                return not right.is_in(self)
         elif self.abstract_spec is not None:
             if self.abstract_spec == right.abstract_spec:
                 return True
@@ -142,7 +142,7 @@ class RangeAttribute(FreeLatticeAttribute):
         self.M = {low_name : base_type.min(), high_name : base_type.max()}
         self.empty = set([])
 
-    def value_less_than(self, left, right):
+    def value_is_in(self, left, right):
 
         # ??? quick and dirty implementation for now.  Would be good
         # to fully order slocs in order to improve efficiency at some
@@ -156,8 +156,8 @@ class RangeAttribute(FreeLatticeAttribute):
                 right_low = self.base_type(right_range[self.low_name])
                 right_high = self.base_type(right_range[self.high_name])
                 # left <= right iff left's range is in right'range
-                if (right_low.less_than(left_low)
-                    and left_high.less_than(right_high)):
+                if (right_low.is_in(left_low)
+                    and left_high.is_in(right_high)):
                     No_Match = False
                     break
 
@@ -200,13 +200,13 @@ class PartialOrderAttribute(FreeLatticeAttribute):
     def __init__(self, name, values=None):
         FreeLatticeAttribute.__init__(self, name)
         self.values = set([])
-        self.named_meets = {}
-        self.named_joins = {}
+        self.named_ands = {}
+        self.named_ors = {}
         # UNKNOWN is different from None:
         # it marks the case where an entity has been marked by a tool,
         # but the status has not been recognized. It is not that easy to
         # to make this work in the current framework:
-        # 1) a join of whatever value X with UNKNOWN should keep UNKNOWN;
+        # 1) a or of whatever value X with UNKNOWN should keep UNKNOWN;
         #    so UNKNOWN should not be inferior to X;
         # 2) UNKNOWN does not allow to reach whatever goal G;
         #    so UNKNOWN should not be superior to X.
@@ -249,33 +249,35 @@ class PartialOrderAttribute(FreeLatticeAttribute):
             between = "PARTIALLY " + maximum
         value_max = self.new_value(maximum)
         value_min = self.new_value(minimum)
-        value_partial = self.name_and(between, {value_max, value_min})
+        value_partial = self.new_value(between)
+        self.assume_stronger(maximum, between)
+        self.assume_stronger(between, minimum)
         return value_max
 
     def name_and(self, value, content):
-        """Add new value as a meet of several pre-existing ones
+        """Add new value as a and of several pre-existing ones
 
         PARAMETERS
           name:    unique str used to identify the new value
-          content: set that contains the pre-existing values to meet
+          content: set that contains the pre-existing values to and
         """
         self.new_value(value)
         for elt in content:
             self.assume_stronger(value, elt)
-        self.named_meets[value] = content
+        self.named_ands[value] = content
         return value
 
     def name_or(self, value, content):
-        """Add new value as a join of several pre-existing ones
+        """Add new value as a or of several pre-existing ones
 
         PARAMETERS
           name:    unique str used to identify the new value
-          content: set that contains the pre-existing values to meet
+          content: set that contains the pre-existing values to or
         """
         self.new_value(value)
         for elt in content:
             self.assume_stronger(elt, value)
-        self.named_joins[value] = content
+        self.named_ors[value] = content
         return value
 
     def assume_stronger(self, left, right):
@@ -288,7 +290,7 @@ class PartialOrderAttribute(FreeLatticeAttribute):
             if left in self.weaker_classes[key]:
                 self.weaker_classes[key].add(right)
 
-    def value_less_than(self, left, right):
+    def value_is_in(self, left, right):
         l = conversions.to_set(left)
         r = self.maximalize(right)
         return l.issubset(r)
@@ -298,6 +300,9 @@ class PartialOrderAttribute(FreeLatticeAttribute):
         result = v
         for elt in v:
             result = result.union(result, self.weaker_classes[elt])
+        for name in self.named_ands:
+            if self.named_ands[name].issubset(result):
+                result.add(name)
         return result
 
     def minimalize(self, value):
@@ -305,9 +310,9 @@ class PartialOrderAttribute(FreeLatticeAttribute):
         result = v
         for elt in v:
             result = result.difference(self.weaker_classes[elt])
-        for name in self.named_meets:
-            if self.named_meets[name].issubset(result):
-                result = result.difference(self.named_meets[name])
+        for name in self.named_ands:
+            if self.named_ands[name].issubset(result):
+                result = result.difference(self.named_ands[name])
                 result.add(name)
 
         if len(result) == 1:
@@ -315,9 +320,167 @@ class PartialOrderAttribute(FreeLatticeAttribute):
         else:
             return result
 
-class DiscreteSpace(FreeLatticeAttribute):
+class OrderedLattice(FreeLatticeAttribute):
+    """Represents an attribute domain as an ordered lattice
+
+    ATTRIBUTES
+      values: possible values taken by such an attribute
+    """
+
+    def __init__(self, name, values=None):
+        FreeLatticeAttribute.__init__(self, name)
+        self.values = set([])
+        self.named_joins = {}
+        self.partial_order = PartialOrderAttribute(name, values)
+
+        # UNKNOWN is a special status that the order knows
+        # already. Add it to the known values of the lattice as
+        # well.
+        self.inner_classes = {None : set([]), "UNKNOWN" : set([])}
+        if values is not None:
+            for value in values:
+                self.new_value(value)
+
+    def new_value(self, value):
+        """Add a new possible value in the attribute domain
+
+        PARAMETERS
+          value: unique str used to identify the new value
+        """
+        self.__new_value(value)
+        self.partial_order.new_value(value)
+        return value
+
+    def __new_value(self, value):
+        """Same as new_value, but without updating the order
+        """
+        self.values.add(value)
+        self.inner_classes[value] = set([])
+        return value
+
+    def new_tristate(self, maximum, minimum=None, between=None):
+        """Add a tristate value in the attribute domain
+
+        This adds three new values to be used to represent a tristate
+        e.g PROVED, NOT PROVED, PARTIALLY PROVED. Returns the maximum
+        value (e.g. PROVED).
+
+        PARAMETERS
+           maximum: unique str used to identify a new value in the
+                    attribute domain that stand for the maximum.
+           minimum: same as maximum, but for the minimum. If not
+                    specified, will be "NOT maximum".
+           between: unique str used to identify a value in between.
+                    If not specified, will be "PARTIALLY maximum".
+        """
+        if minimum is None:
+            minimum = "NOT " + maximum
+        if between is None:
+            between = "PARTIALLY " + maximum
+        value_max = self.__new_value(maximum)
+        value_min = self.__new_value(minimum)
+        value_partial = self.__name_join(between, {value_max, value_min})
+        self.partial_order.new_tristate(maximum, minimum, between)
+        return value_max
+
+    def name_join(self, value, content):
+        """Add new value as a join of several pre-existing ones
+
+        PARAMETERS
+          name:    unique str used to identify the new value
+          content: set that contains the pre-existing values to join
+        """
+        self.__name_join(value, content)
+        self.partial_order.new_value(value)
+        return value
+
+    def __name_join(self, value, content):
+        """Same as name_join, but without updating the order
+        """
+        # ??? Should we provide a public interface for joins, ands, ors?
+        # If we want to make complexe things possible, we should...
+        # The best way would probably to find a syntax to specify
+        # both in the same creation operation. e.g.
+        #  self.new_value("PARTIALLY OK", contains="OK, KO",
+        #                 spec="KO < PARTIALLY OK < OK")
+        # ... Which means that at some point we'll have to check the
+        # consistency of the partial order (i.e. no cycle).
+        self.new_value(value)
+        for elt in content:
+            self.assume_outer(value, elt)
+        self.named_joins[value] = content
+        return value
+
+    def name_or(self, value, content):
+        """Specify the order of value as the maximal weakest for a given set
+
+        PARAMETERS
+          name:    unique str used to identify the new value
+          content: set that contains the pre-existing values to consider
+        """
+        self.__new_value(value)
+        self.partial_order.name_or(value, content)
+        return value
+
+    def name_and(self, value, content):
+        """Specify the order of value as the minimal strongest for a given set
+
+        PARAMETERS
+          name:    unique str used to identify the new value
+          content: set that contains the pre-existing values to consider
+        """
+        self.__new_value(value)
+        self.partial_order.name_and(value, content)
+        return value
+
+    def assume_outer(self, left, right):
+        # add left in right
+        self.inner_classes[left].add(right)
+
+        # compute transitive closure
+        for key in self.inner_classes:
+            if left in self.inner_classes[key]:
+                self.inner_classes[key].add(right)
+
+    def value_is_in(self, left, right):
+        l = conversions.to_set(left)
+        r = self.maximalize(right)
+        return l.issubset(r)
+
+    def maximalize(self, value):
+        v = conversions.to_set(value)
+        result = v
+        for elt in v:
+            result = result.union(result, self.inner_classes[elt])
+        return result
+
+    def minimalize(self, value):
+        v = conversions.to_set(value)
+        result = v
+        for elt in v:
+            result = result.difference(self.inner_classes[elt])
+        for name in self.named_joins:
+            if self.named_joins[name].issubset(result):
+                result = result.difference(self.named_joins[name])
+                result.add(name)
+
+        if len(result) == 1:
+            return result.pop()
+        else:
+            return result
 
     def value_less_than(self, left, right):
+        return self.partial_order.value_is_in(self.minimalize(left),
+                                              self.minimalize(right))
+
+    def less_than(self, left_object, left_key, right_object, right_key):
+        l = self.follow(left_object, left_key)
+        r = self.follow(right_object, right_key)
+        return self.value_less_than(l, r)
+
+class DiscreteSpace(FreeLatticeAttribute):
+
+    def value_is_in(self, left, right):
         if left == self.empty:
             return True
         elif right == self.M:
@@ -348,9 +511,9 @@ class Product(FreeLatticeAttribute):
             self.M[e.name] = e.value_max()
             self.empty[e.name] = e.empty_set()
 
-    def value_less_than(self, left, right):
+    def value_is_in(self, left, right):
         for e in self.elements:
-            if not e.value_less_than(left[e.name], right[e.name]):
+            if not e.value_is_in(left[e.name], right[e.name]):
                 return False
         return True
 

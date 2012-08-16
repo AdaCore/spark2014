@@ -25,7 +25,7 @@ class Goal:
         self.print_msg("info: goal reached", name, sloc, value)
 
     def print_error(self, name, sloc, value):
-        self.print_msg("goal not reached", name, sloc, value)
+       self.print_msg("goal not reached", name, sloc, value)
 
     def print_msg(self, msg, name, sloc, value):
         print "%s: %s at %s (%s)" % (sloc, msg, name, to_string(value))

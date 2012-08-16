@@ -45,7 +45,7 @@ class Entity:
         if states is not None:
             self.states = states
         else:
-            self.states = lattices.PartialOrderAttribute(self.name + ".STATUS")
+            self.states = lattices.OrderedLattice(self.name + ".STATUS")
         self.names = lattices.DiscreteSpace(self.name + ".NAME")
         # ??? should attribute domains know local names? Probably not.
         # If those are supposed to be free from any relation...

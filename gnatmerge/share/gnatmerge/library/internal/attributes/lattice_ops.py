@@ -177,10 +177,10 @@ class Inclusion(sets.Arrow):
         result = None
         result_value = self.lattice.value_max()
         for outer_key in self.object.content():
-            if self.lattice.less_than(object, key, self.object, outer_key):
+            if self.lattice.is_in(object, key, self.object, outer_key):
                 candidate = self.object.follow("NAME", outer_key)
                 candidate_value = self.lattice.follow(self.object, outer_key)
-                if self.lattice.value_less_than(candidate_value, result_value):
+                if self.lattice.value_is_in(candidate_value, result_value):
                     result_value = candidate_value
                     result = candidate
         return result
