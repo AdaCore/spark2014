@@ -32,7 +32,8 @@
 # 4) Put the directory install/bin in your path:
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
-.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib
+.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
+	local-install
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
@@ -60,6 +61,13 @@ install: install-stdlib
 	$(CP) share/gnatprove/config/*cgpr $(CONFIGDIR)
 	$(CP) share/gnatprove/theories/*why $(THEORIESDIR)
 	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
+
+local-install:
+	cd why3 && $(MAKE) && $(MAKE) install
+	cd alt-ergo && $(MAKE) && $(MAKE) install
+	$(MAKE)
+	$(MAKE) install
+
 doc: $(DOC)
 
 $(DOC):
@@ -90,7 +98,7 @@ gnatprove:
 gnatmerge:
 	$(MAKE) -C gnatmerge
 
-install-gnatmerge: 
+install-gnatmerge:
 	$(MAKE) -C gnatmerge INSTALLDIR=$(INSTALLDIR) install
 
 # Translating the standard library for GNATprove
