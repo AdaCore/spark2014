@@ -1,9 +1,9 @@
-Subprogram Contracts
+﻿Subprogram Contracts
 ====================
 
-Subprogram contracts may be more rigourous than in Ada.  Extra legality rules are applied to formal subprogram parameters and further restrictions may be applied to their use.  
+Subprogram contracts may be more rigorous than in Ada.  Extra legality rules are applied to formal subprogram parameters and further restrictions may be applied to their use.  
 
-Further aspects are provided in addition to the Ada ``Pre`` and ``Post``. ``Global``, ``Depends`` and ``Post_Cases`` facillitate an extended specification and a potentially more concise form of post condition.
+Further aspects are provided in addition to the Ada ``Pre`` and ``Post``. ``Global``, ``Depends`` and ``Post_Cases`` facilitate an extended specification and a potentially more concise form of post condition.
 
 Subprogram Parameter Specifications
 -----------------------------------
@@ -14,7 +14,7 @@ Legality Rules
 
 Further restrictions may be applied using ``Strict_Modes`` which extends the rules with:
 
-2. A *formal parameter* of a subprogram of mode **in** or **in out** must be read directly or indirecly within the subprogram.
+2. A *formal parameter* of a subprogram of mode **in** or **in out** must be read directly or indirectly within the subprogram.
 #. A *formal parameter* of a subprogram of mode **out** or **in out** must be updated directly or indirectly within the subprogram.
 
 
@@ -37,7 +37,7 @@ A ``global_aspect`` is a list of ''global_specifications``.
    
 The ``global_aspect`` forms part of the specification of a subprogram explicitly stating the ``global_items`` that it references.  It is also used in the detection of illegal aliasing, preventing unintended use of a *global* variable by forgetting to declare a *local* variable, and the accidental hiding of a *global* variable buy a more *local* variable.
 
-If none of the subprograms have a ``global_aspect``, then, for a complete program, using entire program analysis, it is possible to determine the *global* variables and check for illegal alliasing but not perform the other error preventative checks, nor the data_abstraction.
+If none of the subprograms have a ``global_aspect``, then, for a complete program, using entire program analysis, it is possible to determine the *global* variables and check for illegal aliasing but not perform the other error preventative checks, nor the data_abstraction.
 
 The use of ``global_aspects`` is recommended for newly written code to provide the full measure of error prevention.  If at least each subprogram declared immediately within a package or at library level has a ``global_aspect`` then for the subprograms declared within the body of another subprogram (nested), the ``global_aspect`` of the nested subprogram may be calculated from those of the enclosing subprogram.  To assist in such calculations a ``global_aspect`` may define that a subprogram does not reference any globals using a ``no_globals_specification``.
 
@@ -80,11 +80,11 @@ Legality Rules
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
 #.  There can be at most one of each of ``global_input_specification``, ``global_output_specification``, and ``global_in_out_specification`` in the same ``global_aspect``.
 #.  A function subprogram may not have a ``global_output_specification`` or a ``global_in_out_specification`` in its ``global_aspect`` as a function is not permitted to have side-effects.
-#.  A ``global_item`` appearing only in a ``global_input_specification`` is considered to be of mode **in**.  A ``global_item`` apppearing only in a ``global_output_specification`` is considered to be of mode **out**.  A ``global_item`` which appears in both a ``global_input_specification`` and a ``global_output_specification`` or is only in a ``global_in_out_specification`` is considered to be of mode **in out**.
-#.  The rules for reading or updating of a ``global_item`` of a particular mode are the same as for a *formal partameter* of the same mode including any restrictions placed on the iterpretation of the modes.
-#.  A ``global_item`` that appears in a ``global_in_out_specification`` may not appear in a ``global_input_specification`` or a ``global_output_specification`` within the same ``global_aspect`` exept within the ``condition`` of a ``conditional_global``.
+#.  A ``global_item`` appearing only in a ``global_input_specification`` is considered to be of mode **in**.  A ``global_item`` appearing only in a ``global_output_specification`` is considered to be of mode **out**.  A ``global_item`` which appears in both a ``global_input_specification`` and a ``global_output_specification`` or is only in a ``global_in_out_specification`` is considered to be of mode **in out**.
+#.  The rules for reading or updating of a ``global_item`` of a particular mode are the same as for a *formal parameter* of the same mode including any restrictions placed on the interpretation of the modes.
+#.  A ``global_item`` that appears in a ``global_in_out_specification`` may not appear in a ``global_input_specification`` or a ``global_output_specification`` within the same ``global_aspect`` except within the ``condition`` of a ``conditional_global``.
 #. Other than appearing in a ``condition`` of a ``conditional_global``, a ``global_item`` may not appear more than once in the same ``global_specification``. 
-#.  A ``global_item`` appearing in a ``condition`` of a ``conditional_global`` must appear in a ``global_input_specification`` or ``global_in_out_specification'' as a ``global_definion``, that is, not as a ``conditional_global``. 
+#.  A ``global_item`` appearing in a ``condition`` of a ``conditional_global`` must appear in a ``global_input_specification`` or ``global_in_out_specification'' as a ``global_definition``, that is, not as a ``conditional_global``. 
 #.  A ``global_item`` appearing in the ``global_aspect`` of a subprogram shall not have the same name, or be a subcomponent of an object with the same name as a formal parameter of the subprogram.
 #.  A subprogram, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent, in its ``global_aspect`` immediately within the body of the subprogram.
 
@@ -132,7 +132,7 @@ Examples
   with Global => ((Input  => (X, Y, Z)),
                   (Output => (A, B, C)),
                   (In_Out => (P, Q, R)));  
-                  -- A global aspec with all types of global specification
+                  -- A global aspect with all types of global specification
    
 
 Param Aspects
@@ -329,7 +329,7 @@ basis whether one wants globals to be computed automatically::
    is
 
 In this mode, when a subprogram has a global/parameter/derives annotation, it
-is checked against the actual behavior of the subprogram. If a subprogram does
+is checked against the actual behaviour of the subprogram. If a subprogram does
 not have such annotations, they are computed automatically and this
 information can be used in the proofs of other parts of the programs.
 
