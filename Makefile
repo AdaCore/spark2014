@@ -33,7 +33,7 @@
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
-	local-install
+	local-install gnatmerge
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')

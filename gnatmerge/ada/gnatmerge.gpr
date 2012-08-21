@@ -1,5 +1,5 @@
 with "gnatcoll_python";
-with "asis_gu_bld";
+with "asis";
 
 project GNATMerge is
    for Object_Dir use "obj";
