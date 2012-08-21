@@ -1,7 +1,7 @@
 ﻿Subprogram Contracts
 ====================
 
-Subprogram contracts may be more rigorous than in Ada.  Extra legality rules are applied to formal subprogram parameters and further restrictions may be applied to their use.  
+Subprogram contracts may be more rigorous than in Ada.  Extra legality rules are applied to formal subprogram parameters and further restrictions may be applied to their use.
 
 Further aspects are provided in addition to the Ada ``Pre`` and ``Post``. ``Global``, ``Depends`` and ``Post_Cases`` facilitate an extended specification and a potentially more concise form of post condition.
 
@@ -23,18 +23,18 @@ Global Aspects
 
 A ``global_aspect`` is optional but if constructive, modular analysis or data abstraction is being used then a ``global_aspect`` may be required for every subprogram which references a ``global_item``.
 
-A ``global_item`` denotes a *global_variable_*\ ``name`` (see Ada LRM 8.1) or a 
-*data_abstraction_*\ ``name`` and may be used within in aspect definitions 
-where stated in this manual. 
+A ``global_item`` denotes a *global_variable_*\ ``name`` (see Ada LRM 8.1) or a
+*data_abstraction_*\ ``name`` and may be used within in aspect definitions
+where stated in this manual.
 
 The global_aspect names the ``global_items`` that are read and, or, updated by the subprogram.
 They are considered to have modes the same as *formal parameters*, **in**, **out** and **in out**.
 
 The modes are specified by using specific selector names, ``Input``, ``Output`` and ``In_Out``
-in a ``global_specification``.  
-If one of these selector names is not given the default of ``Input`` is used. 
+in a ``global_specification``.
+If one of these selector names is not given the default of ``Input`` is used.
 A ``global_aspect`` is a list of ''global_specifications``.
-   
+
 The ``global_aspect`` forms part of the specification of a subprogram explicitly stating the ``global_items`` that it references.  It is also used in the detection of illegal aliasing, preventing unintended use of a *global* variable by forgetting to declare a *local* variable, and the accidental hiding of a *global* variable buy a more *local* variable.
 
 If none of the subprograms have a ``global_aspect``, then, for a complete program, using entire program analysis, it is possible to determine the *global* variables and check for illegal aliasing but not perform the other error preventative checks, nor the data_abstraction.
@@ -67,13 +67,13 @@ Syntax of a Global Aspect
                                  | conditional_global
    conditional_global          ::= (if condition then global_item_list)
    global_item_list            ::= global_item
-                                 | (global_item {, global_item}) 
+                                 | (global_item {, global_item})
 
 where
 
    ``global_item``             ::= *global_variable_*\ ``name`` | *data_abstraction_*\ ``name``
 
- 
+
 Legality Rules
 ^^^^^^^^^^^^^^
 
@@ -83,19 +83,19 @@ Legality Rules
 #.  A ``global_item`` appearing only in a ``global_input_specification`` is considered to be of mode **in**.  A ``global_item`` appearing only in a ``global_output_specification`` is considered to be of mode **out**.  A ``global_item`` which appears in both a ``global_input_specification`` and a ``global_output_specification`` or is only in a ``global_in_out_specification`` is considered to be of mode **in out**.
 #.  The rules for reading or updating of a ``global_item`` of a particular mode are the same as for a *formal parameter* of the same mode including any restrictions placed on the interpretation of the modes.
 #.  A ``global_item`` that appears in a ``global_in_out_specification`` may not appear in a ``global_input_specification`` or a ``global_output_specification`` within the same ``global_aspect`` except within the ``condition`` of a ``conditional_global``.
-#. Other than appearing in a ``condition`` of a ``conditional_global``, a ``global_item`` may not appear more than once in the same ``global_specification``. 
-#.  A ``global_item`` appearing in a ``condition`` of a ``conditional_global`` must appear in a ``global_input_specification`` or ``global_in_out_specification'' as a ``global_definition``, that is, not as a ``conditional_global``. 
+#. Other than appearing in a ``condition`` of a ``conditional_global``, a ``global_item`` may not appear more than once in the same ``global_specification``.
+#.  A ``global_item`` appearing in a ``condition`` of a ``conditional_global`` must appear in a ``global_input_specification`` or ``global_in_out_specification'' as a ``global_definition``, that is, not as a ``conditional_global``.
 #.  A ``global_item`` appearing in the ``global_aspect`` of a subprogram shall not have the same name, or be a subcomponent of an object with the same name as a formal parameter of the subprogram.
 #.  A subprogram, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent, in its ``global_aspect`` immediately within the body of the subprogram.
 
 Further restrictions may be applied:
 
-8.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect_clause`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P. 
+8.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect_clause`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P.
 #. The restriction ``Global_Variables_Are_Entire`` asserts that a ``global_item`` cannot be a subcomponent name.
 #. The restriction ``No_Conditional_Globals`` prohibits the use of a ``conditional_global`` in a ``global_specification``.
 #. The provision of ``global_aspects`` on all subprograms may be enforced by using the restriction ``Global_Aspects_Required``.  When this restriction is in force a subprogram which does not have an explicit ``global_aspect`` is considered to have a ``no_globals_specification``. -- ?? is this sensible or should we always insist on Global => null?? I hope not!!
-#. A less stringent restriction is ``Global_Aspects_On_Non_Nested_Subprograms`` which requires a ``global_aspect`` on all subprograms not nested within another subprogram, although a ``global_aspect`` may still be placed on a nested subprogram (and require it if the body is a partial implementation.  A virtual global aspect is calculated from the body of each nested subprogram which does not have an explicit ``global_aspect``.  
- 
+#. A less stringent restriction is ``Global_Aspects_On_Non_Nested_Subprograms`` which requires a ``global_aspect`` on all subprograms not nested within another subprogram, although a ``global_aspect`` may still be placed on a nested subprogram (and require it if the body is a partial implementation.  A virtual global aspect is calculated from the body of each nested subprogram which does not have an explicit ``global_aspect``.
+
 
 Examples
 ^^^^^^^^
@@ -106,13 +106,13 @@ Examples
                         -- any global items.
    with Global => V;    -- Indicates that V is a mode in global item.
    with Global => (X, Y, Z);  -- X, Y and Z are mode in global items.
-   with Global => (I, (if I = 0 then (P, Q, R));  
+   with Global => (I, (if I = 0 then (P, Q, R));
                   -- I is a mode in global item and P, Q, and R are
                   -- conditional globals that are only read if I = 0.
    with Global => (Input => V); -- Indicates that V is a mode in global item.
    with Global => (Input => (X, Y, Z)); -- X, Y and Z are mode in global items.
-   with Global => (Input => (I, (if I = 0 then (P, Q, R))); 
-                   -- I is a mode in global item and P, Q, and R are 
+   with Global => (Input => (I, (if I = 0 then (P, Q, R)));
+                   -- I is a mode in global item and P, Q, and R are
                    -- conditional globals that are only read if I = 0.
    with Global => (Output => (A, B, C)); -- A, B and C are mode out global items.
    with Global => ((Input  => (I, J),
@@ -120,20 +120,20 @@ Examples
                   -- J is a mode in global item I is mode in out, A, B, C are mode out
                   -- and D is a conditional global that is only updated if I = 42.
    with Global =>  (In_Out => (P, Q, R, I, (if I = 42 then D)));
-                  -- I, P, Q, R are global items of mode in out and D is a 
+                  -- I, P, Q, R are global items of mode in out and D is a
                   -- conditional global which is read and updated only if I = 42.
    with Global => ((Input  => K),
                    (Output => (A (K), R.F)));
-                  -- K is a global item of mode in, A is a global array 
+                  -- K is a global item of mode in, A is a global array
                   -- and only element A (K) is updated
                   -- the rest of the array is preserved.
-                  -- R is a global record and only filed R.F is updated 
+                  -- R is a global record and only filed R.F is updated
                   -- the remainder of the fields are preserved.
   with Global => ((Input  => (X, Y, Z)),
                   (Output => (A, B, C)),
-                  (In_Out => (P, Q, R)));  
+                  (In_Out => (P, Q, R)));
                   -- A global aspect with all types of global specification
-   
+
 
 Param Aspects
 --------------
@@ -161,8 +161,8 @@ Syntax of a Param Aspect
                                 | conditional_param
    conditional_param          ::= (if condition then formal_param_list)
    formal_param_list          ::= formal_param
-                                | (formal_param {, formal_param}) 
- 
+                                | (formal_param {, formal_param})
+
 where
 
    ``formal_param``           ::= *formal parameter* as described in Ada LRM 6.1.
@@ -177,20 +177,22 @@ Legality Rules
 #.  A *formal parameter* which appears in a ``param_input_specification`` must be of mode **in** or mode **in out**.
 #.  A *formal parameter* which appears in a ``param_output_specification`` must be of mode **out** or mode **in out**.
 #.  A *formal parameter* which appears in a ``param_in_out_specification`` must be of mode **in out**.
-#. Other than appearing in a ``condition`` of a ``conditional_param``, a *formal parameter* may not appear more than once in the same ``param_specification``. 
+#. Other than appearing in a ``condition`` of a ``conditional_param``, a *formal parameter* may not appear more than once in the same ``param_specification``.
 #.  A *formal parameter* appearing in a ``condition`` of a ``conditional_param`` must be of mode **in** or mode **in out**.
 #.  A ``global_item`` of mode **in** or **in out** from a previous ``global_aspect`` within the same ``aspect_specification`` may appear in the ``condition`` of a ``conditional_param``.
 
 Examples
 ^^^^^^^^
 
-**To Do**
+.. todo::
+   Add examples
 
 
 Anti-aliasing rules:
 --------------------
 
-**To Do**: the following text is copied from the SPARK 2005 LRM
+.. todo::
+ the following text is copied from the SPARK 2005 LRM
 
 The rules below prevent aliasing of variables in the execution of procedure subprograms.  See Section 6.1.2 for the definitions of imported, exported and entire variables.  (If a procedure subprogram has two procedure annotations as a consequence of refinement (c.f. Chapter 7), then in applying the rules to calls of a procedure P occurring outside the package in which P is declared, the annotation in the declaration should be employed; whereas in applying the rules to calls within the body of this package, the annotation in the procedure body or body stub should be used.)
 1	If a variable V named in the global definition of a procedure P is exported, then neither V nor any of its subcomponents can occur as an actual parameter of P.
@@ -206,10 +208,11 @@ Where one of these rules prohibits the occurrence of a variable V or any of its 
 Post_Cases
 ----------
 
-**To Do**
-     A postcondition expressed as a set of disjoint cases covering
-     all cases
+.. todo::
+   A postcondition expressed as a set of disjoint cases covering
+   all cases
 
+::
 
    post_cases          ::= with Post_Cases => (post_case_list)
    post_case_list      ::= post_case {, post_case_list}
@@ -246,23 +249,21 @@ Legality rules
 
 Derives/Depends
 ---------------
-**To Do**
+
+.. todo::
      A declaration that describes the information flow of the subprogram
 
 
 Syntax of a Derives Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**To Do**
+.. todo::
 
-::
-
-
-The Param aspects should refine the regular Ada 2012 parameter modes, for
-example when a parameter X appears in the Param_In_Out aspect, its parameter
-mode should be ``in out``. Likewise, if a parameter X appears in the Param_In
-and Param_Out aspects (e.g. with different conditions), its parameter mode
-should be ``in out``.
+  The Param aspects should refine the regular Ada 2012 parameter modes, for
+  example when a parameter X appears in the Param_In_Out aspect, its parameter
+  mode should be ``in out``. Likewise, if a parameter X appears in the Param_In
+  and Param_Out aspects (e.g. with different conditions), its parameter mode
+  should be ``in out``.
 
 Meaning
 -------
