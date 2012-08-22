@@ -175,8 +175,10 @@ package body Json_Tree is
            Source_File (CU);
          SP      : constant Span :=
            Element_Span (E);
-         Id      : constant Element :=
+         CD      : constant Element :=
            Corresponding_Declaration (E);
+         Id      : constant Element :=
+           (if CD = Nil_Element then E else CD);
          Id_CU   : constant Compilation_Unit :=
            Enclosing_Compilation_Unit (Id);
          Id_CU_S : constant String :=
