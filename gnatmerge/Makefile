@@ -1,5 +1,8 @@
 INSTALLDIR=install
 CP=cp -pr
+MKDIR=mkdir -p
+
+DUMMY:=$(shell $(MKDIR) bin)
 
 all: build
 
@@ -9,7 +12,8 @@ build: force
 force:
 
 clean:
-	make -C ada clean 
+	make -C ada clean
+
 install: build
 	mkdir -p $(INSTALLDIR)/share/
 	mkdir -p $(INSTALLDIR)/bin/
