@@ -10,6 +10,7 @@ SPARK 2014 Language Design Document
    :maxdepth: 2
 
    introduction
+   language_subset
    globalparam
    assertcutinv
    expressions

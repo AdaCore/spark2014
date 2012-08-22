@@ -1,3 +1,5 @@
+.. _abstraction of global state:
+
 Abstraction of Global State
 ===========================
 
