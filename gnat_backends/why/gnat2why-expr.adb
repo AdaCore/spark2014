@@ -4358,18 +4358,21 @@ package body Gnat2Why.Expr is
 
                      while Present (Cur) loop
                         Tail :=
-                          +New_Simpl_Conditional
-                            (Condition =>
-                               Transform_Expr_With_Actions
-                                 (Condition (Cur),
-                                  Condition_Actions (Cur),
-                                  EW_Bool_Type,
-                                  EW_Prog,
-                                  Params => Body_Params),
-                             Then_Part =>
-                               +Transform_Statements (Then_Statements (Cur)),
-                             Else_Part => +Tail,
-                             Domain    => EW_Prog);
+                          New_Label
+                            (Labels => (1 => New_Located_Label (Cur)),
+                             Def    =>
+                             +New_Simpl_Conditional
+                               (Condition =>
+                                  Transform_Expr_With_Actions
+                                    (Condition (Cur),
+                                     Condition_Actions (Cur),
+                                     EW_Bool_Type,
+                                     EW_Prog,
+                                     Params => Body_Params),
+                                Then_Part =>
+                                +Transform_Statements (Then_Statements (Cur)),
+                                Else_Part => +Tail,
+                                Domain    => EW_Prog));
                         Prev (Cur);
                      end loop;
                   end;
