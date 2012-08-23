@@ -100,6 +100,11 @@ package Alfa.Util is
    function Type_In_Formal_Container (Id : Entity_Id) return Boolean;
    --  Return whether a type Id is in the formal container sources
 
+   function Entity_Is_Instance_Of_Formal_Container (Id : Entity_Id)
+                                                    return Boolean;
+   --  return whether the entity Id is the instance of an entity defined in the
+   --  formal containers.
+
    function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id;
    --  Return the underlying base type in formal containers, if any
 

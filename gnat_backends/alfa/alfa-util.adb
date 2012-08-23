@@ -35,6 +35,9 @@ with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package body Alfa.Util is
 
+   function File_Is_Formal_Container (Name : String) return Boolean;
+   --  Return true when the string in argument is a file of formal container
+   --  unit
    ------------------
    -- Global State --
    ------------------
@@ -261,6 +264,28 @@ package body Alfa.Util is
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
 
+   function Entity_Is_Instance_Of_Formal_Container (Id : Entity_Id)
+                                                    return Boolean
+   is
+   begin
+      return File_Is_Formal_Container (File_Name (Sloc (Id)));
+   end Entity_Is_Instance_Of_Formal_Container;
+
+   ------------------------------
+   -- File_Is_Formal_Container --
+   ------------------------------
+
+   function File_Is_Formal_Container (Name : String) return Boolean is
+   begin
+      return
+        Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
+        Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
+        Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
+        Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
+        Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
+        Name = "a-cofove.ads" or else Name = "a-cofove.adb";
+   end File_Is_Formal_Container;
+
    -------------------------------
    -- Get_Enclosing_Declaration --
    -------------------------------
@@ -412,20 +437,11 @@ package body Alfa.Util is
    begin
       if Loc = Standard_Location then
          return False;
-      end if;
-
-      declare
-         Name : constant String :=
-           Get_Name_String (Reference_Name (Get_Source_File_Index (Loc)));
-      begin
+      else
          return
-           Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
-           Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
-           Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
-           Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
-           Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
-           Name = "a-cofove.ads" or else Name = "a-cofove.adb";
-      end;
+           File_Is_Formal_Container
+             (Get_Name_String (Reference_Name (Get_Source_File_Index (Loc))));
+      end if;
    end Location_In_Formal_Containers;
 
    -----------------------------

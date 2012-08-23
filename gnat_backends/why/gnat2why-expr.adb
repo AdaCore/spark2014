@@ -128,6 +128,10 @@ package body Gnat2Why.Expr is
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
 
+   function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean;
+   --  Return true whenever the Why declaration that corresponds to the given
+   --  subprogram has a precondition.
+
    function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
    --  Return whether Choice is a range ("others" counts as a range)
 
@@ -3705,7 +3709,7 @@ package body Gnat2Why.Expr is
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
             begin
                Current_Type := +Why_Logic_Type_Of_Ada_Type (Result_Typ);
-               if Has_Precondition (Subp) then
+               if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call
                     (Name     => Name,
@@ -4324,7 +4328,7 @@ package body Gnat2Why.Expr is
                Why_Name   : constant W_Identifier_Id :=
                  To_Why_Id (Subp, EW_Prog);
                Call       : constant W_Expr_Id :=
-                 (if Has_Precondition (Subp) then
+                 (if Why_Subp_Has_Precondition (Subp) then
                   +New_VC_Call (Stmt, Why_Name, Args, VC_Precondition, EW_Prog)
                   else
                   New_Call (Stmt, EW_Prog, Why_Name, Args));
@@ -4521,5 +4525,15 @@ package body Gnat2Why.Expr is
       Strlit_To_Why_Term.Include (Strval (N), +Id);
       Strlit_To_Why_Type.Include (Strval (N), Why_Type);
    end Transform_String_Literal;
+
+   -------------------------------
+   -- Why_Subp_Has_Precondition --
+   -------------------------------
+
+   function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean is
+   begin
+      return Has_Precondition (E) or else
+        Entity_Is_Instance_Of_Formal_Container (E);
+   end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;
