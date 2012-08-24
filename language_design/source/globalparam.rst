@@ -19,13 +19,48 @@ Further restrictions may be applied using ``Strict_Modes`` which extends the rul
 
 
 .. todo:: Now I have fleshed out the syntax and rules for globals and params I think I can factor out much of the common syntax and many of the rules.
+
+Mode Refinement
+---------------
+
+The modes of each import and export item of a subprogram, both *formal parameters* and *global variables* can be more precisely specified.  
+
+Firstly the *global variables* of a subprogram may be identified and a mode specified for each using a ``global_aspect``. 
+
+Secondly, modes can be applied to independent subcomponents of an object. For instance, the array element A (I) may be designated as mode **out** where as A (J) may be designated as mode **in**.  This mode refinement may be applied to *global variables* using the ``global_aspect`` and *formal_parameters* using the ``param_aspect``.
+
+Lastly, both the ``global_aspect`` and the ``param_aspect`` may have conditional mode definitions.  If the ``condition`` is ``True`` then the items guarded by the ``condition`` have the modes given in the specification otherwise these items are not to have the specified mode.  Depending on the mode a ``False`` ``condition`` may mean that the guarded items are not regarded as being imported or exported.
+
+Syntax of Mode Refinement
+^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+   mode_refinement             ::= Global => mode_specification_list
+   mode_specification_list     ::= mode_specification
+                                 | (mode_specification {, mode_specification})
+   mode_specification          ::= mode_selector mode_definition_list
+                                 | no_globals_specification
+   no_globals_specification    ::= null
+   mode_definition_list        ::= mode_definition
+                                 | (mode_definition {, mode_definition})
+   mode_definition             ::= moded_item
+                                 | conditionally_moded_items
+   conditionally_moded_itens   ::= (if condition then moded_item_list)
+   moded_item_list             ::= moded_item
+                                 | (moded_item {, moded_item})
+   mode_selector               ::= [Input =>] | Output => | In_Out => 
+   moded_item                  ::= name
+
+.. todo:: We may make an extra mode_selector available ``Proof =>`` which indicates that the listed variables are only used for proof and not in the code.
+
+
  
 Global Aspects
 --------------
 
 The ``global_aspect`` names the ``global_items`` that are read and, or, updated
 by the subprogram.  They are considered to have modes the same as *formal
-parameters*, **in**, **out** and **in out**.
+parameters*, **in**, **out** and **in out** and the modes may be refined as described above.
 
 A ``global_item`` denotes a *global_variable_*\ ``name`` (see Ada LRM 8.1) or a
 *data_abstraction_*\ ``name`` (see :ref:`abstraction of global state`) and may
@@ -88,6 +123,9 @@ where
 
 Legality Rules
 ^^^^^^^^^^^^^^
+where
+
+   A moded item must be the name of a *global varable*, a *formal parameter*, a subcomponent of a *global variable or a *formal parameter*, or a *data abstraction*
 
 #.  A ``global_aspect`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``global_aspect`` grammar, except ``global_specification`` and ``mode_selector``, are also ``expressions``.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
