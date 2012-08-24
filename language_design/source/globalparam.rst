@@ -205,7 +205,7 @@ Legality Rules
 Further restrictions may be applied:
 
 9. The use of ``param_aspects`` may be excluded by the restriction ``No_Param_Aspects``.
-#. The restriction ``No_Default_Param_Modes_On_Procedures`` may be used to prohibit the use of an empty ``mode_selector`` in a procedure ``aspect_specification''.
+#. The restriction ``No_Default_Param_Modes_On_Procedures`` may be used to prohibit the use of an empty ``mode_selector`` in a procedure ``aspect_specification``.
 
 Examples
 ^^^^^^^^
@@ -284,7 +284,7 @@ Legality Rules
 #. Every ``dependency_item`` of a subprogram of mode **out** or **in out** shall appear in exactly one ''export_list`` of the ``dependency_aspect``.
 #. Every ``dependency_item`` of a subprogram of mode **in** or **in out** shall appear in at least one ``import_list``.
 #. A ``dependency_aspect`` for a function, F,  may only contain one item in its ``export_list``; the attribute F'Result.  Generally ``dependency_aspects`` are not required for functions unless it is to describe a ``conditional_dependency``.
-#. A ``function_designator`` may not appear in the ``dependency_aspect``of a procedure.
+#. A ``function_designator`` may not appear in the ``dependency_aspect`` of a procedure.
 #. There can be at most one export list which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_aspect``
 
 .. todo:: Further rules regarding the use of conditional dependencies and subcomponents in dependency aspects.
