@@ -1,14 +1,18 @@
 Annotations in subprograms
 ===========================
 
-This section discusses the pragmas ``Cut``, ``Loop_Invariant`` and ``Loop_Variant``.
+This section discusses the pragmas ``Assert_And_Cut``, ``Loop_Invariant`` and
+``Loop_Variant``.
 
 Syntax
 ------
 
+.. todo::
+  We need to document the Assume pragma.
+
 ::
 
-      cut_statement          ::= pragma Cut (boolean_expression);
+      cut_statement          ::= pragma Assert_And_Cut (boolean_expression);
 
       invariant_statement    ::= pragma Loop_Invariant(boolean_expression);
 
@@ -22,9 +26,11 @@ Legality rules
 --------------
 
 In addition to the assertion statements ``pragma Check`` and ``pragma
-Assert``, a SPARK 2014 subprogram can contain the statement ``pragma Cut``
-with a boolean expression. This boolean property must be true at the point of
-the ``pragma Cut``, as it is the case for the other forms of assertions.
+Assert``, a SPARK 2014 subprogram can contain the statement ``pragma
+Assert_And_Cut`` and ``pragma Assume``, both carrying a boolean
+expression. This boolean property must be true at the point of the ``pragma
+Assert_And_Cut``, as it is the case for the other forms of assertions. This
+pragma can occur anywhere a ``pragma Assert`` can occur.
 
 Any loop may contain, at any position in the top-level statement list, a
 ``pragma Loop_Invariant``.
@@ -37,12 +43,14 @@ appear in ``for`` loops.
 Proof semantics
 ---------------
 
-For all the pragmas ``Check``, ``Assert``, ``Cut`` and ``Loop_Invariant``, it
-must be proved that the boolean expression is true. In addition, the pragmas
-``Cut`` and ``Loop_Invariant`` act as a cut point: for any proofs in the
-remainder of the statement list, *only* the boolean expression is known to be
-true at that point; all information about modified variables that has been
-established from the statement list before the cut point is forgotten.
+For all the pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and
+``Loop_Invariant``, it must be proved that the boolean expression is true.
+This is not required for pragma ``Assume``. In addition, the pragmas
+``Assert_And_Cut`` and ``Loop_Invariant`` act as a cut point: the prover is
+free to forget all information about modified variables that has been
+established from the statement list before the cut point. A boolean expression
+given by pragma ``Assume`` can be assumed to be true for the remainder of
+subprogram.
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
@@ -59,9 +67,9 @@ Proving this property implies the termination of the loop.
 Dynamic semantics
 -----------------
 
-The pragmas ``Check``, ``Assert``, ``Cut`` and ``Loop_Invariant`` all have the
-same dynamic semantics, namely a dynamic check that the boolean expression
-evaluates to ``True``.
+The pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and ``Loop_Invariant``
+all have the same dynamic semantics, namely a dynamic check that the boolean
+expression evaluates to ``True``.
 
 Pragma ``Loop_Variant`` corresponds to a dynamic check with the following
 semantics: The check is always true at the first iteration; at subsequent
@@ -92,15 +100,12 @@ The following example describes some pragmas of this section::
       end loop;
    end P;
 
-Note that in this example, the loop variant is unnecessarily complex, stating that ``I``
-increases is enough to prove termination of this simple loop.
+Note that in this example, the loop variant is unnecessarily complex, stating
+that ``I`` increases is enough to prove termination of this simple loop.
 
 Discussion
 ----------
 
 In GNAT, all pragmas described here are implemented using a ``pragma Check``
 internally, so that the user-chosen assertion policy applies.
-
-The alternative name ``pragma Assert_and_Cut`` was proposed for ``pragma
-Cut``.
 

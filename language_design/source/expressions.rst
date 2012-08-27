@@ -7,8 +7,24 @@ New Attributes
 The attributes ``'Loop_Entry``, ``'Update``, ``'Valid_Scalars`` are
 introduced.
 
+.. todo::
+  Need to discuss the use/need for ``'Loop_Entry`` that apply to an outer
+  loop, to be used in the expression of an inner loop invariant. If we want
+  to support that, we will need special rules to prevent the use of a name
+  of an object that does not exist at loop entry.
+
 Legality rules
 --------------
+
+Some valid Ada programs are invalid in SPARK. In particular, a program that
+attempts accessing a component of an object of type ``T`` is invalid in SPARK
+if that composent is absent from ``T`` (while it may be valid in Ada for
+subtypes of discriminant records, although it would raise an exception at run
+time).
+
+.. todo::
+  Need to discuss 'Loop_Entry execution model, in particular when does the
+  object go out of scope (leading to e.g. finalization call)
 
 All these attributes apply to names. The ``'Loop_Entry`` attribute can only be
 used in assertions in loops (such as ``Loop_Invariant`` or ``Assert``), and
@@ -16,7 +32,7 @@ can not be applied to objects of limited type. It has an optional label
 as argument which denotes a loop block. If no such label is given,
 ``'Loop_Entry`` is associated to the innermost enclosing loop.
 
-The ``'Update`` attribute only applies to aggregate objects. It expects a
+The ``'Update`` attribute only applies to composite objects. It expects a
 comma-separated list of associations as argument, of the form ``expression =>
 expression``.
 
