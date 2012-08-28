@@ -14,20 +14,17 @@ Legality Rules
 
 Further restrictions may be applied using ``Strict_Modes`` which extends the rules with:
 
-2. A *formal parameter* of a subprogram of mode **in** or **in out** must be read directly or indirectly within the subprogram body.
+2. A *formal parameter* (see Ada LRM 6.1) of a subprogram of mode **in** or **in out** must be read directly or indirectly within the subprogram body.
 #. A *formal parameter* of a subprogram of mode **out** or **in out** must be updated directly or indirectly within the subprogram body.
-
-
-.. todo:: Now I have fleshed out the syntax and rules for globals and params I think I can factor out much of the common syntax and many of the rules.
 
 Mode Refinement
 ---------------
 
-Mode refinement is used in the specification of both a Global and Param aspects.  It allows the modes of each item read or updated by a subprogram, both *formal parameters* and *global variables* to be more precisely specified:  
+Mode refinement is used in the specification of both Global and Param aspects.  It allows the mode of each item read or updated by a subprogram, *formal parameters*, *global variables* (see Ada LRM 8.1) and *data abstractions*  (see :ref:`abstraction of global state`) to be more precisely specified:  
 
- * The *global variables* of a subprogram may be identified and a mode specified for each using a ``global_aspect``. 
- * Modes can be applied to independent subcomponents of an object. For instance, the array element A (I) may be designated as mode **out** where as A (J) may be designated as mode **in**.  This mode refinement may be applied to *global variables* using the ``global_aspect`` and *formal_parameters* using the ``param_aspect``.
- * Both the ``global_aspect`` and the ``param_aspect`` may have conditional mode definitions.  If the ``condition`` is ``True`` then the items guarded by the ``condition`` have the modes given in the specification otherwise these items are not to have the specified mode and may not be used in that mode. 
+ * The *global variables* and *data abstractions* of a subprogram may be identified and a mode specified for each using a ``global_aspect``. 
+ * Modes can be applied to independent subcomponents of an object. For instance, the array element A (I) may be designated as mode **out** where as A (J) may be designated as mode **in**.  This mode refinement may be applied to *global variables* using the ``global_aspect`` and *formal parameters* using the ``param_aspect``.
+ * Both the ``global_aspect`` and the ``param_aspect`` may have conditional mode definitions.  If the ``condition`` is ``True`` then the items guarded by the ``condition`` have the modes given in the specification otherwise these items do not and may not be used in that mode. 
 
 Syntax of Mode Refinement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -36,56 +33,56 @@ Syntax of Mode Refinement
    mode_refinement             ::= (mode_specification {, mode_specification})
                                  | default_mode_specification
                                  | null
-   mode_specification          ::= mode_selector mode_definition_list
+   mode_specification          ::= mode_selector => mode_definition_list
    default_mode_specification  ::= mode_definition_list
    mode_definition_list        ::= mode_definition
                                  | (mode_definition {, mode_definition})
    mode_definition             ::= moded_item
-                                 | conditionally_moded_items
+                                 | conditional_mode
    conditional_mode            ::= (if condition then moded_item_list)
    moded_item_list             ::= moded_item
                                  | (moded_item {, moded_item})
-   mode_selector               ::= Input => | Output => | In_Out => 
+   mode_selector               ::= Input| Output | In_Out 
    moded_item                  ::= name
 
-.. todo:: We may make an extra mode_selector available ``Proof =>`` which indicates that the listed variables are only used for proof and not in the code.
+.. todo:: We may make an extra mode_selector available ``Proof`` which indicates that the listed variables are only used for proof and not in the code.
 
 Legality Rules
 ^^^^^^^^^^^^^^
 
-#. A ``moded_item`` must be the name of a *global varable*, a *formal parameter*, a subcomponent of a *global variable or a *formal parameter*, or a *data abstraction*
-#. A ``mode_refinement`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``mode_refinement`` grammar, except ``mode_specification`` and ``mode_selector``, are also ``expressions``.
-#. A ``default_mode_specification`` is considered to be a ``mode_specification`` with the ``mode_selector Input =>``.
-#. In a single ``mode_refinement`` there can be at most one of each of a ``mode_specification`` with a ``mode_selector`` of ``Input =>``, ``Output =>`` and ``In_Out =>``.
-#.  The ``mode_selector`` of a ``mode_specification`` determines the effective mode of the ``moded_items`` in the ``mode_definition`` of the ``mode_specification``.  ``Input  =>`` is mode **in**, ``Output =>`` is mode **out**, and, ``In_Out =>`` is mode **in out**.
+#.  A ``mode_refinement`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``mode_refinement`` grammar, except ``mode_specification`` and ``mode_selector``, are also ``expressions``.
+#. A ``moded_item`` must be the name of a *global variable*, a *formal parameter*, a subcomponent of a *global variable* or a *formal parameter*, or a *data abstraction*
+#. A ``default_mode_specification`` is considered to be a ``mode_specification`` with the ``mode_selector Input``.
+#. In a single ``mode_refinement`` there can be at most one of each of a ``mode_specification`` with a ``mode_selector`` of ``Input``, ``Output`` and ``In_Out``.
+#.  The ``mode_selector`` of a ``mode_specification`` determines the effective mode of the ``moded_items`` in the ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is mode **out**, and, ``In_Out`` is mode **in out**.
 #.  The rules for reading or updating of a ``moded_item`` of a particular mode are the same as for a *formal parameter* of the same mode including any restrictions placed on the interpretation of the modes.
-#.  A ``moded_item`` or one of its subcomponents may not appear in more than one ``mode_specification`` or more than once within a single ``mode_specification`` other than appearing in a ``condition`` of a ``conditional_mode_``. 
-#.  A *variable* appearing in the ``condition`` of a ``conditional_mode`` must be a ``moded_item`` appearing in the same ``mode_refinement`` or a *formal parameter* of the associated subprogram of mode **in** or **in out** of the subprogram. 
+#.  A ``moded_item`` or one of its subcomponents may not appear in more than one ``mode_specification`` or more than once within a single ``mode_specification`` other than appearing in a ``condition`` of a ``conditional_mode``. 
+#.  A *variable* appearing in the ``condition`` of a ``conditional_mode`` must be a ``moded_item`` of mode **in** or **in out** appearing in the same ``mode_refinement`` or a *formal parameter* of the associated subprogram of mode **in** or **in out**. 
 #. The body of a subprogram which is constrained by a ``mode_refinement`` must satisfy the mode constraints and conditional use applied to the ``moded_items``. 
 
-.. todo:: Further rules involving subcomponents within a global aspect. Here is a first attempt but it probably requires more thought:
+.. todo:: Further rules involving subcomponents and conditions within a global aspect. Here is a first attempt but it probably requires more thought:
 
-9.  A ``moded_item`` may be a subcomponent provided a containing object (which may itself be a subcomponent) is not a ``moded_item`` in the same ``mode_refinement``.  Provided this rule is satisfied, different subcomponents of a composite object may appear more than once and, for array subcomponents, they may be the same indexed subcomponent. 
-#. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Output =>`` or ``In_Out =>`` then just that subcomponent is considered to be updated and the other subcomponents of the object are preserved (unchanged).  If more than one subcomponent of the same object appears in such a ``moded_specification`` then all the mentioned subcomponents are considered to be updated and remaining subcomponents of the object preserved.
-#. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Input =>`` or ``In_Out =>`` then just that subcomponent is considered to be read.  If more than one subcomponent of the same object appears in such a ``mode_specification`` then all the mentioned subcomponents are considered to be read.
+10.  A ``moded_item`` may be a subcomponent provided a containing object (which may itself be a subcomponent) is not a ``moded_item`` in the same ``mode_refinement``.  Provided this rule is satisfied, different subcomponents of a composite object may appear more than once and, for array subcomponents, they may be the same indexed subcomponent. 
+#. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Output`` or ``In_Out`` then just that subcomponent is considered to be updated and the other subcomponents of the object are preserved (unchanged).  If more than one subcomponent of the same object appears in such a ``moded_specification`` then all the mentioned subcomponents are considered to be updated and remaining subcomponents of the object preserved.
+#. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Input`` or ``In_Out`` then just that subcomponent is considered to be read.  If more than one subcomponent of the same object appears in such a ``mode_specification`` then all the mentioned subcomponents are considered to be read.
 #. If an object has subcomponents which are array elements and more than one of these elements are referenced in a ``mode_refinement`` then more than one element may have the same index.  This may give rise to conflicts.  For example: Global => (Input  => A (I), Output => A (J)); if I = J then A(I) is in out.  I am sure conflicts such as these can be resolved - they just require a bit more thought.
 #. A ``conditional_mode`` defines ``moded_item_list`` and if the ``condition`` is ``True`` then each ``moded_item`` in the list is considered to be a ``moded_item`` of a mode determined by the ``mode_selector`` of the enclosing ``mode_specification``.  If the condition is ``False`` then the items in the defined list are not regarded as moded items of the mode determined by the enclosing ``mode_specification``.
 #. If a ``moded_item``, appears in the ``mode_refinement`` of a subprogram with a mode of **in**, then it may only appear as a ``moded_item`` of mode **in** in any ``mode_refinement`` nested within the subprogram.
 
 Further restrictions may be applied:
 
-#. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``Moded_item`` cannot be a subcomponent name.
+#. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``moded_item`` cannot be a subcomponent name.
 #. The restriction ``No_Conditional_Modes`` prohibits the use of a ``conditional_mode`` in a ``mode_specification``. 
  
  
 Global Aspects
 --------------
 
-The ``global_aspect`` names the **global** items that are read and, or, updated
-by the subprogram.  They are considered to have modes the same as *formal
+A ``global_aspect`` names the *global* items that are read and, or, updated
+by a subprogram.  The *global* items are considered to have modes the same as *formal
 parameters*, **in**, **out** and **in out** and the modes may be refined as described above.
 
-A *global* item is a ``moded_item`` that denotes a *global_variable_*\ ``name`` (see Ada LRM 8.1) or a *data_abstraction_*\ ``name`` (see :ref:`abstraction of global state`).
+A *global* item is a ``moded_item`` that denotes a *global_variable_*\ ``name`` or a *data_abstraction_*\ ``name``.
 
 .. todo::
    Introduce constructive / modular analysis before this point, in the
@@ -118,34 +115,23 @@ Syntax of a Global Aspect
 Legality Rules
 ^^^^^^^^^^^^^^
 
-#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global varable*, a *formal parameter*, a subcomponent of a *global variable or a *formal parameter*, or a *data abstraction*.
+#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global variable*, a subcomponent of a *global variable*, or a *data abstraction*.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
-#.  A function subprogram may not have a ``mode_selector`` of ``Output =>`` or ``In_Out =>`` in its ``global_aspect`` as a function is not permitted to have side-effects.
-#. If the name of a ``moded_item``, appears in the ``global_aspect`` of a procedure subprogram, and V is a *formal parameter* of mode **in** of a subprogram that immediately encloses P, or the name of V appears within the ``global_aspect`` with a mode of **in** of such a subprogram, then the mode  of V, if it appears in the ``global_aspect`` of P, shall also be mode  **in**.
-#.  A ``global_item`` appearing in the ``global_aspect`` of a subprogram shall not have the same name, or be a subcomponent of an object with the same name as a formal parameter of the subprogram.
+#.  A function subprogram may not have a ``mode_selector`` of ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is not permitted to have side-effects.
+#.  A subprogram with a ``global_aspect`` that has a ``mode_refinement`` of **null** is taken to mean that the subprogram does not access any ``global_items``.
+#. A ``global_item`` appearing in the ``global_aspect`` of a subprogram shall not have the same name, or be a subcomponent of an object with the same name as a *formal parameter* of the subprogram.
 #.  A subprogram, shall not declare, immediately within its body, an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent, appearing in the ``global_aspect`` of the subprogram.
-#.  A subprogram with a ``global_aspect`` shall not access any *global* variables directly or indirectly that are not given as a ``global_item`` in its ``global_aspect``.
+#.  A subprogram with a ``global_aspect`` shall not access any *global variable* directly or indirectly that is not given as a ``global_item`` in its ``global_aspect``.
   
-.. todo:: Further rules involving subcomponents within a global aspect. Here is a first attempt but it probably requires more thought:
-
-17.  A ``global_item`` may be a subcomponent provided an enclosing object (which may itself be a subcomponent) is not a ``global_item`` in the same ``global_aspect``.  Provided this rule is satisfied, different subcomponents of a composite object may appear more than once and, for array subcomponents, they may be the same indexed subcomponent. 
-#. If a subcomponent name appears in a ``global_specification`` with a ``mode_selector`` of ``Output =>`` or ``In_Out =>`` then just that subcomponent is considered to be updated and the other subcomponents of the object are preserved (unchanged).  If more than one subcomponent of the same object appears in such a ``global_specification`` then all the mentioned subcomponents are considered to be updated and remaining subcomponents of the object preserved.
-#. If a subcomponent name appears in a ``global_specification`` with a ``mode_selector`` of ``Input =>`` or ``In_Out =>`` then just that subcomponent is considered to be read.  If more than one subcomponent of the same object appears in such a ``global_specification`` then all the mentioned subcomponents are considered to be read.
-#. If an object has subcomponents which are array elements and more than one of these elements are referenced in a ``global_aspect`` then more than one element may have the same index.  This may give rise to conflicts.  For example: Global => (Input  => A (I), Output => A (J)); if I = J then A(I) is in out.  I am sure conflicts such as these can be resolved - they just require a bit more thought.
-#. A ``conditional_global`` defines ``global_item_list`` and if the ``condition`` is ``True`` then each ``global_item`` in the defined list is considered to be a ``global_item`` of a mode determined by the ``mode_selector`` of the enclosing ``global_specification``.  If the condition is ``False``then the items in the defined list are not regarded as global items of the mode determined by the enclosing ``global_specification``
- 
-
 Further restrictions may be applied:
 
-24.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect_clause`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P. 
-#. The restriction ``Global_Variables_Are_Entire`` asserts that a ``global_item`` cannot be a subcomponent name.
-#. The restriction ``No_Conditional_Globals`` prohibits the use of a ``conditional_global`` in a ``global_specification``.
+8.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P. 
 
-.. todo:: In restriction 15, is this the assumption of no Global aspect implies Global => null sensible or should we always insist on Global => null?? I hope not!! Re-automate numbering after removing this todo.
+.. todo:: In the following restriction, is this the assumption of no Global aspect implies Global => null sensible or should we always insist on Global => null?? I hope not!! Re-automate numbering after removing this todo.
 
-20. The provision of ``global_aspects`` on all subprograms may be enforced by using the restriction ``Global_Aspects_Required``.  When this restriction is in force a subprogram which does not have an explicit ``global_aspect`` is considered to have a ``no_globals_specification``. 
-#. A less stringent restriction is ``Global_Aspects_On_Non_Nested_Subprograms`` which requires a ``global_aspect`` on all subprograms not nested within another subprogram, although a ``global_aspect`` may still be placed on a nested subprogram (and require it if the body is a partial implementation.  A virtual global aspect is calculated from the body of each nested subprogram which does not have an explicit ``global_aspect``.  
-#. The style restriction, ``No_Default_Global_Modes_On_Procedures``, disallows an empty ``mode_selector`` within a procedure ``aspect_specification``. An explicit ``Input =>`` must be given.  A function ``aspect_specification`` may have a global_specification with an empty ``mode_selector``. 
+9. The provision of ``global_aspects`` on all subprograms may be enforced by using the restriction ``Global_Aspects_Required``.  When this restriction is in force a subprogram which does not have an explicit ``global_aspect`` is considered to have a have have one of ``Global =>`` **null**. 
+#. A less stringent restriction is ``Global_Aspects_On_Non_Nested_Subprograms`` which requires a ``global_aspect`` on all subprograms not nested within another subprogram, although a ``global_aspect`` may still be placed on a nested subprogram (and require it if the body is a partial implementation).  A virtual global aspect is calculated from the body of each nested subprogram which does not have an explicit ``global_aspect``.  
+#. The style restriction, ``No_Default_Global_Modes_On_Procedures``, disallows a ``default_mode_specification`` within a procedure ``aspect_specification``. An explicit ``Input =>`` must be given.  A function ``aspect_specification`` may have a global_specification with a ``default_mode_specification``. 
  
 
 Examples
@@ -193,50 +179,24 @@ Param Aspects
 --------------
 
 A ``param_aspect`` is an optional aspect used to denote that a formal parameter of a subprogram is only conditionally used or that only part of a formal parameter of a composite type is used.
-Its syntax is similar to a global_aspect.
+It is specified using a ``mode_refinement``.
 
 Syntax of a Param Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
-   param_aspect               ::= Param => param_specification_list
-   param_specification_list   ::= (param_specification {, param_specification})
-   param_specification        ::= mode_selector param_definition_list
-   param_definition_list      ::= param_definition
-                                | (param_definition {, param_definition})
-   param_definition           ::= param_item
-                                | conditional_param
-   conditional_param          ::= (if condition then param_list)
-   param_list                 ::= param_item
-                                | (param_item {, param_item})
-
-where
-
-   ``param_item``             ::= *formal parameter* as described in Ada LRM 6.1 or a subcomponent thereof.
+   param_aspect               ::= Param => mode_refinement
 
 Legality Rules
 ^^^^^^^^^^^^^^
 
-#.  A ``param_aspect`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``param_aspect`` grammar, except ``param_specification`` and ``mode_selector``, are also ``expressions``.
+#. A ``moded_item`` appearing in a ``param_aspect`` of a subprogram must be the name of a *formal parameter* or a subcomponent of a *formal parameter* of the subprogram.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``param_aspect``.
-#.  There can be at most one of each of ``param_specification``, with a ``mode_selector`` of ``Input =>``, ``Output =>``, and ``In_Out =>`` in the same ``param_aspect``.
-#.  Every ``param_item`` appearing in a ``param_aspect`` of a subprogram must be a *formal parameter* or a subcomponent of a *formal parameter* of the subprogram.
-#.  A *formal parameter*, possibly as a prefix to one of its subcomponents, which appears in a ``param_specification`` with a ``mode_selector`` of ``Input =>`` must be of mode **in** or mode **in out**.
-#.  A *formal parameter*, possibly as a prefix to one of its subcomponents, which appears in a ``param_specification`` with a ``mode_selector`` of ``Output =>`` must be of mode **out** or mode **in out**.
-#.  A *formal parameter*, possibly as a prefix to one of its subcomponents,  which appears in a ``param_specification`` with a ``mode_selector`` of ``In_Out =>`` must be of mode **in out**.
-#.  A ``param_item`` may not appear in more than one ``param_specification`` or more than once within a single ``param_specification`` other than appearing in a ``condition`` of a ``conditional_param``.  
-#.  The only *variables* appearing in a ``condition`` of a ``conditional_param`` of a ``aspect_specification`` of a subprogram must be either be a ``param_item`` for which the corresponding *formal parameter* is of mode **in** or mode **in out** or a *global_variable_*\ ``name`` of mode **in** or **in out** from a previous ``global_aspect`` within the same ``aspect_specification``.
-#. The body of a subprogram which has a ``param_aspect`` must satisfy the constraints and conditional use placed on the ``param_items`` in the ``param_aspect``. 
-
-.. todo:: Further rules involving subcomponents within a param aspect. Here is a first attempt but it probably requires more thought:
-
-#. A subcomponent, S, of a *formal parameter* may be a ``param_item`` provided that the *formal parameter* itself is not a ``param_item`` nor is any subcomponent of the *formal parameter* which encloses S. 
-#. Different subcomponents of a *formal parameter* may appear more than once in a ``param_aspect`` and, for array subcomponents, they may be the same indexed subcomponent.
-#. If a *formal parameter* subcomponent name appears in a ``param_specification`` with a ``mode_selector`` of ``Output =>`` or ``In_Out =>`` then just that subcomponent is considered to be updated and the other subcomponents of the object are preserved (unchanged).  If more than one subcomponent of the same *formal_parameter* appears in such a ``param_specification`` then all the mentioned subcomponents are considered to be updated and remaining subcomponents of the object preserved.
-#. If a subcomponent name appears in a ``param_specification`` with a ``mode_selector`` of ``Input =>`` or ``In_Out =>`` then just that subcomponent is considered to be read.  If more than one subcomponent of the same object appears in such a ``param_specification`` then all the mentioned subcomponents are considered to be read.
-#. If a *formal_parameter* has subcomponents which are array elements and more than one of these elements are referenced in a ``global_aspect`` then more than one element may have the same index.  This may give rise to conflicts.  For example: Param => (Input  => A (I), Output => A (J)); if I = J then A(I) is in out.  I am sure conflicts such as these can be resolved - they just require a bit more thought.
-#. A ``conditional_param`` defines ``param_list`` and if the ``condition`` is ``True`` then each ``param_item`` in the defined list is considered to be a ``param_item`` of a mode determined by the ``mode_selector`` of the enclosing ``global_specification``.  If the condition is ``False``then the items in the defined list are not regarded as items of the mode determined by the enclosing ``param_specification`` 
-
+#. A ``param_aspect`` shall not have a ``mode_refinement`` of **null**.
+#. A *formal parameter*, possibly as a prefix to one of its subcomponents, which appears in a ``param_aspect`` with a ``mode_selector`` of ``Output`` must be of mode **out** or mode **in out**.
+#. A *formal parameter*, possibly as a prefix to one of its subcomponents,  which appears in a ``param_aspect`` with a ``mode_selector`` of ``In_Out`` must be of mode **in out**.
+#. A *formal parameter*, possibly as a prefix to one of its subcomponents, which appears in a ``param_aspect`` with a ``mode_selector`` of ``Input`` must be of mode **in** or mode **in out**.
+  
 Further restrictions may be applied:
 
 9. The use of ``param_aspects`` may be excluded by the restriction ``No_Param_Aspects``.
@@ -322,7 +282,7 @@ Legality Rules
 #. A ``function_designator`` may not appear in the ``dependency_aspect`` of a procedure.
 #. The ``+`` symbol in the syntax ``expression_list =>+ import_list`` designates that each ``dependency_item`` in the ``export-list`` has a self-dependency, that is it is dependent on itself. The text (A, B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C, Z)).  
 #. An ``import_list`` which is **null** indicates that the final values of the ``dependency_items`` in the associated ``export_list`` do not depend on any other ``dependency_items`` other than themselves if the ``export_list =>+`` **null** self-dependency syntax is used.  
-#. There can be at most one export list which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_aspect``.  A an ``export_list`` that is **null** represents a sink for ``dependency_items`` in the associated ``import_list``.  A ``depedency_item`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_aspect``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary. 
+#. There can be at most one export list which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_aspect``.  A an ``export_list`` that is **null** represents a sink for ``dependency_items`` in the associated ``import_list``.  A ``dependency_item`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_aspect``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary. 
 
 .. todo:: Further rules regarding the use of conditional dependencies and subcomponents in dependency aspects.
 
