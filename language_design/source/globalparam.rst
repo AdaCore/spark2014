@@ -8,14 +8,24 @@ Aspects are provided in addition to the Ada ``Pre`` and ``Post``. ``Global``, ``
 Subprogram Parameter Specifications
 -----------------------------------
 
-Legality Rules
-^^^^^^^^^^^^^^
+The static semantics of an Ada ``parameter_specification`` have been extended as described in the next subsections.
+
+Extended Static Semantics
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 #. A ``parameter_specification`` of a ``function_specification`` shall not have a mode of **out** or **in out** as a function is not allowed to have side-effects.
 
-Further restrictions may be applied using ``Strict_Modes`` which extends the rules with:
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2. A *formal parameter* (see Ada LRM 6.1) of a subprogram of mode **in** or **in out** must be read directly or indirectly within the subprogram body.
-#. A *formal parameter* of a subprogram of mode **out** or **in out** must be updated directly or indirectly within the subprogram body.
+#. ``Strict_Modes`` requires:
+
+   * A *formal parameter* (see Ada LRM 6.1) of a subprogram of mode **in** or **in out** must be read directly or indirectly within the subprogram body.
+   * A *formal parameter* of a subprogram of mode **out** or **in out** must be updated directly or indirectly within the subprogram body.
+
+Dynamic Semantics
+^^^^^^^^^^^^^^^^^
+
+There is no change to the dynamic semantics of Ada.  The extended semantics are checked by static analyis. 
 
 Mode Refinement
 ---------------
@@ -25,6 +35,8 @@ Mode refinement is used in the specification of both Global and Param aspects.  
  * The *global variables* and *data abstractions* of a subprogram may be identified and a mode specified for each using a ``global_aspect``. 
  * Modes can be applied to independent subcomponents of an object. For instance, the array element A (I) may be designated as mode **out** where as A (J) may be designated as mode **in**.  This mode refinement may be applied to *global variables* using the ``global_aspect`` and *formal parameters* using the ``param_aspect``.
  * Both the ``global_aspect`` and the ``param_aspect`` may have conditional mode definitions.  If the ``condition`` is ``True`` then the items guarded by the ``condition`` have the modes given in the specification otherwise these items do not and may not be used in that mode. 
+
+Sometimes this manual needs to refer to an object which is not a subcomponent of a larger containing object.  Such objects are called *entire* objects.
 
 Syntax of Mode Refinement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -47,34 +59,44 @@ Syntax of Mode Refinement
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which indicates that the listed variables are only used for proof and not in the code.
 
-.. todo:: Do we want to consider conditional_modes which have (if condition then moded_item_list {elsif condition then moded_item_list} [else moded_item_list]) ?  It might well be useful and would be consisten with an extended syntax for dependency relations where I believe it will be useful. 
+.. todo:: Do we want to consider conditional_modes which have (if condition then moded_item_list {elsif condition then moded_item_list} [else moded_item_list]) ?  It might well be useful and would be consisten with an extended syntax for dependedncy relations where I belive it will be useful. 
 
-Legality Rules
-^^^^^^^^^^^^^^
+Static Semantics
+^^^^^^^^^^^^^^^^
 
 #.  A ``mode_refinement`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``mode_refinement`` grammar, except ``mode_specification`` and ``mode_selector``, are also ``expressions``.
-#. A ``moded_item`` must be the name of a *global variable*, a *formal parameter*, a subcomponent of a *global variable* or a *formal parameter*, or a *data abstraction*
+#. A ``moded_item`` must be the name of a *global varable*, a *formal parameter*, a subcomponent of a *global variable* or a *formal parameter*, or a *data abstraction*
 #. A ``default_mode_specification`` is considered to be a ``mode_specification`` with the ``mode_selector Input``.
 #. In a single ``mode_refinement`` there can be at most one of each of a ``mode_specification`` with a ``mode_selector`` of ``Input``, ``Output`` and ``In_Out``.
 #.  The ``mode_selector`` of a ``mode_specification`` determines the effective mode of the ``moded_items`` in the ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is mode **out**, and, ``In_Out`` is mode **in out**.
 #.  The rules for reading or updating of a ``moded_item`` of a particular mode are the same as for a *formal parameter* of the same mode including any restrictions placed on the interpretation of the modes.
-#.  A ``moded_item`` or one of its subcomponents may not appear in more than one ``mode_specification`` or more than once within a single ``mode_specification`` other than appearing in a ``condition`` of a ``conditional_mode``. 
+#.  A ``moded_item`` or one of its subcomponents appearing in a ``mode_specification`` with a ``mode_selector`` of ``In_Out`` may not appear in any other ``mode_specification``. 
+#. A ``moded_item may not appear more than once within a single ``mode_specification`` other than appearing in a ``condition`` of a ``conditional_mode``. 
 #.  A *variable* appearing in the ``condition`` of a ``conditional_mode`` must be a ``moded_item`` of mode **in** or **in out** appearing in the same ``mode_refinement`` or a *formal parameter* of the associated subprogram of mode **in** or **in out**. 
 #. The body of a subprogram which is constrained by a ``mode_refinement`` must satisfy the mode constraints and conditional use applied to the ``moded_items``. 
 
 .. todo:: Further rules involving subcomponents and conditions within a global aspect. Here is a first attempt but it probably requires more thought:
 
-10.  A ``moded_item`` may be a subcomponent provided a containing object (which may itself be a subcomponent) is not a ``moded_item`` in the same ``mode_refinement``.  Provided this rule is satisfied, different subcomponents of a composite object may appear more than once and, for array subcomponents, they may be the same indexed subcomponent. 
+#.  A ``moded_item`` may be a subcomponent provided a containing object (which may itself be a subcomponent) is not a ``moded_item`` in the same ``mode_refinement``.  Provided this rule is satisfied, different subcomponents of a composite object may appear more than once and, for array subcomponents, they may be the same indexed subcomponent. 
 #. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Output`` or ``In_Out`` then just that subcomponent is considered to be updated and the other subcomponents of the object are preserved (unchanged).  If more than one subcomponent of the same object appears in such a ``moded_specification`` then all the mentioned subcomponents are considered to be updated and remaining subcomponents of the object preserved.
 #. If a subcomponent name appears in a ``mode_specification`` with a ``mode_selector`` of ``Input`` or ``In_Out`` then just that subcomponent is considered to be read.  If more than one subcomponent of the same object appears in such a ``mode_specification`` then all the mentioned subcomponents are considered to be read.
 #. If an object has subcomponents which are array elements and more than one of these elements are referenced in a ``mode_refinement`` then more than one element may have the same index.  This may give rise to conflicts.  For example: Global => (Input  => A (I), Output => A (J)); if I = J then A(I) is in out.  I am sure conflicts such as these can be resolved - they just require a bit more thought.
 #. A ``conditional_mode`` defines ``moded_item_list`` and if the ``condition`` is ``True`` then each ``moded_item`` in the list is considered to be a ``moded_item`` of a mode determined by the ``mode_selector`` of the enclosing ``mode_specification``.  If the condition is ``False`` then the items in the defined list are not regarded as moded items of the mode determined by the enclosing ``mode_specification``.
 #. If a ``moded_item``, appears in the ``mode_refinement`` of a subprogram with a mode of **in**, then it may only appear as a ``moded_item`` of mode **in** in any ``mode_refinement`` nested within the subprogram.
 
-Further restrictions may be applied:
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-16. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``moded_item`` cannot be a subcomponent name.
+#. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``Moded_item`` cannot be a subcomponent name.
 #. The restriction ``No_Conditional_Modes`` prohibits the use of a ``conditional_mode`` in a ``mode_specification``. 
+
+Dynamic Semantics
+^^^^^^^^^^^^^^^^^
+
+There are no dynamic semantics associated with a ``mode_refinement`` as it is used purely for static analyses puposes and is not executed.
+
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
+
  
  
 Global Aspects
@@ -114,8 +136,8 @@ Syntax of a Global Aspect
 
    global_aspect               ::= Global => mode_refinement
 
-Legality Rules
-^^^^^^^^^^^^^^
+Static Semantics
+^^^^^^^^^^^^^^^^
 
 #. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global varable*, a subcomponent of a *global variable*, or a *data abstraction*.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
@@ -125,16 +147,23 @@ Legality Rules
 #.  A subprogram, shall not declare, immediately within its body, an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent, appearing in the ``global_aspect`` of the subprogram.
 #.  A subprogram with a ``global_aspect`` shall not access any *global variable* directly or indirectly that is not given as a ``global_item`` in its ``global_aspect``.
   
-Further restrictions may be applied:
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P. 
+#.  If the restriction ``No_Scope_Holes`` is applied then a subprogram, P, shall not declare an entity of the same name as a ``global_item`` or the name of the object of which the ``global_item`` is a subcomponent in its ``global_aspect`` within a ``loop_statement`` or ``block_statement`` whose nearest enclosing program unit is P. 
 
 .. todo:: In the following restriction, is this the assumption of no Global aspect implies Global => null sensible or should we always insist on Global => null?? I hope not!! Re-automate numbering after removing this todo.
 
-9. The provision of ``global_aspects`` on all subprograms may be enforced by using the restriction ``Global_Aspects_Required``.  When this restriction is in force a subprogram which does not have an explicit ``global_aspect`` is considered to have a have have one of ``Global =>`` **null**. 
+2. The provision of ``global_aspects`` on all subprograms may be enforced by using the restriction ``Global_Aspects_Required``.  When this restriction is in force a subprogram which does not have an explicit ``global_aspect`` is considered to have a have have one of ``Global =>`` **null**. 
 #. A less stringent restriction is ``Global_Aspects_On_Non_Nested_Subprograms`` which requires a ``global_aspect`` on all subprograms not nested within another subprogram, although a ``global_aspect`` may still be placed on a nested subprogram (and require it if the body is a partial implementation).  A virtual global aspect is calculated from the body of each nested subprogram which does not have an explicit ``global_aspect``.  
 #. The style restriction, ``No_Default_Global_Modes_On_Procedures``, disallows a ``default_mode_specification`` within a procedure ``aspect_specification``. An explicit ``Input =>`` must be given.  A function ``aspect_specification`` may have a global_specification with a ``default_mode_specification``. 
  
+Dynamic Semantics
+^^^^^^^^^^^^^^^^^
+
+There are no dynamic semantics associated with a ``global_aspect`` it is used purely for static analyses puposes and is not executed.
+
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -180,8 +209,11 @@ Examples
 Param Aspects
 --------------
 
-A ``param_aspect`` is an optional aspect used to denote that a formal parameter of a subprogram is only conditionally used or that only part of a formal parameter of a composite type is used.
-It is specified using a ``mode_refinement``.
+A ``param_aspect`` is an optional aspect used to denote that a formal parameter of a subprogram is only conditionally used or that only part of a formal parameter of a composite type is used. It is specified using a ``mode_refinement``.
+
+A ``param_aspect`` should refine the regular Ada 2012 parameter modes, for
+example when a *formal parameter* X appears as Param => (In_Out => X), its mode should be **in out**. Likewise, if a *formal parameter* Y appears in a ``mode_specifcation`` with a ``mode selector`` of ``Input`` and in another with a ``mode_selector`` of ``Output`` (e.g. with different conditions), its *formal parameter* mode should be **in out**.
+
 
 Syntax of a Param Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -189,8 +221,8 @@ Syntax of a Param Aspect
 
    param_aspect               ::= Param => mode_refinement
 
-Legality Rules
-^^^^^^^^^^^^^^
+Static Semantics
+^^^^^^^^^^^^^^^^
 
 #. A ``moded_item`` appearing in a ``param_aspect`` of a subprogram must be the name of a *formal parameter* or a subcomponent of a *formal parameter* of the subprogram.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``param_aspect``.
@@ -199,10 +231,18 @@ Legality Rules
 #. A *formal parameter*, possibly as a prefix to one of its subcomponents,  which appears in a ``param_aspect`` with a ``mode_selector`` of ``In_Out`` must be of mode **in out**.
 #. A *formal parameter*, possibly as a prefix to one of its subcomponents, which appears in a ``param_aspect`` with a ``mode_selector`` of ``Input`` must be of mode **in** or mode **in out**.
   
-Further restrictions may be applied:
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-9. The use of ``param_aspects`` may be excluded by the restriction ``No_Param_Aspects``.
+#. The use of ``param_aspects`` may be excluded by the restriction ``No_Param_Aspects``.
 #. The restriction ``No_Default_Param_Modes_On_Procedures`` may be used to prohibit the use of an empty ``mode_selector`` in a procedure ``aspect_specification``.
+
+Dynamic Semantics
+^^^^^^^^^^^^^^^^^
+
+There are no dynamic semantics associated with a ``param_aspect`` it is used purely for static analyses puposes and is not executed.
+
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -242,13 +282,13 @@ Dependency aspects are optional and are simple formal specifications.  They are 
 
 The ``dependency_relation`` specifies for each ``export`` every ``import`` on which it depends.  The meaning of X depends on Y in this context is that the final value of ``export``, X, on the completion of the subprogram is at least partly determined from the initial value of ``import``, Y, on entry to the subprogram and is written ``X => Y``. The functional behaviour is not specified by the ``dependency_relation`` but, unlike a postcondition, the ``dependency_relation``, if it is given, has to be complete in the sense that every ``moded_item`` of the subprogram is an ``import``, ``export``, or both, and must appear in the ``dependency_relation``.
 
-The ``dependency_relation`` is specified using a list of dependency clauses.  A ``dependency_clause`` has an ``export_list`` and an ``import_list`` separated by an arrow ``=>``. Each ``export`` in the ``export_list`` depends on every ``import`` in the ``import_list``. As in UML, the entity at the tail of the arrow depends on the entity at the head of the arrow.
+The ``dependency_relation`` is specified using a list of dependency caluses.  A ``dependency_clause`` has an ``export_list`` and an ``import_list`` sepearted by an arrow ``=>``. Each ``export`` in the ``export_list`` depends on every ``import`` in the ``import_list``. As in UML, the entity at the tail of the arrow depends on the entity at the head of the arrow.
    
 A ``moded_item`` which is both an ``import`` and an ``export`` may depend on itself.  A shorthand notation is provided to indicate that each ``export`` in an ``export_list`` is self-dependent using an annotated arrow, ``=>+``, in the ``dependency_clause``.
 
 If an `export` does not depend on any ``import`` this is designated by using a **null** as an ``import_list``.  An ``export`` may be self-dependent but not dependent on any other import.  The shorthand notation denoting self-dependence is useful here, especially if there is more than one such ``export``; ``(X, Y, Z) =>+`` **null** means that the ``export`` X, Y, and Z each depend on themselves but not on any other ``import``.
 
-A dependency may be conditional.  Each ``export`` in an ``export_list`` which has a ``conditional_dependency`` is only dependent on every ``import`` in the ``import_list`` if the ``condition`` is ``True``. 
+A dependency may be condtional.  Each ``export`` in an ``export_list`` which has a ``conditional_dependency`` is only dependent on every ``import`` in the ``import_list`` if the ``condition`` is ``True``. 
 
 Syntax of a Dependency Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -279,8 +319,8 @@ where
 .. todo:: Do we want to consider conditional_modes which have (if condition then import_list {elsif condition then import_list} [else import_list]) ?
 It can imagine that this will be useful. 
 
-Legality Rules
-^^^^^^^^^^^^^^
+Static Semantics
+^^^^^^^^^^^^^^^^
 
 #.  A ``dependency_relation`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``dependency_relation`` grammar, except ``dependency_clause``, are also ``expressions``.
 #. An ``aspect_specification`` of a subprogram may have at most one ``dependency_aspect``.
@@ -297,17 +337,25 @@ Legality Rules
 #. A ``function_result`` may not appear in the ``dependency_relation`` of a procedure.
 #. The ``+`` symbol in the syntax ``expression_list =>+ import_list`` designates that each ``export`` in the ``export-list`` has a self-dependency, that is, it is dependent on itself. The text (A, B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C, Z)).  
 #. An ``import_list`` which is **null** indicates that the final values of each ``export`` in the associated ``export_list`` does not depend on any ``import``, other than themselves, if the ``export_list =>+`` **null** self-dependency syntax is used.  
-#. There can be at most one ``export_list`` which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_relation``.  A an ``export_list`` that is **null** represents a sink for each ``import`` in the ``import_list``.  A ``import`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_relation``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary. 
+#. There can be at most one ``export_list`` which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_relation``.  A an ``export_list`` that is **null** represents a sink for each ``import`` in the ``import_list``.  A ``import`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_relation``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary.
+#. A ``mode_refinement`` of a subprogram of must be consistent with its ``dependency_relation``.  The ``  
 
 .. todo:: Further rules regarding the use of conditional dependencies and subcomponents in dependency aspects.
 
-Further restrictions may be applied:
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. The restriction ``Procedures_Require_Dependency_Aspects`` mandates that all procedures must have a ``dependency_aspect``.  Functions may have a ``dependency_aspect`` but they are not required.
 #. A less stringent restriction is ``Procedure_Declarations_Require_Dependency_Aspects`` which only requires a ``dependency_aspect`` to be applied to a procedure declaration.
 #. The restriction ``No_Conditional_Dependencies`` prohibits the use of a ``conditional_dependency`` in any ``dependency_relation``
 #. ``Dependencies_Are_Entire`` prohibits the use of subcomponents in ``dependency_relations``.
 
+Dynamic Semantics
+^^^^^^^^^^^^^^^^^
+
+There are no dynamic semantics associated with a ``dependency_aspect`` it  used purely for static analyses puposes and is not executed.
+
+.. todo:: We could consider executable semantics, especially for conditional dependencies, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -379,64 +427,53 @@ Post_Cases
 
 ::
 
-   post_cases          ::= with Post_Cases => (post_case_list)
+   post_cases          ::= Post_Cases => (post_case_list)
    post_case_list      ::= post_case {, post_case_list}
    post_case           ::= boolean_expression => boolean_expression
-   derives_aspect      ::= with Derives => (derives_clause_list)
-   derives_clause_list ::=
-       derives_clause {, derives_clause_list}
-     | null
-   derives_clause      ::= name_list => data_expression
-   name_list           ::= name | name_paren_list
-   name_paren_list     ::= (inner_name_list) | null
-   inner_name_list     ::= name {, inner_name_list}
-   data_expression     ::=
-        [+] name_list
-      | (if_data_expression)
-      | (case_data_expression)
-   if_data_expression  ::=
-     if condition then data_expression
-     {elsif condition then data_expression}
-     [else data_expression]
-   case_data_expression ::=
-      case selecting_expression is
-      case_expression_alternative {,
-      case_data_expression_alternative}
-   case_data_expression_alternative ::=
-      when discrete_choice_list => data_expression
 
-Legality rules
-^^^^^^^^^^^^^^
-
-.. todo::
-  Should the post cases be exclusive and should the check that exactly one
-  guard is true be performed at subprogram entry?
+Static Semantics
+^^^^^^^^^^^^^^^^
+.. todo:: Presumably the static semantics of the individual cases should be equivalent to the individual branches of an if-then-elsif-else conditional expression, where the LHS of the arrow is the condition.  I do not know whether it is feasible to prove, in general, that the cases are exclusive and or exhaustive.  It would be good to indicate where we can prove that cases are not exclusive and or exhaustive.
 
 
+Dynamic Semantics
+^^^^^^^^^^^^^^^^
+.. todo:: Presumably the dynamic semantics of the individual cases should be equivalent to the individual branches of an if-then-elsif-else conditional expression where the LHS of the arrow is the condition. A dynamic check could be applied on subprogram exit (it is a post condition! unless it is assumed that the LHS are the 'Old values?) to show that exactly one LHS (guard) is True. If none of the guards are satisfied then the cases are not exhaustive.
 
-Anti-aliasing rules:
---------------------
 
-.. todo:: The following text is copied from the SPARK 2005 LRM
+Procedure Calls
+=================
 
-The rules below prevent aliasing of variables in the execution of procedure subprograms.  See Section 6.1.2 for the definitions of imported, exported and entire variables.  (If a procedure subprogram has two procedure annotations as a consequence of refinement (c.f. Chapter 7), then in applying the rules to calls of a procedure P occurring outside the package in which P is declared, the annotation in the declaration should be employed; whereas in applying the rules to calls within the body of this package, the annotation in the procedure body or body stub should be used.)
-1	If a variable V named in the global definition of a procedure P is exported, then neither V nor any of its subcomponents can occur as an actual parameter of P.
-2	If a variable V occurs in the global definition of a procedure P, then neither V nor any of its subcomponents can occur as an actual parameter of P where the corresponding formal parameter is an exported variable.
-3	If an entire variable V or a subcomponent of V occurs as an actual parameter in a procedure call statement, and the corresponding formal parameter is an exported variable, then neither V or an overlapping subcomponent of V can occur as another actual parameter in that statement. Two components are considered to be overlapping if they are elements of the same array or are the same component of a record (for example V.F and V.F) including subcomponents of the component (for example V.F and V.F.P). Note array elements are always considered to be overlapping and so, for example, V.A(I).P and V.A(J).Q are considered as overlapping.
-Where one of these rules prohibits the occurrence of a variable V or any of its subcomponents as an actual parameter, the following constructs are also prohibited in this context:
-1	a type conversion whose operand is a prohibited construct;
-2	a qualified expression whose operand is a prohibited construct;
-3	a prohibited construct enclosed in parentheses.
+The previous sections of this chapter have been concerned with the declaration of subprograms.  In this section discusses the semantic checks and restrictions placed on a call to a procedure.  The semantic checks are present to avoid the possibility of introducing aliases where the same object may be referenced by two different names.  The presence of aliasing is inconsistent with the underlying flow analysis and proof models used by the tools which assume that different names represent different entities.  In general, it is not possible or is difficult to deduce that two name refer to the same object and problems arise when one of names is used to update the object.  
 
+A common place for aliasing to be itroduced is through the *actual parameters* (see Ada LRM 6.4.1)  and between *actual parameters* and *global variables* in a procedure call.  The extra semantic rules avoid the possibilty of aliasing through *actual parameters* and *global variables*.  A function is not allowed to have side-effects and cannot update an *actual parameter* or *global variable*.  Therefore a finction call cannot introduce aliasing and are excluded from the anti-aliasing static semantic rules given below for prcedure calls.
+
+Anti-Aliasing 
+-------------
+
+The static semantics require the detemination of the ``global_items`` of a procedure.  These may be obtained from a ``global_aspect`` or ``dependency_aspect`` of the procedure, if one is present, or has to be calculated from a whole program analysis.
+
+Extended Static Semantics
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. If a procedure has refined contracts  (need a reference here???) then in applying the static semantic rules to calls of a procedure P occurring outside the package in which P is declared, the contract in the declaration should be employed; whereas in applying the rules to calls within the body of this package, the contract of the procedure body or body stub should be used.
+#.  If a *variable* V named in the ``global_aspect`` of a procedure P is of mode **out** or **in out**, then neither V nor any of its subcomponents can occur as an *actual parameter* of P.
+#. If a *variable* V occurs in the ``global_aspect`` of a procedure P, then neither V nor any of its subcomponents can occur as an *actual parameter* of P where the corresponding *formal parameter* is of mode **out** or **in out**.
+#. If an *entire variable* V or a subcomponent of V occurs as an *actual parameter* in a procedure call statement, and the corresponding *formal parameter* is of mode **out** or **in out**, then neither V or an overlapping subcomponent of V can occur as another *actual parameter* in that statement. Two components are considered to be overlapping if they are elements of the same array with the same index, or slices of the same array with common indices, or are the same component of a record (for example V.F and V.F) including subcomponents of the component (for example V.F and V.F.P).
+#. Where one of these rules prohibits the occurrence of a *variable* V or any of its subcomponents as an actual parameter, the following constructs are also prohibited in this context:
+
+    #. a type conversion whose operand is a prohibited construct;
+    #. a qualified expression whose operand is a prohibited construct;
+    #. a prohibited construct enclosed in parentheses.
+
+Restrictions That May Be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. The  restriction ``Array_Elements_Assumed_To_Overlap`` assumes that array elements are always considered to be overlapping and so, for example, V.A(I).P and V.A(J).Q are considered as overlapping.  This restriction can be enforced simply whereas the more general rule that array subcomponents are only considered to be overlapping when they have common indices requires formal proof in general.
 
 
 .. todo::  The rest of this chapter.  What do we do with the rest of this stuff?
 
-  The Param aspects should refine the regular Ada 2012 parameter modes, for
-  example when a parameter X appears in the Param_In_Out aspect, its parameter
-  mode should be ``in out``. Likewise, if a parameter X appears in the Param_In
-  and Param_Out aspects (e.g. with different conditions), its parameter mode
-  should be ``in out``.
 
 Meaning
 -------
