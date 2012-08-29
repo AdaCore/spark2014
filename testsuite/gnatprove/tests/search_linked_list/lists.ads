@@ -7,13 +7,12 @@ package Lists is
      Contract_Case =>
        (Name     => "all non zero",
         Mode     => Nominal,
-        Requires => (for all C in L.Iterate => Element (L, C) /= 0),
-        Ensures  => not Has_Element (L, Search'Result)),
+        Requires => (for all E of L => E /= 0),
+        Ensures  => not L.Has_Element (Search'Result)),
      Contract_Case =>
        (Name     => "some zero",
         Mode     => Nominal,
-        Requires => (for some C in L.Iterate => Element (L, C) = 0),
-        Ensures  => Element (L, Search'Result) = 0
-          and then (for all C in Left (L, Search'Result).Iterate =>
-                      Element (L, C) /= 0));
+        Requires => (for some E of L => E = 0),
+        Ensures  => L (Search'Result) = 0
+          and then (for all E of L.Left (Search'Result) => E /= 0));
 end Lists;
