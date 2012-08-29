@@ -47,6 +47,8 @@ Syntax of Mode Refinement
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which indicates that the listed variables are only used for proof and not in the code.
 
+.. todo:: Do we want to consider conditional_modes which have (if condition then moded_item_list {elsif condition then moded_item_list} [else moded_item_list]) ?  It might well be useful and would be consisten with an extended syntax for dependency relations where I believe it will be useful. 
+
 Legality Rules
 ^^^^^^^^^^^^^^
 
@@ -71,7 +73,7 @@ Legality Rules
 
 Further restrictions may be applied:
 
-#. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``moded_item`` cannot be a subcomponent name.
+16. The restriction ``Moded_Variables_Are_Entire`` asserts that a ``moded_item`` cannot be a subcomponent name.
 #. The restriction ``No_Conditional_Modes`` prohibits the use of a ``conditional_mode`` in a ``mode_specification``. 
  
  
@@ -115,7 +117,7 @@ Syntax of a Global Aspect
 Legality Rules
 ^^^^^^^^^^^^^^
 
-#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global variable*, a subcomponent of a *global variable*, or a *data abstraction*.
+#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global varable*, a subcomponent of a *global variable*, or a *data abstraction*.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
 #.  A function subprogram may not have a ``mode_selector`` of ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is not permitted to have side-effects.
 #.  A subprogram with a ``global_aspect`` that has a ``mode_refinement`` of **null** is taken to mean that the subprogram does not access any ``global_items``.
@@ -234,62 +236,77 @@ Examples
 Dependency Aspects
 ------------------
 
-Dependency aspects define a dependency relation for a procedure subprogram which may be given in the ``aspect_specification`` of the subprogram.  The dependency relation is used in information flow analysis.
+A ``dependency_aspect`` defines a ``dependency_relation`` for a subprogram which may be given in the ``aspect_specification`` of the subprogram.  The ``dependency_relation`` is used in information flow analysis.
 
-.. todo:: Need to extend this description some more.
+Dependency aspects are optional and are simple formal specifications.  They are ``dependency_relations`` which are given in terms of imports and exports.  An ``import`` of a subprogram is a ``moded_item`` which is read directly or indirectly by the subprogram.  Similarly an ``export`` of a subprogram is ``moded_item`` which is updated directly or indirectly by the subprogram.  A ``moded_item`` may be both an ``import`` and an ``export``.  An ``import`` must have mode **in** or mode **in out** and an ``export`` must have mode **in out** or mode **out**.  Additionally the result of a function is an ``export``.
+
+The ``dependency_relation`` specifies for each ``export`` every ``import`` on which it depends.  The meaning of X depends on Y in this context is that the final value of ``export``, X, on the completion of the subprogram is at least partly determined from the initial value of ``import``, Y, on entry to the subprogram and is written ``X => Y``. The functional behaviour is not specified by the ``dependency_relation`` but, unlike a postcondition, the ``dependency_relation``, if it is given, has to be complete in the sense that every ``moded_item`` of the subprogram is an ``import``, ``export``, or both, and must appear in the ``dependency_relation``.
+
+The ``dependency_relation`` is specified using a list of dependency clauses.  A ``dependency_clause`` has an ``export_list`` and an ``import_list`` separated by an arrow ``=>``. Each ``export`` in the ``export_list`` depends on every ``import`` in the ``import_list``. As in UML, the entity at the tail of the arrow depends on the entity at the head of the arrow.
+   
+A ``moded_item`` which is both an ``import`` and an ``export`` may depend on itself.  A shorthand notation is provided to indicate that each ``export`` in an ``export_list`` is self-dependent using an annotated arrow, ``=>+``, in the ``dependency_clause``.
+
+If an `export` does not depend on any ``import`` this is designated by using a **null** as an ``import_list``.  An ``export`` may be self-dependent but not dependent on any other import.  The shorthand notation denoting self-dependence is useful here, especially if there is more than one such ``export``; ``(X, Y, Z) =>+`` **null** means that the ``export`` X, Y, and Z each depend on themselves but not on any other ``import``.
+
+A dependency may be conditional.  Each ``export`` in an ``export_list`` which has a ``conditional_dependency`` is only dependent on every ``import`` in the ``import_list`` if the ``condition`` is ``True``. 
 
 Syntax of a Dependency Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
-   dependency_aspect      ::= Depends => dependency_list
-   dependency_list        ::= (dependency_clause {, dependency_clause})
-   dependency_clause      ::= export_list =>[+] import_list
+   dependency_aspect      ::= Depends => dependency_relation
+   dependency_relation    ::= (dependency_clause {, dependency_clause})
+   dependency_clause      ::= export_list =>[+] dependency_list
    export_list            ::= null
-                            | function_designator'Result
-                            | dependency_item
-                            | (dependency_item {, dependency_item})
-   import_list            ::= import_item
+                            | export
+                            | (export {, export})
+   dependency_list        ::= import_item_list 
+   import_item_list       ::= import_item
                             | (import_item {, import_item})
-                            | null
-   import_item            ::= dependency_item
-                            | conditional_dependency
+   import_item            ::= import
+                            | conditional_dependency 
    conditional_dependency ::= (if condition then import_list)
-
+   import_list            ::= import
+                            | (import {, import})
+                            | null
+   import                 ::= moded_item
+   export                 ::= moded_item | function_result
+   function_result        ::= function_designator'Result
 
 where
-  ``dependency_item`` ::= ``global_item`` | *formal parameter*
-and
   ``function_designator`` is the name of the function which is defining the ``aspect_specification`` enclosing the ``dependency_aspect``.
 
-.. todo:: We could consider associating + with the export list rather than the arrow, e.g., Depends => (+X => (Y, Z, Z)) or Depends => (+(A, B, C) => Z).
-
+.. todo:: Do we want to consider conditional_modes which have (if condition then import_list {elsif condition then import_list} [else import_list]) ?
+It can imagine that this will be useful. 
 
 Legality Rules
 ^^^^^^^^^^^^^^
 
-#.  A ``dependency_aspect`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``dependency_aspect`` grammar, except ``dependency_clause``, are also ``expressions``.
+#.  A ``dependency_relation`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``dependency_relation`` grammar, except ``dependency_clause``, are also ``expressions``.
 #. An ``aspect_specification`` of a subprogram may have at most one ``dependency_aspect``.
-#. Every *formal parameter* and ``global_item`` of a subprogram is a ``dependency_item``.
-#. Every ``dependency_item`` of a subprogram, or at least one of its components, must appear in the ``dependency_aspect``, if present, of the subprogram.
-#. Every ``dependency_item`` in an ``export_list`` must have a mode of **in out** or **out**.
-#. Every ``dependency_item`` in an ``import_list`` must have a mode of **in** or **in out**
-#. A ``dependency_item`` of mode **in** shall not appear in an ``export_list``, nor a ``dependency_item`` of mode **out** in an `import_list``.
-#. A ``dependency_item`` shall not appear more than once, other than in the ``condition`` of a ``conditional_dependency`` in a single ``import_list`` or ``export_list``.
-#. Every ``dependency_item`` of a subprogram of mode **out** or **in out** shall appear in exactly one ''export_list`` of the ``dependency_aspect``.
-#. Every ``dependency_item`` of a subprogram of mode **in** or **in out** shall appear in at least one ``import_list``.
-#. A ``dependency_aspect`` for a function, F,  may only contain one item in its ``export_list``; the attribute F'Result.  Generally ``dependency_aspects`` are not required for functions unless it is to describe a ``conditional_dependency``.
-#. A ``function_designator`` may not appear in the ``dependency_aspect`` of a procedure.
-#. The ``+`` symbol in the syntax ``expression_list =>+ import_list`` designates that each ``dependency_item`` in the ``export-list`` has a self-dependency, that is it is dependent on itself. The text (A, B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C, Z)).  
-#. An ``import_list`` which is **null** indicates that the final values of the ``dependency_items`` in the associated ``export_list`` do not depend on any other ``dependency_items`` other than themselves if the ``export_list =>+`` **null** self-dependency syntax is used.  
-#. There can be at most one export list which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_aspect``.  A an ``export_list`` that is **null** represents a sink for ``dependency_items`` in the associated ``import_list``.  A ``dependency_item`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_aspect``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary. 
+#. Every *formal_parameter* and every ``global_item``, or a subcomponent of either, of a subprogram is an ``import``, an ``export`` or both.
+#. An ``import`` must have mode **in** or mode **in out**
+#. An ``export`` must have mode **in out** or mode **out**
+#. A ``moded_item`` which is both an ``import`` and an ``export`` shall have mode **in out**.
+#. The result of a function is considered to to be an ``export`` of the function.
+#. Every ``import`` and ``export`` of a subprogram shall appear in the dependency relation.
+#. Each ``export`` shall appear exactly once in a ``dependency_relation``
+#. Each ``import`` shall appear at least once in a ``dependency_relation``.
+#. An ``import`` shall not appear more than once in a single ``import_list``.  
+#. A ``dependency_relation`` for a function, F,  has only one export and this is its result.  Its result is denoted by ``F'Result`` and may only appear as the only export of a function in its ``dependency relation``.  Generally ``dependency_aspects`` are not required for functions unless it is to describe a ``conditional_dependency``.
+#. A ``function_result`` may not appear in the ``dependency_relation`` of a procedure.
+#. The ``+`` symbol in the syntax ``expression_list =>+ import_list`` designates that each ``export`` in the ``export-list`` has a self-dependency, that is, it is dependent on itself. The text (A, B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C, Z)).  
+#. An ``import_list`` which is **null** indicates that the final values of each ``export`` in the associated ``export_list`` does not depend on any ``import``, other than themselves, if the ``export_list =>+`` **null** self-dependency syntax is used.  
+#. There can be at most one ``export_list`` which is a **null** symbol and if it exists it must be the ``export_list`` of the last ``dependency_clause`` in the ``dependency_relation``.  A an ``export_list`` that is **null** represents a sink for each ``import`` in the ``import_list``.  A ``import`` which is in such a ``import_list`` may not appear in another ``import_list`` of the same ``dependency_relation``.  The purpose of a **null** ``export_list`` is to facilitate moving Ada code outside the SPARK boundary. 
 
 .. todo:: Further rules regarding the use of conditional dependencies and subcomponents in dependency aspects.
 
 Further restrictions may be applied:
 
-.. todo:: Further restrictions such as no conditional derives, no subcomponents, etc.  Mandatory derives, derives on interfaces, etc.    
- 
+#. The restriction ``Procedures_Require_Dependency_Aspects`` mandates that all procedures must have a ``dependency_aspect``.  Functions may have a ``dependency_aspect`` but they are not required.
+#. A less stringent restriction is ``Procedure_Declarations_Require_Dependency_Aspects`` which only requires a ``dependency_aspect`` to be applied to a procedure declaration.
+#. The restriction ``No_Conditional_Dependencies`` prohibits the use of a ``conditional_dependency`` in any ``dependency_relation``
+#. ``Dependencies_Are_Entire`` prohibits the use of subcomponents in ``dependency_relations``.
 
 
 Examples
