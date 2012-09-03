@@ -1,3 +1,4 @@
+libs/containers/ada/*/*/* no-precommit-check
 libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
 testsuite/gnatprove/tests/*/* no-precommit-check
