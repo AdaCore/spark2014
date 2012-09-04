@@ -207,9 +207,9 @@ package body Alfa.Definition is
    procedure Mark_Binary_Op                   (N : Node_Id);
    procedure Mark_Call                        (N : Node_Id);
    procedure Mark_Component_Declaration       (N : Node_Id);
-   procedure Mark_Conditional_Expression      (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
+   procedure Mark_If_Expression               (N : Node_Id);
    procedure Mark_If_Statement                (N : Node_Id);
    procedure Mark_Iteration_Scheme            (N : Node_Id);
    procedure Mark_Number_Declaration          (N : Node_Id);
@@ -690,9 +690,6 @@ package body Alfa.Definition is
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
 
-         when N_Conditional_Expression =>
-            Mark_Conditional_Expression (N);
-
          when N_Enumeration_Representation_Clause =>
             Mark_Violation
               ("enumeration representation clause", N, NYI_Rep_Clause);
@@ -732,6 +729,9 @@ package body Alfa.Definition is
 
          when N_Identifier =>
             Mark_Identifier_Or_Expanded_Name (N);
+
+         when N_If_Expression =>
+            Mark_If_Expression (N);
 
          when N_If_Statement =>
             Mark_If_Statement (N);
@@ -1365,29 +1365,6 @@ package body Alfa.Definition is
       end if;
    end Mark_Component_Declaration;
 
-   ---------------------------------
-   -- Mark_Conditional_Expression --
-   ---------------------------------
-
-   procedure Mark_Conditional_Expression (N : Node_Id) is
-      Condition : constant Node_Id := First (Expressions (N));
-      Then_Expr : constant Node_Id := Next (Condition);
-      Else_Expr : Node_Id;
-
-   begin
-      Mark_Actions (N, Then_Actions (N));
-      Mark_Actions (N, Else_Actions (N));
-
-      Else_Expr := Next (Then_Expr);
-
-      Mark (Condition);
-      Mark (Then_Expr);
-
-      if Present (Else_Expr) then
-         Mark (Else_Expr);
-      end if;
-   end Mark_Conditional_Expression;
-
    -----------------------------
    -- Mark_Handled_Statements --
    -----------------------------
@@ -1461,6 +1438,29 @@ package body Alfa.Definition is
          end case;
       end if;
    end Mark_Identifier_Or_Expanded_Name;
+
+   ------------------------
+   -- Mark_If_Expression --
+   ------------------------
+
+   procedure Mark_If_Expression (N : Node_Id) is
+      Condition : constant Node_Id := First (Expressions (N));
+      Then_Expr : constant Node_Id := Next (Condition);
+      Else_Expr : Node_Id;
+
+   begin
+      Mark_Actions (N, Then_Actions (N));
+      Mark_Actions (N, Else_Actions (N));
+
+      Else_Expr := Next (Then_Expr);
+
+      Mark (Condition);
+      Mark (Then_Expr);
+
+      if Present (Else_Expr) then
+         Mark (Else_Expr);
+      end if;
+   end Mark_If_Expression;
 
    -----------------------
    -- Mark_If_Statement --

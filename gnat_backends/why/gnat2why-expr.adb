@@ -1022,7 +1022,7 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (N) is
          when N_Quantified_Expression | N_And_Then |
-              N_Op_And | N_Conditional_Expression
+              N_Op_And | N_If_Expression
             => return False;
          when others => return True;
       end case;
@@ -3149,7 +3149,7 @@ package body Gnat2Why.Expr is
 
       if Domain = EW_Pred and then
          not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
-         | N_Op_Or | N_Or_Else | N_In | N_Conditional_Expression |
+         | N_Op_Or | N_Or_Else | N_In | N_If_Expression |
          N_Quantified_Expression | N_Case_Expression) and then
          not (Nkind (Expr) in N_Identifier | N_Expanded_Name and then
               Ekind (Entity (Expr)) in E_Enumeration_Literal and then
@@ -3643,7 +3643,7 @@ package body Gnat2Why.Expr is
             T := Transform_Quantified_Expression (Expr, Domain, Local_Params);
             Current_Type := EW_Bool_Type;
 
-         when N_Conditional_Expression =>
+         when N_If_Expression =>
             declare
                Cond        : constant Node_Id := First (Expressions (Expr));
                Then_Part   : constant Node_Id := Next (Cond);
