@@ -8,13 +8,13 @@
 -- I will provide another case study external inputs and outputs later.
 private package AdvanceButton.Raw
 with
-  Abstract_State => (Inputs => Volatile_In)
+  Abstract_State => (Inputs => (Volatile => Input))
 is
 
    procedure Read (Pressed : out Boolean)
    with
-     Global_In => Inputs,
-     Derives => (Pressed => Inputs);
+     Global => (Input => Inputs),
+     Depends => (Pressed => Inputs);
    --
    -- Pressed is TRUE if the advance button is down.
 

@@ -6,15 +6,15 @@
 
 package Clock
 with
-  Abnstract_State => (Ticks => Volatile_In)
+  Abnstract_State => (Ticks => (Volatile => Input))
 is
 
    subtype Times is integer range 0 .. 86399;
 
    procedure Read (Time : out Times);
    with
-     Global_In => Ticks,
-     Derives => (Time => Ticks);
+     Global  => (Input => Ticks),
+     Depends => (Time => Ticks);
    -- Time contains the number of seconds since the controller was powered
    -- up and rests to zero every 24 hours.
 

@@ -13,39 +13,41 @@ is
 
    function CurrentMode return AdvanceModes
    with
-     Global_In => State;
+     Global => State;
 
    procedure SetSlowMode
    with
-     Global_In_Out => State,
-     Derives => (State => State);
+     Global  => (In_Out => State),
+     Depends => (State => State);
 
    procedure SetFastMode
    with
-     Global_In_Out State,
-     Derives => (State => State);
+     Global  => (In_Out => State),
+     Depends => (State => State);
 
    procedure JustPressed (Result :    out Boolean)
    --return TRUE if button pressed now and not pressed before
    with
-     Global_In     => Clock.Ticks,
-     Global_In_Out => State,
-     Derives => (Result => State,
-                 State  => (State, Clock.Ticks));
+     Global  =>
+       (Input  => Clock.Ticks,
+        In_Out => State),
+     Depends => (Result =>  State,
+                 State  =>+ Clock.Ticks);
 
    procedure PressedFor (Period : in     Clock.Times;
                          Result :    out Boolean)
    --return TRUE if button was pressed before, is still pressed and Period
    --has elapsed since it last returned TRUE
    with
-     Global_In     => Clock.Ticks,
-     Global_In_Out => State,
-     Derives => ((Result, State) => (Period, State, Clock.Ticks));
+     Global =>
+       (Input  => Clock.Ticks,
+        In_Out => State),
+     Depends => ((Result, State) => (Period, State, Clock.Ticks));
 
    procedure NotPressed (Result :    out Boolean)
    --return TRUE if button is not currently pressed
    with
-     Global_In_Out => State,
-     Derives => ((Result, State) => State);
+     Global  => (In_Out => State),
+     Depends => ((Result, State) => State);
 
 end AdvanceButton;

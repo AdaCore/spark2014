@@ -14,10 +14,10 @@
 with AdvanceButton.Raw;
 package body AdvanceButton
 with
-Refined_State => (State => ((AdvanceButton.Raw.Inputs => Volatile_In),
-                            AdvanceMode,
-                            AdvPressed,
-                            AdvTimer))
+Refined_State => (State => ((AdvanceButton.Raw.Inputs => (Volatile => Input)),
+                             AdvanceMode,
+                             AdvPressed,
+                             AdvTimer))
 is
    AdvanceMode : AdvanceModes := Slow;
    AdvPressed  : Boolean      := False;
@@ -27,8 +27,8 @@ is
 
    procedure SetSlowMode
    with
-     Refined_Global_Out => AdvanceMode,
-     Refined_Derives => (AdvanceMode => null)
+     Refined_Global  => (Output => AdvanceMode),
+     Refined_Depends => (AdvanceMode => null)
    is
    begin
       AdvanceMode := Slow;
@@ -36,8 +36,8 @@ is
 
    procedure SetFastMode
    with
-     Refined_Global_Out => AdvanceMode,
-     Refined_Derives => (AdvanceMode => null)
+     Refined_Global  => (Output => AdvanceMode),
+     Refined_Depends => (AdvanceMode => null)
    is
    begin
       AdvanceMode := Fast;
@@ -45,12 +45,14 @@ is
 
    procedure JustPressed (Result :    out Boolean)
    with
-     Refined_Global_In     => (Raw.Inputs,
-                               Clock.Ticks),
-     Refined_Global_In_Out => (AdvPressed,
-                               AdvTimer),
-     Refined_Derives => ((Result, AdvPressed) => AdvPressed, Raw.Inputs,
-                          AdvTimer => +(Raw.Inputs, AdvPressed, Clock.Ticks))
+     Refined_Global =>
+       (Input  => (Raw.Inputs,
+                   Clock.Ticks),
+        In_Out => (AdvPressed,
+                   AdvTimer)),
+     Refined_Depends =>
+       ((Result, AdvPressed) => AdvPressed, Raw.Inputs,
+         AdvTimer =>+ (Raw.Inputs, AdvPressed, Clock.Ticks))
    is
       PressedBefore : Boolean;
       PressedNow    : Boolean;
@@ -74,14 +76,16 @@ is
    procedure PressedFor (Period : in     Clock.Times;
                          Result :    out Boolean)
    with
-     Refined_Global_In     => (Raw.Inputs, Clock.Ticks),
-     Refined_Global_In_Out => AdvTimer,
-     Refined_Global_Out    => AdvPressed,
-   Refined_Derives => ((Result, AdvTimer) => (Raw.Inputs,
-                                              AdvTimer,
-                                              Period,
-                                              Clock.Ticks),
-                        AdvPressed => Raw.Inputs)
+     Refined_Global =>
+       (Inputs  => (Raw.Inputs, Clock.Ticks),
+        In_Out  => AdvTimer,
+        Output  => AdvPressed),
+     Refined_Depends =>
+       ((Result, AdvTimer) => (Raw.Inputs,
+                               AdvTimer,
+                               Period,
+                               Clock.Ticks),
+         AdvPressed        => Raw.Inputs)
    is
       StillPressed : Boolean;
       TimeNow      : Clock.Times;
@@ -105,9 +109,10 @@ is
 
    procedure NotPressed (Result :    out Boolean)
    with
-     Refined_Global_In  => Raw.Inputs,
-     Refined_Global_Out => AdvPressed,
-     Refined_Derives => ((Result, AdvPressed) =>  Raw.Inputs)
+     Refined_Global =>
+       (Input  => Raw.Inputs,
+        Output => AdvPressed),
+     Refined_Depends => ((Result, AdvPressed) =>  Raw.Inputs)
     is
       Pressed : Boolean;
    begin

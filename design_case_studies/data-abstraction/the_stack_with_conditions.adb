@@ -29,7 +29,7 @@ is
 
    function Is_Empty  return Boolean
    with
-     Refined_Global_In => Pointer,
+     Refined_Global => Pointer,
      Refined_Post => Is_Empty'Result = (Pointer = 0)
    is
    begin
@@ -38,7 +38,7 @@ is
 
    function Is_Full  return Boolean
    with
-     Refined_Global_In => Pointer
+     Refined_Global => Pointer
      Refined_Post => Is_Full'Result = (Pointer = Max_Stack_Size)
    is
    begin
@@ -46,14 +46,14 @@ is
    end Is_Full;
 
    function Top return Integer
-   with Refined_Global_In => (Pointer, S)
+   with Refined_Global => (Pointer, S)
    is
    begin
       return S (Pointer);
    end Top;
 
    procedure Push(X: in Integer)
-   with Refined_Global_In_Out => (Pointer, S),
+   with Refined_Global => (In_Out => (Pointer, S))
    is
    begin
       Pointer := Pointer + 1;
@@ -62,8 +62,8 @@ is
 
    procedure Pop(X: out Integer)
  with
-     Refined_Global_In => S,
-     Refined_Global_In_Out => Pointer
+     Refined_Global => (Input  => S,
+                        In_Out => Pointer)
    is
    begin
       X := S (Pointer);
@@ -72,8 +72,8 @@ is
 
    procedure Swap (X : in Integer)
  with
-     Refined_Global_In => Pointer,
-     Refined_Global_In_Out => S,
+     Refined_Global => (Input  => Pointer,
+                        In_Out => S)
    is
    begin
       S (Pointer) := X;

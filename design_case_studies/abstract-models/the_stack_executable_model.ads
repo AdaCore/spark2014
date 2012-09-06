@@ -26,15 +26,15 @@ is
    -- A function to convert between the abstract state and the model
    function Model return Stack_Model
    with
-     Global_In => State;
+     Global => State;
 
    function Is_Empty return Boolean
    with
-     Global_In => State;
+     Global => State;
 
    function Is_Full return Boolean
    with
-     Global_In => State;
+     Global => State;
 
    -- Head and Tail are essentially functions defined purely for proof although
    -- they are executable.
@@ -45,12 +45,12 @@ is
    -- executable and returns a concrete Ada scalar type.
    function Head return Integer
    with
-     Global_In => State,
+     Global => State,
      pre => not Is_Empty;
 
    function Tail return Stack_Model
    with
-   Global_In => State;
+   Global => State;
 
    -- The postconditions of Top, Push, Pop and Swap are written in terms of
    -- Head, Tail and Model.
@@ -60,7 +60,7 @@ is
    -- cannot change the abstract state.
    function Top return Integer
    with
-     Global_In => State,
+     Global => State,
      Pre  => not Is_Empty,
      Post => Top'Result = Head;
 
@@ -69,7 +69,7 @@ is
    -- conversion routine Model, i.e., Tail = Model'Old.
    procedure Push (X: in Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre  => not Is_Full,
      Post => Head  = X and
              Tail  = Model'Old;
@@ -77,7 +77,7 @@ is
    -- The relationship is reversed here, Model = Tail'Old.
    procedure Pop (X: out Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre => not Is_Empty,
      Post => X     = Head'Old and
              Model = Tail'Old;
@@ -86,7 +86,7 @@ is
    -- change.
    procedure Swap (X : in Integer)
    with
-     Global_In_Out  => State,
+     Global => (In_Out  => State),
      Pre  => not Is_Empty,
      Post => Head = X and
              Tail = Tail'Old;

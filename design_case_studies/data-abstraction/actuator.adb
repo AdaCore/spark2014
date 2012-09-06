@@ -14,17 +14,18 @@ with Actuator.Mirror,
      Actuator.Raw;
 package body Actuator
 with
-Refined_State => (State => (Actuator.Raw.Outputs => Volatile_Out),
+Refined_State => (State => (Actuator.Raw.Outputs => (Volatile => Output)),
                             Actuator.Mirror.State)
 is
    function Status return Status_T is (Mirror.Get_State);
 
    procedure TurnOn
    with
-     Refined_Global_In_Out => Mirror.State,
-     Refined_Global_Out    => Raw.Outputs,
-     Refined_Derives => ((Mirror.State,
-                          Raw.Outputs) => Mirror.State)
+     Refined_Global =>
+       (In_Out => Mirror.State,
+        Output => Raw.Outputs),
+     Refined_Depends =>
+       ((Mirror.State, Raw.Outputs) => Mirror.State)
    is
       if Mirror.Get_State /= Actuator.On then
          Mirror.Set_State (Actuator.On);
@@ -34,10 +35,11 @@ is
 
    procedure TurnOff
    with
-     Refined_Global_In_Out => Mirror.State,
-     Refined_Global_Out    => Raw.Outputs,
-     Refined_Derives => ((Mirror.State,
-                          Raw.Outputs) => Mirror.State)
+     Refined_Global =>
+       (In_Out => Mirror.State,
+        Output => Raw.Outputs,
+        Refined_Depends =>
+          ((Mirror.State, Raw.Outputs) => Mirror.State)
    is
       if Mirror.Get_State /= Actuator.Off then
          Mirror.Set_State (Actuator.Off);

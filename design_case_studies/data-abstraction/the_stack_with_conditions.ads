@@ -23,31 +23,31 @@ with
    Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Is_Full return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Top return Integer
    with
-     Global_In => State,
+     Global => State,
      Pre => not Is_Empty;        -- Functions with global variables may be
                                  -- called directly within proof contracts
 
    procedure Push(X: in Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre => not Is_Full;
 
 
    procedure Pop(X: out Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre => not Is_Empty;
 
    procedure Swap (X : in Integer)
    with
-     Global_In_Out  => State,
+     Global => (In_Out  => State),
      Pre => not Is_Empty;
 
 end The_Stack_With_Conditions;

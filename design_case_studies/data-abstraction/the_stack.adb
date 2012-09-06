@@ -26,28 +26,28 @@ is
    -- The subprogram global definitions are refined in terms of the constituents
 
    function Is_Empty  return Boolean
-   with Refined_Global_In => Pointer
+   with Refined_Global => Pointer
    is
    begin
       return Pointer = 0;
    end Is_Empty;
 
    function Is_Full  return Boolean
-   with Refined_Global_In => Pointer
+   with Refined_Global => Pointer
    is
    begin
       return Pointer = Max_Stack_Size;
    end Is_Full;
 
    function Top return Integer
-   with Refined_Global_In => (Pointer, S)
+   with Refined_Global => (Pointer, S)
    is
    begin
       return S (Pointer);
    end Top;
 
    procedure Push(X: in Integer)
-   with Refined_Global_In_Out => (Pointer, S)
+   with Refined_Global => (In_Out => (Pointer, S))
    is
    begin
       Pointer := Pointer + 1;
@@ -55,7 +55,7 @@ is
    end Push;
 
    procedure Pop(X: out Integer)
-   with Refined_Global_In_Out => (Pointer, S)
+   with Refined_Global => (In_Out => (Pointer, S))
    is
    begin
       X := S (Pointer);
@@ -63,8 +63,8 @@ is
    end Pop;
 
    procedure Swap (X : in Integer)
-   with Refined_Global_In => Pointer,
-        Refined_Global_In_Out => S;
+   with Refined_Global => (Input  => Pointer,
+                           In_Out => S)
    is
    begin
       S (Pointer) := X;

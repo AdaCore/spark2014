@@ -13,34 +13,35 @@ with
    Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Is_Full return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Top return Integer
    with
-     Global_In => State,
+     Global => State,
      Pre => not Is_Empty;
 
    procedure Push (X: in Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre  => not Is_Full,
      Post => Top = X;                     -- A simple post condition
 
 
    procedure Pop (X: out Integer)
    with
-     Global_In_Out => State,
+     Global => (In_Out => State),
      Pre => not Is_Empty;
 
    procedure Swap (X : in Integer)
    with
-     Global_In  => State,
-     Global_Out (if Top /= X then State), -- conditional global contract
-     Pre  => not Is_Empty,                -- indicating that Stack is only
-     Post => Top = X;                     -- an output if X /= Top.
+     Global =>
+       (Input  => State,
+        Output => (if Top /= X then State)), -- conditional global contract
+     Pre  => not Is_Empty,                   -- indicating that Stack is only
+     Post => Top = X;                        -- an output if X /= Top.
 
 end The_Stack_With_More_Conditions;
 

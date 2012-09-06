@@ -10,12 +10,12 @@ with
 is
    function Get_State return Actuator.Status_T
    with
-     Global_In => State;
+     Global => State;
 
    procedure Set_State (S : in Actuator.Status_T)
    with
-     Global_In_Out => State,
-     Derives => (State => S);
+     Global  => (In_Out => State),
+     Depends => (State => S);
 
 send Actuator.Mirror;
 

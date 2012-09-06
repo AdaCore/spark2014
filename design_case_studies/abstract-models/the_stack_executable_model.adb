@@ -53,26 +53,13 @@ is
 
    procedure Push(X: in Integer)
    with
-     Refined_Global_In_Out => (Pointer, S),
+     Refined_Global =>
+       (In_Out => (Pointer, S)),
      Refined_Post =>
        Head  = X and
        Tail  = Model'Old and
        Pointer = Pointer'Old + 1 and
-       S = S'Update (Pointer => X)
-   -- I am not sure about this syntactically.
-   -- What I mean is S'Old'Update (Pointer => X)
-   -- but I am not sure this is allowed. In any case it may only make sense to
-   -- apply 'Update to the initial value of S.
-   -- S'Update is defined to mean that only the element(s) of the initial value
-   -- of S specified by the selector(s) are changed the rest of the composite
-   -- value is left unchanged.
-   -- This ensures the conditions specified for a valid model are met.
-   -- Instead of 'Updtae we could use:
-   -- for all (I in Index_Range => (if I = Pointer then S (I) = X else S (I) = S (I)'Old)
-   -- but this will be clumsy for multiple indices or for record composites.
-   -- Perhaps it would not be unreasonable to use a case expression for
-   -- multiple indices or record fields.
-   -- In either case it is computationally expensive.
+       S = S'Old'Update (Pointer => X)
    -- The refined post condition does introduce a proof obligation to show that
    -- the refined post condition implies the abstract postcondition but since
    -- the refined postcondition is just strengthens the condition with some
@@ -89,9 +76,9 @@ is
    -- Here we olnly need to show that the vector of values has not changed.
    procedure Pop(X: out Integer)
    with
-     Refined_Global_In_Out => (Pointer, S),
+     Refined_Global =>
+       (In_Out => (Pointer, S)),
      Refined_Post =>
-   Post =>
        X       = Head'Old and
        Model   = Tail'Old and
        Pointer = Pointer'Old - 1 and
@@ -106,12 +93,13 @@ is
    -- Only the top of stack is changed.
    procedure Swap (X : in Integer)
    with
-     Refined_Global_In      => Pointer,
-     Refined_Global_In_Out => S,
+     Refined_Global =>
+       (Input  => Pointer,
+        In_Out => S),
      Refined_Post =>
        Head = X and
        Tail = Tail'Old and
-       S = S'Update (Pointer => X)
+       S = S'Old'Update (Pointer => X)
    -- The proof of refinment integrity should be trivial
    is
    begin

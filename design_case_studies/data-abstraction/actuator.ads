@@ -15,18 +15,18 @@ is
 
    function Status return Status_T
    with
-     Global_In => State;
+     Global => State;
 
    procedure TurnOn
    with
-     Global_In_Out => State,
-     Derives => (Outputs => Null);
+     Global  => (In_Out => State),
+     Depends => (Outputs => Null);
      -- Turns the heating on.
 
    procedure TurnOff
    with
-     Global_In_Out => State,
-     Derives => (Outputs => Null);
+     Global  => (In_Out => State),
+     Depends => (Outputs => Null);
      -- Turns the heating off.
 
 end Actuator;

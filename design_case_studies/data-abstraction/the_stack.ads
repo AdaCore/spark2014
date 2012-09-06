@@ -14,21 +14,21 @@ with Abstract_State => State,
      Initializes => State
 is
    function Is_Empty return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Is_Full return Boolean
-   with Global_In => State;
+   with Global => State;
 
    function Top return Integer
-   with Global_In => State;
+   with Global => State;
 
    procedure Push(X: in Integer)
-   with Global_In_Out => State;
+   with Global => (In_Out => State);
 
    procedure Pop(X: out Integer)
-   with Global_In_Out => State;
+   with Global =>(In_Out => State);
 
    procedure Swap (X : in Integer)
-   with Global_In_Out => State;
+   with Global => (In_Out => State);
 
 end The_Stack;
