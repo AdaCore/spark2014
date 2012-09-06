@@ -12,6 +12,7 @@ SPARK 2014 Language Design Document
    introduction
    language_subset
    globalparam
+   procedure_calls
    assertcutinv
    expressions
    abstraction
