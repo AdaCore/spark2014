@@ -12,7 +12,29 @@ An abstract state is a name representing the state embodied by the hidden *varia
 
 If a subprogram P with a ``global_aspect`` is declared in the ``visible_part`` of a package and P reads or updates any of the hidden *variables* of the package then P must include in its ``global_aspect`` the abstract states with the correct mode that represent the hidden *variables* referenced by P.  If P has a ``dependency_apsect`` then the abstract states must appear as imports and exports, as appropriate, in the ``dependency_relation`` of the aspect.
 
-An abstract state name is declared using a ``abstract_state_aspect``. 
+An abstract ``state_name`` is declared using a ``abstract_state_aspect`` appearing in a ``aspect_specification`` of a ``package_specification``.
+
+A package Q with an ``abstract_state_aspect`` must have a ``refined_state_aspect`` appearing in the ``aspect_specification`` of the body of Q.  The ``refinded_state_aspect`` lists for each ``state_name``, its *constituents*.  A constituent is either a *variable* or another ``state_name``.  
+
+If a constituent is a *variable* it must be visible and declared:
+
+ * immediately within the ``private_part`` or body of Q,
+ * in the ``visible_part`` of package embedded in Q, or,
+ * in the ``visible_part`` of a private child of Q.
+
+if the constituent is a ``state_name`` it must be visible and be declared in a ``abstract_state_aspect`` of:
+
+ * a package embedded within Q, or,
+ * a private child of Q.
+
+A ``state_name`` of a package Q may appear in a ``global_aspect`` and a ``dependency_aspect`` of a subprogram P declared in the visible part of Q.  A ``state_name`` may also appear in the ``global_aspect`` and ``dependency_aspect`` of a subprogram calling P form a user of Q.
+
+In the body of package Q the body ofsubprogram P must refine its ``global_aspect`` and ``dependency_aspect`` in terms of each ``constituent`` of each ``state_name`` mentioned in its declaration.  Expression functions are excluded from this rule because the refinement may be deduced from the dfining expression.
+
+Global and dependency refinement are defined using a ``refined_global_aspect`` and a ``refined_depends_aspect`` respectively.
+
+If a suprogram P declared in the visible part of package Q has a ``state_name`` of Q mentioned in its ``global_aspect`` then a refined pre and post condition may be given on the body of P in terms of the constituents of the ``state_name``.
+ 
 
 Syntax of Abstract State Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -31,74 +53,70 @@ Static Semantics
 #. At most one ``abstract_state_aspect`` may appear in a single ``aspect_specification``.
 #. The ``defining_identifier`` of a ``state_name`` must not be the same as a directly visible name or a name declared immediately within the package conatining the ``abstract_state_aspect``.
 #. The ``defining_identifier`` of a ``state_name`` shall not be repeated within the ``abstract_state_list``.
-#. A package shall only have an ``abstract_state_aspect`` if it has *variables* declared in its ``private_part``, immediately within its body, 
+#. A package shall only have an ``abstract_state_aspect`` if it has *variables* declared in its ``private_part``, immediately within its body, or within embedded packages or private child packages.
+#. A ``state_name`` has the same scope and visibility as a declaration in the ``visible part`` of the package to which the ``abstract_state_aspect`` is applied.  
+#. A ``state_name`` can only appear in a ``global_aspect`` or a ``dependency_aspect``, or their equivalent pragmas.
 
-  name_state_property_list ::= defining_identifier [=> property]
-  property_list            ::= property
-                             | (property {, property})
-  property               ::= Volatile => mode_selector
-                           | A_Task
-                           | Is_Protected => protected_feature_list
-  protected_feature_list ::= (protected_feature {, protected_feature})
-  protected_feature      ::= Priority => expression
-                           | Suspendable
-                           | Interrupt [=> name_pair_list]
-                           | Protects => identifier_list
-  name_pair
-                            
+Restrictions that may be Applied
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#. ``No In_Out Volatile Variables`` enforces the restriction that a ``mode_selector`` of In_Out may not appear in an ``abstract_state_aspect`` or a ``refined_state_aspect``.
 
-If a subprogram delared in the ``visible_p 
-A type that represents global state of, e.g., a package, can be defined as
-follows::
+.. todo::  Aspects for RavenSpark, e.g., Task_Object and Protected_Object
+ 
 
-   type T is new SPARK.Abstract_Type;
+Syntax of Refined State Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Variables representing such a state can then be defined at package level::
+::
+  
+  refined_state_aspect   ::= Refined_State => refined_state_list
+  refined_state_list     ::= (state_and_constituents {, state_and_constituents})
+  state_and_constituents ::= state_name => constituent_list
+  constituent_list       ::= constituent
+                           | (constituent_definition {, constituent_definition)
+  constituent_definition ::= constituent [=> (Volatile => mode_selector)]
 
-   V : T;
+where 
+  
+  ``constituent ::=`` *variable_*\ ``name | state_name``                      
 
-Such variables are only accessible in aspects such as ``Global_(In/Out)`` and
-``Derives``, but not in programs nor in contracts.
 
-Each such abstract variable is associated to a set of (private or public)
-global variables. This association is established at the point of declaration
-of each non-abstract global variable::
+Static Semantics 
+^^^^^^^^^^^^^^^^
+#. For a package Q with an ``abstract_state_aspect``, all the *variables* and ``state_names`` which are ``constituents`` of Q must appear in exactly one ``constituent_list`` of the ``refined_state_aspect`` of Q.
 
-   X : Integer
-      with Refines => V;
-   Z : Boolean
-      with Refines => V;
 
-As the aspect name indicates, we also say that ``V`` is *refined* to contain
-``X`` and ``Z``.
+Syntax of Refined Global Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Proof semantics
----------------
+::
 
-Abstract variables stand for the set of associated concrete variables. When a
-subprogram has ``Global`` or ``Derives`` aspects on its specification *and*
-its body, it is checked that the aspects on the body refine the aspects on the
-specification. This means that once the abstract variables are replaced by
-the concrete variables, the former contains the latter.
+  refined_global_aspect ::= Refined_Global => mode_refinement
+
+Each ``moded_item`` of the ``mode_refinement`` must be a ``constituent``.
+
+Syntax of Refined Dependency Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+  refined_depends_aspect ::= Refined_Depends => dependency_relation
+
+Each ``import`` and ``export`` of the ``dependency_relation`` must be a ``constituent``.
 
 Dynamic Semantics
 -----------------
 
 Abstractions do not have dynamic semantics.
 
-Discussion
-----------
+Syntax of Refined Precondition Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It has been argued that with this proposition, it is hard to see the set of
-variables that an abstract variable refines to. From this point of view,
-declaring the refinement at the abstract variable is preferable, e.g.::
+``refined_precondition_aspect ::= Refined_Pre =>`` *Boolean_*\ ``expression``
+  
+Syntax of Refined Postcondition Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   V : T
-      with Refinement => (X, Y, Z);
+``refined_postcondition_aspect ::= Refined_Post =>`` *Boolean_*\ ``expression``
 
-But this has a number of problems, the most difficult one being that the
-concrete variables may be defined in the body only, which would make it
-necessary to parse the body to understand the refinement aspect.
 
-How can one declare that an abstract state refines to the abstract state of
-another package?
