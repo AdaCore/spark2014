@@ -27,7 +27,7 @@ Restrictions That May Be Applied
 Dynamic Semantics
 ^^^^^^^^^^^^^^^^^
 
-There is no change to the dynamic semantics of Ada.  The extended semantics are checked by static analyis. 
+There is no change to the dynamic semantics of Ada.  The extended semantics are checked by static analysis. 
 
 Mode Refinement
 ---------------
@@ -61,13 +61,13 @@ Syntax of Mode Refinement
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which indicates that the listed variables are only used for proof and not in the code.
 
-.. todo:: Do we want to consider conditional_modes which have (if condition then moded_item_list {elsif condition then moded_item_list} [else moded_item_list]) ?  It might well be useful and would be consisten with an extended syntax for dependedncy relations where I belive it will be useful. 
+.. todo:: Do we want to consider conditional_modes which have (if condition then moded_item_list {elsif condition then moded_item_list} [else moded_item_list]) ?  It might well be useful and would be consistent with an extended syntax for dependency relations where I believe it will be useful. 
 
 Static Semantics
 ^^^^^^^^^^^^^^^^
 
 #.  A ``mode_refinement`` is an ``expression`` and must satisfy the Ada syntax.  The non-terminals of the ``mode_refinement`` grammar, except ``mode_specification`` and ``mode_selector``, are also ``expressions``.
-#. A ``moded_item`` must be the name of a *global varable*, a *formal parameter*, a subcomponent of a *global variable* or a *formal parameter*, or a *data abstraction*
+#. A ``moded_item`` must be the name of a *global variable*, a *formal parameter*, a subcomponent of a *global variable* or a *formal parameter*, or a *data abstraction*
 #. A ``default_mode_specification`` is considered to be a ``mode_specification`` with the ``mode_selector Input``.
 #. In a single ``mode_refinement`` there can be at most one of each of a ``mode_specification`` with a ``mode_selector`` of ``Input``, ``Output`` and ``In_Out``.
 #.  A ``moded_item`` or one of its subcomponents appearing in a ``mode_specification`` with a ``mode_selector`` of ``In_Out`` may not appear in any other ``mode_specification``. 
@@ -96,9 +96,9 @@ Restrictions That May Be Applied
 Dynamic Semantics
 ^^^^^^^^^^^^^^^^^
 
-There are no dynamic semantics associated with a ``mode_refinement`` as it is used purely for static analyses puposes and is not executed.
+There are no dynamic semantics associated with a ``mode_refinement`` as it is used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing aspects which are Ada aspects such as Pre and Post. 
 
  
  
@@ -142,7 +142,7 @@ Syntax of a Global Aspect
 Static Semantics
 ^^^^^^^^^^^^^^^^
 
-#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global varable*, a subcomponent of a *global variable*, or a *data abstraction*.
+#. A ``moded_item`` appearing in a ``global_aspect`` must be the name of a *global variable*, a subcomponent of a *global variable*, or a *data abstraction*.
 #.  An ``aspect_specification`` of a subprogram may have at most one ``global_aspect``.
 #.  A function subprogram may not have a ``mode_selector`` of ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is not permitted to have side-effects.
 #.  A subprogram with a ``global_aspect`` that has a ``mode_refinement`` of **null** is taken to mean that the subprogram does not access any ``global_items``.
@@ -164,9 +164,9 @@ Restrictions That May Be Applied
 Dynamic Semantics
 ^^^^^^^^^^^^^^^^^
 
-There are no dynamic semantics associated with a ``global_aspect`` it is used purely for static analyses puposes and is not executed.
+There are no dynamic semantics associated with a ``global_aspect`` it is used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing aspects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -215,7 +215,7 @@ Param Aspects
 A ``param_aspect`` is an optional aspect used to denote that a formal parameter of a subprogram is only conditionally used or that only part of a formal parameter of a composite type is used. It is specified using a ``mode_refinement``.
 
 A ``param_aspect`` should refine the regular Ada 2012 parameter modes, for
-example when a *formal parameter* X appears as Param => (In_Out => X), its mode should be **in out**. Likewise, if a *formal parameter* Y appears in a ``mode_specifcation`` with a ``mode selector`` of ``Input`` and in another with a ``mode_selector`` of ``Output`` (e.g. with different conditions), its *formal parameter* mode should be **in out**.
+example when a *formal parameter* X appears as Param => (In_Out => X), its mode should be **in out**. Likewise, if a *formal parameter* Y appears in a ``mode_specification`` with a ``mode selector`` of ``Input`` and in another with a ``mode_selector`` of ``Output`` (e.g. with different conditions), its *formal parameter* mode should be **in out**.
 
 
 Syntax of a Param Aspect
@@ -243,9 +243,9 @@ Restrictions That May Be Applied
 Dynamic Semantics
 ^^^^^^^^^^^^^^^^^
 
-There are no dynamic semantics associated with a ``param_aspect`` it is used purely for static analyses puposes and is not executed.
+There are no dynamic semantics associated with a ``param_aspect`` it is used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
+.. todo:: We could consider executable semantics, especially for conditional modes, but I think we should only consider executing aspects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -285,13 +285,13 @@ Dependency aspects are optional and are simple formal specifications.  They are 
 
 The ``dependency_relation`` specifies for each ``export`` every ``import`` on which it depends.  The meaning of X depends on Y in this context is that the final value of ``export``, X, on the completion of the subprogram is at least partly determined from the initial value of ``import``, Y, on entry to the subprogram and is written ``X => Y``. The functional behaviour is not specified by the ``dependency_relation`` but, unlike a postcondition, the ``dependency_relation``, if it is given, has to be complete in the sense that every ``moded_item`` of the subprogram is an ``import``, ``export``, or both, and must appear in the ``dependency_relation``.
 
-The ``dependency_relation`` is specified using a list of dependency caluses.  A ``dependency_clause`` has an ``export_list`` and an ``import_list`` sepearted by an arrow ``=>``. Each ``export`` in the ``export_list`` depends on every ``import`` in the ``import_list``. As in UML, the entity at the tail of the arrow depends on the entity at the head of the arrow.
+The ``dependency_relation`` is specified using a list of dependency clauses.  A ``dependency_clause`` has an ``export_list`` and an ``import_list`` separated by an arrow ``=>``. Each ``export`` in the ``export_list`` depends on every ``import`` in the ``import_list``. As in UML, the entity at the tail of the arrow depends on the entity at the head of the arrow.
    
 A ``moded_item`` which is both an ``import`` and an ``export`` may depend on itself.  A shorthand notation is provided to indicate that each ``export`` in an ``export_list`` is self-dependent using an annotated arrow, ``=>+``, in the ``dependency_clause``.
 
 If an `export` does not depend on any ``import`` this is designated by using a **null** as an ``import_list``.  An ``export`` may be self-dependent but not dependent on any other import.  The shorthand notation denoting self-dependence is useful here, especially if there is more than one such ``export``; ``(X, Y, Z) =>+`` **null** means that the ``export`` X, Y, and Z each depend on themselves but not on any other ``import``.
 
-A dependency may be condtional.  Each ``export`` in an ``export_list`` which has a ``conditional_dependency`` is only dependent on every ``import`` in the ``import_list`` if the ``condition`` is ``True``. 
+A dependency may be conditional.  Each ``export`` in an ``export_list`` which has a ``conditional_dependency`` is only dependent on every ``import`` in the ``import_list`` if the ``condition`` is ``True``. 
 
 Syntax of a Dependency Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -356,9 +356,9 @@ Restrictions That May Be Applied
 Dynamic Semantics
 ^^^^^^^^^^^^^^^^^
 
-There are no dynamic semantics associated with a ``dependency_aspect`` it  used purely for static analyses puposes and is not executed.
+There are no dynamic semantics associated with a ``dependency_aspect`` it  used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for conditional dependencies, but I think we should only consider executing apsects which are Ada aspects such as Pre and Post. 
+.. todo:: We could consider executable semantics, especially for conditional dependencies, but I think we should only consider executing aspects which are Ada aspects such as Pre and Post. 
 
 Examples
 ^^^^^^^^
@@ -487,7 +487,7 @@ Param aspects::
 
     G : Integer;
 
-    --  These aspects describe that P always reagitds global variable G, --
+    --  These aspects describe that P always reads global variable G, --
     --  always reads and writes parameter I, and reads and writes the Ith cell
     --  of field F_1 of the argument R_Arg, but only when I is equal to 0.
 
