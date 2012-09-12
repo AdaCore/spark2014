@@ -37,10 +37,10 @@ package Gnat2Why.Expr is
    --  Map of entities, from container's type to the corresponding Has_Element
    --  function.
 
-   function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id;
+   function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
-   function Assume_of_Scalar_Subtype
+   function Assume_Of_Scalar_Subtype
      (Params : Translation_Params;
       N      : Entity_Id;
       Base   : Entity_Id) return W_Prog_Id;

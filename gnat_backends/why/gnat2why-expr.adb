@@ -214,6 +214,10 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Translation_Params) return W_Expr_Id;
 
+   function Transform_Declaration (Decl : Node_Id) return W_Prog_Id;
+   --  Transform a declaration. Return a program that takes into account the
+   --  dynamic semantics of the declaration (checks and assumptions).
+
    function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
 
    function Transform_Aggregate
@@ -345,10 +349,10 @@ package body Gnat2Why.Expr is
    end Apply_Modulus;
 
    ----------------------------
-   -- Assignment_of_Obj_Decl --
+   -- Assignment_Of_Obj_Decl --
    ----------------------------
 
-   function Assignment_of_Obj_Decl (N : Node_Id) return W_Prog_Id
+   function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id
    is
       Lvalue   : constant Entity_Id := Defining_Identifier (N);
       Rexpr    : constant Node_Id := Expression (N);
@@ -416,13 +420,13 @@ package body Gnat2Why.Expr is
       else
          return New_Void (N);
       end if;
-   end Assignment_of_Obj_Decl;
+   end Assignment_Of_Obj_Decl;
 
    ------------------------------
-   -- Assume_of_Scalar_Subtype --
+   -- Assume_Of_Scalar_Subtype --
    ------------------------------
 
-   function Assume_of_Scalar_Subtype
+   function Assume_Of_Scalar_Subtype
      (Params : Translation_Params;
       N      : Entity_Id;
       Base   : Entity_Id) return W_Prog_Id
@@ -493,10 +497,10 @@ package body Gnat2Why.Expr is
          Domain   => EW_Prog,
          Reason   => VC_Range_Check,
          Expr     => +Assuming);
-   end Assume_of_Scalar_Subtype;
+   end Assume_Of_Scalar_Subtype;
 
    ----------------------------------
-   -- Assume_of_Subtype_Indication --
+   -- Assume_Of_Subtype_Indication --
    ----------------------------------
 
    function Assume_Of_Subtype_Indication
@@ -505,7 +509,7 @@ package body Gnat2Why.Expr is
    begin
       if Nkind (N) = N_Subtype_Indication then
          return
-           Assume_of_Scalar_Subtype
+           Assume_Of_Scalar_Subtype
              (Params, Etype (N), Etype (Subtype_Mark (N)));
       else
          return New_Void;
@@ -2869,34 +2873,31 @@ package body Gnat2Why.Expr is
       end case;
    end Transform_Compare_Op;
 
-   ----------------------------------
-   -- Transform_Declarations_Block --
-   ----------------------------------
+   ---------------------------
+   -- Transform_Declaration --
+   ---------------------------
 
-   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
-      return W_Prog_Id
-   is
-      procedure Assume_of_Scalar_Subtype
+   function Transform_Declaration (Decl : Node_Id) return W_Prog_Id is
+
+      function Local_Assume_Of_Scalar_Subtype
         (Params : Translation_Params;
          Ent    : Entity_Id;
-         Base   : Entity_Id;
-         R      : in out W_Prog_Id);
-      --  Local Wrapper for Assume_of_Scalar_Subtype
+         Base   : Entity_Id) return W_Prog_Id;
+      --  Local wrapper on Assume_Of_Scalar_Subtype
 
       function Get_Base_Type (N : Node_Id) return Entity_Id;
       --  Return the base type when N is the node of a (sub-)type
       --  declaration which requires a check.
       --  Return Empty otherwise.
 
-      ------------------------------
-      -- Assume_of_Scalar_Subtype --
-      ------------------------------
+      ------------------------------------
+      -- Local_Assume_Of_Scalar_Subtype --
+      ------------------------------------
 
-      procedure Assume_of_Scalar_Subtype
+      function Local_Assume_Of_Scalar_Subtype
         (Params : Translation_Params;
          Ent    : Entity_Id;
-         Base   : Entity_Id;
-         R      : in out W_Prog_Id)
+         Base   : Entity_Id) return W_Prog_Id
       is
       begin
 
@@ -2905,9 +2906,11 @@ package body Gnat2Why.Expr is
          --  done it for us already
 
          if not Is_Static_Range (Get_Range (Ent)) then
-            R := Sequence (Assume_of_Scalar_Subtype (Params, Ent, Base), R);
+            return Assume_Of_Scalar_Subtype (Params, Ent, Base);
+         else
+            return New_Void;
          end if;
-      end Assume_of_Scalar_Subtype;
+      end Local_Assume_Of_Scalar_Subtype;
 
       -------------------
       -- Get_Base_Type --
@@ -2962,58 +2965,71 @@ package body Gnat2Why.Expr is
          end if;
       end Get_Base_Type;
 
+      R : W_Prog_Id := New_Void;
+
+   --  Start of Transform_Declaration
+
+   begin
+      case Nkind (Decl) is
+         when N_Object_Declaration =>
+            R := Assignment_Of_Obj_Decl (Decl);
+
+         when N_Subtype_Declaration | N_Full_Type_Declaration =>
+            declare
+               Ent  : constant Entity_Id := Defining_Identifier (Decl);
+               Base : constant Entity_Id := Get_Base_Type (Decl);
+            begin
+               if Present (Base) then
+                  case Ekind (Ent) is
+                     when Scalar_Kind =>
+                        R := Local_Assume_Of_Scalar_Subtype
+                          (Body_Params, Ent, Base);
+
+                     when Array_Kind =>
+                        declare
+                           Index      : Node_Id   := First_Index (Ent);
+                           Index_Base : Entity_Id := First_Index (Base);
+                        begin
+                           while Present (Index) loop
+                              R := Sequence (Local_Assume_Of_Scalar_Subtype
+                                              (Body_Params,
+                                               Etype (Index),
+                                               Etype (Index_Base)), R);
+                              Next (Index);
+                              Next (Index_Base);
+                           end loop;
+                        end;
+
+                     when Record_Kind =>
+                        null;
+
+                     when others =>
+                        Ada.Text_IO.Put_Line
+                          ("[Transform_Declarations_Block] ekind ="
+                           & Entity_Kind'Image (Ekind (Ent)));
+                        raise Not_Implemented;
+                  end case;
+               end if;
+            end;
+
+         when others =>
+            null;
+      end case;
+      return R;
+   end Transform_Declaration;
+
+   ----------------------------------
+   -- Transform_Declarations_Block --
+   ----------------------------------
+
+   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
+      return W_Prog_Id
+   is
       Cur_Decl : Node_Id := Last (L);
       R        : W_Prog_Id := Core;
    begin
       while Present (Cur_Decl) loop
-         case Nkind (Cur_Decl) is
-            when N_Object_Declaration =>
-               R := Sequence (Assignment_of_Obj_Decl (Cur_Decl), R);
-
-            when N_Subtype_Declaration | N_Full_Type_Declaration =>
-               declare
-                  Ent : constant Entity_Id :=
-                     Defining_Identifier (Cur_Decl);
-                  Base : constant Entity_Id := Get_Base_Type (Cur_Decl);
-               begin
-                  if Present (Base) then
-                     case Ekind (Ent) is
-                        when Scalar_Kind =>
-                           Assume_of_Scalar_Subtype
-                             (Body_Params, Ent, Base, R);
-
-                        when Array_Kind =>
-                           declare
-                              Index      : Node_Id := First_Index (Ent);
-                              Index_Base : Entity_Id := First_Index (Base);
-                           begin
-                              while Present (Index) loop
-                                 Assume_of_Scalar_Subtype
-                                   (Body_Params,
-                                    Etype (Index),
-                                    Etype (Index_Base),
-                                    R);
-                                 Next (Index);
-                                 Next (Index_Base);
-                              end loop;
-                           end;
-
-                        when Record_Kind =>
-                           null;
-
-                        when others =>
-                           Ada.Text_IO.Put_Line
-                             ("[Transform_Declarations_Block] ekind ="
-                              & Entity_Kind'Image (Ekind (Ent)));
-                           raise Not_Implemented;
-                     end case;
-                  end if;
-               end;
-
-            when others =>
-               null;
-
-         end case;
+         R := Sequence (Transform_Declaration (Cur_Decl), R);
          Prev (Cur_Decl);
       end loop;
       return R;
@@ -4396,8 +4412,10 @@ package body Gnat2Why.Expr is
             Ada.Text_IO.Put_Line ("[Transform_Statement] raise xxx error");
             raise Not_Implemented;
 
-         when N_Object_Declaration =>
-            return Assignment_of_Obj_Decl (Stmt);
+         when N_Object_Declaration    |
+              N_Subtype_Declaration   |
+              N_Full_Type_Declaration =>
+            return Transform_Declaration (Stmt);
 
          when N_Object_Renaming_Declaration =>
 
