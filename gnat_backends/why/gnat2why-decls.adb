@@ -58,7 +58,6 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Strings; use Ada.Strings;
 
 with GNAT.OS_Lib;
-with Ada.Command_Line;
 with GNAT.Case_Util;
 with GNAT.Strings;
 with Ada.Directories;
@@ -74,10 +73,11 @@ package body Gnat2Why.Decls is
    --  formal containers, instead of the ad-hoc copies that we do now.
 
    function Executable_Location return String;
-   --  Return the name of the parent directory where the executable is stored
-   --  (so if you are running "prefix"/bin/gps, you would get "prefix").
-   --  A special case is done for "bin" directories, which are skipped.
-   --  The returned directory always ends up with a directory separator.
+   --  Return the name of the parent directory where the gnatprove executable
+   --  is stored. (so if gnatprove is stored in "prefix"/bin/gnatprove, you
+   --  would get "prefix"). A special case is done for "bin" directories, which
+   --  are skipped. The returned directory alwaysends up with a directory
+   --  separator.
 
    function Is_Directory_Separator (C : Character) return Boolean;
    --  Returns True if C is a directory separator
@@ -90,7 +90,7 @@ package body Gnat2Why.Decls is
    -------------------------
 
    function Executable_Location return String is
-      Exec_Name : constant String := Ada.Command_Line.Command_Name;
+      Exec_Name : constant String := "gnatprove";
 
       function Get_Install_Dir (S : String) return String;
       --  S is the executable name preceeded by the absolute or relative
