@@ -19,6 +19,7 @@ evoting.adb:179:51: info: range check proved
 evoting.adb:202:7: info: index check proved
 evoting.adb:204:56: info: range check proved
 evoting.adb:205:7: info: index check proved
+evoting.adb:208:10: info: loop invariant initialization proved
 evoting.adb:209:13: info: index check proved
 evoting.adb:209:47: loop invariant preservation not proved, requires winners(Candidate_Number_t'First) = false
 evoting.adb:211:13: info: index check proved
@@ -30,9 +31,8 @@ evoting.adb:219:22: info: index check proved
 evoting.adb:220:19: info: index check proved
 evoting.adb:220:52: info: index check proved
 evoting.adb:222:19: info: index check proved
-evoting.adb:222:50: loop invariant initialization not proved, requires Counters(Latest_Highest_Score) > Counters(J)
 evoting.adb:222:52: info: index check proved
-evoting.adb:223:13: index check not proved
+evoting.adb:223:13: info: index check proved
 evoting.adb:223:27: info: index check proved
 evoting.adb:224:50: info: overflow check proved
 evoting.adb:225:16: info: loop invariant initialization proved
@@ -58,14 +58,14 @@ evoting.adb:247:34: info: index check proved
 evoting.adb:248:13: info: index check proved
 evoting.adb:257:32: info: range check proved
 evoting.adb:264:10: info: loop invariant initialization proved
+evoting.adb:264:10: info: loop invariant preservation proved
 evoting.adb:264:62: info: index check proved
-evoting.adb:270:31: loop invariant preservation not proved, requires total <= Total_Range_t(i) * 10000
 evoting.adb:270:51: info: overflow check proved
 evoting.adb:271:25: info: overflow check proved
-evoting.adb:271:25: range check not proved
+evoting.adb:271:25: info: range check proved
 evoting.adb:271:41: info: index check proved
 evoting.adb:274:28: info: overflow check proved
-evoting.adb:274:28: range check not proved
+evoting.adb:274:28: info: range check proved
 evoting.adb:274:44: info: index check proved
 evoting.adb:277:36: info: index check proved
 evoting.adb:279:40: info: range check proved
@@ -104,9 +104,9 @@ evoting.ads:107:47: info: index check proved
 evoting.ads:108:24: info: index check proved
 evoting.ads:108:43: info: index check proved
 evoting.ads:111:45: info: overflow check proved
-evoting.ads:112:19: index check not proved
+evoting.ads:112:19: info: index check proved
 evoting.ads:56:29: info: index check proved
 evoting.ads:56:46: postcondition not proved, requires candidates(i)(j) = ' '
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:93:23: postcondition not proved, requires counters(i) = 0
+evoting.ads:95:33: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
