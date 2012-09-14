@@ -1,20 +1,17 @@
 with Ada.Text_IO; use Ada.Text_IO;
---  use GNAT;
-package body Stacks is
+package body Unbounded_Integer_Stacks is
 
-   function Create (I : Positive := 1000)
-                    return Stack  is
+   function Create (I : Positive := Chunk_Size)
+                   return Stack  is
       output : Stack (I);
    begin
-      Max_Size :=  I;
-      output.Content := (others => Default_Value);
-      --  initial values
+      output.Cont_Ptr.all := (others => Default_Value);
       output.Index := 1;
       return output;
    end Create;
 
    function Is_Empty (S : Stack)
-                      return Boolean is
+                     return Boolean is
    begin
       if S.Index = 1 then
          return True;
@@ -24,9 +21,9 @@ package body Stacks is
    end Is_Empty;
 
    function Is_Full (S : Stack)
-                     return Boolean is
+                    return Boolean is
    begin
-      if S.Index = Max_Size + 1 then
+      if S.Index = S.Cont_Ptr'Length + 1 then
          --  cause index points to the first free empty cell
          return True;
       else
@@ -36,21 +33,25 @@ package body Stacks is
 
    procedure Push (S : in out Stack; X : Integer) is
    begin
-         S.Content (S.Index) := X;
-         S.Index := S.Index + 1;
+      if Is_Full (S) then
+         Enlarge (S);
+      end if;
+      S.Cont_Ptr (S.Index) := X;
+      S.Index := S.Index + 1;
    end Push;
    --  push a new element on the stack
 
    procedure Pop (S : in out Stack; X : out Integer)  is
+      New_Index : Natural := S.Index - 1;
    begin
-         X := S.Content (S.Index - 1);
-         S.Content (S.Index - 1) := Default_Value;
-         --  cleaning the occupied slot
-         S.Index := S.Index - 1;
+      X := S.Cont_Ptr (New_Index);
+      S.Cont_Ptr (New_Index) := Default_Value;
+      --  cleaning the occupied slot
+      S.Index := New_Index;
    end Pop;
 
    function Pop (S : in out Stack)
-                 return Integer is
+                return Integer is
       output : Integer := Default_Value;
    begin
       Pop (S, output);
@@ -58,11 +59,11 @@ package body Stacks is
    end Pop;
 
    function Peek (S : Stack)
-                  return Integer is
+                 return Integer is
       output : Integer := Default_Value;
    begin
       if not Is_Empty (S) then
-         output := S.Content (S.Index - 1);
+         output := S.Cont_Ptr (S.Index - 1);
       else
          output := Error_Value;
       end if;
@@ -70,15 +71,10 @@ package body Stacks is
    end Peek;
 
    function Push (S : Stack; X : Integer)
-                  return Stack is
+                 return Stack is
       output : Stack := S;
    begin
-      if not Is_Full (output) then
-         output.Content (S.Index) := X;
-         output.index := S.Index + 1;
-         --  else
-         --  should rise an exception
-      end if;
+      Push (output, X);
       return output;
    end Push;
 
@@ -94,15 +90,15 @@ package body Stacks is
 
    end test_Pop_When_Empty;
 
-   procedure test_Push_When_Full (S : in out Stack; X : Integer) is
+   procedure Enlarge (S : in out Stack;
+                      Delta_Size : Positive := Chunk_Size) is
+      New_Size : Positive :=  S.Cont_Ptr'Length + Delta_Size;
+      New_Ptr : Content_Ref := new Content_Type (1 .. New_Size);
+      Old_Used_Elements : Natural := S.Index - 1;
    begin
-      Push (S, X);
-      Put_Line ("Error: Push on Full stack does not raise exception");
-   exception
-         --      When Assert_Failure =>
-      when others =>
-         Put_Line ("Ok: Push on Full rstack raises exception");
+      New_Ptr (1 .. Old_Used_Elements) := S.Cont_Ptr (1 .. Old_Used_Elements);
+      New_Ptr (S.Index .. New_Size) := (others => Default_Value);
+      S.Cont_Ptr := New_Ptr;
+   end Enlarge;
 
-   end test_Push_When_Full;
-
-end Stacks;
+end Unbounded_Integer_Stacks;
