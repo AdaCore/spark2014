@@ -26,19 +26,19 @@ begin
    pragma Assert (X = 2);
    pragma Assert (Is_Empty (S));
 
-   test_Pop_When_Empty (S);
+   Test_Pop_When_Empty (S);
    --  test pop
 
    for N in 1 .. Max_Size  loop
-   Push (S, N);
+      Push (S, N);
    end loop;
    --  fulling the stack
 
-   test_Push_When_Full (S, 5);
+   Test_Push_When_Full (S, 5);
    --  test push
 
    for N in 1 .. Max_Size  loop
-   X := Pop (S);
+      X := Pop (S);
    end loop;
    --  clear out the stack
 
