@@ -4304,7 +4304,7 @@ package body Gnat2Why.Expr is
          --  functions, store the value returned in the local special variable
          --  for returned values, prior to raising the exception.
 
-         when Sinfo.N_Return_Statement =>
+         when N_Simple_Return_Statement =>
             declare
                Raise_Stmt  : constant W_Prog_Id :=
                                New_Raise
