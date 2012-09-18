@@ -12,7 +12,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest pdf
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -102,6 +102,18 @@ latexpdf:
 	@echo "Running LaTeX files through pdflatex..."
 	make -C $(BUILDDIR)/latex all-pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
+
+# Currently the latex builder always rewrite the final .latex files making us
+# impossible to avoid rebuild when no changes have been done. The target 'pdf'
+# provides a workaround, by rebuild only if html files were updated or if the
+# pdf files are not present.
+pdf: build/latex/spark2014.pdf
+
+build/latex/spark2014.pdf: build/html/index.html
+	make latexpdf
+
+build/html/index.html:
+	make html
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
