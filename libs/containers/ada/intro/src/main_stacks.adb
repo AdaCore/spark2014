@@ -4,6 +4,38 @@ with Ada.Text_IO; use Ada.Text_IO;
 procedure Main_Stacks is
    S : Stack := Create (4);
    X : Integer;
+
+   procedure Test_Pop_When_Empty (S : in out Stack);
+   --  test pop assertion
+   --  this should be raised when the stack is empty
+
+   procedure Test_Push_When_Full (S : in out Stack; X : Integer);
+   --  test push assertion
+   --  this should be raised when the stack is empty
+
+   procedure Test_Pop_When_Empty (S : in out Stack) is
+      X : Integer;
+   begin
+      X := Pop (S);
+      Put_Line ("Error: Pop on empty stack does not raise exception");
+   exception
+         --      When Assert_Failure =>
+      when others =>
+         Put_Line ("Ok: Pop on empty stack raises exception");
+
+   end Test_Pop_When_Empty;
+
+   procedure Test_Push_When_Full (S : in out Stack; X : Integer) is
+   begin
+      Push (S, X);
+      Put_Line ("Error: Push on Full stack does not raise exception");
+   exception
+         --      When Assert_Failure =>
+      when others =>
+         Put_Line ("Ok: Push on full stack raises exception");
+
+   end Test_Push_When_Full;
+
 begin
    pragma Assert (Is_Empty (S));
    Push (S, 1);
@@ -28,7 +60,7 @@ begin
    Test_Pop_When_Empty (S);
    --  test pop
 
-   for N in 1 .. Max_Size  loop
+   for N in 1 .. Default_Size  loop
       Push (S, N);
    end loop;
    --  fulling the stack
@@ -36,7 +68,7 @@ begin
    Test_Push_When_Full (S, 5);
    --  test push when stack is full
 
-   for N in 1 .. Max_Size  loop
+   for N in 1 .. Default_Size  loop
       X := Pop (S);
    end loop;
    --  clear out the stack
