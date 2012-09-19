@@ -61,11 +61,7 @@ package body Stacks is
                   return Integer is
       output : Integer := Default_Value;
    begin
-      if not Is_Empty (S) then
-         output := S.Content (S.Index - 1);
-      else
-         output := Error_Value;
-      end if;
+      output := S.Content (S.Index - 1);
       return output;
    end Peek;
 
@@ -82,8 +78,8 @@ package body Stacks is
       return output;
    end Push;
 
-   procedure test_Pop_When_Empty (S : in out Stack) is
-      X                            : Integer;
+   procedure Test_Pop_When_Empty (S : in out Stack) is
+      X : Integer;
    begin
       X := Pop (S);
       Put_Line ("Error: Pop on empty stack does not raise exception");
@@ -92,9 +88,9 @@ package body Stacks is
       when others =>
          Put_Line ("Ok: Pop on empty rstack raises exception");
 
-   end test_Pop_When_Empty;
+   end Test_Pop_When_Empty;
 
-   procedure test_Push_When_Full (S : in out Stack; X : Integer) is
+   procedure Test_Push_When_Full (S : in out Stack; X : Integer) is
    begin
       Push (S, X);
       Put_Line ("Error: Push on Full stack does not raise exception");
@@ -103,6 +99,6 @@ package body Stacks is
       when others =>
          Put_Line ("Ok: Push on Full rstack raises exception");
 
-   end test_Push_When_Full;
+   end Test_Push_When_Full;
 
 end Stacks;

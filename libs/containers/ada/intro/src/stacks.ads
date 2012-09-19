@@ -1,12 +1,10 @@
 package Stacks is
    --  A stack package that holds integers
 
-   Max_Size : Integer := 100;
+   Max_Size : Integer := 1000;
    --  the maximal number of elements in the stack
    Default_Value : constant Integer := -1;
    --  value used to initialize not used stack elements;
-   Error_Value : constant Integer := -2;
-   --  value used to identifie anomalies;
 
    type Content_Type is array (Integer range <>) of Integer;
    --  the array that holds the elements

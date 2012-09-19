@@ -9,23 +9,22 @@ begin
    Push (S, 1);
    pragma Assert (not (Is_Empty (S)));
    Pop (S, X);
-   Put_Line (Item => "First pop: " & Integer'Image (X));
    pragma Assert (X = 1);
    pragma Assert (Is_Empty (S));
+   Put_Line (Item => "First pop: " & Integer'Image (X));
    Push (S, 2);
    Push (S, 3);
    Push (S, 4);
    X := Pop (S);
-   Put_Line (Item => "Second pop: " & Integer'Image (X));
    pragma Assert (X = 4);
+   Put_Line (Item => "Second pop: " & Integer'Image (X));
    X := Pop (S);
-   Put_Line (Item => "Third pop: " & Integer'Image (X));
    pragma Assert (X = 3);
+   Put_Line (Item => "Third pop: " & Integer'Image (X));
    X := Pop (S);
-   Put_Line (Item => "Fourth pop: " & Integer'Image (X));
    pragma Assert (X = 2);
    pragma Assert (Is_Empty (S));
-
+   Put_Line (Item => "Fourth pop: " & Integer'Image (X));
    Test_Pop_When_Empty (S);
    --  test pop
 
@@ -35,7 +34,7 @@ begin
    --  fulling the stack
 
    Test_Push_When_Full (S, 5);
-   --  test push
+   --  test push when stack is full
 
    for N in 1 .. Max_Size  loop
       X := Pop (S);
