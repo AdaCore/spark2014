@@ -1,12 +1,14 @@
 with Ada.Text_IO; use Ada.Text_IO;
---  use GNAT;
+
 package body Stacks is
 
    function Create (I : Positive := Default_Size) return Stack is
       Output : Stack (I);
    begin
       Output.Content := (others => Default_Value);
-      --  initial values
+
+      --  Initial values
+
       Output.Index := 1;
       return Output;
    end Create;
@@ -26,13 +28,16 @@ package body Stacks is
       S.Content (S.Index) := X;
       S.Index := S.Index + 1;
    end Push;
-   --  push a new element on the stack
+
+   --  Push a new element on the stack
 
    procedure Pop (S : in out Stack; X : out Integer)  is
    begin
       X := S.Content (S.Index - 1);
       S.Content (S.Index - 1) := Default_Value;
-      --  cleaning the occupied slot
+
+      --  Cleaning the occupied slot
+
       S.Index := S.Index - 1;
    end Pop;
 

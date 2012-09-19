@@ -2,16 +2,18 @@ with Stacks; use Stacks;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main_Stacks is
-   S : Stack := Create (4);
+   S : Stack := Create (Default_Size);
    X : Integer;
 
    procedure Test_Pop_When_Empty (S : in out Stack);
-   --  test pop assertion
-   --  this should be raised when the stack is empty
+
+   --  Test pop assertion
+   --  This should be raised when the stack is empty
 
    procedure Test_Push_When_Full (S : in out Stack; X : Integer);
-   --  test push assertion
-   --  this should be raised when the stack is empty
+
+   --  Test push assertion
+   --  This should be raised when the stack is empty
 
    procedure Test_Pop_When_Empty (S : in out Stack) is
       X : Integer;
@@ -19,7 +21,6 @@ procedure Main_Stacks is
       X := Pop (S);
       Put_Line ("Error: Pop on empty stack does not raise exception");
    exception
-         --      When Assert_Failure =>
       when others =>
          Put_Line ("Ok: Pop on empty stack raises exception");
 
@@ -27,13 +28,15 @@ procedure Main_Stacks is
 
    procedure Test_Push_When_Full (S : in out Stack; X : Integer) is
    begin
+
       Push (S, X);
+
+   --  Test push when stack is full
+
       Put_Line ("Error: Push on Full stack does not raise exception");
    exception
-         --      When Assert_Failure =>
       when others =>
          Put_Line ("Ok: Push on full stack raises exception");
-
    end Test_Push_When_Full;
 
 begin
@@ -58,20 +61,22 @@ begin
    pragma Assert (Is_Empty (S));
    Put_Line (Item => "Fourth pop: " & Integer'Image (X));
    Test_Pop_When_Empty (S);
-   --  test pop
+
+   --  Test pop when stack is empty
 
    for N in 1 .. Default_Size  loop
       Push (S, N);
    end loop;
-   --  fulling the stack
+
+   --  Fulling the stack
 
    Test_Push_When_Full (S, 5);
-   --  test push when stack is full
 
    for N in 1 .. Default_Size  loop
       X := Pop (S);
    end loop;
-   --  clear out the stack
+
+   --  Clear out the stack
 
    Put_Line ("This is the end, Main_Stacks");
 
