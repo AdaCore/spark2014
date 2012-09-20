@@ -29,8 +29,6 @@ package body Stacks is
       S.Index := S.Index + 1;
    end Push;
 
-   --  Push a new element on the stack
-
    procedure Pop (S : in out Stack; X : out Integer)  is
    begin
       X := S.Content (S.Index - 1);

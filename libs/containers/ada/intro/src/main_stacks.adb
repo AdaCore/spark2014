@@ -6,12 +6,10 @@ procedure Main_Stacks is
    X : Integer;
 
    procedure Test_Pop_When_Empty (S : in out Stack);
-
    --  Test pop assertion
    --  This should be raised when the stack is empty
 
    procedure Test_Push_When_Full (S : in out Stack; X : Integer);
-
    --  Test push assertion
    --  This should be raised when the stack is empty
 
@@ -72,11 +70,13 @@ begin
 
    Test_Push_When_Full (S, 5);
 
+   --  Clear out the stack
+
    for N in 1 .. S.Size  loop
       X := Pop (S);
    end loop;
 
-   --  Clear out the stack
+   pragma Assert (Is_Empty (S));
 
    Put_Line ("This is the end, Main_Stacks");
 
