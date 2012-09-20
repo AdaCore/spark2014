@@ -2,7 +2,7 @@ with Stacks; use Stacks;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main_Stacks is
-   S : Stack := Create (Default_Size);
+   S : Stack := Create (42);
    X : Integer;
 
    procedure Test_Pop_When_Empty (S : in out Stack);
@@ -64,7 +64,7 @@ begin
 
    --  Test pop when stack is empty
 
-   for N in 1 .. Default_Size  loop
+   for N in 1 .. S.Size  loop
       Push (S, N);
    end loop;
 
@@ -72,7 +72,7 @@ begin
 
    Test_Push_When_Full (S, 5);
 
-   for N in 1 .. Default_Size  loop
+   for N in 1 .. S.Size  loop
       X := Pop (S);
    end loop;
 
