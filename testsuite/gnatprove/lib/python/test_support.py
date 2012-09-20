@@ -29,6 +29,12 @@ from gnatpython.ex import Run
 def quick_mode():
     return "quick" in os.environ and os.environ["quick"] == "true"
 
+def debug_mode():
+    return "debug" in os.environ and os.environ["debug"] == "true"
+
+def verbose_mode():
+    return "verbose" in os.environ and os.environ["verbose"] == "true"
+
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
@@ -133,6 +139,10 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     cmd = ["gnatprove"]
     if quick_mode():
       cmd += ["--no-proof"]
+    if debug_mode():
+      cmd += ["--debug"]
+    if verbose_mode():
+      cmd += ["--verbose"]
     cmd += to_list(opt)
     process = Run(cmd)
 
