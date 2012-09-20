@@ -1,15 +1,18 @@
-with Stacks; use Stacks;
-with Ada.Text_IO; use Ada.Text_IO;
+with Stacks;       use Stacks;
+with Ada.Text_IO;  use Ada.Text_IO;
 
 procedure Main_Stacks is
-   S : Stack := Create (42);
+   S : Stack :=
+     Create (Default_Size);
    X : Integer;
 
    procedure Test_Pop_When_Empty (S : in out Stack);
+
    --  Test pop assertion
    --  This should be raised when the stack is empty
 
    procedure Test_Push_When_Full (S : in out Stack; X : Integer);
+
    --  Test push assertion
    --  This should be raised when the stack is empty
 
@@ -62,7 +65,7 @@ begin
 
    --  Test pop when stack is empty
 
-   for N in 1 .. S.Size  loop
+   for N in 1 .. Default_Size  loop
       Push (S, N);
    end loop;
 
@@ -70,13 +73,11 @@ begin
 
    Test_Push_When_Full (S, 5);
 
-   --  Clear out the stack
-
-   for N in 1 .. S.Size  loop
+   for N in 1 .. Default_Size  loop
       X := Pop (S);
    end loop;
 
-   pragma Assert (Is_Empty (S));
+   --  Clear out the stack
 
    Put_Line ("This is the end, Main_Stacks");
 

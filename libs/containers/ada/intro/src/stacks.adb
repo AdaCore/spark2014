@@ -1,4 +1,4 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;  use Ada.Text_IO;
 
 package body Stacks is
 
@@ -23,11 +23,17 @@ package body Stacks is
       return S.Index > S.Size;
    end Is_Full;
 
-   procedure Push (S : in out Stack; X : Integer) is
+   function Peek (S : Stack) return Integer is
    begin
-      S.Content (S.Index) := X;
-      S.Index := S.Index + 1;
-   end Push;
+      return S.Content (S.Index - 1);
+   end Peek;
+
+   function Pop (S : in out Stack) return Integer is
+      Output : Integer;
+   begin
+      Pop (S, Output);
+      return Output;
+   end Pop;
 
    procedure Pop (S : in out Stack; X : out Integer)  is
    begin
@@ -39,22 +45,25 @@ package body Stacks is
       S.Index := S.Index - 1;
    end Pop;
 
-   function Pop (S : in out Stack) return Integer is
-      Output : Integer;
-   begin
-      Pop (S, Output);
-      return Output;
-   end Pop;
-
-   function Peek (S : Stack) return Integer is
-   begin
-      return S.Content (S.Index - 1);
-   end Peek;
-
    function Push (S : Stack; X : Integer) return Stack is
       Output : Stack := S;
    begin
-      Push (Output, X);
+
+      --  Push (Output, X);
+      --  Can not call Push procedure because it would leads to
+      --  Infinite recursion. Instead we rewrite below the same procedure body
+
+      Output.Content (S.Index) := X;
+      Output.Index := S.Index + 1;
       return Output;
    end Push;
+
+   procedure Push (S : in out Stack; X : Integer) is
+   begin
+      S.Content (S.Index) := X;
+      S.Index := S.Index + 1;
+   end Push;
+
+   --  Push a new element on the stack
+
 end Stacks;

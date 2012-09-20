@@ -1,11 +1,11 @@
-with Unbounded_Stacks;
+with Indefinite_Stacks;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main_Indefinite_Stacks is
-   package Integer_Stacks is new Unbounded_Stacks (Integer);
+   package Integer_Stacks is new Indefinite_Stacks (Integer);
    use Integer_Stacks;
-   S                                       : Stack := Create (4, -1);
-   X                                       : Integer;
+   S : Stack_Ptr := Create (4);
+   X : Integer;
 
 begin
 
@@ -37,11 +37,11 @@ begin
    --  testing stack for Float values
    --
    declare
-      package  Float_Stacks is new Unbounded_Stacks (Float);
+      package  Float_Stacks is new Indefinite_Stacks (Float);
       use Float_Stacks;
-      T                                    : Float_Stacks.Stack
-        := Create (4, -2.0);
-      U                                    : Float;
+      T : Float_Stacks.Stack
+        := Create (-2.0);
+      U : Float;
 
    begin
       pragma Assert (Is_Empty (T));

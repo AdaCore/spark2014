@@ -1,16 +1,34 @@
 with Unbounded_Stacks;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;       use Ada.Text_IO;
 
 procedure Main_Unbounded_Stacks is
+
+  --  The solution is the same than Indefinite stacks????
+  --   procedure test_Pop_When_Empty (S : in out Stack);
+
+   --  Test pop assertion
+   --  This should be raised when the stack is empty
+
+--   procedure test_Pop_When_Empty (S : in out Stack) is
+--      X : Unbounded_Stacks.Item_Type;
+--   begin
+--      X := Pop (S);
+--      Put_Line ("Error: Pop on empty stack does not raise exception");
+--   exception
+--      when others =>
+--         Put_Line ("Ok: Pop on empty rstack raises exception");
+--   end test_Pop_When_Empty;
+
    package Integer_Stacks is new Unbounded_Stacks (Integer);
    use Integer_Stacks;
-   S                                       : Stack := Create (4, -1);
-   X                                       : Integer;
+   S : Stack := Create (4, -1);
+   X : Integer;
 
 begin
 
-   --  testing stack for Integer values
+   --  Testing stack for Integer values
    --
+
    pragma Assert (Is_Empty (S));
    Push (S, 1);
    pragma Assert (not (Is_Empty (S)));
@@ -32,9 +50,9 @@ begin
    Put_Line (Item => "Fourth Integer pop           : " & Integer'Image (X));
    pragma Assert (X = 2);
    pragma Assert (Is_Empty (S));
-   test_Pop_When_Empty (S);
+--   test_Pop_When_Empty (S);
 
-   --  testing stack for Float values
+   --  Testing stack for Float values
    --
    declare
       package  Float_Stacks is new Unbounded_Stacks (Float);
@@ -64,7 +82,7 @@ begin
       Put_Line (Item => "Fourth  Float pop : " & Float'Image (U));
       pragma Assert (U = 2.0);
       pragma Assert (Is_Empty (T));
-      test_Pop_When_Empty (T);
+--      test_Pop_When_Empty (T);
    end;
 
 end Main_Unbounded_Stacks;
