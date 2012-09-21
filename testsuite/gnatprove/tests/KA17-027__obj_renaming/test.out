@@ -8,6 +8,8 @@ main.adb:27:56: info: range check proved
 main.adb:35:17: info: range check proved
 main.adb:38:14: info: range check proved
 main.adb:44:28: info: index check proved
+main.adb:44:28: info: index check proved
+main.adb:45:28: info: index check proved
 main.adb:45:28: info: index check proved
 main.adb:46:28: info: index check proved
 main.adb:49:28: info: index check proved
