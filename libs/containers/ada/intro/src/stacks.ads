@@ -45,7 +45,7 @@ package Stacks is
 
    procedure Push (S : in out Stack; X : Integer) with
      Pre  => not Is_Full (S),
-   Post => (S = Push (S'Old, X));
+     Post => S = Push (S'Old, X);
 
    --  Push a new element on the stack
 
