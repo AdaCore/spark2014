@@ -23,19 +23,19 @@ package body Stacks is
       return S.Index > S.Size;
    end Is_Full;
 
-   function Peek (S : Stack) return Integer is
+   function Peek (S : Stack) return Element is
    begin
       return S.Content (S.Index - 1);
    end Peek;
 
-   function Pop (S : in out Stack) return Integer is
-      Output : Integer;
+   function Pop (S : in out Stack) return Element is
+      Output : Element;
    begin
       Pop (S, Output);
       return Output;
    end Pop;
 
-   procedure Pop (S : in out Stack; X : out Integer)  is
+   procedure Pop (S : in out Stack; X : out Element) is
    begin
       X := S.Content (S.Index - 1);
       S.Content (S.Index - 1) := Default_Value;
@@ -45,7 +45,7 @@ package body Stacks is
       S.Index := S.Index - 1;
    end Pop;
 
-   function Push (S : Stack; X : Integer) return Stack is
+   function Push (S : Stack; X : Element) return Stack is
       Output : Stack := S;
    begin
 
@@ -58,7 +58,7 @@ package body Stacks is
       return Output;
    end Push;
 
-   procedure Push (S : in out Stack; X : Integer) is
+   procedure Push (S : in out Stack; X : Element) is
    begin
       S.Content (S.Index) := X;
       S.Index := S.Index + 1;

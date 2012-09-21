@@ -1,7 +1,11 @@
-with Stacks;       use Stacks;
+with Stacks;
 with Ada.Text_IO;  use Ada.Text_IO;
 
 procedure Main_Stacks is
+
+   package Integer_Stacks is new Stacks (Integer, Default_Value => -1);
+   use Integer_Stacks;
+
    S : Stack :=
      Create (Default_Size);
    X : Integer;

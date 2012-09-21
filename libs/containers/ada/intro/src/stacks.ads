@@ -1,14 +1,14 @@
-package Stacks is
+generic
+   type Element is private;
 
---  A stack package that holds integers
-
-   Default_Value : constant := -1;
-
+   Default_Value : Element;
    --  Value used to initialize not used stack elements;
+
+package Stacks is
 
    Default_Size  : constant := 1_000;
 
-   type Content_Type is array (Integer range <>) of Integer;
+   type Content_Type is array (Integer range <>) of Element;
 
    --  The array that holds the elements
 
@@ -28,12 +28,12 @@ package Stacks is
 
    function Is_Full (S : Stack) return Boolean;
 
-   function Peek (S : Stack) return Integer with
+   function Peek (S : Stack) return Element with
      Pre => not Is_Empty (S);
 
    --  Returns  the topmost element of the stack without removing it
 
-   function Push (S : Stack; X : Integer) return Stack with
+   function Push (S : Stack; X : Element) return Stack with
      Pre  => not Is_Full (S),
      Post => not Is_Empty (Push'Result)
        and then Peek (Push'Result) = X;
@@ -43,13 +43,13 @@ package Stacks is
    --  Note that "S" is an "in" parameter and is not modified. So Push
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
-   procedure Push (S : in out Stack; X : Integer) with
+   procedure Push (S : in out Stack; X : Element) with
      Pre  => not Is_Full (S),
      Post => S = Push (S'Old, X);
 
    --  Push a new element on the stack
 
-   function Pop (S : in out Stack) return Integer with
+   function Pop (S : in out Stack) return Element with
      Pre  => not Is_Empty (S),
      Post => not Is_Full (S)
                and then Pop'Result = Peek (S)'Old;
@@ -58,7 +58,7 @@ package Stacks is
    --  Istead of having an out parameter
    --  Note that only in Ada 2012 functions can have in out parameters.
 
-   procedure Pop (S : in out Stack; X : out Integer) with
+   procedure Pop (S : in out Stack; X : out Element) with
      Pre  => not Is_Empty (S),
      Post => not Is_Full (S)
                and then X = Peek (S)'Old;
