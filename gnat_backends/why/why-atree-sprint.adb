@@ -46,6 +46,31 @@ package body Why.Atree.Sprint is
    --  Print a node list on current output, separating each element
    --  by a given separator, optionally followed by a new line.
 
+   procedure Print_Label_List
+     (State   : in out Printer_State'Class;
+      List_Id : Why_Node_List);
+   --  Print a list of labels, each one with quotes, and separated by space
+
+   ----------------------
+   -- Print_Label_List --
+   ----------------------
+
+   procedure Print_Label_List
+     (State   : in out Printer_State'Class;
+      List_Id : Why_Node_List)
+   is
+      use Node_Lists;
+      L         : constant List := Get_List (List_Id);
+      Position  : Cursor := First (L);
+      pragma Unreferenced (State);
+   begin
+      while Position /= No_Element loop
+         P (O, Get_Symbol (+Element (Position)), As_String => True);
+         Position := Next (Position);
+         P (O, " ");
+      end loop;
+   end Print_Label_List;
+
    ----------------
    -- Print_List --
    ----------------
@@ -1247,18 +1272,12 @@ package body Why.Atree.Sprint is
       use Node_Lists;
 
       L      : constant List := Get_List (+Get_Labels (Node));
-      Position  : Cursor := First (L);
-      Non_Empty : constant Boolean := Position /= No_Element;
+      Non_Empty : constant Boolean := not (L.Is_Empty);
    begin
       if Non_Empty then
          P (O, "( ");
       end if;
-      while Position /= No_Element loop
-
-         P (O, Get_Symbol (+Element (Position)), As_String => True);
-         Position := Next (Position);
-         P (O, " ");
-      end loop;
+      Print_Label_List (State, +Get_Labels (Node));
       Traverse (State, +Get_Def (Node));
       if Non_Empty then
          P (O, " )");
@@ -1485,7 +1504,7 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             P (O, " ");
-            Print_List (State, +Get_Labels (Node), " ");
+            Print_Label_List (State, +Get_Labels (Node));
 
             P (O, " (");
             Print_List (State, +Binders, ") (");
@@ -1501,7 +1520,7 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             P (O, " ");
-            Print_List (State, +Get_Labels (Node), " ");
+            Print_Label_List (State, +Get_Labels (Node));
 
             if not Is_Empty (+Binders) then
                P (O, " (");
@@ -1520,6 +1539,8 @@ package body Why.Atree.Sprint is
          when EW_Prog =>
             P (O, "let ");
             Traverse (State, +Name);
+            P (O, " ");
+            Print_Label_List (State, +Get_Labels (Node));
 
             if not Is_Empty (+Binders) then
                P (O, " (");

@@ -696,6 +696,7 @@ package body Gnat2Why.Subprograms is
           (Domain  => EW_Prog,
            Name    => To_Ident (WNE_Def),
            Binders => (1 => Unit_Param),
+           Labels  => (1 => Cur_Subp_Sloc),
            Pre     => Pre,
            Post    =>
              +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
@@ -742,6 +743,7 @@ package body Gnat2Why.Subprograms is
            (Domain  => EW_Prog,
             Name    => To_Ident (WNE_Pre_Check),
             Binders => Binders,
+            Labels  => (1 => Cur_Subp_Sloc),
             Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog),
             Post    => True_Pred));
       Close_Theory (File, Filter_Entity => E);

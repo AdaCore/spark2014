@@ -52,8 +52,6 @@ package body Why.Gen.Expr is
 
    Subp_Sloc_Map : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
-   function Cur_Subp_Sloc return W_Identifier_Id;
-
    --------------------------
    -- Compute_Ada_Node_Set --
    --------------------------
