@@ -5,9 +5,9 @@ aggregate.adb:6:18: info: index check proved
 aggregate.adb:6:26: overflow check not proved
 aggregate.adb:6:7: info: index check proved
 aggregate.ads:10:21: info: index check proved
-aggregate.ads:10:27: postcondition not proved, requires K (1) = 2
 aggregate.ads:10:40: info: index check proved
 aggregate.ads:10:60: info: index check proved
+aggregate.ads:10:66: postcondition not proved, requires K (1) = 2 and then K (11) = 2 and then K (6) = 1
 arr_aggregate.adb:16:24: info: range check proved
 arr_aggregate.adb:22:24: info: range check proved
 arr_aggregate.adb:24:24: info: range check proved
