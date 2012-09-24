@@ -1,8 +1,8 @@
 Subprograms
 ===========
 
-Subprogram Declarations
------------------------
+Subprogram Declaration
+----------------------
 
 There are no additions to this subsection but there is an extra
 legality rule and further restrictions may be applied.
@@ -83,6 +83,7 @@ is short hand for
                 and then ...
                 and then (if An'Old then Bn);
 
+
 where 
   
   A1 .. An are Boolean expressions involving the entry values of
@@ -92,6 +93,7 @@ where
   *formal parameters* and *global variables*.
 
 .. centered:: **Syntax**
+
 ::
    
    contract_cases      ::= Contract_Cases => (contract_case_list)
@@ -132,7 +134,9 @@ where
 #. The *variables* appearing in the ``consequence`` must be of mode
    **out** or **in out**.
 
-.. centered:: **Proof Semantics**
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
 
 #. The values of *variables* appearing in the ``guard`` are the entry
    values of the *variables* at a call of the subprogram associated
@@ -193,6 +197,7 @@ subcomponent of a larger containing object.  Such objects are called
 *entire* objects.
 
 .. centered:: **Syntax**
+
 ::
 
    mode_refinement             ::= (mode_specification {, mode_specification})
@@ -348,6 +353,7 @@ by forgetting to declare a *local* variable, and the accidental hiding
 of a *global* variable by a more *local* variable.
 
 .. centered:: **Syntax**
+
 ::
 
    global_aspect ::= Global => mode_refinement
@@ -358,7 +364,7 @@ of a *global* variable by a more *local* variable.
    ``global_aspect``.
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is
-    not permitted to have side-effects.
+   not permitted to have side-effects.
 #. A subprogram with a ``global_aspect`` that has a
    ``mode_refinement`` of **null** is taken to mean that the
    subprogram does not access any global items.
@@ -376,10 +382,9 @@ of a *global* variable by a more *local* variable.
 
 .. todo:: In the following restriction, is this the assumption of no
      Global aspect implies Global => null sensible or should we always
-     insist on Global => null?? I hope not!! Re-automate numbering
-     after removing this todo.
+     insist on Global => null?? I hope not!! 
 
-2. The provision of ``global_aspects`` on all subprograms may be
+#. The provision of ``global_aspects`` on all subprograms may be
    enforced by using the restriction ``Global_Aspects_Required``.
    When this restriction is in force a subprogram which does not have
    an explicit ``global_aspect`` is considered to have a have have one
@@ -463,7 +468,9 @@ appears in a ``mode_specification`` with a ``mode selector`` of
 be **in out**.
 
 
-.. centered:: **Syntax** ::
+.. centered:: **Syntax** 
+
+::
 
    param_aspect ::= Param => mode_refinement
 
@@ -591,6 +598,7 @@ dependent on every ``import`` in the ``import_list`` if the
 ``condition`` is ``True``.
 
 .. centered:: **Syntax**
+
 ::
 
    dependency_aspect      ::= Depends => dependency_relation
@@ -612,7 +620,9 @@ dependent on every ``import`` in the ``import_list`` if the
    export                 ::= moded_item | function_result
    function_result        ::= function_designator'Result
 
-where ``function_designator`` is the name of the function which is
+where 
+  
+  ``function_designator`` is the name of the function which is
   defining the ``aspect_specification`` enclosing the
   ``dependency_aspect``.
 
@@ -672,8 +682,6 @@ where ``function_designator`` is the name of the function which is
 
 #. Every ``moded_item``, or a subcomponent thereof, of a subprogram is
    an ``import``, an ``export`` or both.
-#. A ``mode_refinement`` of a subprogram of must be consistent with
-   its ``dependency_relation``.  T
 
 .. todo:: Further rules regarding the use of conditional dependencies
      and subcomponents in dependency aspects.
@@ -790,17 +798,26 @@ The above restriction has to be checked by flow analysis.
 Subprogram Bodies
 -----------------
 
+.. centered:: **Restrictions That May Be Applied**
+
+
+#. The restriction ``End_Designators_Required`` mandates that the final end
+   of every subprogram body, package declaration and package body has
+   a designator which repeats the defining designator of the unit.
+
+
 Conformance Rules
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 Global Aspects
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 If subprogram does not have a separate declaration its body may have a
-``global_aspect`` in its aspect specification.  When a subprogram has
-a ``global_aspect`` either in its declaration or its body the rules
-and semantics given below should be satisfied by the implementation of
-its body.
+``global_aspect`` in its aspect specification where the same rules as
+for a ``global_aspect`` in a subprogram declaration apply.  When a
+subprogram has a ``global_aspect`` either in its declaration or its
+body the rules and semantics given below should be satisfied by the
+implementation of its body.
 
 .. centered:: **Legality Rules**
 
@@ -816,7 +833,9 @@ its body.
 
 .. centered:: **Verification Rules**
 
-#. The intial value of a ``moded_item` of a ``global_aspect`` which is
+.. centered:: *Checked by Flow-Analysis*
+
+#. The intial value of a ``moded_item`` of a ``global_aspect`` which is
    of mode **in** or **in out** must be used in determining the final
    value of at least one ``export`` of the subprogram.
 #. If a ``moded_item`` of a ``global_aspect`` is of mode **in out** it
@@ -830,6 +849,7 @@ its body.
 
 .. centered:: **Restrictions That May Be Applied**
 
+
 #. If the restriction ``No_Scope_Holes`` is applied then a subprogram,
    P, shall not declare an entity of the same name as a ``moded_item``
    or the name of the object of which the ``moded_item`` is a
@@ -837,16 +857,171 @@ its body.
    or ``block_statement`` whose nearest enclosing program unit is P.
 
 
-If an  explict ``global_aspect`` is not ....
-
-
-
-
 Param Aspects
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
+
+If subprogram does not have a separate declaration its body may have a
+``param_aspect`` in its aspect specification where the same rules as
+for a ``param_aspect`` in a subprogram declaration apply.  When a
+subprogram has a ``param_aspect`` either in its declaration or its
+body the rules and semantics given below should be satisfied by the
+implementation of its body.
+
+.. centered:: **Legality Rules**
+
+#. A subprogram body may only have a ``param_aspect`` if it does not
+   have a separate declaraion.
+
+.. centered:: **Static Semantics**
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
+#. The intial value of a ``moded_item`` of a ``param_aspect`` which is
+   of mode **in** or **in out** must be used in determining the final
+   value of at least one ``export`` of the subprogram.
+#. If a ``moded_item`` of a ``global_aspect`` is of mode **in out** it
+   may be updated directly or indirectly within the subprogram body.
+#. If a ``moded_item`` of a ``global_aspect`` is of mode **out** then
+   it must be updated either directly or indirectly on every
+   executable path through the subprogram body.
+
+.. centered:: **Restrictions That May Be Applied**
+
 
 Dependency Aspects
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
+
+If subprogram does not have a separate declaration its body may have a
+``dependency_aspect`` in its aspect specification where the same rules
+as for a ``dependency_aspect`` in a subprogram declaration apply.
+When a subprogram has a ``dependency_aspect`` either in its
+declaration or its body the rules and semantics given below should be
+satisfied by the implementation of its body.
+
+.. centered:: **Legality Rules**
+
+#. A subprogram body may only have a ``dependency_aspect`` if it does
+   not have a separate declaraion.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
+#. The final value of each export E shall be determined from only
+   static constants and the initial value of ``moded_items`` appearing
+   in the ``dependency_list`` of E or from E itself if the self
+   dependency notation ``=>+`` has been used in the
+   ``dependency_clause`` defining E.
+#. The initial value of each import in a ``dependency_clause`` shall
+   be used in determing the final value of every export given in the
+   same ``dependency_clause``.
+
+.. centered:: *Checked by Proof*
+
+.. todo:: conditional dependencies.
 
 
+Subprogram Calls
+----------------
 
+Parameter Associations
+~~~~~~~~~~~~~~~~~~~~~~
+
+Anti-Aliasing
+~~~~~~~~~~~~~
+
+An alias is a name which refers to the same object as another name.
+The presence of aliasing is inconsistent with the underlying flow
+analysis and proof models used by the tools which assume that
+different names represent different entities.  In general, it is not
+possible or is difficult to deduce that two names refer to the same
+object and problems arise when one of names is used to update the
+object.
+
+A common place for aliasing to be introduced is through the *actual
+parameters* (see Ada LRM 6.4.1) and between *actual parameters* and
+*global variables* in a procedure call.  Extra semantic rules are
+given that avoid the possibility of aliasing through *actual
+parameters* and *global variables*.  A function is not allowed to have
+side-effects and cannot update an *actual parameter* or *global
+variable*.  Therefore a function call cannot introduce aliasing and
+are excluded from the anti-aliasing rules given below for procedure
+calls.
+
+The ``moded_items`` which are *global* to a procedure have to be
+determined.  These may be obtained from a ``global_aspect`` or
+``dependency_aspect`` of the procedure, if either or both of these are
+present are present, or has to be calculated from a whole program
+analysis.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
+#. If a procedure declaration does not have a ``global_aspect`` but
+   has a ``dependency_aspect``, an implicit ``global_aspect`` will be
+   computed from the ``dependency_aspect``.
+#. If a procedure does not have a global or dependency
+   aspect, an implicit ``global_aspect`` will be computed using whole
+   program analysis.
+#. In a call to a procedure P:
+
+   #. If P is declared in package Q with an explicit ``global_aspect``
+      and the body of P has a ``refined_global_aspect`` (need a
+      reference here???) then in applying the anti-aliasing rules to
+      calls of P within the body of Q the ``refined_global_aspect`` of
+      the body or body stub of P should be used.
+   #. In all other cases the ``global_aspect`` from declaration or
+      body of P, if P does not have a separate declaration, shall be
+      used.  The ``global_aspect`` may be implicit.
+
+#. If a *variable* V named in the ``global_aspect`` of a procedure P
+   is of mode **out** or **in out**, then neither V nor any of its
+   subcomponents can occur as an *actual parameter* of P.
+#. If a *variable* V occurs in the ``global_aspect`` of a procedure P,
+   then neither V nor any of its subcomponents can occur as an *actual
+   parameter* of P where the corresponding *formal parameter* is of
+   mode **out** or **in out**.
+#. If an *entire variable* V or a subcomponent of V occurs as an
+   *actual parameter* in a procedure call statement, and the
+   corresponding *formal parameter* is of mode **out** or **in out**,
+   then neither V nor an overlapping subcomponent of V can occur as
+   another *actual parameter* in that statement. Two components are
+   considered to be overlapping if they are elements of the same array
+   with the same index, or slices of the same array with common
+   indices (these two cases require the use of proof techniques), or
+   are the same component of a record (for example V.F and V.F)
+   including subcomponents of the component (for example V.F and
+   V.F.P).
+#. Where one of these rules prohibits the occurrence of a *variable* V
+   or any of its subcomponents as an actual parameter, the following
+   constructs are also prohibited in this context:
+
+    #. a type conversion whose operand is a prohibited construct;
+    #. a qualified expression whose operand is a prohibited construct;
+    #. a prohibited construct enclosed in parentheses.
+
+
+.. centered:: **Restrictions That May Be Applied**
+
+
+#. The restriction ``Array_Elements_Assumed_To_Overlap`` assumes that
+   array elements are always considered to be overlapping and so, for
+   example, V.A(I).P and V.A(J).Q are considered as overlapping.  This
+   restriction can be enforced simply whereas the more general rule
+   that array subcomponents are only considered to be overlapping when
+   they have common indices requires formal proof in general.
+
+
+Dynamic Semantics
+~~~~~~~~~~~~~~~~~
+
+The extended static semantics are checked using static analyses, no
+extra dynamic checks are required.
+
+.. todo:: I can imagine that the anti-aliasing checks could be done
+    dynamically but this could change the behaviour of what are
+    currently valid Ada programs.  I think we should consider this as
+    a staticly determined check used with SPARK 2014.
