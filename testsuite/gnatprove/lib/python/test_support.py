@@ -115,6 +115,20 @@ def gnat2why(src, opt=None):
         if os.path.exists("test.out"):
             cat("test.out", True)
 
+def altergo(src, timeout=10, opt=None):
+    """Invoke alt-ergo with why3-cpulimit wrapper
+
+    PARAMETERS
+      src: VC file to process
+      timeout: timeout passed to why3-cpulimit
+      opt: additional command line options for alt-ergo
+    """
+    cmd = ["why3-cpulimit", str(timeout), "0", "-h", "alt-ergo"]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    print process.out
+
 def why(src, opt=None):
     """Invoke why
 
