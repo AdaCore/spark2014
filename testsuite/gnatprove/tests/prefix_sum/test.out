@@ -165,11 +165,11 @@ prefixsum.ads:24:36: info: range check proved
 prefixsum.ads:26:17: postcondition not proved
 prefixsum.ads:31:37: info: range check proved
 prefixsum.ads:32:39: info: range check proved
-prefixsum.ads:36:14: postcondition not proved, requires A (0) = 0
 prefixsum.ads:36:8: info: index check proved
 prefixsum.ads:37:20: info: index check proved
 prefixsum.ads:37:28: info: index check proved
 prefixsum.ads:38:20: info: index check proved
+prefixsum.ads:38:26: postcondition not proved, requires A (0) = 0 and then A (1) = Ghost (0) and then A (2) = Ghost (0) + Ghost (1)
 prefixsum.ads:38:28: info: index check proved
 prefixsum.ads:38:38: overflow check not proved
 prefixsum.ads:38:40: info: index check proved
