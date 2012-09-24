@@ -81,6 +81,8 @@ a ``package_specification``.
    ``abstract_state_aspect`` or a ``refined_state_aspect``.
 
 
+.. todo:: Initializes, Initial_Condition aspects.
+
 .. todo::  Aspects for RavenSpark, e.g., Task_Object and Protected_Object
 
 .. todo:: External variables.
@@ -357,3 +359,4 @@ Refined Postcondition Aspect
 .. todo:: package dependencies: circularities, private/public child
      packages and their relationship with their parent especially in
      regard to data abstraction.
+

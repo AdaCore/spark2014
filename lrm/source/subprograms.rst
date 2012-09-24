@@ -1,6 +1,8 @@
 Subprograms
 ===========
 
+.. todo:: proof functions - here or elsewhere?
+
 Subprogram Declaration
 ----------------------
 
