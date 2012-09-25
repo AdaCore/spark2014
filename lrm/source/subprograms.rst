@@ -29,6 +29,16 @@ legality rule and further restrictions may be applied.
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
+
+#. Verification conditions are generated from the program text.
+#. The verification conditions have to be proven to be True to
+   formally demonstrate that the implementation of the body of the
+   subprogram satifies the post condition provided the precondition is
+   True and the subprogram completes without exceptions.
+
 .. todo :: Think about Pre'Class and Post'Class
 
 Subprogram Contracts
@@ -169,6 +179,7 @@ where
    ``consequence`` does not evaluate to ``True``, raise the exception
    ....
 
+.. _mode-refinement:
 
 Mode Refinement
 ~~~~~~~~~~~~~~~
@@ -176,11 +187,11 @@ Mode Refinement
 Mode refinement is used in the specification of both Global and Param
 aspects.  It allows the mode of each item read or updated by a
 subprogram, *formal parameters*, *global variables* (see Ada LRM 8.1)
-and *data abstractions* (see :ref:`???`) to be more precisely
+and *abstract states* (see :ref:`abstract-state`) to be more precisely
 specified:
 
- * The *global variables* and *data abstractions* of a subprogram may
-   be identified and a mode specified for each using a
+ * The *global variables* and *abstract states* used by a subprogram
+   may be identified and a mode specified for each using a
    ``global_aspect``.
  * Modes can be applied to independent subcomponents of an object. For
    instance, the array element A (I) may be designated as mode **out**
@@ -211,7 +222,9 @@ subcomponent of a larger containing object.  Such objects are called
                                  | (mode_definition {, mode_definition})
    mode_definition             ::= moded_item
                                  | conditional_mode
-   conditional_mode            ::= (if condition then moded_item_list)
+   conditional_mode            ::= (if condition then moded_item_list
+                                    {elsif condition then moded_item_list}
+                                    [else moded_item_list])
    moded_item_list             ::= moded_item
                                  | (moded_item {, moded_item})
    mode_selector               ::= Input| Output | In_Out 
@@ -220,13 +233,6 @@ subcomponent of a larger containing object.  Such objects are called
 .. todo:: We may make an extra mode_selector available ``Proof`` which
      indicates that the listed variables are only used for proof and not
      in the code.
-
-.. todo:: Do we want to consider conditional_modes which have (if
-     condition then moded_item_list {elsif condition then
-     moded_item_list} [else moded_item_list]) ?  It might well be
-     useful and would be consistent with an extended syntax for
-     dependency relations where I believe it will be useful.
-
 
 .. centered:: **Legality Rules**
 
@@ -243,41 +249,72 @@ subcomponent of a larger containing object.  Such objects are called
    effective mode of the ``moded_items`` in the
    ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is
    mode **out**, and, ``In_Out`` is mode **in out**.
+#. A ``moded_item`` appearing in a ``mode_specification`` with a
+   ``mode_selector`` of ``Input`` and another with a ``mode_selector``
+   of ``Output`` has the effective mode of **in out**.
+#. For an entire composite object V which has subcomponents that
+   appear in a ``mode_refinement`` the following applies:
+   
+   a. if all the subcomponents in the ``mode_refinement`` have an
+      effective mode of **in**, then the effective mode of V is **in**;
+   b. if at least one of the subcomponents in the ``mode_refinemet``
+      has an effective mode of **out** or **in out**, then the
+      effective mode of V is **in out**.
+
+#. Each branch of a ``conditional_mode`` defines a ``moded_item_list``
+   but the effective mode of each ``moded_item`` in the
+   ``moded_item_list`` is unconditional.  The condition is ignored for
+   the purposes of determining the effective mode.
+
+
+.. todo:: We probably need to think more carefully about discriminants
+     of variant records.
 
 .. centered:: **Static Semantics**
 
 #. A ``moded_item`` must be the name of a *global variable*, a *formal
    parameter*, a subcomponent of a *global variable* or a *formal
-   parameter*, or a *data abstraction*
-#. A ``moded_item`` or one of its subcomponents appearing in a
-   ``mode_specification`` with a ``mode_selector`` of ``In_Out`` may
-   not appear in any other ``mode_specification``.
+   parameter*, or an *abstract state*
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` and another with a ``mode_selector``
-   of ``Output`` has the effective mode of **in out**.
-#. The rules for reading or updating of a ``moded_item`` of a
-   particular mode are the same as for a *formal parameter* of the
-   same mode including any restrictions placed on the interpretation
-   of the modes.
-#. A ``moded_item`` may not appear more than once within a single
+   ``mode_selector`` of ``In_Out`` may not appear in any other
+   ``mode_specification``.
+#. A ``moded_item``may not appear more than once within a single
    ``mode_specification`` other than appearing in a ``condition`` of a
-   ``conditional_mode``.
+   ``conditional_mode``.  The rule applies to indexed components in as
+   much as an array element A (I) cannot appear more than once but
+   both A (I) and A (J) may appear in the same ``mode_specification``
+   even though I may equal J.
 #. A *variable* appearing in the ``condition`` of a
    ``conditional_mode`` must be a ``moded_item`` of mode **in** or
    **in out** appearing in the same ``mode_refinement`` or a *formal
    parameter* of the associated subprogram of mode **in** or **in
    out**.
-
-.. todo:: Further rules involving subcomponents and conditions within
-     a global aspect. Here is a first attempt but it probably requires
-     more thought:
-
 #. A ``moded_item`` may be a subcomponent provided a containing object
-   (which may itself be a subcomponent) is not a ``moded_item`` in the
-   same ``mode_refinement``.  Provided this rule is satisfied,
-   different subcomponents of a composite object may appear more than
-   once and, for array subcomponents, they may be the same indexed
-   subcomponent.
+   is not a ``moded_item`` in the same ``mode_refinement``.  As long
+   as this rule is satisfied, different subcomponents of a composite
+   object may appear more than once and, for array subcomponents,
+   elements A (I) and A (J) are considered as distinct instances even
+   though I my equal J.
+
+.. centered:: **Restrictions That May Be Applied**
+
+
+#. The restriction ``Moded_Variables_Are_Entire`` asserts that a
+   ``Moded_item`` cannot be a subcomponent name.
+#. The restriction ``No_Conditional_Modes`` prohibits the use of a
+   ``conditional_mode`` in a ``mode_specification``.
+
+.. centered:: **Dynamic Semantics**
+
+
+There are no dynamic semantics associated with a ``mode_refinement``
+as it is used purely for static analyses purposes and is not executed.
+
+.. todo:: We could consider executable semantics, especially for
+     conditional modes, but I think we should only consider executing
+     aspects which are Ada aspects such as Pre and Post.
+
+
 #. If a subcomponent name appears in a ``mode_specification`` with a
    ``mode_selector`` of ``Output`` or ``In_Out`` then just that
    subcomponent is considered to be updated and the other
@@ -298,54 +335,23 @@ subcomponent of a larger containing object.  Such objects are called
    rise to conflicts.  For example: Global => (Input => A (I), Output
    => A (J)); if I = J then A(I) is in out.  I am sure conflicts such
    as these can be resolved - they just require a bit more thought.
-#. A ``conditional_mode`` defines ``moded_item_list`` and if the
-   ``condition`` is ``True`` then each ``moded_item`` in the list is
-   considered to be a ``moded_item`` of a mode determined by the
-   ``mode_selector`` of the enclosing ``mode_specification``.  If the
-   condition is ``False`` then the items in the defined list are not
-   regarded as moded items of the mode determined by the enclosing
-   ``mode_specification``.
 #. If a ``moded_item``, appears in the ``mode_refinement`` of a
    subprogram with a mode of **in**, then it may only appear as a
    ``moded_item`` of mode **in** in any ``mode_refinement`` nested
    within the subprogram.
 
-.. centered:: **Restrictions That May Be Applied**
-
-
-#. The restriction ``Moded_Variables_Are_Entire`` asserts that a
-   ``Moded_item`` cannot be a subcomponent name.
-#. The restriction ``No_Conditional_Modes`` prohibits the use of a
-   ``conditional_mode`` in a ``mode_specification``.
-
-.. centered:: **Dynamic Semantics**
-
-
-There are no dynamic semantics associated with a ``mode_refinement``
-as it is used purely for static analyses purposes and is not executed.
-
-.. todo:: We could consider executable semantics, especially for
-     conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post.
-
  
 Global Aspects
 ~~~~~~~~~~~~~~
 
-A ``global_aspect`` names the *global* items that are read and, or,
-updated by a subprogram.  The *global* items are considered to have
-modes the same as *formal parameters*, **in**, **out** and **in out**
-and the modes may be refined as described above.
+A ``global_aspect`` is optional and names the *global* items that are
+read and, or, updated by a subprogram.  The *global* items are
+considered to have modes the same as *formal parameters*, **in**,
+**out** and **in out** and the modes may be refined as described in
+:ref:`mode-refinement`.
 
 A *global* item is a ``moded_item`` that denotes a *global_variable_*\
-``name`` or a *data_abstraction_*\ ``name``.
-
-.. todo:: Introduce constructive / modular analysis before this point,
-   in the Language Subset section.
-
-A ``global_aspect`` is optional but if constructive, modular analysis
-or data abstraction is being used then a ``global_aspect`` may be
-required for every subprogram which references a *global* item.
+``name`` or a *abstract_state_*\ ``name``.
 
 The ``global_aspect`` uses a ``mode_refinement`` as part of the
 specification of a subprogram interface explicitly stating the
@@ -374,8 +380,8 @@ of a *global* variable by a more *local* variable.
 .. centered:: **Static Semantics**
 
 #. A ``moded_item`` appearing in a ``global_aspect`` must be the name
-   of a *global variable*, a subcomponent of a *global variable*, or a
-   *data abstraction*.
+   of a *global variable*, a subcomponent of a *global variable*, or
+   an *abstract state*.
 #. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
@@ -393,7 +399,7 @@ of a *global* variable by a more *local* variable.
    of ``Global =>`` **null**.
 #. A less stringent restriction is
    ``Global_Aspects_On_Procedure_Declarations`` which requires a
-   ``global_aspect`` on all subprogram declarations.  They are
+   ``global_aspect`` on all procedure declarations.  They are
    optional on subprogram bodies that do not have a separate
    declaration.  A virtual global aspect is calculated from the
    body of each subprogram body which does not have an explicit
@@ -409,9 +415,6 @@ of a *global* variable by a more *local* variable.
 There are no dynamic semantics associated with a ``global_aspect`` it
 is used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for
-     conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post.
 
 .. centered:: **Examples**
 
