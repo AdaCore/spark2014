@@ -239,7 +239,27 @@ package body Gnat2Why.Decls is
               (Name => To_Ident (WNE_Type),
                Args => 0));
       Typ  : constant W_Primitive_Type_Id :=
-               New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
+        New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id;
+      --  Choose the correct type to use
+
+      --------------------
+      -- Normalize_Type --
+      --------------------
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id is
+      begin
+         if not (Ekind (E) in Private_Kind) or else
+           Type_In_Formal_Container (E)
+         then
+            return E;
+         end if;
+         if In_Alfa (Most_Underlying_Type (E)) then
+            return Normalize_Type (Most_Underlying_Type (E));
+         end if;
+         return E;
+      end Normalize_Type;
 
    begin
       Open_Theory (File, Name);
@@ -251,7 +271,7 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
-      Add_Use_For_Entity (File, Etype (E));
+      Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
       --  We generate a global ref
 
       Emit

@@ -152,10 +152,19 @@ package body Gnat2Why.Types is
      (Ty : Node_Id)
      return W_Primitive_Type_Id is
    begin
-      --  For a private type or record subtype, use the most underlying type if
-      --  it is in Alfa. Otherwise, return the special private type.
 
-      if Ekind (Ty) in Private_Kind then
+      --  Standard.Boolean is modeled as bool; any other boolean subtype
+      --  is modeled as an abstract type to have range checks.
+
+      if Ty = Standard_Boolean then
+         return New_Base_Type (Base_Type => EW_Bool);
+      elsif Ty = Universal_Fixed then
+         return New_Base_Type (Base_Type => EW_Real);
+      elsif Ekind (Ty) in Private_Kind then
+
+         --  For a private type or record subtype, use the most underlying type
+         --  if it is in Alfa. Otherwise, return the special private type.
+
          if Type_In_Formal_Container (Ty) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
          elsif In_Alfa (Most_Underlying_Type (Ty)) then
@@ -163,15 +172,6 @@ package body Gnat2Why.Types is
          else
             return New_Base_Type (Base_Type => EW_Private);
          end if;
-
-      --  Standard.Boolean is modeled as bool; any other boolean subtype
-      --  is modeled as an abstract type to have range checks.
-
-      elsif Ty = Standard_Boolean then
-         return New_Base_Type (Base_Type => EW_Bool);
-
-      elsif Ty = Universal_Fixed then
-         return New_Base_Type (Base_Type => EW_Real);
       else
          return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
       end if;
