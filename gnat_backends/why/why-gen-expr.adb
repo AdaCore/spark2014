@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Elists;                use Elists;
+with Sem_Aux;               use Sem_Aux;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -367,7 +368,8 @@ package body Why.Gen.Expr is
                Next_Elmt (Constr_Elmt);
             end loop;
             declare
-               Args : W_Expr_Array (1 .. Count);
+               Args      : W_Expr_Array (1 .. Count);
+               Discr_Ent : Entity_Id := First_Discriminant (To);
             begin
                Args (1) := Expr;
                Count := 2;
@@ -378,10 +380,12 @@ package body Why.Gen.Expr is
                        Transform_Expr
                          (Domain        => EW_Term,
                           Params        => Term_Params,
-                          Expr          => Node (Constr_Elmt));
+                          Expr          => Node (Constr_Elmt),
+                          Expected_Type => EW_Abstract (Etype (Discr_Ent)));
                      Count := Count + 1;
                   end if;
                   Next_Elmt (Constr_Elmt);
+                  Next_Discriminant (Discr_Ent);
                end loop;
                return
                  New_VC_Call
