@@ -36,7 +36,7 @@ Preconditions and Postconditions
 #. Verification conditions are generated from the program text.
 #. The verification conditions have to be proven to be True to
    formally demonstrate that the implementation of the body of the
-   subprogram satifies the post condition provided the precondition is
+   subprogram satisfies the post condition provided the precondition is
    True and the subprogram completes without exceptions.
 
 .. todo :: Think about Pre'Class and Post'Class
@@ -161,7 +161,7 @@ where
    **others** case is considered to a negation of the conjunction of
    every other ``guard`` and this is anded with the precondition.
 #. A verification condition is that the ``consequent`` for each
-   ``gaurd`` is ``True`` given that the ``guard`` is satisfied.
+   ``guard`` is ``True`` given that the ``guard`` is satisfied.
 
 .. centered:: **Dynamic Semantics**
 
@@ -170,7 +170,7 @@ where
    precondition is satisfied, each ``guard`` is evaluated.  At most
    one of them should evaluate to ``True``.  If the precondition
    fails, more than one ``guard`` evaluates to ``True``, or no
-   ``guard`` eavluates to ``True`` and there is no **others** case ,
+   ``guard`` evaluates to ``True`` and there is no **others** case ,
    an exception is raised. Which one??
 #. If the entry checks do not raise an exception and the execution of
    the subprogram completes then, for the case whose ``guard``
@@ -195,7 +195,7 @@ specified:
    ``global_aspect``.
  * Modes can be applied to independent subcomponents of an object. For
    instance, the array element A (I) may be designated as mode **out**
-   where as A (J) may be designated as mode **in**.  This mode
+   whereas A (J) may be designated as mode **in**.  This mode
    refinement may be applied to *global variables* using the
    ``global_aspect`` and *formal parameters* using the
    ``param_aspect``.
@@ -257,7 +257,7 @@ subcomponent of a larger containing object.  Such objects are called
    
    a. if all the subcomponents in the ``mode_refinement`` have an
       effective mode of **in**, then the effective mode of V is **in**;
-   b. if at least one of the subcomponents in the ``mode_refinemet``
+   b. if at least one of the subcomponents in the ``mode_refinement``
       has an effective mode of **out** or **in out**, then the
       effective mode of V is **in out**.
 
@@ -278,7 +278,7 @@ subcomponent of a larger containing object.  Such objects are called
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
    ``mode_selector`` of ``In_Out`` may not appear in any other
    ``mode_specification``.
-#. A ``moded_item``may not appear more than once within a single
+#. A ``moded_item`` may not appear more than once within a single
    ``mode_specification`` other than appearing in a ``condition`` of a
    ``conditional_mode``.  The rule applies to indexed components in as
    much as an array element A (I) cannot appear more than once but
@@ -428,7 +428,7 @@ X), its mode should be **in out**. Likewise, if a *formal parameter* Y
 appears in a ``mode_specification`` with a ``mode selector`` of
 ``Input`` and in another with a ``mode_selector`` of ``Output``
 (e.g. with different conditions), its *formal parameter* mode should
-be **in out**.  If a subcomponent of a *formal_parameter* appears in
+be **in out**.  If a subcomponent of a *formal parameter* appears in
 an ``Output`` ``mode _specification``, e.g., Param => (Output => A
 (I)), even though the effective mode of A is **in out** the *formal
 parameter*, A, may be given as mode **out** provided no other
@@ -517,7 +517,7 @@ subprogram.  The ``dependency_relation`` is used in information flow
 analysis.
 
 Dependency aspects are optional and are simple formal specifications.
-They are ``dependency_relations`` which are given in terms of imports
+They are dependency relations which are given in terms of imports
 and exports.  An ``export`` of a subprogram is ``moded_item`` which is
 updated directly or indirectly by the subprogram. An ``import`` of a
 subprogram is a ``moded_item``, the initial value of which, is used in
@@ -623,14 +623,14 @@ where
 #. An ``export`` must have an effective mode of **in out** or **out**
 #. A ``moded_item`` which is both an ``import`` and an ``export``
    shall have an effective mode of **in out**.
-#. The result of a function F, denoted F'Result is considered to to be
+#. The result of a function F, denoted F'Result is considered to be
    an ``export`` of the function.
 #. The result of a function is treated as an entire object.
    Subcomponents of a function result cannot be named in a
    ``dependency_relation``
 #. A function which does not have a an explicit ``dependency_aspect``
    is assumed to have the dependency of its result on all of its
-   imports.  Generally ``dependency_aspects`` are not required for
+   imports.  Generally a ``dependency_aspect`` is not required for
    functions unless it is to describe a ``conditional_dependency``.
 #. A ``function_result`` may not appear in the ``dependency_relation``
    of a procedure.
@@ -652,13 +652,13 @@ where
    same ``dependency_relation``.  The purpose of a **null**
    ``export_list`` is to facilitate moving Ada code outside the SPARK
    boundary.
-#. A ``conditional_dpendency`` indicates the conditions under which
+#. A ``conditional_dependency`` indicates the conditions under which
    the initial value of an ``import`` may be used in determining the
    final value of an ``export``.
 #. A ``conditional_dependency`` does not affect the effective
    ``exports`` and ``imports`` and their relationship as this is
    always considered unconditionally in terms of *entire objects*.
-   The effective imports of a ``conditional_dependecncy`` are the
+   The effective imports of a ``conditional_dependency`` are the
    union of the variables used in its conditions and every import in
    the ``import_list`` of every branch.
 
@@ -669,18 +669,18 @@ where
    represented by itself or by one or of its subcomponents.
 #. Every ``moded_item`` of a subprogram shall appear in the
    dependency relation.  A subcomponent of a composite object is
-   suffice to show an appearence.
+   suffice to show an appearance.
 #. An ``export`` may be a subcomponent provided the containing object
-   is not a ``export`` in the same ``dependency_relation``.  As long
+   is not an ``export`` in the same ``dependency_relation``.  As long
    as this rule is satisfied, different subcomponents of a composite
    object may appear each as a distinct ``export`` and, for array
    subcomponents, a single, e.g. element A (I), cannot appear more
    than once as an ``export``, whereas elements A (I) and A (J) are
-   considered as distinct and may bothe appear as an export even
+   considered as distinct and may both appear as an export even
    though I my equal J.
 #. Each ``export`` shall appear exactly once in a
    ``dependency_relation``.  A subcomponent of a composite object V is
-   suffice to show an appearence of V but more than one distinct
+   suffice to show an appearance of V but more than one distinct
    subcomponent V may appear as an ``export``
 #. Each ``import`` shall appear at least once in a
    ``dependency_relation``. 
@@ -731,7 +731,7 @@ it used purely for static analyses purposes and is not executed.
    with Depends => ((A, B) =>+ (A, X, Y),
                      C     =>+ Z,
                      D     =>+ null);
-   -- The "+" sign attached to the arrow indicates self dependency, that is
+   -- The "+" sign attached to the arrow indicates self-dependency, that is
    -- the final value of A depends on the initial value of A as well as the 
    -- initial values of X and Y.
    -- Similarly, the final value of B depends on the initial value of B 
@@ -800,18 +800,18 @@ Conformance Rules
 
 No rules or restrictions considered yet.
 
-Mode Refinment
+Mode Refinement
 ~~~~~~~~~~~~~~
 
-If a subprogram has a mode refinment (in a ``global_aspect``, a
+If a subprogram has a mode refinement (in a ``global_aspect``, a
 ``param_aspect`` or both) then the implementation of its body must
 comply with the refined modes specified for the ``moded_items``.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow_Analysis*
+.. centered:: *Checked by Flow Analysis*
 
-#. The intial value of a ``moded_item`` of a ``global_aspect``,
+#. The initial value of a ``moded_item`` of a ``global_aspect``,
    ``param_aspect`` (or *formal parameter* if the restriction
    ``Strict_Modes`` is in force) which is of mode which has an
    effective mode of **in** or **in out** must be used in determining
@@ -837,13 +837,13 @@ comply with the refined modes specified for the ``moded_items``.
    subcomponent is considered to be updated and the other
    subcomponents of the object are preserved (unchanged).  If more
    than one subcomponent of the same object appears in such a
-   ``moded_specification`` then all the mentioned subcomponents are
+   ``mode_specification`` then all the mentioned subcomponents are
    considered to be updated and remaining subcomponents of the object
    preserved.
 #. If a subcomponent name appears in a ``mode_specification`` with a
    ``mode_selector`` of ``Input`` or ``In_Out`` then the initial value
    of just that subcomponent is considered to be read and used in
-   determing the final value of at least one ``export``.  If more than
+   determining the final value of at least one ``export``.  If more than
    one subcomponent of the same object appears in such a
    ``mode_specification`` then all the rule applies to all mentioned
    subcomponents.
@@ -863,7 +863,7 @@ implementation of its body.
 .. centered:: **Legality Rules**
 
 #. A subprogram body may only have a ``global_aspect`` if it does not
-   have a separate declaraion.
+   have a separate declaration.
 
 .. centered:: **Static Semantics**
 
@@ -901,7 +901,7 @@ implementation of its body.
 .. centered:: **Legality Rules**
 
 #. A subprogram body may only have a ``param_aspect`` if it does not
-   have a separate declaraion.
+   have a separate declaration.
 
 
 Dependency Aspects
@@ -917,7 +917,7 @@ satisfied by the implementation of its body.
 .. centered:: **Legality Rules**
 
 #. A subprogram body may only have a ``dependency_aspect`` if it does
-   not have a separate declaraion.
+   not have a separate declaration.
 
 .. centered:: **Verification Rules**
 
@@ -926,10 +926,10 @@ satisfied by the implementation of its body.
 #. The final value of each effective export E shall be determined from
    only static constants and the initial value of ``moded_items``
    appearing in the ``dependency_list`` of E or from E itself if the
-   self dependency notation ``=>+`` has been used in the
+   self-dependency notation ``=>+`` has been used in the
    ``dependency_clause`` defining E.
 #. The initial value of each effective import in a
-   ``dependency_clause`` shall be used in determing the final value of
+   ``dependency_clause`` shall be used in determining the final value of
    every effective export given in the same ``dependency_clause``.
 
 .. centered:: *Checked by Proof*
