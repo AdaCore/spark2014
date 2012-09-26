@@ -4,6 +4,7 @@ Packages
 Package Specifications and Declarations
 ---------------------------------------
 
+.. _abstract-state:
 
 Abstraction of State
 ^^^^^^^^^^^^^^^^^^^^
