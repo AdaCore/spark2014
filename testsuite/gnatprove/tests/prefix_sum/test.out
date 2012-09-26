@@ -50,12 +50,12 @@ prefixsum.adb:40:34: info: overflow check proved
 prefixsum.adb:40:39: info: division check proved
 prefixsum.adb:40:46: info: overflow check proved
 prefixsum.adb:42:23: info: index check proved
-prefixsum.adb:42:29: loop invariant preservation not proved, requires A (K) = Copy2 (K) + Copy2 (K - Space)
 prefixsum.adb:42:31: info: index check proved
 prefixsum.adb:42:41: overflow check not proved
 prefixsum.adb:42:43: index check not proved
 prefixsum.adb:42:52: info: overflow check proved
 prefixsum.adb:44:23: info: index check proved
+prefixsum.adb:44:29: loop invariant preservation not proved, requires A (K) = Copy2 (K)
 prefixsum.adb:44:31: info: index check proved
 prefixsum.adb:46:31: info: overflow check proved
 prefixsum.adb:46:31: info: range check proved
@@ -165,11 +165,11 @@ prefixsum.ads:24:36: info: range check proved
 prefixsum.ads:26:17: postcondition not proved
 prefixsum.ads:31:37: info: range check proved
 prefixsum.ads:32:39: info: range check proved
+prefixsum.ads:36:14: postcondition not proved, requires A (0) = 0
 prefixsum.ads:36:8: info: index check proved
 prefixsum.ads:37:20: info: index check proved
 prefixsum.ads:37:28: info: index check proved
 prefixsum.ads:38:20: info: index check proved
-prefixsum.ads:38:26: postcondition not proved, requires A (0) = 0 and then A (1) = Ghost (0) and then A (2) = Ghost (0) + Ghost (1)
 prefixsum.ads:38:28: info: index check proved
 prefixsum.ads:38:38: overflow check not proved
 prefixsum.ads:38:40: info: index check proved

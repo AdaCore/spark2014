@@ -69,11 +69,11 @@ evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
 evoting.ads:104:48: info: index check proved
 evoting.ads:105:21: info: index check proved
-evoting.ads:105:38: postcondition not proved, requires counters(winner) > counters(i)
 evoting.ads:105:40: info: index check proved
 evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
+evoting.ads:108:37: postcondition not proved, requires counters(winner) = counters(i)
 evoting.ads:108:39: info: index check proved
 evoting.ads:110:45: info: overflow check proved
 evoting.ads:111:19: index check not proved
