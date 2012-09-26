@@ -581,7 +581,9 @@ dependent on every ``import`` in the ``import_list`` if the
                             | (import_item {, import_item})
    import_item            ::= import
                             | conditional_dependency 
-   conditional_dependency ::= (if condition then import_list)
+   conditional_dependency ::= (if condition then import_list
+                               {elsif condition then import_list}
+                               [else import_list])
    import_list            ::= import
                             | (import {, import})
                             | null
@@ -609,6 +611,8 @@ where
 #. An ``export`` and an ``import`` is a ``moded_item`` and may be an
    *abstract state*, an *entire object* or a subcomponent of an
    *object*.
+#. Every ``moded_item`` of a subprogram is an ``import``, ``export``
+   or both.
 #. If a subcomponent S of a composite object is an ``import`` then the
    *entire* object which contains S is effectively an ``import``.
 #. If a subcomponent S of a composite object is an ``export`` then the
@@ -619,34 +623,11 @@ where
 #. An ``export`` must have an effective mode of **in out** or **out**
 #. A ``moded_item`` which is both an ``import`` and an ``export``
    shall have an effective mode of **in out**.
-#. The result of a function is considered to to be an ``export`` of
-   the function.
-#. Every ``moded_item`` of a subprogram shall appear in the
-   dependency relation.  A subcomonent of a composite object is
-   suffice to show an appearence.
-#. An ``export`` may be a subcomponent provided the containing object
-   is not a ``export`` in the same ``dependency_relation``.  As long
-   as this rule is satisfied, different subcomponents of a composite
-   object may appear each as a distinct ``export`` and, for array
-   subcomponents, element A(I) cannot appear more than once as an
-   ``export``, whereas elements A (I) and A (J) are considered as
-   distinct even though I my equal J.
-#. Each ``export`` shall appear exactly once in a
-   ``dependency_relation``.  A subcomonent of a composite object is
-   suffice to show an appearence.
-#. Each ``import`` shall appear at least once in a
-   ``dependency_relation``.  A subcomonent of a composite object is
-   suffice to show an appearence.
-#. An ``import`` shall not appear more than once in a single
-   ``import_list`` other than appearing in a ``condition`` of a
-   ``conditional_dependency``.  The rule applies to indexed components
-   in as much as an array element A (I) cannot appear more than once
-   but both A (I) and A (J) may appear in the same
-   ``import_list`` even though I may equal J.
-#. A ``dependency_relation`` for a function, F, has only one export
-   and this is its result.  Its result is denoted by ``F'Result`` and
-   may only appear as the only export of a function in its
-   ``dependency relation``.  
+#. The result of a function F, denoted F'Result is considered to to be
+   an ``export`` of the function.
+#. The result of a function is treated as an entire object.
+   Subcomponents of a function result cannot be named in a
+   ``dependency_relation``
 #. A function which does not have a an explicit ``dependency_aspect``
    is assumed to have the dependency of its result on all of its
    imports.  Generally ``dependency_aspects`` are not required for
@@ -674,14 +655,46 @@ where
 #. A ``conditional_dpendency`` indicates the conditions under which
    the initial value of an ``import`` may be used in determining the
    final value of an ``export``.
+#. A ``conditional_dependency`` does not affect the effective
+   ``exports`` and ``imports`` and their relationship as this is
+   always considered unconditionally in terms of *entire objects*.
+   The effective imports of a ``conditional_dependecncy`` are the
+   union of the variables used in its conditions and every import in
+   the ``import_list`` of every branch.
 
 .. centered:: **Static Semantics**
 
-#. Every ``moded_item``, or a subcomponent thereof, of a subprogram is
-   an ``import``, an ``export`` or both.
+#. Every ``moded_item`` of a subprogram is an ``import``, an
+   ``export`` or both. An ``import`` or an ``export`` may be
+   represented by itself or by one or of its subcomponents.
+#. Every ``moded_item`` of a subprogram shall appear in the
+   dependency relation.  A subcomponent of a composite object is
+   suffice to show an appearence.
+#. An ``export`` may be a subcomponent provided the containing object
+   is not a ``export`` in the same ``dependency_relation``.  As long
+   as this rule is satisfied, different subcomponents of a composite
+   object may appear each as a distinct ``export`` and, for array
+   subcomponents, a single, e.g. element A (I), cannot appear more
+   than once as an ``export``, whereas elements A (I) and A (J) are
+   considered as distinct and may bothe appear as an export even
+   though I my equal J.
+#. Each ``export`` shall appear exactly once in a
+   ``dependency_relation``.  A subcomponent of a composite object V is
+   suffice to show an appearence of V but more than one distinct
+   subcomponent V may appear as an ``export``
+#. Each ``import`` shall appear at least once in a
+   ``dependency_relation``. 
+#. An ``import`` shall not appear more than once in a single
+   ``import_list`` other than appearing in a ``condition`` of a
+   ``conditional_dependency``.  As different subcomponents of a
+   composite object are considered to be distinct more than one these
+   may appear in a single import list. The rule applies to indexed
+   components in as much as an array element A (I) cannot appear more
+   than once but both A (I) and A (J) may appear in the same
+   ``import_list`` even though I may equal J.
+#. A *variable* appearing in the condition of a
+   ``conditional_dependency`` must be an ``import`` of the subprogram.
 
-.. todo:: Further rules regarding the use of conditional dependencies
-     and subcomponents in dependency aspects.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -695,9 +708,6 @@ where
 There are no dynamic semantics associated with a ``dependency_aspect``
 it used purely for static analyses purposes and is not executed.
 
-.. todo:: We could consider executable semantics, especially for
-     conditional dependencies, but I think we should only consider
-     executing aspects which are Ada aspects such as Pre and Post.
 
 .. centered:: **Examples**
 
@@ -788,12 +798,39 @@ Subprogram Bodies
 Conformance Rules
 ~~~~~~~~~~~~~~~~~~
 
+No rules or restrictions considered yet.
+
 Mode Refinment
 ~~~~~~~~~~~~~~
 
 If a subprogram has a mode refinment (in a ``global_aspect``, a
 ``param_aspect`` or both) then the implementation of its body must
 comply with the refined modes specified for the ``moded_items``.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow_Analysis*
+
+#. The intial value of a ``moded_item`` of a ``global_aspect``,
+   ``param_aspect`` (or *formal parameter* if the restriction
+   ``Strict_Modes`` is in force) which is of mode which has an
+   effective mode of **in** or **in out** must be used in determining
+   the final value of at least one ``export`` of the subprogram.
+#. If a ``moded_item`` of a ``global_aspect``, ``param_aspect`` (or
+   *formal parameter* if the restriction ``Strict_Modes`` is in force)
+   is of mode **in out** it must be updated directly or indirectly on
+   at least one executable path through the subprogram body.
+#. If a ``moded_item`` of a ``global_aspect``,
+   ``param_aspect`` (or *formal parameter* if the restriction
+   ``Strict_Modes`` is in force) is of mode **out** then
+   it must be updated either directly or indirectly on every
+   executable path through the subprogram body.
+#. If a ``moded_item``, appears in the ``mode_refinement`` of a
+   subprogram with a mode of **in**, then it may only appear as a
+   ``moded_item`` of mode **in** in any ``mode_refinement`` nested
+   within the subprogram.
+
+.. centered:: *Checked by Proof*
 
 #. If a subcomponent name appears in a ``mode_specification`` with a
    ``mode_selector`` of ``Output`` or ``In_Out`` then just that
@@ -804,21 +841,14 @@ comply with the refined modes specified for the ``moded_items``.
    considered to be updated and remaining subcomponents of the object
    preserved.
 #. If a subcomponent name appears in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` or ``In_Out`` then just that
-   subcomponent is considered to be read.  If more than one
-   subcomponent of the same object appears in such a
-   ``mode_specification`` then all the mentioned subcomponents are
-   considered to be read.
-#. If an object has subcomponents which are array elements and more
-   than one of these elements are referenced in a ``mode_refinement``
-   then more than one element may have the same index.  This may give
-   rise to conflicts.  For example: Global => (Input => A (I), Output
-   => A (J)); if I = J then A(I) is in out.  I am sure conflicts such
-   as these can be resolved - they just require a bit more thought.
-#. If a ``moded_item``, appears in the ``mode_refinement`` of a
-   subprogram with a mode of **in**, then it may only appear as a
-   ``moded_item`` of mode **in** in any ``mode_refinement`` nested
-   within the subprogram.
+   ``mode_selector`` of ``Input`` or ``In_Out`` then the initial value
+   of just that subcomponent is considered to be read and used in
+   determing the final value of at least one ``export.  If more than
+   one subcomponent of the same object appears in such a
+   ``mode_specification`` then all the rule applies to all mentioned
+   subcomponents.
+
+.. todo:: Conditional mode specifications which have to be checked by proof.
 
 Global Aspects
 ~~~~~~~~~~~~~~
@@ -846,14 +876,6 @@ implementation of its body.
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. The intial value of a ``moded_item`` of a ``global_aspect`` which is
-   of mode **in** or **in out** must be used in determining the final
-   value of at least one ``export`` of the subprogram.
-#. If a ``moded_item`` of a ``global_aspect`` is of mode **in out** it
-   may be updated directly or indirectly within the subprogram body.
-#. If a ``moded_item`` of a ``global_aspect`` is of mode **out** then
-   it must be updated either directly or indirectly on every
-   executable path through the subprogram body.
 #. A non-*local variable* which is not a formal parameter or listed as a
    ``moded_item`` in the ``global_aspect`` shall not be read or
    updated directly or indirectly within the body of the subprogram.
@@ -864,6 +886,7 @@ implementation of its body.
    :start-after: 6.3.2 Global Aspects
    :end-before:  6.4.2
 
+.. todo:: rules for working out an implicit global aspect.
 
 Param Aspects
 ~~~~~~~~~~~~~
@@ -879,21 +902,6 @@ implementation of its body.
 
 #. A subprogram body may only have a ``param_aspect`` if it does not
    have a separate declaraion.
-
-.. centered:: **Static Semantics**
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow-Analysis*
-
-#. The intial value of a ``moded_item`` of a ``param_aspect`` which is
-   of mode **in** or **in out** must be used in determining the final
-   value of at least one ``export`` of the subprogram.
-#. If a ``moded_item`` of a ``global_aspect`` is of mode **in out** it
-   may be updated directly or indirectly within the subprogram body.
-#. If a ``moded_item`` of a ``global_aspect`` is of mode **out** then
-   it must be updated either directly or indirectly on every
-   executable path through the subprogram body.
 
 
 Dependency Aspects
@@ -915,18 +923,18 @@ satisfied by the implementation of its body.
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. The final value of each export E shall be determined from only
-   static constants and the initial value of ``moded_items`` appearing
-   in the ``dependency_list`` of E or from E itself if the self
-   dependency notation ``=>+`` has been used in the
+#. The final value of each effective export E shall be determined from
+   only static constants and the initial value of ``moded_items``
+   appearing in the ``dependency_list`` of E or from E itself if the
+   self dependency notation ``=>+`` has been used in the
    ``dependency_clause`` defining E.
-#. The initial value of each import in a ``dependency_clause`` shall
-   be used in determing the final value of every export given in the
-   same ``dependency_clause``.
+#. The initial value of each effective import in a
+   ``dependency_clause`` shall be used in determing the final value of
+   every effective export given in the same ``dependency_clause``.
 
 .. centered:: *Checked by Proof*
 
-.. todo:: conditional dependencies.
+.. todo:: conditional dependencies and subcomponents
 
 
 Subprogram Calls
@@ -934,6 +942,11 @@ Subprogram Calls
 
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
+
+.. todo:: possible restrictions regarding not mixing named and
+     positional parameters, requiring all, or more than a certain
+     number of parameters require named association, or more than one
+     parameter of the same type requires named association....
 
 Anti-Aliasing
 ~~~~~~~~~~~~~
@@ -957,10 +970,11 @@ are excluded from the anti-aliasing rules given below for procedure
 calls.
 
 The ``moded_items`` which are *global* to a procedure have to be
-determined.  These may be obtained from a ``global_aspect`` or
-``dependency_aspect`` of the procedure, if either or both of these are
-present are present, or has to be calculated from a whole program
-analysis.
+determined.  These may be obtained from an explicit ``global_aspect``
+or ``dependency_aspect`` of the procedure, if either or both of these
+are present. If neither of these are present then an implicit global
+aspect is used which is deduced by analysing the bodies of the called
+subprogram and the subprograms it calls.
 
 .. centered:: **Verification Rules**
 
@@ -1009,6 +1023,11 @@ analysis.
     #. a qualified expression whose operand is a prohibited construct;
     #. a prohibited construct enclosed in parentheses.
 
+.. centered:: *Checked by Proof*
+
+#. The requirement that no two array elements overlap and that there
+   are no overlapping elements between array slices or between array
+   slices and individual elements.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -1020,7 +1039,3 @@ analysis.
 The extended static semantics are checked using static analyses, no
 extra dynamic checks are required.
 
-.. todo:: I can imagine that the anti-aliasing checks could be done
-    dynamically but this could change the behaviour of what are
-    currently valid Ada programs.  I think we should consider this as
-    a staticly determined check used with SPARK 2014.

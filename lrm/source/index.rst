@@ -26,8 +26,6 @@ SPARK 2014 LRM
    the-standard-library
    restrictions-and-profiles
    extended-legality
-   mapping-between-spark2005-and-spark2014
-
 
 
 Indices and tables
