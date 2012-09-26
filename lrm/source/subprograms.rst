@@ -295,7 +295,6 @@ subcomponent of a larger containing object.  Such objects are called
    object may appear more than once and, for array subcomponents,
    elements A (I) and A (J) are considered as distinct instances even
    though I my equal J.
-<<<<<<< HEAD
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -313,54 +312,7 @@ as it is used purely for static analyses purposes and is not executed.
      conditional modes, but I think we should only consider executing
      aspects which are Ada aspects such as Pre and Post.
 
-=======
 
-.. centered:: **Restrictions That May Be Applied**
-
-
-#. The restriction ``Moded_Variables_Are_Entire`` asserts that a
-   ``Moded_item`` cannot be a subcomponent name.
-#. The restriction ``No_Conditional_Modes`` prohibits the use of a
-   ``conditional_mode`` in a ``mode_specification``.
-
-.. centered:: **Dynamic Semantics**
-
-
-There are no dynamic semantics associated with a ``mode_refinement``
-as it is used purely for static analyses purposes and is not executed.
-
-.. todo:: We could consider executable semantics, especially for
-     conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post.
-
-
-#. If a subcomponent name appears in a ``mode_specification`` with a
-   ``mode_selector`` of ``Output`` or ``In_Out`` then just that
-   subcomponent is considered to be updated and the other
-   subcomponents of the object are preserved (unchanged).  If more
-   than one subcomponent of the same object appears in such a
-   ``moded_specification`` then all the mentioned subcomponents are
-   considered to be updated and remaining subcomponents of the object
-   preserved.
-#. If a subcomponent name appears in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` or ``In_Out`` then just that
-   subcomponent is considered to be read.  If more than one
-   subcomponent of the same object appears in such a
-   ``mode_specification`` then all the mentioned subcomponents are
-   considered to be read.
-#. If an object has subcomponents which are array elements and more
-   than one of these elements are referenced in a ``mode_refinement``
-   then more than one element may have the same index.  This may give
-   rise to conflicts.  For example: Global => (Input => A (I), Output
-   => A (J)); if I = J then A(I) is in out.  I am sure conflicts such
-   as these can be resolved - they just require a bit more thought.
-#. If a ``moded_item``, appears in the ``mode_refinement`` of a
-   subprogram with a mode of **in**, then it may only appear as a
-   ``moded_item`` of mode **in** in any ``mode_refinement`` nested
-   within the subprogram.
-
->>>>>>> a4faef2cf9034ac3fd3148677725ae8d1fce6c65
- 
 Global Aspects
 ~~~~~~~~~~~~~~
 
@@ -412,29 +364,9 @@ of a *global* variable by a more *local* variable.
      Global aspect implies Global => null sensible or should we always
      insist on Global => null?? I hope not!! 
 
-<<<<<<< HEAD
 .. include:: restrictions-and-profiles.rst
    :start-after: 6.1.5 Global Aspects
    :end-before:  6.1.6
-=======
-#. The provision of ``global_aspects`` on all subprograms may be
-   enforced by using the restriction ``Global_Aspects_Required``.
-   When this restriction is in force a subprogram which does not have
-   an explicit ``global_aspect`` is considered to have a have have one
-   of ``Global =>`` **null**.
-#. A less stringent restriction is
-   ``Global_Aspects_On_Procedure_Declarations`` which requires a
-   ``global_aspect`` on all procedure declarations.  They are
-   optional on subprogram bodies that do not have a separate
-   declaration.  A virtual global aspect is calculated from the
-   body of each subprogram body which does not have an explicit
-   ``global_aspect``.
-#. The style restriction, ``No_Default_Global_Modes_On_Procedures``,
-   disallows a ``default_mode_specification`` within a procedure
-   ``aspect_specification``. An explicit ``Input =>`` must be given.
-   A function ``aspect_specification`` may have a global_specification
-   with a ``default_mode_specification``.
->>>>>>> a4faef2cf9034ac3fd3148677725ae8d1fce6c65
  
 .. centered:: **Dynamic Semantics**
 
@@ -689,7 +621,7 @@ where
    shall have an effective mode of **in out**.
 #. The result of a function is considered to to be an ``export`` of
    the function.
-#. Every ``import`` and ``export`` of a subprogram shall appear in the
+#. Every ``moded_item`` of a subprogram shall appear in the
    dependency relation.  A subcomonent of a composite object is
    suffice to show an appearence.
 #. An ``export`` may be a subcomponent provided the containing object
