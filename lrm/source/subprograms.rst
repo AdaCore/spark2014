@@ -843,7 +843,7 @@ comply with the refined modes specified for the ``moded_items``.
 #. If a subcomponent name appears in a ``mode_specification`` with a
    ``mode_selector`` of ``Input`` or ``In_Out`` then the initial value
    of just that subcomponent is considered to be read and used in
-   determing the final value of at least one ``export.  If more than
+   determing the final value of at least one ``export``.  If more than
    one subcomponent of the same object appears in such a
    ``mode_specification`` then all the rule applies to all mentioned
    subcomponents.
