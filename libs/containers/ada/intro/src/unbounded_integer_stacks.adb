@@ -15,6 +15,10 @@ package body Unbounded_Integer_Stacks is
    begin
       New_Ptr (1 .. Old_Used_Elements) := S.Cont_Ptr (1 .. Old_Used_Elements);
       New_Ptr (S.Index .. New_Size) := (others => Default_Value);
+      Free_Content (S.Cont_Ptr);
+
+      --  Free old used Array
+
       S.Cont_Ptr := New_Ptr;
    end Enlarge;
 

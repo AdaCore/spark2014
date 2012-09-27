@@ -1,3 +1,4 @@
+with Ada.Unchecked_Deallocation;
 package Unbounded_Integer_Stacks is
 
    --  A stack package that holds integers
@@ -38,13 +39,6 @@ package Unbounded_Integer_Stacks is
 
    --  Create Stack with I elements
 
-   procedure Enlarge (S : in out Stack)
-   with Pre => (Is_Full (S)),
-   Post => (not Is_Full (S));
-
-   --  Enlarge the stack
-   --  If no Delta_Size is passed it will enlarge stack by Chunk_Size
-
    function Is_Empty (S : Stack) return Boolean;
 
    function Is_Full (S : Stack) return Boolean;
@@ -80,9 +74,20 @@ package Unbounded_Integer_Stacks is
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
    procedure Push (S : in out Stack; X : Integer) with
-     Post => not Is_Empty (S);
-   --  and then Push (S'Old, X) = S;
+     Post => not Is_Empty (S)
+   --  ;
+     and then Push (S'Old, X) = S;
 
    --  Push a new element on the stack
+private
 
+   procedure Enlarge (S : in out Stack)
+   with Pre => (Is_Full (S)),
+   Post => (not Is_Full (S));
+
+   --  Enlarge the stack
+
+   procedure Free_Content is new Ada.Unchecked_Deallocation
+     (Object => Content_Type,
+      Name => Content_Ref);
 end Unbounded_Integer_Stacks;
