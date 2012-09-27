@@ -22,7 +22,7 @@ legality rule and further restrictions may be applied.
    :start-after: 6.1 Subprogram Declarations
    :end-before:  6.1.4
 
-.. todo :: access and aliased parameter specs, null exclusion
+.. todo:: access and aliased parameter specs, null exclusion
      parameters.  Function access results function null exclusion
      results.
 
@@ -39,7 +39,7 @@ Preconditions and Postconditions
    subprogram satisfies the post condition provided the precondition is
    True and the subprogram completes without exceptions.
 
-.. todo :: Think about Pre'Class and Post'Class
+.. todo:: Think about Pre'Class and Post'Class
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +85,7 @@ For example:
 is short hand for
 
 .. code-block:: ada
- 
+
  procedure P (...) with
       Pre  => General_Precondition
                 and then Exactly_One_Of(A1,A2...An),
@@ -96,8 +96,8 @@ is short hand for
                 and then (if An'Old then Bn);
 
 
-where 
-  
+where
+
   A1 .. An are Boolean expressions involving the entry values of
   *formal parameters* and *global variables* and
 
@@ -107,18 +107,18 @@ where
 .. centered:: **Syntax**
 
 ::
-   
+
    contract_cases      ::= Contract_Cases => (contract_case_list)
    contrct_case_list   ::= contract_case {, contract_case_list}
    contract_case       ::= guard => consequence
                          | others => consequence
 
-where 
+where
 
    ``guard       ::=`` *Boolean_*\ ``expression``
 
    ``consequence ::=`` *Boolean_*\ ``expression``
- 
+
 
 .. centered:: **Legality Rules**
 
@@ -227,7 +227,7 @@ subcomponent of a larger containing object.  Such objects are called
                                     [else moded_item_list])
    moded_item_list             ::= moded_item
                                  | (moded_item {, moded_item})
-   mode_selector               ::= Input| Output | In_Out 
+   mode_selector               ::= Input| Output | In_Out
    moded_item                  ::= name
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which
@@ -254,7 +254,7 @@ subcomponent of a larger containing object.  Such objects are called
    of ``Output`` has the effective mode of **in out**.
 #. For an entire composite object V which has subcomponents that
    appear in a ``mode_refinement`` the following applies:
-   
+
    a. if all the subcomponents in the ``mode_refinement`` have an
       effective mode of **in**, then the effective mode of V is **in**;
    b. if at least one of the subcomponents in the ``mode_refinement``
@@ -357,17 +357,17 @@ of a *global* variable by a more *local* variable.
 #. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
-  
+
 .. centered:: **Restrictions That May Be Applied**
 
 .. todo:: In the following restriction, is this the assumption of no
      Global aspect implies Global => null sensible or should we always
-     insist on Global => null?? I hope not!! 
+     insist on Global => null?? I hope not!!
 
 .. include:: restrictions-and-profiles.rst
    :start-after: 6.1.5 Global Aspects
    :end-before:  6.1.6
- 
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``global_aspect`` it
@@ -403,14 +403,14 @@ is used purely for static analyses purposes and is not executed.
                   -- conditional global which is read and updated only if I = 42.
    with Global => (Input  => K,
                    Output => (A (K), R.F));
-                  -- K is a global item of mode in, A is a global array 
+                  -- K is a global item of mode in, A is a global array
                   -- and only element A (K) is updated
                   -- the rest of the array is preserved.
                   -- R is a global record and only filed R.F is updated
                   -- the remainder of the fields are preserved.
   with Global => (Input  => (X, Y, Z),
                   Output => (A, B, C),
-                  In_Out => (P, Q, R));  
+                  In_Out => (P, Q, R));
                   -- A global aspect with all types of global specification
 
 
@@ -435,7 +435,7 @@ parameter*, A, may be given as mode **out** provided no other
 subcomponents of A appear in an ``Input`` ``mode_specification``.
 
 
-.. centered:: **Syntax** 
+.. centered:: **Syntax**
 
 ::
 
@@ -464,7 +464,7 @@ subcomponents of A appear in an ``Input`` ``mode_specification``.
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``Input`` must be of mode **in** or mode **in
    out**.
-  
+
 .. centered:: **Restrictions That May Be Applied**
 
 .. include:: restrictions-and-profiles.rst
@@ -488,24 +488,24 @@ is used purely for static analyses purposes and is not executed.
    with Param => (Input  => R.F,
                   Output => R.E);
    -- The Param aspect states that only field F of the record R is read
-   -- and that only field E is updated; the values remainder of the 
-   -- record fields are preserved. 
+   -- and that only field E is updated; the values remainder of the
+   -- record fields are preserved.
 
    procedure Q (A : in out An_Array_Type)
    with Param => (Input  => A.(I),
                   Output => A (J));
    -- The Param aspect states that only element I of the array A is read
-   -- and that only element J is updated; the values remainder of the 
-   -- array elements are preserved. Note: I may equal J. 
+   -- and that only element J is updated; the values remainder of the
+   -- array elements are preserved. Note: I may equal J.
 
    procedure G (A : in out An_Array_Type)
    with Global => (Input  => K),
         Param  => (Input  => A.(I),
                    Output => (if K = 10 then A (J)));
    -- The Param aspect states that only element I of the array A is read
-   -- and element J is only updated if the global I = 10; 
+   -- and element J is only updated if the global I = 10;
    -- the values remainder of the  array elements are preserved including
-   -- A (J) if K /= 10. Note: I, J and K may all be equal. 
+   -- A (J) if K /= 10. Note: I, J and K may all be equal.
 
 
 Dependency Aspects
@@ -547,7 +547,7 @@ clauses.  A ``dependency_clause`` has an ``export_list`` and an
 ``export_list`` depends on every ``import`` in the ``import_list``. As
 in UML, the entity at the tail of the arrow depends on the entity at
 the head of the arrow.
-   
+
 A ``moded_item`` which is both an ``import`` and an ``export`` may
 depend on itself.  A shorthand notation is provided to indicate that
 each ``export`` in an ``export_list`` is self-dependent using an
@@ -576,11 +576,11 @@ dependent on every ``import`` in the ``import_list`` if the
    export_list            ::= null
                             | export
                             | (export {, export})
-   dependency_list        ::= import_item_list 
+   dependency_list        ::= import_item_list
    import_item_list       ::= import_item
                             | (import_item {, import_item})
    import_item            ::= import
-                            | conditional_dependency 
+                            | conditional_dependency
    conditional_dependency ::= (if condition then import_list
                                {elsif condition then import_list}
                                [else import_list])
@@ -591,8 +591,8 @@ dependent on every ``import`` in the ``import_list`` if the
    export                 ::= moded_item | function_result
    function_result        ::= function_designator'Result
 
-where 
-  
+where
+
   ``function_designator`` is the name of the function which is
   defining the ``aspect_specification`` enclosing the
   ``dependency_aspect``.
@@ -683,7 +683,7 @@ where
    suffice to show an appearance of V but more than one distinct
    subcomponent V may appear as an ``export``
 #. Each ``import`` shall appear at least once in a
-   ``dependency_relation``. 
+   ``dependency_relation``.
 #. An ``import`` shall not appear more than once in a single
    ``import_list`` other than appearing in a ``condition`` of a
    ``conditional_dependency``.  As different subcomponents of a
@@ -732,9 +732,9 @@ it used purely for static analyses purposes and is not executed.
                      C     =>+ Z,
                      D     =>+ null);
    -- The "+" sign attached to the arrow indicates self-dependency, that is
-   -- the final value of A depends on the initial value of A as well as the 
+   -- the final value of A depends on the initial value of A as well as the
    -- initial values of X and Y.
-   -- Similarly, the final value of B depends on the initial value of B 
+   -- Similarly, the final value of B depends on the initial value of B
    -- as well as the initial values of A, X and Y.
    -- The final value of C depends on the initial value of C and Z.
    -- The final value of D depends only on the initial value of D.
@@ -763,10 +763,10 @@ it used purely for static analyses purposes and is not executed.
    function F (X, Y : Integer) return Integer
    with Global  => G,
         Depends => (F'Result => (G, X, (if G then Y)));
-   -- Dependency aspects are only needed for a function to describe conditional 
+   -- Dependency aspects are only needed for a function to describe conditional
    -- dependencies; otherwise they can be directly determined from
    -- its parameters and globals.
-   -- In this example, the result of the function is dependent on G and X 
+   -- In this example, the result of the function is dependent on G and X
    -- but only on Y if G is True.
 
 

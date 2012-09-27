@@ -29,7 +29,7 @@ domains, but the restrictions may be applied individually using the
 place, possibly due to a particular profile being active, may be
 overridden locally using the same pragma.
 
-.. todo :: Should |SPARK| itself be a restriction?  It actually adds
+.. todo:: Should |SPARK| itself be a restriction?  It actually adds
   new features so I am not sure.  I am not entirely happy with the
   next paragraph, which is why I raise this question.  I think there
   should also be a command line switch or some way of stating that the
