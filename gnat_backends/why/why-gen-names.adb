@@ -72,7 +72,7 @@ package body Why.Gen.Names is
    File_Loc_Map : Loc_String_Maps.Map := Loc_String_Maps.Empty_Map;
 
    function Uint_To_Positive (U : Uint) return Positive;
-   --  Limited version of conversion that only works for 1 and 2
+   --  Limited version of conversion that only works for 1 to 4
 
    Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id :=
      (others => Why_Empty);
@@ -804,6 +804,10 @@ package body Why.Gen.Names is
          return 1;
       elsif U = Uint_2 then
          return 2;
+      elsif U = Uint_3 then
+         return 3;
+      elsif U = Uint_4 then
+         return 4;
       else
          raise Program_Error;
       end if;
