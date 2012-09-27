@@ -796,12 +796,12 @@ Subprogram Bodies
 
 
 Conformance Rules
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 No rules or restrictions considered yet.
 
 Mode Refinement
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 If a subprogram has a mode refinement (in a ``global_aspect``, a
 ``param_aspect`` or both) then the implementation of its body must
