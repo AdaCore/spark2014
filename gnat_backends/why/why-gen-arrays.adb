@@ -607,7 +607,7 @@ package body Why.Gen.Arrays is
       Dimension : Pos) return W_Expr_Id
    is
       Progs     : constant W_Expr_Array :=
-        Index & (1 => New_Prepared_Array_Access (Ty_Entity, Domain, Ar));
+        Index & (1 => Array_Convert_To_Base (Ty_Entity, Domain, Ar));
    begin
       return New_Simple_Array_Access
         (Ada_Node  => Ada_Node,
@@ -746,7 +746,7 @@ package body Why.Gen.Arrays is
    -- New_Prepared_Array_Access --
    -------------------------------
 
-   function New_Prepared_Array_Access
+   function Array_Convert_To_Base
      (Ty_Entity : Entity_Id;
       Domain    : EW_Domain;
       Ar        : W_Expr_Id) return W_Expr_Id
@@ -760,7 +760,7 @@ package body Why.Gen.Arrays is
                      S        => Full_Name (Ty_Entity),
                      W        => WNE_To_Array),
            Args   => (1 => +Ar));
-   end New_Prepared_Array_Access;
+   end Array_Convert_To_Base;
 
    -----------------------------
    -- New_Simple_Array_Access --
@@ -786,5 +786,26 @@ package body Why.Gen.Arrays is
          Domain   => Domain,
          Progs    => Args);
    end New_Simple_Array_Access;
+
+   ---------------------------
+   -- New_Simple_Array_Attr --
+   ---------------------------
+
+   function New_Simple_Array_Attr
+     (Attr      : Attribute_Id;
+      Ar        : W_Expr_Id;
+      Domain    : EW_Domain;
+      Dimension : Pos;
+      Argument  : Uint) return W_Expr_Id is
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Attr_To_Why_Name (A     => Attr,
+                               Dim   => Dimension,
+                               Count => Argument),
+           Args => (1 => Ar));
+   end New_Simple_Array_Attr;
 
 end Why.Gen.Arrays;

@@ -61,11 +61,15 @@ package Why.Gen.Arrays is
       Domain    : EW_Domain;
       Dimension : Pos;
       Args      : W_Expr_Array) return W_Expr_Id;
+   --  Generate an array access, assuming that the array (the first element of
+   --  Args) is already converted to the Why3 base type for arrays.
 
-   function New_Prepared_Array_Access
+   function Array_Convert_To_Base
      (Ty_Entity : Entity_Id;
       Domain    : EW_Domain;
       Ar        : W_Expr_Id) return W_Expr_Id;
+   --  "Prepare" an array access by converting the array in argument to its
+   --  Why3 base type.
 
    function New_Array_Attr
       (Attr      : Attribute_Id;
@@ -77,6 +81,15 @@ package Why.Gen.Arrays is
        with Pre =>
          (Attr in Attribute_First | Attribute_Last | Attribute_Length);
    --  Generate an expr that corresponds to Ar'Attr
+
+   function New_Simple_Array_Attr
+     (Attr      : Attribute_Id;
+      Ar        : W_Expr_Id;
+      Domain    : EW_Domain;
+      Dimension : Pos;
+      Argument  : Uint) return W_Expr_Id;
+   --  Same as New_Array_Attr, but expect the array already converted to base
+   --  type
 
    function New_Array_Update
       (Ada_Node  : Node_Id;

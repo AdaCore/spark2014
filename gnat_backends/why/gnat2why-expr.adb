@@ -1741,7 +1741,7 @@ package body Gnat2Why.Expr is
          --  Compute the call, guard and proposition for the axiom
 
          Call :=
-           New_Prepared_Array_Access
+           Array_Convert_To_Base
              (Ty_Entity => Etype (Expr),
               Domain    => EW_Term,
               Ar        =>
@@ -1894,7 +1894,6 @@ package body Gnat2Why.Expr is
          Params : Translation_Params) return W_Pred_Id
       is
          Typ     : constant Entity_Id := Type_Of_Node (Expr);
-         T_Name  : constant Entity_Id := Type_Of_Node (Typ);
          Num_Dim : constant Pos := Number_Dimensions (Typ);
          Ind_Arr : array (1 .. Num_Dim) of Node_Id;
          Binders : W_Identifier_Array (1 .. Positive (Num_Dim));
@@ -2100,12 +2099,12 @@ package body Gnat2Why.Expr is
                  (Value => Expr_Value (Low) + UI_From_Int (Offset));
 
             else
-               First := New_Array_Attr (Attr      => Attribute_First,
-                                        Ty_Entity => T_Name,
-                                        Ar        => Arr,
-                                        Domain    => EW_Term,
-                                        Dimension => Num_Dim,
-                                        Argument  => UI_From_Int (Dim));
+               First := New_Simple_Array_Attr
+                 (Attr      => Attribute_First,
+                  Ar        => Arr,
+                  Domain    => EW_Term,
+                  Dimension => Num_Dim,
+                  Argument  => UI_From_Int (Dim));
                Val := New_Binary_Op
                         (Left     => First,
                          Right    =>
