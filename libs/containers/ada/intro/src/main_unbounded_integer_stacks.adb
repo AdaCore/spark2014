@@ -2,7 +2,7 @@ with Unbounded_Integer_Stacks;  use Unbounded_Integer_Stacks;
 with Ada.Text_IO;               use Ada.Text_IO;
 
 procedure Main_Unbounded_Integer_Stacks is
-   S : Stack := Create (4);
+   S : Stack := Create;
    X : Integer;
 
    procedure Test_Pop_When_Empty (S : in out Stack);
@@ -29,8 +29,12 @@ begin
    pragma Assert (Is_Empty (S));
    Push (S, 2);
    Push (S, 3);
+   Put_Line (Item => "Stack.length before Fourth push"
+             & Integer'Image (S.Cont_Ptr'Length));
    Push (S, 4);
-
+   pragma Assert (4 = S.Cont_Ptr'Length);
+   Put_Line (Item => "Stack.length after Fifth push"
+             & Integer'Image (S.Cont_Ptr'Length));
    X := Pop (S);
    Put_Line (Item => "Second pop: " & Integer'Image (X));
    pragma Assert (X = 4);

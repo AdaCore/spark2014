@@ -1,23 +1,17 @@
 package body Unbounded_Integer_Stacks is
 
-   function Create (I : Positive := Chunk_Size) return Stack  is
-      output : Stack (I);
+   function Create return Stack  is
+      output : Stack (Chunk_Size);
    begin
       output.Cont_Ptr.all := (others => Default_Value);
       output.Index := 1;
       return output;
    end Create;
 
-   procedure Enlarge
-     (S           : in out Stack;
-      Delta_Size  : Positive := Chunk_Size) is
-
-      New_Size : Positive :=
-        S.Cont_Ptr'Length + Delta_Size;
-      New_Ptr : Content_Ref :=
-        new Content_Type (1 .. New_Size);
-      Old_Used_Elements  : Natural :=
-        S.Index - 1;
+   procedure Enlarge (S : in out Stack) is
+      New_Size : Positive := S.Cont_Ptr'Length + Chunk_Size;
+      New_Ptr : Content_Ref := new Content_Type (1 .. New_Size);
+      Old_Used_Elements  : Natural := S.Index - 1;
    begin
       New_Ptr (1 .. Old_Used_Elements) := S.Cont_Ptr (1 .. Old_Used_Elements);
       New_Ptr (S.Index .. New_Size) := (others => Default_Value);
@@ -36,10 +30,10 @@ package body Unbounded_Integer_Stacks is
    function Is_Full (S : Stack) return Boolean is
    begin
       if S.Index = S.Cont_Ptr'Length + 1 then
-
-         --  Cause index points to the first free empty cell
-
          return True;
+
+         --  Because index points to the first free empty cell
+
       else
          return False;
       end if;
@@ -63,7 +57,7 @@ package body Unbounded_Integer_Stacks is
       X := S.Cont_Ptr (New_Index);
       S.Cont_Ptr (New_Index) := Default_Value;
 
-      --  cleaning the occupied slot
+      --  cleaning the used slot
 
       S.Index := New_Index;
    end Pop;
@@ -71,7 +65,11 @@ package body Unbounded_Integer_Stacks is
    function Push (S : Stack; X : Integer) return Stack is
       output : Stack := S;
    begin
-      Push (output, X);
+      if Is_Full (output) then
+         Enlarge (output);
+      end if;
+      output.Cont_Ptr (output.Index) := X;
+      output.Index := output.Index + 1;
       return output;
    end Push;
 

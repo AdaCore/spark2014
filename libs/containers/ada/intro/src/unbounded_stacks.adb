@@ -3,11 +3,8 @@ with Ada.Exceptions;  use Ada.Exceptions;
 
 package body Unbounded_Stacks is
 
-   function Create
-     (I  : Positive := Chunk_Size;
-      Default : Item_Type) return Stack  is
-
-      output : Stack (I);
+   function Create (Default : Item_Type) return Stack  is
+      output : Stack (Chunk_Size);
    begin
       Default_Value := Default;
       output.Cont_Ptr.all := (others => Default_Value);
@@ -80,6 +77,13 @@ package body Unbounded_Stacks is
       output : Stack := S;
    begin
       Push (output, X);
+
+      if Is_Full (output) then
+         Enlarge (output);
+      end if;
+      output.Cont_Ptr (S.Index) := X;
+      output.Index := S.Index + 1;
+
       return output;
    end Push;
 

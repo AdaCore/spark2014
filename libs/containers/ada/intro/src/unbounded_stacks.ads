@@ -5,7 +5,7 @@ package Unbounded_Stacks is
 
    --  A stack package that holds integers
 
-   Chunk_Size : constant Positive := 100;
+   Chunk_Size : constant Positive := 2;
 
    --  The number of elements in a stack
 
@@ -33,9 +33,7 @@ package Unbounded_Stacks is
 
    type Stack_Ptr is access all Stack;
 
-   function Create
-     (I : Positive := Chunk_Size;
-      Default : Item_Type) return Stack;
+   function Create (Default : Item_Type) return Stack;
 
    --  Create stack with I elements
 
@@ -43,23 +41,30 @@ package Unbounded_Stacks is
 
    function Is_Full (S : Stack) return Boolean;
 
-   function Peek (S : Stack) return Item_Type;
+   function Peek (S : Stack) return Item_Type with
+     Pre => not Is_Empty (S);
 
    --  Returns  the topmost element of the stack without removing it
 
-   function Pop (S : in out Stack) return Item_Type;
+   function Pop (S : in out Stack) return Item_Type with
+     Pre  => not Is_Empty (S),
+     Post => not Is_Full (S)
+     and then Pop'Result = Peek (S)'Old;
 
    --  Same as the above procedure, but return the topmost element,
    --  Instead of having an out parameter
    --  Note that only in Ada 2012 functions can have in out parameters.
 
-   procedure Pop (S : in out Stack; X : out Item_Type)
-   with Pre => (not Is_Empty (S)),
-     Post => (not Is_Full (S));
+   procedure Pop (S : in out Stack; X : out Item_Type) with
+     Pre  => not Is_Empty (S),
+     Post => not Is_Full (S)
+               and then Peek (S)'Old = X;
 
-   --  remove the topmost element from the stack, and return it in X
+   --  Remove the topmost element from the stack, and return it in X
 
-   function Push (S : Stack; X : Item_Type) return Stack;
+   function Push (S : Stack; X : Item_Type) return Stack with
+     Post => not Is_Empty (Push'Result)
+     and then Peek (Push'Result) = X;
 
    --  Leave the current stack alone and
    --  Returns  a new stack with the new element on top
@@ -67,8 +72,9 @@ package Unbounded_Stacks is
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
    procedure Push (S : in out Stack; X : Item_Type)
-   with Pre => (not Is_Full (S)),
-     Post => ((not Is_Empty (S)) and (Peek (S) = X));
+   with Post => ((not Is_Empty (S))
+   --and (Push (S'Old, X) = S)
+   );
 
    --  Push a new element on the stack
 private

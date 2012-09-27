@@ -1,71 +1,77 @@
-with Ada.Assertions;  use Ada.Assertions;
-with Ada.Exceptions;  use Ada.Exceptions;
-
 package body Indefinite_Stacks is
 
-   function Create (Default : Item_Type) return Stack_Ptr  is
-      output : Stack'(Item_Type);
+   function Create (Default : Content_Ref) return Stack_Ptr  is
+      output : aliased Stack_Ptr := new Stack'(Default, null, null);
    begin
-      Stack.Next := Null;
       return output;
    end Create;
 
-   function Is_Empty (S : Stack) return Boolean is
+   function Is_Empty (S : Stack_Ptr) return Boolean is
    begin
-      if S.Next = Null then
+      if S = null then
+         return True;
+      elsif  S.Previous = null
+        and S.Next = null
+        and S.Element = null then
          return True;
       else
          return False;
       end if;
    end Is_Empty;
 
-   procedure Push (S : in out Stack_Ptr; X : Item_Type) is
-      X_Ptr : Content_Ref := Item_Type'Access;
+   function Peek (S : Stack_Ptr) return Content_Ref is
+      output : Content_Ref := S.Element;
    begin
-      S := new Stack'(S,X_Ptr);
-   end Push;
-
-   --  Push a new element on the stack
-
-   procedure Pop (S : in out Stack_Ptr; X : out Item_Type)  is
-   begin
-      X := S.Object;
-
-      --  cleaning the occupied slot
-      --      S.Index := New_Index;
-   end Pop;
-
-   function Pop (S : in out Stack_Ptr) return Item_Type is
-      output                       : Item_Type := Default_Value;
-   begin
-      Pop (S, output);
-      return output;
-   end Pop;
-
-   function Peek (S : Stack_Ptr) return Item_Type is
-      output                       : Item_Type := Default_Value;
-   begin
-      if not Is_Empty (S) then
-         output := S.Object;
-      end if;
       return output;
    end Peek;
 
-   function Push (S : Stack_Ptr; X : Item_Type) return Stack is
+   function Pop (S : in out Stack_Ptr) return Content_Ref is
+      output : Content_Ref := S.Element;
+      T : Stack_Ptr := S.Previous;
+   begin
+      S.Previous := null;  --  not required
+      S.Element := null; --  not required
+      Free_Stack (S.Element);
+      S := T;
+
+      --  Cleaning the used slot
+
+      if S /= null then
+         S.Next := null;
+      end if;
+      return output;
+   end Pop;
+
+   procedure Pop (S : in out Stack_Ptr; X : out Content_Ref)  is
+      T : Stack_Ptr := S.Previous;
+   begin
+      X := S.Element;
+      S.Previous := null;  --  Not required
+      S.Element := null; --  Not required
+      Free_Stack (S.Element);
+
+      --  Cleaning the used slot
+
+      S := T;
+      if S /= null then
+         S.Next := null;
+      end if;
+   end Pop;
+
+   function Push (S : Stack_Ptr; X : Content_Ref) return Stack_Ptr is
       output : Stack_Ptr := S;
    begin
       Push (output, X);
       return output;
    end Push;
 
-   procedure test_Pop_When_Empty (S : in out Stack) is
-      X                            : Item_Type;
+   procedure Push (S : in out Stack_Ptr; X : Content_Ref) is
+      T : Stack_Ptr := new Stack'(Element => X, Previous => S, Next => null);
    begin
-      X := Pop (S);
-      Put_Line ("Error : Pop on empty stack does not raise exception");
-   exception
-      when others =>
-         Put_Line ("Ok: Pop on empty rstack raises exception");
-   end test_Pop_When_Empty;
+      S.Next := T;
+      S := T;
+   end Push;
+
+   --  Push a new element on the stack FIFO
 
 end Indefinite_Stacks;

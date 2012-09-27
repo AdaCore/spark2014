@@ -2,7 +2,7 @@ package Unbounded_Integer_Stacks is
 
    --  A stack package that holds integers
 
-   Chunk_Size : constant Positive := 1000;
+   Chunk_Size : constant Positive := 2;
 
    --  The number of elements in a stack
 
@@ -34,13 +34,13 @@ package Unbounded_Integer_Stacks is
    --  Function Create return Stack;
    --  Create stack with MaxSize elements
 
-   function Create (I : Positive := Chunk_Size) return Stack;
+   function Create return Stack;
 
    --  Create Stack with I elements
 
-   procedure Enlarge (S : in out Stack; Delta_Size : Positive := Chunk_Size)
-     with Pre => (Is_Full (S)),
-     Post => (not Is_Full (S));
+   procedure Enlarge (S : in out Stack)
+   with Pre => (Is_Full (S)),
+   Post => (not Is_Full (S));
 
    --  Enlarge the stack
    --  If no Delta_Size is passed it will enlarge stack by Chunk_Size
@@ -50,32 +50,38 @@ package Unbounded_Integer_Stacks is
    function Is_Full (S : Stack) return Boolean;
 
    function Peek (S : Stack) return Integer
-     with Pre => not Is_Empty (S);
+   with Pre => not Is_Empty (S);
 
    --  Returns  the topmost element of the stack without removing it
 
-   function Pop (S : in out Stack) return Integer;
+   function Pop (S : in out Stack) return Integer with
+     Pre  => not Is_Empty (S),
+   Post => not Is_Full (S)
+     and then Pop'Result = Peek (S)'Old;
 
    --  Same as the above procedure, but return the topmost element,
    --  Instead of having an out parameter
    --  Note that only in Ada 2012 functions can have in out parameters.
 
-   procedure Pop (S : in out Stack; X : out Integer)
-     with Pre => (not Is_Empty (S)),
-     Post => (not Is_Full (S));
+   procedure Pop (S : in out Stack; X : out Integer) with
+     Pre  => not Is_Empty (S),
+   Post => not Is_Full (S)
+     and then X = Peek (S)'Old;
 
    --  Remove the topmost element from the stack, and return it in X
 
-   function Push (S : Stack; X : Integer) return Stack;
+   function Push (S : Stack; X : Integer) return Stack with
+     Post => not Is_Empty (Push'Result)
+     and then Peek (Push'Result) = X;
 
    --  Leave the current stack alone and
    --  Returns  a new stack with the new element on top
    --  Note that "S" is an "in" parameter and is not modified. So Push
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
-   procedure Push (S : in out Stack; X : Integer)
-     with Pre => (not Is_Full (S)),
-     Post => ((not Is_Empty (S)) and (Peek (S) = X));
+   procedure Push (S : in out Stack; X : Integer) with
+     Post => not Is_Empty (S);
+   --  and then Push (S'Old, X) = S;
 
    --  Push a new element on the stack
 
