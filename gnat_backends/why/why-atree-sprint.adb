@@ -758,14 +758,20 @@ package body Why.Atree.Sprint is
    is
       Name : constant W_Identifier_Id := Get_Name (Node);
       Args : constant W_Expr_OList := Get_Args (Node);
+
    begin
+      --  The parentheses should only be needed when translating a term or
+      --  predicate, but we use term nodes inside programs as a way to disable
+      --  locally checks (say, to call the conversion function without range
+      --  checks), so the argument of a term might be a program, which then
+      --  needs being parenthesized.
+
+      P (O, "(");
       case Get_Domain (+Node) is
          when EW_Term | EW_Pred =>
-            P (O, "(");
             Traverse (State, +Name);
             P (O, " ");
             Print_List (State, +Args, " ");
-            P (O, ")");
 
          when EW_Prog =>
             Traverse (State, +Name);
@@ -776,6 +782,7 @@ package body Why.Atree.Sprint is
                P (O, ")");
             end if;
       end case;
+      P (O, ")");
 
       State.Control := Abandon_Children;
    end Call_Pre_Op;
