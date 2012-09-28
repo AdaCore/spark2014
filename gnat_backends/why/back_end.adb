@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -83,13 +83,13 @@ package body Back_End is
    -----------------------------
 
    procedure Register_Back_End_Types (Call_Back : Register_Type_Proc) is
-      Float  : C_String := (others => ASCII.NUL);
+      Str_Float  : C_String := (others => ASCII.NUL);
       Double : C_String := (others => ASCII.NUL);
 
    begin
-      Float (Float'First .. Float'First + 4) := "float";
+      Str_Float (Str_Float'First .. Str_Float'First + 4) := "float";
       Call_Back
-        (C_Name => Float, Digs => 6, Complex => False, Count  => 0,
+        (C_Name => Str_Float, Digs => 6, Complex => False, Count  => 0,
          Float_Rep => IEEE_Binary, Size => 32, Alignment => 32);
 
       Double (Double'First .. Double'First + 5) := "double";
