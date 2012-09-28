@@ -83,14 +83,14 @@ procedure Gnatprove is
    --  Generate the Alfa report.
 
    procedure Generate_Project_File
-      (Filename : String;
+      (Filename     : String;
        Project_Name : String;
-       Source_Dir : String);
-   --  Generate project file at given place, with given name and source dir.
+       Source_Files : File_Array_Access);
+   --  Generate project file at given place, with given name and source files.
 
-   function Generate_Why_Project_File (Source_Dir : String)
-       return String;
-   --  Generate project file with the given source dir. Write the file to disk
+   function Generate_Why_Project_File (Proj : Project_Type)
+                                       return String;
+   --  Generate project file for Why3 phase. Write the file to disk
    --  and return the file name.
 
    procedure Generate_Why3_Conf_File
@@ -204,7 +204,7 @@ procedure Gnatprove is
       Obj_Dir       : constant String :=
          Proj_Type.Object_Dir.Display_Full_Name;
       Why_Proj_File : constant String :=
-         Generate_Why_Project_File (Obj_Dir);
+         Generate_Why_Project_File (Proj_Type);
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
       Generate_Why3_Conf_File (Obj_Dir, Obj_Path);
@@ -410,17 +410,25 @@ procedure Gnatprove is
    procedure Generate_Project_File
      (Filename     : String;
       Project_Name : String;
-      Source_Dir   : String)
+      Source_Files : File_Array_Access)
    is
-      File : File_Type;
+      File      : File_Type;
+      Follow_Up : Boolean := False;
    begin
       Create (File, Out_File, Filename);
       Put (File, "project ");
       Put (File, Project_Name);
       Put_Line (File, " is");
-      Put (File, "for Source_Dirs use (""");
-      Put (File, Source_Dir);
-      Put_Line (File, """);");
+      Put_Line (File, "for Source_Files use (");
+
+      for F of Source_Files.all loop
+         if Follow_Up then
+            Put_Line (File, ",");
+         end if;
+         Follow_Up := True;
+         Put (File, "   """ & F.Display_Base_Name & """");
+      end loop;
+      Put_Line (File, ");");
       Put (File, "end ");
       Put (File, Project_Name);
       Put_Line (File, ";");
@@ -431,12 +439,14 @@ procedure Gnatprove is
    -- Generate_Why_Project_File --
    -------------------------------
 
-   function Generate_Why_Project_File (Source_Dir : String)
-      return String
+   function Generate_Why_Project_File (Proj : Project_Type)
+                                       return String
    is
       Why_File_Name : constant String := "why.gpr";
    begin
-      Generate_Project_File (Why_File_Name, "Why", Source_Dir);
+      Generate_Project_File (Why_File_Name,
+                             "Why",
+                             Proj.Library_Files (ALI_Ext => "__package.mlw"));
       return Why_File_Name;
    end Generate_Why_Project_File;
 
@@ -603,7 +613,7 @@ begin
 
    declare
       Obj_Path : constant File_Array :=
-         Object_Path (Proj_Type, Recursive => True);
+        Object_Path (Proj_Type, Recursive => True);
    begin
       Execute_Step (GS_ALI, Project_File.all, Tree, Obj_Path);
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree, Obj_Path);
