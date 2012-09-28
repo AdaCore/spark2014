@@ -172,6 +172,9 @@ package Gnat2Why.Nodes is
    --  check whether the E_Loop_Parameter in argument comes from a quantifier
    --  or not
 
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
+   with Pre => (Nkind (N) = N_Pragma);
+
    function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
      (if Instantiation_Location (Loc) /= No_Location then
         Instantiation_Location (Loc)

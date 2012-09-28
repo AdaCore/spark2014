@@ -218,7 +218,15 @@ package body Gnat2Why.Expr is
    --  Transform a declaration. Return a program that takes into account the
    --  dynamic semantics of the declaration (checks and assumptions).
 
-   function Transform_Statement (Stmt : Node_Id) return W_Prog_Id;
+   function Transform_Statement
+     (Stmt           : Node_Id;
+      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id;
+   --  Transform the Ada statement into a Why program expression.
+   --  If Assert_And_Cut is not Why_Empty, the statement was a "pragma
+   --  Assert_And_Cut". In this case, Assert_And_Cut contains the
+   --  Why3 predicate equivalent of the assertion expression, and
+   --  Transform_Statement contains the check program expression
+   --  that corresponds to the assertion expression.
 
    function Transform_Aggregate
      (Params : Translation_Params;
@@ -4291,8 +4299,16 @@ package body Gnat2Why.Expr is
    -- Transform_Statement --
    -------------------------
 
-   function Transform_Statement (Stmt : Node_Id) return W_Prog_Id is
+   function Transform_Statement
+     (Stmt : Node_Id;
+      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id
+   is
    begin
+
+      --  Make sure that Assert_And_Cut is initialized
+
+      Assert_And_Cut := Why_Empty;
+
       case Nkind (Stmt) is
          when N_Label | N_Null_Statement =>
             return New_Void (Stmt);
@@ -4454,7 +4470,14 @@ package body Gnat2Why.Expr is
                      Pred : constant W_Pred_Id :=
                         Transform_Pragma_Check (Stmt, Check_Expr);
                   begin
-                     if Is_False_Boolean (+Pred) then
+                     if Is_Pragma_Assert_And_Cut (Stmt) then
+                        Assert_And_Cut := Pred;
+                        if Check_Expr /= Why_Empty then
+                           return Check_Expr;
+                        else
+                           return New_Void (Stmt);
+                        end if;
+                     elsif Is_False_Boolean (+Pred) then
                         return
                           +New_VC_Expr
                             (Ada_Node => Stmt,
@@ -4508,11 +4531,25 @@ package body Gnat2Why.Expr is
                              First (Stmts));
    begin
       while Present (Cur_Stmt) loop
-         Result :=
-           Sequence (Result,
-                     New_Label (Labels => (1 => New_Located_Label (Cur_Stmt)),
-                                Def    => +Transform_Statement (Cur_Stmt)));
-         Next (Cur_Stmt);
+         declare
+            Cut_Assertion : W_Pred_Id;
+            Stmt          : constant W_Prog_Id :=
+              Transform_Statement (Cur_Stmt, Cut_Assertion);
+         begin
+            Result :=
+              Sequence
+                (Result,
+                 New_Label (Labels => (1 => New_Located_Label (Cur_Stmt)),
+                            Def    => +Stmt));
+            if Cut_Assertion /= Why_Empty then
+               Result :=
+                 New_Located_Abstract
+                   (Ada_Node => Cur_Stmt,
+                    Expr     => +Result,
+                    Post     => Cut_Assertion);
+            end if;
+            Next (Cur_Stmt);
+         end;
       end loop;
       return Result;
    end Transform_Statements;

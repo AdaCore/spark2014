@@ -70,6 +70,12 @@ package Why.Gen.Progs is
        Pred     : W_Pred_Id) return W_Prog_Id;
    --  Build a named assert (in programs) of a predicate
 
+   function New_Located_Abstract
+     (Ada_Node : Node_Id;
+      Expr     : W_Prog_Id;
+      Post     : W_Pred_Id) return W_Prog_Id;
+   --  build a located abstract Why3 program expression.
+
    function New_Simpl_Any_Prog
      (T    : W_Primitive_Type_Id;
       Pred : W_Pred_OId := Why_Empty) return W_Prog_Id;

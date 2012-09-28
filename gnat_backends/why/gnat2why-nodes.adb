@@ -350,6 +350,17 @@ package body Gnat2Why.Nodes is
         In_Main_Unit_Body (Real_Node);
    end Is_In_Current_Unit;
 
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
+   is
+      Orig : constant Node_Id := Original_Node (N);
+   begin
+      return
+        (Present (Orig) and then
+         Nkind (Orig) = N_Pragma and then
+         Get_Name_String (Chars (Pragma_Identifier (Orig))) =
+           "assert_and_cut");
+   end Is_Pragma_Assert_And_Cut;
+
    ------------------------------
    -- Is_Quantified_Loop_Param --
    ------------------------------

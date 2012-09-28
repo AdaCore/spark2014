@@ -159,6 +159,28 @@ package body Why.Gen.Progs is
       return New_Abstract_Expr (Expr => Call, Post => True_Pred);
    end New_Ignore;
 
+   --------------------------
+   -- New_Located_Abstract --
+   --------------------------
+
+   function New_Located_Abstract
+     (Ada_Node  : Node_Id;
+      Expr : W_Prog_Id;
+      Post : W_Pred_Id) return W_Prog_Id
+   is
+   begin
+      return
+        New_Abstract_Expr
+          (Ada_Node => Ada_Node,
+           Expr     => Expr,
+           Post     =>
+           +New_VC_Expr
+             (Ada_Node => Ada_Node,
+              Expr     => +Post,
+              Reason   => VC_Assert,
+              Domain   => EW_Pred));
+   end New_Located_Abstract;
+
    ------------------------
    -- New_Located_Assert --
    ------------------------
