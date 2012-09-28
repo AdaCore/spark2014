@@ -17,7 +17,7 @@ procedure Main_Unbounded_Integer_Stacks is
       Put_Line ("Error: Pop on empty stack does not raise exception");
    exception
       when others =>
-         Put_Line ("Ok: Pop on empty rstack raises exception");
+         Put_Line ("Ok: Pop on empty Integer stack raises exception");
    end Test_Pop_When_Empty;
 begin
    pragma Assert (Is_Empty (S));

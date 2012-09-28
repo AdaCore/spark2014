@@ -64,5 +64,5 @@ begin
       pragma Assert (Y.Id = 4);
       pragma Assert (Is_Empty (T));
    end;
-   Put_Line ("This is the end, Main_Stacks");
+   Put_Line ("This is the end, Main_Indefinite_Stacks");
 end Main_Indefinite_Stacks;

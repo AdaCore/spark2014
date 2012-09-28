@@ -32,9 +32,6 @@ package Unbounded_Integer_Stacks is
 
    type Stack_Ptr is access all Stack;
 
-   --  Function Create return Stack;
-   --  Create stack with MaxSize elements
-
    function Create return Stack;
 
    --  Create Stack with I elements
@@ -59,8 +56,8 @@ package Unbounded_Integer_Stacks is
 
    procedure Pop (S : in out Stack; X : out Integer) with
      Pre  => not Is_Empty (S),
-   Post => not Is_Full (S)
-     and then X = Peek (S)'Old;
+     Post => not Is_Full (S)
+               and then Peek (S)'Old = X;
 
    --  Remove the topmost element from the stack, and return it in X
 
@@ -74,16 +71,14 @@ package Unbounded_Integer_Stacks is
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
    procedure Push (S : in out Stack; X : Integer) with
-     Post => not Is_Empty (S)
-   --  ;
-     and then Push (S'Old, X) = S;
+     Post => not Is_Empty (S);
+   --  and then Push (S'Old, X) = S;
 
    --  Push a new element on the stack
 private
 
-   procedure Enlarge (S : in out Stack)
-   with Pre => (Is_Full (S)),
-   Post => (not Is_Full (S));
+   procedure Enlarge (S : in out Stack) with
+     Post => (not Is_Full (S));
 
    --  Enlarge the stack
 

@@ -16,7 +16,7 @@ procedure Main_Unbounded_Stacks is
       Put_Line ("Error: Pop on empty stack does not raise exception");
    exception
       when others =>
-         Put_Line ("Ok: Pop on empty rstack raises exception");
+         Put_Line ("Ok: Pop on empty stack raises exception");
 
          --  This should be raised when the stack is empty
 
@@ -39,7 +39,9 @@ begin
 
    Push (S, 2);
    Push (S, 3);
+   pragma Assert (2 = S.Cont_Ptr'Length);
    Push (S, 4);
+   pragma Assert (4 = S.Cont_Ptr'Length);
    X := Pop (S);
    Put_Line (Item => "Second Integer pop: " & Integer'Image (X));
    pragma Assert (X = 4);
@@ -82,7 +84,9 @@ begin
       pragma Assert (Is_Empty (T));
       Push (T, 2.0);
       Push (T, 3.0);
+      pragma Assert (2 = T.Cont_Ptr'Length);
       Push (T, 4.0);
+      pragma Assert (4 = T.Cont_Ptr'Length);
       U := Pop (T);
       Put_Line (Item => "Second  Float pop : " & Float'Image (U));
       pragma Assert (U = 4.0);
@@ -95,5 +99,5 @@ begin
       pragma Assert (Is_Empty (T));
       test_Pop_When_Empty (T);
    end;
-
+   Put_Line ("This is the end, Main_Unbounded_Stacks");
 end Main_Unbounded_Stacks;

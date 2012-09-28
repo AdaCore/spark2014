@@ -12,19 +12,14 @@ package body Unbounded_Stacks is
       return output;
    end Create;
 
-   procedure Enlarge
-     (S          : in out Stack;
-      Delta_Size : Positive := Chunk_Size) is
-
-      New_Size : Positive :=
-        S.Cont_Ptr'Length + Delta_Size;
-      New_Ptr : Content_Ref :=
-        new Content_Type (1 .. New_Size);
-      Old_Used_Elements : Natural :=
-        S.Index - 1;
+   procedure Enlarge (S : in out Stack) is
+      New_Size : Positive := S.Cont_Ptr'Length + Chunk_Size;
+      New_Ptr : Content_Ref := new Content_Type (1 .. New_Size);
+      Old_Used_Elements : Natural := S.Index - 1;
    begin
       New_Ptr (1 .. Old_Used_Elements) := S.Cont_Ptr (1 .. Old_Used_Elements);
       New_Ptr (S.Index .. New_Size) := (others => Default_Value);
+      Free_Content (S.Cont_Ptr);
       S.Cont_Ptr := New_Ptr;
    end Enlarge;
 

@@ -1,3 +1,4 @@
+with Ada.Unchecked_Deallocation;
 generic
    type Item_Type is private;
 
@@ -71,17 +72,20 @@ package Unbounded_Stacks is
    --  Note that "S" is an "in" parameter and is not modified. So Push
    --  Make a copy of S, modify the copy, and then return that modified copy.
 
-   procedure Push (S : in out Stack; X : Item_Type)
-   with Post => ((not Is_Empty (S))
-   --and (Push (S'Old, X) = S)
+   procedure Push (S : in out Stack; X : Item_Type) with
+     Post => ((not Is_Empty (S))
+   --  and (Push (S'Old, X) = S)
    );
 
    --  Push a new element on the stack
 private
 
-   procedure Enlarge
-     (S            : in out Stack;
-      Delta_Size   : Positive := Chunk_Size)
-   with  Post => (not Is_Full (S));
+   procedure Enlarge (S : in out Stack) with
+   Post => (not Is_Full (S));
 
+   --  Enlarge the stack
+
+   procedure Free_Content is new Ada.Unchecked_Deallocation
+     (Object => Content_Type,
+      Name => Content_Ref);
 end Unbounded_Stacks;
