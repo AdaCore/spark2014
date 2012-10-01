@@ -26,7 +26,8 @@ SPARK 2014 LRM
    the-standard-library
    restrictions-and-profiles
    extended-legality
-
+   mapping-spec
+   todo-summary
 
 Indices and tables
 ==================
