@@ -74,7 +74,7 @@ package Why.Ids is
    --  that this node has a kind that corresponds to the Id subtype;
    --  if it is an option, it can also be empty.
    --
-   --  Two these two properties corresponds three 3 classes of ids:
+   --  Two these two properties corresponds three 4 classes of ids:
    --  * opaque ids: may not be kind-valid; no builders, accessors or mutators;
    --  * unchecked ids:  may not be valid, but are kind-valid; builders with no
    --    params; mutators and accessors;
@@ -84,14 +84,14 @@ package Why.Ids is
    --    conversion ("+") to convert to compatible classes, and builders
    --    returning class-wide ids.
    --
-   --  Opaque ids may only be used in Why.Atree; this package cannot depend
-   --  use regular ids without introducing a circular dependancy. Unchecked
-   --  ids may be practical for building a node before its fields nodes are
-   --  known; but they are only available for mutable nodes. As most of the
-   --  nodes are constant, "regular" ids are the most common ones in gnat2why.
+   --  Opaque ids may only be used in Why.Atree; this package cannot use
+   --  regular ids without introducing a circular dependancy. Unchecked ids may
+   --  be practical for building a node before its fields nodes are known; but
+   --  they are only available for mutable nodes. As most of the nodes are
+   --  constant, "regular" ids are the most common ones in gnat2why.
    --
-   --  This package only defines valid and regular ids; other ids
-   --  are in Why.Unchecked_Ids and Why.Opaque_Ids.
+   --  This package only defines valid and regular ids; other ids are in
+   --  Why.Unchecked_Ids and Why.Opaque_Ids.
 
    _@Declare_Node_Ids@_
 

@@ -308,6 +308,8 @@ package body Gnat2Why.Expr is
    procedure Transform_String_Literal
      (Params : Translation_Params;
       N      : Node_Id);
+   --  Create an uninterpreted logic function with no parameters that returns a
+   --  string value corresponding to the string literal.
 
    function Transform_Record_Component_Associations
      (Domain      : EW_Domain;
@@ -1838,9 +1840,9 @@ package body Gnat2Why.Expr is
                  (if Nkind (Expr_Or_Association) =
                     N_Component_Association
                   then
-                  Expression (Expr_Or_Association)
+                    Expression (Expr_Or_Association)
                   else
-                  Expr_Or_Association);
+                    Expr_Or_Association);
 
                if Dim < Num_Dim then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
@@ -4554,6 +4556,10 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Statements;
 
+   ------------------------------
+   -- Transform_String_Literal --
+   ------------------------------
+
    procedure Transform_String_Literal
      (Params : Translation_Params;
       N      : Node_Id)
@@ -4569,6 +4575,7 @@ package body Gnat2Why.Expr is
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Why_Empty;
       end if;
+
       Open_Theory (Decl_File, Name);
       Emit
         (Decl_File.Cur_Theory,
@@ -4578,6 +4585,7 @@ package body Gnat2Why.Expr is
             Binders     => (1 .. 0 => <>),
             Return_Type => +Why_Type));
       Close_Theory (Decl_File, Filter_Entity => N);
+
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;
       end if;
