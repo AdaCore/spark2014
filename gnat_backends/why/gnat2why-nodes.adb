@@ -176,13 +176,13 @@ package body Gnat2Why.Nodes is
    function Get_Range (N : Node_Id) return Node_Id is
    begin
       case Nkind (N) is
-         when N_Range
-           | N_Real_Range_Specification
-           | N_Signed_Integer_Type_Definition
-           | N_Modular_Type_Definition
-           | N_Floating_Point_Definition
-           | N_Ordinary_Fixed_Point_Definition
-           | N_Decimal_Fixed_Point_Definition =>
+         when N_Range                           |
+              N_Real_Range_Specification        |
+              N_Signed_Integer_Type_Definition  |
+              N_Modular_Type_Definition         |
+              N_Floating_Point_Definition       |
+              N_Ordinary_Fixed_Point_Definition |
+              N_Decimal_Fixed_Point_Definition  =>
             return N;
 
          when N_Subtype_Indication =>
@@ -201,7 +201,6 @@ package body Gnat2Why.Nodes is
 
                when others =>
                   raise Program_Error;
-
             end case;
 
          when others =>

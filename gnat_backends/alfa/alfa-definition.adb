@@ -779,6 +779,10 @@ package body Alfa.Definition is
 
          when N_Membership_Test =>
             pragma Assert (No (Alternatives (N)));
+            if Is_Array_Type (Etype (Left_Opnd (N))) then
+               Mark_Violation
+                 ("membership on array type", N, NYI_Array_Operation);
+            end if;
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
 
