@@ -1,3 +1,7 @@
+.. raw:: latex
+
+   \appendix
+
 Restrictions and Profiles
 =========================
 
