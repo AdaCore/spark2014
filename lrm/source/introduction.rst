@@ -5,7 +5,7 @@ Introduction
 document describes the language features of |SPARK|, that either
 restrict or extend those of Ada 2012.
 
-This introduction will mention the design goals of |SPARK|.
+.. todo:: This introduction will mention the design goals of |SPARK|.
 
 Language Subset
 ---------------
