@@ -41,13 +41,20 @@ package Gnat2Why.Driver is
    type Translation_Phase is (Translation,
                               Generate_VCs_For_Pre,
                               Generate_VCs_For_Post,
+                              Generate_VCs_For_Assert,
                               Generate_VCs_For_Body,
                               Generate_Contract_For_Body);
 
    subtype Generate_VCs is Translation_Phase range
      Generate_VCs_For_Pre ..
      --  Generate_VCs_For_Post
+     --  Generate_VCs_For_Assert
      Generate_VCs_For_Body;
+
+   subtype Generate_VCs_For_Assertion is Translation_Phase range
+     Generate_VCs_For_Pre ..
+     --  Generate_VCs_For_Post
+     Generate_VCs_For_Assert;
 
    subtype Generate_For_Body is Translation_Phase range
      Generate_VCs_For_Body ..
@@ -78,6 +85,17 @@ package Gnat2Why.Driver is
                           Gen_Image   => False,
                           Ref_Allowed => True,
                           Name_Map    => Ada_Ent_To_Why.Empty_Map));
+
+   function Assert_Params return Translation_Params is
+     (Translation_Params'(File        => Why_Files (WF_Main).File,
+                          Theory      => Why_Files (WF_Main).Cur_Theory,
+                          Phase       => Generate_VCs_For_Assert,
+                          Gen_Image   => False,
+                          Ref_Allowed => True,
+                          Name_Map    => Ada_Ent_To_Why.Empty_Map));
+   --  Set of parameters for the transformation of an Ada assertion into a Why3
+   --  program that checks the absence of run-time errors and checks that the
+   --  assertion holds.
 
    function Term_Params return Translation_Params is
      (Translation_Params'(File        => Why_Files (WF_Main).File,

@@ -39,6 +39,7 @@ with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with Stand;                 use Stand;
+with Opt;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
 with VC_Kinds;              use VC_Kinds;
@@ -3818,6 +3819,25 @@ package body Gnat2Why.Expr is
                       Domain => Domain);
       end if;
 
+      --  If overflow checks are globally eliminated in assertions, we don't
+      --  generate code in Why3 to check that the intermediate values remain
+      --  within the bounds of the underlying base type, as all intermediate
+      --  computations will actually happen without overflows. Note that
+      --  the overflow mode might be locally reverted to something else than
+      --  ELIMINATED, but we will take this into account when changing this
+      --  code to rely instead on frontend-inserted flags for deciding when
+      --  to perform a check or not. So this is only a workaround for now,
+      --  to avoid generating VCs for overflows when the user passed a switch
+      --  or used a global configuration pragma to eliminate overflows in
+      --  assertions.
+
+      if Params.Phase in Generate_VCs_For_Assertion then
+         Overflow_Check_Needed :=
+           Overflow_Check_Needed
+             and then Opt.Suppress_Options.Overflow_Checks_Assertions
+                        /= Eliminated;
+      end if;
+
       declare
          Overflow_Type : constant W_Base_Type_Id :=
                            (if Overflow_Check_Needed then
@@ -3966,7 +3986,7 @@ package body Gnat2Why.Expr is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
       Arg2 : constant Node_Id := Next (Arg1);
       Expr : constant Node_Id := Expression (Arg2);
-      Params : Translation_Params := Body_Params;
+      Params : Translation_Params := Assert_Params;
    begin
 
       --  Pragma Check generated for Pre/Postconditions are
