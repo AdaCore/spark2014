@@ -122,18 +122,26 @@ Integration in GPS
 
 GNATprove can be run from GPS. There is a menu ``Prove`` with the following
 entries:
-   * Prove All:            This runs GNATprove on all files in the project.
-   * Prove Root Project:   This runs GNATprove on the entire project.
-   * Prove File:           This runs GNATprove on the current unit.
-   * Show Unprovable Code: This runs GNATprove on the entire project in mode ``detect``.
+
+.. csv-table::
+   :header: "Submenu", "Action"
+   :widths: 1, 4
+
+   "Prove All", "This runs GNATprove on all files in the project."
+   "Prove Root Project", "This runs GNATprove on the entire project."
+   "Prove File", "This runs GNATprove on the current unit."
+   "Show Unprovable Code", "This runs GNATprove on the entire project in mode ``detect``."
 
 When editing an Ada file, GNATprove can also be run from the context menu,
 which can be obtained by a right click:
-   * Prove File:           This runs GNATprove on the current unit.
-   * Prove Line:           This runs proofs on the VCs of the current line of
-                           the current file.
-   * Prove Subprogram:     This runs proofs on the VCs of the current
-                           subprogram whose declaration is pointed to.
+
+.. csv-table::
+   :header: "Submenu", "Action"
+   :widths: 1, 4
+
+   "Prove File", "This runs GNATprove on the current unit."
+   "Prove Line", "This runs proofs on the VCs of the current line of the current file."
+   "Prove Subprogram", "This runs proofs on the VCs of the current subprogram whose declaration is pointed to."
 
 GNATprove project switches can be edited from the panel ``GNATprove`` (in
 ``Project --> Edit Project Properties --> Switches``).
