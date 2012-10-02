@@ -583,6 +583,34 @@ execution will stop, with the result value ``False``. However, GNATprove
 requires the expression to be run-time error free over the entire range,
 including ``I = 3``, so there will be an unproved VC for this case.
 
+Pragma ``Assert_And_Cut``
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GNATprove may need to consider many possible paths through a subprogram. If
+this number of paths is too large, GNATprove will take a long time to prove
+even trivial properties. To reduce the number of paths analyzed by GNATprove,
+one may use the pragma ``Assert_And_Cut``, to mark program points where
+GNATprove can *cut* paths, replacing precise knowledge about execution before
+the program point by the assertion given. The effect of this pragma for
+compilation is exactly the same as the one of pragma ``Assert``.
+
+For example, in the procedure below, all that is needed to prove that the code
+using ``X`` is free from run-time errors is that ``X`` is positive. Without the
+pragma, GNATprove considers all execution paths through ``P``, which may be
+many. With the pragma, GNATprove only needs to consider the paths from the
+start of the procedure to the pragma, and the paths from the pragma to the end
+of the procedure, hence many fewer paths.
+
+.. code-block:: ada
+
+  procedure P is
+     X : Integer;
+  begin
+     --  complex computation that sets X
+     pragma Assert_And_Cut (X > 0);
+     --  complex computation that uses X
+  end P;
+
 Features Not Yet Implemented
 ----------------------------
 
