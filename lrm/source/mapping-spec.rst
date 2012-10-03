@@ -1,3 +1,5 @@
+.. _mapping-spec-label:
+
 SPARK2005 to |SPARK| Mapping Specification
 ==========================================
 
