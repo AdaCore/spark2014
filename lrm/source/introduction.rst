@@ -46,7 +46,7 @@ Principal design goals are as follows:
   use constrained to meet this goal.
 
 - The language shall offer an *unambiguous* semantics. In Ada terminology,
-  this means that all erroneous and implementation-dependent behaviour shall
+  this means that all erroneous and unspecified behaviour shall
   be eliminated.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 that is 
