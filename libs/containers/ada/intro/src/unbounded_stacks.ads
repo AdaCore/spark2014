@@ -1,18 +1,16 @@
 with Ada.Unchecked_Deallocation;
+with Ada.Finalization;  use Ada.Finalization;
+with Ada.Text_IO;  use Ada.Text_IO;
 generic
    type Item_Type is private;
 
 package Unbounded_Stacks is
-
+	Counter : Natural := 0;
    --  A stack package that holds integers
 
-   Chunk_Size : constant Positive := 2;
+   Chunk_Size : Positive := 2;
 
    --  The number of elements in a stack
-
-   Default_Value : Item_Type;
-
-   --  Value used to initialize not used stack elements;
 
    type Content_Type is array (Natural range <>) of Item_Type;
 
@@ -22,19 +20,26 @@ package Unbounded_Stacks is
 
    --  Pointer to array
 
-   type Stack (Size  : Positive) is record
-      Cont_Ptr : Content_Ref := new Content_Type (1 .. Size);
+   type Stack is new Controlled with record
+      Cont_Ptr : Content_Ref :=  new Content_Type (1 .. 0);
 
       --  Points to the content array
 
       Index : Natural;
 
       --  Points to the first empty cell
+      Cuenta : Natural;
    end record;
 
    type Stack_Ptr is access all Stack;
 
-   function Create (Default : Item_Type) return Stack;
+   overriding procedure Adjust (Object : in out Stack);
+   overriding procedure Initialize (Object : in out Stack);
+   overriding procedure Finalize (Object : in out Stack);
+
+   --  Inherated controlled procedure
+
+   function Create return Stack;
 
    --  Create stack with I elements
 
@@ -49,7 +54,7 @@ package Unbounded_Stacks is
 
    function Pop (S : in out Stack) return Item_Type with
      Pre  => not Is_Empty (S),
-     Post => not Is_Full (S)
+   Post => not Is_Full (S)
      and then Pop'Result = Peek (S)'Old;
 
    --  Same as the above procedure, but return the topmost element,
@@ -58,8 +63,8 @@ package Unbounded_Stacks is
 
    procedure Pop (S : in out Stack; X : out Item_Type) with
      Pre  => not Is_Empty (S),
-     Post => not Is_Full (S)
-               and then Peek (S)'Old = X;
+   Post => not Is_Full (S)
+     and then Peek (S)'Old = X;
 
    --  Remove the topmost element from the stack, and return it in X
 
@@ -75,17 +80,18 @@ package Unbounded_Stacks is
    procedure Push (S : in out Stack; X : Item_Type) with
      Post => ((not Is_Empty (S))
    --  and (Push (S'Old, X) = S)
-   );
+             );
 
    --  Push a new element on the stack
 private
-
+   Tmp_Ptr : Content_Ref;
    procedure Enlarge (S : in out Stack) with
-   Post => (not Is_Full (S));
+     Post => (not Is_Full (S));
 
    --  Enlarge the stack
 
    procedure Free_Content is new Ada.Unchecked_Deallocation
      (Object => Content_Type,
       Name => Content_Ref);
+
 end Unbounded_Stacks;
