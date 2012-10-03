@@ -31,34 +31,55 @@ package Gnat2Why.Types is
 
    --  This package deals with translations of types.
    --  A single type declaration in Ada is usually translated to a list of
-   --  declarations in Why. Depending on the type in Ada, this list contains
-   --  at least an abstract type, and several function declarations for
-   --  conversions (usually to and from int).
-   --
-   --  Enumeration types:
-   --    We declare an algebraic data type in Why, along with conversion
-   --    from/to int with conversion axioms
-   --
-   --  Integer types:
-   --    We declare an abstract type in Why, along with conversion from/to int
-   --    + axioms
-   --
-   --  Subtypes of Integers:
-   --    There is nothing special to do for subtypes: we treat them just as
-   --    integer types. This means that sometimes we have to insert
-   --    conversions when Ada coerces automatically.
-   --
-   --  Array types:
-   --   We first declare an abstract type for the index type, just as we do
-   --   for integer types. We then declare an abstract type for arrays, and
-   --   access/update functions with axioms.
+   --  declarations in Why, grouped in a Why3 module. Depending on the type in
+   --  Ada, this list contains at least an abstract type, and several function
+   --  declarations for conversions.
+
+   --  For all Ada types, we have a Why3 type which is used to model the Ada
+   --  type. For all discrete types, this is "int", for all floating point
+   --  types this is "real", and for all array types (currently up to four
+   --  dimensions) there is a corresponding Why3 type for each dimension in the
+   --  "__gnatprove_standard.mlw" file. Record types are a bit different, see
+   --  below.
+
+   --  Each Ada type is modeled by a type definition in Why3, plus conversion
+   --  functions to and from the Why3 model type. Operations of the type are
+   --  carried out on the model type, so that each operation involves a
+   --  conversion. Subtype or type conversions in Ada are dealt with naturally
+   --  by the conversion functions; converting from discrete type A to discrete
+   --  type B corresponds to a conversion from A to int, and from int to B.
+
+   --  Records are a bit special because there cannot be a "universal" record
+   --  type in Why3, as e.g. for integer types. Instead, we use Why3
+   --  records which directly correspond to the Ada definition. All operations
+   --  (ie. field accesses) are defined on the type itself.
+   --  To deal with conversions between records, we use the same idea as for
+   --  the other Ada types. However, the underlying model type now is the root
+   --  type for each record type. The root type is the one that has been
+   --  introduced with an explicit "record ... end record" scheme, as opposed
+   --  to a derived type or subtype.
+
+   --  Note that the frontend differentiates between the private type and its
+   --  completion (two different entities), while gnat2why does not look at
+   --  private types and goes to the actual type (either the completion, or
+   --  further up if the completion is a derived type of a private type ...)
+
+   --  There is an exception to that rule, namely for private types whose
+   --  completion is not in Alfa. Such types *are* in Alfa, and in this case
+   --  gnat2why *only* looks at the private entity.
+
+   --  For more details about the different encodings, the packages
+   --    Why.Gen.Scalars
+   --    Why.Gen.Records
+   --    Why.Gen.Arrays
+   --  are useful.
 
    procedure Translate_Type
       (File : in out Why_File;
        E    : Entity_Id);
-   --  Take an Ada Entity and consider it as a full type declaration.
-   --  Transform it into a Why type declaration, including conversion
-   --  functions and axioms.
+   --  Generate the Why3 declaration module for the type entity in argument.
+   --  This function basically dispatches to the corresponding specific package
+   --  in Why.Gen.* (Scalars, Records, or Arrays).
 
    function Why_Prog_Type_Of_Ada_Obj
      (N            : Node_Id;

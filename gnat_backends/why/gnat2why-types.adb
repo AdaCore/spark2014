@@ -266,8 +266,7 @@ package body Gnat2Why.Types is
       Open_Theory (File, Name);
       Translate_Underlying_Type (File.Cur_Theory, E);
 
-      --  We declare a default value for all types, in principle. Right now,
-      --  this is limited to types in the source or in the standard package.
+      --  We declare a default value for all types, in principle.
       --  Cloned subtypes are a special case, they do not need such a
       --  definition.
 
