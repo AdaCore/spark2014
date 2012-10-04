@@ -587,26 +587,45 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      declare
-         Up_From : constant W_Base_Type_Id := Up (From, Base);
-         Up_To   : constant W_Base_Type_Id := Up (To, Base);
-      begin
+      if Get_Base_Type (Base) = EW_Abstract then
+
+         --  the case of record conversions
+
          return
            Insert_Single_Conversion
              (To   => To,
-              From => Up_To,
+              From => Base,
               Expr =>
-                Insert_Conversion
-                  (Domain   => Domain,
-                   Ada_Node => Ada_Node,
-                   To       => Up_To,
-                   From     => Up_From,
-                   Expr     =>
-                     Insert_Single_Conversion
-                       (To   => Up_From,
-                        From => From,
-                        Expr => Expr)));
-      end;
+                Insert_Single_Conversion
+                  (To   => Base,
+                   From => From,
+                   Expr => Expr));
+
+      else
+
+         --  the regular case
+
+         declare
+            Up_From : constant W_Base_Type_Id := Up (From, Base);
+            Up_To   : constant W_Base_Type_Id := Up (To, Base);
+         begin
+            return
+              Insert_Single_Conversion
+                (To   => To,
+                 From => Up_To,
+                 Expr =>
+                   Insert_Conversion
+                     (Domain   => Domain,
+                      Ada_Node => Ada_Node,
+                      To       => Up_To,
+                      From     => Up_From,
+                      Expr     =>
+                        Insert_Single_Conversion
+                          (To   => Up_From,
+                           From => From,
+                           Expr => Expr)));
+         end;
+      end if;
    end Insert_Conversion;
 
    ----------------------

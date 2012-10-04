@@ -278,6 +278,7 @@ package body Why.Gen.Names is
                                   S        => Full_Name (To_Node),
                                   W        => WNE_Of_Base);
                      else
+                        pragma Assert (Root_Record_Type (To_Node) = To_Node);
                         return
                           Prefix (Ada_Node => From_Node,
                                   S        => Full_Name (From_Node),
