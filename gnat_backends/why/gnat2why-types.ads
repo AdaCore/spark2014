@@ -23,56 +23,56 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  Translation of types
+
+--  A single type declaration in Ada is usually translated into a list of
+--  declarations in Why, grouped in a Why module. Depending on the type in
+--  Ada, this list contains at least an abstract type, and several function
+--  declarations for conversions.
+
+--  For all Ada types, we have a Why type which is used to model the Ada type.
+--  For all discrete types, this is "int", for all floating point types this
+--  is "real", and for all array types (currently up to four dimensions)
+--  there is a corresponding Why3 type for each dimension in the
+--  "__gnatprove_standard.mlw" file. Record types are a bit different,
+--  see below.
+
+--  Each Ada type is modeled by a type definition in Why, plus conversion
+--  functions to and from the Why model type. Operations of the type
+--  are carried out on the model type, so that each operation involves a
+--  conversion. Subtype or type conversions in Ada are dealt with naturally by
+--  the conversion functions; converting from discrete type A to discrete type
+--  B corresponds to a conversion from A to int, and from int to B.
+
+--  Records are a bit special because there cannot be a "universal" record
+--  type in Why, as e.g. for integer types. Instead, we use Why records which
+--  directly correspond to the Ada definition. All operations (i.e. field
+--  accesses) are defined on the type itself. To deal with conversions between
+--  records, we use the same idea as for the other Ada types. However, the
+--  underlying model type now is the root type for each record type. The root
+--  type is the one that has been introduced with an explicit "record ... end
+--  record" scheme, as opposed to a derived type or subtype.
+
+--  Note that the frontend differentiates between a private type and its
+--  completion (two different entities), while gnat2why does not look at
+--  private types and goes to the actual type (either the completion, or
+--  further up if the completion is a derived type of a private type ...)
+
+--  There is an exception to that rule, namely for private types whose
+--  completion is not in Alfa. Such types *are* in Alfa, and in this
+--  case gnat2why *only* looks at the private entity.
+
+--  For more details about the different encodings, the packages
+--    Why.Gen.Scalars
+--    Why.Gen.Records
+--    Why.Gen.Arrays
+--  are useful.
+
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
 with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Types is
-
-   --  This package deals with translations of types.
-   --  A single type declaration in Ada is usually translated to a list of
-   --  declarations in Why, grouped in a Why3 module. Depending on the type in
-   --  Ada, this list contains at least an abstract type, and several function
-   --  declarations for conversions.
-
-   --  For all Ada types, we have a Why3 type which is used to model the Ada
-   --  type. For all discrete types, this is "int", for all floating point
-   --  types this is "real", and for all array types (currently up to four
-   --  dimensions) there is a corresponding Why3 type for each dimension in the
-   --  "__gnatprove_standard.mlw" file. Record types are a bit different, see
-   --  below.
-
-   --  Each Ada type is modeled by a type definition in Why3, plus conversion
-   --  functions to and from the Why3 model type. Operations of the type are
-   --  carried out on the model type, so that each operation involves a
-   --  conversion. Subtype or type conversions in Ada are dealt with naturally
-   --  by the conversion functions; converting from discrete type A to discrete
-   --  type B corresponds to a conversion from A to int, and from int to B.
-
-   --  Records are a bit special because there cannot be a "universal" record
-   --  type in Why3, as e.g. for integer types. Instead, we use Why3
-   --  records which directly correspond to the Ada definition. All operations
-   --  (ie. field accesses) are defined on the type itself.
-   --  To deal with conversions between records, we use the same idea as for
-   --  the other Ada types. However, the underlying model type now is the root
-   --  type for each record type. The root type is the one that has been
-   --  introduced with an explicit "record ... end record" scheme, as opposed
-   --  to a derived type or subtype.
-
-   --  Note that the frontend differentiates between the private type and its
-   --  completion (two different entities), while gnat2why does not look at
-   --  private types and goes to the actual type (either the completion, or
-   --  further up if the completion is a derived type of a private type ...)
-
-   --  There is an exception to that rule, namely for private types whose
-   --  completion is not in Alfa. Such types *are* in Alfa, and in this case
-   --  gnat2why *only* looks at the private entity.
-
-   --  For more details about the different encodings, the packages
-   --    Why.Gen.Scalars
-   --    Why.Gen.Records
-   --    Why.Gen.Arrays
-   --  are useful.
 
    procedure Translate_Type
       (File : in out Why_File;
