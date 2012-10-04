@@ -3326,13 +3326,17 @@ package body Gnat2Why.Expr is
                         Domain    => Domain);
                   end if;
                elsif Is_Record_Type (Etype (Left)) then
+                  pragma Assert (Root_Record_Type (Etype (Left)) =
+                                   Root_Record_Type (Etype (Right)));
+                  pragma Assert (Root_Record_Type (Etype (Left)) =
+                                   Get_Ada_Node (+BT));
                   T :=
                     New_Call
                       (Ada_Node => Expr,
                        Domain   => Subdomain,
                        Name     =>
-                         Prefix (Ada_Node => Etype (Left),
-                                 S        => Type_Of_Node (Left),
+                         Prefix (Ada_Node => Get_Ada_Node (+BT),
+                                 S        => Full_Name (Get_Ada_Node (+BT)),
                                  W        => WNE_Bool_Eq),
                        Args     => (1 => Left_Arg,
                                     2 => Right_Arg));
