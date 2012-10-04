@@ -34,7 +34,7 @@ with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
 with Stand;                 use Stand;
 
-with Alfa.Util;
+with Alfa.Util;             use Alfa.Util;
 
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
@@ -330,9 +330,9 @@ package body Why.Gen.Expr is
          Name     : W_Identifier_Id;
          Expr     : W_Expr_Id;
          To       : Entity_Id) return W_Expr_Id;
-      --  The entity 'To' is a record subtype. We potentially need to add
-      --  arguments to the conversion function call, this is done in this
-      --  function.
+      --  The entity "To" is a record type. We potentially need to add
+      --  arguments to the conversion function call, this is done in
+      --  this function.
 
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
@@ -350,6 +350,10 @@ package body Why.Gen.Expr is
       --  If it makes sense in the context, insert an overflow check or a range
       --  check on the top of Expr.
 
+      --------------------------------
+      -- Generate_Record_Conversion --
+      --------------------------------
+
       function Generate_Record_Conversion
         (Ada_Node : Node_Id;
          Name     : W_Identifier_Id;
@@ -358,8 +362,12 @@ package body Why.Gen.Expr is
       is
          Count : Natural := 1;
          Constr_Elmt : Elmt_Id;
+         Used_Name : constant W_Identifier_Id :=
+           (if Root_Record_Type (To) = To then Name
+            else To_Program_Space (Name));
       begin
-         if Has_Discriminants (To) then
+         if Has_Discriminants (To) and then
+           Present (Stored_Constraint (To)) then
             Constr_Elmt := First_Elmt (Stored_Constraint (To));
             while Present (Constr_Elmt) loop
                if not (Is_Static_Expression (Node (Constr_Elmt))) then
@@ -391,7 +399,7 @@ package body Why.Gen.Expr is
                  New_VC_Call
                    (Domain   => EW_Prog,
                     Ada_Node => Ada_Node,
-                    Name     => Name,
+                    Name     => Used_Name,
                     Progs    => Args,
                     Reason   => VC_Discriminant_Check);
             end;
@@ -400,7 +408,7 @@ package body Why.Gen.Expr is
               New_VC_Call
                 (Domain   => EW_Prog,
                  Ada_Node => Ada_Node,
-                 Name     => Name,
+                 Name     => Used_Name,
                  Progs    => (1 => +Expr),
                  Reason   => VC_Discriminant_Check);
          end if;
@@ -491,8 +499,7 @@ package body Why.Gen.Expr is
                   Check_Kind   := Conversion_Reason.Pop;
                elsif
                  Get_Base_Type (From) = EW_Abstract and then
-                 Get_Base_Type (To) = EW_Abstract and then
-                 Ekind (Get_Ada_Node (+To)) = E_Record_Subtype
+                 Get_Base_Type (To) = EW_Abstract
                then
                   Check_Needed := True;
                   Check_Kind := VC_Discriminant_Check;
@@ -502,11 +509,12 @@ package body Why.Gen.Expr is
 
                if Check_Needed then
                   if Get_Base_Type (To) = EW_Abstract and then
-                    Ekind (Get_Ada_Node (+To)) = E_Record_Subtype then
+                    Ekind (Get_Ada_Node (+To)) in
+                    E_Record_Subtype | E_Record_Type then
                      return
                        Generate_Record_Conversion
                          (Ada_Node => Ada_Node,
-                          Name     => To_Program_Space (Name),
+                          Name     => Name,
                           Expr     => Expr,
                           To       => Get_Ada_Node (+To));
                   end if;

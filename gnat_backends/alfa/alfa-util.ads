@@ -108,4 +108,13 @@ package Alfa.Util is
    function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id;
    --  Return the underlying base type in formal containers, if any
 
+   function Root_Record_Type (E : Entity_Id) return Entity_Id;
+   --  Given a record type (or private type whose implementation is a record
+   --  type, etc), return the root type, including traversing private types.
+
+   function Root_Record_Component (E : Entity_Id) return Entity_Id;
+   --  Given a component or discriminant of a record (sub-)type, return the
+   --  corresponding component or discriminant of the root type. This is the
+   --  identity when the component is the component of a root type.
+
 end Alfa.Util;

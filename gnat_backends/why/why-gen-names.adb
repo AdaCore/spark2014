@@ -27,12 +27,12 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded.Hash;
 
 with Atree;               use Atree;
-with Einfo;               use Einfo;
 with Lib;                 use Lib;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
+with Alfa.Util;           use Alfa.Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
@@ -272,16 +272,16 @@ package body Why.Gen.Names is
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                   begin
-                     if Ekind (From_Node) = E_Record_Subtype then
-                        return
-                          Prefix (Ada_Node => From_Node,
-                                  S        => Full_Name (From_Node),
-                                  W        => WNE_To_Base);
-                     else
+                     if Root_Record_Type (From_Node) = From_Node then
                         return
                           Prefix (Ada_Node => To_Node,
                                   S        => Full_Name (To_Node),
                                   W        => WNE_Of_Base);
+                     else
+                        return
+                          Prefix (Ada_Node => From_Node,
+                                  S        => Full_Name (From_Node),
+                                  W        => WNE_To_Base);
                      end if;
                   end;
 

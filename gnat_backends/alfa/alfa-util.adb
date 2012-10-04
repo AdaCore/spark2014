@@ -490,6 +490,105 @@ package body Alfa.Util is
    function Partial_View (E : Entity_Id) return Entity_Id is
       (Full_To_Partial_Entities.Element (E));
 
+   ---------------------------
+   -- Root_Record_Component --
+   ---------------------------
+
+   function Root_Record_Component (E : Entity_Id) return Entity_Id
+   is
+      function Search_By_Name (Rec : Entity_Id; Comp : Entity_Id)
+                               return Entity_Id;
+      --  Given a record type entity and a component/discriminant entity,
+      --  search in Rec a component/discriminant entity with the same name.
+      --  The caller of this function should be sure that there is such a
+      --  component, because it raises Program_Error if it doesn't find any.
+
+      --------------------
+      -- Search_By_Name --
+      --------------------
+
+      function Search_By_Name (Rec : Entity_Id; Comp : Entity_Id)
+                               return Entity_Id
+      is
+         Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Rec);
+      begin
+         while Present (Cur_Comp) loop
+            exit when Chars (Cur_Comp) = Chars (Comp);
+            Next_Component_Or_Discriminant (Cur_Comp);
+         end loop;
+         if Present (Cur_Comp) then
+            return Cur_Comp;
+         else
+            --  We *must* find a component, so we should never be here.
+            raise Program_Error;
+         end if;
+
+      end Search_By_Name;
+
+      Rec_Type : constant Entity_Id := Unique_Entity (Scope (E));
+      Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
+   begin
+      if Root = Rec_Type then
+         return E;
+      end if;
+      if Ekind (E) = E_Component then
+
+         --  In the component case, it is enough to simply search for the
+         --  matching component in the root type, using "Chars".
+
+         return Search_By_Name (Root, E);
+      else
+
+         pragma Assert (Ekind (E) = E_Discriminant);
+
+         --  In the discriminant case, we need to climb up the hierarchy of
+         --  types, to get to the corresponding discriminant in the root type.
+         --  Note that there can be more than one corresponding discriminant
+         --  (because of renamings), in this case the frontend has picked one
+         --  for us.
+
+         declare
+            Cur_Type : Entity_Id := Unique_Entity (Base_Type (Rec_Type));
+            Comp     : Entity_Id := E;
+         begin
+            if Cur_Type /= Rec_Type then
+               Comp := Original_Record_Component (Comp);
+            end if;
+            while Cur_Type /= Root loop
+
+               --  at this point, Comp is a component of Cur_Type
+
+               if Present (Corresponding_Discriminant (Comp)) then
+                  Comp := Corresponding_Discriminant (Comp);
+                  Cur_Type := Scope (Comp);
+               else
+                  declare
+                     Old_Type : constant Entity_Id := Cur_Type;
+                  begin
+                     Cur_Type := Unique_Entity (Etype ((Cur_Type)));
+                     pragma Assert (Cur_Type /= Old_Type);
+                     Comp := Search_By_Name (Cur_Type, Comp);
+                  end;
+               end if;
+            end loop;
+            return Comp;
+         end;
+      end if;
+   end Root_Record_Component;
+
+   ----------------------
+   -- Root_Record_Type --
+   ----------------------
+
+   function Root_Record_Type (E : Entity_Id) return Entity_Id is
+      Result : Entity_Id := E;
+   begin
+      while Underlying_Type (Root_Type (Result)) /= Result loop
+         Result := Underlying_Type (Root_Type (Result));
+      end loop;
+      return Result;
+   end Root_Record_Type;
+
    ------------------------------------
    -- Type_Based_On_Formal_Container --
    ------------------------------------

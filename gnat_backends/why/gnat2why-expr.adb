@@ -4243,13 +4243,10 @@ package body Gnat2Why.Expr is
          begin
             if Component = Assoc then
                return True;
-            elsif Ekind (Component) = E_Discriminant and then
-              Ekind (Assoc) = E_Discriminant then
-               return Discriminal (Component) = Discriminal (Assoc);
-            elsif Present (Original_Record_Component (Component)) then
-               return Original_Record_Component (Component) = Assoc;
             else
-               return False;
+               return
+                 Root_Record_Component (Component) =
+                 Root_Record_Component (Assoc);
             end if;
          end;
       end Matching_Component_Association;

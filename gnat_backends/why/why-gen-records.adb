@@ -29,16 +29,18 @@ with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Elists;             use Elists;
 with Nlists;             use Nlists;
+with Sem_Aux;            use Sem_Aux;
+with Sem_Eval;           use Sem_Eval;
+with Sem_Util;           use Sem_Util;
+with Sinfo;              use Sinfo;
+
+with Alfa.Util;          use Alfa.Util;
+with VC_Kinds;           use VC_Kinds;
 
 with Gnat2Why.Driver;    use Gnat2Why.Driver;
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
-with Sem_Aux;            use Sem_Aux;
-with Sem_Eval;           use Sem_Eval;
-with Sem_Util;           use Sem_Util;
-with Sinfo;              use Sinfo;
-with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Binders;    use Why.Gen.Binders;
@@ -61,9 +63,10 @@ package body Why.Gen.Records is
    --  postcondition states that the value of this function is just the value
    --  of the record component.
 
-   --  For subtypes, we also define conversion functions (in logic and program
-   --  space) to and from the base type. The 'from' function has a precondition
-   --  which expresses the discriminant check.
+   --  For all record types which are not root types, we also define conversion
+   --  functions (in logic and program space) to and from the root type. The
+   --  'from' function has a precondition which expresses the discriminant
+   --  check.
 
    --  For the implementation details: This is one place where we have to look
    --  at the declaration node to find which discriminant values imply the
@@ -80,6 +83,9 @@ package body Why.Gen.Records is
    --  The map [Comp_Info] maps the component entities and N_Variant_Part nodes
    --  to their information record. This map is populated at the beginning of
    --  [Declare_Ada_Record].
+
+   --  We ignore "completely hidden" components of derived record types (see
+   --  also the discussion in einfo.ads and sem_ch3.adb)
 
    type Component_Info is record
       Parent_Variant  : Node_Id;
@@ -99,6 +105,11 @@ package body Why.Gen.Records is
    --  check; this is always false for discriminants and components of
    --  E_Record_Subtypes. For the rest, it depends on whether the component is
    --  in a variant part or not.
+
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
+      (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
+   --  negation wrapper for Is_Completely_Hidden Field (see einfo.ads), which
+   --  also works for E_Component fields
 
    -----------------------
    -- Define_Ada_Record --
@@ -142,7 +153,7 @@ package body Why.Gen.Records is
       --  Check whether the N_Variant is actually an N_Others_Choice
 
       procedure Declare_Conversion_Functions;
-      --  Generate conversion functions from this type to the base type, and
+      --  Generate conversion functions from this type to the root type, and
       --  back
 
       procedure Declare_Equality_Function;
@@ -234,54 +245,56 @@ package body Why.Gen.Records is
             Discr := First_Discriminant (E);
             Constr_Elmt := First_Elmt (Stored_Constraint (E));
             while Present (Discr) loop
-               declare
-                  Discr_Val : W_Expr_Id;
-                  Discr_Exp : W_Expr_Id;
-               begin
-                  Discr_Exp :=
-                    New_Record_Access
-                      (Name  => +A_Ident,
-                       Field =>
-                         To_Why_Id
-                           (Original_Record_Component (Discr)));
-                  if Is_Static_Expression (Node (Constr_Elmt)) then
-                     Discr_Val :=
-                       New_Integer_Constant
-                         (Value => Expr_Value (Node (Constr_Elmt)));
+               if Is_Not_Hidden_Discriminant (Discr) then
+                  declare
+                     Discr_Val : W_Expr_Id;
+                     Discr_Exp : W_Expr_Id;
+                  begin
                      Discr_Exp :=
-                       +Insert_Conversion
-                       (Domain => EW_Term,
-                        Expr   => Discr_Exp,
-                        To     => EW_Int_Type,
-                        From   => EW_Abstract (Etype (Discr)));
-                  else
-                     declare
-                        Discr_Ident : constant W_Identifier_Id :=
-                          New_Temp_Identifier;
-                     begin
-                        Dyn_Discr_Count := Dyn_Discr_Count + 1;
-                        Discr_Binders (Dyn_Discr_Count) :=
-                          (B_Name => Discr_Ident,
-                           B_Type =>
-                             Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
-                           others => <>);
-                        Discr_Val := +Discr_Ident;
-                     end;
-                  end if;
-                  Pred :=
-                    +New_And_Then_Expr
-                    (Domain => EW_Pred,
-                     Left   => +Pred,
-                     Right  =>
-                       New_Relation
-                         (Domain  => EW_Pred,
-                          Op_Type => EW_Abstract,
-                          Op      => EW_Eq,
-                          Left    => +Discr_Exp,
-                          Right   => +Discr_Val));
-                  Next_Discriminant (Discr);
-                  Next_Elmt (Constr_Elmt);
-               end;
+                       New_Record_Access
+                         (Name  => +A_Ident,
+                          Field =>
+                            To_Why_Id
+                              (Root_Record_Component (Discr)));
+                     if Is_Static_Expression (Node (Constr_Elmt)) then
+                        Discr_Val :=
+                          New_Integer_Constant
+                            (Value => Expr_Value (Node (Constr_Elmt)));
+                        Discr_Exp :=
+                          +Insert_Conversion
+                          (Domain => EW_Term,
+                           Expr   => Discr_Exp,
+                           To     => EW_Int_Type,
+                           From   => EW_Abstract (Etype (Discr)));
+                     else
+                        declare
+                           Discr_Ident : constant W_Identifier_Id :=
+                             New_Temp_Identifier;
+                        begin
+                           Dyn_Discr_Count := Dyn_Discr_Count + 1;
+                           Discr_Binders (Dyn_Discr_Count) :=
+                             (B_Name => Discr_Ident,
+                              B_Type =>
+                                Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
+                              others => <>);
+                           Discr_Val := +Discr_Ident;
+                        end;
+                     end if;
+                     Pred :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Pred,
+                        Right  =>
+                          New_Relation
+                            (Domain  => EW_Pred,
+                             Op_Type => EW_Abstract,
+                             Op      => EW_Eq,
+                             Left    => +Discr_Exp,
+                             Right   => +Discr_Val));
+                  end;
+               end if;
+               Next_Discriminant (Discr);
+               Next_Elmt (Constr_Elmt);
             end loop;
             return Discr_Binders (1 .. Dyn_Discr_Count);
          end;
@@ -325,8 +338,10 @@ package body Why.Gen.Records is
          Field : Node_Id := First_Component_Or_Discriminant (E);
       begin
          while Present (Field) loop
+            if Is_Not_Hidden_Discriminant (Field) then
+               Cnt := Cnt + 1;
+            end if;
             Next_Component_Or_Discriminant (Field);
-            Cnt := Cnt + 1;
          end loop;
          return Cnt;
       end Count_Why_Record_Fields;
@@ -337,22 +352,23 @@ package body Why.Gen.Records is
 
       procedure Declare_Conversion_Functions
       is
-         Base            : constant Entity_Id := Unique_Entity (Base_Type (E));
+         Root            : constant Entity_Id :=
+           Unique_Entity (Root_Record_Type (E));
          Num_E_Fields    : constant Natural := Count_Why_Record_Fields (E);
-         Num_Base_Fields : constant Natural := Count_Why_Record_Fields (Base);
-         To_Base_Aggr    : W_Field_Association_Array (1 .. Num_Base_Fields);
-         From_Base_Aggr  : W_Field_Association_Array (1 .. Num_E_Fields);
+         Num_Root_Fields : constant Natural := Count_Why_Record_Fields (Root);
+         To_Root_Aggr    : W_Field_Association_Array (1 .. Num_Root_Fields);
+         From_Root_Aggr  : W_Field_Association_Array (1 .. Num_E_Fields);
          Field           : Entity_Id;
          Seen            : Node_Sets.Set := Node_Sets.Empty_Set;
          Index           : Natural := 1;
          From_Binder     : constant Binder_Array :=
            (1 => (B_Name => A_Ident,
-                  B_Type => Why_Logic_Type_Of_Ada_Type (Base),
+                  B_Type => Why_Logic_Type_Of_Ada_Type (Root),
                   others => <>));
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
       begin
-         pragma Assert (Num_E_Fields <= Num_Base_Fields);
+         pragma Assert (Num_E_Fields <= Num_Root_Fields);
 
          --  First iterate over the the components of the subtype; this allows
          --  to fill in the 'from' aggregate and part of the 'to' aggregate. We
@@ -361,55 +377,60 @@ package body Why.Gen.Records is
 
          Field := First_Component_Or_Discriminant (E);
          while Present (Field) loop
-            declare
-               Orig     : constant Entity_Id :=
-                 Original_Record_Component (Field);
-               Orig_Id  : constant W_Identifier_Id := To_Why_Id (Orig);
-               Field_Id : constant W_Identifier_Id :=
-                 To_Why_Id (Field, Local => True);
-            begin
-               From_Base_Aggr (Index) :=
-                 New_Field_Association
-                   (Domain => EW_Term,
-                    Field  => Field_Id,
-                    Value  =>
-                      Insert_Conversion
-                        (Domain => EW_Term,
-                         To     => EW_Abstract (Etype (Field)),
-                         From   => EW_Abstract (Etype (Orig)),
-                         Expr   =>
-                           New_Record_Access
-                             (Name => +A_Ident,
-                              Field => Orig_Id)));
-               To_Base_Aggr (Index) :=
-                 New_Field_Association
-                   (Domain => EW_Term,
-                    Field  => Orig_Id,
-                    Value  =>
-                      Insert_Conversion
-                        (Domain => EW_Term,
-                         To     => EW_Abstract (Etype (Orig)),
-                         From   => EW_Abstract (Etype (Field)),
-                         Expr   =>
-                           New_Record_Access
-                             (Name  => +A_Ident,
-                              Field => Field_Id)));
-               Seen.Include (Orig);
-               Index := Index + 1;
-               Next_Component_Or_Discriminant (Field);
-            end;
+            if Is_Not_Hidden_Discriminant (Field) then
+               declare
+                  Orig     : constant Entity_Id :=
+                    Root_Record_Component (Field);
+                  Orig_Id  : constant W_Identifier_Id := To_Why_Id (Orig);
+                  Field_Id : constant W_Identifier_Id :=
+                    To_Why_Id (Field, Local => True);
+               begin
+                  From_Root_Aggr (Index) :=
+                    New_Field_Association
+                      (Domain => EW_Term,
+                       Field  => Field_Id,
+                       Value  =>
+                         Insert_Conversion
+                           (Domain => EW_Term,
+                            To     => EW_Abstract (Etype (Field)),
+                            From   => EW_Abstract (Etype (Orig)),
+                            Expr   =>
+                              New_Record_Access
+                                (Name => +A_Ident,
+                                 Field => Orig_Id)));
+                  To_Root_Aggr (Index) :=
+                    New_Field_Association
+                      (Domain => EW_Term,
+                       Field  => Orig_Id,
+                       Value  =>
+                         Insert_Conversion
+                           (Domain => EW_Term,
+                            To     => EW_Abstract (Etype (Orig)),
+                            From   => EW_Abstract (Etype (Field)),
+                            Expr   =>
+                              New_Record_Access
+                                (Name  => +A_Ident,
+                                 Field => Field_Id)));
+                  Seen.Include (Orig);
+                  Index := Index + 1;
+               end;
+            end if;
+            Next_Component_Or_Discriminant (Field);
          end loop;
 
-         --  We now iterate over the components of the base type, to fill in
+         --  We now iterate over the components of the root type, to fill in
          --  the missing part of the 'to' aggregate. As the subtype cannot
          --  provide a value for these fields, we use the dummy value of the
          --  corresponding type. We use the 'Seen' set to filter the components
          --  that have been added already.
 
-         Field := First_Component_Or_Discriminant (Base);
+         --  ??? For renamed discriminants, we should reuse the value of the
+         --  renaming
+
+         Field := First_Component_Or_Discriminant (Root);
          while Present (Field) loop
             if not (Seen.Contains (Field)) then
-               To_Base_Aggr (Index) :=
+               To_Root_Aggr (Index) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => To_Why_Id (Field),
@@ -428,10 +449,10 @@ package body Why.Gen.Records is
                Name        => To_Ident (WNE_To_Base),
                Binders     => R_Binder,
                Return_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Base),
+                 Why_Logic_Type_Of_Ada_Type (Root),
                Def         =>
                  New_Record_Aggregate
-                   (Associations => To_Base_Aggr)));
+                   (Associations => To_Root_Aggr)));
          Emit
            (Theory,
             New_Function_Def
@@ -441,7 +462,7 @@ package body Why.Gen.Records is
                Return_Type => Abstr_Ty,
                Def         =>
                  New_Record_Aggregate
-                   (Associations => From_Base_Aggr)));
+                   (Associations => From_Root_Aggr)));
          declare
             Down_Cast : W_Pred_Id;
             Add_Args  : constant Binder_Array :=
@@ -480,37 +501,39 @@ package body Why.Gen.Records is
          Comp      : Entity_Id := First_Component_Or_Discriminant (E);
       begin
          while Present (Comp) loop
-            declare
-               Comparison : constant W_Pred_Id :=
-                 New_Relation
-                   (Op_Type => EW_Abstract,
-                    Left    =>
-                      New_Record_Access
-                        (Name  => +A_Ident,
-                         Field => To_Why_Id (Comp, Local => True)),
-                    Right    =>
-                      New_Record_Access
-                        (Name  => +A_Ident,
-                         Field => To_Why_Id (Comp, Local => True)),
-                    Op      => EW_Eq);
-               Always_Present : constant Boolean :=
-                 Ekind (E) = E_Record_Subtype or else
-                 not (Has_Discriminants (E)) or else
-                 Ekind (Comp) = E_Discriminant;
-            begin
-               Condition :=
-                 +New_And_Then_Expr
-                   (Domain => EW_Pred,
-                    Left   => +Condition,
-                    Right  =>
-                    (if Always_Present then +Comparison
-                    else
-                    New_Connection
-                      (Domain => EW_Pred,
-                       Op     => EW_Imply,
-                       Left   => +Compute_Discriminant_Check (Comp),
-                       Right  => +Comparison)));
-            end;
+            if Is_Not_Hidden_Discriminant (Comp) then
+               declare
+                  Comparison : constant W_Pred_Id :=
+                    New_Relation
+                      (Op_Type => EW_Abstract,
+                       Left    =>
+                         New_Record_Access
+                           (Name  => +A_Ident,
+                            Field => To_Why_Id (Comp, Local => True)),
+                       Right    =>
+                         New_Record_Access
+                           (Name  => +A_Ident,
+                            Field => To_Why_Id (Comp, Local => True)),
+                       Op      => EW_Eq);
+                  Always_Present : constant Boolean :=
+                    Ekind (E) = E_Record_Subtype or else
+                    not (Has_Discriminants (E)) or else
+                    Ekind (Comp) = E_Discriminant;
+               begin
+                  Condition :=
+                    +New_And_Then_Expr
+                    (Domain => EW_Pred,
+                     Left   => +Condition,
+                     Right  =>
+                       (if Always_Present then +Comparison
+                        else
+                        New_Connection
+                          (Domain => EW_Pred,
+                           Op     => EW_Imply,
+                           Left   => +Compute_Discriminant_Check (Comp),
+                           Right  => +Comparison)));
+               end;
+            end if;
             Next_Component_Or_Discriminant (Comp);
          end loop;
          Emit
@@ -541,39 +564,42 @@ package body Why.Gen.Records is
       is
          Field : Entity_Id := First_Component_Or_Discriminant (E);
       begin
+
          --  ??? enrich the postcondition of access to discriminant, whenever
          --  we statically know its value (in case of E_Record_Subtype)
 
          while Present (Field) loop
-            declare
-               Why_Name  : constant W_Identifier_Id :=
-                 To_Why_Id (Field, Local => True);
-               Prog_Name : constant W_Identifier_Id :=
-                 To_Program_Space (Why_Name);
-               Pre_Cond  : constant W_Pred_Id :=
-                 (if Ekind (E) = E_Record_Subtype  or else
-                  Ekind (Field) = E_Discriminant then True_Pred
-                  else Compute_Discriminant_Check (Field));
-            begin
-               Emit (Theory,
-                     New_Function_Decl
-                       (Domain      => EW_Prog,
-                        Name        => Prog_Name,
-                        Binders     => R_Binder,
-                        Return_Type =>
-                          Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                        Pre         => Pre_Cond,
-                        Post        =>
-                          New_Relation
-                            (Left    => +To_Ident (WNE_Result),
-                             Op_Type => EW_Abstract,
-                             Op      => EW_Eq,
-                             Right   =>
-                               New_Record_Access
-                                 (Name => +A_Ident,
-                                  Field => Why_Name))));
-               Next_Component_Or_Discriminant (Field);
-            end;
+            if Is_Not_Hidden_Discriminant (Field) then
+               declare
+                  Why_Name  : constant W_Identifier_Id :=
+                    To_Why_Id (Field, Local => True);
+                  Prog_Name : constant W_Identifier_Id :=
+                    To_Program_Space (Why_Name);
+                  Pre_Cond  : constant W_Pred_Id :=
+                    (if Ekind (E) = E_Record_Subtype  or else
+                     Ekind (Field) = E_Discriminant then True_Pred
+                     else Compute_Discriminant_Check (Field));
+               begin
+                  Emit (Theory,
+                    New_Function_Decl
+                      (Domain      => EW_Prog,
+                       Name        => Prog_Name,
+                       Binders     => R_Binder,
+                       Return_Type =>
+                         Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                       Pre         => Pre_Cond,
+                       Post        =>
+                         New_Relation
+                           (Left    => +To_Ident (WNE_Result),
+                            Op_Type => EW_Abstract,
+                            Op      => EW_Eq,
+                            Right   =>
+                              New_Record_Access
+                                (Name => +A_Ident,
+                                 Field => Why_Name))));
+               end;
+            end if;
+            Next_Component_Or_Discriminant (Field);
          end loop;
       end Declare_Protected_Access_Functions;
 
@@ -593,7 +619,11 @@ package body Why.Gen.Records is
                B_Type =>
                  Why_Logic_Type_Of_Ada_Type (Etype (Field)),
                others => <>);
-            Next_Component_Or_Discriminant (Field);
+            loop
+               Next_Component_Or_Discriminant (Field);
+               exit when not (Present (Field)) or else
+                 Is_Not_Hidden_Discriminant (Field);
+            end loop;
          end loop;
          Emit (Theory,
            New_Record_Definition (Name    => Ty_Ident,
@@ -617,9 +647,9 @@ package body Why.Gen.Records is
          -- Mark_Component_Items --
          --------------------------
 
-         procedure Mark_Component_List (N : Node_Id;
-                                         Parent_Var_Part : Node_Id;
-                                         Parent_Variant  : Node_Id) is
+         procedure Mark_Component_List (N               : Node_Id;
+                                        Parent_Var_Part : Node_Id;
+                                        Parent_Variant  : Node_Id) is
             Field : Node_Id := First (Component_Items (N));
          begin
             while Present (Field) loop
@@ -647,7 +677,7 @@ package body Why.Gen.Records is
          -- Mark_Variant_Part --
          -----------------------
 
-         procedure Mark_Variant_Part (N : Node_Id;
+         procedure Mark_Variant_Part (N               : Node_Id;
                                       Parent_Var_Part : Node_Id;
                                       Parent_Variant  : Node_Id) is
             Var : Node_Id := First (Variants (N));
@@ -760,7 +790,7 @@ package body Why.Gen.Records is
       end if;
       Declare_Record_Type;
       Declare_Protected_Access_Functions;
-      if Ekind (E) = E_Record_Subtype then
+      if Root_Record_Type (E) /= E then
          Declare_Conversion_Functions;
       end if;
       Declare_Equality_Function;
