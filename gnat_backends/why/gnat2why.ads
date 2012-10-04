@@ -212,8 +212,55 @@
 --     printed in pretty printed VCs.
 --  "GP_Ada_Name:<name>"
 --     Give the name that will be used in pretty printing for that variable,
---     instead of its name in Why3
+--     instead of its name in Why3. This label is used to provide explanations
+--     to the user when a VC is not proved, to show which part of a possibly
+--     large assertion is not proved.
 
 package Gnat2Why is
-   pragma Pure;
+
+   type Transformation_Phase is
+     (Generate_Logic,
+      --  Generation of Why3 code for logic constructs.
+      Generate_VCs_For_Pre,
+      --  Generation of Why3 code to check absence of run-time errors in
+      --  preconditions.
+      Generate_VCs_For_Post,
+      --  Generation of Why3 code to check absence of run-time errors in
+      --  postconditions (including Contract_Case).
+      Generate_VCs_For_Assert,
+      --  Generation of Why3 code to check absence of run-time errors in
+      --  all assertions except precondition and postcondition.
+      Generate_VCs_For_Body,
+      --  Generation of Why3 code to check absence of run-time errors in
+      --  the body of a subprogram, including the verification of all
+      --  intermediate assertions (excluding the postcondition).
+      Generate_Contract_For_Body
+      --  Generation of Why3 code to check that a subprogram body implements
+      --  its contract, that is, the postcondition can be proved.
+     );
+   --  Transformation phases, which impact the way code is transformed from Ada
+   --  to Why3. For example, references to pre-state values (X'Old) are
+   --  transformed differently in the context of generating VCs for run-time
+   --  errors, or in the context of generating a postcondition in Why3.
+
+   subtype Generate_VCs is Transformation_Phase range
+     Generate_VCs_For_Pre ..
+     --  Generate_VCs_For_Post
+     --  Generate_VCs_For_Assert
+     Generate_VCs_For_Body;
+   --  Transformation phases for the generation of VCs
+
+   subtype Generate_VCs_For_Assertion is Transformation_Phase range
+     Generate_VCs_For_Pre ..
+     --  Generate_VCs_For_Post
+     Generate_VCs_For_Assert;
+   --  Transformation phases for the generation of VCs to check absence of
+   --  run-time errors in assertions.
+
+   subtype Generate_For_Body is Transformation_Phase range
+     Generate_VCs_For_Body ..
+     Generate_Contract_For_Body;
+   --  Transformation phases for the generation of Why3 code corresponding to
+   --  the body of a subprogram.
+
 end Gnat2Why;

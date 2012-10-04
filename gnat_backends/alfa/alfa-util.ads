@@ -24,10 +24,28 @@
 ------------------------------------------------------------------------------
 
 with Atree; use Atree;
+with Debug;
 with Einfo; use Einfo;
 with Sinfo; use Sinfo;
 
 package Alfa.Util is
+
+   -------------------
+   -- Special modes --
+   -------------------
+
+   --  These modes are currently set through debug flags
+
+   function Translate_Standard_Only return Boolean is
+     (Debug.Debug_Flag_Dot_HH);
+
+   function In_Detect_Mode_Only return Boolean is (Debug.Debug_Flag_Dot_KK);
+
+   function In_Check_Mode_Only return Boolean is (Debug.Debug_Flag_Dot_GG);
+
+   ---------------
+   -- Utilities --
+   ---------------
 
    function Lowercase_Has_Element_Name return String;
    --  Return the name of the function Has_Element in formal containers

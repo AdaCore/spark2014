@@ -31,7 +31,7 @@ with Why.Inter;       use Why.Inter;
 with Why.Sinfo;       use Why.Sinfo;
 
 with Gnat2Why.Nodes;  use Gnat2Why.Nodes;
-with Gnat2Why.Driver; use Gnat2Why.Driver;
+with Gnat2Why.Util; use Gnat2Why.Util;
 
 package Gnat2Why.Expr is
 
@@ -43,12 +43,12 @@ package Gnat2Why.Expr is
    --  Generate an assignment from an object declaration
 
    function Assume_Of_Scalar_Subtype
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       N      : Entity_Id;
       Base   : Entity_Id) return W_Prog_Id;
 
    function Assume_Of_Subtype_Indication
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       N      : Node_Id) return W_Prog_Id;
 
    function Get_Pure_Logic_Term_If_Possible
@@ -62,7 +62,7 @@ package Gnat2Why.Expr is
      (N           : Node_Id;
       T           : W_Expr_Id;
       Domain      : EW_Domain;
-      Params      : Translation_Params;
+      Params      : Transformation_Params;
       T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
@@ -75,7 +75,7 @@ package Gnat2Why.Expr is
      (Cont   : Node_Id;
       Cursor : W_Expr_Id;
       Domain : EW_Domain;
-      Params : Translation_Params) return W_Expr_Id;
+      Params : Transformation_Params) return W_Expr_Id;
    --  Return an expression that constrains Cursor to belong to container Cont:
    --     Has_Element (Cont, Cursor)
 
@@ -91,20 +91,20 @@ package Gnat2Why.Expr is
      (Case_N       : Node_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
-      Params       : Translation_Params) return W_Expr_Id;
+      Params       : Transformation_Params) return W_Expr_Id;
       --  Return the guard that corresponds to a branch
 
    function Transform_Attribute_Old
      (Expr   : Node_Id;
       Domain : EW_Domain;
-      Params : Translation_Params) return W_Expr_Id;
+      Params : Transformation_Params) return W_Expr_Id;
    --  Translate Expr'Old into Why
 
    function Transform_Expr
      (Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain;
-      Params        : Translation_Params) return W_Expr_Id;
+      Params        : Transformation_Params) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
    --  term or program. If Ref_Allowed is True, then references are allowed,
@@ -116,7 +116,7 @@ package Gnat2Why.Expr is
    function Transform_Expr
      (Expr        : Node_Id;
       Domain      : EW_Domain;
-      Params      : Translation_Params) return W_Expr_Id;
+      Params      : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Expr_With_Actions
@@ -124,7 +124,7 @@ package Gnat2Why.Expr is
       Actions       : List_Id;
       Expected_Type : W_Base_Type_Id;
       Domain        : EW_Domain;
-      Params        : Translation_Params) return W_Expr_Id;
+      Params        : Transformation_Params) return W_Expr_Id;
    --  Same as Transform_Expr, but takes into account the declarations of
    --  constants in Actions, to create a suitable variable map for translating
    --  Expr.
@@ -133,7 +133,7 @@ package Gnat2Why.Expr is
      (Expr          : Node_Id;
       Actions       : List_Id;
       Domain        : EW_Domain;
-      Params        : Translation_Params) return W_Expr_Id;
+      Params        : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Statements

@@ -37,10 +37,11 @@ with Sinfo;              use Sinfo;
 with Alfa.Util;          use Alfa.Util;
 with VC_Kinds;           use VC_Kinds;
 
-with Gnat2Why.Driver;    use Gnat2Why.Driver;
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Binders;    use Why.Gen.Binders;
@@ -738,7 +739,7 @@ package body Why.Gen.Records is
            (Case_N       => Case_N,
             Matched_Expr => +Expr,
             Cond_Domain  => EW_Pred,
-            Params       => Term_Params);
+            Params       => Logic_Params);
       end Transform_Discrete_Choices;
 
    begin

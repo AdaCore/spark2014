@@ -57,10 +57,10 @@ with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;             use Why.Types;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Types;        use Gnat2Why.Types;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Gnat2Why.Subprograms is
 
@@ -117,7 +117,7 @@ package body Gnat2Why.Subprograms is
    --  a singleton of unit type if E has no parameters.
 
    function Compute_Context
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E            : Entity_Id;
       Initial_Body : W_Prog_Id;
       Post_Check   : W_Prog_Id) return W_Prog_Id;
@@ -129,7 +129,7 @@ package body Gnat2Why.Subprograms is
    --  binding to Why body for each local variable of the procedure.
 
    function Compute_Contract_Case
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id;
    --  Generate checks that:
    --  * the Requires clauses do not raise exceptions when the precondition is
@@ -139,7 +139,7 @@ package body Gnat2Why.Subprograms is
    --  * the contracts are satisfied when reaching the end of the subprogram.
 
    function Compute_Pure_Function_Contract_Case
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id;
    --  Generate the proposition for a contract case, to be used in the
    --  postcondition of the program function.
@@ -158,7 +158,7 @@ package body Gnat2Why.Subprograms is
    --  empty if E has no parameters.
 
    function Compute_Spec
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id;
       Domain : EW_Domain) return W_Expr_Id;
@@ -228,7 +228,7 @@ package body Gnat2Why.Subprograms is
    ---------------------
 
    function Compute_Context
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E            : Entity_Id;
       Initial_Body : W_Prog_Id;
       Post_Check   : W_Prog_Id) return W_Prog_Id
@@ -463,7 +463,7 @@ package body Gnat2Why.Subprograms is
    ---------------------------
 
    function Compute_Contract_Case
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id
    is
       CTC : Node_Id;
@@ -525,7 +525,7 @@ package body Gnat2Why.Subprograms is
    -----------------------------------------
 
    function Compute_Pure_Function_Contract_Case
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id
    is
       CTC : Node_Id;
@@ -574,7 +574,7 @@ package body Gnat2Why.Subprograms is
    ------------------
 
    function Compute_Spec
-     (Params : Translation_Params;
+     (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id;
       Domain : EW_Domain) return W_Expr_Id
@@ -627,7 +627,7 @@ package body Gnat2Why.Subprograms is
       Pre        : W_Pred_Id;
       Post       : W_Pred_Id;
       Post_Check : W_Prog_Id;
-      Params     : Translation_Params;
+      Params     : Transformation_Params;
 
    begin
       --  We open a new theory, so that the context is fresh for that
@@ -725,7 +725,7 @@ package body Gnat2Why.Subprograms is
    is
       Name    : constant String := Full_Name (E);
       Binders : constant Binder_Array := Compute_Binders (E);
-      Params  : Translation_Params;
+      Params  : Transformation_Params;
    begin
       Open_Theory (File, Name & "__pre");
       Current_Subp := E;
@@ -819,7 +819,7 @@ package body Gnat2Why.Subprograms is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String := Base_Name & "__expr_fun";
 
-      Params : Translation_Params;
+      Params : Transformation_Params;
 
    begin
       Open_Theory (File, Name);
@@ -847,7 +847,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,
-         Phase       => Translation,
+         Phase       => Generate_Logic,
          Gen_Image   => False,
          Ref_Allowed => False,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
@@ -931,7 +931,7 @@ package body Gnat2Why.Subprograms is
                              Compute_Logic_Binders (E);
 
       Func_Binders : constant Binder_Array := Compute_Binders (E);
-      Params       : Translation_Params;
+      Params       : Transformation_Params;
       Pre          : W_Pred_Id;
       Post         : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
@@ -942,7 +942,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,
-         Phase       => Translation,
+         Phase       => Generate_Logic,
          Gen_Image   => False,
          Ref_Allowed => True,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);

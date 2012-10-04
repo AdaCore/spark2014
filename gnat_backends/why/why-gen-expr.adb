@@ -45,9 +45,9 @@ with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
 
-with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -387,7 +387,7 @@ package body Why.Gen.Expr is
                      Args (Count) :=
                        Transform_Expr
                          (Domain        => EW_Term,
-                          Params        => Term_Params,
+                          Params        => Logic_Params,
                           Expr          => Node (Constr_Elmt),
                           Expected_Type => EW_Abstract (Etype (Discr_Ent)));
                      Count := Count + 1;

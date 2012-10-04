@@ -25,14 +25,16 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
-with Debug;
-with Osint;
-with System;
-with Gnat2Why.Driver;
 with Adabkend;
-with Stringt;
 with Namet;
-with Opt; use Opt;
+with Opt;              use Opt;
+with Osint;
+with Stringt;
+with System;
+
+with Alfa.Util;        use Alfa.Util;
+
+with Gnat2Why.Driver;
 
 package body Back_End is
 
@@ -56,7 +58,7 @@ package body Back_End is
       Namet.Unlock;
       Stringt.Unlock;
 
-      if Debug.Debug_Flag_Dot_HH then
+      if Translate_Standard_Only then
          Translate_Standard_Package;
          Osint.Exit_Program (Osint.E_Success);
       else

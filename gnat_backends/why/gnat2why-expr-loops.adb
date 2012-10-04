@@ -43,8 +43,8 @@ with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Types;             use Why.Types;
 with Why.Inter;             use Why.Inter;
 
-with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
+with Gnat2Why.Util;    use Gnat2Why.Util;
 
 package body Gnat2Why.Expr.Loops is
 

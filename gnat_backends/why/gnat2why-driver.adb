@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  with Ada.Text_IO; use Ada.Text_IO; (debugging only)
-
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with ALI;                   use ALI;
@@ -56,8 +54,12 @@ with Why;                   use Why;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Ids;               use Why.Ids;
+with Why.Inter;             use Why.Inter;
 with Why.Types;             use Why.Types;
+
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
@@ -67,19 +69,23 @@ pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
 
 package body Gnat2Why.Driver is
 
-   --  This is the main driver for the Ada-to-Why back-end
-
-   procedure Do_Generate_VCs (E : Entity_Id);
-   --  Generate VCs for E (currently only for subprograms)
-
-   procedure Translate_Entity (E : Entity_Id);
-   --  Take an Ada entity and translate it to Why. The procedure decides in
-   --  which file the entity has to be stored
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
 
    procedure Translate_CUnit;
-   --  Translate an Ada unit into Why declarations
+   --  Translates the current compilation unit into Why
+
+   procedure Translate_Entity (E : Entity_Id);
+   --  Translates entity E into Why
+
+   procedure Do_Generate_VCs (E : Entity_Id);
+   --  Generates VCs for entity E. This is currently a noop if E is not a
+   --  subprogram. This could be extended one day to generate VCs for the
+   --  elaboration code of packages.
 
    procedure Print_Why_File (File : in out Why_File);
+   --  Print the input Why3 file on disk
 
    ------------------
    -- Generate_VCs --
@@ -87,16 +93,31 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind then
-         if In_Alfa (E) and then Has_Precondition (E) then
-            Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
-         end if;
+      --  Currently generate VCs only on subprograms in Alfa
 
-         if Body_In_Alfa (E)
-           and then not Debug.Debug_Flag_Dot_GG
-         then
-            Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
-         end if;
+      if not (Ekind (E) in Subprogram_Kind and then In_Alfa (E)) then
+         return;
+      end if;
+
+      --  Generate Why3 code to check absence of run-time errors in
+      --  preconditions.
+
+      if Has_Precondition (E) then
+         Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
+      end if;
+
+      --  In 'check' mode, stop here
+
+      if In_Check_Mode_Only then
+         return;
+      end if;
+
+      --  In 'prove' mode, generate Why3 code to check absence of run-time
+      --  errors in the body of a subprogram, and to check that a subprogram
+      --  body implements its contract.
+
+      if Body_In_Alfa (E) then
+         Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
       end if;
    end Do_Generate_VCs;
 
@@ -205,7 +226,7 @@ package body Gnat2Why.Driver is
       Mark_All_Compilation_Units;
       After_Marking;
 
-      if Compilation_Errors or else Debug_Flag_Dot_KK then
+      if Compilation_Errors or else In_Detect_Mode_Only then
          return;
       end if;
 
@@ -321,11 +342,10 @@ package body Gnat2Why.Driver is
    -- Translate_Entity --
    ----------------------
 
-   procedure Translate_Entity (E : Entity_Id)
-   is
+   procedure Translate_Entity (E : Entity_Id) is
       File : Why_File := Why_Files (Dispatch_Entity (E));
-   begin
 
+   begin
       case Ekind (E) is
          when Type_Kind =>
 
