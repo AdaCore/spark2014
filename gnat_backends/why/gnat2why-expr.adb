@@ -2989,7 +2989,8 @@ package body Gnat2Why.Expr is
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare
-               Ent  : constant Entity_Id := Defining_Identifier (Decl);
+               Ent  : constant Entity_Id :=
+                 Unique_Entity (Defining_Identifier (Decl));
                Base : constant Entity_Id := Get_Base_Type (Decl);
             begin
                if Present (Base) then
@@ -4529,6 +4530,13 @@ package body Gnat2Why.Expr is
                      & Pragma_Id'Image (Get_Pragma_Id (Pragma_Name (Stmt))));
                   raise Not_Implemented;
             end case;
+
+         when N_Freeze_Entity =>
+
+            --  ??? Should not occur (L927-029), but until this is fixed,
+            --  ignore freeze nodes
+
+            return New_Void (Stmt);
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
