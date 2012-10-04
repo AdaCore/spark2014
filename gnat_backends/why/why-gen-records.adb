@@ -708,7 +708,9 @@ package body Why.Gen.Records is
                       Local => True)));
             Next (Field);
          end loop;
-         Mark_Component_List (Components, Empty, Empty);
+         if Present (Components) then
+            Mark_Component_List (Components, Empty, Empty);
+         end if;
       end Init_Component_Info;
 
       ----------------------
