@@ -47,7 +47,9 @@ Principal design goals are as follows:
 
 - The language shall offer an *unambiguous* semantics. In Ada terminology,
   this means that all erroneous and unspecified behaviour shall
-  be eliminated.
+  be eliminated. Implementation-defined features will be automatically
+  determined for projects using GNAT, or will be configurable (where
+  possible) or rejected for other compilers.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 that is 
   currently amenable to formal verification, in line with the goals above, although
