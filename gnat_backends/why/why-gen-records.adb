@@ -767,7 +767,12 @@ package body Why.Gen.Records is
             Clone : constant Entity_Id := Cloned_Subtype (E);
          begin
             Add_Use_For_Entity (P, Clone, EW_Export);
-            if Clone = Base_Type (E) then
+
+            --  if the cloned type is a root type, we need to define the
+            --  conversion functions; in all other cases, they are already
+            --  there.
+
+            if Root_Record_Type (Clone) = Clone then
                Emit
                  (Theory,
                   New_Function_Def
