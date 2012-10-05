@@ -2375,6 +2375,18 @@ package body Alfa.Definition is
          return;
       end if;
 
+      --  The base type or original type should be marked before the current
+      --  type.
+      --  We also protect ourselves against the case where the Etype of a full
+      --  view points to the partial view.
+      --
+
+      if Etype (Id) /= Id and then
+        (Underlying_Type (Etype (Id)) /= Id)
+      then
+         Mark_Type_Entity (Etype (Id), In_Container);
+      end if;
+
       --  Type declarations may refer to private types whose full view has not
       --  been declared yet. However, it is this full view which may define the
       --  type in Why3, if it happens to by in Alfa. Hence the need to define
