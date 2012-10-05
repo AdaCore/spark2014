@@ -65,9 +65,9 @@ package body Why.Gen.Records is
    --  of the record component.
 
    --  For all record types which are not root types, we also define conversion
-   --  functions (in logic and program space) to and from the root type. The
-   --  'from' function has a precondition which expresses the discriminant
-   --  check.
+   --  functions to the root type (in logic space) and from the root type (in
+   --  logic and program space). The 'from' function in program space has a
+   --  precondition which expresses the discriminant check.
 
    --  For the implementation details: This is one place where we have to look
    --  at the declaration node to find which discriminant values imply the
@@ -108,9 +108,9 @@ package body Why.Gen.Records is
    --  in a variant part or not.
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-      (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
-   --  negation wrapper for Is_Completely_Hidden Field (see einfo.ads), which
-   --  also works for E_Component fields
+     (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
+   --  Opposite of Einfo.Is_Completely_Hidden, which also returns True if E is
+   --  not a discriminant.
 
    -----------------------
    -- Define_Ada_Record --
@@ -155,7 +155,7 @@ package body Why.Gen.Records is
 
       procedure Declare_Conversion_Functions;
       --  Generate conversion functions from this type to the root type, and
-      --  back
+      --  back.
 
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
@@ -798,6 +798,10 @@ package body Why.Gen.Records is
       end if;
       Declare_Equality_Function;
    end Declare_Ada_Record;
+
+   -----------------------------------------
+   -- Needs_Discriminant_Check_For_Access --
+   -----------------------------------------
 
    function Needs_Discriminant_Check_For_Access (E : Entity_Id) return Boolean
    is

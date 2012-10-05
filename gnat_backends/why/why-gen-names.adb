@@ -264,10 +264,9 @@ package body Why.Gen.Names is
                                W        => WNE_To_Array);
                   end;
 
+               --  Case of a conversion between two record types
+
                when EW_Abstract =>
-
-                  --  We are in the case of conversion between two record types
-
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
@@ -285,7 +284,6 @@ package body Why.Gen.Names is
                                   W        => WNE_To_Base);
                      end if;
                   end;
-
             end case;
       end case;
    end Conversion_Name;

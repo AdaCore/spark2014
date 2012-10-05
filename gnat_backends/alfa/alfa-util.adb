@@ -494,10 +494,11 @@ package body Alfa.Util is
    -- Root_Record_Component --
    ---------------------------
 
-   function Root_Record_Component (E : Entity_Id) return Entity_Id
-   is
-      function Search_By_Name (Rec : Entity_Id; Comp : Entity_Id)
-                               return Entity_Id;
+   function Root_Record_Component (E : Entity_Id) return Entity_Id is
+
+      function Search_By_Name
+        (Rec  : Entity_Id;
+         Comp : Entity_Id) return Entity_Id;
       --  Given a record type entity and a component/discriminant entity,
       --  search in Rec a component/discriminant entity with the same name.
       --  The caller of this function should be sure that there is such a
@@ -507,73 +508,85 @@ package body Alfa.Util is
       -- Search_By_Name --
       --------------------
 
-      function Search_By_Name (Rec : Entity_Id; Comp : Entity_Id)
-                               return Entity_Id
+      function Search_By_Name
+        (Rec  : Entity_Id;
+         Comp : Entity_Id) return Entity_Id
       is
          Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Rec);
+
       begin
          while Present (Cur_Comp) loop
-            exit when Chars (Cur_Comp) = Chars (Comp);
+            if Chars (Cur_Comp) = Chars (Comp) then
+               return Cur_Comp;
+            end if;
+
             Next_Component_Or_Discriminant (Cur_Comp);
          end loop;
-         if Present (Cur_Comp) then
-            return Cur_Comp;
-         else
-            --  We *must* find a component, so we should never be here.
-            raise Program_Error;
-         end if;
 
+         --  We *must* find a component, so we should never be here
+         raise Program_Error;
       end Search_By_Name;
 
       Rec_Type : constant Entity_Id := Unique_Entity (Scope (E));
       Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
+
+   --  Start of Root_Record_Component
+
    begin
+      --  If E is the component of a root type, return it
+
       if Root = Rec_Type then
          return E;
       end if;
+
+      --  In the component case, it is enough to simply search for the matching
+      --  component in the root type, using "Chars".
+
       if Ekind (E) = E_Component then
-
-         --  In the component case, it is enough to simply search for the
-         --  matching component in the root type, using "Chars".
-
          return Search_By_Name (Root, E);
-      else
-
-         pragma Assert (Ekind (E) = E_Discriminant);
-
-         --  In the discriminant case, we need to climb up the hierarchy of
-         --  types, to get to the corresponding discriminant in the root type.
-         --  Note that there can be more than one corresponding discriminant
-         --  (because of renamings), in this case the frontend has picked one
-         --  for us.
-
-         declare
-            Cur_Type : Entity_Id := Unique_Entity (Base_Type (Rec_Type));
-            Comp     : Entity_Id := E;
-         begin
-            if Cur_Type /= Rec_Type then
-               Comp := Original_Record_Component (Comp);
-            end if;
-            while Cur_Type /= Root loop
-
-               --  at this point, Comp is a component of Cur_Type
-
-               if Present (Corresponding_Discriminant (Comp)) then
-                  Comp := Corresponding_Discriminant (Comp);
-                  Cur_Type := Scope (Comp);
-               else
-                  declare
-                     Old_Type : constant Entity_Id := Cur_Type;
-                  begin
-                     Cur_Type := Unique_Entity (Etype ((Cur_Type)));
-                     pragma Assert (Cur_Type /= Old_Type);
-                     Comp := Search_By_Name (Cur_Type, Comp);
-                  end;
-               end if;
-            end loop;
-            return Comp;
-         end;
       end if;
+
+      --  In the discriminant case, we need to climb up the hierarchy of types,
+      --  to get to the corresponding discriminant in the root type. Note that
+      --  there can be more than one corresponding discriminant (because of
+      --  renamings), in this case the frontend has picked one for us.
+
+      pragma Assert (Ekind (E) = E_Discriminant);
+
+      declare
+         Cur_Type : Entity_Id := Rec_Type;
+         Comp     : Entity_Id := E;
+
+      begin
+         --  Throughout the loop, maintain the invariant that Comp is a
+         --  component of Cur_Type.
+
+         while Cur_Type /= Root loop
+
+            --  If the discriminant Comp constrains a discriminant of the
+            --  parent type, then locate the corresponding discriminant of the
+            --  parent type by calling Corresponding_Discriminant. This is
+            --  needed because both discriminants may not have the same name.
+
+            if Present (Corresponding_Discriminant (Comp)) then
+               Comp     := Corresponding_Discriminant (Comp);
+               Cur_Type := Scope (Comp);
+
+            --  Otherwise, just climb the type derivation/subtyping chain
+
+            else
+               declare
+                  Old_Type : constant Entity_Id := Cur_Type;
+               begin
+                  Cur_Type := Unique_Entity (Etype (Cur_Type));
+                  pragma Assert (Cur_Type /= Old_Type);
+                  Comp := Search_By_Name (Cur_Type, Comp);
+               end;
+            end if;
+         end loop;
+
+         return Comp;
+      end;
    end Root_Record_Component;
 
    ----------------------
@@ -582,10 +595,15 @@ package body Alfa.Util is
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id is
       Result : Entity_Id := E;
+
    begin
+      --  Climb the type derivation chain with Root_Type, applying
+      --  Underlying_Type to pass private type boundaries.
+
       while Underlying_Type (Root_Type (Result)) /= Result loop
          Result := Underlying_Type (Root_Type (Result));
       end loop;
+
       return Result;
    end Root_Record_Type;
 

@@ -329,7 +329,8 @@ package body Why.Gen.Expr is
         (Ada_Node : Node_Id;
          Name     : W_Identifier_Id;
          Expr     : W_Expr_Id;
-         To       : Entity_Id) return W_Expr_Id;
+         To       : Entity_Id) return W_Expr_Id
+      with Pre => Is_Record_Type (To);
       --  The entity "To" is a record type. We potentially need to add
       --  arguments to the conversion function call, this is done in
       --  this function.
@@ -360,14 +361,19 @@ package body Why.Gen.Expr is
          Expr     : W_Expr_Id;
          To       : Entity_Id) return W_Expr_Id
       is
-         Count : Natural := 1;
+         Count       : Natural := 1;
          Constr_Elmt : Elmt_Id;
-         Used_Name : constant W_Identifier_Id :=
-           (if Root_Record_Type (To) = To then Name
-            else To_Program_Space (Name));
+
       begin
-         if Has_Discriminants (To) and then
-           Present (Stored_Constraint (To)) then
+         --  When converting to a record type with discriminants that are
+         --  constrained, we need to check that the constraints are satisfied.
+
+         if Has_Discriminants (To)
+           and then Present (Stored_Constraint (To))
+         then
+            --  Count the number of non-static constraints, which should be
+            --  passed in parameter to the "of_base_" call.
+
             Constr_Elmt := First_Elmt (Stored_Constraint (To));
             while Present (Constr_Elmt) loop
                if not (Is_Static_Expression (Node (Constr_Elmt))) then
@@ -375,12 +381,17 @@ package body Why.Gen.Expr is
                end if;
                Next_Elmt (Constr_Elmt);
             end loop;
+
             declare
                Args      : W_Expr_Array (1 .. Count);
                Discr_Ent : Entity_Id := First_Discriminant (To);
+
             begin
-               Args (1) := Expr;
-               Count := 2;
+               --  Construct the list of parameters to pass to the "of_base_"
+               --  call.
+
+               Args (1)    := Expr;
+               Count       := 2;
                Constr_Elmt := First_Elmt (Stored_Constraint (To));
                while Present (Constr_Elmt) loop
                   if not (Is_Static_Expression (Node (Constr_Elmt))) then
@@ -395,22 +406,30 @@ package body Why.Gen.Expr is
                   Next_Elmt (Constr_Elmt);
                   Next_Discriminant (Discr_Ent);
                end loop;
+
+               pragma Assert (No (Discr_Ent));
+
+               --  Create a call with a precondition that does the discriminant
+               --  check.
+
                return
                  New_VC_Call
                    (Domain   => EW_Prog,
                     Ada_Node => Ada_Node,
-                    Name     => Used_Name,
+                    Name     => To_Program_Space (Name),
                     Progs    => Args,
                     Reason   => VC_Discriminant_Check);
             end;
+
+         --  Nothing to check otherwise
+
          else
             return
-              New_VC_Call
-                (Domain   => EW_Prog,
+              New_Call
+                (Domain   => Domain,
                  Ada_Node => Ada_Node,
-                 Name     => Used_Name,
-                 Progs    => (1 => +Expr),
-                 Reason   => VC_Discriminant_Check);
+                 Name     => Name,
+                 Args     => (1 => +Expr));
          end if;
       end Generate_Record_Conversion;
 
@@ -461,6 +480,9 @@ package body Why.Gen.Expr is
       -- Insert_Single_Conversion --
       ------------------------------
 
+      --  ??? This function is too complex. It should be rewritten when we use
+      --  the frontend information for deciding where to put checks.
+
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
          From : W_Base_Type_Id;
@@ -508,9 +530,9 @@ package body Why.Gen.Expr is
                end if;
 
                if Check_Needed then
-                  if Get_Base_Type (To) = EW_Abstract and then
-                    Ekind (Get_Ada_Node (+To)) in
-                    E_Record_Subtype | E_Record_Type then
+                  if Get_Base_Type (To) = EW_Abstract
+                    and then Is_Record_Type (Get_Ada_Node (+To))
+                  then
                      return
                        Generate_Record_Conversion
                          (Ada_Node => Ada_Node,

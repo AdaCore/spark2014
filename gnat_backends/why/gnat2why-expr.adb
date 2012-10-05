@@ -4246,13 +4246,15 @@ package body Gnat2Why.Expr is
          declare
             Assoc : constant Node_Id := Entity (First (CL));
          begin
-            if Component = Assoc then
-               return True;
-            else
-               return
-                 Root_Record_Component (Component) =
-                 Root_Record_Component (Assoc);
-            end if;
+            --  ??? In some cases, it is necessary to go through the
+            --  Root_Record_Component to compare the component from the
+            --  aggregate type (Component) and the component from the aggregate
+            --  (Assoc). We don't understand why this is needed.
+
+            return Component = Assoc
+                     or else
+                   Root_Record_Component (Component) =
+                   Root_Record_Component (Assoc);
          end;
       end Matching_Component_Association;
 
