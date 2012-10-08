@@ -233,8 +233,16 @@ procedure Gnatprove is
       if Force then
          Args.Append ("--force");
       end if;
-      if No_Proof then
-         Args.Append ("--no-proof");
+      if Proof /= Normal then
+         Args.Append ("--proof");
+         case Proof is
+            when No_WP =>
+               Args.Append ("no_wp");
+            when All_Splitted =>
+               Args.Append ("all_splitted");
+            when Normal =>
+               null;
+         end case;
       end if;
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");

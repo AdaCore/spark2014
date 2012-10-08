@@ -152,7 +152,7 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     global fake_output_generated
     cmd = ["gnatprove"]
     if quick_mode():
-      cmd += ["--no-proof"]
+      cmd += ["--proof=no_wp"]
     if debug_mode():
       cmd += ["--debug"]
     if verbose_mode():

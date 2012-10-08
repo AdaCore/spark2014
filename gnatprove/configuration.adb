@@ -43,6 +43,9 @@ package body Configuration is
    Report_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
 
+   Proof_Input  : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --proof
+
    Clean        : aliased Boolean;
    --  Set to True when --clean was given. Triggers clean_up of GNATprove
    --  intermediate files.
@@ -104,7 +107,7 @@ ASCII.LF &
 ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
-"     --no-proof     Disable proof of VCs, only generate VCs" &
+"     --proof=p      Set the proof mode (p=normal*, no_wp, all_splitted)" &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
@@ -323,9 +326,9 @@ ASCII.LF &
 
       Define_Switch
         (Config,
-         No_Proof'Access,
-         Long_Switch => "--no-proof",
-         Help => "Disable proof of VCs, only generate VCs");
+         Proof_Input'Access,
+         Long_Switch => "--proof=",
+         Help => "Select proof mode (normal | no_wp | all_splitted)");
 
       Define_Switch
         (Config,
@@ -458,6 +461,17 @@ ASCII.LF &
       else
          Abort_With_Help
            ("report should be one of (fail | all | detailed)");
+      end if;
+
+      if Proof_Input.all = "normal" or else Proof_Input.all = "" then
+         Proof := Normal;
+      elsif Proof_Input.all = "no_wp" then
+         Proof := No_WP;
+      elsif Proof_Input.all = "all_splitted" then
+         Proof := All_Splitted;
+      else
+         Abort_With_Help
+           ("proof mode should be one of (normal | no_wp | all_splitted)");
       end if;
 
       declare

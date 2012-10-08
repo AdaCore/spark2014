@@ -84,13 +84,22 @@ package Configuration is
    --    GPR_Detailed means that all VCs will be reported, including a reason
    --    for unproved VCs (timeout, max steps)
    --
+
+   type Proof_Mode is (Normal, No_WP, All_Splitted);
+   --  This is a debug option of GNATprove. This option is simply passed to
+   --  gnatwhy3.
+   --  The modes for proof are:
+   --  Normal: Compute WP, split VCs as necessary, call prover as necessary
+   --  No_WP: do not compute WP, do not split VCs, do not call prover
+   --  All_Splitted: compute VCs, split all VCs, do not call prover
+
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    MMode        : GP_Mode := GPM_Detect;
-   Report      : Report_Mode := GPR_Fail;
+   Report       : Report_Mode := GPR_Fail;
    --  Silent Reporting is the Default
-   No_Proof     : aliased Boolean;
-   --  True if --no-proof switch is present. Do not call Alt-Ergo.
+   Proof        : Proof_Mode := Normal;
+   --  Normal proof mode is the default
    Parallel     : aliased Integer;
    --  The number of parallel processes. Specified with -j.
    Timeout      : aliased Integer;
