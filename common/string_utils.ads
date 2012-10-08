@@ -24,11 +24,21 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Strings.Hash;
 with Uintp;                      use Uintp;
 
 package String_Utils is
    package String_Lists is new
      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
+
+   package String_Sets is new
+     Ada.Containers.Indefinite_Hashed_Sets
+       (Element_Type        => String,
+        Hash                => Ada.Strings.Hash,
+        Equivalent_Elements => "=",
+        "="                 => "="
+       );
 
    function Ends_With (Str, Suffix : String) return Boolean;
    --  return True when Str ends with Suffix
@@ -40,6 +50,9 @@ package String_Utils is
    --  Return a string with first character capitalized
 
    procedure Capitalize_First (S : in out String);
+   --  Modify S in place to capitalize the first character
+
+   procedure Lower_Case_First (S : in out String);
    --  Modify S in place to capitalize the first character
 
    function Int_Image (N : Integer) return String;

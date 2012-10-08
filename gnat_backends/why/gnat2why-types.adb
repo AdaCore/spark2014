@@ -217,7 +217,7 @@ package body Gnat2Why.Types is
          elsif Type_Based_On_Formal_Container (E) then
             Emit
               (File.Cur_Theory,
-               New_Type (Name  => To_Ident (WNE_Type),
+               New_Type (Name  => New_Identifier (Name => "t"),
                          Alias => Why_Logic_Type_Of_Ada_Type
                            (Underlying_Formal_Container_Type (E))));
 

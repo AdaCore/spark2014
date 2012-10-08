@@ -89,6 +89,16 @@ package body String_Utils is
       return (for all J in S'Range => Is_Blank (S (J)));
    end Is_Blank;
 
+   ----------------------
+   -- Lower_Case_First --
+   ----------------------
+
+   procedure Lower_Case_First (S : in out String)
+   is
+   begin
+      S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
+   end Lower_Case_First;
+
    -----------------
    -- Starts_With --
    -----------------

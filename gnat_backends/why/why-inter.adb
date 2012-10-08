@@ -49,6 +49,18 @@ package body Why.Inter is
    package Type_Hierarchy is
      new Constant_Tree (EW_Base_Type, EW_Unit);
 
+   Why3_Keywords : String_Utils.String_Sets.Set;
+
+   function Avoid_Why3_Keyword (S : String) return String;
+   --  Append a "__" whenever S is equal to a Why3 keyword.
+   --  also, lowercase the argument.
+
+   function Extract_Object_Name (Obj : String) return String;
+   --  Extract the name after the last "__"; return Obj when the string does
+   --  not contain "__". This is useful to determine the user name of an Ada
+   --  entity when all we have is its fully scoped name (for hidden effects of
+   --  other units).
+
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
    package Standard_Imports is
@@ -232,6 +244,21 @@ package body Why.Inter is
 
       Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
    end Add_Completion;
+
+   ------------------------
+   -- Avoid_Why3_Keyword --
+   ------------------------
+
+   function Avoid_Why3_Keyword (S : String) return String is
+      S_Copy : String := S;
+   begin
+      Lower_Case_First (S_Copy);
+      if Why3_Keywords.Contains (S_Copy) then
+         return S_Copy & "__";
+      else
+         return S_Copy;
+      end if;
+   end Avoid_Why3_Keyword;
 
    ---------------------
    -- Get_Completions --
@@ -707,6 +734,31 @@ package body Why.Inter is
       end if;
    end EW_Abstract;
 
+   -------------------------
+   -- Extract_Object_Name --
+   -------------------------
+
+   function Extract_Object_Name (Obj : String) return String is
+      Index : Integer := Obj'Last;
+   begin
+      while Index > Obj'First loop
+         if Obj (Index) = '_' then
+            if Obj (Index - 1) = '_' then
+               exit;
+            else
+               Index := Index - 2;
+            end if;
+         else
+            Index := Index - 1;
+         end if;
+      end loop;
+      if Index in Obj'Range and then Obj (Index) = '_' then
+         return Obj (Index + 1 .. Obj'Last);
+      else
+         return Obj;
+      end if;
+   end Extract_Object_Name;
+
    ---------------
    -- Full_Name --
    ---------------
@@ -886,10 +938,8 @@ package body Why.Inter is
            (if Domain = EW_Prog then To_String (WNE_Func)
             else To_String (WNE_Log)),
          when Named_Kind => To_String (WNE_Log),
-         when Object_Kind => To_String (WNE_Obj),
          when Type_Kind => To_String (WNE_Type),
          when others => "");
-
    begin
       --  Treat specially the Capacity component of formal containers, which is
       --  translated as a function.
@@ -919,6 +969,20 @@ package body Why.Inter is
                                       Context  => Full_Name (Ada_N));
             end if;
          end;
+      elsif Ekind (E) in Object_Kind then
+         declare
+            Suffix : constant String :=
+              Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
+         begin
+            if Local then
+               return New_Identifier (Ada_Node => E, Name => Suffix);
+            else
+               return
+                 New_Identifier (Ada_Node => E,
+                                 Name     => Suffix,
+                                 Context  => Full_Name (E));
+            end if;
+         end;
       elsif Local then
          return New_Identifier (Ada_Node => E, Name => Suffix);
       elsif Suffix = "" then
@@ -938,7 +1002,7 @@ package body Why.Inter is
       if Obj = Alfa.Name_Of_Heap_Variable then
          return New_Identifier (Name => Alfa.Name_Of_Heap_Variable);
       else
-         return Prefix (Obj, WNE_Obj);
+         return Prefix (Obj, Extract_Object_Name (Obj));
       end if;
    end To_Why_Id;
 
@@ -1024,4 +1088,70 @@ begin
    Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
    Type_Hierarchy.Move_Child (EW_Real, EW_Int);
    Type_Hierarchy.Freeze;
+
+   Why3_Keywords.Include ("begin");
+   Why3_Keywords.Include ("end");
+   Why3_Keywords.Include ("invariant");
+   Why3_Keywords.Include ("as");
+   Why3_Keywords.Include ("axiom");
+   Why3_Keywords.Include ("clone");
+   Why3_Keywords.Include ("coinductive");
+   Why3_Keywords.Include ("constant");
+   Why3_Keywords.Include ("else");
+   Why3_Keywords.Include ("end");
+   Why3_Keywords.Include ("epsilon");
+   Why3_Keywords.Include ("exists");
+   Why3_Keywords.Include ("export");
+   Why3_Keywords.Include ("false");
+   Why3_Keywords.Include ("forall");
+   Why3_Keywords.Include ("function");
+   Why3_Keywords.Include ("goal");
+   Why3_Keywords.Include ("if");
+   Why3_Keywords.Include ("import");
+   Why3_Keywords.Include ("in");
+   Why3_Keywords.Include ("inductive");
+   Why3_Keywords.Include ("lemma");
+   Why3_Keywords.Include ("let");
+   Why3_Keywords.Include ("match");
+   Why3_Keywords.Include ("meta");
+   Why3_Keywords.Include ("namespace");
+   Why3_Keywords.Include ("not");
+   Why3_Keywords.Include ("predicate");
+   Why3_Keywords.Include ("prop");
+   Why3_Keywords.Include ("then");
+   Why3_Keywords.Include ("theory");
+   Why3_Keywords.Include ("true");
+   Why3_Keywords.Include ("type");
+   Why3_Keywords.Include ("use");
+   Why3_Keywords.Include ("with");
+   Why3_Keywords.Include ("abstract");
+   Why3_Keywords.Include ("absurd");
+   Why3_Keywords.Include ("any");
+   Why3_Keywords.Include ("assert");
+   Why3_Keywords.Include ("assume");
+   Why3_Keywords.Include ("begin");
+   Why3_Keywords.Include ("check");
+   Why3_Keywords.Include ("do");
+   Why3_Keywords.Include ("done");
+   Why3_Keywords.Include ("downto");
+   Why3_Keywords.Include ("exception");
+   Why3_Keywords.Include ("for");
+   Why3_Keywords.Include ("fun");
+   Why3_Keywords.Include ("ghost");
+   Why3_Keywords.Include ("invariant");
+   Why3_Keywords.Include ("loop");
+   Why3_Keywords.Include ("model");
+   Why3_Keywords.Include ("module");
+   Why3_Keywords.Include ("mutable");
+   Why3_Keywords.Include ("private");
+   Why3_Keywords.Include ("raise");
+   Why3_Keywords.Include ("raises");
+   Why3_Keywords.Include ("reads");
+   Why3_Keywords.Include ("rec");
+   Why3_Keywords.Include ("to");
+   Why3_Keywords.Include ("try");
+   Why3_Keywords.Include ("val");
+   Why3_Keywords.Include ("variant");
+   Why3_Keywords.Include ("while");
+   Why3_Keywords.Include ("writes");
 end Why.Inter;
