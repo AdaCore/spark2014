@@ -35,12 +35,11 @@ package body PrefixSum is
          Copy2 := A;
          while Left < A'Length loop
             pragma Assert
-              (
-              (Left+1) mod Space = 0
-              and then
-              (Left+1) mod (Space*2) = Space
-              and then
-              (for all K in A'Range =>
+              ((Left + 1) mod Space = 0
+                 and then
+               (Left + 1) mod (Space * 2) = Space
+                 and then
+               (for all K in A'Range =>
                   (if K in A'First .. Left - Space
                      and then (K + 1) mod (2 * Space) = 0
                    then

@@ -26,64 +26,66 @@ prefixsum.adb:31:27: info: index check proved
 prefixsum.adb:33:24: info: overflow check proved
 prefixsum.adb:33:24: info: range check proved
 prefixsum.adb:37:13: info: loop invariant initialization proved
-prefixsum.adb:40:39: info: division check proved
-prefixsum.adb:42:23: info: index check proved
-prefixsum.adb:42:29: loop invariant preservation not proved, requires A (K) = Copy2 (K) + Copy2 (K - Space)
-prefixsum.adb:42:31: info: index check proved
-prefixsum.adb:42:43: index check not proved
-prefixsum.adb:44:23: info: index check proved
-prefixsum.adb:44:31: info: index check proved
-prefixsum.adb:46:31: info: overflow check proved
-prefixsum.adb:46:31: info: range check proved
-prefixsum.adb:47:13: info: index check proved
-prefixsum.adb:47:26: info: index check proved
-prefixsum.adb:47:35: overflow check not proved
-prefixsum.adb:47:37: index check not proved
-prefixsum.adb:48:31: info: overflow check proved
-prefixsum.adb:48:31: info: range check proved
-prefixsum.adb:48:39: info: overflow check proved
-prefixsum.adb:50:25: info: overflow check proved
-prefixsum.adb:50:25: info: range check proved
-prefixsum.adb:58:26: info: range check proved
+prefixsum.adb:38:27: info: division check proved
+prefixsum.adb:38:37: loop invariant preservation not proved, requires Left + 1) mod Space = 0
+prefixsum.adb:40:27: info: division check proved
+prefixsum.adb:44:39: info: division check proved
+prefixsum.adb:46:23: info: index check proved
+prefixsum.adb:46:31: info: index check proved
+prefixsum.adb:46:43: index check not proved
+prefixsum.adb:48:23: info: index check proved
+prefixsum.adb:48:31: info: index check proved
+prefixsum.adb:50:31: info: range check proved
+prefixsum.adb:50:31: overflow check not proved
+prefixsum.adb:51:13: info: index check proved
+prefixsum.adb:51:26: index check not proved
+prefixsum.adb:51:35: overflow check not proved
+prefixsum.adb:51:37: index check not proved
+prefixsum.adb:52:31: info: overflow check proved
+prefixsum.adb:52:31: info: range check proved
+prefixsum.adb:52:39: info: overflow check proved
+prefixsum.adb:54:25: info: overflow check proved
+prefixsum.adb:54:25: info: range check proved
 prefixsum.adb:5:27: info: range check proved
-prefixsum.adb:65:21: info: range check proved
-prefixsum.adb:65:7: info: index check proved
-prefixsum.adb:66:27: info: division check proved
-prefixsum.adb:66:27: info: overflow check proved
-prefixsum.adb:66:27: info: range check proved
-prefixsum.adb:70:10: loop invariant initialization not proved
-prefixsum.adb:70:10: loop invariant preservation not proved
-prefixsum.adb:70:46: info: division check proved
-prefixsum.adb:71:44: info: division check proved
-prefixsum.adb:71:57: range check not proved
-prefixsum.adb:73:25: info: overflow check proved
-prefixsum.adb:73:29: info: overflow check proved
-prefixsum.adb:73:29: info: range check proved
-prefixsum.adb:77:13: info: loop invariant initialization proved
-prefixsum.adb:80:34: info: division check proved
-prefixsum.adb:81:26: info: index check proved
-prefixsum.adb:81:32: loop invariant preservation not proved, requires A (K) = Copy2 (K) + Copy2 (K - Space)
-prefixsum.adb:81:34: info: index check proved
-prefixsum.adb:81:46: index check not proved
-prefixsum.adb:82:37: info: division check proved
-prefixsum.adb:83:26: info: index check proved
-prefixsum.adb:83:34: info: index check proved
+prefixsum.adb:62:26: info: range check proved
+prefixsum.adb:69:21: info: range check proved
+prefixsum.adb:69:7: info: index check proved
+prefixsum.adb:70:27: info: division check proved
+prefixsum.adb:70:27: info: overflow check proved
+prefixsum.adb:70:27: info: range check proved
+prefixsum.adb:74:10: loop invariant initialization not proved
+prefixsum.adb:74:10: loop invariant preservation not proved
+prefixsum.adb:74:46: info: division check proved
+prefixsum.adb:75:44: info: division check proved
+prefixsum.adb:75:57: range check not proved
+prefixsum.adb:77:25: info: overflow check proved
+prefixsum.adb:77:29: info: overflow check proved
+prefixsum.adb:77:29: info: range check proved
+prefixsum.adb:81:13: info: loop invariant initialization proved
+prefixsum.adb:84:34: info: division check proved
 prefixsum.adb:85:26: info: index check proved
+prefixsum.adb:85:32: loop invariant preservation not proved, requires A (K) = Copy2 (K) + Copy2 (K - Space)
 prefixsum.adb:85:34: info: index check proved
-prefixsum.adb:87:32: overflow check not proved
-prefixsum.adb:87:32: range check not proved
-prefixsum.adb:88:26: info: index check proved
-prefixsum.adb:89:13: info: index check proved
+prefixsum.adb:85:46: index check not proved
+prefixsum.adb:86:37: info: division check proved
+prefixsum.adb:87:26: info: index check proved
+prefixsum.adb:87:34: info: index check proved
 prefixsum.adb:89:26: info: index check proved
-prefixsum.adb:89:35: overflow check not proved
-prefixsum.adb:89:37: info: index check proved
-prefixsum.adb:90:13: info: index check proved
-prefixsum.adb:91:32: info: overflow check proved
-prefixsum.adb:91:32: info: range check proved
-prefixsum.adb:91:40: info: overflow check proved
-prefixsum.adb:93:25: info: division check proved
-prefixsum.adb:93:25: info: overflow check proved
-prefixsum.adb:93:25: info: range check proved
+prefixsum.adb:89:34: info: index check proved
+prefixsum.adb:91:32: overflow check not proved
+prefixsum.adb:91:32: range check not proved
+prefixsum.adb:92:26: info: index check proved
+prefixsum.adb:93:13: info: index check proved
+prefixsum.adb:93:26: info: index check proved
+prefixsum.adb:93:35: overflow check not proved
+prefixsum.adb:93:37: info: index check proved
+prefixsum.adb:94:13: info: index check proved
+prefixsum.adb:95:32: info: overflow check proved
+prefixsum.adb:95:32: info: range check proved
+prefixsum.adb:95:40: info: overflow check proved
+prefixsum.adb:97:25: info: division check proved
+prefixsum.adb:97:25: info: overflow check proved
+prefixsum.adb:97:25: info: range check proved
 prefixsum.ads:12:18: info: overflow check proved
 prefixsum.ads:12:23: info: division check proved
 prefixsum.ads:13:14: info: index check proved
