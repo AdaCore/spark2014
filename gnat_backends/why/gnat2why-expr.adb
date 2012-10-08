@@ -42,7 +42,6 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
-with Opt;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
 with VC_Kinds;              use VC_Kinds;
@@ -107,12 +106,11 @@ package body Gnat2Why.Expr is
    function Apply_Modulus
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
-       Domain                : EW_Domain;
-       Overflow_Check_Needed : in out Boolean)
+       Domain                : EW_Domain)
        return W_Expr_Id;
    --  Apply a modulus on T, where the modulus is defined by the Entity N
-   --  which must be a modular type. If E is not a modular type, set
-   --  Overflow_Check_Needed to True and return T unchanged.
+   --  which must be a modular type. If E is not a modular type, return T
+   --  unchanged.
 
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
@@ -344,8 +342,7 @@ package body Gnat2Why.Expr is
    function Apply_Modulus
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
-       Domain                : EW_Domain;
-       Overflow_Check_Needed : in out Boolean)
+       Domain                : EW_Domain)
       return W_Expr_Id
    is
    begin
@@ -358,7 +355,6 @@ package body Gnat2Why.Expr is
                         2 => New_Integer_Constant
                                 (Value => Modulus (E))));
       else
-         Overflow_Check_Needed := True;
          return T;
       end if;
    end Apply_Modulus;
@@ -3186,7 +3182,6 @@ package body Gnat2Why.Expr is
    is
       T                     : W_Expr_Id;
       Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
-      Overflow_Check_Needed : Boolean := False;
       Range_Check_Needed    : Boolean := False;
       Pretty_Label          : W_Identifier_Id := Why_Empty;
       Local_Params          : Transformation_Params := Params;
@@ -3421,11 +3416,7 @@ package body Gnat2Why.Expr is
                     +Transform_Expr (Right, Current_Type, Domain,
                      Local_Params),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus
-                      (Etype (Expr),
-                       T,
-                       Domain,
-                       Overflow_Check_Needed);
+               T := Apply_Modulus (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Plus =>
@@ -3450,7 +3441,6 @@ package body Gnat2Why.Expr is
                     Args    =>
                       (1 => Transform_Expr (Right, Current_Type,
                        Domain, Local_Params)));
-               Overflow_Check_Needed := True;
             end;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
@@ -3474,11 +3464,7 @@ package body Gnat2Why.Expr is
                                                 Local_Params),
                     Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus
-                      (Etype (Expr),
-                       T,
-                       Domain,
-                       Overflow_Check_Needed);
+               T := Apply_Modulus (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Divide =>
@@ -3508,11 +3494,7 @@ package body Gnat2Why.Expr is
                                             Domain,
                                             Local_Params)),
                     Reason   => VC_Division_Check);
-               T := Apply_Modulus
-                      (Etype (Expr),
-                       T,
-                       Domain,
-                       Overflow_Check_Needed);
+               T := Apply_Modulus (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Rem | N_Op_Mod =>
@@ -3581,7 +3563,6 @@ package body Gnat2Why.Expr is
                                                Local_Params),
                           2 => W_Right));
 
-               Overflow_Check_Needed := True;
             end;
 
          when N_Op_Not =>
@@ -3868,31 +3849,18 @@ package body Gnat2Why.Expr is
                       Domain => Domain);
       end if;
 
-      --  If overflow checks are globally eliminated in assertions, we don't
-      --  generate code in Why3 to check that the intermediate values remain
-      --  within the bounds of the underlying base type, as all intermediate
-      --  computations will actually happen without overflows. Note that
-      --  the overflow mode might be locally reverted to something else than
-      --  ELIMINATED, but we will take this into account when changing this
-      --  code to rely instead on frontend-inserted flags for deciding when
-      --  to perform a check or not. So this is only a workaround for now,
-      --  to avoid generating VCs for overflows when the user passed a switch
-      --  or used a global configuration pragma to eliminate overflows in
-      --  assertions.
-
-      if Params.Phase in Generate_VCs_For_Assertion then
-         Overflow_Check_Needed :=
-           Overflow_Check_Needed
-             and then Opt.Suppress_Options.Overflow_Mode_Assertions
-                        /= Eliminated;
-      end if;
-
       declare
          Overflow_Type : constant W_Base_Type_Id :=
-                           (if Overflow_Check_Needed then
-                              EW_Abstract (Etype (Expr))
-                            else
-                              Why_Empty);
+           (if Nkind (Expr) in
+              N_Op
+            | N_Attribute_Reference
+            | N_If_Expression
+            | N_Case_Expression
+            | N_Type_Conversion
+            and then Do_Overflow_Check (Expr) then
+              EW_Abstract (Etype (Expr))
+            else
+              Why_Empty);
          Range_Type    : constant W_Base_Type_Id :=
                            (if Range_Check_Needed then
                               EW_Abstract (Etype (Expr))
