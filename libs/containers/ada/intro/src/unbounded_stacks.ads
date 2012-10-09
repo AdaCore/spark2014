@@ -5,7 +5,7 @@ generic
    type Item_Type is private;
 
 package Unbounded_Stacks is
-	Counter : Natural := 0;
+   Counter : Natural := 0;
    --  A stack package that holds integers
 
    Chunk_Size : Positive := 2;
@@ -84,7 +84,6 @@ package Unbounded_Stacks is
 
    --  Push a new element on the stack
 private
-   Tmp_Ptr : Content_Ref;
    procedure Enlarge (S : in out Stack) with
      Post => (not Is_Full (S));
 

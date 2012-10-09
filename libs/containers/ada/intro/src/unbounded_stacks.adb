@@ -3,7 +3,7 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO;  use Ada.Text_IO;
 package body Unbounded_Stacks is
 
-   function Create return Stack  is
+   function Create return Stack is
       output : Stack;
    begin
       output.Cont_Ptr := new Content_Type (1 .. Chunk_Size);
@@ -15,7 +15,7 @@ package body Unbounded_Stacks is
       New_Ptr : Content_Ref;
       Old_Used_Elements : Natural := S.Index - 1;
    begin
-      Chunk_Size  := S.Cont_Ptr'Length + Chunk_Size;
+      Chunk_Size := S.Cont_Ptr'Length + Chunk_Size;
       New_Ptr := new Content_Type (1 .. Chunk_Size);
       New_Ptr (1 .. Old_Used_Elements) := S.Cont_Ptr (1 .. Old_Used_Elements);
       Free_Content (S.Cont_Ptr);
@@ -69,7 +69,6 @@ package body Unbounded_Stacks is
       end if;
       output.Cont_Ptr (S.Index) := X;
       output.Index := S.Index + 1;
-
       return output;
    end Push;
 
@@ -83,36 +82,37 @@ package body Unbounded_Stacks is
    end Push;
 
    procedure Adjust (Object : in out Stack) is
+      Tmp_Ptr : Content_Ref;
    begin
-      Put_Line (Item => "Adjust.Object.Cont_Ptr'Length: "
-                & Integer'Image (Object.Cont_Ptr'Length));
-      Put_Line (Item => "Adjust.Object.Index: "
+      Put (Item => "Adjust.Object[" & Integer'Image (Object.Cuenta)
+           & "].Cont_Ptr'Length: "
+           & Integer'Image (Object.Cont_Ptr'Length));
+      Put_Line (Item => ", Index: "
                 & Integer'Image (Object.Index));
-      Put_Line (Item => "Adjust.Object.Cuenta: "
-                & Integer'Image (Object.Cuenta));
       Tmp_Ptr := new Content_Type (1 .. Object.Cont_Ptr'Length);
       Tmp_Ptr.all := Object.Cont_Ptr.all;
-      --  Object.Cont_Ptr := Tmp_Ptr;
+      Object.Cont_Ptr := new Content_Type (1 .. Object.Cont_Ptr'Length);
+      Object.Cont_Ptr.all := Tmp_Ptr.all;
    end Adjust;
+
    procedure Initialize (Object : in out Stack) is
    begin
       Counter := Counter + 1;
       Object.Cuenta := Counter;
-      Put_Line (Item => "Initialize.Object.Cuenta: "
-                & Integer'Image (Object.Cuenta));
+      Put_Line (Item => "Initialize.Object["
+                & Integer'Image (Object.Cuenta) &"]");
    end Initialize;
    procedure Finalize (Object : in out Stack) is
    begin
-      Put_Line (Item => "Finalize.Object.Cont_Ptr'Length: "
-                & Integer'Image (Object.Cont_Ptr'Length));
-      Put_Line (Item => "Finalize.Object.Index: "
+      Put (Item => "Finalize.Object[" & Integer'Image (Object.Cuenta)
+           &"].Cont_Ptr'Length: "
+           & Integer'Image (Object.Cont_Ptr'Length));
+      Put_Line (Item => ", Index: "
                 & Integer'Image (Object.Index));
-      Put_Line (Item => "Finalize.Object.Cuenta: "
-                & Integer'Image (Object.Cuenta));
+      --  idempotent operations:
       if Object.Cont_Ptr'Length /= 0 then
          Free_Content (Object.Cont_Ptr);
       end if;
-      Free_Content (Tmp_Ptr);
    end Finalize;
 
 end Unbounded_Stacks;
