@@ -23,14 +23,13 @@ p.adb:46:16: info: range check proved
 p.adb:46:19: info: range check proved
 p.adb:50:40: info: range check proved
 p.adb:9:23: info: range check proved
-++ p__proc p.ads:2
-++ p__proc2 p.adb:12
-++ p__proc3 p.adb:18
-++ p__proc4 p.adb:24
-++ p__proc5 p.adb:30
-++ p__proc6 p.adb:36
-++ p__proc7__zero p.adb:43
-++ p__proc7 p.adb:42
-++ p__proc8__zero p.adb:50
-++ p__proc8 p.adb:49
-
+++ proc p.ads:2
+++ proc2 p.adb:12
+++ proc3 p.adb:18
+++ proc4 p.adb:24
+++ proc5 p.adb:30
+++ proc6 p.adb:36
+++ zero p.adb:43
+++ proc7 p.adb:42
+++ zero p.adb:50
+++ proc8 p.adb:49
