@@ -702,8 +702,7 @@ package body Gnat2Why.Decls is
                declare
                   Spec  : constant Node_Id := Specification (Node);
                   Theory_Name : constant String  :=
-                    Capitalize_First (Get_Name_String (Chars
-                      (Defining_Unit_Name (Spec))));
+                    Capitalize_First (Full_Name (Defining_Unit_Name (Spec)));
 
                begin
 
@@ -873,8 +872,8 @@ package body Gnat2Why.Decls is
 
       Decls : constant List_Id := Visible_Declarations (Parent (E));
       UName : constant String := Full_Name (E);
-      Generic_Name : constant String := Get_Name_String
-        (Chars (Generic_Parent (Parent (E))));
+      Generic_Name : constant String :=
+        Full_Name (Generic_Parent (Parent (E)));
       Assoc : constant List_Id := Generic_Associations
         (Get_Package_Instantiation_Node (E));
       --  use Parent field to reach N_Genereic_Package_Declaration
