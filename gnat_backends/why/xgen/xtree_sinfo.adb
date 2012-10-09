@@ -777,6 +777,8 @@ package body Xtree_Sinfo is
                  "Kind", "EW_Theory_Type");
       New_Field (W_Theory_Declaration,
                  "Includes", "W_Include_Declaration", Id_Set);
+      New_Field (W_Theory_Declaration,
+                 "Comment", "W_Identifier", Id_Lone);
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
       --------------------------

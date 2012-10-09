@@ -25,12 +25,15 @@
 
 with Ada.Containers.Hashed_Maps;
 
+with GNAT.Source_Info;
+
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
@@ -633,7 +636,15 @@ package body Gnat2Why.Subprograms is
       --  We open a new theory, so that the context is fresh for that
       --  subprogram
 
-      Open_Theory (File, Name & "__def");
+      Open_Theory (File, Name & "__def",
+                   Comment =>
+                     "Module for checking absence of run-time errors and "
+                       & "subprogram contract on subprogram body of "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Current_Subp := E;
 
       --  First, clear the list of translations for X'Old expressions, and
@@ -727,7 +738,16 @@ package body Gnat2Why.Subprograms is
       Binders : constant Binder_Array := Compute_Binders (E);
       Params  : Transformation_Params;
    begin
-      Open_Theory (File, Name & "__pre");
+      Open_Theory (File, Name & "__pre",
+                   Comment =>
+                     "Module for checking absence of run-time errors in "
+                       & "the subprogram spec of "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       Current_Subp := E;
       Params :=
         (File        => File.File,
@@ -822,7 +842,15 @@ package body Gnat2Why.Subprograms is
       Params : Transformation_Params;
 
    begin
-      Open_Theory (File, Name);
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module giving a defining axiom for the "
+                       & "expression function "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  If the entity's body is not in Alfa, generate an empty module.
 
@@ -937,7 +965,15 @@ package body Gnat2Why.Subprograms is
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
    begin
-      Open_Theory (File, Name);
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for declaring a program function (and possibly "
+                       & "a logic function) for "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Params :=
         (File        => File.File,

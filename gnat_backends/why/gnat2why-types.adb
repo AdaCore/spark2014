@@ -26,11 +26,14 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
+with GNAT.Source_Info;
+
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with Gnat2Why.Decls;     use Gnat2Why.Decls;
+with Namet;              use Namet;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
+with Sinput;             use Sinput;
 with Stand;              use Stand;
 
 with Alfa.Definition;    use Alfa.Definition;
@@ -48,6 +51,7 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
+with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 
 package body Gnat2Why.Types is
@@ -263,7 +267,15 @@ package body Gnat2Why.Types is
    --  Start of Translate_Type
 
    begin
-      Open_Theory (File, Name);
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for axiomatizing type "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       Translate_Underlying_Type (File.Cur_Theory, E);
 
       --  We declare a default value for all types, in principle.

@@ -23,9 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNAT.Source_Info;
+
 with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
+with Sinput;               use Sinput;
 
 with Alfa.Definition;      use Alfa.Definition;
 with Alfa.Util;            use Alfa.Util;
@@ -262,7 +265,14 @@ package body Gnat2Why.Decls is
       end Normalize_Type;
 
    begin
-      Open_Theory (File, Name);
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining a ref holding the value of variable "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Generate an alias for the name of the object's type, based on the
       --  name of the object. This is useful when generating logic functions
@@ -306,7 +316,14 @@ package body Gnat2Why.Decls is
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Open_Theory (File, Name);
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining the value of constant "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Default values of parameters are not considered as the value of the
       --  constant representing the parameter.

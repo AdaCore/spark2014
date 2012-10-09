@@ -859,14 +859,17 @@ package body Why.Inter is
    -- Open_Theory --
    -----------------
 
-   procedure Open_Theory (P    : in out Why_File;
-                          Name : String;
-                          Kind : EW_Theory_Type := EW_Module) is
+   procedure Open_Theory (P       : in out Why_File;
+                          Name    : String;
+                          Comment : String;
+                          Kind    : EW_Theory_Type := EW_Module)
+   is
       S : constant String := Capitalize_First (Name);
    begin
       P.Cur_Theory :=
-        New_Theory_Declaration (Name => New_Identifier (Name => S),
-                                Kind => Kind);
+        New_Theory_Declaration (Name    => New_Identifier (Name => S),
+                                Kind    => Kind,
+                                Comment => New_Identifier (Name => Comment));
    end Open_Theory;
 
    ---------------

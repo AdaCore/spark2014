@@ -26,6 +26,8 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
+with GNAT.Source_Info;
+
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
@@ -37,8 +39,10 @@ with Sem_Aux;               use Sem_Aux;
 with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
+with Stringt;               use Stringt;
 with Opt;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
@@ -1777,7 +1781,14 @@ package body Gnat2Why.Expr is
          if Params.File = Decl_File.File then
             Decl_File.Cur_Theory := Why_Empty;
          end if;
-         Open_Theory (Decl_File, Name);
+         Open_Theory
+           (Decl_File, Name,
+            Comment =>
+              "Module for defining the value of the aggregate at "
+                & (if Sloc (Expr) > 0 then
+                      Build_Location_String (Sloc (Expr))
+                   else "<no location>")
+                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
          Emit (Decl_File.Cur_Theory,
                New_Function_Decl (Domain      => EW_Term,
@@ -4607,7 +4618,15 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Why_Empty;
       end if;
 
-      Open_Theory (Decl_File, Name);
+      String_To_Name_Buffer (Strval (N));
+      Open_Theory (Decl_File, Name,
+                   Comment =>
+                     "Module for defining a value for string literal "
+                       & """" & Name_Buffer (1 .. Name_Len) & """"
+                       & (if Sloc (N) > 0 then
+                            " defined at " & Build_Location_String (Sloc (N))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Emit
         (Decl_File.Cur_Theory,
          New_Function_Decl
