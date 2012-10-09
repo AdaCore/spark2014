@@ -42,9 +42,10 @@ Legality rules
 In addition to the assertion statements ``pragma Check`` and ``pragma
 Assert``, a SPARK 2014 subprogram can contain the statement ``pragma
 Assert_And_Cut`` and ``pragma Assume``, both carrying a boolean
-expression. This boolean property must be true at the point of the ``pragma
-Assert_And_Cut``, as it is the case for the other forms of assertions. This
-pragma can occur anywhere a ``pragma Assert`` can occur.
+expression. This boolean property must be true at the point of the
+``pragma Assert_And_Cut`` or ``pragma Assume``, as it is the case for
+the other forms of assertions. These pragmas can occur anywhere a
+``pragma Assert`` can occur.
 
 Any loop may contain, at any position in the top-level statement list, a
 ``pragma Loop_Invariant``.
