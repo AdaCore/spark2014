@@ -82,9 +82,9 @@ Proving this property implies the termination of the loop.
 Dynamic semantics
 -----------------
 
-The pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and ``Loop_Invariant``
-all have the same dynamic semantics, namely a dynamic check that the boolean
-expression evaluates to ``True``.
+The pragmas ``Check``, ``Assert``, ``Assume``, ``Assert_And_Cut`` and
+``Loop_Invariant`` all have the same dynamic semantics, namely a
+dynamic check that the boolean expression evaluates to ``True``.
 
 Pragma ``Loop_Variant`` corresponds to a dynamic check with the following
 semantics: The check is always true at the first iteration; at subsequent
