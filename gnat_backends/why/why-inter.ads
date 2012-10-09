@@ -160,10 +160,16 @@ package Why.Inter is
 
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
-                       Local  : Boolean := False) return W_Identifier_Id;
+                       Local  : Boolean := False;
+                       Rec    : Entity_Id := Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic world
-   --  There is also a local and a global name of each identifier
+   --  There is also a local and a global name of each identifier. The local
+   --  name is to be used when referring to the entity in the Why3 module in
+   --  which it is being defined. The global name is to be used everywhere
+   --  else.
+   --  The Rec entity is used only for record components and specifies the
+   --  (sub-)type which contains the component.
 
    function To_Why_Id (Obj : String) return W_Identifier_Id;
    --  This function should only be called for object references for effects

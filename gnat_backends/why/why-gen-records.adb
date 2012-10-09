@@ -831,12 +831,14 @@ package body Why.Gen.Records is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
-      Field    : Entity_Id) return W_Expr_Id
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
    is
       Call_Id : constant W_Identifier_Id :=
         (if Domain = EW_Prog then
-         To_Program_Space (To_Why_Id (Field))
-         else To_Why_Id (Field));
+         To_Program_Space (To_Why_Id (Field, Rec => Ty))
+         else To_Why_Id (Field, Rec => Ty));
    begin
       if Needs_Discriminant_Check_For_Access (Field) then
          return
@@ -863,10 +865,12 @@ package body Why.Gen.Records is
 
    function New_Ada_Record_Update
      (Ada_Node : Node_Id;
-      Domain : EW_Domain;
-      Name   : W_Expr_Id;
-      Field  : Entity_Id;
-      Value  : W_Expr_Id) return W_Expr_Id
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
    is
       Update_Expr : constant W_Expr_Id :=
         New_Record_Update
@@ -876,7 +880,7 @@ package body Why.Gen.Records is
              (1 =>
                 New_Field_Association
                   (Domain => Domain,
-                   Field  => To_Why_Id (Field, Domain),
+                   Field  => To_Why_Id (Field, Domain, Rec => Ty),
                    Value  => Value)));
 
    begin
@@ -886,7 +890,8 @@ package body Why.Gen.Records is
              (+New_Ignore
                   (Ada_Node => Ada_Node,
                    Prog     =>
-                     +New_Ada_Record_Access (Ada_Node, Domain, Name, Field)),
+                   +New_Ada_Record_Access
+                     (Ada_Node, Domain, Name, Field, Ty)),
               +Update_Expr);
       else
          return Update_Expr;

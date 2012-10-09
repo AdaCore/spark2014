@@ -41,18 +41,21 @@ package Why.Gen.Records is
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id;
-      Domain : EW_Domain;
-      Name   : W_Expr_Id;
-      Field  : Entity_Id) return W_Expr_Id;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the access to an Ada
    --  record field. Emit all necessary checks.
 
    function New_Ada_Record_Update
      (Ada_Node : Node_Id;
-      Domain : EW_Domain;
-      Name   : W_Expr_Id;
-      Field  : Entity_Id;
-      Value  : W_Expr_Id) return W_Expr_Id;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the update to an Ada
    --  record field. Emit all necessary checks.
    --  Note that this function does not generate an assignment, instead it

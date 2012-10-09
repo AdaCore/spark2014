@@ -1292,6 +1292,7 @@ package body Gnat2Why.Expr is
                            (Ada_Node => N,
                             Domain   => Domain,
                             Name     => Expr,
+                            Ty       => Unique_Entity (Etype (Prefix (N))),
                             Field    => Sel_Ent),
                        To            => EW_Abstract (Etype (N)),
                        From          => EW_Abstract (Etype (Sel_Ent)));
@@ -1362,6 +1363,7 @@ package body Gnat2Why.Expr is
                Domain   => Domain,
                Name     => Pref,
                Field    => Entity (Selector_Name (N)),
+               Ty       => Unique_Entity (Etype (Prefix (N))),
                Value    => Value);
 
          when N_Indexed_Component =>

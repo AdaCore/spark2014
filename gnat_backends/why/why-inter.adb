@@ -909,7 +909,8 @@ package body Why.Inter is
 
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
-                       Local  : Boolean := False) return W_Identifier_Id
+                       Local  : Boolean := False;
+                       Rec    : Entity_Id := Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
@@ -937,7 +938,8 @@ package body Why.Inter is
          declare
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));
-            Ada_N : constant Node_Id := Scope (E);
+            Ada_N : constant Node_Id :=
+              (if Rec = Empty then Scope (E) else Rec);
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
