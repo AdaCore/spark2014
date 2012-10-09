@@ -12,7 +12,9 @@ package body PrefixSum is
       while Space < A'Length loop
          pragma Assert
            (All_Elements_In (A, Space * Maximum)
-             and then
+            and then
+           (Space = 1 or Space = 2 or Space = 4 or Space = 8)
+            and then
            (for all K in A'Range =>
               (if (K + 1) mod 8 = 0
                  and then Space = 8
@@ -36,8 +38,12 @@ package body PrefixSum is
          while Left < A'Length loop
             pragma Assert
               ((Left + 1) mod Space = 0
-                 and then
+               and then
+                 All_Elements_In (A, Space * Maximum)
+                    and then
                (Left + 1) mod (Space * 2) = Space
+                 and then
+               (if Left >= A'Length then Left = 8 or Left = 9)
                  and then
                (for all K in A'Range =>
                   (if K in A'First .. Left - Space
@@ -71,22 +77,30 @@ package body PrefixSum is
 
       Copy1 := A;
       while Space > 0 loop
-         pragma Assert (Space <= Input_Space / 2
+         pragma Assert ((Space = 4 or Space = 2 or Space = 1)
            and then All_Elements_In (A, (4 / Space) * 8 * Maximum));
 
          Right := Space * 2 - 1;
-
          Copy2 := A;
          while Right < A'Length loop
             pragma Assert
-              (for all K in A'Range =>
+              ((for all K in A'Range =>
                   (if K in A'First .. Right - Space * 2 then
                      (if (K + 1) mod (2 * Space) = 0 then
                          A (K) = Copy2 (K) + Copy2 (K - Space)
                       elsif (K + 1) mod Space = 0 then
                          A (K) = Copy2 (K + Space)
                       else
-                         A (K) = Copy2 (K))));
+                      A (K) = Copy2 (K))
+                   else
+                     A (K) = Copy2 (K)
+                  ))
+               and then
+              (Right + 1) mod (Space * 2) = 0
+               and then
+              (if Right >= A'Length then Right = 9 or Right = 11 or Right = 15)
+--                 and then
+              );
 
             Left      := Right - Space;
             Temp      := A (Right);
