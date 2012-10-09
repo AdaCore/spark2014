@@ -51,7 +51,7 @@ Principal design goals are as follows:
   determined for projects using GNAT, or will be configurable (where
   possible) or rejected for other compilers.
 
-- The |SPARK| language subset shall embody the largest subset of Ada 2012 that is 
+- The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
   currently amenable to formal verification, in line with the goals above, although
   future advances in verification research and computing power may allow
   for expansion of the language and the forms of verification available.
@@ -129,7 +129,7 @@ Method of Description and Syntax Notation
 -----------------------------------------
 
 In expressing the syntax and rules of |SPARK|, the remaining chapters of
-this document follow the notational conventions of the Ada 2012 LRM (section 1.1.4). 
+this document follow the notational conventions of the Ada 2012 LRM (section 1.1.4).
 
 Original Material from TJJ
 --------------------------
@@ -155,7 +155,7 @@ to use in aspect specifications to provide:
 A number of selectable restrictions specific to |SPARK| have been
 introduced to provide language profiles tailored to particular
 domains, but the restrictions may be applied individually using the
-**pragma** ``Restrictions`` or, conversely, a restriction that is in
+pragma ``Restrictions`` or, conversely, a restriction that is in
 place, possibly due to a particular profile being active, may be
 overridden locally using the same pragma.
 
@@ -164,7 +164,7 @@ overridden locally using the same pragma.
   next paragraph, which is why I raise this question.  I think there
   should also be a command line switch or some way of stating that the
   whole program has to be in |SPARK| unless a deliberate escape is
-  made. Alternatively, do e need the pragma/aspect |SPARK| at all.
+  made. Alternatively, do we need the pragma/aspect |SPARK| at all.
   Could we assume that the program is |SPARK| unless we step outside
   the subset when a warning is given, and perhaps we could have a
   restriction in |SPARK| called Ada => 2012, Ada => 95, etc. which
