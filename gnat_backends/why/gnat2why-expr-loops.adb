@@ -26,6 +26,8 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
+with String_Utils;          use String_Utils;
+
 with Atree;                 use Atree;
 with Nlists;                use Nlists;
 with Sinfo;                 use Sinfo;
@@ -162,7 +164,8 @@ package body Gnat2Why.Expr.Loops is
    function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
    is
       Loop_Entity : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
-      Exc_Name    : constant String := Full_Name (Loop_Entity);
+      Exc_Name    : constant String :=
+        Capitalize_First (Full_Name (Loop_Entity));
       Raise_Stmt  : constant W_Prog_Id :=
                       New_Raise
                         (Ada_Node => Stmt,
@@ -392,6 +395,9 @@ package body Gnat2Why.Expr.Loops is
       --    with <loop_name> -> void
       --  end if
 
+      Cap_Loop_Name : constant String :=
+        Capitalize_First (Loop_Name);
+
       Entire_Body : constant W_Prog_Id :=
         Sequence
           (New_Assume_Statement (Ada_Node => Empty, Post => Cond_Pred),
@@ -402,7 +408,7 @@ package body Gnat2Why.Expr.Loops is
                  Then_Part => +Inv_Check,
                  Else_Part =>
                    New_Raise
-                     (Name => New_Identifier (Name => Loop_Name)))));
+                     (Name => New_Identifier (Name => Cap_Loop_Name)))));
       Loop_Stmt   : constant W_Prog_Id :=
                       New_While_Loop
                         (Condition   => True_Prog,
@@ -413,7 +419,7 @@ package body Gnat2Why.Expr.Loops is
       Emit
         (Body_Params.Theory,
          New_Exception_Declaration
-           (Name => New_Identifier (Name => Loop_Name),
+           (Name => New_Identifier (Name => Cap_Loop_Name),
             Arg  => Why.Types.Why_Empty));
 
       return
@@ -427,7 +433,7 @@ package body Gnat2Why.Expr.Loops is
                    Handler =>
                      (1 =>
                         New_Handler
-                          (Name => New_Identifier (Name => Loop_Name),
+                          (Name => New_Identifier (Name => Cap_Loop_Name),
                            Def  => New_Void)))));
    end Wrap_Loop;
 

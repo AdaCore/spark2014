@@ -6,7 +6,7 @@ module Main
   use export "_gnatprove_standard_th".Main
 
   (* exception used to simulate return statements *)
-  exception Gnatprove_Exception___result_exc
+  exception Return__exc
 
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not

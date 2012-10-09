@@ -1011,13 +1011,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "match ");
       Traverse (State, +Get_Term (Node));
-      P (O, " with ");
-      NL (O);
+      PL (O, " with");
       Relative_Indent (O, 1);
       Traverse_List (State, +Get_Branches (Node));
       Relative_Indent (O, -1);
-      P (O, "end");
-      NL (O);
+      PL (O, "end");
       State.Control := Abandon_Children;
    end Match_Pre_Op;
 
@@ -1267,9 +1265,9 @@ package body Why.Atree.Sprint is
       Node  : W_Abstract_Expr_Id)
    is
    begin
-      P (O, "abstract (");
+      P (O, "abstract ");
       Traverse (State, +Get_Expr (Node));
-      P (O, ") {");
+      P (O, " {");
       Traverse (State, +Get_Post (Node));
       P (O, "}");
       State.Control := Abandon_Children;
@@ -1337,7 +1335,7 @@ package body Why.Atree.Sprint is
    is
       Exn_Type : constant W_Simple_Value_Type_OId := Get_Exn_Type (Node);
    begin
-      P (O, "raise Gnatprove_Exception__");
+      P (O, "raise ");
 
       Traverse (State, +Get_Name (Node));
 
@@ -1363,14 +1361,9 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Prog (Node));
       Relative_Indent (O, -1);
       NL (O);
-      PL (O, "with ");
+      PL (O, "with");
       Relative_Indent (O, 1);
-      P (O, "Gnatprove_Exception__");
-      Print_List
-        (State,
-         +Get_Handler (Node),
-         ", Gnatprove_Exception__", Newline => True);
-
+      Print_List (State, +Get_Handler (Node), ", ", Newline => True);
       Relative_Indent (O, -1);
       NL (O);
       P (O, "end");
@@ -1563,15 +1556,14 @@ package body Why.Atree.Sprint is
             end if;
 
             PL (O, " =");
-            NL (O);
             Relative_Indent (O, 1);
 
             if Pre = Why_Empty then
                if not Is_Empty (+Binders) then
-                  PL (O, "{ }");
+                  P (O, "{ }");
                end if;
             else
-               PL (O, "{ ");
+               P (O, "{ ");
                Traverse (State, +Pre);
                PL (O, " }");
             end if;
@@ -1587,7 +1579,7 @@ package body Why.Atree.Sprint is
                   PL (O, "{ true }");
                end if;
             else
-               PL (O, "{ ");
+               P (O, "{ ");
                Traverse (State, +Post);
                PL (O, " }");
             end if;
@@ -1729,7 +1721,7 @@ package body Why.Atree.Sprint is
    is
       Arg : constant W_Primitive_Type_OId := Get_Arg (Node);
    begin
-      P (O, "exception Gnatprove_Exception__");
+      P (O, "exception ");
       Traverse (State, +Get_Name (Node));
 
       if Arg /= Why_Empty then

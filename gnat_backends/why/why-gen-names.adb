@@ -639,7 +639,7 @@ package body Why.Gen.Names is
          when WNE_Type         => return "t";
          when WNE_Ignore       => return "___ignore";
          when WNE_Result       => return "result";
-         when WNE_Result_Exc   => return "_result_exc";
+         when WNE_Result_Exc   => return "Return__exc";
          when WNE_Overflow     => return "overflow_check_";
          when WNE_Eq           => return "eq";
          when WNE_Range_Axiom  => return "range_axiom";
