@@ -238,8 +238,8 @@ procedure Gnatprove is
          case Proof is
             when No_WP =>
                Args.Append ("no_wp");
-            when All_Splitted =>
-               Args.Append ("all_splitted");
+            when All_Split =>
+               Args.Append ("all_split");
             when Normal =>
                null;
          end case;

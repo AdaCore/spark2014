@@ -107,7 +107,7 @@ ASCII.LF &
 ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=normal*, no_wp, all_splitted)" &
+"     --proof=p      Set the proof mode (p=normal*, no_wp, all_split)" &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
@@ -328,7 +328,7 @@ ASCII.LF &
         (Config,
          Proof_Input'Access,
          Long_Switch => "--proof=",
-         Help => "Select proof mode (normal | no_wp | all_splitted)");
+         Help => "Select proof mode (normal | no_wp | all_split)");
 
       Define_Switch
         (Config,
@@ -467,11 +467,11 @@ ASCII.LF &
          Proof := Normal;
       elsif Proof_Input.all = "no_wp" then
          Proof := No_WP;
-      elsif Proof_Input.all = "all_splitted" then
-         Proof := All_Splitted;
+      elsif Proof_Input.all = "all_split" then
+         Proof := All_Split;
       else
          Abort_With_Help
-           ("proof mode should be one of (normal | no_wp | all_splitted)");
+           ("proof mode should be one of (normal | no_wp | all_split)");
       end if;
 
       declare

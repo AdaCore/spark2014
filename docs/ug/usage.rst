@@ -37,7 +37,7 @@ GNATprove accepts the following options::
    --proof=               Proof mode
       normal                Normal mode
       no_wp                 Do not compute VCs, do not call prover
-      all_splitted          Compute all VCs, save them to file, do not call prover
+      all_split             Compute all VCs, save them to file, do not call prover
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
    --timeout=s            Set the timeout for Alt-Ergo in seconds (default: 10)
    --help                 Display the list of options
@@ -71,7 +71,7 @@ use and influences th work that is actually done by gnatprove. If this option
 is set to ``normal``, gnatprove will compute VCs and run the prover in an
 optimal way to prove the user code. If this option is set to ``no_wp``, the
 VCs are not computed, and no prover is called. If this option is set to
-``all_splitted`` the VCs are computed, but no prover is called. With the
+``all_split`` the VCs are computed, but no prover is called. With the
 option ``-q``, gnatprove does give the minimum of messages, while with option
 ``-v``, on the contrary, all details are given.
 

@@ -1,5 +1,4 @@
--+ p__set p.adb:2 (access)
--+ p__p0__get p.adb:10 (access)
-++ p__p0__p1 p.adb:15
--+ p__p0 p.ads:3 (access)
-
+-+ set p.adb:2 (access)
+-+ get p.adb:10 (access)
+++ p1 p.adb:15
+-+ p0 p.ads:3 (access)
