@@ -99,7 +99,6 @@ package body PrefixSum is
               (Right + 1) mod (Space * 2) = 0
                and then
               (if Right >= A'Length then Right = 9 or Right = 11 or Right = 15)
---                 and then
               );
 
             Left      := Right - Space;
