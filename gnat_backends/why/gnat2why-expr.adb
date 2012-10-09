@@ -3744,16 +3744,13 @@ package body Gnat2Why.Expr is
             declare
                Subp       : constant Entity_Id := Entity (Name (Expr));
                --  Retrieve type of function result from function called
-
-               Result_Typ : constant Entity_Id :=
-                              Entity (Result_Definition (Parent (Subp)));
                Name       : constant W_Identifier_Id :=
                  To_Why_Id (Subp, Domain, Local => False);
                Nb_Of_Refs : Natural;
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
             begin
-               Current_Type := +Why_Logic_Type_Of_Ada_Type (Result_Typ);
+               Current_Type := Type_Of_Node (Etype (Subp));
                if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call
