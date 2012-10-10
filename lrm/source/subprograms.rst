@@ -110,12 +110,12 @@ where
 
    contract_cases      ::= Contract_Cases => (contract_case_list)
    contrct_case_list   ::= contract_case {, contract_case_list}
-   contract_case       ::= guard => consequence
+   contract_case       ::= contract_guard => consequence
                          | others => consequence
 
 where
 
-   ``guard       ::=`` *Boolean_*\ ``expression``
+   ``contract_guard    ::=`` *Boolean_*\ ``expression``
 
    ``consequence ::=`` *Boolean_*\ ``expression``
 
@@ -134,10 +134,6 @@ where
    subprogram F, then a ``consequence`` may use the name F'Result in
    its *Boolean_*\ ``expression``. A procedure subprogram may not use
    such a name.
-
-
-.. centered:: **Static Semantics**
-
 #. The *variables* appearing in the ``contact_cases`` of a subprogram
    shall be *formal parameters* or *global variables* of the
    subprogram or subcomponents thereof.
@@ -145,18 +141,31 @@ where
    or **in out**.
 #. The *variables* appearing in the ``consequence`` must be of mode
    **out** or **in out**.
+#. At most one ``contract_guard`` may be True when the subprogram is
+   called.  A True ``contract_guard`` *selects* the ``contract_case``
+   to which it belongs.
+#. If there is not a ``contract_guard`` which is True when the
+   subprgram is called, then there must be an **others**
+   ``contract_case`` and the **others** ``contract_case`` is *selected*.
+#. If a ``contract_case`` is *selected* when a subprogram is called,
+   then the expression of the ``concequence`` of the *selected*
+   ``contract_case`` must be True.
 
-.. centered:: **Verification Rules**
 
-.. centered:: *Checked by Proof*
+.. centered:: **Static Semantics**
 
-#. The values of *variables* appearing in the ``guard`` are the entry
+#. The values of *variables* appearing in the ``contract_guard`` are the entry
    values of the *variables* at a call of the subprogram associated
    with the ``contract_cases``.
 #. The values of variables (including function result attributes)
    appearing the ``consequence`` are their final values after
    completion of the subprogram associated with the
    ``contract_cases``.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
+
 #. A verification condition is that exactly one ``guard`` is True.  An
    **others** case is considered to a negation of the conjunction of
    every other ``guard`` and this is anded with the precondition.
@@ -245,33 +254,6 @@ subcomponent of a larger containing object.  Such objects are called
 #. In a single ``mode_refinement`` there can be at most one of each of
    a ``mode_specification`` with a ``mode_selector`` of ``Input``,
    ``Output`` and ``In_Out``.
-#. The ``mode_selector`` of a ``mode_specification`` determines the
-   effective mode of the ``moded_items`` in the
-   ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is
-   mode **out**, and, ``In_Out`` is mode **in out**.
-#. A ``moded_item`` appearing in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` and another with a ``mode_selector``
-   of ``Output`` has the effective mode of **in out**.
-#. For an entire composite object V which has subcomponents that
-   appear in a ``mode_refinement`` the following applies:
-
-   a. if all the subcomponents in the ``mode_refinement`` have an
-      effective mode of **in**, then the effective mode of V is **in**;
-   b. if at least one of the subcomponents in the ``mode_refinement``
-      has an effective mode of **out** or **in out**, then the
-      effective mode of V is **in out**.
-
-#. Each branch of a ``conditional_mode`` defines a ``moded_item_list``
-   but the effective mode of each ``moded_item`` in the
-   ``moded_item_list`` is unconditional.  The condition is ignored for
-   the purposes of determining the effective mode.
-
-
-.. todo:: We probably need to think more carefully about discriminants
-     of variant records.
-
-.. centered:: **Static Semantics**
-
 #. A ``moded_item`` must be the name of a *global variable*, a *formal
    parameter*, a subcomponent of a *global variable* or a *formal
    parameter*, or an *abstract state*
@@ -295,6 +277,31 @@ subcomponent of a larger containing object.  Such objects are called
    object may appear more than once and, for array subcomponents,
    elements A (I) and A (J) are considered as distinct instances even
    though I my equal J.
+
+.. todo:: We probably need to think more carefully about discriminants
+     of variant records.
+
+.. centered:: **Static Semantics**
+
+#. The ``mode_selector`` of a ``mode_specification`` determines the
+   effective mode of the ``moded_items`` in the
+   ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is
+   mode **out**, and, ``In_Out`` is mode **in out**.
+#. A ``moded_item`` appearing in a ``mode_specification`` with a
+   ``mode_selector`` of ``Input`` and another with a ``mode_selector``
+   of ``Output`` has the effective mode of **in out**.
+#. For an entire composite object V which has subcomponents that
+   appear in a ``mode_refinement`` the following applies:
+
+   a. if all the subcomponents in the ``mode_refinement`` have an
+      effective mode of **in**, then the effective mode of V is **in**;
+   b. if at least one of the subcomponents in the ``mode_refinement``
+      has an effective mode of **out** or **in out**, then the
+      effective mode of V is **in out**.
+#. Each branch of a ``conditional_mode`` defines a ``moded_item_list``
+   but the effective mode of each ``moded_item`` in the
+   ``moded_item_list`` is unconditional.  The condition is ignored for
+   the purposes of determining the effective mode.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -345,18 +352,18 @@ of a *global* variable by a more *local* variable.
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is
    not permitted to have side-effects.
-#. A subprogram with a ``global_aspect`` that has a
-   ``mode_refinement`` of **null** is taken to mean that the
-   subprogram does not access any global items.
-
-.. centered:: **Static Semantics**
-
 #. A ``moded_item`` appearing in a ``global_aspect`` must be the name
    of a *global variable*, a subcomponent of a *global variable*, or
    an *abstract state*.
 #. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
+
+.. centered:: **Static Semantics**
+
+#. A subprogram with a ``global_aspect`` that has a
+   ``mode_refinement`` of **null** is taken to mean that the
+   subprogram does not access any global items.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -447,9 +454,6 @@ subcomponents of A appear in an ``Input`` ``mode_specification``.
    ``param_aspect``.
 #. A ``param_aspect`` shall not have a ``mode_refinement`` of
    **null**.
-
-.. centered:: **Static Semantics**
-
 #. A ``moded_item`` appearing in a ``param_aspect`` of a subprogram
    must be the name of a *formal parameter* or a subcomponent of a
    *formal parameter* of the subprogram.
@@ -464,6 +468,7 @@ subcomponents of A appear in an ``Input`` ``mode_specification``.
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``Input`` must be of mode **in** or mode **in
    out**.
+
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -608,65 +613,18 @@ where
    grammar, except ``dependency_clause``, are also ``expressions``.
 #. An ``aspect_specification`` of a subprogram may have at most one
    ``dependency_aspect``.
-#. An ``export`` and an ``import`` is a ``moded_item`` and may be an
-   *abstract state*, an *entire object* or a subcomponent of an
-   *object*.
-#. Every ``moded_item`` of a subprogram is an ``import``, ``export``
-   or both.
-#. If a subcomponent S of a composite object is an ``import`` then the
-   *entire* object which contains S is effectively an ``import``.
-#. If a subcomponent S of a composite object is an ``export`` then the
-   *entire* object which contains S is effectively both an ``import``
-   and an ``export``, as only part of the object is updated, the rest
-   being preserved.
-#. An ``import`` must have an effective mode of **in** or **in out**
-#. An ``export`` must have an effective mode of **in out** or **out**
+#. An ``import`` must have an effective mode of **in** or **in out**.
+#. An ``export`` must have an effective mode of **in out** or **out**.
 #. A ``moded_item`` which is both an ``import`` and an ``export``
    shall have an effective mode of **in out**.
-#. The result of a function F, denoted F'Result is considered to be
-   an ``export`` of the function.
-#. The result of a function is treated as an entire object.
-   Subcomponents of a function result cannot be named in a
-   ``dependency_relation``
-#. A function which does not have a an explicit ``dependency_aspect``
-   is assumed to have the dependency of its result on all of its
-   imports.  Generally a ``dependency_aspect`` is not required for
-   functions unless it is to describe a ``conditional_dependency``.
 #. A ``function_result`` may not appear in the ``dependency_relation``
    of a procedure.
-#. The ``+`` symbol in the syntax ``expression_list =>+ import_list``
-   designates that each ``export`` in the ``export-list`` has a
-   self-dependency, that is, it is dependent on itself. The text (A,
-   B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C,
-   Z)).
-#. An ``import_list`` which is **null** indicates that the final
-   values of each ``export`` in the associated ``export_list`` does
-   not depend on any ``import``, other than themselves, if the
-   ``export_list =>+`` **null** self-dependency syntax is used.
 #. There can be at most one ``export_list`` which is a **null** symbol
    and if it exists it must be the ``export_list`` of the last
-   ``dependency_clause`` in the ``dependency_relation``.  A an
-   ``export_list`` that is **null** represents a sink for each
-   ``import`` in the ``import_list``.  A ``import`` which is in such a
-   ``import_list`` may not appear in another ``import_list`` of the
-   same ``dependency_relation``.  The purpose of a **null**
-   ``export_list`` is to facilitate moving Ada code outside the SPARK
-   boundary.
-#. A ``conditional_dependency`` indicates the conditions under which
-   the initial value of an ``import`` may be used in determining the
-   final value of an ``export``.
-#. A ``conditional_dependency`` does not affect the effective
-   ``exports`` and ``imports`` and their relationship as this is
-   always considered unconditionally in terms of *entire objects*.
-   The effective imports of a ``conditional_dependency`` are the
-   union of the variables used in its conditions and every import in
-   the ``import_list`` of every branch.
-
-.. centered:: **Static Semantics**
-
-#. Every ``moded_item`` of a subprogram is an ``import``, an
-   ``export`` or both. An ``import`` or an ``export`` may be
-   represented by itself or by one or of its subcomponents.
+   ``dependency_clause`` in the ``dependency_relation``.  An
+   ``import`` which is in an ``import_list`` of a **null** export may
+   not appear in another ``import_list`` of the same
+   ``dependency_relation``.
 #. Every ``moded_item`` of a subprogram shall appear in the
    dependency relation.  A subcomponent of a composite object is
    suffice to show an appearance.
@@ -695,6 +653,60 @@ where
 #. A *variable* appearing in the condition of a
    ``conditional_dependency`` must be an ``import`` of the subprogram.
 
+
+.. centered:: **Static Semantics**
+
+#. Every *formal parameter* and *global variable* of a subprogram is a
+   ``moded_item`` and is an ``import``, ``export`` or both.
+#. An ``import`` or an ``export`` may be represented by itself or by
+   one or of its subcomponents.
+#. An ``export`` and an ``import`` is a ``moded_item`` and may be an
+   *abstract state*, an *entire object* or a subcomponent of an
+   *object*.
+#. The result of a function F, denoted F'Result is considered to be
+   an ``export`` of the function.
+#. The result of a function is treated as an entire object.
+   Subcomponents of a function result cannot be named in a
+   ``dependency_relation``
+#. A function which does not have a an explicit ``dependency_aspect``
+   is assumed to have the dependency of its result on all of its
+   imports.  Generally a ``dependency_aspect`` is not required for
+   functions unless it is to describe a ``conditional_dependency``.
+#. The ``+`` symbol in the syntax ``expression_list =>+ import_list``
+   designates that each ``export`` in the ``export-list`` has a
+   self-dependency, that is, it is dependent on itself. The text (A,
+   B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C,
+   Z)).
+#. An ``import_list`` which is **null** indicates that the final
+   values of each ``export`` in the associated ``export_list`` do not
+   depend on any ``import``, other than themselves, if the
+   ``export_list =>+`` **null** self-dependency syntax is used.
+#. A an ``export_list`` that is **null** represents a sink for each
+   ``import`` in the ``import_list``.The purpose of a **null**
+   ``export_list`` is to facilitate moving Ada code outside the SPARK
+   boundary.
+#. If a subcomponent S of a composite object is an ``import`` then the
+   *entire* object which contains S is effectively an ``import``.
+#. If a subcomponent S of a composite object is an ``export`` then the
+   *entire* object which contains S is effectively both an ``import``
+   and an ``export``, as only part of the object is updated, the rest
+   being preserved.
+#. A ``conditional_dependency`` indicates the conditions under which
+   the initial value of an ``import`` may be used in determining the
+   final value of an ``export``.
+#. A ``conditional_dependency`` does not affect the effective
+   ``exports`` and ``imports`` and their relationship as this is
+   always considered unconditionally in terms of *entire objects*.
+   The effective imports of a ``conditional_dependency`` are the
+   union of the variables used in its conditions and every import in
+   the ``import_list`` of every branch.
+#. The meaning of a ``dependency_relation`` is given in terms of
+   effective exports and imports: the final value of each effective
+   export E shall be determined from only static constants and the
+   initial value of the effective  imports appearing in the
+   ``dependency_list`` of E or from E itself if the self-dependency
+   notation ``=>+`` has been used in the ``dependency_clause``
+   defining E.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -864,9 +876,6 @@ implementation of its body.
 
 #. A subprogram body may only have a ``global_aspect`` if it does not
    have a separate declaration.
-
-.. centered:: **Static Semantics**
-
 #. A subprogram, shall not declare, immediately within its body, an
    entity of the same name as a ``moded_item`` or the name of the
    object of which the ``moded_item`` is a subcomponent, appearing in
@@ -923,14 +932,16 @@ satisfied by the implementation of its body.
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. The final value of each effective export E shall be determined from
-   only static constants and the initial value of ``moded_items``
-   appearing in the ``dependency_list`` of E or from E itself if the
-   self-dependency notation ``=>+`` has been used in the
-   ``dependency_clause`` defining E.
-#. The initial value of each effective import in a
-   ``dependency_clause`` shall be used in determining the final value of
-   every effective export given in the same ``dependency_clause``.
+#. An implicit dependency relation will be determined from the
+   subprogram code (if it exists) by analysis.
+#. If the subprogram has an explicit ``dependency_aspect`` the the
+   implicit dependency relation will be compared with the explicit one
+   provided in the ``dependency_aspect`` and any differences reported.
+#. A function that does not have an explicit ``dependency_aspect`` is
+   assumed to have a dependency relation that its result is dependent
+   on all of its imports and this dependency relation is compared with
+   the implicit one determiined from the body of the function.
+ 
 
 .. centered:: *Checked by Proof*
 
@@ -1039,3 +1050,27 @@ subprogram and the subprograms it calls.
 The extended static semantics are checked using static analyses, no
 extra dynamic checks are required.
 
+Dependency Relations
+~~~~~~~~~~~~~~~~~~~~
+
+Every subprogram has a dependency relation, explicitly given in a
+``dependency_aspect``, implicitly calculated from the subprogram code
+or conservatively assumed from the *formal parameters* and *global
+variables* of the subprogram.  The dependency relation of a subprgram
+is used to determine the effect of a call to a subprogram in terms of
+the flows of information through the subprogram.
+
+#. In a call to a subprogram P, the following will be used as the
+   dependency relation of P:
+
+   #. the ``dependency_relation`` from an explicit ``dependency_aspect`` if one is present;
+   #. for a function which does not have an explicit
+      ``dependency_aspect``, the assumed dependency relation is that its result is
+      dependent on all of its imports;
+   #. for a procedure which does not does not have an explicit
+      ``dependency_aspect`` but the subprogram has a proper body, the
+      implicit dependency relation determined from the subprogram code
+      will be used.
+   #. for a procedure which has neither a ``dependency_aspect`` nor a
+      proper body the conservative dependency relation that is used is
+      that every ``export`` is dependent on every ``import``.
