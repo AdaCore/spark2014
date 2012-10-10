@@ -936,8 +936,8 @@ package body Why.Inter is
         (case Ekind (E) is
          when Subprogram_Kind | E_Subprogram_Body =>
            (if Domain = EW_Prog then To_String (WNE_Func)
-            else To_String (WNE_Log)),
-         when Named_Kind => To_String (WNE_Log),
+            else Avoid_Why3_Keyword (Get_Name_String (Chars (E)))),
+         when Named_Kind => Avoid_Why3_Keyword (Get_Name_String (Chars (E))),
          when Type_Kind => To_String (WNE_Type),
          when others => "");
    begin
@@ -947,9 +947,11 @@ package body Why.Inter is
       if Ekind (E) = E_Discriminant
         and then Is_Formal_Container_Capacity (E)
       then
-         return New_Identifier (Ada_Node => E,
-                                Name     => To_String (WNE_Log),
-                                Context  => Full_Name (E));
+         return New_Identifier
+           (Ada_Node => E,
+            Name     =>
+              Avoid_Why3_Keyword (Get_Name_String (Chars (E))),
+            Context  => Full_Name (E));
 
       --  The component case is sufficiently different to treat it
       --  independently

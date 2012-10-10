@@ -172,8 +172,6 @@ package Why.Gen.Names is
       WNE_Integer_Min,
       WNE_Keep_On_Simp,
       WNE_Last_Static,
-      WNE_Log,
-      WNE_Obj,
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,

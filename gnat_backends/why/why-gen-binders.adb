@@ -547,10 +547,6 @@ package body Why.Gen.Binders is
                      when EW_Term =>
                         pragma Assert (not Logic_Def_Emitted);
 
-                        if Spec (S).Name = Why_Empty then
-                           Spec (S).Name := To_Ident (WNE_Log);
-                        end if;
-
                         Emit
                           (Theory,
                            New_Function_Decl
@@ -626,10 +622,6 @@ package body Why.Gen.Binders is
                         pragma Assert (not Logic_Def_Emitted);
                         pragma Assert (Spec (S).Term /= Why_Empty);
 
-                        if Spec (S).Name = Why_Empty then
-                           Spec (S).Name := To_Ident (WNE_Log);
-                        end if;
-
                         Emit
                           (Theory,
                            New_Function_Def
@@ -643,9 +635,6 @@ package body Why.Gen.Binders is
                         Logic_Def_Emitted := True;
 
                      when EW_Pred =>
-                        if Spec (S).Name = Why_Empty then
-                           Spec (S).Name := To_Ident (WNE_Log);
-                        end if;
 
                         Emit
                           (Theory,
