@@ -9,6 +9,7 @@ SPARK 2014 LRM
 
 .. toctree::
    :maxdepth: 3
+   :numbered:
 
    introduction
    lexical-elements
@@ -24,10 +25,18 @@ SPARK 2014 LRM
    generic-units
    representation-issues
    the-standard-library
-   restrictions-and-profiles
-   extended-legality
-   mapping-spec
-   todo-summary
+
+.. raw:: latex
+
+   \appendix
+
+.. toctree::
+   :maxdepth: 3
+
+   A. Restrictions and Profiles <restrictions-and-profiles>
+   B. Extended Legality Rules <extended-legality>
+   C. SPARK2005 to |SPARK| Mapping Specification <mapping-spec>
+   D. To-Do Summary <todo-summary>
 
 Indices and tables
 ==================
