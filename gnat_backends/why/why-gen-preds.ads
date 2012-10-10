@@ -42,8 +42,9 @@ package Why.Gen.Preds is
    --  the argument is in range First .. Last.
 
    procedure Define_Eq_Predicate
-     (Theory    : W_Theory_Declaration_Id;
-      Base_Type : EW_Scalar);
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Identifier_Id;
+      Base_Type      : EW_Scalar);
    --  Generate the definition of the equality predicate for an abstract type
    --  whose base type is given in parameters. This predicate is True when
    --  conversions to base type are equal.

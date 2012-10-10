@@ -25,6 +25,8 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with String_Utils;    use String_Utils;
+
 with Csets;           use Csets;
 with Lib;             use Lib;
 with Pprint;          use Pprint;
@@ -49,6 +51,12 @@ package body Gnat2Why.Nodes is
      (Present (Corresponding_Body (N))
        and then Is_Main_Cunit
         (Unit (Enclosing_Comp_Unit_Node (Corresponding_Body (N)))));
+
+   Why3_Keywords : String_Utils.String_Sets.Set;
+
+   function Avoid_Why3_Keyword (S : String) return String;
+   --  Append a "__" whenever S is equal to a Why3 keyword.
+   --  also, lowercase the argument.
 
    package body Ada_Ent_To_Why is
 
@@ -168,6 +176,21 @@ package body Gnat2Why.Nodes is
       end Insert;
 
    end Ada_Ent_To_Why;
+
+   ------------------------
+   -- Avoid_Why3_Keyword --
+   ------------------------
+
+   function Avoid_Why3_Keyword (S : String) return String is
+      S_Copy : String := S;
+   begin
+      Lower_Case_First (S_Copy);
+      if Why3_Keywords.Contains (S_Copy) then
+         return S_Copy & "__";
+      else
+         return S_Copy;
+      end if;
+   end Avoid_Why3_Keyword;
 
    ---------------
    -- Get_Range --
@@ -411,6 +434,20 @@ package body Gnat2Why.Nodes is
       end if;
    end Source_Name;
 
+   ----------------
+   -- Short_Name --
+   ----------------
+
+   function Short_Name (E : Entity_Id) return String
+   is
+   begin
+      return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
+   end Short_Name;
+
+   --------------------
+   -- String_Of_Node --
+   --------------------
+
    function String_Of_Node (N : Node_Id) return String
    is
 
@@ -529,4 +566,71 @@ package body Gnat2Why.Nodes is
       end if;
    end Type_Of_Node;
 
+begin
+   Why3_Keywords.Include ("begin");
+   Why3_Keywords.Include ("end");
+   Why3_Keywords.Include ("invariant");
+   Why3_Keywords.Include ("as");
+   Why3_Keywords.Include ("axiom");
+   Why3_Keywords.Include ("clone");
+   Why3_Keywords.Include ("coinductive");
+   Why3_Keywords.Include ("constant");
+   Why3_Keywords.Include ("else");
+   Why3_Keywords.Include ("end");
+   Why3_Keywords.Include ("epsilon");
+   Why3_Keywords.Include ("exists");
+   Why3_Keywords.Include ("export");
+   Why3_Keywords.Include ("false");
+   Why3_Keywords.Include ("forall");
+   Why3_Keywords.Include ("function");
+   Why3_Keywords.Include ("goal");
+   Why3_Keywords.Include ("if");
+   Why3_Keywords.Include ("import");
+   Why3_Keywords.Include ("in");
+   Why3_Keywords.Include ("inductive");
+   Why3_Keywords.Include ("lemma");
+   Why3_Keywords.Include ("let");
+   Why3_Keywords.Include ("match");
+   Why3_Keywords.Include ("meta");
+   Why3_Keywords.Include ("namespace");
+   Why3_Keywords.Include ("not");
+   Why3_Keywords.Include ("predicate");
+   Why3_Keywords.Include ("prop");
+   Why3_Keywords.Include ("then");
+   Why3_Keywords.Include ("theory");
+   Why3_Keywords.Include ("true");
+   Why3_Keywords.Include ("type");
+   Why3_Keywords.Include ("use");
+   Why3_Keywords.Include ("with");
+   Why3_Keywords.Include ("abstract");
+   Why3_Keywords.Include ("absurd");
+   Why3_Keywords.Include ("any");
+   Why3_Keywords.Include ("assert");
+   Why3_Keywords.Include ("assume");
+   Why3_Keywords.Include ("begin");
+   Why3_Keywords.Include ("check");
+   Why3_Keywords.Include ("do");
+   Why3_Keywords.Include ("done");
+   Why3_Keywords.Include ("downto");
+   Why3_Keywords.Include ("exception");
+   Why3_Keywords.Include ("for");
+   Why3_Keywords.Include ("fun");
+   Why3_Keywords.Include ("ghost");
+   Why3_Keywords.Include ("invariant");
+   Why3_Keywords.Include ("loop");
+   Why3_Keywords.Include ("model");
+   Why3_Keywords.Include ("module");
+   Why3_Keywords.Include ("mutable");
+   Why3_Keywords.Include ("private");
+   Why3_Keywords.Include ("raise");
+   Why3_Keywords.Include ("raises");
+   Why3_Keywords.Include ("reads");
+   Why3_Keywords.Include ("rec");
+   Why3_Keywords.Include ("to");
+   Why3_Keywords.Include ("try");
+   Why3_Keywords.Include ("val");
+   Why3_Keywords.Include ("variant");
+   Why3_Keywords.Include ("while");
+   Why3_Keywords.Include ("writes");
+   Why3_Keywords.Include ("int");
 end Gnat2Why.Nodes;

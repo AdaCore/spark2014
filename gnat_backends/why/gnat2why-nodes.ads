@@ -217,4 +217,9 @@ package Gnat2Why.Nodes is
    function String_Of_Node (N : Node_Id) return String;
    --  Return the node as pretty printed Ada code, limited to 50 chars
 
+   function Short_Name (E : Entity_Id) return String;
+   --  Return the "short name" of an Ada entity, which corresponds to the
+   --  actual name used for that entity in Why3 (as opposed to the name of
+   --  the module)
+
 end Gnat2Why.Nodes;

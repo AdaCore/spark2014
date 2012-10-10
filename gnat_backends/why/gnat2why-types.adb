@@ -61,6 +61,7 @@ package body Gnat2Why.Types is
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
      (Theory  : W_Theory_Declaration_Id;
+      E       : Entity_Id;
       Rng     : Node_Id;
       Modulus : W_Integer_Constant_Id := Why_Empty;
       Is_Base : Boolean);
@@ -69,6 +70,7 @@ package body Gnat2Why.Types is
 
    procedure Declare_Ada_Real_From_Range
      (Theory  : W_Theory_Declaration_Id;
+      E       : Entity_Id;
       Rng     : Node_Id;
       Is_Base : Boolean);
    --  Same as Declare_Ada_Real but extract range information
@@ -80,6 +82,7 @@ package body Gnat2Why.Types is
 
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
      (Theory  : W_Theory_Declaration_Id;
+      E       : Entity_Id;
       Rng     : Node_Id;
       Modulus : W_Integer_Constant_Id := Why_Empty;
       Is_Base : Boolean)
@@ -98,7 +101,7 @@ package body Gnat2Why.Types is
               Expr_Value (High_Bound (Range_Node)));
       end if;
       Declare_Ada_Abstract_Signed_Int
-        (Theory, Rng, First, Last, Modulus, Is_Base);
+        (Theory, E, First, Last, Modulus, Is_Base);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------
@@ -107,6 +110,7 @@ package body Gnat2Why.Types is
 
    procedure Declare_Ada_Real_From_Range
      (Theory  : W_Theory_Declaration_Id;
+      E       : Entity_Id;
       Rng     : Node_Id;
       Is_Base : Boolean)
    is
@@ -124,7 +128,7 @@ package body Gnat2Why.Types is
             New_Real_Constant (Value =>
               Expr_Value_R (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Real (Theory, First, Last, Is_Base);
+      Declare_Ada_Real (Theory, E, First, Last, Is_Base);
    end Declare_Ada_Real_From_Range;
 
    ----------------------
@@ -212,7 +216,7 @@ package body Gnat2Why.Types is
                E = Standard_Wide_Wide_Character
          then
             Declare_Ada_Abstract_Signed_Int_From_Range
-              (Theory, E, Is_Base => Is_Ada_Base_Type (E));
+              (Theory, E, E, Is_Base => Is_Ada_Base_Type (E));
 
          elsif Type_Based_On_Formal_Container (E) then
             Emit
@@ -228,19 +232,20 @@ package body Gnat2Why.Types is
                  E_Enumeration_Type       |
                  E_Enumeration_Subtype    =>
                Declare_Ada_Abstract_Signed_Int_From_Range
-                 (Theory, Scalar_Range (E),
+                 (Theory, E, Scalar_Range (E),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Modular_Integer_Kind =>
                Declare_Ada_Abstract_Signed_Int_From_Range
                  (Theory,
+                  E,
                   Scalar_Range (E),
                   New_Integer_Constant (Value => Modulus (E)),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Real_Kind =>
                Declare_Ada_Real_From_Range
-                 (Theory, Scalar_Range (E),
+                 (Theory, E, Scalar_Range (E),
                   Is_Base => Is_Ada_Base_Type (E));
 
             when Array_Kind =>
@@ -293,7 +298,7 @@ package body Gnat2Why.Types is
                Name        => To_Ident (WNE_Dummy),
                Binders     => (1 .. 0 => <>),
                Return_Type =>
-                 New_Abstract_Type (Name => To_Ident (WNE_Type))));
+                 New_Abstract_Type (Name => To_Why_Id (E, Local => True))));
       end if;
 
       --  If E is the full view of a private type, use its partial view as the

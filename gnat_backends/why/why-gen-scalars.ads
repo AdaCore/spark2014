@@ -47,6 +47,7 @@ package Why.Gen.Scalars is
 
    procedure Declare_Ada_Real
      (Theory  : W_Theory_Declaration_Id;
+      Entity  : Entity_Id;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
       Is_Base : Boolean);

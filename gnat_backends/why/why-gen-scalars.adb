@@ -33,12 +33,14 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
      (Theory    : W_Theory_Declaration_Id;
+      Why_Name  : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
       Is_Base   : Boolean := False);
@@ -46,7 +48,8 @@ package body Why.Gen.Scalars is
    --  define conversions from this type to base type.
 
    procedure New_Boolean_Equality_Parameter
-      (Theory        : W_Theory_Declaration_Id);
+     (Theory   : W_Theory_Declaration_Id;
+      Why_Name : W_Identifier_Id);
       --  Create a parameter of the form
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->
       --        {} bool { if result then m = n else m <> n }
@@ -63,15 +66,16 @@ package body Why.Gen.Scalars is
       Modulus : W_Integer_Constant_Id;
       Is_Base : Boolean)
    is
+      Why_Id : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
    begin
       if Entity = Standard_Character then
          Emit (Theory,
-               New_Type (Name => To_Ident (WNE_Type),
+               New_Type (Name => Why_Id,
                          Alias =>
                            New_Abstract_Type
                              (Name => To_Ident (WNE_Char_Type))));
       else
-         Emit (Theory, New_Type (To_String (WNE_Type)));
+         Emit (Theory, New_Type (Name => Why_Id));
       end if;
       Define_Scalar_Attributes
         (Theory    => Theory,
@@ -81,6 +85,7 @@ package body Why.Gen.Scalars is
          Modulus   => +Modulus);
       Define_Scalar_Conversions
         (Theory    => Theory,
+         Why_Name  => Why_Id,
          Base_Type => EW_Int,
          Modulus   => +Modulus,
          Is_Base   => Is_Base);
@@ -92,11 +97,14 @@ package body Why.Gen.Scalars is
 
    procedure Declare_Ada_Real
      (Theory  : W_Theory_Declaration_Id;
+      Entity  : Entity_Id;
       First   : W_Real_Constant_Id;
       Last    : W_Real_Constant_Id;
-      Is_Base : Boolean) is
+      Is_Base : Boolean)
+   is
+      Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
    begin
-      Emit (Theory, New_Type (To_String (WNE_Type)));
+      Emit (Theory, New_Type (Name => Why_Name));
       Define_Scalar_Attributes
         (Theory    => Theory,
          Base_Type => EW_Real,
@@ -105,6 +113,7 @@ package body Why.Gen.Scalars is
          Modulus   => Why_Empty);
       Define_Scalar_Conversions
         (Theory    => Theory,
+         Why_Name  => Why_Name,
          Base_Type => EW_Real,
          Is_Base   => Is_Base);
    end Declare_Ada_Real;
@@ -115,6 +124,7 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Conversions
      (Theory    : W_Theory_Declaration_Id;
+      Why_Name  : W_Identifier_Id;
       Base_Type : EW_Scalar;
       Modulus   : W_Term_OId := Why_Empty;
       Is_Base   : Boolean := False)
@@ -122,7 +132,8 @@ package body Why.Gen.Scalars is
       Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
       BT       : constant W_Primitive_Type_Id :=
         New_Base_Type (Base_Type => Base_Type);
-      Ty_Ident : constant W_Identifier_Id := To_Ident (WNE_Type);
+      Abstr_Ty : constant W_Primitive_Type_Id :=
+        New_Abstract_Type (Name => Why_Name);
       To_Id    : constant W_Identifier_Id := To_Ident (Convert_To (Base_Type));
    begin
       Define_Range_Predicate (Theory, Base_Type);
@@ -133,14 +144,11 @@ package body Why.Gen.Scalars is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => To_Id,
-            Binders        =>
-              New_Binders ((1 => New_Abstract_Type (Name => Ty_Ident))),
+            Binders        => New_Binders ((1 => Abstr_Ty)),
             Return_Type => BT));
 
       --  from base type:
       declare
-         Return_Type  : constant W_Primitive_Type_Id :=
-           New_Abstract_Type (Name => Ty_Ident);
          --  precondition: { <name>___in_range (n) }
          Range_Check  : constant W_Pred_OId :=
                           New_Call
@@ -179,7 +187,7 @@ package body Why.Gen.Scalars is
               (1 => (B_Name => Arg_S,
                      B_Type => BT,
                      others => <>)),
-            Return_Type => Return_Type,
+            Return_Type => Abstr_Ty,
             Spec => Spec);
 
          --  If this is an Ada base type, declare a range check
@@ -210,18 +218,18 @@ package body Why.Gen.Scalars is
             end;
          end if;
 
-         Define_Eq_Predicate (Theory, Base_Type);
+         Define_Eq_Predicate (Theory, Why_Name, Base_Type);
          Define_Range_Axiom (Theory,
-                             Ty_Ident,
+                             Why_Name,
                              To_Ident (Convert_To (Base_Type)));
          Define_Coerce_Axiom (Theory,
                               Base_Type,
                               Modulus);
          Define_Unicity_Axiom (Theory,
-                               Ty_Ident,
+                               Why_Name,
                                Base_Type);
       end;
-      New_Boolean_Equality_Parameter (Theory);
+      New_Boolean_Equality_Parameter (Theory, Why_Name);
    end Define_Scalar_Conversions;
 
    ------------------------------
@@ -325,7 +333,8 @@ package body Why.Gen.Scalars is
    ------------------------------------
 
    procedure New_Boolean_Equality_Parameter
-      (Theory        : W_Theory_Declaration_Id)
+     (Theory   : W_Theory_Declaration_Id;
+      Why_Name : W_Identifier_Id)
    is
       Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
       Arg_T    : constant W_Identifier_Id := New_Identifier (Name => "m");
@@ -357,7 +366,7 @@ package body Why.Gen.Scalars is
       Pre     : constant W_Pred_Id :=
                   New_Literal (Value => EW_True);
       Arg_Type : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => To_Ident (WNE_Type));
+        New_Abstract_Type (Name => Why_Name);
    begin
       Emit
         (Theory,

@@ -29,6 +29,7 @@ with Namet;               use Namet;
 with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
 
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Why.Inter;           use Why.Inter;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
@@ -144,7 +145,13 @@ package body Why.Atree.Sprint is
       Base_Type : constant EW_Type := Get_Base_Type (Node);
    begin
       if Base_Type = EW_Abstract then
-         P (O, Capitalize_First (Full_Name (Get_Ada_Node (+Node))) & ".t");
+         declare
+            N : constant Node_Id := Get_Ada_Node (+Node);
+         begin
+            P (O, Capitalize_First (Full_Name (N)));
+            P (O, ".");
+            P (O, Short_Name (N));
+         end;
       else
          P (O, Base_Type);
       end if;

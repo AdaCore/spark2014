@@ -169,7 +169,7 @@ package body Why.Gen.Records is
       --  Initialize the map which maps each component to its information
       --  record
 
-      Ty_Ident   : constant W_Identifier_Id := To_Ident (WNE_Type);
+      Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
       Abstr_Ty   : constant W_Primitive_Type_Id :=
         New_Abstract_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
@@ -747,9 +747,7 @@ package body Why.Gen.Records is
       --  Get the empty record case out of the way
 
       if Count_Why_Record_Fields (E) = 0 then
-         Emit
-           (Theory,
-            New_Type (To_String (WNE_Type)));
+         Emit (Theory, New_Type (Name => Ty_Ident));
          return;
       end if;
 
@@ -772,6 +770,11 @@ package body Why.Gen.Records is
             --  conversion functions; in all other cases, they are already
             --  there.
 
+            Emit (Theory,
+                  New_Type (Name => Ty_Ident,
+                            Alias =>
+                              New_Abstract_Type
+                                (Name => To_Why_Id (Clone, Local => True))));
             if Root_Record_Type (Clone) = Clone then
                Emit
                  (Theory,

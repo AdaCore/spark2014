@@ -168,9 +168,6 @@ package Why.Inter is
    function To_Why_Id (Obj : String) return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
-   function To_Why_Type (E      : Entity_Id;
-                         Local  : Boolean := False) return W_Identifier_Id;
-
    function To_Why_Type (T : String) return W_Identifier_Id;
 
    EW_Bool_Type : constant W_Base_Type_Id :=

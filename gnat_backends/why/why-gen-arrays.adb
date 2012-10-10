@@ -43,25 +43,29 @@ with Why.Inter;          use Why.Inter;
 
 package body Why.Gen.Arrays is
 
-   procedure Declare_Constrained (Theory : W_Theory_Declaration_Id;
-                                  Und_Ent : Entity_Id);
+   procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
+                                  Why3_Type_Name : W_Identifier_Id;
+                                  Und_Ent        : Entity_Id);
 
-   procedure Declare_Unconstrained (Theory : W_Theory_Declaration_Id;
-                                    Und_Ent : Entity_Id);
+   procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
+                                    Why3_Type_Name : W_Identifier_Id;
+                                    Und_Ent        : Entity_Id);
 
    -----------------------
    -- Declare_Ada_Array --
    -----------------------
 
    procedure Declare_Ada_Array
-     (Theory   : W_Theory_Declaration_Id;
-      Und_Ent  : Entity_Id)
+     (Theory         : W_Theory_Declaration_Id;
+      Und_Ent        : Entity_Id)
    is
+      Why_Name : constant W_Identifier_Id :=
+        To_Why_Id (Und_Ent, Local => True);
    begin
       if Is_Constrained (Und_Ent) then
-         Declare_Constrained (Theory, Und_Ent);
+         Declare_Constrained (Theory, Why_Name, Und_Ent);
       else
-         Declare_Unconstrained (Theory, Und_Ent);
+         Declare_Unconstrained (Theory, Why_Name, Und_Ent);
       end if;
    end Declare_Ada_Array;
 
@@ -69,11 +73,11 @@ package body Why.Gen.Arrays is
    -- Declare_Constrained --
    -------------------------
 
-   procedure Declare_Constrained (Theory : W_Theory_Declaration_Id;
-                                  Und_Ent : Entity_Id)
+   procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
+                                  Why3_Type_Name : W_Identifier_Id;
+                                  Und_Ent        : Entity_Id)
    is
-      Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Type_Id     : constant W_Identifier_Id := To_Ident (WNE_Type);
+      Dimension   : constant Pos := Number_Dimensions (Und_Ent);
       Array_Base  : constant Why_Name_Enum := Ada_Array_Name (Dimension);
       BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
       Comp_Type   : constant W_Primitive_Type_Id :=
@@ -83,7 +87,7 @@ package body Why.Gen.Arrays is
                        (Type_Chain => (1 => Comp_Type),
                         Name       => BT_Id);
       Name_Type   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Type_Id);
+        New_Abstract_Type (Name => Why3_Type_Name);
       A_Ident     : constant W_Identifier_Id := New_Identifier (Name => "a");
       Ar_Binder : constant Binder_Type :=
                       (B_Name => A_Ident,
@@ -144,7 +148,7 @@ package body Why.Gen.Arrays is
       Emit
         (Theory,
          New_Record_Definition
-           (Name    => To_Ident (WNE_Type),
+           (Name    => Why3_Type_Name,
             Binders => Rec_Binders));
       if Ekind (Und_Ent) in String_Kind then
          Declare_Attribute (WNE_Attr_First,
@@ -258,17 +262,18 @@ package body Why.Gen.Arrays is
    -- Declare_Unconstrained --
    ---------------------------
 
-   procedure Declare_Unconstrained (Theory  : W_Theory_Declaration_Id;
-                                    Und_Ent : Entity_Id)
+   procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
+                                    Why3_Type_Name : W_Identifier_Id;
+                                    Und_Ent        : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
       Array_Base  : constant Why_Name_Enum := Ada_Array_Name (Dimension);
-      BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
+      BT_Id       : constant W_Identifier_Id :=
+        Prefix (Array_Base, WNE_Type);
       Comp_Type   : constant W_Primitive_Type_Id :=
         Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
-      Type_Id     : constant W_Identifier_Id := To_Ident (WNE_Type);
       Name_Type   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Type_Id);
+        New_Abstract_Type (Name => Why3_Type_Name);
       Ar_Type     : constant W_Primitive_Type_Id :=
         New_Generic_Actual_Type_Chain
           (Type_Chain => (1 => Comp_Type),
@@ -532,7 +537,7 @@ package body Why.Gen.Arrays is
          --  gnatprove standard files, we just make another alias to __string
          if Und_Ent = Standard_String then
             Emit (Theory,
-              New_Type (To_Ident (WNE_Type),
+              New_Type (Why3_Type_Name,
                 Alias => New_Abstract_Type (Name => To_Ident (WNE_String))));
             Add_With_Clause (Theory,
                              "_gnatprove_standard_th",
@@ -566,7 +571,7 @@ package body Why.Gen.Arrays is
                Emit
                  (Theory,
                   New_Record_Definition
-                    (Name    => To_Ident (WNE_Type),
+                    (Name    => Why3_Type_Name,
                      Binders => Rec_Binders));
             end;
          end if;

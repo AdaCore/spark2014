@@ -35,22 +35,23 @@ package body Why.Gen.Preds is
    -------------------------
 
    procedure Define_Eq_Predicate
-     (Theory    : W_Theory_Declaration_Id;
-      Base_Type : EW_Scalar)
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Identifier_Id;
+      Base_Type      : EW_Scalar)
    is
       X_S               : constant W_Identifier_Id :=
         New_Identifier (Name => "x");
       Y_S               : constant W_Identifier_Id :=
         New_Identifier (Name => "y");
-      Ty_Ident          : constant W_Identifier_Id := To_Ident (WNE_Type);
-
       X_Binder          : constant Binder_Type :=
                             (B_Name => X_S,
-                             B_Type => New_Abstract_Type (Name => Ty_Ident),
+                             B_Type =>
+                               New_Abstract_Type (Name => Why3_Type_Name),
                              others => <>);
       Y_Binder          : constant Binder_Type :=
                             (B_Name => Y_S,
-                             B_Type => New_Abstract_Type (Name => Ty_Ident),
+                             B_Type =>
+                               New_Abstract_Type (Name => Why3_Type_Name),
                              others => <>);
 
       --  <base_type>_of___<name> (x) = <base_type>_of___<name> (y)
