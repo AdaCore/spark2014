@@ -18,9 +18,9 @@ const.adb:25:26: info: assertion proved
 const.adb:26:26: info: assertion proved
 const.adb:27:26: info: assertion proved
 const.adb:28:26: info: assertion proved
-const.adb:32:24: info: assertion proved
+const.adb:32:24: assertion not proved, requires I = 1
 const.adb:33:24: info: assertion proved
-const.adb:34:24: info: assertion proved
+const.adb:34:24: assertion not proved, requires K = 1
 const.adb:35:24: info: assertion proved
 const.adb:36:24: info: assertion proved
 const.adb:37:24: info: assertion proved
