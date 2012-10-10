@@ -1,7 +1,3 @@
-.. raw:: latex
-
-   \appendix
-
 Restrictions and Profiles
 =========================
 
@@ -9,7 +5,7 @@ A list of restrictions by section and their effect:
 
 
 6.1 Subprogram Declarations
-    
+
 #. No_Default_Subprogram_Parameters
 
    Prohibits the use of default subprogram parameters, that is, a
@@ -18,12 +14,12 @@ A list of restrictions by section and their effect:
 
 6.1.4 Mode Refinement
 
-#. Moded_Variables_Are_Entire 
- 
+#. Moded_Variables_Are_Entire
+
    Asserts that a ``moded_item`` cannot be a subcomponent name.
 
 #. No_Conditional_Modes
-   
+
    Prohibits the use of a ``conditional_mode`` in a
    ``mode_specification``.
 
@@ -45,7 +41,7 @@ A list of restrictions by section and their effect:
    considered to have a have have one of ``Global =>`` **null**.
 
 #. Global_Aspects_On_Procedure_Declarations
-   
+
    A less stringent restriction which requires a ``global_aspect`` on
    all procedure declarations that access a *global* variable.  A
    ``global_aspect`` is optional on a subprogram body that does not
@@ -61,21 +57,21 @@ A list of restrictions by section and their effect:
 
 6.1.7 Dependency Aspects
 
-#. Procedures_Require_Dependency_Aspects 
+#. Procedures_Require_Dependency_Aspects
 
    Mandates that all procedures must have a ``dependency_aspect``.
    Functions may have a ``dependency_aspect`` but they are not
    required.
 
 #. Procedure_Declarations_Require_Dependency_Aspects
-   
+
    A less stringent restriction which only requires a
    ``dependency_aspect`` to be applied to a procedure declaration. A
    ``dependency_aspect`` is optional on a subprogram body that does
    not have a separate declaration.  A virtual dependency aspect is
    calculated from the body of each subprogram body which does not
    have an explicit ``dependency_aspect``.
-   
+
 #. No_Conditional_Dependencies
 
    Prohibits the use of a ``conditional_dependency`` in any
@@ -105,8 +101,8 @@ A list of restrictions by section and their effect:
 
 6.3 Subprogram Bodies
 
-#. End_Designators_Required 
-   
+#. End_Designators_Required
+
    Mandates that the final end of every subprogram body, package
    declaration and package body has a designator which repeats the
    defining designator of the unit.
@@ -120,7 +116,7 @@ A list of restrictions by section and their effect:
    ``moded_item`` is a subcomponent in its ``global_aspect`` within a
    ``loop_statement`` or ``block_statement`` whose nearest enclosing
    program unit is P.
-  
+
 6.4.2 Anti-Aliasing
 
 #. Array_Elements_Assumed_To_Overlap
