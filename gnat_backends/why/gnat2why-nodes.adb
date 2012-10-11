@@ -54,10 +54,6 @@ package body Gnat2Why.Nodes is
 
    Why3_Keywords : String_Utils.String_Sets.Set;
 
-   function Avoid_Why3_Keyword (S : String) return String;
-   --  Append a "__" whenever S is equal to a Why3 keyword.
-   --  also, lowercase the argument.
-
    package body Ada_Ent_To_Why is
 
       -------------

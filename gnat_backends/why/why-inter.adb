@@ -969,7 +969,7 @@ package body Why.Inter is
       if Obj = Alfa.Name_Of_Heap_Variable then
          return New_Identifier (Name => Alfa.Name_Of_Heap_Variable);
       else
-         return Prefix (Obj, Extract_Object_Name (Obj));
+         return Prefix (Obj, Avoid_Why3_Keyword (Extract_Object_Name (Obj)));
       end if;
    end To_Why_Id;
 

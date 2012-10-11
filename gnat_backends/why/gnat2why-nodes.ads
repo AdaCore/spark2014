@@ -222,4 +222,8 @@ package Gnat2Why.Nodes is
    --  actual name used for that entity in Why3 (as opposed to the name of
    --  the module)
 
+   function Avoid_Why3_Keyword (S : String) return String;
+   --  Append a "__" whenever S is equal to a Why3 keyword.
+   --  also, lowercase the argument.
+
 end Gnat2Why.Nodes;
