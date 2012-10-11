@@ -181,7 +181,8 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
-      Params      : Transformation_Params) return W_Expr_Id;
+      Params      : Transformation_Params;
+      Current_Type : out W_Base_Type_Id) return W_Expr_Id;
    --  Compute an access expression for record and array accesses without
    --  considering subexpressions. [N] represents the Ada node of the access,
    --  and [Expr] the Why expression of the prefix.
@@ -1264,10 +1265,11 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function One_Level_Access
-     (N           : Node_Id;
-      Expr        : W_Expr_Id;
-      Domain      : EW_Domain;
-      Params      : Transformation_Params) return W_Expr_Id
+     (N            : Node_Id;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Current_Type : out W_Base_Type_Id) return W_Expr_Id
    is
    begin
       case Nkind (N) is
@@ -1275,6 +1277,8 @@ package body Gnat2Why.Expr is
             declare
                Sel_Ent : constant Entity_Id := Entity (Selector_Name (N));
                Id      : constant W_Identifier_Id := To_Why_Id (Sel_Ent);
+               Rec_Ty  : constant Entity_Id :=
+                 Unique_Entity (Etype (Prefix (N)));
             begin
                if Is_Access_To_Formal_Container_Capacity (N) then
                   return
@@ -1283,19 +1287,15 @@ package body Gnat2Why.Expr is
                               Name     => Id,
                               Args     => (1 => Expr));
                else
+                  Current_Type :=
+                    Type_Of_Node (Search_Component_By_Name (Rec_Ty, Sel_Ent));
                   return
-                    Insert_Conversion
-                      (Domain        => Domain,
-                       Ada_Node      => N,
-                       Expr          =>
-                         New_Ada_Record_Access
-                           (Ada_Node => N,
-                            Domain   => Domain,
-                            Name     => Expr,
-                            Ty       => Unique_Entity (Etype (Prefix (N))),
-                            Field    => Sel_Ent),
-                       To            => EW_Abstract (Etype (N)),
-                       From          => EW_Abstract (Etype (Sel_Ent)));
+                    New_Ada_Record_Access
+                      (Ada_Node => N,
+                       Domain   => Domain,
+                       Name     => Expr,
+                       Ty       => Rec_Ty,
+                       Field    => Sel_Ent);
                end if;
             end;
 
@@ -1312,6 +1312,7 @@ package body Gnat2Why.Expr is
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
+               Current_Type := Type_Of_Node (Component_Type (Etype (Ar)));
                while Present (Cursor) loop
                   Indices (Count) :=
                      Transform_Expr
@@ -3778,7 +3779,8 @@ package body Gnat2Why.Expr is
                                    Transform_Expr
                                      (Prefix (Expr), Domain, Local_Params),
                                    Domain,
-                                   Local_Params);
+                                   Local_Params,
+                                   Current_Type);
 
          when N_Attribute_Reference =>
             T := Transform_Attr (Expr,

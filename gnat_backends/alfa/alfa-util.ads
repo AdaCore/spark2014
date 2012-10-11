@@ -135,4 +135,12 @@ package Alfa.Util is
    --  corresponding component or discriminant of the root type. This is the
    --  identity when E is the component of a root type.
 
+   function Search_Component_By_Name
+     (Rec  : Entity_Id;
+      Comp : Entity_Id) return Entity_Id;
+   --  Given a record type entity and a component/discriminant entity, search
+   --  in Rec a component/discriminant entity with the same name. The caller of
+   --  this function should be sure that there is such a component, because it
+   --  raises Program_Error if it doesn't find any.
+
 end Alfa.Util;

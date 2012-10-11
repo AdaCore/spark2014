@@ -496,37 +496,6 @@ package body Alfa.Util is
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id is
 
-      function Search_By_Name
-        (Rec  : Entity_Id;
-         Comp : Entity_Id) return Entity_Id;
-      --  Given a record type entity and a component/discriminant entity,
-      --  search in Rec a component/discriminant entity with the same name.
-      --  The caller of this function should be sure that there is such a
-      --  component, because it raises Program_Error if it doesn't find any.
-
-      --------------------
-      -- Search_By_Name --
-      --------------------
-
-      function Search_By_Name
-        (Rec  : Entity_Id;
-         Comp : Entity_Id) return Entity_Id
-      is
-         Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Rec);
-
-      begin
-         while Present (Cur_Comp) loop
-            if Chars (Cur_Comp) = Chars (Comp) then
-               return Cur_Comp;
-            end if;
-
-            Next_Component_Or_Discriminant (Cur_Comp);
-         end loop;
-
-         --  We *must* find a component, so we should never be here
-         raise Program_Error;
-      end Search_By_Name;
-
       Rec_Type : constant Entity_Id := Unique_Entity (Scope (E));
       Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
 
@@ -543,7 +512,7 @@ package body Alfa.Util is
       --  component in the root type, using "Chars".
 
       if Ekind (E) = E_Component then
-         return Search_By_Name (Root, E);
+         return Search_Component_By_Name (Root, E);
       end if;
 
       --  In the discriminant case, we need to climb up the hierarchy of types,
@@ -580,7 +549,7 @@ package body Alfa.Util is
                begin
                   Cur_Type := Unique_Entity (Etype (Cur_Type));
                   pragma Assert (Cur_Type /= Old_Type);
-                  Comp := Search_By_Name (Cur_Type, Comp);
+                  Comp := Search_Component_By_Name (Cur_Type, Comp);
                end;
             end if;
          end loop;
@@ -606,6 +575,29 @@ package body Alfa.Util is
 
       return Result;
    end Root_Record_Type;
+
+   ------------------------------
+   -- Search_Component_By_Name --
+   ------------------------------
+
+   function Search_Component_By_Name
+     (Rec  : Entity_Id;
+      Comp : Entity_Id) return Entity_Id
+   is
+      Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Rec);
+
+   begin
+      while Present (Cur_Comp) loop
+         if Chars (Cur_Comp) = Chars (Comp) then
+            return Cur_Comp;
+         end if;
+
+         Next_Component_Or_Discriminant (Cur_Comp);
+      end loop;
+
+      --  We *must* find a component, so we should never be here
+      raise Program_Error;
+   end Search_Component_By_Name;
 
    ------------------------------------
    -- Type_Based_On_Formal_Container --
