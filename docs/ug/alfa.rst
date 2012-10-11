@@ -159,7 +159,6 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 * arithmetic operation: not yet implemented arithmetic operation;
 * attribute: not yet implemented attribute;
 * concatenation: array concatenation;
-* conversion: not yet implemented type conversion;
 * container: formal container;
 * dispatch: dispatching;
 * expression with action: expression with action;

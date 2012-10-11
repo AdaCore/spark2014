@@ -41,7 +41,6 @@ package Alfa_Violations is
       NYI_Arith_Operation,  --  arithmetic operation
       NYI_Attribute,        --  attribute
       NYI_Concatenation,    --  concatenation
-      NYI_Conversion,       --  conversion
       NYI_Container,        --  formal containers
       NYI_Dispatch,         --  dispatching
       NYI_Expr_With_Action, --  expression with action
@@ -103,7 +102,6 @@ package Alfa_Violations is
       NYI_Arith_Operation  => To_Unbounded_String ("arithmetic operation"),
       NYI_Attribute        => To_Unbounded_String ("attribute"),
       NYI_Concatenation    => To_Unbounded_String ("concatenation"),
-      NYI_Conversion       => To_Unbounded_String ("conversion"),
       NYI_Container        => To_Unbounded_String ("container"),
       NYI_Dispatch         => To_Unbounded_String ("dispatch"),
       NYI_Expr_With_Action => To_Unbounded_String ("expression with action"),

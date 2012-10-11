@@ -221,7 +221,6 @@ package body Alfa.Definition is
    procedure Mark_Subprogram_Body             (N : Node_Id);
    procedure Mark_Subprogram_Declaration      (N : Node_Id);
    procedure Mark_Subtype_Indication          (N : Node_Id);
-   procedure Mark_Type_Conversion             (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
    procedure Mark_Type_Entity (Id : Entity_Id; In_Container : Boolean);
@@ -917,7 +916,7 @@ package body Alfa.Definition is
             Mark_Subtype_Indication (N);
 
          when N_Type_Conversion =>
-            Mark_Type_Conversion (N);
+            Mark (Expression (N));
 
          when N_Unary_Op =>
             Mark_Unary_Op (N);
@@ -2336,27 +2335,6 @@ package body Alfa.Definition is
          end case;
       end if;
    end Mark_Subtype_Indication;
-
-   --------------------------
-   -- Mark_Type_Conversion --
-   --------------------------
-
-   procedure Mark_Type_Conversion (N : Node_Id) is
-      Expr : constant Node_Id := Expression (N);
-
-   begin
-      --  Type conversion between scalar types are allowed in Alfa. All other
-      --  type conversions are not allowed.
-
-      if not (Is_Scalar_Type (Etype (Expr))
-               and then Is_Scalar_Type (Etype (N)))
-      then
-         Mark_Violation
-           ("type conversion not between scalar types", N, NYI_Conversion);
-      end if;
-
-      Mark (Expr);
-   end Mark_Type_Conversion;
 
    ----------------------
    -- Mark_Type_Entity --
