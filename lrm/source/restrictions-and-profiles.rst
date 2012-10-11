@@ -127,3 +127,25 @@ A list of restrictions by section and their effect:
    whereas the more general rule that array subcomponents are only
    considered to be overlapping when they have common indices requires
    formal proof in general.
+
+7.1.2 Abstract State Aspect
+
+#. ``Package_Aspects_Required`` 
+
+   Applies to an entire package and its private child packages and
+   enforces the restriction that a package which has hidden state must
+   have an ``abstract_state_aspect``.  
+
+   If any of the state components of a package, including *variables*
+   declared in its visible part are initialized during the elaboration
+   of the package, then the initializes state components must appear
+   in an ``initializes_aspect``.
+
+#. ``No In_Out Volatile Variables`` 
+
+   Applies to and entire package and its private child packages and
+   nforces the restriction that a ``mode_selector`` of In_Out may not
+   appear in an ``abstract_state_aspect`` or a
+   ``refined_state_aspect``.
+
+END OF FILE

@@ -1074,6 +1074,7 @@ subprogram and the subprograms it calls.
 
 .. include:: restrictions-and-profiles.rst
    :start-after: 6.4.2 Anti-Aliasing
+   :end-before: 7.1.2
 
 .. centered:: **Dynamic Semantics**
 
