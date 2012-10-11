@@ -1,7 +1,24 @@
 Lexical Elements
 ================
 
-There are no added features or restrictions in this section.
+The following Ada reserved words should not be used in |SPARK|:
+**abort**,
+**accept**,
+**access**,
+**aliased**,
+**delay**,
+**entry**,
+**exception**,
+**goto**,
+**protected**,
+**raise**,
+**requeue**,
+**select**,
+**synchronized**,
+**task**,
+**terminate**,
+**until**.
+
 
 
 

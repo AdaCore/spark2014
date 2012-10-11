@@ -1,18 +1,38 @@
 Names and Expressions
 =====================
 
- 
-
-.. todo:: Need to think about this chapter.
-
-
-.. todo:: This text has been copied directly from the initial langauge
+.. todo:: The text for *New Attributes* has been copied directly from the initial langauge
     design document as prepared by Johannes. It needs to be tided up
     into LRM format.  It was headed Richer Expressions but describes
     attributes.  I am not sure this is the right chapter for these?
 
-Richer Expressions
-------------------
+We denote by *assertion expression* an expression that appears inside an
+assertion, which can be a pragma Assert, a precondition or postcondition, a
+type invariant or predicate, or other assertions introduced in |SPARK|.
+
+Restrictions
+------------
+
+A name that denotes an entity is in |SPARK| if and only if the entity is in
+|SPARK|. Neither ``explicit_dereference`` nor ``implicit_dereference`` are in
+|SPARK|.
+
+Attribute ``Access`` is not in |SPARK|. As they are based on access
+discriminants, user-defined references and user-defined indexing are not in
+|SPARK|.
+
+The literal **null** is not allowed in |SPARK|.
+
+Outside of assertion expressions, an aggregate is in |SPARK| only if its type
+is in |SPARK| and it is side-effect free. Inside assertion expressions,
+aggregates in |SPARK| must additionally be fully defined. An aggregate which
+leaves subcomponents uninitialized is not in |SPARK| if it appears inside an
+assertion expression.
+
+An expression is in |SPARK| only if its type is in |SPARK| and it is
+side-effect free.
+
+The use of allocators is not allowed in |SPARK|.
 
 New Attributes
 --------------
@@ -27,7 +47,7 @@ introduced.
   of an object that does not exist at loop entry.
 
 Legality rules
---------------
+^^^^^^^^^^^^^^
 
 Some valid Ada programs are invalid in SPARK. In particular, a program that
 attempts accessing a component of an object of type ``T`` is invalid in SPARK
@@ -50,7 +70,7 @@ comma-separated list of associations as argument, of the form ``expression =>
 expression``.
 
 Semantics
----------
+^^^^^^^^^
 
 The expression ``Name'Loop_Entry`` designates the value of ``Name`` at the
 beginning of the first iteration of its associated loop. The expression
@@ -59,3 +79,4 @@ components that are specified by the association list in argument. The
 expression ``Name'Valid_Scalars`` is a boolean expression that evaluates to
 ``True`` whenever all scalar components or subcomponents of ``Name`` have
 values allowed by their type.
+

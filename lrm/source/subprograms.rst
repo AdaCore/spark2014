@@ -3,8 +3,17 @@ Subprograms
 
 .. todo:: proof functions - here or elsewhere?
 
+We distinguish the *declaration view* introduced by a ``subprogram_declaration``
+from the *implementation view* introduced by a ``subprogram_body`` or an
+``expression_function_declaration``. For subprograms that are not declared by
+a ``subprogram_declaration``, the ``subprogram_body`` or
+``expression_function_declaration`` also introduces a declaration view which
+may be in |SPARK| even if the implementation view is not.
+
 Subprogram Declaration
 ----------------------
+
+A function is in |SPARK| only if it is side-effect free.
 
 There are no additions to this subsection but there is an extra
 legality rule and further restrictions may be applied.
@@ -28,6 +37,12 @@ legality rule and further restrictions may be applied.
 
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As indicated by the ``aspect_specification`` being part of a
+``subprogram_declaration``, a subprogram is in |SPARK| only if its specific
+contract expressions (introduced by ``Pre`` and ``Post``) and class-wide
+contract expressions (introduced by ``Pre'Class`` and ``Post'Class``), if any,
+are in |SPARK|.
 
 .. centered:: **Verification Rules**
 
@@ -941,7 +956,7 @@ satisfied by the implementation of its body.
    assumed to have a dependency relation that its result is dependent
    on all of its imports and this dependency relation is compared with
    the implicit one determiined from the body of the function.
- 
+
 
 .. centered:: *Checked by Proof*
 
@@ -950,6 +965,9 @@ satisfied by the implementation of its body.
 
 Subprogram Calls
 ----------------
+
+A call is in |SPARK| only if it resolves statically to a subprogram whose
+declaration view is in |SPARK| (whether the call is dispatching or not).
 
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -979,6 +997,18 @@ side-effects and cannot update an *actual parameter* or *global
 variable*.  Therefore a function call cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
+
+.. todo:: Relax rules for aliasing based on the following paragraph.
+
+In |SPARK|, it is not allowed in a call to pass as parameters references to
+overlapping locations, when at least one of the parameters is of mode ``out``
+or ``in out``, unless the other parameter is of mode ``in`` and
+by-copy. Likewise, it is not allowed in a call to pass as ``out`` or ``in out``
+parameter a reference to some location which overlaps with any global parameter
+of the subprogram. Finally, it is not allowed in a call to pass as ``in`` or
+``in out`` parameter a reference to some location which overlaps with a global
+parameter of mode ``out`` or ``in out`` of the subprogram, unless the parameter
+is of mode ``in`` and by-copy.
 
 The ``moded_items`` which are *global* to a procedure have to be
 determined.  These may be obtained from an explicit ``global_aspect``
@@ -1074,3 +1104,4 @@ the flows of information through the subprogram.
    #. for a procedure which has neither a ``dependency_aspect`` nor a
       proper body the conservative dependency relation that is used is
       that every ``export`` is dependent on every ``import``.
+

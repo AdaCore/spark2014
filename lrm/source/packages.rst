@@ -1,6 +1,30 @@
 Packages
 ========
 
+Restrictions
+------------
+
+The partial view of a private type or private extension may be in |SPARK| even
+if its full view is not in |SPARK|. The usual rule applies here, so a private
+type without discriminants is in |SPARK|, while a private type with
+discriminants is in |SPARK| only if its discriminants are in |SPARK|.
+
+The Ada 2012 RM lists places at which an invariant check is performed. In
+|SPARK|, we add the following places:
+
+  * Before a call on any subprogram or entry that:
+
+    * is explicitly declared within the immediate scope of type T (or by an
+      instance of a generic unit, and the generic is declared within the
+      immediate scope of type T), and
+
+    * is visible outside the immediate scope of type T or overrides an
+      operation that is visible outside the immediate scope of T, and
+
+    * has one or more in out or in parameters with a part of type T.
+
+    the check is performed on each such part of type T.
+
 Package Specifications and Declarations
 ---------------------------------------
 
