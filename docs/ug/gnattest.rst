@@ -6,6 +6,27 @@ verified formally must be either verified by manual review, or by testing. The
 tool GNATtest allows the user to easily develop unit tests for subprograms
 declared in library-level package specifications.
 
+Special Compilation Mode
+------------------------
+
+In order to combine formal verification with testing, the program should
+respect a number of restrictions, even on code that is not in Alfa. These
+restrictions are:
+
+.. code-block:: ada
+
+   pragma Restrictions (
+            No_Access_Subprograms,
+            No_Finalization,
+            No_Implicit_Aliasing);
+
+Additionally, the program should be compiled with special switches, which add
+run-time checks to verify dynamically the assumptions made during formal
+verification:
+
+ * ``-gnateA`` adds checks that parameters are not aliased
+ * ``-gnateV`` adds checks that parameters are valid, including parameters of composite types (arrays, records)
+
 Test Cases
 ----------
 
