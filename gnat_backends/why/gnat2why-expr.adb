@@ -1312,7 +1312,8 @@ package body Gnat2Why.Expr is
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
-               Current_Type := Type_Of_Node (Component_Type (Etype (Ar)));
+               Current_Type :=
+                 Type_Of_Node (Component_Type (Unique_Entity (Etype (Ar))));
                while Present (Cursor) loop
                   Indices (Count) :=
                      Transform_Expr
