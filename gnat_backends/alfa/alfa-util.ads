@@ -23,10 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree; use Atree;
+with Atree;   use Atree;
 with Debug;
-with Einfo; use Einfo;
-with Sinfo; use Sinfo;
+with Einfo;   use Einfo;
+with Impunit; use Impunit;
+with Sinfo;   use Sinfo;
 
 package Alfa.Util is
 
@@ -110,6 +111,15 @@ package Alfa.Util is
 
    function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
    --  Return whether a location Loc is in the formal container sources
+
+   function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
+      (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
+   --  Returns True is unit U is in the standard library, which includes all
+   --  units defined in Ada RM, and all units predefined by GNAT.
+
+   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
+   --  Returns True if location Loc is in a unit of the standard library, as
+   --  computed by Unit_In_Standard_Library.
 
    function Type_Based_On_Formal_Container (E : Entity_Id) return Boolean;
    --  Return whether a type E is defined in the formal containers, or it is a

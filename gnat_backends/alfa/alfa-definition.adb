@@ -1248,7 +1248,21 @@ package body Alfa.Definition is
       --  issued even on operations like "A * B / C" which are not reordered
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
-      if Opt.Strict_Alfa_Mode then
+      if Opt.Strict_Alfa_Mode
+
+        --  Ignore code defined in the standard library, unless the main unit
+        --  is from the standard library. In particular, ignore code from
+        --  instances of generics defined in the standard library (unless we
+        --  are analyzing the standard library itself). As a result, no warning
+        --  is generated in this case for standard library code. Such warnings
+        --  are only noise, because a user sets the strict Alfa mode precisely
+        --  when he uses another compiler than GNAT, with a different
+        --  implementation of the standard library.
+
+        and then
+          (not Location_In_Standard_Library (Sloc (N))
+            or else Unit_In_Standard_Library (Main_Unit))
+      then
          case N_Binary_Op'(Nkind (N)) is
             when N_Op_Add | N_Op_Subtract =>
                if Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
@@ -2044,7 +2058,23 @@ package body Alfa.Definition is
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
 
    begin
-      if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body) then
+      --  Only consider subprogram bodies from the main unit, and not bodies
+      --  for expression functions defined in unit specs with'ed directly or
+      --  indirectly from the main unit, or bodies from instances of generics
+      --  in unit specs with'ed directly or indirectly from the main unit.
+
+      if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body)
+
+        --  Ignore bodies defined in the standard library, unless the main unit
+        --  is from the standard library. In particular, ignore bodies from
+        --  instances of generics defined in the standard library (unless we
+        --  are analyzing the standard library itself). As a result, no VC is
+        --  generated in this case for standard library code.
+
+        or else
+          (Location_In_Standard_Library (Sloc (N))
+             and not Unit_In_Standard_Library (Main_Unit))
+      then
          return;
       end if;
 

@@ -26,12 +26,12 @@
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
 
-with Namet;          use Namet;
-with Nlists;         use Nlists;
-with Sem_Util;       use Sem_Util;
-with Sinput;         use Sinput;
+with Namet;                      use Namet;
+with Nlists;                     use Nlists;
+with Sem_Util;                   use Sem_Util;
+with Sinput;                     use Sinput;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
 
 package body Alfa.Util is
 
@@ -443,6 +443,26 @@ package body Alfa.Util is
              (Get_Name_String (Reference_Name (Get_Source_File_Index (Loc))));
       end if;
    end Location_In_Formal_Containers;
+
+   ----------------------------------
+   -- Location_In_Standard_Library --
+   ----------------------------------
+
+   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean is
+   begin
+      if Loc = No_Location then
+         return False;
+      end if;
+
+      if Loc = Standard_Location
+        or else Loc = Standard_ASCII_Location
+        or else Loc = System_Location
+      then
+         return True;
+      end if;
+
+      return Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
+   end Location_In_Standard_Library;
 
    -----------------------------
    -- Lowercase_Capacity_Name --
