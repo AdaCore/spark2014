@@ -4,12 +4,11 @@ p.adb:20:4: info: assertion proved
 p.adb:20:69: info: overflow check proved
 p.adb:23:24: info: loop invariant initialization proved
 p.adb:23:24: info: loop invariant preservation proved
-p.adb:23:24: info: loop invariant proved
 p.adb:30:4: info: assertion proved
 p.adb:30:69: info: overflow check proved
 p.adb:33:24: info: loop invariant initialization proved
 p.adb:33:24: info: loop invariant preservation proved
-p.adb:33:24: info: loop invariant proved
+p.adb:41:4: info: assertion proved
 p.adb:41:69: info: overflow check proved
 p.adb:45:27: info: loop invariant initialization proved
 p.adb:45:27: info: loop invariant preservation proved

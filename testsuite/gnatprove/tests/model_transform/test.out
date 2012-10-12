@@ -1,4 +1,3 @@
-An error occured when calling alt-ergo
 model.adb:61:10: info: loop invariant initialization proved
 model.adb:61:10: info: loop invariant preservation proved
 model.adb:62:52: info: overflow check proved
@@ -10,11 +9,11 @@ model.adb:71:10: info: loop invariant initialization proved
 model.adb:72:57: info: overflow check proved
 model.adb:73:20: info: index check proved
 model.adb:73:41: info: index check proved
-model.adb:73:68: loop invariant preservation not proved, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(AV(From(CFV(T)
 model.adb:74:20: info: index check proved
 model.adb:74:28: info: index check proved
 model.adb:76:20: info: index check proved
 model.adb:76:39: info: index check proved
+model.adb:76:66: loop invariant preservation not proved, requires Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) = Name(AV(To(CFV(T)
 model.adb:77:20: info: index check proved
 model.adb:77:26: info: index check proved
 model.adb:79:20: info: index check proved
