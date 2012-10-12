@@ -926,15 +926,33 @@ package body Why.Gen.Expr is
 
    function New_Pretty_Label (N : Node_Id) return W_Identifier_Id
    is
-      S : constant String := String_Of_Node (N);
+      Used_Node : Node_Id := N;
    begin
-      if S /= "" then
-         return
-           New_Identifier
-             (Name => To_String (WNE_Pretty_Ada) & ":" & S);
-      else
-         return Why_Empty;
+
+      --  String_Of_Node almost systematically prints the original node of the
+      --  argument node. This is usually what we want, except in one strange
+      --  case: The frontend rewrites N_And_Then Chains to lists of simple
+      --  expressions, but the original node of each points to the N_And_Then,
+      --  instead of the expression itself. We work around this by getting the
+      --  right op of the original node in that case.
+
+      --  ??? fix String_Of_Node instead of this workaround
+
+      if Comes_From_Source (N) and then Original_Node (N) /= N and then
+        Nkind (Original_Node (N)) = N_And_Then then
+         Used_Node := Right_Opnd (Original_Node (N));
       end if;
+      declare
+         S : constant String := String_Of_Node (Used_Node);
+      begin
+         if S /= "" then
+            return
+              New_Identifier
+                (Name => To_String (WNE_Pretty_Ada) & ":" & S);
+         else
+            return Why_Empty;
+         end if;
+      end;
    end New_Pretty_Label;
 
    --------------------
