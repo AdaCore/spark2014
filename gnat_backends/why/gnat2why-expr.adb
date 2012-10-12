@@ -1178,6 +1178,18 @@ package body Gnat2Why.Expr is
 
                return Update_Expr;
 
+            when N_Type_Conversion =>
+               return
+                 +Insert_Conversion
+                   (Domain => EW_Prog,
+                    Expr   =>
+                    +Compute_Rvalue
+                      (Expression (N),
+                       Update_Expr,
+                       Etype (Expression (N))),
+                    To     => Type_Of_Node (Etype (Expression (N))),
+                    From   => Type_Of_Node (Etype (N)));
+
             when N_Selected_Component | N_Indexed_Component | N_Slice =>
                declare
                   Prefix_Expr : constant W_Value_Id :=
@@ -1228,6 +1240,9 @@ package body Gnat2Why.Expr is
 
             when N_Indexed_Component | N_Selected_Component | N_Slice =>
                return Why_Lvalue (Prefix (N));
+
+            when N_Type_Conversion =>
+               return Why_Lvalue (Expression (N));
 
             when others =>
                Ada.Text_IO.Put_Line ("[Why_Lvalue] kind ="
