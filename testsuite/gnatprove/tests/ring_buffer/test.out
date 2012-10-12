@@ -24,4 +24,4 @@ ring_buf.ads:49:59: info: index check proved
 ring_buf.ads:55:29: info: postcondition proved
 ring_buf.ads:55:44: info: overflow check proved
 ring_buf.ads:60:39: info: overflow check proved
-ring_buf.ads:60:65: postcondition not proved, requires R.Length = R.Length'Old - 1 and then Head (R'Old) = Element
+ring_buf.ads:60:65: postcondition not proved, requires Head (R'Old) = Element

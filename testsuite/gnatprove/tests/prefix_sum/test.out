@@ -13,6 +13,7 @@ prefixsum.adb:110:25: info: division check proved
 prefixsum.adb:110:25: info: overflow check proved
 prefixsum.adb:110:25: info: range check proved
 prefixsum.adb:13:10: info: loop invariant initialization proved
+prefixsum.adb:13:10: loop invariant preservation not proved
 prefixsum.adb:14:39: info: range check proved
 prefixsum.adb:19:27: info: division check proved
 prefixsum.adb:22:19: info: index check proved
@@ -26,7 +27,6 @@ prefixsum.adb:23:51: info: index check proved
 prefixsum.adb:23:63: info: index check proved
 prefixsum.adb:24:30: info: division check proved
 prefixsum.adb:27:19: info: index check proved
-prefixsum.adb:27:25: loop invariant preservation not proved, requires A (K) = Copy1 (K) + Copy1 (K-1) + Copy1 (K-2) + Copy1 (K-3)
 prefixsum.adb:27:27: info: index check proved
 prefixsum.adb:27:39: info: index check proved
 prefixsum.adb:27:53: info: index check proved
@@ -40,8 +40,8 @@ prefixsum.adb:33:27: info: index check proved
 prefixsum.adb:35:24: info: overflow check proved
 prefixsum.adb:35:24: info: range check proved
 prefixsum.adb:39:13: info: loop invariant initialization proved
-prefixsum.adb:39:13: loop invariant preservation not proved
 prefixsum.adb:40:27: info: division check proved
+prefixsum.adb:40:37: loop invariant preservation not proved, requires Left + 1) mod Space = 0
 prefixsum.adb:42:44: info: range check proved
 prefixsum.adb:44:27: info: division check proved
 prefixsum.adb:50:39: info: division check proved
@@ -68,8 +68,8 @@ prefixsum.adb:75:7: info: index check proved
 prefixsum.adb:76:27: info: division check proved
 prefixsum.adb:76:27: info: overflow check proved
 prefixsum.adb:76:27: info: range check proved
+prefixsum.adb:80:10: loop invariant preservation not proved
 prefixsum.adb:80:49: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
-prefixsum.adb:80:49: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
 prefixsum.adb:81:44: info: division check proved
 prefixsum.adb:81:57: range check not proved
 prefixsum.adb:83:25: info: overflow check proved
