@@ -212,6 +212,11 @@ procedure Gnatprove is
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
       end if;
+
+      --  The steps option is passed to alt-ergo via the why3.conf file. We
+      --  still need to pass it to gnatwhy3 as well so that it is aware of the
+      --  value of that switch.
+
       if Steps /= 0 then
          Args.Append ("--steps");
          Args.Append (Int_Image (Steps));
