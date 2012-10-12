@@ -7,8 +7,19 @@
 SPARK 2014 LRM
 ==============
 
+   Copyright (C) 2011-2012, AdaCore and Altran Praxis Ltd
+
+   Permission is granted to copy, distribute and/or modify this document
+   under the terms of the GNU Free Documentation License, Version 1.1
+   or any later version published by the Free Software Foundation;
+   with no Invariant Sections, with no Front-Cover Texts, and with no
+   Back-Cover Texts.
+   A copy of the license is included in the section entitled 'GNU
+   Free Documentation License'.
+
 .. toctree::
    :maxdepth: 3
+   :numbered:
 
    introduction
    lexical-elements
@@ -24,10 +35,19 @@ SPARK 2014 LRM
    generic-units
    representation-issues
    the-standard-library
-   restrictions-and-profiles
-   extended-legality
-   mapping-spec
-   todo-summary
+
+.. raw:: latex
+
+   \appendix
+
+.. toctree::
+   :maxdepth: 3
+
+   A. Restrictions and Profiles <restrictions-and-profiles>
+   B. Extended Legality Rules <extended-legality>
+   C. SPARK2005 to |SPARK| Mapping Specification <mapping-spec>
+   D. To-Do Summary <todo-summary>
+   E. GNU Free Documentation License <gfdl>
 
 Indices and tables
 ==================

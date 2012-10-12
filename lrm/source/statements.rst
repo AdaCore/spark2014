@@ -2,15 +2,20 @@ Statements
 ==========
 
 
-There are no added features in this section 
-
-.. todo:: there may be restrictions.
+There are no added features in this section, only restrictions.
 
 .. todo:: I think these new pragmas are regarded as statements and
     should appear here.  The text has been copied directly from the
     initial langauge design document as prepared by Johannes. It needs
     to be tided up into LRM format
 
+Restrictions
+------------
+
+User-defined iterator types are not in |SPARK|. An ``iterator_specification``
+is not in |SPARK|.
+
+Goto statements are not in |SPARK|.
 
 Annotations in subprograms
 --------------------------

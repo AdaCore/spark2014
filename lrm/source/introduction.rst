@@ -116,6 +116,8 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - The goto statement is not permitted.
 
+- The use of controlled types is not premitted.
+
 - Tasking is not currently permitted.
 
 - Raising and handling of user-defined exceptions is not permitted.
@@ -123,7 +125,6 @@ in the remaining chapters of this document, the most notable simplifications are
 .. todo:: RCC to check other major restrictions in the GNATProve UG and
    summarize here.  As this section develops and becomes definitive,
    consider removing or reducing duplication in the UG.
-
 
 Method of Description and Syntax Notation
 -----------------------------------------

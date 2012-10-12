@@ -1,6 +1,30 @@
 Packages
 ========
 
+Restrictions
+------------
+
+The partial view of a private type or private extension may be in |SPARK| even
+if its full view is not in |SPARK|. The usual rule applies here, so a private
+type without discriminants is in |SPARK|, while a private type with
+discriminants is in |SPARK| only if its discriminants are in |SPARK|.
+
+The Ada 2012 RM lists places at which an invariant check is performed. In
+|SPARK|, we add the following places:
+
+  * Before a call on any subprogram or entry that:
+
+    * is explicitly declared within the immediate scope of type T (or by an
+      instance of a generic unit, and the generic is declared within the
+      immediate scope of type T), and
+
+    * is visible outside the immediate scope of type T or overrides an
+      operation that is visible outside the immediate scope of T, and
+
+    * has one or more in out or in parameters with a part of type T.
+
+    the check is performed on each such part of type T.
+
 Package Specifications and Declarations
 ---------------------------------------
 
@@ -33,14 +57,11 @@ If a subprogram P with a ``global_aspect`` is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
 *variables* of the package then P must include in its
 ``global_aspect`` the abstract states with the correct mode that
-represent the hidden *variables* referenced by P.  If P has a
+represents the hidden *variables* referenced by P.  If P has a
 ``dependency_aspect`` then the abstract states must appear as imports
 and exports, as appropriate, in the ``dependency_relation`` of the
 aspect.
 
-An abstract ``state_name`` is declared using a
-``abstract_state_aspect`` appearing in an ``aspect_specification`` of
-a ``package_specification``.
 
 .. centered:: **Syntax**
 
@@ -51,7 +72,11 @@ a ``package_specification``.
                           | (state_name {, state_name})
   state_name            ::= defining_identifier [=> (Volatile => mode_selector)]
 
-.. centered:: **Static Semantics**
+.. todo:: May be we have to consider a latched output mode selector,
+   one that can be read after writing but need not be.  This scheme
+   has beeen requested by secunet.
+
+.. centered:: **Legality Rules**
 
 #. An ``abstract_state_aspect`` may only be placed in a
    ``aspect_specification`` of a ``package_specification``.
@@ -62,25 +87,166 @@ a ``package_specification``.
    within the package containing the ``abstract_state_aspect``.
 #. The ``defining_identifier`` of a ``state_name`` shall not be
    repeated within the ``abstract_state_list``.
-#. A package shall only have an ``abstract_state_aspect`` if it has
-   *variables* declared in its ``private_part``, immediately within
-   its body, or within embedded packages or private child packages.
+#. A ``state_name`` can only appear in a ``initializes_aspect``, a
+   ``global_aspect``, a ``dependency_aspect``, their refinded
+   counterparts, or their equivalent pragmas.
+#. The Volatile designates a volatile state, usually an external
+   input or output.  The mode selector determines whether the volatile
+   state is an input or an output or possibly both an input and an
+   output (an in_out).
+#. A volatile state may have the attributes ``Head``, ``Tail``.
+#. A volatile input may be an ``import`` only.
+#. A volatile output may be an ``export`` only.
+#. A volatile in_out has the attributes ``Input`` and ``Output``.
+#. A volatile in_out ``state_name`` cannot be used directly it must be
+   attributed with ``Input`` or ``Output``
+#. A volatile in_out ``state_name`` S may be used as an ``import``
+   using the notation S'Input and used as an export using the notation
+   S'Output.
+
+.. centered:: **Static Semantics**
+
+#. An abstract ``state_name`` is declared using a
+   ``abstract_state_aspect`` appearing in an ``aspect_specification``
+   of a ``package_specification``.
 #. A ``state_name`` has the same scope and visibility as a declaration
    in the ``visible part`` of the package to which the
    ``abstract_state_aspect`` is applied.
-#. A ``state_name`` can only appear in a ``global_aspect`` or a
-   ``dependency_aspect``, their refinded counterparts, or their
-   equivalent pragmas.
+#. If a package has internal state but no ``abstract_state_aspect`` is
+   provided one or more implicit state names are used internally for
+   flow and proof analysis but they cannot be explicitly referenced.
+
+.. todo:: May be we could reference the defaults state names by
+   attributes, e.g., *package_*\ ``name'Uninitialized_State``,
+   *package_*\ ``name'Initialized_State``, *package_*\
+   ``name'Volatile_Input_State``, *package_*\
+   ``name'Volatile_Output_State``, etc.  
+
+   Possibly better: *package_*\
+   ``name'State``, *package_*\ ``name'State'Uninitialized``,
+   *package_*\ ``name'State'Volatile``, *package_*\
+   ``name'State'Volatile'Input``, etc.
+
+#. A volatile state is considered to be a sequence of values, a
+   volatile in_out state has two sequences, an input and and an output
+   sequence.  The input sequence is denoted using the ``Input``
+   attribute and the output sequence is denoted by the ``Output``
+   attribute.
+#. Each time an input or in_out state is read (indirectly through its
+   refinement) its value may be different.  This distinction with a
+   normal non-volatile variable or state is important for both flow
+   analysis and proof.
+#. A volatile output or in_out state may be updated many times but
+   each individual update is considered to have an effect.  This is in
+   contrast with a normal non-valatile variable or state where
+   successive updates with no interniving reads would indicate that
+   earlier updtaes were ineffective.  Flow analysis and proof have to
+   take account of this difference.
 
 .. centered:: **Restrictions that may be Applied**
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.1.2 Abstract State Aspect
+   :end-before: END OF FILE 
 
-#. ``Abstract_State_Names_required`` enforces the restriction that a
-   package which has hidden state must have an
-   ``abstract_state_aspect``.
-#. ``No In_Out Volatile Variables`` enforces the restriction that a
-   ``mode_selector`` of In_Out may not appear in an
-   ``abstract_state_aspect`` or a ``refined_state_aspect``.
+.. centered:: **Dynamic Semantics**
 
+There are no dynamic semantics associated with the
+``abstract_state_aspect`` the rules are checked by static analysis.
+
+
+Initializes Aspect
+^^^^^^^^^^^^^^^^^^
+
+An important property of the state components of a package is whether
+they are initialized during package elaboration.  Flow analysis
+determines that the program state has been initialized and the
+``initializes_aspect`` provides this information without having to
+analyse the body of the package if it exists.
+
+.. centered:: **Syntax**
+
+::
+
+  initializes_aspect    ::= Initializes => initialized_item_list
+  initialized_item_list ::= initialized_item
+                          | (initialized_item {, initialized_item})
+
+
+where
+
+   ``initialized_item  ::= state_name |`` *variable_*\ ``name``
+
+
+.. centered:: **Legality Rules**
+
+#. An ``initializes_aspect`` may only appear in the
+   ``aspect_specification`` of a package specification.  
+#. There can be at most one ``initializes_aspect`` in an
+   ``aspect_specification``.
+#. An ``initialized_item`` is either:
+
+   * a ``state_name`` declared in a previous ``abstract_state_aspect``
+     within the same ``aspect_specification``; or
+   * the name of a *variable* declared in the visible part of the
+     package specification which contains the ``initializes_aspect``.
+
+#. A *variable* appearing in an ``initializes_aspect`` must be entire,
+   it cannot be a subcomponent of a conatining object.
+#. An ``initialized_item`` may not appear more than once in an
+   ``initialized_item_list``.
+
+.. centered:: **Static Semantics**
+
+#. An ``initialized_item`` appearing in a ``initializes_aspect``
+   indicates that it is initialized during package elaboration.
+#. The absence of a ``state_name`` of a package Q or a *variable*
+   declared in the visible part of Q in the ``ininializes_aspect`` of
+   Q indicates that the ``state_name`` or *variable* is not
+   initialized during package elaboration.
+#. If a package has an ``abstract_state_aspect`` but no
+   ``initializes_aspect`` it follows that none of its state components
+   are initialized during the package initialization.
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with the
+``initializes_aspect`` the rules are checked by static analysis.
+
+.. centered:: **Verification Rules**
+
+#. If a package has an ``initializes_aspect`` and it has non-visible
+   state components, it must be preceded by an
+   ``abstract_state_aspect`` in the same ``aspect_specification``.
+#. Each *variable* appearing in an ``initializes_aspect`` of a package
+   Q must be initialized either at the point of declaration in Q or
+   within the sequence of statements of the body of Q.
+#. Each ``constituent`` of a ``state_name`` declared in a package Q
+   that is a *variable* must be initialized at its point of
+   declaration within Q, or if it is a *variable* declared in the
+   visible part of a private child or embedded package package of Q,
+   then it must appear in the ``initializes_aspect`` of the private
+   child or embedded package.
+#. Each ``constituent`` of a ``state_name`` which is a ``state_name``
+   of a private child or embedded package must appear in the
+   ``initializes_aspect`` of the private child or embedded package.
+#. If a package Q has an ``initializes_aspect`` and it does not a
+   contain a *variable* or ``state_name`` V, then neither V nor its
+   constituents, if it is a ``state_name``, should be initialized
+   during the elaboration of Q, its private child or its embedded
+   packages.
+#. If a package has neither an ``abstract_state_aspect`` nor an
+   ``initializes_aspect`` but it has state components, then analysis
+   of the package specification and body (if it exists) will determine
+   the *varibles* declared in the package and whether they are
+   initialized during elaboration of the package.  For *variables* not
+   declared in the visible part of the package a implicit
+   ``state_name`` is generated to represent the *variables* which are
+   not initialized and another for the *variables* which are
+   initialized. The ``state_name`` representing the initialized
+   *variables* is added to an implicitly generated
+   ``initialization_aspect`` along with any *variables* which are
+   declared in the visible part of the package wich are initialized
+   during package elaboration.
 
 .. todo:: Initializes, Initial_Condition aspects.
 
@@ -136,7 +302,6 @@ constituents of the ``state_name`` using a
 Refined State Aspect
 ^^^^^^^^^^^^^^^^^^^^
 
-
 .. centered:: **Syntax**
 
 ::
@@ -152,10 +317,12 @@ where
 
   ``constituent ::=`` *variable_*\ ``name | state_name``
 
-.. centered:: **Static Semantics**
+.. centered:: **Legality Rules**
 
 #. If a package specification has an ``abstract_state_aspect`` then
    its body must have a ``refined_state_aspect``.
+#. A package body cannot have a ``refined_state_aspect`` if its
+   specification does not have an ``abstract_state_aspect``.
 #. For each ``state_name`` appearing in an ``abstract_state_aspect``
    in the specification of a package Q, there must be a
    ``state_and_constituents`` naming the ``state_name`` in the
@@ -170,38 +337,36 @@ where
 #. A *variable* declared in the visible part of a package Q is not a
    ``constituent`` of Q and cannot appear in the
    ``refined_state_aspect`` in the body of Q.
-#. A *variable* declared in the ``private_part`` or body of a package
-   is a ``constituent`` of the package.
-#. A *variable* declared in the ``visible_part`` of a package declared
-   immediately within the ``private_part`` or body of a package Q is a
-   ``constituent`` of Q.
-#. A *variable* declared in the ``visible_part`` of a private child
-   package of a package Q is a ``constituent`` of Q.
+#. Each ``constituent`` of the hidden state of must appear exactly
+   once in a ``constituent_list`` of exactly one
+   ``state_and_constituents``.  A constituent of a package Q is:
+
+   * A *variable* declared in the ``private_part`` or body of Q;
+   * A *variable* declared in the ``visible_part`` of a package
+     declared immediately within the ``private_part`` or body of Q;
+   * A *variable* declared in the ``visible_part`` of a private child
+     package of Q;
+   * A ``state_name`` declared in the ``abstract_state_aspect`` of a
+     package declared immediately within the body of a package Q; and
+   * A ``state_name`` declared in the ``abstract_state_aspect`` of a
+     private child package of Q,
+
 #. A *variable* which is a ``constituent`` is an *entire variable*; it
    is not a component of a containing object.
-#. A ``state_name`` declared in the ``abstract_state_aspect`` of a
-   package declared immediately within the ``private_part`` or body of
-   a package Q is a ``constituent`` of Q.
-#. A ``state_name`` declared in the ``abstract_state_aspect`` of a
-   private child package of a package Q is a ``constituent`` of Q.
-#. Each ``constituent`` of a package Q is a constituent of a single
-   ``state_name`` declared in the ``aspect_state_aspect`` of Q.
-#. For a package Q with an ``abstract_state_aspect``, all the
-   *variables* and ``state_names`` which are ``constituents`` of Q
-   must appear in exactly one ``constituent_list`` of the
-   ``refined_state_aspect`` of Q.
+
+.. centered:: **Static Semantics**
+
 #. If a package Q does not have an explicit ``abstract_state_aspect``
    given but it has state ``constituents`` then an implicit
    ``abstract_state_aspect`` containing just a single ``state_name`` S
    will be assumed in which all the constituents of Q are constituents
    of S.  S is an assumed ``state_name`` and cannot be explicitly be
    referenced.  This will restrict the extent of the static analyses
-   available.
-#. if the specification of a package Q does not have a
-   ``abstract_state_aspect`` then the body of Q shall not have a
-   ``state_refinement_aspect``.
+   and proof possible.
 
-.. centered:: **Restrictions that may be Applied**
+.. todo:: Refinment rules for external variables, rules for refinement
+   using nested and private packages
+
 
 
 Refined Global Aspect
