@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,7 +28,8 @@ with String_Utils;      use String_Utils;
 
 package Call is
 
-   procedure Abort_With_Message (Msg : String);
+   procedure Abort_With_Message (Msg : String) with
+     No_Return;
    --  Print the Msg to Standard Error and Exit with Error code 1.
 
    procedure Call_Exit_On_Failure
