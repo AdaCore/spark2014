@@ -42,7 +42,6 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
-with Stringt;               use Stringt;
 with Opt;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
@@ -4635,11 +4634,9 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Why_Empty;
       end if;
 
-      String_To_Name_Buffer (Strval (N));
       Open_Theory (Decl_File, Name,
                    Comment =>
                      "Module for defining a value for string literal "
-                       & """" & Name_Buffer (1 .. Name_Len) & """"
                        & (if Sloc (N) > 0 then
                             " defined at " & Build_Location_String (Sloc (N))
                           else "")
