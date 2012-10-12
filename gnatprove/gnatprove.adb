@@ -212,6 +212,10 @@ procedure Gnatprove is
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
       end if;
+      if Steps /= 0 then
+         Args.Append ("--steps");
+         Args.Append (Int_Image (Steps));
+      end if;
       if Verbose then
          Args.Append ("--verbose");
       end if;
