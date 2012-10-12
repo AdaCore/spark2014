@@ -4,8 +4,8 @@
 -- I have chosen one possible way of indicating that the state abstraction
 -- represents a volatile input but the purpose of this case study is not to
 -- consider external inputs and outputs but to demonstrate data abstraction
--- using provate children.
--- I will provide another case study external inputs and outputs later.
+-- using private children.
+-- I will provide another case study with external inputs and outputs later.
 private package AdvanceButton.Raw
 with
   Abstract_State => (Inputs => (Volatile => Input))

@@ -1,4 +1,4 @@
--- In the body of Actuator the state abstraction Actuator.State is refined in to
+-- In the body of Actuator the state abstraction Actuator.State is refined in two
 -- constituents, both of which are state abstractions of its private children.
 -- The subprograms of Actuator are defined in terms of calls to subprograms of
 -- its children which each work on part of the overall state abstraction
@@ -7,7 +7,7 @@
 -- in terms of its function Status.  The specification (and implementation) of
 -- Status is actually a call of the function Mirror.Get_State.
 -- The Initial_Condition of Actuator.Mirror.State is given in terms of
--- Actuator.Mirror.State.  We will need to be able to prove that
+-- Actuator.Mirror.State. We will need to be able to prove that
 -- Actuator.Mirror.Get_State = Actuator.Unknown ->
 --    Actuator.Status = Actuator.Uknown.
 with Actuator.Mirror,

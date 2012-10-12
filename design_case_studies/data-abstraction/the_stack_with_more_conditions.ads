@@ -1,5 +1,5 @@
 -- This package demonstrates that postconditions as well as preconditions
--- may be applied to a state abstraction.  The state abstraction "State"
+-- may be applied to a state abstraction. The state abstraction "State"
 -- does not need to be typed as State is never mentioned in the proof
 -- contracts.
 -- The package also shows how the enhanced conditional global contract may be

@@ -1,10 +1,10 @@
 -- This package shows a package declaration which has simple state abstraction
 -- in SPARK 2014.
 -- Note that the state abstraction "State" does not require to be typed as
--- it as only used in global and optionally derives contracts within the
+-- it can only be used in global and optionally derives contracts within the
 -- package specification.
 -- The initializes contract asserts that "State" will be given an initial value
--- during package elaboration.  The absence of an initializes contract asserts
+-- during package elaboration. The absence of an initializes contract asserts
 -- that the "State" will not be given an initial value.
 -- The state of a package may be represented by more than one abstraction but
 -- all the state of the package must be encompased by the abstractions and the

@@ -1,15 +1,15 @@
--- This is package demonstrates simple data abstraction with
+-- This package demonstrates simple data abstraction with
 -- the addition of preconditions so that the subprograms can be proven to be
 -- free of RTE.
 -- Note that the state abstraction "State" does not need to be typed as it is
 -- only referenced in the global and optionally derives contracts of the
--- package specification.  Indeed a state abstraction is never needs typing for
+-- package specification. Indeed a state abstraction is never needs typing for
 -- this reason.
 -- As functions with global variables can be called within contracts the
 -- State abstraction "State" does not need to be explicitly mentioned in
 -- proof contracts.
 -- In the initializes contract we have asserted that the initialized "State"
--- will satisfy the predicate "Is_Empty".  This feature is sadly lacking
+-- will satisfy the predicate "Is_Empty". This feature is sadly lacking
 -- from SPARK 2005 and is required for proof.
 -- It is not possible to talk about State'Old, for instance
 -- State = State'Old as State is purely an abstraction and is not a variable

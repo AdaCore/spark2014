@@ -7,7 +7,7 @@
 -- Placing the state refinement contracts at the start of the package body
 -- collects in one place all of the state constituents of the package and all
 -- of the state abstractions in one place whether the constituents are declared
--- in the private part of a the package or in its child packages.  This should
+-- in the private part of a the package or in its child packages. This should
 -- make analysis easier.
 -- The subprograms in this package body cannot be shown to be free of RTE
 -- without more defensive programming or incorporating preconditions.
@@ -55,14 +55,15 @@ is
    end Push;
 
    procedure Pop(X: out Integer)
-   with Refined_Global => (In_Out => (Pointer, S))
+   with Refined_Global => (In_Out => Pointer,
+			   Input  => S)
    is
    begin
       X := S (Pointer);
       Pointer := Pointer - 1;
    end Pop;
 
-   procedure Swap (X : in Integer)
+   procedure Swap (X: in Integer)
    with Refined_Global => (Input  => Pointer,
                            In_Out => S)
    is

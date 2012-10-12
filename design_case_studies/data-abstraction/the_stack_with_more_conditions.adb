@@ -59,7 +59,8 @@ is
 
    procedure Pop(X: out Integer)
    with
-     Refined_Global => (In_Out => (Pointer, S))
+     Refined_Global => (Input  => S,
+		        In_Out => Pointer)
    is
    begin
       X := S (Pointer);

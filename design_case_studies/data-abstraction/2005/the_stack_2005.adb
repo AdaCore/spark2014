@@ -40,13 +40,21 @@ is
    end Push;
 
    procedure Pop(X: out Integer)
-   --# global in     S;                    -- refined in terms of constituents
-   --#        in out Pointer;
+   --# global in out Pointer;              -- refined in terms of constituents
+   --#        in     S;
    is
    begin
       X := S (Pointer);
       Pointer := Pointer - 1;
    end Pop;
+   
+   procedure Swap (X: in Integer)
+   --# global in     Pointer;
+   --#        in out S;  
+   is
+   begin
+      S (Pointer) := X;
+   end Swap;
 
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;

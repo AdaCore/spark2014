@@ -20,13 +20,13 @@ is
    procedure TurnOn
    with
      Global  => (In_Out => State),
-     Depends => (Outputs => Null);
+     Depends => (State  =>+ null);
      -- Turns the heating on.
 
    procedure TurnOff
    with
      Global  => (In_Out => State),
-     Depends => (Outputs => Null);
+     Depends => (State  =>+ null);
      -- Turns the heating off.
 
 end Actuator;

@@ -1,11 +1,11 @@
 -- This is package is essentially demonstrating simple data abstraction but with
 -- the addition of preconditions so that the subprograms can be proven to be
 -- free of RTE.
--- The own variable has to be typed becaus SPARK 2005 does not allow functions
--- with global variables.  An equivalent function is implicitly declared with
--- the global variables converted to parameters.
+-- The own variable has to be typed because FDL does not allow functions
+-- with global variables.  An equivalent FDL function is implicitly declared for
+-- each Ada function with the global variables converted to parameters.
 -- These parameters need to be typed, hence the declaration of a SPARK abstract
--- type.
+-- type.  The FDL version of of the function has to be used in proof contexts.
 package The_Stack_With_Conditions_2005
 --# own State : Stack;  -- Abstraction of internal state of the package
 --# initializes State;  -- We are asserting it will be initialized
@@ -31,10 +31,8 @@ is
    --# global in out State;
    --# pre not Is_Empty (State);
 
-   procedure Replace (X: in Integer);
+   procedure Swap (X: in Integer);
    --# global in out State;
    --# pre not Is_Empty (State);
-   --# post (Top (State~) = X) -> (State = State~);
-   -- We can refer to the the initial and final value of State.
 
 end The_Stack_With_Conditions_2005;

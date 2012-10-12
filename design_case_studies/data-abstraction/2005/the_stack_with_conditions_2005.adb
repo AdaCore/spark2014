@@ -23,15 +23,7 @@ is
    S: Vector;                              -- Declaration of constituents
    Pointer: Pointer_Range;
 
-   -- To prove the refinment integrity check for the refined post condition
-   -- of Replace the following proof function is required:
-   -- stack(1): the_stack_with_conditions_2005__top(Initial_State) = X -> Final_State = Initial_State
-   --               may_be_deduced_from
-   --                 [ fld_pointer(Initial_State) = fld_pointer(Final_State),
-   --                   Initial_S = fld_s(Initial_State),
-   --                   fld_s(Final_State) = update(Initial_S, [fld_pointer(Initial_State)], X)  ] .
-
-   function Is_Empty  return Boolean       -- Proof and Ada functions
+   function Is_Empty return Boolean       -- Proof and Ada functions
    --# global Pointer;                     -- refined in terms of constituents
    --# return Pointer = 0;
    is
@@ -39,7 +31,7 @@ is
       return Pointer = 0;
    end Is_Empty;
 
-   function Is_Full  return Boolean
+   function Is_Full return Boolean
    --# global Pointer;
    --# return Pointer = Max_Stack_Size;
    is
@@ -77,15 +69,14 @@ is
       Pointer := Pointer - 1;
    end Pop;
 
-   procedure Replace (X: in Integer)
+   procedure Swap (X: in Integer)
    --# global in     Pointer;
    --#        in out S;
    --# pre not Is_Empty (Pointer);
-   --# post S = S~[Pointer => X];
    is
    begin
       S (Pointer) := X;
-   end Replace;
+   end Swap;
 
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;

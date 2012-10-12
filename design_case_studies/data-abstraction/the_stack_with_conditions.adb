@@ -12,6 +12,7 @@
 -- In this simple example the refined postconditions for Is_Empty and Is_Full
 -- could just be replaced by function expressions which are both a refined
 -- postcondition and an implementation.
+package body The_Stack_With_Conditions
 with
    Refined_State (State => (S, Pointer)) -- State refinement
 is
@@ -25,9 +26,9 @@ is
    Pointer: Pointer_Range;
 
    -- The subprogram contracts are refined in terms of the constituents.
-   -- Expression functions could be used where applicable
+   -- Expression functions could be used where applicable.
 
-   function Is_Empty  return Boolean
+   function Is_Empty return Boolean
    with
      Refined_Global => Pointer,
      Refined_Post => Is_Empty'Result = (Pointer = 0)
@@ -36,7 +37,7 @@ is
       return Pointer = 0;
    end Is_Empty;
 
-   function Is_Full  return Boolean
+   function Is_Full return Boolean
    with
      Refined_Global => Pointer
      Refined_Post => Is_Full'Result = (Pointer = Max_Stack_Size)
@@ -61,7 +62,7 @@ is
    end Push;
 
    procedure Pop(X: out Integer)
- with
+   with
      Refined_Global => (Input  => S,
                         In_Out => Pointer)
    is
@@ -71,7 +72,7 @@ is
    end Pop;
 
    procedure Swap (X : in Integer)
- with
+   with
      Refined_Global => (Input  => Pointer,
                         In_Out => S)
    is

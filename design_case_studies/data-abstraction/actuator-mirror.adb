@@ -1,6 +1,6 @@
 -- The body of Actuator.Mirror refines the state abstraction
 -- Actuator.Mirror.State on to a single constituent State.
--- This a one-to-one mapping.
+-- This is a one-to-one mapping.
 package body Actuator.Mirror
 with
   Abstract_Refinement => (State => State)
