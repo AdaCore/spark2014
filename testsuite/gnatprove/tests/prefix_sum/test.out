@@ -41,11 +41,11 @@ prefixsum.adb:35:24: info: overflow check proved
 prefixsum.adb:35:24: info: range check proved
 prefixsum.adb:39:13: info: loop invariant initialization proved
 prefixsum.adb:40:27: info: division check proved
-prefixsum.adb:40:37: loop invariant preservation not proved, requires Left + 1) mod Space = 0
 prefixsum.adb:42:44: info: range check proved
 prefixsum.adb:44:27: info: division check proved
 prefixsum.adb:50:39: info: division check proved
 prefixsum.adb:52:23: info: index check proved
+prefixsum.adb:52:29: loop invariant preservation not proved, requires A (K) = Copy2 (K) + Copy2 (K - Space)
 prefixsum.adb:52:31: info: index check proved
 prefixsum.adb:52:43: index check not proved
 prefixsum.adb:54:23: info: index check proved
@@ -68,8 +68,8 @@ prefixsum.adb:75:7: info: index check proved
 prefixsum.adb:76:27: info: division check proved
 prefixsum.adb:76:27: info: overflow check proved
 prefixsum.adb:76:27: info: range check proved
-prefixsum.adb:80:10: loop invariant preservation not proved
 prefixsum.adb:80:49: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
+prefixsum.adb:80:49: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
 prefixsum.adb:81:44: info: division check proved
 prefixsum.adb:81:57: range check not proved
 prefixsum.adb:83:25: info: overflow check proved
