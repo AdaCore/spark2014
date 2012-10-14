@@ -7,6 +7,10 @@ package PrefixSum is
    function All_Elements_In (A : Input; Max : Positive) return Boolean is
       (for all K in A'Range => A (K) in -Max .. Max);
 
+   function Intermediate_Form (A, B : Input) return Boolean with
+     Pre => All_Elements_In (A, Maximum * 8)
+       and then All_Elements_In (B, Maximum);
+
    function Intermediate_Form (A, B : Input) return Boolean is
        (for all K in A'Range =>
           (if (K + 1) mod 8 = 0 then
