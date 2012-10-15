@@ -3,6 +3,12 @@ Subprograms
 
 .. todo:: proof functions - here or elsewhere?
 
+.. todo:: The paragraph below does not really fit here and is not
+   quite right.  It is a sort of extended static semantics. The
+   concept in-SPARK out-of-SPARK has not been used elsewhere but is a
+   good notion that perhaps we should explain in the introduction and
+   use more frequently in the static semantics.
+
 We distinguish the *declaration view* introduced by a ``subprogram_declaration``
 from the *implementation view* introduced by a ``subprogram_body`` or an
 ``expression_function_declaration``. For subprograms that are not declared by
