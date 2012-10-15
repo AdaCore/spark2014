@@ -88,23 +88,22 @@ aspect.
 #. A ``state_name`` has the same scope and visibility as a declaration
    in the ``visible part`` of the package to which the
    ``abstract_state_aspect`` is applied.
-#. If a package has internal state but no ``abstract_state_aspect`` is
-   provided one or more implicit state names are used internally for
-   flow and proof analysis but they cannot be explicitly referenced.
-
-.. todo:: May be we could reference the defaults state names by
-   attributes, e.g., *package_*\ ``name'Uninitialized_State``,
-   *package_*\ ``name'Initialized_State``, *package_*\
-   ``name'Volatile_Input_State``, *package_*\
-   ``name'Volatile_Output_State``, etc.  
-
-   Possibly better: *package_*\
-   ``name'State``, *package_*\ ``name'State'Uninitialized``,
-   *package_*\ ``name'State'Volatile``, *package_*\
-   ``name'State'Volatile'Input``, etc.
+#. An abstract state of a package is generally considered to be in one
+   of the following categories:
+ 
+   * Unititalized State - state which is not initialized during the
+     package elaboration
+   * Initialized State - state which is initialized during the package
+     elaboration
+   * Volatile Input State - Volatile state which is an input only.
+     Volatile Input State is considered to be implicitly initialized
+   * Volatile Output State - Volatile state which is an output only.
+     Volatile Output State is considered to be implicitly initialized
+   * Volatile In_Out State - Volatile state which is bidirectional.
+     Volatile In_Out State is considered to be implicitly initialized
 
 #. A volatile state is considered to be a sequence of values, a
-   volatile in_out state has two sequences, an input and and an output
+   volatile In_Out state has two sequences, an input and and an output
    sequence.  The input sequence is denoted using the ``Input``
    attribute and the output sequence is denoted by the ``Output``
    attribute.
@@ -118,6 +117,19 @@ aspect.
    successive updates with no interniving reads would indicate that
    earlier updtaes were ineffective.  Flow analysis and proof have to
    take account of this difference.
+#. If a package has internal state but no ``abstract_state_aspect`` is
+   provided, an implicit ``state_name`` is generated for each category
+   of abstract state.  The implicit ``state_names`` cannot be
+   referenced directly but they may be indirectly accessed using the
+   following attributes for the different categories of abstract
+   state:
+
+   * *package_*\ ``name'Uninitialized_State``
+   * *package_*\ ``name'Initialized_State``
+   * *package_*\ ``name'Volatile_Input_State``
+   * *package_*\ ``name'Volatile_Output_State``
+   * *package_*\ ``name'Volatile_In_Out_State``
+
 
 .. centered:: **Restrictions that may be Applied**
 .. include:: restrictions-and-profiles.rst
@@ -167,9 +179,11 @@ where
      package specification which contains the ``initializes_aspect``.
 
 #. A *variable* appearing in an ``initializes_aspect`` must be entire,
-   it cannot be a subcomponent of a conatining object.
+   it cannot be a subcomponent of a containing object.
 #. An ``initialized_item`` may not appear more than once in an
    ``initialized_item_list``.
+#. A ``state_name`` which is designated as ``Volatile`` must not
+   appear in an initializes aspect.
 
 .. centered:: **Static Semantics**
 
@@ -179,6 +193,8 @@ where
    declared in the visible part of Q in the ``ininializes_aspect`` of
    Q indicates that the ``state_name`` or *variable* is not
    initialized during package elaboration.
+#. A ``state_name`` designated as ``Volatile`` is considered to be
+   implicitly initialized.
 #. If a package has an ``abstract_state_aspect`` but no
    ``initializes_aspect`` it follows that none of its state components
    are initialized during the package initialization.
@@ -215,7 +231,7 @@ There are no dynamic semantics associated with the
    of the package specification and body (if it exists) will determine
    the *varibles* declared in the package and whether they are
    initialized during elaboration of the package.  For *variables* not
-   declared in the visible part of the package a implicit
+   declared in the visible part of the package an implicit
    ``state_name`` is generated to represent the *variables* which are
    not initialized and another for the *variables* which are
    initialized. The ``state_name`` representing the initialized
@@ -224,11 +240,11 @@ There are no dynamic semantics associated with the
    declared in the visible part of the package wich are initialized
    during package elaboration.
 
-.. todo:: Initializes, Initial_Condition aspects.
+.. todo:: Initial_Condition aspects.
 
 .. todo::  Aspects for RavenSpark, e.g., Task_Object and Protected_Object
 
-.. todo:: External variables.
+.. todo:: Note that I do not think we can automatically determine volatile variables.
 
 
 
