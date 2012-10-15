@@ -26,7 +26,7 @@ procedure Main_Unbounded_Stacks is
 begin
 
    --  Testing stack for Integer values
-   --
+
    S := Create;
    pragma Assert (Is_Empty (S));
    Push (S, 1);
@@ -66,7 +66,7 @@ begin
          Put_Line ("Error: Pop on empty stack does not raise exception");
       exception
          when others =>
-            Put_Line ("Ok: Pop on empty rstack raises exception");
+            Put_Line ("Ok: Pop on empty stack raises exception");
 
             --  This should be raised when the stack is empty
 

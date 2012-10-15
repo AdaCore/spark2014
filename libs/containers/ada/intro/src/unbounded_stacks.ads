@@ -35,6 +35,7 @@ package Unbounded_Stacks is
 
    --  Inherated controlled procedure
 
+   function Compare (S, T : Stack) return Boolean;
    function Create return Stack;
 
    --  Create stack with I elements
@@ -75,11 +76,11 @@ package Unbounded_Stacks is
 
    procedure Push (S : in out Stack; X : Item_Type) with
      Post => ((not Is_Empty (S))
-   --  and (Push (S'Old, X) = S)
-             );
+              and Compare (S, Push (S'Old, X)));
 
    --  Push a new element on the stack
 private
+
    procedure Enlarge (S : in out Stack) with
      Post => (not Is_Full (S));
 

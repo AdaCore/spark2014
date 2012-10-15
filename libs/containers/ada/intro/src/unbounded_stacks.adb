@@ -2,6 +2,23 @@ with Ada.Assertions;  use Ada.Assertions;
 with Ada.Exceptions;  use Ada.Exceptions;
 package body Unbounded_Stacks is
 
+   function Compare (S, T : Stack) return Boolean is
+   begin
+      if T.Index = S.Index then
+         if S.Index = 1 then
+            return True;
+         elsif S.Cont_Ptr'Length /= 0 and T.Cont_Ptr'Length /= 0 then
+            for j in 1 .. (S.Index - 1) loop
+               if S.Cont_Ptr (j) /= T.Cont_Ptr (j) then
+                  return False;
+               end if;
+            end loop;
+            return True;
+         end if;
+      end if;
+         return False;
+   end Compare;
+
    function Create return Stack is
    begin
       return output : Stack do
