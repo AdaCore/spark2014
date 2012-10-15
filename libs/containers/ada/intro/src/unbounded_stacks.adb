@@ -1,14 +1,13 @@
 with Ada.Assertions;  use Ada.Assertions;
 with Ada.Exceptions;  use Ada.Exceptions;
-with Ada.Text_IO;  use Ada.Text_IO;
 package body Unbounded_Stacks is
 
    function Create return Stack is
-      output : Stack;
    begin
-      output.Cont_Ptr := new Content_Type (1 .. Chunk_Size);
-      output.Index := 1;
-      return output;
+      return output : Stack do
+         output.Cont_Ptr := new Content_Type (1 .. Chunk_Size);
+         output.Index := 1;
+      end return;
    end Create;
 
    procedure Enlarge (S : in out Stack) is
@@ -84,32 +83,16 @@ package body Unbounded_Stacks is
    procedure Adjust (Object : in out Stack) is
       Tmp_Ptr : Content_Ref;
    begin
-      Put (Item => "Adjust.Object[" & Integer'Image (Object.Cuenta)
-           & "].Cont_Ptr'Length: "
-           & Integer'Image (Object.Cont_Ptr'Length));
-      Put_Line (Item => ", Index: "
-                & Integer'Image (Object.Index));
       Tmp_Ptr := new Content_Type (1 .. Object.Cont_Ptr'Length);
       Tmp_Ptr.all := Object.Cont_Ptr.all;
       Object.Cont_Ptr := new Content_Type (1 .. Object.Cont_Ptr'Length);
       Object.Cont_Ptr.all := Tmp_Ptr.all;
    end Adjust;
 
-   procedure Initialize (Object : in out Stack) is
-   begin
-      Counter := Counter + 1;
-      Object.Cuenta := Counter;
-      Put_Line (Item => "Initialize.Object["
-                & Integer'Image (Object.Cuenta) &"]");
-   end Initialize;
    procedure Finalize (Object : in out Stack) is
    begin
-      Put (Item => "Finalize.Object[" & Integer'Image (Object.Cuenta)
-           &"].Cont_Ptr'Length: "
-           & Integer'Image (Object.Cont_Ptr'Length));
-      Put_Line (Item => ", Index: "
-                & Integer'Image (Object.Index));
       --  idempotent operations:
+
       if Object.Cont_Ptr'Length /= 0 then
          Free_Content (Object.Cont_Ptr);
       end if;

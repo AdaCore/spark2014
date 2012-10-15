@@ -1,11 +1,9 @@
 with Ada.Unchecked_Deallocation;
 with Ada.Finalization;  use Ada.Finalization;
-with Ada.Text_IO;  use Ada.Text_IO;
 generic
    type Item_Type is private;
 
 package Unbounded_Stacks is
-   Counter : Natural := 0;
    --  A stack package that holds integers
 
    Chunk_Size : Positive := 2;
@@ -28,13 +26,11 @@ package Unbounded_Stacks is
       Index : Natural;
 
       --  Points to the first empty cell
-      Cuenta : Natural;
    end record;
 
    type Stack_Ptr is access all Stack;
 
    overriding procedure Adjust (Object : in out Stack);
-   overriding procedure Initialize (Object : in out Stack);
    overriding procedure Finalize (Object : in out Stack);
 
    --  Inherated controlled procedure
