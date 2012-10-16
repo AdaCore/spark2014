@@ -1,0 +1,28 @@
+Required steps: 
+Set up a DB2 instance to work with DB2. 
+
+Optional steps: 
+To validate your installation files, instance, and database functionality, run the Validation Tool, /opt/ibm/db2/V10.1/bin/db2val. For more information, see "db2val" i
+n the DB2 Information Center. 
+
+Refer to "What's new" http://publib.boulder.ibm.com/infocenter/db2luw/v10r1/topic/com.ibm.db2.luw.wn.doc/doc/c0052035.html in the DB2 Information Center to learn about
+ the new functions for DB2 V10.1. 
+
+Open First Steps by running "db2fs" using a valid user ID such as the DB2 instance owner's ID. You will need to have DISPLAY set and a supported web browser in the pat
+h of this user ID. 
+
+Verify that you have access to the DB2 Information Center based on the choices you made during this installation. If you performed a typical or a compact installation,
+ verify that you can access the IBM Web site using the internet. If you performed a custom installation, verify that you can access the DB2 Information Center location
+ specified during the installation. 
+
+Ensure that you have the correct license entitlements for DB2 products and features installed on this machine. Each DB2 product or feature comes with a license certifi
+cate file (also referred to as a license key) that is distributed on an Activation CD, which also includes instructions for applying the license file. If you purchased
+ a base DB2 product, as well as, separately priced features, you might need to install more than one license certificate. The Activation CD for your product or feature
+ can be downloaded from Passport Advantage if it is not part of the physical media pack you received from IBM. For more information about licensing, search the Informa
+tion Center (http://publib.boulder.ibm.com/infocenter/db2luw/v10r1/index.jsp) using terms such as "license compliance", "licensing" or "db2licm". 
+
+
+DB2 Setup log file finished at:  Mon 15 Oct 2012 11:57:21 AM CEST CEST
+============================================================
+
+
