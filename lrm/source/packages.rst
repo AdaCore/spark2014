@@ -134,7 +134,7 @@ aspect.
 .. centered:: **Restrictions that may be Applied**
 .. include:: restrictions-and-profiles.rst
    :start-after: 7.1.2 Abstract State Aspect
-   :end-before: END OF FILE 
+   :end-before: 7.1.3 
 
 .. centered:: **Dynamic Semantics**
 
@@ -199,12 +199,19 @@ where
    ``initializes_aspect`` it follows that none of its state components
    are initialized during the package initialization.
 
+.. centered:: **Restrictions that may be Applied**
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.1.3 Initializes Aspect
+   :end-before: 7.1.4
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the
 ``initializes_aspect`` the rules are checked by static analysis.
 
 .. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow Analysis*
 
 #. If a package has an ``initializes_aspect`` and it has non-visible
    state components, it must be preceded by an
@@ -240,11 +247,86 @@ There are no dynamic semantics associated with the
    declared in the visible part of the package wich are initialized
    during package elaboration.
 
-.. todo:: Initial_Condition aspects.
-
-.. todo::  Aspects for RavenSpark, e.g., Task_Object and Protected_Object
-
 .. todo:: Note that I do not think we can automatically determine volatile variables.
+
+Initial Condition Aspect
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ''initial_condition_aspect`` is a prdeicate that may be used to
+describe formally the state of a package.  It behaves as a
+postcondition for the package initialization.
+
+.. centered:: **Syntax**
+  
+``initial_condition_aspect ::= Initial_Condition =>`` *Boolean_*\ ``expression``
+
+
+ .. centered:: **Legality Rules**
+
+#. An ``initial_condition_aspect`` may only be placed in a
+   ``aspect_specification`` of a ``package_specification``.
+#. At most one ``initial_condition_aspect`` may appear in a single
+   ``aspect_specification``.
+#. The expression of an ``initial_condition_aspect`` has extended
+   vsibility.  It may reference declarations from the visible part of
+   Q.
+#. Each *variable* declared in the visible part of a package Q and
+   appearing in the ``initial_condition_aspect`` of Q must be
+   initialized during the elaboration of Q.
+#. Each ``state_name`` declared package Q that is indirectly
+   referenced as a *global* through a function declared in the visible
+   part of Q and applied in the ``initial_condition_aspect`` of Q must
+   be initialized during the elaboration of Q.
+#. A ``state_name`` cannot be referenced directly in an
+   ``initial_condition_aspect`` of a package it can only be referenced
+   indirectly via a function declared in the visible part of the
+   package.
+#. An ``initial_condition_aspect`` of a package Q shall not reference
+   a *variable* or ``state_name`` of a package other than Q.
+
+.. centered:: **Static Semantics**
+
+#. The *boolean_*\ ``expression`` of an ``initial_condition_aspect``
+   of a package is a predicate which defines the state of the package
+   after its elaboration.
+
+.. centered:: **Restrictions that may be Applied**
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.1.4 Initial Condition Aspect
+   :end-before: END OF FILE 
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with the
+``initial_condition_aspect`` the rules are checked by static analysis.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow Analysis*
+
+#. Each *variable* appearing in an ``initial_condition_aspect`` of a
+   package Q which is declared in the visible part of Q must be
+   initialized either at the point of declaration in Q or within the
+   sequence of statements of the body of Q.
+#. The state components represented by each ``state_name`` of a
+   package Q which is indirectly referenced by a function appearing in
+   the ``initial_condition_aspect`` Q must be initialized during the
+   elaboration of Q.
+
+.. todo:: I have not excluded the use of variables or functions of
+   other packages in initial_conditions.  This may well give us
+   elaboration order dependencies.  We need to think about this.  In
+   the meantime I have a restriction to prohibit their use.
+
+.. centered:: *Checked by Proof*
+
+#. Verification conditions are generated for the declarations of a
+   package and the sequence of statements of its body.  The
+   verification conditions must be proven to show that the
+   declarations and statement satisfy the predicate given in the
+   ``initial_condition_aspect`` of the package.
+
+.. todo:: Aspects for RavenSpark, e.g., Task_Object and Protected_Object
 
 
 

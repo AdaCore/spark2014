@@ -16,17 +16,20 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-Subprogram Declaration
-----------------------
+.. centered:: **Extended Legality Rules**
 
 A function is in |SPARK| only if it is side-effect free.
+
+Subprogram Declaration
+----------------------
 
 There are no additions to this subsection but there is an extra
 legality rule and further restrictions may be applied.
 
 .. centered:: **Extended Legality Rules**
 
-#. A ``parameter_specification`` of a ``function_specification`` shall
+#. A function declaration is only in |SPARK| if a
+   ``parameter_specification`` of it's ``function_specification`` does
    not have a mode of **out** or **in out** as a function is not
    allowed to have side-effects.
 
@@ -162,16 +165,6 @@ where
    or **in out**.
 #. The *variables* appearing in the ``consequence`` must be of mode
    **out** or **in out**.
-#. At most one ``contract_guard`` may be True when the subprogram is
-   called.  A True ``contract_guard`` *selects* the ``contract_case``
-   to which it belongs.
-#. If there is not a ``contract_guard`` which is True when the
-   subprgram is called, then there must be an **others**
-   ``contract_case`` and the **others** ``contract_case`` is *selected*.
-#. If a ``contract_case`` is *selected* when a subprogram is called,
-   then the expression of the ``concequence`` of the *selected*
-   ``contract_case`` must be True.
-
 
 .. centered:: **Static Semantics**
 
@@ -192,6 +185,16 @@ where
    every other ``guard`` and this is anded with the precondition.
 #. A verification condition is that the ``consequent`` for each
    ``guard`` is ``True`` given that the ``guard`` is satisfied.
+#. At most one ``contract_guard`` may be True when the subprogram is
+   called.  A True ``contract_guard`` *selects* the ``contract_case``
+   to which it belongs.
+#. If there is not a ``contract_guard`` which is True when the
+   subprgram is called, then there must be an **others**
+   ``contract_case`` and the **others** ``contract_case`` is *selected*.
+#. If a ``contract_case`` is *selected* when a subprogram is called,
+   then the expression of the ``concequence`` of the *selected*
+   ``contract_case`` must be True.
+
 
 .. centered:: **Dynamic Semantics**
 
