@@ -24,16 +24,17 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line;
-with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Text_IO;               use Ada.Text_IO;
+with System.Multiprocessors;
 
-with Hilitevsn; use Hilitevsn;
+with Hilitevsn;                 use Hilitevsn;
 
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
-with GNAT.Strings;      use GNAT.Strings;
+with GNAT.Strings;              use GNAT.Strings;
 with GNAT.OS_Lib;
 
-with Call;              use Call;
+with Call;                      use Call;
 
 package body Configuration is
 
@@ -150,22 +151,21 @@ ASCII.LF &
    procedure Handle_Switch
      (Switch    : String;
       Parameter : String;
-      Section   : String)
-   is
+      Section   : String) is
    begin
       if Section = "cargs" then
          Cargs_List.Append (Switch & Separator & Parameter);
+
       elsif Switch (Switch'First) /= '-' then
 
          --  We assume that the "switch" is actually an argument and put it in
          --  the file list
 
          File_List.Append (Switch);
+
       else
          raise Invalid_Switch;
-
       end if;
-
    end Handle_Switch;
 
    -----------------------
@@ -317,6 +317,7 @@ ASCII.LF &
       Define_Switch
          (Config, Parallel'Access,
           Long_Switch => "-j:",
+          Initial => -1,
           Help => "Set the number of parallel processes (default is 1)");
 
       Define_Switch
@@ -440,6 +441,14 @@ ASCII.LF &
                     Concatenate => False);
          end if;
       end;
+
+      --  Adjust the number of parallel processes. If -j0 was used, the
+      --  number of processes should be set to the actual number of
+      --  processors available on the machine.
+
+      if Parallel = 0 then
+         Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
+      end if;
 
       if MMode_Input.all = "detect" or else MMode_Input.all = "" then
          MMode := GPM_Detect;
