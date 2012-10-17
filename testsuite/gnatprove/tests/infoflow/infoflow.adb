@@ -90,48 +90,50 @@ package body Infoflow is
       end loop;
    end CopyKeys;
 
-   --  Version commented out because generates too many VCs with current Why3
-
---     procedure FlipHalves (H_V1, H_V2 : in out H_Type; I : Integer) is
---     begin
---        declare
---           T_V1 : Content;
---           M_V1 : Integer;
---        begin
---           M_V1 := H_V1'Last / 2;
---           for Q_V1 in H_V1'First .. M_V1 loop
---              pragma Assert (for all K in H_V1'Range =>
---                               (if K < Q_V1 then H_V1 (K) = H_V1'Old (K + M_V1)
---                                elsif K > Q_V1 + M_V1 then
---                                   H_V1 (K) = H_V1'Old (K - M_V1)
---                                else H_V1 (K) = H_V1'Old (K)));
---              T_V1 := H_V1 (Q_V1);
---              H_V1 (Q_V1) := H_V1 (Q_V1 + M_V1);
---              H_V1 (Q_V1 + M_V1) := T_V1;
---           end loop;
---        end;
---
---        --  duplicate version 2
---
---        declare
---           T_V2 : Content;
---           M_V2 : Integer;
---        begin
---           M_V2 := H_V2'Last / 2;
---           for Q_V2 in H_V2'First .. M_V2 loop
---              pragma Assert (for all K in H_V2'Range =>
---                               (if K < Q_V2 then H_V2 (K) = H_V2'Old (K + M_V2)
---                                elsif K > Q_V2 + M_V2 then
---                                   H_V2 (K) = H_V2'Old (K - M_V2)
---                                else H_V2 (K) = H_V2'Old (K)));
---              T_V2 := H_V2 (Q_V2);
---              H_V2 (Q_V2) := H_V2 (Q_V2 + M_V2);
---              H_V2 (Q_V2 + M_V2) := T_V2;
---           end loop;
---        end;
---     end FlipHalves;
-
    procedure FlipHalves (H_V1, H_V2 : in out H_Type; I : Integer) is
+      H_V1_Copy : constant H_Type := H_V1;
+      H_V2_Copy : constant H_Type := H_V2;
+   begin
+      declare
+         T_V1 : Content;
+         M_V1 : Integer;
+      begin
+         M_V1 := H_V1'Last / 2;
+         for Q_V1 in H_V1'First .. M_V1 loop
+            pragma Assert (for all K in H_V1'Range =>
+                             (if K < Q_V1 then H_V1 (K) = H_V1_Copy (K + M_V1)
+                              elsif K > Q_V1 + M_V1 then
+                                 H_V1 (K) = H_V1_Copy (K - M_V1)
+                              else H_V1 (K) = H_V1_Copy (K)));
+            T_V1 := H_V1 (Q_V1);
+            H_V1 (Q_V1) := H_V1 (Q_V1 + M_V1);
+            H_V1 (Q_V1 + M_V1) := T_V1;
+         end loop;
+      end;
+
+      pragma Assert_And_Cut (True);
+
+      --  duplicate version 2
+
+      declare
+         T_V2 : Content;
+         M_V2 : Integer;
+      begin
+         M_V2 := H_V2'Last / 2;
+         for Q_V2 in H_V2'First .. M_V2 loop
+            pragma Assert (for all K in H_V2'Range =>
+                             (if K < Q_V2 then H_V2 (K) = H_V2_Copy (K + M_V2)
+                              elsif K > Q_V2 + M_V2 then
+                                 H_V2 (K) = H_V2_Copy (K - M_V2)
+                              else H_V2 (K) = H_V2_Copy (K)));
+            T_V2 := H_V2 (Q_V2);
+            H_V2 (Q_V2) := H_V2 (Q_V2 + M_V2);
+            H_V2 (Q_V2 + M_V2) := T_V2;
+         end loop;
+      end;
+   end FlipHalves;
+
+   procedure FlipHalves2 (H_V1, H_V2 : in out H_Type; I : Integer) is
       procedure Flip (H : in out H_Type) with
         Pre  => H'First = 1 and H'Last >= 1,
         Post => (for all K in H'Range =>
@@ -160,41 +162,62 @@ package body Infoflow is
       Flip (H_V1);
       --  duplicate version 2
       Flip (H_V2);
-   end FlipHalves;
+   end FlipHalves2;
 
    procedure ArrayPartitionedTransfer
      (A_V1, A_V2 : out Arr;
       B_V1, C_V1, B_V2, C_V2 : in Arr;
-      K, I : Integer) is
+      K_1, K_2, I : Integer) is
    begin
-      for I_V1 in A_V1'First .. K loop
+      for I_V1 in A_V1'First .. K_1 loop
          pragma Assert (for all M in A_V1'First .. I_V1-1 =>
                           A_V1 (M) = B_V1 (M));
          A_V1 (I_V1) := B_V1 (I_V1);
       end loop;
 
-      for I_V1 in K+1 .. A_V1'Last loop
-         pragma Assert (for all M in A_V1'First .. K =>
+      pragma Assert_And_Cut
+        (for all M in A_V1'First .. K_1 =>
+           A_V1 (M) = B_V1 (M));
+
+      for I_V1 in K_1+1 .. A_V1'Last loop
+         pragma Assert (for all M in A_V1'First .. K_1 =>
                           A_V1 (M) = B_V1 (M));
-         pragma Assert (for all M in K+1 .. I_V1-1 =>
-                          A_V1 (M) = C_V1 (M - K));
-         A_V1 (I_V1) := C_V1 (I_V1 - K);
+         pragma Assert (for all M in K_1+1 .. I_V1-1 =>
+                          A_V1 (M) = C_V1 (M - K_1));
+         A_V1 (I_V1) := C_V1 (I_V1 - K_1);
       end loop;
+
+      pragma Assert_And_Cut
+        ((for all M in A_V1'First .. K_1 =>
+            A_V1 (M) = B_V1 (M))
+               and then
+         (for all M in K_1+1 .. A_V1'Last =>
+            A_V1 (M) = C_V1 (M - K_1)));
 
       --  duplicate version 2
 
-      for I_V2 in A_V2'First .. K loop
+      for I_V2 in A_V2'First .. K_2 loop
          pragma Assert (for all M in A_V2'First .. I_V2-1 =>
                           A_V2 (M) = B_V2 (M));
          A_V2 (I_V2) := B_V2 (I_V2);
       end loop;
 
-      for I_V2 in K+1 .. A_V2'Last loop
-         pragma Assert (for all M in A_V2'First .. K =>
+      pragma Assert_And_Cut
+        ((for all M in A_V1'First .. K_1 =>
+            A_V1 (M) = B_V1 (M))
+               and then
+         (for all M in K_1+1 .. A_V1'Last =>
+            A_V1 (M) = C_V1 (M - K_1))
+               and then
+         (for all M in A_V2'First .. K_2 =>
+            A_V2 (M) = B_V2 (M)));
+
+      for I_V2 in K_2+1 .. A_V2'Last loop
+         pragma Assert (for all M in A_V2'First .. K_2 =>
                           A_V2 (M) = B_V2 (M));
-         pragma Assert (for all M in K+1 .. I_V2-1 =>
-                          A_V2 (M) = C_V2 (M - K));
-         A_V2 (I_V2) := C_V2 (I_V2 - K);
+         pragma Assert (for all M in K_2+1 .. I_V2-1 =>
+                          A_V2 (M) = C_V2 (M - K_2));
+         A_V2 (I_V2) := C_V2 (I_V2 - K_2);
       end loop;
    end ArrayPartitionedTransfer;
 end Infoflow;

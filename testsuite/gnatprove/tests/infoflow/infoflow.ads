@@ -103,6 +103,28 @@ package Infoflow is
                          H_V1 (I - H_V1'Last/2) = H_V2 (I - H_V2'Last/2),
                        Ensures  => H_V1 (I) = H_V2 (I));
 
+   procedure FlipHalves2 (H_V1, H_V2 : in out H_Type; I : Integer) With
+     Contract_Case => (Name     => "H(I) from upper half",
+                       Mode     => Nominal,
+                       Requires =>
+                         I in H_V1'Range and then
+                         H_V1'First = 1 and then
+                         H_V2'First = 1 and then
+                         H_V1'Last = H_V2'Last and then
+                         I <= H_V1'Last/2 and then
+                         H_V1 (I + H_V1'Last/2) = H_V2 (I + H_V2'Last/2),
+                       Ensures  => H_V1 (I) = H_V2 (I)),
+     Contract_Case => (Name     => "H(I) from lower half",
+                       Mode     => Nominal,
+                       Requires =>
+                         I in H_V1'Range and then
+                         H_V1'First = 1 and then
+                         H_V2'First = 1 and then
+                         H_V1'Last = H_V2'Last and then
+                         I > H_V1'Last/2 and then
+                         H_V1 (I - H_V1'Last/2) = H_V2 (I - H_V2'Last/2),
+                       Ensures  => H_V1 (I) = H_V2 (I));
+
    --  Types and variables for ArrayPartitionedTransfer
 
    type Arr is array (Integer range <>) of Integer;
@@ -112,29 +134,31 @@ package Infoflow is
    procedure ArrayPartitionedTransfer
      (A_V1, A_V2 : out Arr;
       B_V1, C_V1, B_V2, C_V2 : in Arr;
-      K, I : Integer)
+      K_1, K_2, I : Integer)
    with
      Pre => A_V1'First = 1 and then
             B_V1'First = 1 and then
             C_V1'First = 1 and then
             A_V1'Last = B_V1'Last and then
             A_V1'Last = C_V1'Last and then
-            K in B_V1'Range and then
+            K_1 in B_V1'Range and then
             A_V2'First = 1 and then
             B_V2'First = 1 and then
             C_V2'First = 1 and then
             A_V2'Last = B_V2'Last and then
             A_V2'Last = C_V2'Last and then
-            K in B_V2'Range and then
+            K_2 in B_V2'Range and then
             A_V1'Last = A_V2'Last,
      Contract_Case => (Name     => "A(I) from B(I)",
                        Mode     => Nominal,
-                       Requires => I in A_V1'First .. K and then
+                       Requires => K_1 = K_2 and then
+                                   I in A_V1'First .. K_1 and then
                                    B_V1 (I) = B_V2 (I),
                        Ensures  => A_V1 (I) = A_V2 (I)),
      Contract_Case => (Name     => "A(I) from C(I-K)",
                        Mode     => Nominal,
-                       Requires => I in K+1 .. A_V1'Last and then
-                                   C_V1 (I-K) = C_V2 (I-K),
+                       Requires => K_1 = K_2 and then
+                                   I in K_1+1 .. A_V1'Last and then
+                                   C_V1 (I-K_1) = C_V2 (I-K_1),
                        Ensures  => A_V1 (I) = A_V2 (I));
 end Infoflow;
