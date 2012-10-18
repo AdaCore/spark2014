@@ -5,30 +5,32 @@
 # gnat_backends/gnat_src that points to the GNAT sources.
 #
 # To build gnatprove, you additionnally need an installation of the gnatcoll
-# library.
+# library, and local checked out repositories of submodules why3 and alt-ergo.
 #
 # To build gnatmerge, you additionnally need python support in gnatcoll and
 # an installation of ASIS.
 #
-# For gnatprove to work, you also need working installations of Why3 and
-# Alt-Ergo.
-#
 # The necessary steps to correctly install gnat2why/gnatprove are
 #
-# 1) make
+# 1) make setup
 #
-#    This will build gnatprove and gnat2why
+#    This does the local setup of submodules why3 and alt-ergo.
 #
-# 2) make stdlib
+# 2) make
 #
-#    This will apply gnat2why to the standard library of GNAT to obtain
-#    precompiled Why files
+#    This builds gnatprove, gnat2why, why3 and alt-ergo.
 #
-# 3) make install
+# 3) make stdlib
 #
-#    This will copy all the necessary files into the install/ subdirectory
+#    This applies gnat2why to the standard GNAT library to obtain precompiled
+#    Why files.
 #
-# 4) Put the directory install/bin in your path:
+# 4) make install-all
+#
+#    This copies all the necessary files into the install/ subdirectory, for
+#    gnatprove, why3 and alt-ergo.
+#
+# 5) Put the directory install/bin in your path:
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
