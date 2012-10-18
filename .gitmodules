@@ -1,6 +1,6 @@
 [submodule "why3"]
 	path = why3
-	url = ssh://git.eu.adacore.com/scmrepos/git/why3
+        url  = git+ssh://kanig@scm.forge.open-do.org//scmrepos/git/why3/why3.git
 [submodule "alt-ergo"]
 	path = alt-ergo
-	url = ssh://git.eu.adacore.com/scmrepos/git/alt-ergo
+        url  = git+ssh://kanig@scm.forge.open-do.org//scmrepos/git/alt-ergo/alt-ergo.git
