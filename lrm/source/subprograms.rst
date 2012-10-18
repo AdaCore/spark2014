@@ -18,7 +18,9 @@ may be in |SPARK| even if the implementation view is not.
 
 .. centered:: **Extended Legality Rules**
 
-A function is in |SPARK| only if it is side-effect free.
+.. include:: extended-legality.rst
+   :start-after: 6 Subprograms
+   :end-before:  6.1
 
 Subprogram Declaration
 ----------------------
@@ -28,11 +30,9 @@ legality rule and further restrictions may be applied.
 
 .. centered:: **Extended Legality Rules**
 
-#. A function declaration is only in |SPARK| if a
-   ``parameter_specification`` of it's ``function_specification`` does
-   not have a mode of **out** or **in out** as a function is not
-   allowed to have side-effects.
-
+.. include:: extended-legality.rst
+   :start-after: 6.1 Subprogram Declarations
+   :end-before:  END OF FILE
 
 .. centered:: **Restrictions That May Be Applied**
 
