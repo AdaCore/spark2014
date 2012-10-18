@@ -70,7 +70,7 @@ all-nightly: gnat1why gnatprove local-stdlib install install-examples
 #   install-all  install of gnatprove, why3 and alt-ergo
 
 setup:
-	cd why3 && ./configure --prefix=$(INSTALLDIR)
+	cd why3 && ./configure --prefix=$(INSTALLDIR) --enable-relocation --disable-gui
 	cd alt-ergo && ./configure --prefix=$(INSTALLDIR)
 
 why3:
