@@ -32,7 +32,7 @@
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
-	local-install gnatmerge
+	install-all gnatmerge why3 alt-ergo all setup all-nightly
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
@@ -50,9 +50,37 @@ DOC=ug alfa
 
 CP=cp -pr
 
-all: gnat2why gnatprove
+# main target for developers
+all: gnat2why gnatprove why3 alt-ergo
 
+# main target for nightly builds
 all-nightly: gnat1why gnatprove local-stdlib install install-examples
+
+# Setup and installation of why3 and alt-ergo
+# ===========================================
+#
+# We deal differently with submodules for why3 and alt-ergo in a developer
+# setting, who builds directly why3 and alt-ergo, and for nightly builds, where
+# the builds of why3 and alt-ergo are handled separately.
+#
+# Thus, special targets are defined for the developer only:
+#   setup        setup of why3 and alt-ergo
+#   install-all  install of gnatprove, why3 and alt-ergo
+
+setup:
+	cd why3 && ./configure --prefix=$(INSTALLDIR)
+	cd alt-ergo && ./configure --prefix=$(INSTALLDIR)
+
+why3:
+	$(MAKE) -C why3
+
+alt-ergo:
+	$(MAKE) -C alt-ergo
+
+install-all:
+	$(MAKE) install
+	$(MAKE) -C why3 install
+	$(MAKE) -C alt-ergo install
 
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
@@ -60,12 +88,6 @@ install: install-stdlib
 	$(CP) share/gnatprove/config/*cgpr $(CONFIGDIR)
 	$(CP) share/gnatprove/theories/*why $(THEORIESDIR)
 	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
-
-local-install:
-	cd why3 && $(MAKE) && $(MAKE) install
-	cd alt-ergo && $(MAKE) && $(MAKE) install
-	$(MAKE)
-	$(MAKE) install
 
 doc: $(DOC)
 
@@ -105,7 +127,7 @@ install-gnatmerge:
 #
 # We need two different targets to build the standard library:
 #   local-stdlib  this target is used by the nightly builds
-#   stdlib:       this target is used by the developers
+#   stdlib        this target is used by the developers
 # The reason for two different systems is the following: We want to make sure
 # (especially in nightly builds) to use the "right" gnat2why, ie the local one
 # in ../install/bin. We do so by using the -B switch of gnat2why, but this
