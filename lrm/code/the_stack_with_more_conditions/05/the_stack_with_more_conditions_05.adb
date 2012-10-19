@@ -50,7 +50,7 @@ is
 
    procedure Pop(X: out Integer)
    --# global in     S;
-   --#	      in out Pointer;
+   --#        in out Pointer;
    --# pre not Is_Empty(Pointer);
    is
    begin
@@ -60,7 +60,8 @@ is
 
    procedure Swap (X: in Integer)
    --# global in     Pointer;
-   --#        in out S;       -- We cannot have conditional global contracts in SPARK 2005.
+   --#        in out S;       -- We cannot have conditional global
+                              -- contracts in SPARK 2005.
    --# pre not Is_Empty(Pointer);
    --# post Top(Pointer,S) = X;
    is

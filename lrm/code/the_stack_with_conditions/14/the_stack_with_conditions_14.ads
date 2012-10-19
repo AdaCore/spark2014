@@ -23,7 +23,8 @@ with
    Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
-   with Global => State;
+   with 
+      Global => State;
 
    function Is_Full return Boolean
    with Global => State;
