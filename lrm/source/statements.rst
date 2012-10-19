@@ -128,3 +128,16 @@ Discussion
 
 In GNAT, all pragmas described here are implemented using a ``pragma Check``
 internally, so that the user-chosen assertion policy applies.
+
+Loop Statements
+---------------
+
+User-Defined Iterator Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Generalised Loop Iteration
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Loop Operations
+^^^^^^^^^^^^^^^
+
+
