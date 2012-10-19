@@ -25,6 +25,7 @@ ranges of variables involved. As an example, consider the following subprogram
 specifications:
 
 .. code-block:: ada
+   :linenos:
 
    procedure Not_Guarded (X, Y : Integer) with
      Pre => X / Y > 0;
@@ -117,6 +118,7 @@ false in the context of the complete annotation. Consider the following
 specification:
 
 .. code-block:: ada
+   :linenos:
 
    procedure Q (X, Y : in out Integer) with
      Pre  => X > 0 and X > 0;
@@ -127,6 +129,7 @@ makes it much easier to prove, and also completely useless to express anything
 interesting about a subprogram. Consider the following specification:
 
 .. code-block:: ada
+   :linenos:
 
    function Max (X, Y : Integer) return Integer with
      Post => (if X < Y then Max'Result = Y)
@@ -166,6 +169,7 @@ consistent, that is, is should not be always false. Consider the following
 specification:
 
 .. code-block:: ada
+   :linenos:
 
    procedure P (X, Y : in out Integer) with
      Pre  => X <= 0 and X > 0;
@@ -189,6 +193,7 @@ output respecting the postcondition. If this is not the case, then the
 subprogram is unimplementable. Consider the following specification:
 
 .. code-block:: ada
+   :linenos:
 
    procedure Compute (X : in Integer; Y : out Integer) with
      Post => (if X >= 0 then Y = 1) and (if X <= 0 then Y = -1);
@@ -215,6 +220,7 @@ establish the subprogram's postcondition, the contract is either wrong or
 incomplete. To illustrate the issue, consider the following procedure sketch:
 
 .. code-block:: ada
+   :linenos:
 
    procedure P (X : Integer) with
      Pre => (...),
@@ -243,6 +249,7 @@ Another case of incomplete specifications is illustrated by the following
 simple program:
 
 .. code-block:: ada
+   :linenos:
 
    procedure Full_Stop with
      Pre  => (...),

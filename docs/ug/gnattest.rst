@@ -33,7 +33,7 @@ Test Cases
 Although testing is not exhaustive by nature, contrary to proof, it is meant to
 explore enough possibilities to gain confidence in the program. Safety and
 security standards mandate which possibilities must be explored: functional
-properties related to the low-level requirements, and robustness tests with
+properties related to the low-level requirements, and robustness tests
 with boundary values.
 
 A formal test case is a GNAT extension to Ada, which is part of Alfa, meant to
@@ -57,6 +57,7 @@ Reference Manual for more details. The following is an example of use within a
 package spec:
 
 .. code-block:: ada
+   :linenos:
 
    package Math_Functions is
       ...

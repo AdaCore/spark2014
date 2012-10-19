@@ -177,11 +177,15 @@ GNATprove outputs which features in Alfa but not yet implemented are used
 As an example, consider the following code:
 
 .. code-block:: ada
+   :linenos:
 
     package P is
        X : access Boolean;
        procedure P0;
     end P;
+
+.. code-block:: ada
+   :linenos:
 
     package body P is
        procedure Set is
@@ -253,12 +257,16 @@ package are in Alfa.
 On the following example:
 
 .. code-block:: ada
+   :linenos:
 
     package P is
        pragma Annotate (gnatprove, Force);
        X : access Boolean;
        procedure P0;
     end P;
+
+.. code-block:: ada
+   :linenos:
 
     package body P is
        procedure Set is
@@ -416,6 +424,7 @@ strong enough to prove its callers. The contract of a subprogram can be
 expressed either as a pair of a precondition and a postcondition:
 
 .. code-block:: ada
+   :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
       Pre  => X >= 0,
@@ -424,6 +433,7 @@ expressed either as a pair of a precondition and a postcondition:
 or as a set of contract cases:
 
 .. code-block:: ada
+   :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
       Contract_Case => (Name     => "increment",
@@ -438,6 +448,7 @@ or as a set of contract cases:
 or, finally, as a combination of both:
 
 .. code-block:: ada
+   :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
       Pre  => X >= 0,
@@ -483,13 +494,14 @@ satisfied) is only available for expression functions. Thus, expression
 functions should be used whenever possible for these functions called in
 annotations.  The syntax of expression functions, introduced in Ada 2012,
 allows defining functions whose implementation simply returns an expression,
-such as ``Even``, ``Odd`` and ``Is_Prime`` below.
+such as ``Is_Even``, ``Is_Odd`` and ``Is_Prime`` below.
 
 .. code-block:: ada
+   :linenos:
 
-    function Even (X : Integer) return Boolean is (X mod 2 = 0);
+    function Is_Even (X : Integer) return Boolean is (X mod 2 = 0);
 
-    function Odd (X : Integer) return Boolean is (not Even (X));
+    function Is_Odd (X : Integer) return Boolean is (not Even (X));
 
     function Is_Prime (X : Integer) with
       Pre => Is_Odd (X);
@@ -513,26 +525,27 @@ in order to prove the postcondition of function ``Contains`` below, one has to
 write a precise loop invariant such as the one given below:
 
 .. code-block:: ada
+   :linenos:
 
-  function Contains (Table : IntArray; Value : Integer) return Boolean with
-    Post => (if Contains'Result then
-               (for some J in Table'Range => Table (J) = Value)
-	     else
-               (for all J in Table'Range => Table (J) /= Value));
+   function Contains (Table : IntArray; Value : Integer) return Boolean with
+     Post => (if Contains'Result then
+                (for some J in Table'Range => Table (J) = Value)
+ 	     else
+                (for all J in Table'Range => Table (J) /= Value));
 
-  function Contains (Table : IntArray; Value : Integer) return Boolean is
-  begin
-     for Index in Table'Range loop
-        pragma Assert (for all J in Table'First .. Index - 1 =>
-                         Table (J) /= Value);
+   function Contains (Table : IntArray; Value : Integer) return Boolean is
+   begin
+      for Index in Table'Range loop
+         pragma Assert (for all J in Table'First .. Index - 1 =>
+                          Table (J) /= Value);
 
-        if Table(Index) = Value then
-           return True;
-        end if;
-     end loop;
+         if Table(Index) = Value then
+            return True;
+         end if;
+      end loop;
 
-     return False;
-  end Contains;
+      return False;
+   end Contains;
 
 When the loop involves modifying a variable, it may be necessary to refer to
 the value of the variable at loop entry. This can be done using the GNAT
@@ -541,22 +554,23 @@ function ``Move`` below, one has to write a loop invariant referring to
 ``Src'Loop_Entry`` such as the one given below:
 
 .. code-block:: ada
+   :linenos:
 
-  procedure Move (Dest, Src : out IntArray) with
-    Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
+   procedure Move (Dest, Src : out IntArray) with
+     Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
 
-  procedure Move (Dest, Src : out IntArray) is
-  begin
-     for Index in Dest'Range loop
-        pragma Assert ((for all J in Dest'First .. Index - 1 =>
-                         Dest (J) = Src'Loop_Entry (J)) and
-		       (for all J in Index .. Dest'Last =>
-                         Src (J) = Src'Loop_Entry (J)));
+   procedure Move (Dest, Src : out IntArray) is
+   begin
+      for Index in Dest'Range loop
+         pragma Assert ((for all J in Dest'First .. Index - 1 =>
+                          Dest (J) = Src'Loop_Entry (J)) and
+                        (for all J in Index .. Dest'Last =>
+                          Src (J) = Src'Loop_Entry (J)));
 
-        Dest (Index) := Src (Index);
-        Src (Index) := 0;
-     end loop;
-  end Move;
+         Dest (Index) := Src (Index);
+         Src (Index) := 0;
+      end loop;
+   end Move;
 
 Note that GNATprove does not yet support the use of attribute ``'Loop_Entry``,
 which can be replaced sometimes by the use of attribute ``'Old`` referring to
@@ -601,14 +615,15 @@ start of the procedure to the pragma, and the paths from the pragma to the end
 of the procedure, hence many fewer paths.
 
 .. code-block:: ada
+   :linenos:
 
-  procedure P is
-     X : Integer;
-  begin
-     --  complex computation that sets X
-     pragma Assert_And_Cut (X > 0);
-     --  complex computation that uses X
-  end P;
+   procedure P is
+      X : Integer;
+   begin
+      --  complex computation that sets X
+      pragma Assert_And_Cut (X > 0);
+      --  complex computation that uses X
+   end P;
 
 Features Not Yet Implemented
 ----------------------------

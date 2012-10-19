@@ -11,6 +11,7 @@ decrease the original amount of money (sadly). So the specification of this
 function may be:
 
 .. code-block:: ada
+   :linenos:
 
     function After_Tax
       (Before_Tax : Natural;
@@ -23,6 +24,7 @@ This specification should be in a file named ``after_tax.ads``. This function
 can then be implemented as follow:
 
 .. code-block:: ada
+   :linenos:
 
     function After_Tax
       (Before_Tax : Natural;
