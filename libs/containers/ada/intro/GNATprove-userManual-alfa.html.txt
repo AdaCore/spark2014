@@ -1,0 +1,105 @@
+Changes on alfa.html 
+
+<a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-1.html#I1155" 
+title="SPARK is, as many readers will be aware, a subset of Ada with annotations
+ providing assertions regarding state embedded as Ada comments."  >SPARK</a>
+
+<a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-1-3-4.html#I1083" 
+title="A profile is a set of restrictions imposed on a program so that it meets 
+certain criteria. A restriction is specified using the configuration pragma 
+Restrictions. The Ravenscar profile is equivalent to a large set of restrictions
+ and also certain scheduling pragmas. The purpose of the Ravenscar profile is to
+ restrict the use of many tasking facilities so that the effect of the program 
+is predictable."  >Ravenscar</a> or <a 
+href="http://www.altran-praxis.com/downloads/SPARK/technicalReferences/examiner_ravenscar.pdf" 
+title="RavenSPARK is constructed in exactly the same way as the sequential SPARK
+ language and with exactlythe same objectives. A combination of language 
+restrictions (RavenSPARK subsets the Ravenscar subset!) and additional 
+annotations allows the construction of programs which comply with the Ravenscar 
+Profile but which also have the property that it is possible to show, statically
+, without requiring a complete program closure"  >RavenSPARK</a>.
+
+<a href="goals.html" title="A logical annotation (precondition, 
+postcondition, assertion)"  >Annotations</a>
+
+<a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-1.html#I1155" 
+title="SPARK is, as many readers will be aware, a subset of Ada with annotations
+ providing assertions regarding state embedded as Ada comments."  >SPARK</a>, 
+<a href="http://www.eecs.ucf.edu/~leavens/JML//index.shtml" 
+title="The Java Modeling Language (JML) is a behavioral interface specification 
+language that can be used to specify the behavior of Java modules. It combines 
+the design by contract approach of Eiffel and the model-based specification 
+approach of the Larch family of interface specification languages, with some 
+elements of the refinement calculus."  >JML</a>, <a 
+href="http://frama-c.com/acsl.html" title="The ANSI/ISO C Specification Langage 
+(ACSL) is a behavioral specification language for C programs. ACSL can express a
+ wide range of functional properties. The paramount notion in ACSL is the 
+function contract."  >ACSL</a>, <a 
+href="http://research.microsoft.com/en-us/projects/specsharp/" 
+title="Spec# is a formal language for API contracts (influenced by JML, AsmL, 
+and Eiffel), which extends C# with constructs for non-null types, preconditions,
+ postconditions, and object invariants. Spec# comes with a sound programming 
+methodology that permits specification and reasoning about object invariants 
+even in the presence of callbacks and multi-threading. Spec# is a research 
+vehicle that has been used to explore specifications and the dynamic/static 
+tools that make use of them."  >Spec#</a>
+
+<a 
+href="http://gcc.gnu.org/onlinedocs/gnat_rm/Pragma-Annotate.html" 
+title="This pragma is used to annotate programs. identifier identifies the type 
+of annotation."  >pragma</a>
+
+<a href="http://www.embedded.com/design/military-aerospace-design/4218480/High-integrity-object-oriented-programming-with-Ada---Part-3" 
+title="a signed integer arithmetic operation yielding a result that would exceed
+ the largest integer value will raise a run-time exception rather than 'wrapping
+ around' to produce a negative value with large magnitude. Operations that 
+produce a result lower than the most negative integer value received analogous 
+treatment. This check prevents errors that can lead to vulnerabilities."  >
+overflow check</a>
+
+<a href="http://www.embedded.com/design/military-aerospace-design/4218480/High-integrity-object-oriented-programming-with-Ada---Part-3" 
+title="a signed integer arithmetic operation yielding a result that would exceed
+ the largest integer value will raise a run-time exception rather than 'wrapping
+ around' to produce a negative value with large magnitude. Operations that 
+produce a result lower than the most negative integer value received analogous 
+treatment. This check prevents errors that can lead to vulnerabilities."  >
+overflow checking</a>
+
+<a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-2.html#I1157" 
+title="An aspect clause is used to specify a representation item or an 
+operational item. A representation item is used to specify an object’s run-time 
+representation, such as the size, alignment and placing of the object.">aspects
+</a>
+
+<a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-2.html#I1157" 
+title="An aspect clause is used to specify a representation item or an 
+operational item. A representation item is used to specify an object’s run-time 
+representation, such as the size, alignment and placing of the object.">aspects
+</a>
+
+<a href="goals.html" 
+title="A logical annotation (precondition, postcondition, assertion)"  >
+annotations</a>
+
+<a href="http://www.ada-auth.org/standards/12rm/html/RM-4-5-8.html" 
+title="Wherever the Syntax Rules allow an expression, a quantified_expression 
+may be used in place of the expression, so long as it is immediately surrounded 
+by parentheses. The expected type of a quantified_expression is any Boolean type
+. The predicate in a quantified_expression is expected to be of the same type.">
+quantified expressions</a>
+
+<a href="http://www.ada-auth.org/standards/12rm/html/RM-4-5-8.html" 
+title="Wherever the Syntax Rules allow an expression, a quantified_expression 
+may be used in place of the expression, so long as it is immediately surrounded 
+by parentheses. The expected type of a quantified_expression is any Boolean type
+. The predicate in a quantified_expression is expected to be of the same type.">
+quantified expressions</a>
+
+<a href="goals.html" title="GNATprove generates Verification
+ Conditions (VCs) whose proof ensures that some property holds on the source 
+program">VC</a>
