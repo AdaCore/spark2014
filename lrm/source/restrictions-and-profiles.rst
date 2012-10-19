@@ -172,10 +172,12 @@ A list of restrictions by section and their effect:
 #. ``Package_Elaboration_Order_Independence``
 
    Enforces the rule the elaboration of a package Q may only
-   initialize a *variable* using a *static_expression* or with
-   *variables local* to Q.  If this restriction is in force then the
-   predicate of an ``initial_condition_aspect`` of a package may only
-   refer to state initialized by Q.
+   initialize a *variable* using a *static expression* or using
+   subprograms and *variables local* to Q.  Ultimately all the
+   initialization values must be derived from *static expressions*.  If
+   this restriction is in force then the predicate of an
+   ``initial_condition_aspect`` of a package may only refer to state
+   initialized by Q.
 
 7.1.4 Initial Condition Aspect
  

@@ -384,7 +384,7 @@ where
    ``state_names`` which are the constituents which comprise the
    abstract state represented by the ``state_names`` declared in the
    ``abstract_state_aspect``.
-#  A ``constituent`` of the abstract state of a package Q is:
+#. A ``constituent`` of the abstract state of a package Q is:
 
    * A *variable* declared in the ``private_part`` or body of Q;
    * A *variable* declared in the ``visible_part`` of a package
@@ -416,6 +416,10 @@ where
      have a ``mode_selector`` of Output;
    * In_Out, then each ``constituent`` of the ``state_name`` may have
      have a ``mode_selector`` of Input, Output, or In_Out;
+
+#. A ``state_name`` which is not designated as Volatile may be refined
+   on to one or more Volatile Input, Output or In_Out ``constituents``
+   as well as non-Volatile ``constituents``.
    
 
 .. centered:: **Verification Rules**
@@ -437,6 +441,12 @@ There are no dynamic semantics associated with state abstraction and refinement.
 
 .. todo:: Refinment rules for external variables, rules for refinement
    using nested and private packages
+
+Volatile Variables
+^^^^^^^^^^^^^^^^^^
+
+.. todo:: Write a section on volatile variables
+
 
 Initialization Refinement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
