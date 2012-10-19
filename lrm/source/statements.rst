@@ -140,4 +140,174 @@ Generalised Loop Iteration
 Loop Operations
 ^^^^^^^^^^^^^^^
 
+Two loop-related pragmas, Loop_Invariant and Loop_Variant, and a loop-related
+attribute, Loop_Entry are defined. The pragma Loop_Invariant is similar to
+pragma Assert except for its proof semantics. Pramgma Loop_Variant is
+intended for use in ensuring termination. The Loop_Entry attribute is
+used to refer to the value that an expression had upon entry to a given
+loop in much the same way that the Old attribute in a subprogram
+postcondition can be used to refer to the value an expression had upon
+entry to the subprogram.
 
+pragma Loop_Invariant
+"""""""""""""""""""""
+  A Loop_Invariant pragma shall occur immmediately within
+  the sequence_of_statements of a loop_statement.
+
+  Other than the above rule, pragma Loop_Invariant is equivalent to
+  pragma Assert in the same way that pragmas Assert_And_Cut and Assume are.
+
+.. todo:: describe Proof Semantics of pragma Loop_Invariant
+
+pragma Loop_Variant
+"""""""""""""""""""
+
+   The form of a Loop_Variant pragma is as follows:
+
+       pragma Loop_Variant (loop_variant_item {, loop_variant_item} );
+
+   with associated syntax::
+
+      loop_variant_item ::= change_direction => discrete_expression
+      change_direction  ::= Increases | Decreases
+
+   The expression of a loop_variant_item is expected to be of any
+   discrete type.
+
+   A Loop_Variant pragma shall occur immediately within the
+   sequence_of_statements of a loop statement. 
+
+   Pragma Loop_Variant is an assertion (as defined in RM
+   11.4.2(1.1/3)) and is governed in the same way as pragma Assert
+   by the Assert assertion aspect. In particular, the elaboration of
+   a disabled Loop_Variant pragma has no effect.
+
+   The elaboration of an enabled Loop_Variant pragma begins by
+   evaluating the discrete_expressions in textual order.
+   For the first elaboration of the pragma within a given execution
+   of the enclosing loop statement, no further action is taken.
+   For subsequent elaborations of the pragma, one or more of these
+   expression results are each compared to their corresponding
+   result from the previous iteration as follows: comparisons are
+   performed in textual order either until unequal values are found
+   or until values for all expressions have been compared. In either
+   case, the last pair of values to be compared are then checked as
+   follows: if the change_direction for the associated
+   loop_variant_item is Increases (respectively, Decreases) then a
+   check is performed that the expression value obtained during the
+   current iteration is greater (respectively, less) than the value
+   obtained during the preceding iteration. The exception
+   Assertions.Assertion_Error is raised if this check fails. All
+   comparisons and checks are performed using predefined operations. 
+   
+.. todo:: describe Proof Semantics of pragma Loop_Variant
+
+Loop_Entry attribute
+""""""""""""""""""""
+
+For a prefix X that denotes an object of a nonlimited type, the
+following attribute is defined
+
+::
+
+   X'Loop_Entry [(*loop_*name)]
+
+A Loop_Entry attribute_reference "applies to a loop statement" in the
+same way that an exit_statement does (see RM 5.7). For every rule
+about exit_statements in the Name Resolution Rules and Legality Rules
+sections of RM 5.7, a corresponding rule applies to Loop_Entry
+attribute_references.
+
+For each X'Loop_Entry other than one occurring within a disabled
+assertion expression a constant is implicitly declared at the
+beginning of the associated loop statement. The constant is of the
+type of X and is initialized to the result of evaluating X (as an
+expression) at the point of the constant declaration. The value of
+X'Loop_Entry is the value of this constant; the type of X'Loop_Entry
+is the type of X. These implicit constant declarations occur in an
+arbitrary order.
+
+The previous paragraph notwithstanding, the implicit constant declaration
+is not elaborated if the loop_statement has an iteration_scheme whose
+evaluation yields the result that the sequence_of_statements of the
+loop_statement will not be executed (loosely speaking, if the loop completes
+after zero iterations).
+
+Note: This means that the constant is not elaborated unless the
+loop body will execute (or at least begin execution) at least once.
+For example, a while loop
+
+::
+
+   while <condition> do
+     sequence_of_statements; -- contains Loop_Entry uses
+   end loop;
+
+may be thought of as being transformed into
+
+::
+
+   if <condition> then
+     declare
+       ... implicitly declared Loop_Entry constants
+     begin
+        loop
+           sequence_of_statements;
+           exit when not <condition>;
+        end loop;
+     end;
+   end if;
+
+This rule prevents the following example from raising Constraint_Error:
+
+::
+
+   declare
+     procedure P (X : in out String) is
+     begin
+       for I in X'Range loop
+         pragma Loop_Assertion (X(X'First)'Loop_Entry >= X(I));
+         ...; -- modify X
+       end loop;
+     end P;
+     Length_Is_Zero : String := "";
+   begin
+     P (Length_Is_Zero);
+   end;
+
+In many cases, the language rules pertaining to the Loop_Entry
+attribute match those pertaining to the Old attribute (see section
+6.1.1), except with "Loop_Entry" substituted for "Old". These include:
+
+* prefix name resolution rules (including expected type definition)
+* nominal subtype definition
+* accessibility level definition
+* runtime tag value determination (in the case where X is tagged)
+* interactions with abstract types
+* interactions with anonymous access types
+* forbidden attribute uses in the prefix of the attribute_reference.
+
+Note: The following 6.1.1 Old attribute rules are not included on the
+above list; corresponding rules are instead stated explicitly below:
+
+* the requirement that an Old attribute_reference must occur in a
+  postcondition expression;
+* the rule disallowing a use of an entity declared within the
+  postcondition expression;
+* the rule that a potentially unevaluated Old attribute_reference
+  shall statically denote an entity.
+
+A Loop_Entry attribute_reference shall occur within a
+Loop_Variant or Loop_Invariant pragma.
+
+The prefix of a Loop_Entry attribute_reference shall not contain a use of
+an entity declared within the loop_statement but not within the prefix itself.
+
+The prefix of a Loop_Entry attribute_reference shall statically denote
+an entity if
+
+* the attribute_reference is potentially unevaluated; or
+* the attribute_reference does not apply to the innermost
+  enclosing loop_statement.
+
+.. todo:: relax placement rule and tighten "shall statically denote" rule?
