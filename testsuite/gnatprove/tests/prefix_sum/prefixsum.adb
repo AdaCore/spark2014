@@ -5,10 +5,7 @@ package body PrefixSum is
       Space : Positive := 1;
       Left  : Natural;
       Right : Natural;
-      Copy1 : Input;
-      Copy2 : Input;
    begin
-      Copy1 := A;
       while Space < A'Length loop
          pragma Loop_Invariant
            (All_Elements_In (A, Space * Maximum)
@@ -19,24 +16,25 @@ package body PrefixSum is
               (if (K + 1) mod 8 = 0
                  and then Space = 8
                then
-                 A (K) = Copy1 (0) + Copy1 (1) + Copy1 (2) + Copy1 (3) +
-                         Copy1 (4) + Copy1 (5) + Copy1 (6) + Copy1 (7)
+                 A (K) = A'Loop_Entry (0) + A'Loop_Entry (1) +
+                         A'Loop_Entry (2) + A'Loop_Entry (3) +
+                         A'Loop_Entry (4) + A'Loop_Entry (5) +
+                         A'Loop_Entry (6) + A'Loop_Entry (7)
                elsif (K + 1) mod 4 = 0
                  and then Space >= 4
                then
-                 A (K) = Copy1 (K) + Copy1 (K-1) + Copy1 (K-2) + Copy1 (K-3)
+                 A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) +
+                         A'Loop_Entry (K-2) + A'Loop_Entry (K-3)
                elsif (K + 1) mod 2 = 0
                  and then Space >= 2
                then
-                 A (K) = Copy1 (K) + Copy1 (K-1)
+                 A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1)
                else
-                 A (K) = Copy1 (K)))
-           );
+                 A (K) = A'Loop_Entry (K))));
          pragma Loop_Variant (Increases => Space);
 
          Left := Space - 1;
 
-         Copy2 := A;
          while Left < A'Length loop
             pragma Loop_Invariant (
               (Left + 1) mod Space = 0
@@ -53,9 +51,9 @@ package body PrefixSum is
                 (if K in A'First .. Left - Space
                    and then (K + 1) mod (2 * Space) = 0
                  then
-                    A (K) = Copy2 (K) + Copy2 (K - Space)
+                    A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
                  else
-                    A (K) = Copy2 (K))));
+                    A (K) = A'Loop_Entry (K))));
             pragma Loop_Variant (Increases => Left);
 
             Right     := Left + Space;
@@ -74,12 +72,10 @@ package body PrefixSum is
       Left  : Natural;
       Right : Natural;
       Temp  : Integer;
-      Copy1 : Input;
-      Copy2 : Input;
    begin
       A (A'Last) := 0;
       Space      := Space / 2;
-      Copy1 := A;
+
       while Space > 0 loop
          pragma Loop_Invariant
            ((Space = 4 or Space = 2 or Space = 1)
@@ -88,37 +84,36 @@ package body PrefixSum is
               and then
             (for all K in A'Range =>
               	 (if Space = 4 then
-                    A(K) = Copy1(K)
+                    A (K) = A'Loop_Entry (K)
                  elsif Space = 2 and then (K+1) mod 8 = 0 then
-                    A(K) = Copy1(K) +Copy1(K - 2*Space)
+                    A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - 2*Space)
                  elsif Space = 2 and then (K+1) mod 4 = 0 then
-                    A(K) = Copy1(K + 2*Space)
+                    A (K) = A'Loop_Entry (K + 2*Space)
                  elsif Space = 2 then
-                    A(K) = Copy1(K)
+                    A (K) = A'Loop_Entry (K)
                  elsif Space = 1 and then (K+1) mod 2 = 0 then
-                    A(1) = Copy1(7) and
-                    A(3) = Copy1(1) + Copy1(7) and
-                    A(5) = Copy1(7) + Copy1(3) and
-                    A(7) = Copy1(5) + Copy1(7) + Copy1(3)
+                    A (1) = A'Loop_Entry (7) and
+                    A (3) = A'Loop_Entry (1) + A'Loop_Entry (7) and
+                    A (5) = A'Loop_Entry (7) + A'Loop_Entry (3) and
+                    A (7) = A'Loop_Entry (5) + A'Loop_Entry (7)
+                          + A'Loop_Entry (3)
                  else
-                    A(K) = Copy1(K)
-             )));
+                    A (K) = A'Loop_Entry (K))));
          pragma Loop_Variant (Decreases => Space);
 
          Right := Space * 2 - 1;
-         Copy2 := A;
          while Right < A'Length loop
             pragma Loop_Invariant (
               (for all K in A'Range =>
                 (if K in A'First .. Right - Space * 2 then
                   (if (K + 1) mod (2 * Space) = 0 then
-                      A (K) = Copy2 (K) + Copy2 (K - Space)
+                      A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
                    elsif (K + 1) mod Space = 0 then
-                      A (K) = Copy2 (K + Space)
+                      A (K) = A'Loop_Entry (K + Space)
                    else
-                   A (K) = Copy2 (K))
+                   A (K) = A'Loop_Entry (K))
                  else
-                   A (K) = Copy2 (K)))
+                   A (K) = A'Loop_Entry (K)))
                  and then
               (Right + 1) mod (Space * 2) = 0
                  and then
@@ -128,7 +123,7 @@ package body PrefixSum is
 
             Left      := Right - Space;
             Temp      := A (Right);
-            A (Right) := A (Left) + A(Right);
+            A (Right) := A (Left) + A (Right);
             A (Left)  := Temp;
             Right     := Right + Space * 2;
          end loop;

@@ -20,11 +20,10 @@ package body Queen is
    procedure Try_Row (B : in out Board; I : Index; Done : in out Boolean;
                       C : in Board)
    is
-      B_Old : constant Board := B;
    begin
       for R in Index'Range loop
          pragma Assert (not Done and
-             (for all J in 1 .. I - 1 => B (J) = B_Old (J)) and
+             (for all J in 1 .. I - 1 => B (J) = B'Loop_Entry (J)) and
              (if C (I) < R then
                 not (for all J in I .. N => Consistent (C, J)))
           );
@@ -37,7 +36,7 @@ package body Queen is
             exit;
          end if;
       end loop;
-      pragma Assert (for all J in 1 .. I - 1 => B (J) = B_Old (J));
+      pragma Assert (for all J in 1 .. I - 1 => B (J) = B'Loop_Entry (J));
    end Try_Row;
 
 end Queen;

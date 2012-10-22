@@ -1,13 +1,12 @@
 package body P is
    procedure Shadow_Effect (P : in out Painting; D : Dot) is
-      P_Old : constant Painting := P;
    begin
       for C in Color loop
 
          --  Loop invariant required to prove the postcondition
 
          pragma Loop_Invariant
-           (P.Plain = P_Old.Plain and then
+           (P.Plain = P'Loop_Entry.Plain and then
              (for all J in Color'First .. Color'Pred (C) =>
                (if P.Plain (J) = D then P.Shadow (J) = D)));
 

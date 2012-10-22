@@ -91,8 +91,6 @@ package body Infoflow is
    end CopyKeys;
 
    procedure FlipHalves (H_V1, H_V2 : in out H_Type; I : Integer) is
-      H_V1_Copy : constant H_Type := H_V1;
-      H_V2_Copy : constant H_Type := H_V2;
    begin
       declare
          T_V1 : Content;
@@ -101,10 +99,11 @@ package body Infoflow is
          M_V1 := H_V1'Last / 2;
          for Q_V1 in H_V1'First .. M_V1 loop
             pragma Loop_Invariant (for all K in H_V1'Range =>
-                             (if K < Q_V1 then H_V1 (K) = H_V1_Copy (K + M_V1)
+                             (if K < Q_V1 then
+                                 H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
                               elsif K > Q_V1 + M_V1 then
-                                 H_V1 (K) = H_V1_Copy (K - M_V1)
-                              else H_V1 (K) = H_V1_Copy (K)));
+                                 H_V1 (K) = H_V1'Loop_Entry (K - M_V1)
+                              else H_V1 (K) = H_V1'Loop_Entry (K)));
             T_V1 := H_V1 (Q_V1);
             H_V1 (Q_V1) := H_V1 (Q_V1 + M_V1);
             H_V1 (Q_V1 + M_V1) := T_V1;
@@ -122,10 +121,11 @@ package body Infoflow is
          M_V2 := H_V2'Last / 2;
          for Q_V2 in H_V2'First .. M_V2 loop
             pragma Loop_Invariant (for all K in H_V2'Range =>
-                             (if K < Q_V2 then H_V2 (K) = H_V2_Copy (K + M_V2)
+                             (if K < Q_V2 then
+                                 H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
                               elsif K > Q_V2 + M_V2 then
-                                 H_V2 (K) = H_V2_Copy (K - M_V2)
-                              else H_V2 (K) = H_V2_Copy (K)));
+                                 H_V2 (K) = H_V2'Loop_Entry (K - M_V2)
+                              else H_V2 (K) = H_V2'Loop_Entry (K)));
             T_V2 := H_V2 (Q_V2);
             H_V2 (Q_V2) := H_V2 (Q_V2 + M_V2);
             H_V2 (Q_V2 + M_V2) := T_V2;
@@ -143,15 +143,14 @@ package body Infoflow is
       procedure Flip (H : in out H_Type) is
          T : Content;
          M : Integer;
-         H_Copy : constant H_Type := H;
       begin
          M := H'Last / 2;
          for Q in H'First .. M loop
             pragma Loop_Invariant (for all K in H'Range =>
-                             (if K < Q then H (K) = H_Copy (K + M)
+                             (if K < Q then H (K) = H'Loop_Entry (K + M)
                               elsif K > Q + M then
-                                 H (K) = H_Copy (K - M)
-                              else H (K) = H_Copy (K)));
+                                 H (K) = H'Loop_Entry (K - M)
+                              else H (K) = H'Loop_Entry (K)));
             T         := H (Q);
             H (Q)     := H (Q + M);
             H (Q + M) := T;
