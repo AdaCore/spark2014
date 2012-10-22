@@ -69,7 +69,83 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Compilation Phases}
+
+\begin{itemize}
+\item lexing: \verb|Scn| (mostly need to modify \verb|snames.ads|)
+\item parsing: \verb|Par| (no work needed except for error recovery)
+  \begin{itemize}
+  \item \verb|Par.Ch2| .. \verb|Par.Ch13| match RM chapters
+  \item \verb|Par.Ch4| for attributes
+  \item \verb|Par.Ch13| for aspects
+  \item \verb|Par.Prag| for pragmas
+  \end{itemize}
+\item semantic analysis: \verb|Sem| (where most work is done)
+  \begin{itemize}
+  \item \verb|Sem_Ch2| .. \verb|Sem_Ch13| match RM chapters
+  \item \verb|Sem_Prag| for pragmas/aspects
+  \item \verb|Sem_Attr| for attributes
+  \end{itemize}
+\item expansion: \verb|Exp| (little work for SPARK 2014)
+  \begin{itemize}
+  \item \verb|Exp_Ch2| .. \verb|Exp_Ch13| match RM chapters
+  \item \verb|Exp_Prag| for pragmas/aspects
+  \item \verb|Exp_Attr| for attributes
+  \end{itemize}
+\end{itemize}
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{\textit{Possibly} and \textbf{Certainly} Relevant RM Chapters}
+
+\begin{enumerate}
+\item General
+\item Lexical Elements
+\item Declarations and Types
+\item \textbf{Names and Expressions}
+\item \textbf{Statements}
+\item \textbf{Subprograms}
+\item \textbf{Packages}
+\item \textit{Visibility Rules}
+\item Tasks and Synchronisation
+\item Program Structure and Compilation Issues
+\item Exceptions
+\item Generic Units
+\item Representation Issues
+\end{enumerate}
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{GNAT Abstract Syntax Tree}
+
+\begin{block}{internal nodes}
+  \begin{itemize}
+  \item \verb|Sinfo|, 226 values in kind \verb|Sinfo.Node_Kind|
+  \item structure of tree through basic fields
+  \item additional semantic fields
+  \item 5 general purpose fields for
+    \begin{itemize}
+    \item other nodes, list of nodes
+    \item names
+    \item literals, universal integers, floats, character codes
+    \end{itemize}
+  \end{itemize}
+\end{block}
+
+\begin{block}{entity nodes}
+  \begin{itemize}
+  \item \verb|Einfo|, 79 values in kind \verb|Einfo.Entity_Kind|
+  \item for all identifiers
+  \item 23 general purpose fields
+  \item many boolean flags
+  \end{itemize}
+\end{block}
+
+reference
 \end{specialframe}
 
 
