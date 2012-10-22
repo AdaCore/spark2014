@@ -14,7 +14,7 @@
 -- postcondition and an implementation.
 package body The_Stack_With_Conditions
 with
-   Refined_State (State => (S, Pointer)) -- State refinement
+   Refined_State => State => (S, Pointer) -- State refinement
 is
    Max_Stack_Size : constant := 1024;
    type Pointer_Range is range 0 .. Max_Stack_Size;
@@ -56,7 +56,7 @@ is
 
    procedure Push(X: in Integer)
    with 
-      Refined_Global => (In_Out => (Pointer, S))
+      Refined_Global => In_Out => (Pointer, S)
    is
    begin
       Pointer := Pointer + 1;

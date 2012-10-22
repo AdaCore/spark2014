@@ -47,15 +47,17 @@ Body in |SPARK|:
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the Pre/Post/Return contracts are structured and how they 
-map from SPARK 2005 to |SPARK|. Procedure `Swap` and function `add` perform the same 
-task as in the previous example, but they have been augmented by post annotations. Two 
-additional functions (`Max` and `Divide`) and one additional procedure (`Swap_Array_Elements`) 
-have also been included in this example in order to demonstare further features. `Max` 
-returns the maximum of the two globals. `Divide` returns the division of the two globals 
-after having ensured that the divisor is not equal to zero. Notice that the result of the 
-division is a real number while the global variables are integers. The `Swap_Array_Elements` 
-procedure swaps the contents of two elements of an array.
+This example demonstrates how the Pre/Post/Return contracts are structured 
+and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function 
+`add` perform the same task as in the previous example, but they have been 
+augmented by post annotations. Two additional functions (`Max` and `Divide`) 
+and one additional procedure (`Swap_Array_Elements`) have also been included 
+in this example in order to demonstare further features. `Max` returns the 
+maximum of the two globals. `Divide` returns the division of the two globals 
+after having ensured that the divisor is not equal to zero. Notice that the 
+result of the division is a real number while the global variables are 
+integers. The `Swap_Array_Elements` procedure swaps the contents of two elements 
+of an array.
 
 Specifications in SPARK 2005:
 
@@ -84,7 +86,32 @@ Body in |SPARK|:
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+Procedures and functions can be nested within other procedures and functions. 
+An example of such a case is illustrated in this subsection.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/1_3/05/1_3_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/1_3/05/1_3_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/1_3/14/1_3_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/1_3/14/1_3_14.adb
+      :language: ada
+      :linenos:
 
 Package patterns
 ----------------
