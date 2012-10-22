@@ -9,7 +9,7 @@
 -- The state of a package may be represented by more than one own variable but
 -- all the state of the package must be encompased by the own variables and the
 -- constituent state of each own variable must be mutually exclusive.
-package The_Stack_2005
+package the_stack_05
 --# own State;          -- Abstraction of internal state of the package
 --# initializes State;  -- We are asserting it will be initialized
 is
@@ -28,4 +28,4 @@ is
    procedure Swap(X: in Integer);
    --# global in out State;
 
-end The_Stack_2005;
+end the_stack_05;

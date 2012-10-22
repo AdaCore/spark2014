@@ -1,4 +1,4 @@
-package Global_Depends_14
+package global_derives_14
 with
    Abstract_State => (X, Y)
 is
@@ -13,4 +13,4 @@ is
    with
       Global  => Input => (X, Y);
    
-end Global_Depends_14;
+end global_derives_14;

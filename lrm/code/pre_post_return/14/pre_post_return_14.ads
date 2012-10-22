@@ -1,4 +1,4 @@
-package Pre_Post_Return_14
+package pre_post_return_14
 with
    Abstract_State => (X, Y);
 is
@@ -38,4 +38,4 @@ is
       Pre     => X /= Y and X in Index and Y in Index,
       Post    => A = A'Old'Update(X => A'Old(Y), Y => A'Old(X));
    
-end Pre_Post_Return_14;
+end pre_post_return_14;

@@ -12,7 +12,7 @@
 -- In this simple example the refined postconditions for Is_Empty and Is_Full
 -- could just be replaced by function expressions which are both a refined
 -- postcondition and an implementation.
-package body The_Stack_With_Conditions
+package body the_stack_with_conditions_14
 with
    Refined_State => State => (S, Pointer) -- State refinement
 is
@@ -85,4 +85,4 @@ is
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;
   S := Vector'(Index_Range => 0);
-end The_Stack_With_Conditions;
+end the_stack_with_conditions_14;

@@ -1,4 +1,4 @@
-package body The_Stack_With_More_Conditions
+package body the_stack_with_more_conditions_05
 --# own State is S, Pointer;          -- State refinement
 is
    Max_Stack_Size: constant := 1024;
@@ -73,4 +73,4 @@ is
 begin -- Initialization - we promised to initialize the state
    Pointer := 0;
    S := Vector'(Index_Range => 0);
-end The_Stack_With_More_Conditions;
+end the_stack_with_more_conditions_05;

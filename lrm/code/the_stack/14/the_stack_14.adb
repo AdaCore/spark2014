@@ -11,7 +11,7 @@
 -- make analysis easier.
 -- The subprograms in this package body cannot be shown to be free of RTE
 -- without more defensive programming or incorporating preconditions.
-package body The_Stack
+package body the_stack_14
 with 
    Refined_State => State => (S, Pointer) -- State refinement
 is
@@ -81,4 +81,4 @@ is
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;
   S := Vector'(Index_Range => 0);
-end The_Stack;
+end the_stack_14;

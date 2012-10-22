@@ -1,4 +1,4 @@
-package Global_Derives_05
+package global_derives_05
 --# own X, Y: Integer;
 is
 
@@ -10,4 +10,4 @@ is
    function Add return Integer;
    --# global in X, Y;
    
-end Global_Derives_05;
+end global_derives_05;

@@ -5,7 +5,7 @@
 -- do not be refined because they are given in terms of Top and the refined
 -- postcondition of Top is visible.  There are no refinement checks required.
 -- This implementation has executable contracts.
-package body The_Stack_With_More_Conditions
+package body the_stack_with_more_conditions_14
 with
    Refined_State => State => (S, Pointer) -- State refinement
 is
@@ -79,4 +79,4 @@ is
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;
   S := Vector'(Index_Range => 0);
-end The_Stack_With_More_Conditions;
+end the_stack_with_more_conditions_14;

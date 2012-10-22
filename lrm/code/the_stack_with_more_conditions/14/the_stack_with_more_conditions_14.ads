@@ -6,7 +6,7 @@
 -- used to show that the value of stack is unchanged in a call to Swap
 -- if X = Top.
 -- The contracts are execuatble.
-package The_Stack_With_More_Conditions
+package the_stack_with_more_conditions_14
 with
    Abstract_State    => State,
    Initializes       => State,
@@ -45,5 +45,5 @@ is
      Pre    => not Is_Empty,
      Post   => Top = X;
 
-end The_Stack_With_More_Conditions;
+end the_stack_with_more_conditions_14;
 

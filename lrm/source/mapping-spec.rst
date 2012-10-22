@@ -22,25 +22,25 @@ sum.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/1_1/05/1_1_05.ads
+   .. literalinclude:: ../code/global_derives/05/global_derives_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/1_1/05/1_1_05.adb
+   .. literalinclude:: ../code/global_derives/05/global_derives_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/1_1/14/1_1_14.ads
+   .. literalinclude:: ../code/global_derives/14/global_derives_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/1_1/14/1_1_14.adb
+   .. literalinclude:: ../code/global_derives/14/global_derives_14.adb
       :language: ada
       :linenos:
 
@@ -61,25 +61,25 @@ of an array.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/1_2/05/1_2_05.ads
+   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/1_2/05/1_2_05.adb
+   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/1_2/14/1_2_14.ads
+   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/1_2/14/1_2_14.adb
+   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.adb
       :language: ada
       :linenos:
 
@@ -91,25 +91,25 @@ An example of such a case is illustrated in this subsection.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/1_3/05/1_3_05.ads
+   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/1_3/05/1_3_05.adb
+   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/1_3/14/1_3_14.ads
+   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/1_3/14/1_3_14.adb
+   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.adb
       :language: ada
       :linenos:
 

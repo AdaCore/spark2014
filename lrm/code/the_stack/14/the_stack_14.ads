@@ -9,7 +9,7 @@
 -- The state of a package may be represented by more than one abstraction but
 -- all the state of the package must be encompased by the abstractions and the
 -- constituent state of each abstraction must be mutually exclusive.
-package The_Stack
+package the_stack_14
 with 
    Abstract_State => State,
    Initializes    => State
@@ -38,4 +38,4 @@ is
    with 
       Global => In_Out => State;
 
-end The_Stack;
+end the_stack_14;

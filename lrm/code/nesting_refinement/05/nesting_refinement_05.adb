@@ -1,4 +1,4 @@
-package body Nesting_Refinement_05
+package body nesting_refinement_05
 --# own State is X, Y;     -- Refined State
 is
    X, Y: Integer;
@@ -34,4 +34,4 @@ begin -- Promised to initialize State
       -- (which comprises of X and Y)
    X := 10;
    Y := 20;
-end Nesting_Refinement_05;
+end nesting_refinement_05;
