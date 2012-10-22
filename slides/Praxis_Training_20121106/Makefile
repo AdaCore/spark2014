@@ -1,18 +1,12 @@
-.SUFFIXES: .tex .pdf
-LATEX=gnat
+ALL: gnat.pdf gnat2why.pdf
 
-ALL: ${LATEX}.pdf
-
-.tex.pdf:
+%.pdf: %.tex
 	pdflatex $^
 	pdflatex $^ # repeated for table of contents
 
-${LATEX}.pdf: ${LATEX}.title.pdf ${LATEX}.main.pdf
-	pdfsam-console -overwrite -f $(PWD)/${LATEX}.title.pdf \
-	 -f $(PWD)/${LATEX}.main.pdf -o $(PWD)/${LATEX}.pdf concat
-
-install: ${LATEX}.pdf
-	cp -f $^ ../../slides
+%.pdf: %.title.pdf %.main.pdf
+	pdfsam-console -overwrite -f $(PWD)/$*.title.pdf \
+	 -f $(PWD)/$*.main.pdf -o $(PWD)/$*.pdf concat
 
 .PHONY: clean_tmp clean
 

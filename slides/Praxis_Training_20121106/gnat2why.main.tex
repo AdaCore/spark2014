@@ -1,0 +1,93 @@
+\documentclass{beamer}
+
+\usepackage{xcolor}
+\usepackage{eurosym}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\usepackage{pgflibraryshapes} % for ellipse shape
+
+%\usepackage{beamerthemesplit}
+
+\usepackage[absolute,overlay]{textpos}
+\TPGrid{15}{10}
+
+\newcommand{\vs}{\vspace{0.5cm}}
+
+\definecolor{mygreen}{rgb}{0,0.7,0}
+
+\usepackage{listings}
+\usepackage{color}
+\lstset{
+	language=Ada,
+	keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+	identifierstyle=\ttfamily,
+	commentstyle=\color[rgb]{0.133,0.545,0.133},
+	stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+        morekeywords=[1]some,
+	showstringspaces=false,
+	basicstyle=\tiny,
+	numberstyle=\tiny,
+	numbers=left,
+	stepnumber=1,
+	numbersep=10pt,
+	tabsize=2,
+	breaklines=true,
+	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	breakatwhitespace=false,
+	aboveskip={1.5\baselineskip},
+  columns=fixed,
+  extendedchars=true,
+% frame=single,
+% backgroundcolor=\color{lbcolor},
+}
+
+% special frames used to put source-code listings
+\newenvironment{specialframe}{%
+  \begin{frame}[fragile,environment=specialframe]}{\end{frame}}
+
+\xdefinecolor{adacoreblue}{rgb}{0,0.34,0.59}
+\xdefinecolor{adacoregrey}{rgb}{0.53,0.68,0.84}
+
+\AtBeginSection[]{\frame{\frametitle{Outline}
+\tableofcontents[current]}}
+\AtBeginSubsection[]{\frame{\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]}}
+
+\setbeamertemplate{footline}[page number]
+\setbeamercolor{frametitle}{bg=adacoreblue!40!adacoregrey, fg=white}
+\setbeamercolor{section in toc}{fg=adacoreblue}
+\setbeamercolor{block title}{bg=adacoregrey, fg=white}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{footline}
+{%
+  \hfill \insertframenumber\ / \inserttotalframenumber%
+}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% types: abstract types, predefined types, records, algebraic data types
+% logic: function declarations, definitions, predicates, axioms
+% theories
+
+\section{gnat2why passes}
+
+\begin{specialframe}\frametitle{passes}
+
+\begin{block}{Alfa filter}
+
+\end{block}
+
+\begin{block}{Dispatching of entities to Why3 files}
+
+\end{block}
+
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Why3 tree in gnat2why}
+\end{specialframe}
+
+\end{document}
