@@ -6,7 +6,7 @@
 -- each Ada function with the global variables converted to parameters.
 -- These parameters need to be typed, hence the declaration of a SPARK abstract
 -- type.  The FDL version of of the function has to be used in proof contexts.
-package The_Stack_With_Conditions_2005
+package the_stack_with_conditions_05
 --# own State : Stack;  -- Abstraction of internal state of the package
 --# initializes State;  -- We are asserting it will be initialized
 is
@@ -35,4 +35,4 @@ is
    --# global in out State;
    --# pre not Is_Empty (State);
 
-end The_Stack_With_Conditions_2005;
+end the_stack_with_conditions_05;

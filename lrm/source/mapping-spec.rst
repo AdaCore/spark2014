@@ -22,69 +22,96 @@ sum.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/1_1/05/1_1_05.ads
+   .. literalinclude:: ../code/global_derives/05/global_derives_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/1_1/05/1_1_05.adb
+   .. literalinclude:: ../code/global_derives/05/global_derives_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/1_1/14/1_1_14.ads
+   .. literalinclude:: ../code/global_derives/14/global_derives_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/1_1/14/1_1_14.adb
+   .. literalinclude:: ../code/global_derives/14/global_derives_14.adb
       :language: ada
       :linenos:
 
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the Pre/Post/Return contracts are structured and how they 
-map from SPARK 2005 to |SPARK|. Procedure `Swap` and function `add` perform the same 
-task as in the previous example, but they have been augmented by post annotations. Two 
-additional functions (`Max` and `Divide`) and one additional procedure (`Swap_Array_Elements`) 
-have also been included in this example in order to demonstare further features. `Max` 
-returns the maximum of the two globals. `Divide` returns the division of the two globals 
-after having ensured that the divisor is not equal to zero. Notice that the result of the 
-division is a real number while the global variables are integers. The `Swap_Array_Elements` 
-procedure swaps the contents of two elements of an array.
+This example demonstrates how the Pre/Post/Return contracts are structured 
+and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function 
+`add` perform the same task as in the previous example, but they have been 
+augmented by post annotations. Two additional functions (`Max` and `Divide`) 
+and one additional procedure (`Swap_Array_Elements`) have also been included 
+in this example in order to demonstare further features. `Max` returns the 
+maximum of the two globals. `Divide` returns the division of the two globals 
+after having ensured that the divisor is not equal to zero. Notice that the 
+result of the division is a real number while the global variables are 
+integers. The `Swap_Array_Elements` procedure swaps the contents of two elements 
+of an array.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/1_2/05/1_2_05.ads
+   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/1_2/05/1_2_05.adb
+   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/1_2/14/1_2_14.ads
+   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/1_2/14/1_2_14.adb
+   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.adb
       :language: ada
       :linenos:
 
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+Procedures and functions can be nested within other procedures and functions. 
+An example of such a case is illustrated in this subsection.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.adb
+      :language: ada
+      :linenos:
 
 Package patterns
 ----------------

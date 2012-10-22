@@ -1,4 +1,4 @@
-package body Global_Derives_05
+package body global_derives_14
 is   
    X, Y: Integer;
    
@@ -17,4 +17,4 @@ is
       return X + Y;
    end Add;
 
-end Global_Derives_05;
+end global_derives_14;

@@ -6,10 +6,10 @@
 -- used to show that the value of stack is unchanged in a call to Swap
 -- if X = Top.
 -- The contracts are execuatble.
-package The_Stack_With_More_Conditions
+package the_stack_with_more_conditions_14
 with
-   Abstract_State => State,
-   Initializes => State,
+   Abstract_State    => State,
+   Initializes       => State,
    Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
@@ -21,27 +21,29 @@ is
    function Top return Integer
    with
      Global => State,
-     Pre => not Is_Empty;
+     Pre    => not Is_Empty;
 
    procedure Push (X: in Integer)
    with
-     Global => (In_Out => State),
-     Pre  => not Is_Full,
-     Post => Top = X;                     -- A simple post condition
+     Global => In_Out => State,
+     Pre    => not Is_Full,
+     Post   => Top = X;                     -- A simple post condition
 
 
    procedure Pop (X: out Integer)
    with
-     Global => (In_Out => State),
-     Pre => not Is_Empty;
+     Global => In_Out => State,
+     Pre    => not Is_Empty;
 
    procedure Swap (X : in Integer)
    with
-     Global =>
-       (Input  => State,
-        Output => (if Top /= X then State)), -- conditional global contract
-     Pre  => not Is_Empty,                   -- indicating that Stack is only
-     Post => Top = X;                        -- an output if X /= Top.
+     Global => (Input  => State,
+                Output => (if Top /= X then State)), 
+                             -- conditional global contract
+                             -- indicating that Stack is only
+                             -- an output if X /= Top.
+     Pre    => not Is_Empty,
+     Post   => Top = X;
 
-end The_Stack_With_More_Conditions;
+end the_stack_with_more_conditions_14;
 

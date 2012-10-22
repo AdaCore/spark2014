@@ -1,4 +1,4 @@
-package Pre_Post_Return_14
+package pre_post_return_14
 with
    Abstract_State => (X, Y);
 is
@@ -8,7 +8,7 @@ is
    
    procedure Swap
    with 
-      Global  => (In_Out => (X, Y)),
+      Global  => In_Out => (X, Y),
       Depends => (X => Y,
 	          Y => X),
       Post    => (X = Y'Old,
@@ -16,26 +16,26 @@ is
    
    function Add return Integer
    with
-      Global  => (Input => (X, Y)),
+      Global  => Input => (X, Y),
       Post    => Add'Result = X + Y;
         
    function Max return Integer
    with
-      Global  => (Input => (X, Y)),
+      Global  => Input => (X, Y),
       Post    => (if X >= Y then Max'Result = X
                   else Max'Result = Y);
 		  
    function Divide return Float
    with
-      Global  => (Input => (X, Y)),
+      Global  => Input => (X, Y),
       Pre     => Y /= 0,
       Post    => Divide'Result = Float(X / Y);
    
    procedure Swap_Array_Elements(A: in out Array_Type)
    with
-      Global  => (Input => (X, Y)),
-      Depends => (A => (A, X, Y)),
+      Global  => Input => (X, Y),
+      Depends => A => (A, X, Y),
       Pre     => X /= Y and X in Index and Y in Index,
       Post    => A = A'Old'Update(X => A'Old(Y), Y => A'Old(X));
    
-end Pre_Post_Return_14;
+end pre_post_return_14;

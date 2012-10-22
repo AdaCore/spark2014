@@ -1,4 +1,4 @@
-package Pre_Post_Return_05
+package pre_post_return_05
 --# own X, Y: Integer;
 is
    
@@ -31,4 +31,4 @@ is
    --# pre  X /= Y and X in Index and Y in Index;
    --# post A = A~[X => A~(Y); Y => A~(X)];
    
-end Pre_Post_Return_05;
+end pre_post_return_05;

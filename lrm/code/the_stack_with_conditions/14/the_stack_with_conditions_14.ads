@@ -16,7 +16,7 @@
 -- or function and so we cannot describe that the stack is
 -- unchanged in Swap if X = Top in the postcondition (but see next example).
 -- The proof contracts within this package are executable.
-package The_Stack_With_Conditions
+package the_stack_with_conditions_14
 with
    Abstract_State => State,
    Initializes => State,
@@ -27,28 +27,29 @@ is
       Global => State;
 
    function Is_Full return Boolean
-   with Global => State;
+   with 
+      Global => State;
 
    function Top return Integer
    with
-     Global => State,
-     Pre => not Is_Empty;        -- Functions with global variables may be
+      Global => State,
+      Pre    => not Is_Empty;    -- Functions with global variables may be
                                  -- called directly within proof contracts
 
    procedure Push(X: in Integer)
    with
-     Global => (In_Out => State),
-     Pre => not Is_Full;
+      Global => In_Out => State,
+      Pre => not Is_Full;
 
 
    procedure Pop(X: out Integer)
    with
-     Global => (In_Out => State),
-     Pre => not Is_Empty;
+      Global => In_Out => State,
+      Pre    => not Is_Empty;
 
    procedure Swap (X : in Integer)
    with
-     Global => (In_Out  => State),
-     Pre => not Is_Empty;
+      Global => In_Out => State,
+      Pre    => not Is_Empty;
 
-end The_Stack_With_Conditions;
+end the_stack_with_conditions_14;

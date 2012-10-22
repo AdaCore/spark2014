@@ -11,7 +11,7 @@
 -- The proof obligations resulting from these refinement checks cannot be discharged
 -- without the introduction of user defined proof functions given in
 -- comments in the text.
-package body The_Stack_With_Conditions_2005
+package body the_stack_with_conditions_05
 --# own State is S, Pointer; -- Refinement constituents
 is
    Max_Stack_Size : constant := 1024;
@@ -81,4 +81,4 @@ is
 begin -- Initialization - we promised to initialize the state
   Pointer := 0;
   S := Vector'(Index_Range => 0);
-end The_Stack_With_Conditions_2005;
+end the_stack_with_conditions_05;

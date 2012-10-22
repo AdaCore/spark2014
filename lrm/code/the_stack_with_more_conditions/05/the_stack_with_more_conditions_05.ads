@@ -1,4 +1,4 @@
-package The_Stack_With_More_Conditions
+package the_stack_with_more_conditions_05
 --# own State;
 --# initializes State;
 --  The "Initial_Condition => Is_Empty" statement cannot be replicated in SPARK 2005.
@@ -28,4 +28,4 @@ is
    --# pre  not Is_Empty (State);
    --# post Top (State) = X;
 
-end The_Stack_With_More_Conditions;
+end the_stack_with_more_conditions_05;
