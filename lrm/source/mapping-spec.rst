@@ -10,25 +10,21 @@ design, and as a guide for projects upgrading from SPARK2005 to |SPARK|.
 Subprogram patterns
 -------------------
 
+.. _ms-global_derives-label:
+
 Global and Derives
 ~~~~~~~~~~~~~~~~~~
 
 This example demonstrates how global variables can be accessed through 
-procedures and functions and presents how the derives annotation is structured. 
+procedures and functions and presents how the `derives` annotation is structured. 
 The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap` 
 accesses two global variables and swaps their contents while `Add` returns their 
-sum.
-
+sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further 
+insight and will thus not be included.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/global_derives/05/global_derives_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/global_derives/05/global_derives_05.adb
       :language: ada
       :linenos:
 
@@ -38,36 +34,25 @@ Specifications in |SPARK|:
       :language: ada
       :linenos:
 
-Body in |SPARK|:
-
-   .. literalinclude:: ../code/global_derives/14/global_derives_14.adb
-      :language: ada
-      :linenos:
+.. _ms-pre_post_return-label:
 
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the Pre/Post/Return contracts are structured 
+This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured 
 and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function 
-`add` perform the same task as in the previous example, but they have been 
+`Add` perform the same task as in the previous example, but they have been 
 augmented by post annotations. Two additional functions (`Max` and `Divide`) 
 and one additional procedure (`Swap_Array_Elements`) have also been included 
 in this example in order to demonstare further features. `Max` returns the 
 maximum of the two globals. `Divide` returns the division of the two globals 
-after having ensured that the divisor is not equal to zero. Notice that the 
-result of the division is a real number while the global variables are 
-integers. The `Swap_Array_Elements` procedure swaps the contents of two elements 
-of an array.
+after having ensured that the divisor is not equal to zero. The `Swap_Array_Elements` 
+procedure swaps the contents of two elements of an array. For the same reasons
+as in the previous example, the bodies are not included.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.adb
       :language: ada
       :linenos:
 
@@ -77,17 +62,14 @@ Specifications in |SPARK|:
       :language: ada
       :linenos:
 
-Body in |SPARK|:
-
-   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.adb
-      :language: ada
-      :linenos:
+.. _ms-nesting_refinement-label:
 
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Procedures and functions can be nested within other procedures and functions. 
-An example of such a case is illustrated in this subsection.
+This example demonstrates how procedures and functions can be nested within 
+other procedures and functions. Furthermore, it illustrates how global variables 
+refinement can be performed.
 
 Specifications in SPARK 2005:
 
