@@ -1,4 +1,3 @@
-
 evoting_simple.adb:120:54: overflow check not proved
 evoting_simple.adb:123:13: info: index check proved
 evoting_simple.adb:126:16: info: index check proved
@@ -6,8 +5,8 @@ evoting_simple.adb:127:16: info: index check proved
 evoting_simple.adb:127:41: info: index check proved
 evoting_simple.adb:127:63: info: overflow check proved
 evoting_simple.adb:127:63: info: range check proved
-evoting_simple.adb:128:51: info: overflow check proved
-evoting_simple.adb:128:51: info: range check proved
+evoting_simple.adb:128:51: overflow check not proved
+evoting_simple.adb:128:51: range check not proved
 evoting_simple.adb:146:17: info: range check proved
 evoting_simple.adb:148:13: info: index check proved
 evoting_simple.adb:148:27: info: index check proved

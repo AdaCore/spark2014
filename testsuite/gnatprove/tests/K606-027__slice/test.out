@@ -1,6 +1,5 @@
-
 fb20a00.adb:10:7: info: range check proved
-fb20a00.adb:12:27: range check not proved
+fb20a00.adb:12:27: info: range check proved
 fb20a00.adb:15:28: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:22:18: info: index check proved

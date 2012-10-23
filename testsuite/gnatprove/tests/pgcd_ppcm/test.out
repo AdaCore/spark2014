@@ -1,21 +1,21 @@
+a.adb:10:28: loop invariant preservation not proved, requires Bn /= Integer'first
 a.adb:11:25: overflow check not proved
 a.adb:11:35: overflow check not proved
 a.adb:11:49: info: overflow check proved
 a.adb:11:59: overflow check not proved
 a.adb:12:10: info: loop invariant initialization proved
-a.adb:12:10: info: loop invariant preservation proved
-a.adb:12:25: info: overflow check proved
+a.adb:12:25: overflow check not proved
 a.adb:12:35: overflow check not proved
 a.adb:12:49: info: overflow check proved
 a.adb:12:59: overflow check not proved
 a.adb:15:19: info: division check proved
 a.adb:15:19: range check not proved
-a.adb:18:14: info: overflow check proved
+a.adb:18:14: overflow check not proved
 a.adb:24:22: info: precondition proved
 a.adb:27:18: info: overflow check proved
 a.adb:27:23: info: division check proved
 a.adb:27:23: info: overflow check proved
-a.adb:30:14: info: overflow check proved
+a.adb:30:14: overflow check not proved
 a.ads:14:25: info: overflow check proved
 a.ads:14:47: info: overflow check proved
 a.ads:18:29: overflow check not proved

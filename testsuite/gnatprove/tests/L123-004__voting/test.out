@@ -10,8 +10,8 @@ evoting.adb:173:16: info: index check proved
 evoting.adb:173:41: info: index check proved
 evoting.adb:173:63: info: overflow check proved
 evoting.adb:173:63: info: range check proved
-evoting.adb:174:51: info: overflow check proved
-evoting.adb:174:51: info: range check proved
+evoting.adb:174:51: overflow check not proved
+evoting.adb:174:51: range check not proved
 evoting.adb:197:7: info: index check proved
 evoting.adb:199:56: info: range check proved
 evoting.adb:200:7: info: index check proved
