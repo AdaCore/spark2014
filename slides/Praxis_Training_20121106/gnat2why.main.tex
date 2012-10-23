@@ -73,21 +73,91 @@
 % logic: function declarations, definitions, predicates, axioms
 % theories
 
-\section{gnat2why passes}
+\section{Encoding of Ada into Why3}
 
-\begin{specialframe}\frametitle{passes}
+\begin{specialframe}\frametitle{Types - Scalar types}
+   \begin{block}{Generalities}
+      All entities are translated into their own module, sometimes two
+   \end{block}
 
-\begin{block}{Alfa filter}
-
-\end{block}
-
-\begin{block}{Dispatching of entities to Why3 files}
-
-\end{block}
-
+   \begin{block}{Discrete types}
+   \begin{itemize}
+      \item abstract type
+      \item conversion to/from int
+      \item axioms about these conversion functions
+      \item constants for first/last/modulus, with definition when not dynamic
+      \item \verb|of_int_| program function with precondition that argument is
+         in range
+      \item equality ...
+   \end{itemize}
+   \end{block}
+   \vspace{-1em}
+   \begin{block}{Floating point types}
+      \begin{itemize}
+         \item very similar, but conversion to/from real
+      \end{itemize}
+   \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Why3 tree in gnat2why}
+\begin{specialframe}\frametitle{Types - Record types}
+   \begin{block}{Why3 model}
+      \begin{itemize}
+         \item why3 record type with one field for all present fields
+               (even in case of variant records)
+         \item program functions for access with discriminant check
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Types - Array types}
+   \begin{block}{Why3 record with fields:}
+      \begin{itemize}
+         \item map - contains the data
+         \item first
+         \item last
+         \item offset - to allow for sliding
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
+\section{gnat2why passes}
+
+\begin{specialframe}\frametitle{Different Passes (1)}
+
+   \begin{block}{Alfa filter}
+      \begin{itemize}
+         \item Compute globals for all subprograms
+         \item Traverse the entire tree to find all entities, and to decide
+            whether they are in Alfa or not
+         \item Define lists:
+            \begin{itemize}
+                  \item types in alfa
+                  \item objects in alfa
+                  \item subprograms in alfa
+            \end{itemize}
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
+
+\begin{specialframe}\frametitle{Different Passes (2) }
+   \begin{block}{Translation}
+      \begin{itemize}
+         \item Dispatch over type of entity and call corresponding translation
+            procedure:
+            \begin{itemize}
+                  \item \verb|Translate_Type|
+                  \item \verb|Translate_Constant|
+                  \item \verb|Translate_Variable|
+                  \item \verb|Translate_Subprogram_Spec|
+            \end{itemize}
+         \item Iterate over entities to generate "VCs" (ie Why3 programs that
+            will trigger VCs)
+            \begin{itemize}
+               \item Today, only calls \verb|Generate_VCs_For_Subprogram_Body|
+            \end{itemize}
+      \end{itemize}
+   \end{block}
 \end{specialframe}
 
 \end{document}
