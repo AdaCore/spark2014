@@ -149,8 +149,14 @@ Body in SPARK 2005:
 Private type with refined pre/post contracts in the body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The current example demonstrates how `pre` and `post` conditions, that lie in the specifications 
-of a package, can be refined in the package's body.
+This example demonstrates how `pre` and `post` conditions, that lie in the specifications 
+of a package, can be refined in the package's body. In order to prove the absence of runtime 
+errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not 
+presented here since they are not required in the |SPARK| version. Contracts that need not 
+be refined, do not have to be repeated in the body of a package. In this particular example, 
+the body of the SPARK 2005 might seem to be needlessly repeating contracts. However, this 
+is not true since the contracts that are being repeated are indirectly being refined through 
+the refinement of the `Is_Empty` and `Is_Full` functions.
 
 Specifications in SPARK 2005:
 
