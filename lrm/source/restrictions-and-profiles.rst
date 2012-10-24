@@ -4,6 +4,13 @@ Restrictions and Profiles
 A list of restrictions by section and their effect:
 
 
+2.1 Character Set
+
+#. ``No_Wide_Characters``
+
+   This GNAT-defined restriction may be applied to restrict the use of
+   Wide and Wide_Wide character and string types in |SPARK|.
+
 6.1 Subprogram Declarations
 
 #. ``No_Default_Subprogram_Parameters``
