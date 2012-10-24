@@ -110,9 +110,9 @@ aspect.
    using the notation S'Input and used as an export using the notation
    S'Output.
 #. At most one ``category_state`` of Volatile is permitted in an
-   ``abstract_state_aspect''.
+   ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_state`` is
-   permitted in an abstract_state_aspect``.
+   permitted in an ``abstract_state_aspect``.
 
 .. centered:: **Static Semantics**
 
@@ -557,9 +557,9 @@ where
    if it is present it must be the ``abstract_state_name`` of the last
    ``state_and_constituent_list`` of the ``refined_state_list``.
 #. At most one ``category_constituent`` of Volatile is permitted in an
-   ``abstract_state_aspect''.
+   ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_constituent`` is
-   permitted in an abstract_state_aspect``.
+   permitted in an ``abstract_state_aspect``.
 
 .. centered:: **Static Semantics**
 
