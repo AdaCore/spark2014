@@ -47,13 +47,13 @@ Pragmas
 -------
 
 |SPARK| introduces a number of new pragmas that facilitate program verification.
-These are introduced and documented below in the relevant sections of this document.
+These are described in the relevant sections of this document.
 
 Reserved Words
 --------------
 
 |SPARK| has the same set of reserved words as Ada 2012.  Owing to language restrictions, the
-following set of reserved words are never used in a |SPARK| program:
+following set of reserved words are never used in the |SPARK| part of a program.
 
 **abort**,
 **accept**,
@@ -71,3 +71,4 @@ following set of reserved words are never used in a |SPARK| program:
 **task**,
 **terminate**,
 **until**.
+
