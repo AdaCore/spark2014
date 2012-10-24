@@ -70,10 +70,16 @@ aspect.
 
 ::
 
-  abstract_state_aspect ::= Abstract_State => abstract_state_list
-  abstract_state_list   ::= state_name
-                          | (state_name {, state_name})
-  state_name            ::= defining_identifier [=> (Volatile => mode_selector)]
+  abstract_state_aspect  ::= Abstract_State => abstract_state_list
+  abstract_state_list    ::= state_name_list
+                           | state_category_list
+  categorised_state_list ::= category_state
+                           | (category_state {, category_state})
+  category_state         ::= ([Non_Volatile =>] state_name_list)
+                             ( Volatile => (mode_selector => state_name_list))
+  state_name_list        ::= state_name
+                           | (state_name {, state_name)
+  state_name             ::= defining_identifier
 
 .. todo:: May be we have to consider a latched output mode selector,
    one that can be read after writing but need not be.  This scheme
@@ -95,7 +101,6 @@ aspect.
    output.  The mode selector determines whether the volatile state is
    an input or an output or possibly both an input and an output (an
    in_out).
-#. A volatile state may have the attributes ``Head``, ``Tail``.
 #. A volatile Input may be an ``import`` only.
 #. A volatile Output may be an ``export`` only.
 #. A volatile In_Out has the attributes ``Input`` and ``Output``.
@@ -104,6 +109,10 @@ aspect.
 #. A volatile In_Out ``state_name`` S may be used as an ``import``
    using the notation S'Input and used as an export using the notation
    S'Output.
+#. At most one ``category_state`` of Volatile is permitted in an
+   ``abstract_state_aspect''.
+#. At most one of a Non_Volatile or a default ``category_state`` is
+   permitted in an abstract_state_aspect``.
 
 .. centered:: **Static Semantics**
 
@@ -120,13 +129,15 @@ aspect.
      package elaboration
    * Initialized State - state which is initialized during package
      elaboration
-   * Volatile Input State - Volatile state which is an input only.
-     Volatile Input State is considered to be implicitly initialized
-   * Volatile Output State - Volatile state which is an output only.
-     Volatile Output State is considered to be implicitly initialized
-   * Volatile In_Out State - Volatile state which is bidirectional.
-     Volatile In_Out State is considered to be implicitly initialized
+   * Volatile Input State - Volatile state which is an input only and
+     is considered to be implicitly initialized.
+   * Volatile Output State - Volatile state which is an output only
+     and is considered to be implicitly initialized.
+   * Volatile In_Out State - Volatile state which is bidirectional and
+     is considered to be implicitly initialized.
 
+#. The category is specified using the ``category_state`` syntax.  A
+   ``category_state`` without a category defaults to Non_Volatile.
 #. A volatile In or Out state is considered to be a sequence of
    values, a volatile In_Out state has two sequences, an input and and
    an output sequence.  The input sequence is denoted using the
@@ -199,7 +210,8 @@ There are no dynamic semantics associated with the
 
     package X
     with 
-       Absatract_State => (A, B, C => (Volatile => Input))
+       Absatract_State => (A, B, 
+                          (Volatile => (Input => C)))
     is                                   -- Three abstract state names are declared A, B & C. 
        ...                               -- C is designated as a volatile input.
     end X; 
@@ -510,13 +522,17 @@ Refined State Aspect
 
 ::
 
-  refined_state_aspect       ::= Refined_State => refined_state_list
-  refined_state_list         ::= (state_and_constituents {, state_and_constituent_list})
-  state_and_constituent_list ::= abstract_state_name => constituent_list
-  abstract_state_name        ::= state_name | null
-  constituent_list           ::= constituent
-                               | (constituent_definition {, constituent_definition)
-  constituent_definition     ::= constituent [=> (Volatile => mode_selector)]
+  refined_state_aspect         ::= Refined_State => refined_state_list
+  refined_state_list           ::= (state_and_constituent_list {, state_and_constituent_list})
+  state_and_constituent_list   ::= abstract_state_name => categorised_constituent_list
+  abstract_state_name          ::= state_name | null
+  categorised_constituent_list ::= constituent_list
+                                   (category_constituent {, category_constituent})
+  category_constituent         ::= constituent_list
+                                 | ([Non_Volatile =>] constituent_list)
+                                 | (Volatile => (mode_selector => constituent_list))
+  constituent_list             ::= constituent
+                                 | (constituent {, constituent})
 
 where
 
@@ -540,6 +556,10 @@ where
 #. There should be at most one **null** ``abstract_state_name`` and,
    if it is present it must be the ``abstract_state_name`` of the last
    ``state_and_constituent_list`` of the ``refined_state_list``.
+#. At most one ``category_constituent`` of Volatile is permitted in an
+   ``abstract_state_aspect''.
+#. At most one of a Non_Volatile or a default ``category_constituent`` is
+   permitted in an abstract_state_aspect``.
 
 .. centered:: **Static Semantics**
 
@@ -580,6 +600,8 @@ where
    * In_Out, then each ``constituent`` of the ``state_name`` may have
      have a ``mode_selector`` of Input, Output, or In_Out;
 
+#. The category is specified using the ``category_state`` syntax.  A
+   ``category_state`` without a category defaults to Non_Volatile.
 #. A ``state_name`` which is not designated as Volatile may be refined
    on to one or more Volatile Input, Output or In_Out ``constituents``
    as well as non-Volatile ``constituents``.
