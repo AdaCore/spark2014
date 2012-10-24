@@ -72,7 +72,7 @@ aspect.
 
   abstract_state_aspect  ::= Abstract_State => abstract_state_list
   abstract_state_list    ::= state_name_list
-                           | state_category_list
+                           | categorised_state_list
   categorised_state_list ::= category_state
                            | (category_state {, category_state})
   category_state         ::= ([Non_Volatile =>] state_name_list)
