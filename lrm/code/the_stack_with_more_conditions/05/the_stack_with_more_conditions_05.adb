@@ -15,7 +15,7 @@ is
    
    function Is_Empty return Boolean
    --# global Pointer;
-   --# return Pointer =  0;
+   --# return Pointer = 0;
    is
    begin
       return Pointer = 0;
@@ -23,7 +23,7 @@ is
 
    function Is_Full return Boolean
    --# global Pointer;
-   --# return Pointer =  Max_Stack_Size;
+   --# return Pointer = Max_Stack_Size;
    is
    begin
       return Pointer = Max_Stack_Size;
@@ -40,7 +40,7 @@ is
    
    procedure Push(X: in Integer)
    --# global in out Pointer, S;
-   --# pre not Is_Full (Pointer);
+   --# pre  not Is_Full (Pointer);
    --# post Top (Pointer,S) = X;
    is
    begin
@@ -62,7 +62,7 @@ is
    --# global in     Pointer;
    --#        in out S;       -- We cannot have conditional global
                               -- contracts in SPARK 2005.
-   --# pre not Is_Empty(Pointer);
+   --# pre  not Is_Empty(Pointer);
    --# post Top(Pointer,S) = X;
    is
    begin
