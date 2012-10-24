@@ -395,9 +395,10 @@ its non-visible subordinate packages.
    after its elaboration.
 
 .. centered:: **Restrictions that may be Applied**
+
 .. include:: restrictions-and-profiles.rst
    :start-after: 7.1.4 Initial Condition Aspect
-   :end-before: END OF FILE 
+   :end-before:  7.2.2 
 
 .. centered:: **Dynamic Semantics**
 
@@ -593,12 +594,13 @@ where
    Volatile in the ``refined_state_aspect``.  Furthermore if the
    ``mode_selector`` of the Volatile ``state_name`` is:
   
-   * Input, then each ``constituent`` of the ``state_name`` must also
-     have a ``mode_selector`` of Input;
-   * Output, then each ``constituent`` of the ``state_name`` must also
-     have a ``mode_selector`` of Output;
-   * In_Out, then each ``constituent`` of the ``state_name`` may have
-     have a ``mode_selector`` of Input, Output, or In_Out;
+   * Input, then at least one ``constituent`` of the ``state_name``
+     must also have a ``mode_selector`` of Input;
+   * Output, then at least one ``constituent`` of the ``state_name``
+     must also have a ``mode_selector`` of Output;
+   * In_Out, then at least one ``constituent`` of the ``state_name``
+     should have have a ``mode_selector`` In_Out or at least one of
+     each of Input, Output.
 
 #. The category is specified using the ``category_state`` syntax.  A
    ``category_state`` without a category defaults to Non_Volatile.
@@ -622,6 +624,12 @@ where
    defined ``state_name`` a ``constituent_list`` listing each
    ``constituent`` from which it is composed.
 
+.. centered:: **Restrictions that may be Applied**
+
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.2.2 Refined State Aspect
+   :end-before:  END OF FILE 
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with state abstraction and refinement.
@@ -631,267 +639,67 @@ Volatile Variables
 
 A volatile ``state_name`` may be refined to one or more subordinate
 ``state_names`` but ultimately a volatile ``state_name`` has to be
-refined to a variable.  This variable has to be volatile.  it will
-declared in the body of a package and the declaration will normally be
-denoted as volatile using an aspect or a pragma.  Usually it will also
-have a representation giving its address.
+refined on to one or more volatile *variables*.  This variable has to
+be volatile. The volatile *variable* will declared in the body of a
+package and the declaration will normally be denoted as volatile using
+an aspect or a pragma.  Usually it will also have a representation
+giving its address.
 
 A volatile variable cannot be mentioned directly in a contract as the
 reading of a volatile variable may affect the value of the variable
 and for many I/O ports a read and a write affect different registers
 of the external device.
 
-Can only read/update through procedure calls not functions.
+.. todo:: Rather than have the current problems with external
+   variables in functions should we disallow them in functions?
+   Perhaps wait for a more general soulution which allows non-pure
+   functions in certain situations.
 
-.. todo:: rather than have the current problems with external
-   variables in functions disallow them.  Wait for a more general
-   soulution which allows non-pure functions in certain situations.
+   We need to consider a way of providing features for reasoning about
+   external variables different to the broken 'Tail scheme in SPARK95.
+   This will require some form of attribute as we cannot mention
+   volatile variables directly in a contract.
 
-New attributes 'Head and 'Tail.  'Head can be used only in a
-postcondition or a refined postcondition.  'Tail can only be used as a
-prefix to 'Head or a further Tail.
+   If we want to reason about succesive reads (writes) from a Volatile
+   Input (Output) ``state_name`` we need to have a way to refer to
+   these individual operations.
 
-We can also use also V'Input'Head V'Input'Tail'Head and V'Output'Head and
-V'Output'Tail'Head.
+   At the very least, if V is a Volatile Input variable should not
+   have the following assertion provable:  
 
-Note we cannot apply 'Head or 'Tail to a state_name as these cannot
-appear in a postcondition.  A function will have to be declared either applied to the global state_name or applied to the returned value.  see below:
-
-Possible other attributes 'Sequence_Number, 'First_Count and
-'Last_Count
-
-If must be executed generally can only be partial and then have to
-introduce one or more state variables or nested subprograms
-
-.. code-block:: ada
-
-    package Q
-    with
-       Abstract_State => State,
-       Initializes    => State
-    is
-
-
-      -- First option applied to global State
-      function Is_Valid
-      with
-	 Global => State;
-
-      -- Second option applied to result
-      function Result_Is_Valid (Value : Integer) return Boolean;
-
-      procedure Read_1 (Value : out Integer)
-      with
-	 Global => (In_Out => State),
-	 Post   => Is_Valid;
-
-      procedure Read_2 (Value : Integer)
-      with
-	 Global => State,
-	 Post   => Result_Is_Valid (Value);
-
-    end Q;
-
-    package body Q
-    with
-       Refined_State => (State => (Last_Read, 
-				   External_Input => (Volatile => Input))
-			)
-
-    is
-       Last_Read : Integer := 0;
-
-       function Is_Valid return Boolean 
-       with
-	  Refined_Global => Last_Read
-       is
-       begin
-	  return (Last_Read > 0 and Last_Read < 100);
-       end Is_Valid;
-
-       function Result_Is_Valid (Value : Integer) return Boolean 
-	  (Value > 0 and Value < 100);
-
-       procedure Read_1 (Value : out Integer)
-       with
-	  Refined_Global => (Input  => External_Input,
-			     In_Out => Last_Read)
-       is
-       begin
-	 Last_Read := External_Input;
-	 while not Is_Valid loop
-	    Last_Read := External_Input;
-	 end loop; 
-	 Value := Last_Read;
-       end Read_1;
-
-       procedure Read_2 (Value : out Integer)
-       with
-	  Refined_Global => External_Input,
-			     In_Out => Last_Read)
-       is
-	 Last_Read : Integer;
-       begin
-	 Last_Read := External_Input;
-	 while not Result_Is_Valid (Last_Read) loop
-	    Last_Read := External_Input;
-	 end loop; 
-	 Value := Last_Read;
-       end Read_2;
-
-    end Q;
-
-    Secunet raised the following on Ticket 
-    [JB30-022] - #1750 SPARK: Reasoning about arbitrary long tails
-
-    procedure Wait_For_Input (Result : out Boolean)
-    - --# global in G;
-    - --# derives Result from G;
-    - --# post
-    - --#    " - G may be read several times."
-    - --#    " - The G last read is greater than 1"
-    - --#    " - No G read before may have been greater than 1";
-    is
-       Var : G_Type;
-    begin
-       loop
-	  Var := G;
-	  exit when Var > 1;
-       end loop;
-
-       Success := Var = 2;
-    end Wait_For_Input;
-
-    This is not possible to specify in SPARK05
-
-    If it were to be allowed in S14
-
-    package SecQ
-    with
-       Abstract_State => State,
-       Initializes    => State
-    is
-
-       function Last_Read return Integer
-       with ????
-
-       -- We cannot mention G in a pre or post condition because it is an abstract state_name,
-       -- but how useful is Secunet's specification in a user view.  Would it not be better
-       -- abstracted to just the Result > 0 (which is about all we can say in S14.
-       procedure Wait_For_Input (Result : out Boolean)
-       with 
-	  Global  => G,
-	  Depends =>  (Result => G),
-	  Post    =>  Result = > 1;
-
-       -- May be we wish to know the number of rejected inputs.
-
-       procedure Wait_For_Input_With_Count (Result : out Boolean; Count : out Natural)
-       with 
-	  Global  => G,
-	  Depends =>  ((Result, Count) => G),                  
-	  Post    =>  Result = > 1 and Count > 0;
-
-
-    end SecQ;
-
-    package 
-    with
-       Abstract_State => State,
-       Initializes    => State
-    is
-
-      function Is_Valid
-      with
-	 Global => State;
-
-      procedure Read (Value : out Integer)
-      with
-	 Global => (In_Out => State),
-	 Post   => Is_Valid;
-
-    end Q;
-
-    procedure Wait_For_Input (Result : out Boolean; Count : out Natural)
-    with 
-       Global  => G,
-       Depends =>  Result from G,
-       Post    => (if Count > 0 then
-		      Result =
-			(for all I in 1 .. Count - 1 => G'Sequence_Number (I)'Old <= 1) and
-			G'Sequence_Number (Count)'Old > 1 and
-			G'Head = G'Sequence_Number (Count)'Old
-		   else
-		     Result = False
-		  )
-
-
-    procedure Wait_For_Input (Result : out Boolean)
-    with 
-       Global  => G,
-       Depends =>  Result from G,
-       Post    =>  Result = G'Head > 1 and
-		      (for all I in 1 .. G'Old'Read_Count - 1 => G'Old'Sequence_Number (I) <= 1)
-
-
-       procedure Wait_For_Input (Result : out Boolean)
-       is
-	 Count     : Natural := 0;
-	 Last_Read : Natural := 0;
-
-	 procedure Wait_For_Input_And_Count (Last_Read : in out Natural; Count : in out Natural)
-	 with
-	    Global => G
-	    Post   => Last_Read > 1
-
-       Last_Read := G;
-       Count := 1;
-       while Last_Read <= 1 loop
-	  Last_Read := G;
-	  Count := Count + 1;
-       end loop
-
-
-
-
-
-    - --# post
-    - --#    " - G may be read several times."
-    - --#    " - The G last read is greater than 1"
-    - --#    " - No G read before may have been greater than 1";
-    is
-       Var : G_Type;
-    begin
-       loop
-	  Var := G;
-	  exit when Var > 1;
-       end loop;
-
-       Success := Var = 2;
-    end Wait_For_Input;
-
-
-
-    procedure Read (Value : out
-    .. todo:: Write a section on volatile variables
-
+   T1 := V;
+   T2 := V;
+   
+   pragma Assert (T1 = T2);
 
 Initialization Refinement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-pasted in temporarily:
+If a package has an ``initialization_aspect`` which constain a
+``state_name`` then each ``constituent`` of the ``state_name`` must be
+initialized during package elaboration or Volatile, in which case they
+are implicitly initialized.  A ``constituent`` of ``state_name`` of a
+package which does not appear in the ``initializes_aspect`` of the
+package must not be initialized during package elaboration and cannot
+be Volatile.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow Analysis*
 
 #. Each ``constituent`` of a ``state_name`` declared in a package Q
-   that is a *variable* must be initialized at its point of
-   declaration within Q, or if it is a *variable* declared in the
-   visible part of a private child or embedded package package of Q,
-   then it must appear in the ``initializes_aspect`` of the private
-   child or embedded package.
+   that is a *variable* declared immediately within Q must be
+   initialized at its point of declaration or within the sequence of
+   statements of the body of Q.  
+#. Each ``constituent`` of a ``state_name`` declared in a package Q
+   that is a *variable* declared in the visible part of a private
+   child or embedded package package of Q, must appear in the
+   ``initializes_aspect`` of the private child or embedded package.
 #. Each ``constituent`` of a ``state_name`` which is a ``state_name``
    of a private child or embedded package must appear in the
    ``initializes_aspect`` of the private child or embedded package.
-
-
+#. Each ``constituent`` of a **null** ``abstract_state_name`` must be
+   initialized implicitly or during package elaboration.
 
 Refined Global Aspect
 ^^^^^^^^^^^^^^^^^^^^^
@@ -902,39 +710,62 @@ Refined Global Aspect
 
   refined_global_aspect ::= Refined_Global => mode_refinement
 
-.. centered:: **Static Semantics**
+.. centered:: **Legality Rules**
 
 #. A ``refined_global_aspect`` may only appear on the body of a
    subprogram P in a package whose ``visible_part`` contains the
    declaration of P which has a ``global_aspect``.
 #. A ``refined_global_aspect`` on the body of a subprogram P may only
    mention ``constituents`` of a ``state_name`` mentioned in the
-   ``global_aspect`` in the declaration of P or a *global variable*
-   named in the the ``global_aspect`` of P.
-#. The modes of the constituents of a ``state_name`` S in a
+   ``global_aspect`` in the declaration of P, a *global variable*
+   named in the the ``global_aspect`` of P or a ``constituent`` of a
+   **null** ``abstract_state_name``.
+
+
+.. centered:: **Static Semantics**
+
+#. A *global variable* named in the ``global_aspect`` of a subprogram
+   declaration must appear in the ``refined_global_aspect``, if one is
+   present, of the body of the subprogram with the same mode.
+#. A ``constituent`` of a Non_Volatile ``state_name`` S in a
    ``refined_global_aspect`` of body of a subprogram must be
    compatible with the mode given to S in the ``global_aspect`` of the
-   subprogram declaration.  If the mode of S is **in** then all of the
-   ``constituents`` of S must be mode **in**.  If S is mode **out**
-   then all the ``constituents`` of S must be mode **out**.  If S is
-   mode **in out** then at least one of the ``constituents`` must be
-   mode **in** or **in out** and at least one of the ``constituents``
-   must be mode **out** or **in out**.
-#. The mode of a *global variable* G in a ``refined_global_aspect`` of
-   a body of a subprogram must be identical to the mode of G in the
-   ``global_aspect`` of the subprogram declaration.
+   subprogram declaration and also the mode of the ``constituent`` if
+   it is Volatile:
 
+   * If the mode of S is **in** then each ``constituent`` of S
+     appearing in the ``refined_global_aspect`` must be mode **in**.
+   * If S is mode **out** then each ``constituent`` of S appearing in
+     the ``refined_global_aspect`` must be mode **out**.  
+   * If S is mode **in out** then at least one ``constituent`` must be mode
+     **in** and one mode **out**, or at least one must be mode **in out**.
 
+#. A ``constituent`` of a Volatile ``state_name`` S in a
+   ``refined_global_aspect`` of body of a subprogram may appear with
+   any mode compatible with the ``constituent`` but with the following
+   constraint:
 
-.. centered:: **Restrictions that may be Applied**
+   * If S is a Volatile Input then at least one ``constituent`` of S
+     which is a Volatile Input or In_Out must appear in the
+     ``refined_global_aspect``.
+   * If S is a Volatile Output then at least one ``constituent`` of S
+     which is a Volatile Output or In_Out must appear in the
+     ``refined_global_aspect``.
+   * If S is a Volatile In_Out then at least one ``constituent`` of S
+     which is a Volatile output and one which is a Volatile Output, or
+     one which is In_Out must appear in the ``refined_global_aspect``.
 
-#. The restriction ``Moded_Variables_Are_Entire`` asserts that a
-   ``Moded_item`` cannot be a subcomponent name.
-#. The restriction ``No_Conditional_Modes`` prohibits the use of a
-   ``conditional_mode`` in a ``mode_specification``.
+#. The ``refined_global_aspect`` of a function may have a
+   ``moded_item`` of mode **in ou** provided it is a ``constituent``
+   of a **null** ``abstract_state_name``.
 
+.. centered:: **Verification Rules**
 
+.. centered:: *Checked by Flow-Analysis*
 
+.. todo: Similar rules to those given for ``global_aspects``.  Need to
+   caveat the rules regarding ``global_aspects`` for when a
+   ``refined_global_aspect`` is present.
 
 
 
@@ -955,8 +786,8 @@ Refined Dependency Aspect
 #. A ``refined_dependency_aspect`` on the body of a subprogram P may
    only mention ``constituents`` of a ``state_name`` mentioned in the
    ``global_aspect`` in the declaration of P, a *global variable*
-   named in the the ``global_aspect`` of P or a *formal parameter* of
-   P.
+   named in the the ``global_aspect`` of P, a ``constituent`` of a
+   **null** ``abatract_state_name``, or a *formal parameter* of P.
 #. A constituent of a ``state_name`` or a *global variable* appearing
    in a ``refined_global_aspect`` of a subprogram body may be an
    ``import`` or an ``export`` dependent on its mode.  Similarly a
@@ -966,6 +797,10 @@ Refined Dependency Aspect
    ``export`` are the same as for a ``dependency_aspect`` accept that
    the ``refined_global_aspect`` of the subprogram is considered
    rather than the ``global_aspect``.
+#. A function may have a ``refined_dependency_relation`` which has an
+   ``export`` in addition to its result provided the ``export`` is
+   also an ``import`` and is a ``constituent`` of a **null**
+   ``abstract_state_name``.
 
 .. centered:: **Dynamic Semantics**
 
@@ -981,12 +816,13 @@ Refined Precondition Aspect
 .. centered:: **Static Semantics**
 
 #. A ``refined_precondition`` may only appear on the body of a
-   subprogram.
+   subprogram P in a package whose ``visible_part`` contains the
+   declaration of P.
 #. The *boolean_*\ ``expression`` of a ``refined_precondition`` of a
    subprogram body may only reference a *variable* if it is a *formal
-   parameter* of the subprogram and if the subprogram has:
+   parameter* of the subprogram or if the subprogram has:
 
-  #.  a ``refined_global_aspect``, then the *variable* must be a
+  #.  a ``refined_global_aspect``, then the *variable* may be a
       *global variable* including a ``constituent`` which is a
       *variable* of the ``refined_global_aspect``;
   #. a ``global_aspect`` but no ``refined_global_aspect``, then the
