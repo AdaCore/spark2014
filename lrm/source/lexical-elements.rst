@@ -47,7 +47,7 @@ Pragmas
 -------
 
 |SPARK| introduces a number of new pragmas that facilitate program verification.
-These are introduced and documented below in the relevant sections of this document.
+These are described in the relevant sections of this document.
 
 Reserved Words
 --------------
@@ -71,3 +71,8 @@ following set of reserved words are never used in a |SPARK| program:
 **task**,
 **terminate**,
 **until**.
+
+.. todo:: The wording above assumes a constructive approach. What about the
+   retrospective one, where not all the program is |SPARK|, so you may find
+   these reserved words? I'd rephrase as *the following set of reserved words
+   are never used in the |SPARK| code of a program*.
