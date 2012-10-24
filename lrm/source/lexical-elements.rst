@@ -53,7 +53,7 @@ Reserved Words
 --------------
 
 |SPARK| has the same set of reserved words as Ada 2012.  Owing to language restrictions, the
-following set of reserved words are never used in a |SPARK| program:
+following set of reserved words are never used in the |SPARK| part of a program.
 
 **abort**,
 **accept**,
@@ -72,7 +72,3 @@ following set of reserved words are never used in a |SPARK| program:
 **terminate**,
 **until**.
 
-.. todo:: The wording above assumes a constructive approach. What about the
-   retrospective one, where not all the program is |SPARK|, so you may find
-   these reserved words? I'd rephrase as *the following set of reserved words
-   are never used in the |SPARK| code of a program*.
