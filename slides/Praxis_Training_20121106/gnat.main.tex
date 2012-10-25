@@ -167,7 +167,7 @@ in \texttt{sem\_ch6.adb}: \texttt{Analyze\_Expression\_Function},
   \begin{itemize}
   \item \verb|Sinfo|, 226 values in kind \verb|Sinfo.Node_Kind|
   \item tree structure provided by syntactic fields
-  \item function \verb|Parent| points to tree root
+  \item function \verb|Parent| points upwards in the tree
   \item additional semantic fields
   \item 5 general purpose fields for other nodes, list of nodes, names
     literals, universal integers, floats, character codes
@@ -325,7 +325,7 @@ other relevant debug switches (see \verb|debug.adb|)
 
 47 uses of \verb|Alfa_Mode| in frontend
 
-49 used of \verb|Full_Expander_Active| in frontend
+49 uses of \verb|Full_Expander_Active| in frontend
 
 \vs
 
