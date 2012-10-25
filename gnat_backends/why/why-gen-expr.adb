@@ -1069,7 +1069,6 @@ package body Why.Gen.Expr is
       --  A gnatprove label in Why3 has the following form
       --
       --  "GP_Reason:VC_Kind"     - the kind of the VC
-      --  "GP_Subp:<Subp_Sloc>"   - the sloc of the subprogram
       --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
       --  VC
       --  "keep_on_simp"          - tag that disallows simplifying this VC away
@@ -1081,9 +1080,8 @@ package body Why.Gen.Expr is
       return
         (1 => New_Identifier
            (Name => "GP_Reason:" & VC_Kind'Image (Reason)),
-         2 => Cur_Subp_Sloc,
-         3 => New_Located_Label (N),
-         4 => To_Ident (WNE_Keep_On_Simp));
+         2 => New_Located_Label (N),
+         3 => To_Ident (WNE_Keep_On_Simp));
    end New_VC_Labels;
 
    ------------------
