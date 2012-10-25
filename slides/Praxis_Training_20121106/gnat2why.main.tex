@@ -121,6 +121,10 @@
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Constants, Variables}
+   \begin{itemize}
+      \item declare a logic or program (mutable) variable as required
+      \item only constants get a definition
+   \end{itemize}
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Subprograms}
@@ -151,7 +155,8 @@ VCs for the body + postcondition
 
 \begin{specialframe}\frametitle{Dispatching of entities}
 
-In Why3, files cannot be mutually dependent, so we must break any recursion
+Why3 files can't be mutually dependent, so we must break recursion
+\vspace{-1em}
 
    \begin{block}{Dispatching of entities to files}
       \begin{itemize}
@@ -222,14 +227,7 @@ the program declaration, not the "actual" program
 least) twice to Why3, once as a program expression to get the checks, once as
 annotation
       \end{itemize}
-      
-   \end{block}
 
-   \begin{block}{Conversions}
-      calls
-   \end{block}
-
-   \begin{block}{Arithmetic expressions}
    \end{block}
 
    \begin{block}{loops}
@@ -241,7 +239,60 @@ annotation
 
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Special case - globals that not visible}
+\begin{specialframe}\frametitle{Translation of statements and expressions (2) }
+   \begin{block}{Conversions}
+      \begin{itemize}
+         \item every Ada (sub)type is translated to its own Why3 type
+         \item need to insert conversions
+         \item conversions go through the "Why base type"
+      \end{itemize}
+   \end{block}
+   \begin{block}{Why base type}
+      \begin{itemize}
+         \item for discrete types: \verb|int|
+         \item for floating point types: \verb|real|
+         \item for arrays: generic array type
+         \item for records types: the Why3 type of the Ada root type
+      \end{itemize}
+   \end{block}
 \end{specialframe}
 
+\begin{specialframe}\frametitle{Translation of statements and expressions (3) }
+   \begin{block}{Arithmetic expressions}
+      \begin{itemize}
+         \item insert conversions to \verb|int| to allow arithmetic operators
+         \item insert overflow check calls
+         \item range check on conversion to Ada type
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Special case - "invisible" globals}
+   \begin{block}{Usually, everything is driven by entities}
+      \begin{itemize}
+         \item name generation
+         \item dispatching to correct Why file
+         \item dispatching on the kind of the Entity
+      \end{itemize}
+   \end{block}
+   \begin{block}{reads/writes to vars that are declared in package body}
+      \begin{itemize}
+         \item we only have their name from ALI file
+         \item that's enough to refer to it ...
+         \item ... and its type
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
+\section{gnat2why Code}
+\begin{specialframe}\frametitle{Code organization}
+   \begin{itemize}
+      \item \verb|alfa-*|       units to compute Alfa subset
+      \item \verb|why-atree-*|  units to define and manipulate Why tree
+      \item \verb|why-gen-*|    units to generate specific Why subtrees
+      \item \verb|gnat2why-*|   units that traverse the GNAT tree and generate
+         Why trees
+      \item \verb|why-inter|    unit that does a lot of work "in between"
+   \end{itemize}
+\end{specialframe}
 \end{document}
