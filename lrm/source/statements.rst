@@ -304,10 +304,9 @@ The prefix of a Loop_Entry attribute_reference shall not contain a use of
 an entity declared within the loop_statement but not within the prefix itself.
 
 The prefix of a Loop_Entry attribute_reference shall statically denote
-an entity if
+an entity, or shall denote an object_renaming_declaration, if
 
 * the attribute_reference is potentially unevaluated; or
 * the attribute_reference does not apply to the innermost
   enclosing loop_statement.
 
-.. todo:: relax placement rule and tighten "shall statically denote" rule?
