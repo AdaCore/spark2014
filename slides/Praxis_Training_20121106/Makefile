@@ -1,4 +1,4 @@
-ALL: gnat.pdf gnat2why.pdf
+ALL: gnat.pdf gnat2why.pdf gnatprove.pdf
 
 %.pdf: %.tex
 	pdflatex $^
