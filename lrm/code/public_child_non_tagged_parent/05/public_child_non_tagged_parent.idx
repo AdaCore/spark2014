@@ -1,0 +1,4 @@
+Pairs            specification is in non_tagged_parent_05.ads
+Pairs            body          is in non_tagged_parent_05.adb
+Pairs.Additional specification is in public_child_non_tagged_parent_05.ads
+Pairs.Additional body          is in public_child_non_tagged_parent_05.adb
