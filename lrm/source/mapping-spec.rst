@@ -220,11 +220,17 @@ Bodies of both parent and child in SPARK 2005:
 
 Specifications in |SPARK|:
 
-**TBD**
+   .. literalinclude:: ../code/public_child_non_tagged_parent/14/non_tagged_parent_14.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/14/public_child_non_tagged_parent_14.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
-**TBD**
+As per SPARK 2005.
 
 .. _ms-adt_tagged_type-label:
 
@@ -278,6 +284,35 @@ Body in |SPARK|:
 
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Public child and visibility of parent
++++++++++++++++++++++++++++++++++++++
+
+See  section `Public child extends non-tagged parent ADT`_.
+
+
+Private child and visibility of parent
+++++++++++++++++++++++++++++++++++++++
+
+TBD
+
+Visibility of public siblings
++++++++++++++++++++++++++++++
+
+TBD
+
+Visibility of private siblings
+++++++++++++++++++++++++++++++
+
+TBD
+
+Visibility to parent of private children
+++++++++++++++++++++++++++++++++++++++++
+
+TBD
+
+General visibility of public child
+++++++++++++++++++++++++++++++++++
 
 TBD
 
