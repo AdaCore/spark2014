@@ -1,4 +1,5 @@
---#inherit Pairs;
+--  TBD: confirm that no inherits clause and check
+--  whether anything needed in its place.
 
 package Pairs.Additional
 is
@@ -6,7 +7,8 @@ is
    --  Additional operation to add to the ADT, which
    --  increments each value in the Pair.
    procedure Increment (Value: in out Pairs.Pair);
-   --# derives Value from Value;
+   with
+      Depends => (Value => Value);
 
 private
 

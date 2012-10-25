@@ -182,6 +182,8 @@ Body in |SPARK|:
       :language: ada
       :linenos:
 
+.. _ms-adt_public_child_non_tagged_parent-label:
+
 Public child extends non-tagged parent ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -218,47 +220,194 @@ Bodies of both parent and child in SPARK 2005:
 
 Specifications in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/public_child_non_tagged_parent/14/non_tagged_parent_14.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/14/public_child_non_tagged_parent_14.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
-TBD
+As per SPARK 2005.
 
+.. _ms-adt_tagged_type-label:
 
 Tagged type in root ADT package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+The following example illustrates the use of a tagged type in an ADT package.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type/05/adt_tagged_type_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+N/A
+
+Specification in |SPARK|:
+
+   .. literalinclude:: ../code/adt_tagged_type/14/adt_tagged_type_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+N/A
+
+.. _ms-adt_tagged_type_extension-label:
 
 Extension of tagged type in child package ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+The following example illustrates the extension of a tagged type in a child package.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+   .. literalinclude:: ../code/adt_tagged_type_extension/14/adt_tagged_type_extension_14.ads
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+As per SPARK 2005.
 
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Public child and visibility of parent
++++++++++++++++++++++++++++++++++++++
+
+See  section `Public child extends non-tagged parent ADT`_.
+
+
+Private child and visibility of parent
+++++++++++++++++++++++++++++++++++++++
+
 TBD
+
+Visibility of public siblings
++++++++++++++++++++++++++++++
+
+TBD
+
+Visibility of private siblings
+++++++++++++++++++++++++++++++
+
+TBD
+
+Visibility to parent of private children
+++++++++++++++++++++++++++++++++++++++++
+
+TBD
+
+General visibility of public child
+++++++++++++++++++++++++++++++++++
+
+The following example uses the child package defined in section
+`Public child extends non-tagged parent ADT`_ to illustrate
+use of that by another package.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+   .. literalinclude:: ../code/visibility_of_public_child/14/visibility_of_public_child_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+As per SPARK 2005.
+
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
 
 Visible, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+.. _ms-asm_visible_concrete_initialized_by_declaration-label:
 
 Initialized by declaration
 ++++++++++++++++++++++++++
 
-TBD
+The example that follows presents a way of initializing a concrete state (a state that 
+cannot be refined) at the point of the declaration of the variables that compose it. 
+The body of the |SPARK| version of the code is not presented since it is an exact copy 
+of the SPARK 2005 body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/asm_visible_concrete_initialized_by_declaration_14.ads
+      :language: ada
+      :linenos:
+
+.. _ms-asm_visible_concrete_initialized_by_elaboration-label:
 
 Initialized by elaboration
 ++++++++++++++++++++++++++
 
-TBD
+The following example presents how a package's concrete state can be initialized in-between 
+the `begin -> end` section of the body. The |SPARK| version of the body is not presented 
+since it is identical to the SPARK 2005 body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/asm_visible_concrete_initialized_by_elaboration_14.ads
+      :language: ada
+      :linenos:
 
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^

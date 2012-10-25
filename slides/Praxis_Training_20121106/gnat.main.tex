@@ -79,21 +79,21 @@
   \frametitle{Compilation Phases}
 
 \begin{itemize}
-\item lexing: \verb|Scn| (mostly need to modify \verb|snames.ads|)
-\item parsing: \verb|Par| (no work needed except for error recovery)
+\item lexing: \verb|Scn| (mostly need to modify \verb|snames.ads| for S14)
+\item parsing: \verb|Par| (no work for S14 except for error recovery)
   \begin{itemize}
   \item \verb|Par.Ch2| .. \verb|Par.Ch13| match RM chapters
   \item \verb|Par.Ch4| for attributes
   \item \verb|Par.Ch13| for aspects
   \item \verb|Par.Prag| for pragmas
   \end{itemize}
-\item semantic analysis: \verb|Sem| (where most work is done)
+\item semantic analysis: \verb|Sem| (where most work for S14 is expected)
   \begin{itemize}
   \item \verb|Sem_Ch2| .. \verb|Sem_Ch13| match RM chapters
   \item \verb|Sem_Prag| for pragmas/aspects
   \item \verb|Sem_Attr| for attributes
   \end{itemize}
-\item expansion: \verb|Exp| (little work for SPARK 2014)
+\item expansion: \verb|Exp| (little work for S14)
   \begin{itemize}
   \item \verb|Exp_Ch2| .. \verb|Exp_Ch13| match RM chapters
   \item \verb|Exp_Prag| for pragmas/aspects
@@ -120,7 +120,7 @@
 \item Program Structure and Compilation Issues
 \item Exceptions
 \item Generic Units
-\item Representation Issues
+\item \textit{Representation Issues}
 \end{enumerate}
 
 \end{specialframe}
@@ -130,11 +130,15 @@
   \frametitle{Exercises}
 
 \begin{exercise}
-  Which procedure which does the semantic analysis of expression functions?
+  Which procedures do the semantic analysis of expression functions?
 \end{exercise}
 
 \visible<2>{\begin{answer}
-\texttt{Sem\_Ch6.Analyze\_Expression\_Function}
+in \texttt{sem\_ch6.adb}: \texttt{Analyze\_Expression\_Function},
+\texttt{Analyze\_Subprogram\_Declaration},
+\texttt{Analyze\_Subprogram\_Specification},
+\texttt{Analyze\_Subprogram\_Body},
+\texttt{Analyze\_Subprogram\_Body\_Helper}
 \end{answer}}
 
 \begin{exercise}
@@ -163,7 +167,7 @@
   \begin{itemize}
   \item \verb|Sinfo|, 226 values in kind \verb|Sinfo.Node_Kind|
   \item tree structure provided by syntactic fields
-  \item function \verb|Parent| points to tree root
+  \item function \verb|Parent| points upwards in the tree
   \item additional semantic fields
   \item 5 general purpose fields for other nodes, list of nodes, names
     literals, universal integers, floats, character codes
@@ -250,18 +254,27 @@ in \texttt{sinfo.ads}: comments, \texttt{Node\_Kind}, node class definitions,
 
 see comments in \verb|errout.ads|
 
+\begin{itemize}
+\item redundant errors are suppressed
+\item
+  22 special characters used to insert information in the error message (sloc,
+  name, etc.)
+\item \verb|CODEFIX| comment used to indicate autofix in GPS/GNATbench
+\end{itemize}
+
 \vs
 
-redundant errors are suppressed
-
-\vs
-
-22 special characters used to insert information in the error message (sloc,
-name, etc.)
+error messages are typically one line, but
+\begin{itemize}
+\item they can be continued on multiple lines (with $\backslash$ and $\backslash\backslash$)
+\item messages on generic instances include prefix lines giving locations for
+  the chain of instantiations
+\end{itemize}
 
 \vs
 
 2 most useful error procedures:
+\vspace{-0.5cm}
 \begin{lstlisting}[language=ada]
   procedure Error_Msg_N (Msg : String; N : Node_Or_Entity_Id);
    -- Output a message at the Sloc of the given node
@@ -276,9 +289,9 @@ name, etc.)
 \begin{specialframe}
   \frametitle{Alfa Mode}
 
-mode for GNATprove:
+mode for GNATprove
 \begin{itemize}
-\item \verb|gnat| called in this mode to generate cross-refs
+\item \verb|gcc| called in this mode to generate cross-refs
 \item \verb|gnat2why| called in this mode
 \end{itemize}
 
@@ -288,10 +301,10 @@ triggered by debug switch \verb|-gnatd.F|
 
 \vs
 
-other relevant debug switches (see \verb|debug.adb|):
+other relevant debug switches (see \verb|debug.adb|)
 \begin{itemize}
 \item \verb|-gnatd.V| - extensions for S14 (\verb|'Loop_Entry|, etc.)
-\item \verb|-gnatd.D| - strict Alfa mode (switch \verb|--pendantic|)
+\item \verb|-gnatd.D| - strict Alfa mode (switch \verb|--pedantic|)
 \item \verb|-gnatd.E| - force Alfa mode (GNATprove mode \verb|force|)
 \item \verb|-gnatd.G| - precondition only mode (GNATprove mode \verb|check|)
 \item \verb|-gnatd.H| - special mode for package \verb|Standard|
@@ -312,7 +325,7 @@ other relevant debug switches (see \verb|debug.adb|):
 
 47 uses of \verb|Alfa_Mode| in frontend
 
-49 used of \verb|Full_Expander_Active| in frontend
+49 uses of \verb|Full_Expander_Active| in frontend
 
 \vs
 
@@ -321,7 +334,7 @@ regular scanning/parsing/semantic analysis
 
 \vs
 
-special expansion does little:
+special expansion does little
 \begin{itemize}
 \item identifiers: add suffix to homonyms
 \item calls: introduce temporaries for IN OUT arguments
@@ -365,13 +378,40 @@ special xrefs based on regular ones:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  Compile a file normally and in Alfa mode. In the ALI file, what is the
+  starting character for Alfa xrefs lines?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+F
+\end{answer}}
+
+\begin{exercise}
+  Find xrefs for reads/writes/calls in the regular xrefs, and in Alfa xrefs.
+\end{exercise}
+
+\begin{exercise}
+  Review the code of \verb|Gnat1drv.Adjust_Global_Switches| for the Alfa mode.
+\end{exercise}
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
   \frametitle{Adding A New Pragma}
+
+add two names in \verb|snames.ads-tmpl|
+
+\vs
 
 parsing in \verb|par-prag.adb|: usually nothing to do
 
 \vs
 
-semantic analysis in \verb|sem-prag.adb|:
+semantic analysis in \verb|sem_prag.adb|
 \begin{itemize}
 \item add case in \verb|Analyze_Pragma|
 \item initial comment gives the syntax in BNF
@@ -382,65 +422,344 @@ semantic analysis in \verb|sem-prag.adb|:
 
 \vs
 
-expansion in \verb|exp-prag.adb|:
+expansion in \verb|exp_prag.adb|
 \begin{itemize}
 \item initial comment gives expanded pseudo-code
 \item build nodes with \verb|Make_<node>|
-\item create temporaries with \verb|Make_Temporary|
 \item insert statements with \verb|Insert_Action|
 \item rewrite node with \verb|Rewrite|
-\item possibly reanalyze with \verb|Analyze|
 \end{itemize}
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  How do we check that a pragma is only allowed in S14?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+call \texttt{S14\_Pragma}
+\end{answer}}
+
+\begin{exercise}
+  What are the procedures to check arguments number/types?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+    \texttt{Check\_Arg\_Count},
+    \texttt{Check\_At\_Least\_N\_Arguments},
+    \texttt{Check\_At\_Most\_N\_Arguments},
+    \texttt{Check\_Arg\_Order},
+    \texttt{Check\_Arg\_Is\_...}
+\end{answer}}
+
+\begin{exercise}
+  Review the code for analysis/expansion of \verb|Loop_Assertion|.
+\end{exercise}
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Adding A New Aspect}
+
+add one name in \verb|snames.ads-tmpl|
+
+\vs
+
+add an aspect kind in \verb|aspects.ads|, and follow instructions in comments
+
+\vs
+
+semantic analysis in \verb|sem_ch13.adb|
+\begin{itemize}
+\item most aspect rewritten as pragma or attribute definition clause
+\item syntax usually given only for pragma
+\item analysis is delayed for some aspects, to the freeze point of the
+  corresponding entity
+\end{itemize}
+
+\vs
+
+expansion in \verb|exp_ch13.adb|, \verb|exp_prag.adb|, \verb|sem_ch6.adb|, etc.
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  Give two aspects do not have a corresponding pragma/attribute definition
+  clause.
+\end{exercise}
+
+\visible<2>{\begin{answer}
+e.g. \texttt{Default\_Value} and \texttt{Dimension}
+\end{answer}}
+
+\begin{exercise}
+  How does one know when a pragma comes from an aspect?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+    \texttt{From\_Aspect\_Specification} returns True
+\end{answer}}
+
+\begin{exercise}
+  Review the code for analysis/expansion of \verb|Pre| and \verb|Post| in
+  \verb|sem_ch13.adb|, \verb|sem_prag.adb|, \verb|sem_ch6.adb|
+  (\verb|Process_PCCs|), \verb|exp_prag.adb|.
+\end{exercise}
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Adding A New Attribute}
+
+add two names in \verb|snames.ads-tmpl|
+
+\vs
+
+parsing in \verb|par-ch4.adb| and \verb|par-ch13.adb|: usually nothing to do
+
+\vs
+
+semantic analysis in \verb|sem_attr.adb|
+\begin{itemize}
+\item entry in array \verb|Attribute_Impl_Def| in \verb|sem_attr.ads|
+  together with a description
+\item add case in \verb|Analyze_Attribute|
+\item check cases in which pragma applies (Ada version? GNAT?)
+\item check legality rules (parameters, prefix)
+\item if error, call \verb|Error_Attr| procedures that does not return
+\end{itemize}
+
+\vs
+
+expansion in \verb|exp_attr.adb|
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  How does one check that an attribute is only used in Ada 2012?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+    call \texttt{Check\_Ada\_2012\_Attribute}
+\end{answer}}
+
+\begin{exercise}
+  Where is the attribute \verb|'Old| allowed?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+in postcondition aspect/pragma, \texttt{Ensures} clause, and in the generated
+\texttt{\_Postcondition} procedure
+\end{answer}}
+
+\begin{exercise}
+  Review the code for analysis/expansion of \verb|Loop_Entry|.
+\end{exercise}
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Adding A New Restriction}
+
+add a value in \verb|Restriction_Id| in \verb|s-rident.ads|
+\begin{itemize}
+\item partition-wide restrictions listed first
+\item then unit-level restrictions without value
+\item then unit-level restrictions with value
+\end{itemize}
+
+\vs
+
+semantic analysis in \verb|restrict.adb|
+\begin{itemize}
+\item setting of restriction with \verb|Set_Restriction|
+\item check of restriction with \verb|Check_Restriction|
+\end{itemize}
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Adding A New Profile}
+
+add a value in \verb|Profile_Name| in \verb|s-rident.ads|
+
+\vs
+
+required updates are listed in comments in \verb|s-rident.ads|
 
 \end{specialframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{specialframe}
-  \frametitle{}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  What kind of restriction is \verb|SPARK|?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+unit-level restriction without value
+\end{answer}}
+
+\begin{exercise}
+  Find a SPARK violation detected by the \verb|SPARK| restriction, and one not
+  detected.
+\end{exercise}
+
+\visible<2>{\begin{answer}
+e.g. missing end labels are detected; errors in annotations are not detected
+\end{answer}}
+
+\begin{exercise}
+  Review the code for the \verb|SPARK| restriction.
+\end{exercise}
+
+\begin{exercise}
+  Add a profile \verb|SPARK_2014| which defines the restriction \verb|SPARK|
+  and a few others.
+\end{exercise}
 
 \end{specialframe}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{Adding A New Warning}
+
+procedure at AdaCore
+\begin{itemize}
+\item open TN and discuss proposed semantics
+\item implement under a debug switch (in \verb|debug.adb|)
+\item assess impact
+\item decide if warning kept, if so under which switch(es)
+\end{itemize}
+
+\vs
+
+switches defined in \verb|warnsw.adb|, flags defined in \verb|opt.ads|
+
+\vs
+
+implementation partly in \verb|Sem_Warn|, otherwise scattered in semantic
+analysis units
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{Exercises}
+
+\begin{exercise}
+  How to get the list of GNAT compiler warnings?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+call \texttt{gnatmake} or browse GNAT User's Guide
+\end{answer}}
+
+\begin{exercise}
+  How to enable/disable warning on suspicious contracts?
+\end{exercise}
+
+\visible<2>{\begin{answer}
+    \texttt{-gnatw.t}/\texttt{-gnatw.T}
+\end{answer}}
+
+\begin{exercise}
+  Review the code of \verb|Sem_Ch6.Check_Subprogram_Contract| for suspicious
+  contracts.
+\end{exercise}
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{Check Marks}
+
+frontend marks each node with required run-time checks
+\begin{itemize}
+\item checks defined in \verb|types.ads|
+\item checks suppression recorded in \verb|Opt.Suppress_Options|
+\end{itemize}
+
+\vs
+
+handling defined in \verb|checks.adb|
+\begin{itemize}
+\item check marks set during semantic analysis (\verb|Enable_..._Check| and
+  \verb|Apply_..._Check| procedures)
+\item checks then expanded into code (not in Alfa mode)
+\end{itemize}
+
+\vs
+
+GNATprove can rely on frontend check marks to generate VCs
+
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{Overflow Checking Modes}
+
+three different modes for checking overflows on intermediate arithmetic
+computations
+\begin{enumerate}
+\item STRICT: RM specified base type
+\item MINIMIZED: use larger base type (currently 64-bits
+  \verb|Long_Long_Integer|) if needed
+\item ELIMINATED: use larger base type or arbitrary precision integers if needed
+\end{enumerate}
+
+\vs
+
+set separately for assertions/code
+
+\vs
+
+separate from suppression of overflow checks
+
+\vs
+
+implemented in
+\begin{itemize}
+\item \verb|Minimize_Eliminate_Overflows| in \verb|checks.adb|
+\item run-time unit \verb|System.Bignum| for arbitrary precision integers
+\end{itemize}
+\end{specialframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{specialframe}
+  \frametitle{Special Testing Modes}
+
+extended validity checking for mix test+proof
+\begin{itemize}
+\item \verb|-gnateA|: aliasing checks on subprogram parameters
+\item \verb|-gnateV|: validity checks on subprogram parameters
+\end{itemize}
+
+\vs
+
+aliasing checks in \verb|Checks.Apply_Parameter_Aliasing_Checks|
+
+\vs
+
+validity checks in \verb|Checks.Apply_Parameter_Validity_Checks|
+
+\end{specialframe}
 
 \end{document}
