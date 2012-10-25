@@ -182,6 +182,8 @@ Body in |SPARK|:
       :language: ada
       :linenos:
 
+.. _ms-adt_public_child_non_tagged_parent-label:
+
 Public child extends non-tagged parent ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -218,22 +220,61 @@ Bodies of both parent and child in SPARK 2005:
 
 Specifications in |SPARK|:
 
-TBD
+**TBD**
 
 Body in |SPARK|:
 
-TBD
+**TBD**
 
+.. _ms-adt_tagged_type-label:
 
 Tagged type in root ADT package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+The following example illustrates the use of a tagged type in an ADT package.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type/05/adt_tagged_type_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+N/A
+
+Specification in |SPARK|:
+
+**TBD**
+
+Body in |SPARK|:
+
+N/A
+
+.. _ms-adt_tagged_type_extension-label:
 
 Extension of tagged type in child package ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+**TBD**
+
+Body in |SPARK|:
+
+**TBD**
 
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
