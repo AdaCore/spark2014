@@ -120,6 +120,58 @@
    \end{block}
 \end{specialframe}
 
+\begin{specialframe}\frametitle{Constants, Variables}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Subprograms}
+
+We generate three things for a subprogram, each in its own module:
+   \begin{itemize}
+      \item a Why3 program declaration, with pre/post/effects, but no body
+      \item a Why3 program that computes the precondition, is used to get VCs
+for checks in the precondition
+      \item the actual translation of the Why3 program, which will get us the
+VCs for the body + postcondition
+   \end{itemize}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Other things that generate a module}
+
+   \begin{block}{Array aggregates}
+      We generate:
+   \begin{itemize}
+      \item a function with "holes" for the right hand side
+      \item axiom defining the aggregate
+   \end{itemize}
+   \end{block}
+   \begin{block}{String literals}
+      We only generate the variable, no knowledge about the string for now
+   \end{block}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Dispatching of entities}
+
+In Why3, files cannot be mutually dependent, so we must break any recursion
+
+   \begin{block}{Dispatching of entities to files}
+      \begin{itemize}
+         \item \verb|unit__types_in_spec.mlw| for types of spec
+         \item \verb|unit__types_in_body.mlw|
+         \item \verb|unit__types_variables.mlw|
+         \item \verb|unit__context_in_spec.mlw|
+         \item \verb|unit__context_in_body.mlw|
+         \item \verb|unit__package.mlw|
+      \end{itemize}
+   \end{block}
+   \begin{block}{Dependencies}
+      \begin{itemize}
+         \item Each file in this list can depend on files above, for the same unit or others
+         \item all calls, including recursive calls, are translated by calls to
+the program declaration, not the "actual" program
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
 \section{gnat2why passes}
 
 \begin{specialframe}\frametitle{Different Passes (1)}
@@ -158,6 +210,38 @@
             \end{itemize}
       \end{itemize}
    \end{block}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Translation of statements and expressions}
+   \begin{block}{Generalities}
+      \begin{itemize}
+         \item there is no difference between statement and expression is Why3,
+               so this simplifies things (ie. insert an assert "statement"
+               inside an expression)
+         \item all annotations (pre/post, assert, etc) are translated (at
+least) twice to Why3, once as a program expression to get the checks, once as
+annotation
+      \end{itemize}
+      
+   \end{block}
+
+   \begin{block}{Conversions}
+      calls
+   \end{block}
+
+   \begin{block}{Arithmetic expressions}
+   \end{block}
+
+   \begin{block}{loops}
+      \begin{itemize}
+         \item transform "assertion" invariant to hoare invariant
+         \item use infinite loop + exception to allow multiple exits
+      \end{itemize}
+   \end{block}
+
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Special case - globals that not visible}
 \end{specialframe}
 
 \end{document}
