@@ -3866,7 +3866,7 @@ package body Gnat2Why.Expr is
       if Params.Phase in Generate_VCs_For_Assertion then
          Overflow_Check_Needed :=
            Overflow_Check_Needed
-             and then Opt.Suppress_Options.Overflow_Checks_Assertions
+             and then Opt.Suppress_Options.Overflow_Mode_Assertions
                         /= Eliminated;
       end if;
 
