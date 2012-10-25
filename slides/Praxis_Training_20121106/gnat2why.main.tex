@@ -284,6 +284,23 @@ annotation
    \end{block}
 \end{specialframe}
 
+\begin{specialframe}\frametitle{Tracability}
+   \begin{block}{Labels in Why3 code}
+      \begin{itemize}
+         \item One can label any Why3 entity or expression with a string
+         \item This label will stick to that expression through VCgen,
+         simplifications, etc
+      \end{itemize}
+   \end{block}
+   \begin{block}{We put labels in for}
+      \begin{itemize}
+         \item all VCs (kind of check, source location)
+         \item all statements (for "Show Path")
+         \item all subprograms (for "Prove Subprogram")
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
 \section{gnat2why Code}
 \begin{specialframe}\frametitle{Code organization}
    \begin{itemize}

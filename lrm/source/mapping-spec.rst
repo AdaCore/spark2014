@@ -284,22 +284,64 @@ TBD
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
 
 Visible, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+.. _ms-asm_visible_concrete_initialized_by_declaration-label:
 
 Initialized by declaration
 ++++++++++++++++++++++++++
 
-TBD
+The example that follows presents a way of initializing a concrete state (a state that 
+cannot be refined) at the point of the declaration of the variables that compose it. 
+The body of the |SPARK| version of the code is not presented since it is an exact copy 
+of the SPARK 2005 body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/asm_visible_concrete_initialized_by_declaration_14.ads
+      :language: ada
+      :linenos:
+
+.. _ms-asm_visible_concrete_initialized_by_elaboration-label:
 
 Initialized by elaboration
 ++++++++++++++++++++++++++
 
-TBD
+The following example presents how a package's concrete state can be initialized in-between 
+the `begin -> end` section of the body. The |SPARK| version of the body is not presented 
+since it is identical to the SPARK 2005 body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/asm_visible_concrete_initialized_by_elaboration_14.ads
+      :language: ada
+      :linenos:
 
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^

@@ -5,7 +5,7 @@
 -- on the procedure Read as the type of the Value returned has to be known.
 package Volatile_1
 with
-  Abstract_State => (V_S => (Volatile => Input))
+  Abstract_State => (Volatile => (V_S => Input))
 is
    type T is private;
 

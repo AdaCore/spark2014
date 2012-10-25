@@ -4,7 +4,8 @@
 -- type of the external input values within the package specification.
 package Volatile_2
 with
-  Abstract_State => (V_S => (Volatile => Input))
+  Abstract_State => (Volatile => (V_S => (Input))
+
 is
 
    procedure Input_Is_Rising (Rising : out Boolean)
