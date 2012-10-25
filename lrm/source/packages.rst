@@ -4,6 +4,11 @@ Packages
 Package Specifications and Declarations
 ---------------------------------------
 
+.. centered:: **Restrictions that may be Applied**
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.1 Packages
+   :end-before: 7.1.2
+
 .. _abstract-state:
 
 Abstraction of State
@@ -15,8 +20,8 @@ package.  The *variable* declarations are only visible to users of Q
 if they are declared in the ``visible_part`` of Q which is not good
 practice.  The declarations of all other variables are hidden from the
 user of Q.  Though the variables are hidden they still form part (or
-all) of the state of Q and this state cannot be ignored for static
-analyses and proof.
+all) of the state of Q and this hidden state cannot be ignored for
+static analyses and proof.
 
 |SPARK| extends the concept of state abstraction to provide
  hierachical data abstraction whereby the state of a package Q may be
@@ -50,20 +55,20 @@ Abstract State Aspect
 ^^^^^^^^^^^^^^^^^^^^^
 
 An abstract state is a name representing the state embodied by the
-hidden *variables* of a package. The overall state of a package may be
-represented by one or more visible *variables* and abstract states.
-An abstract state of a package has no type and may only be used within
-a ``global_aspect`` or a ``dependency_aspect`` or their refined
-counterparts.
+hidden state of a package. The overall state of a package may be
+represented by one or more visible *variables* and abstract states
+names, each abstract state name representing a mutually exclusive part
+of the hidden state.  An abstract state name has no type and may only
+be used within a ``global_aspect``, a ``dependency_aspect`` or their
+refined counterparts.
 
 If a subprogram P with a ``global_aspect`` is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
-*variables* of the package then P must include in its
-``global_aspect`` the abstract states with the correct mode that
-represents the hidden *variables* referenced by P.  If P has a
-``dependency_aspect`` then the abstract states must appear as imports
-and exports, as appropriate, in the ``dependency_relation`` of the
-aspect.
+state of the package then P must include in its ``global_aspect`` the
+abstract state names with the correct mode that represent the hidden
+state referenced by P.  If P has a ``dependency_aspect`` then the
+abstract state names must appear as imports and exports, as
+appropriate, in the ``dependency_relation`` of the aspect.
 
 
 .. centered:: **Syntax**
@@ -85,6 +90,8 @@ aspect.
    one that can be read after writing but need not be.  This scheme
    has beeen requested by secunet.
 
+.. todo:: May introduce a way to provide a "history" parameter for Volatile variables.
+
 .. centered:: **Legality Rules**
 
 #. An ``abstract_state_aspect`` may only be placed in a
@@ -97,18 +104,6 @@ aspect.
 #. A ``state_name`` can only appear in a ``initializes_aspect``, a
    ``global_aspect``, a ``dependency_aspect``, their refinded
    counterparts, or their equivalent pragmas.
-#. Volatile designates a volatile state, usually an external input or
-   output.  The mode selector determines whether the volatile state is
-   an input or an output or possibly both an input and an output (an
-   in_out).
-#. A volatile Input may be an ``import`` only.
-#. A volatile Output may be an ``export`` only.
-#. A volatile In_Out has the attributes ``Input`` and ``Output``.
-#. A volatile In_Out ``state_name`` cannot be used directly it must be
-   attributed with ``Input`` or ``Output``
-#. A volatile In_Out ``state_name`` S may be used as an ``import``
-   using the notation S'Input and used as an export using the notation
-   S'Output.
 #. At most one ``category_state`` of Volatile is permitted in an
    ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_state`` is
@@ -122,13 +117,25 @@ aspect.
 #. A ``state_name`` has the same scope and visibility as a declaration
    in the ``visible part`` of the package to which the
    ``abstract_state_aspect`` is applied.
-#. An abstract state of a package is generally considered to be in one
-   of the following categories:
+#. Volatile designates a volatile state, usually representing an
+   external input or output.  The mode selector determines whether the
+   volatile state is an input or an output or possibly both an input
+   and an output (an in_out).
+#. A volatile Input may be an ``import`` only.
+#. A volatile Output may be an ``export`` only.
+#. A volatile In_Out has the attributes ``Input`` and ``Output``.
+#. A volatile In_Out ``state_name`` cannot be used directly it must be
+   attributed with ``Input`` or ``Output``
+#. A volatile In_Out ``state_name`` S may be used as an ``import``
+   using the notation S'Input and used as an export using the notation
+   S'Output.
+#. A `state_name`` of a package is generally considered to be
+   representing hidden state in one of the following categories:
  
-   * Unititalized State - state which is not initialized during
-     package elaboration
-   * Initialized State - state which is initialized during package
-     elaboration
+   * Non_Volatile Unititalized State - state which is not initialized
+     during package elaboration
+   * Non_Volatile Initialized State - state which is initialized
+     during package elaboration
    * Volatile Input State - Volatile state which is an input only and
      is considered to be implicitly initialized.
    * Volatile Output State - Volatile state which is an output only
@@ -136,36 +143,44 @@ aspect.
    * Volatile In_Out State - Volatile state which is bidirectional and
      is considered to be implicitly initialized.
 
-#. The category is specified using the ``category_state`` syntax.  A
-   ``category_state`` without a category defaults to Non_Volatile.
-#. A volatile In or Out state is considered to be a sequence of
-   values, a volatile In_Out state has two sequences, an input and and
-   an output sequence.  The input sequence is denoted using the
-   ``Input`` attribute and the output sequence is denoted by the
-   ``Output`` attribute.
-#. Each time an Input or In_Out state is read (indirectly through its
-   refinement) its value may be different.  This distinction with a
-   normal non-volatile variable or state is important for both flow
-   analysis and proof.
-#. A volatile Output or In_Out state may be updated many times but
-   each individual update is considered to have an effect.  This is in
-   contrast with a normal non-volatile variable or state where
-   successive updates with no interniving reads would indicate that
-   earlier updtaes were ineffective.  Flow analysis and proof have to
-   take account of this difference.
+#. The category is specified using the ``category_state`` syntax
+   supplimented by the ``initializes_aspect.  A ``category_state``
+   without a category defaults to Non_Volatile.
+#. A volatile In or Out ``state_name`` represents a sequence of state
+   changes brought about by reading or writing successive values to or
+   from a Volatile *variable*. An Volatile In_Out ``state_name``
+   represents its input and output characteristics as two seperate
+   sequences.  The input sequence is denoted using the ``Input``
+   attribute and the output sequence is denoted by the ``Output``
+   attribute.
+#. Each time a subprogram is called which has a Volatile Input or
+   In_Out ``state_name`` in its ``global_aspect`` it ultimatly reads a
+   Volatile *variable*.  The value of this *variable* may be different
+   each time it is read. A normal non-volatile *variable* would have
+   the same value unless there was an intervining update of the
+   *variable*. This distinction with a normal non-volatile variable or
+   state_state name is important for both flow analysis and proof.
+#. Each time a subprogram is called which has a Volatile Output or
+   In_Out ``state_name`` in its ``global_aspect`` it ultimatly writes
+   to a Volatile *variable*.  This *variable* may be written to many
+   times without intervining reads.  This is in contrast with a normal
+   non-volatile variable or state where successive updates with no
+   interniving reads would indicate that earlier updtaes were
+   ineffective.  Flow analysis and proof have to take account of this
+   difference.
 #. It follows from the rules that a variable declared in the visible
-   part of a package cannot be considered to be volatile.
+   part of a package cannot be considered to be Volatile.
+
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
 
-#. If a package has internal state but no ``abstract_state_aspect`` is
+#. If a package has hidden state but no ``abstract_state_aspect`` is
    provided, an implicit ``state_name`` is generated for each category
-   of abstract state.  The implicit ``state_names`` cannot be
-   referenced directly but they may be indirectly accessed using the
-   following attributes for the different categories of abstract
-   state:
+   of hidden state.  The implicit ``state_names`` cannot be referenced
+   directly but they may be indirectly accessed using the following
+   attributes for the different categories of hidden state:
 
    * *package_*\ ``name'Uninitialized_State``
    * *package_*\ ``name'Initialized_State``
@@ -285,17 +300,12 @@ where
    appear in an initialization.
 #. If a package has an ``abstract_state_aspect`` but no
    ``initializes_aspect`` it follows that none of its state components
-   are initialized during the package initialization.
+   are initialized during package initialization.
 
 .. centered:: **Restrictions that may be Applied**
 .. include:: restrictions-and-profiles.rst
    :start-after: 7.1.3 Initializes Aspect
    :end-before: 7.1.4
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the
-``initializes_aspect`` the rules are checked by static analysis.
 
 .. centered:: **Verification Rules**
 
@@ -324,11 +334,21 @@ There are no dynamic semantics associated with the
    *variables* is added to an implicitly generated
    ``initialization_aspect`` along with any *variables* which are
    declared in the visible part of the package wich are initialized
-   during the elaboration of the packages.  The *variables* and
-   *state_names* are associated with the ``initializing_package`` in
-   the implicit ``initializes_aspect``
+   during the elaboration of the packages.  If the package has
+   embedded or private child packages, the same process is applied to
+   them and the implicitly declared ``state_names`` arising from this
+   analysis are added to the appropriate implicitly declared
+   ``state_names`` of the parent. The *variables* and *state_names* are
+   associated with the ``initializing_package`` in the implicit
+   ``initializes_aspect``
 
 .. todo:: Note that I do not think we can automatically determine volatile variables.
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with the
+``initializes_aspect`` the rules are checked by static analysis.
+
 
 .. centered:: **Examples**
 

@@ -135,6 +135,13 @@ A list of restrictions by section and their effect:
    considered to be overlapping when they have common indices requires
    formal proof in general.
 
+7.1 Packages
+
+#. ``End_Designators_Required``
+
+   See the same restriction in section 6.3. 
+
+
 7.1.2 Abstract State Aspect
 
 #. ``Package_Aspects_Required`` 
