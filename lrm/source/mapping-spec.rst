@@ -284,7 +284,7 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+Specification in |SPARK|:
 
 As per SPARK 2005.
 
@@ -320,7 +320,32 @@ TBD
 General visibility of public child
 ++++++++++++++++++++++++++++++++++
 
-TBD
+The following example uses the child package defined in section
+`Public child extends non-tagged parent ADT`_ to illustrate
+use of that by another package.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+   .. literalinclude:: ../code/visibility_of_public_child/14/visibility_of_public_child_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+As per SPARK 2005.
+
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
