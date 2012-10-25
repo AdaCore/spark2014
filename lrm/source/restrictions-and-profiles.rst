@@ -4,6 +4,13 @@ Restrictions and Profiles
 A list of restrictions by section and their effect:
 
 
+2.1 Character Set
+
+#. ``No_Wide_Characters``
+
+   This GNAT-defined restriction may be applied to restrict the use of
+   Wide and Wide_Wide character and string types in |SPARK|.
+
 6.1 Subprogram Declarations
 
 #. ``No_Default_Subprogram_Parameters``
@@ -190,6 +197,17 @@ A list of restrictions by section and their effect:
 
    See the same restriction in section 7.1.3. 
 
+7.2.2 Refined State Aspect
+
+#. ``Null_State_Refinement_Prohibited``
+
+   The ``abstract_state_name`` **null** cannot be used in a
+   ``state_refinement_aspect``.
+
+#.  ``Strict_Volatile_State_Refinement``
+
+    A ``constituent`` of a Volatile ``abstract_state_name`` must be
+    Volatile and be of the same mode.
 
 
 

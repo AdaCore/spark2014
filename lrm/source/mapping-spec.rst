@@ -44,7 +44,7 @@ and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
 `Add` perform the same task as in the previous example, but they have been 
 augmented by post annotations. Two additional functions (`Max` and `Divide`) 
 and one additional procedure (`Swap_Array_Elements`) have also been included 
-in this example in order to demonstare further features. `Max` returns the 
+in this example in order to demonstrate further features. `Max` returns the 
 maximum of the two globals. `Divide` returns the division of the two globals 
 after having ensured that the divisor is not equal to zero. The `Swap_Array_Elements` 
 procedure swaps the contents of two elements of an array. For the same reasons
@@ -98,27 +98,89 @@ Body in |SPARK|:
 Package patterns
 ----------------
 
-TBD
-
 Abstract Data Types (ADTs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+.. _ms-adt_visible-label:
 
 Visible type
 ^^^^^^^^^^^^
 
-TBD
+The following example adds no mapping information. The SPARK 2005 and |SPARK| versions 
+of the code are identical. Thus, only the SPARK 2005 code will be presented. The reason 
+why this code is being provided is to allow for a comparison between a package that is 
+purely public and an equivalent one that also has private elements.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_visible/05/adt_visible_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_visible/05/adt_visible_05.adb
+      :language: ada
+      :linenos:
+
+.. _ms-adt_private-label:
 
 Private type
 ^^^^^^^^^^^^
 
-TBD
+Similarly to the previous example, this one does not contain any annotations either. Due 
+to this, the SPARK 2005 and |SPARK| versions are exactly the same and hence only one of  
+them shall be presented.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private/05/adt_private_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private/05/adt_private_05.adb
+      :language: ada
+      :linenos:
+
+.. _ms-adt_private_refinement-label:
 
 Private type with refined pre/post contracts in the body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+This example demonstrates how `pre` and `post` conditions, that lie in the specifications 
+of a package, can be refined in the package's body. In order to prove the absence of runtime 
+errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not 
+presented here since they are not required in the |SPARK| version. Contracts that need not 
+be refined, do not have to be repeated in the body of a package. In this particular example, 
+the body of the SPARK 2005 might seem to be needlessly repeating contracts. However, this 
+is not true since the contracts that are being repeated are indirectly being refined through 
+the refinement of the `Is_Empty` and `Is_Full` functions.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_refinement/05/adt_private_refinement_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_refinement/05/adt_private_refinement_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_refinement/14/adt_private_refinement_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_refinement/14/adt_private_refinement_14.adb
+      :language: ada
+      :linenos:
 
 Public child extends non-tagged parent ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
