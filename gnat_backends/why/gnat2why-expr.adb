@@ -3200,7 +3200,7 @@ package body Gnat2Why.Expr is
         and then Local_Params.Gen_Image
         and then Is_Pretty_Node (Expr) then
          Pretty_Label := New_Pretty_Label (Expr);
-            Local_Params.Gen_Image := False;
+         Local_Params.Gen_Image := False;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -3215,7 +3215,7 @@ package body Gnat2Why.Expr is
               (Entity (Expr) = Standard_True or else
                Entity (Expr) = Standard_False))
       then
-         return
+         T :=
            New_Relation
              (Ada_Node => Expr,
               Domain   => EW_Pred,
@@ -3224,6 +3224,23 @@ package body Gnat2Why.Expr is
               +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params),
               Right    => +True_Prog,
               Op       => EW_Eq);
+
+         --  If a Pretty_Label was computed before, integrate it
+         --  ??? This duplicates code from the end of this function ...
+
+         if Pretty_Label /= Why_Empty then
+            T :=
+              New_Label (Labels =>
+                           (1 => Pretty_Label,
+                            2 => New_Located_Label (Expr)),
+                         Def => T,
+                         Domain => Domain);
+         end if;
+
+         --  All the other considerations in Transform_Expr (conversion etc) do
+         --  not apply, so return
+
+         return T;
       end if;
 
       case Nkind (Expr) is
