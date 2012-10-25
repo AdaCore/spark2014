@@ -251,7 +251,9 @@ N/A
 
 Specification in |SPARK|:
 
-**TBD**
+   .. literalinclude:: ../code/adt_tagged_type/14/adt_tagged_type_14.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
@@ -261,6 +263,8 @@ N/A
 
 Extension of tagged type in child package ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example illustrates the extension of a tagged type in a child package.
 
 Specification in SPARK 2005:
 
@@ -276,11 +280,13 @@ Body in SPARK 2005:
 
 Specification in |SPARK|:
 
-**TBD**
+   .. literalinclude:: ../code/adt_tagged_type_extension/14/adt_tagged_type_extension_14.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
-**TBD**
+As per SPARK 2005.
 
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
