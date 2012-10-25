@@ -73,9 +73,9 @@
 % logic: function declarations, definitions, predicates, axioms
 % theories
 
-\section{Encoding of Ada into Why3}
+\section{Encoding of Ada Into Why3}
 
-\begin{specialframe}\frametitle{Types - Scalar types}
+\begin{specialframe}\frametitle{Types - Scalar Types}
    \begin{block}{Generalities}
       All entities are translated into their own module, sometimes two
    \end{block}
@@ -99,18 +99,18 @@
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Types - Record types}
+\begin{specialframe}\frametitle{Types - Record Types}
    \begin{block}{Why3 model}
       \begin{itemize}
-         \item why3 record type with one field for all present fields
+         \item Why3 record type with one field for all fields present
                (even in case of variant records)
          \item program functions for access with discriminant check
       \end{itemize}
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Types - Array types}
-   \begin{block}{Why3 record with fields:}
+\begin{specialframe}\frametitle{Types - Array Types}
+   \begin{block}{Why3 record with fields}
       \begin{itemize}
          \item map - contains the data
          \item first
@@ -120,17 +120,28 @@
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Constants, Variables}
+\begin{specialframe}\frametitle{Constants}
    \begin{itemize}
-      \item declare a logic or program (mutable) variable as required
-      \item only constants get a definition
+      \item declare a logic variable
+      \item constant defined by an axiom
+      \item deferred constant defined in separate module available only in
+        enclosing unit
+   \end{itemize}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Variables}
+   \begin{itemize}
+      \item declare a program (mutable) variable
+      \item no axiom for initialization
+      \item declare a type for the type of the variable (used for effects)
    \end{itemize}
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Subprograms}
 
-We generate three things for a subprogram, each in its own module:
+We generate 4 things for a subprogram, each in its own module:
    \begin{itemize}
+      \item a Why3 function
       \item a Why3 program declaration, with pre/post/effects, but no body
       \item a Why3 program that computes the precondition, is used to get VCs
 for checks in the precondition
@@ -144,8 +155,8 @@ VCs for the body + postcondition
    \begin{block}{Array aggregates}
       We generate:
    \begin{itemize}
-      \item a function with "holes" for the right hand side
-      \item axiom defining the aggregate
+      \item a function with \emph{holes} for the right hand side
+      \item an axiom defining the aggregate
    \end{itemize}
    \end{block}
    \begin{block}{String literals}
@@ -172,33 +183,61 @@ Why3 files can't be mutually dependent, so we must break recursion
       \begin{itemize}
          \item Each file in this list can depend on files above, for the same unit or others
          \item all calls, including recursive calls, are translated by calls to
-the program declaration, not the "actual" program
+the program declaration, not the \emph{actual} program
       \end{itemize}
    \end{block}
 \end{specialframe}
 
-\section{gnat2why passes}
+\section{gnat2why Phases}
 
-\begin{specialframe}\frametitle{Different Passes (1)}
+\begin{specialframe}\frametitle{Translation Phases}
 
-   \begin{block}{Alfa filter}
-      \begin{itemize}
-         \item Compute globals for all subprograms
-         \item Traverse the entire tree to find all entities, and to decide
-            whether they are in Alfa or not
-         \item Define lists:
-            \begin{itemize}
-                  \item types in alfa
-                  \item objects in alfa
-                  \item subprograms in alfa
-            \end{itemize}
-      \end{itemize}
-   \end{block}
+  documented in \verb|gnat2why.ads|
+
+  \vs
+
+  \begin{enumerate}
+  \item Framing: compute SPARK \emph{globals}
+  \item Detection: separate Alfa and non-Alfa entity views
+  \item Transformation: from GNAT tree to Why tree
+  \item Printing: generate Why files
+  \end{enumerate}
 \end{specialframe}
 
+\begin{specialframe}\frametitle{Phase 1: Framing}
 
-\begin{specialframe}\frametitle{Different Passes (2) }
-   \begin{block}{Translation}
+  implemented in \verb|Alfa.Frame_Conditions|
+
+  \vs
+
+  \begin{itemize}
+  \item read Alfa xrefs from ALI files (using \verb|Get_Alfa| in GNAT sources)
+  \item entities only known by their name
+  \item construct call graph
+  \item start with local reads/writes
+  \item iterate over call graph to compute final reads/writes
+  \end{itemize}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Phase 2: Detection}
+
+  implemented in \verb|Alfa.Detection|
+
+  \vs
+
+  \begin{itemize}
+  \item single traversal of the tree
+  \item detect every violation of Alfa
+  \item mark entity views in Alfa or not in Alfa
+  \item define two lists of entities
+    \begin{itemize}
+    \item \verb|Spec_Entities| of entities defined in spec
+    \item \verb|Body_Entities| of entities defined in body
+    \end{itemize}
+  \end{itemize}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Phase 3: Transformation}
       \begin{itemize}
          \item Dispatch over type of entity and call corresponding translation
             procedure:
@@ -208,20 +247,19 @@ the program declaration, not the "actual" program
                   \item \verb|Translate_Variable|
                   \item \verb|Translate_Subprogram_Spec|
             \end{itemize}
-         \item Iterate over entities to generate "VCs" (ie Why3 programs that
+         \item Iterate over entities to generate \emph{VCs} (ie Why3 programs that
             will trigger VCs)
             \begin{itemize}
                \item Today, only calls \verb|Generate_VCs_For_Subprogram_Body|
             \end{itemize}
       \end{itemize}
-   \end{block}
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Translation of statements and expressions}
    \begin{block}{Generalities}
       \begin{itemize}
          \item there is no difference between statement and expression is Why3,
-               so this simplifies things (ie. insert an assert "statement"
+               so this simplifies things (ie. insert an assert \emph{statement}
                inside an expression)
          \item all annotations (pre/post, assert, etc) are translated (at
 least) twice to Why3, once as a program expression to get the checks, once as
@@ -232,7 +270,7 @@ annotation
 
    \begin{block}{loops}
       \begin{itemize}
-         \item transform "assertion" invariant to hoare invariant
+         \item transform \emph{assertion} invariant to hoare invariant
          \item use infinite loop + exception to allow multiple exits
       \end{itemize}
    \end{block}
@@ -244,7 +282,7 @@ annotation
       \begin{itemize}
          \item every Ada (sub)type is translated to its own Why3 type
          \item need to insert conversions
-         \item conversions go through the "Why base type"
+         \item conversions go through the \emph{Why base type}
       \end{itemize}
    \end{block}
    \begin{block}{Why base type}
@@ -267,7 +305,7 @@ annotation
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Special case - "invisible" globals}
+\begin{specialframe}\frametitle{Special case - \emph{invisible} globals}
    \begin{block}{Usually, everything is driven by entities}
       \begin{itemize}
          \item name generation
@@ -295,8 +333,8 @@ annotation
    \begin{block}{We put labels in for}
       \begin{itemize}
          \item all VCs (kind of check, source location)
-         \item all statements (for "Show Path")
-         \item all subprograms (for "Prove Subprogram")
+         \item all statements (for ``Show Path'')
+         \item all subprograms (for ``Prove Subprogram'')
       \end{itemize}
    \end{block}
 \end{specialframe}
@@ -309,7 +347,7 @@ annotation
       \item \verb|why-gen-*|    units to generate specific Why subtrees
       \item \verb|gnat2why-*|   units that traverse the GNAT tree and generate
          Why trees
-      \item \verb|why-inter|    unit that does a lot of work "in between"
+      \item \verb|why-inter|    unit that does a lot of work \emph{in between}
    \end{itemize}
 \end{specialframe}
 \end{document}
