@@ -26,7 +26,7 @@ prefixsum.adb:121:25: info: division check proved
 prefixsum.adb:121:25: info: overflow check proved
 prefixsum.adb:121:25: range check not proved
 prefixsum.adb:15:10: info: loop invariant initialization proved
-prefixsum.adb:15:10: loop invariant preservation not proved
+prefixsum.adb:16:15: loop invariant preservation not proved, requires All_Elements_In (A, Space * Maximum)
 prefixsum.adb:16:41: info: range check proved
 prefixsum.adb:21:29: info: division check proved
 prefixsum.adb:24:20: info: index check proved
@@ -81,8 +81,8 @@ prefixsum.adb:80:7: info: index check proved
 prefixsum.adb:81:27: info: division check proved
 prefixsum.adb:81:27: info: overflow check proved
 prefixsum.adb:81:27: info: range check proved
-prefixsum.adb:87:10: loop invariant preservation not proved
 prefixsum.adb:87:49: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
+prefixsum.adb:89:26: loop invariant preservation not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum.adb:89:49: info: division check proved
 prefixsum.adb:89:62: range check not proved
 prefixsum.adb:92:25: info: overflow check proved
@@ -132,8 +132,8 @@ prefixsum.ads:22:34: info: overflow check proved
 prefixsum.ads:24:14: info: index check proved
 prefixsum.ads:24:22: info: index check proved
 prefixsum.ads:27:34: info: range check proved
+prefixsum.ads:28:14: postcondition not proved, requires All_Elements_In (A, 8 * Maximum)
 prefixsum.ads:28:36: info: range check proved
-prefixsum.ads:30:17: postcondition not proved
 prefixsum.ads:30:17: precondition not proved
 prefixsum.ads:35:37: info: range check proved
 prefixsum.ads:36:39: info: range check proved

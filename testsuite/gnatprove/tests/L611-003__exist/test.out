@@ -12,7 +12,7 @@ stack.adb:6:20: info: range check proved
 stack.adb:6:7: info: index check proved
 stack.adb:7:12: precondition not proved
 stack.ads:18:51: info: range check proved
-stack.ads:19:12: postcondition not proved
+stack.ads:19:12: postcondition not proved, requires Valid (T, Size'result)
 stack.ads:22:38: precondition not proved
 stack.ads:23:49: postcondition not proved, requires Last_Element (T, S) = Value
 stack.ads:32:21: info: index check proved

@@ -1,3 +1,2 @@
-
 old.ads:10:28: info: postcondition proved
-old.ads:13:50: postcondition not proved
+old.ads:13:50: postcondition not proved, requires boolean'(X in 1..10)'old

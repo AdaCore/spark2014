@@ -1,3 +1,2 @@
-
-database.ads:53:30: postcondition not proved
+database.ads:53:30: postcondition not proved, requires Money.Is_Empty (Balance (Account)
 database.ads:53:41: info: precondition proved
