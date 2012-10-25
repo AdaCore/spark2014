@@ -109,6 +109,13 @@
 
 \begin{specialframe}\frametitle{How it works (2)}
 
+   \begin{block}{Objective computation}
+      \begin{itemize}
+         \item "split" big formula to obtain VCs for paths + checks
+         \item look at the VC labels to see which objective it corresponds to
+         \item possibly filter VCs (by suprogram, by line, etc)
+      \end{itemize}
+   \end{block}
    \begin{block}{For each objective}
       \begin{itemize}
          \item Try to prove all VCs, stop at the first unproved
@@ -132,4 +139,36 @@
    \end{block}
 
 \end{specialframe}
+
+\section{GNATProve}
+
+\begin{specialframe}\frametitle{Overview}
+   \begin{itemize}
+      \item GNATProve is the \verb|.gpr|-project-aware wrapper for gcc, gnat2why and
+      gnatwhy3
+      \item it does nothing intelligent by itself
+   \end{itemize}
+
+   \begin{block}{Phases}
+      \begin{enumerate}
+         \item ALI file generation - gnatprove calls gprbuild, which calls gcc
+         on all relevant Ada files
+         \item Translation to Why - gnatprove calls gprbuild, which calls
+         gnatwhy2 on all relevant Ada files
+         \item Proving - gnatprove calls gprbuild, which calls gnatwhy3 on all
+         relevant \verb|.mlw| files
+      \end{enumerate}
+   \end{block}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{One subtle point}
+   \begin{block}{Dependency computation}
+      \begin{itemize}
+         \item is different for gnat2why because of effect computation
+         \item We use a special mode of gprbuild for that: \verb|ALI_Closure|
+         \item still a bit buggy ...
+      \end{itemize}
+   \end{block}
+\end{specialframe}
+
 \end{document}
