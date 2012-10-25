@@ -185,7 +185,45 @@ Body in |SPARK|:
 Public child extends non-tagged parent ADT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example covers the main differences between a child package
+and an arbitrary package, namely:
+
+* The private part of a child package can access the private part of its parent.
+* The body of a child package can access the private part of its parent.
+* The child does not need a with clause for its parent.
+
+A private type and private constant are declared in the parent. The former is accessed
+in the body of the child, while the latter is accessed in the private part of the child.
+
+
+Specifications of both parent and child in SPARK 2005:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/05/non_tagged_parent_05.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/05/public_child_non_tagged_parent_05.ads
+      :language: ada
+      :linenos:
+
+Bodies of both parent and child in SPARK 2005:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/05/non_tagged_parent_05.adb
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/public_child_non_tagged_parent/05/public_child_non_tagged_parent_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
 TBD
+
+Body in |SPARK|:
+
+TBD
+
 
 Tagged type in root ADT package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
