@@ -19,7 +19,7 @@
 with System.Storage_Elements;
 package body Volatile_1
 with
-  Refined_State => (V_S => (External_Input => (Volatile => Input)))
+  Refined_State => (V_S => (Volatile => (Extenal_Input => Input)))
 is
    External_Input : T
    with
