@@ -196,25 +196,19 @@
 --     The reason for a VC. <VC_Kind> should be obtained by VC_Kind'Image.
 --     Required for all VC nodes.
 --
---  "GP_Subp:<file:line>"
---     For a VC, defines to which subprogram it belongs. The subprogram is
---     defined by file and line. Required for all VC nodes.
---
 --  "keep_on_simp"
 --     Disallows simplification of that node. Required for all VC nodes.
+--  "GP_Pretty_Ada:<string>"
+--     Gives the original Ada source for the Why3 term, as a string.
+--     Is used for pretty printing explanations for a VC
 
 --  -----------------------------
 --  -- Labels for declarations --
 --  -----------------------------
 
---  "GP_Kind:Conversion"
---     Mark this declaration as a conversion function; it will not be
---     printed in pretty printed VCs.
---  "GP_Ada_Name:<name>"
---     Give the name that will be used in pretty printing for that variable,
---     instead of its name in Why3. This label is used to provide explanations
---     to the user when a VC is not proved, to show which part of a possibly
---     large assertion is not proved.
+--  "GP_Subp:<file:line>"
+--     This label is required for all subprograms that generate VCs. It is
+--     used to easily filter the subprogram in VC selection.
 
 package Gnat2Why is
 
