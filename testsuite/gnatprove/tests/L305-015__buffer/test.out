@@ -2,7 +2,6 @@ buf_read.adb:25:21: info: index check proved
 buf_read.adb:42:12: info: index check proved
 buf_read.adb:45:10: range check not proved
 buf_read.adb:46:27: info: range check proved
-buf_read.adb:48:29: info: overflow check proved
 buf_read.adb:48:29: info: range check proved
 buf_read.adb:54:14: assertion not proved, requires Valid (Buffer (Index)
 buf_read.adb:54:21: info: index check proved

@@ -20,9 +20,7 @@ database.adb:141:34: info: loop invariant preservation proved
 database.adb:142:30: info: range check proved
 database.adb:143:31: info: overflow check proved
 database.adb:143:31: info: range check proved
-database.adb:157:30: info: overflow check proved
 database.adb:157:30: info: range check proved
-database.adb:162:30: info: overflow check proved
 database.adb:162:30: info: range check proved
 database.adb:164:13: info: index check proved
 database.adb:206:7: info: index check proved
@@ -42,7 +40,6 @@ database.adb:269:18: info: index check proved
 database.adb:271:10: info: index check proved
 database.adb:272:22: info: precondition proved
 database.adb:285:17: info: precondition proved
-database.adb:285:39: info: overflow check proved
 database.adb:290:7: info: index check proved
 database.adb:291:42: info: precondition proved
 database.adb:291:9: info: index check proved
@@ -66,19 +63,13 @@ database.ads:53:30: info: postcondition proved
 database.ads:53:41: info: precondition proved
 database.ads:74:41: info: precondition proved
 database.ads:93:14: info: precondition proved
-database.ads:93:36: info: overflow check proved
 database.ads:94:14: info: precondition proved
 database.ads:94:32: info: postcondition proved
 database.ads:94:34: info: precondition proved
 database.ads:94:56: info: precondition proved
-money.adb:4:33: info: overflow check proved
 money.adb:4:33: info: range check proved
-money.adb:7:33: info: overflow check proved
 money.adb:7:33: info: range check proved
-money.ads:30:48: info: overflow check proved
 money.ads:31:25: info: postcondition proved
-money.ads:31:53: info: overflow check proved
 money.ads:31:53: info: range check proved
 money.ads:36:25: info: postcondition proved
-money.ads:36:53: info: overflow check proved
 money.ads:36:53: info: range check proved

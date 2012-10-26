@@ -1,11 +1,10 @@
 data.adb:10:10: info: index check proved
 data.adb:10:22: info: index check proved
 data.adb:18:10: info: loop invariant initialization proved
-data.adb:18:51: info: overflow check proved
 data.adb:18:57: info: index check proved
-data.adb:18:62: loop invariant preservation not proved, requires X(K) = not X_Old(K)
 data.adb:18:68: info: index check proved
 data.adb:20:58: info: index check proved
+data.adb:20:63: loop invariant preservation not proved, requires X(K) = X_Old(K)
 data.adb:20:65: info: index check proved
 data.adb:21:10: info: index check proved
 data.adb:21:22: info: index check proved

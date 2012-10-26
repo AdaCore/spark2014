@@ -1,6 +1,4 @@
-segway.adb:18:31: info: overflow check proved
 segway.adb:18:31: info: range check proved
-segway.adb:22:31: info: overflow check proved
 segway.adb:22:31: info: range check proved
 segway.adb:26:19: info: range check proved
 segway.adb:28:19: info: range check proved

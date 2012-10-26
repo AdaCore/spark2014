@@ -5,10 +5,8 @@ flight_manager.adb:13:46: info: overflow check proved
 flight_manager.adb:19:21: overflow check not proved
 flight_manager.adb:19:43: info: division check proved
 flight_manager.adb:19:43: info: overflow check proved
-flight_manager.adb:25:28: info: overflow check proved
 flight_manager.adb:25:28: info: range check proved
 flight_manager.adb:27:28: info: range check proved
-flight_manager.adb:31:29: info: overflow check proved
 flight_manager.adb:31:29: info: range check proved
 flight_manager.adb:33:29: info: range check proved
 flight_manager.adb:36:37: info: overflow check proved

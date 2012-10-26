@@ -3,13 +3,11 @@ put.adb:15:18: info: division check proved
 put.adb:15:18: info: range check proved
 put.adb:16:19: info: overflow check proved
 put.adb:16:26: info: division check proved
-put.adb:16:26: info: overflow check proved
-put.adb:17:22: info: overflow check proved
+put.adb:16:26: info: range check proved
 put.adb:17:22: range check not proved
 put.adb:18:55: info: overflow check proved
 put.adb:18:55: range check not proved
 put.adb:18:7: index check not proved
-put.adb:23:22: info: overflow check proved
 put.adb:23:22: info: range check proved
 put.adb:24:20: info: range check proved
 put.adb:24:7: index check not proved

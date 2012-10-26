@@ -1,17 +1,14 @@
 s.adb:18:22: info: range check proved
 s.adb:21:27: info: loop invariant initialization proved
 s.adb:21:27: info: loop invariant preservation proved
-s.adb:21:35: info: overflow check proved
 s.adb:22:15: info: range check proved
 s.adb:24:24: info: assertion proved
 s.adb:25:12: info: range check proved
 s.adb:27:27: info: loop invariant initialization proved
 s.adb:27:27: info: loop invariant preservation proved
-s.adb:27:35: info: overflow check proved
 s.adb:28:15: info: range check proved
 s.adb:30:24: info: assertion proved
 s.adb:37:10: info: loop invariant initialization proved
-s.adb:37:59: info: overflow check proved
 s.adb:38:27: info: index check proved
 s.adb:38:36: loop invariant preservation not proved, requires Dest (J) = Src_Old (J)
 s.adb:38:38: info: index check proved
@@ -22,7 +19,6 @@ s.adb:42:26: info: index check proved
 s.adb:43:10: info: index check proved
 s.adb:43:25: info: range check proved
 s.adb:51:10: info: loop invariant initialization proved
-s.adb:51:45: info: overflow check proved
 s.adb:52:27: info: index check proved
 s.adb:52:36: loop invariant preservation not proved, requires Dest (J) = Src_Old (J)
 s.adb:52:38: info: index check proved
@@ -34,7 +30,6 @@ s.adb:57:10: info: index check proved
 s.adb:57:25: info: range check proved
 s.adb:6:10: info: loop invariant initialization proved
 s.adb:6:10: info: loop invariant preservation proved
-s.adb:6:59: info: overflow check proved
 s.adb:7:27: info: index check proved
 s.adb:9:13: info: index check proved
 s.ads:14:42: info: index check proved
