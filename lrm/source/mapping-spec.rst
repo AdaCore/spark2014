@@ -498,12 +498,34 @@ As per SPARK 2005
 Private, abstract state, refining onto concrete state of embedded package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This example is based around the packages from section `Private, abstract state,
+refining onto concrete state of private child`_, with the private child packages
+converted into embedded pacakages.
+
+Specification in SPARK 2005
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/asm_abstract_state_refined_in_embedded_package_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/asm_abstract_state_refined_in_embedded_package_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|
+
+TBD
+
+Body in |SPARK|
+
 TBD
 
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+
 
 External Variables
 ~~~~~~~~~~~~~~~~~~
