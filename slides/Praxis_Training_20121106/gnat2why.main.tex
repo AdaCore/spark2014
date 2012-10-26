@@ -73,25 +73,76 @@
 % logic: function declarations, definitions, predicates, axioms
 % theories
 
-\section{Encoding of Ada Into Why3}
+\section{Encoding of Ada Into Why}
 
-\begin{specialframe}\frametitle{Types - Scalar Types}
-   \begin{block}{Generalities}
-      All entities are translated into their own module, sometimes two
-   \end{block}
+\begin{specialframe}\frametitle{A Modular Translation}
+  1 Ada entity $\longleftrightarrow$ 1 or 2 Why modules [+ 1 or 2 modules for VCs]
+
+  \vs
+
+  dependences between Ada entities $\longleftrightarrow$ includes of Why modules
+
+\pause
+  \vs
+
+  1 Ada unit $\longleftrightarrow$ 6 Why files (one is for VCs)
+
+  \vs
+
+  with-clause of Ada unit $\longleftrightarrow$ (nothing special)
+
+\pause
+  \vs
+
+  1 GNAT project $\longleftrightarrow$ 1 output dir \verb|gnatprove|
+
+  \vs
+
+  subproject relations $\longleftrightarrow$ (nothing special)
+
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Dispatching of Entities}
+
+Why files cannot be mutually dependent
+
+\vs
+
+solution: 6 layers of Why files
+      \begin{itemize}
+         \item \verb|unit__types_in_spec.mlw|: types defined in spec
+         \item \verb|unit__types_in_body.mlw|: types defined in body
+         \item \verb|unit__variables.mlw|: global/local variables defined in unit
+         \item \verb|unit__context_in_spec.mlw|: subprograms decl in spec
+         \item \verb|unit__context_in_body.mlw|: subprograms decl in body
+         \item \verb|unit__package.mlw|: subprogram bodies defined in unit
+      \end{itemize}
+
+\vs
+
+no possible circular dependencies
+      \begin{itemize}
+         \item dependency on file in upper layers is fine
+         \item no possible dependency on file in layers below
+         \item dependencies within a layer follow with-clauses in Ada specs
+         \item recursion? calls in \verb|unit__package.mlw| only, functions in
+           \verb|unit__context_in_<spec or body>.mlw| only
+      \end{itemize}
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Scalar Types}
 
    \begin{block}{Discrete types}
    \begin{itemize}
       \item abstract type
-      \item conversion to/from int
+      \item conversion to/from native mathematical \verb|int|
       \item axioms about these conversion functions
-      \item constants for first/last/modulus, with definition when not dynamic
-      \item \verb|of_int_| program function with precondition that argument is
-         in range
-      \item equality ...
+      \item constants for first/last/modulus, with definition when static
+      \item \verb|of_int_| program function with precondition for the range
+      \item equality
    \end{itemize}
    \end{block}
-   \vspace{-1em}
+
    \begin{block}{Floating point types}
       \begin{itemize}
          \item very similar, but conversion to/from real
@@ -99,23 +150,25 @@
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Types - Record Types}
-   \begin{block}{Why3 model}
+\begin{specialframe}\frametitle{Composite Types}
+   \begin{block}{Record types}
       \begin{itemize}
-         \item Why3 record type with one field for all fields present
-               (even in case of variant records)
-         \item program functions for access with discriminant check
+         \item Why record type with corresponding fields
+               (for all fields, even in case of variant records)
+         \item program functions for access (with discriminant check)
       \end{itemize}
    \end{block}
-\end{specialframe}
 
-\begin{specialframe}\frametitle{Types - Array Types}
-   \begin{block}{Why3 record with fields}
+   \begin{block}{Array types}
       \begin{itemize}
-         \item map - contains the data
-         \item first
-         \item last
-         \item offset - to allow for sliding
+      \item Why record with 4 fields
+        \begin{itemize}
+        \item map - contains the data
+        \item first
+        \item last
+        \item offset - to allow for sliding
+        \end{itemize}
+      \item program functions for access (with index check)
       \end{itemize}
    \end{block}
 \end{specialframe}
@@ -123,15 +176,15 @@
 \begin{specialframe}\frametitle{Constants}
    \begin{itemize}
       \item declare a logic variable
-      \item constant defined by an axiom
-      \item deferred constant defined in separate module available only in
-        enclosing unit
+      \item value defined by an axiom
+      \item value for deferred constant defined in separate module available
+        only in enclosing unit
    \end{itemize}
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Variables}
    \begin{itemize}
-      \item declare a program (mutable) variable
+      \item declare a program (always mutable) variable
       \item no axiom for initialization
       \item declare a type for the type of the variable (used for effects)
    \end{itemize}
@@ -139,13 +192,19 @@
 
 \begin{specialframe}\frametitle{Subprograms}
 
-We generate 4 things for a subprogram, each in its own module:
+1 module in \verb|unit__context_in_<spec or body>.mlw|
    \begin{itemize}
-      \item a Why3 function
-      \item a Why3 program declaration, with pre/post/effects, but no body
-      \item a Why3 program that computes the precondition, is used to get VCs
+      \item a function declaration
+      \item a program declaration, with pre/post/effects, but no body
+      \end{itemize}
+
+\vs
+
+2 modules in \verb|unit__package.mlw|
+     \begin{itemize}
+      \item a program that computes the precondition, used to get VCs
 for checks in the precondition
-      \item the actual translation of the Why3 program, which will get us the
+      \item the actual translation of the subprogram, used to get
 VCs for the body + postcondition
    \end{itemize}
 \end{specialframe}
@@ -164,29 +223,6 @@ VCs for the body + postcondition
    \end{block}
 \end{specialframe}
 
-\begin{specialframe}\frametitle{Dispatching of entities}
-
-Why3 files can't be mutually dependent, so we must break recursion
-\vspace{-1em}
-
-   \begin{block}{Dispatching of entities to files}
-      \begin{itemize}
-         \item \verb|unit__types_in_spec.mlw| for types of spec
-         \item \verb|unit__types_in_body.mlw|
-         \item \verb|unit__types_variables.mlw|
-         \item \verb|unit__context_in_spec.mlw|
-         \item \verb|unit__context_in_body.mlw|
-         \item \verb|unit__package.mlw|
-      \end{itemize}
-   \end{block}
-   \begin{block}{Dependencies}
-      \begin{itemize}
-         \item Each file in this list can depend on files above, for the same unit or others
-         \item all calls, including recursive calls, are translated by calls to
-the program declaration, not the \emph{actual} program
-      \end{itemize}
-   \end{block}
-\end{specialframe}
 
 \section{gnat2why Phases}
 
@@ -247,7 +283,7 @@ the program declaration, not the \emph{actual} program
                   \item \verb|Translate_Variable|
                   \item \verb|Translate_Subprogram_Spec|
             \end{itemize}
-         \item Iterate over entities to generate \emph{VCs} (ie Why3 programs that
+         \item Iterate over entities to generate \emph{VCs} (ie Why programs that
             will trigger VCs)
             \begin{itemize}
                \item Today, only calls \verb|Generate_VCs_For_Subprogram_Body|
@@ -258,11 +294,11 @@ the program declaration, not the \emph{actual} program
 \begin{specialframe}\frametitle{Translation of statements and expressions}
    \begin{block}{Generalities}
       \begin{itemize}
-         \item there is no difference between statement and expression is Why3,
+         \item there is no difference between statement and expression is Why,
                so this simplifies things (ie. insert an assert \emph{statement}
                inside an expression)
          \item all annotations (pre/post, assert, etc) are translated (at
-least) twice to Why3, once as a program expression to get the checks, once as
+least) twice to Why, once as a program expression to get the checks, once as
 annotation
       \end{itemize}
 
@@ -280,7 +316,7 @@ annotation
 \begin{specialframe}\frametitle{Translation of statements and expressions (2) }
    \begin{block}{Conversions}
       \begin{itemize}
-         \item every Ada (sub)type is translated to its own Why3 type
+         \item every Ada (sub)type is translated to its own Why type
          \item need to insert conversions
          \item conversions go through the \emph{Why base type}
       \end{itemize}
@@ -290,7 +326,7 @@ annotation
          \item for discrete types: \verb|int|
          \item for floating point types: \verb|real|
          \item for arrays: generic array type
-         \item for records types: the Why3 type of the Ada root type
+         \item for records types: the Why type of the Ada root type
       \end{itemize}
    \end{block}
 \end{specialframe}
@@ -323,9 +359,9 @@ annotation
 \end{specialframe}
 
 \begin{specialframe}\frametitle{Tracability}
-   \begin{block}{Labels in Why3 code}
+   \begin{block}{Labels in Why code}
       \begin{itemize}
-         \item One can label any Why3 entity or expression with a string
+         \item One can label any Why entity or expression with a string
          \item This label will stick to that expression through VCgen,
          simplifications, etc
       \end{itemize}
