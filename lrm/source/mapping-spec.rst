@@ -387,8 +387,8 @@ Specifications in |SPARK|:
 Initialized by elaboration
 ++++++++++++++++++++++++++
 
-The following example presents how a package's concrete state can be initialized in-between 
-the `begin -> end` section of the body. The |SPARK| version of the body is not presented 
+The following example presents how a package's concrete state can be initialized at 
+the statements section of the body. The |SPARK| version of the body is not presented 
 since it is identical to the SPARK 2005 body.
 
 Specifications in SPARK 2005:
@@ -409,35 +409,158 @@ Specifications in |SPARK|:
       :language: ada
       :linenos:
 
+.. _ms-asm_private_concrete-label:
+
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+The following example demonstrates how variables, that need to be hidden from the users of 
+a package, can be placed on the package's private section. The bodies of the packages have 
+not been included since they contain no annotation.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_concrete/05/asm_private_concrete_05.ads
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_concrete/14/asm_private_concrete_14.ads
+      :language: ada
+      :linenos:
 
 Private, abstract state, refining onto concrete states in body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TBD
 
+.. _ms-asm_private_abstract_bodyref_procedureinit-label:
+
 Initialized by procedure call
 +++++++++++++++++++++++++++++
 
-TBD
+In this example, the abstract state declared at the specifications is refined at the body. 
+Procedure `Init` can be invoked by users of the package, in order to initialize the state. 
 
-Initialized by elab of declaration
-++++++++++++++++++++++++++++++++++
+Specifications in SPARK 2005:
 
-TBD
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/asm_private_abstract_bodyref_procedureinit_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/asm_private_abstract_bodyref_procedureinit_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/asm_private_abstract_bodyref_procedureinit_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/asm_private_abstract_bodyref_procedureinit_14.adb
+      :language: ada
+      :linenos:
+
+.. _ms-asm_private_abstract_bodyref_elaborationinit-label:
+
+Initialized by elaboration of declaration
++++++++++++++++++++++++++++++++++++++++++
+
+The example that follows introduces an abstract state at the specifications and refines it 
+at the body. The constituents of the abstract state are initialized at declaration.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/asm_private_abstract_bodyref_elaborationinit_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/asm_private_abstract_bodyref_elaborationinit_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/asm_private_abstract_bodyref_elaborationinit_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/asm_private_abstract_bodyref_elaborationinit_14.adb
+      :language: ada
+      :linenos:
+
+.. _ms-asm_private_abstract_bodyref_statementinit-label:
 
 Initialized by package body statements
 ++++++++++++++++++++++++++++++++++++++
 
-TBD
+This example introduces an abstract state at the specifications and refines it at the body. 
+The constituents of the abstract state are initialized at the statements part of the body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/asm_private_abstract_bodyref_statementinit_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/asm_private_abstract_bodyref_statementinit_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/asm_private_abstract_bodyref_statementinit_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/asm_private_abstract_bodyref_statementinit_14.adb
+      :language: ada
+
+.. _ms-asm_private_abstract_bodyref_mixedinit-label:
 
 Initialized by mixture of declaration and statements
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TBD
+This example introduces an abstract state at the specifications and refines it at the body. 
+Some of the constituents of the abstract state are initialized during their declaration and 
+the rest at the statements part of the body.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/asm_private_abstract_bodyref_mixedinit_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/asm_private_abstract_bodyref_mixedinit_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/asm_private_abstract_bodyref_mixedinit_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/asm_private_abstract_bodyref_mixedinit_14.adb
+      :language: ada
 
 Private, abstract state, refining onto concrete state of private child
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
