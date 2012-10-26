@@ -487,11 +487,11 @@ Body of Parent in |SPARK|:
 
 TBD
 
-Specifications of Children in |SPARK|:
+Specifications of Private Children in |SPARK|:
 
 TBD
 
-Bodies of Children in |SPARK|:
+Bodies of Private Children in |SPARK|:
 
 As per SPARK 2005
 
@@ -525,6 +525,50 @@ TBD
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This example is based around the packages from sections `Private, abstract state,
+refining onto concrete state of private child`_
+and `Private, abstract state, refining onto concrete state of embedded package`_.
+Source_A is an embedded package, while Source_B is a private child.
+
+Specification of Parent in SPARK 2005
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child_05.ads
+      :language: ada
+      :linenos:
+
+Body of Parent in SPARK 2005
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child_05.adb
+      :language: ada
+      :linenos:
+
+Specification of Private Child in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child-child_b_05.ads
+      :language: ada
+      :linenos:
+
+Body of Private Child in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child-child_b_05.adb
+      :language: ada
+      :linenos:
+
+Specification of Parent in |SPARK|
+
+TBD
+
+Body of Parent in |SPARK|
+
+TBD
+
+Specification of Private Child in |SPARK|
+
+TBD
+
+Body of Private Child in |SPARK|
+
+TBD
 
 
 External Variables
