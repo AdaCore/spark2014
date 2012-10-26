@@ -1,9 +1,6 @@
 queen.ads:20:46: info: index check proved
 queen.ads:20:53: info: index check proved
-queen.ads:21:42: info: overflow check proved
 queen.ads:21:63: info: range check proved
-queen.ads:32:42: info: overflow check proved
 queen.ads:32:48: info: index check proved
 queen.ads:32:55: info: index check proved
-queen.ads:33:42: info: overflow check proved
 queen.ads:33:63: info: range check proved

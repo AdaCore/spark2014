@@ -1,5 +1,5 @@
 simple_unc_arrays.adb:119:23: info: discriminant check proved
-simple_unc_arrays.adb:123:33: info: overflow check proved
+simple_unc_arrays.adb:123:33: info: range check proved
 simple_unc_arrays.adb:124:19: index check not proved
 simple_unc_arrays.adb:124:25: info: overflow check proved
 simple_unc_arrays.adb:124:35: index check not proved
@@ -9,54 +9,44 @@ simple_unc_arrays.adb:125:41: info: overflow check proved
 simple_unc_arrays.adb:147:35: overflow check not proved
 simple_unc_arrays.adb:147:42: overflow check not proved
 simple_unc_arrays.adb:147:47: info: division check proved
-simple_unc_arrays.adb:147:47: info: overflow check proved
 simple_unc_arrays.adb:147:47: info: range check proved
 simple_unc_arrays.adb:148:29: index check not proved
 simple_unc_arrays.adb:157:44: index check not proved
 simple_unc_arrays.adb:158:32: info: range check proved
 simple_unc_arrays.adb:158:32: overflow check not proved
 simple_unc_arrays.adb:161:46: index check not proved
-simple_unc_arrays.adb:162:34: overflow check not proved
 simple_unc_arrays.adb:162:34: range check not proved
 simple_unc_arrays.adb:167:23: info: index check proved
 simple_unc_arrays.adb:167:35: index check not proved
 simple_unc_arrays.adb:170:32: info: range check proved
 simple_unc_arrays.adb:170:32: overflow check not proved
-simple_unc_arrays.adb:171:34: info: range check proved
-simple_unc_arrays.adb:171:34: overflow check not proved
-simple_unc_arrays.adb:176:34: info: overflow check proved
+simple_unc_arrays.adb:171:34: range check not proved
 simple_unc_arrays.adb:176:34: info: range check proved
 simple_unc_arrays.adb:186:12: info: range check proved
 simple_unc_arrays.adb:26:36: info: range check proved
 simple_unc_arrays.adb:27:26: info: range check proved
 simple_unc_arrays.adb:32:10: info: loop invariant initialization proved
-simple_unc_arrays.adb:33:36: info: overflow check proved
 simple_unc_arrays.adb:33:46: info: index check proved
 simple_unc_arrays.adb:33:53: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:55: index check not proved
-simple_unc_arrays.adb:33:70: info: overflow check proved
-simple_unc_arrays.adb:33:74: overflow check not proved
+simple_unc_arrays.adb:33:74: info: overflow check proved
 simple_unc_arrays.adb:38:17: info: index check proved
 simple_unc_arrays.adb:38:28: index check not proved
 simple_unc_arrays.adb:39:22: info: range check proved
 simple_unc_arrays.adb:39:22: overflow check not proved
-simple_unc_arrays.adb:40:23: info: range check proved
-simple_unc_arrays.adb:40:23: overflow check not proved
+simple_unc_arrays.adb:40:23: range check not proved
 simple_unc_arrays.ads:112:57: index check not proved
 simple_unc_arrays.ads:116:39: info: postcondition proved
 simple_unc_arrays.ads:30:22: index check not proved
 simple_unc_arrays.ads:30:29: postcondition not proved, requires A.V (J) = A.V'old
 simple_unc_arrays.ads:30:34: index check not proved
-simple_unc_arrays.ads:30:47: overflow check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
-simple_unc_arrays.ads:84:44: info: overflow check proved
 simple_unc_arrays.ads:85:34: info: index check proved
 simple_unc_arrays.ads:85:41: postcondition not proved, requires Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
 simple_unc_arrays.ads:85:62: index check not proved
 simple_unc_arrays.ads:85:67: info: overflow check proved
 simple_unc_arrays.ads:88:22: index check not proved
 simple_unc_arrays.ads:88:49: index check not proved
-simple_unc_arrays.ads:96:44: info: overflow check proved
 simple_unc_arrays.ads:96:52: info: index check proved
 simple_unc_arrays.ads:96:59: postcondition not proved, requires A.V (J) <= A.V (J+1)
 simple_unc_arrays.ads:96:63: index check not proved

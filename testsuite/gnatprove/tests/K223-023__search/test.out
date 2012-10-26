@@ -1,4 +1,3 @@
-search.adb:10:57: info: overflow check proved
 search.adb:10:64: info: index check proved
 search.adb:11:13: info: loop invariant initialization proved
 search.adb:11:13: loop invariant preservation not proved, requires Pos = 0 and (for all J in Position range T'First .. I-1 => (T(J) /= V))) or (T(Pos) = V and (...

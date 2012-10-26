@@ -6,12 +6,9 @@ actuator.ads:13:20: info: postcondition proved
 actuator.ads:21:20: info: postcondition proved
 advancebutton.adb:25:22: info: range check proved
 advancebutton.adb:33:22: info: range check proved
-advancebutton.adb:82:21: info: overflow check proved
-advancebutton.adb:83:34: info: overflow check proved
 advancebutton.adb:83:34: info: range check proved
 clock.ads:11:24: info: postcondition proved
 display.ads:13:29: info: postcondition proved
-heatingsystem_dfa.adb:108:16: info: overflow check proved
 heatingsystem_dfa.adb:108:31: info: division check proved
 heatingsystem_dfa.adb:108:31: info: range check proved
 heatingsystem_dfa.adb:137:23: info: index check proved
@@ -30,28 +27,22 @@ heatingsystem_dfa.adb:31:48: info: range check proved
 heatingsystem_dfa.adb:32:48: info: range check proved
 heatingsystem_dfa.adb:33:64: info: range check proved
 heatingsystem_dfa.adb:54:21: info: division check proved
-heatingsystem_dfa.adb:54:21: info: range check proved
-heatingsystem_dfa.adb:54:21: overflow check not proved
+heatingsystem_dfa.adb:54:21: range check not proved
 heatingsystem_dfa.adb:55:24: info: division check proved
 heatingsystem_dfa.adb:55:43: info: division check proved
-heatingsystem_dfa.adb:55:43: info: overflow check proved
-heatingsystem_dfa.adb:55:43: info: range check proved
+heatingsystem_dfa.adb:55:43: range check not proved
 heatingsystem_dfa.adb:57:45: info: division check proved
-heatingsystem_dfa.adb:57:45: info: overflow check proved
 heatingsystem_dfa.adb:57:45: info: range check proved
 heatingsystem_dfa.adb:58:45: info: division check proved
 heatingsystem_dfa.adb:58:45: info: range check proved
 heatingsystem_dfa.adb:59:47: info: division check proved
-heatingsystem_dfa.adb:59:47: info: overflow check proved
 heatingsystem_dfa.adb:59:47: info: range check proved
 heatingsystem_dfa.adb:60:47: info: division check proved
 heatingsystem_dfa.adb:60:47: info: range check proved
-heatingsystem_dfa.adb:80:28: info: overflow check proved
 heatingsystem_dfa.adb:80:47: info: division check proved
 heatingsystem_dfa.adb:80:47: info: range check proved
 heatingsystem_dfa.adb:83:37: info: range check proved
 heatingsystem_dfa.adb:89:40: info: range check proved
-heatingsystem_dfa.adb:91:31: info: overflow check proved
 heatingsystem_dfa.adb:91:55: info: division check proved
 heatingsystem_dfa.adb:91:55: info: range check proved
 indicator.adb:18:21: info: range check proved
