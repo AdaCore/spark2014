@@ -442,7 +442,58 @@ TBD
 Private, abstract state, refining onto concrete state of private child
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example shows a parent package Power that contains a State own
+variable. This own variable is refined onto concrete state contained within the
+two private children Source_A and Source_B.
+
+
+Specification of Parent in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child_05.ads
+      :language: ada
+      :linenos:
+
+Body of Parent in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child_05.adb
+      :language: ada
+      :linenos:
+
+Specifications of Children in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_a_05.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_b_05.ads
+      :language: ada
+      :linenos:
+
+Bodies of Children in SPARK 2005:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_a_05.adb
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_b_05.adb
+      :language: ada
+      :linenos:
+
+Specification of Parent in |SPARK|:
+
 TBD
+
+Body of Parent in |SPARK|:
+
+TBD
+
+Specifications of Children in |SPARK|:
+
+TBD
+
+Bodies of Children in |SPARK|:
+
+As per SPARK 2005
 
 Private, abstract state, refining onto concrete state of embedded package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
