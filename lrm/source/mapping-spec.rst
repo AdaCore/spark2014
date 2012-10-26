@@ -526,11 +526,15 @@ Body in SPARK 2005
 
 Specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/asm_abstract_state_refined_in_embedded_package_14.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/asm_abstract_state_refined_in_embedded_package_14.adb
+      :language: ada
+      :linenos:
 
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -566,19 +570,25 @@ Body of Private Child in SPARK 2005:
 
 Specification of Parent in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child_14.ads
+      :language: ada
+      :linenos:
 
 Body of Parent in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child_14.adb
+      :language: ada
+      :linenos:
 
 Specification of Private Child in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child-child_b_14.ads
+      :language: ada
+      :linenos:
 
 Body of Private Child in |SPARK|
 
-TBD
+As per SPARK 2005.
 
 
 External Variables
