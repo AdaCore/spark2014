@@ -1,1 +1,1 @@
-ALL XFAIL overflow check not detected
+ALL XFAIL range check not detected
