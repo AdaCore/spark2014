@@ -116,7 +116,7 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - The goto statement is not permitted.
 
-- The use of controlled types is not premitted.
+- The use of controlled types is not permitted.
 
 - Tasking is not currently permitted.
 
