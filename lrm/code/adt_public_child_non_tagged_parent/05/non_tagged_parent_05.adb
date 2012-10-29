@@ -1,4 +1,4 @@
-package body Pairs
+package body non_tagged_parent_05
 is   
 
    function Sum (Value : in Pair) return Integer
@@ -7,5 +7,5 @@ is
         return Value.Value_One + Value.Value_Two;
    end Sum;
 
-end Pairs;
+end non_tagged_parent_05;
 
