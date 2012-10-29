@@ -25,7 +25,7 @@ A list of restrictions by section and their effect:
 
    Asserts that a ``moded_item`` cannot be a subcomponent name.
 
-#. No_Conditional_Modes
+#. ``No_Conditional_Modes``
 
    Prohibits the use of a ``conditional_mode`` in a
    ``mode_specification``.
@@ -40,7 +40,7 @@ A list of restrictions by section and their effect:
 
 6.1.5 Global Aspects
 
-#. Global_Aspects_Required
+#. ``Global_Aspects_Required``
 
    Enforces the use of a ``global_aspect`` on every subprogram which
    accesses a *global* variable.  When this restriction is in force a
@@ -52,7 +52,7 @@ A list of restrictions by section and their effect:
    A less stringent restriction which requires a ``global_aspect`` on
    all procedure declarations that access a *global* variable.  A
    ``global_aspect`` is optional on a subprogram body that does not
-   have a separate declaration.  A virtual global aspect is calculated
+   have a separate declaration.  An implicit global aspect is calculated
    from the body of each subprogram body which does not have an
    explicit ``global_aspect``.
 
@@ -75,7 +75,7 @@ A list of restrictions by section and their effect:
    A less stringent restriction which only requires a
    ``dependency_aspect`` to be applied to a procedure declaration. A
    ``dependency_aspect`` is optional on a subprogram body that does
-   not have a separate declaration.  A virtual dependency aspect is
+   not have a separate declaration.  An implicit dependency aspect is
    calculated from the body of each subprogram body which does not
    have an explicit ``dependency_aspect``.
 
@@ -84,7 +84,7 @@ A list of restrictions by section and their effect:
    Prohibits the use of a ``conditional_dependency`` in any
    ``dependency_relation``.
 
-#. Dependencies_Are_Entire
+#. ``Dependencies_Are_Entire``
 
    Prohibits the use of subcomponents in ``dependency_relations``.
 
@@ -114,15 +114,24 @@ A list of restrictions by section and their effect:
    declaration and package body has a designator which repeats the
    defining designator of the unit.
 
+.. note:: RCC. Is End_Designators_Required really ever going to be used? It was only
+   required in S95 to facilitate the implementation of the hide
+   anno really. This feels more like a rule for GNATCheck that
+   users might choose to emply, but I don't think it makes
+   any difference to verifiability, so no business of |SPARK|?
+
 6.3.2 Global Aspects
 
-#. No_Scope_Holes
+#. ``No_Scope_Holes``
 
    A subprogram, P, shall not declare an entity of the same name as a
    ``moded_item`` or the name of the object of which the
    ``moded_item`` is a subcomponent in its ``global_aspect`` within a
    ``loop_statement`` or ``block_statement`` whose nearest enclosing
    program unit is P.
+
+.. note:: RCC. Is No_Scope_Holes really necessary for proof or any other form
+   of verification? 
 
 6.4.2 Anti-Aliasing
 
@@ -134,6 +143,10 @@ A list of restrictions by section and their effect:
    whereas the more general rule that array subcomponents are only
    considered to be overlapping when they have common indices requires
    formal proof in general.
+
+.. note:: RCC. Strongly agree that we need this for rel1, since it gets
+   us back to the simple aliasing rules of S95, without having to resort
+   to proof.
 
 7.1 Packages
 

@@ -1,5 +1,4 @@
-
-package body Power.Source_B
+package body asm_abstract_state_refined_in_embedded_and_private_child_05.Source_B
 is
    State : Integer;
 
@@ -8,4 +7,4 @@ is
    begin
       Level := State;
    end Read;
-end Power.Source_B;
+end asm_abstract_state_refined_in_embedded_and_private_child_05.Source_B;
