@@ -6,7 +6,6 @@ evoting.adb:151:21: info: overflow check proved
 evoting.adb:151:21: info: range check proved
 evoting.adb:151:31: info: index check proved
 evoting.adb:152:29: info: assertion proved
-evoting.adb:152:41: info: overflow check proved
 evoting.adb:152:44: info: overflow check proved
 evoting.adb:168:54: overflow check not proved
 evoting.adb:171:13: info: index check proved
@@ -14,7 +13,6 @@ evoting.adb:172:13: info: precondition proved
 evoting.adb:174:16: info: index check proved
 evoting.adb:175:16: info: index check proved
 evoting.adb:175:41: info: index check proved
-evoting.adb:175:63: info: overflow check proved
 evoting.adb:175:63: info: range check proved
 evoting.adb:176:51: overflow check not proved
 evoting.adb:176:51: range check not proved
@@ -30,13 +28,10 @@ evoting.adb:211:16: info: index check proved
 evoting.adb:211:30: info: index check proved
 evoting.adb:212:13: info: index check proved
 evoting.adb:213:37: info: range check proved
-evoting.adb:217:32: info: overflow check proved
 evoting.adb:218:10: info: index check proved
 evoting.adb:226:32: info: range check proved
-evoting.adb:233:25: info: overflow check proved
 evoting.adb:233:25: range check not proved
 evoting.adb:233:41: info: index check proved
-evoting.adb:236:28: info: overflow check proved
 evoting.adb:236:28: range check not proved
 evoting.adb:236:44: info: index check proved
 evoting.adb:239:36: info: index check proved
@@ -59,9 +54,7 @@ evoting.adb:47:33: info: range check proved
 evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
 evoting.adb:58:10: index check not proved
-evoting.adb:60:49: info: overflow check proved
 evoting.adb:60:49: info: range check proved
-evoting.adb:64:43: info: overflow check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:73:14: info: index check proved
 evoting.adb:81:40: info: range check proved
@@ -75,10 +68,9 @@ evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
 evoting.ads:108:39: info: index check proved
-evoting.ads:110:45: info: overflow check proved
 evoting.ads:111:19: index check not proved
 evoting.ads:56:29: info: index check proved
 evoting.ads:56:46: postcondition not proved, requires candidates(i)(j) = ' '
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:93:23: postcondition not proved, requires counters(i) = 0
+evoting.ads:95:33: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
