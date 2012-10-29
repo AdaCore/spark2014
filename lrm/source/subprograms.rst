@@ -1,13 +1,18 @@
 Subprograms
 ===========
 
-.. todo:: proof functions - here or elsewhere?
+.. todo:: proof functions - here or elsewhere?  RCC moves this to end of section 6.1.
+   See ToDo there.
 
 .. todo:: The paragraph below does not really fit here and is not
    quite right.  It is a sort of extended static semantics. The
    concept in-SPARK out-of-SPARK has not been used elsewhere but is a
    good notion that perhaps we should explain in the introduction and
-   use more frequently in the static semantics.
+   use more frequently in the static semantics. Target: D1/CDR.
+
+.. note:: RCC. I think the stuff on views should be in 6.1.  A para about
+   what it means for a language feature to be "in" |SPARK| or "not in" |SPARK|
+   should almost certainly go in chapter 1.  Target: D1/CDR.  Assign: ??? 
 
 We distinguish the *declaration view* introduced by a ``subprogram_declaration``
 from the *implementation view* introduced by a ``subprogram_body`` or an
@@ -44,6 +49,10 @@ legality rule and further restrictions may be applied.
      parameters.  Function access results function null exclusion
      results.
 
+.. note:: RCC. Should we forbid these thing outrights, or just
+   ignore them and/or mark the corresponding declarations as "not SPARK"?
+   Assign: ???
+
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -63,7 +72,7 @@ are in |SPARK|.
    subprogram satisfies the post condition provided the precondition is
    True and the subprogram completes without exceptions.
 
-.. todo:: Think about Pre'Class and Post'Class
+.. todo:: Think about Pre'Class and Post'Class. Target: D2.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
@@ -77,11 +86,18 @@ Extra aspects are provided in |SPARK|, ``Global``, ``Param``,
 and ``Post``.  The extra aspects facilitate an extended specification
 and a potentially more concise form of pre and postcondition.
 
+.. note:: RCC. Do we imply or require any specific order on the
+   new aspects here?  I don't think Ada2012 even allows for that at all?
+   In S95, the natural order is always enforced - global, derives, pre, post -
+   this also simplifies implemenation, since there's a sort-of implied
+   declaration-before-use ordering here.  Can we/should we impose
+   ordering on Global, Depends, Pre and Post in S14? Target D1/CDR. Assign: ???
+
 Contract Cases
 ~~~~~~~~~~~~~~
 
 Contract cases provide a concise way to specify a mutually independent
-cases guarded by expressions using the entry value of **in** or **in
+cases guarded by expressions using the initial value of **in** or **in
 out** *formal parameters* or *global variables*.  Each case specifies
 the final value of mode **out** or **in out** *formal parameters* or
 *global variables*.  The other requirement of contract cases, given
@@ -122,11 +138,16 @@ is short hand for
 
 where
 
-  A1 .. An are Boolean expressions involving the entry values of
+  A1 .. An are Boolean expressions involving the initial values of
   *formal parameters* and *global variables* and
 
   B1 .. Bn are Boolean expressions involving the final values of
   *formal parameters* and *global variables*.
+
+.. note:: RCC: Surely B1 .. Bn may also contain initial values?
+   I have also changed "entry value" to "initial value" here, since the
+   latter is used throughout the rest of this chapter. Assign: JK to
+   confirm, update, then remove this note.
 
 .. centered:: **Syntax**
 
@@ -165,6 +186,9 @@ where
    or **in out**.
 #. The *variables* appearing in the ``consequence`` must be of mode
    **out** or **in out**.
+
+.. note:: RCC. Surely *in* mode variables are also OK in the consequence? Assign: JK
+   confirm, update and remove this note.
 
 .. centered:: **Static Semantics**
 
@@ -211,6 +235,8 @@ where
    values of the variables from the subprogram execution.  If the
    ``consequence`` does not evaluate to ``True``, raise the exception
    ....
+
+.. note:: RCC. this section appears to be incomplete.  Assign: JK to complete please?
 
 .. _mode-refinement:
 
@@ -264,8 +290,9 @@ subcomponent of a larger containing object.  Such objects are called
    moded_item                  ::= name
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which
-     indicates that the listed variables are only used for proof and not
-     in the code.
+   indicates that the listed variables are only used for proof and not
+   in the code. RCC comments: Yes - agree this needs to be in.  Target: D1/CDR
+   for the grammar and legality, D2 for the implementation? Assign: TJJ.
 
 .. centered:: **Legality Rules**
 
@@ -302,8 +329,9 @@ subcomponent of a larger containing object.  Such objects are called
    elements A (I) and A (J) are considered as distinct instances even
    though I my equal J.
 
-.. todo:: We probably need to think more carefully about discriminants
-     of variant records.
+.. todo:: We probably need to think more carefully about discriminanted
+   and variant records. RCC comment: we need an entire design activity
+   for disciminated and variant records. ToDo in chapter 3 as well. Target: D2.
 
 .. centered:: **Static Semantics**
 
@@ -311,6 +339,9 @@ subcomponent of a larger containing object.  Such objects are called
    effective mode of the ``moded_items`` in the
    ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is
    mode **out**, and, ``In_Out`` is mode **in out**.
+
+.. note:: RCC. Update for mode ``Proof``.  Assume this is *in*?
+
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
    ``mode_selector`` of ``Input`` and another with a ``mode_selector``
    of ``Output`` has the effective mode of **in out**.
@@ -340,15 +371,16 @@ There are no dynamic semantics associated with a ``mode_refinement``
 as it is used purely for static analyses purposes and is not executed.
 
 .. todo:: We could consider executable semantics, especially for
-     conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post.
+   conditional modes, but I think we should only consider executing
+   aspects which are Ada aspects such as Pre and Post. RCC agrees.
+   Target: rel2+.
 
 
 Global Aspects
 ~~~~~~~~~~~~~~
 
 A ``global_aspect`` is optional and names the *global* items that are
-read and, or, updated by a subprogram.  The *global* items are
+read and/or updated by a subprogram.  The *global* items are
 considered to have modes the same as *formal parameters*, **in**,
 **out** and **in out** and the modes may be refined as described in
 :ref:`mode-refinement`.
@@ -392,12 +424,16 @@ of a *global* variable by a more *local* variable.
 .. centered:: **Restrictions That May Be Applied**
 
 .. todo:: In the following restriction, is this the assumption of no
-     Global aspect implies Global => null sensible or should we always
-     insist on Global => null?? I hope not!!
+   Global aspect implies Global => null sensible or should we always
+   insist on Global => null?? I hope not!!  RCC comment: see discussion
+   under LA11-017 started by RCC on 26/10. Target: D1/CDR.
 
 .. include:: restrictions-and-profiles.rst
    :start-after: 6.1.5 Global Aspects
    :end-before:  6.1.6
+
+.. note:: RCC. I have changed "virtual" to "implicit" here since the
+   latter is used to mean the same thing later on and seems more consistent.
 
 .. centered:: **Dynamic Semantics**
 
@@ -507,7 +543,7 @@ is used purely for static analyses purposes and is not executed.
 
 .. todo:: We could consider executable semantics, especially for
      conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post.
+     aspects which are Ada aspects such as Pre and Post. Target: rel2+.
 
 .. centered:: **Examples**
 
@@ -627,8 +663,9 @@ where
   ``dependency_aspect``.
 
 .. todo:: Do we want to consider conditional_modes which have (if
-     condition then import_list {elsif condition then import_list}
-     [else import_list]) ?  It can imagine that this will be useful.
+   condition then import_list {elsif condition then import_list}
+   [else import_list]) ?  It can imagine that this will be useful.
+   Target: rel2+.
 
 .. centered:: **Legality Rules**
 
@@ -649,9 +686,9 @@ where
    ``import`` which is in an ``import_list`` of a **null** export may
    not appear in another ``import_list`` of the same
    ``dependency_relation``.
-#. Every ``moded_item`` of a subprogram shall appear in the
+#. Every ``moded_item`` of a subprogram shall appear at least once in the
    dependency relation.  A subcomponent of a composite object is
-   suffice to show an appearance.
+   sufficient to show an appearance.
 #. An ``export`` may be a subcomponent provided the containing object
    is not an ``export`` in the same ``dependency_relation``.  As long
    as this rule is satisfied, different subcomponents of a composite
@@ -662,7 +699,7 @@ where
    though I my equal J.
 #. Each ``export`` shall appear exactly once in a
    ``dependency_relation``.  A subcomponent of a composite object V is
-   suffice to show an appearance of V but more than one distinct
+   sufficient to show an appearance of V but more than one distinct
    subcomponent V may appear as an ``export``
 #. Each ``import`` shall appear at least once in a
    ``dependency_relation``.
@@ -707,8 +744,8 @@ where
    ``export_list =>+`` **null** self-dependency syntax is used.
 #. A an ``export_list`` that is **null** represents a sink for each
    ``import`` in the ``import_list``.The purpose of a **null**
-   ``export_list`` is to facilitate moving Ada code outside the SPARK
-   boundary.
+   ``export_list`` is to facilitate the abstraction and calling of units
+   that are not in |SPARK|.
 #. If a subcomponent S of a composite object is an ``import`` then the
    *entire* object which contains S is effectively an ``import``.
 #. If a subcomponent S of a composite object is an ``export`` then the
@@ -805,6 +842,15 @@ it used purely for static analyses purposes and is not executed.
    -- In this example, the result of the function is dependent on G and X
    -- but only on Y if G is True.
 
+.. note:: RCC. procedure S does not make sense.  It has X and A as both formal
+   parameter and global, so can't be right. Assign TJJ to correct.
+
+Proof Functions
+~~~~~~~~~~~~~~~
+
+.. todo:: TN LA24-011 is open for someone to propose a strawman design.
+   Target: D2.
+
 
 Formal Parameter Modes
 ----------------------
@@ -834,7 +880,15 @@ Subprogram Bodies
 Conformance Rules
 ~~~~~~~~~~~~~~~~~
 
-No rules or restrictions considered yet.
+No extensions or restrictions.
+
+.. note:: RCC. I can't think of any reason that we might need any
+   extension or restrictions in this section.  Anyone disagree?
+
+Inline Expansion of Subprograms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
 
 Mode Refinement
 ~~~~~~~~~~~~~~~
@@ -884,7 +938,7 @@ comply with the refined modes specified for the ``moded_items``.
    ``mode_specification`` then all the rule applies to all mentioned
    subcomponents.
 
-.. todo:: Conditional mode specifications which have to be checked by proof.
+.. todo:: Conditional mode specifications which have to be checked by proof. Target: rel2+.
 
 Global Aspects
 ~~~~~~~~~~~~~~
@@ -919,7 +973,9 @@ implementation of its body.
    :start-after: 6.3.2 Global Aspects
    :end-before:  6.4.2
 
-.. todo:: rules for working out an implicit global aspect.
+.. todo:: rules for working out an implicit global aspect. RCC comment: not
+   sure this is needed here.  What are these rules? Why does the reader of 
+   the LRM need to see them? Target: clarify or remove this ToDo for D1/CDR.
 
 Param Aspects
 ~~~~~~~~~~~~~
@@ -935,6 +991,9 @@ implementation of its body.
 
 #. A subprogram body may only have a ``param_aspect`` if it does not
    have a separate declaration.
+
+.. note:: RCC. Should we also note allowing this aspect on a body *stub* here?
+   In S95, the contract appears on the stub, not the separate unit. Assign: ???
 
 
 Dependency Aspects
@@ -952,13 +1011,16 @@ satisfied by the implementation of its body.
 #. A subprogram body may only have a ``dependency_aspect`` if it does
    not have a separate declaration.
 
+.. note:: RCC. Should we also note allowing this aspect on a body *stub* here?
+   As above. Assign: ???
+
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
 
 #. An implicit dependency relation will be determined from the
    subprogram code (if it exists) by analysis.
-#. If the subprogram has an explicit ``dependency_aspect`` the the
+#. If the subprogram has an explicit ``dependency_aspect`` then the
    implicit dependency relation will be compared with the explicit one
    provided in the ``dependency_aspect`` and any differences reported.
 #. A function that does not have an explicit ``dependency_aspect`` is
@@ -969,7 +1031,7 @@ satisfied by the implementation of its body.
 
 .. centered:: *Checked by Proof*
 
-.. todo:: conditional dependencies and subcomponents
+.. todo:: conditional dependencies and subcomponents. Target: rel2+.
 
 
 Subprogram Calls
@@ -982,9 +1044,11 @@ Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. todo:: possible restrictions regarding not mixing named and
-     positional parameters, requiring all, or more than a certain
-     number of parameters require named association, or more than one
-     parameter of the same type requires named association....
+   positional parameters, requiring all, or more than a certain
+   number of parameters require named association, or more than one
+   parameter of the same type requires named association. RCC comment:
+   Is it worth restricting these things if they don't impact verifiability?
+   Target: D2. 
 
 Anti-Aliasing
 ~~~~~~~~~~~~~
@@ -1008,6 +1072,9 @@ are excluded from the anti-aliasing rules given below for procedure
 calls.
 
 .. todo:: Relax rules for aliasing based on the following paragraph.
+   RCC comment: I am happy that these rules are OK given the definition
+   of "overlapping" below. Target: D1/CDR. Assign: ??? (probably TJJ and YM
+   to agree this is all OK.)
 
 In |SPARK|, it is not allowed in a call to pass as parameters references to
 overlapping locations, when at least one of the parameters is of mode ``out``
@@ -1114,4 +1181,35 @@ the flows of information through the subprogram.
    #. for a procedure which has neither a ``dependency_aspect`` nor a
       proper body the conservative dependency relation that is used is
       that every ``export`` is dependent on every ``import``.
+
+Return Statements
+-----------------
+
+No extensions or restrictions.
+
+.. note:: RCC. Is this really true? I don't understand the use of the extended
+   return statement, so advice here is welcome!  Target: D1/CDR.
+
+Overloading of Operators
+------------------------
+
+No extensions or restrictions.
+
+.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
+
+Null Procedures
+---------------
+
+No extensions or restrictions.
+
+.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
+
+Expression Functions
+--------------------
+
+No extensions or restrictions.
+
+.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
+
+
 
