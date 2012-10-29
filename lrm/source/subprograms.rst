@@ -415,6 +415,13 @@ of a *global* variable by a more *local* variable.
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
 
+.. todo:: Following the discussion under LA11-017 (the thread
+   started by RCC on 26/10), we must document here the rules
+   for consistency of globals in Global and Pre/Post aspects.
+   Essentially, if a global appears in the Pre or Post, then 
+   it *must* appear in a mode-consistent fashion in the Global
+   aspect as well. Target: D1/CDR. Assign: TJJ or RCC.
+
 .. centered:: **Static Semantics**
 
 #. A subprogram with a ``global_aspect`` that has a
