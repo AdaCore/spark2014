@@ -824,7 +824,7 @@ Body in |SPARK|:
 TBD
 
 Output driver using \'Append and \'Tail contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
