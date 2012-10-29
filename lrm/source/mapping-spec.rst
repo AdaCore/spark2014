@@ -792,10 +792,9 @@ Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
-and adds a contract using the 'Tail attribute.
-
-*** TBD: the proof fails since nothing guarantees the input data is of the correct type: fixing this would
-complicate the annotation. Need to decide what to do. ***
+and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
+in order to allow proof to succeeed (otherwise, there is no guarantee in the proof context
+that the value read from the port is of the correct type).
 
 Specification in SPARK 2005:
 
@@ -862,7 +861,7 @@ TBD
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+See section `Private, abstract state, refining onto concrete state of embedded package`_.
 
 Package nested inside subprogram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -902,7 +901,8 @@ TBD
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
+the Always_Valid attribute.
 
 Rule declaration anno's
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -922,7 +922,7 @@ TBD
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See the main program annotation used in section `Basic Input and Output Device Drivers`_.
 
 RavenSPARK patterns - (TBD, but check upward compatibility for the future)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
