@@ -596,15 +596,53 @@ External Variables
 
 TBD
 
-Basic Input Device Driver
+Basic Input and Output Device Driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example shows a main program - Copy - that reads all available data
+from a given input port, stores it internally during the reading process in a stack
+and then outputs all the data read to an output port.
+
+Specification of main program in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/copy_05.adb
+      :language: ada
+      :linenos:
+
+Specification of input port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.ads
+      :language: ada
+      :linenos:
+
+Specification of output port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.ads
+      :language: ada
+      :linenos:
+
+Specification of Stack in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/stacks_05.ads
+      :language: ada
+      :linenos:
+
+Specification of main program in |SPARK|:
+
 TBD
 
-Basic Output Device Driver
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Specification of Stack in |SPARK|:
 
 TBD
+
+Specification of input port in |SPARK|:
+
+TBD
+
+Specification of output port in |SPARK|:
+
+TBD
+
 
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
