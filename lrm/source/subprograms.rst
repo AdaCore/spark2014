@@ -414,13 +414,29 @@ of a *global* variable by a more *local* variable.
 #. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
+#. A name that denotes a *global variable* appearing in a precondition
+   or postcondition aspect of a subprogram must also appear in the ``global_aspect``
+   of the same subprogram.
+#. A name that denotes a *global variable* or a *formal parameter* appearing in a precondition
+   or postcondition aspect of a subprogram must be consistent with the mode indicated by
+   the ``global_aspect`` or the ``parameter_specification`` for that name, according to
+   the following rules:
+
+   1. For a name of a object X to appear in a precondition aspect, X must be a formal
+      parameter or global variable which is of mode "in", "in out", or "Proof".
+   2. For a name of a object X to appear in a postcondition aspect, X must be
+      a formal parameter or global variable of any mode.
+   3. Additionally, X'Old is permitted in a postcondition aspect if X is
+      a global variable or formal parameter of mode "in out".
+
 
 .. todo:: Following the discussion under LA11-017 (the thread
    started by RCC on 26/10), we must document here the rules
    for consistency of globals in Global and Pre/Post aspects.
    Essentially, if a global appears in the Pre or Post, then 
    it *must* appear in a mode-consistent fashion in the Global
-   aspect as well. Target: D1/CDR. Assign: TJJ or RCC.
+   aspect as well. Update: RCC proposes rules 5 and 6 above. TJJ, YM
+   and/or SB to check it. Target: D1/CDR. 
 
 .. centered:: **Static Semantics**
 
