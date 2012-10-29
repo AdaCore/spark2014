@@ -725,25 +725,130 @@ External Variables
 
 TBD
 
-Basic Input Device Driver
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Basic Input and Output Device Drivers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example shows a main program - Copy - that reads all available data
+from a given input port, stores it internally during the reading process in a stack
+and then outputs all the data read to an output port.
+
+Specification of main program in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/copy_05.adb
+      :language: ada
+      :linenos:
+
+Specification of input port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.ads
+      :language: ada
+      :linenos:
+
+Body of input port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.adb
+      :language: ada
+      :linenos:
+
+Specification of output port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.ads
+      :language: ada
+      :linenos:
+
+Body of output port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.adb
+      :language: ada
+      :linenos:
+
+Specification of Stack in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/stacks_05.ads
+      :language: ada
+      :linenos:
+
+
+Specification of main program in |SPARK|:
 
 TBD
 
-Basic Output Device Driver
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Specification of input port in |SPARK|:
 
 TBD
+
+Specification of output port in |SPARK|:
+
+TBD
+
+Body of input port in |SPARK|:
+
+TBD
+
+Body of output port in |SPARK|:
+
+TBD
+
+Specification of Stack in |SPARK|:
+
+TBD
+
 
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
+and adds a contract using the 'Tail attribute.
+
+*** TBD: the proof fails since nothing guarantees the input data is of the correct type: fixing this would
+complicate the annotation. Need to decide what to do. ***
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
 TBD
 
-Output driver using \'Append and \'Tail
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Body in |SPARK|:
 
 TBD
+
+Output driver using \'Append and \'Tail contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This example uses the Output package from section `Basic Input and Output Device Drivers`_
+and adds a contract using the 'Append attribute.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
+
+TBD
+
 
 Refinement of external state - voting input switch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
