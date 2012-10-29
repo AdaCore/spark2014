@@ -458,4 +458,28 @@ VCs for the body + postcondition
    \end{itemize}
 \end{specialframe}
 
+\begin{specialframe}\frametitle{Code Pointers}
+
+  Entities in Alfa and not in Alfa are translated differently. Switch is done
+  in \verb|Gnat2Why.Driver.Translate_Entity|
+
+\vs
+
+Standard package is translated by
+\verb|Gnat2Why.Driver.Translate_Standard_Package|
+
+\vs
+
+  Same transformation is called multiple times on the same entity. Context is
+  given by \verb|Gnat2Why.Util.Transformation_Params|
+
+\vs
+
+Special treatment for containers in
+\verb|Gnat2Why.Decls.Translate_Container_Package| based on ad-hoc \verb|sed|
+rewriting. TBD: use new Why clones of modules.
+
+\end{specialframe}
+
+
 \end{document}
