@@ -1,8 +1,8 @@
--- Confirm that no inherit clause in SPARK 2012.
+-- Confirm that no inherit clause in SPARK 2014.
 
-package Stacks.Monitoring is
+package adt_tagged_type_extension_14.adt_tagged_type_extension_14 is
 
-   type Monitored_Stack is new Stacks.Stack with private;
+   type Monitored_Stack is new adt_tagged_type_extension_14.Stack with private;
 
    overriding
    procedure Clear(S : out Monitored_Stack);
@@ -19,10 +19,10 @@ package Stacks.Monitoring is
 
 private
 
-   type Monitored_Stack is new Stacks.Stack with
+   type Monitored_Stack is new adt_tagged_type_extension_14.Stack with
       record
-         Monitor_Vector : Stacks.Vector;
+         Monitor_Vector : adt_tagged_type_extension_14.Vector;
          Next_Identity_Value : Integer;
       end record;
 
-end Stacks.Monitoring;
+end adt_tagged_type_extension_14.adt_tagged_type_extension_14;

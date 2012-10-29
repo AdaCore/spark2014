@@ -1,8 +1,8 @@
---# inherit Power;
-private package Power.Source_B
+--# inherit asm_abstract_state_refined_in_private_child_05;
+private package asm_abstract_state_refined_in_private_child_05.Source_B
 --# own State;
 is
    procedure Read (Level : out Integer);
    --# global State;
    --# derives Level from State;
-end Power.Source_B;
+end asm_abstract_state_refined_in_private_child_05.Source_B;

@@ -1,19 +1,19 @@
-package body Stacks.Monitoring is
-   subtype Index_Range is Stacks.Index_Range;
+package body adt_tagged_type_05.adt_tagged_type_extension_05 is
+   subtype Index_Range is adt_tagged_type_05.Index_Range;
 
    overriding
    procedure Clear(S : out Monitored_Stack) is
    begin
       S.Stack_Pointer := 0;
-      S.Stack_Vector := Stacks.Vector'(Index_Range => 0);
+      S.Stack_Vector := adt_tagged_type_05.Vector'(Index_Range => 0);
       S.Next_Identity_Value := 1;
-      S.Monitor_Vector := Stacks.Vector'(Index_Range => 0);
+      S.Monitor_Vector := adt_tagged_type_05.Vector'(Index_Range => 0);
    end Clear;
 
    overriding
    procedure Push(S : in out Monitored_Stack; X : in Integer) is
    begin
-      Stacks.Push(Stacks.Stack(S), X);
+      adt_tagged_type_05.Push(adt_tagged_type_05.Stack(S), X);
       S.Monitor_Vector(S.Stack_Pointer) := S.Next_Identity_Value;
       S.Next_Identity_Value := S.Next_Identity_Value + 1;
    end Push;
@@ -34,4 +34,4 @@ package body Stacks.Monitoring is
       return S.Next_Identity_Value;
    end Next_Identity;
 
-end Stacks.Monitoring;
+end adt_tagged_type_05.adt_tagged_type_extension_05;

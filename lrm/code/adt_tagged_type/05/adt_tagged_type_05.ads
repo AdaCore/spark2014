@@ -1,4 +1,4 @@
-package Stacks is
+package adt_tagged_type_05 is
 
    type Stack is tagged private;
 
@@ -24,4 +24,4 @@ private
          Stack_Vector : Vector;
          Stack_Pointer : Pointer_Range;
       end record;
-end Stacks;
+end adt_tagged_type_05;

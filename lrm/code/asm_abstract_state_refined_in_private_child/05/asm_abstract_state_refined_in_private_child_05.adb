@@ -1,8 +1,8 @@
-with Power.Source_A, Power.Source_B;
+with asm_abstract_state_refined_in_private_child_05.Source_A, asm_abstract_state_refined_in_private_child_05.Source_B;
 
-package body Power
---# own State is Power.Source_A.State,
---#              Power.Source_B.State;
+package body asm_abstract_state_refined_in_private_child_05
+--# own State is asm_abstract_state_refined_in_private_child_05.Source_A.State,
+--#              asm_abstract_state_refined_in_private_child_05.Source_B.State;
 is
 
   procedure Read_Power(Level : out Integer)
@@ -16,9 +16,9 @@ is
      Level_A : Integer;
      Level_B : Integer;
   begin
-     Source_A. Read (Level_A);
+     Source_A.Read (Level_A);
      Source_B.Read (Level_B);
      Level := Level_A + Level_B;
   end Read_Power;
 
-end Power;
+end asm_abstract_state_refined_in_private_child_05;

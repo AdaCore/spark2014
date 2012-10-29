@@ -1,4 +1,4 @@
-package Pairs is
+package non_tagged_parent_14 is
 
 --  No change to parent.
 
@@ -17,5 +17,5 @@ private
 
     Inc_Value : constant Integer := 1;
 
-end Pairs;
+end non_tagged_parent_14;
 
