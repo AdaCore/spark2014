@@ -6,15 +6,16 @@ procedure Copy
 --#        out    Output_Port.Outputs;
 --# derives Output_Port.Outputs from Input_Port.Inputs;
 is
-   The_Stack : Stacks.Stack;
-   Value     : Integer;
-   Done      : Boolean;
+   The_Stack   : Stacks.Stack;
+   Value       : Integer;
+   Done        : Boolean;
+   Final_Value : constant Integer := 999;
 begin
    Stacks.Clear(The_Stack);
    loop
       Input_Port.Read_From_Port(Value);
       Stacks.Push(The_Stack, Value);
-      Done := Input_Port.End_Of_Input;
+      Done := Value = Final_Value;
       exit when Done;
    end loop;
    loop

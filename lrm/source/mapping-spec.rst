@@ -738,9 +738,21 @@ Specification of input port in SPARK 2005:
       :language: ada
       :linenos:
 
+Body of input port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.adb
+      :language: ada
+      :linenos:
+
 Specification of output port in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.ads
+      :language: ada
+      :linenos:
+
+Body of output port in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.adb
       :language: ada
       :linenos:
 
@@ -750,11 +762,8 @@ Specification of Stack in SPARK 2005:
       :language: ada
       :linenos:
 
+
 Specification of main program in |SPARK|:
-
-TBD
-
-Specification of Stack in |SPARK|:
 
 TBD
 
@@ -763,6 +772,18 @@ Specification of input port in |SPARK|:
 TBD
 
 Specification of output port in |SPARK|:
+
+TBD
+
+Body of input port in |SPARK|:
+
+TBD
+
+Body of output port in |SPARK|:
+
+TBD
+
+Specification of Stack in |SPARK|:
 
 TBD
 
