@@ -1,6 +1,6 @@
-with Power.Source_A, Power.Source_B;
+with asm_abstract_state_refined_in_private_child_14.Source_A, asm_abstract_state_refined_in_private_child_14.Source_B;
 
-package body Power
+package body asm_abstract_state_refined_in_private_child_14
 with
    Refined_State => (State => (Power.Source_A.State, Power.Source_B.State));
 is
@@ -18,4 +18,4 @@ is
      Level := Level_A + Level_B;
   end Read_Power;
 
-end Power;
+end asm_abstract_state_refined_in_private_child_14;

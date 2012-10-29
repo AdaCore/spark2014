@@ -1,5 +1,5 @@
 
-package body Power
+package body asm_abstract_state_refined_in_embedded_package_05
 --# own State is Source_A.State,
 --#              Source_B.State;
 is
@@ -63,4 +63,4 @@ is
      Level := Level_A + Level_B;
   end Read_Power;
 
-end Power;
+end asm_abstract_state_refined_in_embedded_package_05;

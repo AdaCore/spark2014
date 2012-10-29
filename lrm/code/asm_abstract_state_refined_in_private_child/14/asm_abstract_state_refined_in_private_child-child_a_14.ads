@@ -1,4 +1,4 @@
-private package Power.Source_A
+private package asm_abstract_state_refined_in_private_child_14.Source_A
 with
    Abstract_State => State;
 is
@@ -6,4 +6,4 @@ is
    with
       Global => State,
       Depends => (Level => State);
-end Power.Source_A;
+end asm_abstract_state_refined_in_private_child_14.Source_A;

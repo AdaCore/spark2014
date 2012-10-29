@@ -433,8 +433,6 @@ Specifications in |SPARK|:
 Private, abstract state, refining onto concrete states in body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
-
 .. _ms-asm_private_abstract_bodyref_procedureinit-label:
 
 Initialized by procedure call
@@ -529,6 +527,7 @@ Body in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/asm_private_abstract_bodyref_statementinit_14.adb
       :language: ada
+      :linenos:
 
 .. _ms-asm_private_abstract_bodyref_mixedinit-label:
 
@@ -561,6 +560,9 @@ Body in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/asm_private_abstract_bodyref_mixedinit_14.adb
       :language: ada
+      :linenos:
+
+.. _ms-asm_abstract_state_refined_in_private_child-label:
 
 Private, abstract state, refining onto concrete state of private child
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -628,12 +630,14 @@ Bodies of Private Children in |SPARK|:
 
 As per SPARK 2005
 
+.. _ms-asm_abstract_state_refined_in_embedded_package-label:
+
 Private, abstract state, refining onto concrete state of embedded package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example is based around the packages from section `Private, abstract state,
 refining onto concrete state of private child`_, with the private child packages
-converted into embedded pacakages.
+converted into embedded packages.
 
 Specification in SPARK 2005
 
@@ -658,6 +662,8 @@ Body in |SPARK|
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/asm_abstract_state_refined_in_embedded_package_14.adb
       :language: ada
       :linenos:
+
+.. _ms-asm_abstract_state_refined_in_embedded_and_private_child-label:
 
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -792,10 +798,9 @@ Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
-and adds a contract using the 'Tail attribute.
-
-*** TBD: the proof fails since nothing guarantees the input data is of the correct type: fixing this would
-complicate the annotation. Need to decide what to do. ***
+and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
+in order to allow proof to succeeed (otherwise, there is no guarantee in the proof context
+that the value read from the port is of the correct type).
 
 Specification in SPARK 2005:
 
@@ -818,7 +823,7 @@ Body in |SPARK|:
 TBD
 
 Output driver using \'Append and \'Tail contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
@@ -862,7 +867,7 @@ TBD
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+See section `Private, abstract state, refining onto concrete state of embedded package`_.
 
 Package nested inside subprogram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -902,7 +907,8 @@ TBD
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
+the Always_Valid attribute.
 
 Rule declaration anno's
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -922,7 +928,7 @@ TBD
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See the main program annotation used in section `Basic Input and Output Device Drivers`_.
 
 RavenSPARK patterns - (TBD, but check upward compatibility for the future)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,8 +1,8 @@
-with Power.Source_B;
+with asm_abstract_state_refined_in_embedded_and_private_child_14.Source_B;
 
-package body Power
+package body asm_abstract_state_refined_in_embedded_and_private_child_14
 with
-  Refined_State => (State => (Source_A.State, Power.Source_B.State));
+  Refined_State => (State => (Source_A.State, asm_abstract_state_refined_in_embedded_and_private_child_14.Source_B.State));
 is
 
   --  Embedded package spec for Source_A
@@ -41,4 +41,4 @@ is
      Level := Level_A + Level_B;
   end Read_Power;
 
-end Power;
+end asm_abstract_state_refined_in_embedded_and_private_child_14;
