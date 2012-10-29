@@ -16,33 +16,34 @@ Abstraction of State
 
 The *variables* declared in a package Q, embedded packages declared
 within Q, and the private children of Q constitute the state of a
-package.  The *variable* declarations are only visible to users of Q
-if they are declared in the ``visible_part`` of Q which is not good
-practice.  The declarations of all other variables are hidden from the
-user of Q.  Though the variables are hidden they still form part (or
-all) of the state of Q and this hidden state cannot be ignored for
-static analyses and proof.
+package.  The *variable* declarations are only visible to clients of Q
+if they are declared in the ``visible_part`` of Q which is not
+considered good practice in general for public (non-private) packages.
+The declarations of all other variables are hidden from the user of Q.
+Though the variables are hidden they still form part (or all) of the
+state of Q and this hidden state cannot be ignored for static analyses
+and proof.
 
 |SPARK| extends the concept of state abstraction to provide
- hierachical data abstraction whereby the state of a package Q may be
- refined over a tree of subordinate embedded packages or private child
- packages of Q.  This provides data refinement similar to the
- refinement available to types a similar way to type refinement
- whereby a record may contain fields which are themselves records.
+hierachical data abstraction whereby the state of a package Q may be
+refined over a tree of subordinate embedded packages or private child
+packages of Q.  This provides data refinement similar to the
+refinement available to types whereby a record may contain fields
+which are themselves records.
 
 The other feature supported using state abstraction is a logical model
-of volatile variables.  A volatile variables does not behave like
-standard non-volatile variable as its value may change between two
+of volatile *variables*.  A volatile *variable* does not behave like
+standard non-volatile *variable* as its value may change between two
 successive reads without an intervining update, or successive updates
 may occur without any intervining reads and appear to have no effect
-on the program.  Often volatile variables are inputs or outputs to
+on the program.  Often volatile *variables* are inputs or outputs to
 external devices or subsystems.
 
-For flow analysis and proof volatile variables have to be modelled
-differently to standard-non-volatile variables.  The abstract state
+For flow analysis and proof volatile *variables* have to be modelled
+differently to standard-non-volatile *variables*.  The abstract state
 aspect provides a way to designate a named abstract state as being
 volatile, usually representing an external input or output.  This
-abstract state may be refined on to actual variables which are the
+abstract state may be refined on to actual *variables* which are the
 input or output ports connected to the external device.
 
 The modelling of volatile variables in this way may only be achieved
@@ -56,11 +57,12 @@ Abstract State Aspect
 
 An abstract state is a name representing the state embodied by the
 hidden state of a package. The overall state of a package may be
-represented by one or more visible *variables* and abstract states
+represented by one or more visible *variables* and abstract state
 names, each abstract state name representing a mutually exclusive part
 of the hidden state.  An abstract state name has no type and may only
-be used within a ``global_aspect``, a ``dependency_aspect`` or their
-refined counterparts.
+be used within an ``initializes_aspect`, a ``global_aspect``, a
+``dependency_aspect`` or the refined counterparts of a global or
+dependency aspect.
 
 If a subprogram P with a ``global_aspect`` is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
@@ -76,19 +78,25 @@ appropriate, in the ``dependency_relation`` of the aspect.
 ::
 
   abstract_state_aspect  ::= Abstract_State => abstract_state_list
-  abstract_state_list    ::= state_name_list
-                           | categorised_state_list
-  categorised_state_list ::= category_state
+  abstract_state_list    ::= state_name
                            | (category_state {, category_state})
-  category_state         ::= ([Non_Volatile =>] state_name_list)
-                             ( Volatile => (mode_selector => state_name_list))
+  category_state         ::= [Non_Volatile =>] state_name_list
+                           | Volatile => (moded_state_name_list {, moded_state_name_list})
+  moded_state_name_list  ::= mode_selector => state_name_list
   state_name_list        ::= state_name
-                           | (state_name {, state_name)
-  state_name             ::= defining_identifier
+                           | (extended_state_name {, extended_state_name)
+  extended_state_name    ::= state_name [=> Integrity]
+  state_name             ::= defining_identifier 
+
+where
+
+  ``integrity ::=`` *integer_*\ ``expression``
+
+.. todo:: Consider whether we need the extended state_name with integrity
 
 .. todo:: May be we have to consider a latched output mode selector,
    one that can be read after writing but need not be.  This scheme
-   has beeen requested by secunet.
+   has beeen requested by secunet.  Or is this what an In_Out volatile should represent?
 
 .. todo:: May introduce a way to provide a "history" parameter for Volatile variables.
 
@@ -121,8 +129,10 @@ appropriate, in the ``dependency_relation`` of the aspect.
    external input or output.  The mode selector determines whether the
    volatile state is an input or an output or possibly both an input
    and an output (an in_out).
-#. A volatile Input may be an ``import`` only.
-#. A volatile Output may be an ``export`` only.
+#. A volatile Input may only oocur where a ``moded_item`` of mode
+   **in** is permitted.
+#. A volatile Output may only oocur where a ``moded_item`` of mode
+   **out** is permitted.
 #. A volatile In_Out has the attributes ``Input`` and ``Output``.
 #. A volatile In_Out ``state_name`` cannot be used directly it must be
    attributed with ``Input`` or ``Output``
@@ -165,12 +175,16 @@ appropriate, in the ``dependency_relation`` of the aspect.
    to a Volatile *variable*.  This *variable* may be written to many
    times without intervining reads.  This is in contrast with a normal
    non-volatile variable or state where successive updates with no
-   interniving reads would indicate that earlier updtaes were
+   intervining reads would indicate that earlier updtaes were
    ineffective.  Flow analysis and proof have to take account of this
    difference.
-#. It follows from the rules that a variable declared in the visible
-   part of a package cannot be considered to be Volatile.
+#. As a *variable* declared in the visible part of a public package
+   cannot appear in an ``abstract_state_aspect`` it follows from the
+   rules that it cannot be considered to be Volatile.
 
+.. todo:: 
+   Should we provide a way of allowing volatile variables 
+   in the visible part of a public package?
 
 .. centered:: **Verification Rules**
 
@@ -203,33 +217,33 @@ There are no dynamic semantics associated with the
 
 .. code-block:: ada
 
-    package Q
-    with 
-       Abstract_State => State           -- Declaration of abstract state name State
-    is                                   -- representing internal state of Q.
-      function Is_Ready return Boolean   -- Function checking some property of the State.
-      with 
-	 Global => State;                -- State may be used in a global aspect.
+   package Q
+   with 
+      Abstract_State => State           -- Declaration of abstract state name State
+   is                                   -- representing internal state of Q.
+     function Is_Ready return Boolean   -- Function checking some property of the State.
+     with 
+        Global => State;                -- State may be used in a global aspect.
 
-      procedure Init                     -- Procedure to initialize the internal state of Q.
-      with 
-	 Global => (Output => State)     -- State may be used in a global aspect.
-	 Post   => Is_Ready;
+        procedure Init                  -- Procedure to initialize the internal state of Q.
+        with 
+	   Global => (Output => State), -- State may be used in a global aspect.
+	   Post   => Is_Ready;
 
-      procedure Op1 (V : Integer)        -- Another procedure providing some operation on
-      with                               -- State.
-	 Global => (In_Out => State)
-	 Pre    => Is_Ready,
-	 Post   => Is_Ready;   
-    end Q;
+        procedure Op1 (V : Integer)     -- Another procedure providing some operation on
+        with                            -- State.
+           Global => (In_Out => State),
+	   Pre    => Is_Ready,
+	   Post   => Is_Ready;   
+   end Q;
 
-    package X
-    with 
-       Absatract_State => (A, B, 
-                          (Volatile => (Input => C)))
-    is                                   -- Three abstract state names are declared A, B & C. 
-       ...                               -- C is designated as a volatile input.
-    end X; 
+   package X
+   with 
+      Absatract_State => (A, B, 
+                         (Volatile => (Input => C)))
+   is                                   -- Three abstract state names are declared A, B & C. 
+      ...                               -- C is designated as a volatile input.
+   end X; 
 
 
 Initializes Aspect
@@ -263,7 +277,9 @@ where
 .. centered:: **Legality Rules**
 
 #. An ``initializes_aspect`` may only appear in the
-   ``aspect_specification`` of a package specification.  
+   ``aspect_specification`` of a package specification.
+#. The ``initializes_aspect`` must follow the
+   ``abstract_state_aspect`` if one is present.
 #. An ``initialized_item`` is either:
 
    * a ``state_name`` declared in a previous ``abstract_state_aspect``
@@ -336,13 +352,16 @@ where
    declared in the visible part of the package wich are initialized
    during the elaboration of the packages.  If the package has
    embedded or private child packages, the same process is applied to
-   them and the implicitly declared ``state_names`` arising from this
-   analysis are added to the appropriate implicitly declared
-   ``state_names`` of the parent. The *variables* and *state_names* are
-   associated with the ``initializing_package`` in the implicit
-   ``initializes_aspect``
+   them and each implicitly declared ``state_name`` arising from this
+   analysis becomes a constituent of the appropriate implicitly
+   declared ``state_name`` of the parent. The initialized visible
+   *variables* and each initialized *state_name* is associated with
+   the ``initializing_package`` in the implicit ``initializes_aspect``
 
-.. todo:: Note that I do not think we can automatically determine volatile variables.
+.. todo:: I anm not sure we can automatically determine volatile
+   variables.  Possibly use the volatile pargma/aspect - how to
+   determine whether it is Input, Output or In_Out.  Perhaps assume
+   Input if it is designated to be a constant.
 
 .. centered:: **Dynamic Semantics**
 
@@ -365,9 +384,9 @@ There are no dynamic semantics associated with the
 
     package X
     with 
-       Absatract_State =>  A,    -- Declares an abstract state neme A
-       Initializes     => (A, B) -- A and visible variable B are initialized
-				 -- during package initialization.
+       Abstract_State =>  A,    -- Declares an abstract state neme A
+       Initializes    => (A, B) -- A and visible variable B are initialized
+                                -- during package initialization.
     is                           
       ...
       B : Integer;
@@ -376,24 +395,25 @@ There are no dynamic semantics associated with the
 
     package Y
     with 
-       Absatract_State => (A, B, (C => (Volatile => Input)), D),
-       Initializes     => (A, Another_Package => D)
-    is                            -- Four abstract state names are declared A, B C & D.
-				  -- A is ininialized during the elaboration of Q or
-				  -- its non-visible subordinate packages.  
-       ...                        -- C is designated as a volatile input and cannot appear
-				  -- in an initializes aspect clause
-				  -- D is initialized by a different visible package.
+       Abstract_State => (A, B, D,
+                          Volatile => (Input => C)),
+       Initializes    => (A, Another_Package => D)
+    is                          -- Four abstract state names are declared A, B, C & D.
+                                -- A is ininialized during the elaboration of Y or
+				-- its non-visible subordinate packages.  
+       ...                      -- C is designated as a volatile input and cannot appear
+				-- in an initializes aspect clause
+				-- D is initialized by a different visible package
+                                -- B is not initialized during package initialization.
     end Y; 
 
 
 Initial Condition Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ''initial_condition_aspect`` is a prdeicate that may be used to
-describe formally the state of a package.  It behaves as a
-postcondition for the result of the initialization of the package and
-its non-visible subordinate packages.
+The ''initial_condition_aspect`` is a predicate that may be used to
+describe formally the initial state of a package.  It behaves as a
+postcondition for the result of package elaboration.
 
 .. centered:: **Syntax**
   
@@ -404,8 +424,11 @@ its non-visible subordinate packages.
 
 #. An ``initial_condition_aspect`` may only be placed in a
    ``aspect_specification`` of a ``package_specification``.
+#. The ``initial_condition_aspect`` must follow the
+   ``abstract_sate_aspect`` and ``initializes_aspect`` if they are
+   present.
 #. The expression of an ``initial_condition_aspect`` appearing in a
-   package Q has extended vsibility.  It may reference declarations
+   package Q has extended visibility.  It may reference declarations
    from the visible part of Q.
 
 .. centered:: **Static Semantics**
@@ -414,17 +437,6 @@ its non-visible subordinate packages.
    of a package is a predicate which defines the state of the package
    after its elaboration.
 
-.. centered:: **Restrictions that may be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1.4 Initial Condition Aspect
-   :end-before:  7.2.2 
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the
-``initial_condition_aspect`` the rules are checked by static analysis.
-
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
@@ -432,10 +444,11 @@ There are no dynamic semantics associated with the
 #. Each *variable* appearing in an ``initial_condition_aspect`` of a
    package Q which is declared in the visible part of Q must be
    initialized during package elaboration.
-#. The state components represented by each ``state_name`` of a
-   package Q which is indirectly referenced by a function appearing in
-   the ``initial_condition_aspect`` Q must be initialized during
-   package elaboration.
+#. A ``state_name`` cannot appear directly in
+   an``initial_condition_aspect`` but it may be inditrctly referenced
+   through a function call.
+#. Each ``state_name`` referenced in ``initial_condition_aspect`` must
+   be initialized during package elaboration.
 
 .. centered:: *Checked by Proof*
 
@@ -446,6 +459,18 @@ There are no dynamic semantics associated with the
    declarations and statements satisfy the predicate given in the
    ``initial_condition_aspect`` of the package.
 
+.. centered:: **Restrictions that may be Applied**
+
+.. include:: restrictions-and-profiles.rst
+   :start-after: 7.1.4 Initial Condition Aspect
+   :end-before:  7.2.2 
+
+.. centered:: **Dynamic Semantics**
+
+An ``initial_condition_aspect`` is like a paostcondition.  It should
+be evaluated following package elaboration.  if it does not evaluate
+to True, then an exception should be raised.
+ 
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -466,9 +491,9 @@ There are no dynamic semantics associated with the
 
     package X
     with 
-       Absatract_State   =>  A,    -- Declares an abstract state neme A
+       Abstract_State    =>  A,    -- Declares an abstract state neme A
        Initializes       => (A, B) -- A and visible variable B are initialized
-				   -- during package initialization.
+	                           -- during package initialization.
        Initial_Condition => A_Is_Ready and B = 0
 				   -- The logical conditions after package elaboration.
     is                           
@@ -482,27 +507,32 @@ There are no dynamic semantics associated with the
      -- 
     end X; 
 
-
+    with Another_Package;
     package Y
     with 
-       Absatract_State   => (A, B, D),
-       Initializes       => (A, Another_Package => D)
+       Abstract_State    => (A, B, D),
+       Initializes       => (A, Another_Package => D),
        Initial_Condition => A_Is_Ready and D_Property 
 					-- Only the initial conditions of A and D are given
 					-- B cannot be specified because it is not
 					-- initialized during package elaboration.
+                                        -- D can only be initialized in the sequence of statements of
+                                        -- the body of Another_Package that has a with clause naming Y.
+                                        -- For Another_Package to initialize D, D must be declared in
+                                        -- the visible part of Y or a subprogram which initializes D
+                                        -- must be decared in the visible part of Y.
     is                      
-
-      type A_Type is private;
-      A_Value : constant A_Type;
-
-      function A_Is_Empty return Bool
+      function A_Is_Ready return Boolean;
       with
 	 Global => A;
 
       function D_Property return Boolean
       with
 	 Global => D;
+
+      procedure Init_D
+      with
+         Global => (Output => D);
 
     end Y; 
 
@@ -526,7 +556,7 @@ which *variables* and subordinate abstract states are represented by
 the ``state_name`` (its constituents).  A ``refined_state_aspect`` in
 the body of Q is used for this purpose.
 
-In the body a package the constituents of the refined ``state_name``,
+In the body of a package the constituents of the refined ``state_name``,
 the refined view, have to be used rather than the abstract view of the
 ``state_name``.  Refined global, dependency, pre and post aspects are
 provided to express the refined view.
@@ -549,9 +579,8 @@ Refined State Aspect
   abstract_state_name          ::= state_name | null
   categorised_constituent_list ::= constituent_list
                                    (category_constituent {, category_constituent})
-  category_constituent         ::= constituent_list
-                                 | ([Non_Volatile =>] constituent_list)
-                                 | (Volatile => (mode_selector => constituent_list))
+  category_constituent         ::= [Non_Volatile =>] constituent_list
+                                 | Volatile => (mode_selector => constituent_list))
   constituent_list             ::= constituent
                                  | (constituent {, constituent})
 
@@ -577,10 +606,10 @@ where
 #. There should be at most one **null** ``abstract_state_name`` and,
    if it is present it must be the ``abstract_state_name`` of the last
    ``state_and_constituent_list`` of the ``refined_state_list``.
-#. At most one ``category_constituent`` of Volatile is permitted in an
-   ``abstract_state_aspect``.
+#. At most one ``category_constituent`` of Volatile is permitted in a
+   ``refined_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_constituent`` is
-   permitted in an ``abstract_state_aspect``.
+   permitted in a ``refined_state_aspect``.
 
 .. centered:: **Static Semantics**
 
@@ -588,7 +617,7 @@ where
    ``state_names`` which are the constituents that comprise the
    hidden state represented by the ``state_names`` declared in the
    ``abstract_state_aspect``.
-#. A ``constituent`` of the hidden state of a package Q is:
+#. A ``constituent`` of the hidden state of a package Q is one of:
 
    * A *variable* declared in the ``private_part`` or body of Q;
    * A *variable* declared in the ``visible_part`` of a package
@@ -596,7 +625,8 @@ where
    * A *variable* declared in the ``visible_part`` of a private child
      package of Q;
    * A ``state_name`` declared in the ``abstract_state_aspect`` of a
-     package declared immediately within the body of a package Q; and
+     package declared immediately within the ``private_part`` or body
+     of a package Q; or
    * A ``state_name`` declared in the ``abstract_state_aspect`` of a
      private child package of Q.
 
@@ -633,13 +663,15 @@ where
    speed up an operation but does not have an effect on the result of
    the operation.
 
+.. todo:: Think about whether this can introduce a covert channel
+
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
 
 #. If a package has internal state but no but no
    ``abstract_state_aspect`` an implicit one is generated from the
-   code as described in :ref: `_abstract_state_aspect`.  Additionally
+   code as described in :ref:`abstract-state-aspect`.  Additionally
    an implicit ``refined_state_aspect`` giving for each implicitly
    defined ``state_name`` a ``constituent_list`` listing each
    ``constituent`` from which it is composed.
@@ -697,11 +729,11 @@ Initialization Refinement
 
 If a package has an ``initialization_aspect`` which constain a
 ``state_name`` then each ``constituent`` of the ``state_name`` must be
-initialized during package elaboration or Volatile, in which case they
-are implicitly initialized.  A ``constituent`` of ``state_name`` of a
-package which does not appear in the ``initializes_aspect`` of the
-package must not be initialized during package elaboration and cannot
-be Volatile.
+initialized during package elaboration or be desinated as Volatile, in
+which case they are implicitly initialized.  A ``constituent`` of
+``state_name`` of a package which does not appear in the
+``initializes_aspect`` of the package must not be initialized during
+package elaboration.
 
 .. centered:: **Verification Rules**
 
@@ -724,6 +756,12 @@ be Volatile.
 Refined Global Aspect
 ^^^^^^^^^^^^^^^^^^^^^
 
+If a subprogram declaration in the visible part of a package names a
+``state_name`` of a package in its ``global_aspect`` then the body,
+body stub or renaming declaration of the subprogram in the body of the
+package must have a ``refined_global_aspect`` replacing the
+``state_name`` by one or more of its ``constituents``.
+
 .. centered:: **Syntax**
 
 ::
@@ -732,14 +770,15 @@ Refined Global Aspect
 
 .. centered:: **Legality Rules**
 
-#. A ``refined_global_aspect`` may only appear on the body of a
-   subprogram P in a package whose ``visible_part`` contains the
-   declaration of P which has a ``global_aspect``.
-#. A ``refined_global_aspect`` on the body of a subprogram P may only
-   mention ``constituents`` of a ``state_name`` mentioned in the
-   ``global_aspect`` in the declaration of P, a *global variable*
-   named in the the ``global_aspect`` of P or a ``constituent`` of a
-   **null** ``abstract_state_name``.
+#. A ``refined_global_aspect`` may only appear on the body, body stub
+   or renaming declaration of a subprogram P in a package whose
+   ``visible_part`` contains the declaration of P which has a
+   ``global_aspect``.
+#. A ``refined_global_aspect`` on the body, body stub or renaming
+   declaration of a subprogram P may only mention ``constituents`` of
+   a ``state_name`` given in the ``global_aspect`` in the declaration
+   of P, a *global variable* named in the the ``global_aspect`` of P
+   or a ``constituent`` of a **null** ``abstract_state_name``.
 
 
 .. centered:: **Static Semantics**
