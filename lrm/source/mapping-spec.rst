@@ -933,7 +933,48 @@ See section `Private, abstract state, refining onto concrete state of embedded p
 Package nested inside subprogram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This example is a modified version of that given in section
+`Refinement of external state - voting input switch`_. It illustrates the
+use of a package nested within a subprogram.
+
+Abstract Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
+      :language: ada
+      :linenos:
+
+Component Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val3.ads
+      :language: ada
+      :linenos:
+
+Switch body in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.adb
+      :language: ada
+      :linenos:
+
+Abstract Switch specification in |SPARK|
+
 TBD
+
+Component Switch specifications in |SPARK|
+
+TBD
+
+Switch body in |SPARK|
+
+TBD
+
 
 .. _ms-circular_dependence_and_elaboration_order-label:
 
@@ -970,7 +1011,6 @@ Body of package Q_05 in SPARK 2005:
 Bodies and Proof
 ----------------
 
-TBD
 
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
