@@ -94,11 +94,12 @@ where
 
 .. todo:: Consider whether we need the extended state_name with integrity
 
-.. todo:: May be we have to consider a latched output mode selector,
-   one that can be read after writing but need not be.  This scheme
-   has beeen requested by secunet.  Or is this what an In_Out volatile should represent?
+.. todo:: Consider a latched output mode selector, one that can be
+   read after writing but need not be.  This scheme has beeen
+   requested by secunet.
 
-.. todo:: May introduce a way to provide a "history" parameter for Volatile variables.
+.. todo:: May introduce a way to provide a "history" parameter for
+   Volatile variables.
 
 .. centered:: **Legality Rules**
 
@@ -116,6 +117,8 @@ where
    ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_state`` is
    permitted in an ``abstract_state_aspect``.
+#. The only ``mode_selector`` values permitted are Input, Output and
+   possibly In_Out.
 
 .. centered:: **Static Semantics**
 
@@ -156,7 +159,7 @@ where
 #. The category is specified using the ``category_state`` syntax
    supplimented by the ``initializes_aspect.  A ``category_state``
    without a category defaults to Non_Volatile.
-#. A volatile In or Out ``state_name`` represents a sequence of state
+#. A Volatile In or Out ``state_name`` represents a sequence of state
    changes brought about by reading or writing successive values to or
    from a Volatile *variable*. An Volatile In_Out ``state_name``
    represents its input and output characteristics as two seperate
@@ -185,6 +188,10 @@ where
 .. todo:: 
    Should we provide a way of allowing volatile variables 
    in the visible part of a public package?
+
+.. todo:: Should we allow Volatile => In_Out?
+
+.. todo:: Consider Volatile => Latched 
 
 .. centered:: **Verification Rules**
 
@@ -280,6 +287,9 @@ where
    ``aspect_specification`` of a package specification.
 #. The ``initializes_aspect`` must follow the
    ``abstract_state_aspect`` if one is present.
+#. An ``initializes_aspect`` of a package has extended visibility; it
+   is able to refer to *variables* declared in the visible part of the
+   package.
 #. An ``initialized_item`` is either:
 
    * a ``state_name`` declared in a previous ``abstract_state_aspect``
@@ -596,6 +606,10 @@ where
    its body must have a ``refined_state_aspect``.
 #. A package body cannot have a ``refined_state_aspect`` if its
    specification does not have an ``abstract_state_aspect``.
+#. A ``refined_state_aspect`` of a package body has extended
+   visibility; it is able to refer to a *variable*, or a
+   ``state_name`` of a package, declared immediately within the
+   package body.
 #. Each ``state_name`` declared in a package specification must appear
    exactly once as an ``abstract_state_name`` in the
    ``state_refinment_aspect`` of the body of the package.
@@ -774,49 +788,63 @@ package must have a ``refined_global_aspect`` replacing the
    or renaming declaration of a subprogram P in a package whose
    ``visible_part`` contains the declaration of P which has a
    ``global_aspect``.
+#. If a subprogram declaration P in the visible part of a package
+   refers to a ``state_name`` declared in the
+   ``abstract_state_aspect`` of the package, then in the body of the
+   package the body, body stub or renaming declaration must have a
+   ``refined_global_aspect`` unless the body is an expression function
+   when it is optional.
 #. A ``refined_global_aspect`` on the body, body stub or renaming
    declaration of a subprogram P may only mention ``constituents`` of
    a ``state_name`` given in the ``global_aspect`` in the declaration
-   of P, a *global variable* named in the the ``global_aspect`` of P
-   or a ``constituent`` of a **null** ``abstract_state_name``.
+   of P, a *global* item that is not a ``state_name`` of the enclosing
+   package named in the the ``global_aspect`` of P or a
+   ``constituent`` of a **null** ``abstract_state_name``.
 
 
 .. centered:: **Static Semantics**
 
-#. A *global variable* named in the ``global_aspect`` of a subprogram
-   declaration must appear in the ``refined_global_aspect``, if one is
-   present, of the body of the subprogram with the same mode.
-#. A ``constituent`` of a Non_Volatile ``state_name`` S in a
-   ``refined_global_aspect`` of body of a subprogram must be
-   compatible with the mode given to S in the ``global_aspect`` of the
-   subprogram declaration and also the mode of the ``constituent`` if
-   it is Volatile:
 
-   * If the mode of S is **in** then each ``constituent`` of S
-     appearing in the ``refined_global_aspect`` must be mode **in**.
-   * If S is mode **out** then each ``constituent`` of S appearing in
-     the ``refined_global_aspect`` must be mode **out**.  
-   * If S is mode **in out** then at least one ``constituent`` must be mode
-     **in** and one mode **out**, or at least one must be mode **in out**.
+#. A ``refined_global_aspect`` of a subprogram defines a *refinement*
+   of the ``global_aspect`` of the subprogram.
+#. A *refinement*` G' of a ``global_aspect`` G declared within package
+   Q shall satisfy the following rules:
+ 
+   * For each item in G which is not a ``state_name`` of Q, the same
+     item must appear with the same mode in G';
+   * For each item in G which is a ``state_name`` S of package Q that
+     is Non_Volatile at least one ``constituent`` of S must appear in
+     G' and,
+      
+     * if the item in G has mode **in** then each ``constituent`` of S
+       in G' must be of mode **in**.
+     * if the item in G has mode **out** then each ``constituent`` of
+       S in G' must be of mode **out**.
+     * if the item in G has mode **in out** then each ``constituent``
+       of S in G' may be of mode **in**, **out** or **in out** but if
+       S has only one ``constituent`` it must appear in G' with the
+       mode **in out**.  Each ``constituent`` of S in G' may be of
+       mode **out** provided that not every ``constituent`` of S is
+       included in G'.
+ 
+   * For each item in G which is a ``state_name`` S of package Q that
+      is Volatile at least one ``constituent`` of S must appear in G'
+      and,
+ 
+     * if S is a Volatile Input at least one ``constituent`` of S in
+       G'must be of mode **in**.
+     * if S is a Volatile Output at least one ``constituent`` of S in
+       G'must be of mode **out**.
 
-#. A ``constituent`` of a Volatile ``state_name`` S in a
-   ``refined_global_aspect`` of body of a subprogram may appear with
-   any mode compatible with the ``constituent`` but with the following
-   constraint:
+   * A ``constituent`` a **null** ``abstract_name`` may also be
+     mentioned in G' provided its mode is **in out**.
 
-   * If S is a Volatile Input then at least one ``constituent`` of S
-     which is a Volatile Input or In_Out must appear in the
-     ``refined_global_aspect``.
-   * If S is a Volatile Output then at least one ``constituent`` of S
-     which is a Volatile Output or In_Out must appear in the
-     ``refined_global_aspect``.
-   * If S is a Volatile In_Out then at least one ``constituent`` of S
-     which is a Volatile output and one which is a Volatile Output, or
-     one which is In_Out must appear in the ``refined_global_aspect``.
+   * function may have a ``refined_global_aspect`` G' which mentions a
+     ``constituent`` of a **null** ``abstract_name`` but its mode must
+     be **in out**.  The **null** ``abstract_state`` does not appear
+     in G. The **null** ``abstract_state`` must not affect the value of the
+     result of the function it must be purely for optimization.
 
-#. The ``refined_global_aspect`` of a function may have a
-   ``moded_item`` of mode **in ou** provided it is a ``constituent``
-   of a **null** ``abstract_state_name``.
 
 .. centered:: **Verification Rules**
 
