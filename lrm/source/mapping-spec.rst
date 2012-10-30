@@ -797,6 +797,8 @@ TBD
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+*** Add the detail Flo wants in here. ***
+
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
 in order to allow proof to succeeed (otherwise, there is no guarantee in the proof context
@@ -915,13 +917,40 @@ Rule declaration anno's
 
 TBD
 
-Proof types
-~~~~~~~~~~~
+Proof types and proof functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example gives pre- and post-conditions on operations that act upon
+the concrete representation of an abstract own variable. This means that proof functions
+and proof types are needed to state those pre- and post-conditions.
+
+Specification in SPARK 2005
+
+   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005
+
+   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.adb
+      :language: ada
+      :linenos:
+
+Proof rule in SPARK 2005:
+
+   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/push.rlu
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|
 
 TBD
 
-Proof functions
-~~~~~~~~~~~~~~~
+Body in |SPARK|
+
+TBD
+
+Proof rules in |SPARK|:
 
 TBD
 
