@@ -827,7 +827,7 @@ Output driver using \'Append and \'Tail contracts
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-Specification in SPARK 2005:
+Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
       :language: ada
@@ -854,7 +854,7 @@ Refinement of external state - voting input switch
 The following example presents an abstract view of the reading of 3 individual
 switches and the voting performed on the values read.
 
-Abstract Switch specification in SPARK 2005
+Abstract Switch specifications in SPARK 2005
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
       :language: ada
@@ -913,10 +913,37 @@ Package nested inside subprogram
 
 TBD
 
+.. _ms-circular_dependence_and_elaboration_order-label:
+
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+This example demonstrates how the SPARK tools locate and disallow circular dependence 
+and elaboration relations.
+
+Specifications of package P in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
+      :language: ada
+      :linenos:
+
+Specifications of package Q in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
+      :language: ada
+      :linenos:
+
+Body of package P in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.adb
+      :language: ada
+      :linenos:
+
+Body of package Q in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.adb
+      :language: ada
+      :linenos:
 
 Bodies and Proof
 ----------------
