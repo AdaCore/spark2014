@@ -901,6 +901,28 @@ TBD
 Contracts with remote state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example illustrates indirect access to the state of one package
+by another via an intermediary. Raw_Data stores some data, which has pre-processing
+performed on it by Processing and on which Calculate performs some further processing
+(although the corresponding bodies are not given, Read_Calculated_Value in Caluclate
+calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
+
+Specifications in SPARK 2005
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
+      :language: ada
+      :linenos:
+      
+   .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|
+
 TBD
 
 Package nested inside package
@@ -918,7 +940,7 @@ TBD
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how the SPARK tools locate and disallow circular dependence 
+This example demonstrates how the SPARK tools locate and disallow circular dependence
 and elaboration relations.
 
 Specifications of package P_05 in SPARK 2005:
@@ -956,7 +978,7 @@ Assert, Assume, Check contracts
 .. _ms-assert_contract-label:
 
 Assert contract
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 The following example demonstrates how the `assert` annotation is used. `Assert` annotations 
 clear the list of existing hypotheses and add the statements that are within the annotation 
@@ -975,14 +997,36 @@ Body in SPARK 2005:
       :linenos:
 
 Assume contract
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
+
+The following example illustrates use of an Assume annotation (in this case,
+the Assume annotation is effectively being used to implement the Always_Valid
+attribute).
+
+Specification for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.ads
+      :language: ada
+      :linenos:
+
+Body for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.adb
+      :language: ada
+      :linenos:
+
+Specification for Assume annotation in |SPARK|
+
+TBD
+
+Body for Assume annotation in |SPARK|
 
 TBD
 
 .. _ms-check_contract-label:
 
 Check contract
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 This example shows how the `check` annotation can be used to add a new hypothesis to the list 
 of existing hypotheses after first having verified its validity.
