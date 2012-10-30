@@ -1,0 +1,5 @@
+/* Rules to define the proof functions Is_Empty and Is_Full */
+
+push(1): not is_full(X) may_be_replaced_by fld_pointer(fld_my_stack(X)) < pointer_range__last.
+
+push(2): is_empty(X) may_be_replaced_by 0 = fld_pointer(fld_my_stack(X)).
