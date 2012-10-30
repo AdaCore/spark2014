@@ -288,68 +288,65 @@ Specification in |SPARK|:
 
 As per SPARK 2005.
 
+.. _ms-adt_private_public_child_visibility-label:
+
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Public child and visibility of parent
-+++++++++++++++++++++++++++++++++++++
+The following example demonstrates visibility rules that apply between public children, 
+private children and their parent. More specifically, it shows that:
 
-See  section `Public child extends non-tagged parent ADT`_.
+* Private children are able to see their private siblings but not their public siblings.
+* Public children are able to see their public siblings but not their private siblings.
+* All children have access to their parent but the parent can only access private children.
 
+Applying the SPARK tools on the following files will produce certain errors. This was 
+intentionally done in order to illustrate both legal and illegal access attempts.
 
-Private child and visibility of parent
-++++++++++++++++++++++++++++++++++++++
+Specification of parent in SPARK 2005:
 
-TBD
-
-Visibility of public siblings
-+++++++++++++++++++++++++++++
-
-TBD
-
-Visibility of private siblings
-++++++++++++++++++++++++++++++
-
-TBD
-
-Visibility to parent of private children
-++++++++++++++++++++++++++++++++++++++++
-
-TBD
-
-General visibility of public child
-++++++++++++++++++++++++++++++++++
-
-The following example uses the child package defined in section
-`Public child extends non-tagged parent ADT`_ to illustrate
-use of that by another package.
-
-Specification in SPARK 2005:
-
-   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.ads
       :language: ada
       :linenos:
 
-Body in SPARK 2005:
+Specification of private child A in SPARK 2005:
 
-   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.adb
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_a_05.ads
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
+Specification of private child B in SPARK 2005:
 
-   .. literalinclude:: ../code/visibility_of_public_child/14/visibility_of_public_child_14.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_b_05.ads
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+Specification of public child A in SPARK 2005:
 
-As per SPARK 2005.
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.ads
+      :language: ada
+      :linenos:
 
+Specification of public child B in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_b_05.ads
+      :language: ada
+      :linenos:
+
+Body of parent in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.adb
+      :language: ada
+      :linenos:
+
+Body of public child A in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.adb
+      :language: ada
+      :linenos:
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 Visible, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -801,7 +798,7 @@ Input driver using \'Append and \'Tail contracts
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
-in order to allow proof to succeeed (otherwise, there is no guarantee in the proof context
+in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
 Specification in SPARK 2005:
@@ -830,7 +827,7 @@ Output driver using \'Append and \'Tail contracts
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-Specification in SPARK 2005:
+Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
       :language: ada
@@ -857,7 +854,7 @@ Refinement of external state - voting input switch
 The following example presents an abstract view of the reading of 3 individual
 switches and the voting performed on the values read.
 
-Abstract Switch specification in SPARK 2005
+Abstract Switch specifications in SPARK 2005
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
       :language: ada
@@ -938,10 +935,37 @@ Package nested inside subprogram
 
 TBD
 
+.. _ms-circular_dependence_and_elaboration_order-label:
+
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+This example demonstrates how the SPARK tools locate and disallow circular dependence 
+and elaboration relations.
+
+Specifications of package P in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
+      :language: ada
+      :linenos:
+
+Specifications of package Q in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
+      :language: ada
+      :linenos:
+
+Body of package P in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.adb
+      :language: ada
+      :linenos:
+
+Body of package Q in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.adb
+      :language: ada
+      :linenos:
 
 Bodies and Proof
 ----------------

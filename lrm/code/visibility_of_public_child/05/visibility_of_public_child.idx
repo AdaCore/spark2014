@@ -1,6 +1,0 @@
-Pairs            specification is in ..\..\public_child_non_tagged_parent\05\non_tagged_parent_05.ads
-Pairs            body          is in ..\..\public_child_non_tagged_parent\05\non_tagged_parent_05.adb
-Pairs.Additional specification is in ..\..\public_child_non_tagged_parent\05\public_child_non_tagged_parent_05.ads
-Pairs.Additional body          is in ..\..\public_child_non_tagged_parent\05\public_child_non_tagged_parent_05.adb
-Pair_State       specification is in visibility_of_public_child_05.ads
-Pair_State       body          is in visibility_of_public_child_05.adb
