@@ -39,8 +39,8 @@ Specifications in |SPARK|:
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured 
-and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function 
+This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured
+and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
 `Add` perform the same task as in the previous example, but they have been 
 augmented by post annotations. Two additional functions (`Max` and `Divide`) 
 and one additional procedure (`Swap_Array_Elements`) have also been included 
@@ -63,6 +63,35 @@ Specifications in |SPARK|:
       :linenos:
 
 .. _ms-nesting_refinement-label:
+
+Attributes of unconstrained out parameter in precondition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example illustrates the fact that the attributes of an unconstrained
+formal array parameter of mode "out" _are_ permitted to appear in a precondition.
+The flow analyser also needs to be smart about this, since it knows the X'First and
+X'Last are well-defined in the body, even though the content of X isn't.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
+
+TBD
+
 
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
