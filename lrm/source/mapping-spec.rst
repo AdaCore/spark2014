@@ -39,8 +39,8 @@ Specifications in |SPARK|:
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured 
-and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function 
+This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured
+and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
 `Add` perform the same task as in the previous example, but they have been 
 augmented by post annotations. Two additional functions (`Max` and `Divide`) 
 and one additional procedure (`Swap_Array_Elements`) have also been included 
@@ -63,6 +63,35 @@ Specifications in |SPARK|:
       :linenos:
 
 .. _ms-nesting_refinement-label:
+
+Attributes of unconstrained out parameter in precondition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example illustrates the fact that the attributes of an unconstrained
+formal array parameter of mode "out" _are_ permitted to appear in a precondition.
+The flow analyser also needs to be smart about this, since it knows the X'First and
+X'Last are well-defined in the body, even though the content of X isn't.
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
+
+TBD
+
 
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -288,68 +317,65 @@ Specification in |SPARK|:
 
 As per SPARK 2005.
 
+.. _ms-adt_private_public_child_visibility-label:
+
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Public child and visibility of parent
-+++++++++++++++++++++++++++++++++++++
+The following example demonstrates visibility rules that apply between public children, 
+private children and their parent. More specifically, it shows that:
 
-See  section `Public child extends non-tagged parent ADT`_.
+* Private children are able to see their private siblings but not their public siblings.
+* Public children are able to see their public siblings but not their private siblings.
+* All children have access to their parent but the parent can only access private children.
 
+Applying the SPARK tools on the following files will produce certain errors. This was 
+intentionally done in order to illustrate both legal and illegal access attempts.
 
-Private child and visibility of parent
-++++++++++++++++++++++++++++++++++++++
+Specification of parent in SPARK 2005:
 
-TBD
-
-Visibility of public siblings
-+++++++++++++++++++++++++++++
-
-TBD
-
-Visibility of private siblings
-++++++++++++++++++++++++++++++
-
-TBD
-
-Visibility to parent of private children
-++++++++++++++++++++++++++++++++++++++++
-
-TBD
-
-General visibility of public child
-++++++++++++++++++++++++++++++++++
-
-The following example uses the child package defined in section
-`Public child extends non-tagged parent ADT`_ to illustrate
-use of that by another package.
-
-Specification in SPARK 2005:
-
-   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.ads
       :language: ada
       :linenos:
 
-Body in SPARK 2005:
+Specification of private child A in SPARK 2005:
 
-   .. literalinclude:: ../code/visibility_of_public_child/05/visibility_of_public_child_05.adb
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_a_05.ads
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
+Specification of private child B in SPARK 2005:
 
-   .. literalinclude:: ../code/visibility_of_public_child/14/visibility_of_public_child_14.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_b_05.ads
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+Specification of public child A in SPARK 2005:
 
-As per SPARK 2005.
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.ads
+      :language: ada
+      :linenos:
 
+Specification of public child B in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_b_05.ads
+      :language: ada
+      :linenos:
+
+Body of parent in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.adb
+      :language: ada
+      :linenos:
+
+Body of public child A in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.adb
+      :language: ada
+      :linenos:
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 Visible, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -801,7 +827,7 @@ Input driver using \'Append and \'Tail contracts
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
-in order to allow proof to succeeed (otherwise, there is no guarantee in the proof context
+in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
 Specification in SPARK 2005:
@@ -830,7 +856,7 @@ Output driver using \'Append and \'Tail contracts
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-Specification in SPARK 2005:
+Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
       :language: ada
@@ -854,7 +880,47 @@ TBD
 Refinement of external state - voting input switch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example presents an abstract view of the reading of 3 individual
+switches and the voting performed on the values read.
+
+Abstract Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
+      :language: ada
+      :linenos:
+
+Component Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val3.ads
+      :language: ada
+      :linenos:
+
+Switch body in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.adb
+      :language: ada
+      :linenos:
+
+Abstract Switch specification in |SPARK|
+
 TBD
+
+Component Switch specifications in |SPARK|
+
+TBD
+
+Switch body in |SPARK|
+
+TBD
+
 
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
@@ -863,6 +929,28 @@ TBD
 
 Contracts with remote state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example illustrates indirect access to the state of one package
+by another via an intermediary. Raw_Data stores some data, which has pre-processing
+performed on it by Processing and on which Calculate performs some further processing
+(although the corresponding bodies are not given, Read_Calculated_Value in Caluclate
+calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
+
+Specifications in SPARK 2005
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
+      :language: ada
+      :linenos:
+      
+   .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|
 
 TBD
 
@@ -874,22 +962,155 @@ See section `Private, abstract state, refining onto concrete state of embedded p
 Package nested inside subprogram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This example is a modified version of that given in section
+`Refinement of external state - voting input switch`_. It illustrates the
+use of a package nested within a subprogram.
+
+Abstract Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
+      :language: ada
+      :linenos:
+
+Component Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val3.ads
+      :language: ada
+      :linenos:
+
+Switch body in SPARK 2005
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.adb
+      :language: ada
+      :linenos:
+
+Abstract Switch specification in |SPARK|
+
 TBD
+
+Component Switch specifications in |SPARK|
+
+TBD
+
+Switch body in |SPARK|
+
+TBD
+
+
+.. _ms-circular_dependence_and_elaboration_order-label:
 
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+This example demonstrates how the SPARK tools locate and disallow circular dependence
+and elaboration relations.
+
+Specifications of package P_05 in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
+      :language: ada
+      :linenos:
+
+Specifications of package Q_05 in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
+      :language: ada
+      :linenos:
+
+Body of package P_05 in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.adb
+      :language: ada
+      :linenos:
+
+Body of package Q_05 in SPARK 2005:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.adb
+      :language: ada
+      :linenos:
 
 Bodies and Proof
 ----------------
 
-TBD
 
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _ms-assert_contract-label:
+
+Assert contract
+^^^^^^^^^^^^^^^
+
+The following example demonstrates how the `assert` annotation is used. `Assert` annotations 
+clear the list of existing hypotheses and add the statements that are within the annotation 
+as the new hypotheses.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_contract/05/p_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_contract/05/p_05.adb
+      :language: ada
+      :linenos:
+
+Assume contract
+^^^^^^^^^^^^^^^
+
+The following example illustrates use of an Assume annotation (in this case,
+the Assume annotation is effectively being used to implement the Always_Valid
+attribute).
+
+Specification for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.ads
+      :language: ada
+      :linenos:
+
+Body for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.adb
+      :language: ada
+      :linenos:
+
+Specification for Assume annotation in |SPARK|
+
 TBD
+
+Body for Assume annotation in |SPARK|
+
+TBD
+
+.. _ms-check_contract-label:
+
+Check contract
+^^^^^^^^^^^^^^
+
+This example shows how the `check` annotation can be used to add a new hypothesis to the list 
+of existing hypotheses after first having verified its validity.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.adb
+      :language: ada
+      :linenos:
 
 Assert used to control path explostion (ASPDV example)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -915,14 +1136,16 @@ the Always_Valid attribute.
 Rule declaration anno's
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See section `Proof types and proof functions`_.
 
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following example gives pre- and post-conditions on operations that act upon
 the concrete representation of an abstract own variable. This means that proof functions
-and proof types are needed to state those pre- and post-conditions.
+and proof types are needed to state those pre- and post-conditions. In addition, it gives
+an example of the use of a rule declaration annotation - in the body of procedure Initialize -
+to introduce a rule related to the components of a constant record value.
 
 Specification in SPARK 2005
 
@@ -936,9 +1159,9 @@ Body in SPARK 2005
       :language: ada
       :linenos:
 
-Proof rule in SPARK 2005:
+Proof rules in SPARK 2005:
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/push.rlu
+   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/stack.rlu
       :language: ada
       :linenos:
 

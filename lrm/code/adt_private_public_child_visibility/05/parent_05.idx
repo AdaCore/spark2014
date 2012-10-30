@@ -1,0 +1,7 @@
+Parent_05                    specification is in parent_05.ads
+Parent_05                    body          is in parent_05.adb
+Parent_05.Private_Child_A_05 specification is in parent_05_private_child_a_05.ads
+Parent_05.Private_Child_B_05 specification is in parent_05_private_child_b_05.ads
+Parent_05.Public_Child_A_05  specification is in parent_05_public_child_a_05.ads
+Parent_05.Public_Child_A_05  body          is in parent_05_public_child_a_05.adb
+Parent_05.Public_Child_B_05  specification is in parent_05_public_child_b_05.ads
