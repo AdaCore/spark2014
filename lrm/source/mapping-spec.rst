@@ -24,13 +24,13 @@ insight and will thus not be included.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/global_derives/05/global_derives_05.ads
+   .. literalinclude:: ../code/global_derives/05/swap_add_05.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/global_derives/14/global_derives_14.ads
+   .. literalinclude:: ../code/global_derives/14/swap_add_14.ads
       :language: ada
       :linenos:
 
@@ -52,13 +52,13 @@ as in the previous example, the bodies are not included.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/pre_post_return/05/pre_post_return_05.ads
+   .. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/pre_post_return/14/pre_post_return_14.ads
+   .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.ads
       :language: ada
       :linenos:
 
@@ -113,13 +113,13 @@ purely public and an equivalent one that also has private elements.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_visible/05/adt_visible_05.ads
+   .. literalinclude:: ../code/adt_visible/05/stacks_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_visible/05/adt_visible_05.adb
+   .. literalinclude:: ../code/adt_visible/05/stacks_05.adb
       :language: ada
       :linenos:
 
@@ -134,13 +134,13 @@ them shall be presented.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private/05/adt_private_05.ads
+   .. literalinclude:: ../code/adt_private/05/stacks_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private/05/adt_private_05.adb
+   .. literalinclude:: ../code/adt_private/05/stacks_05.adb
       :language: ada
       :linenos:
 
@@ -160,25 +160,25 @@ the refinement of the `Is_Empty` and `Is_Full` functions.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_refinement/05/adt_private_refinement_05.ads
+   .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_refinement/05/adt_private_refinement_05.adb
+   .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_refinement/14/adt_private_refinement_14.ads
+   .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_refinement/14/adt_private_refinement_14.adb
+   .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.adb
       :language: ada
       :linenos:
 
@@ -200,31 +200,31 @@ in the body of the child, while the latter is accessed in the private part of th
 
 Specifications of both parent and child in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/non_tagged_parent_05.ads
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/public_child_non_tagged_parent_05.ads
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.ads
       :language: ada
       :linenos:
 
 Bodies of both parent and child in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/non_tagged_parent_05.adb
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.adb
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/public_child_non_tagged_parent_05.adb
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/non_tagged_parent_14.ads
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/public_child_non_tagged_parent_14.ads
+   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14_additional_14.ads
       :language: ada
       :linenos:
 
@@ -241,7 +241,7 @@ The following example illustrates the use of a tagged type in an ADT package.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type/05/adt_tagged_type_05.ads
+   .. literalinclude:: ../code/adt_tagged_type/05/stacks_05.ads
       :language: ada
       :linenos:
 
@@ -251,7 +251,7 @@ N/A
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/adt_tagged_type/14/adt_tagged_type_14.ads
+   .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
       :language: ada
       :linenos:
 
@@ -268,19 +268,19 @@ The following example illustrates the extension of a tagged type in a child pack
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.ads
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/05/adt_tagged_type_extension_05.adb
+   .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.adb
       :language: ada
       :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/14/adt_tagged_type_extension_14.ads
+   .. literalinclude:: ../code/adt_tagged_type_extension/14/stacks_14_monitored_14.ads
       :language: ada
       :linenos:
 
@@ -366,19 +366,19 @@ of the SPARK 2005 body.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.ads
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/asm_visible_concrete_initialized_by_declaration_05.adb
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/asm_visible_concrete_initialized_by_declaration_14.ads
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/stack_14.ads
       :language: ada
       :linenos:
 
@@ -393,19 +393,19 @@ since it is identical to the SPARK 2005 body.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.ads
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/asm_visible_concrete_initialized_by_elaboration_05.adb
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/asm_visible_concrete_initialized_by_elaboration_14.ads
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/stack_14.ads
       :language: ada
       :linenos:
 
@@ -420,13 +420,13 @@ not been included since they contain no annotation.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_concrete/05/asm_private_concrete_05.ads
+   .. literalinclude:: ../code/asm_private_concrete/05/stack_05.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_concrete/14/asm_private_concrete_14.ads
+   .. literalinclude:: ../code/asm_private_concrete/14/stack_14.ads
       :language: ada
       :linenos:
 
@@ -443,25 +443,25 @@ Procedure `Init` can be invoked by users of the package, in order to initialize 
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/asm_private_abstract_bodyref_procedureinit_05.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/asm_private_abstract_bodyref_procedureinit_05.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/asm_private_abstract_bodyref_procedureinit_14.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/stack_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/asm_private_abstract_bodyref_procedureinit_14.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/stack_14.adb
       :language: ada
       :linenos:
 
@@ -475,25 +475,25 @@ at the body. The constituents of the abstract state are initialized at declarati
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/asm_private_abstract_bodyref_elaborationinit_05.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/asm_private_abstract_bodyref_elaborationinit_05.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/asm_private_abstract_bodyref_elaborationinit_14.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/stack_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/asm_private_abstract_bodyref_elaborationinit_14.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/stack_14.adb
       :language: ada
       :linenos:
 
@@ -507,25 +507,25 @@ The constituents of the abstract state are initialized at the statements part of
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/asm_private_abstract_bodyref_statementinit_05.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/asm_private_abstract_bodyref_statementinit_05.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/asm_private_abstract_bodyref_statementinit_14.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/stack_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/asm_private_abstract_bodyref_statementinit_14.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/stack_14.adb
       :language: ada
       :linenos:
 
@@ -540,25 +540,25 @@ the rest at the statements part of the body.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/asm_private_abstract_bodyref_mixedinit_05.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/asm_private_abstract_bodyref_mixedinit_05.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.adb
       :language: ada
       :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/asm_private_abstract_bodyref_mixedinit_14.ads
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/stack_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/asm_private_abstract_bodyref_mixedinit_14.adb
+   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/stack_14.adb
       :language: ada
       :linenos:
 
@@ -574,55 +574,55 @@ two private children Source_A and Source_B.
 
 Specification of Parent in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.ads
       :language: ada
       :linenos:
 
 Body of Parent in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.adb
       :language: ada
       :linenos:
 
 Specifications of Private Children in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_a_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_b_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.ads
       :language: ada
       :linenos:
 
 Bodies of Private Children in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_a_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.adb
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/asm_abstract_state_refined_in_private_child-child_b_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.adb
       :language: ada
       :linenos:
 
 Specification of Parent in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/asm_abstract_state_refined_in_private_child_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14.ads
       :language: ada
       :linenos:
 
 Body of Parent in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/asm_abstract_state_refined_in_private_child_14.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14.adb
       :language: ada
       :linenos:
 
 Specifications of Private Children in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/asm_abstract_state_refined_in_private_child-child_a_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_a_14.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/asm_abstract_state_refined_in_private_child-child_b_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_b_14.ads
       :language: ada
       :linenos:
 
