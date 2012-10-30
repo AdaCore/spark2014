@@ -854,7 +854,47 @@ TBD
 Refinement of external state - voting input switch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example presents an abstract view of the reading of 3 individual
+switches and the voting performed on the values read.
+
+Abstract Switch specification in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
+      :language: ada
+      :linenos:
+
+Component Switch specifications in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val3.ads
+      :language: ada
+      :linenos:
+
+Switch body in SPARK 2005
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.adb
+      :language: ada
+      :linenos:
+
+Abstract Switch specification in |SPARK|
+
 TBD
+
+Component Switch specifications in |SPARK|
+
+TBD
+
+Switch body in |SPARK|
+
+TBD
+
 
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
@@ -915,14 +955,16 @@ the Always_Valid attribute.
 Rule declaration anno's
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+See section `Proof types and proof functions`_.
 
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following example gives pre- and post-conditions on operations that act upon
 the concrete representation of an abstract own variable. This means that proof functions
-and proof types are needed to state those pre- and post-conditions.
+and proof types are needed to state those pre- and post-conditions. In addition, it gives
+an example of the use of a rule declaration annotation - in the body of procedure Initialize -
+to introduce a rule related to the components of a constant record value.
 
 Specification in SPARK 2005
 
@@ -936,9 +978,9 @@ Body in SPARK 2005
       :language: ada
       :linenos:
 
-Proof rule in SPARK 2005:
+Proof rules in SPARK 2005:
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/push.rlu
+   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/stack.rlu
       :language: ada
       :linenos:
 
