@@ -921,25 +921,25 @@ Circular dependence and elaboration order
 This example demonstrates how the SPARK tools locate and disallow circular dependence 
 and elaboration relations.
 
-Specifications of package P in SPARK 2005:
+Specifications of package P_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
       :language: ada
       :linenos:
 
-Specifications of package Q in SPARK 2005:
+Specifications of package Q_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
       :language: ada
       :linenos:
 
-Body of package P in SPARK 2005:
+Body of package P_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.adb
       :language: ada
       :linenos:
 
-Body of package Q in SPARK 2005:
+Body of package Q_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.adb
       :language: ada
@@ -953,7 +953,51 @@ TBD
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _ms-assert_contract-label:
+
+Assert contract
+~~~~~~~~~~~~~~~
+
+The following example demonstrates how the `assert` annotation is used. `Assert` annotations 
+clear the list of existing hypotheses and add the statements that are within the annotation 
+as the new hypotheses.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_contract/05/p_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_contract/05/p_05.adb
+      :language: ada
+      :linenos:
+
+Assume contract
+~~~~~~~~~~~~~~~
+
 TBD
+
+.. _ms-check_contract-label:
+
+Check contract
+~~~~~~~~~~~~~~
+
+This example shows how the `check` annotation can be used to add a new hypothesis to the list 
+of existing hypotheses after first having verified its validity.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.adb
+      :language: ada
+      :linenos:
 
 Assert used to control path explostion (ASPDV example)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
