@@ -940,7 +940,7 @@ TBD
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how the SPARK tools locate and disallow circular dependence 
+This example demonstrates how the SPARK tools locate and disallow circular dependence
 and elaboration relations.
 
 Specifications of package P in SPARK 2005:
@@ -975,7 +975,30 @@ TBD
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The following example illustrates use of an Assume annotation (in this case,
+the Assume annotation is effectively being used to implement the Always_Valid
+attribute).
+
+Specification for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.ads
+      :language: ada
+      :linenos:
+
+Body for Assume annotation in SPARK 2005
+
+   .. literalinclude:: ../code/proof_check_contract/05/input_port.adb
+      :language: ada
+      :linenos:
+
+Specification for Assume annotation in |SPARK|
+
 TBD
+
+Body for Assume annotation in |SPARK|
+
+TBD
+
 
 Assert used to control path explostion (ASPDV example)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
