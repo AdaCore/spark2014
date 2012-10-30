@@ -641,25 +641,25 @@ converted into embedded packages.
 
 Specification in SPARK 2005
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/asm_abstract_state_refined_in_embedded_package_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/asm_abstract_state_refined_in_embedded_package_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.adb
       :language: ada
       :linenos:
 
 Specification in |SPARK|
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/asm_abstract_state_refined_in_embedded_package_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.ads
       :language: ada
       :linenos:
 
 Body in |SPARK|
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/asm_abstract_state_refined_in_embedded_package_14.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.adb
       :language: ada
       :linenos:
 
@@ -675,43 +675,43 @@ Source_A is an embedded package, while Source_B is a private child.
 
 Specification of Parent in SPARK 2005
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.ads
       :language: ada
       :linenos:
 
 Body of Parent in SPARK 2005
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.adb
       :language: ada
       :linenos:
 
 Specification of Private Child in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child-child_b_05.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05_source_b_05.ads
       :language: ada
       :linenos:
 
 Body of Private Child in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/asm_abstract_state_refined_in_embedded_and_private_child-child_b_05.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05_source_b_05.adb
       :language: ada
       :linenos:
 
 Specification of Parent in |SPARK|
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.ads
       :language: ada
       :linenos:
 
 Body of Parent in |SPARK|
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child_14.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.adb
       :language: ada
       :linenos:
 
 Specification of Private Child in |SPARK|
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/asm_abstract_state_refined_in_embedded_and_private_child-child_b_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14_source_b_14.ads
       :language: ada
       :linenos:
 

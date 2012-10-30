@@ -1,5 +1,5 @@
 -- Use of embedded packages to encapsulate state
-package asm_abstract_state_refined_in_embedded_package_14
+package Power_14
 with
    Abstract_State => State;
 is
@@ -7,4 +7,4 @@ is
    with
       Global  => State,
       Depends => (Level => State);
-end asm_abstract_state_refined_in_embedded_package_14;
+end Power_14;

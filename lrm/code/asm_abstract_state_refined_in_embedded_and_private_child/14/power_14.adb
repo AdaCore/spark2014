@@ -1,8 +1,8 @@
-with asm_abstract_state_refined_in_embedded_and_private_child_14.Source_B;
+with Power_14.Source_B_14;
 
-package body asm_abstract_state_refined_in_embedded_and_private_child_14
+package body Power_14
 with
-  Refined_State => (State => (Source_A.State, asm_abstract_state_refined_in_embedded_and_private_child_14.Source_B.State));
+  Refined_State => (State => (Source_A.State, Power_14.Source_B_14.State));
 is
 
   --  Embedded package spec for Source_A
@@ -30,15 +30,15 @@ is
 
   procedure Read_Power(Level : out Integer)
   with
-     Global => (Source_A.State, Source_B.State),
-     Depends => (Level => (Source_A.State, Source_B.State));
+     Global => (Source_A.State, Source_B_14.State),
+     Depends => (Level => (Source_A.State, Source_B_14.State));
   is
      Level_A : Integer;
      Level_B : Integer;
   begin
      Source_A. Read (Level_A);
-     Source_B.Read (Level_B);
+     Source_B_14.Read (Level_B);
      Level := Level_A + Level_B;
   end Read_Power;
 
-end asm_abstract_state_refined_in_embedded_and_private_child_14;
+end Power_14;

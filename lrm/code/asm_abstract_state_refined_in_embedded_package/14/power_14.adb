@@ -1,25 +1,28 @@
-
-package body asm_abstract_state_refined_in_embedded_package_05
---# own State is Source_A.State,
---#              Source_B.State;
+package body Power_14
+with
+   Refined_State => (State => (Source_A.State, Source_B.State));
 is
 
   --  Embedded package spec for Source_A
   package Source_A
-  --# own State;        
+  with
+     Abstract_State => State;
   is
      procedure Read (Level : out Integer);
-      --# global State;
-      --# derives Level from State;
+     with
+       Global  => State,
+       Depends => (Level => State);
   end Source_A;
 
   --  Embedded package spec for Source_B.
   package Source_B
-  --# own State;
+  with
+     Abstract_State => State;
   is
     procedure Read (Level : out Integer);
-    --# global State;
-    --# derives Level from State;
+    with
+      Global  => State,
+      Depends => (Level => State);
   end Source_B;
 
   --  Embedded package body for Source_A
@@ -48,12 +51,9 @@ is
   end Source_B;
 
   procedure Read_Power(Level : out Integer)
-  --# global Source_A.State, Source_B.State;
-  --# derives
-  --#     Level
-  --#     from
-  --#         Source_A.State,
-  --#         Source_B.State;
+  with
+     Global => (Source_A.State, Source_B.State),
+     Depends => (Level => (Source_A.State, Source_B.State));
   is
      Level_A : Integer;
      Level_B : Integer;
@@ -63,4 +63,4 @@ is
      Level := Level_A + Level_B;
   end Read_Power;
 
-end asm_abstract_state_refined_in_embedded_package_05;
+end Power_14;

@@ -1,4 +1,4 @@
-package body Power_05.Source_B_05
+package body Power_14.Source_B_14
 is
    State : Integer;
 
@@ -7,4 +7,4 @@ is
    begin
       Level := State;
    end Read;
-end Power_05.Source_B_05;
+end Power_14.Source_B_14;
