@@ -13,4 +13,13 @@ is
       My_Stack.S(My_Stack.Pointer) := X;
    end Push;
 
+   procedure Initialize
+   --# global out My_Stack;
+   --# post My_Stack.Pointer = 0;
+   is
+      --# for Initial_Stack declare Rule;
+   begin
+      My_Stack := Initial_Stack;
+   end Initialize;
+
 end Stack;

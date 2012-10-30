@@ -16,9 +16,13 @@ is
    --# pre not Is_Full (State);
    --# post not Is_Empty (State);
 
+   --  Initializes the Stack.
+   procedure Initialize;
+   --# global out State;
+   --# post Is_Empty (State);
+
    --  Other operations not included as not needed for
    --  this example.
-
 
 private
    Stack_Size : constant := 100;
@@ -31,4 +35,9 @@ private
          S : Vector;
          Pointer : Pointer_Range;
       end record;
+      
+   Initial_Stack : constant Stack_Type :=
+      Stack_Type'(S       => Vector'(others => 0),
+                  Pointer => 0);
+
 end Stack;
