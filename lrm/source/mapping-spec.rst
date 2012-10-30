@@ -904,6 +904,28 @@ TBD
 Contracts with remote state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The following example illustrates indirect access to the state of one package
+by another via an intermediary. Raw_Data stores some data, which has pre-processing
+performed on it by Processing and on which Calculate performs some further processing
+(although the corresponding bodies are not given, Read_Calculated_Value in Caluclate
+calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
+
+Specifications in SPARK 2005
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
+      :language: ada
+      :linenos:
+      
+   .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|
+
 TBD
 
 Package nested inside package
