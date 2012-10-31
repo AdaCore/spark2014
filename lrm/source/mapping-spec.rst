@@ -921,6 +921,36 @@ Switch body in |SPARK|
 
 TBD
 
+Complex I/O Device
+^^^^^^^^^^^^^^^^^^
+
+The following example illustrates a more complex I/O device: the device is fundamentally
+an output device but an acknowledgement has to be read from it. In addition, a local register
+stores the last value written to avoid writes that would just re-send the same value.
+The own variable is then refined into a normal variable, an input external variable
+ad an output external variable.
+
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
+
+TBD
+
 
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
