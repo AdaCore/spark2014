@@ -1031,14 +1031,24 @@ Specifications in SPARK 2005
    .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
       :language: ada
       :linenos:
-      
+
    .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/contracts_with_remote_state/14/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/processing.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/calculate.ads
+      :language: ada
+      :linenos:
 
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
