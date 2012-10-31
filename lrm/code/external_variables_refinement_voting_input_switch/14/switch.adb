@@ -3,9 +3,9 @@ with Switch.Val2;
 with Switch.Val3;
 package body Switch
 with
-   Refined_State => (Volatile => (Input => (Switch.Val1.State,
-                                            Switch.Val2.State,
-                                            Switch.Val3.State)));
+   Refined_State => (State => (Volatile => (Input => (Switch.Val1.State,
+                                                      Switch.Val2.State,
+                                                      Switch.Val3.State))));
 is
 
    subtype Value is Integer range -1 .. 1;
