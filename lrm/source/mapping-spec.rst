@@ -86,11 +86,19 @@ Body in SPARK 2005:
 
 Specification in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
-TBD
+*Note that the details of false alarm management are still TBD and so
+there is currently no equivalent in the* |SPARK| *body to the accept annotation
+in the SPARK 2005 body.*
+
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.adb
+      :language: ada
+      :linenos:
 
 
 Nesting of subprograms, including more refinement
@@ -323,7 +331,7 @@ Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following example demonstrates visibility rules that apply between public children, 
-private children and their parent. More specifically, it shows that:
+private children and their parent in SPARK 2005. More specifically, it shows that:
 
 * Private children are able to see their private siblings but not their public siblings.
 * Public children are able to see their public siblings but not their private siblings.
@@ -749,7 +757,6 @@ As per SPARK 2005.
 External Variables
 ~~~~~~~~~~~~~~~~~~
 
-TBD
 
 Basic Input and Output Device Drivers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -797,33 +804,50 @@ Specification of Stack in SPARK 2005:
 
 Specification of main program in |SPARK|:
 
-TBD
+*Note that the syntax for identifying the main program in* |SPARK| *is still
+TBD.*
+
+   .. literalinclude:: ../code/external_variables_input_output/14/copy.adb
+      :language: ada
+      :linenos:
 
 Specification of input port in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port.ads
+      :language: ada
+      :linenos:
 
 Specification of output port in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port.ads
+      :language: ada
+      :linenos:
 
 Body of input port in |SPARK|:
 
-TBD
+This is as per SPARK 2005.
+
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port.adb
+      :language: ada
+      :linenos:
 
 Body of output port in |SPARK|:
 
-TBD
+This is as per SPARK 2005.
+
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port.adb
+      :language: ada
+      :linenos:
 
 Specification of Stack in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/stacks.ads
+      :language: ada
+      :linenos:
 
 
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*** Add the detail Flo wants in here. ***
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
@@ -911,13 +935,92 @@ Switch body in SPARK 2005
 
 Abstract Switch specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.ads
+      :language: ada
+      :linenos:
 
 Component Switch specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val3.ads
+      :language: ada
+      :linenos:
 
 Switch body in |SPARK|
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.adb
+      :language: ada
+      :linenos:
+
+Complex I/O Device
+^^^^^^^^^^^^^^^^^^
+
+The following example illustrates a more complex I/O device: the device is fundamentally
+an output device but an acknowledgement has to be read from it. In addition, a local register
+stores the last value written to avoid writes that would just re-send the same value.
+The own variable is then refined into a normal variable, an input external variable
+ad an output external variable.
+
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
+
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
+
+TBD
+
+Increasing values in input stream
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example illustrates an input port from which values are
+read. According to its post-condition, procedure Increases checks whether
+the first values read from the sequence are in ascending order. This example
+shows that post-conditions can refer to multiple individual elements of the
+input stream.
+
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
+
+Specification in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+TBD
+
+Body in |SPARK|:
 
 TBD
 
@@ -933,7 +1036,7 @@ Contracts with remote state
 The following example illustrates indirect access to the state of one package
 by another via an intermediary. Raw_Data stores some data, which has pre-processing
 performed on it by Processing and on which Calculate performs some further processing
-(although the corresponding bodies are not given, Read_Calculated_Value in Caluclate
+(although the corresponding bodies are not given, Read_Calculated_Value in Calculate
 calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
 
 Specifications in SPARK 2005
@@ -945,14 +1048,24 @@ Specifications in SPARK 2005
    .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
       :language: ada
       :linenos:
-      
+
    .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/contracts_with_remote_state/14/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/processing.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/calculate.ads
+      :language: ada
+      :linenos:
 
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -994,15 +1107,29 @@ Switch body in SPARK 2005
 
 Abstract Switch specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.ads
+      :language: ada
+      :linenos:
 
 Component Switch specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val3.ads
+      :language: ada
+      :linenos:
 
 Switch body in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.adb
+      :language: ada
+      :linenos:
 
 
 .. _ms-circular_dependence_and_elaboration_order-label:
@@ -1037,6 +1164,30 @@ Body of package Q_05 in SPARK 2005:
       :language: ada
       :linenos:
 
+Specifications of package P_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.ads
+      :language: ada
+      :linenos:
+
+Specifications of package Q_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.ads
+      :language: ada
+      :linenos:
+
+Body of package P_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.adb
+      :language: ada
+      :linenos:
+
+Body of package Q_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.adb
+      :language: ada
+      :linenos:
+
 Bodies and Proof
 ----------------
 
@@ -1044,24 +1195,67 @@ Bodies and Proof
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _ms-assert_contract-label:
+.. _ms-assert_loop_contract-label:
 
-Assert contract
-^^^^^^^^^^^^^^^
+Assert (in loop) contract
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how the `assert` annotation is used. `Assert` annotations 
-clear the list of existing hypotheses and add the statements that are within the annotation 
-as the new hypotheses.
+The following example demonstrates how the `assert` annotation can be used inside a loop. 
+At each run of the loop the list of existing hypotheses is cleared and the statements that 
+are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of 
+`assert`, while within a loop, is `pragma Loop_Invariant`.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_contract/05/p_05.ads
+   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_contract/05/p_05.adb
+   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.adb
+      :language: ada
+      :linenos:
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.adb
+      :language: ada
+      :linenos:
+
+
+.. _ms-assert_no_loop_contract-label:
+
+Assert (no loop) contract
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example demonstrates how the `assert` annotation can be used outside of a loop. 
+When the `assert` annotation is reached, the list of hypotheses is cleared and the statements 
+that are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent 
+of `assert`, while not in a loop, is `pragma Assert_And_Cut`. Only the 2005 version of the 
+specifications is being provided since the |SPARK| version is identical.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.adb
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/14/assert_no_loop_14.adb
       :language: ada
       :linenos:
 
@@ -1074,23 +1268,27 @@ attribute).
 
 Specification for Assume annotation in SPARK 2005
 
-   .. literalinclude:: ../code/proof_check_contract/05/input_port.ads
+   .. literalinclude:: ../code/proof_assume_contract/05/input_port.ads
       :language: ada
       :linenos:
 
 Body for Assume annotation in SPARK 2005
 
-   .. literalinclude:: ../code/proof_check_contract/05/input_port.adb
+   .. literalinclude:: ../code/proof_assume_contract/05/input_port.adb
       :language: ada
       :linenos:
 
 Specification for Assume annotation in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/proof_assume_contract/14/input_port.ads
+      :language: ada
+      :linenos:
 
 Body for Assume annotation in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/proof_assume_contract/14/input_port.adb
+      :language: ada
+      :linenos:
 
 .. _ms-check_contract-label:
 
@@ -1098,7 +1296,8 @@ Check contract
 ^^^^^^^^^^^^^^
 
 This example shows how the `check` annotation can be used to add a new hypothesis to the list 
-of existing hypotheses after first having verified its validity.
+of existing hypotheses. The specifications of the |SPARK| version of the code have not been 
+included since they are identical to the SPARK 2005 specifications.
 
 Specifications in SPARK 2005:
 
@@ -1109,6 +1308,12 @@ Specifications in SPARK 2005:
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/check_contract/05/check_05.adb
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/check_contract/14/check_14.adb
       :language: ada
       :linenos:
 
@@ -1137,6 +1342,8 @@ Rule declaration anno's
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 See section `Proof types and proof functions`_.
+
+.. _ms-proof_types_and_proof_functions-label:
 
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1167,15 +1374,15 @@ Proof rules in SPARK 2005:
 
 Specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|
 
-TBD
-
-Proof rules in |SPARK|:
-
-TBD
+   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.adb
+      :language: ada
+      :linenos:
 
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
