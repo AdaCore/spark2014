@@ -86,15 +86,19 @@ Body in SPARK 2005:
 
 Specification in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|:
 
-** Note that the details of false alarm management are still TBD and so
-there is currently no equivalent in the |SPARK| body to the accept annotation
-in the SPARK 2005 body.
+*Note that the details of false alarm management are still TBD and so
+there is currently no equivalent in the* |SPARK| *body to the accept annotation
+in the SPARK 2005 body.*
 
-TBD
+   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.adb
+      :language: ada
+      :linenos:
 
 
 Nesting of subprograms, including more refinement
@@ -801,27 +805,46 @@ Specification of Stack in SPARK 2005:
 
 Specification of main program in |SPARK|:
 
-TBD
+*Note that the syntax for identifying the main program in* |SPARK| *is still
+TBD.*
+
+   .. literalinclude:: ../code/external_variables_input_output/14/copy.adb
+      :language: ada
+      :linenos:
 
 Specification of input port in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port.ads
+      :language: ada
+      :linenos:
 
 Specification of output port in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port.ads
+      :language: ada
+      :linenos:
 
 Body of input port in |SPARK|:
 
-TBD
+This is as per SPARK 2005.
+
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port.adb
+      :language: ada
+      :linenos:
 
 Body of output port in |SPARK|:
 
-TBD
+This is as per SPARK 2005.
+
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port.adb
+      :language: ada
+      :linenos:
 
 Specification of Stack in |SPARK|:
 
-TBD
+   .. literalinclude:: ../code/external_variables_input_output/14/stacks.ads
+      :language: ada
+      :linenos:
 
 
 Input driver using \'Append and \'Tail contracts
@@ -1008,14 +1031,24 @@ Specifications in SPARK 2005
    .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
       :language: ada
       :linenos:
-      
+
    .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
       :language: ada
       :linenos:
 
 Specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/contracts_with_remote_state/14/raw_data.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/processing.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/contracts_with_remote_state/14/calculate.ads
+      :language: ada
+      :linenos:
 
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
