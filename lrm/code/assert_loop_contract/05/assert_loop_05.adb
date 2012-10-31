@@ -1,4 +1,4 @@
-package body P_05
+package body Assert_Loop_05
 is
    function Value_Present (A: A_Type; X : Integer) return Boolean
    is
@@ -11,4 +11,4 @@ is
       end loop;
       return A (I) = X;
    end Value_Present;
-end P_05;
+end Assert_Loop_05;

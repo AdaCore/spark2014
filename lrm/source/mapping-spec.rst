@@ -1044,24 +1044,53 @@ Bodies and Proof
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _ms-assert_contract-label:
+.. _ms-assert_loop_contract-label:
 
-Assert contract
-^^^^^^^^^^^^^^^
+Assert (in loop) contract
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how the `assert` annotation is used. `Assert` annotations 
-clear the list of existing hypotheses and add the statements that are within the annotation 
-as the new hypotheses.
+The following example demonstrates how the `assert` annotation can be used inside a loop. 
+At each run of the loop the list of existing hypotheses is cleared and the statements that 
+are within the `assert` annotation are added as the new hypotheses.
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_contract/05/p_05.ads
+   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.ads
       :language: ada
       :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_contract/05/p_05.adb
+   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.adb
+      :language: ada
+      :linenos:
+
+.. _ms-assert_no_loop_contract-label:
+
+Assert (no loop) contract
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example demonstrates how the `assert` annotation can be used outside of a loop. 
+When the `assert` annotation is reached, the list of hypotheses is cleared and the statements 
+that are within the `assert` annotation are added as the new hypotheses. The equivalent 
+of `assert` for |SPARK| is `pragma Assert_And_Cut`. Only the 2005 version of the specifications 
+is being provided since the |SPARK| version is identical.
+
+Specifications in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.adb
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/assert_no_loop_contract/14/assert_no_loop_14.adb
       :language: ada
       :linenos:
 
@@ -1098,7 +1127,8 @@ Check contract
 ^^^^^^^^^^^^^^
 
 This example shows how the `check` annotation can be used to add a new hypothesis to the list 
-of existing hypotheses after first having verified its validity.
+of existing hypotheses. The specifications of the |SPARK| version of the code have not been 
+included since they are identical to the SPARK 2005 specifications.
 
 Specifications in SPARK 2005:
 
@@ -1109,6 +1139,12 @@ Specifications in SPARK 2005:
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/check_contract/05/check_05.adb
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/check_contract/14/check_14.adb
       :language: ada
       :linenos:
 
