@@ -1268,23 +1268,27 @@ attribute).
 
 Specification for Assume annotation in SPARK 2005
 
-   .. literalinclude:: ../code/proof_check_contract/05/input_port.ads
+   .. literalinclude:: ../code/proof_assume_contract/05/input_port.ads
       :language: ada
       :linenos:
 
 Body for Assume annotation in SPARK 2005
 
-   .. literalinclude:: ../code/proof_check_contract/05/input_port.adb
+   .. literalinclude:: ../code/proof_assume_contract/05/input_port.adb
       :language: ada
       :linenos:
 
 Specification for Assume annotation in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/proof_assume_contract/14/input_port.ads
+      :language: ada
+      :linenos:
 
 Body for Assume annotation in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/proof_assume_contract/14/input_port.adb
+      :language: ada
+      :linenos:
 
 .. _ms-check_contract-label:
 
