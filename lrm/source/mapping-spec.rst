@@ -957,6 +957,9 @@ stores the last value written to avoid writes that would just re-send the same v
 The own variable is then refined into a normal variable, an input external variable
 ad an output external variable.
 
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
+
 
 Specification in SPARK 2005:
 
@@ -986,6 +989,9 @@ read. According to its post-condition, procedure Increases checks whether
 the first values read from the sequence are in ascending order. This example
 shows that post-conditions can refer to multiple individual elements of the
 input stream.
+
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
 
 Specification in SPARK 2005:
 
@@ -1090,15 +1096,29 @@ Switch body in SPARK 2005
 
 Abstract Switch specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.ads
+      :language: ada
+      :linenos:
 
 Component Switch specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val3.ads
+      :language: ada
+      :linenos:
 
 Switch body in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.adb
+      :language: ada
+      :linenos:
 
 
 .. _ms-circular_dependence_and_elaboration_order-label:
