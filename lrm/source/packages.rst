@@ -94,9 +94,12 @@ where
 
 .. todo:: Consider whether we need the extended state_name with integrity
 
+.. todo Consider whether we need Volatile => In_Out.
+
 .. todo:: Consider a latched output mode selector, one that can be
    read after writing but need not be.  This scheme has beeen
-   requested by secunet.
+   requested by secunet.  In this scheme the output would be volatile
+   but the input non-volatile.
 
 .. todo:: May introduce a way to provide a "history" parameter for
    Volatile variables.
@@ -117,8 +120,7 @@ where
    ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_state`` is
    permitted in an ``abstract_state_aspect``.
-#. The only ``mode_selector`` values permitted are Input, Output and
-   possibly In_Out.
+#. The only ``mode_selector`` values permitted are Input or Output.
 
 .. centered:: **Static Semantics**
 
@@ -130,18 +132,11 @@ where
    ``abstract_state_aspect`` is applied.
 #. Volatile designates a volatile state, usually representing an
    external input or output.  The mode selector determines whether the
-   volatile state is an input or an output or possibly both an input
-   and an output (an in_out).
+   volatile state is an input or an output.
 #. A volatile Input may only oocur where a ``moded_item`` of mode
    **in** is permitted.
 #. A volatile Output may only oocur where a ``moded_item`` of mode
    **out** is permitted.
-#. A volatile In_Out has the attributes ``Input`` and ``Output``.
-#. A volatile In_Out ``state_name`` cannot be used directly it must be
-   attributed with ``Input`` or ``Output``
-#. A volatile In_Out ``state_name`` S may be used as an ``import``
-   using the notation S'Input and used as an export using the notation
-   S'Output.
 #. A `state_name`` of a package is generally considered to be
    representing hidden state in one of the following categories:
  
@@ -153,30 +148,24 @@ where
      is considered to be implicitly initialized.
    * Volatile Output State - Volatile state which is an output only
      and is considered to be implicitly initialized.
-   * Volatile In_Out State - Volatile state which is bidirectional and
-     is considered to be implicitly initialized.
 
 #. The category is specified using the ``category_state`` syntax
    supplimented by the ``initializes_aspect.  A ``category_state``
    without a category defaults to Non_Volatile.
 #. A Volatile In or Out ``state_name`` represents a sequence of state
    changes brought about by reading or writing successive values to or
-   from a Volatile *variable*. An Volatile In_Out ``state_name``
-   represents its input and output characteristics as two seperate
-   sequences.  The input sequence is denoted using the ``Input``
-   attribute and the output sequence is denoted by the ``Output``
-   attribute.
-#. Each time a subprogram is called which has a Volatile Input or
-   In_Out ``state_name`` in its ``global_aspect`` it ultimatly reads a
+   from a Volatile *variable*.
+#. Each time a subprogram is called which has a Volatile Input
+   ``state_name`` in its ``global_aspect`` it ultimatly reads a
    Volatile *variable*.  The value of this *variable* may be different
    each time it is read. A normal non-volatile *variable* would have
    the same value unless there was an intervining update of the
    *variable*. This distinction with a normal non-volatile variable or
    state_state name is important for both flow analysis and proof.
-#. Each time a subprogram is called which has a Volatile Output or
-   In_Out ``state_name`` in its ``global_aspect`` it ultimatly writes
-   to a Volatile *variable*.  This *variable* may be written to many
-   times without intervining reads.  This is in contrast with a normal
+#. Each time a subprogram is called which has a Volatile Output
+   ``state_name`` in its ``global_aspect`` it ultimatly writes to a
+   Volatile *variable*.  This *variable* may be written to many times
+   without intervining reads.  This is in contrast with a normal
    non-volatile variable or state where successive updates with no
    intervining reads would indicate that earlier updtaes were
    ineffective.  Flow analysis and proof have to take account of this
@@ -190,8 +179,6 @@ where
    in the visible part of a public package?
 
 .. todo:: Should we allow Volatile => In_Out?
-
-.. todo:: Consider Volatile => Latched 
 
 .. centered:: **Verification Rules**
 
@@ -207,10 +194,10 @@ where
    * *package_*\ ``name'Initialized_State``
    * *package_*\ ``name'Volatile_Input_State``
    * *package_*\ ``name'Volatile_Output_State``
-   * *package_*\ ``name'Volatile_In_Out_State``
 
 
 .. centered:: **Restrictions that may be Applied**
+
 .. include:: restrictions-and-profiles.rst
    :start-after: 7.1.2 Abstract State Aspect
    :end-before: 7.1.3 
@@ -370,7 +357,7 @@ where
 
 .. todo:: I anm not sure we can automatically determine volatile
    variables.  Possibly use the volatile pargma/aspect - how to
-   determine whether it is Input, Output or In_Out.  Perhaps assume
+   determine whether it is Input or Output. Perhaps assume
    Input if it is designated to be a constant.
 
 .. centered:: **Dynamic Semantics**
@@ -583,16 +570,18 @@ Refined State Aspect
 
 ::
 
-  refined_state_aspect         ::= Refined_State => refined_state_list
-  refined_state_list           ::= (state_and_constituent_list {, state_and_constituent_list})
-  state_and_constituent_list   ::= abstract_state_name => categorised_constituent_list
-  abstract_state_name          ::= state_name | null
-  categorised_constituent_list ::= constituent_list
-                                   (category_constituent {, category_constituent})
-  category_constituent         ::= [Non_Volatile =>] constituent_list
-                                 | Volatile => (mode_selector => constituent_list))
-  constituent_list             ::= constituent
-                                 | (constituent {, constituent})
+  refined_state_aspect             ::= Refined_State => state_and_category_list
+  state_and_category_list          ::= (state_and_category {, state_and_category})
+  state_and_category               ::= abstract_state_name => categorised_constituent_list
+  categorised_constituent_list     ::= constituent_list
+                                     | (Non_Volatile => constituent_list)
+                                     | (Volatile     => moded_list)
+  moded_list                       ::= (moded_constituent_list {, moded__constituent_list})
+  moded_constituent_list           ::= mode_selector => constituent_list
+  abstract_state_name              ::= state_name | null
+  constituent_list                 ::= constituent
+                                     | (constituent {, constituent})
+
 
 where
 
@@ -608,8 +597,8 @@ where
    specification does not have an ``abstract_state_aspect``.
 #. A ``refined_state_aspect`` of a package body has extended
    visibility; it is able to refer to a *variable*, or a
-   ``state_name`` of a package, declared immediately within the
-   package body.
+   ``state_name`` or *variable* declared in the visible part of a
+   package, declared immediately within the package body.
 #. Each ``state_name`` declared in a package specification must appear
    exactly once as an ``abstract_state_name`` in the
    ``state_refinment_aspect`` of the body of the package.
@@ -617,13 +606,17 @@ where
    ``abstract_state_name`` it can only be a ``constituent`` of that
    ``abstract_state_name`` and it must be the only ``constituent`` of
    the ``abstract_state_name``.
+#. An entry of a ``categorised_constituent_list`` without a Volatile
+   or Non_Volatile designator is taken to have the default designator
+   of Non_Volatile.
+#. At most one Volatile entry is permitted in a
+   ``categorised_constituent_list``.
+#. At most one of a Non_Volatile or a default entry is permitted in a
+   ``categorised_constituent_list``.
 #. There should be at most one **null** ``abstract_state_name`` and,
-   if it is present it must be the ``abstract_state_name`` of the last
-   ``state_and_constituent_list`` of the ``refined_state_list``.
-#. At most one ``category_constituent`` of Volatile is permitted in a
-   ``refined_state_aspect``.
-#. At most one of a Non_Volatile or a default ``category_constituent`` is
-   permitted in a ``refined_state_aspect``.
+   if it is present it must be Non_Volatile and the last entry of the 
+   ``state_and_category_list``.
+#. Only ``mode_selector`` values of Input and Output may be used.
 
 .. centered:: **Static Semantics**
 
@@ -646,42 +639,40 @@ where
 
 #. Each ``constituent`` of the hidden state of must appear exactly
    once in a ``constituent_list`` of exactly one
-   ``state_and_constituent_list``; that is each ``constitutent`` must
+   ``state_and_category``; that is each ``constitutent`` must
    be a constituent of one and only one ``state_name``.
 #. A *variable* which is a ``constituent`` is an *entire variable*; it
    is not a component of a containing object.
 #. If an ``abstract_state_name`` and its ``constituent`` have the same
    name this represents the simple mapping of a an abstract
    ``state_name`` on to a concrete *variable* of the same name.
-#. If a ``state_name`` has been desinated as Volatile then each
-   ``constituent`` of the ``state_name`` must also be designated as
-   Volatile in the ``refined_state_aspect``.  Furthermore if the
-   ``mode_selector`` of the Volatile ``state_name`` is:
-  
-   * Input, then at least one ``constituent`` of the ``state_name``
-     must also have a ``mode_selector`` of Input;
-   * Output, then at least one ``constituent`` of the ``state_name``
-     must also have a ``mode_selector`` of Output;
-   * In_Out, then at least one ``constituent`` of the ``state_name``
-     should have have a ``mode_selector`` In_Out or at least one of
-     each of Input, Output.
-
-#. The category is specified using the ``category_state`` syntax.  A
-   ``category_state`` without a category defaults to Non_Volatile.
-#. A ``state_name`` which is not designated as Volatile may be refined
-   on to one or more Volatile Input, Output or In_Out ``constituents``
-   as well as non-Volatile ``constituents``.
+#. The category of a ``constituent`` is specified using the Volatile,
+   Non_Volatile or default designator in a
+   ``categorised_constituent_list``.
+#. A ``state_name`` declared in the ``abstract_state_aspect`` which
+   has not designated as Volatile may be refined on to one or more
+   Volatile Input or Output ``constituents`` as well as Non_Volatile
+   ``constituents``.
+#. If a ``state_name`` declared in the ``abstract_state_aspect`` has
+   been desinated as Volatile with a ``mode_selector`` M then at least
+   one ``constituent`` of the ``state_name`` must also be designated
+   as Volatile with a ``mode_selector`` M in the
+   ``refined_state_aspect``.
 #. A **null** ``abstract_state_name`` represents a hidden state
    component of a package which has no logical effect on the view of
    the package visible to a user.  An example would be a cache used to
    speed up an operation but does not have an effect on the result of
    the operation.
+#. A Non_Volatile``constituent`` of a **null** ``abstract_state_name``
+   must be initialized by package elaboration.
 
-.. todo:: Think about whether this can introduce a covert channel
+.. todo:: Think about whether **null** abstract state can introduce a
+   covert channel.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
+
 
 #. If a package has internal state but no but no
    ``abstract_state_aspect`` an implicit one is generated from the
@@ -767,14 +758,16 @@ package elaboration.
 #. Each ``constituent`` of a **null** ``abstract_state_name`` must be
    initialized implicitly or during package elaboration.
 
+.. _refined-global-aspect:
+
 Refined Global Aspect
 ^^^^^^^^^^^^^^^^^^^^^
 
 If a subprogram declaration in the visible part of a package names a
-``state_name`` of a package in its ``global_aspect`` then the body,
-body stub or renaming declaration of the subprogram in the body of the
-package must have a ``refined_global_aspect`` replacing the
-``state_name`` by one or more of its ``constituents``.
+``state_name`` of a package in its ``global_aspect`` then the body, or
+body stub of the subprogram in the body of the package must have a
+``refined_global_aspect`` replacing the ``state_name`` by one or more
+of its ``constituents``.
 
 .. centered:: **Syntax**
 
@@ -784,22 +777,21 @@ package must have a ``refined_global_aspect`` replacing the
 
 .. centered:: **Legality Rules**
 
-#. A ``refined_global_aspect`` may only appear on the body, body stub
-   or renaming declaration of a subprogram P in a package whose
-   ``visible_part`` contains the declaration of P which has a
-   ``global_aspect``.
-#. If a subprogram declaration P in the visible part of a package
-   refers to a ``state_name`` declared in the
-   ``abstract_state_aspect`` of the package, then in the body of the
-   package the body, body stub or renaming declaration must have a
+#. A ``refined_global_aspect`` may only appear on the body or body stub
+   of a subprogram P in a package whose ``visible_part`` contains the
+   declaration of P which has a ``global_aspect``.
+#. If the ``global_aspect`` of a subprogram declaration P in the
+   visible part of a package refers to a ``state_name`` declared in
+   the ``abstract_state_aspect`` of the package, then in the body of
+   the package the body or body stub of P must have a
    ``refined_global_aspect`` unless the body is an expression function
    when it is optional.
-#. A ``refined_global_aspect`` on the body, body stub or renaming
-   declaration of a subprogram P may only mention ``constituents`` of
-   a ``state_name`` given in the ``global_aspect`` in the declaration
-   of P, a *global* item that is not a ``state_name`` of the enclosing
-   package named in the the ``global_aspect`` of P or a
-   ``constituent`` of a **null** ``abstract_state_name``.
+#. A ``refined_global_aspect`` on the body or body stub of a
+   subprogram P may only mention ``constituents`` of a ``state_name``
+   given in the ``global_aspect`` in the declaration of P, a *global*
+   item that is not a ``state_name`` of the enclosing package named in
+   the the ``global_aspect`` of P or a ``constituent`` of a **null**
+   ``abstract_state_name``.
 
 
 .. centered:: **Static Semantics**
@@ -828,8 +820,8 @@ package must have a ``refined_global_aspect`` replacing the
        included in G'.
  
    * For each item in G which is a ``state_name`` S of package Q that
-      is Volatile at least one ``constituent`` of S must appear in G'
-      and,
+     is Volatile at least one ``constituent`` of S must appear in G'
+     and,
  
      * if S is a Volatile Input at least one ``constituent`` of S in
        G'must be of mode **in**.
@@ -850,11 +842,13 @@ package must have a ``refined_global_aspect`` replacing the
 
 .. centered:: *Checked by Flow-Analysis*
 
-.. todo: Similar rules to those given for ``global_aspects``.  Need to
-   caveat the rules regarding ``global_aspects`` for when a
-   ``refined_global_aspect`` is present.
+#. If a subprogram has a ``refined_global_aspect`` which satisfies the
+   legality rules, its ``refined_global_aspect`` is used in the
+   analysis of the subprogram body rather than its ``global_aspect``.
 
+.. todo:: Consider subprogram body renaming declarations.
 
+.. _refined-dependency-aspect:
 
 Refined Dependency Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -865,29 +859,63 @@ Refined Dependency Aspect
 
   refined_depends_aspect ::= Refined_Depends => dependency_relation
 
+
+
+.. centered:: **Legality Rules**
+
+#. A ``refined_dependency_aspect`` may only appear on the body or body
+   stub of a subprogram P in a package whose ``visible_part`` contains
+   the declaration of P which has a ``dependency_aspect`` or is the
+   declaration of a function which has implicit ``dependency_aspect``.
+#. If a ``dependency_aspect`` of a subprogram declaration P in the
+   visible part of a package refers to a ``state_name`` declared in
+   the ``abstract_state_aspect`` of the package, then in the body of
+   the package the body or body stub of P must have a
+   ``refined_dependency_aspect``.
+#. A ``refined_dependency_aspect`` on the body or body stub of a
+   subprogram P may only mention ``constituents`` of a ``state_name``
+   given in the ``dependency_aspect`` in the declaration of P, a
+   *global* item that is not a ``state_name`` of the enclosing or a
+   ``constituent`` of a **null** ``abstract_state_name``.
+
 .. centered:: **Static Semantics**
 
-#. A ``refined_dependency_aspect`` may only appear on the body of a
-   subprogram P in a package whose ``visible_part`` contains the
-   declaration of P which has a ``global_aspect``.
-#. A ``refined_dependency_aspect`` on the body of a subprogram P may
-   only mention ``constituents`` of a ``state_name`` mentioned in the
-   ``global_aspect`` in the declaration of P, a *global variable*
-   named in the the ``global_aspect`` of P, a ``constituent`` of a
-   **null** ``abatract_state_name``, or a *formal parameter* of P.
-#. A constituent of a ``state_name`` or a *global variable* appearing
-   in a ``refined_global_aspect`` of a subprogram body may be an
-   ``import`` or an ``export`` dependent on its mode.  Similarly a
-   *formal_parameter* of the subprogram may be an ``import`` or an
-   ``export`` depending on its mode.
-#. The rules for what may be an ``import`` and what may be an
-   ``export`` are the same as for a ``dependency_aspect`` accept that
-   the ``refined_global_aspect`` of the subprogram is considered
-   rather than the ``global_aspect``.
-#. A function may have a ``refined_dependency_relation`` which has an
-   ``export`` in addition to its result provided the ``export`` is
-   also an ``import`` and is a ``constituent`` of a **null**
-   ``abstract_state_name``.
+#. A ``refined_dependency_aspect`` of a subprogram defines a *refinement*
+   of the ``dependency_aspect`` of the subprogram.
+#. A *refinement* D' of a ``dependecny_aspect`` D declared within package
+   Q shall satisfy the following rules:
+ 
+   * For each ``export`` in D which is not a ``state_name`` of Q, 
+
+     * the same item must appear as an ``export`` in D';
+     * its ``dependency_list`` will be unchanged except that an
+       ``import`` which is a ``state_name`` of Q will be replaced in
+       D' by at least one ``constituent`` of the ``state_name`` and a
+       ``constituent`` of a **null** , ``abstract_state_name`` may be
+       an additional ``import``.
+
+   * for each ``export`` in D which is a ``state_name`` declared in Q,
+
+     * the item is replaced in D' by at least one export which is a
+       ``constituent`` of S,
+     * its ``dependency_list`` in D' cannot contain an ``import` which is a
+       ``state_name`` of Q but may a ``constituent`` of the ``state_name``,
+     * the union of every ``import`` from the ``dependency_list`` of
+       each ``export`` which is a ``constituent`` of S in D', with
+       every ``import`` which is a ``constituent`` of a ``state_name``
+       of Q replaced by its ``state_name`` (a ``constituent`` of a
+       **null** ``abstract_state_name`` is ignored) should give the
+       same set as the set of obtained by the union of every
+       ``import`` in the ``dependency_list`` of S in D.
+       
+   * function may have a ``refined_dependency_aspect`` D' (even if it
+     does not have an explicit ``dependency_aspect`` which mentions a
+     ``constituent`` of a **null** ``abstract_name`` but the must must
+     appear as both an ``import`` and an ``export`` in D'. 
+   * A ``constituent`` of a **null** ``abstract_state_name`` is
+     ignored in showing conformance between the ``dependency-aspect``
+     and the ``refined_dependency_aspect``.
+
 
 .. centered:: **Dynamic Semantics**
 
