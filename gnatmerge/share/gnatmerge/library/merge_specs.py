@@ -3,11 +3,16 @@
 A merge specification describes how heterogeneous results can be merged
 in a higher-level entity.
 
+This module provides three kinds of entities:
+* a parser of merge specs (MergeSpec);
+* a hierarchy of semantics for merge expressions (children of MergeSem);
+* an abstract factory that bridges the gap between these two parts
+(children of MergeSemFactory).
+
 You may find a few examples in the body of function unit_testing.
 """
 
 import shlex
-from debug import decorator
 
 class ParseError(Exception):
     """Exception raised when an invalid merge spec is given to parse
@@ -28,9 +33,9 @@ class ParseError(Exception):
 class MergeSem:
     """Semantic helper for spec merges
 
-    Children of this class provide various methods to compare
-    models (sets of atoms that are meant to represent the actual state
-    of entity, e.g. {'PROVED', 'TESTED'}) verify a spec.
+    Children of this class provide various methods to compare models
+    (e.g. sets of atoms that are true for the FreeSet case) verify a
+    spec.
 
     REMARKS
       This is meant to be an abstract class; do not instanciate it.
@@ -39,6 +44,9 @@ class MergeSem:
 
     def check(self, model):
         """Check a model against the spec
+
+        RETURNS
+          True if the model verifies the spec
 
         REMARKS
           This method is abstract and should be implemented by children
@@ -55,8 +63,8 @@ class MergeSem:
         """
         assert(False)
 
-class MergeUnary(MergeSem):
-    """Semantic helper for unary operators in spec merges
+class FreeSetMergeUnary(MergeSem):
+    """Free set semantic helper for unary operators in spec merges
 
     This represents semantic helpers for atom (e.g. 'PROVED') that are
     qualified by an unary operator (e.g. 'some').
@@ -82,8 +90,8 @@ class MergeUnary(MergeSem):
                      else set([]))
         return check, deduction
 
-class MergeSome(MergeUnary):
-    """Semantic helper for some-quantified atoms in spec merges
+class FreeSetMergeSome(FreeSetMergeUnary):
+    """Free set semantic helper for some-quantified atoms in spec merges
     """
 
     def check(self, model):
@@ -100,8 +108,8 @@ class MergeSome(MergeUnary):
         expression = "some %s" % self.atom
         return "<MergeSome> (%s%s)" % (name_prefix, expression)
 
-class MergeNo(MergeUnary):
-    """Semantic helper for no-quantified atoms in spec merges
+class FreeSetMergeNo(FreeSetMergeUnary):
+    """Free set semantic helper for no-quantified atoms in spec merges
     """
 
     def check(self, model):
@@ -118,8 +126,8 @@ class MergeNo(MergeUnary):
         expression = "no %s" % self.atom
         return "<MergeNo> (%s%s)" % (name_prefix, expression)
 
-class MergeBinary(MergeSem):
-    """Semantic helper for binary operators in spec merges
+class FreeSetMergeBinary(MergeSem):
+    """Free set semantic helper for binary operators in spec merges
 
     This represents semantic helpers (e.g. ['PROVED', 'TESTED'])
     binded with a given binary operators (e.g. 'and').
@@ -145,14 +153,14 @@ class MergeBinary(MergeSem):
         self.operands = operands
 
     def check(self, model):
-        """Implementation of MergeSem.check for binary-binded operands"""
+        """Implementation of MergeSem.check for binary ops"""
         result = self.identity
         for operand in self.operands:
             result = self.operator(result, operand.check(model))
         return result
 
     def deduce_all(self, model):
-        """Implementation of MergeSem.deduce_all for binary-binded operands"""
+        """Implementation of MergeSem.deduce_all for binary ops"""
         le = self.identity
         lm = set([])
         for operand in self.operands:
@@ -163,8 +171,8 @@ class MergeBinary(MergeSem):
             lm.add(self.name)
         return le, lm
 
-class MergeAnd(MergeBinary):
-    """Semantic helper for and-binded helpers
+class FreeSetMergeAnd(FreeSetMergeBinary):
+    """Free set semantic helper for and-binded helpers
 
     This provides the obvious corresponding semantics for and:
     i.e. self.check(model) returns True if all operand.check(model) return
@@ -172,8 +180,8 @@ class MergeAnd(MergeBinary):
     """
 
     def __init__(self, operands, name=None):
-        """Constructor - See description of attributes in MergeBinary"""
-        MergeBinary.__init__(self, operands, name)
+        """Constructor - See description of attributes in FreeSetMergeBinary"""
+        FreeSetMergeBinary.__init__(self, operands, name)
         self.operator = lambda l, r: (l and r)
         self.identity = True
 
@@ -187,8 +195,8 @@ class MergeAnd(MergeBinary):
         expression = " and ".join([str(o) for o in self.operands])
         return "<MergeAnd> (%s%s)" % (name_prefix, expression)
 
-class MergeOr(MergeBinary):
-    """Semantic helper for or-binded helpers
+class FreeSetMergeOr(FreeSetMergeBinary):
+    """Free set semantic helper for or-binded helpers
 
     This provides the obvious corresponding semantics for or:
     i.e. self.check(model) returns False if all operand.check(model) return
@@ -197,7 +205,7 @@ class MergeOr(MergeBinary):
 
     def __init__(self, operands, name=None):
         """Constructor - See description of attributes in MergeBinary"""
-        MergeBinary.__init__(self, operands, name)
+        FreeSetMergeBinary.__init__(self, operands, name)
         self.operator = lambda l, r: (l or r)
         self.identity = False
 
@@ -211,11 +219,88 @@ class MergeOr(MergeBinary):
         expression = " or ".join([str(o) for o in self.operands])
         return "<MergeOr> (%s %s)" % (name_prefix, expression)
 
+class MergeSemFactory:
+    """Abstract factory for semantics of merge spec
+    """
+
+    def build_merge_some(self, atom, name=None):
+        """Build a semantic helper for an expression of the form "some <atom>"
+
+        RETURNS
+          The result of the build
+
+        REMARKS
+          This method is abstract and should be implemented by children
+          of this class.
+        """
+        assert(False)
+
+    def build_merge_no(self, atom, name=None):
+        """Build a semantic helper for an expression of the form "no <atom>"
+
+        RETURNS
+          The result of the build
+
+        REMARKS
+          This method is abstract and should be implemented by children
+          of this class.
+        """
+        assert(False)
+
+    def build_merge_and(self, operands, name=None):
+        """Build a semantic helper for a list of and-binded operands
+
+        RETURNS
+          The result of the build
+
+        REMARKS
+          This method is abstract and should be implemented by children
+          of this class.
+        """
+        assert(False)
+
+    def build_merge_or(self, operands, name=None):
+        """Build a semantic helper for a list of or-binded operands
+
+        RETURNS
+          The result of the build
+
+        REMARKS
+          This method is abstract and should be implemented by children
+          of this class.
+        """
+        assert(False)
+
+class FreeSetMergeFactory(MergeSemFactory):
+    """Factory for simple semantics of merge specs
+
+    In the free set semantics, models are sets of atoms
+    (e.g. {'PROVED', 'TESTED'}). This class allows to recursively build
+    semantic helper from a spec expression.
+
+    """
+
+    def build_merge_some(self, atom, name=None):
+        "Implementation of SemMergeFactory.build_merge_some for sets"
+        return FreeSetMergeSome(atom, name)
+
+    def build_merge_no(self, atom, name=None):
+        "Implementation of SemMergeFactory.build_merge_some for sets"
+        return FreeSetMergeNo(atom, name)
+
+    def build_merge_and(self, operands, name=None):
+        "Implementation of SemMergeFactory.build_merge_some for sets"
+        return FreeSetMergeAnd(operands, name)
+
+    def build_merge_or(self, operands, name=None):
+        "Implementation of SemMergeFactory.build_merge_some for sets"
+        return FreeSetMergeOr(operands, name)
+
 terminals = {"(", ")", "and", "or", "no", "some"}
 
 class MergeSpec:
 
-    def __init__ (self, spec, name=None):
+    def __init__ (self, spec, sem_factory, name=None):
         """Build an internal representation of a merge spec
 
         A merge spec follows this syntax:
@@ -231,6 +316,7 @@ class MergeSpec:
           spec: a string representation of the spec, following the syntax
         """
         self.spec = spec
+        self.sem_factory = sem_factory
         lexer = shlex.shlex(spec)
         e = lexer.get_token()
         tokens = []
@@ -238,8 +324,8 @@ class MergeSpec:
             tokens.append(e)
             e = lexer.get_token()
         self.tokens = tuple(tokens)
-        self.ast, index = self.__parse_status(0)
-        self.ast.name = name
+        self.sem, index = self.__parse_status(0)
+        self.sem.name = name
 
     def __parse_status(self, index):
         """Internal function - parse <status>"""
@@ -250,7 +336,7 @@ class MergeSpec:
             right, index = self.__parse_and(index)
             left.append(right)
         if len(left) > 1:
-            return MergeOr(left), index
+            return self.sem_factory.build_merge_or(left), index
         else:
             return left.pop(), index
 
@@ -263,7 +349,7 @@ class MergeSpec:
             right, index = self.__parse_expr(index)
             left.append(right)
         if len(left) > 1:
-            return MergeAnd(left), index
+            return self.sem_factory.build_merge_and(left), index
         else:
             return left.pop(), index
 
@@ -289,11 +375,11 @@ class MergeSpec:
                                  % self.spec)
                 result = None
             else:
-                result = MergeSome(token)
+                result = self.sem_factory.build_merge_some(token)
                 index += 1
 
         elif self.__is_atom(token):
-            result = MergeSome(token)
+            result = self.sem_factory.build_merge_some(token)
             index += 1
 
         elif token == 'no':
@@ -304,7 +390,7 @@ class MergeSpec:
                                  % self.spec)
                 result = None
             else:
-                result = MergeNo(token)
+                result = self.sem_factory.build_merge_no(token)
                 index += 1
 
         else:
@@ -327,8 +413,8 @@ class MergeSpec:
             return None
 
     def check(self, model):
-        """Same as MergeSem.check"""
-        return self.ast.check(model)
+        """Check model against expression"""
+        return self.sem.check(model)
 
     def maximalize(self, model):
         """Append all possible deductions
@@ -336,7 +422,7 @@ class MergeSpec:
         Get all possible deductions from specs and model, and
         return the original model enriched with these deductions.
         """
-        check, deduction = self.ast.deduce_all(model)
+        check, deduction = self.sem.deduce_all(model)
         return model.union(deduction)
 
 def unit_testing():
@@ -348,7 +434,7 @@ def unit_testing():
     # A simple case: merging fragments with two possible status (OK or KO);
     # and making sure that there are no KO in these fragments, and at least
     # one OK to detect the case where no fragment has been contributed.
-    spec = MergeSpec("some OK and no KO")
+    spec = MergeSpec("some OK and no KO", FreeSetMergeFactory())
     assert(spec.check({'OK'}))
     assert(not spec.check({'KO', 'OK'}))
     assert(not spec.check({'KO'}))
@@ -357,7 +443,9 @@ def unit_testing():
     # A typical example in the case when proof and tests are merged:
     # If a procedure is not proved, then it should be both validated
     # and covered for a given criterion.
-    spec = MergeSpec("(VALIDATED and COVERED) or PROVED", name="OK")
+    spec = MergeSpec("(VALIDATED and COVERED) or PROVED",
+                     FreeSetMergeFactory(),
+                     name="OK")
     assert(spec.check({'VALIDATED', 'COVERED'}))
     assert(not spec.check({'VALIDATED'}))
     assert(spec.check({'PROVED'}))
