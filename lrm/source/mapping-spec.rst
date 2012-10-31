@@ -1100,6 +1100,30 @@ Body of package Q_05 in SPARK 2005:
       :language: ada
       :linenos:
 
+Specifications of package P_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.ads
+      :language: ada
+      :linenos:
+
+Specifications of package Q_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.ads
+      :language: ada
+      :linenos:
+
+Body of package P_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.adb
+      :language: ada
+      :linenos:
+
+Body of package Q_14 in |SPARK|:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.adb
+      :language: ada
+      :linenos:
+
 Bodies and Proof
 ----------------
 
