@@ -95,12 +95,6 @@ the needs of particular
 - Formal verification of non-functional properties, such as WCET and
   worst-case memory usage analysis.
 
-.. todo:: Should we talk about other forms of verification here? For example, other
-   forms of abstract interpretation, model-checking, symbolic execution,
-   concurrency analysis, etc?  Is this
-   a list of what we plan to do for release 1, or a list of what we *might* be able
-   to do in the future?
-
 Principal Language Restrictions
 -------------------------------
 
@@ -122,9 +116,66 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - Raising and handling of user-defined exceptions is not permitted.
 
-.. todo:: RCC to check other major restrictions in the GNATProve UG and
-   summarize here.  As this section develops and becomes definitive,
-   consider removing or reducing duplication in the UG.
+We describe a program unit or language feature as being "in |SPARK|" if it complies
+with the restrictions required to permit formal verification.  Conversely, a program unit language
+feature is "not in |SPARK|" if it does not meet these requirements, and so is not amenable
+to formal verification. Within a single unit, features which are "in" and "not in" |SPARK| may be mixed
+at a fine level. For example, the following combinations may be typical:
+
+- Package specification in |SPARK|. Package body entirely not in |SPARK|.
+
+- Visible part of package specification in |SPARK|. Private part and body not in |SPARK|.
+
+- Package specification in |SPARK|. Package body almost entirely in |SPARK| with a small
+  number of subprogram bodies not in |SPARK|.
+
+- Package specification in |SPARK|, with all bodies imported from another language.
+
+- Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
+  The latter declarations are only visible and usable from client units which are not in |SPARK|.
+
+Such patterns are intended to allow for mixed language programming, and the development of programs
+that mix formal verification and more traditional testing.
+
+Optional Restrictions and Profiles
+----------------------------------
+
+In additional to the global simplifications of the language given above, |SPARK|
+defines a number of Restrictions that may be optionally applied to an entire
+project, program or unit. These restirctions may provide additional simplification
+of the language that users feel necessary, may meet particular demands of standards
+or coding guidelines, and may facilitate additional forms of verification, or
+may improve the level of automation achievable with existing analyses.
+
+A *Profile* is a set of such Restrictions.
+
+Constructive and Retrospective Verification Modes
+-------------------------------------------------
+
+SPARK2005 strongly favoured the *constructive* verification style - where all program
+units required mandatory contracts on their specifications.  These contracts had to be
+designed and added at an early stage to assist modular verification, and then maintained
+by the user as a program evolved.
+
+In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of program
+construction and verification, where useful forms of verification can be achieved with
+code that complies with the core |SPARK| restrictions, but otherwise does not have any contracts.
+In this mode, implicit contracts can be computed from the bodies of units, and then 
+used in the analysis of other units, and so on.  These implicit contracts can
+be "promoted" by the user to become part of the specification of a unit, allowing the
+designer to move from the retrospective to the constructive mode as a project matures.
+The retrospective mode also allows for the verification of legacy code that was not
+originally designed with the |SPARK| contracts in mind.
+
+Finally, unit are do not comply with the rules of |SPARK| can be verified by testing
+against the stated contracts, allowing verification goals to be met by a mixture of
+analysis and test.
+
+.. todo:: RCC: More here on the mixed proof/test mode and how it works?  I am trying hard
+   here to avoid specifiying tool behaviour in the LRM, so it's difficult to know how far
+   to go in terms of stating what will be possible without getting too tool-specific.
+   Target: D1/CDR.
+
 
 Method of Description and Syntax Notation
 -----------------------------------------
@@ -132,61 +183,3 @@ Method of Description and Syntax Notation
 In expressing the syntax and rules of |SPARK|, the remaining chapters of
 this document follow the notational conventions of the Ada 2012 LRM (section 1.1.4).
 
-Original Material from TJJ
---------------------------
-
-Material below is retained from TJJ's draft of this chapter - to be
-reviewed and incorporated into the above.
-
-Language Subset
-~~~~~~~~~~~~~~~
-
-|SPARK| is a subset of Ada 2012 which may be used to prove the absence
-of run-time exceptions and, if suitable postconditions are provided,
-program correctness .  |SPARK| introduces a number of new aspect marks
-to use in aspect specifications to provide:
-
-* more detailed and concise subprogram specifications;
-* support for static analyses;
-* facilities for constructive, modular proof and analysis - proof and
-  static analyses may be performed on partial and incomplete programs;
-  and
-* higher levels of abstraction for data and modelling.
-
-A number of selectable restrictions specific to |SPARK| have been
-introduced to provide language profiles tailored to particular
-domains, but the restrictions may be applied individually using the
-pragma ``Restrictions`` or, conversely, a restriction that is in
-place, possibly due to a particular profile being active, may be
-overridden locally using the same pragma.
-
-.. todo:: Should |SPARK| itself be a restriction?  It actually adds
-  new features so I am not sure.  I am not entirely happy with the
-  next paragraph, which is why I raise this question.  I think there
-  should also be a command line switch or some way of stating that the
-  whole program has to be in |SPARK| unless a deliberate escape is
-  made. Alternatively, do we need the pragma/aspect |SPARK| at all.
-  Could we assume that the program is |SPARK| unless we step outside
-  the subset when a warning is given, and perhaps we could have a
-  restriction in |SPARK| called Ada => 2012, Ada => 95, etc. which
-  indicates that this part of the program is not in |SPARK| and
-  therefore will not raise the warnings?
-
-An Ada program may contain units in |SPARK| and units not in
-|SPARK|. An Ada unit may contain packages and subprograms in |SPARK|
-and others not in |SPARK|. The user can specify that a unit should be
-in |SPARK| by using the pragma |SPARK|. Likewise, the user can specify
-that a package or a subprogram should be in |SPARK| by using the
-aspect |SPARK| on the entity declaration, or the pragma ``SPARK_2014``
-in the body of the package or subprogram.
-
-To perform proofs and some of the deeper static analyses of a unit the
-code must be in SPARK, and depending on the type of analysis may
-require some further restrictions to be applied.
-
-.. todo:: I think we need to mention here in outline how we deal with
-  the dichotomy between proven, non proven and tested and resolve
-  these different parts into a coherent whole.
-
-.. todo:: Need to describe the difference between two modes of
-  working, constructive-modular and generative.
