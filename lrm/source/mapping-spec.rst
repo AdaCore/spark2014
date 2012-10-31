@@ -757,7 +757,6 @@ As per SPARK 2005.
 External Variables
 ~~~~~~~~~~~~~~~~~~
 
-TBD
 
 Basic Input and Output Device Drivers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -850,8 +849,6 @@ Specification of Stack in |SPARK|:
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*** Add the detail Flo wants in here. ***
-
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
@@ -938,15 +935,29 @@ Switch body in SPARK 2005
 
 Abstract Switch specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.ads
+      :language: ada
+      :linenos:
 
 Component Switch specifications in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val1.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val2.ads
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val3.ads
+      :language: ada
+      :linenos:
 
 Switch body in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.adb
+      :language: ada
+      :linenos:
 
 Complex I/O Device
 ^^^^^^^^^^^^^^^^^^
