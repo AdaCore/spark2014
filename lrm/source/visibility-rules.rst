@@ -33,8 +33,11 @@ Renaming Declarations
    are completely different?  Ada LRM 6.3.1 defines "fully conformant", but this
    doesn't seem to say anything and Pre and Post. Do we need
    to define a concept of "Proof Conformance" for |SPARK| that includes conformance
-   of Globals, Pre and Post? Target: D2.
-
+   of Globals, Pre and Post? UPDATE: conversation with SB says to think of a 
+   renaming-as-body as a one-line "call through wrapper" subprogram body. In that way,
+   the rules are clear: Parameters, Globals and Depends must match exactly, but Pre and Post
+   may exhibit the usual refinement relationship. Action on RCC to check what
+   GNATProve actually implements at the moment. Target: D2.
 
 .. todo:: RCC: Also concern about renaming-as-body when state refinement is present?
    Should that be possible? Target: D2.

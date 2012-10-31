@@ -331,7 +331,7 @@ Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following example demonstrates visibility rules that apply between public children, 
-private children and their parent. More specifically, it shows that:
+private children and their parent in SPARK 2005. More specifically, it shows that:
 
 * Private children are able to see their private siblings but not their public siblings.
 * Public children are able to see their public siblings but not their private siblings.
@@ -1025,7 +1025,7 @@ Contracts with remote state
 The following example illustrates indirect access to the state of one package
 by another via an intermediary. Raw_Data stores some data, which has pre-processing
 performed on it by Processing and on which Calculate performs some further processing
-(although the corresponding bodies are not given, Read_Calculated_Value in Caluclate
+(although the corresponding bodies are not given, Read_Calculated_Value in Calculate
 calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
 
 Specifications in SPARK 2005
@@ -1328,6 +1328,8 @@ Rule declaration anno's
 
 See section `Proof types and proof functions`_.
 
+.. _ms-proof_types_and_proof_functions-label:
+
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1357,15 +1359,15 @@ Proof rules in SPARK 2005:
 
 Specification in |SPARK|
 
-TBD
+   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.ads
+      :language: ada
+      :linenos:
 
 Body in |SPARK|
 
-TBD
-
-Proof rules in |SPARK|:
-
-TBD
+   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.adb
+      :language: ada
+      :linenos:
 
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
