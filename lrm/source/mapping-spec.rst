@@ -1138,7 +1138,8 @@ Assert (in loop) contract
 
 The following example demonstrates how the `assert` annotation can be used inside a loop. 
 At each run of the loop the list of existing hypotheses is cleared and the statements that 
-are within the `assert` annotation are added as the new hypotheses.
+are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of 
+`assert`, while within a loop, is `pragma Loop_Invariant`.
 
 Specifications in SPARK 2005:
 
@@ -1152,6 +1153,19 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.adb
+      :language: ada
+      :linenos:
+
+
 .. _ms-assert_no_loop_contract-label:
 
 Assert (no loop) contract
@@ -1159,9 +1173,9 @@ Assert (no loop) contract
 
 The following example demonstrates how the `assert` annotation can be used outside of a loop. 
 When the `assert` annotation is reached, the list of hypotheses is cleared and the statements 
-that are within the `assert` annotation are added as the new hypotheses. The equivalent 
-of `assert` for |SPARK| is `pragma Assert_And_Cut`. Only the 2005 version of the specifications 
-is being provided since the |SPARK| version is identical.
+that are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent 
+of `assert`, while not in a loop, is `pragma Assert_And_Cut`. Only the 2005 version of the 
+specifications is being provided since the |SPARK| version is identical.
 
 Specifications in SPARK 2005:
 
