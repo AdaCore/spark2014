@@ -807,7 +807,7 @@ package must have a ``refined_global_aspect`` replacing the
 
 #. A ``refined_global_aspect`` of a subprogram defines a *refinement*
    of the ``global_aspect`` of the subprogram.
-#. A *refinement*` G' of a ``global_aspect`` G declared within package
+#. A *refinement* G' of a ``global_aspect`` G declared within package
    Q shall satisfy the following rules:
  
    * For each item in G which is not a ``state_name`` of Q, the same
