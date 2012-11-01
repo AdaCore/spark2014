@@ -1,27 +1,59 @@
 Names and Expressions
 =====================
 
-.. todo:: The text for *New Attributes* has been copied directly from the initial langauge
-    design document as prepared by Johannes. It needs to be tided up
-    into LRM format.  It was headed Richer Expressions but describes
-    attributes.  I am not sure this is the right chapter for these?
-
 We denote by *assertion expression* an expression that appears inside an
 assertion, which can be a pragma Assert, a precondition or postcondition, a
 type invariant or predicate, or other assertions introduced in |SPARK|.
 
-Restrictions
-------------
+Names
+-----
 
 A name that denotes an entity is in |SPARK| if and only if the entity is in
 |SPARK|. Neither ``explicit_dereference`` nor ``implicit_dereference`` are in
 |SPARK|.
 
-Attribute ``Access`` is not in |SPARK|. As they are based on access
-discriminants, user-defined references and user-defined indexing are not in
-|SPARK|.
+Indexed Components
+~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+Slices
+~~~~~~
+
+No extensions or restrictions.
+
+Selected Components
+~~~~~~~~~~~~~~~~~~~
+
+Some constructs which would unconditionally raise an exception at
+runtime in Ada are rejected as illegal in |SPARK| if this property
+can be determined by static analysis.
+
+In particular, if the prefix of a
+record component selection is known statically to be constrained so
+that the selected component is not present, then the component
+selection (which, in Ada, would raise Constraint_Error if it were
+to be evaluated) is illegal.
+
+.. todo:: list all such illegal-due-to-inevitable-exception constructs
+
+Attributes
+~~~~~~~~~~
+
+No specific restrictions.
+
+The GNAT-defined attribute ``Name'Valid_Scalars`` may also be useful in |SPARK|.
+This attribute is a Boolean expression that evaluates to
+``True`` whenever all scalar components or subcomponents of ``Name`` have
+values allowed by their type.
+
+Literals
+--------
 
 The literal **null** is not allowed in |SPARK|.
+
+Aggregates
+----------
 
 Outside of assertion expressions, an aggregate is in |SPARK| only if its type
 is in |SPARK| and it is side-effect free. Inside assertion expressions,
@@ -29,13 +61,23 @@ aggregates in |SPARK| must additionally be fully defined. An aggregate which
 leaves subcomponents uninitialized is not in |SPARK| if it appears inside an
 assertion expression.
 
-An expression is in |SPARK| only if its type is in |SPARK| and it is
-side-effect free.
+Record Aggregates
+~~~~~~~~~~~~~~~~~
 
-The use of allocators is not allowed in |SPARK|.
+No extensions or restrictions.
 
-The Update attribute
---------------------
+Extension Aggregates
+~~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+Array Aggregates
+~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+Update Expressions
+~~~~~~~~~~~~~~~~~~
 
 The Update attribute provides a way of overwriting specified components
 of a copy of a given composite value.
@@ -135,6 +177,10 @@ array_component_association, in the order of the
 discrete_choice_list; and within the range of a single
 discrete_choice, in ascending order.
 
+.. todo:: RCC: I am a bit nervous about the ordering of the updates.
+   I can see this is necessary for compilation and execution, but what
+   are the semantics for proof?  How does 'Update translate into Why? Target: D2?
+
 If T is a multidimensional type then the component updating referenced
 above proceeds as follows. For each
 multidimensional_array_component association (in the order in which
@@ -170,25 +216,36 @@ This is different than the Update attribute of a record
 
 for which the order of component updates is unspecified.
 
-Legality rules
-^^^^^^^^^^^^^^
+Expressions
+-----------
 
-Some constructs which would unconditionally raise an exception at
-runtime in Ada are instead, if this can be determined at compile time,
-rejected as illegal in SPARK. In particular, if the prefix of a
-record component selection is known statically to be constrained so
-that the selected component is not present, then the component
-selection (which, in Ada, would raise Constraint_Error if it were
-to be evaluated) is illegal.
+An expression is in |SPARK| only if its type is in |SPARK| and it is
+side-effect free.
 
-.. todo:: list all such illegal-due-to-inevitable-exception constructs
+Operators and Expression Evaluation
+-----------------------------------
+
+No extensions or restrictions.
 
 
-Semantics
-^^^^^^^^^
+Type Conversions
+----------------
 
-The expression ``Name'Valid_Scalars`` is a boolean expression that evaluates to
-``True`` whenever all scalar components or subcomponents of ``Name`` have
-values allowed by their type.
+No extensions or restrictions.
 
-.. todo:: Valid_Scalars is already in GNAT RM. How do we want to handle that?
+
+Qualified Expressions
+---------------------
+
+No extensions or restrictions.
+
+
+Allocators
+----------
+
+The use of allocators is not allowed in |SPARK|.
+
+Static Expressions and Static Subtypes
+--------------------------------------
+
+No extensions or restrictions.

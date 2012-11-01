@@ -21,7 +21,7 @@ The view of an entity introduced by a ``private_type_declaration`` is in
 .. todo::
   YM: The above must be refined. If the private type declaration has
   a visible discriminant, then the type of the discriminant should influence
-  whether the private type is in |SPARK| or not.
+  whether the private type is in |SPARK| or not. Target D1/CDR.
 
 For a type or subtype to be in |SPARK|, all predicate specifications that apply
 to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
@@ -30,35 +30,40 @@ a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 Objects and Named Numbers
 -------------------------
 
-No specific restrictions. Thus, the entity declared by an object declaration is
+The entity declared by an object declaration is
 in |SPARK| if its declaration does not contain the reserved word ``aliased``,
 its type is in |SPARK|, and its initialization expression, if any, is in
 |SPARK|.
 
+.. todo:: TJJ and RCC think we need to allow for a deferred constant declaration
+   to have a Global aspect here, to show the variables that the constant's
+   value is derived from. Additionally, we need to allow for the deferred constant
+   declaration to be in |SPARK| even if the completion is not in |SPARK|. Target: D1/CDR.
+
 Derived Types and Classes
 -------------------------
 
-No specific restrictions.
+No extensions or restrictions.
 
 Scalar Types
 ------------
 
-No specific restrictions.
+No extensions or restrictions.
 
 Array Types
 -----------
 
-No specific restrictions.
+No extensions or restrictions.
 
 Discriminants
 -------------
 
-No specific restrictions.
+No extensions or restrictions.
 
 Record Types
 ------------
 
-No specific restrictions.
+No extensions or restrictions.
 
 .. todo::
    RCC comment: What are our final intensions with respect to discriminated and variant
@@ -73,7 +78,7 @@ No specific restrictions.
 Tagged Types and Type Extensions
 --------------------------------
 
-No specific restrictions.
+No extensions or restrictions.
 
 .. todo::
    RCC comment: This will need to describe any global restrictions on tagged types (if any)
@@ -94,20 +99,14 @@ Access Types
 
 Access types allow the creation of aliased data structures and objects, which
 notably complicate the specification and verification of a program's
-behavior. This is the reason access types are excluded from |SPARK|. This falls
-out without any specific restrictions from the reserved word ``access`` not
-being allowed in |SPARK|.
+behavior. Therefore, all forms of access type declaration are excluded from |SPARK|.
 
-.. note::
-   RCC/3/1 Simply saying that the reserved word is not allowed is a bit low-tech!
-   This seems to imply some sort of lexical/syntactic restriction, which is, of
-   course, not the way it's implemented.  Would it be better to say that all
-   forms of access type declaration are forbidden?
+The attribute ``'Access`` is not in |SPARK|.
 
-.. note::
-  YM/3/3 Your suggestion seems fine.
+Finally, as they are based on access discriminants, user-defined references
+and user-defined indexing are not in |SPARK|.
 
 Declarative Parts
 -----------------
 
-No specific restrictions.
+No extensions or restrictions.
