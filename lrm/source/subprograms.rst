@@ -664,8 +664,7 @@ dependent on every ``import`` in the ``import_list`` if the
    export_list            ::= null
                             | export
                             | (export {, export})
-   dependency_list        ::= import_item_list
-   import_item_list       ::= import_item
+   dependency_list        ::= import_item
                             | (import_item {, import_item})
    import_item            ::= import
                             | conditional_dependency
@@ -917,25 +916,25 @@ Mode Refinement
 ~~~~~~~~~~~~~~~
 
 If a subprogram has a mode refinement (in a ``global_aspect``, a
-``param_aspect`` or both) then the implementation of its body must
-comply with the refined modes specified for the ``moded_items``.
+``refined_global_aspect`` or a ``param_aspect``) then the
+implementation of its body must comply with the refined modes
+specified for the ``moded_items``.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
 
-#. The initial value of a ``moded_item`` of a ``global_aspect``,
-   ``param_aspect`` (or *formal parameter* if the restriction
-   ``Strict_Modes`` is in force) which is of mode which has an
-   effective mode of **in** or **in out** must be used in determining
-   the final value of at least one ``export`` of the subprogram.
-#. If a ``moded_item`` of a ``global_aspect``, ``param_aspect`` (or
-   *formal parameter* if the restriction ``Strict_Modes`` is in force)
-   is of mode **in out** it must be updated directly or indirectly on
-   at least one executable path through the subprogram body.
-#. If a ``moded_item`` of a ``global_aspect``,
-   ``param_aspect`` (or *formal parameter* if the restriction
-   ``Strict_Modes`` is in force) is of mode **out** then
+#. The initial value of a ``moded_item`` (including a *formal
+   parameter* if the restriction ``Strict_Modes`` is in force) which
+   is of mode which has an effective mode of **in** or **in out** must
+   be used in determining the final value of at least one ``export``
+   of the subprogram.
+#. If a ``moded_item`` (including a *formal parameter* if the
+   restriction ``Strict_Modes`` is in force) is of mode **in out** it
+   must be updated directly or indirectly on at least one executable
+   path through the subprogram body.
+#. If a ``moded_item`` (including a *formal parameter* if the
+   restriction ``Strict_Modes`` is in force) is of mode **out** then
    it must be updated either directly or indirectly on every
    executable path through the subprogram body.
 #. If a ``moded_item``, appears in the ``mode_refinement`` of a
@@ -966,29 +965,38 @@ comply with the refined modes specified for the ``moded_items``.
 Global Aspects
 ~~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body may have a
-``global_aspect`` in its aspect specification where the same rules as
-for a ``global_aspect`` in a subprogram declaration apply.  When a
-subprogram has a ``global_aspect`` either in its declaration or its
-body the rules and semantics given below should be satisfied by the
-implementation of its body.
+If subprogram does not have a separate declaration its body or body
+stub may have a ``global_aspect`` in its aspect specification where
+the same rules as for a ``global_aspect`` in a subprogram declaration
+apply.  When a subprogram has a ``global_aspect`` either in its
+declaration or its body or body stub the rules and semantics given
+below should be satisfied by the implementation of its body.
+
+If the subprogram has a ``refined_global_aspect`` (see
+:ref:`refined-global-aspect`), this has to be checked for consitency
+with the ``global_aspect`` and influences the rules for checking the
+implementation of its body as described below.
 
 .. centered:: **Legality Rules**
 
-#. A subprogram body may only have a ``global_aspect`` if it does not
-   have a separate declaration.
+#. A subprogram body or body stub may only have a ``global_aspect`` if
+   it does not have a separate declaration.
 #. A subprogram, shall not declare, immediately within its body, an
    entity of the same name as a ``moded_item`` or the name of the
    object of which the ``moded_item`` is a subcomponent, appearing in
-   the ``global_aspect`` of the subprogram.
+   the ``global_aspect`` of the subprogram.  If the subprogram has a
+   ``refined_global_aspect`` then the rule applies to ``moded_items``
+   from both aspects.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. A non-*local variable* which is not a formal parameter or listed as a
-   ``moded_item`` in the ``global_aspect`` shall not be read or
-   updated directly or indirectly within the body of the subprogram.
+#. A non-*local variable* of a subprogram which is not a formal
+   parameter or listed as a ``moded_item`` in the ``global_aspect``
+   shall not be read or updated directly or indirectly within the body
+   of the subprogram unless it appears as a ``moded_item`` in
+   ``refined_global_aspect`` of the subprogram.
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -1003,39 +1011,40 @@ implementation of its body.
 Param Aspects
 ~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body may have a
-``param_aspect`` in its aspect specification where the same rules as
-for a ``param_aspect`` in a subprogram declaration apply.  When a
-subprogram has a ``param_aspect`` either in its declaration or its
-body the rules and semantics given below should be satisfied by the
-implementation of its body.
+If subprogram does not have a separate declaration its body or body
+stub may have a ``param_aspect`` in its aspect specification where the
+same rules as for a ``param_aspect`` in a subprogram declaration
+apply.  When a subprogram has a ``param_aspect`` either in its
+declaration or its body or body stub the rules and semantics given
+below should be satisfied by the implementation of its body.
 
 .. centered:: **Legality Rules**
 
-#. A subprogram body may only have a ``param_aspect`` if it does not
-   have a separate declaration.
-
-.. note:: RCC. Should we also note allowing this aspect on a body *stub* here?
-   In S95, the contract appears on the stub, not the separate unit. Assign: ???
+#. A subprogram body or body stub may only have a ``param_aspect`` if
+   it does not have a separate declaration.
 
 
 Dependency Aspects
 ~~~~~~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body may have a
-``dependency_aspect`` in its aspect specification where the same rules
-as for a ``dependency_aspect`` in a subprogram declaration apply.
-When a subprogram has a ``dependency_aspect`` either in its
-declaration or its body the rules and semantics given below should be
-satisfied by the implementation of its body.
+If subprogram does not have a separate declaration its body or body
+stub may have a ``dependency_aspect`` in its aspect specification
+where the same rules as for a ``dependency_aspect`` in a subprogram
+declaration apply.  When a subprogram has a ``dependency_aspect``
+either in its declaration or its body or body stub the rules and
+semantics given below should be satisfied by the implementation of its
+body.
+
+If the subprogram has a ``refined_dependency_aspect`` (see
+:ref:`refined-dependency-aspect`), this has to be checked for consitency
+with the ``dependency_aspect`` and influences the rules for checking the
+implementation of its body as described below.
+
 
 .. centered:: **Legality Rules**
 
-#. A subprogram body may only have a ``dependency_aspect`` if it does
-   not have a separate declaration.
-
-.. note:: RCC. Should we also note allowing this aspect on a body *stub* here?
-   As above. Assign: ???
+#. A subprogram body or body stub may only have a
+   ``dependency_aspect`` if it does not have a separate declaration.
 
 .. centered:: **Verification Rules**
 
@@ -1045,7 +1054,8 @@ satisfied by the implementation of its body.
    subprogram code (if it exists) by analysis.
 #. If the subprogram has an explicit ``dependency_aspect`` then the
    implicit dependency relation will be compared with the explicit one
-   provided in the ``dependency_aspect`` and any differences reported.
+   provided in the ``refined_dependency_aspect`` if it exists
+   otherwise the ``dependency_aspect`` and any differences reported.
 #. A function that does not have an explicit ``dependency_aspect`` is
    assumed to have a dependency relation that its result is dependent
    on all of its imports and this dependency relation is compared with
