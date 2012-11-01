@@ -379,11 +379,10 @@ as it is used purely for static analyses purposes and is not executed.
 Global Aspects
 ~~~~~~~~~~~~~~
 
-A ``global_aspect`` is optional and names the *global* items that are
-read and/or updated by a subprogram.  The *global* items are
-considered to have modes the same as *formal parameters*, **in**,
-**out** and **in out** and the modes may be refined as described in
-:ref:`mode-refinement`.
+A ``global_aspect`` names the *global* items that are read and/or
+updated by a subprogram.  The *global* items are considered to have
+modes the same as *formal parameters*, **in**, **out** and **in out**
+and the modes may be refined as described in :ref:`mode-refinement`.
 
 A *global* item is a ``moded_item`` that denotes a *global_variable_*\
 ``name`` or a *abstract_state_*\ ``name``.
@@ -403,8 +402,8 @@ of a *global* variable by a more *local* variable.
 
 .. centered:: **Legality Rules**
 
-#. An ``aspect_specification`` of a subprogram may have at most one
-   ``global_aspect``.
+#. A ``global_aspect`` may only appear in the ``aspect_specification``
+   of a subprogram or a constant declaration.
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is
    not permitted to have side-effects.
@@ -997,6 +996,8 @@ implementation of its body as described below.
    shall not be read or updated directly or indirectly within the body
    of the subprogram unless it appears as a ``moded_item`` in
    ``refined_global_aspect`` of the subprogram.
+#. If a subprogram does not have a ``global_aspect`` then an implicit
+   one is synthesised from implementation of the body (if it exists).
 
 .. centered:: **Restrictions That May Be Applied**
 
@@ -1050,12 +1051,25 @@ implementation of its body as described below.
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. An implicit dependency relation will be determined from the
-   subprogram code (if it exists) by analysis.
-#. If the subprogram has an explicit ``dependency_aspect`` then the
-   implicit dependency relation will be compared with the explicit one
-   provided in the ``refined_dependency_aspect`` if it exists
-   otherwise the ``dependency_aspect`` and any differences reported.
+#. A dependency relation D' is synthesised from the body of a
+   subprogram P (if it exists). if P has a ``dependency_aspect`` and:
+   
+   * has ``refined_dependency_aspect`` then D' is compared with the
+     ``refined_dependency_aspect`` any differences reported; or
+   * has a ``dependency_aspect`` but not a
+     ``refined_dependency_aspect`` when one is required due to state
+     refinement, then D' is taken to be the
+     ``refined_dependency_aspect``.  Using the
+     ``refined_state_aspect`` the consistency between D' and the
+     ``dependency_aspect`` of P is checked and any inconsistencies,
+     reported using the rules given in
+     :ref:`refined-dependency-aspect` ; or
+   * has a ``dependency_aspect`` and does not require a
+     ``refined_dependency_aspect``, then D' is compared directly with
+     the ``dependency_aspect`` of P and any differences reported; or
+   * does not have a ``dependency_aspect`` an implicit
+     ``dependency_aspect`` is synthesised from D'.
+
 #. A function that does not have an explicit ``dependency_aspect`` is
    assumed to have a dependency relation that its result is dependent
    on all of its imports and this dependency relation is compared with
@@ -1083,7 +1097,29 @@ Parameter Associations
    Is it worth restricting these things if they don't impact verifiability?
    Target: D2. 
 
-Anti-Aliasing
+
+Abstract and Refined Views
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are two possible views of a subprogram P declared in the visible
+part of a package.  An abstract view and a refined view.  The abstract
+view is that seen by the client of the package.  The refined view is
+seen within the body of the package and its private descendents.
+
+
+Global Aspects
+^^^^^^^^^^^^^^
+
+Every subprogram is considered to have a ``global_aspect`` whether it
+is explicit or synthesized and implicit.  A subprogram declared in the
+visible part of a package may also have a ``refined_global_aspect``, 
+again this may be explicit or synthesized.  Which of these two aspects
+is used depends on where the subprogram is called.  If it is called
+from within the package or its private dependents and the subprogram
+has a ``refined_global_aspect`` then this is used.  In all other calls
+the ``global_aspect`` is used.  
+
+Anti-Aliasing 
 ~~~~~~~~~~~~~
 
 An alias is a name which refers to the same object as another name.
@@ -1194,26 +1230,51 @@ Dependency Relations
 ~~~~~~~~~~~~~~~~~~~~
 
 Every subprogram has a dependency relation, explicitly given in a
-``dependency_aspect``, implicitly calculated from the subprogram code
+``dependency_aspect``, implicitly synthesized from the subprogram code
 or conservatively assumed from the *formal parameters* and *global
-variables* of the subprogram.  The dependency relation of a subprgram
-is used to determine the effect of a call to a subprogram in terms of
-the flows of information through the subprogram.
+variables* of the subprogram.  If the subprogram is declared in the
+visible part of package it may also have a
+``refined_dependency_aspect``, again explicitly given or synthesised.
 
-#. In a call to a subprogram P, the following will be used as the
-   dependency relation of P:
+The dependency relation of a subprgram is used to determine the effect
+of a call to a subprogram in terms of the flows of information through
+the subprogram.  
 
-   #. the ``dependency_relation`` from an explicit ``dependency_aspect`` if one is present;
-   #. for a function which does not have an explicit
-      ``dependency_aspect``, the assumed dependency relation is that its result is
-      dependent on all of its imports;
-   #. for a procedure which does not does not have an explicit
-      ``dependency_aspect`` but the subprogram has a proper body, the
-      implicit dependency relation determined from the subprogram code
-      will be used.
-   #. for a procedure which has neither a ``dependency_aspect`` nor a
-      proper body the conservative dependency relation that is used is
-      that every ``export`` is dependent on every ``import``.
+#. A subprogram P declared in the visible part of a package, called
+   within the body or private descendents of the package and P
+   requires a ``refined_dependency_aspect`` because of
+   state_refinement, the following will be used as the dependency
+   relation of P:
+
+   * the ``dependency_relation`` from the explicit
+     ``refined_dependency_aspect`` if one is present;
+   * for a function which does not have an explicit
+     ``dependency_aspect``, the assumed dependency relation is that
+     its result is dependent on all of its imports;
+   * for a procedure which does not does not have an explicit
+     ``refined_dependency_aspect`` but the the subprogram
+     has a proper body, the implicit dependency relation synthesized
+     from the subprogram code will be used.
+   * for a procedure which has neither a ``refined_dependency_aspect``
+     nor a proper body the conservative dependency relation that is
+     used is that every ``export`` is dependent on every ``import``.
+
+#. A call to a subprogram P from a client of the package containing
+   the declaration of P or for a call to a subprogram which does not
+   require a ``refined_dependency_aspect``, the following will be used
+   as the dependency relation :
+
+   * the ``dependency_relation`` from an explicit ``dependency_aspect`` if one is present;
+   * for a function which does not have an explicit
+     ``dependency_aspect``, the assumed dependency relation is that
+     its result is dependent on all of its imports;
+   * for a procedure which does not does not have an explicit
+     ``dependency_aspect`` but the subprogram has a proper body, the
+     implicit dependency relation synthesized from the subprogram code
+     will be used.
+   * for a procedure which has neither a ``dependency_aspect`` nor a
+     proper body the conservative dependency relation that is used is
+     that every ``export`` is dependent on every ``import``.
 
 Return Statements
 -----------------

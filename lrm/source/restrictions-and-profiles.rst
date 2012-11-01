@@ -154,33 +154,33 @@ A list of restrictions by section and their effect:
 
    See the same restriction in section 6.3. 
 
+#. ``Package_Aspects_Required`` 
+   
+   Enforces the restrictions ``Abstract_State_Aspects_Required``,
+   ``Initializes_Aspects_Required`` and
+   ``Refined_State_Aspects_Required``.
 
 7.1.2 Abstract State Aspect
 
-#. ``Package_Aspects_Required`` 
+#. ``Abstract_State_Aspects_Required``
 
    Applies to an entire package including any embedded packages and
    its private child packages and enforces the restriction that a
    package which has hidden state must have an
-   ``abstract_state_aspect``.
+   ``abstract_state_aspect``.  If this restriction is in force the
+   absence of a ``abstract_state_name`` implies Abstract_State =>
+   **null**.
+
+7.1.3 Initializes Aspect
+ 
+#. ``Initializes_Aspects_Required``
 
    If any of the state components of a package, including *variables*
    declared in its visible part are initialized during the elaboration
    of the package, then the initializes state components must appear
-   in an ``initializes_aspect``.
-
-#. ``No In_Out Volatile Variables`` 
-
-   Applies to an entire package including any embedded packages and
-   its private child packages and enforces the restriction that a
-   ``mode_selector`` of In_Out may not appear in an
-   ``abstract_state_aspect`` or a ``refined_state_aspect``.
-
-7.1.3 Initializes Aspect
- 
-#. ``Package_Aspects_Required``
-
-   See the same restriction in section 7.1.2. 
+   in an ``initializes_aspect``.  If this restriction is in force the
+   absence of an ``initializes_aspect`` implies Inititalizes =>
+   **null**.
 
 #. ``Package_Elaboration_Initializes_Local_State_Only``
 
@@ -218,6 +218,11 @@ A list of restrictions by section and their effect:
    See the same restriction in section 7.1.3. 
 
 7.2.2 Refined State Aspect
+
+#. ``Refined_State_Aspects_Required``
+
+   If a packages has a ``abstract_state_aspect`` then a corresponding
+   `` refined_state_aspect`` is required.
 
 #. ``Null_State_Refinement_Prohibited``
 

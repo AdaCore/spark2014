@@ -78,7 +78,8 @@ appropriate, in the ``dependency_relation`` of the aspect.
 ::
 
   abstract_state_aspect  ::= Abstract_State => abstract_state_list
-  abstract_state_list    ::= state_name
+  abstract_state_list    ::= null
+                           | state_name
                            | (category_state {, category_state})
   category_state         ::= [Non_Volatile =>] state_name_list
                            | Volatile => (moded_state_name_list {, moded_state_name_list})
@@ -86,7 +87,7 @@ appropriate, in the ``dependency_relation`` of the aspect.
   state_name_list        ::= state_name
                            | (extended_state_name {, extended_state_name)
   extended_state_name    ::= state_name [=> Integrity]
-  state_name             ::= defining_identifier 
+  state_name             ::= defining_identifier
 
 where
 
@@ -115,7 +116,8 @@ where
    repeated within the ``abstract_state_list``.
 #. A ``state_name`` can only appear in a ``initializes_aspect``, a
    ``global_aspect``, a ``dependency_aspect``, their refinded
-   counterparts, or their equivalent pragmas.
+   counterparts, or their equivalent pragmas.  It may also appear as
+   an ``abstract_state_name`` in a ``refined_state_aspect``.
 #. At most one ``category_state`` of Volatile is permitted in an
    ``abstract_state_aspect``.
 #. At most one of a Non_Volatile or a default ``category_state`` is
@@ -126,17 +128,24 @@ where
 
 #. An abstract ``state_name`` is declared using a
    ``abstract_state_aspect`` appearing in an ``aspect_specification``
-   of a ``package_specification``.
+   of a ``package_specification``.  The ``state_name`` is an
+   abstraction representing some or all of the hidden state of
+   package and its private decendents..
 #. A ``state_name`` has the same scope and visibility as a declaration
    in the ``visible part`` of the package to which the
    ``abstract_state_aspect`` is applied.
+#. A **null** ``abstract_state_list`` indicates that a package
+   contains no observable hidden state and does not declare any
+   ``state_name``.  The package may contain hidden state that has no
+   obsevable effect, for instance a cache.  The package may contain
+   visible state, that is, a *variable* declared in its visible part.
 #. Volatile designates a volatile state, usually representing an
    external input or output.  The mode selector determines whether the
    volatile state is an input or an output.
-#. A volatile Input may only oocur where a ``moded_item`` of mode
-   **in** is permitted.
-#. A volatile Output may only oocur where a ``moded_item`` of mode
-   **out** is permitted.
+#. A volatile Input may only oocur where a ``state_name`` may appear
+   as a ``moded_item`` of mode **in**.
+#. A volatile Output may only oocur where a ``state_name`` may appear
+   as a ``moded_item`` of mode **out**.
 #. A `state_name`` of a package is generally considered to be
    representing hidden state in one of the following categories:
  
@@ -150,7 +159,7 @@ where
      and is considered to be implicitly initialized.
 
 #. The category is specified using the ``category_state`` syntax
-   supplimented by the ``initializes_aspect.  A ``category_state``
+   supplimented by the ``initializes_aspect``.  A ``category_state``
    without a category defaults to Non_Volatile.
 #. A Volatile In or Out ``state_name`` represents a sequence of state
    changes brought about by reading or writing successive values to or
@@ -161,7 +170,7 @@ where
    each time it is read. A normal non-volatile *variable* would have
    the same value unless there was an intervining update of the
    *variable*. This distinction with a normal non-volatile variable or
-   state_state name is important for both flow analysis and proof.
+   ``state_name`` is important for both flow analysis and proof.
 #. Each time a subprogram is called which has a Volatile Output
    ``state_name`` in its ``global_aspect`` it ultimatly writes to a
    Volatile *variable*.  This *variable* may be written to many times
@@ -247,14 +256,18 @@ An important property of the state components of a package is whether
 they are initialized during package elaboration.  Flow analysis
 determines that the program state has been initialized and the
 ``initializes_aspect`` provides this information without having to
-analyse the bodies of packages.
+analyse the bodies of packages each time they are used.  When the body
+of the package or named package is analysed it is checked by flow
+analysis that the implementation of the body satisfies the
+``initializes_aspect``
 
 .. centered:: **Syntax**
 
 ::
 
   initializes_aspect    ::= Initializes => initialization_list
-  initialization_list   ::= initialized_item_list
+  initialization_list   ::= null
+                          | initialized_item_list
                           | (initialization {, initialization})
   initialization        ::= [initializing_package =>] initialized_item_list
   initialized_item_list ::= initialized_item
@@ -277,7 +290,8 @@ where
 #. An ``initializes_aspect`` of a package has extended visibility; it
    is able to refer to *variables* declared in the visible part of the
    package.
-#. An ``initialized_item`` is either:
+#. An ``initialized_item`` is
+   either:
 
    * a ``state_name`` declared in a previous ``abstract_state_aspect``
      within the same ``aspect_specification``; or
@@ -311,9 +325,10 @@ where
 #. A ``state_name`` designated as ``Volatile`` is considered to be
    implicitly initialized during package initialization and cannot
    appear in an initialization.
-#. If a package has an ``abstract_state_aspect`` but no
-   ``initializes_aspect`` it follows that none of its state components
-   are initialized during package initialization.
+#. An ``initializes_aspect`` of a package with an
+   ``initialization_list`` of **null** indicates the observable state
+   of the package (if it has some) is not initialized during package
+   elaboration.
 
 .. centered:: **Restrictions that may be Applied**
 .. include:: restrictions-and-profiles.rst
@@ -324,9 +339,7 @@ where
 
 .. centered:: *Checked by Flow Analysis*
 
-#. If a package has an ``initializes_aspect`` and it has non-visible
-   state components, it must be preceded by an
-   ``abstract_state_aspect`` in the same ``aspect_specification``.
+
 #. Each *variable* or ``state_name`` appearing in an
    ``initialized_item_list`` must be initialized during the
    elaboration of the given ``initializing_package`` or the package
@@ -334,26 +347,15 @@ where
 #. If a package has an ``initializes_aspect`` and it does not a
    contain a *variable* or ``state_name`` V, then V shall not be
    initialized during package elaboration.
-#. If a package Q has neither an ``abstract_state_aspect`` nor an
-   ``initializes_aspect`` but it has state components, then analysis
-   of the package specification and body (if it exists) of Q and any
-   packages which mention Q within a ``with_clause`` will determine
-   the *varibles* declared in the package and whether they are
-   initialized during elaboration of the packages.  For *variables*
-   not declared in the visible part of the package an implicit
-   ``state_name`` is generated to represent the *variables* which are
-   not initialized and another for the *variables* which are
-   initialized. The ``state_name`` representing the initialized
-   *variables* is added to an implicitly generated
-   ``initialization_aspect`` along with any *variables* which are
-   declared in the visible part of the package wich are initialized
-   during the elaboration of the packages.  If the package has
-   embedded or private child packages, the same process is applied to
-   them and each implicitly declared ``state_name`` arising from this
-   analysis becomes a constituent of the appropriate implicitly
-   declared ``state_name`` of the parent. The initialized visible
-   *variables* and each initialized *state_name* is associated with
-   the ``initializing_package`` in the implicit ``initializes_aspect``
+#. If a package has an ``abstract_state_aspect`` but no
+   ``initializes_aspect`` then an implicit one synthesized from the
+   implementation of the private part, body and private descendents of
+   the package if they exist.
+#. If a package Q does not have ``initializes_aspect`` but has a non
+   **null** ``abstract_state_aspect`` (possibly synthesized) an
+   implicit ``initializes_aspect`` is synthesised from the from the
+   implementation of the private part, body and private descendents of
+   the package if they exist.
 
 .. todo:: I anm not sure we can automatically determine volatile
    variables.  Possibly use the volatile pargma/aspect - how to
@@ -413,8 +415,10 @@ describe formally the initial state of a package.  It behaves as a
 postcondition for the result of package elaboration.
 
 .. centered:: **Syntax**
+
+::
   
-``initial_condition_aspect ::= Initial_Condition =>`` *Boolean_*\ ``expression``
+  initial_condition_aspect ::= Initial_Condition => predicate
 
 
  .. centered:: **Legality Rules**
@@ -422,17 +426,16 @@ postcondition for the result of package elaboration.
 #. An ``initial_condition_aspect`` may only be placed in a
    ``aspect_specification`` of a ``package_specification``.
 #. The ``initial_condition_aspect`` must follow the
-   ``abstract_sate_aspect`` and ``initializes_aspect`` if they are
+   ``abstract_state_aspect`` and ``initializes_aspect`` if they are
    present.
-#. The expression of an ``initial_condition_aspect`` appearing in a
+#. The predicate of an ``initial_condition_aspect`` appearing in a
    package Q has extended visibility.  It may reference declarations
    from the visible part of Q.
 
 .. centered:: **Static Semantics**
 
-#. The *boolean_*\ ``expression`` of an ``initial_condition_aspect``
-   of a package is a predicate which defines the state of the package
-   after its elaboration.
+#. The predicate of an ``initial_condition_aspect`` of a package is a
+   defines the initial state of the package after its elaboration.
 
 .. centered:: **Verification Rules**
 
@@ -591,14 +594,13 @@ where
 
 #. A ``refined_state_aspect`` may only appear in the body of a
    package.
-#. If a package specification has an ``abstract_state_aspect`` then
-   its body must have a ``refined_state_aspect``.
 #. A package body cannot have a ``refined_state_aspect`` if its
    specification does not have an ``abstract_state_aspect``.
 #. A ``refined_state_aspect`` of a package body has extended
    visibility; it is able to refer to a *variable*, or a
    ``state_name`` or *variable* declared in the visible part of a
-   package, declared immediately within the package body.
+   package, declared immediately within the package body or in a
+   private child package.
 #. Each ``state_name`` declared in a package specification must appear
    exactly once as an ``abstract_state_name`` in the
    ``state_refinment_aspect`` of the body of the package.
@@ -663,8 +665,9 @@ where
    the package visible to a user.  An example would be a cache used to
    speed up an operation but does not have an effect on the result of
    the operation.
-#. A Non_Volatile``constituent`` of a **null** ``abstract_state_name``
+#. A Non_Volatile ``constituent`` of a **null** ``abstract_state_name``
    must be initialized by package elaboration.
+
 
 .. todo:: Think about whether **null** abstract state can introduce a
    covert channel.
@@ -673,13 +676,20 @@ where
 
 .. centered:: *Checked by Flow Analysis*
 
-
-#. If a package has internal state but no but no
-   ``abstract_state_aspect`` an implicit one is generated from the
-   code as described in :ref:`abstract-state-aspect`.  Additionally
-   an implicit ``refined_state_aspect`` giving for each implicitly
-   defined ``state_name`` a ``constituent_list`` listing each
-   ``constituent`` from which it is composed.
+#. if the package has an ``abstract_state_aspect`` but no
+   ``refined_state_aspect`` then an implicit one is synthesized from
+   the from the implemented bodies (if they exist) using the inverse
+   of the above rules.  The synthesis may be approximate and will not
+   consider any **null** ``abstract_state_name``.  Each
+   ``constituent`` will be assigned to a ``state_name`` declared in
+   the ``abstract_state_aspect``.
+#. If a package has no ``abstract_state_aspect`` or no Pure aspect or
+   pragma it may have internal state.  First an implicit
+   ``refined_state_aspect`` is synthesized using the predefined
+   categories of state, Non_Volatile_Initialized,
+   Non_Volatile_Uninitialized, Volatile_Input and Volatile_Output.  An
+   ``abstract_state_aspect`` is synthesized from the synthesized
+   ``refined_state_aspect``.
 
 .. centered:: **Restrictions that may be Applied**
 
@@ -765,7 +775,7 @@ Refined Global Aspect
 
 If a subprogram declaration in the visible part of a package names a
 ``state_name`` of a package in its ``global_aspect`` then the body, or
-body stub of the subprogram in the body of the package must have a
+body stub of the subprogram in the body of the package may have a
 ``refined_global_aspect`` replacing the ``state_name`` by one or more
 of its ``constituents``.
 
@@ -780,12 +790,6 @@ of its ``constituents``.
 #. A ``refined_global_aspect`` may only appear on the body or body stub
    of a subprogram P in a package whose ``visible_part`` contains the
    declaration of P which has a ``global_aspect``.
-#. If the ``global_aspect`` of a subprogram declaration P in the
-   visible part of a package refers to a ``state_name`` declared in
-   the ``abstract_state_aspect`` of the package, then in the body of
-   the package the body or body stub of P must have a
-   ``refined_global_aspect`` unless the body is an expression function
-   when it is optional.
 #. A ``refined_global_aspect`` on the body or body stub of a
    subprogram P may only mention ``constituents`` of a ``state_name``
    given in the ``global_aspect`` in the declaration of P, a *global*
@@ -837,14 +841,26 @@ of its ``constituents``.
      in G. The **null** ``abstract_state`` must not affect the value of the
      result of the function it must be purely for optimization.
 
-
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
 
 #. If a subprogram has a ``refined_global_aspect`` which satisfies the
-   legality rules, its ``refined_global_aspect`` is used in the
-   analysis of the subprogram body rather than its ``global_aspect``.
+   legality rules, it is used in the analysis of the subprogram body
+   rather than its ``global_aspect``.
+   
+* If the declaration of a subprogram P in the visible part of package
+  Q has a ``global_aspect`` which mentions a ``state_name`` of Q, but
+  P does not have a ``refined_global_aspect`` then an implicit
+  ``refined_global_aspect`` will be synthesized from the body of P.`
+
+* if the declaration of a subprogram P declared in the visible part of
+  a pakage Q does not have a ``global_aspect``, first an implicit
+  ``refined_global_aspect`` is synthesized from the body of P, then an
+  implict ``global_aspect`` is synthesized from the synthesized
+  ``refined_global_aspect`` and the ``refined_state_aspect`` (which may also
+  have been synthesized).
+
 
 .. todo:: Consider subprogram body renaming declarations.
 
@@ -865,8 +881,8 @@ Refined Dependency Aspect
 
 #. A ``refined_dependency_aspect`` may only appear on the body or body
    stub of a subprogram P in a package whose ``visible_part`` contains
-   the declaration of P which has a ``dependency_aspect`` or is the
-   declaration of a function which has implicit ``dependency_aspect``.
+   the declaration of a subprogram P which has a ``dependency_aspect``
+   or is the declaration of a function which has implicit.
 #. If a ``dependency_aspect`` of a subprogram declaration P in the
    visible part of a package refers to a ``state_name`` declared in
    the ``abstract_state_aspect`` of the package, then in the body of
@@ -916,6 +932,25 @@ Refined Dependency Aspect
      ignored in showing conformance between the ``dependency-aspect``
      and the ``refined_dependency_aspect``.
 
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
+#. If a subprogram has a ``refined_depedency_aspect`` which satisfies
+   the legality rules, it it is used in the analysis of the subprogram
+   body rather than its ``dependency_aspect``.
+   
+* If the declaration of a subprogram P in the visible part of package
+  Q has a ``dependency_aspect`` which mentions a ``state_name`` of Q,
+  but P does not have a ``refined_dependency_aspect`` then an implicit
+  ``refined_dependency_aspect`` will be synthesized from the body of P.`
+
+* if the declaration of a subprogram P declared in the visible part of
+  a pakage Q does not have a ``dependency_aspect``, first an implicit
+  ``refined_dependency_aspect`` is synthesized from the body of P,
+  then an implict ``dependency_aspect`` is synthesized from the
+  synthesized ``refined_dependency_aspect`` and the
+  ``refined_state_aspect`` (which may also have been synthesized).
 
 .. centered:: **Dynamic Semantics**
 
