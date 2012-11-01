@@ -19,12 +19,18 @@ This example demonstrates how global variables can be accessed through
 procedures and functions and presents how the `derives` annotation is structured. 
 The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap` 
 accesses two global variables and swaps their contents while `Add` returns their 
-sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further 
-insight and will thus not be included.
+sum. The bodies of both SPARK 2005 and |SPARK| are identical and thus only one of 
+them has been included.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/global_derives/05/swap_add_05.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/global_derives/05/swap_add_05.adb
       :language: ada
       :linenos:
 
@@ -70,7 +76,7 @@ Attributes of unconstrained out parameter in precondition
 The following example illustrates the fact that the attributes of an unconstrained
 formal array parameter of mode "out" _are_ permitted to appear in a precondition.
 The flow analyser also needs to be smart about this, since it knows the X'First and
-X'Last are well-defined in the body, even though the content of X isn't.
+X'Last are well-defined in the body, even though the content of X is not.
 
 Specification in SPARK 2005:
 
@@ -1354,8 +1360,8 @@ Rule declaration annotation
 
 See section `Proof types and proof functions`_.
 
-Note that the |SPARK| versions of this example are currently TBD, as the relevant
-syntax is not yet defined.
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1368,9 +1374,9 @@ and proof types are needed to state those pre- and post-conditions. In addition,
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 
-Note that the |SPARK| version of the rule declaration annotation has not yet been defined - note
+*Note that the* |SPARK| *version of the rule declaration annotation has not yet been defined - note
 that it may not even be needed, though this is to be determined -
-and so there is no equivalent included in the |SPARK| code.
+and so there is no equivalent included in the* |SPARK| *code.*
 
 Specification in SPARK 2005
 
