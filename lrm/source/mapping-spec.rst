@@ -854,6 +854,9 @@ and adds a contract using the 'Tail attribute. The example also use the Always_V
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined. Note that this also applies to the use of the Always_Valid annotation.*
+
 Specification in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.ads
@@ -879,6 +882,9 @@ Output driver using \'Append and \'Tail contracts
 
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
+
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
 
 Specifications in SPARK 2005:
 
@@ -1338,10 +1344,16 @@ Always_Valid assertion
 See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
 the Always_Valid attribute.
 
-Rule declaration anno's
-~~~~~~~~~~~~~~~~~~~~~~~
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
+
+Rule declaration annotation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See section `Proof types and proof functions`_.
+
+*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+syntax is not yet defined.*
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1353,6 +1365,10 @@ the concrete representation of an abstract own variable. This means that proof f
 and proof types are needed to state those pre- and post-conditions. In addition, it gives
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
+
+*Note that the* |SPARK| *version of the rule declaration annotation has not yet been defined - note
+that it may not even be needed, though this is to be determined -
+and so there is no equivalent included in the* |SPARK| *code.
 
 Specification in SPARK 2005
 
