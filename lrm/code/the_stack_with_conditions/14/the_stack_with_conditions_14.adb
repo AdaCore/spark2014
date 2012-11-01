@@ -75,7 +75,7 @@ is
 
    procedure Swap (X : in Integer)
    with
-     R efined_Global => (Input  => Pointer,
+      Refined_Global => (Input  => Pointer,
                          In_Out => S)
    is
    begin

@@ -338,7 +338,9 @@ private children and their parent in SPARK 2005. More specifically, it shows tha
 * All children have access to their parent but the parent can only access private children.
 
 Applying the SPARK tools on the following files will produce certain errors. This was 
-intentionally done in order to illustrate both legal and illegal access attempts.
+intentionally done in order to illustrate both legal and illegal access attempts. The 
+|SPARK| version of the code is not provided since the restrictions that are to be 
+applied in terms of package visibility are yet to be determined.
 
 Specification of parent in SPARK 2005:
 
@@ -1352,8 +1354,8 @@ Rule declaration annotation
 
 See section `Proof types and proof functions`_.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+Note that the |SPARK| versions of this example are currently TBD, as the relevant
+syntax is not yet defined.
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1366,9 +1368,9 @@ and proof types are needed to state those pre- and post-conditions. In addition,
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 
-*Note that the* |SPARK| *version of the rule declaration annotation has not yet been defined - note
+Note that the |SPARK| version of the rule declaration annotation has not yet been defined - note
 that it may not even be needed, though this is to be determined -
-and so there is no equivalent included in the* |SPARK| *code.
+and so there is no equivalent included in the |SPARK| code.
 
 Specification in SPARK 2005
 
