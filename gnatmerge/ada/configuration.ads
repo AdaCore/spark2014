@@ -46,6 +46,7 @@ package Configuration is
                       Default_Script'Access;
    Project_File   : aliased GNAT.Strings.String_Access := null;
    Run_Console    : aliased Boolean;
+   Debug_Conf     : aliased GNAT.Strings.String_Access := null;
 
    procedure Read_Command_Line;
 

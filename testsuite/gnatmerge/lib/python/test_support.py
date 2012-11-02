@@ -26,22 +26,26 @@ os.chdir(TESTDIR)
 
 from gnatpython.ex import Run
 
-def gnatmerge(script=None, project=None):
+def gnatmerge(script=None, project=None, options=None, sort_result=True):
     """Invoke gnatmerge
 
     PARAMETERS
       script:  merge script to process
       project: GNAT project file
+      options: Additional options
     """
     cmd = ["gnatmerge",]
     if script is not None:
         cmd += ["-e", script]
     if project is not None:
         cmd += ["-P", project]
+    if options is not None:
+        cmd += options
     process = Run(cmd)
     if process.status:
         print "gnatmerge exit with status " + str(process.status)
     strlist = str.splitlines(process.out)
-    strlist.sort()
+    if sort_result:
+        strlist.sort()
     for line in strlist:
         print line

@@ -63,6 +63,10 @@ package body Common is
      (Data    : in out Callback_Data'Class;
       Command : String);
 
+   procedure On_Debug_Conf
+     (Data    : in out Callback_Data'Class;
+      Command : String);
+
    -----------------------
    -- On_GPR_Object_Dir --
    -----------------------
@@ -207,6 +211,19 @@ package body Common is
       Json_Tree.Close;
    end On_Sloc_Reader_Iterate;
 
+   -------------------
+   -- On_Debug_Conf --
+   -------------------
+
+   procedure On_Debug_Conf
+     (Data    : in out Callback_Data'Class;
+      Command : String)
+   is
+      pragma Unreferenced (Command);
+   begin
+      Set_Return_Value (Data, Debug_Conf.all);
+   end On_Debug_Conf;
+
    ------------------------------------
    -- Register_Scripts_And_Functions --
    ------------------------------------
@@ -248,6 +265,9 @@ package body Common is
       Register_Command
         (Repo, "attribute", 2, 3,
          Handler => On_GPR_Attribute'Unrestricted_Access);
+      Register_Command
+        (Repo, "debug_conf", 0, 0,
+         Handler => On_Debug_Conf'Unrestricted_Access);
    end Register_Project_Module;
 
    --------------------------

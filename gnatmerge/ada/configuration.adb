@@ -67,6 +67,12 @@ package body Configuration is
                      "-c",
                      "--console",
                      Help     => "Run the command-line interpreter");
+      Define_Switch (Config,
+                     Debug_Conf'Access,
+                     "-d:",
+                     Long_Switch => "--debug_conf=",
+                     Argument    => "CONFIG_FILE",
+                     Help        => "Load config file for debug traces");
 
       Getopt (Config);
    exception

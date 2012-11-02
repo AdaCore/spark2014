@@ -13,11 +13,13 @@ You may find a few examples in the body of function unit_testing.
 """
 
 import shlex
+from debug import log_method, log_function
 
 class ParseError(Exception):
     """Exception raised when an invalid merge spec is given to parse
     """
 
+    @log_method
     def __init__(self, text):
         """Constructor
 
@@ -42,6 +44,7 @@ class MergeSem:
       Make sure that children implement the abstract methods.
     """
 
+    @log_method
     def check(self, model):
         """Check a model against the spec
 
@@ -54,6 +57,7 @@ class MergeSem:
         """
         assert(False)
 
+    @log_method
     def deduce_all(self, model):
         """Return all atoms that can be deduced from the model using this spec
 
@@ -77,12 +81,14 @@ class FreeSetMergeUnary(MergeSem):
       This is meant to be an abstract class; do not instanciate it.
       Make sure that children implement the abstract methods.
     """
+    @log_method
     def __init__(self, atom, name=None):
         """Incomplete constructor, to be called from the child's constructor
         """
         self.name = None
         self.atom = atom
 
+    @log_method
     def deduce_all(self, model):
         """Implementation of MergeSem.deduce_all for all unary operators"""
         check = self.check(model)
@@ -94,36 +100,46 @@ class FreeSetMergeSome(FreeSetMergeUnary):
     """Free set semantic helper for some-quantified atoms in spec merges
     """
 
+    @log_method
     def check(self, model):
         """Implementation of MergeSem.check for some-quantified atoms"""
         return self.atom in model
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if self.name is not None:
+        if 'name' in dir(self) and self.name is not None:
             name_prefix = "%s = " % self.name
         else:
             name_prefix = ""
 
-        expression = "some %s" % self.atom
+        if 'atom' in dir(self):
+            expression = "no %s" % self.atom
+        else:
+            expression = ""
+
         return "<MergeSome> (%s%s)" % (name_prefix, expression)
 
 class FreeSetMergeNo(FreeSetMergeUnary):
     """Free set semantic helper for no-quantified atoms in spec merges
     """
 
+    @log_method
     def check(self, model):
         """Implementation of MergeSem.check for no-quantified atoms"""
         return self.atom not in model
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if self.name is not None:
+        if 'name' in dir(self) and self.name is not None:
             name_prefix = "%s = " % self.name
         else:
             name_prefix = ""
 
-        expression = "no %s" % self.atom
+        if 'atom' in dir(self):
+            expression = "no %s" % self.atom
+        else:
+            expression = ""
+
         return "<MergeNo> (%s%s)" % (name_prefix, expression)
 
 class FreeSetMergeBinary(MergeSem):
@@ -147,11 +163,13 @@ class FreeSetMergeBinary(MergeSem):
       Make sure that children implement the abstract methods.
     """
 
+    @log_method
     def __init__(self, operands, name=None):
         """Incomplete constructor to be called in children"""
         self.name = None
         self.operands = operands
 
+    @log_method
     def check(self, model):
         """Implementation of MergeSem.check for binary ops"""
         result = self.identity
@@ -159,6 +177,7 @@ class FreeSetMergeBinary(MergeSem):
             result = self.operator(result, operand.check(model))
         return result
 
+    @log_method
     def deduce_all(self, model):
         """Implementation of MergeSem.deduce_all for binary ops"""
         le = self.identity
@@ -179,6 +198,7 @@ class FreeSetMergeAnd(FreeSetMergeBinary):
     True, and otherwise returns False.
     """
 
+    @log_method
     def __init__(self, operands, name=None):
         """Constructor - See description of attributes in FreeSetMergeBinary"""
         FreeSetMergeBinary.__init__(self, operands, name)
@@ -187,12 +207,16 @@ class FreeSetMergeAnd(FreeSetMergeBinary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if self.name is not None:
+        if 'name' in dir(self) and self.name is not None:
             name_prefix = "%s = " % self.name
         else:
             name_prefix = ""
 
-        expression = " and ".join([str(o) for o in self.operands])
+        if 'operands' in dir(self):
+            expression = " and ".join([str(o) for o in self.operands])
+        else:
+            expression = ""
+
         return "<MergeAnd> (%s%s)" % (name_prefix, expression)
 
 class FreeSetMergeOr(FreeSetMergeBinary):
@@ -203,6 +227,7 @@ class FreeSetMergeOr(FreeSetMergeBinary):
     False, and otherwise returns True.
     """
 
+    @log_method
     def __init__(self, operands, name=None):
         """Constructor - See description of attributes in MergeBinary"""
         FreeSetMergeBinary.__init__(self, operands, name)
@@ -211,18 +236,23 @@ class FreeSetMergeOr(FreeSetMergeBinary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if self.name is not None:
+        if 'name' in dir(self) and self.name is not None:
             name_prefix = "%s =" % self.name
         else:
             name_prefix = ""
 
-        expression = " or ".join([str(o) for o in self.operands])
+        if 'operands' in dir(self):
+            expression = " and ".join([str(o) for o in self.operands])
+        else:
+            expression = ""
+
         return "<MergeOr> (%s %s)" % (name_prefix, expression)
 
 class MergeSemFactory:
     """Abstract factory for semantics of merge spec
     """
 
+    @log_method
     def build_merge_some(self, atom, name=None):
         """Build a semantic helper for an expression of the form "some <atom>"
 
@@ -235,6 +265,7 @@ class MergeSemFactory:
         """
         assert(False)
 
+    @log_method
     def build_merge_no(self, atom, name=None):
         """Build a semantic helper for an expression of the form "no <atom>"
 
@@ -247,6 +278,7 @@ class MergeSemFactory:
         """
         assert(False)
 
+    @log_method
     def build_merge_and(self, operands, name=None):
         """Build a semantic helper for a list of and-binded operands
 
@@ -259,6 +291,7 @@ class MergeSemFactory:
         """
         assert(False)
 
+    @log_method
     def build_merge_or(self, operands, name=None):
         """Build a semantic helper for a list of or-binded operands
 
@@ -280,18 +313,22 @@ class FreeSetMergeFactory(MergeSemFactory):
 
     """
 
+    @log_method
     def build_merge_some(self, atom, name=None):
         "Implementation of SemMergeFactory.build_merge_some for sets"
         return FreeSetMergeSome(atom, name)
 
+    @log_method
     def build_merge_no(self, atom, name=None):
         "Implementation of SemMergeFactory.build_merge_some for sets"
         return FreeSetMergeNo(atom, name)
 
+    @log_method
     def build_merge_and(self, operands, name=None):
         "Implementation of SemMergeFactory.build_merge_some for sets"
         return FreeSetMergeAnd(operands, name)
 
+    @log_method
     def build_merge_or(self, operands, name=None):
         "Implementation of SemMergeFactory.build_merge_some for sets"
         return FreeSetMergeOr(operands, name)
@@ -300,6 +337,7 @@ terminals = {"(", ")", "and", "or", "no", "some"}
 
 class MergeSpec:
 
+    @log_method
     def __init__ (self, spec, sem_factory, name=None):
         """Build an internal representation of a merge spec
 
@@ -327,6 +365,7 @@ class MergeSpec:
         self.sem, index = self.__parse_status(0)
         self.sem.name = name
 
+    @log_method
     def __parse_status(self, index):
         """Internal function - parse <status>"""
         left, index = self.__parse_and(index)
@@ -340,6 +379,7 @@ class MergeSpec:
         else:
             return left.pop(), index
 
+    @log_method
     def __parse_and(self, index):
         """Internal function - parse <and_expr>"""
         left, index = self.__parse_expr(index)
@@ -353,6 +393,7 @@ class MergeSpec:
         else:
             return left.pop(), index
 
+    @log_method
     def __parse_expr(self, index):
         """Internal function - parse <expr>"""
         token = self.__token_look(index)
@@ -399,10 +440,12 @@ class MergeSpec:
 
         return result, index
 
+    @log_method
     def __is_atom(self, token):
         """Internal function - Return True if token is an atom"""
         return token not in terminals
 
+    @log_method
     def __token_look(self, index):
         """Internal function
 
@@ -412,10 +455,12 @@ class MergeSpec:
         else:
             return None
 
+    @log_method
     def check(self, model):
         """Check model against expression"""
         return self.sem.check(model)
 
+    @log_method
     def maximalize(self, model):
         """Append all possible deductions
 
@@ -425,6 +470,11 @@ class MergeSpec:
         check, deduction = self.sem.deduce_all(model)
         return model.union(deduction)
 
+    def __str__(self):
+        """x.__str__() <==> str(x)"""
+        return "<mergeSpec> (%s)" % (self.spec if 'spec' in dir(self)
+                                     else 'none')
+@log_function
 def unit_testing():
     """Unit tests for this module
 
