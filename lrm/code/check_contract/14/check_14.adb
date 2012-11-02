@@ -8,6 +8,6 @@ is
 	 C := C + B;
 	 C := C + 1;
       end if;
-      pragma Check (A + B < C);
+      pragma Assert(A + B < C);
    end Compare;
 end Check_14;

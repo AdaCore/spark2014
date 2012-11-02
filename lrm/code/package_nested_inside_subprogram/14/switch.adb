@@ -5,7 +5,7 @@ package body Switch
 with
    Refined_State => (State => (Volatile => (Input => (Switch.Val1.State,
                                                       Switch.Val2.State,
-                                                      Switch.Val3.State))));
+                                                      Switch.Val3.State))))
 is
 
    subtype Value is Integer range -1 .. 1;
@@ -14,7 +14,7 @@ is
 
    function ReadValue return Reading
    with
-      Global => (Input => (Val1.State, Val2.State, Val3.State));
+      Global => (Input => (Val1.State, Val2.State, Val3.State))
    is
       A, B, C : Reading;
 

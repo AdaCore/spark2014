@@ -1,6 +1,5 @@
 with Processing;
 --# inherit Processing, Raw_Data;
-
 package Calculate
 is
 

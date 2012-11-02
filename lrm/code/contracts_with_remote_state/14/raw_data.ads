@@ -1,11 +1,11 @@
 package Raw_Data
 with
-   Abstract_State => State;
+   Abstract_State => State
 is
 
    function Data_Is_Valid (Value : Integer) return Boolean;
 
-   procedure Read (Value : out Integer);
+   procedure Read (Value : out Integer)
    with
       Global  => (Input => State),
       Depends => (Value => State),

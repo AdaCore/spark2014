@@ -5,25 +5,25 @@ is
    --  Proof functions to indicate whether or not the Stack is empty
    --  and whether or not it is full.
    --# type Abstract_Stack is abstract;
-   --# function Is_Empty (Input : Abstract_Stack) return Boolean;
-   --# function Is_Full (Input : Abstract_Stack) return Boolean;
+   --# function Is_Empty(Input : Abstract_Stack) return Boolean;
+   --# function Is_Full(Input : Abstract_Stack) return Boolean;
    
    --  Proof function to give the number of elements on the stack.
-   --# function Count (Input : Abstract_Stack) return Natural;
+   --# function Count(Input : Abstract_Stack) return Natural;
 
    --  Post-condition indicates that the stack will be
    --  non-empty after pushing an item on to it, while the pre-condition
    --  requires it is not full when we push a value onto it.
    procedure Push(X : in Integer);
    --# global in out State;
-   --# pre not Is_Full (State);
-   --# post not Is_Empty (State);
+   --# pre  not Is_Full(State);
+   --# post not Is_Empty(State);
 
    --  Procedure that swaps the first two elements in a stack.
    procedure Swap2;
    --# global in out State;
-   --# pre Count (State) >= 2;
-   --# post Count (State) = Count (State~);
+   --# pre  Count(State) >= 2;
+   --# post Count(State) =  Count(State~);
 
    --  Initializes the Stack.
    procedure Initialize;

@@ -5,15 +5,15 @@ package Stacks is
    function Is_Empty(S : Stack) return Boolean;
    function Is_Full(S : Stack) return Boolean;
 
-   procedure Clear(S : out Stack);
+   procedure Clear(S : out Stack)
    with
       Depends => (S => null);
 
-   procedure Push(S : in out Stack; X : in Integer);
+   procedure Push(S : in out Stack; X : in Integer)
    with
       Depends => (S =>+ X);
 
-   procedure Pop(S : in out Stack; X : out Integer);
+   procedure Pop(S : in out Stack; X : out Integer)
    with
       Depends => ((S,X) => S);
 

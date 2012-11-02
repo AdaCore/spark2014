@@ -679,65 +679,22 @@ Private, abstract state, refining onto mixture of the above
 This example is based around the packages from sections `Private, abstract state,
 refining onto concrete state of private child`_
 and `Private, abstract state, refining onto concrete state of embedded package`_.
-Source_A is an embedded package, while Source_B is a private child.
-
-Specification of Parent in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.ads
-      :language: ada
-      :linenos:
-
-Body of Parent in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.adb
-      :language: ada
-      :linenos:
-
-Specification of Private Child in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05_source_b_05.ads
-      :language: ada
-      :linenos:
-
-Body of Private Child in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05_source_b_05.adb
-      :language: ada
-      :linenos:
-
-Specification of Parent in |SPARK|:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.ads
-      :language: ada
-      :linenos:
-
-Body of Parent in |SPARK|:
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.adb
-      :language: ada
-      :linenos:
-
-Specification of Private Child in |SPARK|
-
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14_source_b_14.ads
-      :language: ada
-      :linenos:
-
-Body of Private Child in |SPARK|:
-
-As per SPARK 2005.
-
+Source_A is an embedded package, while Source_B is a private child. In order to 
+avoid repetition, the code of this example is not being presented. However, it is 
+available under the "code\asm_abstract_state_refined_in_embedded_and_private_child".
 
 External Variables
 ~~~~~~~~~~~~~~~~~~
 
+.. _ms-external_variables_input_output-label:
 
 Basic Input and Output Device Drivers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following example shows a main program - Copy - that reads all available data
 from a given input port, stores it internally during the reading process in a stack
-and then outputs all the data read to an output port.
+and then outputs all the data read to an output port. The specifications of the 
+stack package are not being presented since they are identical to previous examples.
 
 Specification of main program in SPARK 2005:
 
@@ -769,18 +726,11 @@ Body of output port in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification of Stack in SPARK 2005:
-
-   .. literalinclude:: ../code/external_variables_input_output/05/stacks_05.ads
-      :language: ada
-      :linenos:
-
+.. todo::
+   *Note that the syntax for identifying the main program in* |SPARK| *is still
+   TBD.*
 
 Specification of main program in |SPARK|:
-
-*Note that the syntax for identifying the main program in* |SPARK| *is still
-TBD.*
-
    .. literalinclude:: ../code/external_variables_input_output/14/copy.adb
       :language: ada
       :linenos:
@@ -813,12 +763,7 @@ This is as per SPARK 2005.
       :language: ada
       :linenos:
 
-Specification of Stack in |SPARK|:
-
-   .. literalinclude:: ../code/external_variables_input_output/14/stacks.ads
-      :language: ada
-      :linenos:
-
+.. _ms-external_variables_input_append_tail-label:
 
 Input driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -828,8 +773,9 @@ and adds a contract using the 'Tail attribute. The example also use the Always_V
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined. Note that this also applies to the use of the Always_Valid annotation.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined. Note that this also applies to the use of the Always_Valid annotation.*
 
 Specification in SPARK 2005:
 
@@ -843,13 +789,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
-
-TBD
-
-Body in |SPARK|:
-
-TBD
+.. _ms-external_variables_output_append_tail-label:
 
 Output driver using \'Append and \'Tail contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -857,8 +797,9 @@ Output driver using \'Append and \'Tail contracts
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined.*
 
 Specifications in SPARK 2005:
 
@@ -872,14 +813,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
-
-TBD
-
-Body in |SPARK|:
-
-TBD
-
+.. _ms-external_variables_refinement_voting_input_switch-label:
 
 Refinement of external state - voting input switch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -939,6 +873,8 @@ Switch body in |SPARK|:
       :language: ada
       :linenos:
 
+.. _ms-external_variables_complex_io_device-label:
+
 Complex I/O Device
 ^^^^^^^^^^^^^^^^^^
 
@@ -948,8 +884,9 @@ stores the last value written to avoid writes that would just re-send the same v
 The own variable is then refined into a normal variable, an input external variable
 ad an output external variable.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined.*
 
 
 Specification in SPARK 2005:
@@ -964,13 +901,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
-
-TBD
-
-Body in |SPARK|:
-
-TBD
+.. _ms-external_variables_increasing_values_in_input_stream-label:
 
 Increasing values in input stream
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -981,8 +912,9 @@ the first values read from the sequence are in ascending order. This example
 shows that post-conditions can refer to multiple individual elements of the
 input stream.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined.*
 
 Specification in SPARK 2005:
 
@@ -996,19 +928,11 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
-
-TBD
-
-Body in |SPARK|:
-
-TBD
-
 
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
 
-TBD
+.. _ms-contracts_with_remote_state-label:
 
 Contracts with remote state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1047,10 +971,14 @@ Specifications in |SPARK|:
       :language: ada
       :linenos:
 
+.. _ms-package_nested_inside_package-label:
+
 Package nested inside package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 See section `Private, abstract state, refining onto concrete state of embedded package`_.
+
+.. _ms-package_nested_inside_subprogram-label:
 
 Package nested inside subprogram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1067,17 +995,7 @@ Abstract Switch specifications in SPARK 2005:
 
 Component Switch specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val1.ads
-      :language: ada
-      :linenos:
-
-   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val2.ads
-      :language: ada
-      :linenos:
-
-   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val3.ads
-      :language: ada
-      :linenos:
+As in `Refinement of external state - voting input switch`_
 
 Switch body in SPARK 2005:
 
@@ -1093,17 +1011,7 @@ Abstract Switch specification in |SPARK|:
 
 Component Switch specifications in |SPARK|:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val1.ads
-      :language: ada
-      :linenos:
-
-   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val2.ads
-      :language: ada
-      :linenos:
-
-   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val3.ads
-      :language: ada
-      :linenos:
+As in `Refinement of external state - voting input switch`_
 
 Switch body in |SPARK|:
 
@@ -1171,7 +1079,6 @@ Body of package Q_14 in |SPARK|:
 Bodies and Proof
 ----------------
 
-
 Assert, Assume, Check contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1215,29 +1122,11 @@ Body in |SPARK|:
 Assert (no loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how the `assert` annotation can be used outside of a loop. 
-When the `assert` annotation is reached, the list of hypotheses is cleared and the statements 
-that are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent 
-of `assert`, while not in a loop, is `pragma Assert_And_Cut`. Only the 2005 version of the 
-specifications is being provided since the |SPARK| version is identical.
+While not in a loop, the SPARK 2005 `assert` annotation maps to `pragma Assert_And_Cut` 
+in |SPARK|. These statements clear the list of hypotheses and add the statements that 
+are within them as the new hypotheses.
 
-Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/assert_no_loop_contract/05/assert_no_loop_05.adb
-      :language: ada
-      :linenos:
-
-Body in |SPARK|:
-
-   .. literalinclude:: ../code/assert_no_loop_contract/14/assert_no_loop_14.adb
-      :language: ada
-      :linenos:
+.. _ms-proof_assume_contract-label:
 
 Assume contract
 ^^^^^^^^^^^^^^^
@@ -1275,42 +1164,22 @@ Body for Assume annotation in |SPARK|:
 Check contract
 ^^^^^^^^^^^^^^
 
-This example shows how the `check` annotation can be used to add a new hypothesis to the list 
-of existing hypotheses. The specifications of the |SPARK| version of the code have not been 
-included since they are identical to the SPARK 2005 specifications.
-
-Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/check_contract/05/check_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/check_contract/05/check_05.adb
-      :language: ada
-      :linenos:
-
-Body in |SPARK|:
-
-   .. literalinclude:: ../code/check_contract/14/check_14.adb
-      :language: ada
-      :linenos:
+The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This 
+annotation adds a new hypothesis to the list of existing hypotheses. The code is 
+not presented but can be found under "code\check_contract".
 
 Assert used to control path explostion (ASPDV example)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
+Covered by the example of Gaetan.
 
 Other Contracts and Annotations
 -------------------------------
 
-TBD
-
 Declare annotation
 ~~~~~~~~~~~~~~~~~~
 
-TBD
+.. todo::
 
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1318,16 +1187,18 @@ Always_Valid assertion
 See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
 the Always_Valid attribute.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined.*
 
 Rule declaration annotation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See section `Proof types and proof functions`_.
 
-*Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-syntax is not yet defined.*
+.. todo::
+   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
+   syntax is not yet defined.*
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1340,9 +1211,10 @@ and proof types are needed to state those pre- and post-conditions. In addition,
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 
-*Note that the* |SPARK| *version of the rule declaration annotation has not yet been defined - note
-that it may not even be needed, though this is to be determined -
-and so there is no equivalent included in the* |SPARK| *code.*
+.. todo:
+   *Note that the* |SPARK| *version of the rule declaration annotation has not yet been 
+   defined - note that it may not even be needed, though this is to be determined - and 
+   so there is no equivalent included in the* |SPARK| *code.*
 
 Specification in SPARK 2005:
 
@@ -1377,4 +1249,4 @@ RavenSPARK patterns - (TBD, but check upward compatibility for the future)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. todo::
-  JIB: Targeting supplied by RCC. Target Rel 2+.
+   JIB: Targeting supplied by RCC. Target Rel 2+.

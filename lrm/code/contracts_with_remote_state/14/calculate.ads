@@ -1,9 +1,8 @@
 with Processing;
-
 package Calculate
 is
 
-   procedure Read_Calculated_Value (Value : out Integer);
+   procedure Read_Calculated_Value (Value : out Integer)
    with
       Global  => (Input => (Processing.State, Raw_Data.State)),
       Depends => (Value => (Processing.State, Raw_Data.State)),

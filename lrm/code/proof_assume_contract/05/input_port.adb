@@ -8,7 +8,7 @@ is
    procedure Read_From_Port(Input_Value : out Integer)
    is
    begin
-      --# assume Integer'First <= Inputs and Inputs <= Integer'Last;
+      --# assume Inputs in Integer;
       Input_Value := Inputs;
    end Read_From_Port;
 

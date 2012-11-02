@@ -5,8 +5,7 @@ procedure Copy
 with
    Global  => (Input  => Input_Port.Inputs,
                Output => Output_Port.Outputs),
-   Depends => (Output_Port.Outputs => Input_Port.Inputs);
-
+   Depends => (Output_Port.Outputs => Input_Port.Inputs)
 is
    The_Stack   : Stacks.Stack;
    Value       : Integer;

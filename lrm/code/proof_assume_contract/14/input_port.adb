@@ -1,4 +1,3 @@
-
 package body Input_Port
 is
 
@@ -8,7 +7,7 @@ is
    procedure Read_From_Port(Input_Value : out Integer)
    is
    begin
-      pragma Assume(Integer'First <= Inputs and Inputs <= Integer'Last);
+      pragma Assume(Inputs in Integer);
       Input_Value := Inputs;
    end Read_From_Port;
 
