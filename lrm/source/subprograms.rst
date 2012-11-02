@@ -427,7 +427,9 @@ of a *global* variable by a more *local* variable.
       a formal parameter or global variable of any mode.
    3. Additionally, X'Old is permitted in a postcondition aspect if X is
       a global variable or formal parameter of mode "in out".
-
+   4. Additionally, if X is a formal parameter of an unconstrained array type,
+      and X is mode "out", then the attributes X'First, X'Last, X'Length and
+      X'Range may appear in a precondition aspect.
 
 .. todo:: Following the discussion under LA11-017 (the thread
    started by RCC on 26/10), we must document here the rules
