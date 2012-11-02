@@ -3,3 +3,10 @@
 stack(1): not is_full(X) may_be_replaced_by fld_pointer(fld_my_stack(X)) < pointer_range__last.
 
 stack(2): is_empty(X) may_be_replaced_by 0 = fld_pointer(fld_my_stack(X)).
+
+stack(3): count(X) may_be_replaced_by fld_pointer(fld_my_stack(X)).
+
+/*stack(4): count(state) = count(state~) may_be_deduced_from [fld_pointer(fld_my_stack(state)) = fld_pointer(my_stack~)].*/
+
+stack(4): fld_pointer(fld_my_stack(state)) = fld_pointer(my_stack~) & count(state) = count(state~) are_interchangeable.
+

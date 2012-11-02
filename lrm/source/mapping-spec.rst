@@ -1390,12 +1390,6 @@ Body in SPARK 2005
       :language: ada
       :linenos:
 
-Proof rules in SPARK 2005:
-
-   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack/stack.rlu
-      :language: ada
-      :linenos:
-
 Specification in |SPARK|
 
    .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.ads
@@ -1416,79 +1410,5 @@ See the main program annotation used in section `Basic Input and Output Device D
 RavenSPARK patterns - (TBD, but check upward compatibility for the future)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBD
-
-Other Examples
---------------
-
-Stack example. Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack/05/the_stack_05.ads
-      :language: ada
-      :linenos:
-
-Stack example. Body in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack/05/the_stack_05.adb
-      :language: ada
-      :linenos:
-
-Stack example. Specifications in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack/14/the_stack_14.ads
-      :language: ada
-      :linenos:
-
-Stack example. Body in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack/14/the_stack_14.adb
-      :language: ada
-      :linenos:
-
-Stack example with conditions. Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack_with_conditions/05/the_stack_with_conditions_05.ads
-      :language: ada
-      :linenos:
-
-Stack example with conditions. Body in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack_with_conditions/05/the_stack_with_conditions_05.adb
-      :language: ada
-      :linenos:
-
-Stack example with conditions. Specifications in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack_with_conditions/14/the_stack_with_conditions_14.ads
-      :language: ada
-      :linenos:
-
-Stack example with conditions. Body in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack_with_conditions/14/the_stack_with_conditions_14.adb
-      :language: ada
-      :linenos:
-
-Stack example with more conditions. Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack_with_more_conditions/05/the_stack_with_more_conditions_05.ads
-      :language: ada
-      :linenos:
-
-Stack example with more conditions. Body in SPARK 2005:
-
-   .. literalinclude:: ../code/the_stack_with_more_conditions/05/the_stack_with_more_conditions_05.adb
-      :language: ada
-      :linenos:
-
-Stack example with more conditions. Specifications in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack_with_more_conditions/14/the_stack_with_more_conditions_14.ads
-      :language: ada
-      :linenos:
-
-Stack example with more conditions. Body in |SPARK|:
-
-   .. literalinclude:: ../code/the_stack_with_more_conditions/14/the_stack_with_more_conditions_14.adb
-      :language: ada
-      :linenos:
+.. todo::
+  JIB: Targeting supplied by RCC. Target Rel 2+.
