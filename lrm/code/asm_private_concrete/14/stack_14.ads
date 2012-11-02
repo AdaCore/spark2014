@@ -4,7 +4,7 @@ with
 is
    procedure Push(X : in Integer)
    with
-      Global => In_Out => (S, Pointer);
+      Global => (In_Out => (S, Pointer));
 
    procedure Pop(X : out Integer)
    with

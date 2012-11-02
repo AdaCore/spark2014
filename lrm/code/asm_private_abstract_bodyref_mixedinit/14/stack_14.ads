@@ -5,11 +5,11 @@ with
 is
    procedure Push(X : in Integer)
    with
-      Global => In_Out => Stack;
+      Global => (In_Out => Stack);
 
    procedure Pop(X : out Integer)
    with
-      Global => In_Out => Stack;
+      Global => (In_Out => Stack);
 private
    Stack_Size : constant := 100;
    type    Pointer_Range is range 0 .. Stack_Size;

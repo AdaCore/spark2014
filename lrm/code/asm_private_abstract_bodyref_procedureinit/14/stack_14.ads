@@ -4,15 +4,15 @@ with
 is
    procedure Push(X : in Integer)
    with
-      Global => In_Out => State;
+      Global => (In_Out => State);
 
    procedure Pop(X : out Integer)
    with
-      Global => In_Out => State;
+      Global => (In_Out => State);
 
    procedure Init
    with
-      Global => Output => State;
+      Global => (Output => State);
 private
    Stack_Size : constant := 100;
    type    Pointer_Range is range 0 .. Stack_Size;

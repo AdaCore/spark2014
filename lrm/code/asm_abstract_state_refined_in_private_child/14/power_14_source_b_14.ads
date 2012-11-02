@@ -1,6 +1,6 @@
 private package Power_14.Source_B_14
 with
-   Abstract_State => State;
+   Abstract_State => State
 is
    procedure Read (Level : out Integer);
    with
