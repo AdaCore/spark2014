@@ -1,76 +1,119 @@
 Statements
 ==========
 
+|SPARK| restricts the use of some statements, and adds a number of pragmas which are used for
+verification, particularly involving loop statements.
 
-There are no added features in this section, only restrictions.
+Simple and Compound Statements - Sequences of Statements
+--------------------------------------------------------
 
-.. todo:: I think these new pragmas are regarded as statements and
-    should appear here.  The text has been copied directly from the
-    initial langauge design document as prepared by Johannes. It needs
-    to be tided up into LRM format
+|SPARK| restricts statements that complicate verification, and excludes statements
+related to tasking and synchronization.
 
-Restrictions
-------------
+Assignment Statements
+---------------------
 
-User-defined iterator types are not in |SPARK|. An ``iterator_specification``
-is not in |SPARK|.
+No extensions or restrictions.
 
-Goto statements are not in |SPARK|.
+If Statements
+-------------
 
-Annotations in subprograms
---------------------------
+No extensions or restrictions.
 
-This section discusses the pragmas ``Assert_And_Cut``, ``Loop_Invariant`` and
-``Loop_Variant``.
+Case Statements
+---------------
 
-Syntax
-------
+No extensions or restrictions.
 
-.. todo::
-  We need to document the Assume pragma.
+Loop Statements
+---------------
+
+User-Defined Iterator Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User-defined iterator types are not in |SPARK|.
+
+Generalized Loop Iteration
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An ``iterator_specification`` is not in |SPARK|.
+
+Loop Invariants, Variants and Entry Values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Two loop-related pragmas, Loop_Invariant and Loop_Variant, and a loop-related
+attribute, Loop_Entry are defined. The pragma Loop_Invariant is similar to
+pragma Assert except for its proof semantics. Pragma Loop_Variant is
+intended for use in ensuring termination. The Loop_Entry attribute is
+used to refer to the value that an expression had upon entry to a given
+loop in much the same way that the Old attribute in a subprogram
+postcondition can be used to refer to the value an expression had upon
+entry to the subprogram.
+
+pragmas Loop_Invariant and Loop_Variant
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. centered:: **Syntax**
 
 ::
 
-      cut_statement          ::= pragma Assert_And_Cut (boolean_expression);
+      invariant_statement    ::= pragma Loop_Invariant (boolean_expression);
 
-      invariant_statement    ::= pragma Loop_Invariant(boolean_expression);
+      loop_variant_statement ::= pragma Loop_Variant (loop_variant_item {, loop_variant_item} );
 
-      loop_variant_statement ::= pragma Loop_Variant(variant_list);
+      loop_variant_item ::= change_direction => discrete_expression
+      change_direction  ::= Increases | Decreases
 
-      variant_list           ::= variant {, variant_list}
-      variant_direction      ::= Increases | Decreases
-      variant                ::= variant_direction => discrete_expression
+.. centered:: **Legality Rules**
 
-Legality rules
---------------
 
-In addition to the assertion statements ``pragma Check`` and ``pragma
-Assert``, a SPARK 2014 subprogram can contain the statement ``pragma
-Assert_And_Cut`` and ``pragma Assume``, both carrying a boolean
-expression. This boolean property must be true at the point of the
-``pragma Assert_And_Cut`` or ``pragma Assume``, as it is the case for
-the other forms of assertions. These pragmas can occur anywhere a
-``pragma Assert`` can occur.
+A Loop_Invariant pragma shall occur immmediately within
+the sequence_of_statements of a loop_statement.
 
-Any loop may contain, at any position in the top-level statement list, a
-``pragma Loop_Invariant``.
+A Loop_Variant pragma shall occur immediately within the
+sequence_of_statements of a loop statement. 
 
-``pragma Loop_Variant`` must be the first statement of a loop and may not
-appear in ``for`` loops.
+The expression of a loop_variant_item is expected to be of any
+discrete type.
 
-.. _assertcutinv_proof_semantics:
+.. centered:: **Static Semantics**
 
-Proof semantics
----------------
+TBD
 
-For all the pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and
-``Loop_Invariant``, it must be proved that the boolean expression is true.
-This is not required for pragma ``Assume``. In addition, the pragmas
-``Assert_And_Cut`` and ``Loop_Invariant`` act as a cut point: the prover is
-free to forget all information about modified variables that has been
-established from the statement list before the cut point. A boolean expression
-given by pragma ``Assume`` can be assumed to be true for the remainder of
-subprogram.
+.. centered:: **Dynamic Semantics**
+
+Other than the above legality rules, pragma Loop_Invariant is equivalent to
+pragma Assert.
+
+Pragma Loop_Variant is an assertion (as defined in RM
+11.4.2(1.1/3)) and is governed in the same way as pragma Assert
+by the Assert assertion aspect. In particular, the elaboration of
+a disabled Loop_Variant pragma has no effect.
+
+The elaboration of an enabled Loop_Variant pragma begins by
+evaluating the discrete_expressions in textual order.
+For the first elaboration of the pragma within a given execution
+of the enclosing loop statement, no further action is taken.
+For subsequent elaborations of the pragma, one or more of these
+expression results are each compared to their corresponding
+result from the previous iteration as follows: comparisons are
+performed in textual order either until unequal values are found
+or until values for all expressions have been compared. In either
+case, the last pair of values to be compared are then checked as
+follows: if the change_direction for the associated
+loop_variant_item is Increases (respectively, Decreases) then a
+check is performed that the expression value obtained during the
+current iteration is greater (respectively, less) than the value
+obtained during the preceding iteration. The exception
+Assertions.Assertion_Error is raised if this check fails. All
+comparisons and checks are performed using predefined operations. 
+   
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
+
+.. todo:: describe Proof Semantics of pragma Loop_Invariant
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
@@ -84,133 +127,15 @@ proved.
 
 Proving this property implies the termination of the loop.
 
-Dynamic semantics
------------------
-
-The pragmas ``Check``, ``Assert``, ``Assume``, ``Assert_And_Cut`` and
-``Loop_Invariant`` all have the same dynamic semantics, namely a
-dynamic check that the boolean expression evaluates to ``True``.
-
-Pragma ``Loop_Variant`` corresponds to a dynamic check with the following
-semantics: The check is always true at the first iteration; at subsequent
-iterations, the values of the discrete expressions are compared with the
-values of the discrete expressions at the last iteration, and it is checked
-that this indeed corresponds to a lexicographic order, as it has been
-described in the :ref:`assertcutinv_proof_semantics`.
-
-Examples
---------
-
-.. highlight:: ada
-
-The following example describes some pragmas of this section::
-
-   procedure P is
-      type Total is range 1 .. 100;
-      subtype T is Total range 1 .. 10;
-      I : T := 1;
-      R : Total := 100;
-   begin
-      while I < 10 loop
-         pragma Loop_Invariant (R >= 100 - 10 * I);
-         pragma Loop_Variant (Increases => I,
-                              Decreases => R);
-         R := R - I;
-         I := I + 1;
-      end loop;
-   end P;
-
-Note that in this example, the loop variant is unnecessarily complex, stating
-that ``I`` increases is enough to prove termination of this simple loop.
-
-Discussion
-----------
-
-In GNAT, all pragmas described here are implemented using a ``pragma Check``
-internally, so that the user-chosen assertion policy applies.
-
-Loop Statements
----------------
-
-User-Defined Iterator Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Generalised Loop Iteration
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Loop Operations
-^^^^^^^^^^^^^^^
-
-Two loop-related pragmas, Loop_Invariant and Loop_Variant, and a loop-related
-attribute, Loop_Entry are defined. The pragma Loop_Invariant is similar to
-pragma Assert except for its proof semantics. Pramgma Loop_Variant is
-intended for use in ensuring termination. The Loop_Entry attribute is
-used to refer to the value that an expression had upon entry to a given
-loop in much the same way that the Old attribute in a subprogram
-postcondition can be used to refer to the value an expression had upon
-entry to the subprogram.
-
-pragma Loop_Invariant
-"""""""""""""""""""""
-  A Loop_Invariant pragma shall occur immmediately within
-  the sequence_of_statements of a loop_statement.
-
-  Other than the above rule, pragma Loop_Invariant is equivalent to
-  pragma Assert in the same way that pragmas Assert_And_Cut and Assume are.
-
-.. todo:: describe Proof Semantics of pragma Loop_Invariant
-
-pragma Loop_Variant
-"""""""""""""""""""
-
-   The form of a Loop_Variant pragma is as follows:
-
-       pragma Loop_Variant (loop_variant_item {, loop_variant_item} );
-
-   with associated syntax::
-
-      loop_variant_item ::= change_direction => discrete_expression
-      change_direction  ::= Increases | Decreases
-
-   The expression of a loop_variant_item is expected to be of any
-   discrete type.
-
-   A Loop_Variant pragma shall occur immediately within the
-   sequence_of_statements of a loop statement. 
-
-   Pragma Loop_Variant is an assertion (as defined in RM
-   11.4.2(1.1/3)) and is governed in the same way as pragma Assert
-   by the Assert assertion aspect. In particular, the elaboration of
-   a disabled Loop_Variant pragma has no effect.
-
-   The elaboration of an enabled Loop_Variant pragma begins by
-   evaluating the discrete_expressions in textual order.
-   For the first elaboration of the pragma within a given execution
-   of the enclosing loop statement, no further action is taken.
-   For subsequent elaborations of the pragma, one or more of these
-   expression results are each compared to their corresponding
-   result from the previous iteration as follows: comparisons are
-   performed in textual order either until unequal values are found
-   or until values for all expressions have been compared. In either
-   case, the last pair of values to be compared are then checked as
-   follows: if the change_direction for the associated
-   loop_variant_item is Increases (respectively, Decreases) then a
-   check is performed that the expression value obtained during the
-   current iteration is greater (respectively, less) than the value
-   obtained during the preceding iteration. The exception
-   Assertions.Assertion_Error is raised if this check fails. All
-   comparisons and checks are performed using predefined operations. 
-   
-.. todo:: describe Proof Semantics of pragma Loop_Variant
-
 Loop_Entry attribute
-""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^
 
 For a prefix X that denotes an object of a nonlimited type, the
 following attribute is defined
 
 ::
 
-   X'Loop_Entry [(*loop_*name)]
+   X'Loop_Entry [(loop_name)]
 
 A Loop_Entry attribute_reference "applies to a loop statement" in the
 same way that an exit_statement does (see RM 5.7). For every rule
@@ -237,7 +162,7 @@ Note: This means that the constant is not elaborated unless the
 loop body will execute (or at least begin execution) at least once.
 For example, a while loop
 
-::
+.. code-block:: ada
 
    while <condition> do
      sequence_of_statements; -- contains Loop_Entry uses
@@ -245,7 +170,7 @@ For example, a while loop
 
 may be thought of as being transformed into
 
-::
+.. code-block:: ada
 
    if <condition> then
      declare
@@ -260,13 +185,13 @@ may be thought of as being transformed into
 
 This rule prevents the following example from raising Constraint_Error:
 
-::
+.. code-block:: ada
 
    declare
      procedure P (X : in out String) is
      begin
        for I in X'Range loop
-         pragma Loop_Assertion (X(X'First)'Loop_Entry >= X(I));
+         pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
          ...; -- modify X
        end loop;
      end P;
@@ -276,8 +201,8 @@ This rule prevents the following example from raising Constraint_Error:
    end;
 
 In many cases, the language rules pertaining to the Loop_Entry
-attribute match those pertaining to the Old attribute (see section
-6.1.1), except with "Loop_Entry" substituted for "Old". These include:
+attribute match those pertaining to the Old attribute (see Ada LRM 6.1.1), except
+with "Loop_Entry" substituted for "Old". These include:
 
 * prefix name resolution rules (including expected type definition)
 * nominal subtype definition
@@ -287,7 +212,7 @@ attribute match those pertaining to the Old attribute (see section
 * interactions with anonymous access types
 * forbidden attribute uses in the prefix of the attribute_reference.
 
-Note: The following 6.1.1 Old attribute rules are not included on the
+Note: The following rules are not included on the
 above list; corresponding rules are instead stated explicitly below:
 
 * the requirement that an Old attribute_reference must occur in a
@@ -309,4 +234,79 @@ an entity, or shall denote an object_renaming_declaration, if
 * the attribute_reference is potentially unevaluated; or
 * the attribute_reference does not apply to the innermost
   enclosing loop_statement.
+
+
+Block Statements
+----------------
+
+No extensions or restrictions.
+
+Exit Statements
+---------------
+
+No extensions or restrictions.
+
+Goto Statements
+---------------
+
+The goto statement is not permitted in |SPARK|.
+
+Proof Statements
+----------------
+
+This section discusses the pragmas ``Assert_And_Cut`` and ``Assume``.
+
+.. centered:: **Syntax**
+
+::
+
+      assume_statement       ::= pragma Assume (boolean_expression);
+
+      cut_statement          ::= pragma Assert_And_Cut (boolean_expression);
+
+.. centered:: **Legality Rules**
+
+In addition to the assertion statements ``pragma Check`` and ``pragma
+Assert``, a |SPARK| subprogram can contain the statement ``pragma
+Assert_And_Cut`` and ``pragma Assume``, both carrying a boolean
+expression. These pragmas can occur anywhere a ``pragma Assert`` can occur.
+
+.. _assertcutinv_proof_semantics:
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
+
+For all the pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and
+``Loop_Invariant``, it must be proved that the boolean expression is true.
+This is not required for pragma ``Assume``. In addition, the pragmas
+``Assert_And_Cut`` and ``Loop_Invariant`` act as a cut point: the prover is
+free to forget all information about modified variables that has been
+established from the statement list before the cut point. A boolean expression
+given by pragma ``Assume`` can be assumed to be true for the remainder of
+subprogram.
+
+.. centered:: **Examples**
+
+The following example illustrates some pragmas of this section
+
+.. code-block:: ada
+
+   procedure P is
+      type Total is range 1 .. 100;
+      subtype T is Total range 1 .. 10;
+      I : T := 1;
+      R : Total := 100;
+   begin
+      while I < 10 loop
+         pragma Loop_Invariant (R >= 100 - 10 * I);
+         pragma Loop_Variant (Increases => I,
+                              Decreases => R);
+         R := R - I;
+         I := I + 1;
+      end loop;
+   end P;
+
+Note that in this example, the loop variant is unnecessarily complex, stating
+that ``I`` increases is enough to prove termination of this simple loop.
 
