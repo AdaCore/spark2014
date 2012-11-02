@@ -1,6 +1,6 @@
 package body Nesting_Refinement_14
 with
-   Refined_State => State => (X, Y) -- Refined State
+   Refined_State => (State => (X, Y)) -- Refined State
 is   
    X, Y: Integer;
    

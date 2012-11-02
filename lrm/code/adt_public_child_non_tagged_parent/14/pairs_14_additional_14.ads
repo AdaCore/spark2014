@@ -8,7 +8,7 @@ is
    --  increments each value in the Pair.
    procedure Increment (Value: in out Pairs_14.Pair);
    with
-      Depends => Value => Value;
+      Depends => (Value => Value);
 
 private
 

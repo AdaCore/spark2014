@@ -1,12 +1,12 @@
 package body Power_14
 with
-   Refined_State => (State => (Source_A.State, Source_B.State));
+   Refined_State => (State => (Source_A.State, Source_B.State))
 is
 
   --  Embedded package spec for Source_A
   package Source_A
   with
-     Abstract_State => State;
+     Abstract_State => State
   is
      procedure Read (Level : out Integer);
      with
@@ -17,7 +17,7 @@ is
   --  Embedded package spec for Source_B.
   package Source_B
   with
-     Abstract_State => State;
+     Abstract_State => State
   is
     procedure Read (Level : out Integer);
     with

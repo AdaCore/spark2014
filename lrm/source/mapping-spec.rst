@@ -19,18 +19,12 @@ This example demonstrates how global variables can be accessed through
 procedures and functions and presents how the `derives` annotation is structured. 
 The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap` 
 accesses two global variables and swaps their contents while `Add` returns their 
-sum. The bodies of both SPARK 2005 and |SPARK| are identical and thus only one of 
-them has been included.
+sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further 
+insight and have thus not been included.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/global_derives/05/swap_add_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/global_derives/05/swap_add_05.adb
       :language: ada
       :linenos:
 
@@ -68,13 +62,13 @@ Specifications in |SPARK|:
       :language: ada
       :linenos:
 
-.. _ms-nesting_refinement-label:
+.. _ms-attributes_of_unconstrained_out_parameter_in_precondition-label:
 
 Attributes of unconstrained out parameter in precondition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following example illustrates the fact that the attributes of an unconstrained
-formal array parameter of mode "out" _are_ permitted to appear in a precondition.
+formal array parameter of mode "out" are permitted to appear in a precondition.
 The flow analyser also needs to be smart about this, since it knows the X'First and
 X'Last are well-defined in the body, even though the content of X is not.
 
@@ -96,16 +90,18 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+.. todo::
+   *Note that the details of false alarm management are still TBD and so 
+   there is currently no equivalent in the* |SPARK| *body to the accept annotation
+   in the SPARK 2005 body.*
 
-*Note that the details of false alarm management are still TBD and so
-there is currently no equivalent in the* |SPARK| *body to the accept annotation
-in the SPARK 2005 body.*
+Body in |SPARK|:
 
    .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.adb
       :language: ada
       :linenos:
 
+.. _ms-nesting_refinement-label:
 
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,19 +146,13 @@ Visible type
 ^^^^^^^^^^^^
 
 The following example adds no mapping information. The SPARK 2005 and |SPARK| versions 
-of the code are identical. Thus, only the SPARK 2005 code will be presented. The reason 
-why this code is being provided is to allow for a comparison between a package that is 
-purely public and an equivalent one that also has private elements.
+of the code are identical. Only the specifications of the SPARK 2005 code will be presented. 
+The reason why this code is being provided is to allow for a comparison between a package that 
+is purely public and an equivalent one that also has private elements.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/adt_visible/05/stacks_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/adt_visible/05/stacks_05.adb
       :language: ada
       :linenos:
 
@@ -172,18 +162,12 @@ Private type
 ^^^^^^^^^^^^
 
 Similarly to the previous example, this one does not contain any annotations either. Due 
-to this, the SPARK 2005 and |SPARK| versions are exactly the same and hence only one of  
-them shall be presented.
+to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specifications of
+the 2005 version shall be presented.
 
 Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/adt_private/05/stacks_05.ads
-      :language: ada
-      :linenos:
-
-Body in SPARK 2005:
-
-   .. literalinclude:: ../code/adt_private/05/stacks_05.adb
       :language: ada
       :linenos:
 
@@ -344,9 +328,11 @@ private children and their parent in SPARK 2005. More specifically, it shows tha
 * All children have access to their parent but the parent can only access private children.
 
 Applying the SPARK tools on the following files will produce certain errors. This was 
-intentionally done in order to illustrate both legal and illegal access attempts. The 
-|SPARK| version of the code is not provided since the restrictions that are to be 
-applied in terms of package visibility are yet to be determined.
+intentionally done in order to illustrate both legal and illegal access attempts. 
+
+.. todo::
+   The |SPARK| version of the code is not provided since the restrictions that are to be 
+   applied in terms of package visibility are yet to be determined.
 
 Specification of parent in SPARK 2005:
 
@@ -430,24 +416,14 @@ Initialized by elaboration
 ++++++++++++++++++++++++++
 
 The following example presents how a package's concrete state can be initialized at 
-the statements section of the body. The |SPARK| version of the body is not presented 
-since it is identical to the SPARK 2005 body.
-
-Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.ads
-      :language: ada
-      :linenos:
+the statements section of the body. The specifications of both SPARK 2005 and |SPARK| 
+are not presented since they are identical to the specifications of the previous example. 
+Furthermore, the |SPARK| version of the body is not provided since it is identical to 
+the SPARK 2005 body.
 
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.adb
-      :language: ada
-      :linenos:
-
-Specifications in |SPARK|:
-
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/stack_14.ads
       :language: ada
       :linenos:
 
@@ -545,23 +521,13 @@ Initialized by package body statements
 ++++++++++++++++++++++++++++++++++++++
 
 This example introduces an abstract state at the specifications and refines it at the body. 
-The constituents of the abstract state are initialized at the statements part of the body.
-
-Specifications in SPARK 2005:
-
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.ads
-      :language: ada
-      :linenos:
+The constituents of the abstract state are initialized at the statements part of the body. 
+The specifications of the SPARK 2005 and |SPARK| versions of the code are as in the previous 
+example and have thus not been included.
 
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.adb
-      :language: ada
-      :linenos:
-
-Specifications in |SPARK|:
-
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/stack_14.ads
       :language: ada
       :linenos:
 
@@ -681,25 +647,25 @@ This example is based around the packages from section `Private, abstract state,
 refining onto concrete state of private child`_, with the private child packages
 converted into embedded packages.
 
-Specification in SPARK 2005
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.ads
       :language: ada
       :linenos:
 
-Body in SPARK 2005
+Body in SPARK 2005:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.adb
       :language: ada
       :linenos:
 
-Specification in |SPARK|
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.ads
       :language: ada
       :linenos:
 
-Body in |SPARK|
+Body in |SPARK|:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.adb
       :language: ada
@@ -715,13 +681,13 @@ refining onto concrete state of private child`_
 and `Private, abstract state, refining onto concrete state of embedded package`_.
 Source_A is an embedded package, while Source_B is a private child.
 
-Specification of Parent in SPARK 2005
+Specification of Parent in SPARK 2005:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.ads
       :language: ada
       :linenos:
 
-Body of Parent in SPARK 2005
+Body of Parent in SPARK 2005:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/05/power_05.adb
       :language: ada
@@ -739,13 +705,13 @@ Body of Private Child in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification of Parent in |SPARK|
+Specification of Parent in |SPARK|:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.ads
       :language: ada
       :linenos:
 
-Body of Parent in |SPARK|
+Body of Parent in |SPARK|:
 
    .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_and_private_child/14/power_14.adb
       :language: ada
@@ -757,7 +723,7 @@ Specification of Private Child in |SPARK|
       :language: ada
       :linenos:
 
-Body of Private Child in |SPARK|
+Body of Private Child in |SPARK|:
 
 As per SPARK 2005.
 
@@ -921,13 +887,13 @@ Refinement of external state - voting input switch
 The following example presents an abstract view of the reading of 3 individual
 switches and the voting performed on the values read.
 
-Abstract Switch specifications in SPARK 2005
+Abstract Switch specifications in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
       :language: ada
       :linenos:
 
-Component Switch specifications in SPARK 2005
+Component Switch specifications in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val1.ads
       :language: ada
@@ -941,19 +907,19 @@ Component Switch specifications in SPARK 2005
       :language: ada
       :linenos:
 
-Switch body in SPARK 2005
+Switch body in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.adb
       :language: ada
       :linenos:
 
-Abstract Switch specification in |SPARK|
+Abstract Switch specification in |SPARK|:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.ads
       :language: ada
       :linenos:
 
-Component Switch specifications in |SPARK|
+Component Switch specifications in |SPARK|:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val1.ads
       :language: ada
@@ -967,7 +933,7 @@ Component Switch specifications in |SPARK|
       :language: ada
       :linenos:
 
-Switch body in |SPARK|
+Switch body in |SPARK|:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.adb
       :language: ada
@@ -1053,7 +1019,7 @@ performed on it by Processing and on which Calculate performs some further proce
 (although the corresponding bodies are not given, Read_Calculated_Value in Calculate
 calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
 
-Specifications in SPARK 2005
+Specifications in SPARK 2005:
 
    .. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
       :language: ada
@@ -1067,7 +1033,7 @@ Specifications in SPARK 2005
       :language: ada
       :linenos:
 
-Specifications in |SPARK|
+Specifications in |SPARK|:
 
    .. literalinclude:: ../code/contracts_with_remote_state/14/raw_data.ads
       :language: ada
@@ -1093,13 +1059,13 @@ This example is a modified version of that given in section
 `Refinement of external state - voting input switch`_. It illustrates the
 use of a package nested within a subprogram.
 
-Abstract Switch specifications in SPARK 2005
+Abstract Switch specifications in SPARK 2005:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
       :language: ada
       :linenos:
 
-Component Switch specifications in SPARK 2005
+Component Switch specifications in SPARK 2005:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch-val1.ads
       :language: ada
@@ -1113,19 +1079,19 @@ Component Switch specifications in SPARK 2005
       :language: ada
       :linenos:
 
-Switch body in SPARK 2005
+Switch body in SPARK 2005:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.adb
       :language: ada
       :linenos:
 
-Abstract Switch specification in |SPARK|
+Abstract Switch specification in |SPARK|:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.ads
       :language: ada
       :linenos:
 
-Component Switch specifications in |SPARK|
+Component Switch specifications in |SPARK|:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch-val1.ads
       :language: ada
@@ -1139,7 +1105,7 @@ Component Switch specifications in |SPARK|
       :language: ada
       :linenos:
 
-Switch body in |SPARK|
+Switch body in |SPARK|:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.adb
       :language: ada
@@ -1280,25 +1246,25 @@ The following example illustrates use of an Assume annotation (in this case,
 the Assume annotation is effectively being used to implement the Always_Valid
 attribute).
 
-Specification for Assume annotation in SPARK 2005
+Specification for Assume annotation in SPARK 2005:
 
    .. literalinclude:: ../code/proof_assume_contract/05/input_port.ads
       :language: ada
       :linenos:
 
-Body for Assume annotation in SPARK 2005
+Body for Assume annotation in SPARK 2005:
 
    .. literalinclude:: ../code/proof_assume_contract/05/input_port.adb
       :language: ada
       :linenos:
 
-Specification for Assume annotation in |SPARK|
+Specification for Assume annotation in |SPARK|:
 
    .. literalinclude:: ../code/proof_assume_contract/14/input_port.ads
       :language: ada
       :linenos:
 
-Body for Assume annotation in |SPARK|
+Body for Assume annotation in |SPARK|:
 
    .. literalinclude:: ../code/proof_assume_contract/14/input_port.adb
       :language: ada
@@ -1378,13 +1344,13 @@ to introduce a rule related to the components of a constant record value.
 that it may not even be needed, though this is to be determined -
 and so there is no equivalent included in the* |SPARK| *code.*
 
-Specification in SPARK 2005
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.ads
       :language: ada
       :linenos:
 
-Body in SPARK 2005
+Body in SPARK 2005:
 
    .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.adb
       :language: ada
@@ -1396,13 +1362,13 @@ Proof rules in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.ads
       :language: ada
       :linenos:
 
-Body in |SPARK|
+Body in |SPARK|:
 
    .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.adb
       :language: ada

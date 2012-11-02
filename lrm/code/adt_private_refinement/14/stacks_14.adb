@@ -28,8 +28,8 @@ package body Stacks_14 is
 
    procedure Push(S : in out Stack; X : in Integer) 
    with
-      Refined_Post => (not Is_Empty(S) and
-	               S.Stack_Pointer = S'Old.Stack_Pointer + 1 and
+      Refined_Pre  => S.Stack_Pointer /= Stack_Size,
+      Refined_Post => (S.Stack_Pointer = S'Old.Stack_Pointer + 1 and
 	               S.Stack_Vector = S'Old.Stack_Vector'Update(S.Stack_Pointer => X))
    is
    begin
@@ -39,8 +39,8 @@ package body Stacks_14 is
 
    procedure Pop(S : in out Stack; X : out Integer) 
    with
-      Refined_Post => (not Is_Full(S) and
-                       X = S.Stack_Vector(S'Old.Stack_Pointer) and
+      Refined_Pre  => S.Stack_Pointer /= 0,
+      Refined_Post => (X = S.Stack_Vector(S'Old.Stack_Pointer) and
 	               S.Stack_Pointer = S'Old.Stack_Pointer - 1)
    is
    begin
