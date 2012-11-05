@@ -103,7 +103,6 @@ theory Predicates
    use import int.Int
    use import "bool".Bool
 
-
    predicate is_zero (x : int) = x = 0
 
    predicate is_positive (x : int) = x > 0
@@ -366,4 +365,7 @@ module Mut
 end
 
 
-
+(* resources:
+   - why3.lri.fr (manual + examples)
+   - why3-club@lists.gforge.inria.fr
+ *)

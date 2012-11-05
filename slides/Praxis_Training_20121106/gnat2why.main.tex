@@ -195,6 +195,7 @@ no possible circular dependencies
       \item declare a program (always mutable) variable
       \item no axiom for initialization
       \item declare a type for the type of the variable (used for effects)
+      \item all variables declared at same level (global + local + parameters)
    \end{itemize}
 \end{specialframe}
 
@@ -478,6 +479,10 @@ Standard package is translated by
 Special treatment for containers in
 \verb|Gnat2Why.Decls.Translate_Container_Package| based on ad-hoc \verb|sed|
 rewriting. TBD: use new Why clones of modules.
+
+\end{specialframe}
+
+\begin{specialframe}\frametitle{Terms, Predicates, Programs}
 
 \end{specialframe}
 
