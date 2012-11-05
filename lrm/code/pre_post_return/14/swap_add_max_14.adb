@@ -45,5 +45,4 @@ is
       A(X)      := A(Y);
       A(Y)      := Temporary;
    end Swap_Array_Elements;
-   
 end Swap_Add_Max_14;

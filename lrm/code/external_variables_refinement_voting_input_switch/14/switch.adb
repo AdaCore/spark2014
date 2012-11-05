@@ -2,10 +2,9 @@ with Switch.Val1;
 with Switch.Val2;
 with Switch.Val3;
 package body Switch
-with
-   Refined_State => (State => (Volatile => (Input => (Switch.Val1.State,
-                                                      Switch.Val2.State,
-                                                      Switch.Val3.State))))
+   with Refined_State => (State => (Volatile => (Input => (Switch.Val1.State,
+                                                           Switch.Val2.State,
+                                                           Switch.Val3.State))))
 is
 
    subtype Value is Integer range -1 .. 1;
@@ -22,8 +21,7 @@ is
                                                              2 ..3 => on);
 
    function ReadValue return Reading
-   with
-      Global => (Input => (Val1.State, Val2.State, Val3.State))
+      with Global => (Input => (Val1.State, Val2.State, Val3.State))
    is
       A, B, C : Reading;
    begin

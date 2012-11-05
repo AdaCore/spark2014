@@ -1,17 +1,14 @@
 package body Power_14
-with
-   Refined_State => (State => (Source_A.State, Source_B.State))
+   with Refined_State => (State => (Source_A.State, Source_B.State))
 is
 
   --  Embedded package spec for Source_A
   package Source_A
-  with
-     Abstract_State => State
+     with Abstract_State => State
   is
-     procedure Read (Level : out Integer);
-     with
-       Global  => State,
-       Depends => (Level => State);
+     procedure Read (Level : out Integer)
+        with Global  => State,
+             Depends => (Level => State);
   end Source_A;
 
   --  Embedded package spec for Source_B.
@@ -19,10 +16,9 @@ is
   with
      Abstract_State => State
   is
-    procedure Read (Level : out Integer);
-    with
-      Global  => State,
-      Depends => (Level => State);
+    procedure Read (Level : out Integer)
+       with Global  => State,
+            Depends => (Level => State);
   end Source_B;
 
   --  Embedded package body for Source_A
@@ -51,9 +47,8 @@ is
   end Source_B;
 
   procedure Read_Power(Level : out Integer)
-  with
-     Global => (Source_A.State, Source_B.State),
-     Depends => (Level => (Source_A.State, Source_B.State));
+     with Global  => (Source_A.State, Source_B.State),
+          Depends => (Level => (Source_A.State, Source_B.State))
   is
      Level_A : Integer;
      Level_B : Integer;

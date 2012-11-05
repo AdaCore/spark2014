@@ -1,12 +1,10 @@
 package body Stack_14
-with
-   Refined_State => State => Stack  -- refinement of state
+   with Refined_State => (State => Stack)  -- refinement of state
 is
    Stack: Stack_Type;
 
    procedure Push(X : in Integer)
-   with
-      Refined_Global => In_Out => Stack
+      with Refined_Global => (In_Out => Stack)
    is
    begin
       Pointer := Pointer + 1;
@@ -14,8 +12,7 @@ is
    end Push;
 
    procedure Pop(X : out Integer)
-   with
-      Refined_Global => In_Out => Stack
+      with Refined_Global => (In_Out => Stack)
    is
    begin
       X := S(Pointer);

@@ -6,13 +6,11 @@ package Stacks_14.Monitored_14 is
 
    overriding
    procedure Clear(S : out Monitored_Stack)
-   with
-      Depends => (S => null);
+      with Depends => (S => null);
 
    overriding
    procedure Push(S : in out Monitored_Stack; X : in Integer)
-   with
-      Depends => (S =>+ X);
+      with Depends => (S =>+ X);
 
    function Top_Identity(S : Monitored_Stack) return Integer;
    function Next_Identity(S : Monitored_Stack) return Integer;

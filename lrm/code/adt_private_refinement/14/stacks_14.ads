@@ -7,16 +7,13 @@ is
    function Is_Full(S : Stack) return Boolean;
 
    procedure Clear(S : out Stack)
-   with
-      Post => Is_Empty(S);
+      with Post => Is_Empty(S);
    procedure Push(S : in out Stack; X : in Integer)
-   with
-      Pre  => not Is_Full(S),
-      Post => not Is_Empty(S);
+      with Pre  => not Is_Full(S),
+           Post => not Is_Empty(S);
    procedure Pop(S : in out Stack; X : out Integer)
-   with
-      Pre  => not Is_Empty(S),
-      Post => not Is_Full(S);
+      with Pre  => not Is_Empty(S),
+           Post => not Is_Full(S);
      
 private
    Stack_Size : constant := 100;

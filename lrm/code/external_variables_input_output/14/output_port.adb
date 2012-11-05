@@ -1,6 +1,5 @@
 package body Output_Port
 is
-
    Outputs : Integer;
    for Outputs'Address use 16#CAFE#;
 
@@ -9,5 +8,4 @@ is
    begin
       Outputs := Output_Value;
    end Write_To_Port;
-
 end Output_Port;
