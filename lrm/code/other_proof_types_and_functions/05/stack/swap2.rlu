@@ -1,7 +1,0 @@
-/* Rules to define the Count proof function */
-
-swap2(1): count(X) may_be_replaced_by fld_pointer(fld_my_stack(X)).
-
-swap2(2): count(state) = count(state~) may_be_deduced_from [fld_pointer(fld_my_stack(state)) = fld_pointer(my_stack~)].
-
-

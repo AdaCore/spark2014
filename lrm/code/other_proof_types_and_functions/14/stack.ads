@@ -7,6 +7,9 @@ is
 
    function Is_Full return Boolean
       with Global => (Input => State);
+      
+   function Count return Natural
+      with Global => (Input => State);
 
    --  Post-condition indicates that the stack will be
    --  non-empty after pushing an item on to it, while the pre-condition
@@ -15,6 +18,12 @@ is
       with Global => (In_Out => State),
            Pre    => not Is_Full,
            Post   => not Is_Empty;
+
+   --  Procedure that swaps the first two elements in a stack.
+   procedure Swap2
+      with Global => (In_Out => State),
+           Pre    => Count >= 2,
+           Post   => Count = Count'Old;
 
    --  Initializes the Stack.
    procedure Initialize
