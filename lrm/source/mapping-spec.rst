@@ -224,7 +224,6 @@ and an arbitrary package, namely:
 A private type and private constant are declared in the parent. The former is accessed
 in the body of the child, while the latter is accessed in the private part of the child.
 
-
 Specifications of both parent and child in SPARK 2005:
 
    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
