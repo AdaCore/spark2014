@@ -43,7 +43,9 @@ package body PrefixSum is
 --                (Invariant => (Left + 1) mod Space = 0
             pragma Assert ((Left + 1) mod Space = 0
                               and then
-                            All_Elements_In (A, Space * Maximum)
+                            All_Left_Elements_In (A, Left, Space * 2 * Maximum)
+                              and then
+                            All_Right_Elements_In (A, Left - 1, Space * Maximum)
                               and then
                             (Left + 1) mod (Space * 2) = Space
                               and then

@@ -7,6 +7,16 @@ package PrefixSum is
    function All_Elements_In (A : Input; Max : Positive) return Boolean is
       (for all K in A'Range => A (K) in -Max .. Max);
 
+   function All_Left_Elements_In (A : Input; Right : Integer; Max : Positive)
+     return Boolean
+   is
+      (for all K in A'Range => (if K < Right then A (K) in -Max .. Max));
+
+   function All_Right_Elements_In (A : Input; Left : Integer; Max : Positive)
+     return Boolean
+   is
+      (for all K in A'Range => (if K > Left then A (K) in -Max .. Max));
+
    function Intermediate_Form (A, B : Input) return Boolean with
      Pre => All_Elements_In (A, Maximum * 8)
        and then All_Elements_In (B, Maximum);
