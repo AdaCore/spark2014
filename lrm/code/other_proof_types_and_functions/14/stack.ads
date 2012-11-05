@@ -1,30 +1,25 @@
 package Stack
-with
-   Abstract_State => State
+   with Abstract_State => State
 is
    -- We have to turn the proof functions into actual functions
    function Is_Empty return Boolean
-   with
-      Global => (Input => State);
+      with Global => (Input => State);
 
    function Is_Full return Boolean
-   with
-      Global => (Input => State);
+      with Global => (Input => State);
 
    --  Post-condition indicates that the stack will be
    --  non-empty after pushing an item on to it, while the pre-condition
    --  requires it is not full when we push a value onto it.
    procedure Push(X : in Integer)
-   with
-      Global => (In_Out => State),
-      Pre    => not Is_Full,
-      Post   => not Is_Empty;
+      with Global => (In_Out => State),
+           Pre    => not Is_Full,
+           Post   => not Is_Empty;
 
    --  Initializes the Stack.
    procedure Initialize
-   with
-      Global => (Output => State),
-      Post   => Is_Empty;
+      with Global => (Output => State),
+           Post   => Is_Empty;
 
 private
    Stack_Size : constant := 100;
@@ -41,5 +36,4 @@ private
    Initial_Stack : constant Stack_Type :=
       Stack_Type'(S       => Vector'(others => 0),
                   Pointer => 0);
-
 end Stack;
