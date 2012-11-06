@@ -7,6 +7,7 @@ its calls, parameters and results are logged. The syntax of a pattern may
 be found in the function log.
 """
 
+from utils import full_str
 import gpr
 
 log_list = None
@@ -66,12 +67,12 @@ def log_function(f):
         return f
 
     def wrapper(*args, **kwargs):
-        args_str = ", ".join([str(arg) for arg in args])
+        args_str = ", ".join([full_str(arg) for arg in args])
         print_log('%s(%s)' % (name, args_str))
         indent_log(+1)
         ret = f(*args, **kwargs)
         indent_log(-1)
-        print_log('%s returns %s' % (name, str(ret)))
+        print_log('%s returns %s' % (name, full_str(ret)))
         return ret
 
     return wrapper
@@ -97,12 +98,12 @@ def log_method(f):
             and not match_name(class_name, self.__class__.__name__)):
             return f(self, *args, **kwargs)
 
-        args_str = ", ".join([str(arg) for arg in self, args])
+        args_str = ", ".join([full_str(arg) for arg in self, args])
         print_log('%s(%s)' % (name, args_str))
         indent_log(+1)
         ret = f(self, *args, **kwargs)
         indent_log(-1)
-        print_log('%s returns %s' % (name, str(ret)))
+        print_log('%s returns %s' % (name, full_str(ret)))
         return ret
 
     return wrapper

@@ -14,6 +14,7 @@ You may find a few examples in the body of function unit_testing.
 
 import shlex
 from debug import log_method, log_function
+from utils import attr_str, full_str
 
 class ParseError(Exception):
     """Exception raised when an invalid merge spec is given to parse
@@ -107,17 +108,9 @@ class FreeSetMergeSome(FreeSetMergeUnary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if 'name' in dir(self) and self.name is not None:
-            name_prefix = "%s = " % self.name
-        else:
-            name_prefix = ""
-
-        if 'atom' in dir(self):
-            expression = "no %s" % self.atom
-        else:
-            expression = ""
-
-        return "<MergeSome> (%s%s)" % (name_prefix, expression)
+        name = attr_str(self, 'name')
+        expression = attr_str(self, 'atom', "some %s")
+        return "<FreeSetMergeSome> (%s%s)" % (name, expression)
 
 class FreeSetMergeNo(FreeSetMergeUnary):
     """Free set semantic helper for no-quantified atoms in spec merges
@@ -130,17 +123,9 @@ class FreeSetMergeNo(FreeSetMergeUnary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if 'name' in dir(self) and self.name is not None:
-            name_prefix = "%s = " % self.name
-        else:
-            name_prefix = ""
-
-        if 'atom' in dir(self):
-            expression = "no %s" % self.atom
-        else:
-            expression = ""
-
-        return "<MergeNo> (%s%s)" % (name_prefix, expression)
+        name = attr_str(self, 'name')
+        expression = attr_str(self, 'atom', "no %s")
+        return "<FreeSetMergeNo> (%s%s)" % (name, expression)
 
 class FreeSetMergeBinary(MergeSem):
     """Free set semantic helper for binary operators in spec merges
@@ -207,17 +192,14 @@ class FreeSetMergeAnd(FreeSetMergeBinary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if 'name' in dir(self) and self.name is not None:
-            name_prefix = "%s = " % self.name
-        else:
-            name_prefix = ""
+        name = attr_str(self, 'name')
 
         if 'operands' in dir(self):
-            expression = " and ".join([str(o) for o in self.operands])
+            expression = " and ".join([full_str(o) for o in self.operands])
         else:
             expression = ""
 
-        return "<MergeAnd> (%s%s)" % (name_prefix, expression)
+        return "<FreeSetMergeAnd> (%s%s)" % (name, expression)
 
 class FreeSetMergeOr(FreeSetMergeBinary):
     """Free set semantic helper for or-binded helpers
@@ -236,17 +218,14 @@ class FreeSetMergeOr(FreeSetMergeBinary):
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        if 'name' in dir(self) and self.name is not None:
-            name_prefix = "%s =" % self.name
-        else:
-            name_prefix = ""
+        name = attr_str(self, 'name', '%s = ')
 
         if 'operands' in dir(self):
-            expression = " and ".join([str(o) for o in self.operands])
+            expression = " or ".join([full_str(o) for o in self.operands])
         else:
             expression = ""
 
-        return "<MergeOr> (%s %s)" % (name_prefix, expression)
+        return "<FreeSetMergeOr> (%s%s)" % (name, expression)
 
 class MergeSemFactory:
     """Abstract factory for semantics of merge spec
@@ -472,8 +451,9 @@ class MergeSpec:
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
-        return "<mergeSpec> (%s)" % (self.spec if 'spec' in dir(self)
-                                     else 'none')
+        spec = attr_str(self, 'spec', ' %s')
+        return "<mergeSpec>%s" % spec
+
 @log_function
 def unit_testing():
     """Unit tests for this module
