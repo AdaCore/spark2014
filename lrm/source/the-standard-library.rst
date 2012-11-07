@@ -45,9 +45,10 @@ Real-Time Systems
 This section describes features for real-time programming in |SPARK|, covering facilities
 offered by Ada's Annex D.
 
-.. todo:: Need to think about Ada.Real_Time.  It's important for all S95 customers, to get
+.. todo:: RCC: Need to think about Ada.Real_Time.  It's important for all S95 customers, to get
    at monotonic clock, even if not using RavenSPARK.  It does depend on support for external
-   variables, though, since Ada.Real_Time.Clock is most definitely Volatile.
+   variables, though, since Ada.Real_Time.Clock is most definitely Volatile. TN [LB07-024]
+   raised to discuss this. Target: D2.
 
 Distributed Systems
 -------------------
