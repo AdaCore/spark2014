@@ -68,11 +68,20 @@ pragmas Loop_Invariant and Loop_Variant
 .. centered:: **Legality Rules**
 
 
-A Loop_Invariant pragma shall occur immmediately within
-the sequence_of_statements of a loop_statement.
+The following constructs are said to be "restricted to loops":
 
-A Loop_Variant pragma shall occur immediately within the
-sequence_of_statements of a loop statement. 
+* A Loop_Invariant pragma;
+* A Loop_Variant pragma;
+* A block_statement whose sequence_of_statements (immediately) includes a
+  construct which is restricted to loops.
+
+A construct which is restricted to loops shall occur
+immediately within the sequence_of_statements of either
+a loop_statement or a block_statement.
+
+[Roughly speaking, a Loop_Invariant or Loop_Variant pragma
+must occur immediately within a loop statement except that intervening
+block statements are ignored for purposes of this rule.]
 
 The expression of a loop_variant_item is expected to be of any
 discrete type.
