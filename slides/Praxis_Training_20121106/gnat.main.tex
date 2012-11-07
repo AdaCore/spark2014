@@ -512,7 +512,7 @@ e.g. \texttt{Default\_Value} and \texttt{Dimension}
 \begin{exercise}
   Review the code for analysis/expansion of \verb|Pre| and \verb|Post| in
   \verb|sem_ch13.adb|, \verb|sem_prag.adb|, \verb|sem_ch6.adb|
-  (\verb|Process_PCCs|), \verb|exp_prag.adb|.
+  (\verb|Process_PPCs|), \verb|exp_prag.adb|.
 \end{exercise}
 
 \end{specialframe}
@@ -534,7 +534,7 @@ semantic analysis in \verb|sem_attr.adb|
 \item entry in array \verb|Attribute_Impl_Def| in \verb|sem_attr.ads|
   together with a description
 \item add case in \verb|Analyze_Attribute|
-\item check cases in which pragma applies (Ada version? GNAT?)
+\item check cases in which attribute applies (Ada version? GNAT?)
 \item check legality rules (parameters, prefix)
 \item if error, call \verb|Error_Attr| procedures that does not return
 \end{itemize}
