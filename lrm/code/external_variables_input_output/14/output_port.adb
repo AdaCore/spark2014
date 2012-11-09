@@ -2,6 +2,7 @@ package body Output_Port
 is
    Outputs : Integer;
    for Outputs'Address use 16#CAFE#;
+   pragma Volatile (Outputs);
 
    procedure Write_To_Port(Output_Value : in Integer)
    is

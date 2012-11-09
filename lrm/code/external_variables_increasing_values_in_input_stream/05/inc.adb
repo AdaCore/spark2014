@@ -3,6 +3,7 @@ package body Inc
 is
    S : Integer;
    for S'Address use 16#DEADBEEF#;
+   pragma Volatile (S);
 
    procedure Read (V     : out Integer;
                    Valid : out Boolean)

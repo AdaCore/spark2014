@@ -4,6 +4,7 @@ is
    Inputs : Integer;
    for Inputs'Address use 16#CAFE#;
    --# assert Inputs'Always_Valid;
+   pragma Volatile (Inputs);
 
    procedure Read_From_Port(Input_Value : out Integer)
    is

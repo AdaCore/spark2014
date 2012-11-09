@@ -6,8 +6,11 @@ package body Device
 is
   OldX : Integer := 0; -- only component that needs initialization
   StatusPort : Integer;
+  pragma Volatile (StatusPort);
   -- address clause would be added here
+  
   Register : Integer;
+  pragma Volatile (Register);
   -- address clause would be added here
 
   procedure WriteReg (X : in Integer)
