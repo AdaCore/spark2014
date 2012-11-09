@@ -1,18 +1,8 @@
 Subprograms
 ===========
 
-.. todo:: proof functions - here or elsewhere?  RCC moves this to end of section 6.1.
-   See ToDo there.
-
-.. todo:: The paragraph below does not really fit here and is not
-   quite right.  It is a sort of extended static semantics. The
-   concept in-SPARK out-of-SPARK has not been used elsewhere but is a
-   good notion that perhaps we should explain in the introduction and
-   use more frequently in the static semantics. Target: D1/CDR.
-
-.. note:: RCC. I think the stuff on views should be in 6.1.  A para about
-   what it means for a language feature to be "in" |SPARK| or "not in" |SPARK|
-   should almost certainly go in chapter 1.  Target: D1/CDR.  Assign: ??? 
+Subprogram Declaration
+----------------------
 
 We distinguish the *declaration view* introduced by a ``subprogram_declaration``
 from the *implementation view* introduced by a ``subprogram_body`` or an
@@ -26,14 +16,6 @@ may be in |SPARK| even if the implementation view is not.
 .. include:: extended-legality.rst
    :start-after: 6 Subprograms
    :end-before:  6.1
-
-Subprogram Declaration
-----------------------
-
-There are no additions to this subsection but there is an extra
-legality rule and further restrictions may be applied.
-
-.. centered:: **Extended Legality Rules**
 
 .. include:: extended-legality.rst
    :start-after: 6.1 Subprogram Declarations
