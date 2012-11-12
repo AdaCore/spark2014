@@ -7,10 +7,10 @@ theory Array__1__Type
   type map 'a
 
   type t 'a =
-   {| elts   : map 'a;
-      offset : int;
-      first  : int;
-      last   : int |}
+   { elts   : map 'a;
+     offset : int;
+     first  : int;
+     last   : int }
 
 end
 
@@ -31,7 +31,7 @@ theory Main
 
   (* Here we define the string type *)
   type __string = 
-  {| elts : (Array__1__Type.map __character); offset : int; rt : range_type |}
+  { elts : (Array__1__Type.map __character); offset : int; rt : range_type }
 
 end
 
@@ -120,7 +120,7 @@ theory Array__1__Func
   function access "inline" (i : int) (x : t 'a) : 'a =
      get x.elts (i + x.offset - x.first)
   function update "inline" (i : int) (x : t 'a) (v : 'a) : (t 'a) =
-   {| x with elts = set x.elts (i + x.offset - x.first) v |}
+   { x with elts = set x.elts (i + x.offset - x.first) v }
 
   function bool_eq (t 'a) (t 'a) : bool
 
@@ -164,19 +164,19 @@ theory Array__2__Func
        get i2 j2 (set i1 j1 a v ) = get i2 j2 a
 
   type t 'a =
-   {| elts     : map 'a;
-      offset   : int;
-      offset_2 : int;
-      first    : int;
-      last     : int;
-      first_2  : int;
-      last_2   : int;
-   |}
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+   }
 
   function access (i : int) (j : int) (x : t 'a) : 'a =
      get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts
   function update (i : int) (j : int) (x : t 'a) (v : 'a) : (t 'a) =
-   {| x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts v |}
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts v }
 
   function bool_eq (t 'a) (t 'a) : bool
 
@@ -240,23 +240,23 @@ theory Array__3__Func
        get i2 j2 k2 (set i1 j1 k1 a v ) = get i2 j2 k2 a
 
   type t 'a =
-   {| elts     : map 'a;
-      offset   : int;
-      offset_2 : int;
-      offset_3 : int;
-      first    : int;
-      last     : int;
-      first_2  : int;
-      last_2   : int;
-      first_3  : int;
-      last_3   : int;
-   |}
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+     first_3  : int;
+     last_3   : int;
+   }
 
   function access (i : int) (j : int) (k : int) (x : t 'a) : 'a =
      get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts
 
   function update (i : int) (j : int) (k : int) (x : t 'a) (v : 'a) : (t 'a) =
-   {| x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts v |}
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts v }
 
   function bool_eq (t 'a) (t 'a) : bool
 
@@ -330,26 +330,26 @@ theory Array__4__Func
        get i2 j2 k2 l2 (set i1 j1 k1 l1 a v ) = get i2 j2 k2 l2 a
 
   type t 'a =
-   {| elts     : map 'a;
-      offset   : int;
-      offset_2 : int;
-      offset_3 : int;
-      offset_4 : int;
-      first    : int;
-      last     : int;
-      first_2  : int;
-      last_2   : int;
-      first_3  : int;
-      last_3   : int;
-      first_4  : int;
-      last_4   : int;
-   |}
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int;
+     offset_4 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+     first_3  : int;
+     last_3   : int;
+     first_4  : int;
+     last_4   : int;
+   }
 
   function access (i : int) (j : int) (k : int) (l : int) (x : t 'a) : 'a =
      get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts
 
   function update (i : int) (j : int) (k : int) (l : int) (x : t 'a) (v : 'a) : (t 'a) =
-   {| x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts v |}
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts v }
 
   function bool_eq (t 'a) (t 'a) : bool
 

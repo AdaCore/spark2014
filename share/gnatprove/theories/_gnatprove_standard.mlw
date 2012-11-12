@@ -1,6 +1,6 @@
 module Main
   (* the module of references is needed in all modules *)
-  use export module ref.Ref
+  use export ref.Ref
   (* dito for boolean functions *)
   use export bool.Bool
   use export "_gnatprove_standard_th".Main
@@ -23,14 +23,17 @@ module Integer
 
   use export _gnatprove_standard_th.Integer_Func
 
-  val computer_div_ : x:int -> y:int ->
-    { y<>0 } int { result = computer_div x y }
+  val computer_div_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures { result = computer_div x y }
 
-  val computer_mod_ : x:int -> y:int ->
-    { y<>0 } int { result = computer_mod x y }
+  val computer_mod_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures{ result = computer_mod x y }
 
-  val math_mod_ : x:int -> y:int ->
-    { y<>0 } int { result = math_mod x y }
+  val math_mod_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures { result = math_mod x y }
 
 end
 
@@ -119,8 +122,9 @@ module Floating
 
   function div_real (x : real) (y : real) : real = x /. y
 
-  val div_real_ : x:real -> y:real ->
-    { y<>0.0 } real { result = div_real x y }
+  val div_real_ (x:real) (y:real) : real
+    requires { y<>0.0 }
+    ensures { result = div_real x y }
 
 end
 
@@ -149,17 +153,13 @@ module Array__1
 
   use export _gnatprove_standard_th.Array__1__Func
 
-   val access_ :
-    i : int -> a : t 'a ->
-   { (attr__ATTRIBUTE_FIRST a) <= i <= (attr__ATTRIBUTE_LAST a) }
-   'a
-    { result = access i a }
+   val access_ (i : int) (a : t 'a) : 'a
+      requires { (attr__ATTRIBUTE_FIRST a) <= i <= (attr__ATTRIBUTE_LAST a) }
+      ensures { result = access i a }
 
-   val update_ :
-    i : int -> a : t 'a -> v : 'a ->
-   { attr__ATTRIBUTE_FIRST (a) <= i <= attr__ATTRIBUTE_LAST (a) }
-   t 'a
-   { result = update i a v }
+   val update_ (i : int) (a : t 'a) (v : 'a) : t 'a
+      requires { attr__ATTRIBUTE_FIRST (a) <= i <= attr__ATTRIBUTE_LAST (a) }
+      ensures { result = update i a v }
 
 end
 
@@ -171,19 +171,15 @@ module Array__2
 
   use export _gnatprove_standard_th.Array__2__Func
 
-   val access_ :
-    i : int -> j : int -> a : t 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
-    'a
-    { result = access i j a }
+   val access_ (i : int) (j : int) (a : t 'a) : 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
+    ensures  { result = access i j a }
 
-   val update_ :
-    i : int -> j : int -> a : t 'a -> v : 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
-    t 'a
-    { result = update i j a v }
+   val update_ (i : int) (j : int) (a : t 'a) (v : 'a) : t 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a }
+    ensures { result = update i j a v }
 
 end
 
@@ -195,23 +191,19 @@ module Array__3
 
   use export _gnatprove_standard_th.Array__3__Func
 
-   val access_ :
-    i : int -> j : int -> k : int ->  a : t 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
-      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
-      }
-    'a
-    { result = access i j k a }
+   val access_ (i : int) (j : int) (k : int) (a : t 'a) : 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+               attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
+               }
+    ensures  { result = access i j k a }
 
-   val update_ :
-    i : int -> j : int -> k : int -> a : t 'a -> v : 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
-      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
-      }
-    t 'a
-    { result = update i j k a v }
+   val update_ (i : int) (j : int) (k : int) (a : t 'a) (v : 'a) : t 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+               attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a
+               }
+    ensures  { result = update i j k a v }
 
 end
 
@@ -223,24 +215,20 @@ module Array__4
 
   use export _gnatprove_standard_th.Array__4__Func
 
-   val access_ :
-    i : int -> j : int -> k : int -> l : int -> a : t 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
-      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
-      attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
-      }
-    'a
-    { result = access i j k l a }
+   val access_ (i : int) (j : int) (k : int) (l : int) (a : t 'a) : 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+               attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
+               attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
+               }
+    ensures { result = access i j k l a }
 
-   val update_ :
-    i : int -> j : int -> k : int -> l : int -> a : t 'a -> v : 'a ->
-    { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
-      attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
-      attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
-      attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
-      }
-    t 'a
-    { result = update i j k l a v }
+   val update_ (i : int) (j : int) (k : int) (l : int) (a : t 'a) (v : 'a) : t 'a
+    requires { attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a /\
+               attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a /\
+               attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a /\
+               attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a
+               }
+    ensures  { result = update i j k l a v }
 
 end

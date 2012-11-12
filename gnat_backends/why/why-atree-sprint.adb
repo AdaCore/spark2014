@@ -308,21 +308,21 @@ package body Why.Atree.Sprint is
       Raises : constant W_Identifier_List := Get_Raises (Node);
    begin
       if not Is_Empty (+Reads) then
-         P (O, "reads ");
-         Print_List (State, +Reads, " ");
-         NL (O);
+         P (O, "reads {");
+         Print_List (State, +Reads, ", ");
+         PL (O, " }");
       end if;
 
       if not Is_Empty (+Writes) then
-         P (O, "writes ");
-         Print_List (State, +Writes, " ");
-         NL (O);
+         P (O, "writes {");
+         Print_List (State, +Writes, ", ");
+         PL (O, " }");
       end if;
 
       if not Is_Empty (+Raises) then
-         P (O, "raises ");
-         Print_List (State, +Raises, " ");
-         NL (O);
+         P (O, "raises { ");
+         Print_List (State, +Raises, ", ");
+         PL (O, " }");
       end if;
 
       State.Control := Abandon_Children;
@@ -377,9 +377,9 @@ package body Why.Atree.Sprint is
        Node : W_Record_Definition_Id)
    is
    begin
-      P (O, "{| ");
+      P (O, "{ ");
       Print_List (State, +Get_Fields (Node), "; ");
-      P (O, " |}");
+      P (O, " }");
       State.Control := Abandon_Children;
    end Record_Definition_Pre_Op;
 
@@ -1093,11 +1093,11 @@ package body Why.Atree.Sprint is
       Node  : W_Record_Update_Id)
    is
    begin
-      P (O, "{| ( ");
+      P (O, "{ ( ");
       Traverse (State, +Get_Name (Node));
       P (O, " ) with ");
       Print_List (State, +Get_Updates (Node), "; ");
-      P (O, " |}");
+      P (O, " }");
       State.Control := Abandon_Children;
    end Record_Update_Pre_Op;
 
@@ -1110,9 +1110,9 @@ package body Why.Atree.Sprint is
       Node  : W_Record_Aggregate_Id)
    is
    begin
-      P (O, "{| ");
+      P (O, "{ ");
       Print_List (State, +Get_Associations (Node), "; ");
-      P (O, " |}");
+      P (O, " }");
       State.Control := Abandon_Children;
    end Record_Aggregate_Pre_Op;
 
@@ -1138,10 +1138,30 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id)
    is
-      Ty : constant W_Computation_Type_Id := Get_Any_Type (Node);
+      Ty      : constant W_Computation_Type_Id := Get_Any_Type (Node);
+      Result  : constant W_Binder_Id := Get_Result (Ty);
+      Res_Ty  : constant W_Simple_Value_Type_Id := Get_Arg_Type (Result);
+      Pre     : constant W_Pred_Id := Get_Pre (Ty);
+      Post    : constant W_Pred_Id := Get_Post (Ty);
+      Effects : constant W_Effects_Id := Get_Effects (Ty);
    begin
       P (O, "(any ");
-      Traverse (State, +Ty);
+      Traverse (State, +Res_Ty);
+      NL (O);
+      if Pre /= Why_Empty then
+         P (O, "requires {");
+         Traverse (State, +Pre);
+         PL (O, "} ");
+      end if;
+      if Post /= Why_Empty then
+         P (O, "ensures {");
+         Traverse (State, +Post);
+         PL (O, "} ");
+      end if;
+      if Effects /= Why_Empty then
+         Traverse (State, +Effects);
+         NL (O);
+      end if;
       P (O, ")");
       State.Control := Abandon_Children;
    end Any_Expr_Pre_Op;
@@ -1267,7 +1287,7 @@ package body Why.Atree.Sprint is
    begin
       P (O, "abstract ");
       Traverse (State, +Get_Expr (Node));
-      P (O, " {");
+      P (O, " ensures {");
       Traverse (State, +Get_Post (Node));
       P (O, "}");
       State.Control := Abandon_Children;
@@ -1454,13 +1474,39 @@ package body Why.Atree.Sprint is
             P (O, "val ");
 
             Traverse (State, +Name);
-            P (O, " :");
-
             Relative_Indent (O, 1);
             NL (O);
-            Traverse (State, +Func_Type);
-            Relative_Indent (O, -1);
-            NL (O);
+            declare
+               Binders     : constant W_Binder_OList :=
+                 Get_Binders (Func_Type);
+               Result      : constant W_Binder_Id :=
+                 Get_Result (Func_Type);
+               Result_Type : constant W_Simple_Value_Type_Id :=
+                 Get_Arg_Type (Result);
+               Pre         : constant W_Pred_Id := Get_Pre (Func_Type);
+               Effects     : constant W_Effects_Id := Get_Effects (Func_Type);
+               Post        : constant W_Pred_Id := Get_Post (Func_Type);
+            begin
+               if not Is_Empty (+Binders) then
+                  P (O, " (");
+                  Print_List (State, +Binders, ") (");
+                  P (O, ") ");
+               end if;
+               P (O, " :");
+               Traverse (State, +Result_Type);
+               NL (O);
+               P (O, "requires { ");
+               Traverse (State, +Pre);
+               P (O, " }");
+               NL (O);
+               P (O, "ensures { ");
+               Traverse (State, +Post);
+               P (O, " }");
+               NL (O);
+               Traverse (State, +Effects);
+               NL (O);
+               Relative_Indent (O, -1);
+            end;
 
          when EW_Pred =>
             P (O, "predicate ");
@@ -1552,38 +1598,32 @@ package body Why.Atree.Sprint is
             if not Is_Empty (+Binders) then
                P (O, " (");
                Print_List (State, +Binders, ") (");
-               P (O, ") ");
+               PL (O, ") ");
             end if;
-
-            PL (O, " =");
-            Relative_Indent (O, 1);
 
             if Pre = Why_Empty then
                if not Is_Empty (+Binders) then
-                  P (O, "{ }");
+                  P (O, "requires { }");
                end if;
             else
-               P (O, "{ ");
+               P (O, "requires { ");
                Traverse (State, +Pre);
                PL (O, " }");
             end if;
-
-            NL (O);
+            if Post = Why_Empty then
+               if not Is_Empty (+Binders) then
+                  PL (O, "ensures { true }");
+               end if;
+            else
+               P (O, "ensures { ");
+               Traverse (State, +Post);
+               PL (O, " }");
+            end if;
+            PL (O, " = ");
             Relative_Indent (O, 1);
             Traverse (State, +Def);
             Relative_Indent (O, -1);
             NL (O);
-
-            if Post = Why_Empty then
-               if not Is_Empty (+Binders) then
-                  PL (O, "{ true }");
-               end if;
-            else
-               P (O, "{ ");
-               Traverse (State, +Post);
-               PL (O, " }");
-            end if;
-            Relative_Indent (O, -1);
       end case;
 
       State.Control := Abandon_Children;
@@ -1744,8 +1784,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "use ");
       P (O, Get_Use_Kind (Node));
-      P (O, " ");
-      P (O, Get_Kind (Node), True);
       P (O, " ");
       if File /= Why_Empty then
          P (O, """");
