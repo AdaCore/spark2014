@@ -159,7 +159,7 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : Ureal) is
       Num    : constant Uint := Numerator (Value);
       Den    : constant Uint := Denominator (Value);
-      Base   : constant Nat := Rbase (Value);
+      Base   : constant Nat  := Rbase (Value);
    begin
       --  ??? Same remark as in the case of integer constants:
       --  I suppose that Why's real constants follows the same syntax
@@ -185,9 +185,17 @@ package body Why.Images is
       --
       --       ExponentLetter ::=  { eE }
 
-      if UR_Is_Negative (Value) then
-         P (O, EW_Substract, EW_Real);
-      end if;
+      --  As documented in urealp.ads, Ureal representation is constrained as
+      --  follows:
+
+      --  If the base is zero, then the absolute value of the Ureal is simply
+      --  numerator/denominator. If the base is non-zero, then the absolute
+      --  value is num / (rbase ** den).
+
+      --  Negative numbers are represented by the sign of the numerator being
+      --  negative. The denominator is always positive.
+      --  ??? In practice, the denominator is not always positive, to be
+      --  checked with frontend developers.
 
       if Base = 0 then
          P (O, Num);
@@ -199,13 +207,7 @@ package body Why.Images is
       elsif Base = 10 then
          P (O, Num);
          P (O, "E");
-
-         if Den > Uint_0 then
-            P (O, "-");
-            P (O, Den);
-         else
-            P (O, -Den);
-         end if;
+         P (O, -Den);
 
       else
          P (O, Num);
@@ -213,12 +215,12 @@ package body Why.Images is
 
          if Den > Uint_0 then
             P (O, EW_Divide, EW_Real);
-            P (O, UI_Expon (Den, Base));
+            P (O, UI_Expon (Base, Den));
             P (O, ".0");
 
          else
             P (O, EW_Multiply, EW_Real);
-            P (O, UI_Expon (UI_Negate (Den), Base));
+            P (O, UI_Expon (Base, UI_Negate (Den)));
             P (O, ".0");
          end if;
       end if;
