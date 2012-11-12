@@ -331,9 +331,12 @@ initialized before use.
    call immediately following the package declaration.
 
 .. todo:: Consider rules for:
-   (1) elaboration order independence,
-   (2) constraining packages to initializing only their own variables,
-   (3) when depends/initializes aspects required by some rule assume no
+   
+   elaboration order independence,
+
+   constraining packages to initializing only their own variables,
+
+   when depends/initializes aspects required by some rule assume no
    dependes or initializes aspect implies Initializes => **null**.
 
 
@@ -668,10 +671,10 @@ subordinate abstract states are represented by the ``state_name`` (its
 constituents).  A ``refined_state_aspect`` in the body of Q is used
 for this purpose.
 
-In the body of a package the constituents of the refined ``state_name``,
-the refined view, have to be used rather than the abstract view of the
-``state_name``.  Refined global, dependency, pre and post aspects are
-provided to express the refined view.
+In the body of a package the constituents of the refined
+``state_name``, the refined view, has to be used rather than the
+abstract view of the ``state_name``.  Refined global, dependency, pre
+and post aspects are provided to express the refined view.
 
 In the refined view the constituents of each ``state_name`` have to be
 initialized consistently with their appearance or omission from the
@@ -706,8 +709,11 @@ where
 
 #. A ``refined_state_aspect`` may only appear in the body of a
    package.
-#. A package body cannot have a ``refined_state_aspect`` if its
-   specification does not have an ``abstract_state_aspect``.
+#. If a package declaration has an ``abstract_state_aspect`` its body
+   must have a ``refined_state_aspect``.
+#. A package body may only have a ``refined_state_aspect`` if its
+   declaration does not have an ``abstract_state_aspect``, if its
+   one and only ``abstract_state_name`` is **null**.
 #. A ``refined_state_aspect`` of a package body has extended
    visibility; it is able to refer to a *variable* declared in the
    package body, or a ``state_name`` or *variable* declared in the
@@ -734,9 +740,9 @@ where
 
 .. centered:: **Static Semantics**
 
-#. A ``refined_state_aspect`` defines the *variables* and subordinate
-   ``state_names`` which are the constituents that comprise the
-   hidden state represented by the ``state_names`` declared in the
+#. A ``refined_state_aspect`` defines the *variables* and each
+   subordinate ``state_name`` which are the constituents that comprise
+   the hidden state represented by the ``state_name`` declared in the
    ``abstract_state_aspect``.
 #. A ``constituent`` of the hidden state of a package Q is one of:
 
@@ -788,20 +794,13 @@ where
 
 .. centered:: *Checked by Flow Analysis*
 
-#. if the package has an ``abstract_state_aspect`` but no
-   ``refined_state_aspect`` then an implicit one is synthesized from
-   the from the implemented bodies (if they exist) using the inverse
-   of the above rules.  The synthesis may be approximate and will not
-   consider any **null** ``abstract_state_name``.  Each
-   ``constituent`` will be assigned to a ``state_name`` declared in
-   the ``abstract_state_aspect``.
 #. If a package has no ``abstract_state_aspect`` or no Pure aspect or
    pragma it may have internal state.  First an implicit
    ``refined_state_aspect`` is synthesized using the predefined
    categories of state, Non_Volatile_Initialized,
    Non_Volatile_Uninitialized, Volatile_Input and Volatile_Output.  An
-   ``abstract_state_aspect`` is synthesized from the synthesized
-   ``refined_state_aspect``.
+   implicit ``abstract_state_aspect`` is synthesized from the
+   synthesized ``refined_state_aspect``.
 
 .. centered:: **Restrictions that may be Applied**
 
@@ -812,6 +811,17 @@ where
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with state abstraction and refinement.
+
+Abstract State and Package Hierarchy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   
+   We need to consider the interactions between package hierarchy and abstract state.
+   
+   Do we need to have rules restricting access between parent and child packages?
+
+   Can we ensure abstract state encapsulation?
 
 Volatile Variables
 ^^^^^^^^^^^^^^^^^^
@@ -854,29 +864,42 @@ of the external device.
 Initialization Refinement
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If a package has an ``initialization_aspect`` which contains a
+If a package has a ``dependency_aspect`` or an
+``initialization_aspect`` which contains a ``export`` which is a
 ``state_name`` then each ``constituent`` of the ``state_name`` must be
-initialized during package elaboration or be designated as Volatile, in
-which case they are implicitly initialized.  A ``constituent`` of
-``state_name`` of a package which does not appear in the
+initialized during package elaboration or be designated as Volatile,
+in which case they are implicitly initialized.  A ``constituent`` of a
+Non_Volatile ``state_name`` of a package which does not appear in the
 ``initializes_aspect`` of the package must not be initialized during
-package elaboration.
+package elaboration.  A ``constituent`` of a Volatile ``state_name``
+which is Non_Volatile must initialized during package elaboration.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
 
-#. Each ``constituent`` of a ``state_name`` declared in a package Q
-   that is a *variable* declared immediately within Q must be
-   initialized at its point of declaration or within the sequence of
-   statements of the body of Q.  
-#. Each ``constituent`` of a ``state_name`` declared in a package Q
-   that is a *variable* declared in the visible part of a private
-   child or embedded package package of Q, must appear in the
-   ``initializes_aspect`` of the private child or embedded package.
-#. Each ``constituent`` of a ``state_name`` which is a ``state_name``
-   of a private child or embedded package must appear in the
-   ``initializes_aspect`` of the private child or embedded package.
+#. For each ``export`` that appears in a ``dependency_aspect`` or
+   ``initalizes_aspect`` of a package declaration the following must
+   be satisfied:
+
+   * Each ``export`` that is a *variable* must be initialized at its
+     point of declaration, initialized by the sequence of statements
+     of the package, or by an embedded package or a private child
+     package which names the ``export`` in its ``dependency_aspect``
+     or ``initializes_aspect``;
+   * For an ``export`` which is a ``state_name``, each ``constituent``
+     of the ``export`` that is a *variable* must be initialized at
+     its point of declaration, initialized by the sequence of
+     statements of the package, or by an embedded package or a private
+     child package which names the ``export`` in its
+     ``dependency_aspect`` or ``initializes_aspect``; 
+   * For an ``export`` which is a ``state_name`` each ``constituent``
+     of the ``export`` that is a ``state_name`` must appear in the
+     ``dependency_aspect`` or ``initializes_aspect`` of an embedded
+     package or private child package.
+
+#. A Non_Volatile ``constituent`` of a Volatile ``state_name`` must be
+   initialized during package elaboration.
 #. Each ``constituent`` of a **null** ``abstract_state_name`` must be
    initialized implicitly or during package elaboration.
 
@@ -901,13 +924,13 @@ of its ``constituents``.
 
 #. A ``refined_global_aspect`` may only appear on the body or body stub
    of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P which has a ``global_aspect``.
+   declaration of P.
 #. A ``refined_global_aspect`` on the body or body stub of a
    subprogram P may only mention ``constituents`` of a ``state_name``
    given in the ``global_aspect`` in the declaration of P, a *global*
-   item that is not a ``state_name`` of the enclosing package named in
-   the the ``global_aspect`` of P or a ``constituent`` of a **null**
-   ``abstract_state_name``.
+   item, which is not a ``state_name`` of the enclosing package, named
+   in the the ``global_aspect`` of P or a ``constituent`` of a
+   **null** ``abstract_state_name``.
 
 
 .. centered:: **Static Semantics**
@@ -915,6 +938,11 @@ of its ``constituents``.
 
 #. A ``refined_global_aspect`` of a subprogram defines a *refinement*
    of the ``global_aspect`` of the subprogram.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
 #. A *refinement* G' of a ``global_aspect`` G declared within package
    Q shall satisfy the following rules:
  
@@ -944,7 +972,7 @@ of its ``constituents``.
      * if S is a Volatile Output at least one ``constituent`` of S in
        G'must be of mode **out**.
 
-   * A ``constituent`` a **null** ``abstract_name`` may also be
+   * A ``constituent`` of a **null** ``abstract_name`` may also be
      mentioned in G' provided its mode is **in out**.
 
    * function may have a ``refined_global_aspect`` G' which mentions a
@@ -953,13 +981,9 @@ of its ``constituents``.
      in G. The **null** ``abstract_state`` must not affect the value of the
      result of the function it must be purely for optimization.
 
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow-Analysis*
-
 #. If a subprogram has a ``refined_global_aspect`` which satisfies the
-   legality rules, it is used in the analysis of the subprogram body
-   rather than its ``global_aspect``.
+   flow analysis checks, it is used in the analysis of the subprogram
+   body rather than its ``global_aspect``.
    
 * If the declaration of a subprogram P in the visible part of package
   Q has a ``global_aspect`` which mentions a ``state_name`` of Q, but
@@ -993,23 +1017,23 @@ Refined Dependency Aspect
 
 #. A ``refined_dependency_aspect`` may only appear on the body or body
    stub of a subprogram P in a package whose ``visible_part`` contains
-   the declaration of a subprogram P which has a ``dependency_aspect``
-   or is the declaration of a function which has implicit.
-#. If a ``dependency_aspect`` of a subprogram declaration P in the
-   visible part of a package refers to a ``state_name`` declared in
-   the ``abstract_state_aspect`` of the package, then in the body of
-   the package the body or body stub of P must have a
-   ``refined_dependency_aspect``.
+   the declaration of a subprogram P.
 #. A ``refined_dependency_aspect`` on the body or body stub of a
-   subprogram P may only mention ``constituents`` of a ``state_name``
-   given in the ``dependency_aspect`` in the declaration of P, a
-   *global* item that is not a ``state_name`` of the enclosing or a
+   subprogram P may only mention a formal parameter of P,
+   ``constituents`` of a ``state_name`` given in the
+   ``dependency_aspect`` in the declaration of P, a *global* item that
+   is not a ``state_name`` of the enclosing package or a
    ``constituent`` of a **null** ``abstract_state_name``.
 
 .. centered:: **Static Semantics**
 
 #. A ``refined_dependency_aspect`` of a subprogram defines a *refinement*
    of the ``dependency_aspect`` of the subprogram.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Flow-Analysis*
+
 #. A *refinement* D' of a ``dependency_aspect`` D declared within package
    Q shall satisfy the following rules:
  
@@ -1022,12 +1046,16 @@ Refined Dependency Aspect
        ``constituent`` of a **null** , ``abstract_state_name`` may be
        an additional ``import``.
 
-   * for each ``export`` in D which is a ``state_name`` declared in Q,
+   * for each ``export`` in D which is a ``state_name`` S declared in
+     Q,
 
-     * the item is replaced in D' by at least one export which is a
+     * the item is replaced in D' by at least one ``export`` which is a
        ``constituent`` of S,
-     * its ``dependency_list`` in D' cannot contain an ``import` which is a
-       ``state_name`` of Q but may a ``constituent`` of the ``state_name``,
+     * its ``dependency_list`` will be unchanged except that an
+       ``import`` which is a ``state_name`` of Q will be replaced in
+       D' by at least one ``constituent`` of the ``state_name`` and a
+       ``constituent`` of a **null** , ``abstract_state_name`` may be
+       an additional ``import``.
      * the union of every ``import`` from the ``dependency_list`` of
        each ``export`` which is a ``constituent`` of S in D', with
        every ``import`` which is a ``constituent`` of a ``state_name``
@@ -1036,20 +1064,16 @@ Refined Dependency Aspect
        same set as the set of obtained by the union of every
        ``import`` in the ``dependency_list`` of S in D.
        
-   * function may have a ``refined_dependency_aspect`` D' (even if it
-     does not have an explicit ``dependency_aspect`` which mentions a
-     ``constituent`` of a **null** ``abstract_name`` but the must must
-     appear as both an ``import`` and an ``export`` in D'. 
+   * function may have a ``refined_dependency_aspect`` D' which
+     mentions a ``constituent`` of a **null** ``abstract_name`` but
+     the constituent must appear as both an ``import`` and an
+     ``export`` in D'.
    * A ``constituent`` of a **null** ``abstract_state_name`` is
      ignored in showing conformance between the ``dependency-aspect``
      and the ``refined_dependency_aspect``.
 
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow-Analysis*
-
 #. If a subprogram has a ``refined_dependency_aspect`` which satisfies
-   the legality rules, it it is used in the analysis of the subprogram
+   the flow analysis, it it is used in the analysis of the subprogram
    body rather than its ``dependency_aspect``.
    
 * If the declaration of a subprogram P in the visible part of package
@@ -1075,11 +1099,20 @@ Refined Precondition Aspect
 
 ``refined_precondition_aspect ::= Refined_Pre =>`` *Boolean_*\ ``expression``
 
-.. centered:: **Static Semantics**
+.. centered:: **Legality Rules**
 
 #. A ``refined_precondition`` may only appear on the body of a
    subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
+   declaration of P which has a precondition.
+#. The same legality rules apply to a ``refined_precondition`` as for
+   a precondition except that the post condition may be applied to the
+   body or body stub of a subprogram with a seperate declaration.
+
+.. centered:: **Static Semantics**
+
+#. A ``refined_precondition`` of a subprogram defines a *refinement*
+   of the precondition of the subprogram.
+
 #. The *boolean_*\ ``expression`` of a ``refined_precondition`` of a
    subprogram body may only reference a *variable* if it is a *formal
    parameter* of the subprogram or if the subprogram has:
