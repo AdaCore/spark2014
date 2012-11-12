@@ -268,12 +268,13 @@ subcomponent of a larger containing object.  Such objects are called
                                     [else moded_item_list])
    moded_item_list             ::= moded_item
                                  | (moded_item {, moded_item})
-   mode_selector               ::= Input| Output | In_Out
+   mode_selector               ::= Input| Output | In_Out | Proof
    moded_item                  ::= name
 
 .. todo:: We may make an extra mode_selector available ``Proof`` which
    indicates that the listed variables are only used for proof and not
    in the code. RCC comments: Yes - agree this needs to be in.  Target: D1/CDR
+   TJJ:12-Nov-12 Added Proof to mode_selector.
    for the grammar and legality, D2 for the implementation? Assign: TJJ.
 
 .. centered:: **Legality Rules**
@@ -642,7 +643,8 @@ dependent on every ``import`` in the ``import_list`` if the
 ::
 
    dependency_aspect      ::= Depends => dependency_relation
-   dependency_relation    ::= (dependency_clause {, dependency_clause})
+   dependency_relation    ::= null
+                            | (dependency_clause {, dependency_clause})
    dependency_clause      ::= export_list =>[+] dependency_list
    export_list            ::= null
                             | export
@@ -683,6 +685,8 @@ where
 #. An ``export`` must have an effective mode of **in out** or **out**.
 #. A ``moded_item`` which is both an ``import`` and an ``export``
    shall have an effective mode of **in out**.
+#. A **null** ``dependency_relation`` indicates that there is not an
+   ``import`` nor an ``export``.
 #. A ``function_result`` may not appear in the ``dependency_relation``
    of a procedure.
 #. There can be at most one ``export_list`` which is a **null** symbol
