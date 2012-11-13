@@ -1,4 +1,4 @@
-package Stacks is
+package Stacks_05 is
 
    type Stack is private;
 
@@ -24,4 +24,4 @@ private
          Stack_Vector : Vector;
          Stack_Pointer : Pointer_Range;
       end record;
-end Stacks;
+end Stacks_05;

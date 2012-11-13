@@ -1,4 +1,4 @@
-package body Output_Port
+package body Output_Port_05
 is
 
    Outputs : Integer;
@@ -11,4 +11,4 @@ is
       Outputs := Output_Value;
    end Write_To_Port;
 
-end Output_Port;
+end Output_Port_05;

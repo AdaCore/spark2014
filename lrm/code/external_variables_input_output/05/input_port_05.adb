@@ -1,4 +1,4 @@
-package body Input_Port
+package body Input_Port_05
 is
 
    Inputs : Integer;
@@ -11,4 +11,4 @@ is
       Input_Value := Inputs;
    end Read_From_Port;
 
-end Input_Port;
+end Input_Port_05;
