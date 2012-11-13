@@ -193,9 +193,7 @@ package body Why.Images is
       --  value is num / (rbase ** den).
 
       --  Negative numbers are represented by the sign of the numerator being
-      --  negative. The denominator is always positive.
-      --  ??? In practice, the denominator is not always positive, to be
-      --  checked with frontend developers.
+      --  negative. The base of the denominator is always non-negative.
 
       if Base = 0 then
          P (O, Num);
