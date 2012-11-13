@@ -191,6 +191,8 @@
 --  the elements of the list and the triples themselves are separated by a
 --  colon. The first Sloc is the most generic, the last one is the last
 --  instantiation.
+--  For VCs, we use the prefix "GP_Sloc_VC" instead of "GP_Sloc" to
+--  differentiate between VC positions and other SLOCs
 --
 --  "GP_Reason:<VC_Kind>"
 --     The reason for a VC. <VC_Kind> should be obtained by VC_Kind'Image.

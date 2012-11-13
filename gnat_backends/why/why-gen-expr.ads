@@ -91,7 +91,8 @@ package Why.Gen.Expr is
        Domain    : EW_Domain) return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
-   function New_Located_Label (N : Node_Id) return W_Identifier_Id;
+   function New_Located_Label (N : Node_Id; Is_VC : Boolean)
+                               return W_Identifier_Id;
    --  Return a label that contains the Ada Sloc of the node
 
    function New_Pretty_Label (N : Node_Id) return W_Identifier_Id;
@@ -99,7 +100,8 @@ package Why.Gen.Expr is
 
    function New_Located_Expr (Ada_Node : Node_Id;
                               Expr     : W_Expr_Id;
-                              Domain   : EW_Domain) return W_Expr_Id;
+                              Domain   : EW_Domain;
+                              Is_VC    : Boolean) return W_Expr_Id;
    --  put a location label on the given expression
 
    function New_VC_Call

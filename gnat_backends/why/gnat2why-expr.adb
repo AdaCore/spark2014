@@ -3227,7 +3227,7 @@ package body Gnat2Why.Expr is
             T :=
               New_Label (Labels =>
                            (1 => Pretty_Label,
-                            2 => New_Located_Label (Expr)),
+                            2 => New_Located_Label (Expr, Is_VC => False)),
                          Def => T,
                          Domain => Domain);
          end if;
@@ -3844,7 +3844,7 @@ package body Gnat2Why.Expr is
          T :=
            New_Label (Labels =>
                         (1 => Pretty_Label,
-                         2 => New_Located_Label (Expr)),
+                         2 => New_Located_Label (Expr, Is_VC => False)),
                       Def => T,
                       Domain => Domain);
       end if;
@@ -4431,7 +4431,9 @@ package body Gnat2Why.Expr is
                      while Present (Cur) loop
                         Tail :=
                           New_Label
-                            (Labels => (1 => New_Located_Label (Cur)),
+                            (Labels => (1 =>
+                                         New_Located_Label
+                                           (Cur, Is_VC => False)),
                              Def    =>
                              +New_Simpl_Conditional
                                (Condition =>
@@ -4584,7 +4586,10 @@ package body Gnat2Why.Expr is
             Result :=
               Sequence
                 (Result,
-                 New_Label (Labels => (1 => New_Located_Label (Cur_Stmt)),
+                 New_Label (Labels =>
+                              (1 => New_Located_Label
+                                     (Cur_Stmt,
+                                      Is_VC => False)),
                             Def    => +Stmt));
             if Cut_Assertion /= Why_Empty then
                Result :=

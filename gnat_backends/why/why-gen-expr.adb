@@ -827,11 +827,12 @@ package body Why.Gen.Expr is
 
    function New_Located_Expr (Ada_Node : Node_Id;
                               Expr     : W_Expr_Id;
-                              Domain   : EW_Domain) return W_Expr_Id
+                              Domain   : EW_Domain;
+                              Is_VC    : Boolean) return W_Expr_Id
    is
    begin
       return
-        New_Label (Labels => (1 => New_Located_Label (Ada_Node)),
+        New_Label (Labels => (1 => New_Located_Label (Ada_Node, Is_VC)),
                    Def    => Expr,
                    Domain => Domain);
    end New_Located_Expr;
@@ -840,10 +841,13 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label (N : Node_Id) return W_Identifier_Id is
+   function New_Located_Label (N : Node_Id; Is_VC : Boolean)
+                               return W_Identifier_Id is
 
-      Slc : Source_Ptr := Sloc (N);
-      Buf : Unbounded_String := Null_Unbounded_String;
+      Slc    : Source_Ptr := Sloc (N);
+      Buf    : Unbounded_String := Null_Unbounded_String;
+      Prefix : constant String :=
+        (if Is_VC then "GP_Sloc_VC:" else "GP_Sloc:");
    begin
       loop
          declare
@@ -862,7 +866,7 @@ package body Why.Gen.Expr is
             Append (Buf, ':');
          end;
       end loop;
-      return New_Identifier (Name => "GP_Sloc:" & To_String (Buf));
+      return New_Identifier (Name => Prefix & To_String (Buf));
    end New_Located_Label;
 
    -----------------
@@ -1080,7 +1084,7 @@ package body Why.Gen.Expr is
       return
         (1 => New_Identifier
            (Name => "GP_Reason:" & VC_Kind'Image (Reason)),
-         2 => New_Located_Label (N),
+         2 => New_Located_Label (N, Is_VC => True),
          3 => To_Ident (WNE_Keep_On_Simp));
    end New_VC_Labels;
 
