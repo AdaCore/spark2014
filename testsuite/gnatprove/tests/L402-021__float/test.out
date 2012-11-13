@@ -1,10 +1,10 @@
 p.adb:10:20: overflow check not proved
 p.adb:10:25: info: assertion proved
-p.adb:11:25: assertion not proved, requires R = C or else R = F
-p.adb:12:25: assertion not proved, requires T = C or else T = F
+p.adb:11:25: info: assertion proved
+p.adb:12:25: info: assertion proved
 p.adb:2:22: range check not proved
 p.adb:3:22: range check not proved
-p.adb:4:22: range check not proved
+p.adb:4:22: info: range check proved
 p.adb:5:22: range check not proved
 p.adb:7:21: info: assertion proved
 p.adb:8:20: overflow check not proved
