@@ -188,12 +188,15 @@ package body Why.Images is
       --  As documented in urealp.ads, Ureal representation is constrained as
       --  follows:
 
-      --  If the base is zero, then the absolute value of the Ureal is simply
-      --  numerator/denominator. If the base is non-zero, then the absolute
-      --  value is num / (rbase ** den).
-
       --  Negative numbers are represented by the sign of the numerator being
-      --  negative. The base of the denominator is always non-negative.
+      --  negative.
+
+      --  If the base is zero, then the absolute value of the Ureal is simply
+      --  numerator/denominator, where denominator is positive. If the base is
+      --  non-zero, then the absolute value is
+      --       numerator / (base ** denominator).
+      --  In that case, since base is positive, (base ** denominator) is also
+      --  positive, even when denominator is negative or null.
 
       if Base = 0 then
          P (O, Num);
