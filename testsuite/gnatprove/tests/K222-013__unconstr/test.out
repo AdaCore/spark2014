@@ -1,9 +1,9 @@
 unconstr.adb:11:7: precondition not proved
 unconstr.adb:12:22: info: index check proved
-unconstr.adb:12:28: assertion not proved, requires A (0) = 1
+unconstr.adb:12:7: assertion not proved, requires A (0) = 1
 unconstr.adb:18:7: precondition not proved
 unconstr.adb:19:22: info: index check proved
-unconstr.adb:19:28: assertion not proved, requires A (0) = 1
+unconstr.adb:19:7: assertion not proved, requires A (0) = 1
 unconstr.adb:3:14: info: range check proved
 unconstr.adb:5:22: info: range check proved
 unconstr.adb:5:7: info: index check proved

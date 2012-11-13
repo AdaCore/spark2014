@@ -15,8 +15,8 @@ database.adb:132:10: info: index check proved
 database.adb:133:10: info: index check proved
 database.adb:134:29: info: range check proved
 database.adb:138:29: info: range check proved
-database.adb:141:34: info: loop invariant initialization proved
-database.adb:141:34: info: loop invariant preservation proved
+database.adb:141:13: info: loop invariant initialization proved
+database.adb:141:13: info: loop invariant preservation proved
 database.adb:142:30: info: range check proved
 database.adb:143:31: info: overflow check proved
 database.adb:143:31: info: range check proved

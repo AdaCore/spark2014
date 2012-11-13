@@ -1,16 +1,16 @@
-p.adb:10:21: info: loop invariant initialization proved
-p.adb:10:21: info: loop invariant preservation proved
 p.adb:12:21: info: index check proved
 p.adb:12:42: info: index check proved
 p.adb:14:14: info: index check proved
 p.adb:15:14: info: index check proved
 p.adb:22:7: info: precondition proved
+p.adb:9:10: info: loop invariant initialization proved
+p.adb:9:10: info: loop invariant preservation proved
 p.ads:17:39: info: index check proved
+p.ads:18:15: info: postcondition proved
 p.ads:19:28: info: index check proved
 p.ads:19:46: info: index check proved
-p.ads:19:57: info: postcondition proved
 p.ads:21:65: info: index check proved
 p.ads:27:46: info: range check proved
+p.ads:33:15: info: postcondition proved
 p.ads:34:40: info: range check proved
 p.ads:34:51: info: index check proved
-p.ads:34:62: info: postcondition proved

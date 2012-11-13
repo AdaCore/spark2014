@@ -4,12 +4,12 @@ maxandsum.adb:10:23: info: index check proved
 maxandsum.adb:11:19: info: index check proved
 maxandsum.adb:12:20: info: index check proved
 maxandsum.adb:12:20: range check not proved
-maxandsum.adb:14:29: assertion not proved, requires Sum <= I*Max
+maxandsum.adb:14:10: assertion not proved, requires Sum <= I*Max
 maxandsum.adb:14:33: overflow check not proved
 maxandsum.adb:6:14: info: range check proved
 maxandsum.adb:7:14: info: range check proved
-maxandsum.adb:9:29: info: loop invariant initialization proved
-maxandsum.adb:9:29: loop invariant preservation not proved, requires Sum <= (I-1)*Max
+maxandsum.adb:9:10: info: loop invariant initialization proved
+maxandsum.adb:9:10: loop invariant preservation not proved, requires Sum <= (I-1)*Max
 maxandsum.adb:9:37: overflow check not proved
 maxandsum.ads:8:21: info: postcondition proved
 maxandsum.ads:8:25: overflow check not proved

@@ -17,7 +17,7 @@ infoflow.adb:109:28: index check not proved
 infoflow.adb:109:39: overflow check not proved
 infoflow.adb:110:13: index check not proved
 infoflow.adb:110:24: overflow check not proved
-infoflow.adb:114:30: assertion not proved, requires true
+infoflow.adb:114:7: assertion not proved, requires true
 infoflow.adb:122:28: division check not proved
 infoflow.adb:122:28: range check not proved
 infoflow.adb:125:48: index check not proved

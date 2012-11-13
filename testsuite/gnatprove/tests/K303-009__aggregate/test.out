@@ -65,7 +65,7 @@ rec_aggregate.adb:38:38: info: range check proved
 rec_aggregate.adb:40:24: info: range check proved
 rec_aggregate.adb:40:38: info: range check proved
 rec_aggregate.ads:26:15: info: postcondition proved
-rec_aggregate.ads:33:58: info: postcondition proved
+rec_aggregate.ads:33:14: info: postcondition proved
 rec_aggregate.ads:39:15: info: postcondition proved
 rec_aggregate.ads:39:47: info: overflow check proved
 rec_aggregate.ads:42:45: info: range check proved
