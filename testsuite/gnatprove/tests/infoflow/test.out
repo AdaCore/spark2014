@@ -113,13 +113,13 @@ infoflow.adb:201:38: index check not proved
 infoflow.adb:202:10: index check not proved
 infoflow.adb:202:25: index check not proved
 infoflow.adb:207:13: index check not proved
-infoflow.adb:207:22: assertion not proved, requires A_V1 (M) = B_V1 (M)
 infoflow.adb:207:24: index check not proved
 infoflow.adb:209:27: overflow check not proved
 infoflow.adb:210:13: index check not proved
 infoflow.adb:210:24: index check not proved
 infoflow.adb:210:32: overflow check not proved
 infoflow.adb:213:13: index check not proved
+infoflow.adb:213:22: assertion not proved, requires A_V2 (M) = B_V2 (M)
 infoflow.adb:213:24: index check not proved
 infoflow.adb:215:22: overflow check not proved
 infoflow.adb:217:27: index check not proved

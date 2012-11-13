@@ -30,7 +30,7 @@ heatingsystem_dfa.adb:54:21: info: division check proved
 heatingsystem_dfa.adb:54:21: range check not proved
 heatingsystem_dfa.adb:55:24: info: division check proved
 heatingsystem_dfa.adb:55:43: info: division check proved
-heatingsystem_dfa.adb:55:43: range check not proved
+heatingsystem_dfa.adb:55:43: info: range check proved
 heatingsystem_dfa.adb:57:45: info: division check proved
 heatingsystem_dfa.adb:57:45: info: range check proved
 heatingsystem_dfa.adb:58:45: info: division check proved

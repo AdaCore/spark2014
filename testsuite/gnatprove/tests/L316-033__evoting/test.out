@@ -14,7 +14,7 @@ evoting.adb:174:16: info: index check proved
 evoting.adb:175:16: info: index check proved
 evoting.adb:175:41: info: index check proved
 evoting.adb:175:63: info: range check proved
-evoting.adb:176:51: overflow check not proved
+evoting.adb:176:51: info: overflow check proved
 evoting.adb:176:51: range check not proved
 evoting.adb:199:7: info: index check proved
 evoting.adb:201:56: info: range check proved

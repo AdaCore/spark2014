@@ -67,14 +67,14 @@ prefixsum.adb:29:52: overflow check not proved
 prefixsum.adb:29:54: info: index check proved
 prefixsum.adb:29:62: info: overflow check proved
 prefixsum.adb:29:66: overflow check not proved
-prefixsum.adb:29:68: index check not proved
+prefixsum.adb:29:68: info: index check proved
 prefixsum.adb:29:76: info: overflow check proved
 prefixsum.adb:30:27: info: overflow check proved
 prefixsum.adb:30:32: info: division check proved
 prefixsum.adb:33:20: info: index check proved
 prefixsum.adb:33:28: info: index check proved
 prefixsum.adb:33:38: overflow check not proved
-prefixsum.adb:33:40: index check not proved
+prefixsum.adb:33:40: info: index check proved
 prefixsum.adb:33:48: info: overflow check proved
 prefixsum.adb:35:20: info: index check proved
 prefixsum.adb:35:28: info: index check proved
@@ -105,12 +105,12 @@ prefixsum.adb:58:64: info: overflow check proved
 prefixsum.adb:5:27: info: range check proved
 prefixsum.adb:60:35: info: index check proved
 prefixsum.adb:60:43: info: index check proved
-prefixsum.adb:63:31: overflow check not proved
-prefixsum.adb:63:31: range check not proved
+prefixsum.adb:63:31: info: overflow check proved
+prefixsum.adb:63:31: info: range check proved
 prefixsum.adb:64:13: info: index check proved
-prefixsum.adb:64:26: index check not proved
+prefixsum.adb:64:26: info: index check proved
 prefixsum.adb:64:35: overflow check not proved
-prefixsum.adb:64:37: index check not proved
+prefixsum.adb:64:37: info: index check proved
 prefixsum.adb:65:31: info: overflow check proved
 prefixsum.adb:65:31: info: range check proved
 prefixsum.adb:65:39: info: overflow check proved
@@ -122,7 +122,7 @@ prefixsum.adb:82:7: info: index check proved
 prefixsum.adb:83:27: info: division check proved
 prefixsum.adb:83:27: info: range check proved
 prefixsum.adb:89:49: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
-prefixsum.adb:89:49: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
+prefixsum.adb:91:26: loop invariant preservation not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum.adb:91:49: info: division check proved
 prefixsum.adb:91:49: info: overflow check proved
 prefixsum.adb:91:58: overflow check not proved
