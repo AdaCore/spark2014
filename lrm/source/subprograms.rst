@@ -263,6 +263,7 @@ specified:
                                     [else moded_item_list])
    moded_item_list             ::= moded_item
                                  | (moded_item {, moded_item})
+                                 | null
    mode_selector               ::= Input| Output | In_Out | Proof
    moded_item                  ::= name
 
@@ -271,7 +272,9 @@ specified:
 
 #. An object which is not a subcomponent of any containing object is
    said to be an *entire* object.
-#. An *abstact state* is represneted by a ``state_name``.
+#. An *abstact state* is represented by a ``state_name``.
+#. A ``default_mode_specification`` is considered to be a
+   ``mode_specification`` with the ``mode_selector Input``.
 #. The *effective* mode of a ``moded_item`` with respect to a specific
    subprogram describes the way that the object is used by the
    subprogram:
@@ -310,7 +313,7 @@ specified:
    ``moded_item`` in the ``moded_item_list`` is unconditional.  The
    condition is ignored for the purposes of determining the effective
    mode and the ``mode_selector`` of the ``mode_specification`` is
-   used as described above to determine the *effective* mode..
+   used as described above to determine the *effective* mode.
 
 
 #. If a ``moded_item`` is a subcomponent then the *entire* object of
@@ -326,14 +329,20 @@ specified:
      has an effective mode of **out** or **in out**, then its
      effective mode is **in out**.
 
-#. A ``conditional_mode`` is specified using an if_expression refines
-   ????a ``mode_specification`` and specifies that if a each
-   ``moded_item`` in the moded_item
+#. A ``conditional_mode`` is specified using an if_expression with a
+   notional type of Boolean. The if_expression provides a refinement
+   of the Global Aspect which defines the condition under which each
+   ``moded_item`` of the ``moded_item_list``, which is the *dependent*
+   expression is directly or indirectly read, updted or both.  
+#. If the if_expression does not have a final else clause and all of
+   the conditions of the if_expression evaluates to False it has the
+   effect of **else null**
+#. A *dependent* expression which is a **null** ``moded_item_list``
+   indicates that there are no ``moded_items`` read or updated when
+   the controlling condition evalustaes to True.
 
 .. centered:: **Legality Rules**
 
-#. A ``default_mode_specification`` is considered to be a
-   ``mode_specification`` with the ``mode_selector Input``.
 #. Each ``mode_selector`` shall not occur more than once in a given
    ``mode_refinement``.
 #. A ``moded_item`` must denote a part of a *global variable*, a part
@@ -343,7 +352,7 @@ specified:
    ``mode_specification``.
 #. A ``moded_item`` may not appear more than once within a single
    ``mode_specification`` other than appearing in a ``condition`` of a
-   ``conditional_mode``.  The rule does not apply to individual
+   ``conditional_mode``.  This rule does not apply to individual
    indexed components of the same array object.
 #. A ``moded_item`` may be a subcomponent provided a containing object
    is not a ``moded_item`` in the same ``mode_refinement``.  As long
