@@ -1,3 +1,4 @@
+An error occured when calling alt-ergo
 model.adb:61:10: info: loop invariant initialization proved
 model.adb:61:10: info: loop invariant preservation proved
 model.adb:63:20: info: index check proved
