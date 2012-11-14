@@ -35,8 +35,6 @@ that the selected component is not present, then the component
 selection (which, in Ada, would raise Constraint_Error if it were
 to be evaluated) is illegal.
 
-.. todo:: list all such illegal-due-to-inevitable-exception constructs
-
 Attributes
 ~~~~~~~~~~
 
@@ -177,10 +175,6 @@ array_component_associations are given; within a single
 array_component_association, in the order of the
 discrete_choice_list; and within the range of a single
 discrete_choice, in ascending order.
-
-.. todo:: RCC: I am a bit nervous about the ordering of the updates.
-   I can see this is necessary for compilation and execution, but what
-   are the semantics for proof?  How does 'Update translate into Why? Target: D2?
 
 If T is a multidimensional type then the component updating referenced
 above proceeds as follows. For each
