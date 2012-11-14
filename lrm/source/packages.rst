@@ -908,11 +908,11 @@ which is Non_Volatile must initialized during package elaboration.
 Refined Global Aspect
 ^^^^^^^^^^^^^^^^^^^^^
 
-If a subprogram declaration in the visible part of a package names a
-``state_name`` of a package in its ``global_aspect`` then the body, or
-body stub of the subprogram in the body of the package may have a
-``refined_global_aspect`` replacing the ``state_name`` by one or more
-of its ``constituents``.
+A subprogram declared in the visible part of a package may have a
+``refined_global_aspect`` applied to its body or body stub. The
+``refined_global_aspect`` defines the global items of the subprogram
+in terms of the ``constituents`` of a ``state_name`` of the package
+rather than the ``state_name``.
 
 .. centered:: **Syntax**
 
@@ -1005,6 +1005,12 @@ of its ``constituents``.
 Refined Dependency Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+A subprogram declared in the visible part of a package may have a
+``refined_dependency_aspect`` applied to its body or body stub. The
+``refined_dependency_aspect`` defines the ``dependency_relation`` of the
+subprogram in terms of the ``constituents`` of a ``state_name`` of the
+package rather than the ``state_name``.
+
 .. centered:: **Syntax**
 
 ::
@@ -1020,9 +1026,9 @@ Refined Dependency Aspect
    the declaration of a subprogram P.
 #. A ``refined_dependency_aspect`` on the body or body stub of a
    subprogram P may only mention a formal parameter of P,
-   ``constituents`` of a ``state_name`` given in the
-   ``dependency_aspect`` in the declaration of P, a *global* item that
-   is not a ``state_name`` of the enclosing package or a
+   ``constituents`` of a ``state_name`` of the enclosing package given
+   in the ``dependency_aspect`` in the declaration of P, a *global*
+   item that is not a ``state_name`` of the enclosing package or a
    ``constituent`` of a **null** ``abstract_state_name``.
 
 .. centered:: **Static Semantics**
@@ -1034,8 +1040,10 @@ Refined Dependency Aspect
 
 .. centered:: *Checked by Flow-Analysis*
 
-#. A *refinement* D' of a ``dependency_aspect`` D declared within package
-   Q shall satisfy the following rules:
+#. If the subprogram declaration declared in the visible part of
+   package Q has a ``dependency_aspect`` D then the
+   ``refinded_dependency_aspect`` defines a *refinement* D' of D
+   then it shall satisfy the following rules:
  
    * For each ``export`` in D which is not a ``state_name`` of Q, 
 
@@ -1073,8 +1081,8 @@ Refined Dependency Aspect
      and the ``refined_dependency_aspect``.
 
 #. If a subprogram has a ``refined_dependency_aspect`` which satisfies
-   the flow analysis, it it is used in the analysis of the subprogram
-   body rather than its ``dependency_aspect``.
+   the flow analysis rules, it is used in the analysis of the
+   subprogram body rather than its ``dependency_aspect``.
    
 * If the declaration of a subprogram P in the visible part of package
   Q has a ``dependency_aspect`` which mentions a ``state_name`` of Q,
@@ -1082,11 +1090,10 @@ Refined Dependency Aspect
   ``refined_dependency_aspect`` will be synthesized from the body of P.`
 
 * if the declaration of a subprogram P declared in the visible part of
-  a pakage Q does not have a ``dependency_aspect``, first an implicit
-  ``refined_dependency_aspect`` is synthesized from the body of P,
-  then an implict ``dependency_aspect`` is synthesized from the
-  synthesized ``refined_dependency_aspect`` and the
-  ``refined_state_aspect`` (which may also have been synthesized).
+  a pakage Q does not have a ``dependency_aspect``, an implicit one is
+  synthesizesd from the ``refined_dependency_aspect`` and the
+  ``refined_state_aspect`` (both of which which may also have been
+  synthesized).
 
 .. centered:: **Dynamic Semantics**
 
@@ -1095,92 +1102,109 @@ Abstractions do not have dynamic semantics.
 Refined Precondition Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+A subprogram declared in the visible part of a package may have a
+``refined_precondition`` applied to its body or body stub.  The
+``refined_preconition`` may be used to restate a precondition given on
+the declaration of a subprogram in terms the full view of a private
+type or the ``constituents`` of a refined ``state_name``.
+
+
 .. centered:: **Syntax**
 
 ``refined_precondition_aspect ::= Refined_Pre =>`` *Boolean_*\ ``expression``
 
 .. centered:: **Legality Rules**
 
-#. A ``refined_precondition`` may only appear on the body of a
-   subprogram P in a package whose ``visible_part`` contains the
-   declaration of P which has a precondition.
+#. A ``refined_precondition`` may only appear on the body or body stub
+   of a subprogram P in a package whose ``visible_part`` contains the
+   declaration of P.
 #. The same legality rules apply to a ``refined_precondition`` as for
-   a precondition except that the post condition may be applied to the
-   body or body stub of a subprogram with a seperate declaration.
+   a precondition.
 
 .. centered:: **Static Semantics**
 
 #. A ``refined_precondition`` of a subprogram defines a *refinement*
    of the precondition of the subprogram.
+#. Logically, the precondition of a subprogram must imply its
+   ``refined_precondition`` which in turn means that this relation
+   cannot be achieved with a default precondition (True) and therefore
+   a subprogram with a ``refined_precondition`` will require a
+   precondition also in order to perform proofs.
+#. The static semantics are otherwise as for a precondition.
 
-#. The *boolean_*\ ``expression`` of a ``refined_precondition`` of a
-   subprogram body may only reference a *variable* if it is a *formal
-   parameter* of the subprogram or if the subprogram has:
 
-  #.  a ``refined_global_aspect``, then the *variable* may be a
-      *global variable* including a ``constituent`` which is a
-      *variable* of the ``refined_global_aspect``;
-  #. a ``global_aspect`` but no ``refined_global_aspect``, then the
-     *variable* must be a *global variable* of the ``global_aspect``;
-     or
-  #. no ``global_aspect``, then no *global variables* may be
-     referenced in a ``refined-precondition``.
+.. centered:: **Verification Rules**
 
-.. centered:: **Proof Semantics**
+.. centered:: *Checked by Proof*
 
 #. The precondition of a subprogram declaration shall imply the the
    ``refined_precondition``
 
 .. centered:: **Dynamic Semantics**
 
-#. The call of a subprogram with a ``refined_precondition`` needs to
-   satisfy the expression (**if** precondition **then**
-   ``refined_precondition`` **else** ``false``) otherwise the
-   constraint error Assertions.Assertion_Error is raised.  The
-   precondition is evaluated in the context of the calling environment
-   whereas the ``refined_precondition`` is evaluated in the context of
-   the body of the subprogram.
+#. When a subprogram with a ``refined_precondition`` is called; first
+   the precodition is evaluated as defined in the Ada LRM.  If the
+   precondition evaluates to True, then the ``refined_precondition``
+   is evaluated.  If either precondition or ``refined_precondition``
+   do not evaluate to True an exception is raised.
 
 Refined Postcondition Aspect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+A subprogram declared in the visible part of a package may have a
+``refined_postcondition`` applied to its body or body stub.  The
+``refined_postcondition`` may be used to restate a postcondition given
+on the declaration of a subprogram in terms the full view of a private
+type or the ``constituents`` of a refined ``state_name``.
+
 
 .. centered:: **Syntax**
 
 ``refined_postcondition_aspect ::= Refined_Post =>`` *Boolean_*\
 ``expression``
 
+.. centered:: **Legality Rules**
+
+#. A ``refined_postcondition`` may only appear on the body or body stub
+   of a subprogram P in a package whose ``visible_part`` contains the
+   declaration of P.
+#. The same legality rules apply to a ``refined_postcondition`` as for
+   a postcondition.
+
 .. centered:: **Static Semantics**
 
-#. A ``refined_precondition`` may only appear on the body of a
-   subprogram.
-#. The *boolean_*\ ``expression`` of a ``refined_precondition`` of a
-   subprogram body may only reference a *variable* if it is a *formal
-   parameter* of the subprogram and if the subprogram has:
+#. A ``refined_postcondition`` of a subprogram defines a *refinement*
+   of the postcondition of the subprogram.
+#. Logically, the ``refined_postcondition`` of a subprogram must imply
+   its postcondition.  This means that it is perfectly logical for the
+   declaration not to have a postcondition (which in its absence
+   defaults to True) but for the body or body stub to have a
+   ``refined_postcondition``.
+#. The static semantics are otherwise as for a postcondition.
 
-  #.  a ``refined_global_aspect``, then the *variable* must be a
-      *global variable* including a ``constituent`` which is a
-      *variable* of the ``refined_global_aspect``;
-  #. a ``global_aspect`` but no ``refined_global_aspect``, then the
-     *variable* must be a *global variable* of the ``global_aspect``;
-     or
-  #. no ``global_aspect``, then no *global variables* may be
-     referenced in a ``refined-precondition``.
 
-.. centered:: **Proof Semantics**
+.. centered:: **Verification Rules**
 
-#. The precondition and the ``refined_precondition`` and the
-   ``refined_postcondition`` of a subprogram declaration shall imply
-   the postcondition.
+.. centered:: *Checked by Proof*
+
+#. The precondition of a subprogram declaration with the
+   ``refined_precondition`` of its body or body stub and its
+   ``refined_postcondition`` together imply the postcondition of the
+   declaration, that is:
+
+   ::
+     precondition and refined_precondition and refined_postcondition => postcondition
+
 
 .. centered:: **Dynamic Semantics**
 
-#. The call of a subprogram with a ``refined_postcondition`` needs to
-   satisfy the expression (**if** ``refined_postcondition`` **then**
-   postcondition **else** ``false``) otherwise the constraint error
-   Assertions.Assertion_Error is raised.  The
-   ``refined_postcondition`` is evaluated in the context of the body
-   of the subprogram whereas the postcondition is evaluated in the
-   context of the calling environment.
+#. When a subprogram with a ``refined_postondition`` is called; first
+   the subprogram is evaluated.  If it terminates without exception
+   the ``refined_postcondition`` is evaluated.  If this evalustes to
+   True then the postcondition is evaluated as described in the Ada
+   LRM.  If either the ``refined_postcondition`` or the postcondition
+   do not evaluate to True an exception is raised.
 
 .. todo:: Class wide pre and post conditions.
 
@@ -1189,6 +1213,8 @@ Refined Postcondition Aspect
      regard to data abstraction.
 
 .. todo:: Restrictions related to package interactions.
+
+.. todo:: refined contract_cases
 
 
 Private Types and Private Extensions
