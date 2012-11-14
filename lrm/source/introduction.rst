@@ -260,30 +260,60 @@ A *Profile* is a set of such Restrictions.
 Constructive and Retrospective Verification Modes
 -------------------------------------------------
 
-SPARK2005 strongly favoured the *constructive* verification style - where all program
-units required mandatory contracts on their specifications.  These contracts had to be
-designed and added at an early stage to assist modular verification, and then maintained
-by the user as a program evolved.
+SPARK 2005 strongly favoured the *constructive* verification style - where all
+program units required mandatory contracts on their specifications.  These
+contracts had to be designed and added at an early stage to assist modular
+verification, and then maintained by the user as a program evolved.
 
-In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of program
-construction and verification, where useful forms of verification can be achieved with
-code that complies with the core |SPARK| restrictions, but otherwise does not have any contracts.
-In this mode, implicit contracts can be computed from the bodies of units, and then
-used in the analysis of other units, and so on.  These implicit contracts can
-be "promoted" by the user to become part of the specification of a unit, allowing the
-designer to move from the retrospective to the constructive mode as a project matures.
-The retrospective mode also allows for the verification of legacy code that was not
+In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of
+program construction and verification, where useful forms of verification can
+be achieved with code that complies with the core |SPARK| restrictions, but
+otherwise does not have any contracts.  In this mode, implicit contracts can be
+computed from the bodies of units, and then used in the analysis of other
+units, and so on.  These implicit contracts can be "promoted" by the user to
+become part of the specification of a unit, allowing the designer to move from
+the retrospective to the constructive mode as a project matures.  The
+retrospective mode also allows for the verification of legacy code that was not
 originally designed with the |SPARK| contracts in mind.
 
-Finally, unit are do not comply with the rules of |SPARK| can be verified by testing
-against the stated contracts, allowing verification goals to be met by a mixture of
-analysis and test.
+Combining Formal Verification and Testing
+-----------------------------------------
 
-.. todo:: RCC: More here on the mixed proof/test mode and how it works?  I am trying hard
-   here to avoid specifiying tool behaviour in the LRM, so it's difficult to know how far
-   to go in terms of stating what will be possible without getting too tool-specific.
-   Target: D1/CDR.
+There are common reasons for combining formal verification on some part
+of a codebase and testing on the rest of the codebase:
 
+#. Formal verification is only applicable to a part of the codebase. For
+   example, it might not be possible to apply formal verification to Ada code
+   that is not in |SPARK|.
+
+#. Formal verification only gives strong enough results on a part of the
+   codebase. This might be because the desired properties cannot be expressed
+   formally, or because proof of these desired properties cannot be
+   sufficiently automated.
+
+#. Formal verification is only cost-effective on a part of the codebase. (And
+   it may be more cost-effective than testing on this part of the codebase.)
+
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase.
+
+Contracts on subprograms provide a natural boundary for this combination. If a
+subprogram is proved to respect its contract, it should be possible to call it
+from a tested subprogram. Conversely, formal verification of a subprogram
+(including absence of run-time errors and contract checking) depends on called
+subprograms respecting their own contracts, whether these are verified by
+formal verification or testing.
+
+Formal verification works by making some assumptions, and these assumptions
+should be shown to hold even when formal verification and testing are
+combined. What is certain is that formal verification cannot guarantee the same
+properties when part of a program is only tested, as when all of a program is
+proved. The goal then, when combining formal verification and testing, is to
+reach a level of confidence as good as the level reached by testing alone.
+
+Any toolset that proposes a combination of formal verification and testing for
+|SPARK| should provide a detailed process for doing so, including any necessary
+additional testing of proof assumptions.
 
 Method of Description and Syntax Notation
 -----------------------------------------
