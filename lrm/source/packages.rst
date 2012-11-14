@@ -4,11 +4,6 @@
 Package Specifications and Declarations
 ---------------------------------------
 
-.. centered:: **Restrictions that may be Applied**
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1 Packages
-   :end-before: 7.1.2
-
 .. _abstract-state:
 
 Abstraction of State
@@ -211,13 +206,6 @@ where
    * *package_*\ ``name'Volatile_Input_State``
    * *package_*\ ``name'Volatile_Output_State``
 
-
-.. centered:: **Restrictions that may be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1.2 Abstract State Aspect
-   :end-before: 7.1.3 
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the
@@ -285,12 +273,6 @@ initialized before use.
    package.
 #. A package that does not initialize any state components can be
    explicitly indicated using a **null** ``dependency_relation``.
-
-
-.. centered:: **Restrictions that may be Applied**
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1.3 Initializes Aspect
-   :end-before: 7.1.4
 
 .. centered:: **Verification Rules**
 
@@ -461,12 +443,6 @@ constants.
 #. A **null** ``initialization_list`` is equivalent to a **null**
    ``dependency_relation``.
 
-.. centered:: **Restrictions that may be Applied**
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1.3 Initializes Aspect
-   :end-before: 7.1.4
-
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the
@@ -572,12 +548,6 @@ postcondition for the result of package elaboration.
    demonstrate that the implementation of a package Q and its private
    descendants satisfy the predicate given in the
    ``initial_condition_aspect`` of Q.
-
-.. centered:: **Restrictions that may be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.1.4 Initial Condition Aspect
-   :end-before:  7.2.2 
 
 .. centered:: **Dynamic Semantics**
 
@@ -801,12 +771,6 @@ where
    Non_Volatile_Uninitialized, Volatile_Input and Volatile_Output.  An
    implicit ``abstract_state_aspect`` is synthesized from the
    synthesized ``refined_state_aspect``.
-
-.. centered:: **Restrictions that may be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 7.2.2 Refined State Aspect
-   :end-before:  END OF FILE 
 
 .. centered:: **Dynamic Semantics**
 
