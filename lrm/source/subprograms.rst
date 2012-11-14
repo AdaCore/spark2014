@@ -21,19 +21,6 @@ may be in |SPARK| even if the implementation view is not.
    :start-after: 6.1 Subprogram Declarations
    :end-before:  END OF FILE
 
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.1 Subprogram Declarations
-   :end-before:  6.1.4
-
-.. todo:: access and aliased parameter specs, null exclusion
-     parameters.  Function access results function null exclusion
-     results.
-
-.. note:: RCC. Should we forbid these thing outrights, or just
-   ignore them and/or mark the corresponding declarations as "not SPARK"?
-   Assign: ???
 
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,12 +327,6 @@ subcomponent of a larger containing object.  Such objects are called
    ``moded_item_list`` is unconditional.  The condition is ignored for
    the purposes of determining the effective mode.
 
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.1.4 Mode Refinement
-   :end-before:  6.1.5
-
 .. centered:: **Dynamic Semantics**
 
 
@@ -426,20 +407,6 @@ of a *global* variable by a more *local* variable.
 #. A subprogram with a ``global_aspect`` that has a
    ``mode_refinement`` of **null** is taken to mean that the
    subprogram does not access any global items.
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. todo:: In the following restriction, is this the assumption of no
-   Global aspect implies Global => null sensible or should we always
-   insist on Global => null?? I hope not!!  RCC comment: see discussion
-   under LA11-017 started by RCC on 26/10. Target: D1/CDR.
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.1.5 Global Aspects
-   :end-before:  6.1.6
-
-.. note:: RCC. I have changed "virtual" to "implicit" here since the
-   latter is used to mean the same thing later on and seems more consistent.
 
 .. centered:: **Dynamic Semantics**
 
@@ -534,13 +501,6 @@ subcomponents of A appear in an ``Input`` ``mode_specification``.
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``Input`` must be of mode **in** or mode **in
    out**.
-
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.1.6 Param Aspects
-   :end-before:  6.1.7
 
 .. centered:: **Dynamic Semantics**
 
@@ -774,12 +734,6 @@ where
    notation ``=>+`` has been used in the ``dependency_clause``
    defining E.
 
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.1.7 Dependency Aspects
-   :end-before:  6.2
-
 
 .. centered:: **Dynamic Semantics**
 
@@ -860,26 +814,11 @@ Proof Functions
 Formal Parameter Modes
 ----------------------
 
-There are no additions to this subsection but further restrictions may
-be applied.
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.2 Formal Parameter Modes
-   :end-before:  6.3
-
-
+See Appendix :ref: `restrictions-and-profiles-label` for restrictions that may be applied.
 
 
 Subprogram Bodies
 -----------------
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.3 Subprogram Bodies
-   :end-before:  6.3.2
 
 
 Conformance Rules
@@ -982,12 +921,6 @@ implementation of its body as described below.
    ``refined_global_aspect`` of the subprogram.
 #. If a subprogram does not have a ``global_aspect`` then an implicit
    one is synthesised from implementation of the body (if it exists).
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.3.2 Global Aspects
-   :end-before:  6.4.2
 
 .. todo:: rules for working out an implicit global aspect. RCC comment: not
    sure this is needed here.  What are these rules? Why does the reader of 
@@ -1198,12 +1131,6 @@ subprogram and the subprograms it calls.
 #. The requirement that no two array elements overlap and that there
    are no overlapping elements between array slices or between array
    slices and individual elements.
-
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 6.4.2 Anti-Aliasing
-   :end-before: 7.1
 
 .. centered:: **Dynamic Semantics**
 
