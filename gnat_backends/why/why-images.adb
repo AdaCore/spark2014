@@ -188,8 +188,7 @@ package body Why.Images is
       --  As documented in urealp.ads, Ureal representation is constrained as
       --  follows:
 
-      --  Negative numbers are represented by the sign of the numerator being
-      --  negative.
+      --  Negative numbers are represented by the sign flag being True.
 
       --  If the base is zero, then the absolute value of the Ureal is simply
       --  numerator/denominator, where denominator is positive. If the base is
