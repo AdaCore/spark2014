@@ -156,12 +156,13 @@ behavior specified for the subprogram. Rules which are enforced at this
 point are described in sections with the heading "Verification Rules"
 and a subheading of "Checked by Flow Analysis".
 
-Note SB: this is silly - the heading should be "Flow Analysis Rules".
-The point is that there are no non-flow-analysis verification rules
-anymore. Everything else follows from the one rule that a runtime
-check induces a proof obligation. If we had ghost variables or
-prover-hints or something like that, then we might need
-"Verification Rules" sections. But we don't, so we don't.
+.. note::
+ (SB) this is silly - the heading should be "Flow Analysis Rules".
+ The point is that there are no non-flow-analysis verification rules
+ anymore. Everything else follows from the one rule that a runtime
+ check induces a proof obligation. If we had ghost variables or
+ prover-hints or something like that, then we might need
+ "Verification Rules" sections. But we don't, so we don't.
 
 Finally, program verification is performed.
 
@@ -216,14 +217,16 @@ The dynamic semantics of any construct other than these implementation-defined
 attributes, aspects, and pragmas are defined to be as defined in the
 Ada 2012 reference manual.
 
-Note SB: Need wording here to deal with the case where, to avoid duplication,
-the attribute/aspect/pragma definition occurs only in the GNAT RM.
-We have this situation already with Valid_Scalars attribute and more
-is on the way.
+.. note::
+ (SB) Need wording here to deal with the case where, to avoid duplication,
+ the attribute/aspect/pragma definition occurs only in the GNAT RM.
+ We have this situation already with Valid_Scalars attribute and more
+ is on the way.
 
-Note SB: We could discuss other, more subtle cases in which SPARK
-is GNAT-dependent (e.g., intermediate overflow; elaboration order).
-That level of detail is probably inappropriate here.
+.. note::
+ (SB) We could discuss other, more subtle cases in which SPARK
+ is GNAT-dependent (e.g., intermediate overflow; elaboration order).
+ That level of detail is probably inappropriate here.
 
 Optional Restrictions and Profiles
 ----------------------------------
@@ -248,7 +251,7 @@ by the user as a program evolved.
 In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of program
 construction and verification, where useful forms of verification can be achieved with
 code that complies with the core |SPARK| restrictions, but otherwise does not have any contracts.
-In this mode, implicit contracts can be computed from the bodies of units, and then 
+In this mode, implicit contracts can be computed from the bodies of units, and then
 used in the analysis of other units, and so on.  These implicit contracts can
 be "promoted" by the user to become part of the specification of a unit, allowing the
 designer to move from the retrospective to the constructive mode as a project matures.
