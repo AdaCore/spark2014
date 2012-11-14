@@ -1,5 +1,5 @@
 package Switch
-   with Abstract_State => (Volatile => (Input => State))
+   with Abstract_State => ((State with Volatile, Input))
 is
    type Reading is (on, off, unknown);
 

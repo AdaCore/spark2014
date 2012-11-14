@@ -1185,10 +1185,11 @@ The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. Thi
 annotation adds a new hypothesis to the list of existing hypotheses. The code is 
 not presented but can be found under "code\check_contract".
 
-Assert used to control path explostion (ASPDV example)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Assert used to control path explostion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Covered by the example of Gaetan.
+This example will be added in future, based on the Tutorial 5, Exercise 1 example from
+the advanced SPARK course.
 
 Other Contracts and Annotations
 -------------------------------
@@ -1196,7 +1197,9 @@ Other Contracts and Annotations
 Declare annotation
 ~~~~~~~~~~~~~~~~~~
 
-.. todo::
+.. todo:: The declare annotation SPARK is used to control the generation of proof
+   rules for composite objects. It is not clear that this will be required in
+   |SPARK|, so this section will be updated or removed in future.
 
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1262,8 +1265,8 @@ Main_Program annotation
 
 See the main program annotation used in section `Basic Input and Output Device Drivers`_.
 
-RavenSPARK patterns - (TBD, but check upward compatibility for the future)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RavenSPARK patterns
+~~~~~~~~~~~~~~~~~~~
 
-.. todo::
-   JIB: Targeting supplied by RCC. Target Rel 2+.
+The Ravenscar profile for tasking is not yet supported in |SPARK|.
+Mapping examples will be added here in future.
