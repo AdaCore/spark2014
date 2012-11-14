@@ -11,15 +11,26 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-.. centered:: **Extended Legality Rules**
+Extra checks are performed in |SPARK| to ensure that a function
+declaration is side-effect free.
 
-.. include:: extended-legality.rst
-   :start-after: 6 Subprograms
-   :end-before:  6.1
+.. centered:: **Verification Rules**
 
-.. include:: extended-legality.rst
-   :start-after: 6.1 Subprogram Declarations
-   :end-before:  END OF FILE
+.. centered:: *Flow Analysis*
+
+????
+
+.. todo:: 
+   In the future we may be able to permit access and aliased formal parameter specs - rel2+
+
+   What do we do regarding null exclusion parameters? - D2  
+  
+   What do we do regarding function access results function null exclusion results? - D2
+
+
+
+
+
 
 
 Preconditions and Postconditions
@@ -35,32 +46,40 @@ are in |SPARK|.
 
 .. centered:: *Checked by Proof*
 
-#. Verification conditions are generated from the program text.
-#. The verification conditions have to be proven to be True to
-   formally demonstrate that the implementation of the body of the
-   subprogram satisfies the post condition provided the precondition is
-   True and the subprogram completes without exceptions.
+#. Verification conditions are generated from the program text to
+   demonstrate that the implementation of the body of the subprogram
+   satisfies the post condition provided the precondition is True and
+   the subprogram completes normally.
 
 .. todo:: Think about Pre'Class and Post'Class. Target: D2.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
-Subprogram contracts may be more rigorous in |SPARK| than in Ada.
-Extra legality rules are applied to formal subprogram parameters and
-further restrictions may be applied to their use.
+|SPARK| provides extra aspects, the Global, Param and Dependency
+aspects to strengthen a subprogram declaration so that constructive,
+modular program analysis may be performed.  With the extra aspects the
+body of a subprogram does not have to be imlemented in order for
+analysis and proof of callers of the subprogram.
+
+A Contract Cases aspect is also provided which provides a convinient
+way of specifying formally the required functionality of a subprogram.
 
 Extra aspects are provided in |SPARK|, ``Global``, ``Param``,
 ``Dependency`` and ``Contract_Cases`` in addition to the Ada ``Pre``
 and ``Post``.  The extra aspects facilitate an extended specification
 and a potentially more concise form of pre and postcondition.
 
-.. note:: RCC. Do we imply or require any specific order on the
-   new aspects here?  I don't think Ada2012 even allows for that at all?
-   In S95, the natural order is always enforced - global, derives, pre, post -
-   this also simplifies implemenation, since there's a sort-of implied
-   declaration-before-use ordering here.  Can we/should we impose
-   ordering on Global, Depends, Pre and Post in S14? Target D1/CDR. Assign: ???
+|SPARK| requires that some of the extra aspects are ordered within the
+``aspect_specification`` of a subprogram.
+
+.. centered:: **Legality Rules**
+
+#. The Param, Global and dependency aspects are all individually
+   optional but, if present, must be the first entries in a subprogram
+   ``aspect_specification`` in the order Param aspect, Global Aspect
+   and Dependency Aspect.
+
 
 Contract Cases
 ~~~~~~~~~~~~~~
