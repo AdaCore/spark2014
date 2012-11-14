@@ -140,15 +140,19 @@ that mix formal verification and more traditional testing.
 Static Checking
 ---------------
 
-The static checking needed to determine whether a SPARK 2014
+The static checking needed to determine whether a |SPARK|
 program is suitable for execution is performed in three separate
 phases. Errors may be detected during any of these three steps.
 
-First, a compilation_unit must compile successfully. In addition
-to enforcing all of Ada's legality rules, SPARK 2014 imposes
+First, a compilation unit must compile successfully. In addition
+to enforcing all of Ada's legality rules, |SPARK| imposes
 additional restrictions (e.g., no uses of the reserved word
 **access**). These additional restrictions are
 described in sections with the heading "Extended Legality Rules".
+A compilation unit might be fully in |SPARK|, partially in |SPARK|, or
+not in |SPARK|, as instructed by the user, which sometimes determines
+whether the compiler accepts it or not (e.g., a unit fully in |SPARK|
+cannot use access types, while a unit partially in |SPARK| might).
 
 Next, flow analysis is performed. For example, checks are performed that
 the reads of and writes to global variables by a subprogram match the
@@ -164,54 +168,67 @@ and a subheading of "Checked by Flow Analysis".
  prover-hints or something like that, then we might need
  "Verification Rules" sections. But we don't, so we don't.
 
-Finally, program verification is performed.
+.. note::
+ (YM) I mostly agree with Steve... except for the possible case of
+ type invariants. I don't know what's the status of type invariants in Ada
+ 2012, as there were some discussions not long ago that did not reach a
+ final conclusion. The issue is whether type invariants are enforced at
+ subprogram entry on IN parameters, or not. If it's not the case in Ada, we
+ will still want to enforce this verification in SPARK, at least at the proof
+ level. And, notewithstanding this issue, we will probably need to decide
+ what to enforce for global variables read/written, and Ada RM does not say
+ anything about this. Shouldn't this be under the "Proof Rules" or
+ "Formal Verification Rules"?
+
+Finally, formal program verification is performed.
 
 Many Ada constructs have dynamic semantics which include a requirement
 that some error condition must (or, in the cases of some bounded errors,
-may) be checked for and some exception must (or, in the case of a bounded
-error, may) be raised if the error is detected (see Ada RM 1.1.5(5-8)). For
+may) be checked, and some exception must (or, in the case of a bounded
+error, may) be raised, if the error is detected (see Ada RM 1.1.5(5-8)). For
 example, evaluating the name of an array component includes a check that
 each index value belongs to the corresponding index range of the array
 (see Ada RM 4.1.1(7)).
 
-For every such runtime check (including bounded errors) a corresponding
+For every such run-time check (including bounded errors) a corresponding
 obligation to prove that the error condition cannot be true is introduced.
-In particular, this rule applies to the runtime checks associated with any
+In particular, this rule applies to the run-time checks associated with any
 assertion (see Ada 2012 RM (11.4.2)), except that the
-one exception to this rule is pragma Assume (see section 5.9).
+one exception to this rule is pragma ``Assume`` (see :ref:`pragma_assume`).
 
 In addition, the generation of proof obligations is unaffected by the
-suppression of checks (e.g., via pragma Suppress) or the disabling of
-assertions (e.g., via pragma Assertion_Policy). In other words, suppressing
+suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
+assertions (e.g., via pragma ``Assertion_Policy``). In other words, suppressing
 or disabling a check does not prevent generation of its associated proof
 obligations.
 
 All such generated proof obligations must be discharged before the
-program verification phase may be considered to be complete.
+formal program verification phase may be considered to be complete.
 
-Every valid SPARK program is also also a valid Ada 2012 program.
+Every valid |SPARK| program is also also a valid Ada 2012 program.
 The dynamic semantics of the two languages are defined to be identical,
-so that a valid SPARK program may be compiled and executed by means of
+so that a valid |SPARK| program may be compiled and executed by means of
 an Ada compiler.
 
-Many invalid SPARK programs are also valid Ada 2012 programs.
-An incorrect SPARK program with, say, inconsistent dataflow
+Many invalid |SPARK| programs are also valid Ada 2012 programs.
+An incorrect |SPARK| program with, say, inconsistent dataflow
 annotations or undischarged proof obligations can still be executed as
 long as the Ada compiler in question finds nothing objectionable. What one
-gives up in this case is the formal proof of the absence of runtime errors
-and the static checking of dataflow dependencies.
+gives up in this case is the formal proof of the absence of run-time errors,
+the static checking of dataflow dependencies, and the formal proof that
+the program implements its specifications (contracts and invariants).
 
 There is an important caveat that must accompany the assertion that
-SPARK is, in the sense described above, a subset of Ada 2012. SPARK
+|SPARK| is, in the sense described above, a subset of Ada 2012. |SPARK|
 makes use of certain aspects, attributes, and pragmas that are not
 defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
 implementations to provide implementation-defined aspects, attributes,
-and pragmas. Whenever the SPARK manual defines an aspect (e.g.,
-Contract_Cases), an attribute (e.g., Update), or a pragma (e.g., Loop_Variant),
-this implies that a Spark program which makes use of this
+and pragmas. Whenever the |SPARK| manual defines an aspect (e.g.,
+``Contract_Cases``), an attribute (e.g., ``Update``), or a pragma (e.g., ``Loop_Variant``),
+this implies that a |SPARK| program which makes use of this
 construct can only be compiled and executed by an
 Ada implementation which supports this construct in a way that is
-consistent with the definition given here in the SPARK reference manual.
+consistent with the definition given here in the |SPARK| reference manual.
 The GNAT Pro Ada 2012 implementation is one such implementation.
 The dynamic semantics of any construct other than these implementation-defined
 attributes, aspects, and pragmas are defined to be as defined in the
