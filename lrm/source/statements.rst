@@ -10,6 +10,15 @@ Simple and Compound Statements - Sequences of Statements
 |SPARK| restricts statements that complicate verification, and excludes statements
 related to tasking and synchronization.
 
+.. centered:: **Extended Legality Rules**
+
+#. A ``simple_statement`` shall not be a ``goto_statement``, an ``entry_call_statement``,
+   a ``requeue_statement``, an ``abort_statement``, a ``raise_statement``, a ``delay_statement``,
+   or a ``code_statement``.
+
+#. A ``compound_statement`` shall not be am ``accept_statement`` or a ``select_statement``.
+
+
 Assignment Statements
 ---------------------
 
@@ -31,12 +40,20 @@ Loop Statements
 User-Defined Iterator Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-User-defined iterator types are not in |SPARK|.
+|SPARK| does not permit the use of user-defined iterator types.
+
+.. centered:: **Extended Legality Rules**
+
+#. ``Ada.Iterator_Interfaces`` shall not be named in a ``with_clause``.
 
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An ``iterator_specification`` is not in |SPARK|.
+|SPARK| does not permit the use of generalized loop iteration.
+
+.. centered:: **Extended Legality Rules**
+
+#. An ``iteration_scheme`` shall not be an ``iterator_specification``.
 
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
