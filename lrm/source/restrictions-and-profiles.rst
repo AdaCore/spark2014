@@ -20,6 +20,13 @@ A list of restrictions by section and their effect:
    Prohibits the use of default subprogram parameters, that is, a
    ``parameter_specification`` cannot have a ``default_expression``.
 
+.. todo:: access and aliased parameter specs, null exclusion
+     parameters.  Function access results function null exclusion
+     results.
+
+.. note:: RCC. Should we forbid these thing outrights, or just
+   ignore them and/or mark the corresponding declarations as "not SPARK"?
+   Assign: ???
 
 6.1.4 Mode Refinement
 
@@ -42,6 +49,11 @@ A list of restrictions by section and their effect:
 
 6.1.5 Global Aspects
 
+.. todo:: In the following restriction, is this the assumption of no
+   Global aspect implies Global => null sensible or should we always
+   insist on Global => null?? I hope not!!  RCC comment: see discussion
+   under LA11-017 started by RCC on 26/10. Target: D1/CDR.
+
 #. ``Global_Aspects_Required``
 
    Enforces the use of a ``global_aspect`` on every subprogram which
@@ -57,6 +69,9 @@ A list of restrictions by section and their effect:
    have a separate declaration.  An implicit global aspect is calculated
    from the body of each subprogram body which does not have an
    explicit ``global_aspect``.
+
+.. note:: RCC. I have changed "virtual" to "implicit" here since the
+   latter is used to mean the same thing later on and seems more consistent.
 
 6.1.6 Param Aspects
 
