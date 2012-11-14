@@ -20,7 +20,7 @@ packages and its private descendants constitute the state of Q.
 For a package declared immediately in the body of package, an embedded
 package E, the *variables* which form part of the state are the
 *variables* declared immediately within E and embedded packages
-declared immeditely within E.
+declared immediately within E.
 
 The *variable* declarations are only visible to clients of Q if they
 are declared in the ``visible_part`` of Q which is not considered good
@@ -32,7 +32,7 @@ and proof.  State abstraction is the means by which this hidden state
 is managed for static analyses and proof.
 
 |SPARK| extends the concept of state abstraction to provide
-hierachical data abstraction whereby the hidden state of a package Q
+hierarchical data abstraction whereby the hidden state of a package Q
 may be refined over a tree of private descendants or embedded packages
 of Q.  This provides data refinement similar to the refinement
 available to types whereby a record may contain fields which are
@@ -41,8 +41,8 @@ themselves records.
 The other feature supported using state abstraction is a logical model
 of volatile *variables*.  A volatile *variable* does not behave like
 standard non-volatile *variable* as its value may change between two
-successive reads without an intervining update, or successive updates
-may occur without any intervining reads and appear to have no effect
+successive reads without an intervening update, or successive updates
+may occur without any intervening reads and appear to have no effect
 on the program.  Often volatile *variables* are inputs or outputs to
 external devices or subsystems.
 
@@ -122,7 +122,7 @@ where
 #. The ``defining_identifier`` of a ``state_name`` shall not be
    repeated within the ``abstract_state_list``.
 #. A ``state_name`` can only appear in a ``initializes_aspect``, a
-   ``global_aspect``, a ``dependency_aspect``, their refinded
+   ``global_aspect``, a ``dependency_aspect``, their refined
    counterparts, or their equivalent pragmas.  It may also appear as
    an ``abstract_state_name`` in a ``refined_state_aspect``.
 #. At most one ``category_state`` of Volatile is permitted in an
@@ -166,7 +166,7 @@ where
      and is considered to be implicitly initialized.
 
 #. The category is specified using the ``category_state`` syntax
-   supplimented by the ``initializes_aspect``.  A ``category_state``
+   supplemented by the ``initializes_aspect``.  A ``category_state``
    without a category defaults to Non_Volatile.
 #. A Volatile In or Out ``state_name`` represents a sequence of state
    changes brought about by reading or writing successive values to or
@@ -179,7 +179,7 @@ where
    *variable*. This distinction with a normal non-volatile variable or
    ``state_name`` is important for both flow analysis and proof.
 #. Each time a subprogram is called which has a Volatile Output
-   ``state_name`` in its ``global_aspect`` it ultimatly writes to a
+   ``state_name`` in its ``global_aspect`` it ultimately writes to a
    Volatile *variable*.  This *variable* may be written to many times
    without intervening reads.  This is in contrast with a normal
    non-volatile variable or state where successive updates with no
@@ -249,7 +249,7 @@ There are no dynamic semantics associated with the
 
    package X
    with 
-      Absatract_State => (A, B, 
+      Abstract_State => (A, B, 
                          (Volatile => (Input => C)))
    is                                   -- Three abstract state names are declared A, B & C. 
       ...                               -- C is designated as a volatile input.
@@ -337,7 +337,7 @@ initialized before use.
    constraining packages to initializing only their own variables,
 
    when depends/initializes aspects required by some rule assume no
-   dependes or initializes aspect implies Initializes => **null**.
+   depends or initializes aspect implies Initializes => **null**.
 
 
 .. centered:: **Dynamic Semantics**
@@ -379,9 +379,9 @@ There are no dynamic semantics associated with the
        Depends        => (A => null,
                           B => Q.State)
     is                    -- Three abstract state names are declared A, B & C.
-                          -- A is ininialized during the elaboration of Y or
+                          -- A is initialized during the elaboration of Y or
 			  -- its private descendants.  
-       ...                -- B is intialized during the elaboration of Y or 
+       ...                -- B is initialized during the elaboration of Y or 
                           -- its private descendants and is dependent on the 
                           -- value of Q.State.
                           -- C is designated as a volatile input and is not 
@@ -503,7 +503,7 @@ There are no dynamic semantics associated with the
                           Volatile => (Input => C)),
        Initializes    => A
     is                          -- Three abstract state names are declared A, B & C.
-                                -- A is ininialized during the elaboration of Y or
+                                -- A is initialized during the elaboration of Y or
 				-- its private descendants.  
        ...                      -- C is designated as a volatile input and cannot appear
 				-- in an initializes aspect clause
@@ -570,7 +570,7 @@ postcondition for the result of package elaboration.
 
 #. Verification conditions are generated which have to be proven to
    demonstrate that the implementation of a package Q and its private
-   descendents satisfy the predicate given in the
+   descendants satisfy the predicate given in the
    ``initial_condition_aspect`` of Q.
 
 .. centered:: **Restrictions that may be Applied**
@@ -583,7 +583,7 @@ postcondition for the result of package elaboration.
 
 #. An ``initial_condition_aspect`` is like a postcondition.  It
    should be evaluated following the elaboration of Q and its private
-   descendents.  If it does not evaluate to True, then an exception
+   descendants.  If it does not evaluate to True, then an exception
    should be raised.
  
 .. centered:: **Examples**
@@ -664,7 +664,7 @@ State Refinement
 
 A ``state_name`` declared by an ``abstract_state_aspect`` in the
 specification of a package Q is an abstraction of the non-visible
-*variables* declared in the private part, body, or private descendents
+*variables* declared in the private part, body, or private descendants
 of Q, which together form the hidden state, of Q.  In the body of Q
 each ``state_name`` has to be refined by showing which *variables* and
 subordinate abstract states are represented by the ``state_name`` (its
@@ -774,7 +774,7 @@ where
    Volatile Input or Output ``constituents`` as well as Non_Volatile
    ``constituents``.
 #. If a ``state_name`` declared in the ``abstract_state_aspect`` has
-   been desinated as Volatile with a ``mode_selector`` M then at least
+   been designated as Volatile with a ``mode_selector`` M then at least
    one ``constituent`` of the ``state_name`` must also be designated
    as Volatile with a ``mode_selector`` M in the
    ``refined_state_aspect``.
@@ -841,7 +841,7 @@ of the external device.
 
 .. todo:: Rather than have the current problems with external
    variables in functions should we disallow them in functions?
-   Perhaps wait for a more general soulution which allows non-pure
+   Perhaps wait for a more general solution which allows non-pure
    functions in certain situations.
 
    We need to consider a way of providing features for reasoning about
@@ -849,7 +849,7 @@ of the external device.
    This will require some form of attribute as we cannot mention
    volatile variables directly in a contract.
 
-   If we want to reason about succesive reads (writes) from a Volatile
+   If we want to reason about successive reads (writes) from a Volatile
    Input (Output) ``state_name`` we need to have a way to refer to
    these individual operations.
 
@@ -879,7 +879,7 @@ which is Non_Volatile must initialized during package elaboration.
 .. centered:: *Checked by Flow Analysis*
 
 #. For each ``export`` that appears in a ``dependency_aspect`` or
-   ``initalizes_aspect`` of a package declaration the following must
+   ``initializes_aspect`` of a package declaration the following must
    be satisfied:
 
    * Each ``export`` that is a *variable* must be initialized at its
@@ -968,9 +968,9 @@ rather than the ``state_name``.
      and,
  
      * if S is a Volatile Input at least one ``constituent`` of S in
-       G'must be of mode **in**.
+       G' must be of mode **in**.
      * if S is a Volatile Output at least one ``constituent`` of S in
-       G'must be of mode **out**.
+       G' must be of mode **out**.
 
    * A ``constituent`` of a **null** ``abstract_name`` may also be
      mentioned in G' provided its mode is **in out**.
@@ -993,7 +993,7 @@ rather than the ``state_name``.
 * if the declaration of a subprogram P declared in the visible part of
   a pakage Q does not have a ``global_aspect``, first an implicit
   ``refined_global_aspect`` is synthesized from the body of P, then an
-  implict ``global_aspect`` is synthesized from the synthesized
+  implicit ``global_aspect`` is synthesized from the synthesized
   ``refined_global_aspect`` and the ``refined_state_aspect`` (which may also
   have been synthesized).
 
@@ -1042,7 +1042,7 @@ package rather than the ``state_name``.
 
 #. If the subprogram declaration declared in the visible part of
    package Q has a ``dependency_aspect`` D then the
-   ``refinded_dependency_aspect`` defines a *refinement* D' of D
+   ``refined_dependency_aspect`` defines a *refinement* D' of D
    then it shall satisfy the following rules:
  
    * For each ``export`` in D which is not a ``state_name`` of Q, 
@@ -1078,7 +1078,8 @@ package rather than the ``state_name``.
      ``export`` in D'.
    * A ``constituent`` of a **null** ``abstract_state_name`` is
      ignored in showing conformance between the ``dependency-aspect``
-     and the ``refined_dependency_aspect``.
+     and the ``refined_de according to
+   the rules given for a ``dependency_aspect``.
 
 #. If a subprogram has a ``refined_dependency_aspect`` which satisfies
    the flow analysis rules, it is used in the analysis of the
@@ -1091,7 +1092,7 @@ package rather than the ``state_name``.
 
 * if the declaration of a subprogram P declared in the visible part of
   a pakage Q does not have a ``dependency_aspect``, an implicit one is
-  synthesizesd from the ``refined_dependency_aspect`` and the
+  synthesized from the ``refined_dependency_aspect`` and the
   ``refined_state_aspect`` (both of which which may also have been
   synthesized).
 
@@ -1104,7 +1105,7 @@ Refined Precondition Aspect
 
 A subprogram declared in the visible part of a package may have a
 ``refined_precondition`` applied to its body or body stub.  The
-``refined_preconition`` may be used to restate a precondition given on
+``refined_precondition`` may be used to restate a precondition given on
 the declaration of a subprogram in terms the full view of a private
 type or the ``constituents`` of a refined ``state_name``.
 
@@ -1143,7 +1144,7 @@ type or the ``constituents`` of a refined ``state_name``.
 .. centered:: **Dynamic Semantics**
 
 #. When a subprogram with a ``refined_precondition`` is called; first
-   the precodition is evaluated as defined in the Ada LRM.  If the
+   the precondition is evaluated as defined in the Ada LRM.  If the
    precondition evaluates to True, then the ``refined_precondition``
    is evaluated.  If either precondition or ``refined_precondition``
    do not evaluate to True an exception is raised.
@@ -1199,9 +1200,9 @@ type or the ``constituents`` of a refined ``state_name``.
 
 .. centered:: **Dynamic Semantics**
 
-#. When a subprogram with a ``refined_postondition`` is called; first
+#. When a subprogram with a ``refined_postcondition`` is called; first
    the subprogram is evaluated.  If it terminates without exception
-   the ``refined_postcondition`` is evaluated.  If this evalustes to
+   the ``refined_postcondition`` is evaluated.  If this evaluates to
    True then the postcondition is evaluated as described in the Ada
    LRM.  If either the ``refined_postcondition`` or the postcondition
    do not evaluate to True an exception is raised.
