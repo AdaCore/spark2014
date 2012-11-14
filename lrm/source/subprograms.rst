@@ -818,7 +818,7 @@ Proof Functions
 Formal Parameter Modes
 ----------------------
 
-See Appendix :ref: `restrictions-and-profiles-label` for restrictions that may be applied.
+See Appendix :ref:`restrictions-and-profiles-label` for restrictions that may be applied.
 
 
 Subprogram Bodies
