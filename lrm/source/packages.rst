@@ -7,7 +7,7 @@ Package Specifications and Declarations
 .. _abstract-state:
 
 Abstraction of State
-^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~
 
 The *variables* declared immediately within a package Q, its embedded
 packages and its private descendants constitute the state of Q.
@@ -55,7 +55,7 @@ aspect described in the following subsections.
 .. _abstract-state-aspect:
 
 Abstract State Aspect
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 An abstract state is a name representing the state embodied by the
 hidden state of a package. The overall state of a package may be
@@ -245,7 +245,7 @@ There are no dynamic semantics associated with the
 
 
 Dependency  Aspects
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 An important property of a package is the state components it
 initializes during its elaboration and on what the inital value of
@@ -385,7 +385,7 @@ There are no dynamic semantics associated with the
 
 
 Initializes Aspects
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 The ``initializes_aspect`` is a shorthand notation for the most common
 form of package initialization where none of the initialized items
@@ -499,7 +499,7 @@ There are no dynamic semantics associated with the
     end Z;
 
 Initial Condition Aspect
-^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ''initial_condition_aspect`` is a predicate that may be used to
 describe formally the initial state of a package.  It behaves as a
@@ -630,7 +630,7 @@ Package Bodies
 --------------
 
 State Refinement
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 A ``state_name`` declared by an ``abstract_state_aspect`` in the
 specification of a package Q is an abstraction of the non-visible
@@ -652,7 +652,7 @@ initialized consistently with their appearance or omission from the
 
 
 Refined State Aspect
-^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~
 
 .. centered:: **Syntax**
 
@@ -777,7 +777,7 @@ where
 There are no dynamic semantics associated with state abstraction and refinement.
 
 Abstract State and Package Hierarchy
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. todo::
    
@@ -788,7 +788,7 @@ Abstract State and Package Hierarchy
    Can we ensure abstract state encapsulation?
 
 Volatile Variables
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 A volatile ``state_name`` may be refined to one or more subordinate
 ``state_names`` but ultimately a volatile ``state_name`` has to be
@@ -826,7 +826,7 @@ of the external device.
    pragma Assert (T1 = T2);
 
 Initialization Refinement
-^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a package has a ``dependency_aspect`` or an
 ``initialization_aspect`` which contains a ``export`` which is a
@@ -870,7 +870,7 @@ which is Non_Volatile must initialized during package elaboration.
 .. _refined-global-aspect:
 
 Refined Global Aspect
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a
 ``refined_global_aspect`` applied to its body or body stub. The
@@ -967,7 +967,7 @@ rather than the ``state_name``.
 .. _refined-dependency-aspect:
 
 Refined Dependency Aspect
-^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a
 ``refined_dependency_aspect`` applied to its body or body stub. The
@@ -1065,7 +1065,7 @@ package rather than the ``state_name``.
 Abstractions do not have dynamic semantics.
 
 Refined Precondition Aspect
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a
 ``refined_precondition`` applied to its body or body stub.  The
@@ -1114,7 +1114,7 @@ type or the ``constituents`` of a refined ``state_name``.
    do not evaluate to True an exception is raised.
 
 Refined Postcondition Aspect
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 A subprogram declared in the visible part of a package may have a
@@ -1194,11 +1194,11 @@ Private Types and Private Extensions
    if its discriminants are in |SPARK|.
 
 Private Operations
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 
 Type Invariants
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~
 
 .. centered:: **Extended Dynamic Semantics**
 
