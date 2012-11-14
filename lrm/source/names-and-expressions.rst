@@ -89,7 +89,7 @@ record extension T, the attribute
 is defined and yields a value of type T. The
 record_component_association_list shall have
 one or more record_component_associations, each of which
-shall have a component_choice_list and an expression.
+shall have a non-**others** component_choice_list and an expression.
 
 Each Selector_Name of each record_component_name shall denote a
 distinct non-discriminant component of T.
@@ -134,7 +134,8 @@ shall have an expression. The expected type and applicable index
 constraint of the expression is defined as for an
 array_component_association occurring within an array aggregate of
 type T. The expected type for each discrete_choice is the index
-type of T.
+type of T. The reserved word **others** shall not occur as a discrete_choice
+of an array_component_association of the attribute_reference.
 
 For a prefix X that denotes an object of a nonlimited
 multidimensional array type T, the attribute

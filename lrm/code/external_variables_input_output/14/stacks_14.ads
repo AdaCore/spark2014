@@ -1,5 +1,4 @@
 package Stacks is
-
    type Stack is private;
 
    function Is_Empty(S : Stack) return Boolean;
@@ -13,7 +12,6 @@ package Stacks is
 
    procedure Pop(S : in out Stack; X : out Integer)
       with Depends => ((S,X) => S);
-
 private
    Stack_Size : constant := 100;
    type Pointer_Range is range 0 .. Stack_Size;

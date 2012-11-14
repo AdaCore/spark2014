@@ -137,6 +137,97 @@ at a fine level. For example, the following combinations may be typical:
 Such patterns are intended to allow for mixed language programming, and the development of programs
 that mix formal verification and more traditional testing.
 
+Static Checking
+---------------
+
+The static checking needed to determine whether a SPARK 2014
+program is suitable for execution is performed in three separate
+phases. Errors may be detected during any of these three steps.
+
+First, a compilation_unit must compile successfully. In addition
+to enforcing all of Ada's legality rules, SPARK 2014 imposes
+additional restrictions (e.g., no uses of the reserved word
+**access**). These additional restrictions are
+described in sections with the heading "Extended Legality Rules".
+
+Next, flow analysis is performed. For example, checks are performed that
+the reads of and writes to global variables by a subprogram match the
+behavior specified for the subprogram. Rules which are enforced at this
+point are described in sections with the heading "Verification Rules"
+and a subheading of "Checked by Flow Analysis".
+
+.. note::
+ (SB) this is silly - the heading should be "Flow Analysis Rules".
+ The point is that there are no non-flow-analysis verification rules
+ anymore. Everything else follows from the one rule that a runtime
+ check induces a proof obligation. If we had ghost variables or
+ prover-hints or something like that, then we might need
+ "Verification Rules" sections. But we don't, so we don't.
+
+Finally, program verification is performed.
+
+Many Ada constructs have dynamic semantics which include a requirement
+that some error condition must (or, in the cases of some bounded errors,
+may) be checked for and some exception must (or, in the case of a bounded
+error, may) be raised if the error is detected (see Ada RM 1.1.5(5-8)). For
+example, evaluating the name of an array component includes a check that
+each index value belongs to the corresponding index range of the array
+(see Ada RM 4.1.1(7)).
+
+For every such runtime check (including bounded errors) a corresponding
+obligation to prove that the error condition cannot be true is introduced.
+In particular, this rule applies to the runtime checks associated with any
+assertion (see Ada 2012 RM (11.4.2)), except that the
+one exception to this rule is pragma Assume (see section 5.9).
+
+In addition, the generation of proof obligations is unaffected by the
+suppression of checks (e.g., via pragma Suppress) or the disabling of
+assertions (e.g., via pragma Assertion_Policy). In other words, suppressing
+or disabling a check does not prevent generation of its associated proof
+obligations.
+
+All such generated proof obligations must be discharged before the
+program verification phase may be considered to be complete.
+
+Every valid SPARK program is also also a valid Ada 2012 program.
+The dynamic semantics of the two languages are defined to be identical,
+so that a valid SPARK program may be compiled and executed by means of
+an Ada compiler.
+
+Many invalid SPARK programs are also valid Ada 2012 programs.
+An incorrect SPARK program with, say, inconsistent dataflow
+annotations or undischarged proof obligations can still be executed as
+long as the Ada compiler in question finds nothing objectionable. What one
+gives up in this case is the formal proof of the absence of runtime errors
+and the static checking of dataflow dependencies.
+
+There is an important caveat that must accompany the assertion that
+SPARK is, in the sense described above, a subset of Ada 2012. SPARK
+makes use of certain aspects, attributes, and pragmas that are not
+defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
+implementations to provide implementation-defined aspects, attributes,
+and pragmas. Whenever the SPARK manual defines an aspect (e.g.,
+Contract_Cases), an attribute (e.g., Update), or a pragma (e.g., Loop_Variant),
+this implies that a Spark program which makes use of this
+construct can only be compiled and executed by an
+Ada implementation which supports this construct in a way that is
+consistent with the definition given here in the SPARK reference manual.
+The GNAT Pro Ada 2012 implementation is one such implementation.
+The dynamic semantics of any construct other than these implementation-defined
+attributes, aspects, and pragmas are defined to be as defined in the
+Ada 2012 reference manual.
+
+.. note::
+ (SB) Need wording here to deal with the case where, to avoid duplication,
+ the attribute/aspect/pragma definition occurs only in the GNAT RM.
+ We have this situation already with Valid_Scalars attribute and more
+ is on the way.
+
+.. note::
+ (SB) We could discuss other, more subtle cases in which SPARK
+ is GNAT-dependent (e.g., intermediate overflow; elaboration order).
+ That level of detail is probably inappropriate here.
+
 Optional Restrictions and Profiles
 ----------------------------------
 
@@ -160,7 +251,7 @@ by the user as a program evolved.
 In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of program
 construction and verification, where useful forms of verification can be achieved with
 code that complies with the core |SPARK| restrictions, but otherwise does not have any contracts.
-In this mode, implicit contracts can be computed from the bodies of units, and then 
+In this mode, implicit contracts can be computed from the bodies of units, and then
 used in the analysis of other units, and so on.  These implicit contracts can
 be "promoted" by the user to become part of the specification of a unit, allowing the
 designer to move from the retrospective to the constructive mode as a project matures.

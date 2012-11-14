@@ -569,6 +569,24 @@ Body in |SPARK|:
       :language: ada
       :linenos:
 
+
+.. _ms-asm_initial_condition-label:
+
+Initial condition
+^^^^^^^^^^^^^^^^^
+
+This example introduces a new |SPARK| feature that did not exist in SPARK 2005. 
+On top of declaring an abstract state and promising to initialize it, we also illustrate 
+certain conditions that will be valid after initialization. The body is not being provided 
+since it does not add any further insight.
+
+Specifications in |SPARK|:
+
+   .. literalinclude:: ../code/asm_initial_condition/14/stack_14.ads
+      :language: ada
+      :linenos:
+
+
 .. _ms-asm_abstract_state_refined_in_private_child-label:
 
 Private, abstract state, refining onto concrete state of private child
@@ -730,19 +748,19 @@ Body of output port in SPARK 2005:
    TBD.*
 
 Specification of main program in |SPARK|:
-   .. literalinclude:: ../code/external_variables_input_output/14/copy.adb
+   .. literalinclude:: ../code/external_variables_input_output/14/copy_14.adb
       :language: ada
       :linenos:
 
 Specification of input port in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_output/14/input_port.ads
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port_14.ads
       :language: ada
       :linenos:
 
 Specification of output port in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_output/14/output_port.ads
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port_14.ads
       :language: ada
       :linenos:
 
@@ -750,7 +768,7 @@ Body of input port in |SPARK|:
 
 This is as per SPARK 2005.
 
-   .. literalinclude:: ../code/external_variables_input_output/14/input_port.adb
+   .. literalinclude:: ../code/external_variables_input_output/14/input_port_14.adb
       :language: ada
       :linenos:
 
@@ -758,7 +776,7 @@ Body of output port in |SPARK|:
 
 This is as per SPARK 2005.
 
-   .. literalinclude:: ../code/external_variables_input_output/14/output_port.adb
+   .. literalinclude:: ../code/external_variables_input_output/14/output_port_14.adb
       :language: ada
       :linenos:
 

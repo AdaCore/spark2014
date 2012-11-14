@@ -1,7 +1,7 @@
-package Input_Port
+package Input_Port_14
    with Abstract_State => (Volatile => (Input => Inputs))
 is
    procedure Read_From_Port(Input_Value : out Integer)
       with Global  => (Input => Inputs),
            Depends => (Input_Value => Inputs);
-end Input_Port;
+end Input_Port_14;
