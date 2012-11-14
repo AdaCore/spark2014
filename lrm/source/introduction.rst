@@ -250,7 +250,7 @@ Optional Restrictions and Profiles
 
 In additional to the global simplifications of the language given above, |SPARK|
 defines a number of Restrictions that may be optionally applied to an entire
-project, program or unit. These restirctions may provide additional simplification
+project, program or unit. These restrictions may provide additional simplification
 of the language that users feel necessary, may meet particular demands of standards
 or coding guidelines, and may facilitate additional forms of verification, or
 may improve the level of automation achievable with existing analyses.
