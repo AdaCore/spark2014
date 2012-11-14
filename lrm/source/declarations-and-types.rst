@@ -33,10 +33,6 @@ its type is in |SPARK|, and its initialization expression, if any, is in
 Additionally, the view of an entity introduced by a deferred constant declaration is in
 |SPARK|, even if the initializing expression in the corresponding completion is not in |SPARK|.
 
-.. todo:: TJJ and RCC think we need to allow for a deferred constant declaration
-   to have a Global aspect here, to show the variables that the constant's
-   value is derived from. Target: D1/CDR.
-
 Derived Types and Classes
 -------------------------
 
@@ -71,15 +67,6 @@ No extensions or restrictions.
    RCC comment: This will need to describe any global restrictions on tagged types (if any)
    and any additional Restrictions that we may feel users need.  I assume this section won't
    be finalized for D1/CDR, so target for D2.
-
-.. todo::
-   RCC comment: What are our intensions for Interface Types?  I must admit that no-one
-   at Praxis understands these, so input from AdaCore very much welcome. As above, target for D2.
-
-.. note::
-  YM/3/2 no specific restrictions with interface types. Let us know what your
-  questions are, we'll be happy to answer. Interfaces are tagged abstract types,
-  and you can derive from more than one.
 
 Access Types
 ------------
