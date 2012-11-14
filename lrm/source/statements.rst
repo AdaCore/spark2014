@@ -139,7 +139,7 @@ comparisons and checks are performed using predefined operations.
 
 .. centered:: *Checked by Proof*
 
-.. todo:: describe Proof Semantics of pragma Loop_Invariant
+.. todo:: describe Proof Semantics of pragma Loop_Invariant. Target D2.
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
