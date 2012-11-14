@@ -7,11 +7,7 @@ Users may choose to apply restrictions to simplify the use of wide character set
 Character Set
 -------------
 
-.. centered:: **Restrictions That May Be Applied**
-
-.. include:: restrictions-and-profiles.rst
-   :start-after: 2.1 Character Set
-   :end-before:  6.1
+No extensions. For the restrictions refer to :ref:`restrictions-and-profiles-label`.
 
 Lexical Elements, Separators, and Delimiters
 --------------------------------------------

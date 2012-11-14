@@ -116,8 +116,8 @@ check is performed that the expression value obtained during the
 current iteration is greater (respectively, less) than the value
 obtained during the preceding iteration. The exception
 Assertions.Assertion_Error is raised if this check fails. All
-comparisons and checks are performed using predefined operations. 
-   
+comparisons and checks are performed using predefined operations.
+
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Proof*
@@ -259,6 +259,8 @@ Goto Statements
 ---------------
 
 The goto statement is not permitted in |SPARK|.
+
+.. _pragma_assume:
 
 Proof Statements
 ----------------

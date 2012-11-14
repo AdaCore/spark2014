@@ -1,3 +1,5 @@
+.. _restrictions-and-profiles-label:
+
 Restrictions and Profiles
 =========================
 

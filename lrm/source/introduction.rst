@@ -137,6 +137,114 @@ at a fine level. For example, the following combinations may be typical:
 Such patterns are intended to allow for mixed language programming, and the development of programs
 that mix formal verification and more traditional testing.
 
+Static Checking
+---------------
+
+The static checking needed to determine whether a |SPARK|
+program is suitable for execution is performed in three separate
+phases. Errors may be detected during any of these three steps.
+
+First, a compilation unit must compile successfully. In addition
+to enforcing all of Ada's legality rules, |SPARK| imposes
+additional restrictions (e.g., no uses of the reserved word
+**access**). These additional restrictions are
+described in sections with the heading "Extended Legality Rules".
+A compilation unit might be fully in |SPARK|, partially in |SPARK|, or
+not in |SPARK|, as instructed by the user, which sometimes determines
+whether the compiler accepts it or not (e.g., a unit fully in |SPARK|
+cannot use access types, while a unit partially in |SPARK| might).
+
+Next, flow analysis is performed. For example, checks are performed that
+the reads of and writes to global variables by a subprogram match the
+behavior specified for the subprogram. Rules which are enforced at this
+point are described in sections with the heading "Verification Rules"
+and a subheading of "Checked by Flow Analysis".
+
+.. note::
+ (SB) this is silly - the heading should be "Flow Analysis Rules".
+ The point is that there are no non-flow-analysis verification rules
+ anymore. Everything else follows from the one rule that a runtime
+ check induces a proof obligation. If we had ghost variables or
+ prover-hints or something like that, then we might need
+ "Verification Rules" sections. But we don't, so we don't.
+
+.. note::
+ (YM) I mostly agree with Steve... except for the possible case of
+ type invariants. I don't know what's the status of type invariants in Ada
+ 2012, as there were some discussions not long ago that did not reach a
+ final conclusion. The issue is whether type invariants are enforced at
+ subprogram entry on IN parameters, or not. If it's not the case in Ada, we
+ will still want to enforce this verification in SPARK, at least at the proof
+ level. And, notewithstanding this issue, we will probably need to decide
+ what to enforce for global variables read/written, and Ada RM does not say
+ anything about this. Shouldn't this be under the "Proof Rules" or
+ "Formal Verification Rules"?
+
+Finally, formal program verification is performed.
+
+Many Ada constructs have dynamic semantics which include a requirement
+that some error condition must (or, in the cases of some bounded errors,
+may) be checked, and some exception must (or, in the case of a bounded
+error, may) be raised, if the error is detected (see Ada RM 1.1.5(5-8)). For
+example, evaluating the name of an array component includes a check that
+each index value belongs to the corresponding index range of the array
+(see Ada RM 4.1.1(7)).
+
+For every such run-time check (including bounded errors) a corresponding
+obligation to prove that the error condition cannot be true is introduced.
+In particular, this rule applies to the run-time checks associated with any
+assertion (see Ada 2012 RM (11.4.2)), except that the
+one exception to this rule is pragma ``Assume`` (see :ref:`pragma_assume`).
+
+In addition, the generation of proof obligations is unaffected by the
+suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
+assertions (e.g., via pragma ``Assertion_Policy``). In other words, suppressing
+or disabling a check does not prevent generation of its associated proof
+obligations.
+
+All such generated proof obligations must be discharged before the
+formal program verification phase may be considered to be complete.
+
+Every valid |SPARK| program is also also a valid Ada 2012 program.
+The dynamic semantics of the two languages are defined to be identical,
+so that a valid |SPARK| program may be compiled and executed by means of
+an Ada compiler.
+
+Many invalid |SPARK| programs are also valid Ada 2012 programs.
+An incorrect |SPARK| program with, say, inconsistent dataflow
+annotations or undischarged proof obligations can still be executed as
+long as the Ada compiler in question finds nothing objectionable. What one
+gives up in this case is the formal proof of the absence of run-time errors,
+the static checking of dataflow dependencies, and the formal proof that
+the program implements its specifications (contracts and invariants).
+
+There is an important caveat that must accompany the assertion that
+|SPARK| is, in the sense described above, a subset of Ada 2012. |SPARK|
+makes use of certain aspects, attributes, and pragmas that are not
+defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
+implementations to provide implementation-defined aspects, attributes,
+and pragmas. Whenever the |SPARK| manual defines an aspect (e.g.,
+``Contract_Cases``), an attribute (e.g., ``Update``), or a pragma (e.g., ``Loop_Variant``),
+this implies that a |SPARK| program which makes use of this
+construct can only be compiled and executed by an
+Ada implementation which supports this construct in a way that is
+consistent with the definition given here in the |SPARK| reference manual.
+The GNAT Pro Ada 2012 implementation is one such implementation.
+The dynamic semantics of any construct other than these implementation-defined
+attributes, aspects, and pragmas are defined to be as defined in the
+Ada 2012 reference manual.
+
+.. note::
+ (SB) Need wording here to deal with the case where, to avoid duplication,
+ the attribute/aspect/pragma definition occurs only in the GNAT RM.
+ We have this situation already with Valid_Scalars attribute and more
+ is on the way.
+
+.. note::
+ (SB) We could discuss other, more subtle cases in which SPARK
+ is GNAT-dependent (e.g., intermediate overflow; elaboration order).
+ That level of detail is probably inappropriate here.
+
 Optional Restrictions and Profiles
 ----------------------------------
 
@@ -152,30 +260,60 @@ A *Profile* is a set of such Restrictions.
 Constructive and Retrospective Verification Modes
 -------------------------------------------------
 
-SPARK2005 strongly favoured the *constructive* verification style - where all program
-units required mandatory contracts on their specifications.  These contracts had to be
-designed and added at an early stage to assist modular verification, and then maintained
-by the user as a program evolved.
+SPARK 2005 strongly favoured the *constructive* verification style - where all
+program units required mandatory contracts on their specifications.  These
+contracts had to be designed and added at an early stage to assist modular
+verification, and then maintained by the user as a program evolved.
 
-In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of program
-construction and verification, where useful forms of verification can be achieved with
-code that complies with the core |SPARK| restrictions, but otherwise does not have any contracts.
-In this mode, implicit contracts can be computed from the bodies of units, and then 
-used in the analysis of other units, and so on.  These implicit contracts can
-be "promoted" by the user to become part of the specification of a unit, allowing the
-designer to move from the retrospective to the constructive mode as a project matures.
-The retrospective mode also allows for the verification of legacy code that was not
+In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of
+program construction and verification, where useful forms of verification can
+be achieved with code that complies with the core |SPARK| restrictions, but
+otherwise does not have any contracts.  In this mode, implicit contracts can be
+computed from the bodies of units, and then used in the analysis of other
+units, and so on.  These implicit contracts can be "promoted" by the user to
+become part of the specification of a unit, allowing the designer to move from
+the retrospective to the constructive mode as a project matures.  The
+retrospective mode also allows for the verification of legacy code that was not
 originally designed with the |SPARK| contracts in mind.
 
-Finally, unit are do not comply with the rules of |SPARK| can be verified by testing
-against the stated contracts, allowing verification goals to be met by a mixture of
-analysis and test.
+Combining Formal Verification and Testing
+-----------------------------------------
 
-.. todo:: RCC: More here on the mixed proof/test mode and how it works?  I am trying hard
-   here to avoid specifiying tool behaviour in the LRM, so it's difficult to know how far
-   to go in terms of stating what will be possible without getting too tool-specific.
-   Target: D1/CDR.
+There are common reasons for combining formal verification on some part
+of a codebase and testing on the rest of the codebase:
 
+#. Formal verification is only applicable to a part of the codebase. For
+   example, it might not be possible to apply formal verification to Ada code
+   that is not in |SPARK|.
+
+#. Formal verification only gives strong enough results on a part of the
+   codebase. This might be because the desired properties cannot be expressed
+   formally, or because proof of these desired properties cannot be
+   sufficiently automated.
+
+#. Formal verification is only cost-effective on a part of the codebase. (And
+   it may be more cost-effective than testing on this part of the codebase.)
+
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase.
+
+Contracts on subprograms provide a natural boundary for this combination. If a
+subprogram is proved to respect its contract, it should be possible to call it
+from a tested subprogram. Conversely, formal verification of a subprogram
+(including absence of run-time errors and contract checking) depends on called
+subprograms respecting their own contracts, whether these are verified by
+formal verification or testing.
+
+Formal verification works by making some assumptions, and these assumptions
+should be shown to hold even when formal verification and testing are
+combined. What is certain is that formal verification cannot guarantee the same
+properties when part of a program is only tested, as when all of a program is
+proved. The goal then, when combining formal verification and testing, is to
+reach a level of confidence as good as the level reached by testing alone.
+
+Any toolset that proposes a combination of formal verification and testing for
+|SPARK| should provide a detailed process for doing so, including any necessary
+additional testing of proof assumptions.
 
 Method of Description and Syntax Notation
 -----------------------------------------
