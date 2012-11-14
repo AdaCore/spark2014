@@ -1077,9 +1077,9 @@ package rather than the ``state_name``.
      the constituent must appear as both an ``import`` and an
      ``export`` in D'.
    * A ``constituent`` of a **null** ``abstract_state_name`` is
-     ignored in showing conformance between the ``dependency-aspect``
-     and the ``refined_de according to
-   the rules given for a ``dependency_aspect``.
+     ignored in showing conformance between the ``dependency_aspect``
+     and the ``refined_dependency_aspect`` according to the rules
+     given for a ``dependency_aspect``.
 
 #. If a subprogram has a ``refined_dependency_aspect`` which satisfies
    the flow analysis rules, it is used in the analysis of the
