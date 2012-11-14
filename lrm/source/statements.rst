@@ -105,7 +105,7 @@ discrete type.
 
 .. centered:: **Static Semantics**
 
-TBD
+.. todo:: Anything to say here? RCC does not know. Any comment from SB or YM? Target: D2.
 
 .. centered:: **Dynamic Semantics**
 
