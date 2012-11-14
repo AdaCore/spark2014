@@ -11,14 +11,21 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-Extra checks are performed in |SPARK| to ensure that a function
+Extra rules and checks are applied in |SPARK| to ensure that a function
 declaration is side-effect free.
+
+.. centered:: **Extended Legality Rules**
+
+#. A function declaration shall not have a ``parameter_specification``
+   with a mode of **out** or **in out**.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Flow Analysis*
 
-????
+#. A function declaration shall not update any of the names listed in
+   its Global Aspect whether it is explicitly given or imlpicily
+   synthesized from the subprogram implementation.
 
 .. todo:: 
    In the future we may be able to permit access and aliased formal parameter specs - rel2+
@@ -26,11 +33,6 @@ declaration is side-effect free.
    What do we do regarding null exclusion parameters? - D2  
   
    What do we do regarding function access results function null exclusion results? - D2
-
-
-
-
-
 
 
 Preconditions and Postconditions
@@ -137,12 +139,16 @@ where
    latter is used throughout the rest of this chapter. Assign: JK to
    confirm, update, then remove this note.
 
+The Contract Cases Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Contract_Cases" and the ``aspect_definition`` must follow
+the grammar of ``contract_case_list`` given below.
+
+
 .. centered:: **Syntax**
 
 ::
 
-   contract_cases      ::= Contract_Cases => (contract_case_list)
-   contrct_case_list   ::= contract_case {, contract_case_list}
+   contrct_case_list   ::= (contract_case {, contract_case_list})
    contract_case       ::= contract_guard => consequence
                          | others => consequence
 
@@ -155,76 +161,63 @@ where
 
 .. centered:: **Legality Rules**
 
-#. Only one ``contract_cases`` aspect may appear in an
-   ``aspect_specification``.
-#. A ``contract_cases`` aspect may have at most one **others**
+#. A Contract Cases aspect specification is allowed in the same
+   contexts where a Pre or Post aspect specification is allowed.
+#. A Contract Cases aspect may have at most one **others**
    ``contract_case`` and if it exists it must be the last one in the
    ``contract_case_list``.
-#. A ``contact_cases`` may only appear in the ``aspect_specification``
-   of a subprogram declaration or the body of a subprogram if it has
-   not already been declared.
-#. If the ``contract_cases`` aspect is applied to a function
-   subprogram F, then a ``consequence`` may use the name F'Result in
-   its *Boolean_*\ ``expression``. A procedure subprogram may not use
-   such a name.
-#. The *variables* appearing in the ``contact_cases`` of a subprogram
-   shall be *formal parameters* or *global variables* of the
-   subprogram or subcomponents thereof.
-#. The *variables* appearing in the ``guard`` must be of mode **in**
-   or **in out**.
-#. The *variables* appearing in the ``consequence`` must be of mode
-   **out** or **in out**.
-
-.. note:: RCC. Surely *in* mode variables are also OK in the consequence? Assign: JK
-   confirm, update and remove this note.
+#. A consequence expression is considered to be a postcondition
+   expression for purposes of determining the legality of Old or
+   Result attribute_references.
 
 .. centered:: **Static Semantics**
 
-#. The values of *variables* appearing in the ``contract_guard`` are the entry
-   values of the *variables* at a call of the subprogram associated
-   with the ``contract_cases``.
-#. The values of variables (including function result attributes)
-   appearing the ``consequence`` are their final values after
-   completion of the subprogram associated with the
-   ``contract_cases``.
+#. A Contract Cases aspect specification is an assertion (as defined
+   in RM 11.4.2(1.1/3)); its assertion expressions are as described
+   below. Contract_Cases may be specified as an assertion_aspect_mark
+   in an Assertion_Policy pragma.
+
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Proof*
 
-#. A verification condition is that exactly one ``guard`` is True.  An
-   **others** case is considered to a negation of the conjunction of
-   every other ``guard`` and this is anded with the precondition.
-#. A verification condition is that the ``consequent`` for each
-   ``guard`` is ``True`` given that the ``guard`` is satisfied.
-#. At most one ``contract_guard`` may be True when the subprogram is
-   called.  A True ``contract_guard`` *selects* the ``contract_case``
-   to which it belongs.
-#. If there is not a ``contract_guard`` which is True when the
-   subprgram is called, then there must be an **others**
-   ``contract_case`` and the **others** ``contract_case`` is *selected*.
-#. If a ``contract_case`` is *selected* when a subprogram is called,
-   then the expression of the ``concequence`` of the *selected*
-   ``contract_case`` must be True.
+#. Each ``contract_guard`` in a Contract Cases aspect has to proven to
+   be mutually exclusive, that is only one ``contract_guard`` can be
+   True with any set of inputs conformant with the formal parameters
+   and satisfying the specific precondition.
+#. At the point of call a check that a ``contract_guard`` is True has to be
+   proven.
+#. For every ``contract_case``, when its ``contract_guard`` is True,
+   the implementation of the body of the subprogram must be proven to
+   satisfy the ``consequence`` of the ``contract_case``.
 
 
 .. centered:: **Dynamic Semantics**
 
-#. In a call to a subprogram with a ``contract_cases`` aspect then the
-   entry checks are: the precondition is evaluated and then, if the
-   precondition is satisfied, each ``guard`` is evaluated.  At most
-   one of them should evaluate to ``True``.  If the precondition
-   fails, more than one ``guard`` evaluates to ``True``, or no
-   ``guard`` evaluates to ``True`` and there is no **others** case ,
-   an exception is raised. Which one??
-#. If the entry checks do not raise an exception and the execution of
-   the subprogram completes then, for the case whose ``guard``
-   evaluated to ``True``, evaluate the ``consequence`` using the final
-   values of the variables from the subprogram execution.  If the
-   ``consequence`` does not evaluate to ``True``, raise the exception
-   ....
+#. Upon a call of a subprogram or entry which is subject to an enabled
+   Contract Cases aspect_specification, Contract Cases checks are
+   performed as follows:
 
-.. note:: RCC. this section appears to be incomplete.  Assign: JK to complete please?
+   * Immediately after the specific precondition expression is
+     evaluated and checked (or, if that check is disabled, at the
+     point where the check would have been performed if it were
+     enabled), all of the contract_guard expressions are evaluated in
+     textual order. A check is performed that exactly one (if no
+     others contract_guard is provided) or at most one (if an others
+     contract_guard is provided) of these conditions evaluates to
+     True; Assertions.Assertion_Error is raised if this check fails.
+
+   * Immediately after the specific postcondition expression is
+     evaluated and checked (or, if that check is disabled, at the
+     point where the check would have been performed if it were
+     enabled), exactly one of the consequences is evaluated. The
+     consequence to be evaluated is the one corresponding to the one
+     contract_guard whose evaluation yielded True (if such a
+     contract_guard exists), or to the others contract_guard (if every
+     contract_guard's evaluation yielded False).  A check is performed
+     that the evaluation of the selected consequence evaluates to
+     True; Assertions.Assertion_Error is raised if this check fails.
 
 .. _mode-refinement:
 
@@ -252,10 +245,6 @@ specified:
    the specification otherwise these items may not be used in that
    mode.
 
-Sometimes this manual needs to refer to an object which is not a
-subcomponent of a larger containing object.  Such objects are called
-*entire* objects.
-
 .. centered:: **Syntax**
 
 ::
@@ -277,75 +266,89 @@ subcomponent of a larger containing object.  Such objects are called
    mode_selector               ::= Input| Output | In_Out | Proof
    moded_item                  ::= name
 
-.. todo:: We may make an extra mode_selector available ``Proof`` which
-   indicates that the listed variables are only used for proof and not
-   in the code. RCC comments: Yes - agree this needs to be in.  Target: D1/CDR
-   TJJ:12-Nov-12 Added Proof to mode_selector.
-   for the grammar and legality, D2 for the implementation? Assign: TJJ.
+
+.. centered:: **Static Semantics**
+
+#. An object which is not a subcomponent of any containing object is
+   said to be an *entire* object.
+#. An *abstact state* is represneted by a ``state_name``.
+#. The *effective* mode of a ``moded_item`` with respect to a specific
+   subprogram describes the way that the object is used by the
+   subprogram:
+
+  * If the ``moded_item`` is read directly or indirectly by the
+    subprogram its *effective* mode is **in**.
+  * If the ``moded_item`` is not read but always updated by the
+    subprogram directly or indirectly then its *efective* mode is
+    **out***.
+  * If the body of the suboprogram neither reads or updates the
+    ``moded_item``, directly or indirectly then the *effective* mode
+    is unmoded.
+  * Otherwise the *effective* mode is **in out**.
+
+#. The *effective* mode of a ``moded_item`` is determined as
+   follows:
+  
+   * if a ``moded_item`` is listed in a ``mode_specification`` with a
+     mode selector of ``In_Out``, the **effective* its mode is **in
+     out**;
+   * if a ``moded_item`` is listed in both a ``mode_specification``
+     with a mode selector of ``In`` and one of ``Out``, the
+     **effective* its mode is **in out**;
+   * if a ``moded_item`` is only listed in a ``mode_specification``
+     with a mode selector of In, the **effective* its mode is **in**.
+   * If a ``moded_item`` is only listed in a ``mode_specification``
+     with a mode selector of ``Out``, the **effective* its mode is
+     **out**; and
+   * If a ``moded_item`` is listed in a ``mode_specification`` with a
+     mode selector of ``Proof``, the *effective* its mode is unmoded
+     and can only be used in an assertion expression (as defined in RM
+     11.4.2(1.1/3)).
+
+#. Each branch of a ``conditional_mode`` in a ``mode_specification``
+   defines a ``moded_item_list`` but the effective mode of each
+   ``moded_item`` in the ``moded_item_list`` is unconditional.  The
+   condition is ignored for the purposes of determining the effective
+   mode and the ``mode_selector`` of the ``mode_specification`` is
+   used as described above to determine the *effective* mode..
+
+
+#. If a ``moded_item`` is a subcomponent then the *entire* object of
+   which it is a part also has an *effective* mode is determined as
+   follows:
+
+   * if all of the subcomponents in the ``mode_refinenment`` have an
+     *effective* mode of unmoded then its *effective* mode is unmoded;
+   * If at least one subcomponent has an *effective* mode of **in**
+     but none have an *effective* mode of **in out** or **out** then
+     its effective mode is **in**; and
+   * if at least one of the subcomponents in the ``mode_refinement``
+     has an effective mode of **out** or **in out**, then its
+     effective mode is **in out**.
+
+#. A ``conditional_mode`` is specified using an if_expression refines
+   ????a ``mode_specification`` and specifies that if a each
+   ``moded_item`` in the moded_item
 
 .. centered:: **Legality Rules**
 
-#. A ``mode_refinement`` is an ``expression`` and must satisfy the Ada
-   syntax.  The non-terminals of the ``mode_refinement`` grammar,
-   except ``mode_specification`` and ``mode_selector``, are also
-   ``expressions``.
 #. A ``default_mode_specification`` is considered to be a
    ``mode_specification`` with the ``mode_selector Input``.
-#. In a single ``mode_refinement`` there can be at most one of each of
-   a ``mode_specification`` with a ``mode_selector`` of ``Input``,
-   ``Output`` and ``In_Out``.
-#. A ``moded_item`` must be the name of a *global variable*, a *formal
-   parameter*, a subcomponent of a *global variable* or a *formal
-   parameter*, or an *abstract state*
+#. Each ``mode_selector`` shall not occur more than once in a given
+   ``mode_refinement``.
+#. A ``moded_item`` must denote a part of a *global variable*, a part
+   of a *formal parameter*, or a ``state_name``.
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
    ``mode_selector`` of ``In_Out`` may not appear in any other
    ``mode_specification``.
 #. A ``moded_item`` may not appear more than once within a single
    ``mode_specification`` other than appearing in a ``condition`` of a
-   ``conditional_mode``.  The rule applies to indexed components in as
-   much as an array element A (I) cannot appear more than once but
-   both A (I) and A (J) may appear in the same ``mode_specification``
-   even though I may equal J.
-#. A *variable* appearing in the ``condition`` of a
-   ``conditional_mode`` must be a ``moded_item`` of mode **in** or
-   **in out** appearing in the same ``mode_refinement`` or a *formal
-   parameter* of the associated subprogram of mode **in** or **in
-   out**.
+   ``conditional_mode``.  The rule does not apply to individual
+   indexed components of the same array object.
 #. A ``moded_item`` may be a subcomponent provided a containing object
    is not a ``moded_item`` in the same ``mode_refinement``.  As long
    as this rule is satisfied, different subcomponents of a composite
-   object may appear more than once and, for array subcomponents,
-   elements A (I) and A (J) are considered as distinct instances even
-   though I my equal J.
-
-.. todo:: We probably need to think more carefully about discriminanted
-   and variant records. RCC comment: we need an entire design activity
-   for disciminated and variant records. ToDo in chapter 3 as well. Target: D2.
-
-.. centered:: **Static Semantics**
-
-#. The ``mode_selector`` of a ``mode_specification`` determines the
-   effective mode of the ``moded_items`` in the
-   ``mode_definition_list``.  ``Input`` is mode **in**, ``Output`` is
-   mode **out**, and, ``In_Out`` is mode **in out**.
-
-.. note:: RCC. Update for mode ``Proof``.  Assume this is *in*?
-
-#. A ``moded_item`` appearing in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` and another with a ``mode_selector``
-   of ``Output`` has the effective mode of **in out**.
-#. For an entire composite object V which has subcomponents that
-   appear in a ``mode_refinement`` the following applies:
-
-   a. if all the subcomponents in the ``mode_refinement`` have an
-      effective mode of **in**, then the effective mode of V is **in**;
-   b. if at least one of the subcomponents in the ``mode_refinement``
-      has an effective mode of **out** or **in out**, then the
-      effective mode of V is **in out**.
-#. Each branch of a ``conditional_mode`` defines a ``moded_item_list``
-   but the effective mode of each ``moded_item`` in the
-   ``moded_item_list`` is unconditional.  The condition is ignored for
-   the purposes of determining the effective mode.
+   object may appear more than once.
 
 .. centered:: **Dynamic Semantics**
 

@@ -111,11 +111,15 @@ the grammar of ``abstract_state_list`` given below.
    Global Aspect, a Dependency Aspect, their refined
    counterparts, or their equivalent pragmas.  It may also appear as
    an ``abstract_state_name`` in a Refined State Aspect.
-#. The ``identifier`` of a ``simple_property`` shall be "Volatile", "Input", or "Output".
-#. If a ``property_list`` includes the ``simple_property`` "Volatile", then the same
-   ``property_list`` shall also include exactly one of ``Input`` or ``Output``.
-#. The ``identifier`` of a ``name_value_property`` shall be "Integrity".
-#. The ``expression`` of an "Integrity" property shall be a static expression of any integer type.
+#. The ``identifier`` of a ``simple_property`` shall be "Volatile",
+   "Input", or "Output".
+#. If a ``property_list`` includes the ``simple_property`` "Volatile",
+   then the same ``property_list`` shall also include exactly one of
+   ``Input`` or ``Output``.
+#. The ``identifier`` of a ``name_value_property`` shall be
+   "Integrity".
+#. The ``expression`` of an "Integrity" property shall be a static
+   expression of any integer type.
 
 .. centered:: **Static Semantics**
 
@@ -640,15 +644,14 @@ the grammar of ``state_and_category_list`` given below.
 ::
 
   state_and_category_list          ::= (state_and_category {, state_and_category})
-  state_and_category               ::= abstract_state_name => categorised_constituent_list
-  categorised_constituent_list     ::= constituent_list
-                                     | (Non_Volatile => constituent_list)
-                                     | (Volatile     => moded_list)
-  moded_list                       ::= (moded_constituent_list {, moded__constituent_list})
-  moded_constituent_list           ::= mode_selector => constituent_list
+  state_and_category               ::= abstract_state_name => constituent_with_property_list
   abstract_state_name              ::= state_name | null
+  constituent_with_property_list   ::= constituent_with_property
+                                     | (constituent_with_property {, constituent_with_property})
+  constituent_with_property        ::= constituent
+                                     | (constituent_list with property_list)
   constituent_list                 ::= constituent
-                                     | (constituent {, constituent})
+                                     | (constituent {, constituent}) 
 
 
 where
@@ -676,17 +679,21 @@ where
    ``abstract_state_name`` it can only be a ``constituent`` of that
    ``abstract_state_name`` and it must be the only ``constituent`` of
    the ``abstract_state_name``.
-#. An entry of a ``categorised_constituent_list`` without a Volatile
-   or Non_Volatile designator is taken to have the default designator
-   of Non_Volatile.
-#. At most one Volatile entry is permitted in a
-   ``categorised_constituent_list``.
-#. At most one of a Non_Volatile or a default entry is permitted in a
-   ``categorised_constituent_list``.
+#. The ``identifier`` of a ``simple_property`` shall be "Volatile",
+   "Input", or "Output".
+#. If a ``property_list`` includes the ``simple_property`` "Volatile",
+   then the same ``property_list`` shall also include exactly one of
+   ``Input`` or ``Output``.
+#. The ``identifier`` of a ``name_value_property`` shall be
+   "Integrity".
+#. The ``expression`` of an "Integrity" property shall be a static
+   expression of any integer type.
+#. The same identifier shall not appear more than once in a property
+   list.
 #. There should be at most one **null** ``abstract_state_name`` and,
    if it is present it must be Non_Volatile and the last entry of the 
    ``state_and_category_list``.
-#. Only ``mode_selector`` values of Input and Output may be used.
+
 
 .. centered:: **Static Semantics**
 
@@ -716,18 +723,28 @@ where
 #. If an ``abstract_state_name`` and its ``constituent`` have the same
    name this represents the simple mapping of a an abstract
    ``state_name`` on to a concrete *variable* of the same name.
-#. The category of a ``constituent`` is specified using the Volatile,
-   Non_Volatile or default designator in a
-   ``categorised_constituent_list``.
+#. A ``constituent`` with a ``property_list`` assumes the properties
+   given in the list:
+
+   * The property Volatile indicates that the ``constituent`` is
+     Volatile and this ``simple_property`` must be supplemented by one
+     of the ``simple_properties`` Input or Output indic ating whether
+     the ``constituent`` is a Volatile Input or a Volatile Output.
+   * The ``name_value_property`` Integrity is used to specify an
+     integrity level for the ``constituent``.  Integrity levels may be
+     used in information flow analysis to control the flow of
+     information from a less critical to a more critical object or
+     ``state_name``.
+
 #. A ``state_name`` declared in the Abstract State Aspect which
    has not designated as Volatile may be refined on to one or more
    Volatile Input or Output ``constituents`` as well as Non_Volatile
    ``constituents``.
-#. If a ``state_name`` declared in the Abstract State Aspect has
-   been designated as Volatile with a ``mode_selector`` M then at least
-   one ``constituent`` of the ``state_name`` must also be designated
-   as Volatile with a ``mode_selector`` M in the
-   Refined State Aspect.
+#. If a ``state_name`` declared in the Abstract State Aspect has been
+   designated as Volatile with a ``property`` of Input (Output) then
+   at least one ``constituent`` of the ``state_name`` must also be
+   designated as Volatile with a ``property``` of Input (Output) in
+   the Refined State Aspect.
 #. A **null** ``abstract_state_name`` represents a hidden state
    component of a package which has no logical effect on the view of
    the package visible to a user.  An example would be a cache used to
