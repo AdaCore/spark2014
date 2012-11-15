@@ -2,9 +2,9 @@ with Switch.Val1;
 with Switch.Val2;
 with Switch.Val3;
 package body Switch
-   with Refined_State => (State => (Volatile => (Input => (Switch.Val1.State,
-                                                           Switch.Val2.State,
-                                                           Switch.Val3.State))))
+   -- State is refined onto three states, each of which has properties Volatile and Input
+   with Refined_State => (State =>
+      ((Switch.Val1.State, Switch.Val2.State, Switch.Val2.State) with Volatile, Input))
 is
    subtype Value is Integer range -1 .. 1;
    subtype Score is Integer range -3 .. 3;
