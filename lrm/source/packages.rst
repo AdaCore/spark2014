@@ -112,7 +112,7 @@ the grammar of ``abstract_state_list`` given below.
    12/11/2012. We feel the use of the "A with P1, P2" extension aggregate grammar is much
    more elegant than the old "nested aggregate" like grammar.
 
-.. centered:: **Static Semantics***
+.. centered:: **Static Semantics**
 
 Each state_name occurring in an Abstract_State aspect specification
 for a given package P introduces an implicit
@@ -123,7 +123,7 @@ declaration requires completion.
 [A state abstraction shall only be
 named in contexts where this is explicitly permitted (e.g., as part of a
 Globals aspect specification), but this is not a name resolution rule.
-Thus, the declaration of a state abstraction has has the same visibility
+Thus, the declaration of a state abstraction has the same visibility
 as any other nonoverloadable declaration (e.g., an exception declaration).
 A state abstraction is not an object; it does not have a type.
 The completion of a state abstraction can only be provided as part of
@@ -142,7 +142,7 @@ provided.]
  his opinion of Ada's "a generic subprogram is not a subprogram, a
  generic package is not a package" rule.
 
--- note::
+.. note::
  (SB) removing references to "observable" state for now. We can
  defer mention of caches until we get to refinement.
 
@@ -151,7 +151,7 @@ provided.]
 #. The ``identifier`` of a ``simple_property`` shall be "Volatile",
    "Input", or "Output".
 #. If a ``property_list`` includes "Volatile",
-   then it shall also include exactly one of `Input`` or ``Output``.
+   then it shall also include exactly one of ``Input`` or ``Output``.
 #. If a ``property_list`` includes either "Input" or "Output",
    then it shall also include "Volatile".
 #. The ``identifier`` of a ``name_value_property`` shall be
@@ -178,7 +178,7 @@ provided.]
 
 .. note::
  (SB) further cleanup needed here. I'll get back to this if I have time.
-   Review of volatility-related stuff needed.
+ Review of volatility-related stuff needed.
 
 #. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **in out** or  **out**.
@@ -186,7 +186,7 @@ provided.]
    mode **out**.
 #. A Volatile Output may only occur where a ``state_name`` may appear
    as a ``moded_item`` of mode **out**.
-#. A `state_name`` of a package is generally considered to be
+#. A ``state_name`` of a package is generally considered to be
    representing hidden state in one of the following categories:
  
    * Non-Volatile Uninitialized State - state which is not initialized
