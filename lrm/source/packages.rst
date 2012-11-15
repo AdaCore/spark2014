@@ -57,14 +57,28 @@ aspect described in the following subsections.
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-An abstract state is a name representing the state embodied by the
-hidden state of a package. The overall state of a package may be
-represented by one or more visible *variables* and abstract state
-names, each abstract state name representing a mutually exclusive part
-of the hidden state.  An abstract state name has no type and may only
-be used within an Initializes Aspect, a Global Aspect, a
-Dependency Aspect or the refined counterparts of a global or
-dependency aspect.
+State abstraction provides a mechanism for naming, in a packages's visible
+part, state (typically variable declarations) that will be declared within
+the package's body (or private part, or within private child units of the
+package). For example, a package declares a visible procedure and we wish to
+specify the set of global variables that the procedure reads and writes
+as part of the specification of the subprogram. Those variables cannot
+be named directly in the package specification. Instead, we introduce
+a state abstraction which is visible in the package specification and
+later, when the package body is declared, we specify the set of
+variables that "comprise" or "implement" that state abstraction. If a
+package body contains, for example, a nested package, then a state
+abstraction of the inner package may also be part of the implementation
+of the given state abstraction of the outer package. No such mechanism
+is  needed for visible state (i.e., variables declared in the visible part
+of a package).
+
+The "hidden" state of a package (roughly speaking, all variables declared
+within the the private part or body of the package but not within
+a more nested subprogram body or block statement; state declared in
+private child units is also included) may be represented by one or more state
+abstractions, with each pair of state abstractions representing disjoint
+sets of hidden variables.
 
 If a subprogram P with a Global Aspect is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
@@ -90,7 +104,7 @@ the grammar of ``abstract_state_list`` given below.
   property_list ::= property { , property }
   property ::= simple_property
              | name_value_property
-  simple_property ::= identifier
+  simple_property ::= indentifier
   name_value_property ::= identifier => expression
   state_name ::= defining_identifier
 
@@ -98,24 +112,48 @@ the grammar of ``abstract_state_list`` given below.
    12/11/2012. We feel the use of the "A with P1, P2" extension aggregate grammar is much
    more elegant than the old "nested aggregate" like grammar.
 
+.. centered:: **Static Semantics***
+
+Each state_name occurring in an Abstract_State aspect specification
+for a given package P introduces an implicit
+declaration of a *state abstraction* entity. This implicit declaration
+occurs at the beginning of the visible part of P. This implicit
+declaration requires completion.
+
+[A state abstraction shall only be
+named in contexts where this is explicitly permitted (e.g., as part of a
+Globals aspect specification), but this is not a name resolution rule.
+Thus, the declaration of a state abstraction has has the same visibility
+as any other nonoverloadable declaration (e.g., an exception declaration).
+A state abstraction is not an object; it does not have a type.
+The completion of a state abstraction can only be provided as part of
+a Refined_State aspect specification, provided when the body of P is
+provided.]
+
+.. note::
+ (SB) I use the term "state abstraction" because I don't want to call
+ it an object or a variable. Every variable is an object, every object
+ has a type, and these guys don't have a type. Like, for example,
+ exceptions or packages, these guys are (nonoverloadable)
+ entities but are not objects. We could call them "abstract state
+ entities" if that seems better. I understand that introducing this
+ new terminology will require changing some existing wording, but calling
+ these guys objects or variables is asking for trouble. Ask Robert for
+ his opinion of Ada's "a generic subprogram is not a subprogram, a
+ generic package is not a package" rule.
+
+-- note::
+ (SB) removing references to "observable" state for now. We can
+ defer mention of caches until we get to refinement.
+
 .. centered:: **Legality Rules**
 
-#. An Abstract State Aspect may only be placed in a
-   ``aspect_specification`` of a ``package_specification``.
-#. The ``defining_identifier`` of a ``state_name`` must not be the
-   same as a directly visible name or a name declared immediately
-   within the package containing the Abstract State Aspect.
-#. The ``defining_identifier`` of a ``state_name`` shall not be
-   repeated within the ``abstract_state_list``.
-#. A ``state_name`` can only appear in a Initializes Aspect, a
-   Global Aspect, a Dependency Aspect, their refined
-   counterparts, or their equivalent pragmas.  It may also appear as
-   an ``abstract_state_name`` in a Refined State Aspect.
 #. The ``identifier`` of a ``simple_property`` shall be "Volatile",
    "Input", or "Output".
-#. If a ``property_list`` includes the ``simple_property`` "Volatile",
-   then the same ``property_list`` shall also include exactly one of
-   ``Input`` or ``Output``.
+#. If a ``property_list`` includes "Volatile",
+   then it shall also include exactly one of `Input`` or ``Output``.
+#. If a ``property_list`` includes either "Input" or "Output",
+   then it shall also include "Volatile".
 #. The ``identifier`` of a ``name_value_property`` shall be
    "Integrity".
 #. The ``expression`` of an "Integrity" property shall be a static
@@ -123,24 +161,29 @@ the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Static Semantics**
 
-#. An abstract ``state_name`` is declared using a
-   Abstract State Aspect appearing in an ``aspect_specification``
-   of a ``package_specification``.  The ``state_name`` is an
-   abstraction representing some or all of the hidden state of
-   package, its embedded packages and its private descendants.
-#. A ``state_name`` has the same scope and visibility as a declaration
-   in the ``visible part`` of the package to which the
-   Abstract State Aspect is applied.
-#. A **null** ``abstract_state_list`` indicates that a package
-   contains no observable hidden state and does not declare any
-   ``state_name``. The package may contain hidden state that has no
-   observable effect, for instance a cache.  The package may contain
-   visible state, that is, a *variable* declared in its visible part.
-#. Volatile designates a volatile state, usually representing an
-   external input or output.  The "Input" and "Output" properties determine whether the
-   volatile state is treated as an input or an output for verification purposes.
-#. A Volatile Input may only occur where a ``state_name`` may appear
-   as a ``moded_item`` of mode **in**.
+#. The "hidden state" of a package is the set of variables declared
+   within the private part or body of a package and also includes the
+   hidden state of any private child units of the package.
+
+#. A **null** ``abstract_state_list`` specifies that the set of variables
+   comprising the hidden state of the package shall be empty.
+   [The specification is verified during flow analysis.]
+
+#. A volatile state abstraction is one declared with a property list
+   which includes the **Volatile** property, and similarly for
+   **Input** and **Output**.
+   Volatile variables (and volatile state abstractions) may not
+   be part of the implementation of a non-volatile state abstraction.
+   [This rule is verified during flow analysis.]
+
+.. note::
+ (SB) further cleanup needed here. I'll get back to this if I have time.
+   Review of volatility-related stuff needed.
+
+#. A Volatile Input state abstraction shall not be named in a moded_item of
+   mode **in out** or  **out**.
+#. An Volatile Input state abstraction shall not be named in a moded_item of
+   mode **out**.
 #. A Volatile Output may only occur where a ``state_name`` may appear
    as a ``moded_item`` of mode **out**.
 #. A `state_name`` of a package is generally considered to be
