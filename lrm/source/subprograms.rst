@@ -61,7 +61,7 @@ Subprogram Contracts
 |SPARK| provides extra aspects, the Global, Param and Dependency
 aspects to strengthen a subprogram declaration so that constructive,
 modular program analysis may be performed.  With the extra aspects the
-body of a subprogram does not have to be imlemented in order for
+body of a subprogram does not have to be implemented in order for
 analysis and proof of callers of the subprogram.
 
 A Contract Cases aspect is also provided which provides a convenient
@@ -179,7 +179,7 @@ where
 
 #. Each ``contract_guard`` in a Contract Cases aspect has to proven to
    be mutually exclusive, that is only one ``contract_guard`` can be
-   True with any set of inputs conformant with the formal parameters
+   True with any set of inputs con formant with the formal parameters
    and satisfying the specific precondition.
 #. At the point of call a check that a ``contract_guard`` is True has to be
    proven.
@@ -360,7 +360,7 @@ specified:
 
 #. Note: The checking that the use of a subcomponent or a
    ``conditional_mode`` in the subprogram body is consistent with the
-   ``mode_refinment`` of the subprogram has to be done by subprogram
+   ``mode_refinement`` of the subprogram has to be done by subprogram
    proof.
 
 
@@ -372,7 +372,7 @@ specified:
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
    ``mode_selector`` of ``In_Out`` may not appear in any other
    ``mode_specification``.
-#. Two ``moded_item``\ s occuring in the same ``mode_refinement``
+#. Two ``moded_item``\ s occurring in the same ``mode_refinement``
    shall be independent unless they occur within distinct
    ``conditional_mode``\ s or within distinct ``moded_item_list``\ s of
    the same ``conditional_mode``.
@@ -391,7 +391,7 @@ as it is used purely for static analyses purposes and is not executed.
 
 .. todo:: 
    SB has comments and wording changes on Global Aspects section.
-   He has suggested merging Glabal Aspects with Param Aspects.
+   He has suggested merging Global Aspects with Param Aspects.
    TJJ does not really agree with merging the two sections.
    Address this issue after SB has returned from holiday.
 
@@ -454,14 +454,6 @@ accidental hiding of a *global* variable by a more *local* variable.
    4. Additionally, if X is a formal parameter of an unconstrained array type,
       and X is mode "out", then the attributes X'First, X'Last, X'Length and
       X'Range may appear in a precondition aspect.
-
-.. todo:: Following the discussion under LA11-017 (the thread
-   started by RCC on 26/10), we must document here the rules
-   for consistency of globals in Global and Pre/Post aspects.
-   Essentially, if a global appears in the Pre or Post, then 
-   it *must* appear in a mode-consistent fashion in the Global
-   aspect as well. Update: RCC proposes rules 5 and 6 above. TJJ, YM
-   and/or SB to check it. Target: D1/CDR. 
 
 .. centered:: **Static Semantics**
 
@@ -662,7 +654,7 @@ dependent on every ``import`` in the ``import_list`` if the
 
 The Dependency Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is ``Depends``and the ``aspect_definition`` must follow
-the grammar of ``sependency_relation`` given below.
+the grammar of ``dependency_relation`` given below.
 
 
 .. centered:: **Syntax**
@@ -849,7 +841,7 @@ it used purely for static analyses purposes and is not executed.
    -- The final value of C depends on the initial value of C and Z.
    -- The final value of D depends only on the initial value of D.
 
-   procedure S (X : in Integer; A : in out Integer)
+   procedure S
    with Global  => (Input  => (X, Y, Z),
                     In_Out => (A, B, C, D)),
         Depends => ((A, B) =>+ (A, X, Y),
@@ -859,8 +851,8 @@ it used purely for static analyses purposes and is not executed.
    -- in the dependency aspect as well as formal parameters.
 
    procedure T (X : in Integer; A : in out Integer)
-   with Global  => (Input  => (X, Y, Z),
-                    In_Out => (A, B, C, D)),
+   with Global  => (Input  => (Y, Z),
+                    In_Out => (B, C, D)),
         Depends => ((A, B) =>+ (X, if X = 7 then (A,Y)),
                      C     =>+ Y,
                      D     =>+ null);
@@ -878,9 +870,6 @@ it used purely for static analyses purposes and is not executed.
    -- its parameters and globals.
    -- In this example, the result of the function is dependent on G and X
    -- but only on Y if G is True.
-
-.. note:: RCC. procedure S does not make sense.  It has X and A as both formal
-   parameter and global, so can't be right. Assign TJJ to correct.
 
 Proof Functions
 ~~~~~~~~~~~~~~~
@@ -904,8 +893,6 @@ Conformance Rules
 
 No extensions or restrictions.
 
-.. note:: RCC. I can't think of any reason that we might need any
-   extension or restrictions in this section.  Anyone disagree?
 
 Inline Expansion of Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1000,10 +987,6 @@ implementation of its body as described below.
 #. If a subprogram does not have a ``global_aspect`` then an implicit
    one is synthesised from implementation of the body (if it exists).
 
-.. todo:: rules for working out an implicit global aspect. RCC comment: not
-   sure this is needed here.  What are these rules? Why does the reader of 
-   the LRM need to see them? Target: clarify or remove this ToDo for D1/CDR.
-
 Param Aspects
 ~~~~~~~~~~~~~
 
@@ -1068,7 +1051,7 @@ implementation of its body as described below.
 #. A function that does not have an explicit ``dependency_aspect`` is
    assumed to have a dependency relation that its result is dependent
    on all of its imports and this dependency relation is compared with
-   the implicit one determiined from the body of the function.
+   the implicit one determined from the body of the function.
 
 
 .. centered:: *Checked by Proof*
@@ -1085,12 +1068,6 @@ declaration view is in |SPARK| (whether the call is dispatching or not).
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: possible restrictions regarding not mixing named and
-   positional parameters, requiring all, or more than a certain
-   number of parameters require named association, or more than one
-   parameter of the same type requires named association. RCC comment:
-   Is it worth restricting these things if they don't impact verifiability?
-   Target: D2. 
 
 
 Abstract and Refined Views
@@ -1099,7 +1076,7 @@ Abstract and Refined Views
 There are two possible views of a subprogram P declared in the visible
 part of a package.  An abstract view and a refined view.  The abstract
 view is that seen by the client of the package.  The refined view is
-seen within the body of the package and its private descendents.
+seen within the body of the package and its private descendants.
 
 
 Global Aspects
@@ -1225,12 +1202,12 @@ variables* of the subprogram.  If the subprogram is declared in the
 visible part of package it may also have a
 ``refined_dependency_aspect``, again explicitly given or synthesised.
 
-The dependency relation of a subprgram is used to determine the effect
+The dependency relation of a subprogram is used to determine the effect
 of a call to a subprogram in terms of the flows of information through
 the subprogram.  
 
 #. A subprogram P declared in the visible part of a package, called
-   within the body or private descendents of the package and P
+   within the body or private descendants of the package and P
    requires a ``refined_dependency_aspect`` because of
    state_refinement, the following will be used as the dependency
    relation of P:
@@ -1270,29 +1247,22 @@ Return Statements
 
 No extensions or restrictions.
 
-.. note:: RCC. Is this really true? I don't understand the use of the extended
-   return statement, so advice here is welcome!  Target: D1/CDR.
-
 Overloading of Operators
 ------------------------
 
 No extensions or restrictions.
-
-.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
 
 Null Procedures
 ---------------
 
 No extensions or restrictions.
 
-.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
 
 Expression Functions
 --------------------
 
 No extensions or restrictions.
 
-.. note:: RCC. Anything to add here anyone? Target: D1/CDR.
 
 
 
