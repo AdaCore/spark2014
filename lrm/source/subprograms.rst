@@ -24,15 +24,15 @@ declaration is side-effect free.
 .. centered:: *Flow Analysis*
 
 #. A function declaration shall not update any of the names listed in
-   its Global Aspect whether it is explicitly given or imlpicily
+   its Global Aspect whether it is explicitly given or implicitly
    synthesized from the subprogram implementation.
 
 .. todo:: 
-   In the future we may be able to permit access and aliased formal parameter specs - rel2+
+   In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
 
-   What do we do regarding null exclusion parameters? - D2  
+   What do we do regarding null exclusion parameters? Target: D2  
   
-   What do we do regarding function access results function null exclusion results? - D2
+   What do we do regarding function access results and function null exclusion results? Target: D2
 
 
 Preconditions and Postconditions
@@ -64,7 +64,7 @@ modular program analysis may be performed.  With the extra aspects the
 body of a subprogram does not have to be imlemented in order for
 analysis and proof of callers of the subprogram.
 
-A Contract Cases aspect is also provided which provides a convinient
+A Contract Cases aspect is also provided which provides a convenient
 way of specifying formally the required functionality of a subprogram.
 
 Extra aspects are provided in |SPARK|, ``Global``, ``Param``,
@@ -143,7 +143,7 @@ the grammar of ``contract_case_list`` given below.
 
 ::
 
-   contrct_case_list   ::= (contract_case {, contract_case_list})
+   contract_case_list  ::= (contract_case {, contract_case})
    contract_case       ::= contract_guard => consequence
                          | others => consequence
 
@@ -309,15 +309,14 @@ specified:
    follows:
   
    * if a ``moded_item`` is listed in a ``mode_specification`` with a
-     mode selector of ``In_Out``, the **effective  mode* is **in
-     out**;
+     mode selector of ``In_Out``, the *effective  mode* is **in out**;
    * if a ``moded_item`` is listed in both a ``mode_specification``
      with a mode selector of ``In`` and one of ``Out``, the
-     **effective mode* is **in out**;
+     *effective mode* is **in out**;
    * if a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of In, the **effective mode* is **in**.
+     with a mode selector of In, the *effective mode* is **in**.
    * If a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of ``Out``, the **effective mode* is
+     with a mode selector of ``Out``, the *effective mode* is
      **out**; and
    * If a ``moded_item`` is listed in a ``mode_specification`` with a
      mode selector of ``Proof``, the *effective mode* is unmoded
@@ -361,7 +360,7 @@ specified:
 
 #. Note: The checking that the use of a subcomponent or a
    ``conditional_mode`` in the subprogram body is consistent with the
-   `mode_refinment`` of the subprogram has to be done by subprogram
+   ``mode_refinment`` of the subprogram has to be done by subprogram
    proof.
 
 
