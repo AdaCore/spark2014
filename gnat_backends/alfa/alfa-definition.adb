@@ -1136,10 +1136,16 @@ package body Alfa.Definition is
          N := First (L);
          while Present (N) loop
             --  Only actions that consist in N_Object_Declaration nodes for
-            --  constants are translated.
+            --  constants are translated. All types are accepted and
+            --  corresponding effects (for bounds of dynamic types) discarded
+            --  when translating to Why.
 
-            if Nkind (N) /= N_Object_Declaration
-              or else not Constant_Present (N)
+            if not (Nkind (N) = N_Subtype_Declaration
+                     or else
+                    Nkind (N) = N_Full_Type_Declaration
+                     or else
+                    (Nkind (N) = N_Object_Declaration
+                      and then Constant_Present (N)))
             then
                return False;
             end if;

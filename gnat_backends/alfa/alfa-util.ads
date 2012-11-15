@@ -153,4 +153,12 @@ package Alfa.Util is
    --  this function should be sure that there is such a component, because it
    --  raises Program_Error if it doesn't find any.
 
+   function Matching_Component_Association
+     (Component   : Entity_Id;
+      Association : Node_Id) return Boolean;
+   --  Return whether Association matches Component
+
+   function Number_Components (Typ : Entity_Id) return Natural;
+   --  Count the number of components in record type Typ
+
 end Alfa.Util;

@@ -60,26 +60,6 @@ package body Alfa.Util is
    ------------------------------------
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean is
-
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean;
-      --  Return whether Association matches Component
-
-      ------------------------------------
-      -- Matching_Component_Association --
-      ------------------------------------
-
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean
-      is
-         CL : constant List_Id := Choices (Association);
-      begin
-         pragma Assert (List_Length (CL) = 1);
-         return Component = Entity (First (CL));
-      end Matching_Component_Association;
-
       Typ         : constant Entity_Id := Underlying_Type (Etype (N));
       Assocs      : List_Id;
       Component   : Entity_Id;
@@ -92,7 +72,7 @@ package body Alfa.Util is
          pragma Assert (No (Expressions (N)));
 
          Assocs      := Component_Associations (N);
-         Component   := First_Component (Typ);
+         Component   := First_Component_Or_Discriminant (Typ);
          Association := First (Assocs);
 
          while Component /= Empty loop
@@ -106,7 +86,7 @@ package body Alfa.Util is
             else
                return False;
             end if;
-            Component := Next_Component (Component);
+            Component := Next_Component_Or_Discriminant (Component);
          end loop;
 
       else
@@ -482,6 +462,32 @@ package body Alfa.Util is
 
    function Lowercase_Iterate_Name return String is ("iterate");
 
+   ------------------------------------
+   -- Matching_Component_Association --
+   ------------------------------------
+
+   function Matching_Component_Association
+     (Component   : Entity_Id;
+      Association : Node_Id) return Boolean
+   is
+      CL : constant List_Id := Choices (Association);
+   begin
+      pragma Assert (List_Length (CL) = 1);
+      declare
+         Assoc : constant Node_Id := Entity (First (CL));
+      begin
+         --  ??? In some cases, it is necessary to go through the
+         --  Root_Record_Component to compare the component from the
+         --  aggregate type (Component) and the component from the aggregate
+         --  (Assoc). We don't understand why this is needed.
+
+         return Component = Assoc
+           or else
+             Root_Record_Component (Component) =
+             Root_Record_Component (Assoc);
+      end;
+   end Matching_Component_Association;
+
    --------------------------
    -- Most_Underlying_Type --
    --------------------------
@@ -502,6 +508,21 @@ package body Alfa.Util is
          end if;
       end loop;
    end Most_Underlying_Type;
+
+   -----------------------
+   -- Number_Components --
+   -----------------------
+
+   function Number_Components (Typ : Entity_Id) return Natural is
+      Count     : Natural := 0;
+      Component : Entity_Id := First_Component_Or_Discriminant (Typ);
+   begin
+      while Component /= Empty loop
+         Count := Count + 1;
+         Component := Next_Component_Or_Discriminant (Component);
+      end loop;
+      return Count;
+   end Number_Components;
 
    ------------------
    -- Partial_View --

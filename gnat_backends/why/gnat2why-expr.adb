@@ -284,6 +284,24 @@ package body Gnat2Why.Expr is
    --  Translate an assignment of the form "Lvalue := Expr",
    --  using Ada_Node for its source location.
 
+   ------------------------------------------
+   -- Handling of Expressions with Actions --
+   ------------------------------------------
+
+   --  The detection phase currently allows 3 kinds of nodes in actions:
+   --    N_Object_Declaration for constants
+   --    N_Subtype_Declaration
+   --    N_Full_Type_Declaration
+
+   --  Declarations of constant objects are transformed into let-binding in
+   --  Why, which is possible in any context (program, term, proposition).
+
+   --  Declarations of types are simply ignored. Indeed, we don't know how to
+   --  translate the assignment to type bounds like done in
+   --  Transform_Declaration in a proposition context. Note that this choice
+   --  can possibly lead to dynamic bounds not known at VC level, if such types
+   --  are introduced in actions.
+
    function Transform_Actions
      (Actions : List_Id;
       Expr    : W_Expr_Id;
@@ -1530,15 +1548,23 @@ package body Gnat2Why.Expr is
       T := Expr;
       N := First (Actions);
       while Present (N) loop
-         pragma Assert (Nkind (N) = N_Object_Declaration
-                         and then Constant_Present (N));
+         pragma Assert (Nkind (N) = N_Subtype_Declaration
+                          or else
+                        Nkind (N) = N_Full_Type_Declaration
+                          or else
+                        (Nkind (N) = N_Object_Declaration
+                          and then Constant_Present (N)));
 
-         T := New_Binding
-           (Domain   => Subdomain,
-            Name     =>
-              New_Identifier (Name => Full_Name (Defining_Identifier (N))),
-            Def      => +Transform_Expr (Expression (N), Subdomain, Params),
-            Context  => T);
+         --  Ignore type declarations in actions
+
+         if Nkind (N) = N_Object_Declaration then
+            T := New_Binding
+              (Domain   => Subdomain,
+               Name     =>
+                 New_Identifier (Name => Full_Name (Defining_Identifier (N))),
+               Def      => +Transform_Expr (Expression (N), Subdomain, Params),
+               Context  => T);
+         end if;
 
          Next (N);
       end loop;
@@ -1560,14 +1586,22 @@ package body Gnat2Why.Expr is
    begin
       N := First (Actions);
       while Present (N) loop
-         pragma Assert (Nkind (N) = N_Object_Declaration
-                         and then Constant_Present (N));
+         pragma Assert (Nkind (N) = N_Subtype_Declaration
+                          or else
+                        Nkind (N) = N_Full_Type_Declaration
+                          or else
+                        (Nkind (N) = N_Object_Declaration
+                          and then Constant_Present (N)));
 
-         Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
+         --  Ignore type declarations in actions
 
-         Ada_Ent_To_Why.Insert (Params.Name_Map,
-                                Defining_Identifier (N),
-                                +Id);
+         if Nkind (N) = N_Object_Declaration then
+            Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
+
+            Ada_Ent_To_Why.Insert (Params.Name_Map,
+                                   Defining_Identifier (N),
+                                   +Id);
+         end if;
 
          Next (N);
       end loop;
@@ -4236,55 +4270,6 @@ package body Gnat2Why.Expr is
       Assocs      : List_Id;
       Params      : Transformation_Params) return W_Field_Association_Array
    is
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean;
-      --  Return whether Association matches Component
-
-      function Number_Components (Typ : Entity_Id) return Natural;
-      --  Count the number of components in record type Typ
-
-      ------------------------------------
-      -- Matching_Component_Association --
-      ------------------------------------
-
-      function Matching_Component_Association
-        (Component   : Entity_Id;
-         Association : Node_Id) return Boolean
-      is
-         CL : constant List_Id := Choices (Association);
-      begin
-         pragma Assert (List_Length (CL) = 1);
-         declare
-            Assoc : constant Node_Id := Entity (First (CL));
-         begin
-            --  ??? In some cases, it is necessary to go through the
-            --  Root_Record_Component to compare the component from the
-            --  aggregate type (Component) and the component from the aggregate
-            --  (Assoc). We don't understand why this is needed.
-
-            return Component = Assoc
-                     or else
-                   Root_Record_Component (Component) =
-                   Root_Record_Component (Assoc);
-         end;
-      end Matching_Component_Association;
-
-      -----------------------
-      -- Number_Components --
-      -----------------------
-
-      function Number_Components (Typ : Entity_Id) return Natural is
-         Count     : Natural := 0;
-         Component : Entity_Id := First_Component_Or_Discriminant (Typ);
-      begin
-         while Component /= Empty loop
-            Count := Count + 1;
-            Component := Next_Component_Or_Discriminant (Component);
-         end loop;
-         return Count;
-      end Number_Components;
-
       Component   : Entity_Id := First_Component_Or_Discriminant (Typ);
       Association : Node_Id := Nlists.First (Assocs);
       Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
