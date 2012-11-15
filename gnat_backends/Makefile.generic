@@ -5,8 +5,7 @@
 PROCS=0
 
 # for debugging/development
-# include -gnaty-x to avoid broken build until LB15-020 is corrected
-CFLAGS=-O0 -gnata -gnat12 -gnatg -gnaty-x
+CFLAGS=-O0 -gnata -gnat12 -gnatg
 
 # for production
 # CFLAGS=-O2 -gnatpn
