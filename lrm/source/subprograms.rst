@@ -77,8 +77,8 @@ and a potentially more concise form of pre and postcondition.
 
 .. centered:: **Legality Rules**
 
-#. The Param, Global and dependency aspects are all individually
-   optional but, if present, must be the first entries in a subprogram
+#. The Param, Global and dependency aspects are all optional but, if
+   present, must be the first entries in a subprogram
    ``aspect_specification`` in the order Param aspect, Global Aspect
    and Dependency Aspect.
 
@@ -131,13 +131,8 @@ where
   A1 .. An are Boolean expressions involving the initial values of
   *formal parameters* and *global variables* and
 
-  B1 .. Bn are Boolean expressions involving the final values of
-  *formal parameters* and *global variables*.
-
-.. note:: RCC: Surely B1 .. Bn may also contain initial values?
-   I have also changed "entry value" to "initial value" here, since the
-   latter is used throughout the rest of this chapter. Assign: JK to
-   confirm, update, then remove this note.
+  B1 .. Bn are Boolean expressions that may also use the final values of
+  *formal parameters*, *global variables* and results.
 
 The Contract Cases Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Contract_Cases" and the ``aspect_definition`` must follow
@@ -275,50 +270,70 @@ specified:
 #. An *abstact state* is represented by a ``state_name``.
 #. A ``default_mode_specification`` is considered to be a
    ``mode_specification`` with the ``mode_selector Input``.
-#. The *effective* mode of a ``moded_item`` with respect to a specific
+#. A name is said to be *moded_item eligible* if:
+
+   * it is a direct or expanded name denoting an *entire* object or a
+     ``state_name``; or
+   * it is a direct or expanded name denoting an object renaming
+     declaration whose object name is *moded_item eligible*; or
+   * it is an indexed_component or selected_component whose prefix is
+     *moded_item eligible*.
+
+#. Two *moded_item eligible* names are said to be *independent* if
+   
+   * both are direct or expanded names denoting *entire* objects and
+     they denote two different objects; or
+   * one is a direct or expanded name denoting an object renaming
+     declaration whose object is *independent* of the other; or
+   * one is a selected_component whose prefix is *independent* of the
+     other; or
+   * both are selected_components and their selector_names denote
+     different components of the same record type; or
+   * either is an indexed component
+
+#. The *effective mode* of a ``moded_item`` with respect to a specific
    subprogram describes the way that the object is used by the
    subprogram:
 
   * If the ``moded_item`` is read directly or indirectly by the
-    subprogram its *effective* mode is **in**.
+    subprogram its *effective mode* is **in**.
   * If the ``moded_item`` is not read but always updated by the
-    subprogram directly or indirectly then its *efective* mode is
+    subprogram directly or indirectly then its *efective mode* is
     **out***.
   * If the body of the suboprogram neither reads or updates the
-    ``moded_item``, directly or indirectly then the *effective* mode
+    ``moded_item``, directly or indirectly then the *effective mode*
     is unmoded.
-  * Otherwise the *effective* mode is **in out**.
+  * Otherwise the *effective mode* is **in out**.
 
-#. The *effective* mode of a ``moded_item`` is determined as
+#. The *effective mode* of a ``moded_item`` is determined as
    follows:
   
    * if a ``moded_item`` is listed in a ``mode_specification`` with a
-     mode selector of ``In_Out``, the **effective* its mode is **in
+     mode selector of ``In_Out``, the **effective  mode* is **in
      out**;
    * if a ``moded_item`` is listed in both a ``mode_specification``
      with a mode selector of ``In`` and one of ``Out``, the
-     **effective* its mode is **in out**;
+     **effective mode* is **in out**;
    * if a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of In, the **effective* its mode is **in**.
+     with a mode selector of In, the **effective mode* is **in**.
    * If a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of ``Out``, the **effective* its mode is
+     with a mode selector of ``Out``, the **effective mode* is
      **out**; and
    * If a ``moded_item`` is listed in a ``mode_specification`` with a
-     mode selector of ``Proof``, the *effective* its mode is unmoded
+     mode selector of ``Proof``, the *effective mode* is unmoded
      and can only be used in an assertion expression (as defined in RM
      11.4.2(1.1/3)).
 
-#. Each branch of a ``conditional_mode`` in a ``mode_specification``
-   defines a ``moded_item_list`` but the effective mode of each
-   ``moded_item`` in the ``moded_item_list`` is unconditional.  The
-   condition is ignored for the purposes of determining the effective
-   mode and the ``mode_selector`` of the ``mode_specification`` is
-   used as described above to determine the *effective* mode.
+#. The condition(s) of a ``conditional_mode`` are ignored in
+   determining the *effective mode* of a ``moded_item`` and only the
+   ``mode_selector`` of the ``mode_specification`` is used as
+   described above.
 
 
 #. If a ``moded_item`` is a subcomponent then the *entire* object of
-   which it is a part also has an *effective* mode is determined as
-   follows:
+   which it is a part also has an *effective* mode.  The *effective*
+   mode of the *entire* object is required for flow analysis
+   determined as follows:
 
    * if all of the subcomponents in the ``mode_refinenment`` have an
      *effective* mode of unmoded then its *effective* mode is unmoded;
@@ -330,34 +345,39 @@ specified:
      effective mode is **in out**.
 
 #. A ``conditional_mode`` is specified using an if_expression with a
-   notional type of Boolean. The if_expression provides a refinement
-   of the Global Aspect which defines the condition under which each
-   ``moded_item`` of the ``moded_item_list``, which is the *dependent*
-   expression is directly or indirectly read, updted or both.  
+   notional type of Boolean. The if_expression provides additional
+   details to the ``mode_refinement``.  It defines the condition under
+   which each ``moded_item`` of the ``moded_item_list``, which is the
+   *dependent* expression, is directly or indirectly read, updted or
+   both.
+
 #. If the if_expression does not have a final else clause and all of
    the conditions of the if_expression evaluates to False it has the
-   effect of **else null**
+   effect of **else null**.
+
 #. A *dependent* expression which is a **null** ``moded_item_list``
    indicates that there are no ``moded_items`` read or updated when
    the controlling condition evalustaes to True.
+
+#. Note: The checking that the use of a subcomponent or a
+   ``conditional_mode`` in the subprogram body is consistent with the
+   `mode_refinment`` of the subprogram has to be done by subprogram
+   proof.
+
 
 .. centered:: **Legality Rules**
 
 #. Each ``mode_selector`` shall not occur more than once in a given
    ``mode_refinement``.
-#. A ``moded_item`` must denote a part of a *global variable*, a part
-   of a *formal parameter*, or a ``state_name``.
+#. A ``moded_item`` shall be *moded_item eligible*.
 #. A ``moded_item`` appearing in a ``mode_specification`` with a
    ``mode_selector`` of ``In_Out`` may not appear in any other
    ``mode_specification``.
-#. A ``moded_item`` may not appear more than once within a single
-   ``mode_specification`` other than appearing in a ``condition`` of a
-   ``conditional_mode``.  This rule does not apply to individual
-   indexed components of the same array object.
-#. A ``moded_item`` may be a subcomponent provided a containing object
-   is not a ``moded_item`` in the same ``mode_refinement``.  As long
-   as this rule is satisfied, different subcomponents of a composite
-   object may appear more than once.
+#. Two ``moded_item``\ s occuring in the same ``mode_refinement``
+   shall be independent unless they occur within distinct
+   ``conditional_mode``\ s or within distinct ``moded_item_list``\ s of
+   the same ``conditional_mode``.
+
 
 .. centered:: **Dynamic Semantics**
 
@@ -384,10 +404,10 @@ A *global* item is a ``moded_item`` that denotes a *global_variable_*\
 
 The ``global_aspect`` uses a ``mode_refinement`` as part of the
 specification of a subprogram interface explicitly stating the
-*global* items that it references.  It is also used in the detection
-of illegal aliasing, preventing unintended use of a *global* variable
-by forgetting to declare a *local* variable, and the accidental hiding
-of a *global* variable by a more *local* variable.
+*global* items that it references.  It may also be used in the
+detection of illegal aliasing, preventing unintended use of a *global*
+variable by forgetting to declare a *local* variable, and the
+accidental hiding of a *global* variable by a more *local* variable.
 
 .. centered:: **Syntax**
 
