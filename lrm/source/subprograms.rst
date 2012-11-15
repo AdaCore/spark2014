@@ -348,8 +348,8 @@ specified:
    notional type of Boolean. The if_expression provides additional
    details to the ``mode_refinement``.  It defines the condition under
    which each ``moded_item`` of the ``moded_item_list``, which is the
-   *dependent* expression, is directly or indirectly read, updted or
-   both.
+   *dependent* expression, has to be directly or indirectly read,
+   updated or both within the body of the subprogram.
 
 #. If the if_expression does not have a final else clause and all of
    the conditions of the if_expression evaluates to False it has the
@@ -390,6 +390,20 @@ as it is used purely for static analyses purposes and is not executed.
    aspects which are Ada aspects such as Pre and Post. RCC agrees.
    Target: rel2+.
 
+.. todo:: 
+   SB has comments and wording changes on Global Aspects section.
+   He has suggested merging Glabal Aspects with Param Aspects.
+   TJJ does not really agree with merging the two sections.
+   Address this issue after SB has returned from holiday.
+
+.. todo:: SB Comments that he does not see the explanation
+   of the checking of Global and Param Aspects in their description.
+   TJJ believes the correct place for the explanation is under
+   subprogram bodies because it is when the body is analyzed
+   that the checks and rules come into force.
+   There are some rules, perhaps they are not sufficient.
+   TJJ to discuss with SB when he returns from his holiday.
+   
 
 Global Aspects
 ~~~~~~~~~~~~~~
@@ -420,11 +434,7 @@ accidental hiding of a *global* variable by a more *local* variable.
 #. A ``global_aspect`` may only appear in the ``aspect_specification``
    of a subprogram or a constant declaration.
 #. A function subprogram may not have a ``mode_selector`` of
-   ``Output`` or ``In_Out`` in its ``global_aspect`` as a function is
-   not permitted to have side-effects.
-#. A ``moded_item`` appearing in a ``global_aspect`` must be the name
-   of a *global variable*, a subcomponent of a *global variable*, or
-   an *abstract state*.
+   ``Output`` or ``In_Out`` in its ``global_aspect``.
 #. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
    shall not have the same name, or be a subcomponent of an object
    with the same name as a *formal parameter* of the subprogram.
@@ -473,13 +483,10 @@ is used purely for static analyses purposes and is not executed.
    with Global => null; -- Indicates that the subprogram does not read or update
                         -- any global items.
    with Global => V;    -- Indicates that V is a mode in global item.
-                        -- This style can only be used in a function aspect specification
    with Global => (X, Y, Z);  -- X, Y and Z are mode in global items.
-                        -- This style can only be used in a function aspect specification
    with Global => (I, (if I = 0 then (P, Q, R));
                   -- I is a mode in global item and P, Q, and R are
                   -- conditional globals that are only read if I = 0.
-                  -- This style can only be used in a function aspect specification
    with Global => (Input => V); -- Indicates that V is a mode in global item.
    with Global => (Input => (X, Y, Z)); -- X, Y and Z are mode in global items.
    with Global => (Input => (I, (if I = 0 then (P, Q, R)));
@@ -575,7 +582,7 @@ is used purely for static analyses purposes and is not executed.
    -- record fields are preserved.
 
    procedure Q (A : in out An_Array_Type)
-   with Param => (Input  => A.(I),
+   with Param => (Input  => A (I),
                   Output => A (J));
    -- The Param aspect states that only element I of the array A is read
    -- and that only element J is updated; the values remainder of the
@@ -594,16 +601,21 @@ is used purely for static analyses purposes and is not executed.
 Dependency Aspects
 ~~~~~~~~~~~~~~~~~~
 
+.. todo:: SB has some wording and clarification comments in Legality
+   and static semantic rules.  These have only been partially included
+   as yet: D2.
+
+
 A ``dependency_aspect`` defines a ``dependency_relation`` for a
 subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The ``dependency_relation`` is used in information flow
 analysis.
 
 Dependency aspects are optional and are simple formal specifications.
-They are dependency relations which are given in terms of imports
-and exports.  An ``export`` of a subprogram is ``moded_item`` which is
+They are dependency relations which are given in terms of imports and
+exports.  An ``export`` of a subprogram is a ``moded_item`` which is
 updated directly or indirectly by the subprogram. An ``import`` of a
-subprogram is a ``moded_item``, the initial value of which, is used in
+subprogram is a ``moded_item``, the initial value of which is used in
 determining the final value of an ``export``.  A ``moded_item`` may be
 both an ``import`` and an ``export``.  An ``import`` must have mode
 **in** or mode **in out** and an ``export`` must have mode **in out**
@@ -649,11 +661,15 @@ A dependency may be conditional.  Each ``export`` in an
 dependent on every ``import`` in the ``import_list`` if the
 ``condition`` is ``True``.
 
+The Dependency Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is ``Depends``and the ``aspect_definition`` must follow
+the grammar of ``sependency_relation`` given below.
+
+
 .. centered:: **Syntax**
 
 ::
 
-   dependency_aspect      ::= Depends => dependency_relation
    dependency_relation    ::= null
                             | (dependency_clause {, dependency_clause})
    dependency_clause      ::= export_list =>[+] dependency_list
@@ -672,43 +688,49 @@ dependent on every ``import`` in the ``import_list`` if the
                             | null
    import                 ::= moded_item
    export                 ::= moded_item | function_result
-   function_result        ::= function_designator'Result
 
 where
 
-  ``function_designator`` is the name of the function which is
-  defining the ``aspect_specification`` enclosing the
-  ``dependency_aspect``.
+   ``function_result`` is a function Result attribute_reference.
 
 .. todo:: Do we want to consider conditional_modes which have (if
    condition then import_list {elsif condition then import_list}
-   [else import_list]) ?  It can imagine that this will be useful.
+   [else import_list]) ?  I can imagine that this will be useful.
    Target: rel2+.
+
+.. todo:: KSU have also discussed the need for a quantified dependency
+   using for all.  Consider this in rel2+
 
 .. centered:: **Legality Rules**
 
-#. A ``dependency_relation`` is an ``expression`` and must satisfy the
-   Ada syntax.  The non-terminals of the ``dependency_relation``
-   grammar, except ``dependency_clause``, are also ``expressions``.
-#. An ``aspect_specification`` of a subprogram may have at most one
-   ``dependency_aspect``.
-#. An ``import`` must have an effective mode of **in** or **in out**.
-#. An ``export`` must have an effective mode of **in out** or **out**.
-#. A ``moded_item`` which is both an ``import`` and an ``export``
-   shall have an effective mode of **in out**.
-#. A **null** ``dependency_relation`` indicates that there is not an
-   ``import`` nor an ``export``.
-#. A ``function_result`` may not appear in the ``dependency_relation``
-   of a procedure.
+#. An ``import`` must have an *effective mode* of **in** or **in out**
+   and an ``export`` must have an *effective mode* of **in out** or
+   **out**.  Note: As a consequence ``moded_item`` which is both an
+   ``import`` and an ``export`` shall have an effective mode of **in
+   out**.
+#. For the purposes of determining the legality of a Result
+   attribute_reference, a ``dependency_relation`` is considered to be
+   a postcondition of the function, if any, to which the enclosing
+   ``aspect_specification`` applies.
 #. There can be at most one ``export_list`` which is a **null** symbol
    and if it exists it must be the ``export_list`` of the last
    ``dependency_clause`` in the ``dependency_relation``.  An
    ``import`` which is in an ``import_list`` of a **null** export may
    not appear in another ``import_list`` of the same
    ``dependency_relation``.
-#. Every ``moded_item`` of a subprogram shall appear at least once in the
-   dependency relation.  A subcomponent of a composite object is
-   sufficient to show an appearance.
+#. Every ``moded_item`` in an ``export_list`` must be *independent*.
+#. Every ``moded_item`` in an ``import_list`` must be *independent*.
+#. Every ``export`` of the subprogram shall appear in exactly one
+   ``export_list``.  
+#. Every ``import`` of the subprogram shall appear in at least one
+   ``import_list``.
+#. Every ``import`` of the subprogram shall appear at least 
+of a ``dependency_relation`` shall be *independent*.
+ of the ``dependency_shall appear exactly once in a
+   ``dependency_relation``.  A subcomponent of a composite object V is
+   sufficient to show an appearance of V but more than one distinct
+   subcomponent V may appear as an ``export``
+
 #. An ``export`` may be a subcomponent provided the containing object
    is not an ``export`` in the same ``dependency_relation``.  As long
    as this rule is satisfied, different subcomponents of a composite
@@ -737,6 +759,8 @@ where
 
 .. centered:: **Static Semantics**
 
+#. A **null** ``dependency_relation`` indicates that there is not an
+   ``import`` nor an ``export``.
 #. Every *formal parameter* and *global variable* of a subprogram is a
    ``moded_item`` and is an ``import``, ``export`` or both.
 #. An ``import`` or an ``export`` may be represented by itself or by
