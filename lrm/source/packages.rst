@@ -42,7 +42,7 @@ on the program.  Often volatile *variables* are inputs or outputs to
 external devices or subsystems.
 
 For flow analysis and proof volatile *variables* have to be modelled
-differently to standard-non-volatile *variables*.  The abstract state
+differently to standard non-volatile *variables*.  The abstract state
 aspect provides a way to designate a named abstract state as being
 volatile, usually representing an external input or output.  This
 abstract state may be refined on to actual *variables* which are the
@@ -112,7 +112,7 @@ the grammar of ``abstract_state_list`` given below.
    12/11/2012. We feel the use of the "A with P1, P2" extension aggregate grammar is much
    more elegant than the old "nested aggregate" like grammar.
 
-.. centered:: **Static Semantics***
+.. centered:: **Static Semantics**
 
 Each state_name occurring in an Abstract_State aspect specification
 for a given package P introduces an implicit
@@ -123,7 +123,7 @@ declaration requires completion.
 [A state abstraction shall only be
 named in contexts where this is explicitly permitted (e.g., as part of a
 Globals aspect specification), but this is not a name resolution rule.
-Thus, the declaration of a state abstraction has has the same visibility
+Thus, the declaration of a state abstraction has the same visibility
 as any other nonoverloadable declaration (e.g., an exception declaration).
 A state abstraction is not an object; it does not have a type.
 The completion of a state abstraction can only be provided as part of
@@ -142,7 +142,7 @@ provided.]
  his opinion of Ada's "a generic subprogram is not a subprogram, a
  generic package is not a package" rule.
 
--- note::
+.. note::
  (SB) removing references to "observable" state for now. We can
  defer mention of caches until we get to refinement.
 
@@ -151,7 +151,7 @@ provided.]
 #. The ``identifier`` of a ``simple_property`` shall be "Volatile",
    "Input", or "Output".
 #. If a ``property_list`` includes "Volatile",
-   then it shall also include exactly one of `Input`` or ``Output``.
+   then it shall also include exactly one of ``Input`` or ``Output``.
 #. If a ``property_list`` includes either "Input" or "Output",
    then it shall also include "Volatile".
 #. The ``identifier`` of a ``name_value_property`` shall be
@@ -178,7 +178,7 @@ provided.]
 
 .. note::
  (SB) further cleanup needed here. I'll get back to this if I have time.
-   Review of volatility-related stuff needed.
+ Review of volatility-related stuff needed.
 
 #. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **in out** or  **out**.
@@ -186,7 +186,7 @@ provided.]
    mode **out**.
 #. A Volatile Output may only occur where a ``state_name`` may appear
    as a ``moded_item`` of mode **out**.
-#. A `state_name`` of a package is generally considered to be
+#. A ``state_name`` of a package is generally considered to be
    representing hidden state in one of the following categories:
  
    * Non-Volatile Uninitialized State - state which is not initialized
@@ -668,7 +668,7 @@ and post aspects are provided to express the refined view.
 
 In the refined view the constituents of each ``state_name`` have to be
 initialized consistently with their appearance or omission from the
-Initializes Aspect of the package.
+Package Dependency or Initializes Aspect of the package.
 
 
 Refined State Aspect
@@ -677,10 +677,6 @@ Refined State Aspect
 The Refined State Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` must follow
 the grammar of ``state_and_category_list`` given below.
-
-.. todo:: This section is to be re-written, using the extension-aggregate
-   grammar now used in section 7.1.2. Target: D2, but as soon as possible
-   to D1/CDR.
 
 .. centered:: **Syntax**
 
@@ -696,7 +692,6 @@ the grammar of ``state_and_category_list`` given below.
   constituent_list                 ::= constituent
                                      | (constituent {, constituent}) 
 
-
 where
 
   ``constituent ::=`` *variable_*\ ``name | state_name``
@@ -707,9 +702,9 @@ where
    package.
 #. If a package declaration has an Abstract State Aspect its body
    must have a Refined State Aspect.
-#. A package body may only have a Refined State Aspect if its
-   declaration does not have an Abstract State Aspect, if its
-   one and only ``abstract_state_name`` is **null**.
+#. If a package declaration does not have an Abstract State Aspect,
+   then the corresponding package body *may* have a Refined State Aspect
+   with exactly one ``state_and_category`` where the ``abstract_state_name`` is **null**.
 #. A Refined State Aspect of a package body has extended
    visibility; it is able to refer to a *variable* declared in the
    package body, or a ``state_name`` or *variable* declared in the
@@ -734,7 +729,7 @@ where
 #. The same identifier shall not appear more than once in a property
    list.
 #. There should be at most one **null** ``abstract_state_name`` and,
-   if it is present it must be Non_Volatile and the last entry of the 
+   if it is present it must be non-volatile and the last entry of the 
    ``state_and_category_list``.
 
 
@@ -771,7 +766,7 @@ where
 
    * The property Volatile indicates that the ``constituent`` is
      Volatile and this ``simple_property`` must be supplemented by one
-     of the ``simple_properties`` Input or Output indic ating whether
+     of the ``simple_properties`` Input or Output indicating whether
      the ``constituent`` is a Volatile Input or a Volatile Output.
    * The ``name_value_property`` Integrity is used to specify an
      integrity level for the ``constituent``.  Integrity levels may be
@@ -781,19 +776,19 @@ where
 
 #. A ``state_name`` declared in the Abstract State Aspect which
    has not designated as Volatile may be refined on to one or more
-   Volatile Input or Output ``constituents`` as well as Non_Volatile
+   Volatile Input or Output ``constituents`` as well as non-volatile
    ``constituents``.
 #. If a ``state_name`` declared in the Abstract State Aspect has been
    designated as Volatile with a ``property`` of Input (Output) then
    at least one ``constituent`` of the ``state_name`` must also be
-   designated as Volatile with a ``property``` of Input (Output) in
+   designated as Volatile with a ``property`` of Input (Output) in
    the Refined State Aspect.
 #. A **null** ``abstract_state_name`` represents a hidden state
    component of a package which has no logical effect on the view of
    the package visible to a user.  An example would be a cache used to
    speed up an operation but does not have an effect on the result of
    the operation.
-#. A Non_Volatile ``constituent`` of a **null** ``abstract_state_name``
+#. A non-volatile ``constituent`` of a **null** ``abstract_state_name``
    must be initialized by package elaboration.
 
 .. centered:: **Verification Rules**
@@ -811,6 +806,44 @@ where
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with state abstraction and refinement.
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   -- Here, we present a package Q that declares three abstract states:
+   package Q
+      with Abstract_State => (A, B, (C with Volatile, Input)),
+           Initializes    => (A, B)
+   is 
+      ...
+   end Q;
+
+   -- The package body refines
+   --   A onto three concrete variables declared in the package body
+   --   B onto the abstract state of a nested package
+   --   C onto a raw port in the package body
+   package body Q
+      with Refined_State => (A => (F, G, H),
+                             B => R.State,
+                             C => (Port with Volatile, Input))
+   is
+      F, G, H : Integer := 0; -- all initialized as required
+ 
+      Port : Integer
+         with Volatile, Input;
+
+      package R
+         with Abstract_State => State,
+              Initializes    => State -- initialized as required
+      is
+         ...
+      end R;
+
+      ...
+
+   end Q;
+
 
 Abstract State and Package Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -876,10 +909,10 @@ Initializes Aspect which contains a ``export`` which is a
 ``state_name`` then each ``constituent`` of the ``state_name`` must be
 initialized during package elaboration or be designated as Volatile,
 in which case they are implicitly initialized.  A ``constituent`` of a
-Non_Volatile ``state_name`` of a package which does not appear in the
+non-volatile ``state_name`` of a package which does not appear in the
 Initializes Aspect of the package must not be initialized during
 package elaboration.  A ``constituent`` of a Volatile ``state_name``
-which is Non_Volatile must initialized during package elaboration.
+which is non-volatile must initialized during package elaboration.
 
 .. centered:: **Verification Rules**
 
@@ -905,7 +938,7 @@ which is Non_Volatile must initialized during package elaboration.
      Dependency Aspect or Initializes Aspect of an embedded
      package or private child package.
 
-#. A Non_Volatile ``constituent`` of a Volatile ``state_name`` must be
+#. A non-volatile ``constituent`` of a Volatile ``state_name`` must be
    initialized during package elaboration.
 #. Each ``constituent`` of a **null** ``abstract_state_name`` must be
    initialized implicitly or during package elaboration.
@@ -954,7 +987,7 @@ the grammar of ``mode_refinement`` in :ref:`mode-refinement`.
    * For each item in G which is not a ``state_name`` of Q, the same
      item must appear with the same mode in G';
    * For each item in G which is a ``state_name`` S of package Q that
-     is Non_Volatile at least one ``constituent`` of S must appear in
+     is non-volatile at least one ``constituent`` of S must appear in
      G' and,
       
      * if the item in G has mode **in** then each ``constituent`` of S

@@ -1,36 +1,37 @@
 package body Nesting_Refinement_14
-   with Refined_State => (State => (X, Y)) -- Refined State
-is   
+   -- State is refined onto two concrete variables X and Y
+   with Refined_State => (State => (X, Y))
+is
    X, Y: Integer;
-   
+
    procedure Operate_On_State
       with Refined_Global => (In_Out => X,
-		              Output => Y)
+                              Output => Y)
    is
       Z: Integer;
-      
+
       procedure Add_Z_To_X
          with Global => (In_Out => X,
                          Input  => Z)
       is
       begin
-	 X := X + Z;
+         X := X + Z;
       end Add_Z_To_X;
-      
+
       procedure Overwrite_Y_With_Z
          with Global => (Output => Y,
                          Input  => Z)
       is
       begin
-	 Y := Z;
+         Y := Z;
       end Overwrite_Y_With_Z;
-	 
+
    begin
       Z := 5;
       Add_Z_To_X;
       Overwrite_Y_With_Z;
    end Operate_On_State;
-   
+
 begin -- Promised to initialize State
       -- (which comprises of X and Y)
    X := 10;
