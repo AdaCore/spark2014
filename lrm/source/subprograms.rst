@@ -393,7 +393,7 @@ as it is used purely for static analyses purposes and is not executed.
    SB has comments and wording changes on Global Aspects section.
    He has suggested merging Global Aspects with Param Aspects.
    TJJ does not really agree with merging the two sections.
-   Address this issue after SB has returned from holiday.
+   Address this issue after SB has returned from holiday. Target: D2.
 
 .. todo:: SB Comments that he does not see the explanation
    of the checking of Global and Param Aspects in their description.
@@ -401,7 +401,7 @@ as it is used purely for static analyses purposes and is not executed.
    subprogram bodies because it is when the body is analyzed
    that the checks and rules come into force.
    There are some rules, perhaps they are not sufficient.
-   TJJ to discuss with SB when he returns from his holiday.
+   TJJ to discuss with SB when he returns from his holiday. Target: D2.
    
 
 Global Aspects
@@ -519,7 +519,7 @@ appears in a ``mode_specification`` with a ``mode selector`` of
 ``Input`` and in another with a ``mode_selector`` of ``Output``
 (e.g. with different conditions), its *formal parameter* mode should
 be **in out**.  If a subcomponent of a *formal parameter* appears in
-an ``Output`` ``mode _specification``, e.g., Param => (Output => A
+an ``Output`` ``mode_specification``, e.g., Param => (Output => A
 (I)), even though the effective mode of A is **in out** the *formal
 parameter*, A, may be given as mode **out** provided no other
 subcomponents of A appear in an ``Input`` ``mode_specification``.
@@ -653,7 +653,7 @@ dependent on every ``import`` in the ``import_list`` if the
 ``condition`` is ``True``.
 
 The Dependency Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is ``Depends``and the ``aspect_definition`` must follow
+the ``aspect_mark`` is "Depends" and the ``aspect_definition`` must follow
 the grammar of ``dependency_relation`` given below.
 
 
@@ -716,8 +716,8 @@ where
 #. Every ``import`` of the subprogram shall appear in at least one
    ``import_list``.
 #. Every ``import`` of the subprogram shall appear at least 
-of a ``dependency_relation`` shall be *independent*.
- of the ``dependency_shall appear exactly once in a
+   of a ``dependency_relation`` shall be *independent*.
+   of the ``dependency_shall appear exactly once in a
    ``dependency_relation``.  A subcomponent of a composite object V is
    sufficient to show an appearance of V but more than one distinct
    subcomponent V may appear as an ``export``
@@ -853,14 +853,14 @@ it used purely for static analyses purposes and is not executed.
    procedure T (X : in Integer; A : in out Integer)
    with Global  => (Input  => (Y, Z),
                     In_Out => (B, C, D)),
-        Depends => ((A, B) =>+ (X, if X = 7 then (A,Y)),
+        Depends => ((A, B) =>+ (X, if X = 7 then (A,Y,Z)),
                      C     =>+ Y,
                      D     =>+ null);
    -- This example introduces a conditional dependency for the final values of A and B.
    -- The final value of A is dependent on the initial values of A and X and if X = 7
-   -- then it is also dependent on the initial value of Y.
+   -- then it is also dependent on the initial value of Y and Z.
    -- Similarly, the final value of B is dependent on the initial values of B and X
-   -- and if X = 7 then it is also dependent on the initial values of A and Y.
+   -- and if X = 7 then it is also dependent on the initial values of A, Y, and Z.
 
    function F (X, Y : Integer) return Integer
    with Global  => G,
@@ -1114,8 +1114,8 @@ calls.
 
 .. todo:: Relax rules for aliasing based on the following paragraph.
    RCC comment: I am happy that these rules are OK given the definition
-   of "overlapping" below. Target: D1/CDR. Assign: ??? (probably TJJ and YM
-   to agree this is all OK.)
+   of "overlapping" below. Assign to SB, TJJ and/or YM
+   to agree this is all OK. Target: D2.
 
 In |SPARK|, it is not allowed in a call to pass as parameters references to
 overlapping locations, when at least one of the parameters is of mode ``out``
@@ -1147,8 +1147,8 @@ subprogram and the subprograms it calls.
 #. In a call to a procedure P:
 
    #. If P is declared in package Q with an explicit ``global_aspect``
-      and the body of P has a ``refined_global_aspect`` (need a
-      reference here???) then in applying the anti-aliasing rules to
+      and the body of P has a ``refined_global_aspect``
+      (see :ref:`refined-global-aspect`) then in applying the anti-aliasing rules to
       calls of P within the body of Q the ``refined_global_aspect`` of
       the body or body stub of P should be used.
    #. In all other cases the ``global_aspect`` from declaration or
