@@ -26,7 +26,7 @@ Objects and Named Numbers
 -------------------------
 
 The entity declared by an object declaration is
-in |SPARK| if its declaration does not contain the reserved word ``aliased``,
+in |SPARK| if its declaration does not contain the reserved word **aliased**,
 its type is in |SPARK|, and its initialization expression, if any, is in
 |SPARK|.
 
@@ -75,7 +75,7 @@ Access types allow the creation of aliased data structures and objects, which
 notably complicate the specification and verification of a program's
 behavior. Therefore, all forms of access type declaration are excluded from |SPARK|.
 
-The attribute ``'Access`` is not in |SPARK|.
+The attribute ``Access`` is not in |SPARK|.
 
 Finally, as they are based on access discriminants, user-defined references
 and user-defined indexing are not in |SPARK|.
