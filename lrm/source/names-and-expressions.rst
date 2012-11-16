@@ -143,7 +143,7 @@ multidimensional array type ``T``, the attribute
 ::
 
     X'Update ( multidimensional_array_component_association
-             {, multidimensional_array_component_association} )
+            {, multidimensional_array_component_association} )
 
 is defined with associated syntax
 
