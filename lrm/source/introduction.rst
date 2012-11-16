@@ -91,7 +91,7 @@ the needs of particular
   exceptions will never be raised.
 
 - Formal verification of functional properties, based on contracts expressed as
-  pre-conditions, post-conditions, type-invariants and so on.
+  preconditions, postconditions, type invariants and so on.
 
 - Formal verification of non-functional properties, such as WCET and
   worst-case memory usage analysis.
