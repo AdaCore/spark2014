@@ -153,7 +153,7 @@ proved.
 
 Proving this property implies the termination of the loop.
 
-``Loop_Entry`` Attribute
+Attribute ``Loop_Entry``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 For a prefix ``X`` that denotes an object of a nonlimited type, the
@@ -164,7 +164,7 @@ following attribute is defined
    X'Loop_Entry [(loop_name)]
 
 A ``Loop_Entry`` ``attribute_reference`` "applies to a loop statement" in the
-same way that an exit_statement does (see RM 5.7). For every rule
+same way that an ``exit_statement`` does (see RM 5.7). For every rule
 about ``exit_statements`` in the Name Resolution Rules and Legality Rules
 sections of RM 5.7, a corresponding rule applies to ``Loop_Entry``
 ``attribute_references``.
@@ -233,7 +233,7 @@ with "Loop_Entry" substituted for "Old". These include:
 * prefix name resolution rules (including expected type definition)
 * nominal subtype definition
 * accessibility level definition
-* runtime tag value determination (in the case where X is tagged)
+* runtime tag value determination (in the case where ``X`` is tagged)
 * interactions with abstract types
 * interactions with anonymous access types
 * forbidden attribute uses in the prefix of the ``attribute_reference``.

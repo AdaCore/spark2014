@@ -24,14 +24,16 @@ declaration is side-effect free.
 .. centered:: *Flow Analysis*
 
 #. A function declaration shall not update any of the names listed in
-   its Global Aspect whether it is explicitly given or implicitly
+   its ``Global`` aspect whether it is explicitly given or implicitly
    synthesized from the subprogram implementation.
 
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
 
+.. todo::
    What do we do regarding null exclusion parameters? Target: D2
 
+.. todo::
    What do we do regarding function access results and function null exclusion results? Target: D2
 
 
@@ -58,14 +60,18 @@ are in |SPARK|.
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| provides extra aspects, the Global, Param and Dependency
+|SPARK| provides extra aspects, the ``Global``, ``Param`` and ``Dependency``
 aspects to strengthen a subprogram declaration so that constructive,
 modular program analysis may be performed.  With the extra aspects the
 body of a subprogram does not have to be implemented in order for
 analysis and proof of callers of the subprogram.
 
-A Contract Cases aspect is also provided which provides a convenient
+A ``Contract_Cases`` aspect is also provided which provides a convenient
 way of specifying formally the required functionality of a subprogram.
+
+.. note::
+ (YM) The following paragraph is redundant with the preceding ones. Which should
+ be retained?
 
 Extra aspects are provided in |SPARK|, ``Global``, ``Param``,
 ``Dependency`` and ``Contract_Cases`` in addition to the Ada ``Pre``
@@ -77,16 +83,19 @@ and a potentially more concise form of pre and postcondition.
 
 .. centered:: **Legality Rules**
 
-#. The Param, Global and dependency aspects are all optional but, if
+#. The ``Param``, ``Global`` and ``Dependency`` aspects are all optional but, if
    present, must be the first entries in a subprogram
-   ``aspect_specification`` in the order Param aspect, Global Aspect
-   and Dependency Aspect.
+   ``aspect_specification`` in the order ``Param`` aspect, ``Global`` aspect
+   and ``Dependency`` aspect.
+
+.. note:: (YM) why these ordering restrictions? I don't think we should
+          enforce this.
 
 
 Contract Cases
 ~~~~~~~~~~~~~~
 
-Contract cases provide a concise way to specify a mutually independent
+The ``Contract_Cases`` aspect provide a concise way to specify mutually independent
 cases guarded by expressions using the initial value of **in** or **in
 out** *formal parameters* or *global variables*.  Each case specifies
 the final value of mode **out** or **in out** *formal parameters* or
@@ -219,7 +228,7 @@ where
 Mode Refinement
 ~~~~~~~~~~~~~~~
 
-Mode refinement is used in the specification of both Global and Param
+Mode refinement is used in the specification of both ``Global`` and ``Param``
 aspects.  It allows the mode of each item read or updated by a
 subprogram, *formal parameters*, *global variables* (see Ada LRM 8.1)
 and *abstract states* (see :ref:`abstract-state`) to be more precisely
@@ -229,12 +238,12 @@ specified:
    may be identified and a mode specified for each using a
    ``global_aspect``.
  * Modes can be applied to independent subcomponents of an object. For
-   instance, the array element A (I) may be designated as mode **out**
-   whereas A (J) may be designated as mode **in**.  This mode
+   instance, the array element ``A (I)`` may be designated as mode **out**
+   whereas ``A (J)`` may be designated as mode **in**.  This mode
    refinement may be applied to *global variables* using the
-   ``global_aspect`` and *formal parameters* using the
-   ``param_aspect``.
- * Both the ``global_aspect`` and the ``param_aspect`` may have
+   ``Global`` aspect and *formal parameters* using the
+   ``Param`` aspect.
+ * Both the ``Global`` aspect and the ``Param`` aspect may have
    conditional mode definitions.  If the ``condition`` is ``True``
    then the items guarded by the ``condition`` have the modes given in
    the specification otherwise these items may not be used in that
@@ -276,7 +285,7 @@ specified:
      ``state_name``; or
    * it is a direct or expanded name denoting an object renaming
      declaration whose object name is *moded_item eligible*; or
-   * it is an indexed_component or selected_component whose prefix is
+   * it is an ``indexed_component`` or ``selected_component`` whose prefix is
      *moded_item eligible*.
 
 #. Two *moded_item eligible* names are said to be *independent* if
@@ -285,9 +294,9 @@ specified:
      they denote two different objects; or
    * one is a direct or expanded name denoting an object renaming
      declaration whose object is *independent* of the other; or
-   * one is a selected_component whose prefix is *independent* of the
+   * one is a ``selected_component`` whose prefix is *independent* of the
      other; or
-   * both are selected_components and their selector_names denote
+   * both are ``selected_components`` and their ``selector_names`` denote
      different components of the same record type; or
    * either is an indexed component
 
@@ -298,8 +307,8 @@ specified:
   * If the ``moded_item`` is read directly or indirectly by the
     subprogram its *effective mode* is **in**.
   * If the ``moded_item`` is not read but always updated by the
-    subprogram directly or indirectly then its *efective mode* is
-    **out***.
+    subprogram directly or indirectly then its *effective mode* is
+    **out**.
   * If the body of the suboprogram neither reads or updates the
     ``moded_item``, directly or indirectly then the *effective mode*
     is unmoded.
@@ -311,12 +320,12 @@ specified:
    * if a ``moded_item`` is listed in a ``mode_specification`` with a
      mode selector of ``In_Out``, the *effective  mode* is **in out**;
    * if a ``moded_item`` is listed in both a ``mode_specification``
-     with a mode selector of ``In`` and one of ``Out``, the
+     with a mode selector of ``Input`` and one of ``Output``, the
      *effective mode* is **in out**;
    * if a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of In, the *effective mode* is **in**.
+     with a mode selector of ``Input``, the *effective mode* is **in**.
    * If a ``moded_item`` is only listed in a ``mode_specification``
-     with a mode selector of ``Out``, the *effective mode* is
+     with a mode selector of ``Output``, the *effective mode* is
      **out**; and
    * If a ``moded_item`` is listed in a ``mode_specification`` with a
      mode selector of ``Proof``, the *effective mode* is unmoded
@@ -350,8 +359,8 @@ specified:
    *dependent* expression, has to be directly or indirectly read,
    updated or both within the body of the subprogram.
 
-#. If the if_expression does not have a final else clause and all of
-   the conditions of the if_expression evaluates to False it has the
+#. If the ``if_expression`` does not have a final else clause and all of
+   the conditions of the ``if_expression`` evaluates to False it has the
    effect of **else null**.
 
 #. A *dependent* expression which is a **null** ``moded_item_list``
