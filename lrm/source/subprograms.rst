@@ -304,15 +304,15 @@ specified:
    subprogram describes the way that the object is used by the
    subprogram:
 
-  * If the ``moded_item`` is read directly or indirectly by the
-    subprogram its *effective mode* is **in**.
-  * If the ``moded_item`` is not read but always updated by the
-    subprogram directly or indirectly then its *effective mode* is
-    **out**.
-  * If the body of the suboprogram neither reads or updates the
-    ``moded_item``, directly or indirectly then the *effective mode*
-    is unmoded.
-  * Otherwise the *effective mode* is **in out**.
+   * If the ``moded_item`` is read directly or indirectly by the
+     subprogram its *effective mode* is **in**.
+   * If the ``moded_item`` is not read but always updated by the
+     subprogram directly or indirectly then its *effective mode* is
+     **out**.
+   * If the body of the suboprogram neither reads or updates the
+     ``moded_item``, directly or indirectly then the *effective mode*
+     is unmoded.
+   * Otherwise the *effective mode* is **in out**.
 
 #. The *effective mode* of a ``moded_item`` is determined as
    follows:
