@@ -7,7 +7,7 @@ Users may choose to apply restrictions to simplify the use of wide character set
 Character Set
 -------------
 
-No extensions. For the restrictions refer to :ref:`restrictions-and-profiles-label`.
+No extensions or restrictions.
 
 Lexical Elements, Separators, and Delimiters
 --------------------------------------------

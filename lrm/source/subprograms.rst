@@ -27,11 +27,11 @@ declaration is side-effect free.
    its Global Aspect whether it is explicitly given or implicitly
    synthesized from the subprogram implementation.
 
-.. todo:: 
+.. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
 
-   What do we do regarding null exclusion parameters? Target: D2  
-  
+   What do we do regarding null exclusion parameters? Target: D2
+
    What do we do regarding function access results and function null exclusion results? Target: D2
 
 
@@ -280,7 +280,7 @@ specified:
      *moded_item eligible*.
 
 #. Two *moded_item eligible* names are said to be *independent* if
-   
+
    * both are direct or expanded names denoting *entire* objects and
      they denote two different objects; or
    * one is a direct or expanded name denoting an object renaming
@@ -307,7 +307,7 @@ specified:
 
 #. The *effective mode* of a ``moded_item`` is determined as
    follows:
-  
+
    * if a ``moded_item`` is listed in a ``mode_specification`` with a
      mode selector of ``In_Out``, the *effective  mode* is **in out**;
    * if a ``moded_item`` is listed in both a ``mode_specification``
@@ -389,7 +389,7 @@ as it is used purely for static analyses purposes and is not executed.
    aspects which are Ada aspects such as Pre and Post. RCC agrees.
    Target: rel2+.
 
-.. todo:: 
+.. todo::
    SB has comments and wording changes on Global Aspects section.
    He has suggested merging Global Aspects with Param Aspects.
    TJJ does not really agree with merging the two sections.
@@ -402,7 +402,7 @@ as it is used purely for static analyses purposes and is not executed.
    that the checks and rules come into force.
    There are some rules, perhaps they are not sufficient.
    TJJ to discuss with SB when he returns from his holiday. Target: D2.
-   
+
 
 Global Aspects
 ~~~~~~~~~~~~~~
@@ -712,10 +712,10 @@ where
 #. Every ``moded_item`` in an ``export_list`` must be *independent*.
 #. Every ``moded_item`` in an ``import_list`` must be *independent*.
 #. Every ``export`` of the subprogram shall appear in exactly one
-   ``export_list``.  
+   ``export_list``.
 #. Every ``import`` of the subprogram shall appear in at least one
    ``import_list``.
-#. Every ``import`` of the subprogram shall appear at least 
+#. Every ``import`` of the subprogram shall appear at least
    of a ``dependency_relation`` shall be *independent*.
    of the ``dependency_shall appear exactly once in a
    ``dependency_relation``.  A subcomponent of a composite object V is
@@ -881,8 +881,7 @@ Proof Functions
 Formal Parameter Modes
 ----------------------
 
-See Appendix :ref:`restrictions-and-profiles-label` for restrictions that may be applied.
-
+No extensions or restrictions.
 
 Subprogram Bodies
 -----------------
@@ -1031,7 +1030,7 @@ implementation of its body as described below.
 
 #. A dependency relation D' is synthesised from the body of a
    subprogram P (if it exists). if P has a ``dependency_aspect`` and:
-   
+
    * has ``refined_dependency_aspect`` then D' is compared with the
      ``refined_dependency_aspect`` any differences reported; or
    * has a ``dependency_aspect`` but not a
@@ -1084,14 +1083,14 @@ Global Aspects
 
 Every subprogram is considered to have a ``global_aspect`` whether it
 is explicit or synthesized and implicit.  A subprogram declared in the
-visible part of a package may also have a ``refined_global_aspect``, 
+visible part of a package may also have a ``refined_global_aspect``,
 again this may be explicit or synthesized.  Which of these two aspects
 is used depends on where the subprogram is called.  If it is called
 from within the package or its private dependents and the subprogram
 has a ``refined_global_aspect`` then this is used.  In all other calls
-the ``global_aspect`` is used.  
+the ``global_aspect`` is used.
 
-Anti-Aliasing 
+Anti-Aliasing
 ~~~~~~~~~~~~~
 
 An alias is a name which refers to the same object as another name.
@@ -1204,7 +1203,7 @@ visible part of package it may also have a
 
 The dependency relation of a subprogram is used to determine the effect
 of a call to a subprogram in terms of the flows of information through
-the subprogram.  
+the subprogram.
 
 #. A subprogram P declared in the visible part of a package, called
    within the body or private descendants of the package and P
