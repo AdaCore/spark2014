@@ -45,7 +45,7 @@ SPARK 2014 LRM
 
    A. Restrictions and Profiles <restrictions-and-profiles>
    B. Extended Legality Rules <extended-legality>
-   C. SPARK2005 to |SPARK| Mapping Specification <mapping-spec>
+   C. SPARK 2005 to |SPARK| Mapping Specification <mapping-spec>
    D. To-Do Summary <todo-summary>
    E. GNU Free Documentation License <gfdl>
 

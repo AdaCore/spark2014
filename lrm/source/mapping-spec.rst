@@ -1,11 +1,11 @@
 .. _mapping-spec-label:
 
-SPARK2005 to |SPARK| Mapping Specification
-==========================================
+SPARK 2005 to |SPARK| Mapping Specification
+===========================================
 
-This document defines the mapping between SPARK2005 and |SPARK|.
+This document defines the mapping between SPARK 2005 and |SPARK|.
 It is intended as both a completeness check for the |SPARK| language
-design, and as a guide for projects upgrading from SPARK2005 to |SPARK|.
+design, and as a guide for projects upgrading from SPARK 2005 to |SPARK|.
 
 Subprogram patterns
 -------------------
@@ -15,11 +15,11 @@ Subprogram patterns
 Global and Derives
 ~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how global variables can be accessed through 
-procedures and functions and presents how the `derives` annotation is structured. 
-The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap` 
-accesses two global variables and swaps their contents while `Add` returns their 
-sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further 
+This example demonstrates how global variables can be accessed through
+procedures and functions and presents how the `derives` annotation is structured.
+The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap`
+accesses two global variables and swaps their contents while `Add` returns their
+sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further
 insight and have thus not been included.
 
 Specifications in SPARK 2005:
@@ -41,12 +41,12 @@ Pre/Post/Return contracts
 
 This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured
 and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
-`Add` perform the same task as in the previous example, but they have been 
-augmented by post annotations. Two additional functions (`Max` and `Divide`) 
-and one additional procedure (`Swap_Array_Elements`) have also been included 
-in this example in order to demonstrate further features. `Max` returns the 
-maximum of the two globals. `Divide` returns the division of the two globals 
-after having ensured that the divisor is not equal to zero. The `Swap_Array_Elements` 
+`Add` perform the same task as in the previous example, but they have been
+augmented by post annotations. Two additional functions (`Max` and `Divide`)
+and one additional procedure (`Swap_Array_Elements`) have also been included
+in this example in order to demonstrate further features. `Max` returns the
+maximum of the two globals. `Divide` returns the division of the two globals
+after having ensured that the divisor is not equal to zero. The `Swap_Array_Elements`
 procedure swaps the contents of two elements of an array. For the same reasons
 as in the previous example, the bodies are not included.
 
@@ -91,7 +91,7 @@ Specification in |SPARK|:
       :linenos:
 
 .. todo::
-   *Note that the details of false alarm management are still TBD and so 
+   *Note that the details of false alarm management are still TBD and so
    there is currently no equivalent in the* |SPARK| *body to the accept annotation
    in the SPARK 2005 body.*
 
@@ -106,8 +106,8 @@ Body in |SPARK|:
 Nesting of subprograms, including more refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how procedures and functions can be nested within 
-other procedures and functions. Furthermore, it illustrates how global variables 
+This example demonstrates how procedures and functions can be nested within
+other procedures and functions. Furthermore, it illustrates how global variables
 refinement can be performed.
 
 Specifications in SPARK 2005:
@@ -145,9 +145,9 @@ Abstract Data Types (ADTs)
 Visible type
 ^^^^^^^^^^^^
 
-The following example adds no mapping information. The SPARK 2005 and |SPARK| versions 
-of the code are identical. Only the specifications of the SPARK 2005 code will be presented. 
-The reason why this code is being provided is to allow for a comparison between a package that 
+The following example adds no mapping information. The SPARK 2005 and |SPARK| versions
+of the code are identical. Only the specifications of the SPARK 2005 code will be presented.
+The reason why this code is being provided is to allow for a comparison between a package that
 is purely public and an equivalent one that also has private elements.
 
 Specifications in SPARK 2005:
@@ -161,7 +161,7 @@ Specifications in SPARK 2005:
 Private type
 ^^^^^^^^^^^^
 
-Similarly to the previous example, this one does not contain any annotations either. Due 
+Similarly to the previous example, this one does not contain any annotations either. Due
 to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specifications of
 the 2005 version shall be presented.
 
@@ -176,13 +176,13 @@ Specifications in SPARK 2005:
 Private type with refined pre/post contracts in the body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how `pre` and `post` conditions, that lie in the specifications 
-of a package, can be refined in the package's body. In order to prove the absence of runtime 
-errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not 
-presented here since they are not required in the |SPARK| version. Contracts that need not 
-be refined, do not have to be repeated in the body of a package. In this particular example, 
-the body of the SPARK 2005 might seem to be needlessly repeating contracts. However, this 
-is not true since the contracts that are being repeated are indirectly being refined through 
+This example demonstrates how `pre` and `post` conditions, that lie in the specifications
+of a package, can be refined in the package's body. In order to prove the absence of runtime
+errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not
+presented here since they are not required in the |SPARK| version. Contracts that need not
+be refined, do not have to be repeated in the body of a package. In this particular example,
+the body of the SPARK 2005 might seem to be needlessly repeating contracts. However, this
+is not true since the contracts that are being repeated are indirectly being refined through
 the refinement of the `Is_Empty` and `Is_Full` functions.
 
 Specifications in SPARK 2005:
@@ -319,18 +319,18 @@ As per SPARK 2005.
 Private/Public child visibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates visibility rules that apply between public children, 
+The following example demonstrates visibility rules that apply between public children,
 private children and their parent in SPARK 2005. More specifically, it shows that:
 
 * Private children are able to see their private siblings but not their public siblings.
 * Public children are able to see their public siblings but not their private siblings.
 * All children have access to their parent but the parent can only access private children.
 
-Applying the SPARK tools on the following files will produce certain errors. This was 
-intentionally done in order to illustrate both legal and illegal access attempts. 
+Applying the SPARK tools on the following files will produce certain errors. This was
+intentionally done in order to illustrate both legal and illegal access attempts.
 
 .. todo::
-   The |SPARK| version of the code is not provided since the restrictions that are to be 
+   The |SPARK| version of the code is not provided since the restrictions that are to be
    applied in terms of package visibility are yet to be determined.
 
 Specification of parent in SPARK 2005:
@@ -386,9 +386,9 @@ Visible, concrete state
 Initialized by declaration
 ++++++++++++++++++++++++++
 
-The example that follows presents a way of initializing a concrete state (a state that 
-cannot be refined) at the point of the declaration of the variables that compose it. 
-The body of the |SPARK| version of the code is not presented since it is an exact copy 
+The example that follows presents a way of initializing a concrete state (a state that
+cannot be refined) at the point of the declaration of the variables that compose it.
+The body of the |SPARK| version of the code is not presented since it is an exact copy
 of the SPARK 2005 body.
 
 Specifications in SPARK 2005:
@@ -414,10 +414,10 @@ Specifications in |SPARK|:
 Initialized by elaboration
 ++++++++++++++++++++++++++
 
-The following example presents how a package's concrete state can be initialized at 
-the statements section of the body. The specifications of both SPARK 2005 and |SPARK| 
-are not presented since they are identical to the specifications of the previous example. 
-Furthermore, the |SPARK| version of the body is not provided since it is identical to 
+The following example presents how a package's concrete state can be initialized at
+the statements section of the body. The specifications of both SPARK 2005 and |SPARK|
+are not presented since they are identical to the specifications of the previous example.
+Furthermore, the |SPARK| version of the body is not provided since it is identical to
 the SPARK 2005 body.
 
 Body in SPARK 2005:
@@ -431,8 +431,8 @@ Body in SPARK 2005:
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how variables, that need to be hidden from the users of 
-a package, can be placed on the package's private section. The bodies of the packages have 
+The following example demonstrates how variables, that need to be hidden from the users of
+a package, can be placed on the package's private section. The bodies of the packages have
 not been included since they contain no annotation.
 
 Specifications in SPARK 2005:
@@ -455,8 +455,8 @@ Private, abstract state, refining onto concrete states in body
 Initialized by procedure call
 +++++++++++++++++++++++++++++
 
-In this example, the abstract state declared at the specifications is refined at the body. 
-Procedure `Init` can be invoked by users of the package, in order to initialize the state. 
+In this example, the abstract state declared at the specifications is refined at the body.
+Procedure `Init` can be invoked by users of the package, in order to initialize the state.
 
 Specifications in SPARK 2005:
 
@@ -487,7 +487,7 @@ Body in |SPARK|:
 Initialized by elaboration of declaration
 +++++++++++++++++++++++++++++++++++++++++
 
-The example that follows introduces an abstract state at the specifications and refines it 
+The example that follows introduces an abstract state at the specifications and refines it
 at the body. The constituents of the abstract state are initialized at declaration.
 
 Specifications in SPARK 2005:
@@ -519,9 +519,9 @@ Body in |SPARK|:
 Initialized by package body statements
 ++++++++++++++++++++++++++++++++++++++
 
-This example introduces an abstract state at the specifications and refines it at the body. 
-The constituents of the abstract state are initialized at the statements part of the body. 
-The specifications of the SPARK 2005 and |SPARK| versions of the code are as in the previous 
+This example introduces an abstract state at the specifications and refines it at the body.
+The constituents of the abstract state are initialized at the statements part of the body.
+The specifications of the SPARK 2005 and |SPARK| versions of the code are as in the previous
 example and have thus not been included.
 
 Body in SPARK 2005:
@@ -541,8 +541,8 @@ Body in |SPARK|:
 Initialized by mixture of declaration and statements
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-This example introduces an abstract state at the specifications and refines it at the body. 
-Some of the constituents of the abstract state are initialized during their declaration and 
+This example introduces an abstract state at the specifications and refines it at the body.
+Some of the constituents of the abstract state are initialized during their declaration and
 the rest at the statements part of the body.
 
 Specifications in SPARK 2005:
@@ -575,9 +575,9 @@ Body in |SPARK|:
 Initial condition
 ^^^^^^^^^^^^^^^^^
 
-This example introduces a new |SPARK| feature that did not exist in SPARK 2005. 
-On top of declaring an abstract state and promising to initialize it, we also illustrate 
-certain conditions that will be valid after initialization. The body is not being provided 
+This example introduces a new |SPARK| feature that did not exist in SPARK 2005.
+On top of declaring an abstract state and promising to initialize it, we also illustrate
+certain conditions that will be valid after initialization. The body is not being provided
 since it does not add any further insight.
 
 Specifications in |SPARK|:
@@ -696,8 +696,8 @@ Private, abstract state, refining onto mixture of the above
 This example is based around the packages from sections `Private, abstract state,
 refining onto concrete state of private child`_
 and `Private, abstract state, refining onto concrete state of embedded package`_.
-Source_A is an embedded package, while Source_B is a private child. In order to 
-avoid repetition, the code of this example is not being presented. However, it is 
+Source_A is an embedded package, while Source_B is a private child. In order to
+avoid repetition, the code of this example is not being presented. However, it is
 available under the "code\asm_abstract_state_refined_in_embedded_and_private_child".
 
 External Variables
@@ -710,7 +710,7 @@ Basic Input and Output Device Drivers
 
 The following example shows a main program - Copy - that reads all available data
 from a given input port, stores it internally during the reading process in a stack
-and then outputs all the data read to an output port. The specifications of the 
+and then outputs all the data read to an output port. The specifications of the
 stack package are not being presented since they are identical to previous examples.
 
 Specification of main program in SPARK 2005:
@@ -1104,9 +1104,9 @@ Assert, Assume, Check contracts
 Assert (in loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how the `assert` annotation can be used inside a loop. 
-At each run of the loop the list of existing hypotheses is cleared and the statements that 
-are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of 
+The following example demonstrates how the `assert` annotation can be used inside a loop.
+At each run of the loop the list of existing hypotheses is cleared and the statements that
+are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of
 `assert`, while within a loop, is `pragma Loop_Invariant`.
 
 Specifications in SPARK 2005:
@@ -1139,8 +1139,8 @@ Body in |SPARK|:
 Assert (no loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While not in a loop, the SPARK 2005 `assert` annotation maps to `pragma Assert_And_Cut` 
-in |SPARK|. These statements clear the list of hypotheses and add the statements that 
+While not in a loop, the SPARK 2005 `assert` annotation maps to `pragma Assert_And_Cut`
+in |SPARK|. These statements clear the list of hypotheses and add the statements that
 are within them as the new hypotheses.
 
 .. _ms-proof_assume_contract-label:
@@ -1181,8 +1181,8 @@ Body for Assume annotation in |SPARK|:
 Check contract
 ^^^^^^^^^^^^^^
 
-The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This 
-annotation adds a new hypothesis to the list of existing hypotheses. The code is 
+The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This
+annotation adds a new hypothesis to the list of existing hypotheses. The code is
 not presented but can be found under "code\check_contract".
 
 Assert used to control path explostion
@@ -1232,8 +1232,8 @@ an example of the use of a rule declaration annotation - in the body of procedur
 to introduce a rule related to the components of a constant record value.
 
 .. todo:
-   *Note that the* |SPARK| *version of the rule declaration annotation has not yet been 
-   defined - note that it may not even be needed, though this is to be determined - and 
+   *Note that the* |SPARK| *version of the rule declaration annotation has not yet been
+   defined - note that it may not even be needed, though this is to be determined - and
    so there is no equivalent included in the* |SPARK| *code.*
 
 Specification in SPARK 2005:
