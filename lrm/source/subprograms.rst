@@ -337,7 +337,6 @@ specified:
    ``mode_selector`` of the ``mode_specification`` is used as
    described above.
 
-
 #. If a ``moded_item`` is a subcomponent then the *entire* object of
    which it is a part also has an *effective* mode.  The *effective*
    mode of the *entire* object is required for flow analysis
