@@ -6,7 +6,7 @@ package body P is
       --  corresponding syntax is TBD.
       for I in Positive range X'First .. X'Last loop
          X (I) := 0;
-         pragma Loop_Invariant (for all J in Positive range X'First .. I => (X (J) = 0));
+         pragma Loop_Invariant (for all J in X'First .. I => (X (J) = 0));
       end loop;
    end Init;
 
