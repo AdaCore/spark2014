@@ -376,7 +376,7 @@ initialized before use.
    potentially erroneously initialized more than once prior to the
    call to the main subprogram.
 #. For flow analysis purposes, the elaboration of a package embedded
-   within a subprogram or block statement is modelled as a subporgram
+   within a subprogram or block statement is modelled as a subprogram
    call immediately following the package declaration.
 
 .. centered:: **Dynamic Semantics**
