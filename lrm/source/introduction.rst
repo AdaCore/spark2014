@@ -194,8 +194,8 @@ each index value belongs to the corresponding index range of the array
 For every such run-time check (including bounded errors) a corresponding
 obligation to prove that the error condition cannot be true is introduced.
 In particular, this rule applies to the run-time checks associated with any
-assertion (see Ada 2012 RM (11.4.2)), except that the
-one exception to this rule is pragma ``Assume`` (see :ref:`pragma_assume`).
+assertion (see Ada 2012 RM (11.4.2)); the one exception to this rule is pragma
+``Assume`` (see :ref:`pragma_assume`).
 
 In addition, the generation of proof obligations is unaffected by the
 suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
