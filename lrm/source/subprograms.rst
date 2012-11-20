@@ -276,7 +276,7 @@ specified:
 
 #. An object which is not a subcomponent of any containing object is
    said to be an *entire* object.
-#. An *abstact state* is represented by a ``state_name``.
+#. An *abstract state* is represented by a ``state_name``.
 #. A ``default_mode_specification`` is considered to be a
    ``mode_specification`` with the ``mode_selector Input``.
 #. A name is said to be *moded_item eligible* if:
