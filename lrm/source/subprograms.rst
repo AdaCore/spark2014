@@ -188,7 +188,7 @@ where
 
 #. Each ``contract_guard`` in a Contract Cases aspect has to proven to
    be mutually exclusive, that is only one ``contract_guard`` can be
-   True with any set of inputs con formant with the formal parameters
+   True with any set of inputs conformant with the formal parameters
    and satisfying the specific precondition.
 #. At the point of call a check that a ``contract_guard`` is True has to be
    proven.
