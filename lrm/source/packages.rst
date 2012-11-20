@@ -858,7 +858,7 @@ Volatile Variables
 A volatile ``state_name`` may be refined to one or more subordinate
 ``state_names`` but ultimately a volatile ``state_name`` has to be
 refined on to one or more volatile *variables*.  This variable has to
-be volatile. The volatile *variable* will declared in the body of a
+be volatile. The volatile *variable* will be declared in the body of a
 package and the declaration will normally be denoted as volatile using
 an aspect or a pragma.  Usually it will also have a representation
 giving its address.
