@@ -589,10 +589,10 @@ is used purely for static analyses purposes and is not executed.
 
    procedure G (A : in out An_Array_Type)
    with Global => (Input  => K),
-        Param  => (Input  => A.(I),
+        Param  => (Input  => A (I),
                    Output => (if K = 10 then A (J)));
    -- The Param aspect states that only element I of the array A is read
-   -- and element J is only updated if the global I = 10;
+   -- and element J is only updated if the global K = 10;
    -- the values remainder of the  array elements are preserved including
    -- A (J) if K /= 10. Note: I, J and K may all be equal.
 
