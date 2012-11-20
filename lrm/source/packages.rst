@@ -182,7 +182,7 @@ provided.]
 
 #. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **in out** or  **out**.
-#. An Volatile Input state abstraction shall not be named in a moded_item of
+#. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **out**.
 #. A Volatile Output may only occur where a ``state_name`` may appear
    as a ``moded_item`` of mode **out**.
