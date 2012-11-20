@@ -307,7 +307,7 @@ formal verification or testing.
 
 Formal verification works by making some assumptions, and these assumptions
 should be shown to hold even when formal verification and testing are
-combined. What is certain is that formal verification cannot guarantee the same
+combined. Certainly, formal verification cannot guarantee the same
 properties when part of a program is only tested, as when all of a program is
 proved. The goal then, when combining formal verification and testing, is to
 reach a level of confidence as good as the level reached by testing alone.
