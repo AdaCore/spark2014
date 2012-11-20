@@ -967,7 +967,7 @@ declaration or its body or body stub the rules and semantics given
 below should be satisfied by the implementation of its body.
 
 If the subprogram has a ``refined_global_aspect`` (see
-:ref:`refined-global-aspect`), this has to be checked for consitency
+:ref:`refined-global-aspect`), this has to be checked for consistency
 with the ``global_aspect`` and influences the rules for checking the
 implementation of its body as described below.
 
