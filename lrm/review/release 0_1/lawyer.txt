@@ -1,0 +1,475 @@
+Here are my comments so far, from section 1 and section C.
+Mostly with language focus.
+
+Overall it looks very good.  I like the uniform use of "Refined_xxx"
+terminology.
+
+-Tuck
+------------------------
+
+STT comments on SPARK 2014 LRM manual, based on
+release 0.1 dated November 15, 2012.
+
+1.4 STT Why is tasking not in the SPARK 2014 subset?  What happened to RavenSPARK?  It 
+says "not currently permitted."  Is that a technical term?  Do we intend to lift that 
+restriction before release of S14?
+
+1.4 STT We need a term for the "SPARK-friendly" subset of features, which are not all in 
+S14, but which allow for some amount of analysis.
+
+1.5 STT "Flow analysis" vs. "Data flow analysis" vs. "Info flow analysis."  Should we make 
+a distinction?
+
+1.5 STT "Flow analysis rules" vs. "Verification rules."  SB says everything follows from 
+rule relating to run-time checks, but what about things in Ada which are *not* checked, 
+such as use of uninitialized data, race conditions, various nasty erroneous conditions 
+relating to renaming, etc.?  YM mentions the type invariants, but that seems just 
+indicative of a set of things where the run-time checks are incomplete relative to what we 
+want to do for proofs.
+
+1.6 STT A "profile" is defined already in the Ada RM, and it includes a set of 
+restrictions, plus various policy specifications, and perhaps a few other things 
+specifiable via pragmas.
+
+C.1.1 STT "comprises of" ==> "comprises" or "consists of"
+
+C.1.1 STT Intro paragraph should mention the fact that "derives" has become "depends" in 
+S14, and perhaps title should become "Global and Derives/Depends"
+
+C.1.2 STT "Post => (X = Y'Old, Y = X'Old)" ==> "Post => X = Y'Old and Y = X'Old"
+
+C.1.3 STT "I in Positive range X'First .. X'Last" => "I in X'Range"?
+
+C.1.3 STT "J in Positive range X'First .. I" => J in X'First .. I"?
+
+C.1.4 STT "comprises of" => "comprises" or "consists of" (comment on "begin" keyword of 
+package body."
+
+C.2.1 STT If the SPARK 2005 and 2014 are identical, then why don't the introductory lines 
+say "Specifications in SPARK 2005 (2014 is identical):" or some such thing?  Ditto for 
+Body (also applies in C.2.2).
+
+C.2.1 STT In Refined_Post for Clear, why do we need to say S.StackPointer = 0, since that 
+is implied by Is_Empty(S)?
+
+C.2.1 STT It seems unnecessary to initialize all values of stack in Clear.  I would think 
+that an invariant of (for all I in 1..S.Stack_Pointer => S.Stack_Vector(I) = 0) would be 
+sufficient, with Clear only setting S.Stack_Pointer to zero.
+
+C.2.1 STT (pp 91-92) In Pop postcondition don't we need to say that there is no change to 
+S.Stack_Vector(1..S.Stack_Pointer)?  Or is that somehow assumed due to a default "frame" 
+rule? (Also comes up in C.2.2, p. 109.)
+
+C.2.1 STT bottom of p. 97 "Specification in SPARK 2014" => "Body in SPARK 2014"
+
+C.2.1 STT pp. 92-99 seems like a like of examples that are only indicating that "inherit" 
+is no longer required for children.  Or else I am missing something...
+
+C.2.2 STT p. 100 The following looks funny "with Abstract_State => (S, Pointer), -- 
+concrete state".  What is the explanation for this comment?
+
+C.2.2 STT p. 110 We have a procedure with "Global => State"; should that be "Global => 
+(Input => State)" or is "Input" presumed if not stated?  Ditto for "Global => 
+(Source_A_14.State, ...)"?
+
+C.2.3 STT p. 115-116  It seems unnecessarily confusing to use "Inputs" and "Outputs" as 
+the names of the global state variables, given the use of "Input" and "Output" as words 
+with special significance, producing quite confusing constructs like "((Inputs with 
+Volatile, Input))."  How about "Input_State" and "Output_State" instead?  Also, how does 
+"Input" related to "Volatile" in this example.  Is "Input" qualifying "Volatile" (and only 
+permitted in its presence), or qualifying Inputs?  Perhaps "((Input_State with 
+Volatile(Input)))"?
+
+C.2.3 STT p. 116-117 You have "Body in input/output port in SPARK 2014: This is as per 
+SPARK 2005." and then you use features that are not in SPARK 2005, such as aspect 
+specifications using "with Address => ...".  What gives?
+
+A (6.2 Strict Modes) STT p. 78 The terms "import" and "export" are used here.  Don't we mean "input" and "output"?
+
+A (7.2.2 Refined State Aspect) STT p. 80 Rather than "Null_State_Refinement_Prohibited" 
+use "No_Null_State_Refinement" to be consistent with other restriction identifiers.
+
+B STT p. 81 "Extended Legality Rules" sounds like we are relaxing certain legality rules, thereby making *more* things legal.  I would suggest we call this appendix "Additional Legality Rules" or "SPARK-specific Legality Rules."
+
+13.1 STT p. 73 "As aspects specifications" ==> "As aspect specifications"; "expression associated to the" ==> "expression associated with the".
+
+13.1 STT p. 73 Why aren't forward references allowed?  It seems a serious usability issue to disallow them, especially in code that has already taken advantage of this when written.  Also, any type-related aspect specifications, such as Type_Invariant, will necessarily involve forward references.
+
+13.3 STT p. 73 Why no unchecked type conversions?  Can't these just be treated like "volatile"?
+
+13.4 STT p. 73 It says "Read and Write" operations are not in SPARK 2014.  Do you mean all stream-related attribute subprograms, or just 'Read and 'Write?  And why aren't they permitted?  Is this because they can produce junk?  How are they worse than a volatile integer?
+
+9 STT p. 65 Do we plan to release S14 without support for tasking?  Isn't that a step backward?  Should tasking be listed as a "TBD" rather than as not supported?
+
+
+============================
+
+Bob,
+
+I wasn't signed up to review, but decided to spend some time on it anyway.
+
+I only managed to get up through chapter 5, though I realize that there's
+a lot of meat in chapters 6 and 7.
+
+Most of my comments are in the category of wording and minor editorial.
+I've used the "{}[]" commenting convention that we've used in the ARG.
+
+Get para numbers in!
+
+Review comments on the SPARK 2014 Reference Manual (draft of 15 Nov 2012)
+-------------------------------------------------------------------------
+(NOTE: Only covers Chapters 1-5)
+
+
+Chapter 1 (Introduction)
+
+Reviewer: GD
+Section: 1
+Page/para: 3/1
+Comment:
+The use of the word "both" seems awkward.  I think it reads better without it.
+(Alternative is to keep "both", and replace "but" with "and".)
+
+Reviewer: GD
+Section: 1
+Page/para: 3/2
+Comment: Add a comma: "predecessor{,} SPARK 2005"
+
+Reviewer: GD
+Section: 1.1
+Page/para: 3/3
+Comment: Add a comma: "In this context{,} "implementors" means ..."
+
+Reviewer: GD
+Section: 1.1
+Page/para: 3/4
+Comment: Please replace "LRM" with "RM", and in the first instance
+say "Ada 2012 Reference Manual".
+
+Reviewer: GD
+Section: 1.1
+Page/para: 3/5
+Comment: Add a space: "SPARK{ }2005 to SPARK 2014"
+
+Reviewer: GD
+Section: 1.2
+Page/para: 3/9
+Comment: This paragraph mentions "erroneous or unspecified behavior",
+but what about implementation-defined or partially specified behavior
+(such as order of evaluation or bounded errors)?
+
+Reviewer: GD
+Section: 1.3
+Page/para: 4/5
+Comment: Add a hyphen: "run{-}time profile"
+
+Reviewer: GD
+Section: 1.3
+Page/para: 4/9
+Comment: Replace hyphen with a space: "never fail at run[-]{ }time"
+
+Reviewer: GD
+Section: 1.3
+Page/para: 4/10
+Comment: Eliminate hyphens, add comma: "pre[-]conditions, post[-]conditions,
+type[-]{ }invariants{,} and so on."
+
+Reviewer: GD
+Section: 1.3
+Page/para: 4/11
+Comment: Hyphen not needed: "non[-]functional properties"
+
+Reviewer: GD
+Section: 1.4
+Page/para: 4/14
+Comment: Replace hyphen with a space: "side[-]{ }effects"
+
+Reviewer: GD
+Section: 1.4
+Page/para: 4/21
+Comment: It says "Package body entirely not in SPARK 2014", but I think
+it would read better as "Package body not entirely in SPARK 2014".  Surely
+*some* parts of the body are likely to be in SPARK 2014 (such as the
+beginning and ending syntax of the package body).
+
+Reviewer: GD
+Section: 1.4
+Page/para: 4/23
+Comment: Add a comma: "almost entirely in SPARK 2014{,} with a small..."
+
+Reviewer: GD
+Section: 1.4
+Page/para: 5/3
+Comment: Add a hyphen "mixed{-}[ ]language programming"
+
+Reviewer: GD
+Section: 1.5
+Page/para: 6/2
+Comment: Add a hyphen: "data{-}flow analysis" (two instances)
+
+Reviewer: GD
+Section: 1.7 (1)
+Page/para: 6/?
+Comment: Do we want to use British spelling or American spelling in
+this document?  The Ada RM uses American spelling.  The word in question
+in this paragraph is "favoured" (American spelling is "favored").
+
+Reviewer: GD
+Section: 1.7 (1)
+Page/para: 6/?
+Comment: In the first sentence, I think the single "-" should be a
+double hyphen (to make it a full-fledged dash).
+
+Reviewer: GD
+Section: 1.9 (1)
+Page/para: 7/?
+Comment: Change "LRM" to "RM": "Ada 2012 {RM}[LRM]"
+
+
+Chapter 2 (Lexical Elements)
+
+Reviewer: GD
+Section: 2.9
+Page/para: 10/1
+Comment: "... the following set of reserved words {is}[are] never used ..."
+
+Reviewer: GD
+Section: 2.9
+Page/para: 10/2
+Comment: Delete the period at the end of the list of reserved words.
+
+
+Chapter 3 (Declarations and Types)
+
+Reviewer: GD
+Section: 3
+Page/para: 11/1
+Comment: Pluralize: "... any declaration{s} or type{s} ..."
+
+Reviewer: GD
+Section: 3.2 (1)
+Page/para: 11/3
+Comment: Normally rules pertaining to private types would be given in
+Chapter 7, but OK I guess to mention it here.  The restriction should
+probably also be given in Chapter 7.
+
+Reviewer: GD
+Section: 3.2 (2)
+Page/para: 11/4
+Comment: Subtype predicates only apply to subtypes, so it seems that only
+subtypes should be mentioned here (and change "(sub)type" to "subtype".
+
+Reviewer: GD
+Section: 3.3
+Page/para: 11/6
+Comment: Same comment as for private types in 3.2: Deferred constants are
+a Chapter 7 entity, so this rule should also (or instead) be given there.
+
+Reviewer: GD
+Section: 3.6
+Page/para: 12/1
+Comment: Since 3.2 says that aliased isn't allowed in object declarations,
+this section should say that aliased isn't allowed in an array declaration.
+
+Reviewer: GD
+Section: 3.8
+Page/para: 12/3
+Comment: Since 3.2 says that aliased isn't allowed in object declarations,
+this section should say that aliased isn't allowed in component declarations.
+
+Reviewer: GD
+Section: 3.10 (2)
+Page/para: 12/??
+Comment: No need for the apostrophe in "attribute 'Access".
+
+
+Chapter 4 (Names and Expressions)
+
+Reviewer: GD
+Section: 4
+Page/para: 13/1
+Comment: Reword sentence as:
+           "The term assertion expression denotes an expression..."
+
+Reviewer: GD
+Section: 4
+Page/para: 13/1
+Comment: Add "subtype": "... a type invariant or {subtype} predicate, ..."
+
+Reviewer: GD
+Section: 4.1.3 (1)
+Page/para: 13/5
+Comment: Add a hyphen: "run{-}time"
+
+Reviewer: GD
+Section: 4.1.3 (1)
+Page/para: 13/5
+Comment: It says "if this property can be determined by static analysis",
+which seems imprecise.  It would be better to define what specific properties
+must be satisfied.  Otherwise this seems subject to how good the static
+analysis is, which could potentially change over time.  Or is this some
+sort of general statement that's intended to apply to more than this section,
+in which case it should be moved elsewhere (perhaps into Chapter 1)?  Also,
+the rule in the next paragraph should probably be stated more precisely.
+
+Reviewer: GD
+Section: 4.3
+Page/para: 13/2
+Comment: This paragraph needs more precision. In particular, it would be
+good to define "side-effect free" (maybe this is defined elsewhere?).
+Also, it should define what it means for an aggregate to have uninitialized
+components (has box associations for components without default init).
+
+Reviewer: GD
+Section: 4.3.4 (2)
+Page/para: 14/7
+Comment: Remove hyphen: "non[-]discriminant"
+
+Reviewer: GD
+Section: 4.3.4 (3)
+Page/para: 14/8
+Comment: In the first sentence, I think the single "-" should be a
+double hyphen (to make it a full-fledged dash).
+
+Reviewer: GD
+Section: 4.3.4 (4)
+Page/para: 14/9
+Comment: Is there a good reason to leave the order of evaluation unspecified
+rather than just saying it's left to right?  I thought that SPARK preferred to
+avoid things that are "unspecified", so why not define a canonical ordering?
+Also, this would be consistent with the array form of 'Update, which requires
+left-to-right evaluation (although I realize that the rationale for the array
+case is different, since it allows overwriting).  Maybe this is just a matter
+of being consistent with Ada, since the attribute will be allowed in non-SPARK
+programs, and in SPARK 2014 the expressions have to be side-effect free, so
+the order of evaluation doesn't really matter.
+
+Reviewer: GD
+Section: 4.3.4 (5)
+Page/para: 14/10
+Comment: Add hyphen: "one{-}[ ]dimensional"
+
+Reviewer: GD
+Section: 4.3.4 (6)
+Page/para: 15/?
+Comment: The first sentence says:
+
+ "Each array_component_association of the attribute_reference shall have one
+  or more array_component_associations, each of which shall have an expression."
+
+but that doesn't make sense.  It seems that it should probably read simply:
+
+ "Each array_component_association of the attribute_reference shall have
+  an expression."
+
+Also, strictly speaking, the expression of an attribute_reference (actually
+of the attribute_designator) is required to be static, so it wouldn't be
+allowed to be an aggregate in strict Ada.  Do we need to say anything about
+extending it here?  (I guess the other way to go would be to define 'Update
+to be a function, but that wouldn't work unless we were willing to require
+double parentheses, which we obviously don't want.)
+
+Reviewer: GD
+Section: 4.3.4 (9)
+Page/para: 15/5
+Comment: "If T is {a} one-dimensional {array} type ..."
+
+Reviewer: GD
+Section: 4.3.4 (12)
+Page/para: 15/8
+Comment: "This is different {from} [than] the Update attribute ..."
+
+Reviewer: GD
+Section: 4.4 (1)
+Page/para: 16/1
+Comment: Where is "side-effect free" defined?  (Maybe add a reference?)
+
+
+Chapter 5 (Statements)
+
+Reviewer: GD
+Section: 5.1 (3)
+Page/para: 17/4
+Comment: Fix typo: "... shall not be {an} [am] accept_statement ..."
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 18/?
+Comment: It seems odd to define nonterminals invariant_statement and
+loop_variant_statement for these pragmas (and why does one have a prefix
+"loop_" and not the other?).  It would be more consistent with the Ada RM
+to define them as for other pragmas.  If the nonterminals are retained, then
+presumably the syntax of statement needs to be extended to include them.
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 19/3
+Comment: I suppose this is picky, but I don't like the wording about
+comparing values, which can be read as a choice between evaluating
+until unequal values are found or unconditionally evaluating all
+expressions.  How about this rewording:
+
+  "...: comparisons are performed in textual order [either] until
+   {either a pair} of unequal values {is} [are] found{,} or {else}
+   until values for all {pairs of} expressions have been compared
+   {and found to be equal}."
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 19/3
+Comment: "..., the last pair of values to be compared {is} [are] then ..."
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 19/4
+Comment: Remove hyphen: "vice[-]{ }versa"
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 19/8
+Comment: Add comma in 1st sentence: "... assertion expression{,} a constant ..."
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 20/?
+Comment: Add hyphens in bullet: "run{-}time tag{-}[ ]value determination"
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 20/?
+Comment: For the second to last paragraph on this page, it might be good
+to give a note to explain what the rule means (explain the case where the
+entity can be declared within the prefix itself).
+
+Reviewer: GD
+Section: 5.5.3
+Page/para: 21/1
+Comment: Maybe add a reference to the Ada RM for the term "potentially
+unevaluated".  (One might mistakenly think that the rule might apply in
+a case where it appears after a loop exit or early return.)
+
+Reviewer: GD
+Section: 5.9 (2-3)
+Page/para: 21/7-8
+Comment: Same comment as for invariant_statement and loop_invariant_statement:
+Why define statement nonterminals for these pragmas, which is not the way the
+RM defines pragmas?
+
+Reviewer: GD
+Section: 5.9 (5)
+Page/para: 21/10
+Comment: Minor editorial for 1st sentence: "For {each of} [all] the pragmas
+Check, Assert, Assert_And_Cut{,} and Loop_Invariant, ..."
+
+
+---(end of comments from Gary Dismukes)---
+
+
+Rod Chapman comments
+
+Reviewer: RCC
+Section: 6
+Page/para: 
+Comment: What are the rules for preventing aliasing in the presence
+of object renamings?
+

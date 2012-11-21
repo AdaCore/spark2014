@@ -1,0 +1,107 @@
+
+Implementor (Front-End)
+  Is the language design fit for front-end implementation?
+  For each of the new aspects, are the new grammar and legality
+  rules clear enough to implement?
+  For each new Restriction, is the intent and meaning of the restriction
+  sufficiently clear and detailed to be implemented?
+
+
+Reviewer: YM
+Section: 6.1.4
+Page/para: 26 .. 28
+Comment: The description of mode refinement in not clear enough for
+  implementation. I suggest that this section is reformatted, with a clear
+  intent, some examples, an intuition behind the names "moded_item eligible"
+  and "independent". It could be clearer also if this section was preceded
+  by the description of Global and Param aspects. I am also in favor of the
+  merge of Global and Param aspects suggested by Steve.
+
+Reviewer: YM
+Section: 6.1.5
+Page/para: 29
+Comment: The description of global aspect seems to suppose a constructive
+  approach, when it says
+    "A name that denotes a global variable appearing in a precondition or
+     postcondition aspect of a subprogram must also appear in the
+     global_aspect of the same subprogram."
+  Also, the legality rules mentions the special case of X'First, X'Last, etc.
+  for arrays, without doing the same for discriminants.
+  Also, the comments in examples should be phrased in user terms, so "global
+  variable V may be read by the subprogram" instead of "V is a mode in global
+  item" which simply duplicates the example code.
+
+Reviewer: YM
+Section: 6.1.6
+Page/para: 30
+Comment: The description of param aspect is inconsistent with the description
+  of the global aspect. For example it does not say anything about X'First,
+  X'Last, etc. for an array X. I strongly suggest we follow Steve's idea of
+  combining the descriptions of param and global aspects.
+
+Reviewer: YM
+Section: 6.1.7
+Page/para: 31
+Comment: The description of dependency aspect introduces BNF non-terminals
+  before the BNF grammar is given, which is slightly confusing.
+  I am not clear about the definition of imports and exports (especially true
+  in the retrospective approach). Should a global aspect be given every time a
+  dependency aspect is given? Or should global variables be deduced from
+  the dependency aspect?
+
+Reviewer: YM
+Section: 6.1.7
+Page/para: 32
+Comment: What is the name for the dependency aspect? Earlier in the LRM it is
+  said "Dependency", here it says "Depends".
+
+Reviewer: YM
+Section: 6.1.7
+Page/para: 33
+Comment: The legality rules for dependency aspect are not clear. Rule 8 is
+  completely confused, probably as a result of a merge. Rule 9 is not clear:
+  what if A(I) is an export, and A(J).F also? It may appear that A(J).F is
+  a subcomponent of A(I) if I=J at run time.
+
+Reviewer: YM
+Section: 6.1.7
+Page/para: 33 .. 34
+Comment: The static semantics for dependency aspects are not clear enough for
+  implementation. I suggest rewording more in line with Ada RM.
+
+Reviewer: YM
+Section: 6.3.3
+Page/para: 36/1
+Comment: This is the first occurrence of refined_global_aspect without previous
+  definition. This is also the first occurrence of restriction Strict_Modes,
+  also without a previous definition. Wording is currently too complex to
+  be implemented. It mentions "executable path" without prior definition.
+
+Reviewer: YM
+Section: 6.3.4
+Page/para: 36
+Comment: Why allow global aspects on a stub? AFAIK, a stub cannot have
+  Pre/Post aspects, only the body can.
+
+Reviewer: YM
+Section: 6.3.4
+Page/para: 36
+Comment: It is said that
+  "If the subprogram has a refined_global_aspect (see Refined Global Aspect),
+   this has to be checked for consitency with the global_aspect and influences
+   the rules for checking the implementation of its body as described below."
+  but, if a subprogram has a refined_global_aspect, it cannot have a
+  global_aspect. Only its declaration can have one, and I see no need to
+  discuss that in 6.3.4 on subprogram bodies.
+
+Reviewer: YM
+Section: 6.3.4
+Page/para: 36
+Comment: It is said that in the 2nd legality rule:
+  "A subprogram, shall not declare, immediately within its body, an entity of
+   the same name as a moded_item or the name of the object of which the
+   moded_item is a subcomponent, [...]"
+  What is the rationale for this rule? This looks like a coding standard rule
+  from SPARK 2005 to me, not something that we should enforce in SPARK 2014.
+
+
