@@ -1,7 +1,7 @@
 (*
 Why3 is the name of a tool which can convert its own rich logical language
 into the formats of other tools such as:
-   Alt-Ergo, CVC3, Simplify, Z3, SM
+   Alt-Ergo, CVC3, Simplify, Z3, SMT
    Eprover, Iprover, SPASS, Vampire, TPTP
    Coq, PVS
 
@@ -48,7 +48,7 @@ theory Abstract
    (* One can also declare functions. This one takes two arguments of type t
    and returns another object of type t *)
 
-   function f t t : t
+   function f (x : t) t : t
 
    (* One can also define a function *)
 

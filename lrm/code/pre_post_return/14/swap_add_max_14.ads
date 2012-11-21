@@ -8,8 +8,7 @@ is
       with Global  => (In_Out => (X, Y)),
            Depends => (X => Y,
 	               Y => X),
-           Post    => (X = Y'Old,
-		       Y = X'Old);
+           Post    => (X = Y'Old and Y = X'Old);
    
    function Add return Integer
       with Global  => (Input => (X, Y)),

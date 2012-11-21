@@ -31,7 +31,7 @@ is
    end Operate_On_State;
    
 begin -- Promised to initialize State
-      -- (which comprises of X and Y)
+      -- (which consists of X and Y)
    X := 10;
    Y := 20;
 end Nesting_Refinement_05;

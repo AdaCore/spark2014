@@ -194,8 +194,8 @@ each index value belongs to the corresponding index range of the array
 For every such run-time check (including bounded errors) a corresponding
 obligation to prove that the error condition cannot be true is introduced.
 In particular, this rule applies to the run-time checks associated with any
-assertion (see Ada 2012 RM (11.4.2)), except that the
-one exception to this rule is pragma ``Assume`` (see :ref:`pragma_assume`).
+assertion (see Ada 2012 RM (11.4.2)); the one exception to this rule is pragma
+``Assume`` (see :ref:`pragma_assume`).
 
 In addition, the generation of proof obligations is unaffected by the
 suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
@@ -307,7 +307,7 @@ formal verification or testing.
 
 Formal verification works by making some assumptions, and these assumptions
 should be shown to hold even when formal verification and testing are
-combined. What is certain is that formal verification cannot guarantee the same
+combined. Certainly, formal verification cannot guarantee the same
 properties when part of a program is only tested, as when all of a program is
 proved. The goal then, when combining formal verification and testing, is to
 reach a level of confidence as good as the level reached by testing alone.

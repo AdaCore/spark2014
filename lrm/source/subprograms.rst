@@ -188,7 +188,7 @@ where
 
 #. Each ``contract_guard`` in a Contract Cases aspect has to proven to
    be mutually exclusive, that is only one ``contract_guard`` can be
-   True with any set of inputs con formant with the formal parameters
+   True with any set of inputs conformant with the formal parameters
    and satisfying the specific precondition.
 #. At the point of call a check that a ``contract_guard`` is True has to be
    proven.
@@ -276,7 +276,7 @@ specified:
 
 #. An object which is not a subcomponent of any containing object is
    said to be an *entire* object.
-#. An *abstact state* is represented by a ``state_name``.
+#. An *abstract state* is represented by a ``state_name``.
 #. A ``default_mode_specification`` is considered to be a
    ``mode_specification`` with the ``mode_selector Input``.
 #. A name is said to be *moded_item eligible* if:
@@ -589,10 +589,10 @@ is used purely for static analyses purposes and is not executed.
 
    procedure G (A : in out An_Array_Type)
    with Global => (Input  => K),
-        Param  => (Input  => A.(I),
+        Param  => (Input  => A (I),
                    Output => (if K = 10 then A (J)));
    -- The Param aspect states that only element I of the array A is read
-   -- and element J is only updated if the global I = 10;
+   -- and element J is only updated if the global K = 10;
    -- the values remainder of the  array elements are preserved including
    -- A (J) if K /= 10. Note: I, J and K may all be equal.
 
@@ -967,7 +967,7 @@ declaration or its body or body stub the rules and semantics given
 below should be satisfied by the implementation of its body.
 
 If the subprogram has a ``refined_global_aspect`` (see
-:ref:`refined-global-aspect`), this has to be checked for consitency
+:ref:`refined-global-aspect`), this has to be checked for consistency
 with the ``global_aspect`` and influences the rules for checking the
 implementation of its body as described below.
 

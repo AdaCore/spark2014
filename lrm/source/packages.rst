@@ -182,13 +182,13 @@ provided.]
 
 #. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **in out** or  **out**.
-#. An Volatile Input state abstraction shall not be named in a moded_item of
+#. A Volatile Input state abstraction shall not be named in a moded_item of
    mode **out**.
 #. A Volatile Output may only occur where a ``state_name`` may appear
    as a ``moded_item`` of mode **out**.
 #. A ``state_name`` of a package is generally considered to be
    representing hidden state in one of the following categories:
- 
+
    * Non-Volatile Uninitialized State - state which is not initialized
      during the elaboration of the package
    * Non-Volatile Initialized State - state which is initialized
@@ -242,7 +242,7 @@ Abstract State Aspect the rules are checked by static analysis.
 .. code-block:: ada
 
    package Q
-   with 
+   with
       Abstract_State => State           -- Declaration of abstract state name State
    is                                   -- representing internal state of Q.
      function Is_Ready return Boolean   -- Function checking some property of the State.
@@ -255,22 +255,22 @@ Abstract State Aspect the rules are checked by static analysis.
         procedure Op1 (V : Integer)     -- Another procedure providing some operation on State
            with Global => (In_Out => State),
   	        Pre    => Is_Ready,
-	        Post   => Is_Ready;   
+	        Post   => Is_Ready;
    end Q;
 
    package X
       with  Abstract_State => (A, B, (C with Volatile, Input))
-   is                          -- Three abstract state names are declared A, B & C. 
+   is                          -- Three abstract state names are declared A, B & C.
                                -- A and B are non-volatile abstract states
       ...                      -- C is designated as a volatile input.
-   end X; 
+   end X;
 
    package MILS -- a package that manages distinct state of differing Integrities
       with Abstract_State => ((Top_Secret   with Integrity => 4),
                               (Unclassified with Integrity => 0));
-   is                          
-      ...                      
-   end MILS; 
+   is
+      ...
+   end MILS;
 
    package Sensor -- simple volatile, input device driver
       with Abstract_State => ((Port with Volatile, Input));
@@ -358,7 +358,7 @@ initialized before use.
 #. A ``state_name`` designated as Volatile shall only appear in a
    Dependency Aspect if the package reads or updates the Volatile
    variables represented by the ``state_name`` during its elaboration
-   or the elaboration of its private descendants. 
+   or the elaboration of its private descendants.
 #. If a Dependency Aspect (or an equivalent
    Initializes Aspect) is not provided on a package declaration,
    its body and any private descendants must be present as well as the
@@ -376,7 +376,7 @@ initialized before use.
    potentially erroneously initialized more than once prior to the
    call to the main subprogram.
 #. For flow analysis purposes, the elaboration of a package embedded
-   within a subprogram or block statement is modelled as a subporgram
+   within a subprogram or block statement is modelled as a subprogram
    call immediately following the package declaration.
 
 .. centered:: **Dynamic Semantics**
@@ -389,53 +389,53 @@ Dependency Aspect the rules are checked by static analysis.
 .. code-block:: ada
 
     package Q
-    with 
+    with
        Abstract_State => State,  -- Declaration of abstract state name State
-       Depends        => (State => null)   
+       Depends        => (State => null)
                                   -- Indicates that State will be initialized
-    is                           -- during the elaboration of Q 
+    is                           -- during the elaboration of Q
 				 -- or a private descendant of the package.
       ...
     end Q;
 
     package X
-    with 
+    with
        Abstract_State =>  A,          -- Declares an abstract state name A.
        Depends        => (A => null,  -- A and visible variable B are initialized
                           B => null)  -- during package initialization.
-                                
-    is                           
+
+    is
       ...
       B : Integer;
-     -- 
-    end X; 
+     --
+    end X;
 
     with Q;
     package Y
-    with 
+    with
        Abstract_State => (A, B, (C with Volatile, Input)),
        Depends        => (A => null,
                           B => Q.State)
     is                    -- Three abstract state names are declared A, B & C.
                           -- A is initialized during the elaboration of Y or
-			  -- its private descendants.  
-       ...                -- B is initialized during the elaboration of Y or 
-                          -- its private descendants and is dependent on the 
+			  -- its private descendants.
+       ...                -- B is initialized during the elaboration of Y or
+                          -- its private descendants and is dependent on the
                           -- value of Q.State.
-                          -- C is designated as a volatile input and is not 
+                          -- C is designated as a volatile input and is not
                           -- read during package elaboration and so does not appear
 		          -- in the Dependency Aspect.
-    end Y; 
+    end Y;
 
     package Z
     with
        Abstract_State => A,
        Depends        => null
     is                          -- Package Z has an abstract state name A declared but the
-                                -- elaboration of Z and its private descendants do not 
+                                -- elaboration of Z and its private descendants do not
                                 -- perform any initialization.
       ...
-    
+
     end Z;
 
 
@@ -446,7 +446,7 @@ Initializes Aspect
 The Initializes Aspect is a shorthand notation for the most common
 form of package initialization where none of the initialized items
 have any dependence.  They are initialized from static or compile-time
-constants.  
+constants.
 
 The Initializes Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Initializes" and the ``aspect_definition`` must follow
@@ -494,7 +494,7 @@ the grammar of ``initialization_list`` given below.
                  Sn => null)
 
      where
-    
+
        each S1 .. Sn is a *variable* or ``state_name`` initialized
        during the elaboration of the package.
 
@@ -512,47 +512,47 @@ Initializes Aspect the rules are checked by static analysis.
 .. code-block:: ada
 
     package Q
-    with 
+    with
        Abstract_State => State,  -- Declaration of abstract state name State
        Initializes    => State   -- Indicates that State will be initialized
-    is                           -- during the elaboration of Q 
+    is                           -- during the elaboration of Q
 				 -- or its private descendants.
       ...
     end Q;
 
     package X
-    with 
+    with
        Abstract_State =>  A,    -- Declares an abstract state name A.
        Initializes    => (A, B) -- A and visible variable B are initialized
                                 -- during the elaboration of X or its private descendants.
-    is                           
+    is
       ...
       B : Integer;
-     -- 
-    end X; 
+     --
+    end X;
 
     package Y
-    with 
+    with
        Abstract_State => (A, B, (C with Volatile, Input)),
        Initializes    => A
     is                          -- Three abstract state names are declared A, B & C.
                                 -- A is initialized during the elaboration of Y or
-				-- its private descendants.  
+				-- its private descendants.
        ...                      -- C is designated as a volatile input and cannot appear
 				-- in an initializes aspect clause
-                                -- B is not initialized during the elaboration of Y 
+                                -- B is not initialized during the elaboration of Y
                                 -- or its private descendants.
-    end Y; 
+    end Y;
 
     package Z
     with
        Abstract_State => A,
        Initializes    => null
     is                          -- Package Z has an abstract state name A declared but the
-                                -- elaboration of Z and its private descendants do not 
+                                -- elaboration of Z and its private descendants do not
                                 -- perform any initialization during elaboration.
       ...
-    
+
     end Z;
 
 Initial Condition Aspect
@@ -609,18 +609,18 @@ an ``expression``.
    should be evaluated following the elaboration of Q and its private
    descendants.  If it does not evaluate to True, then an exception
    should be raised.
- 
+
 .. centered:: **Examples**
 
 .. code-block:: ada
 
     package Q
-    with 
+    with
        Abstract_State    => State,    -- Declaration of abstract state name State
        Initializes       => State,    -- State will be initialized during elaboration
-       Initial_Condition => Is_Ready  -- Predicate stating the logical state after 
+       Initial_Condition => Is_Ready  -- Predicate stating the logical state after
 				      -- initialization.
-    is                           
+    is
 
       function Is_Ready return Boolean
       with
@@ -629,13 +629,13 @@ an ``expression``.
     end Q;
 
     package X
-    with 
+    with
        Abstract_State    =>  A,    -- Declares an abstract state neme A
        Initializes       => (A, B) -- A and visible variable B are initialized
 	                           -- during package initialization.
        Initial_Condition => A_Is_Ready and B = 0
 				   -- The logical conditions after package elaboration.
-    is                           
+    is
       ...
       B : Integer;
 
@@ -643,8 +643,8 @@ an ``expression``.
       with
 	 Global => A;
 
-     -- 
-    end X; 
+     --
+    end X;
 
 Package Bodies
 --------------
@@ -690,7 +690,7 @@ the grammar of ``state_and_category_list`` given below.
   constituent_with_property        ::= constituent
                                      | (constituent_list with property_list)
   constituent_list                 ::= constituent
-                                     | (constituent {, constituent}) 
+                                     | (constituent {, constituent})
 
 where
 
@@ -729,7 +729,7 @@ where
 #. The same identifier shall not appear more than once in a property
    list.
 #. There should be at most one **null** ``abstract_state_name`` and,
-   if it is present it must be non-volatile and the last entry of the 
+   if it is present it must be non-volatile and the last entry of the
    ``state_and_category_list``.
 
 
@@ -815,7 +815,7 @@ There are no dynamic semantics associated with state abstraction and refinement.
    package Q
       with Abstract_State => (A, B, (C with Volatile, Input)),
            Initializes    => (A, B)
-   is 
+   is
       ...
    end Q;
 
@@ -829,7 +829,7 @@ There are no dynamic semantics associated with state abstraction and refinement.
                              C => (Port with Volatile, Input))
    is
       F, G, H : Integer := 0; -- all initialized as required
- 
+
       Port : Integer
          with Volatile, Input;
 
@@ -858,7 +858,7 @@ Volatile Variables
 A volatile ``state_name`` may be refined to one or more subordinate
 ``state_names`` but ultimately a volatile ``state_name`` has to be
 refined on to one or more volatile *variables*.  This variable has to
-be volatile. The volatile *variable* will declared in the body of a
+be volatile. The volatile *variable* will be declared in the body of a
 package and the declaration will normally be denoted as volatile using
 an aspect or a pragma.  Usually it will also have a representation
 giving its address.
@@ -883,13 +883,13 @@ of the external device.
    these individual operations.
 
    At the very least, if V is a Volatile Input variable should not
-   have the following assertion provable:  
+   have the following assertion provable:
 
    T1 := V;
    T2 := V;
-   
+
    pragma Assert (T1 = T2);
-  
+
    Target: D2.
 
 .. todo:: May introduce a way to provide a "history" parameter for
@@ -932,7 +932,7 @@ which is non-volatile must initialized during package elaboration.
      its point of declaration, initialized by the sequence of
      statements of the package, or by an embedded package or a private
      child package which names the ``export`` in its
-     Dependency Aspect or Initializes Aspect; 
+     Dependency Aspect or Initializes Aspect;
    * For an ``export`` which is a ``state_name`` each ``constituent``
      of the ``export`` that is a ``state_name`` must appear in the
      Dependency Aspect or Initializes Aspect of an embedded
@@ -983,13 +983,13 @@ the grammar of ``mode_refinement`` in :ref:`mode-refinement`.
 
 #. A *refinement* G' of a Global Aspect G declared within package
    Q shall satisfy the following rules:
- 
+
    * For each item in G which is not a ``state_name`` of Q, the same
      item must appear with the same mode in G';
    * For each item in G which is a ``state_name`` S of package Q that
      is non-volatile at least one ``constituent`` of S must appear in
      G' and,
-      
+
      * if the item in G has mode **in** then each ``constituent`` of S
        in G' must be of mode **in**.
      * if the item in G has mode **out** then each ``constituent`` of
@@ -1000,11 +1000,11 @@ the grammar of ``mode_refinement`` in :ref:`mode-refinement`.
        mode **in out**.  Each ``constituent`` of S in G' may be of
        mode **out** provided that not every ``constituent`` of S is
        included in G'.
- 
+
    * For each item in G which is a ``state_name`` S of package Q that
      is Volatile at least one ``constituent`` of S must appear in G'
      and,
- 
+
      * if S is a Volatile Input at least one ``constituent`` of S in
        G' must be of mode **in**.
      * if S is a Volatile Output at least one ``constituent`` of S in
@@ -1022,7 +1022,7 @@ the grammar of ``mode_refinement`` in :ref:`mode-refinement`.
 #. If a subprogram has a Refined Global Aspect which satisfies the
    flow analysis checks, it is used in the analysis of the subprogram
    body rather than its Global Aspect.
-   
+
 * If the declaration of a subprogram P in the visible part of package
   Q has a Global Aspect which mentions a ``state_name`` of Q, but
   P does not have a Refined Global Aspect then an implicit
@@ -1075,8 +1075,8 @@ the grammar of ``dependency_relation``.
    package Q has a Dependency Aspect D then the
    Refined Dependency Aspect defines a *refinement* D' of D
    then it shall satisfy the following rules:
- 
-   * For each ``export`` in D which is not a ``state_name`` of Q, 
+
+   * For each ``export`` in D which is not a ``state_name`` of Q,
 
      * the same item must appear as an ``export`` in D';
      * its ``dependency_list`` will be unchanged except that an
@@ -1102,7 +1102,7 @@ the grammar of ``dependency_relation``.
        **null** ``abstract_state_name`` is ignored) should give the
        same set as the set of obtained by the union of every
        ``import`` in the ``dependency_list`` of S in D.
-       
+
    * function may have a Refined Dependency Aspect D' which
      mentions a ``constituent`` of a **null** ``abstract_name`` but
      the constituent must appear as both an ``import`` and an
@@ -1115,7 +1115,7 @@ the grammar of ``dependency_relation``.
 #. If a subprogram has a Refined Dependency Aspect which satisfies
    the flow analysis rules, it is used in the analysis of the
    subprogram body rather than its Dependency Aspect.
-   
+
 * If the declaration of a subprogram P in the visible part of package
   Q has a Dependency Aspect which mentions a ``state_name`` of Q,
   but P does not have a Refined Dependency Aspect then an implicit
@@ -1280,7 +1280,7 @@ Deferred Constants
 ------------------
 
 .. todo:: Need to consider here allowing a Global Aspect on a deferred
-   constant declaration to indicate the variables from which the 
+   constant declaration to indicate the variables from which the
    value is derived.  Will be needed if the completion is not in |SPARK|, for instance.
    Target: D2.
 

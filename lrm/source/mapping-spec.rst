@@ -16,11 +16,11 @@ Global and Derives
 ~~~~~~~~~~~~~~~~~~
 
 This example demonstrates how global variables can be accessed through
-procedures and functions and presents how the `derives` annotation is structured.
-The example comprises of one procedure (`Swap`) and one function (`Add`). `Swap`
-accesses two global variables and swaps their contents while `Add` returns their
-sum. The bodies of both SPARK 2005 and |SPARK| are identical and add no further
-insight and have thus not been included.
+procedures/functions and presents how the SPARK 2005 `derives` annotation maps 
+over to `depends` on |SPARK|. The example consists of one procedure (`Swap`) and 
+one function (`Add`). `Swap` accesses two global variables and swaps their contents 
+while `Add` returns their sum. The bodies of both SPARK 2005 and |SPARK| are identical 
+and add no further insight and have thus not been included.
 
 Specifications in SPARK 2005:
 
@@ -310,7 +310,7 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
+Body in |SPARK|:
 
 As per SPARK 2005.
 

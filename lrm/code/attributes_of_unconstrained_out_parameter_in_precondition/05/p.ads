@@ -9,6 +9,6 @@ is
    --# pre X'First <= 2 and
    --#   X'Last >= 20 and
    --#   X'Length >= 19;
-   --# post for all I in Positive range X'First .. X'Last => (X (I) = 0);
+   --# post for all I in X'Range => (X (I) = 0);
 
 end P;

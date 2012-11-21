@@ -1,5 +1,5 @@
 package Stack_14
-   with Abstract_State => (S, Pointer),  -- concrete state
+   with Abstract_State => (S, Pointer),
         Initializes    => (S, Pointer)
 is
    procedure Push(X : in Integer)
