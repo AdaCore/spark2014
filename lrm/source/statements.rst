@@ -126,7 +126,7 @@ expression results are each compared to their corresponding
 result from the previous iteration as follows: comparisons are
 performed in textual order either until unequal values are found
 or until values for all expressions have been compared. In either
-case, the last pair of values to be compared are then checked as
+case, the last pair of values to be compared is then checked as
 follows: if the ``change_direction`` for the associated
 ``loop_variant_item`` is ``Increases`` (respectively, ``Decreases``) then a
 check is performed that the expression value obtained during the
@@ -147,7 +147,7 @@ checked, in the order of appearance in the variant list, that each component
 behaves as described. If the component does indeed decrease (or increase,
 depending on the chosen keyword), we stop and the variant is proved. If the
 component does the opposite (decrease while it was specified to increase, and
-vice-versa), the variant is invalid. If the component stays the same, we move
+vice versa), the variant is invalid. If the component stays the same, we move
 on to the next component. If all components stay the same, the variant is not
 proved.
 
@@ -170,7 +170,7 @@ sections of RM 5.7, a corresponding rule applies to ``Loop_Entry``
 ``attribute_references``.
 
 For each ``X'Loop_Entry`` other than one occurring within a disabled
-assertion expression a constant is implicitly declared at the
+assertion expression, a constant is implicitly declared at the
 beginning of the associated loop statement. The constant is of the
 type of ``X`` and is initialized to the result of evaluating ``X`` (as an
 expression) at the point of the constant declaration. The value of
@@ -233,12 +233,12 @@ with "Loop_Entry" substituted for "Old". These include:
 * prefix name resolution rules (including expected type definition)
 * nominal subtype definition
 * accessibility level definition
-* runtime tag value determination (in the case where ``X`` is tagged)
+* run-time tag-value determination (in the case where ``X`` is tagged)
 * interactions with abstract types
 * interactions with anonymous access types
 * forbidden attribute uses in the prefix of the ``attribute_reference``.
 
-Note: The following rules are not included on the
+Note: The following rules are not included in the
 above list; corresponding rules are instead stated explicitly below:
 
 * the requirement that an ``Old`` ``attribute_reference`` must occur in a
@@ -297,7 +297,7 @@ This section discusses the pragmas ``Assert_And_Cut`` and ``Assume``.
 
 In addition to the assertion statements ``pragma Check`` and ``pragma
 Assert``, a |SPARK| subprogram can contain the statement ``pragma
-Assert_And_Cut`` and ``pragma Assume``, both carrying a boolean
+Assert_And_Cut`` and ``pragma Assume``, both carrying a Boolean
 expression. These pragmas can occur anywhere a ``pragma Assert`` can occur.
 
 .. _assertcutinv_proof_semantics:
@@ -306,12 +306,12 @@ expression. These pragmas can occur anywhere a ``pragma Assert`` can occur.
 
 .. centered:: *Checked by Proof*
 
-For all the pragmas ``Check``, ``Assert``, ``Assert_And_Cut`` and
-``Loop_Invariant``, it must be proved that the boolean expression is true.
+For each of the pragmas ``Check``, ``Assert``, ``Assert_And_Cut``, and
+``Loop_Invariant``, it must be proved that the Boolean expression is true.
 This is not required for pragma ``Assume``. In addition, the pragmas
 ``Assert_And_Cut`` and ``Loop_Invariant`` act as a cut point: the prover is
 free to forget all information about modified variables that has been
-established from the statement list before the cut point. A boolean expression
+established from the statement list before the cut point. A Boolean expression
 given by pragma ``Assume`` can be assumed to be true for the remainder of
 subprogram.
 

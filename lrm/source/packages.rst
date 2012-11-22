@@ -642,7 +642,7 @@ an ``expression``.
    package Q which is declared in the visible part of Q must be
    initialized during the elaboration of Q and its private descendants.
 #. A ``state_name`` cannot appear directly in
-   anInitial Condition Aspect but it may be indirectly referenced
+   an Initial Condition Aspect but it may be indirectly referenced
    through a function call.
 #. Each ``state_name`` referenced in Initial Condition Aspect must
    be initialized during package elaboration.
@@ -681,7 +681,7 @@ an ``expression``.
 
     package X
     with
-       Abstract_State    =>  A,    -- Declares an abstract state neme A
+       Abstract_State    =>  A,    -- Declares an abstract state name A
        Initializes       => (A, B) -- A and visible variable B are initialized
 	                           -- during package initialization.
        Initial_Condition => A_Is_Ready and B = 0
@@ -810,7 +810,7 @@ where
 #. A *variable* which is a ``constituent`` is an *entire variable*; it
    is not a component of a containing object.
 #. If an ``abstract_state_name`` and its ``constituent`` have the same
-   name this represents the simple mapping of a an abstract
+   name this represents the simple mapping of an abstract
    ``state_name`` on to a concrete *variable* of the same name.
 #. A ``constituent`` with a ``property_list`` assumes the properties
    given in the list:
@@ -925,7 +925,7 @@ of the external device.
    functions in certain situations.
 
    We need to consider a way of providing features for reasoning about
-   external variables different to the broken 'Tail scheme in SPARK95.
+   external variables different to the broken 'Tail scheme in SPARK 2005.
    This will require some form of attribute as we cannot mention
    volatile variables directly in a contract.
 
@@ -956,14 +956,14 @@ Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a package has a Dependency Aspect or an
-Initializes Aspect which contains a ``export`` which is a
+Initializes Aspect which contains an ``export`` which is a
 ``state_name`` then each ``constituent`` of the ``state_name`` must be
 initialized during package elaboration or be designated as Volatile,
 in which case they are implicitly initialized.  A ``constituent`` of a
 non-volatile ``state_name`` of a package which does not appear in the
 Initializes Aspect of the package must not be initialized during
 package elaboration.  A ``constituent`` of a Volatile ``state_name``
-which is non-volatile must initialized during package elaboration.
+which is non-volatile must be initialized during package elaboration.
 
 .. centered:: **Verification Rules**
 
@@ -1225,7 +1225,7 @@ a Boolean ``expression``.
 .. centered:: **Dynamic Semantics**
 
 #. When a subprogram with a Refined Precondition is called; first
-   the precondition is evaluated as defined in the Ada LRM.  If the
+   the precondition is evaluated as defined in the Ada RM.  If the
    precondition evaluates to True, then the Refined Precondition
    is evaluated.  If either precondition or Refined Precondition
    do not evaluate to True an exception is raised.
@@ -1283,7 +1283,7 @@ a Boolean ``expression``.
    the subprogram is evaluated.  If it terminates without exception
    the Refined Postcondition is evaluated.  If this evaluates to
    True then the postcondition is evaluated as described in the Ada
-   LRM.  If either the Refined Postcondition or the postcondition
+   RM.  If either the Refined Postcondition or the postcondition
    do not evaluate to True an exception is raised.
 
 .. todo:: refined contract_cases. Target: D2.
@@ -1310,7 +1310,7 @@ Type Invariants
 
 .. centered:: **Extended Dynamic Semantics**
 
-#. The Ada 2012 LRM lists places at which an invariant check is performed. In
+#. The Ada 2012 RM lists places at which an invariant check is performed. In
    |SPARK|, we add the following places:
 
    * Before a call on any subprogram or entry that:

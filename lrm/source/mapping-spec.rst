@@ -3,7 +3,7 @@
 SPARK 2005 to |SPARK| Mapping Specification
 ===========================================
 
-This document defines the mapping between SPARK 2005 and |SPARK|.
+This appendix defines the mapping between SPARK 2005 and |SPARK|.
 It is intended as both a completeness check for the |SPARK| language
 design, and as a guide for projects upgrading from SPARK 2005 to |SPARK|.
 
@@ -22,13 +22,13 @@ one function (`Add`). `Swap` accesses two global variables and swaps their conte
 while `Add` returns their sum. The bodies of both SPARK 2005 and |SPARK| are identical 
 and add no further insight and have thus not been included.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/global_derives/05/swap_add_05.ads
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/global_derives/14/swap_add_14.ads
       :language: ada
@@ -50,13 +50,13 @@ after having ensured that the divisor is not equal to zero. The `Swap_Array_Elem
 procedure swaps the contents of two elements of an array. For the same reasons
 as in the previous example, the bodies are not included.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.ads
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.ads
       :language: ada
@@ -91,9 +91,9 @@ Specification in |SPARK|:
       :linenos:
 
 .. todo::
-   *Note that the details of false alarm management are still TBD and so
-   there is currently no equivalent in the* |SPARK| *body to the accept annotation
-   in the SPARK 2005 body.*
+   Note that the details of false alarm management are still TBD and so
+   there is currently no equivalent of the accept annotation
+   in the SPARK 2005 body.
 
 Body in |SPARK|:
 
@@ -110,7 +110,7 @@ This example demonstrates how procedures and functions can be nested within
 other procedures and functions. Furthermore, it illustrates how global variables
 refinement can be performed.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.ads
       :language: ada
@@ -122,7 +122,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.ads
       :language: ada
@@ -150,7 +150,7 @@ of the code are identical. Only the specifications of the SPARK 2005 code will b
 The reason why this code is being provided is to allow for a comparison between a package that
 is purely public and an equivalent one that also has private elements.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/adt_visible/05/stacks_05.ads
       :language: ada
@@ -165,7 +165,7 @@ Similarly to the previous example, this one does not contain any annotations eit
 to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specifications of
 the 2005 version shall be presented.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/adt_private/05/stacks_05.ads
       :language: ada
@@ -177,7 +177,7 @@ Private type with refined pre/post contracts in the body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example demonstrates how `pre` and `post` conditions, that lie in the specifications
-of a package, can be refined in the package's body. In order to prove the absence of runtime
+of a package, can be refined in the package's body. In order to prove the absence of run-time
 errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not
 presented here since they are not required in the |SPARK| version. Contracts that need not
 be refined, do not have to be repeated in the body of a package. In this particular example,
@@ -185,7 +185,7 @@ the body of the SPARK 2005 might seem to be needlessly repeating contracts. Howe
 is not true since the contracts that are being repeated are indirectly being refined through
 the refinement of the `Is_Empty` and `Is_Full` functions.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
       :language: ada
@@ -197,7 +197,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
       :language: ada
@@ -244,7 +244,7 @@ Bodies of both parent and child in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
       :language: ada
@@ -391,7 +391,7 @@ cannot be refined) at the point of the declaration of the variables that compose
 The body of the |SPARK| version of the code is not presented since it is an exact copy
 of the SPARK 2005 body.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.ads
       :language: ada
@@ -403,7 +403,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/stack_14.ads
       :language: ada
@@ -435,13 +435,13 @@ The following example demonstrates how variables, that need to be hidden from th
 a package, can be placed on the package's private section. The bodies of the packages have
 not been included since they contain no annotation.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_private_concrete/05/stack_05.ads
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_concrete/14/stack_14.ads
       :language: ada
@@ -458,7 +458,7 @@ Initialized by procedure call
 In this example, the abstract state declared at the specifications is refined at the body.
 Procedure `Init` can be invoked by users of the package, in order to initialize the state.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.ads
       :language: ada
@@ -470,7 +470,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/stack_14.ads
       :language: ada
@@ -490,7 +490,7 @@ Initialized by elaboration of declaration
 The example that follows introduces an abstract state at the specifications and refines it
 at the body. The constituents of the abstract state are initialized at declaration.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.ads
       :language: ada
@@ -502,7 +502,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/stack_14.ads
       :language: ada
@@ -545,7 +545,7 @@ This example introduces an abstract state at the specifications and refines it a
 Some of the constituents of the abstract state are initialized during their declaration and
 the rest at the statements part of the body.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.ads
       :language: ada
@@ -557,7 +557,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/stack_14.ads
       :language: ada
@@ -580,7 +580,7 @@ On top of declaring an abstract state and promising to initialize it, we also il
 certain conditions that will be valid after initialization. The body is not being provided
 since it does not add any further insight.
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_initial_condition/14/stack_14.ads
       :language: ada
@@ -766,7 +766,7 @@ Specification of output port in |SPARK|:
 
 Body of input port in |SPARK|:
 
-This is as per SPARK 2005.
+This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
    .. literalinclude:: ../code/external_variables_input_output/14/input_port_14.adb
       :language: ada
@@ -774,7 +774,7 @@ This is as per SPARK 2005.
 
 Body of output port in |SPARK|:
 
-This is as per SPARK 2005.
+This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
    .. literalinclude:: ../code/external_variables_input_output/14/output_port_14.adb
       :language: ada
@@ -818,7 +818,7 @@ and adds a contract using the 'Append attribute.
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
       :language: ada
@@ -924,9 +924,9 @@ Increasing values in input stream
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following example illustrates an input port from which values are
-read. According to its post-condition, procedure Increases checks whether
+read. According to its postcondition, procedure Increases checks whether
 the first values read from the sequence are in ascending order. This example
-shows that post-conditions can refer to multiple individual elements of the
+shows that postconditions can refer to multiple individual elements of the
 input stream.
 
 .. todo::
@@ -955,7 +955,7 @@ Contracts with remote state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following example illustrates indirect access to the state of one package
-by another via an intermediary. Raw_Data stores some data, which has pre-processing
+by another via an intermediary. Raw_Data stores some data, which has preprocessing
 performed on it by Processing and on which Calculate performs some further processing
 (although the corresponding bodies are not given, Read_Calculated_Value in Calculate
 calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
@@ -1026,7 +1026,7 @@ Abstract Switch specification in |SPARK|:
       :language: ada
       :linenos:
 
-Component Switch specifications in |SPARK|:
+Component Switch specification in |SPARK|:
 
 As in `Refinement of external state - voting input switch`_
 
@@ -1109,7 +1109,7 @@ At each run of the loop the list of existing hypotheses is cleared and the state
 are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of
 `assert`, while within a loop, is `pragma Loop_Invariant`.
 
-Specifications in SPARK 2005:
+Specification in SPARK 2005:
 
    .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.ads
       :language: ada
@@ -1121,7 +1121,7 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications in |SPARK|:
+Specification in |SPARK|:
 
    .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.ads
       :language: ada
@@ -1225,9 +1225,9 @@ See section `Proof types and proof functions`_.
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following example gives pre- and post-conditions on operations that act upon
+The following example gives pre- and postconditions on operations that act upon
 the concrete representation of an abstract own variable. This means that proof functions
-and proof types are needed to state those pre- and post-conditions. In addition, it gives
+and proof types are needed to state those pre- and postconditions. In addition, it gives
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 

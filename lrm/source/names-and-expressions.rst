@@ -26,7 +26,7 @@ Selected Components
 ~~~~~~~~~~~~~~~~~~~
 
 Some constructs which would unconditionally raise an exception at
-runtime in Ada are rejected as illegal in |SPARK| if this property
+run-time in Ada are rejected as illegal in |SPARK| if this property
 can be determined by static analysis.
 
 In particular, if the prefix of a
@@ -92,7 +92,7 @@ one or more ``record_component_associations``, each of which
 shall have a non-**others** ``component_choice_list`` and an expression.
 
 Each ``selector_name`` of each ``record_component_name`` shall denote a
-distinct non-discriminant component of ``T``.
+distinct non discriminant component of ``T``.
 Each ``record_component_association``'s associated components shall all
 be of the same type. The expected type and applicable index
 constraint of the expression is defined as for a
@@ -166,7 +166,7 @@ The length of each ``index_expression_list`` shall equal the
 dimensionality of ``T``. The expected type for each expression in an
 ``index_expression_list`` is the corresponding index type of ``T``.
 
-If ``T`` is one-dimensional type then the component updating referenced
+If ``T`` is a one-dimensional array type then the component updating referenced
 above proceeds as follows. The discrete choices and array
 component expressions are evaluated. Each array component
 expression is evaluated once for each associated component, as for
@@ -202,7 +202,7 @@ or
   Some_Array'Update (Param_1'Range => True, Param_2'Range => False)
   -- ok even if the two ranges overlap
 
-This is different than the ``Update`` attribute of a record
+This is different from the ``Update`` attribute of a record
 
 ::
 

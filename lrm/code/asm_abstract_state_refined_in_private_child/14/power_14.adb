@@ -1,7 +1,7 @@
 with Power_14.Source_A_14, Power_14.Source_B_14;
 
 package body Power_14
-   with Refined_State => (State => (Power_14.Source_A_14.State, Power_14.Source_B_14.State)
+   with Refined_State => (State => (Power_14.Source_A_14.State, Power_14.Source_B_14.State))
 is
 
   procedure Read_Power(Level : out Integer)
