@@ -351,8 +351,8 @@ specified:
      has an effective mode of **out** or **in out**, then its
      effective mode is **in out**.
 
-#. A ``conditional_mode`` is specified using an if_expression with a
-   notional type of Boolean. The if_expression provides additional
+#. A ``conditional_mode`` is specified using an ``if_expression`` with a
+   notional type of Boolean. The ``if_expression`` provides additional
    details to the ``mode_refinement``.  It defines the condition under
    which each ``moded_item`` of the ``moded_item_list``, which is the
    *dependent* expression, has to be directly or indirectly read,
@@ -364,7 +364,7 @@ specified:
 
 #. A *dependent* expression which is a **null** ``moded_item_list``
    indicates that there are no ``moded_items`` read or updated when
-   the controlling condition evalustaes to True.
+   the controlling condition evaluates to True.
 
 #. Note: The checking that the use of a subcomponent or a
    ``conditional_mode`` in the subprogram body is consistent with the
