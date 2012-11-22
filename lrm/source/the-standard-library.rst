@@ -19,7 +19,7 @@ The Package Ada
 ~~~~~~~~~~~~~~~
 
 .. todo:: Should we say here which packages are supported in |SPARK| or which ones aren't
-   supported?  How much of the standard library will be available, and in which runtime
+   supported?  How much of the standard library will be available, and in which run-time
    profiles?
 
 

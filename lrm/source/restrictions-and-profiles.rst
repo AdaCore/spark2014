@@ -109,7 +109,7 @@ A list of restrictions by section and their effect:
 
 #. ``Strict_Modes``
 
-   * A *formal parameter* (see Ada LRM 6.1) of a subprogram of mode
+   * A *formal parameter* (see Ada RM 6.1) of a subprogram of mode
      **in** or **in out** (an ``import``) must be read on at least one
      execution path through the body of the subprogram and its initial
      value used in determining the value of at least one of ``export``
@@ -185,7 +185,7 @@ A list of restrictions by section and their effect:
    its private child packages and enforces the restriction that a
    package which has hidden state must have an
    ``abstract_state_aspect``.  If this restriction is in force the
-   absence of a ``abstract_state_name`` implies Abstract_State =>
+   absence of an ``abstract_state_name`` implies Abstract_State =>
    **null**.
 
 7.1.3 Initializes Aspect
@@ -215,7 +215,7 @@ A list of restrictions by section and their effect:
 
 #. ``Package_Elaboration_Order_Independence``
 
-   Enforces the rule the elaboration of a package Q may only
+   Enforces the rule that elaboration of a package Q may only
    initialize a *variable* using a *static expression* or using
    subprograms and *variables local* to Q.  Ultimately all the
    initialization values must be derived from *static expressions*.  If
@@ -238,7 +238,7 @@ A list of restrictions by section and their effect:
 
 #. ``Refined_State_Aspects_Required``
 
-   If a packages has a ``abstract_state_aspect`` then a corresponding
+   If a package has an ``abstract_state_aspect`` then a corresponding
    `` refined_state_aspect`` is required.
 
 #. ``Null_State_Refinement_Prohibited``

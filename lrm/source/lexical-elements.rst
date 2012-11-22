@@ -49,7 +49,7 @@ Reserved Words
 --------------
 
 |SPARK| has the same set of reserved words as Ada 2012.  Owing to language restrictions, the
-following set of reserved words are never used in the |SPARK| part of a program.
+following reserved words are never used in the |SPARK| part of a program.
 
 **abort**,
 **accept**,

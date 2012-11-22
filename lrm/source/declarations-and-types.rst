@@ -1,7 +1,7 @@
 Declarations and Types
 ======================
 
-|SPARK| does not add any declaration or type to Ada 2012, but it restricts
+|SPARK| does not add any declarations or types to Ada 2012, but it restricts
 their usage.
 
 Declarations

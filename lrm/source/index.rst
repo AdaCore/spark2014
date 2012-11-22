@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-SPARK 2014 LRM
-==============
+SPARK 2014 Reference Manual
+===========================
 
    Copyright (C) 2011-2012, AdaCore and Altran Praxis Ltd
 

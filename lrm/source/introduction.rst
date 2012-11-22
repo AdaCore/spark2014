@@ -23,10 +23,10 @@ users and implementors of the language.  In this context
 "implementors" includes those producing both compilers and
 verification tools.
 
-This manual is written in the style and language of the Ada 2012 LRM,
+This manual is written in the style and language of the Ada 2012 Reference Manual (RM),
 so knowledge of Ada 2012 is assumed.  Chapters 2 through 13 mirror
-the structure of the Ada 2012 LRM.  Chapter 14 covers all the annexes
-of the Ada LRM.
+the structure of the Ada 2012 RM.  Chapter 14 covers all the annexes
+of the Ada RM.
 
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
@@ -77,8 +77,8 @@ the needs of particular
 
 - Standards - for example, DO-178C Level A,
 
-- Technical requirements - for example, systems requiring software that is amenable
-  to worst-case execution time (WCET) analysis or compatibility with a "zero footprint" runtime profile.
+- Technical requirements - for example, systems requiring software that is
+  compatible with a "zero footprint" run-time library.
 
 |SPARK| will be amenable to a range of formal analyses, including but not limited to:
 
@@ -87,7 +87,7 @@ the needs of particular
 - Information-flow analysis and program slicing.
 
 - Formal verification of robustness properties. In Ada terminology, this refers to
-  the proof that a predefined check will never fail at run-time, and hence predefined
+  the proof that a predefined check will never fail at run time, and hence predefined
   exceptions will never be raised.
 
 - Formal verification of functional properties, based on contracts expressed as
@@ -117,17 +117,19 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - Raising and handling of user-defined exceptions is not permitted.
 
-We describe a program unit or language feature as being "in |SPARK|" if it complies
-with the restrictions required to permit formal verification.  Conversely, a program unit language
-feature is "not in |SPARK|" if it does not meet these requirements, and so is not amenable
-to formal verification. Within a single unit, features which are "in" and "not in" |SPARK| may be mixed
-at a fine level. For example, the following combinations may be typical:
+We describe a program unit or language feature as being "in |SPARK|"
+if it complies with the restrictions required to permit formal
+verification.  Conversely, a program unit language feature is "not in
+|SPARK|" if it does not meet these requirements, and so is not
+amenable to formal verification. Within a single unit, features which
+are "in" and "not in" |SPARK| may be mixed at a fine level. For
+example, the following combinations may be typical:
 
 - Package specification in |SPARK|. Package body entirely not in |SPARK|.
 
 - Visible part of package specification in |SPARK|. Private part and body not in |SPARK|.
 
-- Package specification in |SPARK|. Package body almost entirely in |SPARK| with a small
+- Package specification in |SPARK|. Package body almost entirely in |SPARK|, with a small
   number of subprogram bodies not in |SPARK|.
 
 - Package specification in |SPARK|, with all bodies imported from another language.
@@ -135,7 +137,7 @@ at a fine level. For example, the following combinations may be typical:
 - Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
   The latter declarations are only visible and usable from client units which are not in |SPARK|.
 
-Such patterns are intended to allow for mixed language programming, and the development of programs
+Such patterns are intended to allow for mixed-language programming, and the development of programs
 that mix formal verification and more traditional testing.
 
 Static Checking
@@ -164,7 +166,7 @@ and a subheading of "Checked by Flow Analysis".
 .. note::
  (SB) this is silly - the heading should be "Flow Analysis Rules".
  The point is that there are no non-flow-analysis verification rules
- anymore. Everything else follows from the one rule that a runtime
+ anymore. Everything else follows from the one rule that a run-time
  check induces a proof obligation. If we had ghost variables or
  prover-hints or something like that, then we might need
  "Verification Rules" sections. But we don't, so we don't.
@@ -206,7 +208,7 @@ obligations.
 All such generated proof obligations must be discharged before the
 formal program verification phase may be considered to be complete.
 
-Every valid |SPARK| program is also also a valid Ada 2012 program.
+Every valid |SPARK| program is also a valid Ada 2012 program.
 The dynamic semantics of the two languages are defined to be identical,
 so that a valid |SPARK| program may be compiled and executed by means of
 an Ada compiler.
@@ -249,7 +251,7 @@ Ada 2012 reference manual.
 Optional Restrictions and Profiles
 ----------------------------------
 
-In additional to the global simplifications of the language given above, |SPARK|
+In addition to the global simplifications of the language given above, |SPARK|
 defines a number of Restrictions that may be optionally applied to an entire
 project, program or unit. These restrictions may provide additional simplification
 of the language that users feel necessary, may meet particular demands of standards
@@ -262,7 +264,7 @@ Constructive and Retrospective Verification Modes
 -------------------------------------------------
 
 SPARK 2005 strongly favoured the *constructive* verification style - where all
-program units required mandatory contracts on their specifications.  These
+program units required contracts on their specifications.  These
 contracts had to be designed and added at an early stage to assist modular
 verification, and then maintained by the user as a program evolved.
 
@@ -320,5 +322,5 @@ Method of Description and Syntax Notation
 -----------------------------------------
 
 In expressing the syntax and rules of |SPARK|, the remaining chapters of
-this document follow the notational conventions of the Ada 2012 LRM (section 1.1.4).
+this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
 

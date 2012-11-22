@@ -230,7 +230,7 @@ Mode Refinement
 
 Mode refinement is used in the specification of both ``Global`` and ``Param``
 aspects.  It allows the mode of each item read or updated by a
-subprogram, *formal parameters*, *global variables* (see Ada LRM 8.1)
+subprogram, *formal parameters*, *global variables* (see Ada RM 8.1)
 and *abstract states* (see :ref:`abstract-state`) to be more precisely
 specified:
 
@@ -309,7 +309,7 @@ specified:
    * If the ``moded_item`` is not read but always updated by the
      subprogram directly or indirectly then its *effective mode* is
      **out**.
-   * If the body of the suboprogram neither reads or updates the
+   * If the body of the suboprogram neither reads nor updates the
      ``moded_item``, directly or indirectly then the *effective mode*
      is unmoded.
    * Otherwise the *effective mode* is **in out**.
@@ -359,7 +359,7 @@ specified:
    updated or both within the body of the subprogram.
 
 #. If the ``if_expression`` does not have a final else clause and all of
-   the conditions of the ``if_expression`` evaluates to False it has the
+   the conditions of the ``if_expression`` evaluate to False it has the
    effect of **else null**.
 
 #. A *dependent* expression which is a **null** ``moded_item_list``
@@ -390,7 +390,7 @@ specified:
 
 
 There are no dynamic semantics associated with a ``mode_refinement``
-as it is used purely for static analyses purposes and is not executed.
+as it is used purely for static analysis purposes and is not executed.
 
 .. todo:: We could consider executable semantics, especially for
    conditional modes, but I think we should only consider executing
@@ -453,9 +453,9 @@ accidental hiding of a *global* variable by a more *local* variable.
    the ``global_aspect`` or the ``parameter_specification`` for that name, according to
    the following rules:
 
-   1. For a name of a object X to appear in a precondition aspect, X must be a formal
+   1. For a name of an object X to appear in a precondition aspect, X must be a formal
       parameter or global variable which is of mode "in", "in out", or "Proof".
-   2. For a name of a object X to appear in a postcondition aspect, X must be
+   2. For a name of an object X to appear in a postcondition aspect, X must be
       a formal parameter or global variable of any mode.
    3. Additionally, X'Old is permitted in a postcondition aspect if X is
       a global variable or formal parameter of mode "in out".
@@ -472,7 +472,7 @@ accidental hiding of a *global* variable by a more *local* variable.
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``global_aspect`` it
-is used purely for static analyses purposes and is not executed.
+is used purely for static analysis purposes and is not executed.
 
 
 .. centered:: **Examples**
@@ -504,7 +504,7 @@ is used purely for static analyses purposes and is not executed.
                   -- K is a global item of mode in, A is a global array
                   -- and only element A (K) is updated
                   -- the rest of the array is preserved.
-                  -- R is a global record and only filed R.F is updated
+                  -- R is a global record and only field R.F is updated
                   -- the remainder of the fields are preserved.
   with Global => (Input  => (X, Y, Z),
                   Output => (A, B, C),
@@ -563,7 +563,7 @@ subcomponents of A appear in an ``Input`` ``mode_specification``.
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``param_aspect`` it
-is used purely for static analyses purposes and is not executed.
+is used purely for static analysis purposes and is not executed.
 
 .. todo:: We could consider executable semantics, especially for
      conditional modes, but I think we should only consider executing
@@ -577,15 +577,15 @@ is used purely for static analyses purposes and is not executed.
    with Param => (Input  => R.F,
                   Output => R.E);
    -- The Param aspect states that only field F of the record R is read
-   -- and that only field E is updated; the values remainder of the
-   -- record fields are preserved.
+   -- and that only field E is updated; the values of the remainder of
+   -- the record fields are preserved.
 
    procedure Q (A : in out An_Array_Type)
    with Param => (Input  => A (I),
                   Output => A (J));
    -- The Param aspect states that only element I of the array A is read
-   -- and that only element J is updated; the values remainder of the
-   -- array elements are preserved. Note: I may equal J.
+   -- and that only element J is updated; the values of the remainder of
+   -- the array elements are preserved. Note: I may equal J.
 
    procedure G (A : in out An_Array_Type)
    with Global => (Input  => K),
@@ -593,8 +593,8 @@ is used purely for static analyses purposes and is not executed.
                    Output => (if K = 10 then A (J)));
    -- The Param aspect states that only element I of the array A is read
    -- and element J is only updated if the global K = 10;
-   -- the values remainder of the  array elements are preserved including
-   -- A (J) if K /= 10. Note: I, J and K may all be equal.
+   -- the values of the remainder of the array elements are preserved
+   -- including A (J) if K /= 10. Note: I, J and K may all be equal.
 
 
 Dependency Aspects
@@ -737,7 +737,7 @@ where
    subcomponents, a single, e.g. element A (I), cannot appear more
    than once as an ``export``, whereas elements A (I) and A (J) are
    considered as distinct and may both appear as an export even
-   though I my equal J.
+   though I may equal J.
 #. Each ``export`` shall appear exactly once in a
    ``dependency_relation``.  A subcomponent of a composite object V is
    sufficient to show an appearance of V but more than one distinct
@@ -777,7 +777,7 @@ where
    imports.  Generally a ``dependency_aspect`` is not required for
    functions unless it is to describe a ``conditional_dependency``.
 #. The ``+`` symbol in the syntax ``expression_list =>+ import_list``
-   designates that each ``export`` in the ``export-list`` has a
+   designates that each ``export`` in the ``export_list`` has a
    self-dependency, that is, it is dependent on itself. The text (A,
    B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C,
    Z)).
@@ -816,7 +816,7 @@ where
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``dependency_aspect``
-it used purely for static analyses purposes and is not executed.
+it used purely for static analysis purposes and is not executed.
 
 
 .. centered:: **Examples**
@@ -949,9 +949,9 @@ specified for the ``moded_items``.
 #. If a subcomponent name appears in a ``mode_specification`` with a
    ``mode_selector`` of ``Input`` or ``In_Out`` then the initial value
    of just that subcomponent is considered to be read and used in
-   determining the final value of at least one ``export``.  If more than
+   determining the final value of at least one ``export``. If more than
    one subcomponent of the same object appears in such a
-   ``mode_specification`` then all the rule applies to all mentioned
+   ``mode_specification`` then the rule applies to all mentioned
    subcomponents.
 
 .. todo:: Conditional mode specifications which have to be checked by proof. Target: rel2+.
@@ -959,7 +959,7 @@ specified for the ``moded_items``.
 Global Aspects
 ~~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body or body
+If a subprogram does not have a separate declaration its body or body
 stub may have a ``global_aspect`` in its aspect specification where
 the same rules as for a ``global_aspect`` in a subprogram declaration
 apply.  When a subprogram has a ``global_aspect`` either in its
@@ -997,7 +997,7 @@ implementation of its body as described below.
 Param Aspects
 ~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body or body
+If a subprogram does not have a separate declaration its body or body
 stub may have a ``param_aspect`` in its aspect specification where the
 same rules as for a ``param_aspect`` in a subprogram declaration
 apply.  When a subprogram has a ``param_aspect`` either in its
@@ -1013,7 +1013,7 @@ below should be satisfied by the implementation of its body.
 Dependency Aspects
 ~~~~~~~~~~~~~~~~~~
 
-If subprogram does not have a separate declaration its body or body
+If a subprogram does not have a separate declaration its body or body
 stub may have a ``dependency_aspect`` in its aspect specification
 where the same rules as for a ``dependency_aspect`` in a subprogram
 declaration apply.  When a subprogram has a ``dependency_aspect``
@@ -1022,7 +1022,7 @@ semantics given below should be satisfied by the implementation of its
 body.
 
 If the subprogram has a ``refined_dependency_aspect`` (see
-:ref:`refined-dependency-aspect`), this has to be checked for consitency
+:ref:`refined-dependency-aspect`), this has to be checked for consistency
 with the ``dependency_aspect`` and influences the rules for checking the
 implementation of its body as described below.
 
@@ -1106,16 +1106,16 @@ The presence of aliasing is inconsistent with the underlying flow
 analysis and proof models used by the tools which assume that
 different names represent different entities.  In general, it is not
 possible or is difficult to deduce that two names refer to the same
-object and problems arise when one of names is used to update the
+object and problems arise when one of the names is used to update the
 object.
 
 A common place for aliasing to be introduced is through the *actual
-parameters* (see Ada LRM 6.4.1) and between *actual parameters* and
+parameters* (see Ada RM 6.4.1) and between *actual parameters* and
 *global variables* in a procedure call.  Extra semantic rules are
 given that avoid the possibility of aliasing through *actual
 parameters* and *global variables*.  A function is not allowed to have
 side-effects and cannot update an *actual parameter* or *global
-variable*.  Therefore a function call cannot introduce aliasing and
+variable*.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
 
@@ -1138,7 +1138,7 @@ The ``moded_items`` which are *global* to a procedure have to be
 determined.  These may be obtained from an explicit ``global_aspect``
 or ``dependency_aspect`` of the procedure, if either or both of these
 are present. If neither of these are present then an implicit global
-aspect is used which is deduced by analysing the bodies of the called
+aspect is used which is deduced by analysis of the bodies of the called
 subprogram and the subprograms it calls.
 
 .. centered:: **Verification Rules**
@@ -1224,8 +1224,8 @@ the subprogram.
    * for a function which does not have an explicit
      ``dependency_aspect``, the assumed dependency relation is that
      its result is dependent on all of its imports;
-   * for a procedure which does not does not have an explicit
-     ``refined_dependency_aspect`` but the the subprogram
+   * for a procedure which does not have an explicit
+     ``refined_dependency_aspect`` but the subprogram
      has a proper body, the implicit dependency relation synthesized
      from the subprogram code will be used.
    * for a procedure which has neither a ``refined_dependency_aspect``
@@ -1241,7 +1241,7 @@ the subprogram.
    * for a function which does not have an explicit
      ``dependency_aspect``, the assumed dependency relation is that
      its result is dependent on all of its imports;
-   * for a procedure which does not does not have an explicit
+   * for a procedure which does not have an explicit
      ``dependency_aspect`` but the subprogram has a proper body, the
      implicit dependency relation synthesized from the subprogram code
      will be used.
