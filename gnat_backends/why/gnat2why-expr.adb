@@ -4031,8 +4031,10 @@ package body Gnat2Why.Expr is
    -- Transform_Pragma_Check --
    ----------------------------
 
-   function Transform_Pragma_Check (Stmt : Node_Id; Runtime : out W_Prog_Id)
-      return W_Pred_Id
+   procedure Transform_Pragma_Check
+     (Stmt    : Node_Id;
+      Runtime : out W_Prog_Id;
+      Pred    : out W_Pred_Id)
    is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
       Arg2 : constant Node_Id := Next (Arg1);
@@ -4048,14 +4050,16 @@ package body Gnat2Why.Expr is
          Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
       then
          Runtime := New_Void (Stmt);
-         return True_Pred;
+         Pred := True_Pred;
+         return;
       end if;
 
       if Present (Expr) then
          Runtime := New_Ignore
            (Prog => +Transform_Expr (Expr, EW_Prog, Params => Params));
          Params.Gen_Image := True;
-         return +Transform_Expr (Expr, EW_Pred, Params => Params);
+         Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
+         return;
       else
          raise Program_Error;
       end if;
@@ -4492,9 +4496,10 @@ package body Gnat2Why.Expr is
                when Pragma_Check =>
                   declare
                      Check_Expr : W_Prog_Id;
-                     Pred : constant W_Pred_Id :=
-                        Transform_Pragma_Check (Stmt, Check_Expr);
+                     Pred       : W_Pred_Id;
                   begin
+                     Transform_Pragma_Check (Stmt, Check_Expr, Pred);
+
                      if Is_Pragma_Assert_And_Cut (Stmt) then
                         Assert_And_Cut := Pred;
                         if Check_Expr /= Why_Empty then
@@ -4550,19 +4555,11 @@ package body Gnat2Why.Expr is
    -- Transform_Statements --
    --------------------------
 
-   function Transform_Statements
-     (Stmts      : List_Id;
-      Start_From : Node_Id := Empty)
-     return W_Prog_Id
+   function Transform_Statements (Stmts : List_Of_Nodes.List) return W_Prog_Id
    is
-      Result          : W_Prog_Id := New_Void;
-      Cur_Stmt        : Node_Or_Entity_Id :=
-                          (if Present (Start_From) then
-                             Next (Start_From)
-                           else
-                             First (Stmts));
+      Result : W_Prog_Id := New_Void;
    begin
-      while Present (Cur_Stmt) loop
+      for Cur_Stmt of Stmts loop
          declare
             Cut_Assertion : W_Pred_Id;
             Stmt          : constant W_Prog_Id :=
@@ -4583,11 +4580,13 @@ package body Gnat2Why.Expr is
                     Expr     => +Result,
                     Post     => Cut_Assertion);
             end if;
-            Next (Cur_Stmt);
          end;
       end loop;
       return Result;
    end Transform_Statements;
+
+   function Transform_Statements (Stmts : List_Id) return W_Prog_Id is
+      (Transform_Statements (Get_Statement_List (Stmts)));
 
    ------------------------------
    -- Transform_String_Literal --

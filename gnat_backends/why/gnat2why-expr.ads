@@ -82,10 +82,13 @@ package Gnat2Why.Expr is
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
 
-   function Transform_Pragma_Check (Stmt : Node_Id; Runtime : out W_Prog_Id)
-      return W_Pred_Id;
-   --  Translate a pragma check into a predicate; also, generate an expression
-   --  which will make generate the necessary checks for Why
+   procedure Transform_Pragma_Check
+     (Stmt    : Node_Id;
+      Runtime : out W_Prog_Id;
+      Pred    : out W_Pred_Id);
+   --  Given a pragma Check in Stmt, generates the corresponding proposition in
+   --  Pred, and the program which checks the absence of run-time errors in
+   --  Runtime.
 
    function Transform_Discrete_Choices
      (Case_N       : Node_Id;
@@ -136,15 +139,10 @@ package Gnat2Why.Expr is
       Params        : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
-   function Transform_Statements
-     (Stmts      : List_Id;
-      Start_From : Node_Id := Empty)
-     return W_Prog_Id;
-   --  Translate a list of Ada statements into a single Why expression.
-   --  An empty list is translated to "void".
-   --  The parameter Start_From indicates a node in the list from which the
-   --  translation process is to be started. All nodes before and including
-   --  Start_From are ignored.
+   function Transform_Statements (Stmts : List_Of_Nodes.List) return W_Prog_Id;
+   function Transform_Statements (Stmts : List_Id) return W_Prog_Id;
+   --  Transforms a list of statements into a Why expression. An empty list is
+   --  transformed into the void expression.
 
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
       return W_Prog_Id;

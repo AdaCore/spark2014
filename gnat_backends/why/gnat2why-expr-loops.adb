@@ -26,109 +26,111 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
-with String_Utils;          use String_Utils;
+with String_Utils;       use String_Utils;
 
-with Atree;                 use Atree;
-with Nlists;                use Nlists;
-with Sinfo;                 use Sinfo;
-with Snames;                use Snames;
-with Uintp;                 use Uintp;
-with VC_Kinds;              use VC_Kinds;
-with Why;                   use Why;
-with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Expr;          use Why.Gen.Expr;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Gen.Preds;         use Why.Gen.Preds;
-with Why.Types;             use Why.Types;
-with Why.Inter;             use Why.Inter;
+with Atree;              use Atree;
+with Sinfo;              use Sinfo;
+with Snames;             use Snames;
+with Uintp;              use Uintp;
+with VC_Kinds;           use VC_Kinds;
 
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
-with Gnat2Why.Util;    use Gnat2Why.Util;
+with Alfa.Util;          use Alfa.Util;
+
+with Why;                use Why;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Tables;   use Why.Atree.Tables;
+with Why.Conversions;    use Why.Conversions;
+with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Expr;       use Why.Gen.Expr;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Progs;      use Why.Gen.Progs;
+with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Types;          use Why.Types;
+with Why.Inter;          use Why.Inter;
+
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Gnat2Why.Expr.Loops is
 
-   function Compute_Invariant
-      (Loop_Body  : List_Id;
-       Inv_Check  : out W_Prog_Id;
-       Split_Node : out Node_Id) return W_Pred_Id;
-   --  Given a list of statements (a loop body), construct a predicate that
-   --  corresponds to the conjunction of all assertions at the beginning of
-   --  the list. The out parameter Split_Node is set to the last node that is
-   --  an assertion.
-   --  If there are no assertions, we set Split_Node to N_Empty and we return
-   --  True.
-   --  The out parameter Inv_Check contains an expression that corresponds to
-   --  the runtime checks of the invariant.
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
+
+   procedure Get_Loop_Invariant
+     (Loop_Stmts     : List_Of_Nodes.List;
+      Initial_Stmts  : out List_Of_Nodes.List;
+      Loop_Invariant : out Node_Id;
+      Final_Stmts    : out List_Of_Nodes.List);
+   --  Loop_Stmts is a flattened list of statements and declarations in a loop
+   --  body. It includes the statements and declarations that appear directly
+   --  in the main list inside the loop, and recursively all inner declarations
+   --  and statements that appear in block statements.
+   --
+   --  Get_Loop_Invariant splits this list into three buckets:
+   --   * Initial_Stmts is the list of initial statements and declarations
+   --     before the first occurrence of pragma Loop_Invariant;
+   --   * Loop_Invariant is the node of the first occurrence of pragma
+   --     Loop_Invariant in the list, if any, and Empty otherwise;
+   --   * Final_Stmts is the list of final statements and declarations
+   --     after the first occurrence of pragma Loop_Invariant.
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 
    function Wrap_Loop
-      (Loop_Body : W_Prog_Id;
-       Cond_Prog : W_Prog_Id;
-       Cond_Pred : W_Pred_Id;
-       Exit_Cond : W_Prog_Id;
-       Loop_Name : String;
-       Invariant : W_Pred_Id;
-       Inv_Check : W_Prog_Id)
-      return W_Prog_Id;
-   --  Given a loop body, the loop condition, the loop name, the invariant,
-   --  the check_expression for the invariant, generate the entire loop
-   --  expression in Why.
-   --  See the comment in the body of Wrap_Loop to see how it's done.
+     (Loop_Name          : String;
+      Loop_Start         : W_Prog_Id;
+      Loop_End           : W_Prog_Id;
+      Enter_Condition    : W_Prog_Id;
+      Loop_Condition     : W_Prog_Id;
+      Implicit_Invariant : W_Pred_Id;
+      User_Invariant     : W_Pred_Id;
+      Invariant_Check    : W_Prog_Id) return W_Prog_Id;
+   --  Returns the loop expression in Why. Loop_Start and Loop_End correspond
+   --  to the statements and declarations respectively before and after the
+   --  loop invariant pragma put by the user, if any. Otherwise, Loop_Start is
+   --  the void expression, and Loop_End corresponds to all statements in the
+   --  loop. Enter_Condition and Loop_Condition are respectively the conditions
+   --  for entering the loop the first time, and staying in the loop at each
+   --  execution of the loop. Implicit_Invariant is the condition that can
+   --  be assumed to hold at the start of the Why loop. User_Invariant is the
+   --  invariant to use for the Why loop. Invariant_Check is the Why program
+   --  checking that the user invariant does not raise a run-time error.
+   --
+   --  See comments in Wrap_Loop's body for the actual transformation.
 
-   -----------------------
-   -- Compute_Invariant --
-   -----------------------
+   ------------------------
+   -- Get_Loop_Invariant --
+   ------------------------
 
-   function Compute_Invariant
-      (Loop_Body  : List_Id;
-       Inv_Check  : out W_Prog_Id;
-       Split_Node : out Node_Id)
-     return W_Pred_Id
+   procedure Get_Loop_Invariant
+     (Loop_Stmts     : List_Of_Nodes.List;
+      Initial_Stmts  : out List_Of_Nodes.List;
+      Loop_Invariant : out Node_Id;
+      Final_Stmts    : out List_Of_Nodes.List)
    is
-      Cur_Stmt : Node_Id := Nlists.First (Loop_Body);
-      Pred : W_Pred_Id := True_Pred;
+      Loop_Invariant_Found : Boolean := False;
+
    begin
-      Inv_Check := New_Void;
-      Split_Node := Empty;
+      for N of Loop_Stmts loop
+         if Loop_Invariant_Found then
+            Final_Stmts.Append (N);
 
-      while Nkind (Cur_Stmt) /= N_Empty loop
-         case Nkind (Cur_Stmt) is
-            when N_Pragma =>
-               if Get_Pragma_Id (Pragma_Name (Cur_Stmt)) = Pragma_Check then
-                  declare
-                     Cur_Check : W_Prog_Id;
-                     Cur_Pred : constant W_Pred_Id :=
-                        Transform_Pragma_Check (Cur_Stmt, Cur_Check);
-                  begin
-                     Pred := +New_And_Expr (+Pred, +Cur_Pred, EW_Pred);
-                     Inv_Check := Sequence (Inv_Check, Cur_Check);
-                  end;
-               end if;
+         elsif Is_Pragma_Check (N, Name_Loop_Invariant) then
+            Loop_Invariant := N;
+            Loop_Invariant_Found := True;
 
-            when N_Object_Declaration =>
-               null;
-
-            when others =>
-               exit;
-         end case;
-
-         Split_Node := Cur_Stmt;
-         Nlists.Next (Cur_Stmt);
+         else
+            Initial_Stmts.Append (N);
+         end if;
       end loop;
-      Pred :=
-        +New_VC_Expr
-          (Ada_Node => Split_Node,
-           Expr     => +Pred,
-           Reason   => VC_Loop_Invariant,
-           Domain   => EW_Pred);
-      return Pred;
-   end Compute_Invariant;
+
+      if not Loop_Invariant_Found then
+         Loop_Invariant := Empty;
+      end if;
+   end Get_Loop_Invariant;
 
    -----------------------------------
    -- Loop_Entity_Of_Exit_Statement --
@@ -189,39 +191,68 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Statement --
    ------------------------------
 
-   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id
-   is
-      Loop_Body    : constant List_Id := Statements (Stmt);
-      Split_Node   : Node_Id;
+   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id is
+      Loop_Body   : constant List_Id   := Statements (Stmt);
+      Scheme      : constant Node_Id   := Iteration_Scheme (Stmt);
+      Loop_Entity : constant Entity_Id := Entity (Identifier (Stmt));
+      Loop_Name   : constant String    := Full_Name (Loop_Entity);
+
+      Loop_Stmts     : List_Of_Nodes.List;
+      Initial_Stmts  : List_Of_Nodes.List;
+      Final_Stmts    : List_Of_Nodes.List;
+      Loop_Invariant : Node_Id;
+
+      Initial_Prog : W_Prog_Id;
+      Final_Prog   : W_Prog_Id;
       Inv_Check    : W_Prog_Id;
-      Invariant    : constant W_Pred_Id :=
-        Compute_Invariant (Loop_Body, Inv_Check, Split_Node);
-      Loop_Content : constant W_Prog_Id :=
-         Transform_Statements (Stmts => Loop_Body, Start_From => Split_Node);
-      Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
-      Loop_Entity  : constant Entity_Id := Entity (Identifier (Stmt));
-      Loop_Name    : constant String := Full_Name (Loop_Entity);
+      Invariant    : W_Pred_Id;
+
    begin
-      --  No iteration scheme, we have a simple loop. Generate condition
-      --  "true".
+      --  Retrieve the different parts of the loop
+
+      Loop_Stmts := Get_Flat_Statement_List (Loop_Body);
+      Get_Loop_Invariant
+        (Loop_Stmts, Initial_Stmts, Loop_Invariant, Final_Stmts);
+
+      --  Transform each part of the loop
+
+      Initial_Prog := Transform_Statements (Initial_Stmts);
+      Final_Prog := Transform_Statements (Final_Stmts);
+
+      if Present (Loop_Invariant) then
+         Transform_Pragma_Check (Loop_Invariant, Inv_Check, Invariant);
+      else
+         Inv_Check := New_Void;
+         Invariant := True_Pred;
+      end if;
+
+      Invariant :=
+        +New_VC_Expr
+          (Ada_Node => Loop_Invariant,
+           Expr     => +Invariant,
+           Reason   => VC_Loop_Invariant,
+           Domain   => EW_Pred);
+
+      --  Depending on the form of the loop, put together the generated Why
+      --  nodes in a different way.
+
+      --  Case of a simple loop
 
       if Nkind (Scheme) = N_Empty then
-         return
-            Wrap_Loop
-               (Loop_Body => Loop_Content,
-                Cond_Prog => True_Prog,
-                Cond_Pred => True_Pred,
-                Exit_Cond => True_Prog,
-                Loop_Name => Loop_Name,
-                Invariant => Invariant,
-                Inv_Check => Inv_Check);
+         return Wrap_Loop (Loop_Name          => Loop_Name,
+                           Loop_Start         => Initial_Prog,
+                           Loop_End           => Final_Prog,
+                           Enter_Condition    => True_Prog,
+                           Loop_Condition     => True_Prog,
+                           Implicit_Invariant => True_Pred,
+                           User_Invariant     => Invariant,
+                           Invariant_Check    => Inv_Check);
 
-      --  A while loop
+      --  Case of a WHILE loop
 
-      elsif
-        Nkind (Iterator_Specification (Scheme)) = N_Empty
-          and then
-        Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
+      elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
+              and then
+            Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
       then
          While_Loop : declare
             Cond_Prog : constant W_Prog_Id :=
@@ -235,25 +266,38 @@ package body Gnat2Why.Expr.Loops is
                                             Condition_Actions (Scheme),
                                             EW_Pred,
                                             Params => Body_Params);
+
+            --  If the Loop_Assertion pragma comes first in the loop body
+            --  (possibly inside nested block statements), then we can use the
+            --  loop condition as an implicit invariant of the generated Why
+            --  loop. In other cases, we cannot, as this would not be always
+            --  correct.
+
+            Impl_Pred : constant W_Pred_Id :=
+              (if Get_Kind (+Initial_Prog) = W_Void then
+                 Cond_Pred
+               else
+                 True_Pred);
          begin
-            return
-              Wrap_Loop
-                (Loop_Body => Loop_Content,
-                 Cond_Prog => Cond_Prog,
-                 Cond_Pred => Cond_Pred,
-                 Exit_Cond => Cond_Prog,
-                 Loop_Name => Loop_Name,
-                 Invariant => Invariant,
-                 Inv_Check => Inv_Check);
+            return Wrap_Loop (Loop_Name          => Loop_Name,
+                              Loop_Start         => Initial_Prog,
+                              Loop_End           => Final_Prog,
+                              Enter_Condition    => Cond_Prog,
+                              Loop_Condition     => Cond_Prog,
+                              Implicit_Invariant => Impl_Pred,
+                              User_Invariant     => Invariant,
+                              Invariant_Check    => Inv_Check);
          end While_Loop;
 
-      --  A for loop. Here, we set the condition to express that the index is
-      --  in the range of the loop. We need to evaluate the range expression
-      --  once at the beginning of the loop, to get potential checks in that
-      --  expression only once.
+      --  Case of a FOR loop
+
+      --  Here, we set the condition to express that the index is in the range
+      --  of the loop. We need to evaluate the range expression once at the
+      --  beginning of the loop, to get potential checks in that expression
+      --  only once.
 
       elsif Nkind (Condition (Scheme)) = N_Empty then
-         Plain_Loop : declare
+         For_Loop : declare
             LParam_Spec  : constant Node_Id :=
                              Loop_Parameter_Specification (Scheme);
             Loop_Range   : constant Node_Id :=
@@ -321,17 +365,17 @@ package body Gnat2Why.Expr.Loops is
                                High      => +High_Ident,
                                Expr      => +Index_Deref);
             Entire_Loop  : W_Prog_Id :=
-                             Wrap_Loop
-                               (Loop_Body    =>
-                                  Sequence (Loop_Content, Update_Stmt),
-                                Cond_Prog    => Cond_Prog,
-                                Cond_Pred    => Cond_Pred,
-                                Exit_Cond    => +Exit_Cond,
-                                Loop_Name    => Loop_Name,
-                                Invariant    => Invariant,
-                                Inv_Check    => Inv_Check);
+              Wrap_Loop (Loop_Name          => Loop_Name,
+                         Loop_Start         => Initial_Prog,
+                         Loop_End           =>
+                           Sequence (Final_Prog, Update_Stmt),
+                         Enter_Condition    => Cond_Prog,
+                         Loop_Condition     => +Exit_Cond,
+                         Implicit_Invariant => Cond_Pred,
+                         User_Invariant     => Invariant,
+                         Invariant_Check    => Inv_Check);
 
-         --  Start of Plain_Loop
+         --  Start of For_Loop
 
          begin
             Entire_Loop := New_Binding_Ref
@@ -358,7 +402,7 @@ package body Gnat2Why.Expr.Loops is
               Sequence
                 (Assume_Of_Subtype_Indication (Body_Params, Loop_Range),
                  Entire_Loop);
-         end Plain_Loop;
+         end For_Loop;
 
       else
          --  Some other kind of loop
@@ -371,70 +415,67 @@ package body Gnat2Why.Expr.Loops is
    -- Wrap_Loop --
    ---------------
 
+   --  Generate the following Why loop expression:
+   --
+   --  if enter_condition then
+   --    loop_start;
+   --    invariant_check;
+   --    try
+   --      loop invariant { user_invariant }
+   --         assume { implicit_invariant };
+   --         loop_end;
+   --         if loop_condition then
+   --            loop_start;
+   --            invariant_check
+   --         else raise loop_name
+   --      end loop
+   --    with loop_name -> void
+   --  end if
+
    function Wrap_Loop
-      (Loop_Body : W_Prog_Id;
-       Cond_Prog : W_Prog_Id;
-       Cond_Pred : W_Pred_Id;
-       Exit_Cond : W_Prog_Id;
-       Loop_Name : String;
-       Invariant : W_Pred_Id;
-       Inv_Check : W_Prog_Id)
-      return W_Prog_Id
+     (Loop_Name          : String;
+      Loop_Start         : W_Prog_Id;
+      Loop_End           : W_Prog_Id;
+      Enter_Condition    : W_Prog_Id;
+      Loop_Condition     : W_Prog_Id;
+      Implicit_Invariant : W_Pred_Id;
+      User_Invariant     : W_Pred_Id;
+      Invariant_Check    : W_Prog_Id) return W_Prog_Id
    is
+      Loop_Ident : constant W_Identifier_Id :=
+        New_Identifier (Name => Capitalize_First (Loop_Name));
 
-      --  Given a loop body and condition, generate the expression
-      --  if <condition> then
-      --    ignore (inv);
-      --    try
-      --      loop {inv}
-      --         assume {condition};
-      --         <loop body>
-      --         if <condition> then ignore (inv)
-      --         else raise <loop_name>;
-      --      end loop
-      --    with <loop_name> -> void
-      --  end if
-
-      Cap_Loop_Name : constant String :=
-        Capitalize_First (Loop_Name);
-
-      Entire_Body : constant W_Prog_Id :=
+      Loop_Body : constant W_Prog_Id :=
         Sequence
-          (New_Assume_Statement (Ada_Node => Empty, Post => Cond_Pred),
+          (New_Assume_Statement
+             (Ada_Node => Empty, Post => Implicit_Invariant),
            Sequence
-             (Loop_Body,
+             (Loop_End,
               New_Conditional
-                (Condition => +Exit_Cond,
-                 Then_Part => +Inv_Check,
-                 Else_Part =>
-                   New_Raise
-                     (Name => New_Identifier (Name => Cap_Loop_Name)))));
-      Loop_Stmt   : constant W_Prog_Id :=
-                      New_While_Loop
-                        (Condition   => True_Prog,
-                         Annotation  =>
-                           New_Loop_Annot (Invariant => Invariant),
-                         Loop_Content => Entire_Body);
+                (Condition => +Loop_Condition,
+                 Then_Part => +Sequence (Loop_Start, Invariant_Check),
+                 Else_Part => New_Raise (Name => Loop_Ident))));
+
+      Loop_Stmt : constant W_Prog_Id :=
+        New_While_Loop
+          (Condition    => True_Prog,
+           Annotation   => New_Loop_Annot (Invariant => User_Invariant),
+           Loop_Content => Loop_Body);
+
+      Loop_Try : constant W_Prog_Id :=
+        New_Try_Block
+          (Prog    => Loop_Stmt,
+           Handler => (1 => New_Handler (Name => Loop_Ident,
+                                         Def  => New_Void)));
+
    begin
-      Emit
-        (Body_Params.Theory,
-         New_Exception_Declaration
-           (Name => New_Identifier (Name => Cap_Loop_Name),
-            Arg  => Why.Types.Why_Empty));
+      Emit (Body_Params.Theory,
+            New_Exception_Declaration (Name => Loop_Ident, Arg  => Why_Empty));
 
       return
         New_Conditional
-          (Condition => +Cond_Prog,
-           Then_Part =>
-             +Sequence
-               (Inv_Check,
-                New_Try_Block
-                  (Prog    => Loop_Stmt,
-                   Handler =>
-                     (1 =>
-                        New_Handler
-                          (Name => New_Identifier (Name => Cap_Loop_Name),
-                           Def  => New_Void)))));
+          (Condition => +Enter_Condition,
+           Then_Part => +Sequence ((Loop_Start, Invariant_Check, Loop_Try)));
    end Wrap_Loop;
 
 end Gnat2Why.Expr.Loops;

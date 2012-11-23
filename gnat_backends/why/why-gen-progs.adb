@@ -302,4 +302,13 @@ package body Why.Gen.Progs is
       end case;
    end Sequence;
 
+   function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
+      Result : W_Prog_Id := Progs (Progs'First);
+   begin
+      for J in Progs'First + 1 .. Progs'Last loop
+         Result := Sequence (Result, Progs (J));
+      end loop;
+      return Result;
+   end Sequence;
+
 end Why.Gen.Progs;

@@ -23,11 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;   use Atree;
+with Atree;          use Atree;
 with Debug;
-with Einfo;   use Einfo;
-with Impunit; use Impunit;
-with Sinfo;   use Sinfo;
+with Einfo;          use Einfo;
+with Impunit;        use Impunit;
+with Namet;          use Namet;
+with Sinfo;          use Sinfo;
+
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package Alfa.Util is
 
@@ -160,5 +163,23 @@ package Alfa.Util is
 
    function Number_Components (Typ : Entity_Id) return Natural;
    --  Count the number of components in record type Typ
+
+   procedure Append
+     (To    : in out List_Of_Nodes.List;
+      Elmts : List_Of_Nodes.List);
+   --  Append all elements from list Elmts to the list To
+
+   function Get_Statement_List (Stmts : List_Id) return List_Of_Nodes.List;
+   --  Given a list of statements and declarations Stmts, returns the same list
+   --  seen as a container list of nodes.
+
+   function Get_Flat_Statement_List
+     (Stmts : List_Id) return List_Of_Nodes.List;
+   --  Given a list of statements and declarations Stmts, returns the flattened
+   --  list that includes these statements and declarations, and recursively
+   --  all inner declarations and statements that appear in block statements.
+
+   function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
+   --  Returns whether N has the form pragma Check (Name, ...)
 
 end Alfa.Util;

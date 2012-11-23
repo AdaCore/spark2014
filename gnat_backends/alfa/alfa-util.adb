@@ -26,12 +26,10 @@
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
 
-with Namet;                      use Namet;
-with Nlists;                     use Nlists;
-with Sem_Util;                   use Sem_Util;
-with Sinput;                     use Sinput;
-
-with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
+with Nlists;   use Nlists;
+with Sem_Util; use Sem_Util;
+with Sinput;   use Sinput;
+with Snames;   use Snames;
 
 package body Alfa.Util is
 
@@ -147,6 +145,19 @@ package body Alfa.Util is
       Ignored := Traverse_Aggregate (N);
       return not Aggregate_Not_Fully_Initialized;
    end All_Aggregates_Are_Fully_Initialized;
+
+   ------------
+   -- Append --
+   ------------
+
+   procedure Append
+     (To    : in out List_Of_Nodes.List;
+      Elmts : List_Of_Nodes.List) is
+   begin
+      for E of Elmts loop
+         To.Append (E);
+      end loop;
+   end Append;
 
    --------------------------------------
    -- Expression_Functions_All_The_Way --
@@ -311,6 +322,56 @@ package body Alfa.Util is
       end if;
    end Get_Expression_Function;
 
+   -----------------------------
+   -- Get_Flat_Statement_List --
+   -----------------------------
+
+   function Get_Flat_Statement_List
+     (Stmts : List_Id) return List_Of_Nodes.List
+   is
+      Cur_Stmt   : Node_Id := Nlists.First (Stmts);
+      Flat_Stmts : List_Of_Nodes.List;
+
+   begin
+      while Present (Cur_Stmt) loop
+         case Nkind (Cur_Stmt) is
+            when N_Block_Statement =>
+               if Present (Declarations (Cur_Stmt)) then
+                  Append (Flat_Stmts,
+                          Get_Flat_Statement_List (Declarations (Cur_Stmt)));
+               end if;
+
+               Append (Flat_Stmts,
+                       Get_Flat_Statement_List
+                         (Statements (Handled_Statement_Sequence (Cur_Stmt))));
+
+            when others =>
+               Flat_Stmts.Append (Cur_Stmt);
+         end case;
+
+         Nlists.Next (Cur_Stmt);
+      end loop;
+
+      return Flat_Stmts;
+   end Get_Flat_Statement_List;
+
+   ------------------------
+   -- Get_Statement_List --
+   ------------------------
+
+   function Get_Statement_List (Stmts : List_Id) return List_Of_Nodes.List is
+      Cur_Stmt   : Node_Id := Nlists.First (Stmts);
+      New_Stmts : List_Of_Nodes.List;
+
+   begin
+      while Present (Cur_Stmt) loop
+         New_Stmts.Append (Cur_Stmt);
+         Nlists.Next (Cur_Stmt);
+      end loop;
+
+      return New_Stmts;
+   end Get_Statement_List;
+
    -------------------------
    -- Get_Subprogram_Body --
    -------------------------
@@ -408,6 +469,19 @@ package body Alfa.Util is
       return Location_In_Formal_Containers (Sloc (Typ))
         and then Name = Lowercase_Capacity_Name;
    end Is_Formal_Container_Capacity;
+
+   ---------------------
+   -- Is_Pragma_Check --
+   ---------------------
+
+   function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean is
+   begin
+      return Nkind (N) = N_Pragma
+        and then Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check
+        and then
+          Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
+            = Name;
+   end Is_Pragma_Check;
 
    -----------------------------------
    -- Location_In_Formal_Containers --

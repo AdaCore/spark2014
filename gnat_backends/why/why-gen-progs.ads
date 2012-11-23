@@ -86,6 +86,9 @@ package Why.Gen.Progs is
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.
 
+   function Sequence (Progs : W_Prog_Array) return W_Prog_Id
+   with Pre => Progs'Length /= 0;
+
    function New_Result
      (T : W_Simple_Value_Type_Id)
      return W_Binder_Id;
