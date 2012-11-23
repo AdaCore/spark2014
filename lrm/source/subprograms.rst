@@ -223,41 +223,31 @@ where
      that the evaluation of the selected consequence evaluates to
      True; Assertions.Assertion_Error is raised if this check fails.
 
-.. _mode-refinement:
+.. _mode-specification:
 
-Mode Refinement
-~~~~~~~~~~~~~~~
+Mode Specification
+~~~~~~~~~~~~~~~~~~
 
-Mode refinement is used in the specification of both ``Global`` and ``Param``
-aspects.  It allows the mode of each item read or updated by a
-subprogram, *formal parameters*, *global variables* (see Ada RM 8.1)
-and *abstract states* (see :ref:`abstract-state`) to be more precisely
-specified:
+A formal parameter or *global variable* of a subprogram, or state
+abstraction (see :ref:`abstract-state`) which may be read, directly or
+indirectly, by the subprogram is an *input* of the subprogram. A
+formal parameter, *global variable* or state abstraction which may be
+updated, directly or indirectly, by the subprogram is an *output* of
+the subprogram.
 
- * The *global variables* and *abstract states* used by a subprogram
-   may be identified and a mode specified for each using a
-   ``global_aspect``.
- * Modes can be applied to independent subcomponents of an object. For
-   instance, the array element ``A (I)`` may be designated as mode **out**
-   whereas ``A (J)`` may be designated as mode **in**.  This mode
-   refinement may be applied to *global variables* using the
-   ``Global`` aspect and *formal parameters* using the
-   ``Param`` aspect.
- * Both the ``Global`` aspect and the ``Param`` aspect may have
-   conditional mode definitions.  If the ``condition`` is ``True``
-   then the items guarded by the ``condition`` have the modes given in
-   the specification otherwise these items may not be used in that
-   mode.
+A mode specification is used for the ``Global`` and ``Param`` aspects
+as well as for advanced Global aspects.  It allows the mode of each
+input and output of the subprogram to be specified.
 
 .. centered:: **Syntax**
 
 ::
 
-   mode_refinement             ::= (mode_specification {, mode_specification})
-                                 | default_mode_specification
+   mode_specification          ::= (mode_choice {, mode_choice})
+                                 | default_mode_choice
                                  | null
-   mode_specification          ::= mode_selector => mode_definition_list
-   default_mode_specification  ::= mode_definition_list
+   mode_choice                 ::= mode_selector => mode_definition_list
+   default_mode_choice         ::= mode_definition_list
    mode_definition_list        ::= mode_definition
                                  | (mode_definition {, mode_definition})
    mode_definition             ::= moded_item
@@ -274,11 +264,132 @@ specified:
 
 .. centered:: **Static Semantics**
 
+#. A ``default_mode_choice`` is considered to be a ``mode_choice``
+   with the ``mode_selector Input``.
+
+.. centered:: **Legality Rules**
+
+#. Each ``mode_selector`` shall not occur more than once in a given
+   ``mode_specification``.
+#. A ``moded_item`` appearing in a ``mode_specification`` with a
+   ``mode_selector`` of ``In_Out`` may not appear in any other
+   ``mode_specification``.
+
+.. _global-aspect:
+
+Global Aspect
+~~~~~~~~~~~~~
+
+A *global item* is a *global variable* or a state abstraction (see
+:ref:`abstract-state`).
+
+A ``global_aspect`` of a subprogram, if present, lists the global
+items that are inputs and outputs of the subprogram and assigns a mode
+to each of them using a ``mode_specification``.
+  
+The *global* items are considered to have modes the same as *formal
+parameters*, **in**, **out** and **in out** with the same meaning.
+
+The Global aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Global" and the ``aspect_definition`` must
+follow the grammar of ``mode_specification``
+:ref:`mode-specification`.
+
+.. centered:: **Static Semantics**
+
 #. An object which is not a subcomponent of any containing object is
    said to be an *entire* object.
-#. An *abstract state* is represented by a ``state_name``.
-#. A ``default_mode_specification`` is considered to be a
-   ``mode_specification`` with the ``mode_selector Input``.
+
+#. A subprogram with a ``global_aspect`` that has a
+   ``mode_refinement`` of **null** is taken to mean that the
+   subprogram does not access any global items.
+
+#. Each global item in a Global aspect of a subprogram is an input or
+   an output of the subprogram shall satisfy the following mode
+   specification rules:
+
+   * a global item that is never updated, directly or indirectly, by
+     the subprogram is mode **in** and has a ``mode_selector`` of Input;
+   * a global item that is never read, directly or indirectly, by the
+     subprogram and is always updated on every call to the subprogram
+     is mode **out** and has a ``mode_selector`` of Output; and
+   * otherwise the global item is mode **in out** and has a
+     ``mode_selector`` of In_Out.
+
+#. A global aspect is *basic* if it does not have a
+   ``conditional_mode`` and every global item that is a global
+   variable is an entire object.
+   [Basic Global aspects are checked by flow-analysis]
+
+#. If a Global aspect is not provided in a subprogram
+   aspect_specification one is synthesized from the body of the
+   subprogram, if it exists.  Only baisc Global aspects are
+   synthesized.
+
+.. centered:: **Legality Rules**
+
+#. A ``global_aspect`` may only appear in the ``aspect_specification``
+   of a subprogram.
+#. A function subprogram may not have a ``mode_selector`` of
+   ``Output`` or ``In_Out`` in its ``global_aspect``.
+#. Every ``moded_item`` occurring in a Global aspect shall be a global
+   item.
+#. A global item which is a state_abstraction shall occur at most
+   once in a single Global aspect.
+#. A global item which is an entire object shall occur at most once in
+   a single Global aspect and none of its subcomponents shall be named
+   in the same Global aspect.
+#. A global item occuring in a Global aspect of a subprogram aspect
+   specification shall not have the same direct name as a formal
+   parameter of the subprogram.
+
+.. centered:: **Verification Rules**
+
+#. A basic Global Aspect is verified against the mode specification
+   rules given in the static semantics.
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with a Global.
+
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   with Global => null; -- Indicates that the subprogram does not read or update
+                        -- any global items.
+   with Global => V;    -- Indicates that V is a mode in global item.
+   with Global => (X, Y, Z);  -- X, Y and Z are mode in global items.
+   with Global => (Input => V); -- Indicates that V is a mode in global item.
+   with Global => (Input => (X, Y, Z)); -- X, Y and Z are mode in global items.
+   with Global => (Output => (A, B, C)); -- A, B and C are mode out global items.
+   with Global => (Input  => (X, Y, Z),
+                   Output => (A, B, C),
+                   In_Out => (P, Q, R));
+                  -- A global aspect with all types of global specification
+
+
+Param Aspects and Advanced Global Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Param Aspects and Advanced Global aspects are optional and facilitate
+designating a mode to a subcomponent of an object and to define mode
+behaviour that is conditional.
+
+When subcomponents of an object or conditional modes occur in a
+``mode_specification`` an *effective* mode can be determined which
+would be the equivalent mode of the each ``moded_item`` if the
+subcomponents were replaced by their entire containing objects and
+every ``conditional_mode`` by an unconditional one.
+ 
+The Param aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Param" and the ``aspect_definition`` must
+follow the grammar of ``mode_specification``
+:ref:`mode-specification`.
+
+.. centered:: **Static Semantics**
+
 #. A name is said to be *moded_item eligible* if:
 
    * it is a direct or expanded name denoting an *entire* object or a
@@ -366,212 +477,65 @@ specified:
    indicates that there are no ``moded_items`` read or updated when
    the controlling condition evaluates to True.
 
-#. Note: The checking that the use of a subcomponent or a
-   ``conditional_mode`` in the subprogram body is consistent with the
-   ``mode_refinement`` of the subprogram has to be done by subprogram
-   proof.
-
-
-.. centered:: **Legality Rules**
-
-#. Each ``mode_selector`` shall not occur more than once in a given
-   ``mode_refinement``.
-#. A ``moded_item`` shall be *moded_item eligible*.
-#. A ``moded_item`` appearing in a ``mode_specification`` with a
-   ``mode_selector`` of ``In_Out`` may not appear in any other
-   ``mode_specification``.
-#. Two ``moded_item``\ s occurring in the same ``mode_refinement``
-   shall be independent unless they occur within distinct
-   ``conditional_mode``\ s or within distinct ``moded_item_list``\ s of
-   the same ``conditional_mode``.
-
-
-.. centered:: **Dynamic Semantics**
-
-
-There are no dynamic semantics associated with a ``mode_refinement``
-as it is used purely for static analysis purposes and is not executed.
-
-.. todo:: We could consider executable semantics, especially for
-   conditional modes, but I think we should only consider executing
-   aspects which are Ada aspects such as Pre and Post. RCC agrees.
-   Target: rel2+.
-
-.. todo::
-   SB has comments and wording changes on Global Aspects section.
-   He has suggested merging Global Aspects with Param Aspects.
-   TJJ does not really agree with merging the two sections.
-   Address this issue after SB has returned from holiday. Target: D2.
-
-.. todo:: SB Comments that he does not see the explanation
-   of the checking of Global and Param Aspects in their description.
-   TJJ believes the correct place for the explanation is under
-   subprogram bodies because it is when the body is analyzed
-   that the checks and rules come into force.
-   There are some rules, perhaps they are not sufficient.
-   TJJ to discuss with SB when he returns from his holiday. Target: D2.
-
-
-Global Aspects
-~~~~~~~~~~~~~~
-
-A ``global_aspect`` names the *global* items that are read and/or
-updated by a subprogram.  The *global* items are considered to have
-modes the same as *formal parameters*, **in**, **out** and **in out**
-and the modes may be refined as described in :ref:`mode-refinement`.
-
-A *global* item is a ``moded_item`` that denotes a *global_variable_*\
-``name`` or a *abstract_state_*\ ``name``.
-
-The ``global_aspect`` uses a ``mode_refinement`` as part of the
-specification of a subprogram interface explicitly stating the
-*global* items that it references.  It may also be used in the
-detection of illegal aliasing, preventing unintended use of a *global*
-variable by forgetting to declare a *local* variable, and the
-accidental hiding of a *global* variable by a more *local* variable.
-
-.. centered:: **Syntax**
-
-::
-
-   global_aspect ::= Global => mode_refinement
+#. If a subcomponent is designated as pariticular mode it applies to
+   just that subcomponent.  For instance, for an array A indexed by I,
+   (Output => A (I)) specifies that this element of the array is an
+   Output.  From this ``mode_choice`` in isolation it would imply that
+   all other elements of the array are unchanged.  Other
+   ``mode_choices`` in the ``mode_specification`` may indicate that
+   other elements of the array are used a different mode.
 
 .. centered:: **Legality Rules**
 
-#. A ``global_aspect`` may only appear in the ``aspect_specification``
-   of a subprogram or a constant declaration.
-#. A function subprogram may not have a ``mode_selector`` of
-   ``Output`` or ``In_Out`` in its ``global_aspect``.
-#. A ``moded_item`` appearing in the ``global_aspect`` of a subprogram
-   shall not have the same name, or be a subcomponent of an object
-   with the same name as a *formal parameter* of the subprogram.
-#. A name that denotes a *global variable* appearing in a precondition
-   or postcondition aspect of a subprogram must also appear in the ``global_aspect``
-   of the same subprogram.
-#. A name that denotes a *global variable* or a *formal parameter* appearing in a precondition
-   or postcondition aspect of a subprogram must be consistent with the mode indicated by
-   the ``global_aspect`` or the ``parameter_specification`` for that name, according to
-   the following rules:
+#. Every ``moded_item`` of a Param aspect of aspect_specification of a
+   subprogram shall be a formal parameter of the subprogram.
 
-   1. For a name of an object X to appear in a precondition aspect, X must be a formal
-      parameter or global variable which is of mode "in", "in out", or "Proof".
-   2. For a name of an object X to appear in a postcondition aspect, X must be
-      a formal parameter or global variable of any mode.
-   3. Additionally, X'Old is permitted in a postcondition aspect if X is
-      a global variable or formal parameter of mode "in out".
-   4. Additionally, if X is a formal parameter of an unconstrained array type,
-      and X is mode "out", then the attributes X'First, X'Last, X'Length and
-      X'Range may appear in a precondition aspect.
-
-.. centered:: **Static Semantics**
-
-#. A subprogram with a ``global_aspect`` that has a
-   ``mode_refinement`` of **null** is taken to mean that the
-   subprogram does not access any global items.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with a ``global_aspect`` it
-is used purely for static analysis purposes and is not executed.
-
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   with Global => null; -- Indicates that the subprogram does not read or update
-                        -- any global items.
-   with Global => V;    -- Indicates that V is a mode in global item.
-   with Global => (X, Y, Z);  -- X, Y and Z are mode in global items.
-   with Global => (I, (if I = 0 then (P, Q, R));
-                  -- I is a mode in global item and P, Q, and R are
-                  -- conditional globals that are only read if I = 0.
-   with Global => (Input => V); -- Indicates that V is a mode in global item.
-   with Global => (Input => (X, Y, Z)); -- X, Y and Z are mode in global items.
-   with Global => (Input => (I, (if I = 0 then (P, Q, R)));
-                   -- I is a mode in global item and P, Q, and R are
-                   -- conditional globals that are only read if I = 0.
-   with Global => (Output => (A, B, C)); -- A, B and C are mode out global items.
-   with Global => (Input  => (I, J),
-                   Output => (A, B, C, I, (if I = 42 then D))));
-                  -- J is a mode in global item I is mode in out, A, B, C are mode out
-                  -- and D is a conditional global that is only updated if I = 42.
-   with Global =>  (In_Out => (P, Q, R, I, (if I = 42 then D)));
-                  -- I, P, Q, R are global items of mode in out and D is a
-                  -- conditional global which is read and updated only if I = 42.
-   with Global => (Input  => K,
-                   Output => (A (K), R.F));
-                  -- K is a global item of mode in, A is a global array
-                  -- and only element A (K) is updated
-                  -- the rest of the array is preserved.
-                  -- R is a global record and only field R.F is updated
-                  -- the remainder of the fields are preserved.
-  with Global => (Input  => (X, Y, Z),
-                  Output => (A, B, C),
-                  In_Out => (P, Q, R));
-                  -- A global aspect with all types of global specification
-
-
-Param Aspects
-~~~~~~~~~~~~~
-
-A ``param_aspect`` is an optional aspect used to denote that a formal
-parameter of a subprogram is only conditionally used or that only part
-of a formal parameter of a composite type is used. It is specified
-using a ``mode_refinement``.
-
-A ``param_aspect`` should refine the regular Ada 2012 parameter modes,
-for example when a *formal parameter* X appears as Param => (In_Out =>
-X), its mode should be **in out**. Likewise, if a *formal parameter* Y
-appears in a ``mode_specification`` with a ``mode selector`` of
-``Input`` and in another with a ``mode_selector`` of ``Output``
-(e.g. with different conditions), its *formal parameter* mode should
-be **in out**.  If a subcomponent of a *formal parameter* appears in
-an ``Output`` ``mode_specification``, e.g., Param => (Output => A
-(I)), even though the effective mode of A is **in out** the *formal
-parameter*, A, may be given as mode **out** provided no other
-subcomponents of A appear in an ``Input`` ``mode_specification``.
-
-
-.. centered:: **Syntax**
-
-::
-
-   param_aspect ::= Param => mode_refinement
-
-.. centered:: **Legality Rules**
-
-#. An ``aspect_specification`` of a subprogram may have at most one
-   ``param_aspect``.
-#. A ``param_aspect`` shall not have a ``mode_refinement`` of
-   **null**.
-#. A ``moded_item`` appearing in a ``param_aspect`` of a subprogram
-   must be the name of a *formal parameter* or a subcomponent of a
-   *formal parameter* of the subprogram.
 #. A *formal parameter*, possibly as a prefix to one of its
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``Output`` must be of mode **out** or mode
    **in out**.
+
 #. A *formal parameter*, possibly as a prefix to one of its
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``In_Out`` must be of mode **in out**.
+
 #. A *formal parameter*, possibly as a prefix to one of its
    subcomponents, which appears in a ``param_aspect`` with a
    ``mode_selector`` of ``Input`` must be of mode **in** or mode **in
    out**.
 
+#. The legality rules for an advanced Global aspect include the rules
+   given for a basic Global aspect and these legality rules where they
+   do not apply specifically to a Param aspect.
+
+#. A ``moded_item`` shall be *moded_item eligible*.
+
+#. Two ``moded_item``\ s occurring in the same ``mode_refinement``
+   shall be independent unless they occur within distinct
+   ``conditional_mode``\ s or within distinct ``moded_item_list``\ s of
+   the same ``conditional_mode``.
+
+.. centered:: **Verification Rules**
+
+#. Proof checks are generated to verify that each subcomponent satisfies
+   its given mode.
+
+#. Proof checks are generated for each ``conditional_mode`` to
+   demonstrate when a condition is True that the ``moded_item``\ s
+   dependent on the condition satisfy their mode.
+
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with a ``param_aspect`` it
-is used purely for static analysis purposes and is not executed.
-
-.. todo:: We could consider executable semantics, especially for
-     conditional modes, but I think we should only consider executing
-     aspects which are Ada aspects such as Pre and Post. Target: rel2+.
+There are no dynamic semantics associated with Param aspects or
+advanced Global aspects.
 
 .. centered:: **Examples**
 
 .. code-block:: ada
+
+   -------------
+   Param Aspects
+   -------------
 
    procedure P (R : in out A_Record_Type)
    with Param => (Input  => R.F,
@@ -595,6 +559,44 @@ is used purely for static analysis purposes and is not executed.
    -- and element J is only updated if the global K = 10;
    -- the values of the remainder of the array elements are preserved
    -- including A (J) if K /= 10. Note: I, J and K may all be equal.
+
+   --------------
+   Global Aspects
+   --------------
+
+   with Global => (I, (if I = 0 then (P, Q, R));
+                  -- I is a mode in global item and P, Q, and R are
+                  -- conditional globals that are only read if I = 0.
+   with Global => (Input => (I, (if I = 0 then (P, Q, R)));
+                   -- I is a mode in global item and P, Q, and R are
+                   -- conditional globals that are only read if I = 0.
+   with Global => (Input  => (I, J),
+                   Output => (A, B, C, I, (if I = 42 then D))));
+                  -- J is a mode in global item I is mode in out, A, B, C are mode out
+                  -- and D is a conditional global that is only updated if I = 42.
+   with Global =>  (In_Out => (P, Q, R, I, (if I = 42 then D)));
+                  -- I, P, Q, R are global items of mode in out and D is a
+                  -- conditional global which is read and updated only if I = 42.
+   with Global => (Input  => K,
+                   Output => (A (K), R.F));
+                  -- K is a global item of mode in, A is a global array
+                  -- and only element A (K) is updated
+                  -- the rest of the array is preserved.
+                  -- R is a global record and only field R.F is updated
+                  -- the remainder of the fields are preserved.
+
+.. todo:: We could consider executable semantics, especially for
+   conditional modes, but I think we should only consider executing
+   aspects which are Ada aspects such as Pre and Post. RCC agrees.
+   Target: rel2+.
+
+.. todo:: SB Comments that he does not see the explanation
+   of the checking of Global and Param Aspects in their description.
+   TJJ believes the correct place for the explanation is under
+   subprogram bodies because it is when the body is analyzed
+   that the checks and rules come into force.
+   There are some rules, perhaps they are not sufficient.
+   TJJ to discuss with SB when he returns from his holiday. Target: D2.
 
 
 Dependency Aspects
