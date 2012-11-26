@@ -20,7 +20,7 @@ begin
    pragma Assert_And_Cut (X in 10 .. 1000 and Y > 0 and Z < 0 and Y + Z <= 1000);
 
    for K in 1 .. 10 loop
-      pragma Assert (X >= K);
+      pragma Loop_Invariant (X >= K);
       if Y > K then
          return X;
       end if;
@@ -30,7 +30,7 @@ begin
    pragma Assert_And_Cut (X in 10 .. 1000 and Y > 0 and Z < 0 and Y + Z <= 1000);
 
    for K in 1 .. 10 loop
-      pragma Assert (X >= K);
+      pragma Loop_Invariant (X >= K);
       if Y > K then
          if Z > K then
             return Y;
@@ -42,7 +42,7 @@ begin
 
    Outter : for H in 1 .. 10 loop
       for K in 1 .. 10 loop
-         pragma Assert (X >= K);
+         pragma Loop_Invariant (X >= K);
          if Y > K then
             if Z > K then
                return Y;

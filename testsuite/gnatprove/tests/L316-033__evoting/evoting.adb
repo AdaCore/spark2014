@@ -147,9 +147,9 @@ package body eVoting is
       sum : Natural := 0;
    begin
       for i in Counters_t'Range loop
-         pragma Assert (sum <= Natural(i)*Natural(Counter_Range_t'Last));
+         pragma Loop_Invariant (sum <= Natural(i)*Natural(Counter_Range_t'Last));
          sum := sum + Natural(counters(i));
-         pragma Assert (sum <= Natural(i+1)*Natural(Counter_Range_t'Last));
+         pragma Loop_Invariant (sum <= Natural(i+1)*Natural(Counter_Range_t'Last));
       end loop;
       return sum;
    end;

@@ -39,7 +39,7 @@ package body Segway is
    procedure Halt is
    begin
       while State /= Still loop
-         pragma Assert (Speed_Is_Valid);
+         pragma Loop_Invariant (Speed_Is_Valid);
          if Speed > 0 then
             State_Update (Brake);
          else

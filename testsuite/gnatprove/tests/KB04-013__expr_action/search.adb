@@ -5,7 +5,7 @@ package body Search is
    begin
       for I in 1 .. 10 loop
 	 --  Possible run-time errors below due to non-lazy operators used
-         pragma Assert
+         pragma Loop_Invariant
            ((Pos = 0 and then
 	       (for all J in Position range T'First .. I-1 => (T(J) /= V)))
 	    or else

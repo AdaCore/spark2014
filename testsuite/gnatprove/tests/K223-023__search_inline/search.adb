@@ -4,7 +4,7 @@ package body Search is
       Pos : Integer := 0;
    begin
       for I in 1 .. 10 loop
-         pragma Assert
+         pragma Loop_Invariant
            (for all J in Position range T'First .. I-1 => (T(J) /= V));
          if T (I) = V then
             Pos := I;

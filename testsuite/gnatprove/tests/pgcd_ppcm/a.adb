@@ -6,10 +6,11 @@ package body A is
       Bn : Integer := B;
    begin
       while Bn /= 0 loop
-         pragma Assert (An /= Integer'First);
-         pragma Assert (Bn /= Integer'First);
-         pragma Assert (abs An <= abs A or else abs An <= abs B);
-         pragma Assert (abs Bn <= abs A or else abs Bn <= abs B);
+         pragma Loop_Invariant
+           (An /= Integer'First
+              and then Bn /= Integer'First
+              and then (abs An <= abs A or else abs An <= abs B)
+              and then (abs Bn <= abs A or else abs Bn <= abs B));
          Ao := An;
          An := Bn;
          Bn := Ao rem Bn;

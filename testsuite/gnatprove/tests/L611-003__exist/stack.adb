@@ -10,7 +10,7 @@ package body Stack is
    function Size (T : Stack_T) return Size_T is
    begin
       for Index in T'Range loop
-         pragma Assert (for all I in Index_T'first .. Index - 1 =>
+         pragma Loop_Invariant (for all I in Index_T'first .. Index - 1 =>
                           T (I) /= No_Element);
          if T (Index) = No_Element then
             return Index - 1;

@@ -12,7 +12,7 @@ package body PrefixSum is
       while Space < A'Length loop
 --           pragma Loop_Assertion
 --             (Invariant =>
-         pragma Assert (
+         pragma Loop_Invariant (
               All_Elements_In (A, Space * Maximum)
                 and then
               (Space = 1 or Space = 2 or Space = 4 or Space = 8)
@@ -41,7 +41,7 @@ package body PrefixSum is
          while Left < A'Length loop
 --              pragma Loop_Assertion
 --                (Invariant => (Left + 1) mod Space = 0
-            pragma Assert ((Left + 1) mod Space = 0
+            pragma Loop_Invariant ((Left + 1) mod Space = 0
                               and then
                             All_Left_Elements_In (A, Left, Space * 2 * Maximum)
                               and then
@@ -86,7 +86,7 @@ package body PrefixSum is
       while Space > 0 loop
 --           pragma Loop_Assertion
 --             (Invariant => (Space = 4 or Space = 2 or Space = 1)
-         pragma Assert ((Space = 4 or Space = 2 or Space = 1)
+         pragma Loop_Invariant ((Space = 4 or Space = 2 or Space = 1)
                            and then
                          All_Elements_In (A, (4 / Space) * 8 * Maximum));
 --             Variant => (Decreasing => Space));
@@ -96,7 +96,7 @@ package body PrefixSum is
          while Right < A'Length loop
 --              pragma Loop_Assertion
 --                (Invariant =>
-            pragma Assert (
+            pragma Loop_Invariant (
                  (for all K in A'Range =>
                    (if K in A'First .. Right - Space * 2 then
                      (if (K + 1) mod (2 * Space) = 0 then

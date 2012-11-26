@@ -17,7 +17,7 @@ package body Binary_Search is
       end if;
 
       while Left < Right loop
-         pragma Assert
+         pragma Loop_Invariant
            ((for all Index in A'First .. Left => A (Index) <= I)
               and then (for all Index in A'First .. Left => I <= A (Index)));
          Med := Left + (Right - Left) / 2;

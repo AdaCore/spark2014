@@ -147,7 +147,7 @@ package body eVoting is
       sum : Natural := 0;
    begin
       for i in Counters_t'Range loop
-         pragma Assert((sum <= Natural(Counter_Range_t'Last) * Natural(i))
+         pragma Loop_Invariant((sum <= Natural(Counter_Range_t'Last) * Natural(i))
                        and
                          (counters(i) <= Counter_Range_t'Last)
                        and
@@ -205,7 +205,7 @@ package body eVoting is
       winners(latest_highest_score) := True;
 
       for i in (Candidate_Number_t'First + 2)..last_candidate loop
-         pragma Assert
+         pragma Loop_Invariant
            (winners(Candidate_Number_t'First) = False and then
             Latest_Highest_Score < I and then
             Winners(Latest_Highest_Score) and then
@@ -222,7 +222,7 @@ package body eVoting is
                   Counters(Latest_Highest_Score) > Counters(J))));
          if counters(i) > counters(latest_highest_score) then
             for J in Candidate_Number_T'First..I - 1 loop
-               pragma Assert
+               pragma Loop_Invariant
                  (for all K in Candidate_Number_T range 0 .. J - 1 =>
                   not Winners(K));
                Winners(J) := False;
@@ -241,7 +241,7 @@ package body eVoting is
          Init_Winners : Election_Result_T := Winners;
       begin
          for I in (Last_Candidate + 1)..Candidate_Number_T'Last loop
-            pragma Assert ((for all J in (Last_Candidate + 1)..I-1
+            pragma Loop_Invariant ((for all J in (Last_Candidate + 1)..I-1
               => not Winners(J)) and
                 (for all J in Candidate_Number_T'First..Last_Candidate
                  => Winners(J) = Init_Winners(J)));

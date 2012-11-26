@@ -56,7 +56,7 @@ package body Infoflow is
    procedure ScrubCache (Cache_V1, Cache_V2 : out SensorCacheType) is
    begin
       for I in SensorIds loop
-         pragma Assert (for all K in SensorIds =>
+         pragma Loop_Invariant (for all K in SensorIds =>
                           (if K < I then Cache_V1 (K) = 0));
          Cache_V1 (I) := 0;
       end loop;
@@ -64,7 +64,7 @@ package body Infoflow is
       --  duplicate version 2
 
       for I in SensorIds loop
-         pragma Assert (for all K in SensorIds =>
+         pragma Loop_Invariant (for all K in SensorIds =>
                           (if K < I then Cache_V2 (K) = 0));
          Cache_V2 (I) := 0;
       end loop;
@@ -76,7 +76,7 @@ package body Infoflow is
       J                      : in KeyTableEntries) is
    begin
       for I in KeyTableEntries loop
-         pragma Assert (for all K in KeyTableEntries =>
+         pragma Loop_Invariant (for all K in KeyTableEntries =>
                           (if K < I then OutKeys_V1 (K) = InKeys_V1 (K)));
          OutKeys_V1 (I) := InKeys_V1 (I);
       end loop;
@@ -84,7 +84,7 @@ package body Infoflow is
       --  duplicate version 2
 
       for I in KeyTableEntries loop
-         pragma Assert (for all K in KeyTableEntries =>
+         pragma Loop_Invariant (for all K in KeyTableEntries =>
                           (if K < I then OutKeys_V2 (K) = InKeys_V2 (K)));
          OutKeys_V2 (I) := InKeys_V2 (I);
       end loop;
@@ -100,7 +100,7 @@ package body Infoflow is
       begin
          M_V1 := H_V1'Last / 2;
          for Q_V1 in H_V1'First .. M_V1 loop
-            pragma Assert (for all K in H_V1'Range =>
+            pragma Loop_Invariant (for all K in H_V1'Range =>
                              (if K < Q_V1 then H_V1 (K) = H_V1_Copy (K + M_V1)
                               elsif K > Q_V1 + M_V1 then
                                  H_V1 (K) = H_V1_Copy (K - M_V1)
@@ -121,7 +121,7 @@ package body Infoflow is
       begin
          M_V2 := H_V2'Last / 2;
          for Q_V2 in H_V2'First .. M_V2 loop
-            pragma Assert (for all K in H_V2'Range =>
+            pragma Loop_Invariant (for all K in H_V2'Range =>
                              (if K < Q_V2 then H_V2 (K) = H_V2_Copy (K + M_V2)
                               elsif K > Q_V2 + M_V2 then
                                  H_V2 (K) = H_V2_Copy (K - M_V2)
@@ -147,7 +147,7 @@ package body Infoflow is
       begin
          M := H'Last / 2;
          for Q in H'First .. M loop
-            pragma Assert (for all K in H'Range =>
+            pragma Loop_Invariant (for all K in H'Range =>
                              (if K < Q then H (K) = H_Copy (K + M)
                               elsif K > Q + M then
                                  H (K) = H_Copy (K - M)
@@ -170,7 +170,7 @@ package body Infoflow is
       K_1, K_2, I : Integer) is
    begin
       for I_V1 in A_V1'First .. K_1 loop
-         pragma Assert (for all M in A_V1'First .. I_V1-1 =>
+         pragma Loop_Invariant (for all M in A_V1'First .. I_V1-1 =>
                           A_V1 (M) = B_V1 (M));
          A_V1 (I_V1) := B_V1 (I_V1);
       end loop;
@@ -180,10 +180,11 @@ package body Infoflow is
            A_V1 (M) = B_V1 (M));
 
       for I_V1 in K_1+1 .. A_V1'Last loop
-         pragma Assert (for all M in A_V1'First .. K_1 =>
-                          A_V1 (M) = B_V1 (M));
-         pragma Assert (for all M in K_1+1 .. I_V1-1 =>
-                          A_V1 (M) = C_V1 (M - K_1));
+         pragma Loop_Invariant ((for all M in A_V1'First .. K_1 =>
+                                   A_V1 (M) = B_V1 (M))
+                                  and then
+                                (for all M in K_1+1 .. I_V1-1 =>
+                                   A_V1 (M) = C_V1 (M - K_1)));
          A_V1 (I_V1) := C_V1 (I_V1 - K_1);
       end loop;
 
@@ -197,7 +198,7 @@ package body Infoflow is
       --  duplicate version 2
 
       for I_V2 in A_V2'First .. K_2 loop
-         pragma Assert (for all M in A_V2'First .. I_V2-1 =>
+         pragma Loop_Invariant (for all M in A_V2'First .. I_V2-1 =>
                           A_V2 (M) = B_V2 (M));
          A_V2 (I_V2) := B_V2 (I_V2);
       end loop;
@@ -213,10 +214,11 @@ package body Infoflow is
             A_V2 (M) = B_V2 (M)));
 
       for I_V2 in K_2+1 .. A_V2'Last loop
-         pragma Assert (for all M in A_V2'First .. K_2 =>
-                          A_V2 (M) = B_V2 (M));
-         pragma Assert (for all M in K_2+1 .. I_V2-1 =>
-                          A_V2 (M) = C_V2 (M - K_2));
+         pragma Loop_Invariant ((for all M in A_V2'First .. K_2 =>
+                                   A_V2 (M) = B_V2 (M))
+                                  and then
+                                (for all M in K_2+1 .. I_V2-1 =>
+                                   A_V2 (M) = C_V2 (M - K_2)));
          A_V2 (I_V2) := C_V2 (I_V2 - K_2);
       end loop;
    end ArrayPartitionedTransfer;

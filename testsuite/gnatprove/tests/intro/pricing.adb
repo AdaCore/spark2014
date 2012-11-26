@@ -7,8 +7,9 @@ package body Pricing is
       Total : Sat.My_Int := 0;
    begin
       for It in Positive range Bk'Range loop
-         pragma Assert (for all K in Positive range Bk'First .. It - 1 =>
-                          (Total >= Price_Of_Item (Bk (K))));
+         pragma Loop_Invariant
+           (for all K in Positive range Bk'First .. It - 1 =>
+              (Total >= Price_Of_Item (Bk (K))));
          Total := Sat.Add (Total, Price_Of_Item (Bk (It)));
       end loop;
       return Total;

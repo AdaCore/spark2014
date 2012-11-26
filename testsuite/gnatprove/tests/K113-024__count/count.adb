@@ -4,7 +4,7 @@ package body Count is
       Res : Natural := 0;
    begin
       loop
-         Pragma Assert (Res <= Max);
+         pragma Loop_Invariant (Res <= Max);
          Res := Res + Step;
          if Res > Max then
             exit;

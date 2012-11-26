@@ -3,7 +3,7 @@ package body Find is
       Res : Integer := 0;
    begin
       for I in T'Range loop
-         pragma Assert (Res = 0);
+         pragma Loop_Invariant (Res = 0);
          if T (I) = R then
             Res := I;
             exit;

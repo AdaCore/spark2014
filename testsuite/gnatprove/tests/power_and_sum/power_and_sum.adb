@@ -6,7 +6,7 @@ package body Power_and_Sum is
    begin
       Result := X;
       while I < N loop
-         pragma Assert (Result = X ** I and then (I >= 1));
+         pragma Loop_Invariant (Result = X ** I and then (I >= 1));
          Result := Result * X;
          I := I + 1;
       end loop;
@@ -17,7 +17,7 @@ package body Power_and_Sum is
       TotalSum : Natural := 0;
    begin
       while I <= N loop
-         pragma Assert (2*TotalSum = I*(I-1));
+         pragma Loop_Invariant (2*TotalSum = I*(I-1));
 
          TotalSum := TotalSum + I;
          I := I + 1;
@@ -33,12 +33,12 @@ package body Power_and_Sum is
       InnerSum : Natural := 0;
    begin
       while I <= N loop
-         pragma Assert (6*TotalSum = (I-1)*I*(I+1));
+         pragma Loop_Invariant (6*TotalSum = (I-1)*I*(I+1));
 
          InnerSum := 0;
          J := 1;
          while J <= I loop
-            pragma Assert (2*InnerSum = J*(J-1));
+            pragma Loop_Invariant (2*InnerSum = J*(J-1));
 
             InnerSum := InnerSum + J;
             J := J + 1;

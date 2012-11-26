@@ -138,7 +138,7 @@ package body Database is
          Count : Natural := 0;
       begin
          for I in Account_Num loop
-            pragma Assert (Count < Natural(I));
+            pragma Loop_Invariant (Count < Natural(I));
             if Is_Available (I) then
                Count := Count + 1;
             end if;

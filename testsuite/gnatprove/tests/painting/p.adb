@@ -6,7 +6,7 @@ package body P is
 
          --  Loop invariant required to prove the postcondition
 
-         pragma Assert
+         pragma Loop_Invariant
            (P.Plain = P_Old.Plain and then
              (for all J in Color'First .. Color'Pred (C) =>
                (if P.Plain (J) = D then P.Shadow (J) = D)));

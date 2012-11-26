@@ -7,7 +7,7 @@ package body Simple_Unc_Arrays is
    begin
       return C : Table (A.Last) do
          for I in 1 .. A.Last loop
-            pragma Assert
+            pragma Loop_Invariant
               ((for all J in 1 .. I-1 => C.V (J) = A.V (J) + B.V (J))
 --              and then
 --                 (for all K in I .. A.Last => C.V (K) = C.V'Old (K))
@@ -29,7 +29,7 @@ package body Simple_Unc_Arrays is
 
    begin
       while Low < High loop
-         pragma Assert
+         pragma Loop_Invariant
            ((for all J in 1 .. Low - 1  => (A.V (J) = AV_Old (A.Last - J + 1)))
 --            and then
 --              (for all J in Low -1 .. A.Last => (A.V (J) = A.V'Old (J)))
@@ -49,7 +49,7 @@ package body Simple_Unc_Arrays is
      Res : Value := A.V (1);
    begin
       for I in 2 .. A.Last loop
-         pragma Assert (for all J in 1 .. I - 1 => Res <= A.V (J));
+         pragma Loop_Invariant (for all J in 1 .. I - 1 => Res <= A.V (J));
 
          if Res > A.V (I) then
             Res := A.V (I);
@@ -67,7 +67,7 @@ package body Simple_Unc_Arrays is
    begin
      return Res : Value := A.V (1) do
        for I in 2 .. A.Last loop
-          pragma Assert (for all J in 1 .. I - 1 => Res >= A.V (J));
+          pragma Loop_Invariant (for all J in 1 .. I - 1 => Res >= A.V (J));
 
          if Res < A.V (I) then
             Res := A.V (I);
@@ -99,7 +99,7 @@ package body Simple_Unc_Arrays is
       Pos : Natural := 0;
    begin
       for I in A.V'range loop
-         pragma Assert (for all J in 1 .. I - 1 => A.V (J) /= V);
+         pragma Loop_Invariant (for all J in 1 .. I - 1 => A.V (J) /= V);
 
          if A.V (I) = V then
             Pos := I;

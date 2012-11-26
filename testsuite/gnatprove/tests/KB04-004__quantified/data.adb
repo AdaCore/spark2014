@@ -15,7 +15,7 @@ package body Data is
       X_Old : constant T := X;
    begin
       for I in X'Range loop
-	 pragma Assert ((for all K in X'First .. I-1 => X(K) = not X_Old(K))
+	 pragma Loop_Invariant ((for all K in X'First .. I-1 => X(K) = not X_Old(K))
 			  and then
 			    (for all K in I .. X'Last => X(K) = X_Old(K)));
 	 X(I) := not X(I);

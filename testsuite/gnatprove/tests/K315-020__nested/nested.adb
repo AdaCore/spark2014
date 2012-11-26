@@ -6,10 +6,10 @@ package body Nested is
 
       Outer:
       for I in 1 .. 10 loop
-         Pragma Assert (X = (I - 1) * 10);
+         pragma Loop_Invariant (X = (I - 1) * 10);
          X := 0;
          for J in 1 ..10 loop
-            Pragma Assert (X = I * (J - 1));
+            pragma Loop_Invariant (X = I * (J - 1));
             X := I * J;
             exit Outer when X >= 45;
          end loop;

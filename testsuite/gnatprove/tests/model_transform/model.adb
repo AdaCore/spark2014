@@ -58,7 +58,7 @@ package body Model is
       Act : UML_Activity;
    begin
       for S in Owned_State(SM)'Range loop
-	 pragma Assert
+	 pragma Loop_Invariant
 	   (for all T in Owned_State(SM)'First .. S-1 =>
 	      Name(Owned_State(SM)(T)) =
 	      Name(AV(UML_Action_Access(T))));
@@ -68,7 +68,7 @@ package body Model is
       end loop;
 
       for S in Owned_Transition(SM)'Range loop
-         pragma Assert
+         pragma Loop_Invariant
            (for all T in Owned_Transition(SM)'First .. S-1 =>
               Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) =
               Name(AV(From(CFV(UML_Control_Flow_Access(T)))))
