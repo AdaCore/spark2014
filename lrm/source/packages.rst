@@ -58,7 +58,7 @@ states.
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-State abstraction provides a mechanism for naming, in a packages's
+State abstraction provides a mechanism for naming, in a package's
 visible part, state (typically variable declarations) that will be
 declared within the package's body (or private part, or within private
 descendents of the package). For example, a package declares a visible
@@ -107,7 +107,7 @@ where the ``aspect_mark`` is "Abstract_State" and the
   property_list              ::= property { , property }
   property                   ::= simple_property
                                | name_value_property
-  simple_property            ::= indentifier
+  simple_property            ::= identifier
   name_value_property        ::= identifier => expression
   state_name                 ::= defining_identifier
 
@@ -179,7 +179,7 @@ where the ``aspect_mark`` is "Abstract_State" and the
 .. centered:: **Verification Rules**
 
 #. A ``Volatile Input`` state abstraction shall not be a global item
-   (see :ref: `global-aspect`) of mode **in out** or **out**.
+   (see :ref:`global-aspect`) of mode **in out** or **out**.
    [Checked when analyzing subprogram declarations.]
 #. A ``Volatile Output`` state abstraction shall not be a global item of
    mode **in** or **in out**.
