@@ -439,7 +439,60 @@ Section: C.4.6
 Page/para: Page 137 
 Comment: It is a shame that RavenSPARK is not to be supported initially - do we have a time frame for it's introduction. 
 This is probably important to legacy customers and future users.
+
+
+Ident: EXT-AH61
+Section: 4.1.3
+Page/para: 
+Comment: The phrase "Some constructs which ..." is not followed up with a clear list of which exceptions are
+or are not determined by static analysis. Is this an area which we need to clarify once we know what we can
+and can not check?
 Status: 
 
 
+Ident: EXT-AH62
+Section: 4.1.4
+Page/para: 
+Comment: The second paragraph states "... may also be useful in SPARK 2014". Do you mean that it isn't currently included in SPARK 2014 but could be? Or that it is a useful attribute that SPARK 2014 developers can use to check validity of data? Consider rewording to make this clear.
+Status: 
+
+
+Ident: EXT-AH63
+Section: 4.3.3
+Page/para: 
+Comment: It would be nice to make it clear at the beginning here that the Update attribute is an extension of Ada 2012 for SPARK 2014 that can only be used within SPARK aspects (assuming my understanding matches the intention). This comment also applies generally (e.g. section 5.5.3 also introduces constructs rather than restricting them). Thinking about this a little more, if SPARK 2014 adds attributes with dynamic semantics then other compiler vendors would have to sign up to meet SPARK 2014 LRM as well as Ada 2012 LRM. In other words, SPARK 2014 programs can not be compiled with Ada 2012 compilers.
+Status: 
+
+
+Ident: EXT-AH64
+Section: Annex A
+Page/para: 
+Comment: This is titled Restrictions and Profiles but it doesn't define any profiles. A "profile" is a specific set of restrictions that a user chooses so shouldn't this doc say that the definition of profiles is out of scope, but the definition of restrictions is.
+Status: 
+
+
+Ident: EXT-AH65
+Section: General
+Page/para: 
+Comment: For language constructs added for SPARK 2014 there is normally a section titled "Verification Rules" but we don't have these for any standard Ada 2012 constructs. Should we add these? It would be nice to be able to trace all VCs back to a verification rule in this doc.
+Status: 
+
+
+Ident: EXT-AH66
+Section: General
+Page/para: 
+Comment: In order to ensure completeness, it would be better to always list Syntax, Legality Rules, Static Semantics, Verification Rules and Dynamic Semantics and explicitly state that they don't apply.
+Status: 
+
+Ident: EXT-AH67
+Section: General
+Page/para: 
+Comment: Looking at section 6.1.6 "Param Aspects" my initial thought was: "do we really need this?" Is there anywhere where we've documented why we feel our customers really want this kind of thing? I don't see this functionality being required to support the design goals so I'd expect there to be a clear rationale for it. This is a general comment because I feel there are a number of other areas where we may be planning to do more than we need.
+Status: 
+
+Ident: EXT-AH68
+Section: General
+Page/para: 
+Comment: The document doesn't describe how a user asserts whether or not code is intended to be within SPARK 2014 or not. On a related note, I was surprised the --#hide annotation isn't in the mapping section. 
+Status: 
 
