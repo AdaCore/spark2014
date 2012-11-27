@@ -261,7 +261,7 @@ package body eVoting is
       Put_Line("**** Result ****");
 
       for i in 0..last_candidate loop
-         Pragma Assert((if i > 0 then total >= Total_Range_t(counters(0)))
+         pragma Loop_Invariant((if i > 0 then total >= Total_Range_t(counters(0)))
                        and
                          (last_candidate <= Candidate_Number_t'Last)
                        and

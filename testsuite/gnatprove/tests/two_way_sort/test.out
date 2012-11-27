@@ -8,15 +8,15 @@ p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:28:10: info: loop invariant initialization proved
 p1.adb:28:10: loop invariant preservation not proved
-p1.adb:30:72: info: index check proved
-p1.adb:31:67: info: index check proved
-p1.adb:32:17: info: index check proved
-p1.adb:33:19: range check not proved
-p1.adb:34:16: info: index check proved
-p1.adb:35:19: range check not proved
-p1.adb:37:13: info: precondition proved
-p1.adb:38:19: info: range check proved
+p1.adb:31:60: info: index check proved
+p1.adb:32:55: info: index check proved
+p1.adb:33:17: info: index check proved
+p1.adb:34:19: range check not proved
+p1.adb:35:16: info: index check proved
+p1.adb:36:19: range check not proved
+p1.adb:38:13: info: precondition proved
 p1.adb:39:19: info: range check proved
+p1.adb:40:19: info: range check proved
 p1.adb:5:14: index check not proved
 p1.adb:5:19: postcondition not proved, requires A(I) = A(J)'old
 p1.adb:5:21: info: index check proved

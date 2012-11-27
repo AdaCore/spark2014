@@ -4,64 +4,64 @@ power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: info: overflow check proved
 power_and_sum.adb:16:23: info: range check proved
 power_and_sum.adb:17:29: info: range check proved
-power_and_sum.adb:20:26: overflow check not proved
-power_and_sum.adb:20:36: info: loop invariant initialization proved
-power_and_sum.adb:20:36: loop invariant preservation not proved, requires 2*TotalSum = I*(I-1
-power_and_sum.adb:20:39: overflow check not proved
-power_and_sum.adb:20:42: info: overflow check proved
+power_and_sum.adb:20:10: info: loop invariant initialization proved
+power_and_sum.adb:20:10: loop invariant preservation not proved, requires 2*TotalSum = I*(I-1
+power_and_sum.adb:20:34: overflow check not proved
+power_and_sum.adb:20:47: overflow check not proved
+power_and_sum.adb:20:50: info: overflow check proved
 power_and_sum.adb:22:31: info: range check proved
 power_and_sum.adb:22:31: overflow check not proved
 power_and_sum.adb:23:17: info: overflow check proved
 power_and_sum.adb:23:17: info: range check proved
 power_and_sum.adb:25:23: info: overflow check proved
-power_and_sum.adb:25:33: info: assertion proved
 power_and_sum.adb:25:36: overflow check not proved
 power_and_sum.adb:25:39: info: overflow check proved
+power_and_sum.adb:25:7: info: assertion proved
 power_and_sum.adb:26:17: info: range check proved
 power_and_sum.adb:30:23: info: range check proved
 power_and_sum.adb:31:23: info: range check proved
 power_and_sum.adb:32:29: info: range check proved
 power_and_sum.adb:33:29: info: range check proved
-power_and_sum.adb:36:26: overflow check not proved
-power_and_sum.adb:36:36: info: loop invariant initialization proved
-power_and_sum.adb:36:36: loop invariant preservation not proved, requires 6*TotalSum = (I-1)*I*(I+1
-power_and_sum.adb:36:40: info: overflow check proved
-power_and_sum.adb:36:43: overflow check not proved
-power_and_sum.adb:36:45: overflow check not proved
-power_and_sum.adb:36:48: overflow check not proved
+power_and_sum.adb:36:10: info: loop invariant initialization proved
+power_and_sum.adb:36:10: loop invariant preservation not proved, requires 6*TotalSum = (I-1)*I*(I+1
+power_and_sum.adb:36:34: overflow check not proved
+power_and_sum.adb:36:48: info: overflow check proved
+power_and_sum.adb:36:51: overflow check not proved
+power_and_sum.adb:36:53: overflow check not proved
+power_and_sum.adb:36:56: overflow check not proved
 power_and_sum.adb:38:22: info: range check proved
 power_and_sum.adb:39:15: info: range check proved
-power_and_sum.adb:41:29: overflow check not proved
-power_and_sum.adb:41:39: info: loop invariant initialization proved
-power_and_sum.adb:41:39: loop invariant preservation not proved, requires 2*InnerSum = J*(J-1
-power_and_sum.adb:41:42: overflow check not proved
-power_and_sum.adb:41:45: info: overflow check proved
+power_and_sum.adb:41:13: info: loop invariant initialization proved
+power_and_sum.adb:41:13: loop invariant preservation not proved, requires 2*InnerSum = J*(J-1
+power_and_sum.adb:41:37: overflow check not proved
+power_and_sum.adb:41:50: overflow check not proved
+power_and_sum.adb:41:53: info: overflow check proved
 power_and_sum.adb:43:34: info: range check proved
 power_and_sum.adb:43:34: overflow check not proved
 power_and_sum.adb:44:20: info: overflow check proved
 power_and_sum.adb:44:20: info: range check proved
-power_and_sum.adb:46:27: info: assertion proved
+power_and_sum.adb:46:10: info: assertion proved
 power_and_sum.adb:46:31: info: overflow check proved
+power_and_sum.adb:47:10: info: assertion proved
 power_and_sum.adb:47:26: info: overflow check proved
-power_and_sum.adb:47:36: info: assertion proved
 power_and_sum.adb:47:39: overflow check not proved
 power_and_sum.adb:47:42: info: overflow check proved
+power_and_sum.adb:48:31: info: range check proved
 power_and_sum.adb:48:31: overflow check not proved
-power_and_sum.adb:48:31: range check not proved
 power_and_sum.adb:49:17: info: overflow check proved
 power_and_sum.adb:49:17: info: range check proved
 power_and_sum.adb:51:23: info: overflow check proved
-power_and_sum.adb:51:33: info: assertion proved
 power_and_sum.adb:51:36: overflow check not proved
 power_and_sum.adb:51:39: info: overflow check proved
 power_and_sum.adb:51:42: overflow check not proved
 power_and_sum.adb:51:45: overflow check not proved
+power_and_sum.adb:51:7: info: assertion proved
 power_and_sum.adb:52:17: info: range check proved
 power_and_sum.adb:5:22: info: range check proved
 power_and_sum.adb:9:10: info: loop invariant initialization proved
 power_and_sum.adb:9:10: info: loop invariant preservation proved
-power_and_sum.adb:9:36: info: overflow check proved
-power_and_sum.adb:9:39: info: range check proved
+power_and_sum.adb:9:44: info: overflow check proved
+power_and_sum.adb:9:47: info: range check proved
 power_and_sum.ads:3:16: info: overflow check proved
 power_and_sum.ads:3:19: info: range check proved
 power_and_sum.ads:3:21: info: postcondition proved

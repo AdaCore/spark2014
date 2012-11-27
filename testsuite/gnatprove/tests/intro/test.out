@@ -1,8 +1,8 @@
 pricing.adb:10:10: info: loop invariant initialization proved
-pricing.adb:10:68: info: overflow check proved
-pricing.adb:11:34: loop invariant preservation not proved, requires Total >= Price_Of_Item (Bk (K)
-pricing.adb:11:52: info: index check proved
-pricing.adb:12:50: info: index check proved
+pricing.adb:11:56: info: overflow check proved
+pricing.adb:12:22: loop invariant preservation not proved, requires Total >= Price_Of_Item (Bk (K)
+pricing.adb:12:40: info: index check proved
+pricing.adb:13:50: info: index check proved
 pricing.adb:6:13: info: range check proved
 pricing.adb:7:29: info: range check proved
 pricing.adb:9:11: info: range check proved

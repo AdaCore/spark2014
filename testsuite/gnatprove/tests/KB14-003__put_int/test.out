@@ -1,7 +1,7 @@
 put.adb:10:33: info: overflow check proved
 put.adb:15:18: info: division check proved
-put.adb:15:18: info: range check proved
-put.adb:16:19: info: overflow check proved
+put.adb:15:18: range check not proved
+put.adb:16:19: overflow check not proved
 put.adb:16:26: info: division check proved
 put.adb:16:26: info: range check proved
 put.adb:17:22: range check not proved
