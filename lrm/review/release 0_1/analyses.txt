@@ -12,6 +12,7 @@ Section: general
 Page/para:
 Comment: I am missing in this document a comprehensive list of
   attributes and when they can be used.
+Status: 
 
 Ident: AN-FS2
 Section: general
@@ -54,6 +55,8 @@ Serious thought required. I tend to "derives result from X", with
 implicit 'Range as an in parameter and flow analysis will not complain
 if you derive nothing from it and the default is "Depends (null => all
 the 'Range stuff)".
+Status: 
+
 
 Ident: AN-JK3
 Section: general (related to previous review)
@@ -71,6 +74,8 @@ Comment:
   implicit "in" parameters. In addition, there may be flow from
   X'First/'Last to the contents of X. Such "obvious" relations should be
   implicit, and not be required to be written by the programmer.
+Status: 
+
 
 Ident: AN-JK4
 Section: general
@@ -84,6 +89,8 @@ Comment:
   When the global/flow contract is required for analysis of another
   subprogram (e.g. to implement the above comparison), the user-provided
   contract is used if it exists, otherwise the implicit one is used.
+Status: 
+
 
 ----------------------------------------------------------
 Regular comments
@@ -95,12 +102,16 @@ Page/para:
 Comment:
   Why is the initialization expression of a variable required to be in S14
   for the variable to be in S14?
+Status: 
+
 
 Ident: AN-FS6
 Section: 5.5.3
 Page/para: 18 .. 19
 Comment: We may want a restriction which requires each while loop to
   have a Loop_Variant pragma.
+Status: 
+
 
 Ident: AN-YM7
 Section: 6.1
@@ -108,6 +119,8 @@ Page/para: 23/5
 Comment: I don't see what we could do about the access and aliased formal
   parameter specs, null exclusion parameters or access results. (the list of
   "todo".) I'd rather say these are not in SPARK 2014.
+Status: 
+
 
 Ident: AN-JK8
 Section: 6.1.3
@@ -116,6 +129,8 @@ Comment:
   The "expansion" given for the contract cases aspect is not quite
   the same, as the "exactly_one_of" has to be true in *all* contexts, not
   only the calling contexts.
+Status: 
+
 
 Ident: AN-YM9
 Section: 6.1.4
@@ -131,6 +146,8 @@ Comment:
   JK: very difficult to read; in any case won't go into first release.
     We should make sure (how?) that we can add that stuff later into the
     language, and leave it out for now.
+Status: 
+
 
 Ident: AN-YM10
 Section: 6.1.4
@@ -138,6 +155,8 @@ Page/para: 28
 Comment: The todo mentioning a possible executable semantics for the
   conditional modes is probably much too ambitious. I'd just remove it for now.
   Same for the similar toto on param aspect.
+Status: 
+
 
 Ident: AN-FS11
 Section: 6.1.5
@@ -145,6 +164,8 @@ Page/para:
 Comment: Flow analysis cannot cope with "global in out a(j)". Nor can
   it cope with conditional stuff. Can we defer this until after rel1? We
   really must take it out of the grammar and the examples!
+Status: 
+
 
 Ident: AN-FS12
 Section: 6.1.6
@@ -152,11 +173,15 @@ Page/para:
 Comment:
   FS: Remove for release 1
   JK: leave out for the first release
+Status: 
+
 
 Ident: AN-FS13
 Section: 6.1.7
 Page/para:
 Comment: Remove all the conditional stuff.
+Status: 
+
 
 Ident: AN-YM14
 Section: 6.3.4
@@ -165,6 +190,8 @@ Comment: The 2nd verification rule for Global aspect says that
   "If a subprogram does not have a global_aspect then an implicit one is
    synthesised from implementation of the body (if it exists)."
   This does not belong to the language description I think.
+Status: 
+
 
 Ident: AN-YM15
 Section: 6.3.4
@@ -174,6 +201,8 @@ Comment: The first verification rule for Dependency aspect mixes synthesis
   checking of aspects between refined_dependency_aspect on body and
   dependency_aspect on the spec (which does not belong to this section on
   dependency_aspect on body).
+Status: 
+
 
 Ident: AN-YM16
 Section: 6.3.4
@@ -184,6 +213,8 @@ Comment: It is said that refined_global_aspect may be synthesized. That looks
   introduction of the LRM, or at the start of the chapter, and then
   verification rules should not distinguish between synthesized and manually
   written contracts.
+Status: 
+
 
 Ident: AN-YM17
 Section: 6.4.3
@@ -191,16 +222,22 @@ Page/para: 40/4
 Comment: It is said that P may require a refined_dependency_aspect because of
   state_refinement, but this is the first time this constraint appears, so
   one may not understand what is meant here, unless one already knows SPARK.
+Status: 
+
 
 Ident: AN-JK18
 Section: 7.1.1
 Page/para:
 Comment: Remove comments about "good practice"
+Status: 
+
 
 Ident: AN-FS19
 Section: 7.1.2
 Page/para: verification rules
 Comment: I am not sure what flow analysis is meant to check here.
+Status: 
+
 
 Ident: AN-FS20
 Section: 7.1.4 and 7.1.5
@@ -209,6 +246,8 @@ Comment: I note that in a generic or package in a body information can
   flow into the initialisation from either the generic parameters or the
   state of the enclosing subprogram. We must be able to capture this in
   analysis.
+Status: 
+
 
 Ident: AN-FS21
 Section: 7.2.2 | null abstract state
@@ -216,12 +255,16 @@ Page/para:
 Comment: I do not understand how we can flow-analyse something like a
   cache without being either unhelpful (lots of coupling) or unsound
   (you miss potential coupling).
+Status: 
+
 
 Ident: AN-YM22
 Section: 7.2.4
 Page/para: 55/2
 Comment: There should be a restriction that volatile variables are not allowed
   in assertions, since that amount to a side-effect.
+Status: 
+
 
 Ident: AN-JK23
 Section: 9
@@ -234,3 +277,5 @@ Comment:
   attention, there should be a volatile global "in" state. This could be
   done by annotating the underlying "pragma import" C functions which
   probably read that state.
+Status: 
+

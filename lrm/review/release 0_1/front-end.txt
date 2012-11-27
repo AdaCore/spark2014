@@ -16,6 +16,8 @@ Comment: The description of mode refinement in not clear enough for
   and "independent". It could be clearer also if this section was preceded
   by the description of Global and Param aspects. I am also in favor of the
   merge of Global and Param aspects suggested by Steve.
+Status: 
+
 
 Ident: FE-YM2
 Section: 6.1.5
@@ -30,6 +32,8 @@ Comment: The description of global aspect seems to suppose a constructive
   Also, the comments in examples should be phrased in user terms, so "global
   variable V may be read by the subprogram" instead of "V is a mode in global
   item" which simply duplicates the example code.
+Status: 
+
 
 Ident: FE-YM3
 Section: 6.1.6
@@ -38,6 +42,8 @@ Comment: The description of param aspect is inconsistent with the description
   of the global aspect. For example it does not say anything about X'First,
   X'Last, etc. for an array X. I strongly suggest we follow Steve's idea of
   combining the descriptions of param and global aspects.
+Status: 
+
 
 Ident: FE-YM4
 Section: 6.1.7
@@ -48,12 +54,16 @@ Comment: The description of dependency aspect introduces BNF non-terminals
   in the retrospective approach). Should a global aspect be given every time a
   dependency aspect is given? Or should global variables be deduced from
   the dependency aspect?
+Status: 
+
 
 Ident: FE-YM5
 Section: 6.1.7
 Page/para: 32
 Comment: What is the name for the dependency aspect? Earlier in the LRM it is
   said "Dependency", here it says "Depends".
+Status: 
+
 
 Ident: FE-YM6
 Section: 6.1.7
@@ -62,12 +72,16 @@ Comment: The legality rules for dependency aspect are not clear. Rule 8 is
   completely confused, probably as a result of a merge. Rule 9 is not clear:
   what if A(I) is an export, and A(J).F also? It may appear that A(J).F is
   a subcomponent of A(I) if I=J at run time.
+Status: 
+
 
 Ident: FE-YM7
 Section: 6.1.7
 Page/para: 33 .. 34
 Comment: The static semantics for dependency aspects are not clear enough for
   implementation. I suggest rewording more in line with Ada RM.
+Status: 
+
 
 Ident: FE-YM8
 Section: 6.3.3
@@ -76,12 +90,16 @@ Comment: This is the first occurrence of refined_global_aspect without previous
   definition. This is also the first occurrence of restriction Strict_Modes,
   also without a previous definition. Wording is currently too complex to
   be implemented. It mentions "executable path" without prior definition.
+Status: 
+
 
 Ident: FE-YM9
 Section: 6.3.4
 Page/para: 36
 Comment: Why allow global aspects on a stub? AFAIK, a stub cannot have
   Pre/Post aspects, only the body can.
+Status: 
+
 
 Ident: FE-YM10
 Section: 6.3.4
@@ -93,6 +111,8 @@ Comment: It is said that
   but, if a subprogram has a refined_global_aspect, it cannot have a
   global_aspect. Only its declaration can have one, and I see no need to
   discuss that in 6.3.4 on subprogram bodies.
+Status: 
+
 
 Ident: FE-YM11
 Section: 6.3.4
@@ -103,5 +123,7 @@ Comment: It is said that in the 2nd legality rule:
    moded_item is a subcomponent, [...]"
   What is the rationale for this rule? This looks like a coding standard rule
   from SPARK 2005 to me, not something that we should enforce in SPARK 2014.
+Status: 
+
 
 
