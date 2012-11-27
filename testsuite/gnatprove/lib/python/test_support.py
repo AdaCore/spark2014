@@ -158,6 +158,9 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     if verbose_mode():
       cmd += ["--verbose"]
     cmd += to_list(opt)
+    # Force the option -gnatd.V for SPARK 2014 extensions, to avoid having to
+    # put it in all project files of tests.
+    cmd += ["-cargs", "-gnatd.V"]
     process = Run(cmd)
 
     # In quick mode, ignore xfail tests by simply generating a dummy output
