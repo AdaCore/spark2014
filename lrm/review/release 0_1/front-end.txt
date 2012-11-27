@@ -127,3 +127,136 @@ Status:
 
 
 
+-----------------------------------------
+
+Comments form Jon Burton
+
+
+
+Ident: FE-JIB12
+Section: General
+Page/para: N/A
+Comment: There are references throughout the document to being "in SPARK 2014" and "out of SPARK 2014". Since not  
+being in SPARK 2014 is not an obstacle to compilation but in certain circumstances we may wish to enforce
+that only SPARK 2014 constructs are used, then it is not clear from the LRM as it currently stands what should 
+be done when implementing legality rules if a given syntactic entity is found not to be in SPARK 2014. 
+Status: 
+
+
+Ident: FE-JIB13
+Section: General
+Page/para: N/A
+Comment: The definition in the LRM of what is in and what is out of SPARK 2014 is incomplete in that it does not cover
+all syntactic entities. For example, when is a subprogram body in SPARK 2014? Or section 6.1.1 says that the 
+post-condition of a subprogram declaration must be in SPARK 2014 if the subprogram declaration itself is to be
+in SPARK 2014; however, I can t find anywhere a definition of what it means for a post-condition to be in SPARK 
+2014.
+Status: 
+
+
+Ident: FE-JIB14
+Section: General
+Page/para: N/A
+Comment: Throughout the document, there is narrative text that is intended purely to provide context and 
+there is text that appears to be narrative   since it does not appear under a specific heading 
+such as Legality Rules   but is obviously intended to be implemented. It would be good if every 
+rule to be implemented could appear under a heading that makes clear it is to be implemented. 
+For example, in section 11 on exceptions, the first and third paragraphs provide contextual 
+information, while the second paragraph gives the rule to be implemented. The same applies to the
+text throughout the document that defines syntactic entities as being in or out of SPARK 2014.
+Status: 
+
+
+Ident: FE-JIB15
+Section: 4.1.3
+Page/para: 13
+Comment: This section defines a general principle and then gives one specific example. It is not clear if 
+this specific example is to be implemented due to it being stated here, or if it is just an 
+example. That is, is there only one such element in this set of illegal items, or are they 
+distributed across the rest of the document. 
+Status: 
+
+
+Ident: FE-JIB16
+Section: 4.3.4
+Page/para: pp 14-15
+Comment: This section needs to be written as a series of numbered requirements rather than as a narrative,
+with headings such as Legality Rules, etc, so we know what exactly needs to be implemented and to allow easy 
+apportionment to the tool architecture. 
+Status: 
+
+
+Ident: FE-JIB17
+Section: 6.1.7
+Page/para: 32/Syntax
+Comments: If a conditional dependency is used, then a given export may be derived from null.
+However, as far as I can see an export cannot be derived from null when a non-conditional dependency is given.
+Status: 
+
+
+Ident: FE-JIB18
+Section: 6.1.7
+Page/para: 33/item 8 
+Comment: Possibly a cut and paste error as the first two sentences don t make sense.
+Status: 
+
+
+Ident: FE-JIB19
+Section: 6.1.7
+Page/para: 33/ N/A
+Comment: There appears to be some duplication/overlap between rules here: items 4 and 9, items 6 and 10, items 7 and 11.
+Status: 
+
+
+Ident: FE-JIB20
+Section: 7.1.2
+Page/para: 45/ N/A
+Comment: Static Semantics items 1-3: are these really legality rules?
+Status: 
+
+
+Ident: FE-JIB21
+Section: 7.1.4
+Page/para: 47/Legality Rules
+Comment: Should this list not be more extensive, providing counterparts of some of the legality rules given in
+section 6.1.7? 
+Status: 
+
+
+Ident: FE-JIB22
+Section: 7.2.8
+Page/para: 58/Legality Rules
+Comment: Item 2: I assume this means the legality rules defined in the Ada RM (since there are some rules defined
+under Global Aspects in this document   section 6.1.5, p.29   that constrain preconditions).
+Status: 
+
+
+Ident: FE-JIB23
+Section: 7.2.9
+Page/para: 59/Legality Rules
+Comment: Item 2: I assume this means the legality rules defined in the Ada RM (since there are some rules defined
+under Global Aspects in this document   section 6.1.5, p.29   that constrain postconditions).
+Status: 
+
+
+
+Ident: FE-JIB24
+Section: A
+Page/para: 78/6.2
+Comment: Strict_Modes is to be handled by flow analysis. Is checking by the flow analyser
+compatible with being specified  
+as a pragma Restriction, when a Restriction violation leads to a compile-time error?
+Status: 
+
+
+Ident: FE-JIB25
+Section: A
+Page/para: 79/6.4.2
+Comment: Global_Aspects_Required, Global_Aspects_On_Procedure_Decalarations, Array_Elements_Assumed_To_Overlap, 
+Abstract_State_Aspects_Required and Initializes_Aspects_Required appear to be instructions to the flow analyser 
+rather than restrictions as such (since if the thing they require is absent then an assumption is made         
+regarding what it should be, rather than an error being flagged). Is it OK that they are handled as pragma 
+Restrictions, when a Restriction violation leads to a compile-time error?
+Status: 
+
+
