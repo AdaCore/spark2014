@@ -32,7 +32,7 @@ Ident: REQ-SM5
 Section: 1.2 (and 1.5 6/3)
 Page/para: 3/3
 Comment: "Implementation" = "Compiler"?
-Status:
+Status: No action, RCC
 
 
 Ident: REQ-SM6
@@ -67,7 +67,7 @@ Ident: REQ-SM10
 Section: 1.4
 Page/para: 4/1
 Comment: "of" => "from"
-Status:
+Status: Can't locate this issue, RCC
 
 
 Ident: REQ-SM11
@@ -109,28 +109,28 @@ Ident: REQ-SM16
 Section: 1.5
 Page/para: 6/2
 Comment: Delete "also".
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM17
 Section: 1.5
 Page/para: 6/4
 Comment: So we will have to provide the GNAT RM?
-Status:
+Status: No action, RCC
 
 
 Ident: REQ-SM18
 Section: 1.6
 Page/para: 6/1
 Comment: "Additional" => "addition"
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM19
 Section: 1.7
 Page/para: 6/1
 Comment: Delete "mandatory" - otherwise it's a tautology.
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM20
@@ -209,7 +209,7 @@ Ident: REQ-SM29
 Section: 6.1.3
 Page/para: 25/last but one
 Comment: Typo in "con formant"
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM30
@@ -238,7 +238,7 @@ Ident: REQ-SM33
 Section: 6.1.5
 Page/para: 30/?
 Comment: "filed" => "field"
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM34
@@ -308,7 +308,7 @@ Ident: REQ-SM43
 Section: App C
 Page/para: 83/?
 Comment: "document" => "appendix".
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-SM44
@@ -472,7 +472,7 @@ Section:
 Page/para: page 27, 6.,
 Comment: 2nd bullet: efective --> effective
 3rd bullet: or --> nor
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-CC61
@@ -497,7 +497,7 @@ Ident: REQ-CC63
 Section: 
 Page/para: page 28: 6.,
 Comment: evalustae --> evaluate
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-CC64
@@ -512,7 +512,7 @@ Ident: REQ-CC65
 Section: 
 Page/para: page 31, comments of procedure G
 Comment: A.(I) --> I suppose the '.' is a typo
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-CC66
@@ -721,7 +721,7 @@ Ident: REQ-NW91
 Section:        Appendix C.2.1
 Page/para:      97/Second instance of Specification in SPARK 2014.
 Comment:        Change second instance of "Specification in SPARK 2014" to "Body in SPARK 2014".
-Status:
+Status: Done, RCC
 
 
 Ident: REQ-NW92

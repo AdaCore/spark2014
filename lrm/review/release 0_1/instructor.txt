@@ -29,7 +29,7 @@ Ident: INSTRUCT-RPM2
 Section: 1.5
 Page/para: p5, 8th para in section 1.5
 Comment: Replace "except that the one exception is" with ". The one exception is"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM3
 Section: 4.2
@@ -52,7 +52,7 @@ Ident: INSTRUCT-RPM5
 Section: 5.1
 Page/para: p17, section 5.1, item 2
 Comment: Typo "shall not be am" -> "shall not be an"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM6
 Section: 5.5.3
@@ -89,38 +89,38 @@ Section: general
 Page/para: general
 Comment: There is an inconsistent mix of Boolean and boolean throughout
 the document. Should all be Boolean.
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM10
 Section: 6.1.3
 Page/para: p24
 Comment: Typo "specify a mutually independent cases" -> delete the "a"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM11
 Section: 6.1.3
 Page/para:p25
 Comment: Typo "con formant" -> "conformant"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM12
 Section: 6.1.4
 Page/para: p27
 Comment: List numbering restarts after item 6. Is this intentional?
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM13
 Section: 6.1.4
 Page/para: p27
 Comment: Typo "efective"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM14
 Section: various (e.g. 6.1.4)
 Page/para: various (grep for it)
 Comment: Typo. Several instances of "is used purely for static analyses purposes" 
 Should be "analysis". 
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM15
 Section: 6.1.5
@@ -133,13 +133,13 @@ Ident: INSTRUCT-RPM16
 Section: 6.1.5
 Page/para: p29, item 5a
 Comment: Typo "name of a object" should be "an"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM17
 Section: 6.1.5
 Page/para: p30, example code
 Comment: Typo "filed" -> "field"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM18
 Section: 6.1.5
@@ -153,13 +153,13 @@ Ident: INSTRUCT-RPM19
 Section: 6.1.6
 Page/para: p31, top example (same typo in 3 places)
 Comment: Typo "the values remainder" -> "the values of the remainder"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM20
 Section: 6.1.6
 Page/para: p31, 3rd case in example
 Comment: In comment "I = 10" should be "K = 10".
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM21
 Section: 6.1.7
@@ -171,7 +171,7 @@ Ident: INSTRUCT-RPM22
 Section: 6.1.7
 Page/para: p33, item 9
 Comment: Typo "my" -> "may"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM23
 Section: 6.1.7
@@ -189,13 +189,13 @@ Ident: INSTRUCT-RPM24
 Section: 6.3.6
 Page/para: p37
 Comment:  Typo "consitency"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM25
 Section: 6.4.2
 Page/para: p38, penultimate para
 Comment: Typo/grammar "a function call cannot introduce aliasing and are"
-Status: 
+Status: Done, RCC
 
 Ident: INSTRUCT-RPM26
 Section: 6.4.2
@@ -210,7 +210,7 @@ Ident: INSTRUCT-RPM27
 Section: 7.1.6
 Page/para: p51, example code
 Comment: Typo "neme" -> "name"
-Status: 
+Status: Done, RCC
 
 --
 Robin
