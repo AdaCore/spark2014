@@ -47,12 +47,6 @@ volatile, usually representing an external input or output.  This
 abstract state may be refined on to actual *variables* which are the
 input or output ports connected to the external device.
 
-An abstract state may be assigned an *integrity level* which indicates
-that the state has a particular integrity.  *Integrity levels* are
-used in information flow analysis to monitor or prohibit the flow of
-information (data) of different *integrity levels* between abstract
-states.
-
 .. _abstract-state-aspect:
 
 Abstract State Aspect
@@ -119,10 +113,6 @@ where the ``aspect_mark`` is "Abstract_State" and the
    then it shall also include exactly one of ``Input`` or ``Output``.
 #. If a ``property_list`` includes either ``Input`` or ``Output``,
    then it shall also include ``Volatile``.
-#. The ``identifier`` of a ``name_value_property`` shall be
-   ``Integrity``.
-#. The ``expression`` of an ``Integrity`` property shall be a static
-   expression of any integer type.
 
 .. centered:: **Static Semantics**
 
@@ -161,20 +151,6 @@ where the ``aspect_mark`` is "Abstract_State" and the
    sequence of state changes brought about by reading or writing
    successive values to or from a volatile *variable*.
 
-#. A state abstraction which is declared with an ``Integrity``
-   property is deemed to have an *integrity level* as specified by the
-   integer expression of the ``name_value`` property.  The *integrity
-   level* of an abstract state is used monitor or prohibit information
-   flow from a higher *integrity level* to a lower one or vice-versa
-   depending on the options selected for the analysis.  A state
-   abstraction which is not declared with an Integrity property is
-   considered to have a lower *integrity level* than any declared with
-   one. [Information flow integrity checks are performed as part of
-   the verification rules.]
-
-#. A state abstraction which requires a particular *integrity level*
-   must be explicitly declared. *Integrity levels* cannot be
-   synthesized.
 
 .. centered:: **Verification Rules**
 
@@ -222,18 +198,66 @@ Aspect.
       ...                      -- C is designated as a volatile input.
    end X;
 
+   package Sensor -- simple volatile, input device driver
+      with Abstract_State => (Port with Volatile, Input);
+   is
+      ...
+   end Sensor;
+
+Integrity Levels
+^^^^^^^^^^^^^^^^
+
+An abstract state may be assigned an *integrity level* which indicates
+that the state has a particular integrity.  *Integrity levels* are
+used in information flow analysis to monitor or prohibit the flow of
+information (data) of different *integrity levels* between abstract
+states.
+
+.. centered:: **Legality Rules**
+
+#. The ``identifier`` of a ``name_value_property`` shall be
+   ``Integrity``.
+#. The ``expression`` of an ``Integrity`` property shall be a static
+   expression of any integer type.
+
+.. centered:: **Static Semantics**
+
+#. A state abstraction which is declared with an ``Integrity``
+   property is deemed to have an *integrity level* as specified by the
+   integer expression of the ``name_value`` property.  The *integrity
+   level* of an abstract state is used monitor or prohibit information
+   flow from a higher *integrity level* to a lower one or vice-versa
+   depending on the options selected for the analysis.  A state
+   abstraction which is not declared with an Integrity property is
+   considered to have a lower *integrity level* than any declared with
+   one. [Information flow integrity checks are performed as part of
+   the verification rules.]
+
+#. A state abstraction which requires a particular *integrity level*
+   must be explicitly declared. *Integrity levels* cannot be
+   synthesized.
+
+.. centered:: **Verification Rules**
+
+#. An abstract state declared with an *integrity level* shall not be
+   used in determining the value of an output of a subprogram with a
+   higher or lower *integrity level* depending on the mode of analysis.
+   [Checked during information flow analysis.]
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with the integrity levels.
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
    package MILS -- a package that manages distinct state of differing Integrities
       with Abstract_State => ((Top_Secret   with Integrity => 4),
                               (Unclassified with Integrity => 0));
    is
       ...
    end MILS;
-
-   package Sensor -- simple volatile, input device driver
-      with Abstract_State => (Port with Volatile, Input);
-   is
-      ...
-   end Sensor;
 
 Synthesized State Abstractions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -243,7 +267,6 @@ state abstractions even if they are not explicitly declared.  If the
 state abstractions are not explicitly declared they will be
 synthesized from the implementation (if it exists) of the package and
 its private descendents.
-
 
 .. centered:: **Static Semantics**
 
