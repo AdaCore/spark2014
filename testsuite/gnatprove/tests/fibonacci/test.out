@@ -3,10 +3,10 @@ fib.adb:103:13: range check not proved
 fib.adb:107:36: overflow check not proved
 fib.adb:107:39: range check not proved
 fib.adb:107:42: loop invariant initialization not proved, requires a2 ** n2 = p2 * (b2 ** k2
-fib.adb:107:42: loop invariant preservation not proved, requires a2 ** n2 = p2 * (b2 ** k2
 fib.adb:107:47: overflow check not proved
 fib.adb:107:53: overflow check not proved
 fib.adb:107:56: range check not proved
+fib.adb:108:30: loop invariant preservation not proved, requires p2 <= a2 ** n2
 fib.adb:108:36: overflow check not proved
 fib.adb:108:39: range check not proved
 fib.adb:108:60: overflow check not proved
@@ -131,8 +131,8 @@ fib.adb:7:11: info: range check proved
 fib.adb:80:18: overflow check not proved
 fib.adb:80:18: range check not proved
 fib.adb:88:13: info: range check proved
+fib.adb:8:35: loop invariant initialization not proved, requires b <= a
 fib.adb:8:35: loop invariant preservation not proved, requires b <= a
-fib.adb:8:51: loop invariant initialization not proved, requires a <= 2 ** (i - 2
 fib.adb:8:56: overflow check not proved
 fib.adb:8:62: overflow check not proved
 fib.adb:8:62: range check not proved
