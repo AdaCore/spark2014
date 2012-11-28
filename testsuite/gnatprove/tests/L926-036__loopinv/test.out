@@ -1,0 +1,12 @@
+counters.adb:13:18: info: range check proved
+counters.adb:13:18: overflow check not proved
+counters.adb:18:21: overflow check not proved
+counters.adb:21:24: overflow check not proved
+counters.adb:23:24: overflow check not proved
+counters.adb:26:21: overflow check not proved
+counters.adb:29:24: overflow check not proved
+counters.adb:31:24: overflow check not proved
+main.adb:15:17: info: range check proved
+main.adb:17:32: range check not proved
+main.adb:17:37: info: range check proved
+main.adb:17:37: overflow check not proved
