@@ -89,12 +89,15 @@ The following constructs are said to be "restricted to loops":
 
 * A ``Loop_Invariant`` pragma;
 * A ``Loop_Variant`` pragma;
-* A ``block_statement`` whose ``sequence_of_statements`` (immediately) includes
-  a construct which is restricted to loops.
+* A ``block_statement`` whose ``sequence_of_statements`` or ``declarative_part``
+  immediately includes a construct which is restricted to loops.
 
 A construct which is restricted to loops shall occur
-immediately within the ``sequence_of_statements`` of either
-a ``loop_statement`` or a ``block_statement``.
+immediately within either:
+
+* the ``sequence_of_statements`` of a ``loop_statement``; or
+* the ``sequence_of_statements`` or ``declarative_part`` of a
+  ``block_statement``.
 
 [Roughly speaking, a ``Loop_Invariant`` or ``Loop_Variant`` pragma
 must occur immediately within a loop statement except that intervening
