@@ -1,9 +1,14 @@
 Program Structure and Compilation Issues
 ========================================
 
-Because functions and expressions in |SPARK| must be side-effect free, it may
-be necessary to analyze the bodies of all subprograms called to determine if a
-function or an expression is in |SPARK|.
+Data flow analysis, unlike compilation, does not follow Ada's separate
+compilation model. For example, functions in |SPARK| must be side-effect free;
+this rule is enforced as part of data flow analysis. Suppose that a function
+calls a procedure which in turn calls another procedure, which in turn calls
+yet another. In the absence of Global aspect specifications for the
+procedures in question, it would be necessary to analyze the bodies
+of all subprograms called in order to determine whether the function
+is side-effect free.
 
 Limited Package Views
 ---------------------

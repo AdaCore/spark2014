@@ -105,7 +105,7 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - The use of access types and allocators is not permitted.
 
-- All expressions and functions are free of side-effects.
+- All expressions (including function calls) are free of side-effects.
 
 - Aliasing of names is not permitted.
 
@@ -115,7 +115,7 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - Tasking is not currently permitted.
 
-- Raising and handling of user-defined exceptions is not permitted.
+- Raising and handling of exceptions is not permitted.
 
 We describe a program unit or language feature as being "in |SPARK|"
 if it complies with the restrictions required to permit formal

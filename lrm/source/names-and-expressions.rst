@@ -54,10 +54,16 @@ Aggregates
 ----------
 
 Outside of assertion expressions, an aggregate is in |SPARK| only if its type
-is in |SPARK| and it is side-effect free. Inside assertion expressions,
+is in |SPARK|. Inside assertion expressions,
 aggregates in |SPARK| must additionally be fully defined. An aggregate which
 leaves subcomponents uninitialized is not in |SPARK| if it appears inside an
 assertion expression.
+
+.. todo::
+   Define this term "fully defined" and say who enforces this rule.
+   Are we saying here that an aggregate which occurs in an an assertion
+   expression introduces a proof obligation that all of its scalar
+   subcomponents are valid?
 
 Record Aggregates
 ~~~~~~~~~~~~~~~~~
@@ -216,8 +222,8 @@ for which the order of component updates is unspecified.
 Expressions
 -----------
 
-An expression is in |SPARK| only if its type is in |SPARK| and it is
-side-effect free.
+An expression is in |SPARK| only if its type is in |SPARK|.
+
 
 Operators and Expression Evaluation
 -----------------------------------

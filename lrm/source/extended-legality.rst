@@ -7,19 +7,16 @@ code is within |SPARK| by section and the reason for their exclusion:
 
 6 Subprograms
 
-#. A function is in |SPARK| only if it is side-effect free.
-
-   Expressions in |SPARK| are required to be side-effect free, they
-   just return a value.  A function call is an expression and a
-   function may be called as part of a larger expression, so a
-   function must be side-effect free.
+#. A function in |SPARK| may not modify variables declared global
+   to the function, but this rule is enforced during data flow analysis
+   and not as an extended legality rule. As a consequence of this rule,
+   the evaluation of any [SPARK] expression is side-effect free.
 
 6.1 Subprogram Declarations
 
-#. A function declaration is only in |SPARK| if a
-   ``parameter_specification`` of it's ``function_specification`` does
-   not have a mode of **out** or **in out**.
-
-   A function is not allowed to have side-effects.
+#. A function declaration in |SPARK| shall not have a
+   ``parameter_specification`` of its ``function_specification``
+   with a mode of **out** or **in out**. This rule also applies to
+   a subprogram_body for which no explicit specification is given.
 
 END OF FILE

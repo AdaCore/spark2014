@@ -11,21 +11,25 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-Extra rules and checks are applied in |SPARK| to ensure that a function
-declaration is side-effect free.
+Rules are imposed in |SPARK| to ensure that the execution of a function
+call does not modify any variables declared outside of the function.
+It follows as a consequence of these rules that the evaluation
+of any [SPARK] expression is side-effect free.
 
 .. centered:: **Extended Legality Rules**
 
 #. A function declaration shall not have a ``parameter_specification``
-   with a mode of **out** or **in out**.
+   with a mode of **out** or **in out**. This rule also applies to
+   a subprogram_body for a function for which no explicit specification
+   is given.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Flow Analysis*
 
-#. A function declaration shall not update any of the names listed in
-   its ``Global`` aspect whether it is explicitly given or implicitly
-   synthesized from the subprogram implementation.
+#. The Global aspect of a function (whether explicitly specified or
+   implicitly synthesized from the subprogram implementation)
+   shall not include a moded_choice having a mode of Output or In_Out.
 
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
