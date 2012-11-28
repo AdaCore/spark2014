@@ -282,7 +282,8 @@ package body Gnat2Why.Expr is
       Val_Type : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id;
    --  Translate an assignment of the form "Lvalue := Expr",
-   --  using Ada_Node for its source location.
+   --  using Ada_Node for its source location. [Val_Type] is the type of
+   --  [Expr], and the type of the innermost component of the Lvalue.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -1159,49 +1160,49 @@ package body Gnat2Why.Expr is
       --                   (Upd (Prefix.Acc1, Acc2,
       --                         Upd (..., Accn, Expr))));
 
-      function Compute_Rvalue
-        (N : Node_Id;
-         Update_Expr : W_Prog_Id;
-         Expr_Type   : Entity_Id)
-         return W_Prog_Id;
+      procedure Shift_Rvalue
+        (N         : in out Node_Id;
+         Expr      : in out W_Prog_Id;
+         Expr_Type : in out Entity_Id);
+      --  the input triple (N, Expr, Expr_Type) describes an assignment
+      --      N := Expr
+      --  where N is the Ada node for some Lvalue of the form
+      --    Prefix.Acc1.(...).Acc[n-1].Accn := Expr;
+      --  Expr_Type is the type in which the assignment takes place, ie. the
+      --  type of Expr and of Accn.
+      --  The *output* triple (N, Expr, Expr_Type) corresponds to the same
+      --  assignment, but shifting the Accn to the right side and transforming
+      --  it into an update. We obtain
+      --    Prefix.Acc1.(...).Acc[n-1] :=
+      --         Upd (Prefix.Acc1.(...).Acc[n-1], Accn, Expr)
 
-      function Why_Lvalue (N : Node_Id) return W_Identifier_Id;
-      --  Compute the innermost that is accessed in the Lvalue, variable, ie
-      --  the outermost data structure; this basically corresponds to "Prefix"
-      --  above.
+      ------------------
+      -- Shift_Rvalue --
+      ------------------
 
-      --------------------
-      -- Compute_Rvalue --
-      --------------------
-
-      function Compute_Rvalue
-        (N : Node_Id;
-         Update_Expr : W_Prog_Id;
-         Expr_Type   : Entity_Id)
-         return W_Prog_Id is
-
-         --  The outermost Access node corresponds to the innermost data
-         --  structure; therefore, we compute the update expression before the
-         --  recursive call; It happens that the prefix of the current
-         --  node precisely corresponds to the data structure to be
-         --  updated.
+      procedure Shift_Rvalue
+        (N         : in out Node_Id;
+         Expr      : in out W_Prog_Id;
+         Expr_Type : in out Entity_Id)
+      is
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
-
-               return Update_Expr;
+               null;
 
             when N_Type_Conversion =>
-               return
-                 +Insert_Conversion
-                   (Domain => EW_Prog,
-                    Expr   =>
-                    +Compute_Rvalue
-                      (Expression (N),
-                       Update_Expr,
-                       Etype (Expression (N))),
-                    To     => Type_Of_Node (Etype (Expression (N))),
-                    From   => Type_Of_Node (Etype (N)));
+               declare
+                  New_Type : constant Entity_Id := Etype (Expression (N));
+               begin
+                  N := Expression (N);
+                  Expr :=
+                    +Insert_Conversion
+                      (Domain => EW_Prog,
+                       Expr   => +Expr,
+                       To     => Type_Of_Node (New_Type),
+                       From   => Type_Of_Node (Expr_Type));
+                  Expr_Type := New_Type;
+               end;
 
             when N_Selected_Component | N_Indexed_Component | N_Slice =>
                declare
@@ -1210,27 +1211,16 @@ package body Gnat2Why.Expr is
                                     (Prefix (N),
                                      EW_Prog,
                                      Params => Body_Params);
-                  Update_Name : constant W_Identifier_Id :=
-                                  New_Temp_Identifier;
-                  One_Update  : constant W_Value_Id :=
-                                  +One_Level_Update
-                                    (N,
-                                     +Prefix_Expr,
-                                     +Update_Expr,
-                                     Expr_Type,
-                                     EW_Prog,
-                                     Params => Body_Params);
-
                begin
-                  return
-                    New_Binding
-                      (Name    => Update_Name,
-                       Def     => One_Update,
-                       Context =>
-                       +Compute_Rvalue
-                         (Prefix (N),
-                          +Update_Name,
-                          Etype (Prefix (N))));
+                  Expr :=
+                    +One_Level_Update (N,
+                                       +Prefix_Expr,
+                                       +Expr,
+                                       Expr_Type,
+                                       EW_Prog,
+                                       Params => Body_Params);
+                  N := Prefix (N);
+                  Expr_Type := Etype (N);
                end;
 
             when others =>
@@ -1238,54 +1228,22 @@ package body Gnat2Why.Expr is
                                      & Node_Kind'Image (Nkind (N)));
                raise Not_Implemented;
          end case;
-      end Compute_Rvalue;
-
-      ----------------
-      -- Why_Lvalue --
-      ----------------
-
-      function Why_Lvalue (N : Node_Id) return W_Identifier_Id
-      is
-      begin
-         case Nkind (N) is
-            when N_Identifier | N_Expanded_Name =>
-               return To_Why_Id (Entity (N));
-
-            when N_Indexed_Component | N_Selected_Component | N_Slice =>
-               return Why_Lvalue (Prefix (N));
-
-            when N_Type_Conversion =>
-               return Why_Lvalue (Expression (N));
-
-            when others =>
-               Ada.Text_IO.Put_Line ("[Why_Lvalue] kind ="
-                                     & Node_Kind'Image (Nkind (N)));
-               raise Not_Implemented;
-         end case;
-
-      end Why_Lvalue;
+      end Shift_Rvalue;
 
       --  begin processing for Transform_Assignment_Statement
 
-      W_Lvalue   : constant W_Identifier_Id := Why_Lvalue (Lvalue);
-      Value_Name : constant W_Identifier_Id := New_Temp_Identifier;
-      --  In the case of slices, the update operation is the construction
-      --  of an Any_Expr. To be able to use the value in the postcondition
-      --  of this Any_Expr, it needs to be valid in the logic space.
-      --  It is not the case in general. So it is binded to an identifier
-      --  Value_Name, which will be usable in the logic space.
+      Left_Side  : Node_Id := Lvalue;
+      Right_Side : W_Prog_Id := Expr;
+      Cur_Type   : Entity_Id := Val_Type;
    begin
+      while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
+         Shift_Rvalue (Left_Side, Right_Side, Cur_Type);
+      end loop;
       return
-        New_Binding
+        New_Assignment
           (Ada_Node => Ada_Node,
-           Name     => Value_Name,
-           Def      => +Expr,
-           Context  =>
-             New_Assignment
-               (Ada_Node => Ada_Node,
-                Name     => W_Lvalue,
-                Value    =>
-                  Compute_Rvalue (Lvalue, +Value_Name, Val_Type)));
+           Name     => To_Why_Id (Entity (Left_Side)),
+           Value    => Right_Side);
    end New_Assignment;
 
    ----------------------
@@ -1424,6 +1382,7 @@ package body Gnat2Why.Expr is
          when N_Slice =>
             declare
                Prefix_Name : constant W_Identifier_Id := New_Temp_Identifier;
+               Value_Name  : constant W_Identifier_Id := New_Temp_Identifier;
                Prefix_Expr : constant W_Value_Id :=
                                +Transform_Expr
                                  (Prefix (N),
@@ -1449,7 +1408,7 @@ package body Gnat2Why.Expr is
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
                                   Left_Type  => Expr_Type,
-                                  Right_Arr  => Value,
+                                  Right_Arr  => +Value_Name,
                                   Right_Type => Val_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
@@ -1478,9 +1437,13 @@ package body Gnat2Why.Expr is
                     Name   => Prefix_Name,
                     Def    => Prefix_Expr,
                     Context =>
-                      +New_Simpl_Any_Prog
-                        (T => +BT,
-                         Pred => +Quantif));
+                      New_Binding
+                        (Domain  => EW_Prog,
+                         Name    => Value_Name,
+                         Def     => +Value,
+                         Context => +New_Simpl_Any_Prog
+                           (T => +BT,
+                            Pred => +Quantif)));
             end;
 
          when others =>
@@ -2543,8 +2506,10 @@ package body Gnat2Why.Expr is
 
       function Expected_Type return Entity_Id
       is
+
          --  The outermost prefix of the Lvalue (which is the innermost
-         --  access) corresponds to the expected type of the assignment.
+         --  access) corresponds to the expected type of the right value.
+
       begin
          case Nkind (Lvalue) is
             when N_Identifier | N_Expanded_Name =>
