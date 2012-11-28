@@ -419,18 +419,26 @@ package body Gnat2Why.Expr.Loops is
    --
    --  if enter_condition then
    --    loop_start;
-   --    invariant_check;
    --    try
    --      loop invariant { user_invariant }
    --         assume { implicit_invariant };
+   --         invariant_check;
    --         loop_end;
    --         if loop_condition then
-   --            loop_start;
-   --            invariant_check
-   --         else raise loop_name
+   --            loop_start
+   --         else
+   --            raise loop_name
    --      end loop
    --    with loop_name -> void
    --  end if
+   --
+   --  Note that the expression that checks that the user invariant does not
+   --  raise a run-time error (invariant_check) is put inside the loop, in a
+   --  context where the user invariant and the implicit invariant are known to
+   --  hold. A naive translation would put it after the two copies of
+   --  loop_start, but it is more efficient to put it in only one place. Both
+   --  choices are logically equivalent, because the user invariant must be
+   --  proved before it can be used in the loop.
 
    function Wrap_Loop
      (Loop_Name          : String;
@@ -447,14 +455,14 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Body : constant W_Prog_Id :=
         Sequence
-          (New_Assume_Statement
-             (Ada_Node => Empty, Post => Implicit_Invariant),
-           Sequence
-             (Loop_End,
-              New_Conditional
-                (Condition => +Loop_Condition,
-                 Then_Part => +Sequence (Loop_Start, Invariant_Check),
-                 Else_Part => New_Raise (Name => Loop_Ident))));
+          ((1 => New_Assume_Statement
+                  (Ada_Node => Empty, Post => Implicit_Invariant),
+            2 => Invariant_Check,
+            3 => Loop_End,
+            4 => New_Conditional
+                  (Condition => +Loop_Condition,
+                   Then_Part => +Loop_Start,
+                   Else_Part => New_Raise (Name => Loop_Ident))));
 
       Loop_Stmt : constant W_Prog_Id :=
         New_While_Loop
@@ -475,7 +483,7 @@ package body Gnat2Why.Expr.Loops is
       return
         New_Conditional
           (Condition => +Enter_Condition,
-           Then_Part => +Sequence ((Loop_Start, Invariant_Check, Loop_Try)));
+           Then_Part => +Sequence (Loop_Start, Loop_Try));
    end Wrap_Loop;
 
 end Gnat2Why.Expr.Loops;
