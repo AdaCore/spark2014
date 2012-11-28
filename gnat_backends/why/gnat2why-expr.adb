@@ -188,10 +188,17 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
+      Prefix_Type : Entity_Id;
       Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
+
+   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id;
+   --  The node in argument is some array or record access. This function
+   --  computes the type of the entity that corresponds to the access.
+   --  This may be different from the Etype of the node in case of
+   --  unconstrained array types, or discriminant records.
 
    function Transform_Block_Statement (N : Node_Id) return W_Prog_Id;
 
@@ -823,6 +830,34 @@ package body Gnat2Why.Expr is
       return Is_Range;
    end Discrete_Choice_Is_Range;
 
+   -----------------------------
+   -- Expected_Type_Of_Prefix --
+   -----------------------------
+
+   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id
+   is
+   begin
+      case Nkind (N) is
+         when N_Identifier | N_Expanded_Name =>
+            return Type_Of_Node (N);
+
+         when N_Slice =>
+            return Type_Of_Node (Unique_Entity (Etype (Prefix (N))));
+
+         when N_Indexed_Component =>
+            return Type_Of_Node
+              (Component_Type (Unique_Entity (Etype (Prefix (N)))));
+
+         when N_Selected_Component =>
+            return Type_Of_Node (Selector_Name (N));
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
+                                  & Node_Kind'Image (Nkind (N)));
+            raise Not_Implemented;
+      end case;
+   end Expected_Type_Of_Prefix;
+
    ---------------------------------------------
    -- Get_Container_In_Iterator_Specification --
    ---------------------------------------------
@@ -1206,21 +1241,25 @@ package body Gnat2Why.Expr is
 
             when N_Selected_Component | N_Indexed_Component | N_Slice =>
                declare
+                  Prefix_Type : constant Entity_Id :=
+                    Expected_Type_Of_Prefix (Prefix (N));
                   Prefix_Expr : constant W_Value_Id :=
-                                  +Transform_Expr
-                                    (Prefix (N),
-                                     EW_Prog,
-                                     Params => Body_Params);
+                    +Transform_Expr (Domain        => EW_Prog,
+                                     Expr          => Prefix (N),
+                                     Expected_Type =>
+                                       Type_Of_Node (Prefix_Type),
+                                     Params        => Body_Params);
                begin
                   Expr :=
                     +One_Level_Update (N,
                                        +Prefix_Expr,
                                        +Expr,
+                                       Prefix_Type,
                                        Expr_Type,
                                        EW_Prog,
                                        Params => Body_Params);
                   N := Prefix (N);
-                  Expr_Type := Etype (N);
+                  Expr_Type := Prefix_Type;
                end;
 
             when others =>
@@ -1333,6 +1372,7 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
+      Prefix_Type : Entity_Id;
       Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id is
@@ -1351,7 +1391,7 @@ package body Gnat2Why.Expr is
                Domain   => Domain,
                Name     => Pref,
                Field    => Entity (Selector_Name (N)),
-               Ty       => Unique_Entity (Etype (Prefix (N))),
+               Ty       => Prefix_Type,
                Value    => Value);
 
          when N_Indexed_Component =>
@@ -1371,7 +1411,7 @@ package body Gnat2Why.Expr is
                end loop;
                return
                   New_Array_Update (Ada_Node  => N,
-                                    Ty_Entity => Type_Of_Node (Prefix (N)),
+                                    Ty_Entity => Prefix_Type,
                                     Ar        => Pref,
                                     Index     => Indices,
                                     Value     => Value,
@@ -1388,12 +1428,9 @@ package body Gnat2Why.Expr is
                                  (Prefix (N),
                                   EW_Term,
                                   Params => Params);
-               Expr_Type   : constant Entity_Id :=
-                               Type_Of_Node
-                                 (Unique_Entity (Etype (Prefix (N))));
-               Dim         : constant Pos := Number_Dimensions (Expr_Type);
+               Dim         : constant Pos := Number_Dimensions (Prefix_Type);
                BT          : constant W_Base_Type_Id :=
-                               +Why_Logic_Type_Of_Ada_Type (Expr_Type);
+                               +Why_Logic_Type_Of_Ada_Type (Prefix_Type);
                Result_Id   : constant W_Identifier_Id := To_Ident (WNE_Result);
                Binders     : constant W_Identifier_Array :=
                                New_Temp_Identifiers (Positive (Dim));
@@ -1407,7 +1444,7 @@ package body Gnat2Why.Expr is
                In_Slice_Eq : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Left_Type  => Expr_Type,
+                                  Left_Type  => Prefix_Type,
                                   Right_Arr  => +Value_Name,
                                   Right_Type => Val_Type,
                                   Index      => Indexes,
@@ -1415,9 +1452,9 @@ package body Gnat2Why.Expr is
                Unchanged   : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Left_Type  => Expr_Type,
+                                  Left_Type  => Prefix_Type,
                                   Right_Arr  => +Prefix_Name,
-                                  Right_Type => Expr_Type,
+                                  Right_Type => Prefix_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
                Def         : constant W_Pred_Id :=
@@ -2494,47 +2531,8 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      function Expected_Type return Entity_Id;
-      --  Compute the expected type of the right hand side expression.
-
       Lvalue   : constant Node_Id := Name (Stmt);
-      --  The Lvalue in the Ada sense, ie the chain of accesses
-
-      --------------------
-      -- Expected_Type --
-      --------------------
-
-      function Expected_Type return Entity_Id
-      is
-
-         --  The outermost prefix of the Lvalue (which is the innermost
-         --  access) corresponds to the expected type of the right value.
-
-      begin
-         case Nkind (Lvalue) is
-            when N_Identifier | N_Expanded_Name =>
-               return Type_Of_Node (Lvalue);
-
-            when N_Slice =>
-               return Type_Of_Node (Unique_Entity (Etype (Prefix (Lvalue))));
-
-            when N_Indexed_Component =>
-               return Type_Of_Node
-                 (Component_Type (Unique_Entity (Etype (Prefix (Lvalue)))));
-
-            when N_Selected_Component =>
-               return Type_Of_Node (Selector_Name (Lvalue));
-
-            when others =>
-               Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
-                                     & Node_Kind'Image (Nkind (Lvalue)));
-               raise Not_Implemented;
-         end case;
-      end Expected_Type;
-
-   --  Start of processing for Transform_Assignment_Statement
-
-      Exp_Entity : constant Entity_Id := Expected_Type;
+      Exp_Entity : constant Entity_Id := Expected_Type_Of_Prefix (Lvalue);
    begin
       return
         New_Assignment
