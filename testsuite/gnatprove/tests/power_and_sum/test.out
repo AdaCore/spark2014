@@ -1,5 +1,9 @@
 An error occured when calling alt-ergo
 An error occured when calling alt-ergo
+An error occured when calling alt-ergo
+An error occured when calling alt-ergo
+An error occured when calling alt-ergo
+An error occured when calling alt-ergo
 power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: info: overflow check proved
 power_and_sum.adb:16:23: info: range check proved
@@ -25,7 +29,7 @@ power_and_sum.adb:33:29: info: range check proved
 power_and_sum.adb:36:10: info: loop invariant initialization proved
 power_and_sum.adb:36:10: loop invariant preservation not proved, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:36:34: overflow check not proved
-power_and_sum.adb:36:48: info: overflow check proved
+power_and_sum.adb:36:48: overflow check not proved
 power_and_sum.adb:36:51: overflow check not proved
 power_and_sum.adb:36:53: overflow check not proved
 power_and_sum.adb:36:56: overflow check not proved
@@ -38,12 +42,12 @@ power_and_sum.adb:41:50: overflow check not proved
 power_and_sum.adb:41:53: info: overflow check proved
 power_and_sum.adb:43:34: info: range check proved
 power_and_sum.adb:43:34: overflow check not proved
-power_and_sum.adb:44:20: info: overflow check proved
 power_and_sum.adb:44:20: info: range check proved
+power_and_sum.adb:44:20: overflow check not proved
 power_and_sum.adb:46:10: info: assertion proved
 power_and_sum.adb:46:31: info: overflow check proved
 power_and_sum.adb:47:10: info: assertion proved
-power_and_sum.adb:47:26: info: overflow check proved
+power_and_sum.adb:47:26: overflow check not proved
 power_and_sum.adb:47:39: overflow check not proved
 power_and_sum.adb:47:42: info: overflow check proved
 power_and_sum.adb:48:31: info: range check proved
@@ -55,7 +59,7 @@ power_and_sum.adb:51:36: overflow check not proved
 power_and_sum.adb:51:39: info: overflow check proved
 power_and_sum.adb:51:42: overflow check not proved
 power_and_sum.adb:51:45: overflow check not proved
-power_and_sum.adb:51:7: info: assertion proved
+power_and_sum.adb:51:7: assertion not proved, requires 6*TotalSum = N*(N+1)*(N+2
 power_and_sum.adb:52:17: info: range check proved
 power_and_sum.adb:5:22: info: range check proved
 power_and_sum.adb:9:10: info: loop invariant initialization proved

@@ -121,8 +121,8 @@ prefixsum.adb:82:21: info: range check proved
 prefixsum.adb:82:7: info: index check proved
 prefixsum.adb:83:27: info: division check proved
 prefixsum.adb:83:27: info: range check proved
-prefixsum.adb:89:57: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
-prefixsum.adb:91:26: loop invariant initialization not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum.adb:89:57: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
+prefixsum.adb:91:26: loop invariant preservation not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum.adb:91:49: info: division check proved
 prefixsum.adb:91:49: info: overflow check proved
 prefixsum.adb:91:58: overflow check not proved
@@ -139,7 +139,7 @@ prefixsum.ads:22:37: info: range check proved
 prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:14: info: index check proved
 prefixsum.ads:27:22: info: index check proved
-prefixsum.ads:27:28: info: overflow check proved
+prefixsum.ads:27:28: overflow check not proved
 prefixsum.ads:27:30: info: index check proved
 prefixsum.ads:27:36: overflow check not proved
 prefixsum.ads:27:38: info: index check proved
@@ -156,7 +156,7 @@ prefixsum.ads:28:46: info: index check proved
 prefixsum.ads:29:25: info: division check proved
 prefixsum.ads:30:14: info: index check proved
 prefixsum.ads:30:22: info: index check proved
-prefixsum.ads:30:28: info: overflow check proved
+prefixsum.ads:30:28: overflow check not proved
 prefixsum.ads:30:30: info: index check proved
 prefixsum.ads:30:38: overflow check not proved
 prefixsum.ads:30:40: info: index check proved
@@ -176,6 +176,7 @@ prefixsum.ads:40:17: precondition not proved
 prefixsum.ads:45:37: info: range check proved
 prefixsum.ads:46:39: info: range check proved
 prefixsum.ads:48:17: info: precondition proved
+prefixsum.ads:50:14: postcondition not proved, requires A (0) = 0
 prefixsum.ads:50:8: info: index check proved
 prefixsum.ads:51:20: info: index check proved
 prefixsum.ads:51:28: info: index check proved
@@ -198,7 +199,6 @@ prefixsum.ads:54:52: info: index check proved
 prefixsum.ads:54:62: overflow check not proved
 prefixsum.ads:54:64: info: index check proved
 prefixsum.ads:55:20: info: index check proved
-prefixsum.ads:55:26: postcondition not proved, requires A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
 prefixsum.ads:55:28: info: index check proved
 prefixsum.ads:55:38: info: overflow check proved
 prefixsum.ads:55:40: info: index check proved
