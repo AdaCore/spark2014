@@ -69,11 +69,14 @@ package body Gnat2Why.Expr.Loops is
    --
    --  Get_Loop_Invariant splits this list into three buckets:
    --   * Initial_Stmts is the list of initial statements and declarations
-   --     before the first occurrence of pragma Loop_Invariant;
+   --     before the first occurrence of pragma Loop_Invariant, or the empty
+   --     list if there are no pragma Loop_Invariant in the loop;
    --   * Loop_Invariant is the node of the first occurrence of pragma
    --     Loop_Invariant in the list, if any, and Empty otherwise;
    --   * Final_Stmts is the list of final statements and declarations
-   --     after the first occurrence of pragma Loop_Invariant.
+   --     after the first occurrence of pragma Loop_Invariant, or all the
+   --     statements of the loop if there are no pragma Loop_Invariant in the
+   --     loop.
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
    --  Return the Defining_Identifier of the loop that belongs to an exit
@@ -127,8 +130,12 @@ package body Gnat2Why.Expr.Loops is
          end if;
       end loop;
 
+      --  If not loop invariant was found, put all statements and declarations
+      --  in the list Final_Stmts, leaving the list Initial_Stmts empty.
+
       if not Loop_Invariant_Found then
          Loop_Invariant := Empty;
+         Final_Stmts.Move (Initial_Stmts);
       end if;
    end Get_Loop_Invariant;
 
@@ -418,8 +425,8 @@ package body Gnat2Why.Expr.Loops is
    --  Generate the following Why loop expression:
    --
    --  if enter_condition then
-   --    loop_start;
    --    try
+   --      loop_start;
    --      loop invariant { user_invariant }
    --         assume { implicit_invariant };
    --         invariant_check;
@@ -472,7 +479,7 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Try : constant W_Prog_Id :=
         New_Try_Block
-          (Prog    => Loop_Stmt,
+          (Prog    => Sequence (Loop_Start, Loop_Stmt),
            Handler => (1 => New_Handler (Name => Loop_Ident,
                                          Def  => New_Void)));
 
@@ -483,7 +490,7 @@ package body Gnat2Why.Expr.Loops is
       return
         New_Conditional
           (Condition => +Enter_Condition,
-           Then_Part => +Sequence (Loop_Start, Loop_Try));
+           Then_Part => +Loop_Try);
    end Wrap_Loop;
 
 end Gnat2Why.Expr.Loops;
