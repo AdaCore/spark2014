@@ -518,11 +518,15 @@ Loop Invariants
 In order for GNATprove to prove formally the properties of interest on
 subprograms with loops, the user should annotate these loops with loop
 invariants. A loop invariant gives information on the state at entry to the
-loop at each iteration. Loop invariants in Alfa consist in the conjunction of
-all assertions that appear at the beginning of the loop body. Loop invariants
-may have to be precise enough to prove the property of interest. For example,
-in order to prove the postcondition of function ``Contains`` below, one has to
-write a precise loop invariant such as the one given below:
+loop at each iteration. Loop invariants in Alfa are expressed with the
+``Loop_Invariant`` pragma, which may appear anywhere in the main list of
+statements in a loop body, or directly in a chain of nested block statements in
+this main list of statements. Only the first ``Loop_Invariant`` pragma is used
+by GNATprove as a loop invariant during proof. Other ``Loop_Invariant`` pragmas
+are proved like regular assertions. Loop invariants may have to be precise
+enough to prove the property of interest. For example, in order to prove the
+postcondition of function ``Contains`` below, one has to write a precise loop
+invariant such as the one given below:
 
 .. code-block:: ada
    :linenos:
@@ -536,8 +540,8 @@ write a precise loop invariant such as the one given below:
    function Contains (Table : IntArray; Value : Integer) return Boolean is
    begin
       for Index in Table'Range loop
-         pragma Assert (for all J in Table'First .. Index - 1 =>
-                          Table (J) /= Value);
+         pragma Loop_Invariant (for all J in Table'First .. Index - 1 =>
+                                 Table (J) /= Value);
 
          if Table(Index) = Value then
             return True;
@@ -562,10 +566,10 @@ function ``Move`` below, one has to write a loop invariant referring to
    procedure Move (Dest, Src : out IntArray) is
    begin
       for Index in Dest'Range loop
-         pragma Assert ((for all J in Dest'First .. Index - 1 =>
-                          Dest (J) = Src'Loop_Entry (J)) and
-                        (for all J in Index .. Dest'Last =>
-                          Src (J) = Src'Loop_Entry (J)));
+         pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
+                                  Dest (J) = Src'Loop_Entry (J)) and
+                                (for all J in Index .. Dest'Last =>
+                                  Src (J) = Src'Loop_Entry (J)));
 
          Dest (Index) := Src (Index);
          Src (Index) := 0;
