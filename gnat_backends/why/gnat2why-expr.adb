@@ -1454,9 +1454,13 @@ package body Gnat2Why.Expr is
                                  (Left_Arr   => +Result_Id,
                                   Left_Type  => Prefix_Type,
                                   Right_Arr  => +Prefix_Name,
-                                  Right_Type => Prefix_Type,
+                                  Right_Type => Val_Type,
                                   Index      => Indexes,
                                   Dimension  => Dim);
+
+               --  ??? Why is the Right_Type above Val_Type and not
+               --  Prefix_Type?
+
                Def         : constant W_Pred_Id :=
                                New_Conditional
                                  (Condition => Range_Pred,
