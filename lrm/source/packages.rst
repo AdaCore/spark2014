@@ -113,6 +113,11 @@ where the ``aspect_mark`` is "Abstract_State" and the
    then it shall also include exactly one of ``Input`` or ``Output``.
 #. If a ``property_list`` includes either ``Input`` or ``Output``,
    then it shall also include ``Volatile``.
+#. The ``identifier`` of a ``name_value_property`` shall be
+   ``Integrity``.
+#. The ``expression`` of an ``Integrity`` property shall be a static
+   expression of any integer type.
+
 
 .. centered:: **Static Semantics**
 
@@ -206,19 +211,14 @@ Aspect.
 
 Integrity Levels
 ^^^^^^^^^^^^^^^^
-
+.. todo:: Integrity levels are still under discussion so that the
+   following description should be considered provisional.
+ 
 An abstract state may be assigned an *integrity level* which indicates
 that the state has a particular integrity.  *Integrity levels* are
 used in information flow analysis to monitor or prohibit the flow of
 information (data) of different *integrity levels* between abstract
 states.
-
-.. centered:: **Legality Rules**
-
-#. The ``identifier`` of a ``name_value_property`` shall be
-   ``Integrity``.
-#. The ``expression`` of an ``Integrity`` property shall be a static
-   expression of any integer type.
 
 .. centered:: **Static Semantics**
 
