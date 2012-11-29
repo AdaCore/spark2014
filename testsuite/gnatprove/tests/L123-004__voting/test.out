@@ -8,8 +8,8 @@ evoting.adb:170:13: info: precondition proved
 evoting.adb:172:16: info: index check proved
 evoting.adb:173:16: info: index check proved
 evoting.adb:173:41: info: index check proved
-evoting.adb:173:63: range check not proved
-evoting.adb:174:51: overflow check not proved
+evoting.adb:173:63: info: range check proved
+evoting.adb:174:51: info: overflow check proved
 evoting.adb:174:51: range check not proved
 evoting.adb:197:7: info: index check proved
 evoting.adb:199:56: info: range check proved
@@ -50,22 +50,22 @@ evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
 evoting.adb:58:10: index check not proved
 evoting.adb:60:49: info: range check proved
-evoting.adb:64:43: range check not proved
+evoting.adb:64:43: info: range check proved
 evoting.adb:73:14: info: index check proved
 evoting.adb:81:40: info: range check proved
 evoting.adb:95:7: info: precondition proved
 evoting.ads:104:24: info: index check proved
 evoting.ads:104:48: info: index check proved
 evoting.ads:105:21: info: index check proved
-evoting.ads:105:38: postcondition not proved, requires counters(winner) > counters(i)
 evoting.ads:105:40: info: index check proved
 evoting.ads:107:23: info: index check proved
 evoting.ads:107:43: info: index check proved
 evoting.ads:108:20: info: index check proved
+evoting.ads:108:37: postcondition not proved, requires counters(winner) = counters(i)
 evoting.ads:108:39: info: index check proved
-evoting.ads:111:19: info: index check proved
+evoting.ads:111:19: index check not proved
 evoting.ads:56:29: info: index check proved
 evoting.ads:56:46: postcondition not proved, requires candidates(i)(j) = ' '
 evoting.ads:88:53: info: index check proved
 evoting.ads:93:11: info: index check proved
-evoting.ads:93:23: postcondition not proved, requires counters(i) = 0
+evoting.ads:95:33: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
