@@ -1,26 +1,26 @@
 const.adb:10:22: info: index check proved
-const.adb:10:7: assertion not proved, requires C(1) = 1
+const.adb:10:7: info: assertion proved
 const.adb:11:22: info: index check proved
 const.adb:11:7: assertion not proved, requires C(2) = 1
 const.adb:12:22: info: index check proved
-const.adb:12:7: assertion not proved, requires C2(1) = 1
+const.adb:12:7: info: assertion proved
 const.adb:13:22: info: index check proved
 const.adb:13:7: assertion not proved, requires C2(2) = 1
 const.adb:16:7: info: assertion proved
 const.adb:17:7: info: assertion proved
 const.adb:18:22: info: index check proved
-const.adb:18:7: assertion not proved, requires D2(1) = 1
+const.adb:18:7: info: assertion proved
 const.adb:19:22: info: index check proved
 const.adb:19:7: assertion not proved, requires D2(2) = 1
 const.adb:23:7: assertion not proved, requires E.X = 1
-const.adb:24:7: assertion not proved, requires E.Y = 1
+const.adb:24:7: info: assertion proved
 const.adb:25:7: info: assertion proved
 const.adb:26:7: info: assertion proved
 const.adb:27:7: info: assertion proved
 const.adb:28:7: info: assertion proved
-const.adb:32:7: assertion not proved, requires I = 1
+const.adb:32:7: info: assertion proved
 const.adb:33:7: info: assertion proved
-const.adb:34:7: assertion not proved, requires K = 1
+const.adb:34:7: info: assertion proved
 const.adb:35:7: info: assertion proved
 const.adb:36:7: info: assertion proved
 const.adb:37:7: info: assertion proved

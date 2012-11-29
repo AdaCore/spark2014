@@ -1,6 +1,6 @@
+invertinjection.adb:10:7: info: assertion proved
 invertinjection.adb:11:25: info: index check proved
 invertinjection.adb:11:28: info: index check proved
-invertinjection.adb:11:35: assertion not proved, requires B (A (J)) = J
 invertinjection.adb:6:10: info: loop invariant initialization proved
 invertinjection.adb:7:36: info: index check proved
 invertinjection.adb:7:39: info: index check proved

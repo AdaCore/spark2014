@@ -20,19 +20,19 @@ evoting.adb:204:56: info: range check proved
 evoting.adb:205:7: info: index check proved
 evoting.adb:208:10: info: loop invariant initialization proved
 evoting.adb:209:13: info: index check proved
-evoting.adb:209:47: loop invariant preservation not proved, requires winners(Candidate_Number_t'First) = false
 evoting.adb:211:13: info: index check proved
 evoting.adb:215:22: info: index check proved
 evoting.adb:215:55: info: index check proved
 evoting.adb:219:22: info: index check proved
 evoting.adb:220:19: info: index check proved
+evoting.adb:220:50: loop invariant preservation not proved, requires Counters(Latest_Highest_Score) = Counters(J)
 evoting.adb:220:52: info: index check proved
 evoting.adb:222:19: info: index check proved
 evoting.adb:222:52: info: index check proved
 evoting.adb:223:13: info: index check proved
 evoting.adb:223:27: info: index check proved
 evoting.adb:225:16: info: loop invariant initialization proved
-evoting.adb:227:19: loop invariant preservation not proved, requires not Winners(K)
+evoting.adb:225:16: info: loop invariant preservation proved
 evoting.adb:227:23: info: index check proved
 evoting.adb:228:16: info: index check proved
 evoting.adb:230:13: info: index check proved
@@ -43,9 +43,9 @@ evoting.adb:233:13: info: index check proved
 evoting.adb:234:37: info: range check proved
 evoting.adb:236:13: info: index check proved
 evoting.adb:244:13: info: loop invariant initialization proved
+evoting.adb:244:13: info: loop invariant preservation proved
 evoting.adb:244:73: info: overflow check proved
-evoting.adb:245:18: loop invariant preservation not proved, requires not Winners(J)
-evoting.adb:245:22: index check not proved
+evoting.adb:245:22: info: index check proved
 evoting.adb:247:21: info: index check proved
 evoting.adb:247:34: info: index check proved
 evoting.adb:248:13: info: index check proved
@@ -69,7 +69,7 @@ evoting.adb:306:36: info: range check proved
 evoting.adb:310:18: info: range check proved
 evoting.adb:310:7: info: precondition proved
 evoting.adb:312:14: info: range check proved
-evoting.adb:312:7: precondition not proved
+evoting.adb:312:7: info: precondition proved
 evoting.adb:314:29: info: range check proved
 evoting.adb:314:7: info: precondition proved
 evoting.adb:38:74: info: range check proved
@@ -77,7 +77,7 @@ evoting.adb:47:13: info: index check proved
 evoting.adb:47:33: info: range check proved
 evoting.adb:52:7: info: index check proved
 evoting.adb:53:34: info: range check proved
-evoting.adb:58:10: index check not proved
+evoting.adb:58:10: info: index check proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:73:14: info: index check proved

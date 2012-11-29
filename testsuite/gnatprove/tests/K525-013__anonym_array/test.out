@@ -3,4 +3,4 @@ p.adb:5:4: index check not proved
 p.adb:6:13: info: range check proved
 p.adb:6:4: index check not proved
 p.adb:7:34: info: index check proved
-p.adb:7:40: assertion not proved, requires X (A) = 1
+p.adb:7:4: info: assertion proved

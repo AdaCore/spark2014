@@ -3,6 +3,6 @@ stacks.adb:5:18: info: range check proved
 stacks.adb:6:7: info: index check proved
 stacks.ads:14:69: info: index check proved
 stacks.ads:18:31: postcondition not proved, requires Size (Top, Data) = Size (Top'Old, Data'Old) + 1
-stacks.ads:18:58: overflow check not proved
+stacks.ads:18:58: info: overflow check proved
 stacks.ads:22:43: postcondition not proved, requires Size (Top, Data) = Size (Top'Old, Data'Old) - 1
 stacks.ads:8:69: info: range check proved
