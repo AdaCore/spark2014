@@ -1,3 +1,5 @@
+An error occured when calling alt-ergo
+An error occured when calling alt-ergo
 power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: info: overflow check proved
 power_and_sum.adb:16:23: info: range check proved
@@ -36,12 +38,12 @@ power_and_sum.adb:41:50: overflow check not proved
 power_and_sum.adb:41:53: info: overflow check proved
 power_and_sum.adb:43:34: info: range check proved
 power_and_sum.adb:43:34: overflow check not proved
-power_and_sum.adb:44:20: info: overflow check proved
 power_and_sum.adb:44:20: info: range check proved
+power_and_sum.adb:44:20: overflow check not proved
 power_and_sum.adb:46:10: info: assertion proved
 power_and_sum.adb:46:31: info: overflow check proved
 power_and_sum.adb:47:10: info: assertion proved
-power_and_sum.adb:47:26: info: overflow check proved
+power_and_sum.adb:47:26: overflow check not proved
 power_and_sum.adb:47:39: overflow check not proved
 power_and_sum.adb:47:42: info: overflow check proved
 power_and_sum.adb:48:31: info: range check proved
