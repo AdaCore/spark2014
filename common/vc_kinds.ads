@@ -31,6 +31,9 @@
 --  Access_Check), and which GNATprove can detect (it excludes
 --  Storage_Check), plus various assertions that we want to distinguish.
 
+--  Changes in VC_Kind should be reflected in gnat_expl.ml in gnatwhy3, the
+--  driver for VC generation and proof.
+
 package VC_Kinds is
 
    type VC_Kind is
@@ -50,6 +53,7 @@ package VC_Kinds is
       VC_Loop_Invariant,
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
+      VC_Loop_Variant,
       VC_Assert);
 
 end VC_Kinds;

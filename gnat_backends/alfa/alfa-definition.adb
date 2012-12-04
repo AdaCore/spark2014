@@ -1978,6 +1978,26 @@ package body Alfa.Definition is
                Pop_Logic_Scope;
             end if;
 
+         --  pragma Loop_Variant
+         --         ( LOOP_VARIANT_ITEM {, LOOP_VARIANT_ITEM } );
+
+         --  LOOP_VARIANT_ITEM ::= CHANGE_DIRECTION => discrete_EXPRESSION
+
+         --  CHANGE_DIRECTION ::= Increases | Decreases
+
+         when Pragma_Loop_Variant =>
+            declare
+               Variant : Node_Id;
+            begin
+               --  Process all increasing / decreasing expressions
+
+               Variant := First (Pragma_Argument_Associations (N));
+               while Present (Variant) loop
+                  Mark (Expression (Variant));
+                  Next (Variant);
+               end loop;
+            end;
+
          --  Ignored pragmas, either because they are already taken into
          --  account (Precondition and Postcondition), or because they have no
          --  effect on verification (Export, Import, Preelaborate, Pure,

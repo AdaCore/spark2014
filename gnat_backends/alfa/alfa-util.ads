@@ -29,6 +29,7 @@ with Einfo;          use Einfo;
 with Impunit;        use Impunit;
 with Namet;          use Namet;
 with Sinfo;          use Sinfo;
+with Snames;         use Snames;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
@@ -178,6 +179,9 @@ package Alfa.Util is
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.
+
+   function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
+   --  Returns whether N is a pragma of the given kind
 
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  Returns whether N has the form pragma Check (Name, ...)

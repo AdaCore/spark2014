@@ -29,7 +29,6 @@ with Ada.Strings.Maps.Constants;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
-with Snames;   use Snames;
 
 package body Alfa.Util is
 
@@ -470,18 +469,23 @@ package body Alfa.Util is
         and then Name = Lowercase_Capacity_Name;
    end Is_Formal_Container_Capacity;
 
+   ---------------
+   -- Is_Pragma --
+   ---------------
+
+   function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean is
+     (Nkind (N) = N_Pragma
+       and then Get_Pragma_Id (Pragma_Name (N)) = Name);
+
    ---------------------
    -- Is_Pragma_Check --
    ---------------------
 
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean is
-   begin
-      return Nkind (N) = N_Pragma
-        and then Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check
+     (Is_Pragma (N, Pragma_Check)
         and then
-          Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
-            = Name;
-   end Is_Pragma_Check;
+      Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
+      = Name);
 
    -----------------------------------
    -- Location_In_Formal_Containers --

@@ -195,6 +195,10 @@ package body Gnat2Why.Expr is
    --  same as One_Level_Access, but for updates
 
    function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id;
+   --  ??? The comment below is incorrect, as Expected_Type_Of_Prefix is called
+   --  for every assignment, not only assignment to record components and array
+   --  cells. To be checked.
+   --
    --  The node in argument is some array or record access. This function
    --  computes the type of the entity that corresponds to the access.
    --  This may be different from the Etype of the node in case of

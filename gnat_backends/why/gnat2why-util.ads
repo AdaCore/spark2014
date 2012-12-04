@@ -79,4 +79,13 @@ package Gnat2Why.Util is
    function Logic_Params return Transformation_Params is
      (Usual_Params (Generate_Logic));
 
+   --------------
+   -- Builders --
+   --------------
+
+   function Create_Zero_Binding
+     (Vars : W_Identifier_List;
+      Prog : W_Prog_Id) return W_Prog_Id;
+   --  Return a program which binds every variable in Vars to 0 in Prog
+
 end Gnat2Why.Util;
