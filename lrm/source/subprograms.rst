@@ -23,14 +23,6 @@ of any [SPARK] expression is side-effect free.
    a subprogram_body for a function for which no explicit specification
    is given.
 
-.. centered:: **Verification Rules**
-
-.. centered:: *Flow Analysis*
-
-#. The Global aspect of a function (whether explicitly specified or
-   implicitly synthesized from the subprogram implementation)
-   shall not include a moded_choice having a mode of Output or In_Out.
-
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
 
@@ -46,73 +38,62 @@ Preconditions and Postconditions
 
 As indicated by the ``aspect_specification`` being part of a
 ``subprogram_declaration``, a subprogram is in |SPARK| only if its specific
-contract expressions (introduced by ``Pre`` and ``Post``) and class-wide
-contract expressions (introduced by ``Pre'Class`` and ``Post'Class``), if any,
+contract expressions (introduced by Pre and Post) and class-wide
+contract expressions (introduced by Pre'Class and Post'Class), if any,
 are in |SPARK|.
 
 .. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
 
 #. Verification conditions are generated from the program text to
    demonstrate that the implementation of the body of the subprogram
    satisfies the post condition provided the precondition is True and
    the subprogram completes normally.
 
+.. note:: (TJJ 29/11/12) Do we need this verifiaction rule?  If we do
+    it needs to be more precise I think.
+
 .. todo:: Think about Pre'Class and Post'Class. Target: D2.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| provides extra aspects, the ``Global``, ``Param`` and ``Dependency``
+|SPARK| provides extra aspects, the Global, Param and ``Dependency``
 aspects to strengthen a subprogram declaration so that constructive,
 modular program analysis may be performed.  With the extra aspects the
 body of a subprogram does not have to be implemented in order for
 analysis and proof of callers of the subprogram.
 
 A ``Contract_Cases`` aspect is also provided which provides a convenient
-way of specifying formally the required functionality of a subprogram.
+way of formally specifying the required functionality of a subprogram.
 
-.. note::
- (YM) The following paragraph is redundant with the preceding ones. Which should
- be retained?
-
-Extra aspects are provided in |SPARK|, ``Global``, ``Param``,
-``Dependency`` and ``Contract_Cases`` in addition to the Ada ``Pre``
-and ``Post``.  The extra aspects facilitate an extended specification
-and a potentially more concise form of pre and postcondition.
-
-|SPARK| requires that some of the extra aspects are ordered within the
-``aspect_specification`` of a subprogram.
 
 .. centered:: **Legality Rules**
 
-#. The ``Param``, ``Global`` and ``Dependency`` aspects are all optional but, if
-   present, must be the first entries in a subprogram
-   ``aspect_specification`` in the order ``Param`` aspect, ``Global`` aspect
-   and ``Dependency`` aspect.
+#. The Global, Param, Dependency and Contract_Cases aspects may be
+   specified for a subprogram with an ``aspect_specification``.  More
+   specifically, these aspects are allowed in the same
+   contexts as a Pre or Post aspect.
 
-.. note:: (YM) why these ordering restrictions? I don't think we should
-          enforce this.
-
-
-Contract Cases
+Contract Cases 
 ~~~~~~~~~~~~~~
 
-The ``Contract_Cases`` aspect provide a concise way to specify mutually independent
-cases guarded by expressions using the initial value of **in** or **in
-out** *formal parameters* or *global variables*.  Each case specifies
-the final value of mode **out** or **in out** *formal parameters* or
-*global variables*.  The other requirement of contract cases, given
-that they are mutually exclusive, is that there is exactly one guard
-which is satisfied.  The guard of the final case may be the keyword
-**others** which means that if all the other guards are false this
-case is taken.
+The Contract_Cases aspect provides a concise way to specify mutually
+independent cases guarded by ``conditions`` using the initial value of
+**in** or **in out** formal parameters or global variables.  Each
+``contract_case`` specifies the final value of mode **out** or **in
+out** formal parameters or global variables.  The final
+``contract_case`` may be the keyword **others** which means that, in a
+specific call to the subprogram, if all the ``conditions`` are False
+this ``contract_case`` is taken.  If an **others** ``contract_case``
+is not specified, then in a specific call of the subprogram exactly
+one of the gaurding ``conditions`` should be True
 
-Contract cases may be used in conjunction with a standard pre and
-postcondition in which case the precondition is augmented with a check
-that exactly one of the guards is satisfied and the postcondition is
-conjoined with conditional expressions representing each of the cases.
+A Contract_Cases aspect may be used in conjunction with the
+language-defined aspects Pre and Post in which case the precondition
+specifed by the Pre aspect is augmented with a check that exactly one
+of the ``conditions`` of the ``contract_case_list`` is satisfied and
+the postcondition specified by the Post aspect is conjoined with
+conditional expressions representing each of the ``contract_cases``.
 For example:
 
 .. code-block:: ada
@@ -142,13 +123,13 @@ is short hand for
 where
 
   A1 .. An are Boolean expressions involving the initial values of
-  *formal parameters* and *global variables* and
+  formal parameters and global variables and
 
   B1 .. Bn are Boolean expressions that may also use the final values of
-  *formal parameters*, *global variables* and results.
+  formal parameters, global variables and results.
 
-The Contract Cases Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Contract_Cases" and the ``aspect_definition`` must follow
+The Contract_Cases aspect is specified with an ``aspect_specification`` where
+the ``aspect_mark`` is Contract_Cases and the ``aspect_definition`` must follow
 the grammar of ``contract_case_list`` given below.
 
 
@@ -157,89 +138,90 @@ the grammar of ``contract_case_list`` given below.
 ::
 
    contract_case_list  ::= (contract_case {, contract_case})
-   contract_case       ::= contract_guard => consequence
+   contract_case       ::= condition => consequence
                          | others => consequence
 
 where
-
-   ``contract_guard    ::=`` *Boolean_*\ ``expression``
 
    ``consequence ::=`` *Boolean_*\ ``expression``
 
 
 .. centered:: **Legality Rules**
 
-#. A Contract Cases aspect specification is allowed in the same
-   contexts where a Pre or Post aspect specification is allowed.
-#. A Contract Cases aspect may have at most one **others**
+#. A Contract_Cases aspect may have at most one **others**
    ``contract_case`` and if it exists it must be the last one in the
    ``contract_case_list``.
-#. A consequence expression is considered to be a postcondition
+#. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
-   Result attribute_references.
+   Result ``attribute_references``.
 
 .. centered:: **Static Semantics**
 
-#. A Contract Cases aspect specification is an assertion (as defined
-   in RM 11.4.2(1.1/3)); its assertion expressions are as described
-   below. Contract_Cases may be specified as an assertion_aspect_mark
-   in an Assertion_Policy pragma.
-
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
-
-#. Each ``contract_guard`` in a Contract Cases aspect has to proven to
-   be mutually exclusive, that is only one ``contract_guard`` can be
-   True with any set of inputs conformant with the formal parameters
-   and satisfying the specific precondition.
-#. At the point of call a check that a ``contract_guard`` is True has to be
-   proven.
-#. For every ``contract_case``, when its ``contract_guard`` is True,
-   the implementation of the body of the subprogram must be proven to
-   satisfy the ``consequence`` of the ``contract_case``.
-
+#. A Contract_Cases aspect is an assertion (as defined in RM
+   11.4.2(1.1/3)); its assertion expressions are as described
+   below. Contract_Cases may be specified as an
+   ``assertion_aspect_mark`` in an Assertion_Policy pragma.
 
 .. centered:: **Dynamic Semantics**
 
 #. Upon a call of a subprogram or entry which is subject to an enabled
-   Contract Cases aspect_specification, Contract Cases checks are
+   Contract_Cases aspect, Contract_Cases checks are
    performed as follows:
 
    * Immediately after the specific precondition expression is
      evaluated and checked (or, if that check is disabled, at the
      point where the check would have been performed if it were
-     enabled), all of the contract_guard expressions are evaluated in
-     textual order. A check is performed that exactly one (if no
-     others contract_guard is provided) or at most one (if an others
-     contract_guard is provided) of these conditions evaluates to
-     True; Assertions.Assertion_Error is raised if this check fails.
+     enabled), all of the ``conditions`` of the ``contract_case_list``
+     are evaluated in textual order. A check is performed that exactly
+     one (if no **others** ``contract_case`` is provided) or at most
+     one (if an **others** ``contract_case`` is provided) of these
+     ``conditions`` evaluates to True; Assertions.Assertion_Error is
+     raised if this check fails.
 
    * Immediately after the specific postcondition expression is
      evaluated and checked (or, if that check is disabled, at the
      point where the check would have been performed if it were
-     enabled), exactly one of the consequences is evaluated. The
-     consequence to be evaluated is the one corresponding to the one
-     contract_guard whose evaluation yielded True (if such a
-     contract_guard exists), or to the others contract_guard (if every
-     contract_guard's evaluation yielded False).  A check is performed
-     that the evaluation of the selected consequence evaluates to
-     True; Assertions.Assertion_Error is raised if this check fails.
+     enabled), exactly one of the ``consequences`` is evaluated. The
+     ``consequence`` to be evaluated is the one corresponding to the
+     one ``condition`` whose evaluation yielded True (if such a
+     ``condition`` exists), or to the **others** ``contract_case`` (if
+     every ``condition``\ 's evaluation yielded False).  A check
+     is performed that the evaluation of the selected ``consequence``
+     evaluates to True; Assertions.Assertion_Error is raised if this
+     check fails.
+
+.. centered:: **Verification Rules**
+
+#. Each ``condition`` in a Contract_Cases aspect has to proven to
+   be mutually exclusive, that is only one ``condition`` can be
+   True with any set of inputs conformant with the formal parameters
+   and satisfying the specific precondition.
+#. At the point of call a check that a single ``condition`` of the
+   Contract_Cases aspect is True has to be proven, or if no
+   ``condition`` is True then the Contract_Cases aspect must have an
+   **others** ``contract_case``.
+#. For every ``contract_case``, when its ``condition`` is True, or the
+   **others** ``contract_case`` when none of theconditions are True,
+   the implementation of the body of the subprogram must be proven to
+   satisfy the ``consequence`` of the ``contract_case``.
+
+.. note:: (TJJ 29/11/12) Do we need this verification rule?  Could it
+   be captured as part of the general statement about proof?
+
 
 .. _mode-specification:
 
 Mode Specification
 ~~~~~~~~~~~~~~~~~~
 
-A formal parameter or *global variable* of a subprogram, or state
+A formal parameter or global variable of a subprogram, or state
 abstraction (see :ref:`abstract-state`) which may be read, directly or
 indirectly, by the subprogram is an *input* of the subprogram. A
-formal parameter, *global variable* or state abstraction which may be
+formal parameter, global variable or state abstraction which may be
 updated, directly or indirectly, by the subprogram is an *output* of
 the subprogram.
 
-A mode specification is used for the ``Global`` and ``Param`` aspects
+A mode specification is used for the Global and Param aspects
 as well as for advanced Global aspects.  It allows the mode of each
 input and output of the subprogram to be specified.
 
@@ -351,6 +333,10 @@ follow the grammar of ``mode_specification``
 
 #. A basic Global Aspect is verified against the mode specification
    rules given in the static semantics.
+#. The Global aspect of a function (whether explicitly specified or
+   implicitly synthesized from the subprogram implementation)
+   shall not include a moded_choice having a mode of Output or In_Out.
+
 
 .. centered:: **Dynamic Semantics**
 
@@ -377,7 +363,8 @@ There are no dynamic semantics associated with a Global.
 Param Aspects and Advanced Global Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Param Aspects and Advanced Global aspects are optional and facilitate
+Param Aspects and Advanced Global aspects specifications may be provided for a subprogram.
+More specifically, these aspect specifications are optional and facilitate
 designating a mode to a subcomponent of an object and to define mode
 behaviour that is conditional.
 
