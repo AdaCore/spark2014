@@ -272,7 +272,7 @@ A *global item* is a *global variable* or a state abstraction (see
 A ``global_aspect`` of a subprogram, if present, lists the global
 items that are inputs and outputs of the subprogram and assigns a mode
 to each of them using a ``mode_specification``.
-  
+
 The *global* items are considered to have modes the same as *formal
 parameters*, **in**, **out** and **in out** with the same meaning.
 
@@ -373,7 +373,7 @@ When subcomponents of an object or conditional modes occur in a
 would be the equivalent mode of the each ``moded_item`` if the
 subcomponents were replaced by their entire containing objects and
 every ``conditional_mode`` by an unconditional one.
- 
+
 The Param aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Param" and the ``aspect_definition`` must
 follow the grammar of ``mode_specification``
