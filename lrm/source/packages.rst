@@ -9,21 +9,21 @@ Package Specifications and Declarations
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
-The *variables* declared immediately within a package Q, its embedded
+The variables declared immediately within a package Q, its embedded
 packages and its private descendants constitute the state of Q.
 
 For a package declared immediately in the body of package, an embedded
-package E, the *variables* which form part of the state are the
-*variables* declared immediately within E and embedded packages
+package E, the variables which form part of the state are the
+variables declared immediately within E and embedded packages
 declared immediately within E.
 
-The *variable* declarations are only visible to clients of Q if they
+The variable declarations are only visible to clients of Q if they
 are declared in the ``visible_part`` of Q which is not considered good
 practice in general for public (non-private) packages.  The
-declarations of all other variables are hidden from a client of Q.
+declarations of all other variables are *hidden* from a client of Q.
 Though the variables are hidden they still form part (or all) of the
 state of Q and this hidden state cannot be ignored for static analyses
-and proof.  State abstraction is the means by which this hidden state
+and proof.  *State abstraction* is the means by which this hidden state
 is managed for static analyses and proof.
 
 |SPARK| extends the concept of state abstraction to provide
@@ -33,7 +33,7 @@ of Q.  This provides data refinement similar to the refinement
 available to types whereby a record may contain fields which are
 themselves records.
 
-State abstraction supports a logical model of volatility.  A volatile
+State abstraction supports a logical model of volatility.  A *volatile*
 state does not behave like a standard non-volatile one as its value
 may change between two successive reads without an intervening update,
 or successive updates may occur without any intervening reads and
@@ -44,7 +44,7 @@ For flow analysis and proof volatile states have to be modelled
 differently to standard non-volatile states.  The abstract state
 aspect provides a way to designate a named abstract state as being
 volatile, usually representing an external input or output.  This
-abstract state may be refined on to actual *variables* which are the
+abstract state may be refined on to actual variables which are the
 input or output ports connected to the external device.
 
 .. _abstract-state-aspect:
@@ -52,7 +52,7 @@ input or output ports connected to the external device.
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-State abstraction provides a mechanism for naming, in a package's
+*State abstraction* provides a mechanism for naming, in a package's
 visible part, state (typically variable declarations) that will be
 declared within the package's body (or private part, or within private
 descendents of the package). For example, a package declares a visible
@@ -61,15 +61,15 @@ procedure reads and writes as part of the specification of the
 subprogram. Those variables cannot be named directly in the package
 specification. Instead, we introduce a state abstraction which is
 visible in the package specification and later, when the package body
-is declared, we specify the set of variables that "constitute" or
-"implement" that state abstraction. If a package body contains, for
+is declared, we specify the set of variables that *constitute* or
+*implement* that state abstraction. If a package body contains, for
 example, a nested package, then a state abstraction of the inner
 package may also be part of the implementation of the given state
 abstraction of the outer package. No such mechanism is needed for
-visible state (i.e., variables declared in the visible part of a
+visible state (i.e., variables declared in the ``visible_part`` of a
 package).
 
-The "hidden" state of a package (roughly speaking, all variables
+The *hidden* state of a package (roughly speaking, all variables
 declared within the the private part or body of the package but not
 within a more nested subprogram body or block statement; state
 declared in private descendents is also included) may be represented
@@ -85,7 +85,7 @@ state names must appear as inputs and outputs of P, as appropriate, in
 the ``dependency_relation`` of the Dependency Aspect.
 
 The Abstract State Aspect is introduced by an ``aspect_specification``
-where the ``aspect_mark`` is "Abstract_State" and the
+where the ``aspect_mark`` is Abstract_State and the
 ``aspect_definition`` must follow the grammar of
 ``abstract_state_list`` given below.
 
@@ -107,16 +107,14 @@ where the ``aspect_mark`` is "Abstract_State" and the
 
 .. centered:: **Legality Rules**
 
-#. The ``identifier`` of a ``simple_property`` shall be ``Volatile``,
-   ``Input``, or ``Output``.
-#. If a ``property_list`` includes ``Volatile``,
-   then it shall also include exactly one of ``Input`` or ``Output``.
-#. If a ``property_list`` includes either ``Input`` or ``Output``,
-   then it shall also include ``Volatile``.
+#. The ``identifier`` of a ``simple_property`` shall be Volatile,
+   Input, or Output.
+#. If a ``property_list`` includes Volatile, then it shall also
+   include exactly one of Input or Output.
+#. If a ``property_list`` includes either Input or Output,
+   then it shall also include Volatile.
 #. The ``identifier`` of a ``name_value_property`` shall be
-   ``Integrity``.
-#. The ``expression`` of an ``Integrity`` property shall be a static
-   expression of any integer type.
+   Integrity.
 
 
 .. centered:: **Static Semantics**
@@ -127,12 +125,10 @@ where the ``aspect_mark`` is "Abstract_State" and the
    declaration occurs at the beginning of the visible part of P. This
    implicit declaration requires completion.
 
-#. Each ``state_name`` occurring in an Abstract_State aspect declares
-   a state abstraction entity. If a generic unit includes an
-   Abstract_State aspect, the state abstractions implicitly
-   generated by different instantiations of the generic unit refer to
-   distinct abstract state entities (but all have the same
-   defining_identifier).
+#. If a generic unit includes an Abstract_State aspect, the state
+   abstractions implicitly generated by different instantiations of
+   the generic unit refer to distinct state abstraction entities (but all
+   have the same defining_identifier).
 
 #. [A state abstraction shall only be named in contexts where this is
    explicitly permitted (e.g., as part of a Globals aspect
@@ -148,27 +144,22 @@ where the ``aspect_mark`` is "Abstract_State" and the
    comprising the hidden state of the package shall be empty.
    [The specification is is checked when the package body is analysed.]
 
-#. A volatile state abstraction is one declared with a property list
-   which includes the ``Volatile`` property, and either
-   ``Input`` or ``Output``.
+#. A *volatile* state abstraction is one declared with a property list
+   which includes the Volatile property, and either Input or Output.
 
-#. A ``Volatile Input`` or ``Output`` state abstraction represents a
-   sequence of state changes brought about by reading or writing
-   successive values to or from a volatile *variable*.
+#. A Volatile Input or Output state abstraction represents a sequence
+   of state changes brought about by reading or writing successive
+   values to or from a volatile variable.
 
 
 .. centered:: **Verification Rules**
 
-#. A ``Volatile Input`` state abstraction shall not be a global item
-   (see :ref:`global-aspect`) of mode **in out** or **out**.
-   [Checked when analyzing subprogram declarations.]
-#. A ``Volatile Output`` state abstraction shall not be a global item of
-   mode **in** or **in out**.
-   [Checked when analyzing subprogram declarations.]
-#. An abstract state declared with an *integrity level* shall not be
-   used in determining the value of an output of a subprogram with a
-   higher or lower *integrity level* depending on the mode of analysis.
-   [Checked during information flow analysis.]
+#. A Volatile Input state abstraction shall not be a global item (see
+   :ref:`global-aspect`) of mode **in out** or **out**.  [Checked when
+   analyzing subprogram declarations.]
+#. A Volatile Output state abstraction shall not be a global item of
+   mode **in** or **in out**.  [Checked when analyzing subprogram
+   declarations.]
 
 .. centered:: **Dynamic Semantics**
 
@@ -301,16 +292,16 @@ its private descendents.
 State Abstraction for a Visible Variable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-State abstraction is not generally required for *variables* declared
-in the visible part of a package but such a *variable* is not in the
+State abstraction is not generally required for variables declared in
+the ``visible_part`` of a package but such a variable is not in the
 limited view of the package.  A state abstraction declared within the
 package is present in the limited view of the package.  If the state
-represented by the *variable* declared in the visible part of the
+represented by the variable declared in the ``visible_part`` of the
 package is required in the limited view of the package, then a state
-abstraction has to be associated with the *variable*.  An Abstract
-State Aspect in the aspect_specification of the *variable* declaration
+abstraction has to be associated with the variable.  An Abstract
+State Aspect in the aspect_specification of the variable declaration
 declares an state abstraction entity and associates it with the
-*variable* declaration.
+variable declaration.
 
 .. centered:: **Legality Rules**
 
