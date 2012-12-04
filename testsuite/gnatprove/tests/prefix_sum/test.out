@@ -176,6 +176,7 @@ prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:45:37: info: range check proved
 prefixsum.ads:46:39: info: range check proved
 prefixsum.ads:48:17: info: precondition proved
+prefixsum.ads:50:14: postcondition not proved, requires A (0) = 0
 prefixsum.ads:50:8: info: index check proved
 prefixsum.ads:51:20: info: index check proved
 prefixsum.ads:51:28: info: index check proved

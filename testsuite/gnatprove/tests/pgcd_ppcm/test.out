@@ -7,14 +7,15 @@ a.adb:13:25: overflow check not proved
 a.adb:13:35: info: overflow check proved
 a.adb:13:49: info: overflow check proved
 a.adb:13:59: info: overflow check proved
-a.adb:16:19: info: division check proved
-a.adb:16:19: range check not proved
-a.adb:19:14: overflow check not proved
-a.adb:25:22: info: precondition proved
-a.adb:28:18: info: overflow check proved
-a.adb:28:23: info: division check proved
-a.adb:28:23: info: overflow check proved
-a.adb:31:14: overflow check not proved
+a.adb:14:10: loop variant not proved
+a.adb:17:19: info: division check proved
+a.adb:17:19: range check not proved
+a.adb:20:14: overflow check not proved
+a.adb:26:22: info: precondition proved
+a.adb:29:18: info: overflow check proved
+a.adb:29:23: info: division check proved
+a.adb:29:23: info: overflow check proved
+a.adb:32:14: overflow check not proved
 a.adb:9:10: info: loop invariant initialization proved
 a.ads:14:25: info: overflow check proved
 a.ads:14:47: info: overflow check proved

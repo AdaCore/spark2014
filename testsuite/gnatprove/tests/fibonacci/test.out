@@ -1,72 +1,82 @@
-fib.adb:100:22: overflow check not proved
-fib.adb:103:13: range check not proved
-fib.adb:107:36: overflow check not proved
-fib.adb:107:39: range check not proved
-fib.adb:107:42: loop invariant initialization not proved, requires a2 ** n2 = p2 * (b2 ** k2
-fib.adb:107:42: loop invariant preservation not proved, requires a2 ** n2 = p2 * (b2 ** k2
-fib.adb:107:47: overflow check not proved
-fib.adb:107:53: overflow check not proved
-fib.adb:107:56: range check not proved
-fib.adb:108:36: overflow check not proved
-fib.adb:108:39: range check not proved
-fib.adb:108:60: overflow check not proved
-fib.adb:108:63: range check not proved
-fib.adb:109:17: division check not proved
+fib.adb:101:13: assertion not proved, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
+fib.adb:101:32: overflow check not proved
+fib.adb:101:38: overflow check not proved
+fib.adb:101:44: overflow check not proved
+fib.adb:101:51: overflow check not proved
+fib.adb:101:51: range check not proved
+fib.adb:101:62: overflow check not proved
+fib.adb:101:65: range check not proved
+fib.adb:102:22: range check not proved
+fib.adb:103:22: overflow check not proved
+fib.adb:106:13: range check not proved
 fib.adb:10:17: overflow check not proved
 fib.adb:10:17: range check not proved
-fib.adb:110:13: assertion not proved, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
-fib.adb:110:31: overflow check not proved
-fib.adb:110:37: overflow check not proved
-fib.adb:110:43: overflow check not proved
-fib.adb:110:50: division check not proved
-fib.adb:110:50: range check not proved
-fib.adb:110:62: overflow check not proved
-fib.adb:110:65: range check not proved
-fib.adb:111:22: division check not proved
-fib.adb:111:22: range check not proved
-fib.adb:112:22: overflow check not proved
-fib.adb:114:32: overflow check not proved
-fib.adb:114:38: overflow check not proved
-fib.adb:114:44: overflow check not proved
-fib.adb:114:51: overflow check not proved
-fib.adb:114:51: range check not proved
-fib.adb:114:57: assertion not proved, requires p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2
+fib.adb:110:36: overflow check not proved
+fib.adb:110:39: range check not proved
+fib.adb:110:42: loop invariant initialization not proved, requires a2 ** n2 = p2 * (b2 ** k2
+fib.adb:110:47: overflow check not proved
+fib.adb:110:53: overflow check not proved
+fib.adb:110:56: range check not proved
+fib.adb:111:30: loop invariant preservation not proved, requires p2 <= a2 ** n2
+fib.adb:111:36: overflow check not proved
+fib.adb:111:39: range check not proved
+fib.adb:111:60: overflow check not proved
+fib.adb:111:63: range check not proved
+fib.adb:112:10: loop variant not proved
+fib.adb:113:17: division check not proved
+fib.adb:114:13: assertion not proved, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
+fib.adb:114:31: overflow check not proved
+fib.adb:114:37: overflow check not proved
+fib.adb:114:43: overflow check not proved
+fib.adb:114:50: division check not proved
+fib.adb:114:50: range check not proved
 fib.adb:114:62: overflow check not proved
 fib.adb:114:65: range check not proved
-fib.adb:116:22: range check not proved
-fib.adb:117:22: overflow check not proved
-fib.adb:126:11: info: range check proved
-fib.adb:127:10: index check not proved
-fib.adb:127:19: index check not proved
-fib.adb:129:11: range check not proved
-fib.adb:129:33: overflow check not proved
-fib.adb:130:10: index check not proved
-fib.adb:130:19: index check not proved
-fib.adb:130:24: overflow check not proved
-fib.adb:132:11: range check not proved
-fib.adb:133:10: index check not proved
-fib.adb:133:19: index check not proved
-fib.adb:135:11: range check not proved
-fib.adb:135:33: overflow check not proved
-fib.adb:136:10: index check not proved
-fib.adb:136:19: index check not proved
-fib.adb:136:24: overflow check not proved
-fib.adb:144:11: info: range check proved
-fib.adb:145:10: index check not proved
-fib.adb:145:19: index check not proved
-fib.adb:147:11: range check not proved
-fib.adb:147:32: overflow check not proved
-fib.adb:148:10: index check not proved
-fib.adb:148:19: index check not proved
-fib.adb:148:24: overflow check not proved
-fib.adb:150:11: range check not proved
-fib.adb:151:10: index check not proved
-fib.adb:151:19: index check not proved
-fib.adb:153:11: range check not proved
-fib.adb:153:32: overflow check not proved
-fib.adb:154:10: index check not proved
-fib.adb:154:19: index check not proved
-fib.adb:154:24: overflow check not proved
+fib.adb:115:22: division check not proved
+fib.adb:115:22: range check not proved
+fib.adb:116:22: overflow check not proved
+fib.adb:118:32: overflow check not proved
+fib.adb:118:38: overflow check not proved
+fib.adb:118:44: overflow check not proved
+fib.adb:118:51: overflow check not proved
+fib.adb:118:51: range check not proved
+fib.adb:118:57: assertion not proved, requires p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2
+fib.adb:118:62: overflow check not proved
+fib.adb:118:65: range check not proved
+fib.adb:120:22: range check not proved
+fib.adb:121:22: overflow check not proved
+fib.adb:130:11: info: range check proved
+fib.adb:131:10: index check not proved
+fib.adb:131:19: index check not proved
+fib.adb:133:11: range check not proved
+fib.adb:133:33: overflow check not proved
+fib.adb:134:10: index check not proved
+fib.adb:134:19: index check not proved
+fib.adb:134:24: overflow check not proved
+fib.adb:136:11: range check not proved
+fib.adb:137:10: index check not proved
+fib.adb:137:19: index check not proved
+fib.adb:139:11: range check not proved
+fib.adb:139:33: overflow check not proved
+fib.adb:140:10: index check not proved
+fib.adb:140:19: index check not proved
+fib.adb:140:24: overflow check not proved
+fib.adb:148:11: info: range check proved
+fib.adb:149:10: index check not proved
+fib.adb:149:19: index check not proved
+fib.adb:151:11: range check not proved
+fib.adb:151:32: overflow check not proved
+fib.adb:152:10: index check not proved
+fib.adb:152:19: index check not proved
+fib.adb:152:24: overflow check not proved
+fib.adb:154:11: range check not proved
+fib.adb:155:10: index check not proved
+fib.adb:155:19: index check not proved
+fib.adb:157:11: range check not proved
+fib.adb:157:32: overflow check not proved
+fib.adb:158:10: index check not proved
+fib.adb:158:19: index check not proved
+fib.adb:158:24: overflow check not proved
 fib.adb:22:13: info: range check proved
 fib.adb:23:13: info: range check proved
 fib.adb:24:13: info: range check proved
@@ -80,90 +90,84 @@ fib.adb:29:42: overflow check not proved
 fib.adb:29:42: range check not proved
 fib.adb:31:28: overflow check not proved
 fib.adb:31:32: overflow check not proved
-fib.adb:32:19: overflow check not proved
-fib.adb:32:19: range check not proved
+fib.adb:32:10: loop variant not proved
 fib.adb:33:19: overflow check not proved
 fib.adb:33:19: range check not proved
+fib.adb:34:19: overflow check not proved
 fib.adb:34:19: range check not proved
-fib.adb:35:17: overflow check not proved
-fib.adb:35:17: range check not proved
-fib.adb:37:12: range check not proved
-fib.adb:39:36: loop invariant initialization not proved, requires a2 = Fibonacci(i)
-fib.adb:39:36: loop invariant preservation not proved, requires a2 = Fibonacci(i)
-fib.adb:39:38: precondition not proved
-fib.adb:40:30: precondition not proved
-fib.adb:40:42: overflow check not proved
-fib.adb:40:42: range check not proved
-fib.adb:42:28: overflow check not proved
-fib.adb:42:32: overflow check not proved
-fib.adb:43:19: overflow check not proved
-fib.adb:43:19: range check not proved
-fib.adb:44:19: overflow check not proved
-fib.adb:44:19: range check not proved
+fib.adb:35:19: range check not proved
+fib.adb:36:17: overflow check not proved
+fib.adb:36:17: range check not proved
+fib.adb:38:12: range check not proved
+fib.adb:40:36: loop invariant initialization not proved, requires a2 = Fibonacci(i)
+fib.adb:40:36: loop invariant preservation not proved, requires a2 = Fibonacci(i)
+fib.adb:40:38: precondition not proved
+fib.adb:41:30: precondition not proved
+fib.adb:41:42: overflow check not proved
+fib.adb:41:42: range check not proved
+fib.adb:43:28: overflow check not proved
+fib.adb:43:32: overflow check not proved
+fib.adb:44:10: loop variant not proved
+fib.adb:45:19: overflow check not proved
 fib.adb:45:19: range check not proved
-fib.adb:46:17: overflow check not proved
-fib.adb:46:17: range check not proved
-fib.adb:51:16: range check not proved
-fib.adb:56:16: range check not proved
+fib.adb:46:19: overflow check not proved
+fib.adb:46:19: range check not proved
+fib.adb:47:19: range check not proved
+fib.adb:48:17: overflow check not proved
+fib.adb:48:17: range check not proved
+fib.adb:53:16: range check not proved
+fib.adb:58:16: range check not proved
 fib.adb:5:12: info: range check proved
-fib.adb:63:12: info: range check proved
-fib.adb:64:11: info: range check proved
-fib.adb:65:17: overflow check not proved
-fib.adb:65:17: range check not proved
+fib.adb:65:12: info: range check proved
+fib.adb:66:11: info: range check proved
+fib.adb:67:17: overflow check not proved
+fib.adb:67:17: range check not proved
 fib.adb:6:12: info: range check proved
-fib.adb:72:13: info: range check proved
-fib.adb:73:11: info: range check proved
-fib.adb:74:10: loop invariant initialization not proved, requires p1 = Factorial(i - 1)
-fib.adb:74:10: loop invariant preservation not proved, requires p1 = Factorial(i - 1)
-fib.adb:74:38: precondition not proved
-fib.adb:74:50: overflow check not proved
-fib.adb:74:50: range check not proved
-fib.adb:75:18: overflow check not proved
-fib.adb:75:18: range check not proved
-fib.adb:77:13: range check not proved
-fib.adb:78:11: range check not proved
-fib.adb:79:10: loop invariant initialization not proved, requires p2 = Factorial(i - 1)
-fib.adb:79:10: loop invariant preservation not proved, requires p2 = Factorial(i - 1)
-fib.adb:79:38: precondition not proved
-fib.adb:79:50: overflow check not proved
-fib.adb:79:50: range check not proved
+fib.adb:74:13: info: range check proved
+fib.adb:75:11: info: range check proved
+fib.adb:76:10: loop invariant initialization not proved, requires p1 = Factorial(i - 1)
+fib.adb:76:10: loop invariant preservation not proved, requires p1 = Factorial(i - 1)
+fib.adb:76:38: precondition not proved
+fib.adb:76:50: overflow check not proved
+fib.adb:76:50: range check not proved
+fib.adb:77:18: overflow check not proved
+fib.adb:77:18: range check not proved
+fib.adb:79:13: range check not proved
 fib.adb:7:11: info: range check proved
-fib.adb:80:18: overflow check not proved
-fib.adb:80:18: range check not proved
-fib.adb:88:13: info: range check proved
+fib.adb:80:11: range check not proved
+fib.adb:81:10: loop invariant initialization not proved, requires p2 = Factorial(i - 1)
+fib.adb:81:10: loop invariant preservation not proved, requires p2 = Factorial(i - 1)
+fib.adb:81:38: precondition not proved
+fib.adb:81:50: overflow check not proved
+fib.adb:81:50: range check not proved
+fib.adb:82:18: overflow check not proved
+fib.adb:82:18: range check not proved
 fib.adb:8:35: loop invariant initialization not proved, requires b <= a
 fib.adb:8:35: loop invariant preservation not proved, requires b <= a
 fib.adb:8:56: overflow check not proved
 fib.adb:8:62: overflow check not proved
 fib.adb:8:62: range check not proved
-fib.adb:92:10: loop invariant initialization not proved, requires a1 ** n1 = p1 * (b1 ** k1
-fib.adb:92:10: loop invariant preservation not proved, requires a1 ** n1 = p1 * (b1 ** k1
-fib.adb:92:36: overflow check not proved
-fib.adb:92:39: range check not proved
-fib.adb:92:47: overflow check not proved
-fib.adb:92:53: overflow check not proved
-fib.adb:92:56: range check not proved
-fib.adb:93:17: division check not proved
-fib.adb:94:13: assertion not proved, requires p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1
-fib.adb:94:31: overflow check not proved
-fib.adb:94:37: overflow check not proved
-fib.adb:94:43: overflow check not proved
-fib.adb:94:50: division check not proved
-fib.adb:94:50: range check not proved
-fib.adb:94:62: overflow check not proved
-fib.adb:94:65: range check not proved
-fib.adb:95:22: division check not proved
-fib.adb:95:22: range check not proved
-fib.adb:96:22: overflow check not proved
-fib.adb:98:13: assertion not proved, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
-fib.adb:98:32: overflow check not proved
-fib.adb:98:38: overflow check not proved
-fib.adb:98:44: overflow check not proved
-fib.adb:98:51: overflow check not proved
-fib.adb:98:51: range check not proved
-fib.adb:98:62: overflow check not proved
-fib.adb:98:65: range check not proved
-fib.adb:99:22: range check not proved
+fib.adb:90:13: info: range check proved
+fib.adb:94:10: loop invariant initialization not proved, requires a1 ** n1 = p1 * (b1 ** k1
+fib.adb:94:10: loop invariant preservation not proved, requires a1 ** n1 = p1 * (b1 ** k1
+fib.adb:94:36: overflow check not proved
+fib.adb:94:39: range check not proved
+fib.adb:94:47: overflow check not proved
+fib.adb:94:53: overflow check not proved
+fib.adb:94:56: range check not proved
+fib.adb:95:10: loop variant not proved
+fib.adb:96:17: division check not proved
+fib.adb:97:13: assertion not proved, requires p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1
+fib.adb:97:31: overflow check not proved
+fib.adb:97:37: overflow check not proved
+fib.adb:97:43: overflow check not proved
+fib.adb:97:50: division check not proved
+fib.adb:97:50: range check not proved
+fib.adb:97:62: overflow check not proved
+fib.adb:97:65: range check not proved
+fib.adb:98:22: division check not proved
+fib.adb:98:22: range check not proved
+fib.adb:99:22: overflow check not proved
 fib.ads:14:17: postcondition not proved, requires l1 = l2
 fib.ads:25:18: postcondition not proved, requires p1 = p2
 fib.ads:32:20: overflow check not proved
