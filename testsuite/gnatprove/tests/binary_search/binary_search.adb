@@ -20,6 +20,7 @@ package body Binary_Search is
          pragma Loop_Invariant
            ((for all Index in A'First .. Left => A (Index) <= I)
               and then (for all Index in A'First .. Left => I <= A (Index)));
+         pragma Loop_Variant (Decreases => Right - Left);
          Med := Left + (Right - Left) / 2;
          if A (Med) < I then
             Left := Med;

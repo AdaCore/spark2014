@@ -29,6 +29,7 @@ package body Fib is
                         b1 = Fibonacci(i - 1) and then --range
                         i <= 23 and then
                         n1 + i - 2 = copy_n1);
+         pragma Loop_Variant (Decreases => n1);
          a1 := a1 + b1; --overflow
          b1 := a1 - b1;
          n1 := n1 - 1;
@@ -40,6 +41,7 @@ package body Fib is
                         b2 = Fibonacci(i - 1) and then --range
                         i <= 23 and then
                         n2 + i - 2 = copy_n2);
+         pragma Loop_Variant (Decreases => n2);
          a2 := a2 + b2; --overflow, range
          b2 := a2 - b2; --overflow
          n2 := n2 - 1; --overflow
@@ -90,6 +92,7 @@ package body Fib is
       k1 := n1;
       while (k1 > 0) loop
          pragma Loop_Invariant (a1 ** n1 = p1 * (b1 ** k1) and then k1 >= 0); --not proved
+         pragma Loop_Variant (Decreases => k1);
          if (k1 rem 2 = 0) then
             pragma Assert (p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1); --not proved, overflow
             k1 := k1 mod 2;
@@ -106,6 +109,7 @@ package body Fib is
       while (k2 > 0) loop
          pragma Loop_Invariant (a2 ** n2 = p2 * (b2 ** k2) and then k1 >= 0 and then --init, preserve
                           p2 <= a2 ** n2 and then b2 <= a2 ** n2);
+         pragma Loop_Variant (Decreases => k2);
          if (k2 rem 2 = 0) then
             pragma Assert (p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2); --fail, overflow
             k2 := k2 mod 2;

@@ -11,6 +11,7 @@ package body S is
 
      Index := Table'First;
      while Index <= Array_Range'(Table'Last) loop
+        pragma Loop_Variant (Increases => Index);
         pragma Loop_Invariant (Found = False);
         if Table(Index) = Value then
            Found := True;

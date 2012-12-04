@@ -11,6 +11,7 @@ package body A is
               and then Bn /= Integer'First
               and then (abs An <= abs A or else abs An <= abs B)
               and then (abs Bn <= abs A or else abs Bn <= abs B));
+         pragma Loop_Variant (Decreases => Bn);
          Ao := An;
          An := Bn;
          Bn := Ao rem Bn;
