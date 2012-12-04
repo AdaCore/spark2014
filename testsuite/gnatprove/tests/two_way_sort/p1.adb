@@ -25,7 +25,7 @@ package body P1 is
       I := A'First;
       J := A'Last;
       while I <= J loop
-         pragma Loop_Variant (J - I);
+         pragma Loop_Variant (Decreases => J - I);
          pragma Loop_Invariant
            (I in A'Range
               and then J in A'Range
