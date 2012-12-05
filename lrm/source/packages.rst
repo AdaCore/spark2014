@@ -970,7 +970,7 @@ rather than the ``state_name``.
 
 The Refined Global Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition`` must follow
-the grammar of ``mode_specification`` in :ref:`mode-specification`.
+the grammar of ``global_specification`` in :ref:`global-aspect`.
 
 .. centered:: **Legality Rules**
 
