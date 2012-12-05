@@ -1,6 +1,6 @@
 main.adb:12:29: info: postcondition proved
 main.adb:12:44: info: range check proved
-main.adb:15:29: info: postcondition proved
+main.adb:15:29: postcondition not proved, requires Get_Arr'Result = ArrArr'(others => Rec'(Comp => 9012))
 main.adb:15:59: info: range check proved
 main.adb:18:15: info: postcondition proved
 main.adb:21:45: info: range check proved
