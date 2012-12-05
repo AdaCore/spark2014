@@ -10,6 +10,7 @@ maxandsum.adb:6:14: info: range check proved
 maxandsum.adb:7:14: info: range check proved
 maxandsum.adb:9:10: info: loop invariant initialization proved
 maxandsum.adb:9:10: loop invariant preservation not proved, requires Sum <= (I-1)*Max
+maxandsum.adb:9:42: info: overflow check proved
 maxandsum.adb:9:45: info: overflow check proved
 maxandsum.ads:8:21: info: postcondition proved
 maxandsum.ads:8:25: overflow check not proved
