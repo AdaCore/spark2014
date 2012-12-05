@@ -971,7 +971,7 @@ package body Why.Gen.Expr is
    is
    begin
       return
-         New_And_Then_Expr
+         New_And_Expr
            (Left  =>
               New_Comparison
                 (Domain    => Domain,

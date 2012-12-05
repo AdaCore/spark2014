@@ -42,9 +42,9 @@ simple_unc_arrays.ads:30:29: postcondition not proved, requires A.V (J) = A.V'ol
 simple_unc_arrays.ads:30:34: index check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
 simple_unc_arrays.ads:85:34: index check not proved
+simple_unc_arrays.ads:85:41: postcondition not proved, requires Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
 simple_unc_arrays.ads:85:62: index check not proved
 simple_unc_arrays.ads:85:67: overflow check not proved
-simple_unc_arrays.ads:86:16: postcondition not proved
 simple_unc_arrays.ads:88:22: index check not proved
 simple_unc_arrays.ads:88:49: index check not proved
 simple_unc_arrays.ads:96:52: info: index check proved
