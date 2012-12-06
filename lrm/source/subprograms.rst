@@ -342,56 +342,30 @@ There are no dynamic semantics associated with a Global.
 Dependency Aspects
 ~~~~~~~~~~~~~~~~~~
 
-.. todo:: SB has some wording and clarification comments in Legality
-   and static semantic rules.  These have only been partially included
-   as yet: D2.
-
-
-A Dependency aspect defines a ``dependency_relation`` for a
+A Dependency aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
-subprogram.  The ``dependency_relation`` is used in information flow
-analysis.
+subprogram.  The dependency relation is used in information flow
+analysis. Dependency aspects are optional and are simple specifications.
 
-Dependency aspects are optional and are simple formal specifications. They
-describe for each output of a subprogram the inputs on which it depends. An
-input or output of a subprogram is a ``global_item`` or a formal parameter. An
-input must have mode **in** or mode **in out** and an output must have mode **in
-out** or mode **out**. Additionally the result of a function is regarded as an 
-output of the subprogram.
+A Dependency aspect for a subprogram specifies for each output every input on
+which it depends. The meaning of X depends on Y in this context is that the
+final value of output, X, on the completion of the subprogram is at least partly
+determined from the initial value of input, Y and is written X => Y. As in UML,
+the entity at the tail of the arrow depends on the entity at the head of the
+arrow.
 
-The ``dependency_relation`` specifies for each output every input on which it
-depends. The meaning of X depends on Y in this context is that the final value
-of output, X, on the completion of the subprogram is at least partly determined
-from the initial value of input, Y, on entry to the subprogram and is written X
-=> Y. The functional behaviour is not specified by the ``dependency_relation``
-but, unlike a postcondition, the ``dependency_relation``, if it is given, has to
-be complete in the sense that every input and output of the subprogram must
-appear in the ``dependency_relation``. The ``dependency_relation`` of a function
-is assumed to be that its result is dependent on every input of the function if
-an explicit ``dependency_aspect`` is not given.
+If an output does not depend on any input this is indicated
+using a **null**, e.g., X => **null**.  An output may be
+self-dependent but not dependent on any other input.  The shorthand
+notation denoting self-dependence is useful here, X =>+ **null**.
 
-The ``dependency_relation`` is specified using a list of dependency
-clauses.  A ``dependency_clause`` has an ``output_list`` and an
-``input_list`` separated by an arrow ``=>``. Each ``output`` in the
-``output_list`` depends on every ``input`` in the ``import_list``. As
-in UML, the entity at the tail of the arrow depends on the entity at
-the head of the arrow.
-
-A ``global_item`` or formal parameter which is both an ``input`` and an
-``output``(it has mode **in out**) may depend on itself. A shorthand notation is
-provided to indicate that each ``output`` in an ``output_list`` is
-self-dependent using an annotated arrow, ``=>+``, in the ``dependency_clause``.
-
-If an ``output`` does not depend on any ``input`` this is designated by
-using a **null** as an ``input_list``.  An ``output`` may be
-self-dependent but not dependent on any other ``input``.  The shorthand
-notation denoting self-dependence is useful here, especially if there
-is more than one such ``output``; ``(X, Y, Z) =>+`` **null** means
-that the ``output`` X, Y, and Z each depend on themselves but not on
-any other ``input``.
+The functional behaviour of a subprogram is not specified by the Dependency
+aspect but, unlike a postcondition, the Dependency aspect, if it is given, has
+to be complete in the sense that every input and output of the subprogram must
+appear in the Dependency aspect.
 
 The Dependency Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Depends" and the ``aspect_definition`` must follow
+the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
 the grammar of ``dependency_relation`` given below.
 
 
@@ -402,9 +376,9 @@ the grammar of ``dependency_relation`` given below.
    dependency_relation    ::= null
                             | (dependency_clause {, dependency_clause})
    dependency_clause      ::= output_list =>[+] input_list
-   output_list            ::= null
-                            | output
+   output_list            ::= output
                             | (output {, output})
+                            | null
    input_list             ::= input
                             | (input {, input})
                             | null
@@ -413,129 +387,77 @@ the grammar of ``dependency_relation`` given below.
 
 where
 
-   ``function_result`` is a function Result attribute_reference.
-
-.. todo:: Do we want to consider conditional_modes which have (if
-   condition then import_list {elsif condition then import_list}
-   [else import_list]) ?  I can imagine that this will be useful.
-   Target: rel2+.
-
-.. todo:: KSU have also discussed the need for a quantified dependency
-   using for all.  Consider this in rel2+
+   ``function_result`` is a function Result ``attribute_reference``.
 
 .. centered:: **Legality Rules**
 
-#. An ``import`` must have an *effective mode* of **in** or **in out**
-   and an ``export`` must have an *effective mode* of **in out** or
-   **out**.  Note: As a consequence ``moded_item`` which is both an
-   ``import`` and an ``export`` shall have an effective mode of **in
-   out**.
+#. Every ``input`` and ``output`` of a ``dependency relation`` of a Dependency
+   aspect of a subprogram is a state abstraction, a whole object (not part of 
+   a containing object) or a formal parameter of the subprogram.
+
+#. An ``input`` must have a mode of **in** or **in out**
+   and an ``output`` must have an mode of **in out** or
+   **out**.  [Note: As a consequence an entity which is both an
+   ``input`` and an ``output`` shall have a mode of **in out**.]
+   
 #. For the purposes of determining the legality of a Result
-   attribute_reference, a ``dependency_relation`` is considered to be
+   ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function, if any, to which the enclosing
    ``aspect_specification`` applies.
-#. There can be at most one ``export_list`` which is a **null** symbol
-   and if it exists it must be the ``export_list`` of the last
+
+#. There can be at most one ``output_list`` which is a **null** symbol
+   and if it exists it must be the ``output_list`` of the last
    ``dependency_clause`` in the ``dependency_relation``.  An
-   ``import`` which is in an ``import_list`` of a **null** export may
-   not appear in another ``import_list`` of the same
+   ``input`` which is in an ``input_list`` of a **null** export may
+   not appear in another ``input_list`` of the same
    ``dependency_relation``.
-#. Every ``moded_item`` in an ``export_list`` must be *independent*.
-#. Every ``moded_item`` in an ``import_list`` must be *independent*.
-#. Every ``export`` of the subprogram shall appear in exactly one
-   ``export_list``.
-#. Every ``import`` of the subprogram shall appear in at least one
-   ``import_list``.
-#. Every ``import`` of the subprogram shall appear at least
-   of a ``dependency_relation`` shall be *independent*.
-   of the ``dependency_shall appear exactly once in a
-   ``dependency_relation``.  A subcomponent of a composite object V is
-   sufficient to show an appearance of V but more than one distinct
-   subcomponent V may appear as an ``export``
 
-#. An ``export`` may be a subcomponent provided the containing object
-   is not an ``export`` in the same ``dependency_relation``.  As long
-   as this rule is satisfied, different subcomponents of a composite
-   object may appear each as a distinct ``export`` and, for array
-   subcomponents, a single, e.g. element A (I), cannot appear more
-   than once as an ``export``, whereas elements A (I) and A (J) are
-   considered as distinct and may both appear as an export even
-   though I may equal J.
-#. Each ``export`` shall appear exactly once in a
-   ``dependency_relation``.  A subcomponent of a composite object V is
-   sufficient to show an appearance of V but more than one distinct
-   subcomponent V may appear as an ``export``
-#. Each ``import`` shall appear at least once in a
-   ``dependency_relation``.
-#. An ``import`` shall not appear more than once in a single
-   ``import_list`` other than appearing in a ``condition`` of a
-   ``conditional_dependency``.  As different subcomponents of a
-   composite object are considered to be distinct more than one these
-   may appear in a single import list. The rule applies to indexed
-   components in as much as an array element A (I) cannot appear more
-   than once but both A (I) and A (J) may appear in the same
-   ``import_list`` even though I may equal J.
-#. A *variable* appearing in the condition of a
-   ``conditional_dependency`` must be an ``import`` of the subprogram.
+#. Every ``output`` in an ``output_list`` must be distinct.   
 
+#. Every ``input`` in an ``input_list`` must be distinct.
+
+#. Every ``output`` of the subprogram shall appear in exactly one
+   ``output_list``.
+   
+#. Every ``input`` of the subprogram shall appear in at least one
+   ``input_list``.
 
 .. centered:: **Static Semantics**
 
-#. A **null** ``dependency_relation`` indicates that there is not an
-   ``import`` nor an ``export``.
-#. Every *formal parameter* and *global variable* of a subprogram is a
-   ``moded_item`` and is an ``import``, ``export`` or both.
-#. An ``import`` or an ``export`` may be represented by itself or by
-   one or of its subcomponents.
-#. An ``export`` and an ``import`` is a ``moded_item`` and may be an
-   *abstract state*, an *entire object* or a subcomponent of an
-   *object*.
-#. The result of a function F, denoted F'Result is considered to be
-   an ``export`` of the function.
-#. The result of a function is treated as an entire object.
-   Subcomponents of a function result cannot be named in a
-   ``dependency_relation``
-#. A function which does not have a an explicit ``dependency_aspect``
-   is assumed to have the dependency of its result on all of its
-   imports.  Generally a ``dependency_aspect`` is not required for
-   functions unless it is to describe a ``conditional_dependency``.
-#. The ``+`` symbol in the syntax ``expression_list =>+ import_list``
-   designates that each ``export`` in the ``export_list`` has a
-   self-dependency, that is, it is dependent on itself. The text (A,
-   B, C) =>+ Z is shorthand for (A => (A, Z), B => (B, Z), C => (C,
-   Z)).
-#. An ``import_list`` which is **null** indicates that the final
-   values of each ``export`` in the associated ``export_list`` do not
-   depend on any ``import``, other than themselves, if the
-   ``export_list =>+`` **null** self-dependency syntax is used.
-#. A an ``export_list`` that is **null** represents a sink for each
-   ``import`` in the ``import_list``.The purpose of a **null**
-   ``export_list`` is to facilitate the abstraction and calling of units
-   that are not in |SPARK|.
-#. If a subcomponent S of a composite object is an ``import`` then the
-   *entire* object which contains S is effectively an ``import``.
-#. If a subcomponent S of a composite object is an ``export`` then the
-   *entire* object which contains S is effectively both an ``import``
-   and an ``export``, as only part of the object is updated, the rest
-   being preserved.
-#. A ``conditional_dependency`` indicates the conditions under which
-   the initial value of an ``import`` may be used in determining the
-   final value of an ``export``.
-#. A ``conditional_dependency`` does not affect the effective
-   ``exports`` and ``imports`` and their relationship as this is
-   always considered unconditionally in terms of *entire objects*.
-   The effective imports of a ``conditional_dependency`` are the
-   union of the variables used in its conditions and every import in
-   the ``import_list`` of every branch.
-#. The meaning of a ``dependency_relation`` is given in terms of
-   effective exports and imports: the final value of each effective
-   export E shall be determined from only static constants and the
-   initial value of the effective  imports appearing in the
-   ``dependency_list`` of E or from E itself if the self-dependency
-   notation ``=>+`` has been used in the ``dependency_clause``
-   defining E.
+#. The grammar terms ``input`` and ``output`` have the meaning given to input
+   and output given in :ref:`global-aspect`.
+   
+#. A Dependency aspect of a subprogram with a **null** ``dependency_relation``
+   indicates that the subprogram has no ``inputs`` or ``outputs``.  
+   [From an information flow analysis viewpoint it is a 
+   null operation (a no-op).]
+   
+#. A ``dependency_clause`` has the meaning, that the final value every 
+   ``output`` in the ``output_list`` is dependent on the initial value of every 
+   ``input`` in the ``input_list``.
+   
+#. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
+   ``input_list`` means that each ``output`` in the ``output_list`` has a
+   *self-dependency*, that is, it is dependent on itself. 
+   [The text (A, B, C) =>+ Z is shorthand for 
+   (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
+#. A ``dependency_clause`` with a **null** ``input_list`` means that the final
+   values of each ``output`` in the ``output_list`` does not depend on any
+   ``input``, other than themselves, if the ``output_list`` =>+ **null**
+   self-dependency syntax is used.
 
+#. A an ``output_list`` that is **null** represents a *sink* for each
+   ``input`` in the ``input_list``.  The ``inputs`` in the ``input_list`` have
+   no discernible effect from an information flow analysis viewpoint.
+   [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
+   and calling of subprograms whose implementation are not in |SPARK|.]
+
+#. A function which does not have a an explicit Dependency aspect
+   is assumed to have the ``dependency_relation`` 
+   of its result is dependent on all of its inputs.  
+   [Generally a Dependency aspect is not required for functions.]
+   
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``dependency_aspect``
@@ -581,26 +503,13 @@ it used purely for static analysis purposes and is not executed.
    -- Here globals are used rather than parameters and global items may appear
    -- in the dependency aspect as well as formal parameters.
 
-   procedure T (X : in Integer; A : in out Integer)
-   with Global  => (Input  => (Y, Z),
-                    In_Out => (B, C, D)),
-        Depends => ((A, B) =>+ (X, if X = 7 then (A,Y,Z)),
-                     C     =>+ Y,
-                     D     =>+ null);
-   -- This example introduces a conditional dependency for the final values of A and B.
-   -- The final value of A is dependent on the initial values of A and X and if X = 7
-   -- then it is also dependent on the initial value of Y and Z.
-   -- Similarly, the final value of B is dependent on the initial values of B and X
-   -- and if X = 7 then it is also dependent on the initial values of A, Y, and Z.
-
    function F (X, Y : Integer) return Integer
    with Global  => G,
-        Depends => (F'Result => (G, X, (if G then Y)));
-   -- Dependency aspects are only needed for a function to describe conditional
-   -- dependencies; otherwise they can be directly determined from
-   -- its parameters and globals.
-   -- In this example, the result of the function is dependent on G and X
-   -- but only on Y if G is True.
+        Depends => (F'Result => (G, X),
+                    null     => Y);
+   -- Dependency aspects are only needed for special cases like here where the
+   -- parameter Y has no discernible effect on the result of the function.
+
 
 Proof Functions
 ~~~~~~~~~~~~~~~
