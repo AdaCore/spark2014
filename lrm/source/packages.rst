@@ -124,7 +124,7 @@ where the ``aspect_mark`` is Abstract_State and the
    Refined_State aspect specification within the body of the package.]
    
 #. A variable declared in the ``visible_part`` of a package implicitly
-   declares a state abstraction with the same identifier as the 
+   declares a state abstraction entity with the same identifier as the 
    ``defining_identifier`` of the variable.  The variable declaration acts
    as the completion of the state abstraction.  The implicitly declared
    state abstraction is only visible in a limited view of the package.
@@ -143,7 +143,7 @@ where the ``aspect_mark`` is Abstract_State and the
 
 .. centered:: **Verification Rules**
 
-#. The ``sate_abstractions`` declared in a Abstract_State_Aspect of a package,
+#. The ``state_abstractions`` declared in a Abstract_State_Aspect of a package,
    if present, must cover all the hidden state of the package. 
    [The rule is checked when the package body is analysed.]
    

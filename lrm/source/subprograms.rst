@@ -49,7 +49,7 @@ are in |SPARK|.
    satisfies the post condition provided the precondition is True and
    the subprogram completes normally.
 
-.. note:: (TJJ 29/11/12) Do we need this verifiaction rule?  If we do
+.. note:: (TJJ 29/11/12) Do we need this verification rule?  If we do
     it needs to be more precise I think.
 
 .. todo:: Think about Pre'Class and Post'Class. Target: D2.
@@ -86,11 +86,11 @@ out** formal parameters or global variables.  The final
 specific call to the subprogram, if all the ``conditions`` are False
 this ``contract_case`` is taken.  If an **others** ``contract_case``
 is not specified, then in a specific call of the subprogram exactly
-one of the gaurding ``conditions`` should be True
+one of the guarding ``conditions`` should be True
 
 A Contract_Cases aspect may be used in conjunction with the
 language-defined aspects Pre and Post in which case the precondition
-specifed by the Pre aspect is augmented with a check that exactly one
+specified by the Pre aspect is augmented with a check that exactly one
 of the ``conditions`` of the ``contract_case_list`` is satisfied and
 the postcondition specified by the Post aspect is conjoined with
 conditional expressions representing each of the ``contract_cases``.
@@ -201,7 +201,7 @@ where
    ``condition`` is True then the Contract_Cases aspect must have an
    **others** ``contract_case``.
 #. For every ``contract_case``, when its ``condition`` is True, or the
-   **others** ``contract_case`` when none of theconditions are True,
+   **others** ``contract_case`` when none of the conditions are True,
    the implementation of the body of the subprogram must be proven to
    satisfy the ``consequence`` of the ``contract_case``.
 
@@ -216,14 +216,8 @@ Global Aspect
 A *global item* is a global variable or a state abstraction (see
 :ref:`abstract-state`).
 
-A global item which may be read, directly or indirectly, by a subprogram is an
-*input* of the subprogram. A global which may be updated, directly or
-indirectly, by the subprogram is an *output* of the subprogram.
-
-A ``global_aspect`` of a subprogram, if present, lists the global items that are
-inputs and outputs of the subprogram and assigns a mode to each of them using a
-``mode_specification``. The *global* items are considered to have modes the same
-as formal parameters, **in**, **out** and **in out** with the same meaning.
+A Global aspect of a subprogram, if present, lists the global items whose values
+are used or affected by a call of the subprogram.
 
 The Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Global and the ``aspect_definition`` must
@@ -239,39 +233,13 @@ follow the grammar of ``global_specification``
    moded_global_list           ::= mode_selector => global_list
    global_list                 ::= global_item
                                  | (global_item {, global_item})
-                                 | null
+   mode_selector               ::= Input | Output | In_Out | Proof
    global_item                 ::= name
 
-.. centered:: **Static Semantics**
+.. centered:: **Legality Rules**
 
-#. A ``global_item`` is a state abstraction or a stand alone variable object, 
-   that is, it is not part of a larger object.
-   
-#. A ``global_specification`` which is a ``global_list`` is considered to be a
-   ``moded_global_list`` with the ``mode_selector`` Input.
-  
-#. A subprogram with a ``global_aspect`` that has a
-   ``global_specification`` of **null** is taken to mean that the
-   subprogram does not access any ``global_items``.
-
-#. Each ``global_item`` in a Global aspect of a subprogram is an input or
-   an output of the subprogram and shall satisfy the following mode
-   specification rules 
-   [which are checked during ana;ysis of the subprogram body]:
-
-   * a ``global_item`` that is never updated, directly or indirectly, by
-     the subprogram is mode **in** and has a ``mode_selector`` of Input;
-   * a ``global_item`` that is never read, directly or indirectly, by the
-     subprogram and is always updated on every call to the subprogram
-     is mode **out** and has a ``mode_selector`` of Output;
-   * otherwise the ``global_item`` is mode **in out** and has a
-     ``mode_selector`` of In_Out.
-
-#. If a Global aspect is not provided in a subprogram
-   aspect_specification one is synthesized from the body of the
-   subprogram, if it exists.
-
-   .. centered:: **Legality Rules**
+#. A ``global_item`` of a subprogram shall be stand alone variable object, 
+   that is, it is not part of a larger object, or a state abstraction. 
 
 #. Each ``mode_selector`` shall not occur more than once in a single
    ``global_specification``.
@@ -285,9 +253,62 @@ follow the grammar of ``global_specification``
 
 #. A ``global_item`` shall occur at most once in a single Global aspect.
 
-#. A global item occuring in a Global aspect of a subprogram aspect
-   specification shall not have the same ``defining_identifer`` as a formal
+#. A global item occurring in a Global aspect of a subprogram aspect
+   specification shall not have the same ``defining_identifier`` as a formal
    parameter of the subprogram.
+
+.. centered:: **Static Semantics**
+
+#. A ``global_specification`` which is a ``global_list`` is considered to be a
+   ``moded_global_list`` with the ``mode_selector`` Input.
+  
+#. A subprogram with a Global aspect that has a
+   ``global_specification`` of **null** is taken to mean that the
+   subprogram does not reference any ``global_items``.
+
+#. The *final* value of a ``global_item`` or parameter of a subprogram is its 
+   value immediately following the successful call of the subprogram.
+
+#. The *initial* value of a ``global_item`` or parameter of a subprogram is its 
+   value at the call of the subprogram.
+   
+#. An *output* of a subprogram is a ``global_item`` or parameter whose final
+   value may be updated by a call to the subprogram.  The result of a function
+   is also an output.
+   
+#. An *input* of a subprogram is a ``global_item`` or parameter whose initial
+   value may be used in determining the final value of an output of the 
+   subprogram.
+   
+#. A ``global_item`` occurring in a Global aspect of a subprogram is an input or
+   output of the subprogram or its initial value is used in an assertion 
+   expression within the subprogram.
+   
+#. Each ``global_item`` in a Global aspect of a subprogram that is is an input
+   or output of the subprogram and shall satisfy the following mode
+   specification rules 
+   [which are checked during analysis of the subprogram body]:
+
+   * a ``global_item`` that is an input but not an output, is mode **in** and 
+     has a ``mode_selector`` of Input; 
+   
+   * a ``global_item`` that is an output, not an input and is always updated on
+     every call of the subprogram is mode **out** and has a ``mode_selector`` 
+     of Output;
+     
+   * otherwise the ``global_item`` is both an input and an output and is
+     mode **in out** and has a ``mode_selector`` of In_Out.
+
+#. A ``global_item`` which is is neither an input nor an output of a subprogram
+   but is referenced, directly or indirectly, in an assertion expression within 
+   the subprogram has a ``mode_selector`` of Proof.
+
+#. All ``global_items`` which are referenced by a subprogram must appear in its
+   Global aspect, if it is present.
+   
+#. If a Global aspect is not provided in a subprogram
+   aspect_specification one is synthesized from the body of the
+   subprogram, if it exists.
 
 .. centered:: **Dynamic Semantics**
 
@@ -297,6 +318,7 @@ There are no dynamic semantics associated with a Global.
 
 #. A Global aspect is verified against the mode specification
    rules given in the static semantics.
+   
 #. The Global aspect of a function (whether explicitly specified or
    implicitly synthesized from the subprogram implementation)
    shall not include a moded_global_list having a mode of Output or In_Out.
@@ -325,60 +347,48 @@ Dependency Aspects
    as yet: D2.
 
 
-A ``dependency_aspect`` defines a ``dependency_relation`` for a
+A Dependency aspect defines a ``dependency_relation`` for a
 subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The ``dependency_relation`` is used in information flow
 analysis.
 
-Dependency aspects are optional and are simple formal specifications.
-They are dependency relations which are given in terms of imports and
-exports.  An ``export`` of a subprogram is a ``moded_item`` which is
-updated directly or indirectly by the subprogram. An ``import`` of a
-subprogram is a ``moded_item``, the initial value of which is used in
-determining the final value of an ``export``.  A ``moded_item`` may be
-both an ``import`` and an ``export``.  An ``import`` must have mode
-**in** or mode **in out** and an ``export`` must have mode **in out**
-or mode **out**.  Additionally the result of a function is an
-``export``.
+Dependency aspects are optional and are simple formal specifications. They
+describe for each output of a subprogram the inputs on which it depends. An
+input or output of a subprogram is a ``global_item`` or a formal parameter. An
+input must have mode **in** or mode **in out** and an output must have mode **in
+out** or mode **out**. Additionally the result of a function is regarded as an 
+output of the subprogram.
 
-The ``dependency_relation`` specifies for each ``export`` every
-``import`` on which it depends.  The meaning of X depends on Y in this
-context is that the final value of ``export``, X, on the completion of
-the subprogram is at least partly determined from the initial value of
-``import``, Y, on entry to the subprogram and is written ``X =>
-Y``. The functional behaviour is not specified by the
-``dependency_relation`` but, unlike a postcondition, the
-``dependency_relation``, if it is given, has to be complete in the
-sense that every ``moded_item`` of the subprogram is an ``import``,
-``export``, or both, and must appear in the ``dependency_relation``.
-The ``dependency_relation`` of a function is assumed to be that its
-result is dependent on every ``import`` of the function if an explicit
-``dependency_aspect`` is not given.
+The ``dependency_relation`` specifies for each output every input on which it
+depends. The meaning of X depends on Y in this context is that the final value
+of output, X, on the completion of the subprogram is at least partly determined
+from the initial value of input, Y, on entry to the subprogram and is written X
+=> Y. The functional behaviour is not specified by the ``dependency_relation``
+but, unlike a postcondition, the ``dependency_relation``, if it is given, has to
+be complete in the sense that every input and output of the subprogram must
+appear in the ``dependency_relation``. The ``dependency_relation`` of a function
+is assumed to be that its result is dependent on every input of the function if
+an explicit ``dependency_aspect`` is not given.
 
 The ``dependency_relation`` is specified using a list of dependency
-clauses.  A ``dependency_clause`` has an ``export_list`` and an
-``import_list`` separated by an arrow ``=>``. Each ``export`` in the
-``export_list`` depends on every ``import`` in the ``import_list``. As
+clauses.  A ``dependency_clause`` has an ``output_list`` and an
+``input_list`` separated by an arrow ``=>``. Each ``output`` in the
+``output_list`` depends on every ``input`` in the ``import_list``. As
 in UML, the entity at the tail of the arrow depends on the entity at
 the head of the arrow.
 
-A ``moded_item`` which is both an ``import`` and an ``export`` may
-depend on itself.  A shorthand notation is provided to indicate that
-each ``export`` in an ``export_list`` is self-dependent using an
-annotated arrow, ``=>+``, in the ``dependency_clause``.
+A ``global_item`` or formal parameter which is both an ``input`` and an
+``output``(it has mode **in out**) may depend on itself. A shorthand notation is
+provided to indicate that each ``output`` in an ``output_list`` is
+self-dependent using an annotated arrow, ``=>+``, in the ``dependency_clause``.
 
-If an `export` does not depend on any ``import`` this is designated by
-using a **null** as an ``import_list``.  An ``export`` may be
-self-dependent but not dependent on any other import.  The shorthand
+If an ``output`` does not depend on any ``input`` this is designated by
+using a **null** as an ``input_list``.  An ``output`` may be
+self-dependent but not dependent on any other ``input``.  The shorthand
 notation denoting self-dependence is useful here, especially if there
-is more than one such ``export``; ``(X, Y, Z) =>+`` **null** means
-that the ``export`` X, Y, and Z each depend on themselves but not on
-any other ``import``.
-
-A dependency may be conditional.  Each ``export`` in an
-``export_list`` which has a ``conditional_dependency`` is only
-dependent on every ``import`` in the ``import_list`` if the
-``condition`` is ``True``.
+is more than one such ``output``; ``(X, Y, Z) =>+`` **null** means
+that the ``output`` X, Y, and Z each depend on themselves but not on
+any other ``input``.
 
 The Dependency Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Depends" and the ``aspect_definition`` must follow
@@ -391,22 +401,15 @@ the grammar of ``dependency_relation`` given below.
 
    dependency_relation    ::= null
                             | (dependency_clause {, dependency_clause})
-   dependency_clause      ::= export_list =>[+] dependency_list
-   export_list            ::= null
-                            | export
-                            | (export {, export})
-   dependency_list        ::= import_item
-                            | (import_item {, import_item})
-   import_item            ::= import
-                            | conditional_dependency
-   conditional_dependency ::= (if condition then import_list
-                               {elsif condition then import_list}
-                               [else import_list])
-   import_list            ::= import
-                            | (import {, import})
+   dependency_clause      ::= output_list =>[+] input_list
+   output_list            ::= null
+                            | output
+                            | (output {, output})
+   input_list             ::= input
+                            | (input {, input})
                             | null
-   import                 ::= moded_item
-   export                 ::= moded_item | function_result
+   input                  ::= name
+   output                 ::= name | function_result
 
 where
 
