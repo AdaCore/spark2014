@@ -418,6 +418,37 @@ package body Alfa.Util is
       return N;
    end Get_Subprogram_Spec;
 
+   ------------------------------
+   -- Innermost_Enclosing_Loop --
+   ------------------------------
+
+   function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id is
+      Cur    : Node_Id := N;
+      Result : Node_Id := Empty;
+
+   begin
+      while Present (Cur) loop
+         if Nkind (Cur) = N_Loop_Statement then
+            Result := Cur;
+
+         --  Prevent the search from going too far
+
+         elsif Nkind_In (Cur, N_Entry_Body,
+                              N_Package_Body,
+                              N_Package_Declaration,
+                              N_Protected_Body,
+                              N_Subprogram_Body,
+                              N_Task_Body)
+         then
+            exit;
+         end if;
+
+         Cur := Parent (Cur);
+      end loop;
+
+      return Result;
+   end Innermost_Enclosing_Loop;
+
    ------------------
    -- Is_Full_View --
    ------------------

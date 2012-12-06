@@ -186,4 +186,7 @@ package Alfa.Util is
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  Returns whether N has the form pragma Check (Name, ...)
 
+   function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
+   --  Returns the innermost loop enclosing N, if any, and Empty otherwise
+
 end Alfa.Util;

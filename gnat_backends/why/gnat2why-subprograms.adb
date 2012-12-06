@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-
 with GNAT.Source_Info;
 
 with Atree;                 use Atree;
@@ -36,7 +34,6 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
-with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
 with Alfa;                  use Alfa;
@@ -48,14 +45,14 @@ with Why;                   use Why;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
+with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
-
-with Why.Conversions;       use Why.Conversions;
+with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;             use Why.Types;
 
@@ -63,44 +60,9 @@ with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Types;        use Gnat2Why.Types;
-with Gnat2Why.Util;       use Gnat2Why.Util;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 
 package body Gnat2Why.Subprograms is
-
-   ---------------------
-   -- Local Variables --
-   ---------------------
-
-   --  Expressions X'Old and F'Result are normally expanded into references to
-   --  saved values of variables by the frontend, but this expansion does not
-   --  apply to the original postcondition. It is this postcondition which
-   --  is translated by gnat2why into a program to detect possible run-time
-   --  errors, therefore a special mechanism is needed to deal with expressions
-   --  X'Old and F'Result.
-
-   Result_Name : W_Identifier_Id := Why_Empty;
-   --  Name to use for occurrences of F'Result in the postcondition. It should
-   --  be equal to Why_Empty when we are not generating code for detecting
-   --  run-time errors in the postcondition.
-
-   package Old_Nodes is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Name_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-
-   Old_Map : Old_Nodes.Map;
-
-   --  Mapping of all expressions whose 'Old attribute is used in the current
-   --  postcondition to the translation of the corresponding
-   --  expression in Why. Until 'Old is forbidden in the body, this is also
-   --  used to translate occurrences of 'Old that are left by the frontend (for
-   --  example, inside quantified expressions that are only preanalyzed).
-   --
-   --  The mapping is cleared before generating Why code for VC generation for
-   --  the body and postcondition, filled during the translation, and used
-   --  afterwards to generate the necessary copy instructions.
 
    -----------------------
    -- Local Subprograms --
@@ -266,53 +228,8 @@ package body Gnat2Why.Subprograms is
                       Def  => Sequence (Post_Check, Result_Var))));
       end;
 
-      declare
-         use Old_Nodes;
-         C : Cursor := Old_Map.First;
-      begin
-         while Has_Element (C) loop
-            declare
-               N    : constant Node_Id := Key (C);
-               Name : constant Name_Id := Element (C);
+      R := Bind_From_Mapping_In_Expr (Params, Map_For_Old, R);
 
-               --  Generate a program expression to check absence of run-time
-               --  errors.
-
-               RE_Prog : constant W_Prog_Id :=
-                           New_Ignore
-                             (Prog =>
-                                +Transform_Expr (N, EW_Prog, Params));
-
-               --  Generate a term definition for the value of the object at
-               --  subprogram entry, and link with rest of code. This
-               --  definition does not involve lazy boolean operators, so it
-               --  does not lead to more paths being generated in the naive WP,
-               --  contrary to what we would get if directly defining the value
-               --  of the object as a program. This is particularly useful for
-               --  Requires clauses of Contract_Case.
-
-               Let_Prog : constant W_Prog_Id :=
-                            New_Binding
-                              (Name   => New_Identifier (Symbol => Name,
-                                                         Domain => EW_Prog),
-                               Def    =>
-                               +New_Simpl_Any_Prog
-                                 (T    => Why_Logic_Type_Of_Ada_Obj (N),
-                                  Pred =>
-                                  +W_Expr_Id'(New_Relation
-                                    (Domain   => EW_Pred,
-                                     Op_Type  => EW_Bool,
-                                     Left     => +To_Ident (WNE_Result),
-                                     Op       => EW_Eq,
-                                     Right    =>
-                                     +Transform_Expr (N, EW_Term, Params)))),
-                               Context => +R);
-            begin
-               R := Sequence (RE_Prog, Let_Prog);
-               Next (C);
-            end;
-         end loop;
-      end;
       return R;
    end Compute_Context;
 
@@ -650,7 +567,7 @@ package body Gnat2Why.Subprograms is
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
 
-      Old_Map.Clear;
+      Reset_Map_For_Old;
       Result_Name := New_Result_Temp_Identifier.Id (Name);
 
       --  Generate code to detect possible run-time errors in the postcondition
@@ -788,36 +705,6 @@ package body Gnat2Why.Subprograms is
 
       return Empty;
    end Get_Location_For_Postcondition;
-
-   ------------------
-   -- Name_For_Old --
-   ------------------
-
-   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Name : Name_Id;
-   begin
-      if Old_Map.Contains (N) then
-         Name := Old_Map.Element (N);
-      else
-         declare
-            Cnt : constant Natural := Natural (Old_Map.Length);
-         begin
-            Name := NID ("__gnatprove_old___" & Int_Image (Cnt));
-            Old_Map.Include (N, Name);
-         end;
-      end if;
-      return New_Identifier (Symbol => Name, Domain => EW_Term);
-   end Name_For_Old;
-
-   ---------------------
-   -- Name_For_Result --
-   ---------------------
-
-   function Name_For_Result return W_Identifier_Id is
-   begin
-      pragma Assert (Result_Name /= Why_Empty);
-      return Result_Name;
-   end Name_For_Result;
 
    ----------------------------------------
    -- Translate_Expression_Function_Body --

@@ -29,7 +29,6 @@ with Ada.Text_IO;
 with GNAT.Source_Info;
 
 with Ada.Containers;                     use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
@@ -68,7 +67,6 @@ with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;   use Gnat2Why.Expr.Loops;
-with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Expr is
@@ -556,6 +554,61 @@ package body Gnat2Why.Expr is
          return New_Void;
       end if;
    end Assume_Of_Subtype_Indication;
+
+   -------------------------------
+   -- Bind_From_Mapping_In_Expr --
+   -------------------------------
+
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Map    : Old_Nodes.Map;
+      Expr   : W_Prog_Id) return W_Prog_Id
+   is
+      Result : W_Prog_Id := Expr;
+   begin
+      for C in Map.Iterate loop
+         declare
+            N    : constant Node_Id := Old_Nodes.Key (C);
+            Name : constant W_Identifier_Id := Old_Nodes.Element (C);
+
+            --  Generate a program expression to check absence of run-time
+            --  errors.
+
+            RE_Prog : constant W_Prog_Id :=
+              New_Ignore
+                (Prog =>
+                 +Transform_Expr (N, EW_Prog, Params));
+
+            --  Generate a term definition for the value of the object at
+            --  subprogram entry, and link with rest of code. This
+            --  definition does not involve lazy boolean operators, so it
+            --  does not lead to more paths being generated in the naive WP,
+            --  contrary to what we would get if directly defining the value
+            --  of the object as a program. This is particularly useful for
+            --  Requires clauses of Contract_Case.
+
+            Let_Prog : constant W_Prog_Id :=
+                            New_Binding
+                              (Name   => Name,
+                               Def    =>
+                               +New_Simpl_Any_Prog
+                                 (T    => Why_Logic_Type_Of_Ada_Obj (N),
+                                  Pred =>
+                                  +W_Expr_Id'(New_Relation
+                                    (Domain   => EW_Pred,
+                                     Op_Type  => EW_Bool,
+                                     Left     => +To_Ident (WNE_Result),
+                                     Op       => EW_Eq,
+                                     Right    =>
+                                     +Transform_Expr (N, EW_Term, Params)))),
+                               Context => +Result);
+         begin
+            Result := Sequence (RE_Prog, Let_Prog);
+         end;
+      end loop;
+
+      return Result;
+   end Bind_From_Mapping_In_Expr;
 
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
@@ -1153,6 +1206,80 @@ package body Gnat2Why.Expr is
    end Iterate_Call_Arguments;
 
    -------------------------
+   -- Name_For_Loop_Entry --
+   -------------------------
+
+   function Name_For_Loop_Entry
+     (Expr    : Node_Id;
+      Loop_Id : Node_Id) return W_Identifier_Id
+   is
+      Result : W_Identifier_Id;
+
+      procedure Get_Name
+        (Loop_Id  : Node_Id;
+         Loop_Map : in out Old_Nodes.Map);
+      --  Update the mapping Loop_Map with an entry for Expr if not already
+      --  present, and store in Result the corresponding identifier.
+
+      --------------
+      -- Get_Name --
+      --------------
+
+      procedure Get_Name
+        (Loop_Id  : Node_Id;
+         Loop_Map : in out Old_Nodes.Map) is
+      begin
+         pragma Unreferenced (Loop_Id);
+
+         if not Loop_Map.Contains (Expr) then
+            Loop_Map.Include (Expr, New_Temp_Identifier);
+         end if;
+
+         Result := Loop_Map.Element (Expr);
+      end Get_Name;
+
+   --  Start of Name_For_Loop_Entry
+
+   begin
+      if not Loop_Entry_Map.Contains (Loop_Id) then
+         declare
+            Empty_Map : Old_Nodes.Map;
+         begin
+            Loop_Entry_Map.Include (Loop_Id, Empty_Map);
+         end;
+      end if;
+
+      Loop_Entry_Map.Update_Element
+        (Position => Loop_Entry_Map.Find (Loop_Id),
+         Process  => Get_Name'Access);
+
+      return Result;
+   end Name_For_Loop_Entry;
+
+   ------------------
+   -- Name_For_Old --
+   ------------------
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
+   begin
+      if not Old_Map.Contains (N) then
+         Old_Map.Include (N, New_Temp_Identifier);
+      end if;
+
+      return Old_Map.Element (N);
+   end Name_For_Old;
+
+   ---------------------
+   -- Name_For_Result --
+   ---------------------
+
+   function Name_For_Result return W_Identifier_Id is
+   begin
+      pragma Assert (Result_Name /= Why_Empty);
+      return Result_Name;
+   end Name_For_Result;
+
+   -------------------------
    -- Needs_Temporary_Ref --
    -------------------------
 
@@ -1535,6 +1662,15 @@ package body Gnat2Why.Expr is
                                          Params),
            Expr      => T);
    end Range_Expr;
+
+   -----------------------
+   -- Reset_Map_For_Old --
+   -----------------------
+
+   procedure Reset_Map_For_Old is
+   begin
+      Old_Map.Clear;
+   end Reset_Map_For_Old;
 
    -----------------------
    -- Transform_Actions --
@@ -2746,6 +2882,29 @@ package body Gnat2Why.Expr is
             if Attr_Id = Attribute_Length then
                Range_Check_Needed := True;
             end if;
+
+         when Attribute_Loop_Entry =>
+            Loop_Entry : declare
+               Arg     : constant Node_Id := First (Expressions (Expr));
+               Loop_Id : Entity_Id;
+
+            begin
+               --  The loop to which attribute Loop_Entry applies is either
+               --  identified explicitly in argument, or, if Loop_Entry takes
+               --  no arguments, it is the innermost enclosing loop.
+
+               if Present (Arg) then
+                  Loop_Id := Entity (Arg);
+               else
+                  Loop_Id :=
+                    Entity (Identifier (Innermost_Enclosing_Loop (Expr)));
+               end if;
+
+               pragma Assert (Domain /= EW_Pred
+                               and then Params.Phase in Generate_VCs);
+
+               T := +Name_For_Loop_Entry (Var, Loop_Id);
+            end Loop_Entry;
 
          when Attribute_Modulus =>
             T := New_Attribute_Expr (Etype (Var), Attr_Id);

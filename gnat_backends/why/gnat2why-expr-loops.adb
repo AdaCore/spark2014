@@ -26,13 +26,12 @@
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
 
-with String_Utils;       use String_Utils;
-
 with Atree;              use Atree;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
+with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
@@ -47,8 +46,8 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Types;          use Why.Types;
 with Why.Inter;          use Why.Inter;
+with Why.Types;          use Why.Types;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Util;      use Gnat2Why.Util;
@@ -105,7 +104,7 @@ package body Gnat2Why.Expr.Loops is
    --  to their saved values, returned in Tmp_Vars.
 
    function Wrap_Loop
-     (Loop_Name          : String;
+     (Loop_Id            : Entity_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
@@ -282,10 +281,9 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------
 
    function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id is
-      Loop_Body   : constant List_Id   := Statements (Stmt);
-      Scheme      : constant Node_Id   := Iteration_Scheme (Stmt);
-      Loop_Entity : constant Entity_Id := Entity (Identifier (Stmt));
-      Loop_Name   : constant String    := Full_Name (Loop_Entity);
+      Loop_Body : constant List_Id   := Statements (Stmt);
+      Scheme    : constant Node_Id   := Iteration_Scheme (Stmt);
+      Loop_Id   : constant Entity_Id := Entity (Identifier (Stmt));
 
       Loop_Stmts     : List_Of_Nodes.List;
       Initial_Stmts  : List_Of_Nodes.List;
@@ -400,7 +398,7 @@ package body Gnat2Why.Expr.Loops is
       --  Case of a simple loop
 
       if Nkind (Scheme) = N_Empty then
-         return Wrap_Loop (Loop_Name          => Loop_Name,
+         return Wrap_Loop (Loop_Id            => Loop_Id,
                            Loop_Start         => Initial_Prog,
                            Loop_End           => Final_Prog,
                            Enter_Condition    => True_Prog,
@@ -443,7 +441,7 @@ package body Gnat2Why.Expr.Loops is
                else
                  True_Pred);
          begin
-            return Wrap_Loop (Loop_Name          => Loop_Name,
+            return Wrap_Loop (Loop_Id            => Loop_Id,
                               Loop_Start         => Initial_Prog,
                               Loop_End           => Final_Prog,
                               Enter_Condition    => Cond_Prog,
@@ -532,7 +530,7 @@ package body Gnat2Why.Expr.Loops is
                                High      => +High_Ident,
                                Expr      => +Index_Deref);
             Entire_Loop  : W_Prog_Id :=
-              Wrap_Loop (Loop_Name          => Loop_Name,
+              Wrap_Loop (Loop_Id            => Loop_Id,
                          Loop_Start         => Initial_Prog,
                          Loop_End           =>
                            Sequence (Final_Prog, Update_Stmt),
@@ -779,19 +777,20 @@ package body Gnat2Why.Expr.Loops is
    --
    --  if enter_condition then
    --    try
-   --      loop_start;
-   --      loop invariant { user_invariant }
-   --         assume { implicit_invariant };
-   --         invariant_check;
-   --         let variant_tmps = ref 0 in
+   --      let loop_entry_tmps = saved_values in
+   --        loop_start;
+   --        loop invariant { user_invariant }
+   --          assume { implicit_invariant };
+   --          invariant_check;
+   --          let variant_tmps = ref 0 in
    --            variant_update;
    --            loop_end;
    --            if loop_condition then
-   --               loop_start;
-   --               variant_check
+   --              loop_start;
+   --              variant_check
    --            else
-   --               raise loop_name
-   --      end loop
+   --              raise loop_name
+   --        end loop
    --    with loop_name -> void
    --  end if
    --
@@ -804,7 +803,7 @@ package body Gnat2Why.Expr.Loops is
    --  proved before it can be used in the loop.
 
    function Wrap_Loop
-     (Loop_Name          : String;
+     (Loop_Id            : Entity_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
@@ -816,6 +815,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id
    is
+      Loop_Name  : constant String := Full_Name (Loop_Id);
       Loop_Ident : constant W_Identifier_Id :=
         New_Identifier (Name => Capitalize_First (Loop_Name));
 
@@ -842,9 +842,14 @@ package body Gnat2Why.Expr.Loops is
            Annotation   => New_Loop_Annot (Invariant => User_Invariant),
            Loop_Content => Loop_Body);
 
+      Try_Body : constant W_Prog_Id :=
+        Bind_From_Mapping_In_Expr (Params => Body_Params,
+                                   Map    => Map_For_Loop_Entry (Loop_Id),
+                                   Expr   => Sequence (Loop_Start, Loop_Stmt));
+
       Loop_Try : constant W_Prog_Id :=
         New_Try_Block
-          (Prog    => Sequence (Loop_Start, Loop_Stmt),
+          (Prog    => Try_Body,
            Handler => (1 => New_Handler (Name => Loop_Ident,
                                          Def  => New_Void)));
    begin

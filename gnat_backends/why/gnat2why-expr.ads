@@ -23,15 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;           use Types;
+with Ada.Containers.Hashed_Maps;
 
-with Why.Types;       use Why.Types;
-with Why.Ids;         use Why.Ids;
-with Why.Inter;       use Why.Inter;
-with Why.Sinfo;       use Why.Sinfo;
+with Types;          use Types;
 
-with Gnat2Why.Nodes;  use Gnat2Why.Nodes;
-with Gnat2Why.Util; use Gnat2Why.Util;
+with Why.Types;      use Why.Types;
+with Why.Ids;        use Why.Ids;
+with Why.Inter;      use Why.Inter;
+with Why.Sinfo;      use Why.Sinfo;
+
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Gnat2Why.Util;  use Gnat2Why.Util;
 
 package Gnat2Why.Expr is
 
@@ -150,5 +152,95 @@ package Gnat2Why.Expr is
    --  sequence of Why expressions; dynamic type declarations are translated
    --  to assert/assume statements, object declarations to assignment
    --  statements
+
+   ----------------------------------------
+   -- Attributes Old, Loop_Entry, Result --
+   ----------------------------------------
+
+   --  Expressions X'Old and F'Result are normally expanded into references to
+   --  saved values of variables by the frontend, but this expansion does not
+   --  apply to the original postcondition. It is this postcondition which
+   --  is translated by gnat2why into a program to detect possible run-time
+   --  errors, therefore a special mechanism is needed to deal with expressions
+   --  X'Old and F'Result.
+
+   Result_Name : W_Identifier_Id := Why_Empty;
+   --  Name to use for occurrences of F'Result in the postcondition. It should
+   --  be equal to Why_Empty when we are not generating code for detecting
+   --  run-time errors in the postcondition.
+
+   package Old_Nodes is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => W_Identifier_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Old_Nodes.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Old_Nodes."=");
+
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Map    : Old_Nodes.Map;
+      Expr   : W_Prog_Id) return W_Prog_Id;
+   --  Bind names from Map to their corresponding values, obtained by
+   --  transforming the expression node associated to the name in Map, in Expr.
+
+   function Name_For_Loop_Entry
+     (Expr    : Node_Id;
+      Loop_Id : Node_Id) return W_Identifier_Id;
+   --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
+
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Old_Nodes.Map;
+   --  Returns the map of identifiers to use for Loop_Entry attribute
+   --  references applying to loop Loop_Id.
+
+   function Map_For_Old return Old_Nodes.Map;
+   --  Returns the map of identifiers to use for Old attribute references in
+   --  the current subprogram.
+
+   procedure Reset_Map_For_Old;
+   --  Empty the map of identifiers to use for Old attribute references
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id;
+   --  During the generation of code for detecting run-time errors in the
+   --  postcondition, return the name to use for occurrences of N'Old.
+
+   --  Register a node that appears with attribute 'Old; return a fresh
+   --  Name_Id for this Node. This function is intended to be called by the
+   --  code that translates expressions to Why (Gnat2why.Expr), which itself
+   --  is called by Transform_Subprogram. For each call to this
+   --  function, a declaration at the beginning of the Why program is
+   --  generated.
+
+   function Name_For_Result return W_Identifier_Id;
+   --  During the generation of code for detecting run-time errors in the
+   --  postcondition of F, return the name to use for occurrences of F'Result.
+
+private
+   --  Mapping of all expressions whose 'Old attribute is used in the current
+   --  postcondition to the translation of the corresponding
+   --  expression in Why. Until 'Old is forbidden in the body, this is also
+   --  used to translate occurrences of 'Old that are left by the frontend (for
+   --  example, inside quantified expressions that are only preanalyzed).
+   --
+   --  The mapping is cleared before generating Why code for VC generation for
+   --  the body and postcondition, filled during the translation, and used
+   --  afterwards to generate the necessary copy instructions.
+
+   Old_Map        : Old_Nodes.Map;
+   Loop_Entry_Map : Loop_Entry_Nodes.Map;
+
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Old_Nodes.Map is
+     (if Loop_Entry_Map.Contains (Loop_Id) then
+        Loop_Entry_Map.Element (Loop_Id)
+      else
+        Old_Nodes.Empty_Map);
+
+   function Map_For_Old return Old_Nodes.Map is (Old_Map);
 
 end Gnat2Why.Expr;

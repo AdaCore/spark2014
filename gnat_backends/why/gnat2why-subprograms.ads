@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
-with Why.Inter;     use Why.Inter;
+with Types;          use Types;
+
+with Why.Inter;      use Why.Inter;
 
 package Gnat2Why.Subprograms is
 
@@ -72,21 +72,6 @@ package Gnat2Why.Subprograms is
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in the precondition of E.
-
-   function Name_For_Old (N : Node_Id) return W_Identifier_Id;
-   --  During the generation of code for detecting run-time errors in the
-   --  postcondition, return the name to use for occurrences of N'Old.
-
-   --  Register a node that appears with attribute 'Old; return a fresh
-   --  Name_Id for this Node. This function is intended to be called by the
-   --  code that translates expressions to Why (Gnat2why.Expr), which itself
-   --  is called by Transform_Subprogram. For each call to this
-   --  function, a declaration at the beginning of the Why program is
-   --  generated.
-
-   function Name_For_Result return W_Identifier_Id;
-   --  During the generation of code for detecting run-time errors in the
-   --  postcondition of F, return the name to use for occurrences of F'Result.
 
    procedure Translate_Subprogram_Spec
      (File : in out Why_File;
