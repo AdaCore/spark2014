@@ -15,6 +15,7 @@ You may find a few examples in the body of function unit_testing.
 import shlex
 from debug import log_method, log_function
 from utils import attr_str, full_str
+from elements import elements_union
 
 class ParseError(Exception):
     """Exception raised when an invalid merge spec is given to parse
@@ -59,8 +60,18 @@ class MergeSem:
         assert(False)
 
     @log_method
-    def deduce_all(self, model):
-        """Return all atoms that can be deduced from the model using this spec
+    def proof(self, model, result):
+        """Return a proof/counterexample of result for model
+
+        PARAMETERS
+          model: the model against which the spec is checked
+          result: whether or not the spec is expected to be True
+                  (in which case a proof is returned) or False
+                  (in which case a counterexample is returned).
+
+        RETURNS
+          A "maximal" proof/counterexample: the maximal subset of the model
+          that shows that the spec's evaluation of this model is 'result'.
 
         REMARKS
           This method is abstract and should be implemented by children
@@ -89,14 +100,6 @@ class FreeSetMergeUnary(MergeSem):
         self.name = None
         self.atom = atom
 
-    @log_method
-    def deduce_all(self, model):
-        """Implementation of MergeSem.deduce_all for all unary operators"""
-        check = self.check(model)
-        deduction = ({self.name,} if (check and self.name is not None)
-                     else set([]))
-        return check, deduction
-
 class FreeSetMergeSome(FreeSetMergeUnary):
     """Free set semantic helper for some-quantified atoms in spec merges
     """
@@ -105,6 +108,14 @@ class FreeSetMergeSome(FreeSetMergeUnary):
     def check(self, model):
         """Implementation of MergeSem.check for some-quantified atoms"""
         return self.atom in model
+
+    @log_method
+    def proof(self, model, result):
+        """Implementation of MergeSem.proof for some-quantified atoms"""
+        if result and self.atom in model:
+            return {self.atom}
+        else:
+            return set([])
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
@@ -120,6 +131,14 @@ class FreeSetMergeNo(FreeSetMergeUnary):
     def check(self, model):
         """Implementation of MergeSem.check for no-quantified atoms"""
         return self.atom not in model
+
+    @log_method
+    def proof(self, model, result):
+        """Implementation of MergeSem.proof for no-quantified atoms"""
+        if not result and self.atom in model:
+            return { self.atom }
+        else:
+            return set([])
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
@@ -163,17 +182,11 @@ class FreeSetMergeBinary(MergeSem):
         return result
 
     @log_method
-    def deduce_all(self, model):
-        """Implementation of MergeSem.deduce_all for binary ops"""
-        le = self.identity
-        lm = set([])
-        for operand in self.operands:
-            re, rm = operand.deduce_all(model)
-            le = self.operator(le, re)
-            lm = lm.union(rm)
-        if self.name is not None and le:
-            lm.add(self.name)
-        return le, lm
+    def proof(self, model, result):
+        """Implementation of MergeSem.proof for binary ops"""
+        return elements_union([operand.proof(model, result)
+                               for operand in self.operands
+                               if operand.check(model) == result])
 
 class FreeSetMergeAnd(FreeSetMergeBinary):
     """Free set semantic helper for and-binded helpers
@@ -299,17 +312,17 @@ class FreeSetMergeFactory(MergeSemFactory):
 
     @log_method
     def build_merge_no(self, atom, name=None):
-        "Implementation of SemMergeFactory.build_merge_some for sets"
+        "Implementation of SemMergeFactory.build_merge_no for sets"
         return FreeSetMergeNo(atom, name)
 
     @log_method
     def build_merge_and(self, operands, name=None):
-        "Implementation of SemMergeFactory.build_merge_some for sets"
+        "Implementation of SemMergeFactory.build_merge_and for sets"
         return FreeSetMergeAnd(operands, name)
 
     @log_method
     def build_merge_or(self, operands, name=None):
-        "Implementation of SemMergeFactory.build_merge_some for sets"
+        "Implementation of SemMergeFactory.build_merge_or for sets"
         return FreeSetMergeOr(operands, name)
 
 terminals = {"(", ")", "and", "or", "no", "some"}
@@ -436,18 +449,13 @@ class MergeSpec:
 
     @log_method
     def check(self, model):
-        """Check model against expression"""
+        """Check model against expression - See MergeSem.check"""
         return self.sem.check(model)
 
     @log_method
-    def maximalize(self, model):
-        """Append all possible deductions
-
-        Get all possible deductions from specs and model, and
-        return the original model enriched with these deductions.
-        """
-        check, deduction = self.sem.deduce_all(model)
-        return model.union(deduction)
+    def proof(self, model, result):
+        """Return a proof of result for model - See MergeSem.proof"""
+        return self.sem.proof(model, result)
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
@@ -465,10 +473,22 @@ def unit_testing():
     # and making sure that there are no KO in these fragments, and at least
     # one OK to detect the case where no fragment has been contributed.
     spec = MergeSpec("some OK and no KO", FreeSetMergeFactory())
+
     assert(spec.check({'OK'}))
+    assert(spec.proof({'OK'}, True) == {'OK'})
+    assert(spec.proof({'OK'}, False) == set([]))
+
     assert(not spec.check({'KO', 'OK'}))
+    assert(spec.proof({'KO', 'OK'}, True) == {'OK'})
+    assert(spec.proof({'KO', 'OK'}, False) == {'KO'})
+
     assert(not spec.check({'KO'}))
+    assert(spec.proof({'KO'}, True) == set([]))
+    assert(spec.proof({'KO'}, False) == {'KO'})
+
     assert(not spec.check(set([])))
+    assert(spec.proof(set([]), True) == set([]))
+    assert(spec.proof(set([]), False) == set([]))
 
     # A typical example in the case when proof and tests are merged:
     # If a procedure is not proved, then it should be both validated
@@ -479,4 +499,3 @@ def unit_testing():
     assert(spec.check({'VALIDATED', 'COVERED'}))
     assert(not spec.check({'VALIDATED'}))
     assert(spec.check({'PROVED'}))
-    assert(spec.maximalize({'PROVED'}) == {'PROVED', 'OK'})
