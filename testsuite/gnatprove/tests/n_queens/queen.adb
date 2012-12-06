@@ -22,11 +22,12 @@ package body Queen is
    is
    begin
       for R in Index'Range loop
-         pragma Assert (not Done and
-             (for all J in 1 .. I - 1 => B (J) = B'Loop_Entry (J)) and
-             (if C (I) < R then
+         pragma Loop_Invariant
+           (not Done and
+              (for all J in 1 .. I - 1 => B (J) = B'Loop_Entry (J)) and
+              (if C (I) < R then
                 not (for all J in I .. N => Consistent (C, J)))
-          );
+           );
          B (I) := R;
          if C (I) = R then
             Add_next (B, I, Done, C);
@@ -36,7 +37,6 @@ package body Queen is
             exit;
          end if;
       end loop;
-      pragma Assert (for all J in 1 .. I - 1 => B (J) = B'Loop_Entry (J));
    end Try_Row;
 
 end Queen;
