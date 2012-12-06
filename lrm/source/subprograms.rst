@@ -244,7 +244,7 @@ follow the grammar of ``global_specification``
 #. Each ``mode_selector`` shall not occur more than once in a single
    ``global_specification``.
 
-#. A ``global_item`` appearing in a ``moded_global_List`` with a
+#. A ``global_item`` appearing in a ``moded_global_list`` with a
    ``mode_selector`` of In_Out may not appear in any other
    ``moded_global_list``.
 
@@ -316,12 +316,8 @@ There are no dynamic semantics associated with a Global.
 
 .. centered:: **Verification Rules**
 
-#. A Global aspect is verified against the mode specification
+#. A Global aspect is verified against the ``global_specification``
    rules given in the static semantics.
-   
-#. The Global aspect of a function (whether explicitly specified or
-   implicitly synthesized from the subprogram implementation)
-   shall not include a moded_global_list having a mode of Output or In_Out.
 
 .. centered:: **Examples**
 
