@@ -197,6 +197,10 @@ package body Why.Images is
       --  In that case, since base is positive, (base ** denominator) is also
       --  positive, even when denominator is negative or null.
 
+      if UR_Is_Negative (Value) then
+         P (O, EW_Substract, EW_Real);
+      end if;
+
       if Base = 0 then
          P (O, Num);
          P (O, ".0");
