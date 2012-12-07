@@ -325,14 +325,15 @@ There are no dynamic semantics associated with a Global.
 
    with Global => null; -- Indicates that the subprogram does not read or update
                         -- any global items.
-   with Global => V;    -- Indicates that V is a mode in global item.
-   with Global => (X, Y, Z);  -- X, Y and Z are mode in global items.
-   with Global => (Input => V); -- Indicates that V is a mode in global item.
-   with Global => (Input => (X, Y, Z)); -- X, Y and Z are mode in global items.
-   with Global => (Output => (A, B, C)); -- A, B and C are mode out global items.
+   with Global => V;    -- Indicates that V may be read by the subprogram.
+   with Global => (X, Y, Z);  -- X, Y and Z may be read by the subprogram.
+   with Global => (Input => V); -- Indicates that V may be read by the subprogram.
+   with Global => (Input => (X, Y, Z)); -- X, Y and Z may be read by the subprogram.
+   with Global => (Output => (A, B, C)); -- A, B and C may be written by the subprogram.
    with Global => (Input  => (X, Y, Z),
                    Output => (A, B, C),
-                   In_Out => (P, Q, R));
+                   In_Out => (P, Q, R),
+                   Proof  => (T, U));
                   -- A global aspect with all types of global specification
 
 Dependency Aspects
@@ -428,7 +429,7 @@ where
    [From an information flow analysis viewpoint it is a 
    null operation (a no-op).]
    
-#. A ``dependency_clause`` has the meaning, that the final value every 
+#. A ``dependency_clause`` has the meaning that the final value of every 
    ``output`` in the ``output_list`` is dependent on the initial value of every 
    ``input`` in the ``input_list``.
    
@@ -439,25 +440,25 @@ where
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
-   values of each ``output`` in the ``output_list`` does not depend on any
-   ``input``, other than themselves, if the ``output_list`` =>+ **null**
+   value of each ``output`` in the ``output_list`` does not depend on any
+   ``input``, other than itself, if the ``output_list`` =>+ **null**
    self-dependency syntax is used.
 
 #. A an ``output_list`` that is **null** represents a *sink* for each
    ``input`` in the ``input_list``.  The ``inputs`` in the ``input_list`` have
    no discernible effect from an information flow analysis viewpoint.
    [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
-   and calling of subprograms whose implementation are not in |SPARK|.]
+   and calling of subprograms whose implementation is not in |SPARK|.]
 
-#. A function which does not have a an explicit Dependency aspect
+#. A function which does not have an explicit Dependency aspect
    is assumed to have the ``dependency_relation`` 
-   of its result is dependent on all of its inputs.  
+   that its result is dependent on all of its inputs.  
    [Generally a Dependency aspect is not required for functions.]
    
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a ``dependency_aspect``
-it used purely for static analysis purposes and is not executed.
+as it is used purely for static analysis purposes and is not executed.
 
 
 .. centered:: **Examples**
@@ -493,7 +494,7 @@ it used purely for static analysis purposes and is not executed.
    procedure S
    with Global  => (Input  => (X, Y, Z),
                     In_Out => (A, B, C, D)),
-        Depends => ((A, B) =>+ (A, X, Y),
+        Depends => ((A, B) =>+ (A, X, Y, Z),
                      C     =>+ Y,
                      D     =>+ null);
    -- Here globals are used rather than parameters and global items may appear
