@@ -181,7 +181,7 @@ Ident: EXT-JEB25
 Section: 6.1.5
 Page/para: page 30, final example
 Comment: What about the "Proof" mode selector, the comment states that all types of global_specification are covered.
-Status: 
+Status: Added to example. [JIB]
 
 
 Ident: EXT-JEB26
@@ -232,7 +232,7 @@ Ident: EXT-JEB32
 Section: 6.1.7
 Page/para: page 34/35
 Comment: In example procedure S, The Global Z does not appear as an import in the dependency relationship - surely that is an error.
-Status: 
+Status: Fixed. [JIB]
 
 
 Ident: EXT-JEB33

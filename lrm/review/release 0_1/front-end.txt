@@ -33,7 +33,8 @@ Comment: The description of global aspect seems to suppose a constructive
   Also, the comments in examples should be phrased in user terms, so "global
   variable V may be read by the subprogram" instead of "V is a mode in global
   item" which simply duplicates the example code.
-Status: 
+Status: First two points are addressed since the relevant rules have been removed.
+        Final point on comments has been actioned. [JIB]
 
 
 Ident: FE-YM3
