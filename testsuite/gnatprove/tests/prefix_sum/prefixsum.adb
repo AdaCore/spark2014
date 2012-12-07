@@ -1,4 +1,3 @@
-with Ada.Text_IO; use Ada.Text_IO;
 package body PrefixSum is
 
    procedure Upsweep (A : in out Input; Output_Space : out Positive) is
@@ -8,11 +7,11 @@ package body PrefixSum is
    begin
       while Space < A'Length loop
          pragma Loop_Invariant
-           (All_Elements_In (A, Space * Maximum)
+            (All_Elements_In (A, Space * Maximum)
               and then
-           (Space = 1 or Space = 2 or Space = 4)
+            (Space = 1 or Space = 2 or Space = 4)
               and then
-           (for all K in A'Range =>
+            (for all K in A'Range =>
               (if (K + 1) mod 8 = 0
                  and then Space = 8
                then

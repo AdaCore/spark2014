@@ -48,15 +48,21 @@ package PrefixSum is
        and then Intermediate_Form (A, Ghost),
      Post =>
        A (0) = 0
-          and then A (1) = Ghost (0)
-          and then A (2) = Ghost (0) + Ghost (1)
-          and then A (3) = Ghost (0) + Ghost (1) + Ghost (2)
-          and then A (4) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
-          and then A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) +
-                           Ghost (4)
-          and then A (6) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) +
-                           Ghost (4) + Ghost (5)
-          and then A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) +
-                           Ghost (4) + Ghost (5) + Ghost (6);
+         and then
+       A (1) = Ghost (0)
+         and then
+       A (2) = Ghost (0) + Ghost (1)
+         and then
+       A (3) = Ghost (0) + Ghost (1) + Ghost (2)
+         and then
+       A (4) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
+         and then
+       A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+         and then
+       A (6) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+             + Ghost (5)
+         and then
+       A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+             + Ghost (5) + Ghost (6);
 
 end PrefixSum;
