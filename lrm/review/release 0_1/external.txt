@@ -125,7 +125,7 @@ Section: 6.1.4
 Page/para: page 27, Static Semantics item 5, final bullet
 Comment: The final definition of independence seems incomplete - does this mean that Y and Y(J) are independent or 
 Y(I) and Y(I) are independent and that Y(I) and Y(J) are independent when indexes I and J evaluate to the same value.
-Status: 
+Status: Detail on independence no longer needed. [JIB]
 
 
 Ident: EXT-JEB18
@@ -139,7 +139,7 @@ Ident: EXT-JEB19
 Section: 6.1.4
 Page/para: page 27, Static semantics item 6, subitem 1.
 Comment: The mode selector values of "In" and "Out" do not match the options in the Syntax (these should be "Input"or "Output".
-Status: 
+Status: Detail on effective mode has now been removed. [JIB]
 
 
 Ident: EXT-JEB20
@@ -174,7 +174,7 @@ Ident: EXT-JEB24
 Section: 6.1.5
 Page/para: page 29, para 5(a)
 Comment: You need to be careful about modes and effective modes. Here I think you are refering to effective modes but then Proof is only a mode_Selector value not an effective mode.
-Status: 
+Status: This paragraph has now been removed, as has the detail on effective modes. [JIB]
 
 
 Ident: EXT-JEB25
@@ -188,7 +188,7 @@ Ident: EXT-JEB26
 Section: 6.1.6
 Page/para: Legality Rules
 Comment: Should a mode_selector of "Proof" be prohibited here.
-Status: 
+Status: The detail on Param aspects has now been removed. [JIB]
 
 
 Ident: EXT-JEB27
@@ -203,7 +203,7 @@ Section: 6.1.7
 Page/para: page 33, Legality Rules
 Comment: You need to be careful with the wording here. From the Syntax import_lists only  occur within a conditional_dependency but I expect the 
 constraints apply more widely to any imports in any dependency_list.
-Status: 
+Status: This has been corrected during the removal of detail on conditional dependencies. [JIB]
 
 
 Ident: EXT-JEB29
@@ -211,7 +211,7 @@ Section: 6.1.7
 Page/para: Legality Rules item 8
 Comment: This needs rephrasing, I don't know what "shall appear at least of a dependency_relation" is supposed to mean. 
 Also second sentence is incomplete.
-Status: 
+Status: Has been corrected. [JIB]
 
 
 Ident: EXT-JEB30

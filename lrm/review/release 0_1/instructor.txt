@@ -127,7 +127,7 @@ Section: 6.1.5
 Page/para: p29 
 Comment: If you say "Output => (A, B, C, I (if I = 42 then D))" I assume that "I = 42"
 refers to the initial value of I? I didn¡¯t spot that in the rules when I skimmed them.
-Status: 
+Status: Conditional dependencies have now been removed. [JIB] 
 
 Ident: INSTRUCT-RPM16
 Section: 6.1.5
@@ -147,7 +147,7 @@ Page/para:
 Comment: If I understand correctly, you can specify a global as In_Out or you can 
 specify it as both Input and Output and it means the same thing. From an ease of 
 teaching viewpoint I don't see the point of In_Out.
-Status: 
+Status: This has been updated so that only In_Out is used now. [JIB]
 
 Ident: INSTRUCT-RPM19
 Section: 6.1.6
@@ -165,7 +165,7 @@ Ident: INSTRUCT-RPM21
 Section: 6.1.7
 Page/para: p33, item 8
 Comment: This doesn't make sense. Looks like some sort of editing error.
-Status: 
+Status: Now corrected. [JIB]
 
 Ident: INSTRUCT-RPM22
 Section: 6.1.7

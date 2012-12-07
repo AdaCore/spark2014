@@ -16,7 +16,8 @@ Comment: The description of mode refinement in not clear enough for
   and "independent". It could be clearer also if this section was preceded
   by the description of Global and Param aspects. I am also in favor of the
   merge of Global and Param aspects suggested by Steve.
-Status: 
+Status: This detail has been vastly simplified and moved into the relevant
+        sections that use it. [JIB] 
 
 
 Ident: FE-YM2
@@ -42,7 +43,7 @@ Comment: The description of param aspect is inconsistent with the description
   of the global aspect. For example it does not say anything about X'First,
   X'Last, etc. for an array X. I strongly suggest we follow Steve's idea of
   combining the descriptions of param and global aspects.
-Status: 
+Status: The detail on param aspects has now been removed. [JIB] 
 
 
 Ident: FE-YM4
@@ -72,7 +73,7 @@ Comment: The legality rules for dependency aspect are not clear. Rule 8 is
   completely confused, probably as a result of a merge. Rule 9 is not clear:
   what if A(I) is an export, and A(J).F also? It may appear that A(J).F is
   a subcomponent of A(I) if I=J at run time.
-Status: 
+Status: The corresponding rules are no longer relevant so have been removed. [JIB]
 
 
 Ident: FE-YM7
@@ -80,7 +81,7 @@ Section: 6.1.7
 Page/para: 33 .. 34
 Comment: The static semantics for dependency aspects are not clear enough for
   implementation. I suggest rewording more in line with Ada RM.
-Status: 
+Status: These have now been reworded. [JIB]
 
 
 Ident: FE-YM8
@@ -191,28 +192,28 @@ Section: 6.1.7
 Page/para: 32/Syntax
 Comments: If a conditional dependency is used, then a given export may be derived from null.
 However, as far as I can see an export cannot be derived from null when a non-conditional dependency is given.
-Status: 
+Status: This has been corrected. [JIB]
 
 
 Ident: FE-JIB18
 Section: 6.1.7
 Page/para: 33/item 8 
 Comment: Possibly a cut and paste error as the first two sentences don t make sense.
-Status: 
+Status: No longer relevant as the corresponding rules have been removed. [JIB]
 
 
 Ident: FE-JIB19
 Section: 6.1.7
 Page/para: 33/ N/A
 Comment: There appears to be some duplication/overlap between rules here: items 4 and 9, items 6 and 10, items 7 and 11.
-Status: 
+Status: This has been fixed. [JIB]
 
 
 Ident: FE-JIB20
 Section: 7.1.2
 Page/para: 45/ N/A
 Comment: Static Semantics items 1-3: are these really legality rules?
-Status: 
+Status: No longer relevant due to updates that have been made. [JIB]
 
 
 Ident: FE-JIB21

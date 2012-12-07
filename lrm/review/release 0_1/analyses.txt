@@ -146,7 +146,8 @@ Comment:
   JK: very difficult to read; in any case won't go into first release.
     We should make sure (how?) that we can add that stuff later into the
     language, and leave it out for now.
-Status: 
+Status: This section has now been removed and the necessary detail merged
+        with the sections where it is used. [JIB] 
 
 
 Ident: AN-YM10
@@ -164,7 +165,7 @@ Page/para:
 Comment: Flow analysis cannot cope with "global in out a(j)". Nor can
   it cope with conditional stuff. Can we defer this until after rel1? We
   really must take it out of the grammar and the examples!
-Status: 
+Status: This has been done. [JIB]
 
 
 Ident: AN-FS12
@@ -173,14 +174,14 @@ Page/para:
 Comment:
   FS: Remove for release 1
   JK: leave out for the first release
-Status: 
+Status: Done. [JIB]
 
 
 Ident: AN-FS13
 Section: 6.1.7
 Page/para:
 Comment: Remove all the conditional stuff.
-Status: 
+Status: Done. [JIB] 
 
 
 Ident: AN-YM14

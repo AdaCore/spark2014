@@ -505,7 +505,7 @@ Section:
 Page/para: page 28, 6.1.5
 Comment: The second sentence is unclear: are the only mode allowed 'in', 'out',
 'in out' as implied or  'proof' is also OK?
-Status:
+Status: Proof is also OK, which is now made clear by the updated syntax and text. [JIB]
 
 
 Ident: REQ-CC65

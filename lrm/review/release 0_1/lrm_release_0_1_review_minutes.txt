@@ -129,7 +129,7 @@ Section:
 Page/para:
 Comment: legality rules concerning param aspects & conditional dependencies are hard to understand 
 Action: Keep the grammar. Keep the legality rules and resolve specific issues where they are unclear. Find some way to distinguish rules we are implementing in release 1 from those we aren't.
-Status: 
+Status: Both have been removed from the LRM. [JIB] 
 
 
 Source: STT
