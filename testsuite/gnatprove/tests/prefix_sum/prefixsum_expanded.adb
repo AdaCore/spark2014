@@ -110,11 +110,11 @@ package body PrefixSum_Expanded is
       Right : Natural;
       Temp  : Integer;
 
-      Saved_A : constant Input := A;
+      Saved_A : Input;
    begin
       A (A'Last) := 0;
       Space      := Space / 2;
-
+      Saved_A := A;
       pragma Assert
          (Saved_A (0) = Ghost(0)
             and then
