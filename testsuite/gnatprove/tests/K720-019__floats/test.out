@@ -7,7 +7,7 @@ pack.adb:10:42: info: precondition proved
 pack.adb:10:47: info: range check proved
 pack.adb:10:52: info: precondition proved
 pack.adb:10:57: info: range check proved
-pack.adb:10:62: range check not proved
+pack.adb:10:62: info: range check proved
 pack.adb:5:17: info: overflow check proved
 pack.ads:15:31: info: postcondition proved
 pack.ads:15:37: info: overflow check proved
