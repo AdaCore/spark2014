@@ -271,8 +271,8 @@ On the following example:
 
 |GNATprove| outputs the following errors::
 
-    p.adb:4:07: explicit dereference is not in |SPARK|
-    p.ads:3:08: access type is not in |SPARK|
+    p.adb:4:07: explicit dereference is not in SPARK
+    p.ads:3:08: access type is not in SPARK
 
 The error messages distinguish constructs not in |SPARK| (like a pointer
 dereference) from constructs not yet implemented. Notice that no error is given

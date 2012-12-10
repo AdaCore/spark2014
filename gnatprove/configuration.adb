@@ -114,13 +114,13 @@ ASCII.LF &
 ASCII.LF &
 "     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"
 & ASCII.LF &
-"     --timeout=s    Set the timeout for Alt-Ergo in seconds (default: 1)" &
+"     --timeout=s    Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
 "     --limit-line=s Limit proofs to given file and line" &
 ASCII.LF &
 "     --limit-subp=s Limit proofs to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s     Use given prover instead of default prover";
+"     --prover=s     Use given prover instead of default Alt-Ergo prover";
 
    --------------
    -- Clean_Up --
@@ -364,7 +364,7 @@ ASCII.LF &
       Define_Switch
          (Config, Timeout'Access,
           Long_Switch => "--timeout=",
-          Help => "Set the timeout for Alt-Ergo in seconds (default is 1)");
+          Help => "Set the prover timeout in seconds (default is 1)");
 
       Define_Switch
          (Config,
@@ -402,7 +402,7 @@ ASCII.LF &
         (Config,
          Alter_Prover'Access,
          Long_Switch => "--prover=",
-         Help => "Use given prover instead of default prover");
+         Help => "Use given prover instead of default Alt-Ergo prover");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");

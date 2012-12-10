@@ -59,7 +59,7 @@ Command-line Usage
       all_split             Compute all VCs, save them to file, do not call prover
    --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
-   --timeout=s            Set the prover timeout in seconds (default: 10)
+   --timeout=s            Set the prover timeout in seconds (default: 1)
    --limit-line=file:line Limit proofs to the specified file and line
    --limit-subp=file:line Limit proofs to the specified subprogram declared at
                           the location given by file and line

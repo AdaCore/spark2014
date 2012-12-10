@@ -373,9 +373,9 @@ package body Alfa.Definition is
             --  in Alfa.
 
             if Debug.Debug_Flag_Dot_KK then
-               return Use_Msg & "? is not in Alfa";
+               return Use_Msg & "? is not in SPARK";
             else
-               return Use_Msg & " is not in Alfa";
+               return Use_Msg & " is not in SPARK";
             end if;
 
          when Alfa_Violations.Not_Yet_Implemented =>
