@@ -1,0 +1,13 @@
+test.adb:10:8: info: index check proved
+test.adb:15:26: info: range check proved
+test.adb:16:33: info: range check proved
+test.adb:16:57: info: division check proved
+test.adb:21:34: range check not proved
+test.adb:4:38: info: postcondition proved
+test.adb:7:25: info: index check proved
+test.adb:9:24: info: index check proved
+test.adb:9:8: info: index check proved
+test.ads:12:34: info: postcondition proved
+test.ads:30:16: info: range check proved
+test.ads:9:35: info: postcondition proved
+
