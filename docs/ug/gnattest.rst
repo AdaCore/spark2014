@@ -1,5 +1,5 @@
-Combining GNATprove with GNATtest
-=================================
+Combining |GNATprove| with GNATtest
+===================================
 
 Not all subprograms can be verified formally. Subprograms that cannot be
 verified formally must be either verified by manual review, or by testing. The
@@ -10,7 +10,7 @@ Special Compilation Mode
 ------------------------
 
 In order to combine formal verification with testing, the program should
-respect a number of restrictions, even on code that is not in Alfa. These
+respect a number of restrictions, even on code that is not in |SPARK|. These
 restrictions are:
 
 .. code-block:: ada
@@ -36,7 +36,7 @@ security standards mandate which possibilities must be explored: functional
 properties related to the low-level requirements, and robustness tests
 with boundary values.
 
-A formal test case is a GNAT extension to Ada, which is part of Alfa, meant to
+A formal test case is a GNAT extension to Ada, which is part of |SPARK|, meant to
 facilitate the formalization of test cases. It can be expressed either as an
 aspect in Ada 2012 or as a pragma in all Ada modes (83, 95, 2005, 2012). A
 formal test case is attached to a subprogram declaration for a subprogram

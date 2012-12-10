@@ -64,12 +64,12 @@ parts of the application it can handle. It generates a file ``gnatprove.out``
 that contains project statistics; this information also shows up on the
 standard output. It shows here that the subprogram is supported::
 
-    Subprograms in Alfa       : 100% (1/1)
+    Subprograms in SPARK      : 100% (1/1)
       ... already supported   : 100% (1/1)
       ... not yet supported   :   0% (0/1)
-    Subprograms not in Alfa   :   0% (0/1)
+    Subprograms not in SPARK  :   0% (0/1)
 
-As the specification of ``After_Tax`` is in Alfa, GNATprove can check that its
+As the specification of ``After_Tax`` is in |SPARK|, GNATprove can check that its
 precondition is complete. This is given by the ``check`` mode::
 
     gnatprove --mode=check -P taxes.gpr
@@ -78,7 +78,7 @@ No error will be returned in this case; so this precondition cannot
 raise a run-time error (for more information about the ``check`` mode,
 please consult the section :ref:`completeness of preconditions`).
 
-As the body of ``After_Tax`` is in Alfa, GNATprove can also check that its
+As the body of ``After_Tax`` is in |SPARK|, GNATprove can also check that its
 implementation is free from run-time errors and fulfills its contract.
 This is given by the ``prove`` mode::
 
@@ -110,7 +110,7 @@ please consult the sections :ref:`absence of run-time errors` and
 :ref:`functional verification`).
 
 This concludes our quick tour of GNATprove; the following chapters
-will detail further Alfa, GNATprove, GNATtest and the functionalities
+will detail further |SPARK|, GNATprove, GNATtest and the functionalities
 that these tools provides, making a clear separation between what
 is already available, what will be implemented in a near future, and what
 is outside the scope of this technology.

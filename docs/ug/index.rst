@@ -11,8 +11,8 @@ GNATprove User's Guide
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
    or any later version published by the Free Software Foundation;
-   with no Invariant Sections, with no Front-Cover Texts, and with no 
-   Back-Cover Texts. 
+   with no Invariant Sections, with no Front-Cover Texts, and with no
+   Back-Cover Texts.
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
 
@@ -20,7 +20,7 @@ GNATprove User's Guide
    :maxdepth: 2
 
    getting_started
-   alfa
+   language_subset
    usage
    goals
    gnattest

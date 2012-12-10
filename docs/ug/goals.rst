@@ -1,7 +1,7 @@
 Verification Goals
 ==================
 
-GNATprove generates Verification Conditions (VCs) whose proof ensures that some
+|GNATprove| generates Verification Conditions (VCs) whose proof ensures that some
 property holds on the source program. Such VCs are generated for functional
 properties expressed as annotations but also to ensure different high-level
 properties of the code described in the subsequent sections.
@@ -39,7 +39,7 @@ specifications:
    procedure No_Need_For_Guard (X, Y : Positive) with
      Pre => X / Y > 0;
 
-GNATprove is able to show that only the precondition of the first of these
+|GNATprove| is able to show that only the precondition of the first of these
 specifications could raise a run-time error::
 
    p.ads:4:15: division by zero failed
@@ -49,7 +49,7 @@ specifications could raise a run-time error::
 
 Notice also that division might also overflow here, if ``X`` is the minimal
 integer value and ``Y`` is ``-1`` (standard 32-bits integers are assumed
-here). GNATprove generates VCs to check this overflow, and it detects that only
+here). |GNATprove| generates VCs to check this overflow, and it detects that only
 the precondition of the last of these specifications cannot raise a run-time
 error::
 
@@ -64,7 +64,7 @@ Absence of Run-Time Errors
 --------------------------
 
 This verification activity is available in mode ``prove``.
-GNATprove generates VCs to prove that the code of a subprogram analyzed does
+|GNATprove| generates VCs to prove that the code of a subprogram analyzed does
 not contain violations of the following checks:
 
 * overflow check
@@ -89,7 +89,7 @@ run-time errors. This includes postconditions.
 Functional Verification
 -----------------------
 
-This verification activity is available in mode ``prove``.  GNATprove generates
+This verification activity is available in mode ``prove``.  |GNATprove| generates
 VCs to prove that all subprograms called in the code of a subprogram analyzed
 have their precondition satisfied at the point of call. It also generates VCs
 to prove that the postcondition of the subprogram analyzed is satisfied.
@@ -103,7 +103,7 @@ Consistency Checks *(Not Yet Implemented)*
 ------------------------------------------
 
 Like code, contracts are written by a human and thus can contain errors.
-GNATprove helps detecting inconsistencies in contracts by implementing specific
+|GNATprove| helps detecting inconsistencies in contracts by implementing specific
 checks for the following cases: redundant annotations, inconsistent
 annotations, unimplementable contracts, incomplete contracts. These checks
 do not detect all problematic cases, only some of them, much like detection of
@@ -158,7 +158,7 @@ which is the same as
   A or (not A) or B or C
 
 which is always true! The programmer used ``or`` where he should have used
-``and`` in the postcondition. GNATprove will detect such (partially or
+``and`` in the postcondition. |GNATprove| will detect such (partially or
 completely) redundant annotations and issue a warning to the programmer.
 
 Inconsistent Annotations *(Not Yet Implemented)*
@@ -180,7 +180,7 @@ unprovable VCs when proving the subprogram, inconsistent preconditions can only
 be detected this way when proving the caller. It is much better to detect such
 cases earlier when proving the subprogram, as a *precondition* that is always
 false makes the corresponding subprogram trivially *correct*, because under
-this false hypothesis, everything can be proved. GNATprove will detect such
+this false hypothesis, everything can be proved. |GNATprove| will detect such
 inconsistent annotations and issue an error to the programmer.
 
 Unimplementable Contracts *(Not Yet Implemented)*
@@ -202,7 +202,7 @@ An implementation of ``Compute`` with this contract is unlikely to be
 provable. If it is, that's only because ``Compute`` never returns on input
 ``X=0``. Indeed, if ``Compute`` did return on input ``X=0``, it would have to
 satisfy inconsistent requirements that ``Y=1`` and ``Y=-1``. Therefore, the
-precondition should specify here that ``X/=0`` in input. GNATprove will detect
+precondition should specify here that ``X/=0`` in input. |GNATprove| will detect
 such unimplementable contracts and issue an error to the programmer.
 
 Incomplete Contracts *(Not Yet Implemented)*
@@ -240,7 +240,7 @@ procedure when ``X`` is equal to zero, but not what happens when this is
 not the case. This means that the entire ``else`` branch does not
 contribute to establishing the postcondition.
 
-GNATprove will report this situation as a warning, indicating which portions of
+|GNATprove| will report this situation as a warning, indicating which portions of
 the code do not contribute to the subprogram contract. The programmer can then
 either correct the contract to reflect both situations, remove the offending
 portion of the code, or accept the warning.
