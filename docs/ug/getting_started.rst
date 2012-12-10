@@ -1,14 +1,14 @@
-Getting started with GNATprove
-==============================
+Getting started with |GNATprove|
+================================
 
-This chapter describes some simple ways of using GNATprove to formally prove
-properties on programs. A more detailed description of GNATprove's capabilities
-should follow in the next sections; here, only a taste of them will be
-given. We will be running GNATprove on a simple program that computes how much
-money is left after paying an income tax. The rate is a percentage, so it
-should be inferior to 100. One may also want to check that such a function does
-decrease the original amount of money (sadly). So the specification of this
-function may be:
+This chapter describes some simple ways of using |GNATprove| to formally prove
+properties on programs. A more detailed description of |GNATprove|'s
+capabilities should follow in the next sections; here, only a taste of them
+will be given. We will be running |GNATprove| on a simple program that computes
+how much money is left after paying an income tax. The rate is a percentage, so
+it should be inferior to 100. One may also want to check that such a function
+does decrease the original amount of money (sadly). So the specification of
+this function may be:
 
 .. code-block:: ada
    :linenos:
@@ -48,18 +48,18 @@ a GNAT project should be created:
        end Compiler;
     end Taxes;
 
-This project should be in file ``taxes.gpr``. It specifies that the
-source code to inspect is in the current directory; as this particular
-example uses an Ada 2012 feature (aspects), it is also necessary to
-define the compiler option ``-gnat12``. GNAT projects are used by
-most tools in the GNAT Pro toolsuite; for an in-depth documentation of this
-technology, you may consult the GNAT Pro user's guide.
+This project should be in file ``taxes.gpr``. It specifies that the source code
+to inspect is in the current directory; as this particular example uses an Ada
+2012 feature (aspects), it is also necessary to use the compiler switch
+``-gnat12``. GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
+for an in-depth documentation of this technology, you may consult |GNAT Pro|
+User's Guide.
 
-You can then invoke GNATprove on this project::
+You can then invoke |GNATprove| on this project::
 
-    gnatprove -P taxes.gpr
+    $ gnatprove -P taxes.gpr
 
-By default, GNATprove is in ``detect`` mode, which consists in detecting which
+By default, |GNATprove| is in ``detect`` mode, which consists in detecting which
 parts of the application it can handle. It generates a file ``gnatprove.out``
 that contains project statistics; this information also shows up on the
 standard output. It shows here that the subprogram is supported::
@@ -69,7 +69,7 @@ standard output. It shows here that the subprogram is supported::
       ... not yet supported   :   0% (0/1)
     Subprograms not in SPARK  :   0% (0/1)
 
-As the specification of ``After_Tax`` is in |SPARK|, GNATprove can check that its
+As the specification of ``After_Tax`` is in |SPARK|, |GNATprove| can check that its
 precondition is complete. This is given by the ``check`` mode::
 
     gnatprove --mode=check -P taxes.gpr
@@ -78,7 +78,7 @@ No error will be returned in this case; so this precondition cannot
 raise a run-time error (for more information about the ``check`` mode,
 please consult the section :ref:`completeness of preconditions`).
 
-As the body of ``After_Tax`` is in |SPARK|, GNATprove can also check that its
+As the body of ``After_Tax`` is in |SPARK|, |GNATprove| can also check that its
 implementation is free from run-time errors and fulfills its contract.
 This is given by the ``prove`` mode::
 
@@ -90,7 +90,7 @@ multiplication::
     after_tax.adb:5:36: overflow check not proved
 
 To get a complete report including all checks that could be proved, one should
-run GNATprove in ``all`` report mode::
+run |GNATprove| in ``all`` report mode::
 
     gnatprove --mode=prove --report=all -P taxes.gpr
 
@@ -109,8 +109,8 @@ the possible overflow (for more information about the ``prove`` mode,
 please consult the sections :ref:`absence of run-time errors` and
 :ref:`functional verification`).
 
-This concludes our quick tour of GNATprove; the following chapters
-will detail further |SPARK|, GNATprove, GNATtest and the functionalities
+This concludes our quick tour of |GNATprove|; the following chapters
+will detail further |SPARK|, |GNATprove|, GNATtest and the functionalities
 that these tools provides, making a clear separation between what
 is already available, what will be implemented in a near future, and what
 is outside the scope of this technology.

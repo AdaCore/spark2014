@@ -1,9 +1,23 @@
-Usage
-=====
+Using |GNATprove|
+=================
 
-The |GNATprove| tool is packaged as an executable called "gnatprove". Like other
-tools in GNAT Pro Toolsuite, |GNATprove| is based on the structure of GNAT
-projects, defined in ``.gpr`` files.
+The |GNATprove| tool is packaged as an executable called ``gnatprove``. Like
+other tools in |GNAT Pro| Toolsuite, |GNATprove| is based on the structure of
+GNAT projects, defined in ``.gpr`` files.
+
+|GNATprove| Usage Scenarios
+---------------------------
+
+..  Note that, in many cases, ad-hoc data structures based on pointers can be
+    replaced by the use of standard Ada containers (vectors, lists, sets, maps,
+    etc.) Although the implementation of standard containers is not in |SPARK|,
+    we have defined a slightly modified version of these targeted at formal
+    verification. These formal containers are implemented in the GNAT standard
+    library. These alternative containers are typical of the tradeoffs implicit
+    in |SPARK|: favor automatic formal verification as much as possible, at the
+    cost of minor adaptations to the code.
+
+To be completed
 
 .. _command line:
 
@@ -14,43 +28,48 @@ Command-line Usage
 
    gnatprove -P <project_file>.gpr <switches> <optional_list_of_files>
 
-|GNATprove| accepts the following options::
+|GNATprove| accepts the following basic switches::
 
-   --mode=       Main mode
-       detect      Detect and output |SPARK| information (default)
-       force       Output errors for violations of |SPARK| (warn unimplemented)
+   -f            Force recompilation/proving of all units and all VCs
+   -jnnn         Use nnn parallel processes (default: 1)
+   --mode=       Proof mode
+       detect      Detect and output SPARK information (default)
+       force       Output errors for violations of SPARK (warn unimplemented)
        check       Check consistency of contracts
        prove       Prove subprogram contracts and absence of run-time errors
-
-   --report=     Control reporting
+   -q            Be quiet/terse
+   --clean       Remove GNATprove intermediate files, and exit
+   --report=     Output mode
        fail        Report failures to prove VCs (default)
        all         Report all results of proving VCs
        detailed    Report all results of proving VCs, including a reason when
                    not proved
-
    -u            Unique compilation, only prove the given files
    -U            Prove all files of all projects
-   -q            Be quiet/terse
-   -f            Fore recompilation/proving of all units and all VCs
-   -jnnn         Use nnn parallel processes (default: 1)
    -v, --verbose Output extra verbose information
+   --version     Output version of the tool and exit
+   -h, --help    Display usage information
 
-   --pedantic             Use a strict interpretation of the Ada standard
+|GNATprove| accepts the following advanced switches::
+
+   -d, --debug            Debug mode
    --proof=               Proof mode
       normal                Normal mode
       no_wp                 Do not compute VCs, do not call prover
       all_split             Compute all VCs, save them to file, do not call prover
+   --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
-   --timeout=s            Set the timeout for Alt-Ergo in seconds (default: 10)
-   --help                 Display the list of options
+   --timeout=s            Set the prover timeout in seconds (default: 10)
    --limit-line=file:line Limit proofs to the specified file and line
    --limit-subp=file:line Limit proofs to the specified subprogram declared at
                           the location given by file and line
+   --prover=s             Use given prover instead of default Alt-Ergo prover
 
 In modes ``detect`` and ``force``, |GNATprove| does not compute an accurate set
 of global variables read and written in each subprogram. Hence, its detection
-of subprograms in |SPARK| might be slightly more optimistic than the reality. When
-using mode ``check`` or ``prove`` on the contrary, the detection is accurate.
+of subprograms in |SPARK| might be slightly more optimistic than the
+reality. When using mode ``check`` or ``prove`` on the contrary, the detection
+is accurate.
 
 Although ``--report`` has only some effect in modes ``check`` and ``prove``,
 all combinations of options are allowed.
@@ -104,7 +123,8 @@ In modes ``check`` or ``prove`` and report ``all``, |GNATprove| prints on the
 standard output error messages for unproved VCs, and information messages for
 proved VCs.
 
-|GNATprove| always generates :ref:`project statistics` in file ``gnatprove.out``.
+|GNATprove| always generates :ref:`project statistics` in file
+``gnatprove.out``.
 
 For each unit ``<name>``, |GNATprove| generates a :ref:`summary file`
 ``<name>.alfa`` in the sub-directory ``gnatprove`` of the corresponding

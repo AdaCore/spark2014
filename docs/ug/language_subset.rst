@@ -1,141 +1,144 @@
-Definition of |SPARK|
-=====================
+Analyzable Language Subset
+==========================
 
-Rationale
----------
+.. A lot of the material in this chapter is copied from the Introduction of
+   SPARK 2014 RM.
 
-|SPARK| is a subset of Ada 2012 described in the |SPARK| Reference Manual. It is
-intended to be the largest possible subset of Ada amenable to automatic
-proving.
+|SPARK|
+-------
 
-In the context of Ada 2012, aspects are natural means of expressing important
-features such as subprogram contracts or test case definitions, so |SPARK| is
-defined in terms of these Ada 2012 features. For legacy applications, |GNATprove|
-and GNATtest also support other Ada versions (83, 95, 2005), where specific
-GNAT pragmas can be used to replace the important features mentioned above.
+|SPARK| is a programming language and a set of verification tools designed to
+meet the needs of high-assurance software development.  |SPARK| is based on Ada
+2012, both subsetting the language to remove features that defy verification,
+but also extending the system of contracts and "aspects" to support modular,
+formal verification.
 
-|SPARK| is meant to facilitate the expression of functional properties on Ada
-programs, so that these properties can be verified either by testing or by
-formal proof or by a combination thereof. Compared to the existing SPARK
-annotated subset of Ada, |SPARK| is less constraining, but it does not
-allow specifying and verifying data-and-control coupling properties. In
-the absence of functional property definitions, the parts of an Ada program
-that are in the |SPARK| subset can still be proven free of run-time errors.
+|SPARK| is a much larger and more flexible language than its predecessor
+SPARK 2005. The language can be configured to suit a number of application
+domains and standards, from server-class high-assurance systems (such as
+air-traffic management applications), to embedded, hard real-time, critical
+systems (such as avionic systems complying with DO-178C Level A).
 
-|SPARK| is supported in the GNAT compiler, as well as tools GNATtest and
-|GNATprove|, aiming respectively at unit testing and unit proof of Ada
-subprograms.  Annotations that specify the functional behavior of the program
-can be executed, or not, during a run of the program, and a failure to match
-the expected behavior results then in an error being reported at run time
-through the exception mechanism. The tool GNATtest automates the generation of
-a test harness and the verification that a user-provided test procedure
-implements a specified formal test-case. The same annotations can be analyzed
-statically with |GNATprove| to show that the program is free from run-time errors
-and that it follows its expected behavior. A crucial feature of |GNATprove| is
-that it interprets annotations exactly like they are interpreted at run time
-during tests. In particular, their executable semantics includes the
-verification of run-time checks, which can be verified statically with
-|GNATprove|.  |GNATprove| can perform additional verifications on the specification
-of the expected behavior itself, and its correspondence to the code.
+|SPARK| is supported by various tools in the |GNAT Pro| toolsuite:
 
-Currently, |SPARK| is only concerned with sequential execution of subprograms. A
-future version of |SPARK| could include support of tasking with restrictions
-similar to the ones found in Ravenscar or RavenSPARK. The main features from
-Ada absent from |SPARK| are: exceptions, pointers (access types) and controlled
-types. Each of these features has the potential to make automatic
-formal verification very difficult, hence their rejection. Note that, in many
-cases, ad-hoc data structures based on pointers can be replaced by the use
-of standard Ada containers (vectors, lists, sets, maps, etc.) Although the
-implementation of standard containers is not in |SPARK|, we have defined a
-slightly modified version of these targeted at formal verification. These formal
-containers are implemented in the GNAT standard library. These alternative
-containers are typical of the tradeoffs implicit in |SPARK|: favor automatic formal
-verification as much as possible, at the cost of minor adaptations to the code.
+* the GNAT compiler
+* GNATtest tool for unit testing harness generation
+* |GNATprove| tool for formal program verification
 
-|SPARK| is still evolving, so that features not yet supported could be so in the
-future. However, the definition and evolution of |SPARK| should respect the
-following principles:
+A user can specify in |SPARK| the functional behavior of a program, and get
+the following results from the above tools:
 
-1. Annotations are free of side effects
+* GNAT warnings on suspicious contracts and quantifiers;
+* exceptions being raised at run time when an assertion fails, if the program
+  is compiled with appropriate switches;
+* a unit testing harness taking into account subprogram contracts, generated by
+  GNATtest;
+* formal guarantees that a set of subprograms are free from run-time errors and
+  respect their contracts, provided by |GNATprove|.
 
-No writes to global variables are allowed in annotations (contracts,
-assertions, etc.). The possibility of run-time errors in annotations should be
-detected in formal proofs.
+A crucial feature of |GNATprove| is that it interprets annotations exactly like
+they are interpreted at run time during tests. In particular, their executable
+semantics includes the verification of run-time checks, which can be verified
+statically with |GNATprove|.  |GNATprove| can perform additional verifications
+on the specification of the expected behavior itself, and its correspondence to
+the code.
 
-2. Code is unambiguous
+For more details, see the |SPARK| Reference Manual.
 
-No behavior should depend on compiler choices (parameter passing, order of
-evaluation of expressions, etc.)
+Principal Language Restrictions
+-------------------------------
 
-3. Global effects of subprograms are generated
+To facilitate formal verification, |SPARK| enforces a number of global
+simplifications to Ada 2012. The most notable simplifications are:
 
-No manual annotations are needed for variables read and written by subprograms,
-contrary to SPARK, JML, ACSL, Spec#. This requires all subprograms called to be
-implemented.
+- The use of access types and allocators is not permitted.
 
-4. Subprograms in |SPARK| / not in |SPARK| can be mixed
+- All expressions (including function calls) are free of side-effects.
 
-Provable and unprovable code can be combined at a fine-grain level. Provable
-code can call unprovable code, and vice-versa.
+- Aliasing of names is not permitted.
 
-Features of Ada for object-oriented programming and generic programming are
-included in |SPARK|: tagged types, dispatching, generics. Restrictions in |SPARK| do
-not target increase in readability, so use-clause, overloading and renamings
-are allowed for example. Also restrictions in |SPARK| do not constrain control
-flow, so arbitrary exits from loops and returns in subprograms are
-allowed. Note that, if desired, these restrictions can be detected with a
-coding style checker like GNATcheck.
+- The goto statement is not permitted.
 
-Combining |SPARK| and Full Ada Code
------------------------------------
+- The use of controlled types is not permitted.
 
-A subprogram is either:
+- Tasking is not currently permitted.
 
-* not in |SPARK|, when its specification is not in |SPARK|;
+- Raising and handling of exceptions is not permitted.
 
-* fully in |SPARK|, when its specification and implementation are in |SPARK| (in |SPARK| for short);
+We describe a program unit or language feature as being "in |SPARK|" if it
+complies with the restrictions required to permit formal verification.
+Conversely, a program unit language feature is "not in |SPARK|" if it does not
+meet these requirements, and so is not amenable to formal verification. Within
+a single unit, features which are "in" and "not in" |SPARK| may be mixed at a
+fine level. For example, the following combinations may be typical:
 
-* partially in |SPARK|, when its specification is in |SPARK| and its implementation is not in |SPARK|.
+- Package specification in |SPARK|. Package body entirely not in |SPARK|.
 
-For a subprogram specification to be in |SPARK|, all the types of its parameters
-(and result for a function) must be in |SPARK|, and all expressions mentioned in
-its contract must be in |SPARK|. For a subprogram implementation to be in |SPARK|,
-its specification must be in |SPARK|, all local declarations must be in |SPARK|
-(types, variables, subprograms, etc.), all expressions and statements mentioned
-in its body must be in |SPARK|, and finally all calls in its body must be to
-subprograms at least partially in |SPARK|.
+- Visible part of package specification in |SPARK|. Private part and body not
+  in |SPARK|.
 
-A consequence of this definition is that a subprogram fully in |SPARK| can only
-call subprograms that are themselves partially or fully in |SPARK|. A subprogram
-partially or not in |SPARK| can call any kind of subprogram.
+- Package specification in |SPARK|. Package body almost entirely in |SPARK|,
+  with a small number of subprogram bodies not in |SPARK|.
 
-Most formal verification activities performed with |GNATprove| address
-subprograms that are fully in |SPARK|. Some activities, which apply to the
-contract of the subprogram only, also address subprograms that are partially in
-|SPARK|.
+- Package specification in |SPARK|, with all bodies imported from another
+  language.
 
-.. comment: don't we need something about "alfa friendlyness" here?
+- Package specification contains a mixture of declarations which are in |SPARK|
+  and not in |SPARK|.  The latter declarations are only visible and usable from
+  client units which are not in |SPARK|.
 
-Automatic Detection of Subprograms in |SPARK|
----------------------------------------------
+Such patterns are intended to allow for mixed-language programming, and the
+development of programs that mix formal verification and more traditional
+testing.
 
-|GNATprove| automatically detects which subprograms are fully in |SPARK|, and which
-subprograms are either not in |SPARK| or only partially in |SPARK|. Thus, the user
-does not have to annotate the code to provide this information. However, the
-user can review the results of this automatic detection, and require that some
-subprograms are fully in |SPARK| (leading to an error if not).
+Constructive and Retrospective Verification Modes
+-------------------------------------------------
+
+SPARK 2005 strongly favoured the *constructive* verification style - where all
+program units required contracts on their specifications.  These
+contracts had to be designed and added at an early stage to assist modular
+verification, and then maintained by the user as a program evolved.
+
+In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of
+program construction and verification, where useful forms of verification can
+be achieved with code that complies with the core |SPARK| restrictions, but
+otherwise does not have any contracts.  In this mode, implicit contracts can be
+computed from the bodies of units, and then used in the analysis of other
+units, and so on.  These implicit contracts can be "promoted" by the user to
+become part of the specification of a unit, allowing the designer to move from
+the retrospective to the constructive mode as a project matures.  The
+retrospective mode also allows for the verification of legacy code that was not
+originally designed with the |SPARK| contracts in mind.
+
+|GNATprove| supports both approaches. |GNATprove| can detect automatically that
+a subprogram spec or body is in |SPARK|, and it can compute the data
+dependences of subprograms both inside and outside of |SPARK|.
+
+.. _project statistics:
+
+Project Statistics
+^^^^^^^^^^^^^^^^^^
+
+Based on the automatic detection of which subprograms are in |SPARK|,
+|GNATprove| generates global project statistics in file ``gnatprove.out``. The
+statistics describe:
+
+* what percentage and number of subprograms are in |SPARK|
+* what percentage and number of |SPARK| subprograms are not yet supported
+* what are the main reasons for subprograms not to be in |SPARK|
+* what are the main reasons for subprograms not to be yet supported in |SPARK|
+* units with the largest number of subprograms in |SPARK|
+* units with the largest number of subprograms not in |SPARK|
 
 .. _summary file:
 
 Summary File
 ^^^^^^^^^^^^
 
-The information of which subprograms are fully in |SPARK| and which are not, as
-well as whether the features used in subprograms are already implemented or not,
-is stored in a file with extension .alfa for review by the user, and to produce
-global :ref:`project statistics`.
-
-|GNATprove| outputs which features not in |SPARK| are used (using parentheses):
+The information of which subprogram specs and bodies are in |SPARK| is stored
+in a file with extension ``.alfa`` for review by the user, and to produce
+global :ref:`project statistics`. |GNATprove| outputs the reasons for which a
+subprogram is not in |SPARK| (using parentheses):
 
 * access: access types and dereferences;
 * assembly language: assembly language;
@@ -143,36 +146,14 @@ global :ref:`project statistics`.
 * dynamic allocation: dynamic allocation;
 * exception: raising and catching exceptions;
 * forward reference: forward reference to an entity;
-* goto: goto;
+* goto: use of *goto*;
 * indirect call: indirect call;
 * tasking: tasking;
-* unchecked conversion: unchecked conversion;
+* unchecked conversion: use of ``Unchecked_Conversion``;
 * impure function: functions which write to variables other than parameters;
 * recursive call: forbidden types of recursive calls, e.g. in contracts;
 * uninitialized logic expr: expression which should be fully initialized;
 * unsupported construct: any other unsupported construct.
-
-|GNATprove| outputs which features in |SPARK| but not yet implemented are used
-[using brackets]:
-
-* aggregate: aggregate extension;
-* arithmetic operation: not yet implemented arithmetic operation;
-* attribute: not yet implemented attribute;
-* concatenation: array concatenation;
-* container: formal container;
-* dispatch: dispatching;
-* expression with action: expression with action;
-* multi dim array: multi-dimensional array of dimention > 4;
-* pragma: not yet implemented pragma;
-* representation clause: representation clause;
-* tagged type: tagged type;
-* type invariant;
-* type predicate;
-* operation on arrays: rarely used operation on arrays, such as boolean operators;
-* iterators: loops with iterators;
-* class wide types: class wide types;
-* interfaces: interfaces;
-* not yet implemented: any other not yet implemented construct.
 
 As an example, consider the following code:
 
@@ -216,30 +197,22 @@ As an example, consider the following code:
 
 On this code, |GNATprove| outputs the following information in file p.alfa::
 
-    -+ p__set p.adb:2 (access)
-    -+ p__p0__get p.adb:10 (access)
-    ++ p__p0__p1 p.adb:15
-    -+ p__p0 p.ads:3 (access)
+   -+ set p.adb:2 (access)
+   -+ get p.adb:10 (access)
+   ++ p1 p.adb:15
+   -+ p0 p.ads:3 (access)
 
-The first character denotes whether the subprogram body is fully in |SPARK| (+),
-not in |SPARK| (-) or not yet implemented in |SPARK| (*). The second character
-follows the same categories for the subprogram spec. The name that follows is a
-unique name for the subprogram. The location of the subprogram is given next
-with its file and line. Subprograms not in |SPARK| may be followed by a set of
-features used that make it not |SPARK|, given in parentheses. Subprograms not in
-|SPARK| or not yet implemented in |SPARK| may be followed by a set of features not
-yet implemented, given in brackets, whose implementation would make the
-subprogram in |SPARK|.
+The first character denotes whether the subprogram body is in |SPARK| (+), not
+in |SPARK| (-) or not yet implemented (*). The second character follows the
+same categories for the subprogram spec. The name that follows is a unique name
+for the subprogram. The location of the subprogram is given next with its file
+and line. Non-|SPARK| features used are given in parentheses. Features not yet
+implemented are given in brackets.
 
-In the example above, P.Set (unique name: p__set) and P.P0.Get (unique name:
-p__p0__get) are both partially in |SPARK| because their body both contain pointer
-dereferences. P.P0.P1 (unique name: p__p0__p1) is fully in |SPARK|. Since P.Set is
-partially in |SPARK| and defined as a local subprogram of P.P0, P.P0 is partially
-in |SPARK|.
-
-The purpose of the additional information on features not yet implemented is to
-allow users to experiment and see which features are more beneficial in their
-context, in order to prioritize efficiently their implementation.
+In the example above, ``Set`` and ``Get`` have a spec in |SPARK|, but not their
+body, because it contains a pointer dereference.  Since ``Set`` is a local
+subprogram of ``P0``, the body of ``P0`` is not in |SPARK| either. ``P1`` body
+is in |SPARK|.
 
 User-specified Compliance
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -303,67 +276,68 @@ On the following example:
 
 The error messages distinguish constructs not in |SPARK| (like a pointer
 dereference) from constructs not yet implemented. Notice that no error is given
-for the dereference in P.P0.Get, as another pragma Annotate in that subprogram
-specifies that formal proof should not be done on this subprogram.
+for the dereference in ``Get``, as another pragma ``Annotate`` in that
+subprogram specifies that formal proof should not be done on this subprogram.
 
-.. _project statistics:
+Combining Formal Verification and Testing
+-----------------------------------------
 
-Project Statistics
-------------------
+There are common reasons for combining formal verification on some part
+of a codebase and testing on the rest of the codebase:
 
-Based on the generated :ref:`summary file` for each source unit, |GNATprove|
-generates global project statistics in file ``gnatprove.out``. The statistics
-describe:
+#. Formal verification is only applicable to a part of the codebase. For
+   example, it might not be possible to apply formal verification to Ada code
+   that is not in |SPARK|.
 
-* what percentage and number of subprograms are in |SPARK|
-* what percentage and number of |SPARK| subprograms are not yet supported
-* what are the main reasons for subprograms not to be in |SPARK|
-* what are the main reasons for subprograms not to be yet supported in |SPARK|
-* units with the largest number of subprograms in |SPARK|
-* units with the largest number of subprograms not in |SPARK|
+#. Formal verification only gives strong enough results on a part of the
+   codebase. This might be because the desired properties cannot be expressed
+   formally, or because proof of these desired properties cannot be
+   sufficiently automated.
 
-A Non-ambiguous Subset of Ada
------------------------------
+#. Formal verification is only cost-effective on a part of the codebase. (And
+   it may be more cost-effective than testing on this part of the codebase.)
 
-The behaviour of a program in |SPARK| should be unique, both in order to
-facilitate formal verification of properties over these programs, and to get
-the additional guarantee that a formally verified |SPARK| program always behaves
-the same.
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase.
 
-Sources of ambiguity in sequential Ada programs are:
+Contracts on subprograms provide a natural boundary for this combination. If a
+subprogram is proved to respect its contract, it should be possible to call it
+from a tested subprogram. Conversely, formal verification of a subprogram
+(including absence of run-time errors and contract checking) depends on called
+subprograms respecting their own contracts, whether these are verified by
+formal verification or testing.
 
-* order of evaluation of sub-expressions, which may interact with writes to
-  globals through calls;
-* evaluation strategy for arithmetic expressions, which may result in an
-  overflow check passing or failing;
-* bounds of base scalar types;
-* compiler permissions, such as the permission for the compiler to compute the
-  right result of an arithmetic expression even if a naive computation would
-  raise an exception due to overflow.
+Formal verification works by making some assumptions, and these assumptions
+should be shown to hold even when formal verification and testing are
+combined. Certainly, formal verification cannot guarantee the same
+properties when part of a program is only tested, as when all of a program is
+proved. The goal then, when combining formal verification and testing, is to
+reach a level of confidence as good as the level reached by testing alone.
 
-In |SPARK|, none of these sources of ambiguity is possible.
+|GNAT Pro| proposes a combination of formal verification and testing for
+|SPARK| based on |GNATprove| and GNATtest. See :ref:`proof and test` for
+details.
 
-No Writes to Globals in Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Implementation-Defined Behavior
+-------------------------------
 
-In Ada, a sub-expression can write to a global variable through a call. As the
-order of evaluation of sub-expressions in an expression (for example, operands
-of an arithmetic operation or arguments of a call) is not specified in Ada, the
-time of this write may have an influence on the value of the expression. In
-|SPARK|, functions cannot write to globals, which removes this source of
-ambiguity.
+A |SPARK| program is guaranteed to be unambiguous, so that formal verification
+of properties is possible. However, some behaviors may depend on the compiler
+used. By default, |GNATprove| adopts the same choices as the GNAT
+compiler. |GNATprove| also supports other compilers by providing special
+switches:
+
+* for specifying the target configuration (coming soon)
+* ``--pedantic`` for warning about possible implementation-defined behavior
 
 Parenthesized Arithmetic Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In Ada, non-parenthesized arithmetic operations could be re-ordered by the
 compiler, which may result in a failing computation (due to overflow checking)
-becoming a successful one, and vice-versa. In |SPARK|, we adopt by default the
-choice made by GNAT which is to evaluate all expressions left-to-right, except
-when option ``--pedantic`` is used, in which case a warning is emitted for
-every operation that could be re-ordered.
-
-More specifically, a warning is emitted when option ``--pedantic`` is set on:
+becoming a successful one, and vice-versa. By default, |GNATprove| evaluates
+allexpressions left-to-right, like GNAT. When the switch ``--pedantic`` is
+used, a warning is emitted for every operation that could be re-ordered:
 
 * any operand of a binary adding operation (+,-) that is itself a binary adding
   operation;
@@ -374,18 +348,17 @@ Compiler Permissions
 ^^^^^^^^^^^^^^^^^^^^
 
 Ada standard defines various ways in which a compiler is allowed to compute a
-correct result for a computation instead of raising a run-time error. In |SPARK|,
-we adopt by default the choices made by GNAT on the platform, except when
-option ``--pedantic`` is used, in which case we reject all such permissions
-and interpret all computations with the strictest meaning.
+correct result for a computation instead of raising a run-time error. By
+default, |GNATprove| adopts the choices made by GNAT on the platform.  When the
+switch ``--pedantic`` is used, |GNATprove| interprets all computations with the
+strictest meaning guaranteed by Ada Reference Manual.
 
 For example, the bounds of base types for user-defined types, which define
 which computations overflow, may vary depending on the compiler and host/target
 architectures. With option ``--pedantic``, all bounds should be set to their
-minimum range
-guaranteed by the Ada standard (worst case). For example, the following type
-should have a base type ranging from -10 to 10 (standard requires a symmetric
-range with a possible extra negative value)::
+minimum range guaranteed by the Ada standard (worst case). For example, the
+following type should have a base type ranging from -10 to 10 (standard
+requires a symmetric range with a possible extra negative value)::
 
     type T is 1 .. 10;
 
@@ -393,30 +366,39 @@ This other type should have a base type ranging from -10 to 9::
 
     type T is -10 .. 1;
 
-The bounds of standard scalar types are still defined by the GNAT compiler
-for every host/target architecture, even with option ``--pedantic``.
+Language Features Not Yet Supported
+-----------------------------------
 
-Pure Contract Specifications
-----------------------------
-
-Contract specifications and other assertions should have a pure logical meaning
-and no visible effect on the computation, aside from possibly raising an
-exception at run time when ill-defined (run-time error) or invalid (assertion
-violation). This is guaranteed in |SPARK| by the restriction that functions should
-not perform writes to global variables since a function call is the only
-possible way of generating side effects within an expression.
-
-Features Not Yet Implemented
-----------------------------
-
-The major features not yet implemented are:
+The major features not yet supported are:
 
 * OO programming: tagged types, dispatching
 * formal containers
 * invariants on types (invariants and predicates)
 
-Other important features not yet implemented are:
+The prototype version of |GNATprove| outputs in the :ref:`summary file` which
+features from |SPARK| are not yet supported and used in the program [using
+brackets]:
 
-* discriminant / variant records
-* elaboration code
-* attribute ``'Loop_Entry``
+* aggregate: aggregate extension;
+* arithmetic operation: not yet implemented arithmetic operation;
+* attribute: not yet implemented attribute;
+* concatenation: array concatenation;
+* container: formal container;
+* dispatch: dispatching;
+* expression with action: expression with action;
+* multi dim array: multi-dimensional array of dimention > 4;
+* pragma: not yet implemented pragma;
+* representation clause: representation clause;
+* tagged type: tagged type;
+* type invariant;
+* type predicate;
+* operation on arrays: rarely used operation on arrays, such as boolean
+  operators;
+* iterators: loops with iterators;
+* class wide types: class wide types;
+* interfaces: interfaces;
+* not yet implemented: any other not yet implemented construct.
+
+The purpose of the additional information on features not yet supported is to
+allow users to experiment and see which features are more beneficial in their
+context, in order to prioritize efficiently their implementation.

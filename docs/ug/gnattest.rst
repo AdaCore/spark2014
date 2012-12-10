@@ -1,3 +1,5 @@
+.. _proof and test:
+
 Combining |GNATprove| with GNATtest
 ===================================
 
