@@ -464,7 +464,7 @@ Ident: REQ-CC59
 Section: 
 Page/para: page 27, 5., last bullet
 Comment: either is an indexed component: so a(1) and a(1) are independent?
-Status:
+Status: No longer relevant as now only entire objects can be referenced in the relevant aspects. [JIB]
 
 
 Ident: REQ-CC60
@@ -482,7 +482,8 @@ Comment: why is the numbering of paragraphs reset to 1?
 this paragraph should happen before since it is used by the previous
 ones... generally speaking the whole thing is difficult to understand
 until you get to the examples on page 29/30
-Status:
+Status: This section has now been removed and the detail subsumed within the referencing sections. [JIB]
+        
 
 
 Ident: REQ-CC62
@@ -490,7 +491,7 @@ Section:
 Page/para: page 27, 3.
 Comment: why can't an entire object have a "out" or "proof" effective mode? That
 doesn't seem obvious...
-Status:
+Status: No longer relevant as now only entire objects can be referenced in the relevant aspects. [JIB]
 
 
 Ident: REQ-CC63

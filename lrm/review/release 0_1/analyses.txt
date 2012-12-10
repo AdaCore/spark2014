@@ -89,6 +89,7 @@ Comment:
   When the global/flow contract is required for analysis of another
   subprogram (e.g. to implement the above comparison), the user-provided
   contract is used if it exists, otherwise the implicit one is used.
+Action: Detail to be added to Section 1.
 Status: 
 
 
@@ -156,7 +157,7 @@ Page/para: 28
 Comment: The todo mentioning a possible executable semantics for the
   conditional modes is probably much too ambitious. I'd just remove it for now.
   Same for the similar toto on param aspect.
-Status: 
+Status: No longer relevant as the conditional modes and param aspect have been removed. [JIB] 
 
 
 Ident: AN-FS11
@@ -237,7 +238,7 @@ Ident: AN-FS19
 Section: 7.1.2
 Page/para: verification rules
 Comment: I am not sure what flow analysis is meant to check here.
-Status: 
+Status: Comments added to make clear when the checks are carried out. [JIB] 
 
 
 Ident: AN-FS20
@@ -247,7 +248,9 @@ Comment: I note that in a generic or package in a body information can
   flow into the initialisation from either the generic parameters or the
   state of the enclosing subprogram. We must be able to capture this in
   analysis.
-Status: 
+Action: TJJ to check that the treatment of generics is sufficient.
+Status: Package-level Depends aspect gives this for packages; see Action in relation
+        to generics.
 
 
 Ident: AN-FS21
