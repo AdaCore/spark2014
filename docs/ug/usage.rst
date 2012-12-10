@@ -443,7 +443,7 @@ sufficient to spot a missing assertion. To further assist the user, we plan to
 add to this path some information about the values taken by variables from a
 counterexample.
 
-.. figure:: show_path.jpg
+.. figure:: static/show_path.jpg
    :align: center
    :alt: GPS displays a path in the source code panel by coloring in blue
          the background of those lines in the path.
