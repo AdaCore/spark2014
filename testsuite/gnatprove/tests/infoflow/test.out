@@ -1,13 +1,13 @@
 infoflow.adb:103:34: index check not proved
-infoflow.adb:103:43: loop invariant preservation not proved, requires H_V1 (K) = H_V1'loop_entry
+infoflow.adb:103:43: loop invariant initialization not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:103:49: index check not proved
 infoflow.adb:103:64: overflow check not proved
 infoflow.adb:104:46: overflow check not proved
 infoflow.adb:105:34: index check not proved
-infoflow.adb:105:43: loop invariant initialization not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:105:49: index check not proved
 infoflow.adb:105:64: overflow check not proved
 infoflow.adb:106:36: index check not proved
+infoflow.adb:106:45: loop invariant preservation not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:106:51: index check not proved
 infoflow.adb:107:21: index check not proved
 infoflow.adb:108:13: index check not proved
@@ -39,12 +39,12 @@ infoflow.adb:136:14: range check not proved
 infoflow.adb:140:35: division check not proved
 infoflow.adb:140:35: overflow check not proved
 infoflow.adb:140:43: index check not proved
+infoflow.adb:140:49: postcondition not proved, requires H (K) = H'old
 infoflow.adb:140:52: index check not proved
 infoflow.adb:140:60: overflow check not proved
 infoflow.adb:140:68: division check not proved
 infoflow.adb:140:68: overflow check not proved
 infoflow.adb:141:26: index check not proved
-infoflow.adb:141:32: postcondition not proved, requires H (K) = H'old
 infoflow.adb:141:35: index check not proved
 infoflow.adb:141:43: overflow check not proved
 infoflow.adb:141:51: division check not proved
@@ -54,11 +54,11 @@ infoflow.adb:147:22: info: division check proved
 infoflow.adb:147:22: range check not proved
 infoflow.adb:150:45: index check not proved
 infoflow.adb:150:51: loop invariant initialization not proved, requires H (K) = H'loop_entry
-infoflow.adb:150:51: loop invariant preservation not proved, requires H (K) = H'loop_entry
 infoflow.adb:150:54: index check not proved
 infoflow.adb:150:69: overflow check not proved
 infoflow.adb:151:43: overflow check not proved
 infoflow.adb:152:34: index check not proved
+infoflow.adb:152:40: loop invariant preservation not proved, requires H (K) = H'loop_entry
 infoflow.adb:152:43: index check not proved
 infoflow.adb:152:58: overflow check not proved
 infoflow.adb:153:36: index check not proved
@@ -85,11 +85,11 @@ infoflow.adb:179:23: index check not proved
 infoflow.adb:181:22: overflow check not proved
 infoflow.adb:183:36: index check not proved
 infoflow.adb:183:45: loop invariant initialization not proved, requires A_V1 (M) = B_V1 (M)
-infoflow.adb:183:45: loop invariant preservation not proved, requires A_V1 (M) = B_V1 (M)
 infoflow.adb:183:47: index check not proved
 infoflow.adb:185:50: overflow check not proved
 infoflow.adb:185:60: overflow check not proved
 infoflow.adb:186:36: index check not proved
+infoflow.adb:186:45: loop invariant preservation not proved, requires A_V1 (M) = C_V1 (M - K_1)
 infoflow.adb:186:47: index check not proved
 infoflow.adb:186:55: overflow check not proved
 infoflow.adb:187:10: index check not proved
