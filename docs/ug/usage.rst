@@ -362,12 +362,6 @@ function ``Move`` below, one has to write a loop invariant referring to
       end loop;
    end Move;
 
-Note that |GNATprove| does not yet support the use of attribute ``'Loop_Entry``,
-which can be replaced sometimes by the use of attribute ``'Old`` referring to
-the value of a variable at subprogram entry. Ultimately, uses of ``'Old``
-outside of postconditions will be deprecated, once attribute ``'Loop_Entry`` is
-supported.
-
 Quantified Expressions
 ^^^^^^^^^^^^^^^^^^^^^^
 
