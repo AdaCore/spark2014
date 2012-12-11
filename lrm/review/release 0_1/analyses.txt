@@ -231,7 +231,7 @@ Ident: AN-JK18
 Section: 7.1.1
 Page/para:
 Comment: Remove comments about "good practice"
-Status: 
+Status: Comment removed. [JIB]
 
 
 Ident: AN-FS19

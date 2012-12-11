@@ -183,7 +183,7 @@ analysis as there were cases where it would have been much better if we
 could have said that a function derives its return value from some of
 its imports and derives null from other imports. I can expand on that if
 required.
-Status: 
+Status: The syntax allows for this and an example is given of this case. [JIB]
 
 Ident: INSTRUCT-RPM24
 Section: 6.3.6

@@ -57,7 +57,7 @@ are in |SPARK|.
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| provides extra aspects, the Global and Dependency
+|SPARK| provides extra aspects, the Global and Depends
 aspects to strengthen a subprogram declaration so that constructive,
 modular program analysis may be performed.  With the extra aspects the
 body of a subprogram does not have to be implemented in order for
@@ -69,7 +69,7 @@ way of formally specifying the required functionality of a subprogram.
 
 .. centered:: **Legality Rules**
 
-#. The Global, Dependency and Contract_Cases aspects may be
+#. The Global, Depends and Contract_Cases aspects may be
    specified for a subprogram with an ``aspect_specification``.  More
    specifically, these aspects are allowed in the same
    contexts as a Pre or Post aspect.
@@ -238,8 +238,8 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` of a subprogram shall be stand alone variable object, 
-   that is, it is not part of a larger object, or a state abstraction. 
+#. A ``global_item`` of a subprogram shall be a stand alone variable object, 
+   that is, it is not part of a larger object, or it shall be a state abstraction. 
 
 #. Each ``mode_selector`` shall not occur more than once in a single
    ``global_specification``.
@@ -251,7 +251,8 @@ follow the grammar of ``global_specification``
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its ``global_aspect``.
 
-#. A ``global_item`` shall occur at most once in a single Global aspect.
+#. The object denoted by a given ``global_item`` in a single Global aspect shall
+   not be denoted by any other ``global_item`` in that Global aspect. 
 
 #. A global item occurring in a Global aspect of a subprogram aspect
    specification shall not have the same ``defining_identifier`` as a formal
@@ -336,15 +337,17 @@ There are no dynamic semantics associated with a Global.
                    Proof  => (T, U));
                   -- A global aspect with all types of global specification
 
-Dependency Aspects
-~~~~~~~~~~~~~~~~~~
+.. _depends_aspect:
 
-A Dependency aspect defines a *dependency relation* for a
+Depends Aspects
+~~~~~~~~~~~~~~~
+
+A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The dependency relation is used in information flow
-analysis. Dependency aspects are optional and are simple specifications.
+analysis. Depends aspects are optional and are simple specifications.
 
-A Dependency aspect for a subprogram specifies for each output every input on
+A Depends aspect for a subprogram specifies for each output every input on
 which it depends. The meaning of X depends on Y in this context is that the
 final value of output, X, on the completion of the subprogram is at least partly
 determined from the initial value of input, Y and is written X => Y. As in UML,
@@ -356,23 +359,23 @@ using a **null**, e.g., X => **null**.  An output may be
 self-dependent but not dependent on any other input.  The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
-The functional behaviour of a subprogram is not specified by the Dependency
-aspect but, unlike a postcondition, the Dependency aspect, if it is given, has
+The functional behaviour of a subprogram is not specified by the Depends
+aspect but, unlike a postcondition, the Depends aspect, if it is given, has
 to be complete in the sense that every input and output of the subprogram must
-appear in the Dependency aspect.
+appear in the Depends aspect.
 
-The Dependency Aspect is introduced by an ``aspect_specification`` where
+The Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
-the grammar of ``dependency_relation`` given below.
+the grammar of ``depends_relation`` given below.
 
 
 .. centered:: **Syntax**
 
 ::
 
-   dependency_relation    ::= null
-                            | (dependency_clause {, dependency_clause})
-   dependency_clause      ::= output_list =>[+] input_list
+   depends_relation       ::= null
+                            | (depends_clause {, depends_clause})
+   depends_clause         ::= output_list =>[+] input_list
    output_list            ::= output
                             | (output {, output})
                             | null
@@ -388,7 +391,7 @@ where
 
 .. centered:: **Legality Rules**
 
-#. Every ``input`` and ``output`` of a ``dependency relation`` of a Dependency
+#. Every ``input`` and ``output`` of a ``depends_relation`` of a Depends
    aspect of a subprogram is a state abstraction, a whole object (not part of 
    a containing object) or a formal parameter of the subprogram.
 
@@ -398,20 +401,22 @@ where
    ``input`` and an ``output`` shall have a mode of **in out**.]
    
 #. For the purposes of determining the legality of a Result
-   ``attribute_reference``, a ``dependency_relation`` is considered to be
+   ``attribute_reference``, a ``depends_relation`` is considered to be
    a postcondition of the function, if any, to which the enclosing
    ``aspect_specification`` applies.
 
 #. There can be at most one ``output_list`` which is a **null** symbol
    and if it exists it must be the ``output_list`` of the last
-   ``dependency_clause`` in the ``dependency_relation``.  An
+   ``depends_clause`` in the ``depends_relation``.  An
    ``input`` which is in an ``input_list`` of a **null** export may
    not appear in another ``input_list`` of the same
-   ``dependency_relation``.
+   ``depends_relation``.
 
-#. Every ``output`` in an ``output_list`` must be distinct.   
+#. The object denoted by a given ``output`` in an ``output_list`` shall
+   not be denoted by any other ``output`` in that ``output_list``.   
 
-#. Every ``input`` in an ``input_list`` must be distinct.
+#. The object denoted by a given ``input`` in an ``input_list`` shall
+   not be denoted by any other ``input`` in that ``input_list``.     
 
 #. Every ``output`` of the subprogram shall appear in exactly one
    ``output_list``.
@@ -424,22 +429,22 @@ where
 #. The grammar terms ``input`` and ``output`` have the meaning given to input
    and output given in :ref:`global-aspect`.
    
-#. A Dependency aspect of a subprogram with a **null** ``dependency_relation``
+#. A Depends aspect of a subprogram with a **null** ``depends_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.  
    [From an information flow analysis viewpoint it is a 
    null operation (a no-op).]
    
-#. A ``dependency_clause`` has the meaning that the final value of every 
+#. A ``depends_clause`` has the meaning that the final value of every 
    ``output`` in the ``output_list`` is dependent on the initial value of every 
    ``input`` in the ``input_list``.
    
-#. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
+#. A ``depends_clause`` with a "+" symbol in the syntax ``output_list`` =>+
    ``input_list`` means that each ``output`` in the ``output_list`` has a
    *self-dependency*, that is, it is dependent on itself. 
    [The text (A, B, C) =>+ Z is shorthand for 
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
-#. A ``dependency_clause`` with a **null** ``input_list`` means that the final
+#. A ``depends_clause`` with a **null** ``input_list`` means that the final
    value of each ``output`` in the ``output_list`` does not depend on any
    ``input``, other than itself, if the ``output_list`` =>+ **null**
    self-dependency syntax is used.
@@ -450,14 +455,14 @@ where
    [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
    and calling of subprograms whose implementation is not in |SPARK|.]
 
-#. A function which does not have an explicit Dependency aspect
-   is assumed to have the ``dependency_relation`` 
+#. A function which does not have an explicit Depends aspect
+   is assumed to have the ``depends_relation`` 
    that its result is dependent on all of its inputs.  
-   [Generally a Dependency aspect is not required for functions.]
+   [Generally a Depends aspect is not required for functions.]
    
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with a ``dependency_aspect``
+There are no dynamic semantics associated with a Depends aspect
 as it is used purely for static analysis purposes and is not executed.
 
 
@@ -498,13 +503,13 @@ as it is used purely for static analysis purposes and is not executed.
                      C     =>+ Y,
                      D     =>+ null);
    -- Here globals are used rather than parameters and global items may appear
-   -- in the dependency aspect as well as formal parameters.
+   -- in the Depends aspect as well as formal parameters.
 
    function F (X, Y : Integer) return Integer
    with Global  => G,
         Depends => (F'Result => (G, X),
                     null     => Y);
-   -- Dependency aspects are only needed for special cases like here where the
+   -- Depends aspects are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
 
@@ -639,52 +644,52 @@ below should be satisfied by the implementation of its body.
    it does not have a separate declaration.
 
 
-Dependency Aspects
-~~~~~~~~~~~~~~~~~~
+Depends Aspects
+~~~~~~~~~~~~~~~
 
 If a subprogram does not have a separate declaration its body or body
-stub may have a ``dependency_aspect`` in its aspect specification
-where the same rules as for a ``dependency_aspect`` in a subprogram
-declaration apply.  When a subprogram has a ``dependency_aspect``
+stub may have a Depends aspect in its aspect specification
+where the same rules as for a Depends aspect in a subprogram
+declaration apply.  When a subprogram has a Depends aspect
 either in its declaration or its body or body stub the rules and
 semantics given below should be satisfied by the implementation of its
 body.
 
-If the subprogram has a ``refined_dependency_aspect`` (see
+If the subprogram has a Refined_Depends aspect (see
 :ref:`refined-dependency-aspect`), this has to be checked for consistency
-with the ``dependency_aspect`` and influences the rules for checking the
+with the Depends aspect and influences the rules for checking the
 implementation of its body as described below.
 
 
 .. centered:: **Legality Rules**
 
 #. A subprogram body or body stub may only have a
-   ``dependency_aspect`` if it does not have a separate declaration.
+   Depends aspect if it does not have a separate declaration.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
 
 #. A dependency relation D' is synthesised from the body of a
-   subprogram P (if it exists). if P has a ``dependency_aspect`` and:
+   subprogram P (if it exists). if P has a Depends aspect and:
 
-   * has ``refined_dependency_aspect`` then D' is compared with the
-     ``refined_dependency_aspect`` any differences reported; or
-   * has a ``dependency_aspect`` but not a
-     ``refined_dependency_aspect`` when one is required due to state
+   * has a Refined_Depends aspect then D' is compared with the
+     Refined_Depends aspect any differences reported; or
+   * has a Depends aspect but not a
+     Refined_Depends aspect when one is required due to state
      refinement, then D' is taken to be the
-     ``refined_dependency_aspect``.  Using the
+     Refined_Depends aspect.  Using the
      ``refined_state_aspect`` the consistency between D' and the
-     ``dependency_aspect`` of P is checked and any inconsistencies,
+     Depends aspect of P is checked and any inconsistencies,
      reported using the rules given in
      :ref:`refined-dependency-aspect` ; or
-   * has a ``dependency_aspect`` and does not require a
-     ``refined_dependency_aspect``, then D' is compared directly with
-     the ``dependency_aspect`` of P and any differences reported; or
-   * does not have a ``dependency_aspect`` an implicit
-     ``dependency_aspect`` is synthesised from D'.
+   * has a Depends aspect and does not require a
+     Refined_Depends aspect, then D' is compared directly with
+     the Depends aspect of P and any differences reported; or
+   * does not have a Depends aspect an implicit
+     Depends aspect is synthesised from D'.
 
-#. A function that does not have an explicit ``dependency_aspect`` is
+#. A function that does not have an explicit Depends aspect is
    assumed to have a dependency relation that its result is dependent
    on all of its imports and this dependency relation is compared with
    the implicit one determined from the body of the function.
@@ -765,7 +770,7 @@ is of mode ``in`` and by-copy.
 
 The ``moded_items`` which are *global* to a procedure have to be
 determined.  These may be obtained from an explicit ``global_aspect``
-or ``dependency_aspect`` of the procedure, if either or both of these
+or Depends aspect of the procedure, if either or both of these
 are present. If neither of these are present then an implicit global
 aspect is used which is deduced by analysis of the bodies of the called
 subprogram and the subprograms it calls.
@@ -775,9 +780,9 @@ subprogram and the subprograms it calls.
 .. centered:: *Checked by Flow-Analysis*
 
 #. If a procedure declaration does not have a ``global_aspect`` but
-   has a ``dependency_aspect``, an implicit ``global_aspect`` will be
-   computed from the ``dependency_aspect``.
-#. If a procedure does not have a global or dependency
+   has a Depends aspect, an implicit ``global_aspect`` will be
+   computed from the Depends aspect.
+#. If a procedure does not have a global or depends
    aspect, an implicit ``global_aspect`` will be computed using whole
    program analysis.
 #. In a call to a procedure P:
@@ -832,11 +837,11 @@ Dependency Relations
 ~~~~~~~~~~~~~~~~~~~~
 
 Every subprogram has a dependency relation, explicitly given in a
-``dependency_aspect``, implicitly synthesized from the subprogram code
+Depends aspect, implicitly synthesized from the subprogram code
 or conservatively assumed from the *formal parameters* and *global
 variables* of the subprogram.  If the subprogram is declared in the
 visible part of package it may also have a
-``refined_dependency_aspect``, again explicitly given or synthesised.
+Refined_Depends aspect, again explicitly given or synthesised.
 
 The dependency relation of a subprogram is used to determine the effect
 of a call to a subprogram in terms of the flows of information through
@@ -844,37 +849,37 @@ the subprogram.
 
 #. A subprogram P declared in the visible part of a package, called
    within the body or private descendants of the package and P
-   requires a ``refined_dependency_aspect`` because of
+   requires a Refined_Depends aspect because of
    state_refinement, the following will be used as the dependency
    relation of P:
 
-   * the ``dependency_relation`` from the explicit
-     ``refined_dependency_aspect`` if one is present;
+   * the ``depends_relation`` from the explicit
+     Refined_Depends aspect if one is present;
    * for a function which does not have an explicit
-     ``dependency_aspect``, the assumed dependency relation is that
+     Depends aspect, the assumed dependency relation is that
      its result is dependent on all of its imports;
    * for a procedure which does not have an explicit
-     ``refined_dependency_aspect`` but the subprogram
+     Refined_Depends aspect but the subprogram
      has a proper body, the implicit dependency relation synthesized
      from the subprogram code will be used.
-   * for a procedure which has neither a ``refined_dependency_aspect``
+   * for a procedure which has neither a Refined_Depends aspect
      nor a proper body the conservative dependency relation that is
      used is that every ``export`` is dependent on every ``import``.
 
 #. A call to a subprogram P from a client of the package containing
    the declaration of P or for a call to a subprogram which does not
-   require a ``refined_dependency_aspect``, the following will be used
+   require a Refined_Depends aspect, the following will be used
    as the dependency relation :
 
-   * the ``dependency_relation`` from an explicit ``dependency_aspect`` if one is present;
+   * the ``depends_relation`` from an explicit Depends aspect if one is present;
    * for a function which does not have an explicit
-     ``dependency_aspect``, the assumed dependency relation is that
+     Depends aspect, the assumed dependency relation is that
      its result is dependent on all of its imports;
    * for a procedure which does not have an explicit
-     ``dependency_aspect`` but the subprogram has a proper body, the
+     Depends aspect but the subprogram has a proper body, the
      implicit dependency relation synthesized from the subprogram code
      will be used.
-   * for a procedure which has neither a ``dependency_aspect`` nor a
+   * for a procedure which has neither a Depends aspect nor a
      proper body the conservative dependency relation that is used is
      that every ``export`` is dependent on every ``import``.
 

@@ -522,7 +522,7 @@ Page/para: page 32
 Comment: I have some doubts about the "=>+" notation. It doesn't seem
 necessary and doesn't help particularly the reader...
 this is the first instance of a particularly weird notation so far...
-Status:
+Status: No better alternative is currently available so not proposed to change this at the moment. [JIB]
 
 
 Ident: REQ-CC67

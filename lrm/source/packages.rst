@@ -13,8 +13,7 @@ The variables declared immediately within a package Q, its embedded
 packages and its private descendants constitute the state of Q.
 
 The variable declarations are only visible to clients of Q if they
-are declared in the ``visible_part`` of Q which is not considered good
-practice in general for public (non-private) packages.  The
+are declared in the ``visible_part`` of Q.  The
 declarations of all other variables are *hidden* from a client of Q.
 Though the variables are hidden they still form part (or all) of the
 state of Q and this hidden state cannot be ignored for static analyses
@@ -69,9 +68,9 @@ If a subprogram P with a Global Aspect is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
 state of the package then P must include in its Global Aspect the
 abstract state names with the correct mode that represent the hidden
-state referenced by P.  If P has a Dependency Aspect then the abstract
+state referenced by P.  If P has a Depends aspect then the abstract
 state names must appear as inputs and outputs of P, as appropriate, in
-the ``dependency_relation`` of the Dependency Aspect.
+the ``depends_relation`` of the Depends aspect.
 
 The Abstract State Aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the
@@ -143,11 +142,11 @@ where the ``aspect_mark`` is Abstract_State and the
 
 .. centered:: **Verification Rules**
 
-#. The ``state_abstractions`` declared in a Abstract_State_Aspect of a package,
+#. The state abstractions declared in a Abstract_State_Aspect of a package,
    if present, must cover all the hidden state of the package. 
    [The rule is checked when the package body is analysed.]
    
-#. A Volatile Input ``state_abstraction`` shall not be a global item (see
+#. A Volatile Input state abstraction shall not be a global item (see
    :ref:`global-aspect`) of mode **in out** or **out**.  [Checked when
    analyzing subprogram declarations.]
 
@@ -322,7 +321,7 @@ variable's declaration.
 
    end Raw_Input_Port;
 
-Package Dependency Aspect
+Package Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An important property of a package is the state components it
@@ -331,50 +330,80 @@ each depends.  This information is required for flow analysis which is
 used to demonstrate that every variable in a |SPARK| program is
 initialized before use.
 
+The package-level Depends aspect is introduced by an
+``aspect_specification`` where the ``aspect_mark`` is Depends and the
+``aspect_definition`` must follow the grammar of ``depends_relation``
+given in section :ref:`depends_aspect`.
+
 .. centered:: **Legality Rules**
 
-#. A Dependency Aspect may appear in the ``aspect_specification``
+#. Every ``input`` and ``output`` of a ``depends_relation`` of a Depends
+   aspect of a package specification is a state abstraction.
+#. A Depends aspect may appear in the ``aspect_specification``
    of a package specification but it must follow the
-   Abstract State Aspect if one is present.
-#. A Dependency Aspect of a package has extended visibility; it is
+   Abstract State aspect if one is present.
+#. A Depends aspect of a package has extended visibility; it is
    able to refer to *variables* declared in the visible part of the
    package.
+#. A Depends aspect of a package shall not allow the optional ``+``
+   within a ``depends_clause``.
+#. A Depends aspect of a package shall not allow a ``function_result``
+   as an ``output``.
+#. A Depends aspect of a package shall not allow ``null`` as an
+   ``output_list``.
+#. A ``state_name`` that is designated as ``Volatile`` must not appear in
+   an ``output_list`` in a Depends aspect of a package.
+
+#. The object denoted by a given ``output`` in an ``output_list`` shall
+   not be denoted by any other ``output`` in that ``output_list``.   
+
+#. The object denoted by a given ``input`` in an ``input_list`` shall
+   not be denoted by any other ``input`` in that ``input_list``.  
 
 .. centered:: **Static Semantics**
 
-#. The Dependency Aspect of a package declaration describes for
-   each *variable* or ``state_name`` that the package initializes
-   during its elaboration a list of every ``moded_item`` on which each
-   initial value depends.  A package may initialize an item at the
-   point of declaration of the item, in the sequence of statements of
-   its body, within an embedded package or a private descendent of the
-   package.
+#. An *output* of a package elaboration is a state abstraction such that the
+   set of variables represented by the state abstraction is initialized during
+   elaboration.
+#. An *input* of a package elaboration is a state abstraction such that the
+   initial value of one or more of the set of variables represented by that
+   state abstraction may be used to determine the final value of one or more
+   members of the set of variables represented by the outputs of the
+   package elaboration.
+#. The Depends aspect of a package declaration describes for
+   each ``output`` of the package elaboration a list of every ``input``
+   on which the initial value of that ``output`` depends.  [A package may
+   initialize an item at the point of declaration of the item, in the
+   sequence of statements of its body, within an embedded package or a
+   private descendent of the package.]
 #. A package that does not initialize any state components can be
-   explicitly indicated using a **null** ``dependency_relation``.
+   explicitly indicated using a **null** ``depends_relation``.
+#. A ``depends_clause`` with a **null** ``input_list`` means that the final
+   value of each ``output`` in the ``output_list`` does not depend on any
+   ``input``.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow Analysis*
 
-#. If a Dependency Aspect is provided on a package declaration
+#. If a Depends aspect is provided on a package declaration
    then flow analysis does not require the package body to proceed
    with the analysis of clients of the package.  Flow analysis will
    check that the body of the package satisfies its
-   Dependency Aspect when it is analyzed.
-#. Only state components initialized by the package or its private
-   descendants shall appear in its Dependency Aspect.
-#. Each *variable* or ``state_name`` initialized by a package must
-   appear as an ``export`` in the Dependency Aspect of the
-   package, if one is present.
+   Depends aspect when it is analyzed.
+#. Only *inputs* of a package elaboration shall appear as an ``input``
+   in its Depends aspect.
+#. Every *output* of a package elaboration shall appear as an ``output``
+   in the Depends aspect of the package, if one is present.
 #. A ``state_name`` designated as Volatile shall only appear in a
-   Dependency Aspect if the package reads or updates the Volatile
+   Depends aspect if the package reads or updates the Volatile
    variables represented by the ``state_name`` during its elaboration
    or the elaboration of its private descendants.
-#. If a Dependency Aspect (or an equivalent
-   Initializes Aspect) is not provided on a package declaration,
+#. If a Depends aspect (or an equivalent
+   Initializes aspect) is not provided on a package declaration,
    its body and any private descendants must be present as well as the
    bodies of any packages on which the package depends to synthesize
-   an implicit Dependency Aspect for the package.  Ultimately this
+   an implicit Depends aspect for the package.  Ultimately this
    could require an entire program analysis.
 #. Library level packages are considered to be elaborated in some
    order determined by the compiler prior to a call to the main
@@ -393,7 +422,7 @@ initialized before use.
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the
-Dependency Aspect the rules are checked by static analysis.
+Depends aspect as the rules are checked by static analysis.
 
 .. centered:: **Examples**
 
@@ -403,7 +432,7 @@ Dependency Aspect the rules are checked by static analysis.
     with
        Abstract_State => State,  -- Declaration of abstract state name State
        Depends        => (State => null)
-                                  -- Indicates that State will be initialized
+                                 -- Indicates that State will be initialized
     is                           -- during the elaboration of Q
 				 -- or a private descendant of the package.
       ...
@@ -412,10 +441,10 @@ Dependency Aspect the rules are checked by static analysis.
     package X
     with
        Abstract_State =>  A,          -- Declares an abstract state name A.
-       Depends        => (A => null,  -- A and visible variable B are initialized
-                          B => null)  -- during package initialization.
-
-    is
+       Depends        => (A => null,  -- Indicates that A and visible variable 
+                          B => null)  -- B will be initialized during the.
+                                      -- elaboration of X or a private descendant
+    is                                -- of the package.
       ...
       B : Integer;
      --
@@ -435,7 +464,7 @@ Dependency Aspect the rules are checked by static analysis.
                           -- value of Q.State.
                           -- C is designated as a volatile input and is not
                           -- read during package elaboration and so does not appear
-		          -- in the Dependency Aspect.
+		          -- in the Depends aspect.
     end Y;
 
     package Z
@@ -463,42 +492,38 @@ The Initializes Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Initializes" and the ``aspect_definition`` must follow
 the grammar of ``initialization_list`` given below.
 
-.. todo:: (YM) The grammar is not consistent. It mentions ``export_list`` where
-          probably ``initialized_item_list`` should be used.
-
 .. centered:: **Syntax**
 
 ::
 
-  initialization_list   ::= null
-                          | export_list
-  initialized_item_list ::= export
-                          | (export {, export})
-
+  initialization_list   ::= output_list
 
 .. centered:: **Legality Rules**
 
-#. An Initializes Aspect may only appear in the
+#. Every ``output`` of an ``initialization_list`` of an Initializes
+   aspect of a package specification is a state abstraction.
+#. An Initializes aspect may only appear in the
    ``aspect_specification`` of a package specification.
-#. The Initializes Aspect must follow the
-   Abstract State Aspect if one is present.
+#. The Initializes aspect must follow the
+   Abstract State aspect if one is present.
 #. An ``aspect_specification`` shall not have an
-   Initializes Aspect if it has a Dependency Aspect.
-#. An Initializes Aspect of a package has extended visibility; it
-   is able to refer to *variables* declared in the visible part of the
+   Initializes Aspect if it has a Depends aspect.
+#. An Initializes aspect of a package has extended visibility; it
+   is able to refer to variables declared in the visible part of the
    package.
-#. An ``export`` may not appear more than once in an
-   Initializes Aspect.
-#. A *variable* appearing in an Initializes Aspect must be entire,
+#. The object denoted by a given ``output`` in an Initializes aspect shall
+   not be denoted by any other ``output`` in that Initializes aspect.   
+#. A variable appearing in an Initializes aspect must be entire,
    it cannot be a subcomponent of a containing object.
 #. A ``state_name`` which is designated as ``Volatile`` must not
-   appear in an Initializes Aspect.
+   appear in an Initializes aspect.
+#. An Initializes aspect shall not allow ``function_result`` as an ``output``.
 
 
 .. centered:: **Static Semantics**
 
 #. An Initializes Aspect is a shorthand notation for a
-   Dependency Aspect of the form:
+   Depends aspect of the form:
 
    ::
 
@@ -509,16 +534,16 @@ the grammar of ``initialization_list`` given below.
 
      where
 
-       each S1 .. Sn is a *variable* or ``state_name`` initialized
+       each S1 .. Sn is a variable or state abstraction initialized
        during the elaboration of the package.
 
 #. A **null** ``initialization_list`` is equivalent to a **null**
-   ``dependency_relation``.
+   ``depends_relation``.
 
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the
-Initializes Aspect the rules are checked by static analysis.
+Initializes Aspect as the rules are checked by static analysis.
 
 
 .. centered:: **Examples**
@@ -582,11 +607,11 @@ an ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. An Initial Condition Aspect may only be placed in a
+#. An Initial Condition Aspect may only be placed in an
    ``aspect_specification`` of a ``package_specification``.
 #. The Initial Condition Aspect must follow the
-   Abstract State Aspect, Dependency Aspect and
-   Initializes Aspect if they are present.
+   Abstract State Aspect, Depends aspect and
+   Initializes aspect if they are present.
 #. The predicate of an Initial Condition Aspect appearing in a
    package Q has extended visibility.  It may reference declarations
    from the visible part of Q.
@@ -677,12 +702,12 @@ for this purpose.
 
 In the body of a package the constituents of the refined
 ``state_name``, the refined view, has to be used rather than the
-abstract view of the ``state_name``.  Refined global, dependency, pre
+abstract view of the ``state_name``.  Refined global, depends, pre
 and post aspects are provided to express the refined view.
 
 In the refined view the constituents of each ``state_name`` have to be
 initialized consistently with their appearance or omission from the
-Package Dependency or Initializes Aspect of the package.
+Package Depends or Initializes aspect of the package.
 
 
 Refined State Aspect
@@ -918,7 +943,7 @@ of the external device.
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a package has a Dependency Aspect or an
+If a package has a Depends aspect or an
 Initializes Aspect which contains an ``export`` which is a
 ``state_name`` then each ``constituent`` of the ``state_name`` must be
 initialized during package elaboration or be designated as Volatile,
@@ -932,24 +957,24 @@ which is non-volatile must be initialized during package elaboration.
 
 .. centered:: *Checked by Flow Analysis*
 
-#. For each ``export`` that appears in a Dependency Aspect or
-   Initializes Aspect of a package declaration the following must
+#. For each ``export`` that appears in a Depends aspect or
+   Initializes aspect of a package declaration the following must
    be satisfied:
 
    * Each ``export`` that is a *variable* must be initialized at its
      point of declaration, initialized by the sequence of statements
      of the package, or by an embedded package or a private child
-     package which names the ``export`` in its Dependency Aspect
-     or Initializes Aspect;
+     package which names the ``export`` in its Depends aspect
+     or Initializes aspect;
    * For an ``export`` which is a ``state_name``, each ``constituent``
      of the ``export`` that is a *variable* must be initialized at
      its point of declaration, initialized by the sequence of
      statements of the package, or by an embedded package or a private
      child package which names the ``export`` in its
-     Dependency Aspect or Initializes Aspect;
+     Depends aspect or Initializes aspect;
    * For an ``export`` which is a ``state_name`` each ``constituent``
      of the ``export`` that is a ``state_name`` must appear in the
-     Dependency Aspect or Initializes Aspect of an embedded
+     Depends aspect or Initializes aspect of an embedded
      package or private child package.
 
 #. A non-volatile ``constituent`` of a Volatile ``state_name`` must be
@@ -1051,49 +1076,49 @@ the grammar of ``global_specification`` in :ref:`global-aspect`.
 
 .. _refined-dependency-aspect:
 
-Refined Dependency Aspect
+Refined Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a
-Refined Dependency Aspect applied to its body or body stub. The
-Refined Dependency Aspect defines the ``dependency_relation`` of the
+Refined Depends aspect applied to its body or body stub. The
+Refined Depends aspect defines the ``depends_relation`` of the
 subprogram in terms of the ``constituents`` of a ``state_name`` of the
 package rather than the ``state_name``.
 
-The Refined Dependency Aspect is introduced by an ``aspect_specification`` where
+The Refined Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Depends" and the ``aspect_definition`` must follow
-the grammar of ``dependency_relation``.
+the grammar of ``depends_relation``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined Dependency Aspect may only appear on the body or body
+#. A Refined Depends aspect may only appear on the body or body
    stub of a subprogram P in a package whose ``visible_part`` contains
    the declaration of a subprogram P.
-#. A Refined Dependency Aspect on the body or body stub of a
+#. A Refined Depends aspect on the body or body stub of a
    subprogram P may only mention a formal parameter of P,
    ``constituents`` of a ``state_name`` of the enclosing package given
-   in the Dependency Aspect in the declaration of P, a *global*
+   in the Depends aspect in the declaration of P, a *global*
    item that is not a ``state_name`` of the enclosing package or a
    ``constituent`` of a **null** ``abstract_state_name``.
 
 .. centered:: **Static Semantics**
 
-#. A Refined Dependency Aspect of a subprogram defines a *refinement*
-   of the Dependency Aspect of the subprogram.
+#. A Refined Depends aspect of a subprogram defines a *refinement*
+   of the Depends aspect of the subprogram.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
 
 #. If the subprogram declaration declared in the visible part of
-   package Q has a Dependency Aspect D then the
-   Refined Dependency Aspect defines a *refinement* D' of D
+   package Q has a Depends aspect D then the
+   Refined Depends aspect defines a *refinement* D' of D
    then it shall satisfy the following rules:
 
    * For each ``export`` in D which is not a ``state_name`` of Q,
 
      * the same item must appear as an ``export`` in D';
-     * its ``dependency_list`` will be unchanged except that an
+     * its ``depends_list`` will be unchanged except that an
        ``import`` which is a ``state_name`` of Q will be replaced in
        D' by at least one ``constituent`` of the ``state_name`` and a
        ``constituent`` of a **null** , ``abstract_state_name`` may be
@@ -1104,41 +1129,41 @@ the grammar of ``dependency_relation``.
 
      * the item is replaced in D' by at least one ``export`` which is a
        ``constituent`` of S,
-     * its ``dependency_list`` will be unchanged except that an
+     * its ``depends_list`` will be unchanged except that an
        ``import`` which is a ``state_name`` of Q will be replaced in
        D' by at least one ``constituent`` of the ``state_name`` and a
        ``constituent`` of a **null** , ``abstract_state_name`` may be
        an additional ``import``.
-     * the union of every ``import`` from the ``dependency_list`` of
+     * the union of every ``import`` from the ``depends_list`` of
        each ``export`` which is a ``constituent`` of S in D', with
        every ``import`` which is a ``constituent`` of a ``state_name``
        of Q replaced by its ``state_name`` (a ``constituent`` of a
        **null** ``abstract_state_name`` is ignored) should give the
        same set as the set of obtained by the union of every
-       ``import`` in the ``dependency_list`` of S in D.
+       ``import`` in the ``depends_list`` of S in D.
 
-   * function may have a Refined Dependency Aspect D' which
+   * function may have a Refined Depends aspect D' which
      mentions a ``constituent`` of a **null** ``abstract_name`` but
      the constituent must appear as both an ``import`` and an
      ``export`` in D'.
    * A ``constituent`` of a **null** ``abstract_state_name`` is
-     ignored in showing conformance between the Dependency Aspect
-     and the Refined Dependency Aspect according to the rules
-     given for a Dependency Aspect.
+     ignored in showing conformance between the Depends aspect
+     and the Refined Depends aspect according to the rules
+     given for a Depends aspect.
 
-#. If a subprogram has a Refined Dependency Aspect which satisfies
+#. If a subprogram has a Refined Depends aspect which satisfies
    the flow analysis rules, it is used in the analysis of the
-   subprogram body rather than its Dependency Aspect.
+   subprogram body rather than its Depends aspect.
 
 * If the declaration of a subprogram P in the visible part of package
-  Q has a Dependency Aspect which mentions a ``state_name`` of Q,
-  but P does not have a Refined Dependency Aspect then an implicit
-  Refined Dependency Aspect will be synthesized from the body of P.`
+  Q has a Depends aspect which mentions a ``state_name`` of Q,
+  but P does not have a Refined Depends aspect then an implicit
+  Refined Depends aspect will be synthesized from the body of P.`
 
 * if the declaration of a subprogram P declared in the visible part of
-  a package Q does not have a Dependency Aspect, an implicit one is
-  synthesized from the Refined Dependency Aspect and the
-  Refined State Aspect (both of which which may also have been
+  a package Q does not have a Depends aspect, an implicit one is
+  synthesized from the Refined Depends aspect and the
+  Refined State aspect (both of which which may also have been
   synthesized).
 
 .. centered:: **Dynamic Semantics**

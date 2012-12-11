@@ -56,7 +56,11 @@ Comment: The description of dependency aspect introduces BNF non-terminals
   in the retrospective approach). Should a global aspect be given every time a
   dependency aspect is given? Or should global variables be deduced from
   the dependency aspect?
-Status: 
+Status: Updates made to address the non-terminals issue. Imports and exports
+        renamed as inputs and outputs and definitions improved. The LRM as it
+        currently stands does not mandate a global aspect every time a depends
+        aspect is given. Rather it states a rule that a global aspect should
+        be synthesized if one does not exist. [JIB] 
 
 
 Ident: FE-YM5
@@ -64,7 +68,7 @@ Section: 6.1.7
 Page/para: 32
 Comment: What is the name for the dependency aspect? Earlier in the LRM it is
   said "Dependency", here it says "Depends".
-Status: 
+Status: All references to this updated to be Depends aspect. [JIB] 
 
 
 Ident: FE-YM6
@@ -222,7 +226,8 @@ Section: 7.1.4
 Page/para: 47/Legality Rules
 Comment: Should this list not be more extensive, providing counterparts of some of the legality rules given in
 section 6.1.7? 
-Status: 
+Status: Text has now been updated to explicitly include those rules from subprogram Depends that are
+        relevant to package Depends. [JIB]
 
 
 Ident: FE-JIB22
