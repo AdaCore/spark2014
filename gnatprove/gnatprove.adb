@@ -570,7 +570,7 @@ procedure Gnatprove is
             if MMode = GPM_Detect
               or else MMode = GPM_Force
             then
-               return "detection of Alfa subprograms";
+               return "detection of SPARK subprograms";
             else
                return "translation to intermediate language";
             end if;
