@@ -14,7 +14,7 @@ funcs.adb:107:26: info: range check proved
 funcs.adb:107:35: info: range check proved
 funcs.adb:107:7: info: assertion proved
 funcs.adb:108:16: info: range check proved
-funcs.adb:108:20: info: assertion proved
+funcs.adb:108:20: assertion not proved, requires Y = Q5 (3)
 funcs.adb:108:43: info: range check proved
 funcs.adb:53:68: info: postcondition proved
 funcs.adb:64:26: info: range check proved
@@ -68,7 +68,7 @@ funcs.adb:85:26: info: range check proved
 funcs.adb:85:35: info: range check proved
 funcs.adb:85:7: info: assertion proved
 funcs.adb:86:16: info: range check proved
-funcs.adb:86:20: info: assertion proved
+funcs.adb:86:20: assertion not proved, requires Y = G5 (3)
 funcs.adb:86:43: info: range check proved
 funcs.adb:90:22: info: precondition proved
 funcs.adb:90:26: info: range check proved
@@ -93,7 +93,7 @@ funcs.adb:96:35: info: range check proved
 funcs.adb:96:7: info: assertion proved
 funcs.adb:97:12: info: precondition proved
 funcs.adb:97:16: info: range check proved
-funcs.adb:97:20: info: assertion proved
+funcs.adb:97:20: assertion not proved, requires Y = P5 (3)
 funcs.adb:97:39: info: precondition proved
 funcs.adb:97:43: info: range check proved
 funcs.ads:19:68: info: postcondition proved

@@ -1,22 +1,22 @@
 flight_manager.adb:12:12: info: postcondition proved
-flight_manager.adb:13:24: info: overflow check proved
+flight_manager.adb:13:24: overflow check not proved
 flight_manager.adb:13:46: info: division check proved
 flight_manager.adb:13:46: info: overflow check proved
 flight_manager.adb:19:21: overflow check not proved
 flight_manager.adb:19:43: info: division check proved
-flight_manager.adb:19:43: info: overflow check proved
+flight_manager.adb:19:43: overflow check not proved
 flight_manager.adb:25:28: info: range check proved
 flight_manager.adb:27:28: info: range check proved
 flight_manager.adb:31:29: info: range check proved
 flight_manager.adb:33:29: info: range check proved
-flight_manager.adb:36:37: info: overflow check proved
+flight_manager.adb:36:37: overflow check not proved
 flight_manager.adb:36:53: overflow check not proved
-flight_manager.adb:37:37: info: overflow check proved
+flight_manager.adb:37:37: overflow check not proved
 flight_manager.adb:37:53: overflow check not proved
-flight_manager.ads:10:30: info: overflow check proved
+flight_manager.ads:10:30: overflow check not proved
 flight_manager.ads:10:65: overflow check not proved
 flight_manager.ads:10:77: postcondition not proved, requires Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed
 flight_manager.ads:11:18: overflow check not proved
-flight_manager.ads:12:23: info: overflow check proved
+flight_manager.ads:12:23: overflow check not proved
 flight_manager.ads:12:58: overflow check not proved
 flight_manager.ads:13:18: overflow check not proved

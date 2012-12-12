@@ -25,13 +25,13 @@ optional.adb:31:13: loop invariant initialization not proved, requires TA'Loop_E
 optional.adb:31:13: loop invariant preservation not proved, requires TA'Loop_Entry (Outer, Inner) = 0
 optional.adb:31:38: info: index check proved
 utils.adb:10:29: info: range check proved
-utils.adb:10:34: info: range check proved
 utils.adb:10:34: overflow check not proved
+utils.adb:10:34: range check not proved
 utils.adb:12:17: info: range check proved
 while_loops.adb:18:10: info: loop invariant initialization proved
 while_loops.adb:18:10: info: loop invariant preservation proved
-while_loops.adb:20:29: info: range check proved
 while_loops.adb:20:29: overflow check not proved
+while_loops.adb:20:29: range check not proved
 while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:32:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
 while_loops.adb:36:29: info: overflow check proved
@@ -39,8 +39,8 @@ while_loops.adb:36:29: info: range check proved
 while_loops.adb:46:33: info: range check proved
 while_loops.adb:48:13: info: loop invariant initialization proved
 while_loops.adb:48:13: info: loop invariant preservation proved
-while_loops.adb:53:29: info: range check proved
 while_loops.adb:53:29: overflow check not proved
+while_loops.adb:53:29: range check not proved
 while_loops.adb:63:33: info: range check proved
 while_loops.adb:65:13: info: loop invariant initialization proved
 while_loops.adb:65:13: info: loop invariant preservation proved

@@ -6,7 +6,7 @@ tab.adb:12:65: info: index check proved
 tab.adb:13:14: info: index check proved
 tab.adb:14:13: index check not proved
 tab.adb:14:23: info: index check proved
-tab.adb:15:24: info: overflow check proved
+tab.adb:15:24: overflow check not proved
 tab.adb:4:24: info: range check proved
 tab.adb:6:49: range check not proved
 tab.adb:9:10: loop invariant initialization not proved

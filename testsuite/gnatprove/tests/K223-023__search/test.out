@@ -9,7 +9,7 @@ search.adb:8:10: info: loop invariant initialization proved
 search.adb:8:10: loop invariant preservation not proved, requires Pos = 0 and (for all J in Position range T'First .. I-1 => (T(J) /= V))) or (T(Pos) = V and (...
 search.ads:10:13: index check not proved
 search.ads:11:34: info: range check proved
-search.ads:11:54: info: overflow check proved
+search.ads:11:54: overflow check not proved
 search.ads:11:54: range check not proved
 search.ads:5:53: info: index check proved
 search.ads:8:57: info: range check proved
