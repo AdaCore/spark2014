@@ -16,12 +16,33 @@ call does not modify any variables declared outside of the function.
 It follows as a consequence of these rules that the evaluation
 of any [SPARK] expression is side-effect free.
 
+We also introduce the notion of a *global item*, which is a global variable or
+a state abstraction (see :ref:`abstract-state`). Global items are presented
+in Global aspects (see :ref:`global-aspect`).
+
 .. centered:: **Extended Legality Rules**
 
 #. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a subprogram_body for a function for which no explicit specification
    is given.
+
+.. centered:: **Static Semantics**
+
+#. The *final* value of a global item or parameter of a subprogram is its 
+   value immediately following the successful call of the subprogram.
+
+#. The *initial* value of a global item or parameter of a subprogram is its 
+   value at the call of the subprogram.
+   
+#. An *output* of a subprogram is a global item or parameter whose final
+   value may be updated by a call to the subprogram.  The result of a function
+   is also an output.
+   
+#. An *input* of a subprogram is a global item or parameter whose initial
+   value may be used in determining the final value of an output of the 
+   subprogram.
+
 
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
@@ -213,9 +234,6 @@ where
 Global Aspect
 ~~~~~~~~~~~~~
 
-A *global item* is a global variable or a state abstraction (see
-:ref:`abstract-state`).
-
 A Global aspect of a subprogram, if present, lists the global items whose values
 are used or affected by a call of the subprogram.
 
@@ -233,20 +251,16 @@ follow the grammar of ``global_specification``
    moded_global_list           ::= mode_selector => global_list
    global_list                 ::= global_item
                                  | (global_item {, global_item})
-   mode_selector               ::= Input | Output | In_Out | Proof
+   mode_selector               ::= Input | Output | In_Out | Contract_In
    global_item                 ::= name
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` of a subprogram shall be a stand alone variable object, 
-   that is, it is not part of a larger object, or it shall be a state abstraction. 
+#. A ``global_item`` of a subprogram shall be a stand alone variable object 
+   [that is, it is not part of a larger object] or it shall be a state abstraction. 
 
 #. Each ``mode_selector`` shall not occur more than once in a single
    ``global_specification``.
-
-#. A ``global_item`` appearing in a ``moded_global_list`` with a
-   ``mode_selector`` of In_Out may not appear in any other
-   ``moded_global_list``.
 
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its ``global_aspect``.
@@ -262,54 +276,40 @@ follow the grammar of ``global_specification``
 
 #. A ``global_specification`` which is a ``global_list`` is considered to be a
    ``moded_global_list`` with the ``mode_selector`` Input.
+
+#. A ``global_item`` is *referenced* by a subprogram if it is an input or
+   an output of the subprogram, or is used directly or indirectly
+   in any assertion expression within the subprogram.
+
+#. A subprogram with a Global aspect that has a ``global_specification``
+   of **null** is taken to mean that the subprogram does not reference
+   any ``global_items``.
   
-#. A subprogram with a Global aspect that has a
-   ``global_specification`` of **null** is taken to mean that the
-   subprogram does not reference any ``global_items``.
-
-#. The *final* value of a ``global_item`` or parameter of a subprogram is its 
-   value immediately following the successful call of the subprogram.
-
-#. The *initial* value of a ``global_item`` or parameter of a subprogram is its 
-   value at the call of the subprogram.
-   
-#. An *output* of a subprogram is a ``global_item`` or parameter whose final
-   value may be updated by a call to the subprogram.  The result of a function
-   is also an output.
-   
-#. An *input* of a subprogram is a ``global_item`` or parameter whose initial
-   value may be used in determining the final value of an output of the 
-   subprogram.
-   
 #. A ``global_item`` occurring in a Global aspect of a subprogram is an input or
    output of the subprogram or its initial value is used in an assertion 
    expression within the subprogram.
    
 #. Each ``global_item`` in a Global aspect of a subprogram that is is an input
-   or output of the subprogram and shall satisfy the following mode
+   or output of the subprogram shall satisfy the following mode
    specification rules 
    [which are checked during analysis of the subprogram body]:
 
    * a ``global_item`` that is an input but not an output, is mode **in** and 
      has a ``mode_selector`` of Input; 
    
-   * a ``global_item`` that is an output, not an input and is always updated on
+   * a ``global_item`` that is an output, not an input and is always fully initialized on
      every call of the subprogram is mode **out** and has a ``mode_selector`` 
      of Output;
      
    * otherwise the ``global_item`` is both an input and an output and is
      mode **in out** and has a ``mode_selector`` of In_Out.
 
-#. A ``global_item`` which is is neither an input nor an output of a subprogram
+#. A ``global_item`` which is neither an input nor an output of a subprogram
    but is referenced, directly or indirectly, in an assertion expression within 
-   the subprogram has a ``mode_selector`` of Proof.
+   the subprogram has a ``mode_selector`` of Contract_In.
 
 #. All ``global_items`` which are referenced by a subprogram must appear in its
    Global aspect, if it is present.
-   
-#. If a Global aspect is not provided in a subprogram
-   aspect_specification one is synthesized from the body of the
-   subprogram, if it exists.
 
 .. centered:: **Dynamic Semantics**
 
@@ -328,13 +328,14 @@ There are no dynamic semantics associated with a Global.
                         -- any global items.
    with Global => V;    -- Indicates that V may be read by the subprogram.
    with Global => (X, Y, Z);  -- X, Y and Z may be read by the subprogram.
-   with Global => (Input => V); -- Indicates that V may be read by the subprogram.
-   with Global => (Input => (X, Y, Z)); -- X, Y and Z may be read by the subprogram.
-   with Global => (Output => (A, B, C)); -- A, B and C may be written by the subprogram.
-   with Global => (Input  => (X, Y, Z),
-                   Output => (A, B, C),
-                   In_Out => (P, Q, R),
-                   Proof  => (T, U));
+   with Global => (Input        => V); -- Indicates that V may be read by the subprogram.
+   with Global => (Input        => (X, Y, Z)); -- X, Y and Z may be read by the subprogram.
+   with Global => (Output       => (A, B, C)); -- A, B and C will be fully initialized
+                                               -- by the subprogram.
+   with Global => (Input        => (X, Y, Z),
+                   Output       => (A, B, C),
+                   In_Out       => (P, Q, R),
+                   Contract_In  => (T, U));
                   -- A global aspect with all types of global specification
 
 .. _depends_aspect:
