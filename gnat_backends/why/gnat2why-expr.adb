@@ -3383,26 +3383,19 @@ package body Gnat2Why.Expr is
               +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params),
               Right    => +True_Prog,
               Op       => EW_Eq);
+      elsif Domain /= EW_Pred and then
+        Is_Discrete_Type (Etype (Expr)) and then
+        Compile_Time_Known_Value (Expr) then
 
-         --  If a Pretty_Label was computed before, integrate it
-         --  ??? This duplicates code from the end of this function ...
+         --  Optimization: if we have a discrete value that is statically
+         --  known, use the static value.
 
-         if Pretty_Label /= Why_Empty then
-            T :=
-              New_Label (Labels =>
-                           (1 => Pretty_Label,
-                            2 => New_Located_Label (Expr, Is_VC => False)),
-                         Def => T,
-                         Domain => Domain);
-         end if;
-
-         --  All the other considerations in Transform_Expr (conversion etc) do
-         --  not apply, so return
-
-         return T;
-      end if;
-
-      case Nkind (Expr) is
+         T :=
+           New_Integer_Constant (Ada_Node => Expr,
+                                 Value    => Expr_Value (Expr));
+         Current_Type := EW_Int_Type;
+      else
+         case Nkind (Expr) is
          when N_Aggregate =>
             declare
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
@@ -4000,7 +3993,8 @@ package body Gnat2Why.Expr is
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
                                   & Node_Kind'Image (Nkind (Expr)));
             raise Not_Implemented;
-      end case;
+         end case;
+      end if;
 
       --  Add the pretty printing label here, if there is one
 

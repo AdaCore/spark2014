@@ -1,6 +1,9 @@
-
+p.adb:7:14: info: range check proved, in instantiation at q.adb:13
+p.adb:7:14: info: range check proved, in instantiation at q.ads:8
 p.adb:8:19: overflow check not proved, in instantiation at q.adb:13
 p.adb:8:19: overflow check not proved, in instantiation at q.ads:8
+p.adb:8:25: info: range check proved, in instantiation at q.adb:13
+p.adb:8:25: info: range check proved, in instantiation at q.ads:8
 p.adb:8:29: overflow check not proved, in instantiation at q.adb:13
 p.adb:8:29: overflow check not proved, in instantiation at q.ads:8
 p.adb:9:7: precondition not proved, in instantiation at q.adb:13

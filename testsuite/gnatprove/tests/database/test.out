@@ -20,7 +20,9 @@ database.adb:141:13: info: loop invariant preservation proved
 database.adb:142:30: info: range check proved
 database.adb:143:31: info: overflow check proved
 database.adb:143:31: info: range check proved
+database.adb:155:28: info: range check proved
 database.adb:157:30: info: range check proved
+database.adb:160:28: info: range check proved
 database.adb:162:30: info: range check proved
 database.adb:164:13: info: index check proved
 database.adb:206:7: info: index check proved

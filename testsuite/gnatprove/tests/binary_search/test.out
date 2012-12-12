@@ -4,8 +4,8 @@ binary_search.adb:15:10: info: index check proved
 binary_search.adb:15:31: info: index check proved
 binary_search.adb:16:17: info: range check proved
 binary_search.adb:21:50: info: index check proved
+binary_search.adb:21:60: loop invariant preservation not proved, requires A (Index) <= I
 binary_search.adb:22:63: loop invariant initialization not proved, requires I <= A (Index)
-binary_search.adb:22:63: loop invariant preservation not proved, requires I <= A (Index)
 binary_search.adb:22:66: info: index check proved
 binary_search.adb:23:10: loop variant not proved
 binary_search.adb:24:22: range check not proved
@@ -14,6 +14,7 @@ binary_search.adb:25:13: info: index check proved
 binary_search.adb:27:16: index check not proved
 binary_search.adb:30:20: range check not proved
 binary_search.adb:33:14: info: range check proved
+binary_search.adb:9:17: info: range check proved
 binary_search.ads:11:20: info: index check proved
 binary_search.ads:11:30: info: index check proved
 binary_search.ads:12:48: info: index check proved

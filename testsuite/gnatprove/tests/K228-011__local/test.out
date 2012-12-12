@@ -1,4 +1,6 @@
+localcst.adb:22:14: info: range check proved
 localcst.adb:7:31: info: range check proved
+localcst.adb:9:14: info: range check proved
 localcst.ads:10:33: info: postcondition proved
 localcst.ads:4:32: info: postcondition proved
 localcst.ads:7:31: info: postcondition proved
