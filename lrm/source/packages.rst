@@ -126,12 +126,6 @@ where the ``aspect_mark`` is Abstract_State and the
    aspect_specification can only be provided as part of a
    Refined_State aspect specification within the body of the package.]
    
-#. A variable declared in the ``visible_part`` of a package implicitly
-   declares a state abstraction entity with the same identifier as the 
-   ``defining_identifier`` of the variable.  The variable declaration acts
-   as the completion of the state abstraction.  The implicitly declared
-   state abstraction is only visible in a limited view of the package.
-
 #. The state abstractions declared in a Abstract_State aspect of a package,
    if present, must cover all the hidden state of the package. 
    [The rule is checked when the package is analyzed.]
@@ -139,6 +133,20 @@ where the ``aspect_mark`` is Abstract_State and the
 #. A **null** ``abstract_state_list`` specifies that a package contains no 
    hidden state or variables declared in its ``visible_part``.
    [The specification is is checked when the package is analyzed.]
+
+#. A variable declared in the ``visible_part`` of a package implicitly
+   declares a state abstraction entity with the same identifier as the 
+   ``defining_identifier`` of the variable.  The variable declaration acts
+   as the completion of the state abstraction.  The implicitly declared
+   state abstraction is only visible in a limited view of the package.
+   
+#. A parameterless function declaration which overloads a state abstraction
+   declaration is used to represent the state abstraction where a state
+   abstraction entity is not permitted [e.g. in an expression].
+   The function declaration is completed by its body which may be used
+   to implement the *representation* of the state abstraction.
+   [That is how the constituents that make up the state abstraction are
+    related to it.]
 
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
