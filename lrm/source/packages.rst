@@ -97,12 +97,16 @@ where the ``aspect_mark`` is Abstract_State and the
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
    Input, or Output.
+#. There shall be at most one occurrence of the ``identifiers``
+   Volatile, Input and Output in a single ``property_list``.
 #. If a ``property_list`` includes Volatile, then it shall also
    include exactly one of Input or Output.
 #. If a ``property_list`` includes either Input or Output,
    then it shall also include Volatile.
 #. The ``identifier`` of a ``name_value_property`` shall be
    Integrity.
+#. The declaration of a state abstraction may be overloaded by a variable
+   declaration or a parameterless function declaration.
 
 .. centered:: **Static Semantics**
 
@@ -116,7 +120,7 @@ where the ``aspect_mark`` is Abstract_State and the
    explicitly permitted (e.g., as part of a Globals aspect
    specification), but this is not a name resolution rule.  Thus, the
    declaration of a state abstraction has the same visibility as any
-   other nonoverloadable declaration (e.g., an exception declaration).
+   other declaration.
    A state abstraction is not an object; it does not have a type.  The
    completion of a state abstraction declared in a package
    aspect_specification can only be provided as part of a
@@ -128,9 +132,13 @@ where the ``aspect_mark`` is Abstract_State and the
    as the completion of the state abstraction.  The implicitly declared
    state abstraction is only visible in a limited view of the package.
 
+#. The state abstractions declared in a Abstract_State aspect of a package,
+   if present, must cover all the hidden state of the package. 
+   [The rule is checked when the package is analyzed.]
+   
 #. A **null** ``abstract_state_list`` specifies that a package contains no 
    hidden state or variables declared in its ``visible_part``.
-   [The specification is is checked when the package body is analysed.]
+   [The specification is is checked when the package is analyzed.]
 
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
@@ -142,10 +150,6 @@ where the ``aspect_mark`` is Abstract_State and the
 
 .. centered:: **Verification Rules**
 
-#. The state abstractions declared in a Abstract_State_Aspect of a package,
-   if present, must cover all the hidden state of the package. 
-   [The rule is checked when the package body is analysed.]
-   
 #. A Volatile Input state abstraction shall not be a global item (see
    :ref:`global-aspect`) of mode **in out** or **out**.  [Checked when
    analyzing subprogram declarations.]
@@ -154,9 +158,6 @@ where the ``aspect_mark`` is Abstract_State and the
    mode **in** or **in out**.  [Checked when analyzing subprogram
    declarations.]
    
-#. A package with a **null** ``abstract_state_list`` shall not contain any 
-   state, visible or hidden. [Checked when analyzing the package body.]
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the Abstract State
@@ -325,7 +326,7 @@ Package Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An important property of a package is the state components it
-initializes during its elaboration and on what the inital value of
+initializes during its elaboration and on what the initial value of
 each depends.  This information is required for flow analysis which is
 used to demonstrate that every variable in a |SPARK| program is
 initialized before use.
