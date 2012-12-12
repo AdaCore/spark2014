@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -427,7 +427,7 @@ procedure Alfa_Report is
 
       Create (Handle, Out_File, Configuration.Alfa_Report_File);
       Print_Statistics (Handle      => Handle,
-                        Label       => "Subprograms in Alfa",
+                        Label       => "Subprograms in SPARK",
                         Label_Len   => Label_Length,
                         Cnt         => Alfa_Count,
                         Total       => Total_Count,
@@ -445,7 +445,7 @@ procedure Alfa_Report is
                         Total       => Total_Count,
                         Cnt_Padding => True);
       Print_Statistics (Handle      => Handle,
-                        Label       => "Subprograms not in Alfa",
+                        Label       => "Subprograms not in SPARK",
                         Label_Len   => Label_Length,
                         Cnt         => Global_Count (Unsupported),
                         Total       => Total_Count,
@@ -460,7 +460,7 @@ procedure Alfa_Report is
       Sort_Violations (Violation_Rank);
 
       New_Line (Handle);
-      Put_Line (Handle, "Subprograms not in Alfa due to" &
+      Put_Line (Handle, "Subprograms not in SPARK due to" &
                   " (possibly more than one reason):");
       Print_NIR_Violations;
 
@@ -489,14 +489,14 @@ procedure Alfa_Report is
 
       New_Line (Handle);
       Put_Line (Handle,
-                "Units with the largest number of subprograms in Alfa:");
+                "Units with the largest number of subprograms in SPARK:");
       Print_File_Count (M            => File_Alfa_Cnt,
                         M_Complement => File_Not_Alfa_Cnt,
                         R            => File_Alfa_Rank);
 
       New_Line (Handle);
       Put_Line (Handle,
-                "Units with the largest number of subprograms not in Alfa:");
+                "Units with the largest number of subprograms not in SPARK:");
       Print_File_Count (M            => File_Not_Alfa_Cnt,
                         M_Complement => File_Alfa_Cnt,
                         R            => File_Not_Alfa_Rank);
