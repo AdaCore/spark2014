@@ -146,7 +146,7 @@ where the ``aspect_mark`` is Abstract_State and the
    The function declaration is completed by its body which may be used
    to implement the *representation* of the state abstraction.
    [That is how the constituents that make up the state abstraction are
-    related to it.]
+   related to it.]
 
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
