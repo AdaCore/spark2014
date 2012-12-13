@@ -237,12 +237,24 @@ package body Why.Images is
 
          pragma Assert (Scale_Num mod Den = 0);
 
-         Int_Part  : constant Uint := Scale_Result / Scale_Factor;
-         Fact_Part : constant Uint := Scale_Result mod Scale_Factor;
+         Int_Part   : constant Uint := Scale_Result / Scale_Factor;
+         Fact_Part  : constant Uint := Scale_Result mod Scale_Factor;
+         Scale_Part : Uint := Scale_Factor / 10;
 
       begin
          P (O, Int_Part);
          P (O, ".");
+
+         --  If there is a fractional part, first print as many zeros as needed
+         --  to reach the non-zero fractional part.
+
+         if Fact_Part /= 0 then
+            while Scale_Part > Fact_Part loop
+               P (O, "0");
+               Scale_Part := Scale_Part / 10;
+            end loop;
+         end if;
+
          P (O, Fact_Part);
       end Print_Decimal_Notation;
 
