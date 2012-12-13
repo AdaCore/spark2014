@@ -145,7 +145,7 @@ where the ``aspect_mark`` is Abstract_State and the
    abstraction entity is not permitted [e.g. in an expression].
    The function declaration is completed by its body which may be used
    to implement the *representation* of the state abstraction.
-   [Thatis, how the constituents that make up the state abstraction are
+   [That is, how the constituents that make up the state abstraction are
    related to it.]
 
 #. A *volatile* state abstraction is one declared with a property list
