@@ -70,7 +70,7 @@ state of the package then P must include in its Global Aspect the
 abstract state names with the correct mode that represent the hidden
 state referenced by P.  If P has a Depends aspect then the abstract
 state names must appear as inputs and outputs of P, as appropriate, in
-the ``depends_relation`` of the Depends aspect.
+the ``dependency_relation`` of the Depends aspect.
 
 The Abstract State Aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the
@@ -341,12 +341,12 @@ initialized before use.
 
 The package-level Depends aspect is introduced by an
 ``aspect_specification`` where the ``aspect_mark`` is Depends and the
-``aspect_definition`` must follow the grammar of ``depends_relation``
+``aspect_definition`` must follow the grammar of ``dependency_relation``
 given in section :ref:`depends_aspect`.
 
 .. centered:: **Legality Rules**
 
-#. Every ``input`` and ``output`` of a ``depends_relation`` of a Depends
+#. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
    aspect of a package specification is a state abstraction.
 #. A Depends aspect may appear in the ``aspect_specification``
    of a package specification but it must follow the
@@ -355,7 +355,7 @@ given in section :ref:`depends_aspect`.
    able to refer to *variables* declared in the visible part of the
    package.
 #. A Depends aspect of a package shall not allow the optional ``+``
-   within a ``depends_clause``.
+   within a ``dependency_clause``.
 #. A Depends aspect of a package shall not allow a ``function_result``
    as an ``output``.
 #. A Depends aspect of a package shall not allow ``null`` as an
@@ -386,8 +386,8 @@ given in section :ref:`depends_aspect`.
    sequence of statements of its body, within an embedded package or a
    private descendent of the package.]
 #. A package that does not initialize any state components can be
-   explicitly indicated using a **null** ``depends_relation``.
-#. A ``depends_clause`` with a **null** ``input_list`` means that the final
+   explicitly indicated using a **null** ``dependency_relation``.
+#. A ``dependency_clause`` with a **null** ``input_list`` means that the final
    value of each ``output`` in the ``output_list`` does not depend on any
    ``input``.
 
@@ -547,7 +547,7 @@ the grammar of ``initialization_list`` given below.
        during the elaboration of the package.
 
 #. A **null** ``initialization_list`` is equivalent to a **null**
-   ``depends_relation``.
+   ``dependency_relation``.
 
 .. centered:: **Dynamic Semantics**
 
@@ -1083,20 +1083,20 @@ the grammar of ``global_specification`` in :ref:`global-aspect`.
   Refined Global Aspect and the Refined State Aspect (which may also
   have been synthesized).
 
-.. _refined-dependency-aspect:
+.. _refined-depends-aspect:
 
 Refined Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a
 Refined Depends aspect applied to its body or body stub. The
-Refined Depends aspect defines the ``depends_relation`` of the
+Refined Depends aspect defines the ``dependency_relation`` of the
 subprogram in terms of the ``constituents`` of a ``state_name`` of the
 package rather than the ``state_name``.
 
 The Refined Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Depends" and the ``aspect_definition`` must follow
-the grammar of ``depends_relation``.
+the grammar of ``dependency_relation``.
 
 .. centered:: **Legality Rules**
 
@@ -1127,7 +1127,7 @@ the grammar of ``depends_relation``.
    * For each ``export`` in D which is not a ``state_name`` of Q,
 
      * the same item must appear as an ``export`` in D';
-     * its ``depends_list`` will be unchanged except that an
+     * its ``dependency_list`` will be unchanged except that an
        ``import`` which is a ``state_name`` of Q will be replaced in
        D' by at least one ``constituent`` of the ``state_name`` and a
        ``constituent`` of a **null** , ``abstract_state_name`` may be
@@ -1138,18 +1138,18 @@ the grammar of ``depends_relation``.
 
      * the item is replaced in D' by at least one ``export`` which is a
        ``constituent`` of S,
-     * its ``depends_list`` will be unchanged except that an
+     * its ``dependency_list`` will be unchanged except that an
        ``import`` which is a ``state_name`` of Q will be replaced in
        D' by at least one ``constituent`` of the ``state_name`` and a
        ``constituent`` of a **null** , ``abstract_state_name`` may be
        an additional ``import``.
-     * the union of every ``import`` from the ``depends_list`` of
+     * the union of every ``import`` from the ``dependency_list`` of
        each ``export`` which is a ``constituent`` of S in D', with
        every ``import`` which is a ``constituent`` of a ``state_name``
        of Q replaced by its ``state_name`` (a ``constituent`` of a
        **null** ``abstract_state_name`` is ignored) should give the
        same set as the set of obtained by the union of every
-       ``import`` in the ``depends_list`` of S in D.
+       ``import`` in the ``dependency_list`` of S in D.
 
    * function may have a Refined Depends aspect D' which
      mentions a ``constituent`` of a **null** ``abstract_name`` but

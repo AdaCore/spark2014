@@ -367,16 +367,16 @@ appear in the Depends aspect.
 
 The Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
-the grammar of ``depends_relation`` given below.
+the grammar of ``dependency_relation`` given below.
 
 
 .. centered:: **Syntax**
 
 ::
 
-   depends_relation       ::= null
-                            | (depends_clause {, depends_clause})
-   depends_clause         ::= output_list =>[+] input_list
+   dependency_relation       ::= null
+                            | (dependency_clause {, dependency_clause})
+   dependency_clause         ::= output_list =>[+] input_list
    output_list            ::= output
                             | (output {, output})
                             | null
@@ -392,7 +392,7 @@ where
 
 .. centered:: **Legality Rules**
 
-#. Every ``input`` and ``output`` of a ``depends_relation`` of a Depends
+#. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
    aspect of a subprogram is a state abstraction, a whole object (not part of 
    a containing object) or a formal parameter of the subprogram.
 
@@ -402,16 +402,16 @@ where
    ``input`` and an ``output`` shall have a mode of **in out**.]
    
 #. For the purposes of determining the legality of a Result
-   ``attribute_reference``, a ``depends_relation`` is considered to be
+   ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function, if any, to which the enclosing
    ``aspect_specification`` applies.
 
 #. There can be at most one ``output_list`` which is a **null** symbol
    and if it exists it must be the ``output_list`` of the last
-   ``depends_clause`` in the ``depends_relation``.  An
+   ``dependency_clause`` in the ``dependency_relation``.  An
    ``input`` which is in an ``input_list`` of a **null** export may
    not appear in another ``input_list`` of the same
-   ``depends_relation``.
+   ``dependency_relation``.
 
 #. The object denoted by a given ``output`` in an ``output_list`` shall
    not be denoted by any other ``output`` in that ``output_list``.   
@@ -430,22 +430,22 @@ where
 #. The grammar terms ``input`` and ``output`` have the meaning given to input
    and output given in :ref:`global-aspect`.
    
-#. A Depends aspect of a subprogram with a **null** ``depends_relation``
+#. A Depends aspect of a subprogram with a **null** ``dependency_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.  
    [From an information flow analysis viewpoint it is a 
    null operation (a no-op).]
    
-#. A ``depends_clause`` has the meaning that the final value of every 
+#. A ``dependency_clause`` has the meaning that the final value of every 
    ``output`` in the ``output_list`` is dependent on the initial value of every 
    ``input`` in the ``input_list``.
    
-#. A ``depends_clause`` with a "+" symbol in the syntax ``output_list`` =>+
+#. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
    ``input_list`` means that each ``output`` in the ``output_list`` has a
    *self-dependency*, that is, it is dependent on itself. 
    [The text (A, B, C) =>+ Z is shorthand for 
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
-#. A ``depends_clause`` with a **null** ``input_list`` means that the final
+#. A ``dependency_clause`` with a **null** ``input_list`` means that the final
    value of each ``output`` in the ``output_list`` does not depend on any
    ``input``, other than itself, if the ``output_list`` =>+ **null**
    self-dependency syntax is used.
@@ -457,7 +457,7 @@ where
    and calling of subprograms whose implementation is not in |SPARK|.]
 
 #. A function which does not have an explicit Depends aspect
-   is assumed to have the ``depends_relation`` 
+   is assumed to have the ``dependency_relation`` 
    that its result is dependent on all of its inputs.  
    [Generally a Depends aspect is not required for functions.]
    
@@ -657,7 +657,7 @@ semantics given below should be satisfied by the implementation of its
 body.
 
 If the subprogram has a Refined_Depends aspect (see
-:ref:`refined-dependency-aspect`), this has to be checked for consistency
+:ref:`refined-depends-aspect`), this has to be checked for consistency
 with the Depends aspect and influences the rules for checking the
 implementation of its body as described below.
 
@@ -683,7 +683,7 @@ implementation of its body as described below.
      ``refined_state_aspect`` the consistency between D' and the
      Depends aspect of P is checked and any inconsistencies,
      reported using the rules given in
-     :ref:`refined-dependency-aspect` ; or
+     :ref:`refined-depends-aspect` ; or
    * has a Depends aspect and does not require a
      Refined_Depends aspect, then D' is compared directly with
      the Depends aspect of P and any differences reported; or
@@ -854,7 +854,7 @@ the subprogram.
    state_refinement, the following will be used as the dependency
    relation of P:
 
-   * the ``depends_relation`` from the explicit
+   * the ``dependency_relation`` from the explicit
      Refined_Depends aspect if one is present;
    * for a function which does not have an explicit
      Depends aspect, the assumed dependency relation is that
@@ -872,7 +872,7 @@ the subprogram.
    require a Refined_Depends aspect, the following will be used
    as the dependency relation :
 
-   * the ``depends_relation`` from an explicit Depends aspect if one is present;
+   * the ``dependency_relation`` from an explicit Depends aspect if one is present;
    * for a function which does not have an explicit
      Depends aspect, the assumed dependency relation is that
      its result is dependent on all of its imports;
