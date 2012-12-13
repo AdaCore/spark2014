@@ -126,7 +126,7 @@ where the ``aspect_mark`` is Abstract_State and the
    aspect_specification can only be provided as part of a
    Refined_State aspect specification within the body of the package.]
    
-#. The state abstractions declared in a Abstract_State aspect of a package,
+#. The state abstractions declared in an Abstract_State aspect of a package,
    if present, must cover all the hidden state of the package. 
    [The rule is checked when the package is analyzed.]
    
@@ -145,7 +145,7 @@ where the ``aspect_mark`` is Abstract_State and the
    abstraction entity is not permitted [e.g. in an expression].
    The function declaration is completed by its body which may be used
    to implement the *representation* of the state abstraction.
-   [That is how the constituents that make up the state abstraction are
+   [Thatis, how the constituents that make up the state abstraction are
    related to it.]
 
 #. A *volatile* state abstraction is one declared with a property list
