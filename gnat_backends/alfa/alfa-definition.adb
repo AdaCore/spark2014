@@ -1963,7 +1963,8 @@ package body Alfa.Definition is
                                or else Has_Body_Violations (Cur_Ent))
                   then
                      Error_Msg_N
-                       ("annotation is placed after violation of SPARK", N);
+                       ("annotation is placed after violation of 'S'P'A'R'K",
+                        N);
                      return;
                   end if;
                end;
