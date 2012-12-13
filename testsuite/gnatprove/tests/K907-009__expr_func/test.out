@@ -1,8 +1,7 @@
-
-Subprograms in SPARK       : 100% (12/12)
+Subprograms in SPARK      : 100% (12/12)
   ... already supported   : 100% (12/12)
   ... not yet supported   :   0% ( 0/12)
-Subprograms not in SPARK   :   0% ( 0/12)
+Subprograms not in SPARK  :   0% ( 0/12)
 
 Subprograms not in SPARK due to (possibly more than one reason):
  (none)
