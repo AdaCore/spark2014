@@ -85,13 +85,15 @@ package Configuration is
    --    for unproved VCs (timeout, max steps)
    --
 
-   type Proof_Mode is (Normal, No_WP, All_Split);
+   type Proof_Mode is (Normal, No_WP, All_Split, Path_WP, No_Split);
    --  This is a debug option of GNATprove. This option is simply passed to
    --  gnatwhy3.
    --  The modes for proof are:
    --  Normal: Compute WP, split VCs as necessary, call prover as necessary
    --  No_WP: do not compute WP, do not split VCs, do not call prover
    --  All_Split: compute VCs, split all VCs, do not call prover
+   --  Path_WP: use the "normal" (exponential) WP
+   --  No_Split: only use fast WP, no split of VCs at all
 
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
@@ -167,4 +169,6 @@ package Configuration is
 
    procedure Read_Command_Line (Tree : out Project_Tree);
 
+   function To_String (P : Proof_Mode) return String;
+   --  transform the proof mode into a string for gnatwhy3 command line option
 end Configuration;

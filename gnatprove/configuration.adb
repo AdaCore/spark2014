@@ -108,7 +108,8 @@ ASCII.LF &
 ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=normal*, no_wp, all_split)" &
+"     --proof=p      Set the proof mode "&
+"(p=normal*, no_wp, all_split, path_wp, no_split)" &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
@@ -167,6 +168,22 @@ ASCII.LF &
          raise Invalid_Switch;
       end if;
    end Handle_Switch;
+
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (P : Proof_Mode) return String
+   is
+   begin
+      case P is
+         when No_WP => return "no_wp";
+         when All_Split => return "all_split";
+         when Normal => return "normal";
+         when Path_WP => return "path_wp";
+         when No_Split => return "no_split";
+      end case;
+   end To_String;
 
    -----------------------
    -- Read_Command_Line --
@@ -479,9 +496,14 @@ ASCII.LF &
          Proof := No_WP;
       elsif Proof_Input.all = "all_split" then
          Proof := All_Split;
+      elsif Proof_Input.all = "path_wp" then
+         Proof := Path_WP;
+      elsif Proof_Input.all = "no_split" then
+         Proof := No_Split;
       else
          Abort_With_Help
-           ("proof mode should be one of (normal | no_wp | all_split)");
+           ("proof mode should be one of " &
+            "(normal | no_wp | all_split|path_wp|no_split)");
       end if;
 
       declare

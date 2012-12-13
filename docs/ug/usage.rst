@@ -57,6 +57,9 @@ Command-line Usage
       normal                Normal mode
       no_wp                 Do not compute VCs, do not call prover
       all_split             Compute all VCs, save them to file, do not call prover
+      path_wp               Use traditional way of computing VCs, one for each path
+      no_split              Compute only a single VC for each check; fastest
+                            but least precise option
    --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
    --timeout=s            Set the prover timeout in seconds (default: 1)
@@ -90,11 +93,14 @@ behavior of the prover Alt-Ergo. The option ``-j`` activates parallel
 compilation and parallel proofs.  The option ``proof`` is intended for debug
 use and influences th work that is actually done by gnatprove. If this option
 is set to ``normal``, gnatprove will compute VCs and run the prover in an
-optimal way to prove the user code. If this option is set to ``no_wp``, the
-VCs are not computed, and no prover is called. If this option is set to
-``all_split`` the VCs are computed, but no prover is called. With the
-option ``-q``, gnatprove does give the minimum of messages, while with option
-``-v``, on the contrary, all details are given.
+optimal way to prove the user code. If this option is set to ``no_split``,
+less VCs are generated, which will make |GNATprove| run faster, but may prove
+less objectives. If this option is set to ``no_wp``, the VCs are not computed,
+and no prover is called. If this option is set to ``all_split`` the VCs are
+computed, but no prover is called. If this option is set to ``path_wp``, one
+VC is generated for each path. With the option ``-q``, gnatprove does give the
+minimum of messages, while with option ``-v``, on the contrary, all details
+are given.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only the file 12 of
