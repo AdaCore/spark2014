@@ -254,19 +254,25 @@ follow the grammar of ``global_specification``
    mode_selector               ::= Input | Output | In_Out | Contract_In
    global_item                 ::= name
 
+.. centered:: **Name Resolution Rules**
+
+#. The ``name`` represented by a given ``global_item`` will resolve to denote
+   a variable object or a state abstraction. In a context where the ``name``
+   could be interpreted either as a variable or as a state abstraction it shall
+   resolve to denote a variable.
+
 .. centered:: **Legality Rules**
 
 #. A ``global_item`` of a subprogram shall be a stand alone variable object 
    [that is, it is not part of a larger object] or it shall be a state abstraction. 
 
-#. Each ``mode_selector`` shall not occur more than once in a single
-   ``global_specification``.
+#. Each ``mode_selector`` shall occur at most once in a single
+   Global aspect.
 
 #. A function subprogram may not have a ``mode_selector`` of
-   ``Output`` or ``In_Out`` in its ``global_aspect``.
+   ``Output`` or ``In_Out`` in its Global aspect.
 
-#. The object denoted by a given ``global_item`` in a single Global aspect shall
-   not be denoted by any other ``global_item`` in that Global aspect. 
+#. Each ``global_item`` in a single Global aspect shall denote a distinct entity.
 
 #. A global item occurring in a Global aspect of a subprogram aspect
    specification shall not have the same ``defining_identifier`` as a formal
@@ -274,42 +280,44 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Static Semantics**
 
-#. A ``global_specification`` which is a ``global_list`` is considered to be a
+#. A ``global_specification`` that is a ``global_list`` is considered to be a
    ``moded_global_list`` with the ``mode_selector`` Input.
 
-#. A ``global_item`` is *referenced* by a subprogram if it is an input or
-   an output of the subprogram, or is used directly or indirectly
-   in any assertion expression within the subprogram.
+#. A ``global_item`` is *referenced* by a subprogram if:
+
+   * It is an input or an output of the subprogram, or;
+
+   * It [its initial value] is used to determine the value of an assertion
+     expression within the subprogram, or;
+
+   * It [its initial value] is used to determine the value of an assertion
+     expression within another subprogram that is called either directly or
+     indirectly by this subprogram.
 
 #. A subprogram with a Global aspect that has a ``global_specification``
-   of **null** is taken to mean that the subprogram does not reference
-   any ``global_items``.
+   of **null** shall not reference any ``global_items``.
   
-#. A ``global_item`` occurring in a Global aspect of a subprogram is an input or
-   output of the subprogram or its initial value is used in an assertion 
-   expression within the subprogram.
+#. A ``global_item`` shall occur in a Global aspect of a subprogram if and
+   only if it is referenced by the subprogram.
    
-#. Each ``global_item`` in a Global aspect of a subprogram that is is an input
+#. Each ``global_item`` in a Global aspect of a subprogram that is an input
    or output of the subprogram shall satisfy the following mode
    specification rules 
    [which are checked during analysis of the subprogram body]:
 
-   * a ``global_item`` that is an input but not an output, is mode **in** and 
+   * a ``global_item`` that is an input but not an output is mode **in** and 
      has a ``mode_selector`` of Input; 
    
-   * a ``global_item`` that is an output, not an input and is always fully initialized on
-     every call of the subprogram is mode **out** and has a ``mode_selector`` 
+   * a ``global_item`` that is an output but not an input is always fully initialized on
+     every call of the subprogram, is mode **out** and has a ``mode_selector`` 
      of Output;
      
-   * otherwise the ``global_item`` is both an input and an output and is
+   * otherwise the ``global_item`` is both an input and an output, is
      mode **in out** and has a ``mode_selector`` of In_Out.
 
-#. A ``global_item`` which is neither an input nor an output of a subprogram
-   but is referenced, directly or indirectly, in an assertion expression within 
-   the subprogram has a ``mode_selector`` of Contract_In.
-
-#. All ``global_items`` which are referenced by a subprogram must appear in its
-   Global aspect, if it is present.
+#. A ``global_item`` that is referenced by a subprogram but is neither an
+   input nor an output of that subprogram [that is, it is only used to determine
+   the value of an assertion expression] has a ``mode_selector`` of Contract_In.
 
 .. centered:: **Dynamic Semantics**
 
