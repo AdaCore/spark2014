@@ -157,9 +157,101 @@ package body Why.Images is
    end P;
 
    procedure P (O : Output_Id; Value : Ureal) is
+
+      function Only_Prime_Factors_Are_Two_And_Five (N : Nat) return Boolean;
+      --  Returns whether number N is a multiple of 2 and 5 only. If this is
+      --  the case, that means that a fraction whose denominator is a power of
+      --  N can be written exactly in decimal notation. Otherwise, the fraction
+      --  may not always be written exactly in decimal notation (e.g. 1/3).
+
+      function Max_Number_Of_Decimals (Den : Uint) return Nat;
+      --  Returns the maximal number of decimals when dividing a natural number
+      --  by Den. Den is a multiple of factors 2 and 5 only. Every factor of
+      --  10, 5 or 2 potentially adds a decimal.
+
+      procedure Print_Decimal_Notation (Num, Den : Uint);
+      --  Prints the decimal notation of fraction Num/Den. This fraction should
+      --  be a number that can be written exactly in decimal notation.
+
+      ----------------------------
+      -- Max_Number_Of_Decimals --
+      ----------------------------
+
+      function Max_Number_Of_Decimals (Den : Uint) return Nat is
+         M   : Uint := Den;
+         Max : Nat := 0;
+
+      begin
+         while M mod 10 = 0 loop
+            Max := Max + 1;
+            M := M / 10;
+         end loop;
+
+         while M mod 2 = 0 loop
+            Max := Max + 1;
+            M := M / 2;
+         end loop;
+
+         while M mod 5 = 0 loop
+            Max := Max + 1;
+            M := M / 5;
+         end loop;
+
+         pragma Assert (M = 1);
+
+         return Max;
+      end Max_Number_Of_Decimals;
+
+      -----------------------------------------
+      -- Only_Prime_Factors_Are_Two_And_Five --
+      -----------------------------------------
+
+      function Only_Prime_Factors_Are_Two_And_Five (N : Nat) return Boolean is
+         M : Nat := N;
+      begin
+         while M mod 2 = 0 loop
+            M := M / 2;
+         end loop;
+
+         while M mod 5 = 0 loop
+            M := M / 5;
+         end loop;
+
+         return M = 1;
+      end Only_Prime_Factors_Are_Two_And_Five;
+
+      ----------------------------
+      -- Print_Decimal_Notation --
+      ----------------------------
+
+      --  To print Num/Den in decimal notation, compute the maximum number of
+      --  decimals of the result, scale Num by 10 this maximum number of times,
+      --  perform the exact division, and retrieve the integral and fractional
+      --  parts of the result.
+
+      procedure Print_Decimal_Notation (Num, Den : Uint) is
+         Max          : constant Nat := Max_Number_Of_Decimals (Den);
+         Scale_Factor : constant Uint := UI_From_Int (10) ** Max;
+         Scale_Num    : constant Uint := Num * Scale_Factor;
+         Scale_Result : constant Uint := Scale_Num / Den;
+
+         pragma Assert (Scale_Num mod Den = 0);
+
+         Int_Part  : constant Uint := Scale_Result / Scale_Factor;
+         Fact_Part : constant Uint := Scale_Result mod Scale_Factor;
+
+      begin
+         P (O, Int_Part);
+         P (O, ".");
+         P (O, Fact_Part);
+      end Print_Decimal_Notation;
+
       Num    : constant Uint := Numerator (Value);
       Den    : constant Uint := Denominator (Value);
       Base   : constant Nat  := Rbase (Value);
+
+   --  Start of P
+
    begin
       --  ??? Same remark as in the case of integer constants:
       --  I suppose that Why's real constants follows the same syntax
@@ -198,8 +290,10 @@ package body Why.Images is
       --  positive, even when denominator is negative or null.
 
       if UR_Is_Negative (Value) then
-         P (O, EW_Substract, EW_Real);
+         P (O, EW_Minus, EW_Real);
       end if;
+
+      --  The base is zero, hence the absolute value is numerator/denominator
 
       if Base = 0 then
          P (O, Num);
@@ -208,25 +302,37 @@ package body Why.Images is
          P (O, Den);
          P (O, ".0");
 
+      --  The base is 10, hence the absolute value can be expressed directly in
+      --  Why using the exponent notation E.
+
       elsif Base = 10 then
          P (O, Num);
+         P (O, ".0");
          P (O, "E");
          P (O, -Den);
 
-      else
-         P (O, Num);
+      --  The denominator is negative or null, hence the real number is
+      --     numerator * (base ** (- denominator)).
+
+      elsif Den <= Uint_0 then
+         P (O, UI_Mul (Num, UI_Expon (Base, UI_Negate (Den))));
          P (O, ".0");
 
-         if Den > Uint_0 then
-            P (O, EW_Divide, EW_Real);
-            P (O, UI_Expon (Base, Den));
-            P (O, ".0");
+      --  The base has only 2 and 5 as prime factors, hence the real number can
+      --  be written exactly in decimal notation.
 
-         else
-            P (O, EW_Multiply, EW_Real);
-            P (O, UI_Expon (Base, UI_Negate (Den)));
-            P (O, ".0");
-         end if;
+      elsif Only_Prime_Factors_Are_Two_And_Five (Base) then
+         Print_Decimal_Notation (Num, UI_Expon (Base, Den));
+
+      --  Otherwise, print a fraction
+
+      else
+         pragma Assert (Den > Uint_0);
+         P (O, Num);
+         P (O, ".0");
+         P (O, EW_Divide, EW_Real);
+         P (O, UI_Expon (Base, Den));
+         P (O, ".0");
       end if;
    end P;
 

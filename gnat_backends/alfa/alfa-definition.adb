@@ -833,14 +833,6 @@ package body Alfa.Definition is
             Mark (Low_Bound (N));
             Mark (High_Bound (N));
 
-         --  Make sure the original node for a real literal is in Alfa, because
-         --  the translation uses the original node if the node was rewritten.
-
-         when N_Real_Literal =>
-            if Is_Rewrite_Substitution (N) then
-               Mark (Original_Node (N));
-            end if;
-
          when N_Record_Representation_Clause =>
             Mark_Violation ("record representation clause", N, NYI_Rep_Clause);
 
@@ -1011,6 +1003,7 @@ package body Alfa.Definition is
               N_Package_Instantiation                  |
               N_Package_Renaming_Declaration           |
               N_Procedure_Instantiation                |
+              N_Real_Literal                           |
               N_String_Literal                         |
               N_Subprogram_Info                        |
               N_Subprogram_Renaming_Declaration        |

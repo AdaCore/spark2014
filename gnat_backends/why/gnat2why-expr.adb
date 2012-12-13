@@ -3431,27 +3431,23 @@ package body Gnat2Why.Expr is
                  Value    => Intval (Expr));
             Current_Type := EW_Int_Type;
 
+         --  Note: although the original node for a real literal might be
+         --  closer to the source code expression of the value, this original
+         --  node should not be used for transforming the node into Why.
+         --  Indeed, a source float literal in Ada might not be representable
+         --  in machine, in which case the frontend rewrites the value into a
+         --  machine representable value (respecting the Ada RM rules, so
+         --  getting the closest representable floating-point value).
+
+         --  The procedure printing this node in Why takes care of putting the
+         --  value in a suitable form for provers. In particular, we want to
+         --  avoid printing divisions between real numbers, which provers don't
+         --  handle well, even when the division can be expressed exactly as a
+         --  decimal number.
+
          when N_Real_Literal =>
-            --  The original is usually much easier to process for alt-ergo
-            --  than the rewritten node; typically, the will be in decimal
-            --  base whereas the expanded node will be of the form
-            --  (Num / (2 ** Den)). The division is a problem for alt-ergo,
-            --  even between two litterals. Note that Alfa-marking makes sure
-            --  the original node is in Alfa in this case.
-
-            if Is_Rewrite_Substitution (Expr) then
-               T := Transform_Expr (Original_Node (Expr),
-                                    EW_Real_Type,
-                                    Domain,
-                                    Local_Params);
-
-            else
-               T :=
-                 New_Real_Constant
-                   (Ada_Node => Expr,
-                    Value    => Realval (Expr));
-            end if;
-
+            T := New_Real_Constant (Ada_Node => Expr,
+                                    Value    => Realval (Expr));
             Current_Type := EW_Real_Type;
 
          when N_Character_Literal =>
