@@ -43,7 +43,6 @@ with Snames;                use Snames;
 with Stand;                 use Stand;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
-with VC_Kinds;              use VC_Kinds;
 with Eval_Fat;
 
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
@@ -109,6 +108,13 @@ package body Gnat2Why.Expr is
    --  Apply a modulus on T, where the modulus is defined by the Entity N
    --  which must be a modular type. If E is not a modular type, return T
    --  unchanged.
+
+   function Insert_Overflow_Check (Ada_Node : Node_Id;
+                                   T : W_Expr_Id;
+                                   In_Type : Entity_Id) return W_Expr_Id
+   with Pre => Is_Scalar_Type (In_Type);
+   --  on top of the Why expression T, put an overflow check for the base type
+   --  of In_Type. Use the Ada_Node for the VC location.
 
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
@@ -330,7 +336,6 @@ package body Gnat2Why.Expr is
      (Expr               : Node_Id;
       Domain             : EW_Domain;
       Current_Type       : out W_Base_Type_Id;
-      Range_Check_Needed : in out Boolean;
       Params             : Transformation_Params) return W_Expr_Id;
    --  Range_Check_Needed is set to True for some attributes (like 'Pos,
    --  'Length, 'Modulus) which return a universal integer, so that we check
@@ -957,6 +962,127 @@ package body Gnat2Why.Expr is
       end if;
    end Get_Pure_Logic_Term_If_Possible;
 
+   --------------------------
+   -- Get_Range_Check_Info --
+   --------------------------
+
+   procedure Get_Range_Check_Info
+     (Expr : Node_Id;
+      Check_Type : out Entity_Id;
+      Check_Kind : out VC_Kind)
+   is
+      Par : constant Node_Id := Parent (Expr);
+      Found : Boolean := False;
+   begin
+      Check_Kind := VC_Range_Check;
+
+      case Nkind (Par) is
+         when N_Assignment_Statement =>
+            Check_Type := Etype (Name (Par));
+
+         when N_Indexed_Component =>
+            Check_Kind := VC_Index_Check;
+
+            --  We find the correct type to check against in the index types
+            --  of the array type of the prefix of the index access.
+            --  When it is present, the correct type to look at is the
+            --  "actual_subtype" of the array object entity.
+
+            declare
+               Obj : constant Entity_Id := Prefix (Par);
+               Array_Type : Entity_Id := Etype (Obj);
+               Act_Cursor : Node_Id := First (Expressions (Par));
+               Ty_Cursor  : Node_Id;
+            begin
+               if Is_Entity_Name (Obj) and then
+                 Present (Actual_Subtype (Entity (Obj)))
+               then
+                  Array_Type := Actual_Subtype (Entity (Obj));
+               end if;
+               Array_Type := Unique_Entity (Array_Type);
+               Ty_Cursor := First_Index (Array_Type);
+               while Present (Act_Cursor) loop
+                  if Expr = Act_Cursor then
+                     Check_Type := Etype (Ty_Cursor);
+                     Found := True;
+                     exit;
+                  end if;
+                  Next (Act_Cursor);
+                  Next_Index (Ty_Cursor);
+               end loop;
+               if not Found then
+                  raise Program_Error;
+               end if;
+            end;
+
+         when N_Type_Conversion =>
+            Check_Type := Etype (Expression (Par));
+
+         when N_Function_Call
+            | N_Procedure_Call_Statement
+            | N_Parameter_Association =>
+
+            --  Find the expression in the arguments of the call
+
+            declare
+
+               procedure Check_Call_Arg (Formal, Actual : Node_Id);
+               --  If the actual is our expression, set the Check_Type to
+               --  the Etype of the formal
+
+               --------------------
+               -- Check_Call_Arg --
+               --------------------
+
+               procedure Check_Call_Arg (Formal, Actual : Node_Id)
+               is
+               begin
+                  if Expr = Actual then
+                     Check_Type := Etype (Formal);
+                     Found := True;
+                  end if;
+               end Check_Call_Arg;
+
+               procedure Find_Expr_in_Call_Args is new
+                 Iterate_Call_Arguments (Check_Call_Arg);
+
+            begin
+               if Nkind (Par) = N_Parameter_Association then
+                  Find_Expr_in_Call_Args (Parent (Par));
+               else
+                  Find_Expr_in_Call_Args (Par);
+               end if;
+               if not Found then
+                  raise Program_Error;
+               end if;
+            end;
+
+         when N_Attribute_Reference =>
+            declare
+               Aname   : constant Name_Id := Attribute_Name (Par);
+               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+            begin
+               case Attr_Id is
+                  when Attribute_Val | Attribute_Pred | Attribute_Succ =>
+                     Check_Type := Base_Type (Entity (Prefix (Par)));
+
+                  when others =>
+                     Ada.Text_IO.Put_Line ("[Get_Check_Info] attr ="
+                                           & Attribute_Id'Image (Attr_Id));
+
+               end case;
+            end;
+
+         when N_Object_Declaration =>
+            Check_Type := Etype (Defining_Identifier (Par));
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Get_Check_Info] kind ="
+                                  & Node_Kind'Image (Nkind (Par)));
+            raise Program_Error;
+      end case;
+   end Get_Range_Check_Info;
+
    ----------------------
    -- Has_Element_Expr --
    ----------------------
@@ -991,6 +1117,48 @@ package body Gnat2Why.Expr is
          return Call;
       end if;
    end Has_Element_Expr;
+
+   ---------------------------
+   -- Insert_Overflow_Check --
+   ---------------------------
+
+   function Insert_Overflow_Check (Ada_Node : Node_Id;
+                                   T : W_Expr_Id;
+                                   In_Type : Entity_Id) return W_Expr_Id
+   is
+      Base : constant Entity_Id := Base_Type (In_Type);
+   begin
+      return
+        New_VC_Call
+          (Domain   => EW_Prog,
+           Ada_Node => Ada_Node,
+           Name     =>
+             Prefix (Full_Name (Base), WNE_Range_Check_Fun, Base),
+           Progs    => (1 => +T),
+           Reason   => VC_Overflow_Check);
+   end Insert_Overflow_Check;
+
+   ------------------------
+   -- Insert_Range_Check --
+   ------------------------
+
+   function Insert_Range_Check (Expr          : Node_Id;
+                                T             : W_Expr_Id)
+                                return W_Expr_Id
+   is
+
+      Check_Type : Entity_Id;
+      Check_Kind : VC_Kind;
+   begin
+      Get_Range_Check_Info (Expr, Check_Type,  Check_Kind);
+      return New_VC_Call
+        (Domain   => EW_Prog,
+         Ada_Node => Expr,
+         Name     =>
+           Prefix (Full_Name (Check_Type), WNE_Range_Check_Fun, Check_Type),
+         Progs    => (1 => +T),
+         Reason   => Check_Kind);
+   end Insert_Range_Check;
 
    ------------------------
    -- Insert_Ref_Context --
@@ -2728,7 +2896,6 @@ package body Gnat2Why.Expr is
      (Expr               : Node_Id;
       Domain             : EW_Domain;
       Current_Type       : out W_Base_Type_Id;
-      Range_Check_Needed : in out Boolean;
       Params             : Transformation_Params) return W_Expr_Id
    is
       Aname   : constant Name_Id := Attribute_Name (Expr);
@@ -2827,11 +2994,11 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             Current_Type := EW_Int_Type;
-            Range_Check_Needed := True;
 
          when Attribute_Val =>
             declare
-               Val_Type : constant W_Base_Type_Id := Type_Of_Node (Var);
+               Val_Type : constant W_Base_Type_Id :=
+                 Type_Of_Node (Base_Type (Entity (Var)));
             begin
                T := Transform_Expr (First (Expressions (Expr)),
                                     Val_Type,
@@ -2879,10 +3046,6 @@ package body Gnat2Why.Expr is
                   null;
             end case;
 
-            if Attr_Id = Attribute_Length then
-               Range_Check_Needed := True;
-            end if;
-
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
                Arg     : constant Node_Id := First (Expressions (Expr));
@@ -2909,7 +3072,6 @@ package body Gnat2Why.Expr is
          when Attribute_Modulus =>
             T := New_Attribute_Expr (Etype (Var), Attr_Id);
             Current_Type := EW_Int_Type;
-            Range_Check_Needed := True;
 
          when Attribute_Mod =>
             T :=
@@ -3346,7 +3508,6 @@ package body Gnat2Why.Expr is
    is
       T                     : W_Expr_Id;
       Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
-      Range_Check_Needed    : Boolean := False;
       Pretty_Label          : W_Identifier_Id := Why_Empty;
       Local_Params          : Transformation_Params := Params;
    begin
@@ -3687,23 +3848,14 @@ package body Gnat2Why.Expr is
                Left    : constant Node_Id := Left_Opnd (Expr);
                Right   : constant Node_Id := Right_Opnd (Expr);
                Name    : W_Identifier_Id;
-               T_Right : constant W_Base_Type_Id := Type_Of_Node (Right);
-               W_Right : W_Expr_Id := Transform_Expr (Right,
-                                                      EW_Int_Type,
-                                                      Domain,
-                                                      Local_Params);
+               W_Right : constant W_Expr_Id :=
+                 Transform_Expr (Right,
+                                 EW_Int_Type,
+                                 Domain,
+                                 Local_Params);
             begin
                Current_Type := Base_Why_Type (Left);
                Name := New_Exp (Get_Base_Type (Current_Type));
-
-               if Is_Discrete_Type (Most_Underlying_Type (Etype (Left))) then
-                  W_Right := Insert_Conversion (Domain     => Domain,
-                                                Ada_Node   => Right,
-                                                Expr       => W_Right,
-                                                From       => EW_Int_Type,
-                                                To         => EW_Int_Type,
-                                                Range_Type => T_Right);
-               end if;
 
                T := New_Call
                       (Ada_Node => Expr,
@@ -3896,10 +4048,11 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Type_Conversion =>
-            return Transform_Expr (Expression (Expr),
-                                   Expected_Type,
-                                   Domain,
-                                   Local_Params);
+               T := Transform_Expr (Expression (Expr),
+                                    Expected_Type,
+                                    Domain,
+                                    Local_Params);
+               Current_Type := Expected_Type;
 
          when N_Unchecked_Type_Conversion =>
             --  Compiler inserted conversions are trusted
@@ -3952,7 +4105,6 @@ package body Gnat2Why.Expr is
             T := Transform_Attr (Expr,
                                  Domain,
                                  Current_Type,
-                                 Range_Check_Needed,
                                  Local_Params);
 
          when N_Case_Expression =>
@@ -3992,7 +4144,11 @@ package body Gnat2Why.Expr is
          end case;
       end if;
 
-      --  Add the pretty printing label here, if there is one
+      --  We now have the translation of the Ada expression in [T], pending
+      --  checks and conversion. We now do the wrapping up to insert all those
+      --  if needed.
+
+      --  This label will be used for pretty printing the expression
 
       if Pretty_Label /= Why_Empty then
          T :=
@@ -4003,41 +4159,39 @@ package body Gnat2Why.Expr is
                       Domain => Domain);
       end if;
 
-      declare
-         Overflow_Type : constant W_Base_Type_Id :=
-           (if Nkind (Expr) in
+      --  Do_Overflow_Check cannot be called on all nodes, so we check the
+      --  Nkind before the call. We can simply insert that here, because
+      --  overflow checks are only on intermediate expressions, and hence the
+      --  expression is already of "int" or "real" type.
+
+      if Domain = EW_Prog and then
+        Nkind (Expr) in
               N_Op
             | N_Attribute_Reference
             | N_If_Expression
             | N_Case_Expression
-            | N_Type_Conversion
-            and then Do_Overflow_Check (Expr) then
-              EW_Abstract (Etype (Expr))
-            else
-              Why_Empty);
-         Range_Type    : constant W_Base_Type_Id :=
-                           (if Range_Check_Needed then
-                              EW_Abstract (Etype (Expr))
-                            else
-                              Why_Empty);
-      begin
-         case Domain is
-            when EW_Term | EW_Prog =>
-               return
-                 Insert_Conversion
-                   (Domain        => Domain,
-                    Ada_Node      => Expr,
-                    Expr          => T,
-                    From          => Current_Type,
-                    To            => Expected_Type,
-                    Overflow_Type => Overflow_Type,
-                    Range_Type    => Range_Type);
+            | N_Type_Conversion and then
+        Do_Overflow_Check (Expr) then
+         T := Insert_Overflow_Check (Expr, T, Etype (Expr));
+      end if;
 
-            when EW_Pred =>
-               return T;
+      --  We now insert a range check. It requires the expression to be of
+      --  "int" or "real" type. This is not always the case, so the range check
+      --  has to be intertwined with the conversion.
 
-         end case;
-      end;
+      if Domain in EW_Term | EW_Prog then
+         T :=
+           Insert_Conversion
+             (Domain        => Domain,
+              Ada_Node      => Expr,
+              Expr          => T,
+              From          => Current_Type,
+              To            => Expected_Type,
+              Range_Check   =>
+                Domain = EW_Prog and then Do_Range_Check (Expr));
+      end if;
+
+      return T;
    end Transform_Expr;
 
    function Transform_Expr

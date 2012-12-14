@@ -640,7 +640,7 @@ package body Why.Gen.Names is
          when WNE_Ignore       => return "___ignore";
          when WNE_Result       => return "result";
          when WNE_Result_Exc   => return "Return__exc";
-         when WNE_Overflow     => return "overflow_check_";
+         when WNE_Range_Check_Fun => return "range_check_";
          when WNE_Eq           => return "eq";
          when WNE_Range_Axiom  => return "range_axiom";
          when WNE_Unicity      => return "unicity_axiom";

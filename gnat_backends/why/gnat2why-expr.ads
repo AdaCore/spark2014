@@ -26,6 +26,7 @@
 with Ada.Containers.Hashed_Maps;
 
 with Types;          use Types;
+with VC_Kinds;       use VC_Kinds;
 
 with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
@@ -59,6 +60,22 @@ package Gnat2Why.Expr is
       Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
+
+   procedure Get_Range_Check_Info
+     (Expr : Node_Id;
+      Check_Type : out Entity_Id;
+      Check_Kind : out VC_Kind);
+   --  Given an expression with the Do_Range_Check flag on, determine the check
+   --  type (ie the range to check against) and check kind (range check or
+   --  index check).
+
+   function Insert_Range_Check (Expr          : Node_Id;
+                                T             : W_Expr_Id)
+                                return W_Expr_Id;
+   --  on top of the Why expression T, put a range check for the expected type.
+   --  Use the Ada expression to find the kind of the check - in the case of an
+   --  indexed component, this may actually generate an index check. Use
+   --  [Get_Range_Check_Info] to determine the type and kind of the check.
 
    function Range_Expr
      (N           : Node_Id;

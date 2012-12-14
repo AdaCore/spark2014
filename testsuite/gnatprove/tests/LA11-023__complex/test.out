@@ -1,2 +1,0 @@
-bar.adb:12:17: info: range check proved, in instantiation at foo.ads:18
-toto.adb:9:14: info: range check proved

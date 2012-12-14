@@ -10,13 +10,6 @@ binary_search.adb:22:66: info: index check proved
 binary_search.adb:23:10: loop variant not proved
 binary_search.adb:24:22: range check not proved
 binary_search.adb:24:39: info: division check proved
-binary_search.adb:25:13: info: index check proved
-binary_search.adb:27:16: index check not proved
-binary_search.adb:30:20: range check not proved
-binary_search.adb:33:14: info: range check proved
-binary_search.adb:9:17: info: range check proved
-binary_search.ads:11:20: info: index check proved
-binary_search.ads:11:30: info: index check proved
-binary_search.ads:12:48: info: index check proved
-binary_search.ads:13:49: info: index check proved
-binary_search.ads:13:59: postcondition not proved, requires A (Index) /= I
+binary_search.ads:11:33: info: index check proved
+binary_search.ads:12:57: info: index check proved
+binary_search.ads:12:66: postcondition not proved, requires A (Search'Result) = I

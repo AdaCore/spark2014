@@ -1,11 +1,6 @@
 flight_manager.adb:16:21: overflow check not proved
 flight_manager.adb:16:43: info: division check proved
-flight_manager.adb:16:43: range check not proved
 flight_manager.adb:23:20: overflow check not proved
-flight_manager.adb:31:28: info: range check proved
-flight_manager.adb:33:28: info: range check proved
-flight_manager.adb:37:29: info: range check proved
-flight_manager.adb:39:29: info: range check proved
 flight_manager.adb:42:56: overflow check not proved
 flight_manager.adb:43:56: overflow check not proved
 flight_manager.ads:13:27: overflow check not proved

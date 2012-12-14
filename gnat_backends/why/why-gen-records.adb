@@ -835,10 +835,7 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-      Call_Id : constant W_Identifier_Id :=
-        (if Domain = EW_Prog then
-         To_Program_Space (To_Why_Id (Field, Rec => Ty))
-         else To_Why_Id (Field, Rec => Ty));
+      Call_Id : constant W_Identifier_Id := To_Why_Id (Field, Rec => Ty);
    begin
       if Needs_Discriminant_Check_For_Access (Field) then
          return

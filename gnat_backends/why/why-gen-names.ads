@@ -176,7 +176,7 @@ package Why.Gen.Names is
       WNE_Of_Base,
       WNE_Of_Int,
       WNE_Of_Real,
-      WNE_Overflow,
+      WNE_Range_Check_Fun,
       WNE_Pre_Check,
       WNE_Pretty_Ada,
       WNE_Private,

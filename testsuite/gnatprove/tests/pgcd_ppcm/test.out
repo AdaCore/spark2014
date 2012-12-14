@@ -1,10 +1,10 @@
-a.adb:11:27: loop invariant preservation not proved, requires Bn /= Integer'first
 a.adb:12:25: info: overflow check proved
 a.adb:12:35: info: overflow check proved
 a.adb:12:49: overflow check not proved
 a.adb:12:59: overflow check not proved
 a.adb:13:25: info: overflow check proved
 a.adb:13:35: overflow check not proved
+a.adb:13:41: loop invariant preservation not proved, requires abs Bn <= abs A or else abs Bn <= abs B
 a.adb:13:49: overflow check not proved
 a.adb:13:59: overflow check not proved
 a.adb:14:10: loop variant not proved

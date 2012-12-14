@@ -56,23 +56,18 @@ with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 
 package body Gnat2Why.Types is
 
-   function Is_Ada_Base_Type (N : Node_Id) return Boolean;
-   --  Return True is N is of an Ada base type
-
    procedure Declare_Ada_Abstract_Signed_Int_From_Range
      (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
       Rng     : Node_Id;
-      Modulus : W_Integer_Constant_Id := Why_Empty;
-      Is_Base : Boolean);
+      Modulus : W_Integer_Constant_Id := Why_Empty);
    --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
    --  from node.
 
    procedure Declare_Ada_Real_From_Range
      (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
-      Rng     : Node_Id;
-      Is_Base : Boolean);
+      Rng     : Node_Id);
    --  Same as Declare_Ada_Real but extract range information
    --  from node.
 
@@ -84,8 +79,7 @@ package body Gnat2Why.Types is
      (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
       Rng     : Node_Id;
-      Modulus : W_Integer_Constant_Id := Why_Empty;
-      Is_Base : Boolean)
+      Modulus : W_Integer_Constant_Id := Why_Empty)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
       First      : W_Integer_Constant_Id := Why_Empty;
@@ -101,7 +95,7 @@ package body Gnat2Why.Types is
               Expr_Value (High_Bound (Range_Node)));
       end if;
       Declare_Ada_Abstract_Signed_Int
-        (Theory, E, First, Last, Modulus, Is_Base);
+        (Theory, E, First, Last, Modulus);
    end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    ---------------------------------
@@ -111,8 +105,7 @@ package body Gnat2Why.Types is
    procedure Declare_Ada_Real_From_Range
      (Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id;
-      Rng     : Node_Id;
-      Is_Base : Boolean)
+      Rng     : Node_Id)
    is
       Range_Node : constant Node_Id := Get_Range (Rng);
       First      : W_Real_Constant_Id := Why_Empty;
@@ -128,18 +121,8 @@ package body Gnat2Why.Types is
             New_Real_Constant (Value =>
               Expr_Value_R (High_Bound (Range_Node)));
       end if;
-      Declare_Ada_Real (Theory, E, First, Last, Is_Base);
+      Declare_Ada_Real (Theory, E, First, Last);
    end Declare_Ada_Real_From_Range;
-
-   ----------------------
-   -- Is_Ada_Base_Type --
-   ----------------------
-
-   function Is_Ada_Base_Type (N : Node_Id) return Boolean is
-      T : constant Entity_Id := Etype (N);
-   begin
-      return Base_Type (T) = T;
-   end Is_Ada_Base_Type;
 
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
@@ -215,8 +198,7 @@ package body Gnat2Why.Types is
                E = Standard_Wide_Character      or else
                E = Standard_Wide_Wide_Character
          then
-            Declare_Ada_Abstract_Signed_Int_From_Range
-              (Theory, E, E, Is_Base => Is_Ada_Base_Type (E));
+            Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
 
          elsif Type_Based_On_Formal_Container (E) then
             Emit
@@ -232,21 +214,17 @@ package body Gnat2Why.Types is
                  E_Enumeration_Type       |
                  E_Enumeration_Subtype    =>
                Declare_Ada_Abstract_Signed_Int_From_Range
-                 (Theory, E, Scalar_Range (E),
-                  Is_Base => Is_Ada_Base_Type (E));
+                 (Theory, E, Scalar_Range (E));
 
             when Modular_Integer_Kind =>
                Declare_Ada_Abstract_Signed_Int_From_Range
                  (Theory,
                   E,
                   Scalar_Range (E),
-                  New_Integer_Constant (Value => Modulus (E)),
-                  Is_Base => Is_Ada_Base_Type (E));
+                  New_Integer_Constant (Value => Modulus (E)));
 
             when Real_Kind =>
-               Declare_Ada_Real_From_Range
-                 (Theory, E, Scalar_Range (E),
-                  Is_Base => Is_Ada_Base_Type (E));
+               Declare_Ada_Real_From_Range (Theory, E, Scalar_Range (E));
 
             when Array_Kind =>
                Declare_Ada_Array (Theory, E);

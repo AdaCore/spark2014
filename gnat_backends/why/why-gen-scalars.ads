@@ -37,8 +37,7 @@ package Why.Gen.Scalars is
       Entity  : Entity_Id;
       First   : W_Integer_Constant_Id;
       Last    : W_Integer_Constant_Id;
-      Modulus : W_Integer_Constant_Id;
-      Is_Base : Boolean);
+      Modulus : W_Integer_Constant_Id);
    --  Declare the whole theory for a signed int of the given size,
    --  i.e. whose range is First .. Last. This creates an abstract type
    --  whose name is given in parameter along with a set of axioms and
@@ -49,8 +48,7 @@ package Why.Gen.Scalars is
      (Theory  : W_Theory_Declaration_Id;
       Entity  : Entity_Id;
       First   : W_Real_Constant_Id;
-      Last    : W_Real_Constant_Id;
-      Is_Base : Boolean);
+      Last    : W_Real_Constant_Id);
    --  Declare the whole theory for a floating/fixed point type whose range
    --  is First .. Last.  This creates an abstract type whose name is
    --  given in parameter along with a set of axioms and subprograms

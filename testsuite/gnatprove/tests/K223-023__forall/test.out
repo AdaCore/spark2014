@@ -1,6 +1,2 @@
-forall.adb:12:14: info: index check proved
-forall.adb:6:14: info: index check proved
 forall.ads:10:37: postcondition not proved, requires Has_Zero'Result = 0
-forall.ads:5:44: info: index check proved
 forall.ads:6:37: info: postcondition proved
-forall.ads:9:45: info: index check proved

@@ -32,7 +32,6 @@ with Stand;              use Stand;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
 
-with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
@@ -715,11 +714,6 @@ package body Why.Gen.Arrays is
       Name      : constant W_Identifier_Id :=
         Prefix (S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Update);
-      Used_Name : constant W_Identifier_Id :=
-        (if Domain = EW_Prog then
-         To_Program_Space (Name)
-         else
-         Name);
       Args      : constant W_Expr_Array :=
         Index & (1 => New_Call
                  (Domain => Domain,
@@ -730,12 +724,11 @@ package body Why.Gen.Arrays is
                                      Args   => (1 => +Ar)),
                  2 => +Value);
       Array_Upd : constant W_Expr_Id :=
-                    New_VC_Call
+                    New_Call
                       (Ada_Node => Ada_Node,
                        Domain   => Domain,
-                       Reason   => VC_Index_Check,
-                       Name     => Used_Name,
-                       Progs    => Args);
+                       Name     => Name,
+                       Args     => Args);
    begin
       return
         New_Call
@@ -780,16 +773,13 @@ package body Why.Gen.Arrays is
       Name      : constant W_Identifier_Id :=
         Prefix (S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Access);
-      Used_Name : constant W_Identifier_Id :=
-        (if Domain = EW_Prog then To_Program_Space (Name) else Name);
    begin
       return
-        +New_VC_Call
+        New_Call
         (Ada_Node => Ada_Node,
-         Reason   => VC_Index_Check,
-         Name     => Used_Name,
+         Name     => Name,
          Domain   => Domain,
-         Progs    => Args);
+         Args    => Args);
    end New_Simple_Array_Access;
 
    ---------------------------

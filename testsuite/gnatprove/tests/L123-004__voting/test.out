@@ -1,9 +1,6 @@
 evoting.adb:147:24: info: range check proved
 evoting.adb:150:21: overflow check not proved
-evoting.adb:150:21: range check not proved
-evoting.adb:150:31: info: index check proved
 evoting.adb:166:54: overflow check not proved
-evoting.adb:169:13: info: index check proved
 evoting.adb:170:13: info: precondition proved
 evoting.adb:172:16: info: index check proved
 evoting.adb:173:16: info: index check proved
@@ -26,11 +23,7 @@ evoting.adb:211:37: info: range check proved
 evoting.adb:216:10: info: index check proved
 evoting.adb:224:32: info: range check proved
 evoting.adb:231:25: range check not proved
-evoting.adb:231:41: info: index check proved
 evoting.adb:234:28: range check not proved
-evoting.adb:234:44: info: index check proved
-evoting.adb:237:36: info: index check proved
-evoting.adb:239:40: info: range check proved
 evoting.adb:251:7: info: precondition proved
 evoting.adb:255:13: info: index check proved
 evoting.adb:256:43: info: range check proved

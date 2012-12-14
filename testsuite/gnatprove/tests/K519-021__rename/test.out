@@ -1,2 +1,1 @@
-p.adb:4:10: info: range check proved
 p.ads:2:13: postcondition not proved, requires X = 1

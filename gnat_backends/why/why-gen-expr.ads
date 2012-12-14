@@ -143,17 +143,11 @@ package Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Overflow_Type : W_Base_Type_OId := Why_Empty;
-      Range_Type    : W_Base_Type_OId := Why_Empty) return W_Expr_Id
-   with
-     Pre => Overflow_Type = Why_Empty or else Range_Type = Why_Empty;
+      Range_Check   : Boolean := False) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
-   --  We insert a conversion so that its type corresponds to "To". If
-   --  Overflow_Type is non empty, then it specifies that the operation in
-   --  expr is done in the corresponding base type and that its overflow check
-   --  should be inserted. If Range_Type is non empty, then a range check
-   --  should be inserted that the result is in the bounds of this type. Both
-   --  of Overflow_Type and Range_Type should not be set at the same time.
+   --  We insert a conversion so that its type corresponds to "To".
+   --  ??? In the case of record conversions, this function also inserts
+   --  discriminant checks. To be removed.
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;
