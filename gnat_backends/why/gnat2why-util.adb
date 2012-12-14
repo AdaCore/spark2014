@@ -26,8 +26,6 @@
 with Uintp;              use Uintp;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Types;          use Why.Types;
 
 package body Gnat2Why.Util is
 
@@ -36,14 +34,13 @@ package body Gnat2Why.Util is
    -------------------------
 
    function Create_Zero_Binding
-     (Vars : W_Identifier_List;
+     (Vars : Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id
    is
-      Var_List : constant Node_Lists.List := Get_List (Why_Node_List (Vars));
       Result   : W_Prog_Id;
    begin
       Result := Prog;
-      for V of Var_List loop
+      for V of Vars loop
          Result :=
            New_Binding_Ref (Name     => W_Identifier_Id (V),
                             Def      => New_Integer_Constant (Value => Uint_0),

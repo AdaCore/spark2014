@@ -59,32 +59,39 @@ package body Gnat2Why.Expr.Loops is
    -----------------------
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts     : List_Of_Nodes.List;
-      Initial_Stmts  : out List_Of_Nodes.List;
-      Loop_Invariant : out Node_Id;
-      Loop_Variant   : out Node_Id;
-      Final_Stmts    : out List_Of_Nodes.List);
+     (Loop_Stmts      : List_Of_Nodes.List;
+      Initial_Stmts   : out List_Of_Nodes.List;
+      Loop_Invariants : out List_Of_Nodes.List;
+      Loop_Variants   : out List_Of_Nodes.List;
+      Final_Stmts     : out List_Of_Nodes.List);
    --  Loop_Stmts is a flattened list of statements and declarations in a loop
    --  body. It includes the statements and declarations that appear directly
    --  in the main list inside the loop, and recursively all inner declarations
    --  and statements that appear in block statements.
    --
+   --  Loop invariants (pragma Loop_Invariant) and loop variants (pragma
+   --  Loop_Variant) may appear anywhere in this list. We distinguish:
+   --  . the "selected" loop invariants, which consist in the first loop
+   --  invariant in the list, plus all loop invariants that appear next to
+   --  it, or separated from it only by loop variants.
+   --  . the "selected" loop variants that appear next to a loop invariant in
+   --  the set above, or separated from it only by other loop variants. If
+   --  there are no selected loop invariants, there cannot be selected loop
+   --  variants.
+   --
    --  Get_Loop_Invariant splits this list into four buckets:
    --   * Initial_Stmts is the list of initial statements and declarations
-   --     before the first occurrence of pragma Loop_Invariant, or the empty
-   --     list if there are no pragma Loop_Invariant in the loop.
-   --   * Loop_Invariant is the node of the first occurrence of pragma
-   --     Loop_Invariant in the list, if any, and Empty otherwise.
-   --   * Loop_Variant is the node of the pragma Loop_Variant just after
-   --     Loop_Invariant (without intermediate statements), if any;
-   --     or otherwise the node of the pragma Loop_Variant just before
-   --     Loop_Invariant (without intermediate statements), if any;
-   --     and Empty otherwise. Note that Initial_Stmts and Final_Stmts do not
-   --     contain Loop_Variant if it is not Empty.
+   --     before the first selected loop invariant, or the empty list if there
+   --     are no loop invariants in the loop.
+   --   * Loop_Invariants is the list of selected loop invariants, if any, and
+   --     the empty list otherwise. Note that Initial_Stmts and Final_Stmts do
+   --     not contain any selected loop invariant.
+   --   * Loop_Variants is the list of selected loop variants, if any, and the
+   --     the empty list otherwise. Note that Initial_Stmts and Final_Stmts do
+   --     not contain any selected loop variant.
    --   * Final_Stmts is the list of final statements and declarations
-   --     after the first occurrence of pragma Loop_Invariant, or all the
-   --     statements of the loop if there are no pragma Loop_Invariant in the
-   --     loop.
+   --     after the last select loop invariant/variant, or all the statements
+   --     of the loop if there is no loop invariant in the loop.
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
    --  Return the Defining_Identifier of the loop that belongs to an exit
@@ -94,8 +101,8 @@ package body Gnat2Why.Expr.Loops is
      (Stmt       : Node_Id;
       Check_Part : out W_Prog_Id;
       Logic_Part : out W_Pred_Id;
-      Tmp_Vars   : out W_Identifier_List;
-      Tmp_Assign : out W_Assignment_List);
+      Tmp_Vars   : out Node_Lists.List;
+      Tmp_Assign : out Node_Lists.List);
    --  Given a pragma Loop_Variant in Stmt, returns the Why node for checking
    --  that a loop variant does not raise run-time errors in Check_Part, and
    --  the Why node for the logic proposition that the variant increases or
@@ -112,7 +119,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariant     : W_Pred_Id;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : W_Identifier_List;
+      Variant_Tmps       : Node_Lists.List;
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id;
    --  Returns the loop expression in Why.
@@ -144,80 +151,91 @@ package body Gnat2Why.Expr.Loops is
    ------------------------
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts     : List_Of_Nodes.List;
-      Initial_Stmts  : out List_Of_Nodes.List;
-      Loop_Invariant : out Node_Id;
-      Loop_Variant   : out Node_Id;
-      Final_Stmts    : out List_Of_Nodes.List)
+     (Loop_Stmts      : List_Of_Nodes.List;
+      Initial_Stmts   : out List_Of_Nodes.List;
+      Loop_Invariants : out List_Of_Nodes.List;
+      Loop_Variants   : out List_Of_Nodes.List;
+      Final_Stmts     : out List_Of_Nodes.List)
    is
-      Loop_Invariant_Found : Boolean := False;
-      N : Node_Id;
+      type State is
+        (Before_Selected_Block, In_Selected_Block, Past_Selected_Block);
+
+      Cur_State : State := Before_Selected_Block;
+      N         : Node_Id;
 
       use List_Of_Nodes;
 
    begin
-      Loop_Invariant := Empty;
-      Loop_Variant   := Empty;
-
       for Cur in Loop_Stmts.Iterate loop
          N := Element (Cur);
 
-         --  If this is the first pragma Loop_Invariant, mark it as the
-         --  official loop invariant.
+         case Cur_State is
+            when Before_Selected_Block =>
 
-         if not Loop_Invariant_Found
-           and then Is_Pragma_Check (N, Name_Loop_Invariant)
-         then
-            Loop_Invariant := N;
-            Loop_Invariant_Found := True;
+               --  Add the first loop invariant to the selected ones, possibly
+               --  move preceding loop variants to the selected ones, and
+               --  update Cur_State.
 
-         --  If this is a pragma Loop_Variant preceding or following the
-         --  official loop invariant, mark it as the official loop variant.
-         --  If there are both a pragma Loop_Variant preceding and following
-         --  the official loop invariant, choose the one following the loop
-         --  invariant as the official loop variant.
+               if Is_Pragma_Check (N, Name_Loop_Invariant) then
+                  Loop_Invariants.Append (N);
 
-         elsif Is_Pragma (N, Pragma_Loop_Variant)
-           and then
+                  --  If there are loop variants preceding the first loop
+                  --  invariant, mark them as selected.
 
-             --  Case where the Loop_Variant follows the official loop
-             --  invariant.
+                  declare
+                     Prev : Cursor := Previous (Cur);
+                     P    : Node_Id;
+                  begin
+                     while Prev /= No_Element loop
+                        P := Element (Prev);
 
-             ((Loop_Invariant_Found
-                 and then
-               Element (Previous (Cur)) = Loop_Invariant)
+                        if Is_Pragma (P, Pragma_Loop_Variant) then
+                           Initial_Stmts.Delete_Last;
+                           Loop_Variants.Prepend (P);
+                        end if;
 
-                 or else
+                        Prev := Previous (Prev);
+                     end loop;
+                  end;
 
-              --  Case where the Loop_Variant precedes the official loop
-              --  invariant, and there are no following Loop_Variant.
+                  Cur_State := In_Selected_Block;
 
-              (not Loop_Invariant_Found
-                 and then
-               Present (Element (Next (Cur)))
-                 and then
-               Is_Pragma_Check (Element (Next (Cur)), Name_Loop_Invariant)
-                 and then
-               (not (Present (Element (Next (Next (Cur))))
-                      and then
-                     Is_Pragma (Element (Next (Next (Cur))),
-                                Pragma_Loop_Variant)))))
-         then
-            Loop_Variant := N;
+               --  Add the statement or declaration to the initial ones
 
-         elsif Loop_Invariant_Found then
-            Final_Stmts.Append (N);
+               else
+                  Initial_Stmts.Append (N);
+               end if;
 
-         else
-            Initial_Stmts.Append (N);
-         end if;
+            when In_Selected_Block =>
+
+               --  Add any loop invariant to the selected ones
+
+               if Is_Pragma_Check (N, Name_Loop_Invariant) then
+                  Loop_Invariants.Append (N);
+
+               --  Add any loop variant to the selected ones
+
+               elsif Is_Pragma_Check (N, Name_Loop_Variant) then
+                  Loop_Variants.Append (N);
+
+               --  Anything else is included in the final list of statements,
+               --  and Cur_State is updated.
+
+               else
+                  Final_Stmts.Append (N);
+                  Cur_State := Past_Selected_Block;
+               end if;
+
+            when Past_Selected_Block =>
+               Final_Stmts.Append (N);
+         end case;
       end loop;
 
-      --  If not loop invariant was found, put all statements and declarations
+      --  If no loop invariant was found, put all statements and declarations
       --  in the list Final_Stmts, leaving the list Initial_Stmts empty.
 
-      if not Loop_Invariant_Found then
-         Final_Stmts.Move (Initial_Stmts);
+      if Cur_State = Before_Selected_Block then
+         Final_Stmts.Move (Source => Initial_Stmts);
       end if;
    end Get_Loop_Invariant;
 
@@ -285,112 +303,131 @@ package body Gnat2Why.Expr.Loops is
       Scheme    : constant Node_Id   := Iteration_Scheme (Stmt);
       Loop_Id   : constant Entity_Id := Entity (Identifier (Stmt));
 
-      Loop_Stmts     : List_Of_Nodes.List;
-      Initial_Stmts  : List_Of_Nodes.List;
-      Final_Stmts    : List_Of_Nodes.List;
-      Loop_Invariant : Node_Id;
-      Loop_Variant   : Node_Id;
+      Loop_Stmts      : List_Of_Nodes.List;
+      Initial_Stmts   : List_Of_Nodes.List;
+      Final_Stmts     : List_Of_Nodes.List;
+      Loop_Invariants : List_Of_Nodes.List;
+      Loop_Variants   : List_Of_Nodes.List;
 
-      Initial_Prog   : W_Prog_Id;
-      Final_Prog     : W_Prog_Id;
+      Initial_Prog    : W_Prog_Id;
+      Final_Prog      : W_Prog_Id;
 
       --  Variables for the loop invariant, default initialized to the proper
       --  values when the loop does not have an invariant.
 
-      Inv_Check      : W_Prog_Id := New_Void;
-      Invariant      : W_Pred_Id := True_Pred;
+      Inv_Check       : W_Prog_Id := New_Void;
+      Invariant       : W_Pred_Id := True_Pred;
 
       --  Variables for the loop variant, default initialized to the proper
       --  values when the loop does not have a variant.
 
-      Variant_Check  : W_Prog_Id := New_Void;
-      Variant_Update : W_Prog_Id := New_Void;
-      Variant_Tmps   : W_Identifier_List :=
-        W_Identifier_List (Why.Atree.Tables.New_List);
+      Variant_Check   : W_Prog_Id := New_Void;
+      Variant_Update  : W_Prog_Id := New_Void;
+      Variant_Tmps    : Node_Lists.List;
 
    begin
       --  Retrieve the different parts of the loop
 
       Loop_Stmts := Get_Flat_Statement_List (Loop_Body);
       Get_Loop_Invariant
-        (Loop_Stmts, Initial_Stmts, Loop_Invariant, Loop_Variant, Final_Stmts);
+        (Loop_Stmts      => Loop_Stmts,
+         Initial_Stmts   => Initial_Stmts,
+         Loop_Invariants => Loop_Invariants,
+         Loop_Variants   => Loop_Variants,
+         Final_Stmts     => Final_Stmts);
 
-      --  Transform statements before and after the loop invariant
+      --  Transform statements before and after the loop invariants
 
       Initial_Prog := Transform_Statements (Initial_Stmts);
       Final_Prog := Transform_Statements (Final_Stmts);
 
-      --  Generate the relevant bits for the loop invariant if present
+      --  Generate a VC for the loop invariants, located on the first one
 
-      if Present (Loop_Invariant) then
-         Transform_Pragma_Check (Loop_Invariant, Inv_Check, Invariant);
+      if not Loop_Invariants.Is_Empty then
+
+         --  Generate the relevant bits for the various loop invariants
+
+         for Loop_Invariant of Loop_Invariants loop
+            declare
+               One_Inv_Check : W_Prog_Id;
+               One_Invariant : W_Pred_Id;
+            begin
+               Transform_Pragma_Check (Stmt    => Loop_Invariant,
+                                       Runtime => One_Inv_Check,
+                                       Pred    => One_Invariant);
+               Inv_Check := Sequence (Inv_Check, One_Inv_Check);
+               Invariant := +New_And_Expr (Left   => +Invariant,
+                                           Right  => +One_Invariant,
+                                           Domain => EW_Pred);
+            end;
+         end loop;
+
+         Invariant := +New_VC_Expr (Ada_Node => Loop_Invariants.First_Element,
+                                    Expr     => +Invariant,
+                                    Reason   => VC_Loop_Invariant,
+                                    Domain   => EW_Pred);
       end if;
 
-      --  ??? Do we always want to generate a loop invariant, even when there
-      --  are no Loop_Invariant pragmas in the loop?
+      --  Generate the relevant bits for the loop variants, if any
 
-      Invariant :=
-        +New_VC_Expr
-          (Ada_Node => Loop_Invariant,
-           Expr     => +Invariant,
-           Reason   => VC_Loop_Invariant,
-           Domain   => EW_Pred);
-
-      --  Generate the relevant bits for the loop variant if present
-
-      if Present (Loop_Variant) then
+      for Loop_Variant of Loop_Variants loop
          declare
-            Variant_Prog : W_Prog_Id;
-            Variant_Pred : W_Pred_Id;
-            Tmp_Assign   : W_Assignment_List;
-            Variant_Init : Node_Lists.List;
+            One_Variant_Prog : W_Prog_Id;
+            One_Variant_Pred : W_Pred_Id;
+            One_Variant_Init : Node_Lists.List;
+            One_Variant_Tmps : Node_Lists.List;
 
          begin
             --  Generate the Why expressions for checking absence of run-time
             --  errors and variant progress.
 
             Transform_Loop_Variant (Stmt       => Loop_Variant,
-                                    Check_Part => Variant_Prog,
-                                    Logic_Part => Variant_Pred,
-                                    Tmp_Vars   => Variant_Tmps,
-                                    Tmp_Assign => Tmp_Assign);
+                                    Check_Part => One_Variant_Prog,
+                                    Logic_Part => One_Variant_Pred,
+                                    Tmp_Vars   => One_Variant_Tmps,
+                                    Tmp_Assign => One_Variant_Init);
+
+            --  Add new temporaries to the common list for loop variants
+
+            Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
 
             --  Create a VC for the loop variant
 
-            Variant_Pred := +New_VC_Expr (Ada_Node => Loop_Variant,
-                                          Expr     => +Variant_Pred,
-                                          Reason   => VC_Loop_Variant,
-                                          Domain   => EW_Pred);
+            One_Variant_Pred := +New_VC_Expr (Ada_Node => Loop_Variant,
+                                              Expr     => +One_Variant_Pred,
+                                              Reason   => VC_Loop_Variant,
+                                              Domain   => EW_Pred);
 
             --  Retrieve the list of assignments to save variant expressions
 
-            Variant_Init := Get_List (+Tmp_Assign);
-
             declare
-               Variant_Assign : W_Prog_Array (1 ..
-                                              Positive (Variant_Init.Length));
+               One_Variant_Assign :
+                 W_Prog_Array (1 .. Positive (One_Variant_Init.Length));
                J : Positive := 1;
             begin
-               for Assign of Variant_Init loop
-                  Variant_Assign (J) := +Assign;
+               for Assign of One_Variant_Init loop
+                  One_Variant_Assign (J) := +Assign;
                   J := J + 1;
                end loop;
 
                --  Create the program that updates the variables holding saved
                --  values of variant expressions.
 
-               Variant_Update := Sequence (Variant_Assign);
+               Variant_Update := Sequence (Variant_Update,
+                                           Sequence (One_Variant_Assign));
 
                --  Combine the run-time check and the loop variant check in
                --  one program Variant_Check, for use in Loop_Wrap.
 
                Variant_Check :=
-                 Sequence (New_Ignore (Prog => Variant_Prog),
-                           New_Located_Assert (Ada_Node => Loop_Variant,
-                                               Pred     => Variant_Pred));
+                 Sequence
+                   ((1 => Variant_Check,
+                     2 => New_Ignore (Prog => One_Variant_Prog),
+                     3 => New_Located_Assert (Ada_Node => Loop_Variant,
+                                              Pred     => One_Variant_Pred)));
             end;
          end;
-      end if;
+      end loop;
 
       --  Depending on the form of the loop, put together the generated Why
       --  nodes in a different way.
@@ -624,8 +661,8 @@ package body Gnat2Why.Expr.Loops is
      (Stmt       : Node_Id;
       Check_Part : out W_Prog_Id;
       Logic_Part : out W_Pred_Id;
-      Tmp_Vars   : out W_Identifier_List;
-      Tmp_Assign : out W_Assignment_List)
+      Tmp_Vars   : out Node_Lists.List;
+      Tmp_Assign : out Node_Lists.List)
    is
       Variant : Node_Id;
 
@@ -710,12 +747,6 @@ package body Gnat2Why.Expr.Loops is
       Check_Part := New_Void;
       Logic_Part := True_Pred;
 
-      --  Force initialization because the caller does not ncessarily
-      --  initialize the lists.
-
-      Tmp_Vars := W_Identifier_List (Why.Atree.Tables.New_List);
-      Tmp_Assign := W_Assignment_List (Why.Atree.Tables.New_List);
-
       --  Build incrementally Check_Part and Logic_Part, assuming these
       --  variables already contain the Why nodes created for the variant
       --  cases that follow this one.
@@ -740,8 +771,8 @@ package body Gnat2Why.Expr.Loops is
                               Value => +Variant_Expr (Expr, EW_Term));
 
          begin
-            Append (Why_Node_List (Tmp_Vars), +Name);
-            Append (Why_Node_List (Tmp_Assign), +Assign);
+            Tmp_Vars.Append (+Name);
+            Tmp_Assign.Append (+Assign);
 
             Check_Part :=
               (if No (Next (Variant)) then
@@ -811,7 +842,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariant     : W_Pred_Id;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : W_Identifier_List;
+      Variant_Tmps       : Node_Lists.List;
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id
    is

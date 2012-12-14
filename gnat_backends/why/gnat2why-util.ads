@@ -25,10 +25,11 @@
 
 --  Utilities for the transformation phase
 
-with Why.Ids;        use Why.Ids;
-with Why.Inter;      use Why.Inter;
+with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Ids;          use Why.Ids;
+with Why.Inter;        use Why.Inter;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 
 package Gnat2Why.Util is
 
@@ -84,7 +85,7 @@ package Gnat2Why.Util is
    --------------
 
    function Create_Zero_Binding
-     (Vars : W_Identifier_List;
+     (Vars : Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id;
    --  Return a program which binds every variable in Vars to 0 in Prog
 

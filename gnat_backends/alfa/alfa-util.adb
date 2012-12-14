@@ -158,6 +158,15 @@ package body Alfa.Util is
       end loop;
    end Append;
 
+   procedure Append
+     (To    : in out Node_Lists.List;
+      Elmts : Node_Lists.List) is
+   begin
+      for E of Elmts loop
+         To.Append (E);
+      end loop;
+   end Append;
+
    --------------------------------------
    -- Expression_Functions_All_The_Way --
    --------------------------------------

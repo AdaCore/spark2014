@@ -23,15 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;          use Atree;
+with Atree;            use Atree;
 with Debug;
-with Einfo;          use Einfo;
-with Impunit;        use Impunit;
-with Namet;          use Namet;
-with Sinfo;          use Sinfo;
-with Snames;         use Snames;
+with Einfo;            use Einfo;
+with Impunit;          use Impunit;
+with Namet;            use Namet;
+with Sinfo;            use Sinfo;
+with Snames;           use Snames;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Why.Atree.Tables; use Why.Atree.Tables;
+
+with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 
 package Alfa.Util is
 
@@ -168,6 +170,11 @@ package Alfa.Util is
    procedure Append
      (To    : in out List_Of_Nodes.List;
       Elmts : List_Of_Nodes.List);
+   --  Append all elements from list Elmts to the list To
+
+   procedure Append
+     (To    : in out Node_Lists.List;
+      Elmts : Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
    function Get_Statement_List (Stmts : List_Id) return List_Of_Nodes.List;
