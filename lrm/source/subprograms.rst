@@ -278,6 +278,13 @@ follow the grammar of ``global_specification``
    specification shall not have the same ``defining_identifier`` as a formal
    parameter of the subprogram.
 
+#. A global item  of mode **in out** or **out** shall not be a Volatile Input
+   state abstraction (see :ref:`abstract-state-aspect`).
+
+#. A global item of mode **in** or **in out** shall not be a Volatile Output
+   state abstraction.
+
+
 .. centered:: **Static Semantics**
 
 #. A ``global_specification`` that is a ``global_list`` is considered to be a

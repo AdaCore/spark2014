@@ -105,8 +105,6 @@ where the ``aspect_mark`` is Abstract_State and the
    then it shall also include Volatile.
 #. The ``identifier`` of a ``name_value_property`` shall be
    Integrity.
-#. The declaration of a state abstraction may be overloaded by a variable
-   declaration or a parameterless function declaration.
 
 .. centered:: **Static Semantics**
 
@@ -139,14 +137,6 @@ where the ``aspect_mark`` is Abstract_State and the
    ``defining_identifier`` of the variable.  The variable declaration acts
    as the completion of the state abstraction.  The implicitly declared
    state abstraction is only visible in a limited view of the package.
-   
-#. A parameterless function declaration which overloads a state abstraction
-   declaration is used to represent the state abstraction where a state
-   abstraction entity is not permitted [e.g. in an expression].
-   The function declaration is completed by its body which may be used
-   to implement the *representation* of the state abstraction.
-   [That is, how the constituents that make up the state abstraction are
-   related to it.]
 
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
@@ -158,18 +148,12 @@ where the ``aspect_mark`` is Abstract_State and the
 
 .. centered:: **Verification Rules**
 
-#. A Volatile Input state abstraction shall not be a global item (see
-   :ref:`global-aspect`) of mode **in out** or **out**.  [Checked when
-   analyzing subprogram declarations.]
-
-#. A Volatile Output state abstraction shall not be a global item of
-   mode **in** or **in out**.  [Checked when analyzing subprogram
-   declarations.]
+There are no Verification Rules associated with the Abstract State aspect.
    
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the Abstract State
-Aspect.
+aspect.
 
 .. centered:: **Examples**
 
