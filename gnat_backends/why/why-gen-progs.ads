@@ -24,6 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Types;               use Types;
+with VC_Kinds;            use VC_Kinds;
+
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
@@ -65,6 +67,10 @@ package Why.Gen.Progs is
       return W_Prog_Id;
    --   Build the program "ignore(prog)" of return type "unit".
 
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
+       Pred     : W_Pred_Id;
+       Reason   : VC_Kind) return W_Prog_Id;
    function New_Located_Assert
       (Ada_Node : Node_Id;
        Pred     : W_Pred_Id) return W_Prog_Id;

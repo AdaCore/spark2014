@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Uintp;                use Uintp;
-with VC_Kinds;             use VC_Kinds;
 
 with Why.Conversions;      use Why.Conversions;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
@@ -187,19 +186,20 @@ package body Why.Gen.Progs is
 
    function New_Located_Assert
       (Ada_Node : Node_Id;
+       Pred     : W_Pred_Id;
+       Reason   : VC_Kind) return W_Prog_Id
+   is
+      (New_Assert (Ada_Node => Ada_Node,
+                   Pred     => +New_VC_Expr (Ada_Node => Ada_Node,
+                                             Expr     => +Pred,
+                                             Reason   => Reason,
+                                             Domain   => EW_Pred)));
+
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
        Pred     : W_Pred_Id) return W_Prog_Id
    is
-   begin
-      return
-        New_Assert
-          (Ada_Node => Ada_Node,
-           Pred     =>
-             +New_VC_Expr
-               (Ada_Node => Ada_Node,
-                Expr     => +Pred,
-                Reason   => VC_Assert,
-                Domain   => EW_Pred));
-   end New_Located_Assert;
+      (New_Located_Assert (Ada_Node, Pred, VC_Assert));
 
    ----------------
    -- New_Result --

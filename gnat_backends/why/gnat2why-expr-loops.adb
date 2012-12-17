@@ -362,20 +362,6 @@ package body Gnat2Why.Expr.Loops is
 
             Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
 
-            --  Create VCs for the loop variant progress, in the first part of
-            --  the loop, and the non-regression in the other part of the loop.
-
-            One_Variant_Progress_Pred :=
-              +New_VC_Expr (Ada_Node => Stmt,
-                            Expr     => +One_Variant_Progress_Pred,
-                            Reason   => VC_Loop_Variant,
-                            Domain   => EW_Pred);
-            One_Variant_Same_Or_Progress_Pred :=
-              +New_VC_Expr (Ada_Node => Stmt,
-                            Expr     => +One_Variant_Same_Or_Progress_Pred,
-                            Reason   => VC_Loop_Variant,
-                            Domain   => EW_Pred);
-
             --  Inside the loop in Why:
             --  * add One_Variant_Update to Init_Prog, to be performed at the
             --    start of the loop
@@ -396,7 +382,8 @@ package body Gnat2Why.Expr.Loops is
                      2 => New_Ignore (Prog => One_Variant_Prog),
                      3 => New_Located_Assert
                             (Ada_Node => Stmt,
-                             Pred     => One_Variant_Progress_Pred),
+                             Pred     => One_Variant_Progress_Pred,
+                             Reason   => VC_Loop_Variant),
                      4 => One_Variant_Update));
 
                Final_Prog :=
@@ -404,7 +391,8 @@ package body Gnat2Why.Expr.Loops is
                    (Final_Prog,
                     New_Located_Assert
                       (Ada_Node => Stmt,
-                       Pred     => One_Variant_Same_Or_Progress_Pred));
+                       Pred     => One_Variant_Same_Or_Progress_Pred,
+                       Reason   => VC_Loop_Variant));
 
             --  In the unrolled part of the loop, before the loop in Why:
             --  * transform the loop variant into One_Variant_Prog for run-time
@@ -425,7 +413,8 @@ package body Gnat2Why.Expr.Loops is
                    (Final_Prog,
                     New_Located_Assert
                       (Ada_Node => Stmt,
-                       Pred     => One_Variant_Same_Or_Progress_Pred));
+                       Pred     => One_Variant_Same_Or_Progress_Pred,
+                       Reason   => VC_Loop_Variant));
             end if;
 
          --  Transform a regular statement
@@ -592,13 +581,6 @@ package body Gnat2Why.Expr.Loops is
 
             Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
 
-            --  Create a VC for the loop variant
-
-            One_Variant_Pred := +New_VC_Expr (Ada_Node => Loop_Variant,
-                                              Expr     => +One_Variant_Pred,
-                                              Reason   => VC_Loop_Variant,
-                                              Domain   => EW_Pred);
-
             --  Create the program that updates the variables holding saved
             --  values of variant expressions.
 
@@ -612,7 +594,8 @@ package body Gnat2Why.Expr.Loops is
                 ((1 => Variant_Check,
                   2 => New_Ignore (Prog => One_Variant_Prog),
                   3 => New_Located_Assert (Ada_Node => Loop_Variant,
-                                           Pred     => One_Variant_Pred)));
+                                           Pred     => One_Variant_Pred,
+                                           Reason   => VC_Loop_Variant)));
          end;
       end loop;
 

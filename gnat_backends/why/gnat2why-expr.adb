@@ -4617,6 +4617,17 @@ package body Gnat2Why.Expr is
                   declare
                      Check_Expr : W_Prog_Id;
                      Pred       : W_Pred_Id;
+
+                     --  Mark non-selected loop invariants (those not occurring
+                     --  next to the first batch of selected variants and
+                     --  invariants) as loop invariant VCs.
+
+                     Reason : constant VC_Kind :=
+                       (if Is_Pragma_Check (Stmt, Name_Loop_Invariant) then
+                          VC_Loop_Invariant
+                        else
+                          VC_Assert);
+
                   begin
                      Transform_Pragma_Check (Stmt, Check_Expr, Pred);
 
@@ -4632,16 +4643,16 @@ package body Gnat2Why.Expr is
                           +New_VC_Expr
                             (Ada_Node => Stmt,
                              Expr     => +New_Identifier (Name => "absurd"),
-                             Reason   => VC_Assert,
+                             Reason   => Reason,
                              Domain   => EW_Prog);
                      elsif Is_True_Boolean (+Pred) then
                         return New_Void (Stmt);
                      elsif Check_Expr /= Why_Empty then
                         return
                           Sequence (Check_Expr,
-                                    New_Located_Assert (Stmt, Pred));
+                                    New_Located_Assert (Stmt, Pred, Reason));
                      else
-                        return New_Located_Assert (Stmt, Pred);
+                        return New_Located_Assert (Stmt, Pred, Reason);
                      end if;
                   end;
 
