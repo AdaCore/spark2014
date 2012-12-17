@@ -4675,32 +4675,41 @@ package body Gnat2Why.Expr is
    -- Transform_Statements --
    --------------------------
 
+   function Transform_Statements
+     (Cur_Stmt  : Node_Id;
+      Prev_Prog : W_Prog_Id) return W_Prog_Id
+   is
+      Result        : W_Prog_Id := Prev_Prog;
+      Cut_Assertion : W_Pred_Id;
+      Stmt          : constant W_Prog_Id :=
+        Transform_Statement (Cur_Stmt, Cut_Assertion);
+   begin
+      Result :=
+        Sequence
+          (Result,
+           New_Label (Labels =>
+                        (1 => New_Located_Label
+                         (Cur_Stmt,
+                            Is_VC => False)),
+                      Def    => +Stmt));
+      if Cut_Assertion /= Why_Empty then
+         Result :=
+           New_Located_Abstract
+             (Ada_Node => Cur_Stmt,
+              Expr     => +Result,
+              Post     => Cut_Assertion);
+      end if;
+
+      return Result;
+   end Transform_Statements;
+
    function Transform_Statements (Stmts : List_Of_Nodes.List) return W_Prog_Id
    is
       Result : W_Prog_Id := New_Void;
    begin
       for Cur_Stmt of Stmts loop
-         declare
-            Cut_Assertion : W_Pred_Id;
-            Stmt          : constant W_Prog_Id :=
-              Transform_Statement (Cur_Stmt, Cut_Assertion);
-         begin
-            Result :=
-              Sequence
-                (Result,
-                 New_Label (Labels =>
-                              (1 => New_Located_Label
-                                     (Cur_Stmt,
-                                      Is_VC => False)),
-                            Def    => +Stmt));
-            if Cut_Assertion /= Why_Empty then
-               Result :=
-                 New_Located_Abstract
-                   (Ada_Node => Cur_Stmt,
-                    Expr     => +Result,
-                    Post     => Cut_Assertion);
-            end if;
-         end;
+         Result := Transform_Statements (Cur_Stmt  => Cur_Stmt,
+                                         Prev_Prog => Result);
       end loop;
       return Result;
    end Transform_Statements;

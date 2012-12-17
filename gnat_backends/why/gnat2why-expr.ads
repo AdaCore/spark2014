@@ -146,6 +146,13 @@ package Gnat2Why.Expr is
    --  Transforms a list of statements into a Why expression. An empty list is
    --  transformed into the void expression.
 
+   function Transform_Statements
+     (Cur_Stmt  : Node_Id;
+      Prev_Prog : W_Prog_Id) return W_Prog_Id;
+   --  Transform the next statement Cur_Stmt in a list of statements, where
+   --  Prev_Prog is the transformation of the previous statements in the list.
+   --  This allows treating the case where Cur_Stmt is a pragma Assert_And_Cut.
+
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
       return W_Prog_Id;
    --  Translate the Declarations block of Block statement or subprogram to a
