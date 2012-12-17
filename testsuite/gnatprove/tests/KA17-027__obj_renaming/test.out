@@ -1,22 +1,7 @@
 main.adb:12:29: info: postcondition proved
-main.adb:12:44: info: range check proved
 main.adb:15:29: postcondition not proved, requires Get_Arr'Result = ArrArr'(others => Rec'(Comp => 9012))
-main.adb:15:59: info: range check proved
 main.adb:18:15: info: postcondition proved
-main.adb:21:45: info: range check proved
-main.adb:27:56: info: range check proved
-main.adb:35:17: info: range check proved
-main.adb:38:14: info: range check proved
-main.adb:44:28: info: index check proved
-main.adb:44:28: info: index check proved
-main.adb:45:28: info: index check proved
-main.adb:45:28: info: index check proved
-main.adb:46:28: info: index check proved
-main.adb:49:28: info: index check proved
-main.adb:53:25: info: range check proved
 main.adb:58:32: overflow check not proved
-main.adb:58:32: range check not proved
-main.adb:63:16: info: range check proved
 main.adb:69:4: assertion not proved, requires Obj_1.Comp = 9012
 main.adb:70:4: assertion not proved, requires Obj_2.Comp = 9012
 main.adb:71:4: info: assertion proved

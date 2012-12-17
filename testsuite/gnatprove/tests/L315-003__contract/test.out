@@ -1,5 +1,3 @@
-math.adb:12:50: info: range check proved
-math.adb:4:24: info: range check proved
 math.adb:6:18: info: overflow check proved
 math.adb:6:23: overflow check not proved
 math.adb:6:30: info: overflow check proved

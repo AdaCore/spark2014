@@ -1,6 +1,0 @@
-
-stats.adb:34:39: info: range check proved
-stats.adb:35:48: info: range check proved
-stats.adb:36:48: info: range check proved
-stats.adb:37:48: info: range check proved
-stats.adb:38:48: info: range check proved

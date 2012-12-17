@@ -1,2 +1,1 @@
-p.adb:4:26: info: range check proved
 p.adb:7:19: overflow check not proved

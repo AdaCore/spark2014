@@ -1,9 +1,9 @@
-p.adb:3:24: info: index check proved
-p.adb:5:15: info: index check proved
-p.adb:5:7: info: index check proved
-p.adb:6:7: info: index check proved
-p.ads:6:14: info: index check proved
-p.ads:6:21: info: index check proved
+p.adb:3:26: info: index check proved
+p.adb:5:17: info: index check proved
+p.adb:5:9: info: index check proved
+p.adb:6:9: info: index check proved
+p.ads:6:16: info: index check proved
+p.ads:6:23: info: index check proved
 p.ads:6:30: info: postcondition proved
-p.ads:6:34: info: index check proved
-p.ads:6:41: info: index check proved
+p.ads:6:36: info: index check proved
+p.ads:6:43: info: index check proved

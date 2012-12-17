@@ -1,16 +1,10 @@
-const.adb:10:22: info: index check proved
 const.adb:10:7: info: assertion proved
-const.adb:11:22: info: index check proved
 const.adb:11:7: assertion not proved, requires C(2) = 1
-const.adb:12:22: info: index check proved
 const.adb:12:7: info: assertion proved
-const.adb:13:22: info: index check proved
 const.adb:13:7: assertion not proved, requires C2(2) = 1
 const.adb:16:7: info: assertion proved
 const.adb:17:7: info: assertion proved
-const.adb:18:22: info: index check proved
 const.adb:18:7: info: assertion proved
-const.adb:19:22: info: index check proved
 const.adb:19:7: assertion not proved, requires D2(2) = 1
 const.adb:23:7: assertion not proved, requires E.X = 1
 const.adb:24:7: info: assertion proved
@@ -28,5 +22,3 @@ const.adb:41:7: assertion not proved, requires O = 1
 const.adb:42:7: assertion not proved, requires P = 1
 const.adb:7:7: info: assertion proved
 const.adb:8:7: info: assertion proved
-const.ads:22:35: info: range check proved
-const.ads:26:35: info: range check proved

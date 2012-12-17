@@ -1,6 +1,6 @@
-queen.ads:20:46: info: index check proved
-queen.ads:20:53: info: index check proved
+queen.ads:20:48: info: index check proved
+queen.ads:20:55: info: index check proved
 queen.ads:21:63: info: range check proved
-queen.ads:32:48: info: index check proved
-queen.ads:32:55: info: index check proved
+queen.ads:32:50: info: index check proved
+queen.ads:32:57: info: index check proved
 queen.ads:33:63: info: range check proved

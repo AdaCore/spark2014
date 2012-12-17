@@ -1,50 +1,20 @@
-actuator.adb:21:21: info: range check proved
-actuator.adb:22:21: info: range check proved
-actuator.adb:27:21: info: range check proved
-actuator.adb:28:21: info: range check proved
 actuator.ads:13:20: info: postcondition proved
 actuator.ads:21:20: info: postcondition proved
-advancebutton.adb:25:22: info: range check proved
-advancebutton.adb:33:22: info: range check proved
 advancebutton.adb:83:34: info: range check proved
 clock.ads:11:24: info: postcondition proved
 display.ads:13:29: info: postcondition proved
 heatingsystem_dfa.adb:108:31: info: division check proved
-heatingsystem_dfa.adb:108:31: info: range check proved
-heatingsystem_dfa.adb:137:23: info: index check proved
-heatingsystem_dfa.adb:139:14: info: index check proved
-heatingsystem_dfa.adb:231:38: info: index check proved
-heatingsystem_dfa.adb:232:38: info: index check proved
-heatingsystem_dfa.adb:234:26: info: index check proved
-heatingsystem_dfa.adb:235:26: info: index check proved
-heatingsystem_dfa.adb:245:21: info: range check proved
-heatingsystem_dfa.adb:246:53: info: range check proved
-heatingsystem_dfa.adb:247:53: info: range check proved
-heatingsystem_dfa.adb:248:53: info: range check proved
-heatingsystem_dfa.adb:249:53: info: range check proved
-heatingsystem_dfa.adb:30:48: info: range check proved
-heatingsystem_dfa.adb:31:48: info: range check proved
-heatingsystem_dfa.adb:32:48: info: range check proved
-heatingsystem_dfa.adb:33:64: info: range check proved
+heatingsystem_dfa.adb:137:33: info: index check proved
+heatingsystem_dfa.adb:139:24: info: index check proved
 heatingsystem_dfa.adb:54:21: info: division check proved
-heatingsystem_dfa.adb:54:21: info: range check proved
 heatingsystem_dfa.adb:55:24: info: division check proved
 heatingsystem_dfa.adb:55:43: info: division check proved
-heatingsystem_dfa.adb:55:43: info: range check proved
 heatingsystem_dfa.adb:57:45: info: division check proved
 heatingsystem_dfa.adb:58:45: info: division check proved
 heatingsystem_dfa.adb:59:47: info: division check proved
 heatingsystem_dfa.adb:60:47: info: division check proved
 heatingsystem_dfa.adb:80:47: info: division check proved
-heatingsystem_dfa.adb:80:47: info: range check proved
-heatingsystem_dfa.adb:83:37: info: range check proved
-heatingsystem_dfa.adb:89:40: info: range check proved
 heatingsystem_dfa.adb:91:55: info: division check proved
-heatingsystem_dfa.adb:91:55: info: range check proved
-indicator.adb:18:21: info: range check proved
-indicator.adb:19:21: info: range check proved
-indicator.adb:24:21: info: range check proved
-indicator.adb:25:21: info: range check proved
 indicator.ads:16:20: info: postcondition proved
 indicator.ads:8:20: info: postcondition proved
 modeswitch.ads:9:26: info: postcondition proved

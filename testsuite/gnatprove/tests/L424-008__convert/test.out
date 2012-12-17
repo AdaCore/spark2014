@@ -1,20 +1,4 @@
-p.adb:13:32: info: range check proved
-p.adb:13:35: info: range check proved
-p.adb:13:38: info: range check proved
-p.adb:17:22: info: index check proved
 p.adb:17:7: assertion not proved, requires My_S2 (2) /= 1
-p.adb:21:32: info: range check proved
-p.adb:21:35: info: range check proved
-p.adb:21:38: info: range check proved
-p.adb:25:22: info: index check proved
 p.adb:25:7: assertion not proved, requires My_S2 (2) = 2
-p.adb:29:32: info: range check proved
-p.adb:29:35: info: range check proved
-p.adb:29:38: info: range check proved
-p.adb:33:22: info: index check proved
 p.adb:33:7: assertion not proved, requires My_S2 (2) /= 2
-p.adb:5:32: info: range check proved
-p.adb:5:35: info: range check proved
-p.adb:5:38: info: range check proved
-p.adb:9:22: info: index check proved
 p.adb:9:7: assertion not proved, requires My_S2 (2) = 1
