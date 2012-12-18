@@ -1,0 +1,154 @@
+p.adb:102:7: loop variant not proved
+p.adb:103:7: index check not proved
+p.adb:104:14: overflow check not proved
+p.adb:105:50: overflow check not proved
+p.adb:105:57: index check not proved
+p.adb:105:65: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:105:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:10:7: index check not proved
+p.adb:110:7: index check not proved
+p.adb:111:7: loop variant not proved
+p.adb:112:14: overflow check not proved
+p.adb:113:50: overflow check not proved
+p.adb:113:57: index check not proved
+p.adb:113:65: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:113:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:119:9: info: range check proved
+p.adb:11:14: overflow check not proved
+p.adb:121:7: index check not proved
+p.adb:122:14: overflow check not proved
+p.adb:123:14: overflow check not proved
+p.adb:124:36: overflow check not proved
+p.adb:124:7: loop invariant initialization not proved
+p.adb:124:7: loop invariant preservation not proved
+p.adb:125:7: loop variant not proved
+p.adb:126:50: overflow check not proved
+p.adb:126:57: index check not proved
+p.adb:127:7: loop variant not proved
+p.adb:128:50: overflow check not proved
+p.adb:128:54: overflow check not proved
+p.adb:128:61: index check not proved
+p.adb:12:7: loop variant not proved
+p.adb:132:9: range check not proved
+p.adb:134:7: index check not proved
+p.adb:135:14: overflow check not proved
+p.adb:136:14: overflow check not proved
+p.adb:137:36: overflow check not proved
+p.adb:137:7: loop invariant initialization not proved
+p.adb:137:7: loop invariant preservation not proved
+p.adb:138:50: overflow check not proved
+p.adb:138:57: index check not proved
+p.adb:139:7: loop variant not proved
+p.adb:140:7: loop variant not proved
+p.adb:141:50: overflow check not proved
+p.adb:141:54: overflow check not proved
+p.adb:141:61: index check not proved
+p.adb:145:9: range check not proved
+p.adb:147:7: index check not proved
+p.adb:148:14: overflow check not proved
+p.adb:149:14: overflow check not proved
+p.adb:150:7: loop variant not proved
+p.adb:151:36: overflow check not proved
+p.adb:151:7: loop invariant initialization not proved
+p.adb:151:7: loop invariant preservation not proved
+p.adb:152:50: overflow check not proved
+p.adb:152:57: index check not proved
+p.adb:153:50: overflow check not proved
+p.adb:153:54: overflow check not proved
+p.adb:153:61: index check not proved
+p.adb:154:7: loop variant not proved
+p.adb:160:9: range check not proved
+p.adb:162:7: index check not proved
+p.adb:163:14: overflow check not proved
+p.adb:164:7: loop variant not proved
+p.adb:165:14: overflow check not proved
+p.adb:166:36: overflow check not proved
+p.adb:166:7: loop invariant initialization not proved
+p.adb:166:7: loop invariant preservation not proved
+p.adb:167:50: overflow check not proved
+p.adb:167:57: index check not proved
+p.adb:168:7: loop variant not proved
+p.adb:169:50: overflow check not proved
+p.adb:169:54: overflow check not proved
+p.adb:169:61: index check not proved
+p.adb:173:9: range check not proved
+p.adb:175:7: loop variant not proved
+p.adb:176:7: index check not proved
+p.adb:177:36: overflow check not proved
+p.adb:177:7: loop invariant initialization not proved
+p.adb:177:7: loop invariant preservation not proved
+p.adb:178:53: index check not proved
+p.adb:179:50: overflow check not proved
+p.adb:179:57: index check not proved
+p.adb:180:14: overflow check not proved
+p.adb:181:14: overflow check not proved
+p.adb:182:7: loop variant not proved
+p.adb:186:9: range check not proved
+p.adb:188:7: index check not proved
+p.adb:189:14: overflow check not proved
+p.adb:18:9: info: range check proved
+p.adb:190:7: loop variant not proved
+p.adb:191:50: overflow check not proved
+p.adb:191:57: index check not proved
+p.adb:191:65: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:191:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:192:14: overflow check not proved
+p.adb:193:36: overflow check not proved
+p.adb:193:7: loop invariant not proved, requires J = A + K
+p.adb:194:50: overflow check not proved
+p.adb:194:54: overflow check not proved
+p.adb:194:61: index check not proved
+p.adb:194:69: loop invariant not proved, requires Tab (L) = L
+p.adb:195:7: loop variant not proved
+p.adb:19:12: overflow check not proved
+p.adb:20:14: overflow check not proved
+p.adb:20:22: range check not proved
+p.adb:20:7: index check not proved
+p.adb:22:17: overflow check not proved
+p.adb:24:17: overflow check not proved
+p.adb:26:7: loop variant not proved
+p.adb:33:9: info: range check proved
+p.adb:35:7: index check not proved
+p.adb:36:14: overflow check not proved
+p.adb:37:14: overflow check not proved
+p.adb:38:7: loop variant not proved
+p.adb:39:7: loop variant not proved
+p.adb:45:9: info: range check proved
+p.adb:47:7: index check not proved
+p.adb:48:14: overflow check not proved
+p.adb:49:7: loop variant not proved
+p.adb:50:14: overflow check not proved
+p.adb:51:7: loop variant not proved
+p.adb:58:7: index check not proved
+p.adb:59:14: overflow check not proved
+p.adb:60:7: loop variant not proved
+p.adb:61:50: overflow check not proved
+p.adb:61:57: index check not proved
+p.adb:61:65: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:61:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:68:7: index check not proved
+p.adb:69:14: overflow check not proved
+p.adb:70:50: overflow check not proved
+p.adb:70:57: index check not proved
+p.adb:70:65: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:70:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:71:7: loop variant not proved
+p.adb:78:50: overflow check not proved
+p.adb:78:57: index check not proved
+p.adb:78:65: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:78:7: info: loop invariant initialization proved
+p.adb:79:7: index check not proved
+p.adb:80:14: overflow check not proved
+p.adb:81:7: loop variant not proved
+p.adb:86:7: index check not proved
+p.adb:87:53: index check not proved
+p.adb:87:61: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:87:61: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:88:14: overflow check not proved
+p.adb:89:7: loop variant not proved
+p.adb:94:7: loop variant not proved
+p.adb:95:7: index check not proved
+p.adb:96:53: index check not proved
+p.adb:96:61: loop invariant initialization not proved, requires Tab (L) = L
+p.adb:96:61: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:97:14: overflow check not proved
