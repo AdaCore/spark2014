@@ -313,12 +313,13 @@ invariants. A loop invariant gives information on the state at entry to the
 loop at each iteration. Loop invariants in |SPARK| are expressed with the
 ``Loop_Invariant`` pragma, which may appear anywhere in the main list of
 statements in a loop body, or directly in a chain of nested block statements in
-this main list of statements. Only the first ``Loop_Invariant`` pragma is used
-by |GNATprove| as a loop invariant during proof. Other ``Loop_Invariant`` pragmas
-are proved like regular assertions. Loop invariants may have to be precise
-enough to prove the property of interest. For example, in order to prove the
-postcondition of function ``Contains`` below, one has to write a precise loop
-invariant such as the one given below:
+this main list of statements. Only the first ``Loop_Invariant`` pragmas are
+used by |GNATprove| as a loop invariant during proof (they should be next to
+each other, or separated only by ``Loop_Variant`` pragmas). Other
+``Loop_Invariant`` pragmas are proved like regular assertions. Loop invariants
+may have to be precise enough to prove the property of interest. For example,
+in order to prove the postcondition of function ``Contains`` below, one has to
+write a precise loop invariant such as the one given below:
 
 .. code-block:: ada
    :linenos:
@@ -367,6 +368,32 @@ function ``Move`` below, one has to write a loop invariant referring to
          Src (Index) := 0;
       end loop;
    end Move;
+
+Loop Variants
+^^^^^^^^^^^^^
+
+Proofs of termination of loops rely on ``Loop_Variant`` pragmas. Proving one
+loop variant is sufficient to prove that a loop terminates, even if the loop
+contains multiple ``Loop_Variant`` pragmas, and others are not proved. Indeed,
+it is sufficient to know that one bounded quantity decreases or increases
+monotonically (or a mix of these, as loop invariants may have increasing and
+decreasing parts, the order of which fixes the lexicographic combined order of
+progress) to be assured that the loop terminates. Note that, in general, this
+requires proving also that there are no run-time errors in the loop, to show
+that the quantity stays within bounds. Otherwise, the code may still wrap
+around at run time (if the code is compiled without checks), and the loop will
+not necessarily exit.
+
+The ``Loop_Variant`` pragmas that appear next to the first group of
+``Loop_Invariant`` pragmas (or at the start of the loop body if there are no
+``Loop_Invariant`` pragmas in the loop) are handled with the most precision by
+|GNATprove|, as they become loop variants of the underlying intermediate
+representation in Why3. Other ``Loop_Variant`` pragmas are proved by showing
+that the quantity that should progress monotonically does so between the
+program point where the first group of ``Loop_Invariant`` pragmas appears (or
+the start of the loop if there is no such group) and the program point where
+the ``Loop_Variant`` pragma appears, and that this quantity either stays the
+same or progresses on the rest of the loop.
 
 Quantified Expressions
 ^^^^^^^^^^^^^^^^^^^^^^
