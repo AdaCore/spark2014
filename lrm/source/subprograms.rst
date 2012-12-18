@@ -257,9 +257,7 @@ follow the grammar of ``global_specification``
 .. centered:: **Name Resolution Rules**
 
 #. The ``name`` represented by a given ``global_item`` will resolve to denote
-   a variable object or a state abstraction. In a context where the ``name``
-   could be interpreted either as a variable or as a state abstraction it shall
-   resolve to denote a variable.
+   a variable object or a state abstraction.
 
 .. centered:: **Legality Rules**
 
@@ -302,7 +300,7 @@ follow the grammar of ``global_specification``
      indirectly by this subprogram.
 
 #. A subprogram with a Global aspect that has a ``global_specification``
-   of **null** shall not reference any ``global_items``.
+   of **null** shall not reference any global items.
   
 #. A ``global_item`` shall occur in a Global aspect of a subprogram if and
    only if it is referenced by the subprogram.
