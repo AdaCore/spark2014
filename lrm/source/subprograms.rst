@@ -254,10 +254,6 @@ follow the grammar of ``global_specification``
    mode_selector               ::= Input | Output | In_Out | Contract_In
    global_item                 ::= name
 
-.. centered:: **Name Resolution Rules**
-
-#. The ``name`` represented by a given ``global_item`` will resolve to denote
-   a variable object or a state abstraction.
 
 .. centered:: **Legality Rules**
 
@@ -270,7 +266,7 @@ follow the grammar of ``global_specification``
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its Global aspect.
 
-#. Each ``global_item`` in a single Global aspect shall denote a distinct entity.
+#. ``global_items`` in the same Global aspect shall denote distinct entities.
 
 #. A global item occurring in a Global aspect of a subprogram aspect
    specification shall not have the same ``defining_identifier`` as a formal
