@@ -127,10 +127,6 @@ where the ``aspect_mark`` is Abstract_State and the
    aspect_specification can only be provided as part of a
    Refined_State aspect specification within the body of the package.]
    
-#. The state abstractions declared in an Abstract_State aspect of a package,
-   if present, must cover all the hidden state of the package. 
-   [The rule is checked when the package is analyzed.]
-   
 #. A **null** ``abstract_state_list`` specifies that a package contains no 
    hidden state or variables declared in its ``visible_part``.
    [The specification is is checked when the package is analyzed.]
@@ -733,8 +729,9 @@ where
 
 .. centered:: **Legality Rules**
 
-#. A Refined State Aspect may only appear in the body of a
-   package.
+#. A Refined State Aspect may only appear in ``package_body``. [The use
+   of ``package_body`` rather than package body allows this aspect to be specified
+   for generic package bodies.]
 #. If a package declaration has an Abstract State Aspect its body
    must have a Refined State Aspect.
 #. If a package declaration does not have an Abstract State Aspect,
@@ -745,6 +742,8 @@ where
    package body, or a ``state_name`` or *variable* declared in the
    visible part of a package, declared immediately within the package
    body.
+#. Every item of the package's hidden state must appear as a
+   ``constituent`` in its Refined State aspect.
 #. Each ``state_name`` declared in a package specification must appear
    exactly once as an ``abstract_state_name`` in the
    Refined State Aspect of the body of the package.
