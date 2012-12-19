@@ -105,6 +105,9 @@ where the ``aspect_mark`` is Abstract_State and the
    then it shall also include Volatile.
 #. The ``identifier`` of a ``name_value_property`` shall be
    Integrity.
+#. If a ``property_list`` includes Integrity then it shall be the final
+   property in the list. [This eliminates the possibility of a positional
+   association following a named association in the property list.]
 
 .. centered:: **Static Semantics**
 
