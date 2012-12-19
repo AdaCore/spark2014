@@ -145,12 +145,6 @@ where the ``aspect_mark`` is Abstract_State and the
    hidden state or variables declared in its ``visible_part``.
    [The specification is is checked when the package is analyzed.]
 
-#. A variable declared in the ``visible_part`` of a package implicitly
-   declares a state abstraction entity with the same identifier as the 
-   ``defining_identifier`` of the variable.  The variable declaration acts
-   as the completion of the state abstraction.  The implicitly declared
-   state abstraction is only visible in a limited view of the package.
-
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
 
