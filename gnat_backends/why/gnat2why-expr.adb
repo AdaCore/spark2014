@@ -3786,28 +3786,37 @@ package body Gnat2Why.Expr is
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
                Name  : W_Identifier_Id;
+               L_Why, R_Why : W_Expr_Id;
             begin
                Current_Type := Base_Why_Type (Left, Right);
+               L_Why :=
+                 Transform_Expr (Left,
+                                 Current_Type,
+                                 Domain,
+                                 Local_Params);
+               R_Why :=
+                 Transform_Expr (Right,
+                                 Current_Type,
+                                 Domain,
+                                 Local_Params);
                Name := New_Division (Get_Base_Type (Current_Type));
-               if Domain = EW_Prog then
-                  Name := To_Program_Space (Name);
+               if Domain = EW_Prog and then Do_Division_Check (Expr) then
+                  T :=
+                    New_VC_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => To_Program_Space (Name),
+                       Progs    => (1 => L_Why, 2 => R_Why),
+                       Reason   => VC_Division_Check);
+               else
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => Name,
+                       Args    => (1 => L_Why, 2 => R_Why));
                end if;
 
-               T :=
-                 New_VC_Call
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Name     => Name,
-                    Progs    =>
-                      (1 => Transform_Expr (Left,
-                                            Current_Type,
-                                            Domain,
-                                            Local_Params),
-                       2 => Transform_Expr (Right,
-                                            Current_Type,
-                                            Domain,
-                                            Local_Params)),
-                    Reason   => VC_Division_Check);
                T := Apply_Modulus (Etype (Expr), T, Domain);
             end;
 
