@@ -57,10 +57,7 @@ example, a nested package, then a state abstraction of the inner
 package may also be part of the implementation of the given state
 abstraction of the outer package.
 
-The *hidden* state of a package (roughly speaking, all variables
-declared within the the ``private_part`` or body of the package but not
-within a more nested subprogram body or ``block_statement``; state
-declared in private descendants is also included) may be represented
+The *hidden* state of a package may be represented
 by one or more state abstractions, with each pair of state
 abstractions representing disjoint sets of hidden variables.
 
@@ -110,6 +107,23 @@ where the ``aspect_mark`` is Abstract_State and the
    association following a named association in the property list.]
 
 .. centered:: **Static Semantics**
+
+#. The visible state and state abstractions of a package P consist of:
+
+   * any variables declared immediately within the visible part
+     of P; and
+   * any state abstractions declared by the Abstract State aspect
+     specification (if any) of package P; and
+   * the visible state and state abstractions of any packages declared
+     immediately within the visible part of P.
+
+#. The hidden state of a package P consists of:
+
+   * any variables declared immediately within the private part or
+     body of P; and
+   * the visible state and state abstractions of any packages declared
+     immediately within the private part or body of P, and of any
+     private child units of P or of their public descendants.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
