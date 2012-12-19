@@ -10,18 +10,14 @@ a.adb:13:59: overflow check not proved
 a.adb:14:10: loop variant not proved
 a.adb:17:19: info: division check proved
 a.adb:20:14: info: overflow check proved
-a.adb:20:14: info: range check proved
 a.adb:26:22: info: precondition proved
 a.adb:29:18: info: overflow check proved
 a.adb:29:23: info: division check proved
 a.adb:29:23: info: overflow check proved
 a.adb:32:14: overflow check not proved
-a.adb:32:14: range check not proved
 a.adb:9:10: info: loop invariant initialization proved
 a.ads:14:25: info: overflow check proved
-a.ads:14:44: info: range check proved
 a.ads:14:47: info: overflow check proved
-a.ads:14:63: info: range check proved
 a.ads:18:29: overflow check not proved
 a.ads:18:38: overflow check not proved
 a.ads:18:45: info: overflow check proved

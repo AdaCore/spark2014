@@ -23,7 +23,6 @@ arith.adb:23:28: division check not proved
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
 arith.adb:26:16: overflow check not proved
 arith.adb:26:23: overflow check not proved
-arith.adb:26:23: range check not proved
 arith.adb:7:12: warning: possible reassociation due to missing parentheses
 arith.adb:7:14: overflow check not proved
 arith.adb:7:18: overflow check not proved

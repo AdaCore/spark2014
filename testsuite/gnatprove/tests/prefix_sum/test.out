@@ -162,24 +162,24 @@ prefixsum.ads:65:62: overflow check not proved
 prefixsum.ads:66:14: overflow check not proved
 prefixsum.ads:66:26: overflow check not proved
 prefixsum_expanded.adb:116:27: info: division check proved
+prefixsum_expanded.adb:119:23: assertion not proved, requires Saved_A (0) = Ghost(0)
 prefixsum_expanded.adb:121:34: overflow check not proved
 prefixsum_expanded.adb:125:34: overflow check not proved
 prefixsum_expanded.adb:125:45: overflow check not proved
 prefixsum_expanded.adb:125:56: overflow check not proved
-prefixsum_expanded.adb:127:23: assertion not proved, requires Saved_A (4) = Ghost(4)
 prefixsum_expanded.adb:129:34: overflow check not proved
 prefixsum_expanded.adb:12:40: overflow check not proved
 prefixsum_expanded.adb:12:40: range check not proved
-prefixsum_expanded.adb:137:37: loop invariant initialization not proved, requires Space = 4 or Space = 2 or Space = 1
 prefixsum_expanded.adb:139:36: division check not proved
 prefixsum_expanded.adb:139:36: overflow check not proved
 prefixsum_expanded.adb:139:45: overflow check not proved
 prefixsum_expanded.adb:139:49: overflow check not proved
 prefixsum_expanded.adb:139:49: range check not proved
-prefixsum_expanded.adb:143:24: loop invariant preservation not proved, requires A (K) = A'loop_entry
 prefixsum_expanded.adb:145:43: overflow check not proved
+prefixsum_expanded.adb:147:24: loop invariant initialization not proved, requires A (3) = A'loop_entry
 prefixsum_expanded.adb:153:45: overflow check not proved
 prefixsum_expanded.adb:155:45: overflow check not proved
+prefixsum_expanded.adb:157:26: loop invariant preservation not proved, requires A (7) = A'Loop_Entry (5) + A'Loop_Entry (7) + A'loop_entry
 prefixsum_expanded.adb:157:45: overflow check not proved
 prefixsum_expanded.adb:158:26: overflow check not proved
 prefixsum_expanded.adb:161:10: loop variant not proved
@@ -216,7 +216,7 @@ prefixsum_expanded.adb:187:32: overflow check not proved
 prefixsum_expanded.adb:187:32: range check not proved
 prefixsum_expanded.adb:187:40: overflow check not proved
 prefixsum_expanded.adb:189:25: division check not proved
-prefixsum_expanded.adb:195:16: assertion not proved, requires A (1) = Saved_A (0) + Saved_A (7)
+prefixsum_expanded.adb:193:16: assertion not proved, requires A (0) = Saved_A (7)
 prefixsum_expanded.adb:195:30: overflow check not proved
 prefixsum_expanded.adb:197:30: overflow check not proved
 prefixsum_expanded.adb:199:30: overflow check not proved
@@ -300,9 +300,10 @@ prefixsum_expanded.ads:27:31: overflow check not proved
 prefixsum_expanded.ads:27:39: overflow check not proved
 prefixsum_expanded.ads:29:23: overflow check not proved
 prefixsum_expanded.ads:31:23: overflow check not proved
-prefixsum_expanded.ads:44:30: postcondition not proved, requires Output_Space = 8
+prefixsum_expanded.ads:43:14: postcondition not proved, requires All_Elements_In (A, 8 * Maximum)
 prefixsum_expanded.ads:45:17: precondition not proved
 prefixsum_expanded.ads:53:17: info: precondition proved
+prefixsum_expanded.ads:55:14: postcondition not proved, requires A (0) = 0
 prefixsum_expanded.ads:59:26: overflow check not proved
 prefixsum_expanded.ads:61:26: overflow check not proved
 prefixsum_expanded.ads:61:38: overflow check not proved
@@ -318,7 +319,6 @@ prefixsum_expanded.ads:67:38: overflow check not proved
 prefixsum_expanded.ads:67:50: overflow check not proved
 prefixsum_expanded.ads:67:62: overflow check not proved
 prefixsum_expanded.ads:68:14: overflow check not proved
-prefixsum_expanded.ads:70:14: postcondition not proved, requires A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4) + Ghost (5) + Ghost (6)
 prefixsum_expanded.ads:70:26: overflow check not proved
 prefixsum_expanded.ads:70:38: overflow check not proved
 prefixsum_expanded.ads:70:50: overflow check not proved

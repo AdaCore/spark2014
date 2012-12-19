@@ -2,8 +2,6 @@ evoting.adb:150:10: info: loop invariant initialization proved
 evoting.adb:150:10: info: loop invariant preservation proved
 evoting.adb:150:50: info: overflow check proved
 evoting.adb:151:21: info: overflow check proved
-evoting.adb:151:21: info: range check proved
-evoting.adb:151:31: info: index check proved
 evoting.adb:152:10: info: loop invariant proved
 evoting.adb:152:52: info: overflow check proved
 evoting.adb:168:54: overflow check not proved
