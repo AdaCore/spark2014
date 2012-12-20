@@ -1448,6 +1448,11 @@ package body Alfa.Definition is
                  E_Subprogram_Body       =>
                null;
 
+            --  We should not encounter abstract state in this traversal
+
+            when E_Abstract_State =>
+               raise Program_Error;
+
             when E_Exception =>
                Mark_Violation ("exception", N, NIR_Exception);
 
