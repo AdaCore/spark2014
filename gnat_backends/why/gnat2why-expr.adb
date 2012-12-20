@@ -109,12 +109,13 @@ package body Gnat2Why.Expr is
    --  which must be a modular type. If E is not a modular type, return T
    --  unchanged.
 
-   function Insert_Overflow_Check (Ada_Node : Node_Id;
-                                   T : W_Expr_Id;
-                                   In_Type : Entity_Id) return W_Expr_Id
-   with Pre => Is_Scalar_Type (In_Type);
-   --  on top of the Why expression T, put an overflow check for the base type
-   --  of In_Type. Use the Ada_Node for the VC location.
+   function Insert_Overflow_Check
+     (Ada_Node : Node_Id;
+      T        : W_Expr_Id;
+      In_Type  : Entity_Id) return W_Expr_Id
+     with Pre => Is_Scalar_Type (In_Type);
+   --  Inserts an overflow check on top of the Why expression T, using the
+   --  bounds of the base type of In_Type. Use Ada_Node for the VC location.
 
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
@@ -967,75 +968,105 @@ package body Gnat2Why.Expr is
    --------------------------
 
    procedure Get_Range_Check_Info
-     (Expr : Node_Id;
+     (Expr       : Node_Id;
       Check_Type : out Entity_Id;
       Check_Kind : out VC_Kind)
    is
       Par : constant Node_Id := Parent (Expr);
-      Found : Boolean := False;
+
    begin
-      Check_Kind := VC_Range_Check;
+      --  If the parent expression is an array access, this is an index check
+
+      if Nkind (Par) = N_Indexed_Component then
+         Check_Kind := VC_Index_Check;
+
+      --  Otherwise, this is a range check
+
+      else
+         Check_Kind := VC_Range_Check;
+      end if;
+
+      --  Set the appropriate entity in Check_Type giving the bounds for the
+      --  check, depending on the parent node Par.
 
       case Nkind (Par) is
+
          when N_Assignment_Statement =>
             Check_Type := Etype (Name (Par));
 
+         --  For an array access, retrieve the type for the corresponding index
+
          when N_Indexed_Component =>
-            Check_Kind := VC_Index_Check;
 
-            --  We find the correct type to check against in the index types
-            --  of the array type of the prefix of the index access.
-            --  When it is present, the correct type to look at is the
-            --  "actual_subtype" of the array object entity.
-
-            declare
-               Obj : constant Entity_Id := Prefix (Par);
-               Array_Type : Entity_Id := Etype (Obj);
-               Act_Cursor : Node_Id := First (Expressions (Par));
+            Indexed_Component : declare
+               Obj        : constant Node_Id := Prefix (Par);
+               Array_Type : Entity_Id;
+               Act_Cursor : Node_Id;
                Ty_Cursor  : Node_Id;
+               Found      : Boolean;
+
             begin
-               if Is_Entity_Name (Obj) and then
-                 Present (Actual_Subtype (Entity (Obj)))
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Is_Entity_Name (Obj)
+                 and then Present (Actual_Subtype (Entity (Obj)))
                then
                   Array_Type := Actual_Subtype (Entity (Obj));
+               else
+                  Array_Type := Etype (Obj);
                end if;
-               Array_Type := Unique_Entity (Array_Type);
-               Ty_Cursor := First_Index (Array_Type);
+
+               --  Find the index type that corresponds to the expression
+
+               Ty_Cursor  := First_Index (Unique_Entity (Array_Type));
+               Act_Cursor := First (Expressions (Par));
+               Found      := False;
                while Present (Act_Cursor) loop
                   if Expr = Act_Cursor then
                      Check_Type := Etype (Ty_Cursor);
                      Found := True;
                      exit;
                   end if;
+
                   Next (Act_Cursor);
                   Next_Index (Ty_Cursor);
                end loop;
+
+               --  The only possible child node of an indexed component with a
+               --  range check should be one of the expressions, so Found
+               --  should always be True at this point.
+
                if not Found then
                   raise Program_Error;
                end if;
-            end;
+            end Indexed_Component;
+
+         --  ??? Why are we taking the type of the expression for a type
+         --  conversion? Shouldn't we taking the type of Expr?
 
          when N_Type_Conversion =>
             Check_Type := Etype (Expression (Par));
 
-         when N_Function_Call
-            | N_Procedure_Call_Statement
-            | N_Parameter_Association =>
+         --  For a call, retrieve the type for the corresponding argument
 
-            --  Find the expression in the arguments of the call
+         when N_Function_Call            |
+              N_Procedure_Call_Statement |
+              N_Parameter_Association    =>
 
-            declare
+            Call : declare
+
+               Found : Boolean := False;
 
                procedure Check_Call_Arg (Formal, Actual : Node_Id);
-               --  If the actual is our expression, set the Check_Type to
-               --  the Etype of the formal
+               --  If Actual is the right expression, set Check_Type to the
+               --  Etype of Formal.
 
                --------------------
                -- Check_Call_Arg --
                --------------------
 
-               procedure Check_Call_Arg (Formal, Actual : Node_Id)
-               is
+               procedure Check_Call_Arg (Formal, Actual : Node_Id) is
                begin
                   if Expr = Actual then
                      Check_Type := Etype (Formal);
@@ -1052,32 +1083,39 @@ package body Gnat2Why.Expr is
                else
                   Find_Expr_in_Call_Args (Par);
                end if;
+
+               --  The only possible child node of a call with a range check
+               --  should be one of the arguments, so Found should always be
+               --  True at this point.
+
                if not Found then
                   raise Program_Error;
                end if;
-            end;
+            end Call;
 
          when N_Attribute_Reference =>
-            declare
+            Attribute : declare
                Aname   : constant Name_Id := Attribute_Name (Par);
                Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
             begin
                case Attr_Id is
-                  when Attribute_Val | Attribute_Pred | Attribute_Succ =>
+                  when Attribute_Pred |
+                       Attribute_Succ |
+                       Attribute_Val  =>
                      Check_Type := Base_Type (Entity (Prefix (Par)));
 
                   when others =>
-                     Ada.Text_IO.Put_Line ("[Get_Check_Info] attr ="
+                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
                                            & Attribute_Id'Image (Attr_Id));
-
+                     raise Program_Error;
                end case;
-            end;
+            end Attribute;
 
          when N_Object_Declaration =>
             Check_Type := Etype (Defining_Identifier (Par));
 
          when others =>
-            Ada.Text_IO.Put_Line ("[Get_Check_Info] kind ="
+            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
             raise Program_Error;
       end case;
@@ -1122,42 +1160,49 @@ package body Gnat2Why.Expr is
    -- Insert_Overflow_Check --
    ---------------------------
 
-   function Insert_Overflow_Check (Ada_Node : Node_Id;
-                                   T : W_Expr_Id;
-                                   In_Type : Entity_Id) return W_Expr_Id
+   function Insert_Overflow_Check
+     (Ada_Node : Node_Id;
+      T        : W_Expr_Id;
+      In_Type  : Entity_Id) return W_Expr_Id
    is
       Base : constant Entity_Id := Base_Type (In_Type);
+
    begin
-      return
-        New_VC_Call
-          (Domain   => EW_Prog,
-           Ada_Node => Ada_Node,
-           Name     =>
-             Prefix (Full_Name (Base), WNE_Range_Check_Fun, Base),
-           Progs    => (1 => +T),
-           Reason   => VC_Overflow_Check);
+      return New_VC_Call (Domain   => EW_Prog,
+                          Ada_Node => Ada_Node,
+                          Name     => Prefix (S        => Full_Name (Base),
+                                              W        => WNE_Range_Check_Fun,
+                                              Ada_Node => Base),
+                          Progs    => (1 => +T),
+                          Reason   => VC_Overflow_Check);
    end Insert_Overflow_Check;
 
    ------------------------
    -- Insert_Range_Check --
    ------------------------
 
-   function Insert_Range_Check (Expr          : Node_Id;
-                                T             : W_Expr_Id)
-                                return W_Expr_Id
+   function Insert_Range_Check
+     (Expr : Node_Id;
+      T    : W_Expr_Id) return W_Expr_Id
    is
-
       Check_Type : Entity_Id;
       Check_Kind : VC_Kind;
+
    begin
-      Get_Range_Check_Info (Expr, Check_Type,  Check_Kind);
-      return New_VC_Call
-        (Domain   => EW_Prog,
-         Ada_Node => Expr,
-         Name     =>
-           Prefix (Full_Name (Check_Type), WNE_Range_Check_Fun, Check_Type),
-         Progs    => (1 => +T),
-         Reason   => Check_Kind);
+      --  Determine the type Check_Type, whose base type will give the bounds
+      --  for the check, and whether the check is a range check or an index
+      --  check.
+
+      Get_Range_Check_Info (Expr, Check_Type, Check_Kind);
+
+      return New_VC_Call (Domain   => EW_Prog,
+                          Ada_Node => Expr,
+                          Name     => Prefix (S        =>
+                                                Full_Name (Check_Type),
+                                              W        => WNE_Range_Check_Fun,
+                                              Ada_Node => Check_Type),
+                          Progs    => (1 => +T),
+                          Reason   => Check_Kind);
    end Insert_Range_Check;
 
    ------------------------
@@ -4168,36 +4213,39 @@ package body Gnat2Why.Expr is
                       Domain => Domain);
       end if;
 
-      --  Do_Overflow_Check cannot be called on all nodes, so we check the
-      --  Nkind before the call. We can simply insert that here, because
-      --  overflow checks are only on intermediate expressions, and hence the
-      --  expression is already of "int" or "real" type.
+      --  Insert an overflow check if flag Do_Overflow_Check is set. No
+      --  conversion should be needed, as overflow checks are only set on
+      --  intermediate expressions, whose transformation into Why should
+      --  always have type "int" or "real". We start by checking that Expr has
+      --  a kind on which we can call Do_Overflow_Check, otherwise there is
+      --  nothing to do.
 
-      if Domain = EW_Prog and then
-        Nkind (Expr) in
-              N_Op
-            | N_Attribute_Reference
-            | N_If_Expression
-            | N_Case_Expression
-            | N_Type_Conversion and then
-        Do_Overflow_Check (Expr) then
+      if Domain = EW_Prog
+        and then Nkind (Expr) in N_Attribute_Reference |
+                                 N_Case_Expression     |
+                                 N_If_Expression       |
+                                 N_Op                  |
+                                 N_Type_Conversion
+        and then Do_Overflow_Check (Expr)
+      then
          T := Insert_Overflow_Check (Expr, T, Etype (Expr));
       end if;
 
-      --  We now insert a range check. It requires the expression to be of
-      --  "int" or "real" type. This is not always the case, so the range check
-      --  has to be intertwined with the conversion.
+      --  Insert a range check if flag Do_Range_Check is set. This may require
+      --  a conversion to be inserted, as the check in Why only applies to an
+      --  expression of type "int" or "real" type.
+
+      --  ??? Why do the conversion for Domain=EW_Term?
 
       if Domain in EW_Term | EW_Prog then
-         T :=
-           Insert_Conversion
-             (Domain        => Domain,
-              Ada_Node      => Expr,
-              Expr          => T,
-              From          => Current_Type,
-              To            => Expected_Type,
-              Range_Check   =>
-                Domain = EW_Prog and then Do_Range_Check (Expr));
+         T := Insert_Conversion (Domain        => Domain,
+                                 Ada_Node      => Expr,
+                                 Expr          => T,
+                                 From          => Current_Type,
+                                 To            => Expected_Type,
+                                 Range_Check   => Domain = EW_Prog
+                                                    and then
+                                                  Do_Range_Check (Expr));
       end if;
 
       return T;

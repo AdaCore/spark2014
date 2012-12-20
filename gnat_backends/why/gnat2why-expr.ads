@@ -62,20 +62,24 @@ package Gnat2Why.Expr is
    --  return this term. Otherwise, return Why_Empty.
 
    procedure Get_Range_Check_Info
-     (Expr : Node_Id;
+     (Expr       : Node_Id;
       Check_Type : out Entity_Id;
       Check_Kind : out VC_Kind);
-   --  Given an expression with the Do_Range_Check flag on, determine the check
-   --  type (ie the range to check against) and check kind (range check or
-   --  index check).
+   --  The frontend sets Do_Range_Check flag to True both for range checks and
+   --  for index checks. We distinguish between these by calling this
+   --  procedure, which also sets the bounds against which the value of Expr
+   --  should be checked. Expr should have the flag Do_Range_Check flag set to
+   --  True. Check_Type is set to the entity giving the bounds for the check.
+   --  Check_Kind is set to VC_Range_Check or VC_Index_Check.
 
-   function Insert_Range_Check (Expr          : Node_Id;
-                                T             : W_Expr_Id)
-                                return W_Expr_Id;
-   --  on top of the Why expression T, put a range check for the expected type.
-   --  Use the Ada expression to find the kind of the check - in the case of an
-   --  indexed component, this may actually generate an index check. Use
-   --  [Get_Range_Check_Info] to determine the type and kind of the check.
+   function Insert_Range_Check
+     (Expr : Node_Id;
+      T    : W_Expr_Id) return W_Expr_Id;
+   --  Inserts a check on top of the Why expression T, which might be either
+   --  a range check, or an index check, depending on the corresponding
+   --  Ada node Expr. Expr also determines the bounds for the check.
+   --  [Get_Range_Check_Info] is called to determine the type and kind of
+   --  the check.
 
    function Range_Expr
      (N           : Node_Id;
