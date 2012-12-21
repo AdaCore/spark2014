@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2011, AdaCore                   --
+--                       Copyright (C) 2010-2012, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -143,9 +143,11 @@ package body Why.Atree.Tables is
 
    function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id is
       use Node_Tables;
+      Result : Why_Node_Id;
    begin
       Append (Node_Table, Node);
-      return To_Index (Last (Node_Table));
+      Result := To_Index (Last (Node_Table));
+      return Result;
    end New_Why_Node_Id;
 
    function New_Why_Node_Id
