@@ -553,8 +553,8 @@ No extensions or restrictions.
 Mode Refinement
 ~~~~~~~~~~~~~~~
 
-If a subprogram has a mode refinement (in a ``global_aspect``, a
-``refined_global_aspect`` or a ``param_aspect``) then the
+If a subprogram has a mode refinement (in a ``global_aspect`` or a
+``refined_global_aspect``) then the
 implementation of its body must comply with the refined modes
 specified for the ``moded_items``.
 
@@ -637,21 +637,6 @@ implementation of its body as described below.
    ``refined_global_aspect`` of the subprogram.
 #. If a subprogram does not have a ``global_aspect`` then an implicit
    one is synthesised from implementation of the body (if it exists).
-
-Param Aspects
-~~~~~~~~~~~~~
-
-If a subprogram does not have a separate declaration its body or body
-stub may have a ``param_aspect`` in its aspect specification where the
-same rules as for a ``param_aspect`` in a subprogram declaration
-apply.  When a subprogram has a ``param_aspect`` either in its
-declaration or its body or body stub the rules and semantics given
-below should be satisfied by the implementation of its body.
-
-.. centered:: **Legality Rules**
-
-#. A subprogram body or body stub may only have a ``param_aspect`` if
-   it does not have a separate declaration.
 
 
 Depends Aspects

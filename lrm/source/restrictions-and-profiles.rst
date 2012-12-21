@@ -73,12 +73,6 @@ A list of restrictions by section and their effect:
 .. note:: RCC. I have changed "virtual" to "implicit" here since the
    latter is used to mean the same thing later on and seems more consistent.
 
-6.1.6 Param Aspects
-
-#. ``No_Param_Aspects``
-
-   Excludes the use of ``param_aspects``.
-
 6.1.7 Dependency Aspects
 
 #. ``Procedures_Require_Dependency_Aspects``

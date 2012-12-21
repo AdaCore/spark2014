@@ -105,6 +105,8 @@ where the ``aspect_mark`` is Abstract_State and the
 #. If a ``property_list`` includes Integrity then it shall be the final
    property in the list. [This eliminates the possibility of a positional
    association following a named association in the property list.]
+#. A package_declaration or generic_package_declaration requires a completion
+   [(a body)] if it contains an Abstract State aspect specification.
 
 .. centered:: **Static Semantics**
 
@@ -781,18 +783,6 @@ where
    subordinate ``state_name`` which are the constituents that comprise
    the hidden state represented by the ``state_name`` declared in the
    Abstract State Aspect.
-#. A ``constituent`` of the hidden state of a package Q is one of:
-
-   * A *variable* declared in the ``private_part`` or body of Q;
-   * A *variable* declared in the ``visible_part`` of a package
-     declared immediately within the ``private_part`` or body of Q;
-   * A *variable* declared in the ``visible_part`` of a private child
-     package of Q;
-   * A ``state_name`` declared in the Abstract State Aspect of a
-     package declared immediately within the ``private_part`` or body
-     of a package Q; or
-   * A ``state_name`` declared in the Abstract State Aspect of a
-     private child package of Q.
 
 #. Each ``constituent`` of the hidden state of must appear exactly
    once in a ``constituent_list`` of exactly one
