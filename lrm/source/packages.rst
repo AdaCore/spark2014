@@ -344,9 +344,6 @@ given in section :ref:`depends_aspect`.
 #. A Depends aspect may appear in the ``aspect_specification``
    of a package specification but it must follow the
    Abstract State aspect if one is present.
-#. A Depends aspect of a package has extended visibility; it is
-   able to refer to *variables* declared in the visible part of the
-   package.
 #. A Depends aspect of a package shall not allow the optional ``+``
    within a ``dependency_clause``.
 #. A Depends aspect of a package shall not allow a ``function_result``
@@ -510,9 +507,6 @@ the grammar of ``initialization_list`` given below.
    Abstract State aspect if one is present.
 #. An ``aspect_specification`` shall not have an
    Initializes Aspect if it has a Depends aspect.
-#. An Initializes aspect of a package has extended visibility; it
-   is able to refer to variables declared in the visible part of the
-   package.
 #. The object denoted by a given ``output`` in an Initializes aspect shall
    not be denoted by any other ``output`` in that Initializes aspect.   
 #. A variable appearing in an Initializes aspect must be entire,
@@ -614,9 +608,6 @@ an ``expression``.
 #. The Initial Condition Aspect must follow the
    Abstract State Aspect, Depends aspect and
    Initializes aspect if they are present.
-#. The predicate of an Initial Condition Aspect appearing in a
-   package Q has extended visibility.  It may reference declarations
-   from the visible part of Q.
 
 .. centered:: **Static Semantics**
 
