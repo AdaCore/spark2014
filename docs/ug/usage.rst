@@ -461,9 +461,9 @@ Investigating Incorrect Code or Assertion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to check whether the code is incorrect [CODE] or the
-assertion is incorrect [ASSERT]. Since run-time checks and assertions can be
-executed at run time, one way to increase confidence in the correction of the
-code and assertions is to test the program on representative inputs. The
+assertion is incorrect [ASSERT], or both. Since run-time checks and assertions
+can be executed at run time, one way to increase confidence in the correction
+of the code and assertions is to test the program on representative inputs. The
 following GNAT switches can be used:
 
 * ``-gnato``: enable run-time checking of intermediate overflows
@@ -474,14 +474,23 @@ following GNAT switches can be used:
 Investigating Unprovable Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The second step is to consider whether the property is provable
-[SPEC]. |GNATprove| does not look into subprogram bodies, so all the necessary
-information for calls should be explicit in the subprogram contracts. A focused
-manual review of the code and assertions can efficiently diagnose many cases of
-missing assertions. Even when an assertion is quite large, |GNATprove|
-precisely locates the part that it cannot prove, which can help figuring out
-the problem. It may useful to simplify the code during this investigation, for
-example by adding a simpler assertion and trying to prove it.
+The second step is to consider whether the property is provable [SPEC].  A
+check or assertion might be unprovable because a necessary annotation is
+missing:
+
+* the precondition of the enclosing subprogram might be too weak; or
+* the postcondition of a subprogram called might be too weak; or
+* a loop invariant for an enclosing loop might be too weak; or
+* a loop invariant for a loop before the check or assertion might be too weak.
+
+In particular, |GNATprove| does not look into subprogram bodies, so all the
+necessary information for calls should be explicit in the subprogram
+contracts. A focused manual review of the code and assertions can efficiently
+diagnose many cases of missing annotations. Even when an assertion is quite
+large, |GNATprove| precisely locates the part that it cannot prove, which can
+help figuring out the problem. It may useful to simplify the code during this
+investigation, for example by adding a simpler assertion and trying to prove
+it.
 
 |GNATprove| provides path information that might help the code review. Select
 ``Prove --> Show Path`` as described in :ref:`GPS integration` to display
@@ -509,6 +518,10 @@ integration`).
 Note that for the above experiments, it is quite convenient to use the ``Prove
 Line`` or ``Prove Subprogram`` features in GPS, as described in :ref:`GPS
 integration`, to get faster results for the desired line or subprogram.
+
+A common limitation of automatic provers is that they don't handle well
+non-linear arithmetic. For example, they might fail to prove simple assertions
+involving multiplication, division, modulo or exponentiation.
 
 We plan to provide a `user view` of the formula passed to the prover, for
 advanced users to inspect. This view will express in an Ada-like syntax the
