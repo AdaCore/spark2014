@@ -4228,7 +4228,33 @@ package body Gnat2Why.Expr is
                                  N_Type_Conversion
         and then Do_Overflow_Check (Expr)
       then
-         T := Insert_Overflow_Check (Expr, T, Etype (Expr));
+         declare
+            --  The multiplication and division operations on fixed-point
+            --  types have a return type of universal_fixed (with no bounds),
+            --  which is used as an overload resolution trick to allow
+            --  free conversion between certain real types on the result of
+            --  multiplication or division. The target non-universal type
+            --  determines the actual sort of multiplication or division
+            --  performed, and therefore determines the possibility of
+            --  overflow. In the compiler, the multiplication is expanded so
+            --  the operands are first converted to some common type, so back
+            --  ends don't see the universal_fixed Etype. Here, we are seeing
+            --  the unexpanded operation because we are running in a mode that
+            --  disables the expansion. Hence, we recognize the universal_fixed
+            --  case specially and in that case use the target type of the
+            --  enclosing conversion.
+
+            Typ : constant Entity_Id :=
+              (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
+                 and then Etype (Expr) = Universal_Fixed
+                 and then Nkind (Parent (Expr)) = N_Type_Conversion
+               then
+                 Etype (Parent (Expr))
+               else
+                 Etype (Expr));
+         begin
+            T := Insert_Overflow_Check (Expr, T, Typ);
+         end;
       end if;
 
       --  Insert a range check if flag Do_Range_Check is set. This may require
