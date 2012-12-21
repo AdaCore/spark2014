@@ -1,4 +1,1 @@
-c45532o.adb:10:34: info: range check proved
-c45532o.adb:11:34: info: range check proved
-c45532o.adb:12:34: info: range check proved
-c45532o.adb:14:33: info: range check proved
+c45532o.adb:14:33: info: overflow check proved
