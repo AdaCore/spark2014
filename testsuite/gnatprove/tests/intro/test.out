@@ -9,6 +9,8 @@ pricing.ads:16:15: info: postcondition proved
 pricing.ads:17:62: info: index check proved
 sat.adb:10:12: info: overflow check proved
 sat.adb:11:12: info: overflow check proved
+sat.adb:11:12: info: range check proved
+sat.adb:5:12: info: range check proved
 sat.ads:10:6: info: postcondition proved
 sat.ads:16:6: info: postcondition proved
 sat.ads:18:38: info: overflow check proved
