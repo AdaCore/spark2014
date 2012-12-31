@@ -1,6 +1,8 @@
 An error occured when calling alt-ergo
 An error occured when calling alt-ergo
 An error occured when calling alt-ergo
+An error occured when calling alt-ergo
+An error occured when calling alt-ergo
 power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: info: overflow check proved
 power_and_sum.adb:20:10: info: loop invariant initialization proved
@@ -9,7 +11,7 @@ power_and_sum.adb:20:34: overflow check not proved
 power_and_sum.adb:20:47: overflow check not proved
 power_and_sum.adb:20:50: info: overflow check proved
 power_and_sum.adb:22:31: overflow check not proved
-power_and_sum.adb:23:17: overflow check not proved
+power_and_sum.adb:23:17: info: overflow check proved
 power_and_sum.adb:25:23: overflow check not proved
 power_and_sum.adb:25:36: overflow check not proved
 power_and_sum.adb:25:39: info: overflow check proved

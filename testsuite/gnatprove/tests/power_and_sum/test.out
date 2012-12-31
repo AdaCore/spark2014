@@ -6,7 +6,7 @@ power_and_sum.adb:20:34: overflow check not proved
 power_and_sum.adb:20:47: overflow check not proved
 power_and_sum.adb:20:50: info: overflow check proved
 power_and_sum.adb:22:31: overflow check not proved
-power_and_sum.adb:23:17: overflow check not proved
+power_and_sum.adb:23:17: info: overflow check proved
 power_and_sum.adb:25:23: overflow check not proved
 power_and_sum.adb:25:36: overflow check not proved
 power_and_sum.adb:25:39: info: overflow check proved
