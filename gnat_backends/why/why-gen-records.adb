@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2012, AdaCore                   --
+--                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -513,7 +513,7 @@ package body Why.Gen.Records is
                             Field => To_Why_Id (Comp, Local => True)),
                        Right    =>
                          New_Record_Access
-                           (Name  => +A_Ident,
+                           (Name  => +B_Ident,
                             Field => To_Why_Id (Comp, Local => True)),
                        Op      => EW_Eq);
                   Always_Present : constant Boolean :=
