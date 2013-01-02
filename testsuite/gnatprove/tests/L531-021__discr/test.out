@@ -1,5 +1,5 @@
 conv.adb:15:17: info: discriminant check proved
-conv.adb:17:17: discriminant check not proved
+conv.adb:17:17: info: discriminant check proved
 conv.adb:19:7: info: assertion proved
 conv.adb:6:30: info: postcondition proved
 special.adb:14:7: info: assertion proved
