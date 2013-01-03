@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2012, AdaCore                   --
+--                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -506,17 +506,28 @@ package body Why.Gen.Binders is
                --  Quantify at the same time over all binders that have the
                --  same type as the first one. This avoids the generation of
                --  very deep Why3 expressions, whose traversal may lead to
-               --  stack overflow.
+               --  stack overflow. However, avoid the recursive call in the
+               --  case where [Other_Binders] is empty. This makes sure that we
+               --  put the trigger on the axiom.
 
-               return New_Universal_Quantif
-                 (Ada_Node  => Ada_Node,
-                  Variables => Vars,
-                  Var_Type  => Typ,
-                  Pred      =>
-                    New_Universal_Quantif (Ada_Node  => Empty,
-                                           Binders   => Other_Binders,
-                                           Triggers  => Triggers,
-                                           Pred      => Pred));
+               if Other_Binders'Length = 0 then
+                  return New_Universal_Quantif
+                    (Ada_Node  => Ada_Node,
+                     Variables => Vars,
+                     Var_Type  => Typ,
+                     Triggers  => Triggers,
+                     Pred      => Pred);
+               else
+                  return New_Universal_Quantif
+                    (Ada_Node  => Ada_Node,
+                     Variables => Vars,
+                     Var_Type  => Typ,
+                     Pred      =>
+                       New_Universal_Quantif (Ada_Node  => Empty,
+                                              Binders   => Other_Binders,
+                                              Triggers  => Triggers,
+                                              Pred      => Pred));
+               end if;
             end;
          end if;
       end if;
