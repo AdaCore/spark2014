@@ -1,2 +1,2 @@
-cursor_location.ads:19:26: postcondition not proved, requires Request (Side) or not DU_Available (Change_Side (Side)
+cursor_location.ads:18:10: postcondition not proved, requires DU_Available (Side)
 cursor_location.ads:27:60: info: postcondition proved
