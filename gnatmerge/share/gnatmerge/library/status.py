@@ -8,7 +8,7 @@ status (e.g. error messages from gnatprove).
 
 from merge_specs import MergeSemFactory, MergeSem
 from elements import dicts_union
-from utils import attr_str, full_str
+from utils import attr_str, full_str, final_singleton
 from debug import log_method, log_function
 
 class StatusSome(MergeSem):
@@ -169,6 +169,7 @@ class StatusOr(MergeSem):
 
         return "<StatusOr> (%s%s)" % (name, expression)
 
+@final_singleton
 class MergeStatusFactory(MergeSemFactory):
     """Factory for simple status of merge specs
 

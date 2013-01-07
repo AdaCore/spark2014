@@ -14,7 +14,7 @@ You may find a few examples in the body of function unit_testing.
 
 import shlex
 from debug import log_method, log_function
-from utils import attr_str, full_str
+from utils import attr_str, full_str, final_singleton
 from elements import elements_union
 
 class ParseError(Exception):
@@ -296,6 +296,7 @@ class MergeSemFactory:
         """
         assert(False)
 
+@final_singleton
 class FreeSetMergeFactory(MergeSemFactory):
     """Factory for simple semantics of merge specs
 

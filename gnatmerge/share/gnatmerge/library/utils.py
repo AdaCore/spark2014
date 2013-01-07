@@ -34,3 +34,16 @@ def full_str(value):
                                      for k in value])
     else:
         return str(value)
+
+def final_singleton(cls):
+    """Singleton class decorator
+
+    Make sure that the constructor always returns the same instance.
+    The decorated class cannot be derived.
+    """
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
