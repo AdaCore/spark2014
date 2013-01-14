@@ -2,4 +2,4 @@ check.ads:3:37: division check not proved
 check.ads:3:37: overflow check not proved
 check.ads:3:70: division check not proved
 check.ads:3:70: overflow check not proved
-check.ads:4:32: postcondition not proved, requires Div'Result > 0
+check.ads:4:32: info: postcondition proved

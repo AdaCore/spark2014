@@ -1,4 +1,4 @@
-divide.adb:11:17: overflow check not proved
+divide.adb:11:17: info: overflow check proved
 divide.adb:12:17: info: overflow check proved
 divide.adb:8:10: info: loop invariant initialization proved
 divide.adb:8:35: loop invariant preservation not proved, requires Q <= M - R

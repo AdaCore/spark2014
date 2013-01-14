@@ -2,7 +2,7 @@ math.adb:6:18: info: overflow check proved
 math.adb:6:23: overflow check not proved
 math.adb:6:30: info: overflow check proved
 math.adb:7:21: info: overflow check proved
-math.ads:10:6: postcondition not proved
+math.ads:10:6: info: postcondition proved
 math.ads:17:25: info: postcondition proved
 math.ads:18:6: info: postcondition proved
 math.ads:20:38: overflow check not proved

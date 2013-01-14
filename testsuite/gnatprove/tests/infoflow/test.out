@@ -1,10 +1,10 @@
 infoflow.adb:103:40: index check not proved
-infoflow.adb:103:43: loop invariant initialization not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:103:43: loop invariant preservation not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:103:64: index check not proved
 infoflow.adb:103:64: overflow check not proved
 infoflow.adb:104:46: overflow check not proved
 infoflow.adb:105:40: index check not proved
+infoflow.adb:105:43: loop invariant initialization not proved, requires H_V1 (K) = H_V1'loop_entry
 infoflow.adb:105:64: index check not proved
 infoflow.adb:105:64: overflow check not proved
 infoflow.adb:106:42: index check not proved
@@ -108,10 +108,10 @@ infoflow.adb:201:44: index check not proved
 infoflow.adb:202:16: index check not proved
 infoflow.adb:202:31: index check not proved
 infoflow.adb:207:19: index check not proved
-infoflow.adb:207:22: assertion not proved, requires A_V1 (M) = B_V1 (M)
 infoflow.adb:207:30: index check not proved
 infoflow.adb:209:27: overflow check not proved
 infoflow.adb:210:19: index check not proved
+infoflow.adb:210:22: assertion not proved, requires A_V1 (M) = C_V1 (M - K_1)
 infoflow.adb:210:32: index check not proved
 infoflow.adb:210:32: overflow check not proved
 infoflow.adb:213:19: index check not proved
@@ -119,11 +119,11 @@ infoflow.adb:213:30: index check not proved
 infoflow.adb:215:22: overflow check not proved
 infoflow.adb:217:42: index check not proved
 infoflow.adb:217:45: loop invariant initialization not proved, requires A_V2 (M) = B_V2 (M)
+infoflow.adb:217:45: loop invariant preservation not proved, requires A_V2 (M) = B_V2 (M)
 infoflow.adb:217:53: index check not proved
 infoflow.adb:219:50: overflow check not proved
 infoflow.adb:219:60: overflow check not proved
 infoflow.adb:220:42: index check not proved
-infoflow.adb:220:45: loop invariant preservation not proved, requires A_V2 (M) = C_V2 (M - K_2)
 infoflow.adb:220:55: index check not proved
 infoflow.adb:220:55: overflow check not proved
 infoflow.adb:221:16: index check not proved

@@ -1,12 +1,12 @@
 const.adb:10:7: info: assertion proved
-const.adb:11:7: assertion not proved, requires C(2) = 1
+const.adb:11:7: info: assertion proved
 const.adb:12:7: assertion not proved, requires C2(1) = 1
 const.adb:13:7: assertion not proved, requires C2(2) = 1
 const.adb:16:7: info: assertion proved
 const.adb:17:7: info: assertion proved
 const.adb:18:7: info: assertion proved
 const.adb:19:7: assertion not proved, requires D2(2) = 1
-const.adb:23:7: assertion not proved, requires E.X = 1
+const.adb:23:7: info: assertion proved
 const.adb:24:7: info: assertion proved
 const.adb:25:7: info: assertion proved
 const.adb:26:7: info: assertion proved

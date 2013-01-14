@@ -5,7 +5,7 @@ pricing.adb:12:44: info: index check proved
 pricing.adb:6:13: info: range check proved
 pricing.adb:9:11: info: range check proved
 pricing.ads:11:35: info: postcondition proved
-pricing.ads:16:15: info: postcondition proved
+pricing.ads:17:40: postcondition not proved, requires Price_Of_Basket'Result >= Price_Of_Item (Bk (It)
 pricing.ads:17:62: info: index check proved
 sat.adb:10:12: info: overflow check proved
 sat.adb:11:12: info: overflow check proved

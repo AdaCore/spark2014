@@ -5,7 +5,7 @@ linear_div.adb:20:7: info: loop invariant initialization proved
 linear_div.adb:22:25: loop invariant preservation not proved, requires Quotient >= 0
 linear_div.adb:23:24: info: overflow check proved
 linear_div.adb:23:35: info: overflow check proved
-linear_div.adb:24:28: overflow check not proved
+linear_div.adb:24:28: info: overflow check proved
 linear_div.adb:25:30: info: overflow check proved
 random_testing.adb:10:16: postcondition not proved, requires Result
 random_testing.adb:15:4: info: precondition proved

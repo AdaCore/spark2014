@@ -5,4 +5,4 @@ unconstr.adb:19:7: assertion not proved, requires A (0) = 1
 unconstr.adb:3:14: info: range check proved
 unconstr.adb:5:11: info: index check proved
 unconstr.ads:9:25: index check not proved
-unconstr.ads:9:33: info: postcondition proved
+unconstr.ads:9:33: postcondition not proved, requires X (X'First) = 0
