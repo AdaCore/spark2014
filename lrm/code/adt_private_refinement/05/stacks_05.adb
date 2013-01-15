@@ -1,20 +1,20 @@
 package body Stacks_05 is
 
-   function Is_Empty(S : Stack) return Boolean
+   function Is_Empty (S : Stack) return Boolean
    --# return S.Stack_Pointer = 0;
    is
    begin
       return S.Stack_Pointer = 0;
    end Is_Empty;
 
-   function Is_Full(S : Stack) return Boolean
+   function Is_Full (S : Stack) return Boolean
    --# return S.Stack_Pointer = Stack_Size;
    is
    begin
       return S.Stack_Pointer = Stack_Size;
    end Is_Full;
 
-   procedure Clear(S : out Stack)
+   procedure Clear (S : out Stack)
    --# post Is_Empty(S) and
    --#      S.Stack_Pointer = 0;
    is
@@ -22,7 +22,7 @@ package body Stacks_05 is
       S.Stack_Pointer := 0;
    end Clear;
 
-   procedure Push(S : in out Stack; X : in Integer)
+   procedure Push (S : in out Stack; X : in Integer)
    --# pre  not Is_Full(S);
    --# post not Is_Empty(S) and
    --#      S.Stack_Pointer = S~.Stack_Pointer + 1 and
@@ -30,10 +30,10 @@ package body Stacks_05 is
    is
    begin
       S.Stack_Pointer := S.Stack_Pointer + 1;
-      S.Stack_Vector(S.Stack_Pointer) := X;
+      S.Stack_Vector (S.Stack_Pointer) := X;
    end Push;
 
-   procedure Pop(S : in out Stack; X : out Integer)
+   procedure Pop (S : in out Stack; X : out Integer)
    --# pre  not Is_Empty(S);
    --# post not Is_Full(S) and
    --#      X = S.Stack_Vector(S~.Stack_Pointer) and
@@ -41,7 +41,7 @@ package body Stacks_05 is
    --#      S.Stack_Vector = S~.Stack_Vector;
    is
    begin
-      X := S.Stack_Vector(S.Stack_Pointer);
+      X := S.Stack_Vector (S.Stack_Pointer);
       S.Stack_Pointer := S.Stack_Pointer - 1;
    end Pop;
 end Stacks_05;
