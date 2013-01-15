@@ -15,12 +15,10 @@ package body Stacks_14 is
 
    procedure Clear(S : out Stack)
       with Refined_Post => (Is_Empty(S) and
-                            S.Stack_Pointer = 0 and
-                            (for all I in Index_Range => (S.Stack_Vector(I) = 0)))
+                            S.Stack_Pointer = 0)
    is
    begin
       S.Stack_Pointer := 0;
-      S.Stack_Vector  := Vector'(Index_Range => 0);
    end Clear;
 
    procedure Push(S : in out Stack; X : in Integer) 
@@ -36,7 +34,8 @@ package body Stacks_14 is
    procedure Pop(S : in out Stack; X : out Integer) 
       with Refined_Pre  => S.Stack_Pointer /= 0,
            Refined_Post => (X = S.Stack_Vector(S'Old.Stack_Pointer) and
-	                    S.Stack_Pointer = S'Old.Stack_Pointer - 1)
+	                    S.Stack_Pointer = S'Old.Stack_Pointer - 1 and
+                            S.Stack_Vector = S'Old.Stack_Vector)
    is
    begin
       X := S.Stack_Vector(S.Stack_Pointer);

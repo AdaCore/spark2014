@@ -9,7 +9,7 @@ package Stacks_05 is
    --# derives S from ;
 
    procedure Push(S : in out Stack; X : in Integer);
-   --# derives S from S, X;
+   --# derives S from *, X;
 
    procedure Pop(S : in out Stack; X : out Integer);
    --# derives S, X from S;

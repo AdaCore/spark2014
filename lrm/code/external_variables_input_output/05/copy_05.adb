@@ -2,9 +2,9 @@ with Input_Port_05, Output_Port_05, Stacks_05;
 --# inherit Input_Port_05, Output_Port_05, Stacks_05;
 --# main_program;
 procedure Copy_05
---# global in     Input_Port_05.Inputs;
---#        out    Output_Port_05.Outputs;
---# derives Output_Port_05.Outputs from Input_Port_05.Inputs;
+--# global in     Input_Port_05.Input_State;
+--#        out    Output_Port_05.Output_State;
+--# derives Output_Port_05.Output_State from Input_Port_05.Input_State;
 is
    The_Stack   : Stacks_05.Stack;
    Value       : Integer;

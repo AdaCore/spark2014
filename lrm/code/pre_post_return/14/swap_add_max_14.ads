@@ -27,6 +27,6 @@ is
    procedure Swap_Array_Elements(A: in out Array_Type)
       with Global  => (Input => (X, Y)),
            Depends => (A => (A, X, Y)),
-           Pre     => X /= Y and X in Index and Y in Index,
+           Pre     => X in Index and Y in Index,
            Post    => A = A'Old'Update (X => A'Old (Y), Y => A'Old (X));
 end Swap_Add_Max_14;

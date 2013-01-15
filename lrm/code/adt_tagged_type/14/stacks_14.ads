@@ -10,6 +10,10 @@ package Stacks_14 is
 
    procedure Push(S : in out Stack; X : in Integer)
       with Depends => (S =>+ X);
+   --  The =>+ symbolizes that any variable on the left side of =>+,
+   --  depends on all variables that are on the right side of =>+
+   --  plus itself. For example (X, Y) =>+ Z would mean that
+   --  X depends on X, Z and Y depends on Y, Z.
 
    procedure Pop(S : in out Stack; X : out Integer)
       with Depends => ((S,X) => S);

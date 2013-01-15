@@ -8,7 +8,7 @@ is
    procedure Swap;
    --# global in out X, Y;
    --# derives X from Y &
-   --#	       Y from X;
+   --#         Y from X;
    --# post X = Y~ and Y = X~;
    
    function Add return Integer;
@@ -28,7 +28,7 @@ is
    procedure Swap_Array_Elements(A: in out Array_Type);
    --# global in X, Y;
    --# derives A from A, X, Y;
-   --# pre  X /= Y and X in Index and Y in Index;
+   --# pre  X in Index and Y in Index;
    --# post A = A~[X => A~(Y); Y => A~(X)];
    
 end Swap_Add_Max_05;

@@ -1,8 +1,8 @@
 package Input_Port_05
-  --# own in Inputs;
+  --# own in Input_State;
 is
    procedure Read_From_Port(Input_Value : out Integer);
-   --# global in Inputs;
-   --# derives Input_Value from Inputs;
+   --# global in Input_State;
+   --# derives Input_Value from Input_State;
 
 end Input_Port_05;

@@ -1,4 +1,5 @@
-package Stacks is
+package Stacks
+is
    type Stack is private;
 
    function Is_Empty(S : Stack) return Boolean;

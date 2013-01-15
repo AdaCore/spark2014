@@ -16,12 +16,10 @@ package body Stacks_05 is
 
    procedure Clear(S : out Stack)
    --# post Is_Empty(S) and
-   --#      S.Stack_Pointer = 0 and
-   --#      (for all I in Index_Range => (S.Stack_Vector(I) = 0));
+   --#      S.Stack_Pointer = 0;
    is
    begin
       S.Stack_Pointer := 0;
-      S.Stack_Vector  := Vector'(Index_Range => 0);
    end Clear;
 
    procedure Push(S : in out Stack; X : in Integer)
@@ -39,7 +37,8 @@ package body Stacks_05 is
    --# pre  not Is_Empty(S);
    --# post not Is_Full(S) and
    --#      X = S.Stack_Vector(S~.Stack_Pointer) and
-   --#      S.Stack_Pointer = S~.Stack_Pointer - 1;
+   --#      S.Stack_Pointer = S~.Stack_Pointer - 1 and 
+   --#      S.Stack_Vector = S~.Stack_Vector;
    is
    begin
       X := S.Stack_Vector(S.Stack_Pointer);

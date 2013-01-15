@@ -17,7 +17,7 @@ Global and Derives
 
 This example demonstrates how global variables can be accessed through
 procedures/functions and presents how the SPARK 2005 `derives` annotation maps 
-over to `depends` on |SPARK|. The example consists of one procedure (`Swap`) and 
+over to `depends` in |SPARK|. The example consists of one procedure (`Swap`) and 
 one function (`Add`). `Swap` accesses two global variables and swaps their contents 
 while `Add` returns their sum. The bodies of both SPARK 2005 and |SPARK| are identical 
 and add no further insight and have thus not been included.
@@ -39,7 +39,7 @@ Specification in |SPARK|:
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the `Pre`/`Post`/`Return` contracts are structured
+This example demonstrates how the `Pre`/`Post`/`Return` contracts are restructured
 and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
 `Add` perform the same task as in the previous example, but they have been
 augmented by post annotations. Two additional functions (`Max` and `Divide`)
@@ -146,7 +146,7 @@ Visible type
 ^^^^^^^^^^^^
 
 The following example adds no mapping information. The SPARK 2005 and |SPARK| versions
-of the code are identical. Only the specifications of the SPARK 2005 code will be presented.
+of the code are identical. Only the specification of the SPARK 2005 code will be presented.
 The reason why this code is being provided is to allow for a comparison between a package that
 is purely public and an equivalent one that also has private elements.
 
@@ -162,7 +162,7 @@ Private type
 ^^^^^^^^^^^^
 
 Similarly to the previous example, this one does not contain any annotations either. Due
-to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specifications of
+to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specification of
 the 2005 version shall be presented.
 
 Specification in SPARK 2005:
@@ -176,14 +176,12 @@ Specification in SPARK 2005:
 Private type with refined pre/post contracts in the body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how `pre` and `post` conditions, that lie in the specifications
-of a package, can be refined in the package's body. In order to prove the absence of run-time
-errors, 3 user rules had to be introduced for the SPARK 2005 version. These rules are not
-presented here since they are not required in the |SPARK| version. Contracts that need not
-be refined, do not have to be repeated in the body of a package. In this particular example,
-the body of the SPARK 2005 might seem to be needlessly repeating contracts. However, this
-is not true since the contracts that are being repeated are indirectly being refined through
-the refinement of the `Is_Empty` and `Is_Full` functions.
+This example demonstrates how `pre` and `post` conditions, that lie in the specification
+of a package, can be refined in the package's body. Contracts that need not be refined, do
+not have to be repeated in the body of a package. In this particular example, the body of
+the SPARK 2005 might seem to be needlessly repeating contracts. However, this is not true
+since the contracts that are being repeated are indirectly being refined through the
+refinement of the `Is_Empty` and `Is_Full` functions.
 
 Specification in SPARK 2005:
 
@@ -244,7 +242,7 @@ Bodies of both parent and child in SPARK 2005:
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
+Specifications of both parent and child in |SPARK|:
 
    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
       :language: ada
@@ -254,7 +252,7 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+Bodies of both parent and child in |SPARK|:
 
 As per SPARK 2005.
 
@@ -388,8 +386,6 @@ Initialized by declaration
 
 The example that follows presents a way of initializing a concrete state (a state that
 cannot be refined) at the point of the declaration of the variables that compose it.
-The body of the |SPARK| version of the code is not presented since it is an exact copy
-of the SPARK 2005 body.
 
 Specification in SPARK 2005:
 
@@ -409,6 +405,10 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
+Body in |SPARK|:
+
+As per SPARK 2005.
+
 .. _ms-asm_visible_concrete_initialized_by_elaboration-label:
 
 Initialized by elaboration
@@ -417,14 +417,16 @@ Initialized by elaboration
 The following example presents how a package's concrete state can be initialized at
 the statements section of the body. The specifications of both SPARK 2005 and |SPARK|
 are not presented since they are identical to the specifications of the previous example.
-Furthermore, the |SPARK| version of the body is not provided since it is identical to
-the SPARK 2005 body.
 
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.adb
       :language: ada
       :linenos:
+
+Body in |SPARK|:
+
+As per SPARK 2005.
 
 .. _ms-asm_private_concrete-label:
 
@@ -455,7 +457,7 @@ Private, abstract state, refining onto concrete states in body
 Initialized by procedure call
 +++++++++++++++++++++++++++++
 
-In this example, the abstract state declared at the specifications is refined at the body.
+In this example, the abstract state declared at the specification is refined at the body.
 Procedure `Init` can be invoked by users of the package, in order to initialize the state.
 
 Specification in SPARK 2005:
@@ -487,7 +489,7 @@ Body in |SPARK|:
 Initialized by elaboration of declaration
 +++++++++++++++++++++++++++++++++++++++++
 
-The example that follows introduces an abstract state at the specifications and refines it
+The example that follows introduces an abstract state at the specification and refines it
 at the body. The constituents of the abstract state are initialized at declaration.
 
 Specification in SPARK 2005:
@@ -519,7 +521,7 @@ Body in |SPARK|:
 Initialized by package body statements
 ++++++++++++++++++++++++++++++++++++++
 
-This example introduces an abstract state at the specifications and refines it at the body.
+This example introduces an abstract state at the specification and refines it at the body.
 The constituents of the abstract state are initialized at the statements part of the body.
 The specifications of the SPARK 2005 and |SPARK| versions of the code are as in the previous
 example and have thus not been included.
@@ -541,7 +543,7 @@ Body in |SPARK|:
 Initialized by mixture of declaration and statements
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-This example introduces an abstract state at the specifications and refines it at the body.
+This example introduces an abstract state at the specification and refines it at the body.
 Some of the constituents of the abstract state are initialized during their declaration and
 the rest at the statements part of the body.
 
@@ -710,7 +712,7 @@ Basic Input and Output Device Drivers
 
 The following example shows a main program - Copy - that reads all available data
 from a given input port, stores it internally during the reading process in a stack
-and then outputs all the data read to an output port. The specifications of the
+and then outputs all the data read to an output port. The specification of the
 stack package are not being presented since they are identical to previous examples.
 
 Specification of main program in SPARK 2005:
@@ -838,7 +840,7 @@ Refinement of external state - voting input switch
 The following example presents an abstract view of the reading of 3 individual
 switches and the voting performed on the values read.
 
-Abstract Switch specifications in SPARK 2005:
+Abstract Switch specification in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
       :language: ada
@@ -1004,7 +1006,7 @@ This example is a modified version of that given in section
 `Refinement of external state - voting input switch`_. It illustrates the
 use of a package nested within a subprogram.
 
-Abstract Switch specifications in SPARK 2005:
+Abstract Switch specification in SPARK 2005:
 
    .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
       :language: ada
@@ -1042,16 +1044,16 @@ Switch body in |SPARK|:
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how the SPARK tools locate and disallow circular dependence
+This example demonstrates how the Examiner locates and disallows circular dependence
 and elaboration relations.
 
-Specifications of package P_05 in SPARK 2005:
+Specification of package P_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
       :language: ada
       :linenos:
 
-Specifications of package Q_05 in SPARK 2005:
+Specification of package Q_05 in SPARK 2005:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
       :language: ada
@@ -1069,13 +1071,13 @@ Body of package Q_05 in SPARK 2005:
       :language: ada
       :linenos:
 
-Specifications of package P_14 in |SPARK|:
+Specification of package P_14 in |SPARK|:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.ads
       :language: ada
       :linenos:
 
-Specifications of package Q_14 in |SPARK|:
+Specification of package Q_14 in |SPARK|:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.ads
       :language: ada
