@@ -6,7 +6,7 @@ package body Stacks_14 is
       return S.Stack_Pointer = 0;
    end Is_Empty;
 
-   function Is_Full(S : Stack) return Boolean 
+   function Is_Full(S : Stack) return Boolean
       with Refined_Post => Is_Full'Result = (S.Stack_Pointer = Stack_Size)
    is
    begin
@@ -21,7 +21,7 @@ package body Stacks_14 is
       S.Stack_Pointer := 0;
    end Clear;
 
-   procedure Push(S : in out Stack; X : in Integer) 
+   procedure Push(S : in out Stack; X : in Integer)
       with Refined_Pre  => S.Stack_Pointer /= Stack_Size,
            Refined_Post => (S.Stack_Pointer = S'Old.Stack_Pointer + 1 and
 	                    S.Stack_Vector = S'Old.Stack_Vector'Update(S.Stack_Pointer => X))
@@ -31,7 +31,7 @@ package body Stacks_14 is
       S.Stack_Vector(S.Stack_Pointer) := X;
    end Push;
 
-   procedure Pop(S : in out Stack; X : out Integer) 
+   procedure Pop(S : in out Stack; X : out Integer)
       with Refined_Pre  => S.Stack_Pointer /= 0,
            Refined_Post => (X = S.Stack_Vector(S'Old.Stack_Pointer) and
 	                    S.Stack_Pointer = S'Old.Stack_Pointer - 1 and

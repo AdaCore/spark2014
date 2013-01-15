@@ -1,14 +1,14 @@
 package body Stacks_05 is
-   
-   function Is_Empty(S : Stack) return Boolean 
-   --# return S.Stack_Pointer = 0;  
+
+   function Is_Empty(S : Stack) return Boolean
+   --# return S.Stack_Pointer = 0;
    is
    begin
       return S.Stack_Pointer = 0;
    end Is_Empty;
 
-   function Is_Full(S : Stack) return Boolean 
-   --# return S.Stack_Pointer = Stack_Size;  
+   function Is_Full(S : Stack) return Boolean
+   --# return S.Stack_Pointer = Stack_Size;
    is
    begin
       return S.Stack_Pointer = Stack_Size;
@@ -33,11 +33,11 @@ package body Stacks_05 is
       S.Stack_Vector(S.Stack_Pointer) := X;
    end Push;
 
-   procedure Pop(S : in out Stack; X : out Integer) 
+   procedure Pop(S : in out Stack; X : out Integer)
    --# pre  not Is_Empty(S);
    --# post not Is_Full(S) and
    --#      X = S.Stack_Vector(S~.Stack_Pointer) and
-   --#      S.Stack_Pointer = S~.Stack_Pointer - 1 and 
+   --#      S.Stack_Pointer = S~.Stack_Pointer - 1 and
    --#      S.Stack_Vector = S~.Stack_Vector;
    is
    begin

@@ -1,7 +1,7 @@
 package body Swap_Add_Max_14
-is   
+is
    X, Y: Integer;
-   
+
    procedure Swap
    is
       Temporary: Integer;
@@ -10,13 +10,13 @@ is
       X         := Y;
       Y         := Temporary;
    end Swap;
-   
+
    function Add return Integer
    is
    begin
       return X + Y;
    end Add;
-   
+
    function Max return Integer
    is
       Result: Integer;
@@ -28,7 +28,7 @@ is
       end if;
       return Result;
    end Max;
-   
+
    function Divide return Float
    is
       Result: Float;
@@ -36,7 +36,7 @@ is
       Result := Float(X / Y);
       return Result;
    end Divide;
-   
+
    procedure Swap_Array_Elements(A: in out Array_Type)
    is
       Temporary: Integer;
