@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2012, AdaCore                   --
+--                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -4220,15 +4220,19 @@ package body Gnat2Why.Expr is
       --  a kind on which we can call Do_Overflow_Check, otherwise there is
       --  nothing to do.
 
+      --  Note that N_Type_Conversions *may* have a Do_Overflow_Check flag, but
+      --  they are actually for range checks and are checked elsewhere. See the
+      --  documentation of sinfo.ads.
+
       if Domain = EW_Prog
         and then Nkind (Expr) in N_Attribute_Reference |
                                  N_Case_Expression     |
                                  N_If_Expression       |
-                                 N_Op                  |
-                                 N_Type_Conversion
+                                 N_Op
         and then Do_Overflow_Check (Expr)
       then
          declare
+
             --  The multiplication and division operations on fixed-point
             --  types have a return type of universal_fixed (with no bounds),
             --  which is used as an overload resolution trick to allow
@@ -4257,21 +4261,39 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Insert a range check if flag Do_Range_Check is set. This may require
-      --  a conversion to be inserted, as the check in Why only applies to an
-      --  expression of type "int" or "real" type.
+      --  Convert the expression to the expected type, if needed. This is
+      --  intertwined with inserting range checks, and Insert_Conversion does
+      --  both. This is because range checks need to be done on the Why "int"
+      --  type, so they may trigger a conversion, or if a conversion is already
+      --  needed, must be done on the "right side" of the conversion.
+      --  Note that Insert_Conversion is smart enough to not insert any
+      --  conversion when it's not needed.
 
-      --  ??? Why do the conversion for Domain=EW_Term?
+      --  A range check is needed only in programs (Domain EW_Prog), and on
+      --  nodes that have the range check flag. For type conversions, the
+      --  Do_Overflow_Check actually means that a range check is needed,
+      --  instead of an overflow check (see sinfo.ads and the discussion of
+      --  range checks and overflow checks there). Because range checks are
+      --  determined by looking at the parent node, in that special case we go
+      --  one step down for the Range_Check_Node.
 
       if Domain in EW_Term | EW_Prog then
-         T := Insert_Conversion (Domain        => Domain,
-                                 Ada_Node      => Expr,
-                                 Expr          => T,
-                                 From          => Current_Type,
-                                 To            => Expected_Type,
-                                 Range_Check   => Domain = EW_Prog
-                                                    and then
-                                                  Do_Range_Check (Expr));
+         declare
+            Range_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog then
+                 (if Do_Range_Check (Expr) then Expr
+                  elsif Nkind (Expr) = N_Type_Conversion and then
+                  Do_Overflow_Check (Expr) then Expression (Expr)
+                  else Empty)
+               else Empty);
+         begin
+            T := Insert_Conversion (Domain        => Domain,
+                                    Ada_Node      => Expr,
+                                    Expr          => T,
+                                    From          => Current_Type,
+                                    To            => Expected_Type,
+                                    Range_Check   => Range_Check_Node);
+         end;
       end if;
 
       return T;

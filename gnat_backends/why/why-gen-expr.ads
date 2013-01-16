@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2012, AdaCore                   --
+--                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -143,7 +143,7 @@ package Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Boolean := False) return W_Expr_Id;
+      Range_Check   : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
    --  ??? In the case of record conversions, this function also inserts

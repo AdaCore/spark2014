@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2012, AdaCore                   --
+--                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -249,7 +249,7 @@ package body Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Boolean := False) return W_Expr_Id
+      Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
       Base   : constant W_Base_Type_Id := LCA (To, From);
 
@@ -420,7 +420,7 @@ package body Why.Gen.Expr is
    --  Start of processing for Insert_Conversion
 
    begin
-      if Eq (To, From) and not Range_Check then
+      if Eq (To, From) and Range_Check = Empty then
          return Expr;
       end if;
 
@@ -462,8 +462,8 @@ package body Why.Gen.Expr is
             --  should be inserted, or inserted at all. It's not very elegant,
             --  but it has the advantage of being pretty clear.
 
-            if Range_Check then
-               Get_Range_Check_Info (Ada_Node, Range_Type, Check_Kind);
+            if Range_Check /= Empty then
+               Get_Range_Check_Info (Range_Check, Range_Type, Check_Kind);
                if Is_Appropriate (From, Range_Type) then
                   return
                     Insert_Single_Conversion
@@ -480,7 +480,7 @@ package body Why.Gen.Expr is
                                 (To => Up_From,
                                  From => From,
                                  Expr =>
-                                   Insert_Range_Check (Ada_Node, Expr))));
+                                   Insert_Range_Check (Range_Check, Expr))));
                elsif Is_Appropriate (Up_From, Range_Type) then
                   return
                     Insert_Single_Conversion
@@ -494,7 +494,7 @@ package body Why.Gen.Expr is
                             From     => Up_From,
                             Expr     =>
                               Insert_Range_Check
-                                (Ada_Node,
+                                (Range_Check,
                                  Insert_Single_Conversion
                                    (To => Up_From,
                                     From => From,
@@ -506,7 +506,7 @@ package body Why.Gen.Expr is
                        From => Up_To,
                        Expr =>
                          Insert_Range_Check
-                           (Ada_Node,
+                           (Range_Check,
                             Insert_Conversion
                               (Domain   => Domain,
                                Ada_Node => Ada_Node,
@@ -520,7 +520,7 @@ package body Why.Gen.Expr is
                elsif Is_Appropriate (To, Range_Type) then
                   return
                     Insert_Range_Check
-                      (Ada_Node,
+                      (Range_Check,
                        Insert_Single_Conversion
                          (To   => To,
                           From => Up_To,
