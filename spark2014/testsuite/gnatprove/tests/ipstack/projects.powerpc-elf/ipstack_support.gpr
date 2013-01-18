@@ -1,4 +1,3 @@
-with "zfp_support";
 with "ipstack_config";
 
 project IPStack_Support is
