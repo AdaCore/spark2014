@@ -94,17 +94,47 @@ where the ``aspect_mark`` is Abstract_State and the
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
    Input, or Output.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR identifier of simple_property shall be Volatile, Input or Output
+
 #. There shall be at most one occurrence of the ``identifiers``
    Volatile, Input and Output in a single ``property_list``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR At most one occurrence of Volatile, Input and Output in single property_list
+
 #. If a ``property_list`` includes Volatile, then it shall also
    include exactly one of Input or Output.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR If property_list includes Volatile, then it shall also include exactly one of Input or Output
+
 #. If a ``property_list`` includes either Input or Output,
    then it shall also include Volatile.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR If property_list includes Input or Output, it shall also include Volatile
+
 #. The ``identifier`` of a ``name_value_property`` shall be
    Integrity.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR name_value_property identified must be Integrity
+
 #. If a ``property_list`` includes Integrity then it shall be the final
    property in the list. [This eliminates the possibility of a positional
    association following a named association in the property list.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.2 LR If property_list has Integrity it must be the final property in the list
+
 #. A package_declaration or generic_package_declaration requires a completion
    [(a body)] if it contains an Abstract State aspect specification.
 

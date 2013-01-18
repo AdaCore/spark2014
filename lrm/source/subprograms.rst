@@ -258,25 +258,53 @@ follow the grammar of ``global_specification``
 .. centered:: **Legality Rules**
 
 #. A ``global_item`` of a subprogram shall be a stand alone variable object 
-   [that is, it is not part of a larger object] or it shall be a state abstraction. 
+   [that is, it is not part of a larger object] or it shall be a state abstraction.
+
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR global_item shall be stand alone variable or state abstraction
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
 
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once in a single Global aspect
+
 #. A function subprogram may not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its Global aspect.
 
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
+
 #. ``global_items`` in the same Global aspect shall denote distinct entities.
+
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR global_items shall denote distinct entities
 
 #. A global item occurring in a Global aspect of a subprogram aspect
    specification shall not have the same ``defining_identifier`` as a formal
    parameter of the subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR A global_item cannot have the same defining_identifier as a formal parameter
+
 #. A global item  of mode **in out** or **out** shall not be a Volatile Input
    state abstraction (see :ref:`abstract-state-aspect`).
 
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR A global_item of mode in out or out cannot be a Volatile Input state abstraction
+
 #. A global item of mode **in** or **in out** shall not be a Volatile Output
    state abstraction.
+
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR A global_item of mode in out or in cannot be a Volatile Output state abstraction
 
 
 .. centered:: **Static Semantics**
