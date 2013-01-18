@@ -1,5 +1,5 @@
 --
---  Copyright (C) 2011-2012, AdaCore
+--  Copyright (C) 2011-2013, AdaCore
 --
 
 --  pragma Ada_12;

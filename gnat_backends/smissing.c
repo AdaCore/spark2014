@@ -4,7 +4,7 @@
  *                                                                          *
  *                              j m i s s i n g                             *
  *                                                                          *
- *                      Copyright (C) 1998-2011, AdaCore                    *
+ *                      Copyright (C) 1998-2013, AdaCore                    *
  *                                                                          *
  * GNAT is free software;  you can  redistribute it  and/or modify it under *
  * terms of the  GNU General Public License as published  by the Free Soft- *
