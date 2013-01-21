@@ -27,10 +27,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with Elists;             use Elists;
 with Nlists;             use Nlists;
-with Sem_Aux;            use Sem_Aux;
-with Sem_Eval;           use Sem_Eval;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 
@@ -132,12 +129,6 @@ package body Why.Gen.Records is
       --  compute the discriminant check for an access to the given field, as a
       --  predicate which can be used as a precondition
 
-      function Compute_Down_Cast_Check (E : Entity_Id; Pred : out W_Pred_Id)
-                                        return Binder_Array;
-      --  compute the precondition for the cast from the base type to the
-      --  current entity. The values of the discriminants may depend on dynamic
-      --  expressions that cannot be used at the place where
-
       function Compute_Others_Choice (Info  : Component_Info;
                                       Discr : W_Term_Id) return W_Pred_Id;
       --  compute (part of) the discriminant check for one discriminant in the
@@ -217,83 +208,6 @@ package body Why.Gen.Records is
          end loop;
          return Cond;
       end Compute_Discriminant_Check;
-
-      -----------------------------
-      -- Compute_Down_Cast_Check --
-      -----------------------------
-
-      function Compute_Down_Cast_Check (E : Entity_Id; Pred : out W_Pred_Id)
-                                        return Binder_Array
-      is
-         Discr       : Entity_Id;
-         Constr_Elmt : Elmt_Id;
-      begin
-         Pred := True_Pred;
-         if not Has_Discriminants (E) then
-            return (1 .. 0 => <>);
-         end if;
-         declare
-            Discr_Binders   : Binder_Array
-              (1 .. Natural (Number_Discriminants (E)));
-            Dyn_Discr_Count : Natural := 0;
-         begin
-            Discr := First_Discriminant (E);
-            Constr_Elmt := First_Elmt (Stored_Constraint (E));
-            while Present (Discr) loop
-               if Is_Not_Hidden_Discriminant (Discr) then
-                  declare
-                     Discr_Val : W_Expr_Id;
-                     Discr_Exp : W_Expr_Id;
-                  begin
-                     Discr_Exp :=
-                       New_Record_Access
-                         (Name  => +A_Ident,
-                          Field =>
-                            To_Why_Id
-                              (Root_Record_Component (Discr)));
-                     if Is_Static_Expression (Node (Constr_Elmt)) then
-                        Discr_Val :=
-                          New_Integer_Constant
-                            (Value => Expr_Value (Node (Constr_Elmt)));
-                        Discr_Exp :=
-                          +Insert_Conversion
-                          (Domain => EW_Term,
-                           Expr   => Discr_Exp,
-                           To     => EW_Int_Type,
-                           From   => EW_Abstract (Etype (Discr)));
-                     else
-                        declare
-                           Discr_Ident : constant W_Identifier_Id :=
-                             New_Temp_Identifier;
-                        begin
-                           Dyn_Discr_Count := Dyn_Discr_Count + 1;
-                           Discr_Binders (Dyn_Discr_Count) :=
-                             (B_Name => Discr_Ident,
-                              B_Type =>
-                                Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
-                              others => <>);
-                           Discr_Val := +Discr_Ident;
-                        end;
-                     end if;
-                     Pred :=
-                       +New_And_Then_Expr
-                       (Domain => EW_Pred,
-                        Left   => +Pred,
-                        Right  =>
-                          New_Relation
-                            (Domain  => EW_Pred,
-                             Op_Type => EW_Abstract,
-                             Op      => EW_Eq,
-                             Left    => +Discr_Exp,
-                             Right   => +Discr_Val));
-                  end;
-               end if;
-               Next_Discriminant (Discr);
-               Next_Elmt (Constr_Elmt);
-            end loop;
-            return Discr_Binders (1 .. Dyn_Discr_Count);
-         end;
-      end Compute_Down_Cast_Check;
 
       ---------------------------
       -- Compute_Others_Choice --
@@ -458,31 +372,6 @@ package body Why.Gen.Records is
                Def         =>
                  New_Record_Aggregate
                    (Associations => From_Root_Aggr)));
-         declare
-            Down_Cast : W_Pred_Id;
-            Add_Args  : constant Binder_Array :=
-              Compute_Down_Cast_Check (E, Down_Cast);
-         begin
-            Emit
-              (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Program_Space (From_Ident),
-                  Binders     => From_Binder & Add_Args,
-                  Return_Type => Abstr_Ty,
-                  Post        =>
-                    New_Relation
-                      (Op_Type => EW_Abstract,
-                       Left    => +To_Ident (WNE_Result),
-                       Op      => EW_Eq,
-                       Right   =>
-                         New_Call
-                           (Domain => EW_Term,
-                            Name   => From_Ident,
-                            Args   => (1 => +A_Ident))),
-                  Pre         => Down_Cast));
-         end;
-
       end Declare_Conversion_Functions;
 
       -------------------------------

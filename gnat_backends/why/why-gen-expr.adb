@@ -27,8 +27,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
-with Elists;                use Elists;
-with Sem_Aux;               use Sem_Aux;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -47,7 +45,6 @@ with Why.Inter;             use Why.Inter;
 
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
-with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -253,113 +250,19 @@ package body Why.Gen.Expr is
    is
       Base   : constant W_Base_Type_Id := LCA (To, From);
 
-      function Generate_Record_Conversion
-        (Ada_Node : Node_Id;
-         Name     : W_Identifier_Id;
-         Expr     : W_Expr_Id;
-         To       : Entity_Id) return W_Expr_Id
-      with Pre => Is_Record_Type (To);
-      --  The entity "To" is a record type. We potentially need to add
-      --  arguments to the conversion function call, this is done in
-      --  this function.
-
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
          From : W_Base_Type_Id;
          Expr : W_Expr_Id) return W_Expr_Id;
+
       --  Assuming that there is at most one step between To and From in the
       --  type hierarchy (i.e. that it exists a conversion from From
       --  to To; a counterexample would be two abstract types whose base
       --  types differ), insert the corresponding conversion.
 
-      --------------------------------
-      -- Generate_Record_Conversion --
-      --------------------------------
-
-      function Generate_Record_Conversion
-        (Ada_Node : Node_Id;
-         Name     : W_Identifier_Id;
-         Expr     : W_Expr_Id;
-         To       : Entity_Id) return W_Expr_Id
-      is
-         Count       : Natural := 1;
-         Constr_Elmt : Elmt_Id;
-
-      begin
-         --  When converting to a record type with discriminants that are
-         --  constrained, we need to check that the constraints are satisfied.
-
-         if Has_Discriminants (To)
-           and then Present (Stored_Constraint (To))
-         then
-            --  Count the number of non-static constraints, which should be
-            --  passed in parameter to the "of_base_" call.
-
-            Constr_Elmt := First_Elmt (Stored_Constraint (To));
-            while Present (Constr_Elmt) loop
-               if not (Is_Static_Expression (Node (Constr_Elmt))) then
-                  Count := Count + 1;
-               end if;
-               Next_Elmt (Constr_Elmt);
-            end loop;
-
-            declare
-               Args      : W_Expr_Array (1 .. Count);
-               Discr_Ent : Entity_Id := First_Discriminant (To);
-
-            begin
-               --  Construct the list of parameters to pass to the "of_base_"
-               --  call.
-
-               Args (1)    := Expr;
-               Count       := 2;
-               Constr_Elmt := First_Elmt (Stored_Constraint (To));
-               while Present (Constr_Elmt) loop
-                  if not (Is_Static_Expression (Node (Constr_Elmt))) then
-                     Args (Count) :=
-                       Transform_Expr
-                         (Domain        => EW_Term,
-                          Params        => Logic_Params,
-                          Expr          => Node (Constr_Elmt),
-                          Expected_Type => EW_Abstract (Etype (Discr_Ent)));
-                     Count := Count + 1;
-                  end if;
-                  Next_Elmt (Constr_Elmt);
-                  Next_Discriminant (Discr_Ent);
-               end loop;
-
-               pragma Assert (No (Discr_Ent));
-
-               --  Create a call with a precondition that does the discriminant
-               --  check.
-
-               return
-                 New_VC_Call
-                   (Domain   => EW_Prog,
-                    Ada_Node => Ada_Node,
-                    Name     => To_Program_Space (Name),
-                    Progs    => Args,
-                    Reason   => VC_Discriminant_Check);
-            end;
-
-         --  Nothing to check otherwise
-
-         else
-            return
-              New_Call
-                (Domain   => Domain,
-                 Ada_Node => Ada_Node,
-                 Name     => Name,
-                 Args     => (1 => +Expr));
-         end if;
-      end Generate_Record_Conversion;
-
       ------------------------------
       -- Insert_Single_Conversion --
       ------------------------------
-
-      --  ??? This function is too complex. It should be rewritten when we use
-      --  the frontend information for deciding where to put checks.
 
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
@@ -379,40 +282,16 @@ package body Why.Gen.Expr is
          then
             return Expr;
          else
-
-            --  ??? This code will be simplified soon, so that conversion never
-            --  emits checks. Today, we have this special handling to emit
-            --  discriminant checks during conversion.
-
             declare
                Name         : constant W_Identifier_Id :=
                  Conversion_Name (From => From, To => To);
             begin
-
-               if Domain = EW_Prog and then
-                 Get_Base_Type (From) = EW_Abstract and then
-                 Get_Base_Type (To) = EW_Abstract and then
-                 Get_Base_Type (To) = EW_Abstract and then
-                 Is_Record_Type (Get_Ada_Node (+To))
-               then
-                  return
-                    Generate_Record_Conversion
-                      (Ada_Node => Ada_Node,
-                       Name     => Name,
-                       Expr     => Expr,
-                       To       => Get_Ada_Node (+To));
-               else
-
-                  --  All other conversion checks are inserted by another
-                  --  mechanism.
-
-                  return
-                    New_Call
-                      (Domain   => Domain,
-                       Ada_Node => Ada_Node,
-                       Name     => Name,
-                       Args     => (1 => +Expr));
-               end if;
+               return
+                 New_Call
+                   (Domain   => Domain,
+                    Ada_Node => Ada_Node,
+                    Name     => Name,
+                    Args     => (1 => +Expr));
             end;
          end if;
       end Insert_Single_Conversion;
@@ -427,6 +306,8 @@ package body Why.Gen.Expr is
       if Get_Base_Type (Base) = EW_Abstract then
 
          --  the case of record conversions
+         --  ??? Similar to range checks (see the "else" case), this code will
+         --  have to insert discriminant checks before or after the conversion.
 
          return
            Insert_Single_Conversion
