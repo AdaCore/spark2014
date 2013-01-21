@@ -83,7 +83,7 @@ ASCII.LF &
 ASCII.LF &
 " -jnnn              Use nnn parallel processes (default: 1)" &
 ASCII.LF &
-"     --mode=m       Set the mode of GNATprove (m=detect*,force,check,prove)" &
+"     --mode=m       Set the mode of GNATprove (m=detect*,force,prove*)" &
 ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
 ASCII.LF &
@@ -467,16 +467,14 @@ ASCII.LF &
          Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
       end if;
 
-      if MMode_Input.all = "detect" or else MMode_Input.all = "" then
-         MMode := GPM_Detect;
+      if MMode_Input.all = "prove" or else MMode_Input.all = "" then
+         MMode := GPM_Prove;
       elsif MMode_Input.all = "force" then
          MMode := GPM_Force;
-      elsif MMode_Input.all = "check" then
-         MMode := GPM_Check;
-      elsif MMode_Input.all = "prove" then
-         MMode := GPM_Prove;
+      elsif MMode_Input.all = "detect" then
+         MMode := GPM_Detect;
       else
-         Abort_With_Help ("mode should be one of (detect | force | check)");
+         Abort_With_Help ("mode should be one of (detect | force | prove)");
       end if;
 
       if Report_Input.all = "fail" or else Report_Input.all = "" then

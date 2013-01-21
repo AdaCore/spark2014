@@ -35,7 +35,6 @@ Command-line Usage
    --mode=       Proof mode
        detect      Detect and output SPARK information (default)
        force       Output errors for violations of SPARK (warn unimplemented)
-       check       Check consistency of contracts
        prove       Prove subprogram contracts and absence of run-time errors
    -q            Be quiet/terse
    --clean       Remove GNATprove intermediate files, and exit
@@ -71,10 +70,10 @@ Command-line Usage
 In modes ``detect`` and ``force``, |GNATprove| does not compute an accurate set
 of global variables read and written in each subprogram. Hence, its detection
 of subprograms in |SPARK| might be slightly more optimistic than the
-reality. When using mode ``check`` or ``prove`` on the contrary, the detection
+reality. When using mode ``prove`` on the contrary, the detection
 is accurate.
 
-Although ``--report`` has only some effect in modes ``check`` and ``prove``,
+Although ``--report`` has only some effect in mode ``prove``,
 all combinations of options are allowed.
 
 When given a list of files, |GNATprove| will consider them as entry points of
@@ -122,12 +121,12 @@ also to be found in the ``<name>.alfa`` files mentioned below.
 In mode ``force``, |GNATprove| prints on the standard output error messages for
 |SPARK| subset violations, and warning messages for unimplemented features.
 
-In modes ``check`` or ``prove`` and report ``fail``, |GNATprove| prints on the
-standard output error messages for unproved VCs.
+In mode ``prove`` and report ``fail``, |GNATprove| prints on the standard
+output error messages for unproved VCs.
 
-In modes ``check`` or ``prove`` and report ``all``, |GNATprove| prints on the
-standard output error messages for unproved VCs, and information messages for
-proved VCs.
+In mode ``prove`` and report ``all``, |GNATprove| prints on the standard
+output error messages for unproved VCs, and information messages for proved
+VCs.
 
 |GNATprove| always generates :ref:`project statistics` in file
 ``gnatprove.out``.
@@ -566,8 +565,7 @@ producing and attempting to prove.
 Known Limitations
 -----------------
 
-In modes ``check`` and ``prove``, the current version has the following
-limitations:
+In mode ``prove``, the current version has the following limitations:
 
    * It only accepts projects with a single object directory; it will stop
      with an error message if run on projects with more than one object

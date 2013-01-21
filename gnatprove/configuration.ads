@@ -66,7 +66,7 @@ package Configuration is
    Alter_Prover : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --prover= was given
 
-   type GP_Mode is (GPM_Detect, GPM_Force, GPM_Check, GPM_Prove);
+   type GP_Mode is (GPM_Detect, GPM_Force, GPM_Prove);
    --  The four feature modes of GNATprove:
    --  * GPM_Detect : Alfa Detection only
    --  * GPM_Force  : Alfa Detection only, output errors for violations of Alfa
@@ -97,7 +97,7 @@ package Configuration is
 
    subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
-   MMode        : GP_Mode := GPM_Detect;
+   MMode        : GP_Mode := GPM_Prove;
    Report       : Report_Mode := GPR_Fail;
    --  Silent Reporting is the Default
    Proof        : Proof_Mode := Normal;
