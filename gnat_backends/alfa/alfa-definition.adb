@@ -854,6 +854,8 @@ package body Alfa.Definition is
 
          when N_Slice =>
             Mark_Most_Underlying_Type_In_Alfa (Etype (Prefix (N)), N);
+            Mark (Prefix (N));
+            Mark (Discrete_Range (N));
 
          when N_Subprogram_Body =>
 
