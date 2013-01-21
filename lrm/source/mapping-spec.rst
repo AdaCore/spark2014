@@ -1185,7 +1185,7 @@ Check contract
 
 The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This
 annotation adds a new hypothesis to the list of existing hypotheses. The code is
-not presented but can be found under "code\check_contract".
+not presented but can be found under "code\\check_contract".
 
 Assert used to control path explostion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

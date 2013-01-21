@@ -254,6 +254,9 @@ follow the grammar of ``global_specification``
    mode_selector               ::= Input | Output | In_Out | Contract_In
    global_item                 ::= name
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 6.1.4 Syntax
 
 .. centered:: **Legality Rules**
 
@@ -427,21 +430,37 @@ where
 
    ``function_result`` is a function Result ``attribute_reference``.
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 6.1.5 Syntax
+
 .. centered:: **Legality Rules**
 
 #. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
    aspect of a subprogram is a state abstraction, a whole object (not part of 
    a containing object) or a formal parameter of the subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. An ``input`` must have a mode of **in** or **in out**
    and an ``output`` must have an mode of **in out** or
    **out**.  [Note: As a consequence an entity which is both an
    ``input`` and an ``output`` shall have a mode of **in out**.]
-   
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function, if any, to which the enclosing
    ``aspect_specification`` applies.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 #. There can be at most one ``output_list`` which is a **null** symbol
    and if it exists it must be the ``output_list`` of the last
@@ -450,17 +469,37 @@ where
    not appear in another ``input_list`` of the same
    ``dependency_relation``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The object denoted by a given ``output`` in an ``output_list`` shall
    not be denoted by any other ``output`` in that ``output_list``.   
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 #. The object denoted by a given ``input`` in an ``input_list`` shall
    not be denoted by any other ``input`` in that ``input_list``.     
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. Every ``output`` of the subprogram shall appear in exactly one
    ``output_list``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
    
 #. Every ``input`` of the subprogram shall appear in at least one
    ``input_list``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 

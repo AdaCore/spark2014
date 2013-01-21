@@ -90,6 +90,10 @@ where the ``aspect_mark`` is Abstract_State and the
   name_value_property        ::= identifier => expression
   state_name                 ::= defining_identifier
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 7.1.2 Syntax
+
 .. centered:: **Legality Rules**
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
