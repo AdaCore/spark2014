@@ -172,6 +172,17 @@ package body Why.Images is
       procedure Print_Decimal_Notation (Num, Den : Uint);
       --  Prints the decimal notation of fraction Num/Den. This fraction should
       --  be a number that can be written exactly in decimal notation.
+      --
+      --  To get better results when an SMT prover does not natively support
+      --  the theory of int to real conversions, instead of generating
+      --     <integral part>.<fractional part>
+      --  we generate instead
+      --     Floating.real_of_int (<integral part>) + 0.<fractional part>
+      --  so that the SMT prover can reason in the integers for the integral
+      --  part. The fractional part is only printed if not null.
+
+      procedure Print_Integer_As_Real (J : Uint);
+      --  Print Floating.real_of_int (J)
 
       ----------------------------
       -- Max_Number_Of_Decimals --
@@ -242,21 +253,40 @@ package body Why.Images is
          Scale_Part : Uint := Scale_Factor / 10;
 
       begin
-         P (O, Int_Part);
-         P (O, ".");
+         P (O, "(");
 
-         --  If there is a fractional part, first print as many zeros as needed
-         --  to reach the non-zero fractional part.
+         Print_Integer_As_Real (Int_Part);
+
+         --  Only print a fractional part if there is one
 
          if Fact_Part /= 0 then
+            P (O, EW_Add, EW_Real);
+            P (O, " 0.");
+
+            --  First, print as many zeros as needed to reach the non-zero
+            --  fractional part.
+
             while Scale_Part > Fact_Part loop
                P (O, "0");
                Scale_Part := Scale_Part / 10;
             end loop;
+
+            P (O, Fact_Part);
          end if;
 
-         P (O, Fact_Part);
+         P (O, ")");
       end Print_Decimal_Notation;
+
+      ---------------------------
+      -- Print_Integer_As_Real --
+      ---------------------------
+
+      procedure Print_Integer_As_Real (J : Uint) is
+      begin
+         P (O, "(" & To_String (WNE_Real_Of_Int) & " ");
+         P (O, J);
+         P (O, ")");
+      end Print_Integer_As_Real;
 
       Num    : constant Uint := Numerator (Value);
       Den    : constant Uint := Denominator (Value);
@@ -327,8 +357,8 @@ package body Why.Images is
       --     numerator * (base ** (- denominator)).
 
       elsif Den <= Uint_0 then
-         P (O, UI_Mul (Num, UI_Expon (Base, UI_Negate (Den))));
-         P (O, ".0");
+         Print_Integer_As_Real
+           (UI_Mul (Num, UI_Expon (Base, UI_Negate (Den))));
 
       --  The base has only 2 and 5 as prime factors, hence the real number can
       --  be written exactly in decimal notation.
