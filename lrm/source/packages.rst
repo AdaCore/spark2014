@@ -531,24 +531,66 @@ the grammar of ``initialization_list`` given below.
 
   initialization_list   ::= output_list
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 7.1.4 Syntax
+
 .. centered:: **Legality Rules**
 
 #. Every ``output`` of an ``initialization_list`` of an Initializes
    aspect of a package specification is a state abstraction.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. An Initializes aspect may only appear in the
    ``aspect_specification`` of a package specification.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The Initializes aspect must follow the
    Abstract State aspect if one is present.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. An ``aspect_specification`` shall not have an
    Initializes Aspect if it has a Depends aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The object denoted by a given ``output`` in an Initializes aspect shall
-   not be denoted by any other ``output`` in that Initializes aspect.   
+   not be denoted by any other ``output`` in that Initializes aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. A variable appearing in an Initializes aspect must be entire,
    it cannot be a subcomponent of a containing object.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. A ``state_name`` which is designated as ``Volatile`` must not
    appear in an Initializes aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. An Initializes aspect shall not allow ``function_result`` as an ``output``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -639,9 +681,18 @@ an ``expression``.
 
 #. An Initial Condition Aspect may only be placed in an
    ``aspect_specification`` of a ``package_specification``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The Initial Condition Aspect must follow the
    Abstract State Aspect, Depends aspect and
    Initializes aspect if they are present.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -762,45 +813,112 @@ where
 
   ``constituent ::=`` *variable_*\ ``name | state_name``
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 7.2.2 Syntax
+
 .. centered:: **Legality Rules**
 
 #. A Refined State Aspect may only appear in ``package_body``. [The use
    of ``package_body`` rather than package body allows this aspect to be specified
    for generic package bodies.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. If a package declaration has an Abstract State Aspect its body
    must have a Refined State Aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. If a package declaration does not have an Abstract State Aspect,
    then the corresponding package body *may* have a Refined State Aspect
    with exactly one ``state_and_category`` where the ``abstract_state_name`` is **null**.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. A Refined State Aspect of a package body has extended
    visibility; it is able to refer to a *variable* declared in the
    package body, or a ``state_name`` or *variable* declared in the
    visible part of a package, declared immediately within the package
    body.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. Every item of the package's hidden state must appear as a
    ``constituent`` in its Refined State aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. Each ``state_name`` declared in a package specification must appear
    exactly once as an ``abstract_state_name`` in the
    Refined State Aspect of the body of the package.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. If a ``constituent`` has the same name as an
    ``abstract_state_name`` it can only be a ``constituent`` of that
    ``abstract_state_name`` and it must be the only ``constituent`` of
    the ``abstract_state_name``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The ``identifier`` of a ``simple_property`` shall be "Volatile",
    "Input", or "Output".
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. If a ``property_list`` includes the ``simple_property`` "Volatile",
    then the same ``property_list`` shall also include exactly one of
    ``Input`` or ``Output``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The ``identifier`` of a ``name_value_property`` shall be
    "Integrity".
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The ``expression`` of an "Integrity" property shall be a static
    expression of any integer type.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The same identifier shall not appear more than once in a property
    list.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. There should be at most one **null** ``abstract_state_name`` and,
    if it is present it must be non-volatile and the last entry of the
    ``state_and_category_list``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1020,6 +1138,11 @@ the grammar of ``global_specification`` in :ref:`global-aspect`.
 #. A Refined Global Aspect may only appear on the body or body stub
    of a subprogram P in a package whose ``visible_part`` contains the
    declaration of P.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. A Refined Global Aspect on the body or body stub of a
    subprogram P may only mention ``constituents`` of a ``state_name``
    given in the Global Aspect in the declaration of P, a *global*
@@ -1027,6 +1150,9 @@ the grammar of ``global_specification`` in :ref:`global-aspect`.
    in the the Global Aspect of P or a ``constituent`` of a
    **null** ``abstract_state_name``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1112,12 +1238,21 @@ the grammar of ``dependency_relation``.
 #. A Refined Depends aspect may only appear on the body or body
    stub of a subprogram P in a package whose ``visible_part`` contains
    the declaration of a subprogram P.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. A Refined Depends aspect on the body or body stub of a
    subprogram P may only mention a formal parameter of P,
    ``constituents`` of a ``state_name`` of the enclosing package given
    in the Depends aspect in the declaration of P, a *global*
    item that is not a ``state_name`` of the enclosing package or a
    ``constituent`` of a **null** ``abstract_state_name``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1206,8 +1341,17 @@ a Boolean ``expression``.
 #. A Refined Precondition may only appear on the body or body stub
    of a subprogram P in a package whose ``visible_part`` contains the
    declaration of P.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The same legality rules apply to a Refined Precondition as for
    a precondition.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1255,8 +1399,17 @@ a Boolean ``expression``.
 #. A Refined Postcondition may only appear on the body or body stub
    of a subprogram P in a package whose ``visible_part`` contains the
    declaration of P.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
 #. The same legality rules apply to a Refined Postcondition as for
    a postcondition.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
