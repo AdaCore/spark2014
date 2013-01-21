@@ -101,12 +101,6 @@ package body Why.Gen.Records is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   function Needs_Discriminant_Check_For_Access (E : Entity_Id) return Boolean;
-   --  Decide whether the an access to the given Component entity needs a
-   --  check; this is always false for discriminants and components of
-   --  E_Record_Subtypes. For the rest, it depends on whether the component is
-   --  in a variant part or not.
-
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
      (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
    --  Opposite of Einfo.Is_Completely_Hidden, which also returns True if E is
@@ -807,22 +801,6 @@ package body Why.Gen.Records is
       Declare_Equality_Function;
    end Declare_Ada_Record;
 
-   -----------------------------------------
-   -- Needs_Discriminant_Check_For_Access --
-   -----------------------------------------
-
-   function Needs_Discriminant_Check_For_Access (E : Entity_Id) return Boolean
-   is
-   begin
-      if Ekind (E) = E_Discriminant then
-         return False;
-      elsif Ekind (Scope (E)) = E_Record_Subtype then
-         return False;
-      end if;
-      return
-        Nkind (Parent (Parent (List_Containing (Parent (E))))) = N_Variant;
-   end Needs_Discriminant_Check_For_Access;
-
    ---------------------------
    -- New_Ada_Record_Access --
    ---------------------------
@@ -837,7 +815,8 @@ package body Why.Gen.Records is
    is
       Call_Id : constant W_Identifier_Id := To_Why_Id (Field, Rec => Ty);
    begin
-      if Needs_Discriminant_Check_For_Access (Field) then
+      if Domain = EW_Prog and then
+        Do_Discriminant_Check (Ada_Node) then
          return
            New_VC_Call
              (Ada_Node => Ada_Node,
