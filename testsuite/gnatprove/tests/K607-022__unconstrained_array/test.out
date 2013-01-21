@@ -1,4 +1,3 @@
-simple_unc_arrays.adb:119:23: info: discriminant check proved
 simple_unc_arrays.adb:124:25: index check not proved
 simple_unc_arrays.adb:124:25: overflow check not proved
 simple_unc_arrays.adb:124:39: index check not proved
