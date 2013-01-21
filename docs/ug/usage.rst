@@ -452,7 +452,7 @@ check or an assertion holds, there might be various reasons:
 * [CODE] The check or assertion does not hold, because the code is wrong.
 * [ASSERT] The assertion does not hold, because it is incorrect.
 * [SPEC] The check or assertion cannot be proved, because of some missing
-   assertions about the behavior of the program.
+  assertions about the behavior of the program.
 * [TIMEOUT] The check or assertion is not proved because the prover timeouts.
 * [PROVER] The check or assertion is not proved because the prover is not smart
   enough.
