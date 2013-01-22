@@ -4,7 +4,7 @@ tab.adb:12:62: index check not proved
 tab.adb:12:67: info: index check proved
 tab.adb:14:15: index check not proved
 tab.adb:15:24: overflow check not proved
-tab.adb:6:49: info: range check proved
+tab.adb:6:49: range check not proved
 tab.adb:9:10: loop invariant initialization not proved
 tab.adb:9:10: loop invariant preservation not proved
 tab.ads:6:18: postcondition not proved

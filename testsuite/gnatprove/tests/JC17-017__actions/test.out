@@ -1,9 +1,9 @@
 p.adb:22:20: range check not proved
-p.adb:23:22: info: range check proved
-p.adb:24:22: info: range check proved
+p.adb:23:22: range check not proved
+p.adb:24:22: range check not proved
 p.adb:26:16: range check not proved
-p.adb:27:18: info: range check proved
-p.adb:28:18: info: range check proved
+p.adb:27:18: range check not proved
+p.adb:28:18: range check not proved
 p.adb:30:18: overflow check not proved
 p.adb:30:18: range check not proved
 p.adb:31:20: overflow check not proved

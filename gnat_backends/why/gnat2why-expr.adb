@@ -1042,11 +1042,8 @@ package body Gnat2Why.Expr is
                end if;
             end Indexed_Component;
 
-         --  ??? Why are we taking the type of the expression for a type
-         --  conversion? Shouldn't we taking the type of Expr?
-
          when N_Type_Conversion =>
-            Check_Type := Etype (Expression (Par));
+            Check_Type := Etype (Par);
 
          when N_Qualified_Expression =>
             Check_Type := Etype (Par);
