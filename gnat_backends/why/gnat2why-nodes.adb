@@ -631,4 +631,5 @@ begin
    Why3_Keywords.Include ("int");
    Why3_Keywords.Include ("real");
    Why3_Keywords.Include ("bool");
+   Why3_Keywords.Include ("unit");
 end Gnat2Why.Nodes;
