@@ -38,10 +38,10 @@ all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
 check: $(ALL_WHYPACK:__package.mlw=.check)
 
 %__package.mlw: %.adb $(ALL_ALIS)
-	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg -I. $<
+	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
 
 %__package.mlw: %.ads $(ALL_ALIS)
-	$(GNAT2WHY) -gnatd.F -gnatd.G -gnatpg -I. $<
+	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
 
 %.ali: %.adb
 	$(CC) -c -gnatc -gnatpg -gnatd.F $<

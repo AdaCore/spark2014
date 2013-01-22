@@ -109,12 +109,6 @@ package body Gnat2Why.Driver is
          Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
       end if;
 
-      --  In 'check' mode, stop here
-
-      if In_Check_Mode_Only then
-         return;
-      end if;
-
       --  In 'prove' mode, generate Why3 code to check absence of run-time
       --  errors in the body of a subprogram, and to check that a subprogram
       --  body implements its contract.
