@@ -441,44 +441,12 @@ General
    the specific detail: I think it has to stay at a high-level since how hierarchies are managed is more
    a language-specific thing.
 
+Requirements on state declarations in general:
+
 Abstract State
 ^^^^^^^^^^^^^^
 
-#. Language feature:
-
-    * This language feature provides an abstraction of the hidden state referenced by the package.
-
-#. Feature definition (use cases?):
-
-    * It shall be possible to provide an abstracted view of hidden state.
-      *Rationale: allows modular analysis, since this means analysis performed before all package bodies are available
-      and so before all hidden state is known. In addition, it allows management of complexity.*
-
-    * It shall be possible to explicitly denote the absence of hidden state.
-      *Rationale: to model programs without hidden state.*
-
-    * It shall be possible to indicate those hidden state items that are Volatile
-      and for each to give a mode of either in or out.
-      *Rationale: to model programs that refer to external state, since that state
-      has a different semantics to internal state.*
-
-    * It shall be possible to indicate a numeric integrity level for each data item.
-      *Rationale: to assist security and safety analysis.*
-
-#. Constraints:
-
-   * It shall not be possible to include visible state in the statement of abstract state.
-     * Rationale: visible state is already visible in the necessary contexts and is not
-     abstract.*
-     *However, we may thus need a means of stating modes on visible volatile state.*
-
-#. Consistency:
-
-    * Not applicable.
-
-#. Semantics:
-
-    * Not applicable.
+#. Need to mention somewhere about being able to state
 
 
 Global
