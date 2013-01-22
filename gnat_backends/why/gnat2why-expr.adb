@@ -1048,6 +1048,13 @@ package body Gnat2Why.Expr is
          when N_Type_Conversion =>
             Check_Type := Etype (Expression (Par));
 
+         when N_Qualified_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Simple_Return_Statement =>
+            Check_Type :=
+              Etype (Return_Applies_To (Return_Statement_Entity (Par)));
+
          --  For a call, retrieve the type for the corresponding argument
 
          when N_Function_Call            |
