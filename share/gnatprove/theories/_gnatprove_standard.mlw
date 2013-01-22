@@ -36,7 +36,7 @@ module Main
   type range_type
 
   (* Here we define the string type *)
-  type __string = 
+  type __string =
   { elts : (Array__1__Type.map __character); offset : int; rt : range_type }
 
 end
@@ -100,6 +100,22 @@ module Floating
   axiom Round_pos_tie:
     forall x:real.
       real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
+
+  axiom Round_int :
+    forall i:int. round (real_of_int i) = i
+
+  axiom Round_near_int :
+    forall i:int. forall x:real.
+      -.0.5 <. x /\ x <. 0.5 -> (round(real_of_int(i) +. x) = i)
+
+  axiom Round_monotonic:
+    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
+
+  axiom Round_monotonic_int1:
+    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
+
+  axiom Round_monotonic_int2:
+    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
 
   (* Boolean comparison functions for reals *)
 
