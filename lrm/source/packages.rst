@@ -1,4 +1,4 @@
-﻿Packages
+Packages
 ========
 
 Package Specifications and Declarations
@@ -41,6 +41,43 @@ being volatile, usually representing an external input or output.
 
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
+
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Language feature:
+
+    * This language feature provides an abstraction of the hidden state referenced by the package.
+
+#. Needs to be met by language feature:
+
+    * It shall be possible to provide an abstracted view of hidden state that can be referred to
+      in specifications of program behaviour.
+      *Rationale: this allows modular analysis, since modular is analysis performed
+      before all package bodies are available and so before all hidden state is known.
+      Abstraction also allows the management of complexity.*
+
+#. Constraints:
+
+   * It shall not be possible to include visible state in the statement of abstract state.
+     *Rationale: visible state is already visible in the necessary contexts and by definition
+     is not abstract.*
+
+#. Consistency:
+
+    * Not applicable.
+
+#. Semantics:
+
+    * Not applicable.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+
+Language definition
+^^^^^^^^^^^^^^^^^^^
 
 State abstraction provides a mechanism for naming, in a package's
 ``visible_part``, state (typically variable declarations) that will be
@@ -184,11 +221,6 @@ where the ``aspect_mark`` is Abstract_State and the
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
 
-#. A Volatile Input or Output state abstraction represents a sequence
-   of state changes brought about by reading or writing successive
-   values to or from a volatile variable.
-
-
 .. centered:: **Verification Rules**
 
 There are no Verification Rules associated with the Abstract State aspect.
@@ -232,98 +264,9 @@ aspect.
       ...
    end Sensor;
 
-Integrity Levels
-^^^^^^^^^^^^^^^^
-.. todo:: Integrity levels are still under discussion so that the
-   following description should be considered provisional.
- 
-An abstract state may be assigned an *integrity level* which indicates
-that the state has a particular integrity.  *Integrity levels* are
-used in information flow analysis to monitor or prohibit the flow of
-information (data) of different *integrity levels* between abstract
-states.
 
-.. centered:: **Static Semantics**
-
-#. A state abstraction which is declared with an ``Integrity``
-   property is deemed to have an *integrity level* as specified by the
-   integer expression of the ``name_value`` property.  The *integrity
-   level* of an abstract state is used monitor or prohibit information
-   flow from a higher *integrity level* to a lower one or vice-versa
-   depending on the options selected for the analysis.  A state
-   abstraction which is not declared with an Integrity property is
-   considered to have a lower *integrity level* than any declared with
-   one. [Information flow integrity checks are performed as part of
-   the verification rules.]
-
-#. A state abstraction which requires a particular *integrity level*
-   must be explicitly declared. *Integrity levels* cannot be
-   synthesized.
-
-.. centered:: **Verification Rules**
-
-#. An abstract state declared with an *integrity level* shall not be
-   used in determining the value of an output of a subprogram with a
-   higher or lower *integrity level* depending on the mode of analysis.
-   [Checked during information flow analysis.]
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the integrity levels.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   package MILS -- a package that manages distinct state of differing Integrities
-      with Abstract_State => ((Top_Secret   with Integrity => 4),
-                              (Unclassified with Integrity => 0));
-   is
-      ...
-   end MILS;
-
-Synthesized State Abstractions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A package which has hidden state is considered to have one or more
-state abstractions even if they are not explicitly declared.  If the
-state abstractions are not explicitly declared they will be
-synthesized from the implementation (if it exists) of the package and
-its private descendent.
-
-.. centered:: **Static Semantics**
-
-#. A state abstraction of a package is considered to represent
-   hidden state in one of the following categories:
-
-   * Non-Volatile Uninitialized State - state which is not initialized
-     during the elaboration of the package
-   * Non-Volatile Initialized State - state which is initialized
-     during the elaboration of the package
-   * Volatile Input State - Volatile state which is an input only and
-     is considered to be implicitly initialized.
-   * Volatile Output State - Volatile state which is an output only
-     and is considered to be implicitly initialized.
-
-#. If a package has hidden state but no Abstract State Aspect is
-   provided, a state abstraction is synthesized for each category of
-   hidden state for which there exits *variables* of the category.
-   The synthesized state abstractions are given one of the following
-   default ``state_names`` representing each of the categories of
-   state:
-
-   * Uninitialized_State
-   * Initialized_State
-   * Volatile_Input_State
-   * Volatile_Output_State
-
-   A default ``state_name`` is only synthesized if the hidden state of
-   the corresponding category is present within the package or its
-   private descendants.
-
-
-Input, Output and Integrity Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Input, Output and Integrity Aspects **To be moved elsewhere?**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For variables which are declared directly within the visible part of a
 package specification, the Volatile, Input, Output,
@@ -357,411 +300,17 @@ variable's declaration.
 
    end Raw_Input_Port;
 
-Package Depends Aspect
-~~~~~~~~~~~~~~~~~~~~~~~~~
+For future issues of this document:
+"""""""""""""""""""""""""""""""""""
 
-An important property of a package is the state components it
-initializes during its elaboration and on what the initial value of
-each depends.  This information is required for flow analysis which is
-used to demonstrate that every variable in a |SPARK| program is
-initialized before use.
+#. Further semantic detail regarding Volatile state and integrity levels.
 
-The package-level Depends aspect is introduced by an
-``aspect_specification`` where the ``aspect_mark`` is Depends and the
-``aspect_definition`` must follow the grammar of ``dependency_relation``
-given in section :ref:`depends_aspect`.
 
-.. centered:: **Legality Rules**
+Package-level Global, Depends and Initializes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect of a package specification is a state abstraction.
-#. A Depends aspect may appear in the ``aspect_specification``
-   of a package specification but it must follow the
-   Abstract State aspect if one is present.
-#. A Depends aspect of a package shall not allow the optional ``+``
-   within a ``dependency_clause``.
-#. A Depends aspect of a package shall not allow a ``function_result``
-   as an ``output``.
-#. A Depends aspect of a package shall not allow ``null`` as an
-   ``output_list``.
-#. A ``state_name`` that is designated as ``Volatile`` must not appear in
-   an ``output_list`` in a Depends aspect of a package.
+**Detail TBD**
 
-#. The object denoted by a given ``output`` in an ``output_list`` shall
-   not be denoted by any other ``output`` in that ``output_list``.   
-
-#. The object denoted by a given ``input`` in an ``input_list`` shall
-   not be denoted by any other ``input`` in that ``input_list``.  
-
-.. centered:: **Static Semantics**
-
-#. An *output* of a package elaboration is a state abstraction such that the
-   set of variables represented by the state abstraction is initialized during
-   elaboration.
-#. An *input* of a package elaboration is a state abstraction such that the
-   initial value of one or more of the set of variables represented by that
-   state abstraction may be used to determine the final value of one or more
-   members of the set of variables represented by the outputs of the
-   package elaboration.
-#. The Depends aspect of a package declaration describes for
-   each ``output`` of the package elaboration a list of every ``input``
-   on which the initial value of that ``output`` depends.  [A package may
-   initialize an item at the point of declaration of the item, in the
-   sequence of statements of its body, within an embedded package or a
-   private descendent of the package.]
-#. A package that does not initialize any state components can be
-   explicitly indicated using a **null** ``dependency_relation``.
-#. A ``dependency_clause`` with a **null** ``input_list`` means that the final
-   value of each ``output`` in the ``output_list`` does not depend on any
-   ``input``.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. If a Depends aspect is provided on a package declaration
-   then flow analysis does not require the package body to proceed
-   with the analysis of clients of the package.  Flow analysis will
-   check that the body of the package satisfies its
-   Depends aspect when it is analyzed.
-#. Only *inputs* of a package elaboration shall appear as an ``input``
-   in its Depends aspect.
-#. Every *output* of a package elaboration shall appear as an ``output``
-   in the Depends aspect of the package, if one is present.
-#. A ``state_name`` designated as Volatile shall only appear in a
-   Depends aspect if the package reads or updates the Volatile
-   variables represented by the ``state_name`` during its elaboration
-   or the elaboration of its private descendants.
-#. If a Depends aspect (or an equivalent
-   Initializes aspect) is not provided on a package declaration,
-   its body and any private descendants must be present as well as the
-   bodies of any packages on which the package depends to synthesize
-   an implicit Depends aspect for the package.  Ultimately this
-   could require an entire program analysis.
-#. Library level packages are considered to be elaborated in some
-   order determined by the compiler prior to a call to the main
-   subprogram.  When the main subprogram is analysed the elaboration
-   of the library-level packages is modelled as a sequence of
-   subprogram calls, one for each package, in the same order as
-   determined for package elaboration by the compiler.  Flow analysis
-   is used to determine from the sequence of subprogram calls whether
-   a *variable* or ``state_name`` is initialized and whether it is
-   potentially erroneously initialized more than once prior to the
-   call to the main subprogram.
-#. For flow analysis purposes, the elaboration of a package embedded
-   within a subprogram or block statement is modelled as a subprogram
-   call immediately following the package declaration.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the
-Depends aspect as the rules are checked by static analysis.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-    package Q
-    with
-       Abstract_State => State,  -- Declaration of abstract state name State
-       Depends        => (State => null)
-                                 -- Indicates that State will be initialized
-    is                           -- during the elaboration of Q
-				 -- or a private descendant of the package.
-      ...
-    end Q;
-
-    package X
-    with
-       Abstract_State =>  A,          -- Declares an abstract state name A.
-       Depends        => (A => null,  -- Indicates that A and visible variable 
-                          B => null)  -- B will be initialized during the.
-                                      -- elaboration of X or a private descendant
-    is                                -- of the package.
-      ...
-      B : Integer;
-     --
-    end X;
-
-    with Q;
-    package Y
-    with
-       Abstract_State => (A, B, (C with Volatile, Input)),
-       Depends        => (A => null,
-                          B => Q.State)
-    is                    -- Three abstract state names are declared A, B & C.
-                          -- A is initialized during the elaboration of Y or
-			  -- its private descendants.
-       ...                -- B is initialized during the elaboration of Y or
-                          -- its private descendants and is dependent on the
-                          -- value of Q.State.
-                          -- C is designated as a volatile input and is not
-                          -- read during package elaboration and so does not appear
-		          -- in the Depends aspect.
-    end Y;
-
-    package Z
-    with
-       Abstract_State => A,
-       Depends        => null
-    is                          -- Package Z has an abstract state name A declared but the
-                                -- elaboration of Z and its private descendants do not
-                                -- perform any initialization.
-      ...
-
-    end Z;
-
-
-
-Initializes Aspect
-~~~~~~~~~~~~~~~~~~
-
-The Initializes Aspect is a shorthand notation for the most common
-form of package initialization where none of the initialized items
-have any dependence.  They are initialized from static or compile-time
-constants.
-
-The Initializes Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Initializes" and the ``aspect_definition`` must follow
-the grammar of ``initialization_list`` given below.
-
-.. centered:: **Syntax**
-
-::
-
-  initialization_list   ::= output_list
-
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: 7.1.4 Syntax
-
-.. centered:: **Legality Rules**
-
-#. Every ``output`` of an ``initialization_list`` of an Initializes
-   aspect of a package specification is a state abstraction.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. An Initializes aspect may only appear in the
-   ``aspect_specification`` of a package specification.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The Initializes aspect must follow the
-   Abstract State aspect if one is present.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. An ``aspect_specification`` shall not have an
-   Initializes Aspect if it has a Depends aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The object denoted by a given ``output`` in an Initializes aspect shall
-   not be denoted by any other ``output`` in that Initializes aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A variable appearing in an Initializes aspect must be entire,
-   it cannot be a subcomponent of a containing object.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A ``state_name`` which is designated as ``Volatile`` must not
-   appear in an Initializes aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. An Initializes aspect shall not allow ``function_result`` as an ``output``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. An Initializes Aspect is a shorthand notation for a
-   Depends aspect of the form:
-
-   ::
-
-     Depends => (S1 => null,
-                 S2 => null,
-                 ...
-                 Sn => null)
-
-     where
-
-       each S1 .. Sn is a variable or state abstraction initialized
-       during the elaboration of the package.
-
-#. A **null** ``initialization_list`` is equivalent to a **null**
-   ``dependency_relation``.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the
-Initializes Aspect as the rules are checked by static analysis.
-
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-    package Q
-    with
-       Abstract_State => State,  -- Declaration of abstract state name State
-       Initializes    => State   -- Indicates that State will be initialized
-    is                           -- during the elaboration of Q
-				 -- or its private descendants.
-      ...
-    end Q;
-
-    package X
-    with
-       Abstract_State =>  A,    -- Declares an abstract state name A.
-       Initializes    => (A, B) -- A and visible variable B are initialized
-                                -- during the elaboration of X or its private descendants.
-    is
-      ...
-      B : Integer;
-     --
-    end X;
-
-    package Y
-    with
-       Abstract_State => (A, B, (C with Volatile, Input)),
-       Initializes    => A
-    is                          -- Three abstract state names are declared A, B & C.
-                                -- A is initialized during the elaboration of Y or
-				-- its private descendants.
-       ...                      -- C is designated as a volatile input and cannot appear
-				-- in an initializes aspect clause
-                                -- B is not initialized during the elaboration of Y
-                                -- or its private descendants.
-    end Y;
-
-    package Z
-    with
-       Abstract_State => A,
-       Initializes    => null
-    is                          -- Package Z has an abstract state name A declared but the
-                                -- elaboration of Z and its private descendants do not
-                                -- perform any initialization during elaboration.
-      ...
-
-    end Z;
-
-Initial Condition Aspect
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-The Initial Condition Aspect is a predicate that may be used to
-describe formally the initial state of a package.  It behaves as a
-postcondition for the result of package elaboration.
-
-The Initial Condition Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` must be
-an ``expression``.
-
-.. centered:: **Legality Rules**
-
-#. An Initial Condition Aspect may only be placed in an
-   ``aspect_specification`` of a ``package_specification``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The Initial Condition Aspect must follow the
-   Abstract State Aspect, Depends aspect and
-   Initializes aspect if they are present.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. The predicate of an Initial Condition Aspect of a package
-   defines the initial state of the package after its elaboration and
-   the elaboration of its private descendants.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. Each *variable* appearing in an Initial Condition Aspect of a
-   package Q which is declared in the visible part of Q must be
-   initialized during the elaboration of Q and its private descendants.
-#. A ``state_name`` cannot appear directly in
-   an Initial Condition Aspect but it may be indirectly referenced
-   through a function call.
-#. Each ``state_name`` referenced in Initial Condition Aspect must
-   be initialized during package elaboration.
-
-.. centered:: *Checked by Proof*
-
-#. Verification conditions are generated which have to be proven to
-   demonstrate that the implementation of a package Q and its private
-   descendants satisfy the predicate given in the
-   Initial Condition Aspect of Q.
-
-.. centered:: **Dynamic Semantics**
-
-#. An Initial Condition Aspect is like a postcondition.  It
-   should be evaluated following the elaboration of Q and its private
-   descendants.  If it does not evaluate to True, then an exception
-   should be raised.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-    package Q
-    with
-       Abstract_State    => State,    -- Declaration of abstract state name State
-       Initializes       => State,    -- State will be initialized during elaboration
-       Initial_Condition => Is_Ready  -- Predicate stating the logical state after
-				      -- initialization.
-    is
-
-      function Is_Ready return Boolean
-      with
-	 Global => State;
-
-    end Q;
-
-    package X
-    with
-       Abstract_State    =>  A,    -- Declares an abstract state name A
-       Initializes       => (A, B) -- A and visible variable B are initialized
-	                           -- during package initialization.
-       Initial_Condition => A_Is_Ready and B = 0
-				   -- The logical conditions after package elaboration.
-    is
-      ...
-      B : Integer;
-
-      function A_Is_Ready return Boolean
-      with
-	 Global => A;
-
-     --
-    end X;
 
 Package Bodies
 --------------
@@ -1503,4 +1052,3 @@ Assignment and Finalization
 ---------------------------
 
 Controlled types are not permitted in |SPARK|.
-

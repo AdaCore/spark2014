@@ -324,3 +324,25 @@ Method of Description and Syntax Notation
 In expressing the syntax and rules of |SPARK|, the remaining chapters of
 this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
 
+.. _generic_hlrs:
+
+Generic high-level requirements
+-------------------------------
+
+#. **Do I need to classify these general requirements? Would be useful.**
+
+#. When specifying program behvaiour in terms of a relation or a set, it shall be
+   possible to explicitly provide a null relation or an empty set.
+   *Rationale: to explicitly identify programs that - for example - do not reference
+   global data. This is especially needed in the presence of retrospective mode,
+   where absence of a specification does not mean presence of a null specification.*
+
+#. It shall be possible to designate - both visible and hidden - state items that are Volatile
+   and for each to give a mode of either in or out.
+   *Rationale: to model programs that refer to external state, since that state
+   is modelled differently to internal state.*
+
+#. It shall be possible to indicate for both visible and hidden state items
+   a numeric integrity level.
+   *Rationale: to assist security and safety analysis.*
+
