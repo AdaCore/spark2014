@@ -234,6 +234,69 @@ where
 Global Aspect
 ~~~~~~~~~~~~~
 
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Language feature:
+
+   * This language feature provides a list of the global data read and updated
+     when the subprogram is called. [Note that the data read can include data
+     used in proof contexts, including assertions.]
+
+#. Needs to be met by language feature:
+
+   * It shall be possible to specify the list of global data read and updated
+     when the subprogram is called. *Rationale: to allow provision of at
+     least the same functionality as SPARK 2005 and to allow modular analysis.*
+
+   * It shall be possible to specify the mode (input, output or both)
+     for each global data item. *Rationale: This matches the presentation of
+     formal parameters, and the information is used by both flow analysis and proof.*
+
+   * It shall be possible to identify globals that are used only in proof contexts.
+     *Rationale: since the list of global data items constrains the data that can be read
+     and updated when the subprogram is called, then the global data list needs to cover
+     data items that are read in proof contexts.*
+
+#. Constraints:
+
+   * Nothing further needed.*
+
+#. Consistency:
+
+   * The mode associated with a formal parameter or volatile variable in a global data list
+     shall be consistent with the mode associated with it at the point of its declaration.
+     *Rationale: this provides an early basic consistency check.*
+
+#. Semantics: 
+
+   * A global data item with an input mode is read on at least one
+     executable path.
+     *Rationale: by definition.*
+
+   * A global data item with an output mode is written on at least one
+     executable path.
+     *Rationale: by definition.*
+
+   * A global data item with an output mode but no input mode is written
+     on all executable paths.
+     *Rationale: to ensure that data items with output mode are always initialized
+     on completion of a call to the subprogram.*
+
+   * A global data item that is only read in a proof context shall not have
+     an input or output mode.
+     *Rationale: the effect of reading data items in a proof context is fundamentally
+     different from the reading of data items outside of a proof context, since the
+     former does not contribute to information flow relations.*
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+
+Language definition
+^^^^^^^^^^^^^^^^^^^
+
 A Global aspect of a subprogram, if present, lists the global items whose values
 are used or affected by a call of the subprogram.
 

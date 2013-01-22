@@ -65,11 +65,11 @@ High-level requirements
 
 #. Consistency:
 
-    * Not applicable.
+    * No further abstract state-specific requirements.
 
 #. Semantics:
 
-    * Not applicable.
+    * No further abstract state-specific requirements.
 
 #. General requirements:
 

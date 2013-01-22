@@ -331,11 +331,11 @@ Generic high-level requirements
 
 #. **Do I need to classify these general requirements? Would be useful.**
 
-#. When specifying program behvaiour in terms of a relation or a set, it shall be
+#. When specifying program behaviour in terms of a relation or a set, it shall be
    possible to explicitly provide a null relation or an empty set.
    *Rationale: to explicitly identify programs that - for example - do not reference
    global data. This is especially needed in the presence of retrospective mode,
-   where absence of a specification does not mean presence of a null specification.*
+   where absence of a specification cannot mean presence of a null specification.*
 
 #. It shall be possible to designate - both visible and hidden - state items that are Volatile
    and for each to give a mode of either in or out.
@@ -345,4 +345,13 @@ Generic high-level requirements
 #. It shall be possible to indicate for both visible and hidden state items
    a numeric integrity level.
    *Rationale: to assist security and safety analysis.*
+
+#. When specifying subprogram behaviour other than via proof statements, it shall be necessary
+   to provide a complete specification.
+   *Rationale:* To allow provision of at least the same functionality as SPARK 2005
+   and to allow modular analysis. Most value is given if the list is complete. Plus ???*
+
+#. Where distinct names are referenced within a given flow analysis specification, then
+   those names shall refer to distinct entities.
+   *Rationale: to support flow analysis and to aid clarity of the interface definition.*
 

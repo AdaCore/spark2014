@@ -265,6 +265,14 @@ have a better way of tracing.
 Language Feature Requirements
 -----------------------------
 
+#. **To discuss with Flo: need to know the properties that need to hold
+   of the graphs that he generates in order for everything to work (really, what
+   are the pre-conditions to the analysis phase and to the graph generation phase).
+   Note that when we add additional rules to the LRM, we are trying to avoid problems
+   with soundness and we have Steve to help us with that: how are we guarding against
+   this in the things that Flo does?**
+
+
 #. Need to go through all the text in this section to draw out stuff where there
    is an outstanding action but I haven't yet recorded it.
 
@@ -452,105 +460,6 @@ Abstract State
 Global
 ^^^^^^
 
-#. Language feature:
-
-   * This language feature provides a list of the global data referenced by the
-     subprogram.
-
-#. Feature definition (use cases?):
-
-   * It shall be possible to specify the complete list of global data used by a given subprogram.
-     *Rationale:* To allow provision of at least the same functionality as SPARK 2005
-     and to allow modular analysis. Plus ???*
-
-   * It shall be possible to specify the mode (input, output or both)
-     for each global data item.*Rationale: This matches the presentation of
-     formal parameters, and the information is used by both flow analysis and proof.*
-
-   * It shall be possible to identify globals that are only used in contracts.
-     *Rationale: these are referenced by the subprogram but do not constitute a
-     global in the usual sense.*
-
-    * It shall be possible to explicitly denote the absence of use of global
-      data. *Rationale: to model subprograms that do not access global data
-      and since absence of a specification of global data usage cannot signify
-      the absence of that usage, due to retrospective mode.*
-
-#. Constraints:
-
-   * The names used in a given list of global data items shall refer to distinct
-     entities.
-     *Rationale: to support flow analysis and to make the interface definition clear.*
-
-   * The list of global data for a given subprogram shall be complete.
-     *Rationale: most value is given if the list is complete.*
-
-#. Consistency:
-
-   * Where a parameter at an enclosing scope is a global in this scope,
-     formal parameter modes and global modes are consistent - i.e. an in out formal
-     parameter can be either an in or an out global mode.
-     *Rationale: allows an early basic consistency check.*
-
-   * Where a global data list contains a volatile variable then the mode of
-     the item in the global data list should match the mode of the item in the
-     abstract state defintion.
-     *Rationale: Accesses to volatile state should be consistent with their
-     universal mode; moreover, note that volatile variables cannot have a
-     mixed input/output mode.*
-     * Note that this relies on volatile varables all appearing in the abstract
-     state list.*
-
-#. Semantics: *Need to sort out the detail in relation to Contract_In and in/out;
-   and also add rationale detail.*
-
-
-   * For each item in the list of global data for a given subprogram:
-     * Need to check this detail carefully to make sure all cases are covered.
-     And see if this detail could be abstracted. Note that I am assuming that if
-     written once and read in a proof context then that is in out, so we need to
-     make sure use of uninitalized variables is checked for proof contexts. If
-     it isn't, then the output could be undefined on some paths. Also, what if assertions
-     are turned off: need to make sure that we still do the check for unitialized
-     variables regarding proof contexts even if they are.*
-
-     * Note that it would be useful to do a table here of written (0, 1, all),
-       read in non-proof context (0, 1, all), read in proof context (0, 1, all),
-       plus column giving mode or error and then presenting it like that.
-
-     * that - either directly or indirectly - is not written by the subprogram on
-       any executable path but is read by the subprogram in a non-proof context
-       on at least one executable path then that item shall have an input mode;
-
-     * that - either directly or indirectly - is not read by the subprogram [in any context] on
-       any executable path but is written by the subprogram on all executable paths
-       then that item shall have an output mode;
-
-     * that - either directly or indirectly - is not read [in any context] and is not written by the
-       subprogram on any executable path, or is written once and not read on
-       an executable path then an error shall be flagged.
-
-     * that - either directly or indirectly - is read at least once [in any context] and
-       written at least once by the subprogram on an executable path then that item shall
-       have a combined input/output mode.
-
-     * that - either directly or indirectly - is not read in a non-proof context and
-       is not written by the subprogram on any executable path but is read in a proof
-       context on an executable path, then that item shall have a mode indicating it is
-       only used in contracts.
-
-     * Do we need rationale detail here?
-
-     * Note that if a proof read is used to determine whether in/out, then
-       we lose the clear relationship with the dependency relation:
-       alternatively, could we make the relevant value have nothing dependent on it?
-       But in the case it has an impact on the program then its impact will
-       be to terminate it, while the subprogram won't terminate. Hence,
-       I think we shouldn't have in/out relate to use only in a proof context.
-       Moreover, if we want to keep the Contract_In aspect then I think it should
-       list everything that is used in the proofs, since normal usage by a subprogram
-       is fundamentally different to usage in a proof context, at least terms
-       of the possble outcomes.
 
 Depends
 ^^^^^^^
