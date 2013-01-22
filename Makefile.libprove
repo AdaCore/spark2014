@@ -60,4 +60,5 @@ $(WHY_STANDARD):
 	why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_spec.mlw > /dev/null
 	why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_body.mlw > /dev/null
 	why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null
+	why3 -L ../share/gnatprove/theories --type-only -L . $*__package.mlw > /dev/null
 	touch $@
