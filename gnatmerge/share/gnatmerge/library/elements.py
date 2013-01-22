@@ -24,7 +24,10 @@ def elements_union_gen(iter):
             content = i
 
         for e in content:
-            yield e
+            if isinstance(content, dict):
+                yield content[e]
+            else:
+                yield e
 
 @log_function
 def elements_union(iter):
@@ -33,6 +36,29 @@ def elements_union(iter):
     Same as elements_union_gen, but returns a set instead of a generator.
     """
     return { e for e in elements_union_gen(iter) }
+
+@log_function
+def elements_union_0(iter):
+    """Extension of elements_union with None as a zero element
+
+    i.e. elements_union_0([Any_Set, None]) == None
+    """
+    if None in iter:
+        return None
+    else:
+        return elements_union(iter)
+
+@log_function
+def elements_union_1(iter):
+    """Extension of elements_union with None as an identity element
+
+    i.e. elements_union_1([Any_Set, None]) == Any_Set
+    """
+    l = [i for i in iter if i is not None]
+    if len(l) == 0:
+        return None
+    else:
+        return elements_union(l)
 
 @log_function
 def dicts_union(dicts):
@@ -64,3 +90,10 @@ def unit_testing():
     assert(dicts_union([p1, p2, p3]) == {"A" : {11, 12, 31, 32},
                                          "B" : {21, 22},
                                          "C" : {41, 42}})
+
+    sn = None
+    se = set([])
+    s1 = {1, 2}
+    s2 = {3, 4}
+    assert(elements_union_1([sn, se, s1, s2]) == {1, 2, 3, 4})
+    assert(elements_union_0([sn, se, s1, s2]) == None)

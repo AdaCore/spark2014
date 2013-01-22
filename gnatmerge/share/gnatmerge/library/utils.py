@@ -2,6 +2,7 @@
 """
 
 import types
+import inspect
 
 def attr_str(object, attribute_name, format="%s"):
     """Formatted string for object.attribute_name
@@ -47,3 +48,16 @@ def final_singleton(cls):
             instances[cls] = cls()
         return instances[cls]
     return getinstance
+
+def iterable(e):
+    """Make an object iterable
+
+    If e is not iterable or is not a generator, return the corresponding
+    singleton generator.
+    """
+    if '__iter__' in dir(e) or inspect.isgeneratorfunction(e):
+        return e
+    else:
+        def one_time_iterator():
+            yield e
+        return one_time_iterator()

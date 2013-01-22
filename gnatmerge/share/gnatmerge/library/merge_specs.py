@@ -79,6 +79,33 @@ class MergeSem:
         """
         assert(False)
 
+    @log_method
+    def apply(self, model):
+        """Model morphism
+
+        From the model in parameter, build and return a new model that
+        represents only the truth value of the spec.
+
+        For example, suppose that the models that we consider are such that
+        they associate atoms with counterexamples:
+
+            model = {KO : None, OK : overflow check not proved}
+
+        ...and that we consider the spec named ALL_OK, with the expression
+
+            ALL_PROVED = some OK and no KO
+
+        ...then this method will return a model that associate the name of
+        the spec (ALL_PROVED):
+
+            result = {ALL_PROVED : overflow check not proved}
+
+        REMARKS
+          This method is abstract and should be implemented by children
+          of this class.
+        """
+        assert(False)
+
 class FreeSetMergeUnary(MergeSem):
     """Free set semantic helper for unary operators in spec merges
 
@@ -99,6 +126,14 @@ class FreeSetMergeUnary(MergeSem):
         """
         self.name = None
         self.atom = atom
+
+    @log_method
+    def apply(self, model):
+        """Implementation of MergeSem.apply for unary operators"""
+        if self.check(model):
+            return {self.name}
+        else:
+            return set([])
 
 class FreeSetMergeSome(FreeSetMergeUnary):
     """Free set semantic helper for some-quantified atoms in spec merges
@@ -187,6 +222,14 @@ class FreeSetMergeBinary(MergeSem):
         return elements_union([operand.proof(model, result)
                                for operand in self.operands
                                if operand.check(model) == result])
+
+    @log_method
+    def apply(self, model):
+        """Implementation of MergeSem.apply for binary ops"""
+        if self.check(model):
+            return {self.name}
+        else:
+            return set([])
 
 class FreeSetMergeAnd(FreeSetMergeBinary):
     """Free set semantic helper for and-binded helpers
@@ -458,6 +501,12 @@ class MergeSpec:
         """Return a proof of result for model - See MergeSem.proof"""
         return self.sem.proof(model, result)
 
+    @log_method
+    def apply(self, model):
+        """Model morphism - See MergeSem.apply
+        """
+        return self.sem.apply(model)
+
     def __str__(self):
         """x.__str__() <==> str(x)"""
         spec = attr_str(self, 'spec', ' %s')
@@ -473,21 +522,25 @@ def unit_testing():
     # A simple case: merging fragments with two possible status (OK or KO);
     # and making sure that there are no KO in these fragments, and at least
     # one OK to detect the case where no fragment has been contributed.
-    spec = MergeSpec("some OK and no KO", FreeSetMergeFactory())
+    spec = MergeSpec("some OK and no KO", FreeSetMergeFactory(), name="ALL_OK")
 
     assert(spec.check({'OK'}))
+    assert(spec.apply({'OK'}) == {"ALL_OK"})
     assert(spec.proof({'OK'}, True) == {'OK'})
     assert(spec.proof({'OK'}, False) == set([]))
 
     assert(not spec.check({'KO', 'OK'}))
+    assert(spec.apply({'OK', 'KO'}) == set([]))
     assert(spec.proof({'KO', 'OK'}, True) == {'OK'})
     assert(spec.proof({'KO', 'OK'}, False) == {'KO'})
 
     assert(not spec.check({'KO'}))
+    assert(spec.apply({'KO'}) == set([]))
     assert(spec.proof({'KO'}, True) == set([]))
     assert(spec.proof({'KO'}, False) == {'KO'})
 
     assert(not spec.check(set([])))
+    assert(spec.apply(set([])) == set([]))
     assert(spec.proof(set([]), True) == set([]))
     assert(spec.proof(set([]), False) == set([]))
 
