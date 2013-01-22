@@ -199,7 +199,7 @@ def gnatprove(opt=["-P", "test.gpr"]):
     for line in out:
         print line
 
-def prove(opt=None, steps=max_steps, vc_timeout=vc_timeout(), mode="check"):
+def prove(opt=None, steps=max_steps, vc_timeout=vc_timeout(), mode="prove"):
     """Call gnatprove with standard options"""
     if opt is None:
         opt = []
@@ -212,7 +212,7 @@ def prove(opt=None, steps=max_steps, vc_timeout=vc_timeout(), mode="check"):
 
 def prove_all(opt=None, steps=max_steps, vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
-    prove(opt, steps, vc_timeout, "prove")
+    prove(opt, steps, vc_timeout)
 
 def to_list(arg):
     """Convert to list
