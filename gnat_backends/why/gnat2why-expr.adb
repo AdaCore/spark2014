@@ -425,7 +425,7 @@ package body Gnat2Why.Expr is
             L_Name   : constant String := Full_Name (Lvalue);
             L_Id     : constant W_Identifier_Id := To_Why_Id (Lvalue);
          begin
-            if Is_Mutable (Lvalue) then
+            if Is_Mutable_In_Why (Lvalue) then
                return New_Assignment
                  (Ada_Node => N,
                   Name     => L_Id,
@@ -4403,7 +4403,7 @@ package body Gnat2Why.Expr is
       else
          T := +To_Why_Id (Ent, Domain);
       end if;
-      if Is_Mutable (Ent) and then Params.Ref_Allowed then
+      if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Expr, Right => +T);
       end if;
 

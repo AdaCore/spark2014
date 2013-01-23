@@ -622,7 +622,7 @@ package body Why.Inter is
             end if;
 
          when Object_Kind =>
-            if not Is_Mutable (E)
+            if not Is_Mutable_In_Why (E)
               or else (Ekind (E) = E_Discriminant
                          and then Is_Formal_Container_Capacity (E))
             then

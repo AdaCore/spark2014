@@ -312,7 +312,7 @@ package body Gnat2Why.Types is
      return W_Simple_Value_Type_Id
    is
       Mutable : constant Boolean :=
-                  not Is_Primitive and then Is_Mutable (N);
+                  not Is_Primitive and then Is_Mutable_In_Why (N);
    begin
       return Why_Prog_Type_Of_Ada_Type (Etype (N), Mutable);
    end  Why_Prog_Type_Of_Ada_Obj;

@@ -28,7 +28,7 @@ with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Decls is
 
-   function Is_Mutable (N : Node_Id) return Boolean;
+   function Is_Mutable_In_Why (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation
 

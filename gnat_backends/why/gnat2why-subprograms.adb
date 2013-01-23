@@ -368,7 +368,8 @@ package body Gnat2Why.Subprograms is
             Result (Count) :=
               (Ada_Node => Id,
                B_Name   => Name,
-               Modifier => (if Is_Mutable (Id) then Ref_Modifier else None),
+               Modifier =>
+                 (if Is_Mutable_In_Why (Id) then Ref_Modifier else None),
                B_Type   => +Why_Prog_Type_Of_Ada_Obj (Id, True));
             Next (Param);
             Count := Count + 1;

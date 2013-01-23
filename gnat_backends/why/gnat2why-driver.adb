@@ -377,7 +377,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when Object_Kind =>
-            if not Is_Mutable (E) then
+            if not Is_Mutable_In_Why (E) then
                if In_Alfa (E) then
                   Translate_Constant (File, E);
                end if;

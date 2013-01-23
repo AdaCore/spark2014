@@ -204,7 +204,7 @@ package body Gnat2Why.Decls is
    -- Is_Mutable --
    ----------------
 
-   function Is_Mutable (N : Node_Id) return Boolean
+   function Is_Mutable_In_Why (N : Node_Id) return Boolean
    is
    begin
 
@@ -221,7 +221,7 @@ package body Gnat2Why.Decls is
       else
          return True;
       end if;
-   end Is_Mutable;
+   end Is_Mutable_In_Why;
 
    ------------------------
    -- Translate_Variable --
