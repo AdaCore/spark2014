@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
+with Errout;                use Errout;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -638,11 +639,28 @@ package body Why.Gen.Expr is
    function New_Located_Label (N : Node_Id; Is_VC : Boolean)
                                return W_Identifier_Id is
 
-      Slc    : Source_Ptr := Sloc (N);
+      Slc    : Source_Ptr;
       Buf    : Unbounded_String := Null_Unbounded_String;
       Prefix : constant String :=
         (if Is_VC then "GP_Sloc_VC:" else "GP_Sloc:");
    begin
+
+      --  For VCs, we mostly want to point directly to the relevant node [N].
+      --  For other nodes (e.g. pretty printing labels) it's more sensible to
+      --  point to the beginning of the expression instead of the operator.
+      --  This is achieved by calling [First_Sloc] instead of [Sloc]. However,
+      --  [First_Sloc] does not work for N_And_Then nodes in assertions which
+      --  are rewritten in a strange manner, so we do not do this optimization
+      --  in that case. See also [New_Pretty_Label].
+
+      if Is_VC or else
+        (Comes_From_Source (N) and then Original_Node (N) /= N and then
+        Nkind (Original_Node (N)) = N_And_Then) then
+         Slc := Sloc (N);
+      else
+         Slc := First_Sloc (N);
+      end if;
+
       loop
          declare
             File   : constant String := File_Name (Slc);
