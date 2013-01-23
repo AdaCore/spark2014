@@ -300,16 +300,14 @@ variable's declaration.
 
    end Raw_Input_Port;
 
-For future issues of this document:
-"""""""""""""""""""""""""""""""""""
-
-#. Further semantic detail regarding Volatile state and integrity levels.
+.. todo: Further semantic detail regarding Volatile state and integrity levels
+         needs to be added.
 
 
 Package-level Global, Depends and Initializes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Detail TBD**
+**High-level detail TBD.**
 
 
 Package Bodies
@@ -343,12 +341,6 @@ Refined State Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Language feature:
-
-   * This language feature allows an explicit statement of the hidden state declared
-     in a package and the mapping of that hidden state to the state abstractions
-     declared for the package.
-
 #. Needs to be met by language feature:
 
    * For each state abstraction, it shall be possible to define the set of hidden
@@ -356,7 +348,10 @@ High-level requirements
      hidden state items can either be concrete state or further state abstractions).
      *Rationale: the semantics of properties defined in terms of abstract state
      can only be precisely defined in terms of the corresponding concrete state,
-     though nested abstraction is also necessary to manage hierarchies of data.*
+     though nested abstraction is also necessary to manage hierarchies of data.
+     Moreover, there may be multiple possible refinements for a given abstract specification
+     and so the user should be able to specify what they actually want. This also
+     supports stepwise development.*
 
 #. Constraints:
 
@@ -372,11 +367,11 @@ High-level requirements
 
 #. Consistency:
 
-   * Nothing further needed.
+   * No further Refined state-specific requirements needed.
 
 #. Semantics:
 
-   * Nothing further needed.
+   * No further Refined state-specific requirements needed.
 
 #. General requirements:
 
@@ -403,233 +398,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Refined State Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` must follow
-the grammar of ``state_and_category_list`` given below.
-
-.. centered:: **Syntax**
-
-::
-
-  state_and_category_list          ::= (state_and_category {, state_and_category})
-  state_and_category               ::= abstract_state_name => constituent_with_property_list
-  abstract_state_name              ::= state_name | null
-  constituent_with_property_list   ::= constituent_with_property
-                                     | (constituent_with_property {, constituent_with_property})
-  constituent_with_property        ::= constituent
-                                     | (constituent_list with property_list)
-  constituent_list                 ::= constituent
-                                     | (constituent {, constituent})
-
-where
-
-  ``constituent ::=`` *variable_*\ ``name | state_name``
-
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: 7.2.2 Syntax
-
-.. centered:: **Legality Rules**
-
-#. A Refined State Aspect may only appear in ``package_body``. [The use
-   of ``package_body`` rather than package body allows this aspect to be specified
-   for generic package bodies.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a package declaration has an Abstract State Aspect its body
-   must have a Refined State Aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a package declaration does not have an Abstract State Aspect,
-   then the corresponding package body *may* have a Refined State Aspect
-   with exactly one ``state_and_category`` where the ``abstract_state_name`` is **null**.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A Refined State Aspect of a package body has extended
-   visibility; it is able to refer to a *variable* declared in the
-   package body, or a ``state_name`` or *variable* declared in the
-   visible part of a package, declared immediately within the package
-   body.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. Every item of the package's hidden state must appear as a
-   ``constituent`` in its Refined State aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. Each ``state_name`` declared in a package specification must appear
-   exactly once as an ``abstract_state_name`` in the
-   Refined State Aspect of the body of the package.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a ``constituent`` has the same name as an
-   ``abstract_state_name`` it can only be a ``constituent`` of that
-   ``abstract_state_name`` and it must be the only ``constituent`` of
-   the ``abstract_state_name``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The ``identifier`` of a ``simple_property`` shall be "Volatile",
-   "Input", or "Output".
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a ``property_list`` includes the ``simple_property`` "Volatile",
-   then the same ``property_list`` shall also include exactly one of
-   ``Input`` or ``Output``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The ``identifier`` of a ``name_value_property`` shall be
-   "Integrity".
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The ``expression`` of an "Integrity" property shall be a static
-   expression of any integer type.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The same identifier shall not appear more than once in a property
-   list.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. There should be at most one **null** ``abstract_state_name`` and,
-   if it is present it must be non-volatile and the last entry of the
-   ``state_and_category_list``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. A Refined State Aspect defines the *variables* and each
-   subordinate ``state_name`` which are the constituents that comprise
-   the hidden state represented by the ``state_name`` declared in the
-   Abstract State Aspect.
-
-#. Each ``constituent`` of the hidden state of must appear exactly
-   once in a ``constituent_list`` of exactly one
-   ``state_and_category``; that is each ``constituent`` must
-   be a constituent of one and only one ``state_name``.
-#. A *variable* which is a ``constituent`` is an *entire variable*; it
-   is not a component of a containing object.
-#. If an ``abstract_state_name`` and its ``constituent`` have the same
-   name this represents the simple mapping of an abstract
-   ``state_name`` on to a concrete *variable* of the same name.
-#. A ``constituent`` with a ``property_list`` assumes the properties
-   given in the list:
-
-   * The property Volatile indicates that the ``constituent`` is
-     Volatile and this ``simple_property`` must be supplemented by one
-     of the ``simple_properties`` Input or Output indicating whether
-     the ``constituent`` is a Volatile Input or a Volatile Output.
-   * The ``name_value_property`` Integrity is used to specify an
-     integrity level for the ``constituent``.  Integrity levels may be
-     used in information flow analysis to control the flow of
-     information from a less critical to a more critical object or
-     ``state_name``.
-
-#. A ``state_name`` declared in the Abstract State Aspect which
-   has not designated as Volatile may be refined on to one or more
-   Volatile Input or Output ``constituents`` as well as non-volatile
-   ``constituents``.
-#. If a ``state_name`` declared in the Abstract State Aspect has been
-   designated as Volatile with a ``property`` of Input (Output) then
-   at least one ``constituent`` of the ``state_name`` must also be
-   designated as Volatile with a ``property`` of Input (Output) in
-   the Refined State Aspect.
-#. A **null** ``abstract_state_name`` represents a hidden state
-   component of a package which has no logical effect on the view of
-   the package visible to a user.  An example would be a cache used to
-   speed up an operation but does not have an effect on the result of
-   the operation.
-#. A non-volatile ``constituent`` of a **null** ``abstract_state_name``
-   must be initialized by package elaboration.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. If a package has no Abstract State Aspect or no Pure aspect or
-   pragma it may have internal state.  First an implicit
-   Refined State Aspect is synthesized using the predefined
-   categories of state, Non_Volatile_Initialized,
-   Non_Volatile_Uninitialized, Volatile_Input and Volatile_Output.  An
-   implicit Abstract State Aspect is synthesized from the
-   synthesized Refined State Aspect.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with state abstraction and refinement.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   -- Here, we present a package Q that declares three abstract states:
-   package Q
-      with Abstract_State => (A, B, (C with Volatile, Input)),
-           Initializes    => (A, B)
-   is
-      ...
-   end Q;
-
-   -- The package body refines
-   --   A onto three concrete variables declared in the package body
-   --   B onto the abstract state of a nested package
-   --   C onto a raw port in the package body
-   package body Q
-      with Refined_State => (A => (F, G, H),
-                             B => R.State,
-                             C => (Port with Volatile, Input))
-   is
-      F, G, H : Integer := 0; -- all initialized as required
-
-      Port : Integer
-         with Volatile, Input;
-
-      package R
-         with Abstract_State => State,
-              Initializes    => State -- initialized as required
-      is
-         ...
-      end R;
-
-      ...
-
-   end Q;
+*To be completed in the Milestone 4 version of this document.*
 
 
 Abstract State and Package Hierarchy
@@ -691,49 +460,75 @@ of the external device.
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a package has a Depends aspect or an
-Initializes Aspect which contains an ``export`` which is a
-``state_name`` then each ``constituent`` of the ``state_name`` must be
-initialized during package elaboration or be designated as Volatile,
-in which case they are implicitly initialized.  A ``constituent`` of a
-non-volatile ``state_name`` of a package which does not appear in the
-Initializes Aspect of the package must not be initialized during
-package elaboration.  A ``constituent`` of a Volatile ``state_name``
-which is non-volatile must be initialized during package elaboration.
+**High-level detail TBD.**
 
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. For each ``export`` that appears in a Depends aspect or
-   Initializes aspect of a package declaration the following must
-   be satisfied:
-
-   * Each ``export`` that is a *variable* must be initialized at its
-     point of declaration, initialized by the sequence of statements
-     of the package, or by an embedded package or a private child
-     package which names the ``export`` in its Depends aspect
-     or Initializes aspect;
-   * For an ``export`` which is a ``state_name``, each ``constituent``
-     of the ``export`` that is a *variable* must be initialized at
-     its point of declaration, initialized by the sequence of
-     statements of the package, or by an embedded package or a private
-     child package which names the ``export`` in its
-     Depends aspect or Initializes aspect;
-   * For an ``export`` which is a ``state_name`` each ``constituent``
-     of the ``export`` that is a ``state_name`` must appear in the
-     Depends aspect or Initializes aspect of an embedded
-     package or private child package.
-
-#. A non-volatile ``constituent`` of a Volatile ``state_name`` must be
-   initialized during package elaboration.
-#. Each ``constituent`` of a **null** ``abstract_state_name`` must be
-   initialized implicitly or during package elaboration.
 
 .. _refined-global-aspect:
 
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
+
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Needs to be met by language feature:
+
+   * Where a global data list referring to abstract state has been specified for a subprogram,
+     it shall be possible to provide a refined global data list that takes account of the
+     refinement of that abstract state.
+     *Rationale: the semantics of properties defined in terms of abstract state
+     can only be precisely defined in terms of the corresponding concrete state,
+     though nested abstraction is also necessary to manage hierarchies of data.
+     Moreover, there may be multiple possible refinements for a given abstract specification
+     and so the user should be able to specify what they actually want. This also
+     supports stepwise development.*
+
+#. Constraints:
+
+   * No further Refined Global-specific requirements needed.
+
+#. Consistency: **Possibly combine rationale in one block; perhaps also take wording from 2005 LRM.**
+
+   * Let *Abs* be the abstraction function defined by state refinement.
+     Let *G* be the global data list and *RG* be the refined global data list. Then
+
+     * Let *Y* be a data item in *G*. If every data item *X* in *RG*
+       where *Abs (X) = Y* is such that its mode indicates it is only used in a proof
+       context, then *Abs (X)* shall have the same mode in *G*. Otherwise:
+       
+       *Rationale: In general, modes should be preserved. However, if one refinement
+       constituent of a state abstractionn has an input and/or output mode, then
+       it is no longer of interest whether another constituent is only used in a
+       proof context.*
+
+     * The mode of *X* in *RG* must be a mode of *Abs (X)* in *G*.
+       *Rationale: Modes should be preserved by refinement.*
+
+     * If *mode X* is in *RG* but not all constituents of *Abs (X)* are in *RG*
+       then *Abs (X)* must appear in *G* with at least input mode.
+       *Rationale: In this case, Abs (X) is not fully initialized by the
+       subprogram and the relevant components must be intialized prior to calling
+       the subprogram.*
+
+     * If *Y* appears in *G*, then at least one *X* such that *Abs (X) = Y*
+       must appear in *RG*.
+       *Rationale: By definition of abstraction.*
+ 
+
+#. Semantics:
+
+   * As per Global.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+.. todo: If it ends up being possible to refine null abstract state, then refinements of such
+         state could appear in refined globals statements, though they would need
+         to have mode in out.
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
 Refined Global Aspect applied to its body or body stub. The

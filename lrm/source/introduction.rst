@@ -361,17 +361,25 @@ Generic high-level requirements
 #. Where it is possible to specify subprogram behaviour using a language feature that
    refers to abstract state, it shall be possible to define a corresponding *refined*
    version of the language feature that refers to hidden state.
-   **Rationale: may be multiple refinements for a given abstract specification and so the user should
-   specify what they actually want; supports stepwise development
+   **Rationale: there may be multiple possible refinements for a given abstract specification
+   and so the user should be able to specify what they actually want. This also
+   supports stepwise development.**
 
+#. Add a requirement relating to simplicity: this will allow us to do things like
+   state that names don't appear more than once in a given list, for example.
 
 General Actions
 ---------------
 
+#. Remove references - other than in the Introduction - to whether things are
+   in or out of SPARK and add a comment to say that that detail is still to
+   be defined.
+
 #. Make clear that the wording of the HLRs doesn't need to be as precise as the RM
    wording, so provided the broad intent is clear, we shouldn't be raising comments on them.
 
-#. Do we need something in general on visibility?
+#. Do we need something in general on visibility? That is, an item where we state what
+   a given language feature can refer to?
 
 #. Note that we currently require from Global that outs are written on all executable paths,
    but nothing like that in relation to Depends.
@@ -383,5 +391,8 @@ General Actions
 
 #. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
    a single list of possibilities for the future?
+
+#. May need to present the high-level requirements a bit differently, as they appear
+   as if they could be a bit more difficult to read.
 
 
