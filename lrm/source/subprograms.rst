@@ -227,7 +227,6 @@ where
 Global Aspects
 ~~~~~~~~~~~~~~
 
-<<<<<<< HEAD
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -286,10 +285,7 @@ High-level requirements
 Language definition
 ^^^^^^^^^^^^^^^^^^^
 
-A Global aspect of a subprogram, if present, lists the global items whose values
-=======
 A Global aspect of a subprogram lists the global items whose values
->>>>>>> TICKET:[M104-011]
 are used or affected by a call of the subprogram.
 
 The Global aspect is introduced by an ``aspect_specification`` where
@@ -631,6 +627,11 @@ where
    [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
    and calling of subprograms whose implementation is not in |SPARK|.]
 
+#. A function which does not have an explicit Depends aspect
+   is assumed to have the ``dependency_relation`` 
+   that its result is dependent on all of its inputs.  
+   [Generally a Depends aspect is not required for functions.]
+   
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Depends aspect
