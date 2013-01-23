@@ -338,32 +338,20 @@ package body Alfa.Util is
      (Stmts : List_Id) return List_Of_Nodes.List
    is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
-      Insp_Stmt  : Node_Id;
       Flat_Stmts : List_Of_Nodes.List;
 
    begin
-
-      --  Cur_Stmt is the pointer that allows to iterate via "Next", but
-      --  Insp_Stmt is the actual node we look at. In most cases, these are the
-      --  same, but in some cases, we skip some part of the tree (e.g. to skip
-      --  an implicit label declaration node)
-
       while Present (Cur_Stmt) loop
-         Insp_Stmt := Cur_Stmt;
-         if Nkind (Cur_Stmt) = N_Implicit_Label_Declaration then
-            Insp_Stmt := Label_Construct (Cur_Stmt);
-         end if;
-         case Nkind (Insp_Stmt) is
+         case Nkind (Cur_Stmt) is
             when N_Block_Statement =>
-               if Present (Declarations (Insp_Stmt)) then
+               if Present (Declarations (Cur_Stmt)) then
                   Append (Flat_Stmts,
-                          Get_Flat_Statement_List (Declarations (Insp_Stmt)));
+                          Get_Flat_Statement_List (Declarations (Cur_Stmt)));
                end if;
 
-               Append
-                 (Flat_Stmts,
-                  Get_Flat_Statement_List
-                    (Statements (Handled_Statement_Sequence (Insp_Stmt))));
+               Append (Flat_Stmts,
+                       Get_Flat_Statement_List
+                         (Statements (Handled_Statement_Sequence (Cur_Stmt))));
 
             when N_Subprogram_Body | N_Subprogram_Declaration =>
 
@@ -374,7 +362,7 @@ package body Alfa.Util is
                null;
 
             when others =>
-               Flat_Stmts.Append (Insp_Stmt);
+               Flat_Stmts.Append (Cur_Stmt);
          end case;
 
          Nlists.Next (Cur_Stmt);
