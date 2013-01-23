@@ -330,11 +330,11 @@ package body Alfa.Util is
       end if;
    end Get_Expression_Function;
 
-   -----------------------------
-   -- Get_Flat_Statement_List --
-   -----------------------------
+   ---------------------------------------------
+   -- Get_Flat_Statement_And_Declaration_List --
+   ---------------------------------------------
 
-   function Get_Flat_Statement_List
+   function Get_Flat_Statement_And_Declaration_List
      (Stmts : List_Id) return List_Of_Nodes.List
    is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
@@ -346,11 +346,12 @@ package body Alfa.Util is
             when N_Block_Statement =>
                if Present (Declarations (Cur_Stmt)) then
                   Append (Flat_Stmts,
-                          Get_Flat_Statement_List (Declarations (Cur_Stmt)));
+                          Get_Flat_Statement_And_Declaration_List
+                            (Declarations (Cur_Stmt)));
                end if;
 
                Append (Flat_Stmts,
-                       Get_Flat_Statement_List
+                       Get_Flat_Statement_And_Declaration_List
                          (Statements (Handled_Statement_Sequence (Cur_Stmt))));
 
             when others =>
@@ -361,13 +362,15 @@ package body Alfa.Util is
       end loop;
 
       return Flat_Stmts;
-   end Get_Flat_Statement_List;
+   end Get_Flat_Statement_And_Declaration_List;
 
-   ------------------------
-   -- Get_Statement_List --
-   ------------------------
+   ----------------------------------------
+   -- Get_Statement_And_Declaration_List --
+   ----------------------------------------
 
-   function Get_Statement_List (Stmts : List_Id) return List_Of_Nodes.List is
+   function Get_Statement_And_Declaration_List
+     (Stmts : List_Id) return List_Of_Nodes.List
+   is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
       New_Stmts : List_Of_Nodes.List;
 
@@ -378,7 +381,7 @@ package body Alfa.Util is
       end loop;
 
       return New_Stmts;
-   end Get_Statement_List;
+   end Get_Statement_And_Declaration_List;
 
    -------------------------
    -- Get_Subprogram_Body --

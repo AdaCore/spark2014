@@ -162,17 +162,20 @@ package Gnat2Why.Expr is
       Params        : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
-   function Transform_Statements (Stmts : List_Of_Nodes.List) return W_Prog_Id;
-   function Transform_Statements (Stmts : List_Id) return W_Prog_Id;
-   --  Transforms a list of statements into a Why expression. An empty list is
-   --  transformed into the void expression.
+   function Transform_Statements_And_Declarations
+     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id;
+   function Transform_Statements_And_Declarations
+     (Stmts_And_Decls : List_Id) return W_Prog_Id;
+   --  Transforms a list of statements and declarations into a Why expression.
+   --  An empty list is transformed into the void expression.
 
-   function Transform_Statements
-     (Cur_Stmt  : Node_Id;
-      Prev_Prog : W_Prog_Id) return W_Prog_Id;
-   --  Transform the next statement Cur_Stmt in a list of statements, where
-   --  Prev_Prog is the transformation of the previous statements in the list.
-   --  This allows treating the case where Cur_Stmt is a pragma Assert_And_Cut.
+   function Transform_Statement_Or_Declaration_In_List
+     (Stmt_Or_Decl : Node_Id;
+      Prev_Prog    : W_Prog_Id) return W_Prog_Id;
+   --  Transform the next statement or declaration Cur, inside a list of
+   --  statements and declarations. Prev_Prog is the transformation of the
+   --  previous statements and declarations in the list. This allows treating
+   --  the case where Cur is a pragma Assert_And_Cut.
 
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
       return W_Prog_Id;

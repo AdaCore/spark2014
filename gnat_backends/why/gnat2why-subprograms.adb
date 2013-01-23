@@ -633,7 +633,7 @@ package body Gnat2Why.Subprograms is
              +Compute_Context
                (Params,
                 E,
-                Transform_Statements
+                Transform_Statements_And_Declarations
                   (Statements
                      (Handled_Statement_Sequence (Body_N))),
               Post_Check)));

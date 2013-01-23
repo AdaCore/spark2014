@@ -115,12 +115,12 @@ package body Gnat2Why.Expr.Loops is
    --  to their saved values, returned in Tmp_Vars.
 
    procedure Transform_Loop_Body_Statements
-     (Stmts        : List_Of_Nodes.List;
-      Within_Loop  : Boolean;
-      Init_Prog    : out W_Prog_Id;
-      Body_Prog    : out W_Prog_Id;
-      Final_Prog   : out W_Prog_Id;
-      Variant_Tmps : out Node_Lists.List);
+     (Stmts_And_Decls : List_Of_Nodes.List;
+      Within_Loop     : Boolean;
+      Init_Prog       : out W_Prog_Id;
+      Body_Prog       : out W_Prog_Id;
+      Final_Prog      : out W_Prog_Id;
+      Variant_Tmps    : out Node_Lists.List);
    --  Returns Why nodes for the transformation of the list of statements and
    --  declaration Stmts from a loop body:
    --  * Init_Prog is the part to put at the start
@@ -324,12 +324,12 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------------
 
    procedure Transform_Loop_Body_Statements
-     (Stmts        : List_Of_Nodes.List;
-      Within_Loop  : Boolean;
-      Init_Prog    : out W_Prog_Id;
-      Body_Prog    : out W_Prog_Id;
-      Final_Prog   : out W_Prog_Id;
-      Variant_Tmps : out Node_Lists.List)
+     (Stmts_And_Decls : List_Of_Nodes.List;
+      Within_Loop     : Boolean;
+      Init_Prog       : out W_Prog_Id;
+      Body_Prog       : out W_Prog_Id;
+      Final_Prog      : out W_Prog_Id;
+      Variant_Tmps    : out Node_Lists.List)
    is
       One_Variant_Prog                  : W_Prog_Id;
       One_Variant_Progress_Pred         : W_Pred_Id;
@@ -342,18 +342,18 @@ package body Gnat2Why.Expr.Loops is
       Body_Prog := New_Void;
       Final_Prog := New_Void;
 
-      for Stmt of Stmts loop
+      for Stmt_Or_Decl of Stmts_And_Decls loop
 
          --  Loop variants are handled specially to populate Init_Prog and
          --  Final_Prog with code that must occur before or after Body_Prog.
 
-         if Is_Pragma (Stmt, Pragma_Loop_Variant) then
+         if Is_Pragma (Stmt_Or_Decl, Pragma_Loop_Variant) then
 
             --  Generate the Why expressions for checking absence of run-time
             --  errors and variant progress.
 
             Transform_Loop_Variant
-              (Stmt                  => Stmt,
+              (Stmt                  => Stmt_Or_Decl,
                Check_Prog            => One_Variant_Prog,
                Progress_Pred         => One_Variant_Progress_Pred,
                Same_Or_Progress_Pred => One_Variant_Same_Or_Progress_Pred,
@@ -381,7 +381,7 @@ package body Gnat2Why.Expr.Loops is
                    ((1 => Body_Prog,
                      2 => New_Ignore (Prog => One_Variant_Prog),
                      3 => New_Located_Assert
-                            (Ada_Node => Stmt,
+                            (Ada_Node => Stmt_Or_Decl,
                              Pred     => One_Variant_Progress_Pred,
                              Reason   => VC_Loop_Variant),
                      4 => One_Variant_Update));
@@ -390,7 +390,7 @@ package body Gnat2Why.Expr.Loops is
                  Sequence
                    (Final_Prog,
                     New_Located_Assert
-                      (Ada_Node => Stmt,
+                      (Ada_Node => Stmt_Or_Decl,
                        Pred     => One_Variant_Same_Or_Progress_Pred,
                        Reason   => VC_Loop_Variant));
 
@@ -412,7 +412,7 @@ package body Gnat2Why.Expr.Loops is
                  Sequence
                    (Final_Prog,
                     New_Located_Assert
-                      (Ada_Node => Stmt,
+                      (Ada_Node => Stmt_Or_Decl,
                        Pred     => One_Variant_Same_Or_Progress_Pred,
                        Reason   => VC_Loop_Variant));
             end if;
@@ -420,8 +420,9 @@ package body Gnat2Why.Expr.Loops is
          --  Transform a regular statement
 
          else
-            Body_Prog := Transform_Statements (Cur_Stmt  => Stmt,
-                                               Prev_Prog => Body_Prog);
+            Body_Prog := Transform_Statement_Or_Declaration_In_List
+                           (Stmt_Or_Decl => Stmt_Or_Decl,
+                            Prev_Prog    => Body_Prog);
          end if;
       end loop;
    end Transform_Loop_Body_Statements;
@@ -476,7 +477,7 @@ package body Gnat2Why.Expr.Loops is
    begin
       --  Retrieve the different parts of the loop
 
-      Loop_Stmts := Get_Flat_Statement_List (Loop_Body);
+      Loop_Stmts := Get_Flat_Statement_And_Declaration_List (Loop_Body);
       Get_Loop_Invariant
         (Loop_Stmts      => Loop_Stmts,
          Initial_Stmts   => Initial_Stmts,
@@ -486,24 +487,27 @@ package body Gnat2Why.Expr.Loops is
 
       --  Transform statements before and after the loop invariants
 
-      Transform_Loop_Body_Statements (Stmts        => Initial_Stmts,
-                                      Within_Loop  => False,
-                                      Init_Prog    => Initial_Unrolled_Init,
-                                      Body_Prog    => Initial_Unrolled_Body,
-                                      Final_Prog   => Initial_Unrolled_Final,
-                                      Variant_Tmps => Initial_Unrolled_Tmps);
-      Transform_Loop_Body_Statements (Stmts        => Final_Stmts,
-                                      Within_Loop  => True,
-                                      Init_Prog    => Final_Loop_Init,
-                                      Body_Prog    => Final_Loop_Body,
-                                      Final_Prog   => Final_Loop_Final,
-                                      Variant_Tmps => Final_Loop_Tmps);
-      Transform_Loop_Body_Statements (Stmts        => Initial_Stmts,
-                                      Within_Loop  => True,
-                                      Init_Prog    => Initial_Loop_Init,
-                                      Body_Prog    => Initial_Loop_Body,
-                                      Final_Prog   => Initial_Loop_Final,
-                                      Variant_Tmps => Initial_Loop_Tmps);
+      Transform_Loop_Body_Statements
+        (Stmts_And_Decls => Initial_Stmts,
+         Within_Loop     => False,
+         Init_Prog       => Initial_Unrolled_Init,
+         Body_Prog       => Initial_Unrolled_Body,
+         Final_Prog      => Initial_Unrolled_Final,
+         Variant_Tmps    => Initial_Unrolled_Tmps);
+      Transform_Loop_Body_Statements
+        (Stmts_And_Decls => Final_Stmts,
+         Within_Loop     => True,
+         Init_Prog       => Final_Loop_Init,
+         Body_Prog       => Final_Loop_Body,
+         Final_Prog      => Final_Loop_Final,
+         Variant_Tmps    => Final_Loop_Tmps);
+      Transform_Loop_Body_Statements
+        (Stmts_And_Decls => Initial_Stmts,
+         Within_Loop     => True,
+         Init_Prog       => Initial_Loop_Init,
+         Body_Prog       => Initial_Loop_Body,
+         Final_Prog      => Initial_Loop_Final,
+         Variant_Tmps    => Initial_Loop_Tmps);
 
       --  Add new temporaries to the common list for loop variants
 

@@ -175,11 +175,12 @@ package Alfa.Util is
       Elmts : Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
-   function Get_Statement_List (Stmts : List_Id) return List_Of_Nodes.List;
+   function Get_Statement_And_Declaration_List
+     (Stmts : List_Id) return List_Of_Nodes.List;
    --  Given a list of statements and declarations Stmts, returns the same list
    --  seen as a container list of nodes.
 
-   function Get_Flat_Statement_List
+   function Get_Flat_Statement_And_Declaration_List
      (Stmts : List_Id) return List_Of_Nodes.List;
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively

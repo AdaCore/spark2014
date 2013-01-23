@@ -237,8 +237,8 @@ package body Gnat2Why.Expr is
    --  Transform a declaration. Return a program that takes into account the
    --  dynamic semantics of the declaration (checks and assumptions).
 
-   function Transform_Statement
-     (Stmt           : Node_Id;
+   function Transform_Statement_Or_Declaration
+     (Stmt_Or_Decl   : Node_Id;
       Assert_And_Cut : out W_Pred_Id) return W_Prog_Id;
    --  Transform the Ada statement into a Why program expression.
    --  If Assert_And_Cut is not Why_Empty, the statement was a "pragma
@@ -685,7 +685,7 @@ package body Gnat2Why.Expr is
 
             when N_Case_Statement_Alternative =>
                --  ??? Maybe we should merge the code for statements?
-               return +Transform_Statements (Statements (N));
+               return +Transform_Statements_And_Declarations (Statements (N));
 
             when others =>
                raise Unexpected_Node;
@@ -3261,7 +3261,8 @@ package body Gnat2Why.Expr is
    function Transform_Block_Statement (N : Node_Id) return W_Prog_Id
    is
       Core : constant W_Prog_Id :=
-         Transform_Statements (Statements (Handled_Statement_Sequence (N)));
+        Transform_Statements_And_Declarations
+          (Statements (Handled_Statement_Sequence (N)));
    begin
       if Present (Declarations (N)) then
          return Transform_Declarations_Block (Declarations (N), Core);
@@ -4182,7 +4183,7 @@ package body Gnat2Why.Expr is
 
             T :=
                +Sequence
-                 (Transform_Statements (Actions (Expr)),
+                 (Transform_Statements_And_Declarations (Actions (Expr)),
                   +Transform_Expr (Expression (Expr),
                                    Expected_Type,
                                    EW_Prog,
@@ -4707,27 +4708,25 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Record_Component_Associations;
 
-   -------------------------
-   -- Transform_Statement --
-   -------------------------
+   ----------------------------------------
+   -- Transform_Statement_Or_Declaration --
+   ----------------------------------------
 
-   function Transform_Statement
-     (Stmt : Node_Id;
-      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id
-   is
+   function Transform_Statement_Or_Declaration
+     (Stmt_Or_Decl           : Node_Id;
+      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id is
    begin
-
       --  Make sure that Assert_And_Cut is initialized
 
       Assert_And_Cut := Why_Empty;
 
-      case Nkind (Stmt) is
+      case Nkind (Stmt_Or_Decl) is
          when N_Label | N_Null_Statement =>
-            return New_Void (Stmt);
+            return New_Void (Stmt_Or_Decl);
 
          when N_Assignment_Statement =>
 
-            return Transform_Assignment_Statement (Stmt);
+            return Transform_Assignment_Statement (Stmt_Or_Decl);
 
          --  Translate a return statement by raising the predefined exception
          --  for returns, which is caught at the end of the subprogram. For
@@ -4738,22 +4737,22 @@ package body Gnat2Why.Expr is
             declare
                Raise_Stmt  : constant W_Prog_Id :=
                                New_Raise
-                                 (Ada_Node => Stmt,
+                                 (Ada_Node => Stmt_Or_Decl,
                                   Name     => To_Ident (WNE_Result_Exc));
                Result_Stmt : W_Prog_Id;
             begin
-               if Expression (Stmt) /= Empty then
+               if Expression (Stmt_Or_Decl) /= Empty then
                   declare
                      Return_Type : constant W_Base_Type_Id :=
-                                     Type_Of_Node (Etype (Return_Applies_To
-                                       (Return_Statement_Entity (Stmt))));
+                       Type_Of_Node (Etype (Return_Applies_To
+                         (Return_Statement_Entity (Stmt_Or_Decl))));
                   begin
                      Result_Stmt :=
                        New_Assignment
-                         (Ada_Node => Stmt,
+                         (Ada_Node => Stmt_Or_Decl,
                           Name     => Name_For_Result,
                           Value    =>
-                            +Transform_Expr (Expression (Stmt),
+                            +Transform_Expr (Expression (Stmt_Or_Decl),
                                              Return_Type,
                                              EW_Prog,
                                              Params => Body_Params));
@@ -4769,32 +4768,33 @@ package body Gnat2Why.Expr is
                Nb_Of_Refs : Natural;
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args
-                   (Stmt, EW_Prog, Nb_Of_Refs, Params => Body_Params);
-               Subp       : constant Entity_Id := Entity (Name (Stmt));
+                   (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Params => Body_Params);
+               Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
                Why_Name   : constant W_Identifier_Id :=
                  To_Why_Id (Subp, EW_Prog);
                Call       : constant W_Expr_Id :=
                  (if Why_Subp_Has_Precondition (Subp) then
-                  +New_VC_Call (Stmt, Why_Name, Args, VC_Precondition, EW_Prog)
+                   +New_VC_Call
+                     (Stmt_Or_Decl, Why_Name, Args, VC_Precondition, EW_Prog)
                   else
-                  New_Call (Stmt, EW_Prog, Why_Name, Args));
+                    New_Call (Stmt_Or_Decl, EW_Prog, Why_Name, Args));
             begin
                if Nb_Of_Refs = 0 then
                   return +Call;
                else
-                  return
-                    Insert_Ref_Context (Body_Params, Stmt, +Call, Nb_Of_Refs);
+                  return Insert_Ref_Context
+                           (Body_Params, Stmt_Or_Decl, +Call, Nb_Of_Refs);
                end if;
             end;
 
          when N_If_Statement =>
             declare
-               Tail : W_Prog_Id :=
-                        Transform_Statements (Else_Statements (Stmt));
+               Tail : W_Prog_Id := Transform_Statements_And_Declarations
+                                     (Else_Statements (Stmt_Or_Decl));
             begin
-               if Present (Elsif_Parts (Stmt)) then
+               if Present (Elsif_Parts (Stmt_Or_Decl)) then
                   declare
-                     Cur : Node_Id := Last (Elsif_Parts (Stmt));
+                     Cur : Node_Id := Last (Elsif_Parts (Stmt_Or_Decl));
                   begin
 
                      --  Beginning from the tail that consists of the
@@ -4818,7 +4818,8 @@ package body Gnat2Why.Expr is
                                      EW_Prog,
                                      Params => Body_Params),
                                 Then_Part =>
-                                +Transform_Statements (Then_Statements (Cur)),
+                                  +Transform_Statements_And_Declarations
+                                    (Then_Statements (Cur)),
                                 Else_Part => +Tail,
                                 Domain    => EW_Prog));
                         Prev (Cur);
@@ -4830,12 +4831,13 @@ package body Gnat2Why.Expr is
 
                return
                  +New_Simpl_Conditional
-                 (Condition => Transform_Expr (Condition (Stmt),
+                 (Condition => Transform_Expr (Condition (Stmt_Or_Decl),
                                                EW_Bool_Type,
                                                EW_Prog,
                                                Params => Body_Params),
                     Then_Part =>
-                      +Transform_Statements (Then_Statements (Stmt)),
+                      +Transform_Statements_And_Declarations
+                        (Then_Statements (Stmt_Or_Decl)),
                     Else_Part => +Tail,
                     Domain    => EW_Prog);
             end;
@@ -4847,36 +4849,28 @@ package body Gnat2Why.Expr is
          when N_Object_Declaration    |
               N_Subtype_Declaration   |
               N_Full_Type_Declaration =>
-            return Transform_Declaration (Stmt);
-
-         when N_Object_Renaming_Declaration =>
-
-            --  Renamings are replaced by the renamed object in the frontend,
-            --  but the renaming objects are not removed from the tree. We can
-            --  safely ignore them.
-
-            return New_Void;
+            return Transform_Declaration (Stmt_Or_Decl);
 
          when N_Loop_Statement =>
-            return Transform_Loop_Statement (Stmt);
+            return Transform_Loop_Statement (Stmt_Or_Decl);
 
          when N_Exit_Statement =>
-            return Transform_Exit_Statement (Stmt);
+            return Transform_Exit_Statement (Stmt_Or_Decl);
 
          when N_Case_Statement =>
             return
               +Case_Expr_Of_Ada_Node
-                 (N           => Stmt,
+                 (N           => Stmt_Or_Decl,
                   Domain      => EW_Prog,
                   Params      => Body_Params);
 
          when N_Block_Statement =>
-            return Transform_Block_Statement (Stmt);
+            return Transform_Block_Statement (Stmt_Or_Decl);
 
          when N_Pragma =>
-            case Get_Pragma_Id (Pragma_Name (Stmt)) is
+            case Get_Pragma_Id (Pragma_Name (Stmt_Or_Decl)) is
                when Pragma_Annotate =>
-                  return New_Void (Stmt);
+                  return New_Void (Stmt_Or_Decl);
 
                when Pragma_Check =>
                   declare
@@ -4888,110 +4882,141 @@ package body Gnat2Why.Expr is
                      --  invariants) as loop invariant VCs.
 
                      Reason : constant VC_Kind :=
-                       (if Is_Pragma_Check (Stmt, Name_Loop_Invariant) then
+                       (if Is_Pragma_Check (Stmt_Or_Decl, Name_Loop_Invariant)
+                        then
                           VC_Loop_Invariant
                         else
                           VC_Assert);
 
                   begin
-                     Transform_Pragma_Check (Stmt, Check_Expr, Pred);
+                     Transform_Pragma_Check (Stmt_Or_Decl, Check_Expr, Pred);
 
-                     if Is_Pragma_Assert_And_Cut (Stmt) then
+                     if Is_Pragma_Assert_And_Cut (Stmt_Or_Decl) then
                         Assert_And_Cut := Pred;
                         if Check_Expr /= Why_Empty then
                            return Check_Expr;
                         else
-                           return New_Void (Stmt);
+                           return New_Void (Stmt_Or_Decl);
                         end if;
                      elsif Is_False_Boolean (+Pred) then
                         return
                           +New_VC_Expr
-                            (Ada_Node => Stmt,
+                            (Ada_Node => Stmt_Or_Decl,
                              Expr     => +New_Identifier (Name => "absurd"),
                              Reason   => Reason,
                              Domain   => EW_Prog);
                      elsif Is_True_Boolean (+Pred) then
-                        return New_Void (Stmt);
+                        return New_Void (Stmt_Or_Decl);
                      elsif Check_Expr /= Why_Empty then
                         return
                           Sequence (Check_Expr,
-                                    New_Located_Assert (Stmt, Pred, Reason));
+                                    New_Located_Assert
+                                      (Stmt_Or_Decl, Pred, Reason));
                      else
-                        return New_Located_Assert (Stmt, Pred, Reason);
+                        return New_Located_Assert (Stmt_Or_Decl, Pred, Reason);
                      end if;
                   end;
 
                when Pragma_Export   |
                     Pragma_Import   |
                     Pragma_Warnings =>
-                  return New_Void (Stmt);
+                  return New_Void (Stmt_Or_Decl);
 
                when others =>
                   Ada.Text_IO.Put_Line
                     ("[Transform_Statement] pragma kind ="
-                     & Pragma_Id'Image (Get_Pragma_Id (Pragma_Name (Stmt))));
+                     & Pragma_Id'Image
+                         (Get_Pragma_Id (Pragma_Name (Stmt_Or_Decl))));
                   raise Not_Implemented;
             end case;
 
+         --  ??? Should not occur (L927-029), but until this is fixed, ignore
+         --  freeze nodes.
+
          when N_Freeze_Entity =>
+            return New_Void;
 
-            --  ??? Should not occur (L927-029), but until this is fixed,
-            --  ignore freeze nodes
+         --  Renamings are replaced by the renamed object in the frontend, but
+         --  the renaming objects are not removed from the tree. We can safely
+         --  ignore them.
 
-            return New_Void (Stmt);
+         when N_Object_Renaming_Declaration =>
+            return New_Void;
+
+         --  Nothing to do for an implicit label declaration
+
+         when N_Implicit_Label_Declaration =>
+            return New_Void;
+
+         --  Subprogram declarations are already taken care of explicitly.
+         --  They should not be treated as part of a list of declarations.
+
+         when N_Subprogram_Body        |
+              N_Subprogram_Declaration =>
+            return New_Void;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
-                                  & Node_Kind'Image (Nkind (Stmt)));
+                                  & Node_Kind'Image (Nkind (Stmt_Or_Decl)));
             raise Not_Implemented;
       end case;
-   end Transform_Statement;
+   end Transform_Statement_Or_Declaration;
 
-   --------------------------
-   -- Transform_Statements --
-   --------------------------
+   ------------------------------------------------
+   -- Transform_Statement_Or_Declaration_In_List --
+   ------------------------------------------------
 
-   function Transform_Statements
-     (Cur_Stmt  : Node_Id;
-      Prev_Prog : W_Prog_Id) return W_Prog_Id
+   function Transform_Statement_Or_Declaration_In_List
+     (Stmt_Or_Decl : Node_Id;
+      Prev_Prog    : W_Prog_Id) return W_Prog_Id
    is
       Result        : W_Prog_Id := Prev_Prog;
       Cut_Assertion : W_Pred_Id;
-      Stmt          : constant W_Prog_Id :=
-        Transform_Statement (Cur_Stmt, Cut_Assertion);
+      Prog          : constant W_Prog_Id :=
+        Transform_Statement_Or_Declaration (Stmt_Or_Decl, Cut_Assertion);
    begin
       Result :=
         Sequence
           (Result,
            New_Label (Labels =>
                         (1 => New_Located_Label
-                         (Cur_Stmt,
+                         (Stmt_Or_Decl,
                             Is_VC => False)),
-                      Def    => +Stmt));
+                      Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Result :=
            New_Located_Abstract
-             (Ada_Node => Cur_Stmt,
+             (Ada_Node => Stmt_Or_Decl,
               Expr     => +Result,
               Post     => Cut_Assertion);
       end if;
 
       return Result;
-   end Transform_Statements;
+   end Transform_Statement_Or_Declaration_In_List;
 
-   function Transform_Statements (Stmts : List_Of_Nodes.List) return W_Prog_Id
+   -------------------------------------------
+   -- Transform_Statements_And_Declarations --
+   -------------------------------------------
+
+   function Transform_Statements_And_Declarations
+     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id
    is
       Result : W_Prog_Id := New_Void;
    begin
-      for Cur_Stmt of Stmts loop
-         Result := Transform_Statements (Cur_Stmt  => Cur_Stmt,
-                                         Prev_Prog => Result);
+      for Cur_Stmt_Or_Decl of Stmts_And_Decls loop
+         Result :=
+           Transform_Statement_Or_Declaration_In_List
+             (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
+              Prev_Prog    => Result);
       end loop;
       return Result;
-   end Transform_Statements;
+   end Transform_Statements_And_Declarations;
 
-   function Transform_Statements (Stmts : List_Id) return W_Prog_Id is
-      (Transform_Statements (Get_Statement_List (Stmts)));
+   function Transform_Statements_And_Declarations
+     (Stmts_And_Decls : List_Id) return W_Prog_Id
+   is
+     (Transform_Statements_And_Declarations
+        (Get_Statement_And_Declaration_List (Stmts_And_Decls)));
 
    ------------------------------
    -- Transform_String_Literal --
