@@ -334,8 +334,9 @@ package body Why.Gen.Expr is
 
             function Is_Appropriate (Base       : W_Base_Type_Id;
                                      Check_Type : Entity_Id) return Boolean is
-              (if Is_Discrete_Type (Check_Type) then Base = EW_Int_Type
-                 else Base = EW_Real_Type);
+              (if Is_Discrete_Type (Underlying_Type (Check_Type)) then
+               Base = EW_Int_Type
+               else Base = EW_Real_Type);
 
          begin
 
