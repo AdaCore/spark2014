@@ -363,33 +363,6 @@ follow the grammar of ``global_specification``
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
 
-#. A subprogram with a Global aspect that has a ``global_specification``
-   of **null** shall not reference any global items.
-  
-#. A ``global_item`` shall occur in a Global aspect of a subprogram if and
-   only if it is referenced by the subprogram.
-   
-#. A ``global_item`` that is referenced by a subprogram must appear in its 
-   Global aspect.
-   
-#. Each ``global_item`` in a Global aspect of a subprogram that is an input
-   or output of the subprogram shall satisfy the following mode
-   specification rules 
-   [which are checked during analysis of the subprogram body]:
-
-   * a ``global_item`` that is an input but not an output is mode **in** and 
-     has a ``mode_selector`` of Input; 
-   
-   * a ``global_item`` that is an output but not an input is always fully 
-     initialized on every call of the subprogram, is mode **out** and has a 
-     ``mode_selector`` of Output;
-     
-   * otherwise the ``global_item`` is both an input and an output, is
-     mode **in out** and has a ``mode_selector`` of In_Out.
-
-#. A ``global_item`` that is referenced by a subprogram but is neither an
-   input nor an output of that subprogram [that is, it is only used to determine
-   the value of an assertion expression] has a ``mode_selector`` of Proof_In.
 
 .. centered:: **Dynamic Semantics**
 
@@ -398,8 +371,8 @@ There are no dynamic semantics associated with a Global.
 .. centered:: **Verification Rules**
 
 There are no verification rules associated with a Global aspect of a subprogram
-declaration.  The rules given in the static semantics are verified during
-analysis of the subprogram body.
+declaration.  The rules given in the Subprogram Bodies section under Global 
+aspects are checked when a subprogram body is a analysed.
 
 .. centered:: **Examples**
 
@@ -601,11 +574,6 @@ where
 #. The grammar terms ``input`` and ``output`` have the meaning given to input
    and output given in :ref:`subprogram-declarations`.
    
-#. A Depends aspect of a subprogram with a **null** ``dependency_relation``
-   indicates that the subprogram has no ``inputs`` or ``outputs``.  
-   [From an information flow analysis viewpoint it is a 
-   null operation (a no-op).]
-   
 #. A ``dependency_clause`` has the meaning that the final value of every 
    ``output`` in the ``output_list`` is dependent on the initial value of every 
    ``input`` in the ``input_list``.
@@ -621,12 +589,17 @@ where
    ``input``, other than itself, if the ``output_list`` =>+ **null**
    self-dependency syntax is used.
 
-#. A an ``output_list`` that is **null** represents a *sink* for each
+#. An ``output_list`` that is **null** represents a *sink* for each
    ``input`` in the ``input_list``.  The ``inputs`` in the ``input_list`` have
    no discernible effect from an information flow analysis viewpoint.
    [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
    and calling of subprograms whose implementation is not in |SPARK|.]
 
+#. A Depends aspect of a subprogram with a **null** ``dependency_relation``
+   indicates that the subprogram has no ``inputs`` or ``outputs``.  
+   [From an information flow analysis viewpoint it is a 
+   null operation (a no-op).]
+   
 #. A function which does not have an explicit Depends aspect
    is assumed to have the ``dependency_relation`` 
    that its result is dependent on all of its inputs.  
@@ -639,10 +612,9 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with a Dependency aspect of a subprogram
-declaration.  The rules given in the static semantics are verified during
-analysis of the subprogram body.
-
+There are no verification rules associated with a Depends aspect of a subprogram
+declaration.  The rules given in the Subprogram Bodies section under Depends 
+aspects are checked when a subprogram body is a analysed.
 
 .. centered:: **Examples**
 
@@ -748,8 +720,33 @@ Global Aspect.
 
 .. centered:: **Verification Rules**
 
-The rules presented in the static semantics of :ref:`global-aspects` 
-in subprogram declarations are checked when a subprogram body is analysed.
+#. A subprogram with a Global aspect that has a ``global_specification``
+   of **null** shall not reference any global items.
+  
+#. A ``global_item`` shall occur in a Global aspect of a subprogram if and
+   only if it is referenced by the subprogram.
+   
+#. A ``global_item`` that is referenced by a subprogram must appear in its 
+   Global aspect.
+   
+#. Each ``global_item`` in a Global aspect of a subprogram that is an input
+   or output of the subprogram shall satisfy the following mode
+   specification rules 
+   [which are checked during analysis of the subprogram body]:
+
+   * a ``global_item`` that is an input but not an output is mode **in** and 
+     has a ``mode_selector`` of Input; 
+   
+   * a ``global_item`` that is an output but not an input is always fully 
+     initialized on every call of the subprogram, is mode **out** and has a 
+     ``mode_selector`` of Output;
+     
+   * otherwise the ``global_item`` is both an input and an output, is
+     mode **in out** and has a ``mode_selector`` of In_Out.
+
+#. A ``global_item`` that is referenced by a subprogram but is neither an
+   input nor an output of that subprogram [that is, it is only used to determine
+   the value of an assertion expression] has a ``mode_selector`` of Proof_In.
 
 
 Depends Aspects
@@ -765,10 +762,24 @@ Depends Aspect.
 No extra legality rules are associated with Depends aspects on 
 subprogram bodies.
 
+.. centered:: **Static Semantics**
+
+No extra static semantics are associated with Depends aspects on 
+subprogram bodies.
+
+
 .. centered:: **Verification Rules**
 
-The rules presented in the static semantics of :ref:`depends-aspects` 
-in subprogram declarations are checked when a subprogram body is analysed.
+#. Each ``output`` given in the Depends aspect must be an ``output`` in
+   the implementation of the subprogram body and the ``output`` must depend on 
+   all, but only, the ``inputs`` given in the ``input_list`` associated with the 
+   ``output``.
+   
+#. Each ``output`` of the implementation of the subprogram body is present as 
+   an output in the Depends aspect.
+   
+#. Each ``input`` of the Depends aspect is an ``input`` of the implementation of 
+   the subprogram body.
 
 
 Subprogram Calls
