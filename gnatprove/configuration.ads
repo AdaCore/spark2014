@@ -154,13 +154,12 @@ package Configuration is
       Ada.Directories.Compose (Why3_Dir, "drivers");
 
    --  The exact places for the three configuration files used by gnatprove
-   Gpr_Ada_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
+   Gpr_Translataion_Cnf_File : constant String :=
+     Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
+   Gpr_Frames_Cnf_File : constant String :=
+      Ada.Directories.Compose (Gpr_Cnf_Dir, "frames.cgpr");
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
-   Gpr_Altergo_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
-
    Alfa_Report_File : constant String := "gnatprove.out";
    --  The name of the file in which the Alfa report is generated
 

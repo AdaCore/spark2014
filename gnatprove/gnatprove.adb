@@ -183,11 +183,16 @@ procedure Gnatprove is
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  only generate ALI
       Args.Append ("-gnatd.F");     --  ALFA section in ALI
+      Args.Append ("-gnatd.G");     --  stop after ALI file generation
       if Pedantic then
          Args.Append ("-gnatd.D");
       end if;
 
-      Call_Gprbuild (Project_File, "", Parallel, Args, Status);
+      Call_Gprbuild (Project_File,
+                     Gpr_Frames_Cnf_File,
+                     Parallel,
+                     Args,
+                     Status);
    end Compute_ALI_Information;
 
    -----------------
@@ -610,7 +615,11 @@ procedure Gnatprove is
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
-      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Parallel, Args, Status);
+      Call_Gprbuild (Project_File,
+                     Gpr_Translataion_Cnf_File,
+                     Parallel,
+                     Args,
+                     Status);
    end Translate_To_Why;
 
    --  begin processing for Gnatprove

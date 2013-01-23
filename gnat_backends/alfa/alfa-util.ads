@@ -48,6 +48,9 @@ package Alfa.Util is
 
    function In_Detect_Mode_Only return Boolean is (Debug.Debug_Flag_Dot_KK);
 
+   function In_Frame_Condition_Mode return Boolean is
+     (Debug.Debug_Flag_Dot_GG);
+
    ---------------
    -- Utilities --
    ---------------

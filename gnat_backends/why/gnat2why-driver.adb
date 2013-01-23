@@ -139,6 +139,14 @@ package body Gnat2Why.Driver is
         (Action => Mark_Compilation_Unit);
 
    begin
+
+      --  We do not actually run the translation if we are in
+      --  Frame_Condition_Mode (-gnatd.G). Back out.
+
+      if In_Frame_Condition_Mode then
+         return;
+      end if;
+
       --  All temporaries created for this unit should be different from
       --  temporaries created for other units. To that end, use the unit name
       --  as a suffix for creating temporary names.
