@@ -408,6 +408,9 @@ Definitions
 General
 ^^^^^^^
 
+#. **NB Need to define what is meant by imports and exports, wrt high-level
+   requirements on Depends.**
+
 #. Names declared and used in the new language features are distinct from formal parameters
    when both are in scope. *Rationale: flow analysis is performed using names and so the analysis
    of a given subprogram should not depend on the names chosen for the formal parameters
@@ -454,7 +457,8 @@ Requirements on state declarations in general:
 Abstract State
 ^^^^^^^^^^^^^^
 
-#. Need to mention somewhere about being able to state
+#. Need to mention somewhere about being able to state volatile and mode characteristics
+   for visible variables.
 
 
 Global
@@ -464,69 +468,6 @@ Global
 Depends
 ^^^^^^^
 
-#. Language feature:
-
-   * This language feature defines the dependency relation met by a given
-     subprogram, namely which exports are dependent on which inputs for a
-     given subprogram (it gives the information flow).
-
-#. Feature definition (use cases?):
-
-   * It shall be possible to specify the complete dependency relation of a
-     subprogram.
-     *Rationale: To allow provision of at least the same functionality as SPARK 2005
-     and to allow modular analysis. Plus ???*
-
-   * It shall be possible to refer to both global data and formal parameters
-     in the dependency relation.
-     * Rationale: The imports and exports are given by both the global data and the
-     formal parameters.*
-
-   * It shall be possible to state where imports are not used or exports are
-     derived from no import.
-     *Rationale: to model programs accurately.*
-
-   * It shall be possible to define an empty dependency relation.
-     *Rationale: to model programs accurately.*
-
-   * It shall be possible to assume an implicit dependency relation on functions
-     and so an explcit statement shall not be required.
-     *Rationale: this is typical usage and saves effort.*
-
-#. Constraints:
-
-   * The names used in a given dependency relation to define the exports
-     of the subprogram shall refer to distinct entities.
-     *Rationale: to support flow analysis and to make the interface definition clear.*
-
-   * The names used in a given dependency relation to define the inputs on which
-     a given export depends shall refer to dinstinct entities.
-     *Rationale: to support flow analysis and to make the interface definition clear.*
-
-   * The dependency relation shall be complete.
-     *Rationale: this is necessary for security analysis and most value is
-     given if it is complete.*
-
-#. Consistency:
-
-   * The dependency relation shall be consistent with the global data items and
-     their modes in the following ways:
-
-     * Every item in the list of global data associated with the subprogram that
-       has either an output or input/output mode shall appear at least once as
-       an export in the dependency relation.
-
-     * Every item in the list of global data associated with the subprogram that
-       has either an input or input/output mode shall appear at least once as
-       an import in the dependency relation.
-
-#. Semantics:
-
-   * That (X,Y) is in the dependency relation for a given subprogram
-     (i.e. X depends on Y) means that X is an export of the subprogram
-     such that the intial value of Y is used to set the final value of X on
-     at least one executable path.
-     *Rationale: by definition.*
 
 
 Initializes

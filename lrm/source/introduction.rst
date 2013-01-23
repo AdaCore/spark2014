@@ -331,6 +331,9 @@ Generic high-level requirements
 
 #. **Do I need to classify these general requirements? Would be useful.**
 
+#. **Add in here the general requirements from my other file, making sure there is one
+   relating to being able to provide abstraction.**
+
 #. When specifying program behaviour in terms of a relation or a set, it shall be
    possible to explicitly provide a null relation or an empty set.
    *Rationale: to explicitly identify programs that - for example - do not reference
@@ -349,9 +352,25 @@ Generic high-level requirements
 #. When specifying subprogram behaviour other than via proof statements, it shall be necessary
    to provide a complete specification.
    *Rationale:* To allow provision of at least the same functionality as SPARK 2005
-   and to allow modular analysis. Most value is given if the list is complete. Plus ???*
+   and to allow modular analysis. This is also necessary for security analysis.*
 
 #. Where distinct names are referenced within a given flow analysis specification, then
    those names shall refer to distinct entities.
    *Rationale: to support flow analysis and to aid clarity of the interface definition.*
+
+
+General Actions
+---------------
+
+#. Make clear that the wording of the HLRs doesn't need to be as precise as the RM
+   wording, so provided the broad intent is clear, we shouldn't be raising comments on them.
+
+#. Do we need something in general on visibility?
+
+#. Note that we currently require from Global that outs are written on all executable paths,
+   but nothing like that in relation to Depends.
+
+#. Do I still need to add something on no overlapping between globals and formal parameter names,
+   as well as names declared in the subprogram body? Where does that go (I thought I had something like that)?
+
 

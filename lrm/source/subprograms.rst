@@ -260,7 +260,7 @@ High-level requirements
 
 #. Constraints:
 
-   * Nothing further needed.*
+   *Nothing further needed.*
 
 #. Consistency:
 
@@ -445,6 +445,59 @@ There are no dynamic semantics associated with a Global.
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
+
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Language feature:
+
+   * This language feature defines the dependency relation met by a given
+     subprogram, namely it defines which outputs are dependent on which inputs
+     [that is, it gives the information flow].
+
+#. Needs to be met by language feature:
+
+   * It shall be possible to specify the dependency relation that is met by a
+     given subprogram.
+     *Rationale: To allow provision of at least the same functionality as SPARK 2005
+     and to allow modular analysis.*
+
+   * It shall be possible to refer to both global data and formal parameters
+     in the dependency relation.
+     *Rationale: The inputs and outputs are given by both the global data and the
+     formal parameters.*
+
+   * It shall be possible to assume an implicit dependency relation on functions
+     and so an explicit statement shall not be required.
+     *Rationale: this is typical usage and saves effort.*
+
+#. Constraints:
+
+   * Nothing further needed.
+
+#. Semantics: 
+
+   * That (X,Y) is in the dependency relation for a given subprogram
+     (i.e. X depends on Y) means that X is an output of the subprogram
+     such that the intial value of the input Y is used to set the final value of X on
+     at least one executable path.
+     *Rationale: by definition.*
+
+#. Consistency:
+
+    * The dependency relation defines an alternative view of the inputs and outputs
+      of the subprogram and that view must be equivalent to the list of global
+      data items and formal parameters and their modes (ignoring data items used only in proof contexts).
+      *Rationale: this provides a useful early consistency check.*
+    
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
 A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
