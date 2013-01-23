@@ -3,9 +3,9 @@ flight_manager.adb:16:43: info: division check proved
 flight_manager.adb:23:20: overflow check not proved
 flight_manager.adb:42:56: overflow check not proved
 flight_manager.adb:43:56: overflow check not proved
+flight_manager.ads:13:14: postcondition not proved, requires Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed
 flight_manager.ads:13:27: overflow check not proved
 flight_manager.ads:13:62: overflow check not proved
-flight_manager.ads:13:74: postcondition not proved, requires Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed
 flight_manager.ads:14:18: overflow check not proved
 flight_manager.ads:15:23: overflow check not proved
 flight_manager.ads:15:58: overflow check not proved

@@ -18,8 +18,8 @@ p1.adb:37:19: range check not proved
 p1.adb:39:13: info: precondition proved
 p1.adb:40:19: range check not proved
 p1.adb:41:19: range check not proved
+p1.adb:5:14: postcondition not proved, requires A(I) = A(J)'old
 p1.adb:5:16: info: index check proved
-p1.adb:5:19: postcondition not proved, requires A(I) = A(J)'old
 p1.adb:5:23: index check not proved
 p1.adb:6:27: info: index check proved
 p1.adb:6:34: index check not proved

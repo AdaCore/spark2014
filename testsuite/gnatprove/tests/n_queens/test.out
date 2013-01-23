@@ -4,8 +4,8 @@ queen.adb:15:10: assertion not proved, requires not Consistent (C, I)
 queen.adb:16:10: assertion not proved, requires not (...
 queen.adb:16:68: info: range check proved
 queen.adb:25:10: info: loop invariant initialization proved
+queen.adb:27:43: loop invariant preservation not proved, requires B (J) = B'loop_entry
 queen.adb:27:46: info: index check proved
-queen.adb:27:49: loop invariant preservation not proved, requires B (J) = B'loop_entry
 queen.adb:27:65: info: index check proved
 queen.adb:29:60: info: range check proved
 queen.adb:33:13: precondition not proved
@@ -21,7 +21,7 @@ queen.ads:26:58: info: range check proved
 queen.ads:32:50: info: index check proved
 queen.ads:32:57: info: index check proved
 queen.ads:33:63: info: range check proved
+queen.ads:36:48: postcondition not proved, requires B(J) = B'old
 queen.ads:36:50: index check not proved
-queen.ads:36:53: postcondition not proved, requires B(J) = B'old
 queen.ads:36:62: index check not proved
 queen.ads:38:58: range check not proved

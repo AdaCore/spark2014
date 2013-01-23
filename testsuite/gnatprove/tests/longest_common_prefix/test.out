@@ -1,7 +1,7 @@
 lcp.adb:11:50: overflow check not proved
+lcp.adb:11:57: loop invariant preservation not proved, requires A (X + K) = A (Y + K)
 lcp.adb:11:62: info: index check proved
 lcp.adb:11:62: overflow check not proved
-lcp.adb:11:67: loop invariant preservation not proved, requires A (X + K) = A (Y + K)
 lcp.adb:11:74: info: index check proved
 lcp.adb:11:74: overflow check not proved
 lcp.adb:11:7: info: loop invariant initialization proved
@@ -15,9 +15,9 @@ lcp.adb:9:20: overflow check not proved
 lcp.adb:9:32: info: index check proved
 lcp.adb:9:32: overflow check not proved
 lcp.ads:6:35: info: overflow check proved
+lcp.ads:6:42: postcondition not proved, requires A (X + K) = A (Y + K)
 lcp.ads:6:47: index check not proved
 lcp.ads:6:47: overflow check not proved
-lcp.ads:6:52: postcondition not proved, requires A (X + K) = A (Y + K)
 lcp.ads:6:59: index check not proved
 lcp.ads:6:59: overflow check not proved
 lcp.ads:7:19: overflow check not proved

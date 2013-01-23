@@ -13,7 +13,7 @@ actions.adb:28:68: info: index check proved
 actions.adb:28:7: assertion not proved
 actions.adb:33:35: info: overflow check proved
 actions.adb:33:45: info: index check proved
-actions.adb:37:27: assertion not proved, requires X < 5
+actions.adb:37:25: assertion not proved, requires X < 5
 actions.adb:41:35: info: overflow check proved
 actions.adb:41:45: info: index check proved
 actions.adb:51:22: info: overflow check proved

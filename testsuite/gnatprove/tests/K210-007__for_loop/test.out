@@ -19,6 +19,6 @@ s.adb:52:53: info: index check proved
 s.adb:6:10: info: loop invariant initialization proved
 s.adb:6:10: info: loop invariant preservation proved
 s.adb:7:34: info: index check proved
-s.ads:14:51: postcondition not proved, requires Dest (J) = Src'old
-s.ads:17:51: postcondition not proved, requires Dest (J) = Src'old
+s.ads:14:42: postcondition not proved, requires Dest (J) = Src'old
+s.ads:17:42: postcondition not proved, requires Dest (J) = Src'old
 s.ads:8:15: info: postcondition proved

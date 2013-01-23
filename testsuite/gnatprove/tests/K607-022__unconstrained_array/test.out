@@ -18,9 +18,9 @@ simple_unc_arrays.adb:170:32: overflow check not proved
 simple_unc_arrays.adb:171:34: range check not proved
 simple_unc_arrays.adb:176:34: range check not proved
 simple_unc_arrays.adb:26:36: info: range check proved
+simple_unc_arrays.adb:33:44: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
+simple_unc_arrays.adb:33:44: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:50: index check not proved
-simple_unc_arrays.adb:33:53: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
-simple_unc_arrays.adb:33:53: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:74: index check not proved
 simple_unc_arrays.adb:33:74: overflow check not proved
 simple_unc_arrays.adb:38:21: index check not proved
@@ -29,18 +29,18 @@ simple_unc_arrays.adb:39:22: overflow check not proved
 simple_unc_arrays.adb:40:23: range check not proved
 simple_unc_arrays.ads:112:61: index check not proved
 simple_unc_arrays.ads:116:39: info: postcondition proved
+simple_unc_arrays.ads:30:20: postcondition not proved, requires A.V (J) = A.V'old
 simple_unc_arrays.ads:30:26: index check not proved
-simple_unc_arrays.ads:30:29: postcondition not proved, requires A.V (J) = A.V'old
 simple_unc_arrays.ads:30:51: index check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
+simple_unc_arrays.ads:85:16: postcondition not proved, requires Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
 simple_unc_arrays.ads:85:38: index check not proved
-simple_unc_arrays.ads:85:41: postcondition not proved, requires Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
 simple_unc_arrays.ads:85:67: index check not proved
 simple_unc_arrays.ads:85:67: overflow check not proved
 simple_unc_arrays.ads:88:26: index check not proved
 simple_unc_arrays.ads:88:53: index check not proved
+simple_unc_arrays.ads:96:51: postcondition not proved, requires A.V (J) <= A.V (J+1)
 simple_unc_arrays.ads:96:56: index check not proved
-simple_unc_arrays.ads:96:59: postcondition not proved, requires A.V (J) <= A.V (J+1)
 simple_unc_arrays.ads:96:68: index check not proved
 simple_unc_arrays.ads:96:68: overflow check not proved
 simple_unc_arrays.ads:98:55: index check not proved

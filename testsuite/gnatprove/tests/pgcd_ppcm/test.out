@@ -1,4 +1,4 @@
-a.adb:11:27: loop invariant preservation not proved, requires Bn /= Integer'first
+a.adb:11:24: loop invariant preservation not proved, requires Bn /= Integer'first
 a.adb:12:25: info: overflow check proved
 a.adb:12:35: info: overflow check proved
 a.adb:12:49: overflow check not proved

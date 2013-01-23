@@ -18,5 +18,5 @@ dynamic.adb:6:15: info: range check proved
 dynamic.adb:7:15: info: range check proved
 dynamic.adb:8:15: info: range check proved
 dynamic.adb:9:15: info: range check proved
+dynamic.ads:7:21: postcondition not proved, requires X + 2 <= P'result
 dynamic.ads:7:23: info: overflow check proved
-dynamic.ads:7:27: postcondition not proved, requires X + 2 <= P'result
