@@ -523,6 +523,9 @@ High-level requirements
 
     * See also section :ref:`generic_hlrs`.
 
+.. todo:: The consistency rules will be updated as the
+          model for volatile variables is defined.
+
 .. todo: If it ends up being possible to refine null abstract state, then refinements of such
          state could appear in refined globals statements, though they would need
          to have mode in out.
