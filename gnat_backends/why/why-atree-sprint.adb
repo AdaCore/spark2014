@@ -1768,6 +1768,7 @@ package body Why.Atree.Sprint is
          P (O, "of ");
          Traverse (State, +Arg);
       end if;
+      NL (O);
 
       State.Control := Abandon_Children;
    end Exception_Declaration_Pre_Op;

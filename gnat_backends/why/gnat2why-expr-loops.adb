@@ -31,7 +31,6 @@ with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
-with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
@@ -41,13 +40,11 @@ with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Inter;          use Why.Inter;
-with Why.Types;          use Why.Types;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Util;      use Gnat2Why.Util;
@@ -297,13 +294,12 @@ package body Gnat2Why.Expr.Loops is
 
    function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Loop_Entity : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
-      Exc_Name    : constant String :=
-        Capitalize_First (Full_Name (Loop_Entity));
+      Exc_Name    : constant W_Identifier_Id :=
+        To_Why_Id (Loop_Entity_Of_Exit_Statement (Stmt));
       Raise_Stmt  : constant W_Prog_Id :=
                       New_Raise
                         (Ada_Node => Stmt,
-                         Name => New_Identifier (Name => Exc_Name));
+                         Name => Exc_Name);
    begin
       if Nkind (Condition (Stmt)) = N_Empty then
          return Raise_Stmt;
@@ -1050,10 +1046,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id
    is
-      Loop_Name  : constant String := Full_Name (Loop_Id);
-      Loop_Ident : constant W_Identifier_Id :=
-        New_Identifier (Name => Capitalize_First (Loop_Name));
-
+      Loop_Ident : constant W_Identifier_Id := To_Why_Id (Loop_Id);
       Loop_Inner : constant W_Prog_Id :=
         Sequence ((1 => Variant_Update,
                    2 => Loop_End,
@@ -1088,9 +1081,6 @@ package body Gnat2Why.Expr.Loops is
            Handler => (1 => New_Handler (Name => Loop_Ident,
                                          Def  => New_Void)));
    begin
-      Emit (Body_Params.Theory,
-            New_Exception_Declaration (Name => Loop_Ident, Arg  => Why_Empty));
-
       return
         New_Conditional
           (Condition => +Enter_Condition,

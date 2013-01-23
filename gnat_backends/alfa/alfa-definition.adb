@@ -769,10 +769,13 @@ package body Alfa.Definition is
             end;
 
          when N_Loop_Statement =>
+
+            Push_Scope (Entity (Identifier (N)));
             if Present (Iteration_Scheme (N)) then
                Mark_Iteration_Scheme (Iteration_Scheme (N));
             end if;
             Mark_List (Statements (N));
+            Pop_Scope (Entity (Identifier (N)));
 
          --  Expansion rewrites complex membership tests into simpler ones
 
@@ -2724,6 +2727,9 @@ package body Alfa.Definition is
             else
                Mark_Spec_Violations (Ent);
             end if;
+
+         when E_Loop =>
+            null;
 
          when others =>
             raise Program_Error;

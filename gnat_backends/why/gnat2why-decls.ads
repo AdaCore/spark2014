@@ -49,4 +49,8 @@ package Gnat2Why.Decls is
       E              : Entity_Id);
    --  Translate a package with a Why3 axiomatization
 
+   procedure Translate_Loop_Entity
+     (File : in out Why_File;
+      E    : Entity_Id);
+
 end Gnat2Why.Decls;

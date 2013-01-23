@@ -912,4 +912,30 @@ package body Gnat2Why.Decls is
       --  Ada.Text_IO.Put_Line ("----------- CONTEXT ----------");
    end Translate_Container_Package;
 
+   ---------------------------
+   -- Translate_Loop_Entity --
+   ---------------------------
+
+   procedure Translate_Loop_Entity
+     (File : in out Why_File;
+      E    : Entity_Id)
+   is
+      Name : constant String := Full_Name (E);
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining the loop exit exception for the loop"
+                   & """" & Get_Name_String (Chars (E)) & """"
+                   & (if Sloc (E) > 0 then
+                     " defined at " & Build_Location_String (Sloc (E))
+                     else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (File.Cur_Theory,
+            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
+                                       Arg  => Why_Empty));
+
+      Close_Theory (File, Filter_Entity => E, No_Import => True);
+   end Translate_Loop_Entity;
+
 end Gnat2Why.Decls;

@@ -179,6 +179,9 @@ package body Why.Inter is
                when Subprogram_Kind =>
                   null;
 
+               when E_Loop =>
+                  null;
+
                when others =>
                   raise Program_Error;
                end case;
@@ -660,6 +663,9 @@ package body Why.Inter is
                end if;
             end;
 
+         when E_Loop =>
+            return WF_Context_In_Body;
+
          when others =>
             raise Program_Error;
 
@@ -931,6 +937,8 @@ package body Why.Inter is
          elsif Ekind (E) in Subprogram_Kind | E_Subprogram_Body |
          Named_Kind | Type_Kind | Object_Kind then
          Short_Name (E)
+         elsif Ekind (E) = E_Loop then
+         Capitalize_First (Short_Name (E))
          else "");
    begin
       --  Treat specially the Capacity component of formal containers, which is

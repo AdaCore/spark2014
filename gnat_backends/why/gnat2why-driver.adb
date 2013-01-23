@@ -419,6 +419,9 @@ package body Gnat2Why.Driver is
                                             File, E);
             end if;
 
+         when E_Loop =>
+            Translate_Loop_Entity (File, E);
+
          when others =>
             raise Program_Error;
       end case;
