@@ -593,6 +593,8 @@ procedure Gnatprove is
          Args.Append (File);
       end loop;
       Args.Append ("-cargs:Ada");
+      Args.Append ("-gnatc");       --  No object file generation
+      Args.Append ("-gnatd.F");     --  SPARK mode
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
       if MMode = GPM_Detect then
