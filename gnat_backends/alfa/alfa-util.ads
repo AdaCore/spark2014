@@ -184,7 +184,6 @@ package Alfa.Util is
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.
-   --  This list does not contain subprogram bodies or declarations.
 
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
    --  Returns whether N is a pragma of the given kind

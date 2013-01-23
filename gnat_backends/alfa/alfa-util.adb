@@ -353,14 +353,6 @@ package body Alfa.Util is
                        Get_Flat_Statement_List
                          (Statements (Handled_Statement_Sequence (Cur_Stmt))));
 
-            when N_Subprogram_Body | N_Subprogram_Declaration =>
-
-               --  As the resulting list of this subprogram is then passed to
-               --  [Transform_Statement], some types of declarations should not
-               --  be here, such as subprograms.
-
-               null;
-
             when others =>
                Flat_Stmts.Append (Cur_Stmt);
          end case;
