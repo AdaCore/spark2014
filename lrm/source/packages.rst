@@ -340,6 +340,69 @@ Package Depends or Initializes aspect of the package.
 Refined State Aspect
 ~~~~~~~~~~~~~~~~~~~~
 
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Language feature:
+
+   * This language feature allows an explicit statement of the hidden state declared
+     in a package and the mapping of that hidden state to the state abstractions
+     declared for the package.
+
+#. Needs to be met by language feature:
+
+   * For each state abstraction, it shall be possible to define the set of hidden
+     state items that implement or *refine* that abstract state (where the
+     hidden state items can either be concrete state or further state abstractions).
+     *Rationale: the semantics of properties defined in terms of abstract state
+     can only be precisely defined in terms of the corresponding concrete state,
+     though nested abstraction is also necessary to manage hierarchies of data.*
+
+#. Constraints:
+
+   * Each item of hidden state must map to exactly one state abstraction.
+     *Rationale: all hidden state must be covered since otherwise specifications referring to abstract state may
+     be incomplete; that state must map to exactly one abstraction to give a clean and easily understandable
+     abstraction, and for the purposes of simplicity of analysis.*
+
+   * Each item of abstract state covered by the package shall be mapped to at least one
+     item of hidden state (either concrete state or a further state abstraction).
+     *Rationale: the semantics of properties defined in terms of abstract state
+     can only be precisely defined in terms of the corresponding concrete state.*
+
+#. Consistency:
+
+   * Nothing further needed.
+
+#. Semantics:
+
+   * Nothing further needed.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+
+.. todo:: The consistency rules will be updated as the
+          models for volatile variables and integrity levels are defined.
+
+.. todo: Consider whether it should be possible to refine null abstract state onto hidden state.
+     *Rationale: this would allow the modelling of programs that - for example - use caches
+     to improve performance.*
+
+.. todo:: Consider whether it should be possible to refine abstract onto hidden state without any restrictions,
+     although the refinement would be checked and potential issues flagged up to the user.
+     *Rationale: there are a number of different possible models of mapping abstract
+     to concrete state - especially when volatile state is being used - and it might
+     be useful to provide greater flexibility to the user. In addition, if a facility is
+     provided to allow users to step outside of the language when refining depends, for example, then it may be
+     necessary to relax the abstraction model as well as relaxing the language feature
+     of direct relevance.*
+
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
+
 The Refined State Aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` must follow
 the grammar of ``state_and_category_list`` given below.

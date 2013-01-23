@@ -358,6 +358,12 @@ Generic high-level requirements
    those names shall refer to distinct entities.
    *Rationale: to support flow analysis and to aid clarity of the interface definition.*
 
+#. Where it is possible to specify subprogram behaviour using a language feature that
+   refers to abstract state, it shall be possible to define a corresponding *refined*
+   version of the language feature that refers to hidden state.
+   **Rationale: may be multiple refinements for a given abstract specification and so the user should
+   specify what they actually want; supports stepwise development
+
 
 General Actions
 ---------------
@@ -372,5 +378,10 @@ General Actions
 
 #. Do I still need to add something on no overlapping between globals and formal parameter names,
    as well as names declared in the subprogram body? Where does that go (I thought I had something like that)?
+
+#. Make stuff on future actions into ToDos: currently applies to Abstract State.
+
+#. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
+   a single list of possibilities for the future?
 
 

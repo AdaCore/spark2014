@@ -237,16 +237,11 @@ Global Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Language feature:
-
-   * This language feature provides a list of the global data read and updated
-     when the subprogram is called. [Note that the data read can include data
-     used in proof contexts, including assertions.]
-
 #. Needs to be met by language feature:
 
    * It shall be possible to specify the list of global data read and updated
-     when the subprogram is called. *Rationale: to allow provision of at
+     when the subprogram is called. [Note that the data read can include data
+     used in proof contexts, including assertions.] *Rationale: to allow provision of at
      least the same functionality as SPARK 2005 and to allow modular analysis.*
 
    * It shall be possible to specify the mode (input, output or both)
@@ -260,7 +255,7 @@ High-level requirements
 
 #. Constraints:
 
-   *Nothing further needed.*
+   *No further Global-specific requirements needed.*
 
 #. Consistency:
 
@@ -449,16 +444,10 @@ Depends Aspects
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Language feature:
-
-   * This language feature defines the dependency relation met by a given
-     subprogram, namely it defines which outputs are dependent on which inputs
-     [that is, it gives the information flow].
-
 #. Needs to be met by language feature:
 
-   * It shall be possible to specify the dependency relation that is met by a
-     given subprogram.
+   * It shall be possible to specify the dependency relation - that is, which outputs
+     are dependent on which inputs - that is met by a given subprogram.
      *Rationale: To allow provision of at least the same functionality as SPARK 2005
      and to allow modular analysis.*
 
@@ -473,7 +462,7 @@ High-level requirements
 
 #. Constraints:
 
-   * Nothing further needed.
+   * No further Depends-specific requirements needed.
 
 #. Semantics: 
 
