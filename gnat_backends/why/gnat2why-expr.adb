@@ -4107,11 +4107,11 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Type_Conversion =>
-               T := Transform_Expr (Expression (Expr),
-                                    Expected_Type,
-                                    Domain,
-                                    Local_Params);
-               Current_Type := Expected_Type;
+            T := Transform_Expr (Expression (Expr),
+                                 Expected_Type,
+                                 Domain,
+                                 Local_Params);
+            Current_Type := Expected_Type;
 
          when N_Unchecked_Type_Conversion =>
             --  Compiler inserted conversions are trusted
