@@ -530,22 +530,35 @@ package body Why.Inter is
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
 
-         for N of S loop
+         declare
+            C : Node_Sets.Cursor := S.First;
+         begin
+            while C /= Node_Sets.No_Element loop
+               declare
+                  N : constant Node_Id := Element (C);
+               begin
+                  --  Here we need to consider entities and some non-entities
+                  --  such as string literals. We do *not* consider the
+                  --  Filter_Entity, nor its Full_View. Loop parameters are a
+                  --  bit special, we want to deal with them only if they are
+                  --  from loop, but not from a quantifier.
 
-            --  Loop parameters may appear, but they do not have a Why
-            --  declaration; we skip them here. We also need to protect against
-            --  nodes that are not entities, such as string literals
-
-            if N /= Filter_Entity and then
-              (if Nkind (N) in N_Entity then Ekind (N) /= E_Loop_Parameter)
-              and then
-                (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                 Partial_View (N) /= Filter_Entity)
-            then
-               Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N);
-            end if;
-         end loop;
+                  if N /= Filter_Entity
+                    and then
+                      (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                       Partial_View (N) /= Filter_Entity)
+                    and then
+                      (if Nkind (N) in N_Entity and then
+                       Ekind (N) = E_Loop_Parameter
+                       then not Is_Quantified_Loop_Param (N))
+                  then
+                     Standard_Imports.Set_SI (N);
+                     Add_Use_For_Entity (P, N);
+                  end if;
+               end;
+               Next (C);
+            end loop;
+         end;
 
          --  We add the dependencies to Gnatprove_Standard theories that may
          --  have been triggered

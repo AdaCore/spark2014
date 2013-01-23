@@ -4383,6 +4383,7 @@ package body Gnat2Why.Expr is
       --  * enumeration literals (we have a separate function)
       --  * ids of Standard.ASCII (transform to integer)
       --  * loop parameters (set type to integer)
+      --  * quantified variables (use local name instead of global name)
 
       Current_Type := Type_Of_Node (Expr);
 
@@ -4395,18 +4396,19 @@ package body Gnat2Why.Expr is
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
-      elsif Ekind (Ent) = E_Loop_Parameter then
+      elsif Ekind (Ent) = E_Loop_Parameter and then
+        Is_Quantified_Loop_Param (Ent) then
          T := +New_Identifier (Name => Full_Name (Ent));
-         if not Type_In_Formal_Container (Etype (Ent)) then
-            Current_Type := EW_Int_Type;
-         end if;
       else
          T := +To_Why_Id (Ent, Domain);
+      end if;
+      if Ekind (Ent) = E_Loop_Parameter and then
+        not Type_In_Formal_Container (Etype (Ent)) then
+         Current_Type := EW_Int_Type;
       end if;
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Expr, Right => +T);
       end if;
-
       return T;
    end Transform_Identifier;
 

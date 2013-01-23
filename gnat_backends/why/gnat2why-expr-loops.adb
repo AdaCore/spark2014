@@ -680,9 +680,7 @@ package body Gnat2Why.Expr.Loops is
               Defining_Identifier (LParam_Spec);
             Is_Reverse   : constant Boolean := Reverse_Present (LParam_Spec);
             Loop_Index   : constant W_Identifier_Id :=
-              New_Identifier
-                (Ada_Node => Etype (Ent),
-                 Name => Full_Name (Ent));
+              To_Why_Id (E => Ent, Domain => EW_Prog);
             Index_Deref  : constant W_Prog_Id :=
                              New_Deref
                                (Ada_Node => Stmt,
@@ -756,10 +754,12 @@ package body Gnat2Why.Expr.Loops is
          --  Start of For_Loop
 
          begin
-            Entire_Loop := New_Binding_Ref
-                             (Name    => Loop_Index,
-                              Def     => +Init_Index,
-                              Context => Entire_Loop);
+            Entire_Loop :=
+              Sequence
+                (New_Assignment
+                     (Name => Loop_Index,
+                      Value  => +Init_Index),
+                 Entire_Loop);
             Entire_Loop :=
                New_Binding
                  (Name    => High_Ident,

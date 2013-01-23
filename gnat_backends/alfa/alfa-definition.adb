@@ -1534,9 +1534,19 @@ package body Alfa.Definition is
 
       elsif Present (Loop_Parameter_Specification (N)) then
          pragma Assert (No (Condition_Actions (N)));
-         --  The entity for iterating over a loop is always in Alfa
          Mark (Discrete_Subtype_Definition
-                 (Loop_Parameter_Specification (N)));
+               (Loop_Parameter_Specification (N)));
+
+         --  The loop parameter shall be added to the entities in Alfa. This
+         --  can be done by pushing it to the stack and popping it directly
+         --  afterwards.
+         declare
+            Loop_Index : constant Entity_Id :=
+              Defining_Identifier (Loop_Parameter_Specification (N));
+         begin
+            Push_Scope (Loop_Index);
+            Pop_Scope (Loop_Index);
+         end;
 
       else
          pragma Assert (No (Condition_Actions (N)));

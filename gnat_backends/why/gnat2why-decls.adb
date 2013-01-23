@@ -242,7 +242,9 @@ package body Gnat2Why.Decls is
               (Name => To_Ident (WNE_Type),
                Args => 0));
       Typ  : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl)));
+        (if Ekind (E) = E_Loop_Parameter
+         then New_Base_Type (Base_Type => EW_Int)
+         else New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl))));
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
