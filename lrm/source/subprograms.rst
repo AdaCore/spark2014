@@ -1,8 +1,10 @@
 Subprograms
 ===========
 
-Subprogram Declaration
-----------------------
+.. _subprogram-declarations:
+
+Subprogram Declarations
+-----------------------
 
 We distinguish the *declaration view* introduced by a ``subprogram_declaration``
 from the *implementation view* introduced by a ``subprogram_body`` or an
@@ -16,16 +18,15 @@ call does not modify any variables declared outside of the function.
 It follows as a consequence of these rules that the evaluation
 of any [SPARK] expression is side-effect free.
 
-We also introduce the notion of a *global item*, which is a global variable or
-a state abstraction (see :ref:`abstract-state`). Global items are presented
-in Global aspects (see :ref:`global-aspect`).
+We also introduce the notion of a *global item*, which is a name that denotes a
+global variable or a state abstraction (see :ref:`abstract-state`). 
+Global items are presented in Global aspects (see :ref:`global-aspects`).
 
-.. centered:: **Extended Legality Rules**
-
-#. A function declaration shall not have a ``parameter_specification``
-   with a mode of **out** or **in out**. This rule also applies to
-   a subprogram_body for a function for which no explicit specification
-   is given.
+An *entire object* is an object which is not a subcomponent of a larger 
+containing object.  An *entire variable* is an an entire object which is a 
+variable.  From the language rules of Ada it follows that formal subprogram
+parameters and formal generic objects are entire objects. 
+A renaming declaration of an entire object is also an entire object. 
 
 .. centered:: **Static Semantics**
 
@@ -42,6 +43,13 @@ in Global aspects (see :ref:`global-aspect`).
 #. An *input* of a subprogram is a global item or parameter whose initial
    value may be used in determining the final value of an output of the 
    subprogram.
+
+.. centered:: **Verification Rules**
+
+#. A function declaration shall not have a ``parameter_specification``
+   with a mode of **out** or **in out**. This rule also applies to
+   a subprogram_body for a function for which no explicit specification
+   is given.
 
 
 .. todo::
@@ -63,30 +71,15 @@ contract expressions (introduced by Pre and Post) and class-wide
 contract expressions (introduced by Pre'Class and Post'Class), if any,
 are in |SPARK|.
 
-.. centered:: **Verification Rules**
-
-#. Verification conditions are generated from the program text to
-   demonstrate that the implementation of the body of the subprogram
-   satisfies the post condition provided the precondition is True and
-   the subprogram completes normally.
-
-.. note:: (TJJ 29/11/12) Do we need this verification rule?  If we do
-    it needs to be more precise I think.
-
 .. todo:: Think about Pre'Class and Post'Class. Target: D2.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| provides extra aspects, the Global and Depends
-aspects to strengthen a subprogram declaration so that constructive,
-modular program analysis may be performed.  With the extra aspects the
-body of a subprogram does not have to be implemented in order for
-analysis and proof of callers of the subprogram.
-
-A Contract_Cases aspect is also provided which provides a convenient
-way of formally specifying the required functionality of a subprogram.
-
+In order to extend Ada's support for specification of subprogram contracts
+(e.g., the Pre, Post, Pre'Class and Post'Class aspects) by providing more
+precise and/or concise contracts, the |SPARK| aspects, Global, Depends,
+and Contract_Cases are defined.
 
 .. centered:: **Legality Rules**
 
@@ -229,11 +222,12 @@ where
 .. note:: (TJJ 29/11/12) Do we need this verification rule?  Could it
    be captured as part of the general statement about proof?
 
-.. _global-aspect:
+.. _global-aspects:
 
-Global Aspect
-~~~~~~~~~~~~~
+Global Aspects
+~~~~~~~~~~~~~~
 
+<<<<<<< HEAD
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -293,6 +287,9 @@ Language definition
 ^^^^^^^^^^^^^^^^^^^
 
 A Global aspect of a subprogram, if present, lists the global items whose values
+=======
+A Global aspect of a subprogram lists the global items whose values
+>>>>>>> TICKET:[M104-011]
 are used or affected by a call of the subprogram.
 
 The Global aspect is introduced by an ``aspect_specification`` where
@@ -309,7 +306,7 @@ follow the grammar of ``global_specification``
    moded_global_list           ::= mode_selector => global_list
    global_list                 ::= global_item
                                  | (global_item {, global_item})
-   mode_selector               ::= Input | Output | In_Out | Contract_In
+   mode_selector               ::= Input | Output | In_Out | Proof_In
    global_item                 ::= name
 
 .. ifconfig:: Display_Trace_Units
@@ -318,8 +315,8 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` of a subprogram shall be a stand alone variable object 
-   [that is, it is not part of a larger object] or it shall be a state abstraction.
+#. A ``global_item`` of a subprogram shall be an entire variable 
+   or it shall be a state abstraction.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -345,27 +342,13 @@ follow the grammar of ``global_specification``
    
       :Trace Unit: 6.1.4 LR global_items shall denote distinct entities
 
-#. A global item occurring in a Global aspect of a subprogram aspect
+#. A ``global_item`` occurring in a Global aspect of a subprogram aspect
    specification shall not have the same ``defining_identifier`` as a formal
    parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
    
       :Trace Unit: 6.1.4 LR A global_item cannot have the same defining_identifier as a formal parameter
-
-#. A global item  of mode **in out** or **out** shall not be a Volatile Input
-   state abstraction (see :ref:`abstract-state-aspect`).
-
-   .. ifconfig:: Display_Trace_Units
-   
-      :Trace Unit: 6.1.4 LR A global_item of mode in out or out cannot be a Volatile Input state abstraction
-
-#. A global item of mode **in** or **in out** shall not be a Volatile Output
-   state abstraction.
-
-   .. ifconfig:: Display_Trace_Units
-   
-      :Trace Unit: 6.1.4 LR A global_item of mode in out or in cannot be a Volatile Output state abstraction
 
 
 .. centered:: **Static Semantics**
@@ -377,10 +360,10 @@ follow the grammar of ``global_specification``
 
    * It is an input or an output of the subprogram, or;
 
-   * It [its initial value] is used to determine the value of an assertion
+   * Its initial value is used to determine the value of an assertion
      expression within the subprogram, or;
 
-   * It [its initial value] is used to determine the value of an assertion
+   * Its initial value is used to determine the value of an assertion
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
 
@@ -390,6 +373,9 @@ follow the grammar of ``global_specification``
 #. A ``global_item`` shall occur in a Global aspect of a subprogram if and
    only if it is referenced by the subprogram.
    
+#. A ``global_item`` that is referenced by a subprogram must appear in its 
+   Global aspect.
+   
 #. Each ``global_item`` in a Global aspect of a subprogram that is an input
    or output of the subprogram shall satisfy the following mode
    specification rules 
@@ -398,16 +384,16 @@ follow the grammar of ``global_specification``
    * a ``global_item`` that is an input but not an output is mode **in** and 
      has a ``mode_selector`` of Input; 
    
-   * a ``global_item`` that is an output but not an input is always fully initialized on
-     every call of the subprogram, is mode **out** and has a ``mode_selector`` 
-     of Output;
+   * a ``global_item`` that is an output but not an input is always fully 
+     initialized on every call of the subprogram, is mode **out** and has a 
+     ``mode_selector`` of Output;
      
    * otherwise the ``global_item`` is both an input and an output, is
      mode **in out** and has a ``mode_selector`` of In_Out.
 
 #. A ``global_item`` that is referenced by a subprogram but is neither an
    input nor an output of that subprogram [that is, it is only used to determine
-   the value of an assertion expression] has a ``mode_selector`` of Contract_In.
+   the value of an assertion expression] has a ``mode_selector`` of Proof_In.
 
 .. centered:: **Dynamic Semantics**
 
@@ -415,28 +401,35 @@ There are no dynamic semantics associated with a Global.
 
 .. centered:: **Verification Rules**
 
-#. A Global aspect is verified against the ``global_specification``
-   rules given in the static semantics.
+There are no verification rules associated with a Global aspect of a subprogram
+declaration.  The rules given in the static semantics are verified during
+analysis of the subprogram body.
 
 .. centered:: **Examples**
 
 .. code-block:: ada
 
-   with Global => null; -- Indicates that the subprogram does not read or update
+   with Global => null; -- Indicates that the subprogram does reference 
                         -- any global items.
-   with Global => V;    -- Indicates that V may be read by the subprogram.
-   with Global => (X, Y, Z);  -- X, Y and Z may be read by the subprogram.
-   with Global => (Input        => V); -- Indicates that V may be read by the subprogram.
-   with Global => (Input        => (X, Y, Z)); -- X, Y and Z may be read by the subprogram.
-   with Global => (Output       => (A, B, C)); -- A, B and C will be fully initialized
-                                               -- by the subprogram.
-   with Global => (Input        => (X, Y, Z),
+   with Global => V;    -- Indicates that V is an input of the subprogram.
+   with Global => (X, Y, Z);  -- X, Y and Z are inputs of the subprogram.
+   with Global => (Input        => V); -- Indicates that V is an input of the subprogram.
+   with Global => (Input        => (X, Y, Z)); -- X, Y and Z are inputs of the subprogram.
+   with Global => (Output       => (A, B, C)); -- A, B and C are outputs of
+                                               -- the subprogram.
+   with Global => (In_Out       => (D, E, F)); -- D, E and F are both inputs and
+                                               -- outputs of the subprogram
+   with Global => (Proof_In     => (G, H));    -- G and H are only used in 
+                                               -- assertion expressions within
+                                               -- the subprogram
+   with Global => (Input        => (X, Y, Z),   
                    Output       => (A, B, C),
-                   In_Out       => (P, Q, R),
-                   Contract_In  => (T, U));
-                  -- A global aspect with all types of global specification
+                   In_Out       => (P, Q, R),  
+                   Proof_In     => (T, U));                                                    
+                   -- A global aspect with all types of global specification
+                  
 
-.. _depends_aspect:
+.. _depends-aspects:
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
@@ -491,7 +484,7 @@ Language Definition
 A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The dependency relation is used in information flow
-analysis. Depends aspects are optional and are simple specifications.
+analysis. Depends aspects are simple specifications.
 
 A Depends aspect for a subprogram specifies for each output every input on
 which it depends. The meaning of X depends on Y in this context is that the
@@ -506,7 +499,7 @@ self-dependent but not dependent on any other input.  The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
 The functional behaviour of a subprogram is not specified by the Depends
-aspect but, unlike a postcondition, the Depends aspect, if it is given, has
+aspect but, unlike a postcondition, the Depends aspect has
 to be complete in the sense that every input and output of the subprogram must
 appear in the Depends aspect.
 
@@ -519,9 +512,9 @@ the grammar of ``dependency_relation`` given below.
 
 ::
 
-   dependency_relation       ::= null
+   dependency_relation    ::= null
                             | (dependency_clause {, dependency_clause})
-   dependency_clause         ::= output_list =>[+] input_list
+   dependency_clause      ::= output_list =>[+] input_list
    output_list            ::= output
                             | (output {, output})
                             | null
@@ -542,8 +535,8 @@ where
 .. centered:: **Legality Rules**
 
 #. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect of a subprogram is a state abstraction, a whole object (not part of 
-   a containing object) or a formal parameter of the subprogram.
+   aspect of a subprogram denotes a state abstraction, an entire variable or a 
+   formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -560,7 +553,7 @@ where
 
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
-   a postcondition of the function, if any, to which the enclosing
+   a postcondition of the function to which the enclosing
    ``aspect_specification`` applies.
 
    .. ifconfig:: Display_Trace_Units
@@ -570,7 +563,7 @@ where
 #. There can be at most one ``output_list`` which is a **null** symbol
    and if it exists it must be the ``output_list`` of the last
    ``dependency_clause`` in the ``dependency_relation``.  An
-   ``input`` which is in an ``input_list`` of a **null** export may
+   ``input`` which is in an ``input_list`` of a **null** ``output_list`` may
    not appear in another ``input_list`` of the same
    ``dependency_relation``.
 
@@ -578,14 +571,15 @@ where
 
       :Trace Unit: TBD
 
-#. The object denoted by a given ``output`` in an ``output_list`` shall
-   not be denoted by any other ``output`` in that ``output_list``.   
+#. The entity denoted by an ``output`` in an ``output_list`` shall
+   not be denoted by any other ``output`` in that ``output_list`` or any other
+   ``output_list``.   
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. The object denoted by a given ``input`` in an ``input_list`` shall
+#. The entity denoted by an ``input`` in an ``input_list`` shall
    not be denoted by any other ``input`` in that ``input_list``.     
 
    .. ifconfig:: Display_Trace_Units
@@ -609,7 +603,7 @@ where
 .. centered:: **Static Semantics**
 
 #. The grammar terms ``input`` and ``output`` have the meaning given to input
-   and output given in :ref:`global-aspect`.
+   and output given in :ref:`subprogram-declarations`.
    
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.  
@@ -637,15 +631,16 @@ where
    [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
    and calling of subprograms whose implementation is not in |SPARK|.]
 
-#. A function which does not have an explicit Depends aspect
-   is assumed to have the ``dependency_relation`` 
-   that its result is dependent on all of its inputs.  
-   [Generally a Depends aspect is not required for functions.]
-   
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Depends aspect
 as it is used purely for static analysis purposes and is not executed.
+
+.. centered:: **Verification Rules**
+
+There are no verification rules associated with a Dependency aspect of a subprogram
+declaration.  The rules given in the static semantics are verified during
+analysis of the subprogram body.
 
 
 .. centered:: **Examples**
@@ -695,8 +690,11 @@ as it is used purely for static analysis purposes and is not executed.
    -- parameter Y has no discernible effect on the result of the function.
 
 
-Proof Functions
+Logic Functions
 ~~~~~~~~~~~~~~~
+
+In |SPARK| it will be possible to define functions which have no body and
+are only used for proof purposes with the assertion policy Ignore.
 
 .. todo:: TN LA24-011 is open for someone to propose a strawman design.
    Target: D2.
@@ -706,6 +704,18 @@ Formal Parameter Modes
 ----------------------
 
 No extensions or restrictions.
+
+.. todo::
+   The modes of a subprogram in Ada are not as strict as S2005 and there
+   is a difference in interpretation of the modes as viewed by flow analysis.
+   For instance in Ada a formal parameter of mode out of a composite type need 
+   only be partially updated, but in flow analysis this would have mode in out.
+   Similarly an Ada formal parameter may have mode in out but not be an input.
+   In flow analysis it would be regarded as an input and give arise to 
+   flow eerors.
+   Perhaps we need an aspect to describe the strict view of a parameter
+   if it is different to the specified Ada mode of the formal parameter? Target: D2
+
 
 Subprogram Bodies
 -----------------
@@ -722,149 +732,42 @@ Inline Expansion of Subprograms
 
 No extensions or restrictions.
 
-Mode Refinement
-~~~~~~~~~~~~~~~
-
-If a subprogram has a mode refinement (in a ``global_aspect`` or a
-``refined_global_aspect``) then the
-implementation of its body must comply with the refined modes
-specified for the ``moded_items``.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. The initial value of a ``moded_item`` (including a *formal
-   parameter* if the restriction ``Strict_Modes`` is in force) which
-   is of mode which has an effective mode of **in** or **in out** must
-   be used in determining the final value of at least one ``export``
-   of the subprogram.
-#. If a ``moded_item`` (including a *formal parameter* if the
-   restriction ``Strict_Modes`` is in force) is of mode **in out** it
-   must be updated directly or indirectly on at least one executable
-   path through the subprogram body.
-#. If a ``moded_item`` (including a *formal parameter* if the
-   restriction ``Strict_Modes`` is in force) is of mode **out** then
-   it must be updated either directly or indirectly on every
-   executable path through the subprogram body.
-#. If a ``moded_item``, appears in the ``mode_refinement`` of a
-   subprogram with a mode of **in**, then it may only appear as a
-   ``moded_item`` of mode **in** in any ``mode_refinement`` nested
-   within the subprogram.
-
-.. centered:: *Checked by Proof*
-
-#. If a subcomponent name appears in a ``mode_specification`` with a
-   ``mode_selector`` of ``Output`` or ``In_Out`` then just that
-   subcomponent is considered to be updated and the other
-   subcomponents of the object are preserved (unchanged).  If more
-   than one subcomponent of the same object appears in such a
-   ``mode_specification`` then all the mentioned subcomponents are
-   considered to be updated and remaining subcomponents of the object
-   preserved.
-#. If a subcomponent name appears in a ``mode_specification`` with a
-   ``mode_selector`` of ``Input`` or ``In_Out`` then the initial value
-   of just that subcomponent is considered to be read and used in
-   determining the final value of at least one ``export``. If more than
-   one subcomponent of the same object appears in such a
-   ``mode_specification`` then the rule applies to all mentioned
-   subcomponents.
-
-.. todo:: Conditional mode specifications which have to be checked by proof. Target: rel2+.
-
 Global Aspects
 ~~~~~~~~~~~~~~
 
-If a subprogram does not have a separate declaration its body or body
-stub may have a ``global_aspect`` in its aspect specification where
-the same rules as for a ``global_aspect`` in a subprogram declaration
-apply.  When a subprogram has a ``global_aspect`` either in its
-declaration or its body or body stub the rules and semantics given
-below should be satisfied by the implementation of its body.
-
-If the subprogram has a ``refined_global_aspect`` (see
-:ref:`refined-global-aspect`), this has to be checked for consistency
-with the ``global_aspect`` and influences the rules for checking the
-implementation of its body as described below.
+If a subprogram does not have a separate declaration then the Global 
+aspect is applied to the declaration of its its body or body stub.
+The implementation of a subprogram body must be consistent with its 
+Global Aspect.  
 
 .. centered:: **Legality Rules**
 
-#. A subprogram body or body stub may only have a ``global_aspect`` if
-   it does not have a separate declaration.
 #. A subprogram, shall not declare, immediately within its body, an
-   entity of the same name as a ``moded_item`` or the name of the
-   object of which the ``moded_item`` is a subcomponent, appearing in
-   the ``global_aspect`` of the subprogram.  If the subprogram has a
-   ``refined_global_aspect`` then the rule applies to ``moded_items``
-   from both aspects.
+   entity with the same ``defining_identifier`` as a ``global_item``.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow-Analysis*
-
-#. A non-*local variable* of a subprogram which is not a formal
-   parameter or listed as a ``moded_item`` in the ``global_aspect``
-   shall not be read or updated directly or indirectly within the body
-   of the subprogram unless it appears as a ``moded_item`` in
-   ``refined_global_aspect`` of the subprogram.
-#. If a subprogram does not have a ``global_aspect`` then an implicit
-   one is synthesised from implementation of the body (if it exists).
+The rules presented in the static semantics of :ref:`global-aspects` 
+in subprogram declarations are checked when a subprogram body is analysed.
 
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
 
-If a subprogram does not have a separate declaration its body or body
-stub may have a Depends aspect in its aspect specification
-where the same rules as for a Depends aspect in a subprogram
-declaration apply.  When a subprogram has a Depends aspect
-either in its declaration or its body or body stub the rules and
-semantics given below should be satisfied by the implementation of its
-body.
-
-If the subprogram has a Refined_Depends aspect (see
-:ref:`refined-depends-aspect`), this has to be checked for consistency
-with the Depends aspect and influences the rules for checking the
-implementation of its body as described below.
-
+If a subprogram does not have a separate declaration then the Depends 
+aspect is applied to the declaration of its its body or body stub.
+The implementation of a subprogram body must be consistent with its 
+Depends Aspect.  
 
 .. centered:: **Legality Rules**
 
-#. A subprogram body or body stub may only have a
-   Depends aspect if it does not have a separate declaration.
+No extra legality rules are associated with Depends aspects on 
+subprogram bodies.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow-Analysis*
-
-#. A dependency relation D' is synthesised from the body of a
-   subprogram P (if it exists). if P has a Depends aspect and:
-
-   * has a Refined_Depends aspect then D' is compared with the
-     Refined_Depends aspect any differences reported; or
-   * has a Depends aspect but not a
-     Refined_Depends aspect when one is required due to state
-     refinement, then D' is taken to be the
-     Refined_Depends aspect.  Using the
-     ``refined_state_aspect`` the consistency between D' and the
-     Depends aspect of P is checked and any inconsistencies,
-     reported using the rules given in
-     :ref:`refined-depends-aspect` ; or
-   * has a Depends aspect and does not require a
-     Refined_Depends aspect, then D' is compared directly with
-     the Depends aspect of P and any differences reported; or
-   * does not have a Depends aspect an implicit
-     Depends aspect is synthesised from D'.
-
-#. A function that does not have an explicit Depends aspect is
-   assumed to have a dependency relation that its result is dependent
-   on all of its imports and this dependency relation is compared with
-   the implicit one determined from the body of the function.
-
-
-.. centered:: *Checked by Proof*
-
-.. todo:: conditional dependencies and subcomponents. Target: rel2+.
+The rules presented in the static semantics of :ref:`depends-aspects` 
+in subprogram declarations are checked when a subprogram body is analysed.
 
 
 Subprogram Calls
@@ -877,28 +780,6 @@ Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 
-
-Abstract and Refined Views
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-There are two possible views of a subprogram P declared in the visible
-part of a package.  An abstract view and a refined view.  The abstract
-view is that seen by the client of the package.  The refined view is
-seen within the body of the package and its private descendants.
-
-
-Global Aspects
-^^^^^^^^^^^^^^
-
-Every subprogram is considered to have a ``global_aspect`` whether it
-is explicit or synthesized and implicit.  A subprogram declared in the
-visible part of a package may also have a ``refined_global_aspect``,
-again this may be explicit or synthesized.  Which of these two aspects
-is used depends on where the subprogram is called.  If it is called
-from within the package or its private dependents and the subprogram
-has a ``refined_global_aspect`` then this is used.  In all other calls
-the ``global_aspect`` is used.
-
 Anti-Aliasing
 ~~~~~~~~~~~~~
 
@@ -910,146 +791,34 @@ possible or is difficult to deduce that two names refer to the same
 object and problems arise when one of the names is used to update the
 object.
 
-A common place for aliasing to be introduced is through the *actual
-parameters* (see Ada RM 6.4.1) and between *actual parameters* and
-*global variables* in a procedure call.  Extra semantic rules are
-given that avoid the possibility of aliasing through *actual
-parameters* and *global variables*.  A function is not allowed to have
-side-effects and cannot update an *actual parameter* or *global
-variable*.  Therefore, function calls cannot introduce aliasing and
+A common place for aliasing to be introduced is through the actual
+parameters and between actual parameters and
+global variables in a procedure call.  Extra verification rules are
+given that avoid the possibility of aliasing through actual
+parameters and global variables.  A function is not allowed to have
+side-effects and cannot update an actual parameter or global
+variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
 
-.. todo:: Relax rules for aliasing based on the following paragraph.
-   RCC comment: I am happy that these rules are OK given the definition
-   of "overlapping" below. Assign to SB, TJJ and/or YM
-   to agree this is all OK. Target: D2.
+   .. centered:: **Verification Rules**
 
-In |SPARK|, it is not allowed in a call to pass as parameters references to
-overlapping locations, when at least one of the parameters is of mode ``out``
-or ``in out``, unless the other parameter is of mode ``in`` and
-by-copy. Likewise, it is not allowed in a call to pass as ``out`` or ``in out``
-parameter a reference to some location which overlaps with any global parameter
-of the subprogram. Finally, it is not allowed in a call to pass as ``in`` or
-``in out`` parameter a reference to some location which overlaps with a global
-parameter of mode ``out`` or ``in out`` of the subprogram, unless the parameter
-is of mode ``in`` and by-copy.
-
-The ``moded_items`` which are *global* to a procedure have to be
-determined.  These may be obtained from an explicit ``global_aspect``
-or Depends aspect of the procedure, if either or both of these
-are present. If neither of these are present then an implicit global
-aspect is used which is deduced by analysis of the bodies of the called
-subprogram and the subprograms it calls.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow-Analysis*
-
-#. If a procedure declaration does not have a ``global_aspect`` but
-   has a Depends aspect, an implicit ``global_aspect`` will be
-   computed from the Depends aspect.
-#. If a procedure does not have a global or depends
-   aspect, an implicit ``global_aspect`` will be computed using whole
-   program analysis.
-#. In a call to a procedure P:
-
-   #. If P is declared in package Q with an explicit ``global_aspect``
-      and the body of P has a ``refined_global_aspect``
-      (see :ref:`refined-global-aspect`) then in applying the anti-aliasing rules to
-      calls of P within the body of Q the ``refined_global_aspect`` of
-      the body or body stub of P should be used.
-   #. In all other cases the ``global_aspect`` from declaration or
-      body of P, if P does not have a separate declaration, shall be
-      used.  The ``global_aspect`` may be implicit.
-
-#. If a *variable* V named in the ``global_aspect`` of a procedure P
-   is of mode **out** or **in out**, then neither V nor any of its
-   subcomponents can occur as an *actual parameter* of P.
-#. If a *variable* V occurs in the ``global_aspect`` of a procedure P,
-   then neither V nor any of its subcomponents can occur as an *actual
-   parameter* of P where the corresponding *formal parameter* is of
-   mode **out** or **in out**.
-#. If an *entire variable* V or a subcomponent of V occurs as an
-   *actual parameter* in a procedure call statement, and the
-   corresponding *formal parameter* is of mode **out** or **in out**,
-   then neither V nor an overlapping subcomponent of V can occur as
-   another *actual parameter* in that statement. Two components are
-   considered to be overlapping if they are elements of the same array
-   with the same index, or slices of the same array with common
-   indices (these two cases require the use of proof techniques), or
-   are the same component of a record (for example V.F and V.F)
-   including subcomponents of the component (for example V.F and
-   V.F.P).
-#. Where one of these rules prohibits the occurrence of a *variable* V
-   or any of its subcomponents as an actual parameter, the following
-   constructs are also prohibited in this context:
-
-    #. a type conversion whose operand is a prohibited construct;
-    #. a qualified expression whose operand is a prohibited construct;
-    #. a prohibited construct enclosed in parentheses.
-
-.. centered:: *Checked by Proof*
-
-#. The requirement that no two array elements overlap and that there
-   are no overlapping elements between array slices or between array
-   slices and individual elements.
-
-.. centered:: **Dynamic Semantics**
-
-The extended static semantics are checked using static analyses, no
-extra dynamic checks are required.
-
-Dependency Relations
-~~~~~~~~~~~~~~~~~~~~
-
-Every subprogram has a dependency relation, explicitly given in a
-Depends aspect, implicitly synthesized from the subprogram code
-or conservatively assumed from the *formal parameters* and *global
-variables* of the subprogram.  If the subprogram is declared in the
-visible part of package it may also have a
-Refined_Depends aspect, again explicitly given or synthesised.
-
-The dependency relation of a subprogram is used to determine the effect
-of a call to a subprogram in terms of the flows of information through
-the subprogram.
-
-#. A subprogram P declared in the visible part of a package, called
-   within the body or private descendants of the package and P
-   requires a Refined_Depends aspect because of
-   state_refinement, the following will be used as the dependency
-   relation of P:
-
-   * the ``dependency_relation`` from the explicit
-     Refined_Depends aspect if one is present;
-   * for a function which does not have an explicit
-     Depends aspect, the assumed dependency relation is that
-     its result is dependent on all of its imports;
-   * for a procedure which does not have an explicit
-     Refined_Depends aspect but the subprogram
-     has a proper body, the implicit dependency relation synthesized
-     from the subprogram code will be used.
-   * for a procedure which has neither a Refined_Depends aspect
-     nor a proper body the conservative dependency relation that is
-     used is that every ``export`` is dependent on every ``import``.
-
-#. A call to a subprogram P from a client of the package containing
-   the declaration of P or for a call to a subprogram which does not
-   require a Refined_Depends aspect, the following will be used
-   as the dependency relation :
-
-   * the ``dependency_relation`` from an explicit Depends aspect if one is present;
-   * for a function which does not have an explicit
-     Depends aspect, the assumed dependency relation is that
-     its result is dependent on all of its imports;
-   * for a procedure which does not have an explicit
-     Depends aspect but the subprogram has a proper body, the
-     implicit dependency relation synthesized from the subprogram code
-     will be used.
-   * for a procedure which has neither a Depends aspect nor a
-     proper body the conservative dependency relation that is used is
-     that every ``export`` is dependent on every ``import``.
-
+#. In |SPARK|, a proceudre call shall not pass actual parameters 
+   which denote objects with overlapping locations, when at least one of 
+   corresponding formal parameters is of mode **out** or **in out**, 
+   unless the other corresponding formal parameter is of mode **in** 
+   and by-copy. 
+   
+#. Likewise, it is not allowed in a call to pass an actual parameter, whose
+   corresponding formal parameter is mode **out** or **in out**,
+   that denotes an object which overlaps with any ``global_item`` referenced 
+   by the subprogram. 
+   
+#. Finally, it is not allowed in a call to pass an actual parameter which 
+   denotes an object which overlaps a ``global_item`` of mode 
+   **out** or **in out** of the subprogram, unless the corresponding formal
+   parameter is of mode **in** and by-copy.
+   
 Return Statements
 -----------------
 

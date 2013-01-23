@@ -1,4 +1,4 @@
-Packages
+﻿Packages
 ========
 
 Package Specifications and Declarations
@@ -471,7 +471,13 @@ Refined Global Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 #. Needs to be met by language feature:
+=======
+The Refined Global Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition`` must follow
+the grammar of ``global_specification`` in :ref:`global-aspects`.
+>>>>>>> TICKET:[M104-011]
 
    * Where a global data list referring to abstract state has been specified for a subprogram,
      it shall be possible to provide a refined global data list that takes account of the
