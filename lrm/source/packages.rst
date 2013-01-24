@@ -308,8 +308,63 @@ variable's declaration.
 
 Package-level Global, Depends and Initializes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**High-level detail TBD.**
+
+For analysis purposes, the elaboration of a 
+package is considered as a call of a set of nested subprograms.  
+For instance, the elaboration of the package specfication is the external client
+view of the elaboration, but the elaboration of the specification notionally
+calls the elaboration of any packages on which it depends and the elaboration
+of the package body.  The elaboration of the package body calls the ellaboration
+of any packages on which it depends and so forth.  This model does not address
+the issue of incorrect elaboration order or elaboration order circularities but 
+these will be dealt with elsewhere.
+
+The net result of this view of package elaboration is that every package which
+contains some form of state has a Global and a Dependency aspect representing
+the composite view of the nested subprogram calls at the level of abstraction 
+presented by the package specification.  
+
+.. centered:: **Legality Rules**
+
+#. The package Global and Depends aspects may only appear in the 
+   ``aspect_specification`` of a ``package_specification``.
+
+
+Global Aspects
+~~~~~~~~~~~~~~
 
 **High-level detail TBD.**
+
+The syntax and semantics for a package Global aspect is the same as for a 
+subprogram Global aspect when one considers the package elaboration as a 
+subprogramaspect :ref:`global-aspects`.  
+
+Initializes Aspects
+~~~~~~~~~~~~~~~~~~~
+
+Very often a package will have no dependencies but only initialize its own 
+state, that is variables declared in the package or in its private descendents.
+In such cases an Initializes aspect may be used rather than a Global aspect.
+
+The Iniyializes aspect is introduced by an ``aspect_specification`` where the 
+``aspect_mark`` is Initializes and the ``aspect_definition`` must follow the 
+grammar of ``initialization_list`` given below.
+
+.. centered:: **Syntax**
+
+::
+
+  initialization_list ::= global_list
+  
+An initialization list is shorthand for a Global aspect of the form
+
+::
+   Global => (Output => global_list)
+   
+where the entities denoted in the ``global_list`` are identical, each is a
+variable or state abstractio and declared within the ``visibl_part`` 
+of the package with the Initializes aspect.
 
 
 Package Bodies
@@ -320,9 +375,9 @@ State Refinement
 
 A ``state_name`` declared by an Abstract State Aspect in the
 specification of a package Q is an abstraction of the non-visible
-*variables* declared in the private part, body, or private descendants
+variables declared in the private part, body, or private descendants
 of Q, which together form the hidden state, of Q.  In the body of Q
-each ``state_name`` has to be refined by showing which *variables* and
+each ``state_name`` has to be refined by showing which variables and
 subordinate abstract states are represented by the ``state_name`` (its
 constituents).  A Refined State Aspect in the body of Q is used
 for this purpose.
