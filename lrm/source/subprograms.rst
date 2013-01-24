@@ -230,7 +230,7 @@ Global Aspects
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * It shall be possible to specify the list of global data read and updated
      when the subprogram is called. [Note that the data read can include data
@@ -406,7 +406,7 @@ Depends Aspects
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * It shall be possible to specify the dependency relation - that is, which outputs
      are dependent on which inputs - that is met by a given subprogram.
