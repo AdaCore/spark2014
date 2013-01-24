@@ -1,4 +1,4 @@
-﻿Packages
+Packages
 ========
 
 Package Specifications and Declarations
@@ -341,7 +341,7 @@ Refined State Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * For each state abstraction, it shall be possible to define the set of hidden
      state items that implement or *refine* that abstract state (where the
@@ -471,7 +471,7 @@ Refined Global Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * Where a global data list referring to abstract state has been specified for a subprogram,
      it shall be possible to provide a refined global data list that takes account of the
@@ -545,7 +545,7 @@ Refined Depends Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * Where a dependency relation referring to abstract state has been given,
      it shall be possible to specify a refined dependency relation that takes account
@@ -617,7 +617,7 @@ Refined Precondition Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * Where a pre-condition has been provided for a subprogram declaration, it shall be
      possible to state a refined pre-condition that refers to concrete rather than abstract state
@@ -716,7 +716,7 @@ Refined Postcondition Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Needs to be met by language feature:
+#. Goals to be met by language feature:
 
    * Where a post-condition has been provided for a subprogram declaration, it shall be
      possible to state a refined post-condition that refers to concrete rather than abstract state

@@ -1,61 +1,7 @@
-General notes
-=============
 
-#. Remember to explain that sections of the document that aren't relevant have been removed for the moment.
-
-High-level requirements
-=======================
-
-There are two main components to the SPARK 2014 LRM (this document). The first
-defines an extension to the Ada 2012 syntax to provide SPARK features such
-as Global. The second defines a subset of Ada 2012 by excluding certain language
-features. The syntax and rules that define the extensions to the language must
-be such that they work correctly given the Ada subset with which we are working
-(and varying that subset will cause those rules to be modified: typically,
-the stronger the restrictions on the Ada subset then the simpler will be the
-SPARK rules, and vice versa).
-
-However, the high-level requirements to be met by the SPARK 2014 language are invariant
-under the scope of the Ada subset being used and are of necessity much simpler
-to understand than the language definition rules. Moreover, they provide
-a rationale for the language features and rules as provided in this document.
-
-Hence, high-level requirements are provided according to the following
-structure:
-
-#. Strategic requirements for the SPARK 2014 language (at a high level and
-   possibly decomposed into .
-
-#. Requirements to provide particular language features.
-
-#. For each such language feature, requirements are given to define how
-   that feature should work in a way that is - as much as possible - language
-   independent. [This means that language features may be understood independently
-   of the low-level detail needed to make them work in the context of the
-   Ada 2012 subset being used.]
-
-Where relevant, a rationale will be given to explain why the requirement is
-levied. Further narrartive detail is given on each of the strategic requirements.
-
-*Need to decide on a classification for the strategic requirements as well,
-and the ones below them, where the latter includes use cases.*
-
-*Need also to work out how to integrate the strategic reqts/high-level reqts
-given independently of the language features, the use cases and the specific
-detail on the language features.*
-
-*Write up my model for what we are doing, including the stuff on domain, tool,
-language extension, language subset: need to know what type of requirement artefact
-is relevant for each entity we are referring to.*
-
-*Note that the strategic requirements are really outside of our scope, though
-they are still important.*
 
 Notes
 -----
-
-#. NB This is taking a long time: need to make sure we get done what we need to
-   by the time this draft needs to be done.
 
 #. Note: need to check the rest of the introduction for possible additional
    strategic requirements.
@@ -69,9 +15,6 @@ Notes
    since the constructive mode has a tighter requirement).
 
 #. Note: try to lift the level of abstraction of things like "distinct entities".
-
-#. Note: Will need to add tracing between the various levels of requirements
-    and identify where we can't trace.
 
 #. Note: handling retrospective, mixing of code and mixing of types of verification
     evidence might be difficult.
@@ -106,6 +49,8 @@ Notes
 
 Strategic Requirements
 ----------------------
+
+#. Note that need to classify the requirements here.
 
 Provide rationale detail? I think that would be useful.
 
@@ -265,63 +210,7 @@ have a better way of tracing.
 Language Feature Requirements
 -----------------------------
 
-#. **To discuss with Flo: need to know the properties that need to hold
-   of the graphs that he generates in order for everything to work (really, what
-   are the pre-conditions to the analysis phase and to the graph generation phase).
-   Note that when we add additional rules to the LRM, we are trying to avoid problems
-   with soundness and we have Steve to help us with that: how are we guarding against
-   this in the things that Flo does?**
 
-#. Remove volatility from the detail for milestone 2, even in terms of those
-   things where we don't give the language-specific rules. In general, go through
-   and see what should be descoped.
-
-#. What about volatile variables declared in the visible part of the spec,
-   that hence don't appear in the abstract state aspect, and therefore that
-   don't have a mode. Is it a change that we now don't want visible state in
-   the abstract state aspect? Hence, perhaps we need a requirement that says
-   volatile variables always need to have a mode, independently of where they
-   are recorded.
-
-#. In addition, need to talk to Trevor about the way the consistency relationship
-   between concrete and abstract state is defined (in current LRM, defines it in large part
-   by consistency between refined globals and depends and the abstract versions
-   of those things, whereas I was going to define it at level of abstraction relationship
-   and then apply it directly to the refined globals and depends).
-
-#. We have a requirement to say that we provide everything that SPARK 2005 does:
-   but at the very least we are missing --# accept and --# hide. Need to check to
-   to see if there is anything else like this.
-
-#. Need to have a definition of hidden state.
-
-#. Wrt hierarchies of data refinement, do we need to make clear the conditions
-   under which we can refine abstract state at one level onto abstract state at the lower
-   level? Look at the 2005 LRM to see what it says.
-
-#. Need to define what semantics means: it should mean what needs to hold
-   of the implementation so that it is considered correct against the specification.
-
-#. General: idea of replacing all renamings with the real thing prior to analysis.
-
-#. General: the rule on referring to abstract state should be lifted up so that it
-   refers to everything.
-
-#. Optional guideline: disallow use of different names for the same entities in the
-   same subprogram.
-
-#. Do we need flow analysis on contracts to check for uninitialized variables?
-   This would only apply to pragmas.
-
-#. General idea that we could pursue:
-
-   * Define a simple standard relationship between refined global and global, but allow
-     a feature to manually relate and justify. *In a way, this allows something like
-     dual annotations but without needing two annotations.*
-
-   * Similar for refinement of null state or caches in functions.
-
-   * This is the idea of stepping outside of the language.
 
 To be allocated
 ^^^^^^^^^^^^^^^
@@ -335,27 +224,22 @@ To be allocated
    Global within that package Body. Where does that rule go and where is it in the
    2005 LRM?
 
-Definitions
-^^^^^^^^^^^
 
-#. Feature definition: this gives the use case and also gives the detail that would
-   be present if we could give a mathematical definition.
-
-#. Constraints: this defines any ways in which we need to restrict that definition
-   or relation, typically to serve the needs of analysis or verification or because
-   there is some language feature where the interaction with this feature
-   is problematical. *Anything other than this? If not, this is very useful.*
-
-#. Consistency: here, we consider the other language features being implemented
-   and consider what the relationship should be between this and those features.
-
-#. Semantics: here we define what the language feature means and hence
-   what it means for the program to be correct against any specification given
-   using this feature.
 
 
 General
 ^^^^^^^
+
+#. **To discuss with Flo: need to know the properties that need to hold
+   of the graphs that he generates in order for everything to work (really, what
+   are the pre-conditions to the analysis phase and to the graph generation phase).
+   Note that when we add additional rules to the LRM, we are trying to avoid problems
+   with soundness and we have Steve to help us with that: how are we guarding against
+   this in the things that Flo does?**
+
+#. Remove volatility from the detail for milestone 2, even in terms of those
+   things where we don't give the language-specific rules. In general, go through
+   and see what should be descoped.
 
 #. **NB Need to define what is meant by imports and exports, wrt high-level
    requirements on Depends.**

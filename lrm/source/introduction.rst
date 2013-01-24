@@ -31,8 +31,84 @@ of the Ada RM.
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
 
-|SPARK| Design Goals
---------------------
+Method of Description and Syntax Notation
+-----------------------------------------
+
+In expressing the syntax and rules of |SPARK|, the following chapters of
+this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
+
+High-level requirements
+-----------------------
+
+There are two main components to the SPARK 2014 LRM (this document). The first
+defines an extension to the Ada 2012 syntax to provide SPARK features such
+as dependency relations for subprograms. The second defines a subset of Ada
+2012 by excluding certain language
+features. The syntax and rules that define the extensions to the language must
+be such that they work correctly given the Ada subset with which we are working
+(and varying that subset will cause those rules to be modified: typically,
+the stronger the restrictions on the Ada subset then the simpler will be the
+SPARK rules, and vice versa).
+
+However, the high-level requirements to be met by the SPARK 2014 language are invariant
+under the scope of the Ada subset being used and are of necessity much simpler
+to understand than the language definition rules. Moreover, they provide
+a rationale for the language features and rules as provided in this document.
+
+Hence, high-level requirements are provided according to the following
+structure:
+
+#. Strategic requirements to be met by the SPARK 2014 language and its associated
+   toolset (given in this chapter).
+
+#. Requirements to provide particular language features.
+
+#. For each such language feature, requirements are given to define how
+   that feature should work in a way that is - as much as possible - language
+   independent. [This means that language features may be understood independently
+   of the low-level detail needed to make them work in the context of the
+   Ada 2012 subset being used.]
+
+Where relevant, a rationale will be given to explain why the requirement is
+levied. Further narrative detail is given on each of the strategic requirements.
+
+Presentation of Language Feature Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For each language feature, high-level requiements are given under the following
+headings:
+
+#. *Goals to be met by language feature*: this defines the broad need behind
+   a given language feature, along with requirements on the capabilities that
+   the feature needs to support.
+
+#. *Constraints*: this defines any ways in which we need to restrict the nature of
+   the language feature, typically to serve the needs of analysis or verification.
+
+#. *Consistency*: here, we consider the other language features being implemented
+   and consider what the relationship should be between this and those features.
+
+#. *Semantics*: here we define what the language feature means and hence
+   what it means for the program to be correct against any specification given
+   using this feature.
+
+Generic Requirements
+~~~~~~~~~~~~~~~~~~~~
+
+A number of requirements apply to multiple language features and they are given
+at the end of this chapter.
+
+Reading the High-Level Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The high-level requirements are naturally given in language that is less precise
+than would be expected of rules in a language reference manual. Where greater
+precision is required, that will be given in the language definition rules
+themselves.
+
+
+|SPARK| Strategic Requirements
+------------------------------
 
 Principal design goals are as follows:
 
@@ -318,18 +394,66 @@ Any toolset that proposes a combination of formal verification and testing for
 |SPARK| should provide a detailed process for doing so, including any necessary
 additional testing of proof assumptions.
 
-Method of Description and Syntax Notation
------------------------------------------
-
-In expressing the syntax and rules of |SPARK|, the remaining chapters of
-this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
 
 .. _generic_hlrs:
+
+Definition of Terms for High-Level Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Generic high-level requirements
 -------------------------------
 
-#. **Do I need to classify these general requirements? Would be useful.**
+The following high-level requirements apply to multiple language features and
+hence are given in a single place to ease readability.
+
+
+
+#. What about volatile variables declared in the visible part of the spec,
+   that hence don't appear in the abstract state aspect, and therefore that
+   don't have a mode. Is it a change that we now don't want visible state in
+   the abstract state aspect? Hence, perhaps we need a requirement that says
+   volatile variables always need to have a mode, independently of where they
+   are recorded.
+
+#. In addition, need to talk to Trevor about the way the consistency relationship
+   between concrete and abstract state is defined (in current LRM, defines it in large part
+   by consistency between refined globals and depends and the abstract versions
+   of those things, whereas I was going to define it at level of abstraction relationship
+   and then apply it directly to the refined globals and depends).
+
+#. We have a requirement to say that we provide everything that SPARK 2005 does:
+   but at the very least we are missing --# accept and --# hide. Need to check to
+   to see if there is anything else like this.
+
+#. Need to have a definition of hidden state.
+
+#. Wrt hierarchies of data refinement, do we need to make clear the conditions
+   under which we can refine abstract state at one level onto abstract state at the lower
+   level? Look at the 2005 LRM to see what it says.
+
+#. Need to define what semantics means: it should mean what needs to hold
+   of the implementation so that it is considered correct against the specification.
+
+
+#. General: the rule on referring to abstract state should be lifted up so that it
+   refers to everything.
+
+#. Optional guideline: disallow use of different names for the same entities in the
+   same subprogram.
+
+#. Do we need flow analysis on contracts to check for uninitialized variables?
+   This would only apply to pragmas.
+
+#. General idea that we could pursue:
+
+   * Define a simple standard relationship between refined global and global, but allow
+     a feature to manually relate and justify. *In a way, this allows something like
+     dual annotations but without needing two annotations.*
+
+   * Similar for refinement of null state or caches in functions.
+
+   * This is the idea of stepping outside of the language.
+
 
 #. **Add in here the general requirements from my other file, making sure there is one
    relating to being able to provide abstraction.**
@@ -375,9 +499,6 @@ General Actions
    in or out of SPARK and add a comment to say that that detail is still to
    be defined.
 
-#. Make clear that the wording of the HLRs doesn't need to be as precise as the RM
-   wording, so provided the broad intent is clear, we shouldn't be raising comments on them.
-
 #. Do we need something in general on visibility? That is, an item where we state what
    a given language feature can refer to?
 
@@ -392,14 +513,19 @@ General Actions
 #. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
    a single list of possibilities for the future?
 
-#. May need to present the high-level requirements a bit differently, as they appear
-   as if they could be a bit more difficult to read.
-
 #. Check for consistency of all the high-level requirements.
 
 #. Make sure that the high-level requirements are given with enough contextual detail.
 
 #. Put the justification for presence of refined language features in this general
    section, since it is common for all.
+
+Notes on the Current Draft
+--------------------------
+
+This is an interim draft that covers all high-level requirements, provides
+syntax where possible and otherwise provides the detailed rules necessary to
+support implementation of basic flow analysis. Where detail is not relevant to
+meeting these needs then it has typically been removed.
 
 
