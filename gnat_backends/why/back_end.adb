@@ -27,7 +27,6 @@
 
 with Adabkend;
 with Namet;
-with Opt;              use Opt;
 with Osint;
 with Stringt;
 with System;
@@ -116,15 +115,6 @@ package body Back_End is
       use type System.Address;
 
    begin
-
-      --  If we are int translation mode, disable the generation of ALI files,
-      --  as the overall workflow in gnatprove depends on their timestamp
-      --  staying the same.
-
-      if In_Frame_Condition_Mode then
-         Opt.Disable_ALI_File := True;
-      end if;
-
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
       --  and need to set gnat_argv to save_argv so that Ada.Command_Line
       --  has access to the command line.

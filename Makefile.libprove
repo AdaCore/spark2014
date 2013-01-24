@@ -44,10 +44,10 @@ check: $(ALL_WHYPACK:__package.mlw=.check)
 	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
 
 %.ali: %.adb
-	$(CC) -c -gnatc -gnatpg -gnatd.F $<
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.F -gnatd.G $<
 
 %.ali: %.ads
-	$(CC) -c -gnatc -gnatpg -gnatd.F $<
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.F -gnatd.G $<
 
 $(WHY_STANDARD):
 	touch $(DUMMYFILE)
