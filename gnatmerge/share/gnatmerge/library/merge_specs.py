@@ -47,39 +47,6 @@ class MergeSem:
     """
 
     @log_method
-    def check(self, model):
-        """Check a model against the spec
-
-        RETURNS
-          True if the model verifies the spec
-
-        REMARKS
-          This method is abstract and should be implemented by children
-          of this class.
-        """
-        assert(False)
-
-    @log_method
-    def proof(self, model, result):
-        """Return a proof/counterexample of result for model
-
-        PARAMETERS
-          model: the model against which the spec is checked
-          result: whether or not the spec is expected to be True
-                  (in which case a proof is returned) or False
-                  (in which case a counterexample is returned).
-
-        RETURNS
-          A "maximal" proof/counterexample: the maximal subset of the model
-          that shows that the spec's evaluation of this model is 'result'.
-
-        REMARKS
-          This method is abstract and should be implemented by children
-          of this class.
-        """
-        assert(False)
-
-    @log_method
     def apply(self, model):
         """Model morphism
 
@@ -141,16 +108,8 @@ class FreeSetMergeSome(FreeSetMergeUnary):
 
     @log_method
     def check(self, model):
-        """Implementation of MergeSem.check for some-quantified atoms"""
+        """Return True if the expression is True for model"""
         return self.atom in model
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for some-quantified atoms"""
-        if result and self.atom in model:
-            return {self.atom}
-        else:
-            return set([])
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
@@ -164,16 +123,8 @@ class FreeSetMergeNo(FreeSetMergeUnary):
 
     @log_method
     def check(self, model):
-        """Implementation of MergeSem.check for no-quantified atoms"""
+        """Return True if the expression is True for model"""
         return self.atom not in model
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for no-quantified atoms"""
-        if not result and self.atom in model:
-            return { self.atom }
-        else:
-            return set([])
 
     def __str__(self):
         """x.__str__() <==> str(x)"""
@@ -210,18 +161,11 @@ class FreeSetMergeBinary(MergeSem):
 
     @log_method
     def check(self, model):
-        """Implementation of MergeSem.check for binary ops"""
+        """Return True if the expression is True for model"""
         result = self.identity
         for operand in self.operands:
             result = self.operator(result, operand.check(model))
         return result
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for binary ops"""
-        return elements_union([operand.proof(model, result)
-                               for operand in self.operands
-                               if operand.check(model) == result])
 
     @log_method
     def apply(self, model):
@@ -524,25 +468,10 @@ def unit_testing():
     # one OK to detect the case where no fragment has been contributed.
     spec = MergeSpec("some OK and no KO", FreeSetMergeFactory(), name="ALL_OK")
 
-    assert(spec.check({'OK'}))
     assert(spec.apply({'OK'}) == {"ALL_OK"})
-    assert(spec.proof({'OK'}, True) == {'OK'})
-    assert(spec.proof({'OK'}, False) == set([]))
-
-    assert(not spec.check({'KO', 'OK'}))
     assert(spec.apply({'OK', 'KO'}) == set([]))
-    assert(spec.proof({'KO', 'OK'}, True) == {'OK'})
-    assert(spec.proof({'KO', 'OK'}, False) == {'KO'})
-
-    assert(not spec.check({'KO'}))
     assert(spec.apply({'KO'}) == set([]))
-    assert(spec.proof({'KO'}, True) == set([]))
-    assert(spec.proof({'KO'}, False) == {'KO'})
-
-    assert(not spec.check(set([])))
     assert(spec.apply(set([])) == set([]))
-    assert(spec.proof(set([]), True) == set([]))
-    assert(spec.proof(set([]), False) == set([]))
 
     # A typical example in the case when proof and tests are merged:
     # If a procedure is not proved, then it should be both validated
@@ -550,6 +479,6 @@ def unit_testing():
     spec = MergeSpec("(VALIDATED and COVERED) or PROVED",
                      FreeSetMergeFactory(),
                      name="OK")
-    assert(spec.check({'VALIDATED', 'COVERED'}))
-    assert(not spec.check({'VALIDATED'}))
-    assert(spec.check({'PROVED'}))
+    assert(spec.apply({'VALIDATED', 'COVERED'}) == {"OK"})
+    assert(spec.apply({'VALIDATED'}) == set([]))
+    assert(spec.apply({'PROVED'}) == {"OK"})

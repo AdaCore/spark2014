@@ -10,7 +10,7 @@ See unit_testing for a few use cases.
 """
 
 from merge_specs import MergeSpec
-from status import MergeStatusFactory
+from status import MergeStatusFactory, new_model, add_to_model
 from elements import elements_union
 from debug import log_method, log_function
 from utils import iterable
@@ -43,26 +43,6 @@ class SpecMap:
             self.map[key] = MergeSpec(map[key],
                                       MergeStatusFactory(),
                                       name=key)
-
-    @log_method
-    def check(self, model):
-        """Check model against expressions
-
-        Same as MergeSpec.check, but for several named expressions; return
-        the set of names whose expressions are verified in model.
-        """
-        return {key for key in self.map if self.map[key].check(model)}
-
-    @log_method
-    def proof(self, model, result):
-        """Check model against expressions
-
-        Same as MergeSpec.proof, but for several named expressions; return
-        a dictionnary whose keys are the name of the expression that evaluated
-        to result, and whose values are the corresponding proofs.
-        """
-        return {key : elements_union(self.map[key].proof(model, result))
-                for key in self.map if self.map[key].check(model) == result}
 
     @log_method
     def add_atoms(self, atoms):
@@ -107,52 +87,7 @@ def unit_testing():
     spec_map.add({"OK SO FAR"        : "no KO",
                   "STRICTLY PARTIAL" : "some OK and some KO"})
 
-    model = {}
-    assert(spec_map.check(model) == {"NO VCS", "OK SO FAR"})
-    assert(spec_map.proof(model, True)  == {"NO VCS"           : set([]),
-                                            "OK SO FAR"        : set([])})
-    assert(spec_map.proof(model, False) == {"PROVED"           : set([]),
-                                            "PARTIALLY PROVED" : set([]),
-                                            "STRICTLY PARTIAL" : set([]),
-                                            "NOT PROVED"       : set([])})
-
-    model["OK"] = {m1}
-    assert(spec_map.check(model) == {"PROVED", "PARTIALLY PROVED",
-                                     "OK SO FAR"})
-    assert(spec_map.proof(model, True)  == {"PROVED"           : {m1},
-                                            "OK SO FAR"        : set([]),
-                                            "PARTIALLY PROVED" : {m1}})
-    assert(spec_map.proof(model, False) == {"NO VCS"           : {m1},
-                                            "STRICTLY PARTIAL" : set([]),
-                                            "NOT PROVED"       : {m1}})
-
-    model["KO"] = {m2}
-    assert(spec_map.check(model) == {"PARTIALLY PROVED", "STRICTLY PARTIAL"})
-    assert(spec_map.proof(model, True)  == {"PARTIALLY PROVED" : {m1},
-                                            "STRICTLY PARTIAL" : {m1, m2}})
-    assert(spec_map.proof(model, False) == {"NO VCS"           : {m1, m2},
-                                            "PROVED"           : {m2},
-                                            "OK SO FAR"        : {m2},
-                                            "NOT PROVED"       : {m1}})
-
-    model = {"KO" : {m2, m4}}
-    assert(spec_map.check(model) == {"NOT PROVED"})
-    assert(spec_map.proof(model, True)  == {"NOT PROVED"       : {m2, m4}})
-    assert(spec_map.proof(model, False) == {"NO VCS"           : {m2, m4},
-                                            "PROVED"           : {m2, m4},
-                                            "OK SO FAR"        : {m2, m4},
-                                            "PARTIALLY PROVED" : set([]),
-                                            "STRICTLY PARTIAL" : set([])})
-    ###
-
-    def add_to_model(model, key, element):
-        if key in model[True]:
-            model[True][key].add(element)
-        else:
-            model[True][key] = {element}
-            model[False][key] = None
-
-    model = {True : {}, False : {}}
+    model = new_model()
     assert(spec_map.apply(model) == {
         True   : {"NO VCS"           : set([]),
                   "OK SO FAR"        : set([]),
@@ -197,7 +132,7 @@ def unit_testing():
                   "STRICTLY PARTIAL" : None,
                   "NOT PROVED"       : {m1}}})
 
-    model = {True : {}, False : {}}
+    model = new_model()
     add_to_model(model, "KO", m2)
     add_to_model(model, "KO", m4)
     assert(spec_map.apply(model) == {
@@ -214,17 +149,14 @@ def unit_testing():
                   "STRICTLY PARTIAL" : set([]),
                   "NOT PROVED"       : None}})
 
-    ###
-
     atomic_spec = SpecMap()
     atomic_spec.add_atoms({"OK", "KO"})
 
-    model = {"OK" : {m1}}
-    assert(atomic_spec.check(model) == {"OK"})
-    assert(atomic_spec.proof(model, True)  == {"OK" : {m1}})
-    assert(atomic_spec.proof(model, False)  == {"KO" : set([])})
+    model = new_model()
+    add_to_model(model, "OK", m1)
+    assert(atomic_spec.apply(model) == {True  : {'OK' : {m1}, 'KO' : None},
+                                        False : {'OK' : None, 'KO' : set([])}})
 
-    model = {"KO" : {m1}}
-    assert(atomic_spec.check(model) == {"KO"})
-    assert(atomic_spec.proof(model, True)  == {"KO" : {m1}})
-    assert(atomic_spec.proof(model, False)  == {"OK" : set([])})
+    add_to_model(model, "KO", m2)
+    assert(atomic_spec.apply(model) == {True  : {'OK' : {m1}, 'KO' : {m2}},
+                                        False : {'KO' : None, 'OK' : None}})

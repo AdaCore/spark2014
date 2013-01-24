@@ -32,6 +32,19 @@ from elements import dicts_union, elements_union_gen, elements_union_0, elements
 from utils import attr_str, full_str, final_singleton
 from debug import log_method, log_function
 
+def new_model():
+    """Return a new (empty) model"""
+    return {True : {}, False : {}}
+
+def add_to_model(model, key, element):
+    """Add a proof element for key in model
+    """
+    if key in model[True]:
+        model[True][key].add(element)
+    else:
+        model[True][key] = {element}
+        model[False][key] = None
+
 class StatusSome(MergeSem):
     """Status semantics for some-quantified atoms in spec merges
 
@@ -50,20 +63,8 @@ class StatusSome(MergeSem):
         self.name = name
 
     @log_method
-    def check(self, model):
-        """Implementation of MergeSem.check for some-quantified atoms"""
-        return self.atom in model
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for some-quantified atoms"""
-        if result and self.atom in model:
-            return {self.atom : model[self.atom]}
-        else:
-            return {}
-
-    @log_method
     def apply(self, model):
+        """Model morphism - See MergeSem.apply"""
         if self.atom not in model[True]:
             return {True  : {self.name : None},
                     False : {self.name : set([])}}
@@ -95,20 +96,8 @@ class StatusNo(MergeSem):
         self.name = name
 
     @log_method
-    def check(self, model):
-        """Implementation of MergeSem.check for no-quantified atoms"""
-        return not self.atom in model
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for no-quantified atoms"""
-        if not result and self.atom in model:
-            return {self.atom : model[self.atom]}
-        else:
-            return {}
-
-    @log_method
     def apply(self, model):
+        """Model morphism - See MergeSem.apply"""
         if self.atom not in model[True]:
             return {True  : {self.name : set([])},
                     False : {self.name : None}}
@@ -140,22 +129,8 @@ class StatusAnd(MergeSem):
         self.name = name
 
     @log_method
-    def check(self, model):
-        """Implementation of MergeSem.check for and-binded operands"""
-        for operand in self.operands:
-            if not operand.check(model):
-                return False
-        return True
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for and-binded operands"""
-        return dicts_union([operand.proof(model, result)
-                            for operand in self.operands
-                            if operand.check(model) == result])
-
-    @log_method
     def apply(self, model):
+        """Model morphism - See MergeSem.apply"""
         down = [op.apply(model) for op in self.operands]
         pros = [d[True] for d in down]
         cons = [d[False] for d in down]
@@ -195,22 +170,8 @@ class StatusOr(MergeSem):
         self.name = name
 
     @log_method
-    def check(self, model):
-        """Implementation of MergeSem.check for or-binded operands"""
-        for operand in self.operands:
-            if operand.check(model):
-                return True
-        return False
-
-    @log_method
-    def proof(self, model, result):
-        """Implementation of MergeSem.proof for or-binded operands"""
-        return dicts_union([operand.proof(model, result)
-                            for operand in self.operands
-                            if operand.check(model) == result])
-
-    @log_method
     def apply(self, model):
+        """Model morphism - See MergeSem.apply"""
         down = [op.apply(model) for op in self.operands]
         pros = [d[True] for d in down]
         cons = [d[False] for d in down]
@@ -288,39 +249,7 @@ def unit_testing():
     m4 = Message(name ="VC4", status="KO", sloc="p.adb:4:4",
                  message="assertion not proved")
 
-    model = {}
-    assert(not spec.check(model))
-    assert(spec.proof(model, True)  == {})
-    assert(spec.proof(model, False) == {})
-
-    model["OK"] = {m1}
-    assert(spec.check(model))
-    assert(spec.proof(model, True)  == {"OK" : {m1}})
-    assert(spec.proof(model, False) == {})
-
-    model["KO"] = {m2}
-    assert(not spec.check(model))
-    assert(spec.proof(model, True)  == {"OK" : {m1}})
-    assert(spec.proof(model, False) == {"KO" : {m2}})
-
-    model["OK"].add(m3)
-    assert(not spec.check(model))
-    assert(spec.proof(model, True)  == {"OK" : {m1, m3}})
-    assert(spec.proof(model, False) == {"KO" : {m2}})
-
-    model["KO"].add(m4)
-    assert(not spec.check(model))
-    assert(spec.proof(model, True)  == {"OK" : {m1, m3}})
-    assert(spec.proof(model, False) == {"KO" : {m2, m4}})
-
-    def add_to_model(model, key, element):
-        if key in model[True]:
-            model[True][key].add(element)
-        else:
-            model[True][key] = {element}
-            model[False][key] = None
-
-    model = {True : {}, False : {}}
+    model = new_model()
     assert(spec.apply(model) == {True  : {"ALL_OK" : None},
                                  False : {"ALL_OK" : set([])}})
 
