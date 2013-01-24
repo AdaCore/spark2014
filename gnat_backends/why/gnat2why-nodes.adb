@@ -173,6 +173,41 @@ package body Gnat2Why.Nodes is
 
    end Ada_Ent_To_Why;
 
+   ------------------
+   -- Add_To_Graph --
+   ------------------
+
+   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id) is
+
+      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set);
+      --  Add entity To to set Set
+
+      ----------------
+      -- Add_To_Set --
+      ----------------
+
+      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set)
+      is
+         pragma Unreferenced (Ignored);
+      begin
+         Set.Include (To);
+      end Add_To_Set;
+
+   --  Start of processing for Add_To_Graph
+
+   begin
+      if Map.Contains (From) then
+         Map.Update_Element (Map.Find (From), Add_To_Set'Access);
+      else
+         declare
+            S : Node_Sets.Set;
+         begin
+            S.Include (To);
+            Map.Insert (From, S);
+         end;
+      end if;
+   end Add_To_Graph;
+
    ------------------------
    -- Avoid_Why3_Keyword --
    ------------------------
@@ -187,6 +222,57 @@ package body Gnat2Why.Nodes is
          return S_Copy;
       end if;
    end Avoid_Why3_Keyword;
+
+   -----------------------
+   -- Get_Graph_Closure --
+   -----------------------
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
+      From : Node_Id) return Node_Sets.Set
+   is
+      use Node_Sets;
+      Result   : Set;
+      Work_Set : Set;
+      First    : Cursor;
+      Cur_Node : Node_Id;
+
+      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);
+      --  Update sets Result and Work_Set by adding those nodes from New_Set
+      --  that have not been encountered yet.
+
+      ---------------------
+      -- Update_Work_Set --
+      ---------------------
+
+      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set) is
+         pragma Unreferenced (Ignored);
+      begin
+         for N of New_Set loop
+            if not Result.Contains (N) then
+               Result.Include (N);
+               Work_Set.Include (N);
+            end if;
+         end loop;
+      end Update_Work_Set;
+
+   begin
+      Work_Set.Include (From);
+      Result.Include (From);
+
+      while not Work_Set.Is_Empty loop
+         First := Work_Set.First;
+         Cur_Node := Element (First);
+         Work_Set.Delete (First);
+
+         if Map.Contains (Cur_Node) then
+            Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
+                                       Process  => Update_Work_Set'Access);
+         end if;
+      end loop;
+
+      return Result;
+   end Get_Graph_Closure;
 
    ---------------
    -- Get_Range --

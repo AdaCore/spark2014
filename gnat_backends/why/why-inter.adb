@@ -42,7 +42,6 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 
 with Gnat2Why.Decls;      use Gnat2Why.Decls;
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Why.Inter is
 
@@ -512,18 +511,30 @@ package body Why.Inter is
    -- Close_Theory --
    ------------------
 
-   procedure Close_Theory (P             : in out Why_File;
-                           Filter_Entity : Entity_Id;
-                           No_Import     : Boolean := False)
+   procedure Close_Theory
+     (P              : in out Why_File;
+      Filter_Entity  : Entity_Id;
+      Defined_Entity : Entity_Id := Empty;
+      Do_Closure     : Boolean := False;
+      No_Import      : Boolean := False)
    is
       use Node_Sets;
-
-      S : constant Node_Sets.Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+      S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
 
       Gnatprove_Standard : constant String := "_gnatprove_standard";
+
    begin
+      --  If required, compute the closure of entities on which Defined_Entity
+      --  depends, and add those in the set of nodes S used for computing
+      --  includes.
+
+      if Do_Closure then
+         S.Union (Get_Graph_Closure (Entity_Dependencies, Defined_Entity));
+      end if;
+
       Standard_Imports.Clear;
       Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
+
       if not (No_Import) then
 
          if Present (Filter_Entity) then
@@ -533,35 +544,33 @@ package body Why.Inter is
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
 
-         declare
-            C : Node_Sets.Cursor := S.First;
-         begin
-            while C /= Node_Sets.No_Element loop
-               declare
-                  N : constant Node_Id := Element (C);
-               begin
-                  --  Here we need to consider entities and some non-entities
-                  --  such as string literals. We do *not* consider the
-                  --  Filter_Entity, nor its Full_View. Loop parameters are a
-                  --  bit special, we want to deal with them only if they are
-                  --  from loop, but not from a quantifier.
+         for N of S loop
+            --  Here we need to consider entities and some non-entities
+            --  such as string literals. We do *not* consider the
+            --  Filter_Entity, nor its Full_View. Loop parameters are a
+            --  bit special, we want to deal with them only if they are
+            --  from loop, but not from a quantifier.
 
-                  if N /= Filter_Entity
-                    and then
-                      (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                       Partial_View (N) /= Filter_Entity)
-                    and then
-                      (if Nkind (N) in N_Entity and then
-                       Ekind (N) = E_Loop_Parameter
-                       then not Is_Quantified_Loop_Param (N))
-                  then
-                     Standard_Imports.Set_SI (N);
-                     Add_Use_For_Entity (P, N);
-                  end if;
-               end;
-               Next (C);
-            end loop;
-         end;
+            if N /= Filter_Entity
+              and then
+                (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                 Partial_View (N) /= Filter_Entity)
+              and then
+                (if Nkind (N) in N_Entity and then
+                 Ekind (N) = E_Loop_Parameter
+                 then not Is_Quantified_Loop_Param (N))
+            then
+               Standard_Imports.Set_SI (N);
+               Add_Use_For_Entity (P, N);
+
+               --  When Defined_Entity is present, add the entities on which it
+               --  depends in the graph of dependencies.
+
+               if Present (Defined_Entity) then
+                  Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
+               end if;
+            end if;
+         end loop;
 
          --  We add the dependencies to Gnatprove_Standard theories that may
          --  have been triggered

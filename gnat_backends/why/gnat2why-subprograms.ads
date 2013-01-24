@@ -91,4 +91,14 @@ package Gnat2Why.Subprograms is
    --  current unit. If subprogram E's body is not in Alfa, generate an empty
    --  module.
 
+   procedure Complete_Expression_Function_Body_Translation
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean);
+   --  If subprogram E's body is in Alfa, generate a theory that imports all
+   --  axioms from expression functions that are used recursively in E's body.
+   --  In_Body is True if the body of the expression function is defined in
+   --  the body of the current unit. If subprogram E's body is not in Alfa,
+   --  generate an empty module.
+
 end Gnat2Why.Subprograms;

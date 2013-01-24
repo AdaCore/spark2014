@@ -82,6 +82,12 @@ package body Gnat2Why.Driver is
    procedure Translate_Entity (E : Entity_Id);
    --  Translates entity E into Why
 
+   procedure Complete_Entity_Translation (E : Entity_Id);
+   --  Complete the translation of entity E, after all entities from the same
+   --  unit (spec or body) have been translated. This is used currently to
+   --  generate a theory for expression functions that imports all necessary
+   --  axioms from other expression functions.
+
    procedure Do_Generate_VCs (E : Entity_Id);
    --  Generates VCs for entity E. This is currently a noop if E is not a
    --  subprogram. This could be extended one day to generate VCs for the
@@ -90,9 +96,43 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File (File : in out Why_File);
    --  Print the input Why3 file on disk
 
-   ------------------
-   -- Generate_VCs --
-   ------------------
+   ---------------------------------
+   -- Complete_Entity_Translation --
+   ---------------------------------
+
+   procedure Complete_Entity_Translation (E : Entity_Id) is
+      File : Why_File := Why_Files (Dispatch_Entity (E));
+
+   begin
+      case Ekind (E) is
+
+         --  An entity E_Subprogram_Body should be present only for expression
+         --  functions. This allows a separate definition of theories in Why3
+         --  for declaring the logic function, its axiom, and the closure of
+         --  the necessary axioms. This is necessary so that they are defined
+         --  with the proper visibility over previously defined entities.
+
+         when E_Subprogram_Body =>
+            declare
+               Decl_E : constant Entity_Id := Unique_Entity (E);
+            begin
+               pragma Assert (Present (Get_Expression_Function (Decl_E)));
+
+               --  Always generate a module, so that units which depend on this
+               --  one can rely on the presence of the completion.
+
+               Complete_Expression_Function_Body_Translation
+                 (File, Decl_E, In_Body => In_Main_Unit_Body (E));
+            end;
+
+         when others =>
+            null;
+      end case;
+   end Complete_Entity_Translation;
+
+   ---------------------
+   -- Do_Generate_VCs --
+   ---------------------
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
@@ -290,9 +330,10 @@ package body Gnat2Why.Driver is
       --  For all expression functions from other units (whose status as
       --  expression is visible at this point, meaning they are defined as such
       --  in a spec), make their definition available for proofs by declaring a
-      --  completion of their base theory. This does not distinguish
-      --  definitions which are visible at this point from those that are not.
-      --  (To be distinguished later ???)
+      --  completion of their base theory. We only declare the "closure" theory
+      --  as a completion, as it already includes the "axiom" theory.
+      --  This does not distinguish definitions which are visible at this point
+      --  from those that are not. (To be distinguished later ???)
 
       for E of All_Entities loop
          if Ekind (E) = E_Function
@@ -301,7 +342,8 @@ package body Gnat2Why.Driver is
          then
             declare
                Base_Name : constant String := Full_Name (E);
-               Name      : constant String := Base_Name & "__expr_fun";
+               Name      : constant String :=
+                 Base_Name & To_String (WNE_Expr_Fun_Closure);
             begin
                Add_Completion (Base_Name, Name, WF_Context_In_Spec);
             end;
@@ -314,8 +356,16 @@ package body Gnat2Why.Driver is
          Translate_Entity (E);
       end loop;
 
+      for E of Spec_Entities loop
+         Complete_Entity_Translation (E);
+      end loop;
+
       for E of Body_Entities loop
          Translate_Entity (E);
+      end loop;
+
+      for E of Body_Entities loop
+         Complete_Entity_Translation (E);
       end loop;
 
       --  Generate VCs for entities of unit. This must follow the generation of
@@ -400,9 +450,9 @@ package body Gnat2Why.Driver is
 
          --  An entity E_Subprogram_Body should be present only for expression
          --  functions. This allows a separate definition of theories in Why3
-         --  for declaring the logic function and its axiom. This is necessary
-         --  so that they are defined with the proper visibility over
-         --  previously defined entities.
+         --  for declaring the logic function, its axiom, and the closure of
+         --  the necessary axioms. This is necessary so that they are defined
+         --  with the proper visibility over previously defined entities.
 
          when E_Subprogram_Body =>
             declare

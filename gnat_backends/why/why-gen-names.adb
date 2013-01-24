@@ -693,7 +693,9 @@ package body Why.Gen.Names is
          when WNE_Char_Type    => return "__character";
          when WNE_Private      => return "__private";
          when WNE_Keep_On_Simp => return "keep_on_simp";
-         when WNE_Pretty_Ada => return "GP_Pretty_Ada";
+         when WNE_Pretty_Ada   => return "GP_Pretty_Ada";
+         when WNE_Expr_Fun_Axiom   => return "__expr_fun_axiom";
+         when WNE_Expr_Fun_Closure => return "__expr_fun_closure";
 
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);

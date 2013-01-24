@@ -43,6 +43,8 @@ with Why.Ids;                            use Why.Ids;
 with Why.Atree.Builders;                 use Why.Atree.Builders;
 with Why.Types;                          use Why.Types;
 
+with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
+
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
    --  phases of the translation process.
@@ -103,13 +105,20 @@ package Why.Inter is
      with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Build an empty Why_File with the given name.
 
-   procedure Close_Theory (P             : in out Why_File;
-                           Filter_Entity : Entity_Id;
-                           No_Import     : Boolean := False)
-     with Pre => (P.Cur_Theory /= Why_Empty),
-          Post => (P.Cur_Theory = Why_Empty);
+   procedure Close_Theory
+     (P              : in out Why_File;
+      Filter_Entity  : Entity_Id;
+      Defined_Entity : Entity_Id := Empty;
+      Do_Closure     : Boolean := False;
+      No_Import      : Boolean := False)
+   with
+     Pre => (if Do_Closure then Present (Defined_Entity));
    --  Close the current theory by adding all necessary imports and adding the
-   --  theory to the file
+   --  theory to the file. If not Empty, Defined_Entity is the entity defined
+   --  by the current theory, which is used to complete the graph of
+   --  dependencies for this entity. If Do_Closure is True, then these
+   --  dependencies are used to get all entities on which this definition
+   --  depends.
 
    procedure Discard_Theory (P : in out Why_File);
    --  Remove the current theory from P
@@ -259,5 +268,9 @@ private
 
    Why_File_Completion : Completion_Array;
    --  Global variable storing completions of theories
+
+   Entity_Dependencies : Node_Graphs.Map;
+   --  Mapping from an entity to the set of entities on which it depends. This
+   --  map is filled by Close_Theory.
 
 end Why.Inter;

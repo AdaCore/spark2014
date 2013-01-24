@@ -131,10 +131,53 @@
 --         For an Ada function, a logic function is created before the program
 --         function in the same module.  The logic function is called in the
 --         postcondition of the program function, to give a value to the
---         result. For an expression function, a defining axiom for the logic
---         function is created in a separate module. This axiom is only
---         available for proofs on code that has visibility over the body of
---         the expression function.
+--         result.
+
+--         For an expression function whose body is in SPARK, two additional
+--         theories are created:
+--           - a theory for the defining axiom for the logic function
+--           - a theory for including all axioms of all expression functions
+--             which participate in the definition of the current one
+--         These theories are seen as completions of the theory defining the
+--         logic function. When translating code that uses the expression
+--         function, the completions theories are included only if they were
+--         previously generated for the current unit, or if the expression
+--         function belongs in another unit. So axioms are only available for
+--         proofs on code that has visibility over the body of the expression
+--         function.
+
+--         As an example, consider the following code:
+
+--              p.ads           p.adb           q.ads           q.adb
+
+--           fun F1 is (1);                  fun G1 is (1);
+--           fun F2 is                       fun G2;         fun G2 is
+--             (F1+G1-1);                                      (G1+G3-1);
+--           fun F3;         fun F3 is (1);  fun G3;         fun G3 is (1);
+--           fun F4 is                       fun G4 is
+--             (F3+G3-1);                      (G1+G3-1);
+
+--         For every function, 3 theories are generated, for example for F2:
+--           - a theory F2 defining the logic function f2
+--           - a theory F2__expr_fun_axiom defining the axiom for f2, namely
+--             that: f2 = f1 + g1 - 1
+--           - a theory F2__expr_fun_closure including all available axioms for
+--             f2, namely here:
+--               F2__expr_fun_axiom (f2 = f1 + g1 - 1)
+--               F1__expr_fun_axiom (f1 = 1)
+--               G1__expr_fun_axiom (g1 = 1)
+--             This is only the case because the definitions of F1 and G1 are
+--             visible in the unit where F2 is defined. For F4, the closure
+--             only contains its own axiom, not the ones for F3 and G3,
+--             because F4 is defined in the spec of P, which has no visibility
+--             over the body of P (where F3 is defined) and the body of Q
+--             (where G3 is defined).
+
+--         The proof of a subprogram client unit of P and Q will have access to
+--         the axioms for all expression functions defined in p.ads and q.ads
+--         (whether in the public or the private part, but not in the body).
+--         The order of declarations and definitions in p.ads and q.ads should
+--         have no impact.
 
 --         A program function with definition is created in its own module, in
 --         the main file. VCs generated for this program function correspond to

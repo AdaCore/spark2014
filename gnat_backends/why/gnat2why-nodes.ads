@@ -70,6 +70,23 @@ package Gnat2Why.Nodes is
       "="             => "=");
    --  Maps of nodes
 
+   package Node_Graphs is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Sets.Set,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Sets."=");
+   --  Maps of nodes to sets of nodes
+
+   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id);
+   --  Add the relation From -> To in the given graph
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
+      From : Node_Id) return Node_Sets.Set;
+   --  Return the set of nodes reachable from node From by following the edges
+   --  in the graph Map.
+
    package Ada_To_Why is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Why_Node_Id,

@@ -160,6 +160,15 @@ package Why.Gen.Names is
       WNE_Def_Axiom,
       WNE_Dummy,
       WNE_Eq,
+
+      --  suffix for the name of the theory defining the axiom for an
+      --  expression function
+      WNE_Expr_Fun_Axiom,
+
+      --  suffix for the name of the theory importing all necessary axioms from
+      --  other expression functions
+      WNE_Expr_Fun_Closure,
+
       WNE_First_Static,
       WNE_Func,
       WNE_Ignore,

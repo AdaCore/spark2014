@@ -134,6 +134,53 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
    --  Return a node with a proper location for the postcondition of E, if any
 
+   ---------------------------------------------------
+   -- Complete_Expression_Function_Body_Translation --
+   ---------------------------------------------------
+
+   procedure Complete_Expression_Function_Body_Translation
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean)
+   is
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String :=
+        Base_Name & To_String (WNE_Expr_Fun_Closure);
+
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module including all necessary axioms for the "
+                       & "expression function "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  If the entity's body is not in Alfa, generate an empty module.
+
+      if not Body_In_Alfa (E) then
+         Close_Theory (File, Filter_Entity => Empty);
+         return;
+      end if;
+
+      --  No filtering is necessary here, as the theory should on the contrary
+      --  use the previously defined theory for the function declaration.
+      --  Attach the newly created theory as a completion of the existing one.
+
+      Close_Theory (File,
+                    Filter_Entity  => Empty,
+                    Defined_Entity => E,
+                    Do_Closure     => True);
+
+      if In_Body then
+         Add_Completion (Base_Name, Name, WF_Context_In_Body);
+      else
+         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+      end if;
+   end Complete_Expression_Function_Body_Translation;
+
    ------------------
    -- Compute_Args --
    ------------------
@@ -725,7 +772,8 @@ package body Gnat2Why.Subprograms is
       Read_Names         : constant Name_Set.Set := Get_Reads (E);
 
       Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & "__expr_fun";
+      Name      : constant String :=
+        Base_Name & To_String (WNE_Expr_Fun_Axiom);
 
       Params : Transformation_Params;
 
@@ -821,10 +869,14 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  No filtering is necessary here, as the theory should on the contrary
-      --  use the previously defined theory for the function declaration.
+      --  use the previously defined theory for the function declaration. Pass
+      --  in the defined entity E so that the graph of dependencies between
+      --  expression functions can be built.
       --  Attach the newly created theory as a completion of the existing one.
 
-      Close_Theory (File, Filter_Entity => Empty);
+      Close_Theory (File,
+                    Filter_Entity  => Empty,
+                    Defined_Entity => E);
 
       if In_Body then
          Add_Completion (Base_Name, Name, WF_Context_In_Body);
