@@ -1,0 +1,89 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+\documentclass[draft]{ltxguide}[1995/11/28]
+%\usepackage{draftcopy}
+
+\makeatletter
+\def\setitemindent#1{\settowidth{\labelwidth}{#1}%
+        \leftmargini\labelwidth
+        \advance\leftmargini\labelsep
+   \def\@listi{\leftmargin\leftmargini
+        \labelwidth\leftmargini\advance\labelwidth by -\labelsep}}
+\def\setitemitemindent#1{\settowidth{\labelwidth}{#1}%
+        \leftmarginii\labelwidth
+        \advance\leftmarginii\labelsep
+\def\@listii{\leftmargin\leftmarginii
+        \labelwidth\leftmarginii\advance\labelwidth by -\labelsep
+        \parsep=\parskip
+        \topsep=\z@
+        \itemsep=\parskip \advance\itemsep by -\parsep}}
+%
+% adjusted environment "description"
+% if an optional parameter (at the first two levels of lists)
+% is present, its width is considered to be the widest mark
+% throughout the current list.
+\def\description{\@ifnextchar[{\@describe}{\list{}{\labelwidth\z@
+          \itemindent-\leftmargin \let\makelabel\descriptionlabel}}}
+%
+\def\describelabel#1{#1\hfil}
+\def\@describe[#1]{\relax\ifnum\@listdepth=0
+\setitemindent{#1}\else\ifnum\@listdepth=1
+\setitemitemindent{#1}\fi\fi
+\list{--}{\let\makelabel\describelabel}}
+\DeleteShortVerb{\|}
+\renewenvironment{decl}[1][]%
+    {\par\small\addvspace{2.3ex}%
+     \vskip -\parskip
+     \ifx\relax#1\relax
+        \def\@decl@date{}%
+     \else
+        \def\@decl@date{\NEWfeature{#1}}%
+     \fi
+     \noindent\hspace{-\leftmargini}%
+     \begin{tabular}{|l|}\hline\ignorespaces}%
+    {\\\hline\end{tabular}\nobreak\@decl@date\par\nobreak
+     \vspace{2.3ex plus 1ex}\vskip -\parskip}
+\MakeShortVerb{\|}
+%
+\def\@listI{\leftmargin\leftmargini
+            \parskip 0\p@ \@plus 1\p@
+            \parsep 0\p@ \@plus\p@
+            \topsep 2\p@ \@plus\p@
+            \itemsep0\p@\relax}
+\@listI
+\setlength{\parskip}{\medskipamount}
+\makeatother
+\newcommand{\SJour}{\textsc{SVJour}}
+
+\title{The \SJour\ document class users guide\\supplement for\\
+\textit{Software Tools for Technology Transfer}}
+
+\author{\copyright~1997, Springer Verlag Heidelberg\\
+   All rights reserved.}
+
+\date{19 Febrary 1998}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:intro}
+This document describes the \textit{sttt} option for the
+\SJour\ \LaTeXe\ document class. For details on
+manuscript handling and the review process we refer to the
+\emph{Instructions for authors} in the printed journal. For style
+matters please consult previous issues of the journal.
+
+\section{Initializing the class}
+\label{sec:opt}
+
+As explained in the main \emph{Users guide} you can
+begin a document for \emph{Software Tools for Technology Transfer} by including
+\begin{verbatim}
+   \documentclass[sttt]{svjour}
+\end{verbatim}
+as the first line in your text. All other options are also described in
+the main \emph{User guide}.
+
+\end{document}
