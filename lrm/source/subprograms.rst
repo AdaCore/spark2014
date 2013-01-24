@@ -511,7 +511,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR Must be a state abstraction/whole object or formal parameter
 
 #. An ``input`` must have a mode of **in** or **in out**
    and an ``output`` must have an mode of **in out** or
@@ -520,7 +520,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR input must be of mode in or in out and output must be of mode out or in out
 
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
@@ -540,7 +540,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR null restrictions in Depends aspect
 
 #. The entity denoted by an ``output`` in an ``output_list`` shall
    not be denoted by any other ``output`` in that ``output_list`` or any other
@@ -548,28 +548,28 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR Unique output entities
 
 #. The entity denoted by an ``input`` in an ``input_list`` shall
    not be denoted by any other ``input`` in that ``input_list``.     
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR Unique input entities
 
 #. Every ``output`` of the subprogram shall appear in exactly one
    ``output_list``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR Each output appears exactly once
    
 #. Every ``input`` of the subprogram shall appear in at least one
    ``input_list``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 6.1.5 LR Each input shall appear at least once
 
 .. centered:: **Static Semantics**
 
