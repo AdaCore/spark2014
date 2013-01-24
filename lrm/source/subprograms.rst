@@ -440,6 +440,8 @@ High-level requirements
       of the subprogram and that view must be equivalent to the list of global
       data items and formal parameters and their modes (ignoring data items used only in proof contexts).
       *Rationale: this provides a useful early consistency check.*
+      **Note that the semantics of the formal parameter modes is different to that of the global
+      data items: what are the implications of this?**
     
 
 #. General requirements:

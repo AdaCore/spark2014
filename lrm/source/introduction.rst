@@ -395,4 +395,11 @@ General Actions
 #. May need to present the high-level requirements a bit differently, as they appear
    as if they could be a bit more difficult to read.
 
+#. Check for consistency of all the high-level requirements.
+
+#. Make sure that the high-level requirements are given with enough contextual detail.
+
+#. Put the justification for presence of refined language features in this general
+   section, since it is common for all.
+
 

@@ -272,28 +272,9 @@ Language Feature Requirements
    with soundness and we have Steve to help us with that: how are we guarding against
    this in the things that Flo does?**
 
-
-#. Need to go through all the text in this section to draw out stuff where there
-   is an outstanding action but I haven't yet recorded it.
-
-#. There are still issues to be resolved relating to refined pre- and post-conditions
-   I think: the detail there doesn't feel very convincing and there isn't very much
-   of it.
-
-#. Need to go through and check that all terms are defined sufficiently well,
-   so that the high-level requirements are sufficiently precise.
-
 #. Remove volatility from the detail for milestone 2, even in terms of those
    things where we don't give the language-specific rules. In general, go through
    and see what should be descoped.
-
-#. Note that we define requirements on augmentation plus subset, and then decompose
-   as necessary (at least we do this notionally). This means that we might
-   effectively get the final requirement at the language-independent level: hence,
-   for the moment, we could note that but give a higher-level statement.
-
-#. Details of global refinement with Contract_In have not yet been worked out
-   (at least, they don't seem to be in the LRM).
 
 #. What about volatile variables declared in the visible part of the spec,
    that hence don't appear in the abstract state aspect, and therefore that
@@ -302,17 +283,11 @@ Language Feature Requirements
    volatile variables always need to have a mode, independently of where they
    are recorded.
 
-#. Need to complete rationale detail wrt state refinement.
-
-#. Need to define refinement wrtIntegrity levels.
-
 #. In addition, need to talk to Trevor about the way the consistency relationship
    between concrete and abstract state is defined (in current LRM, defines it in large part
    by consistency between refined globals and depends and the abstract versions
    of those things, whereas I was going to define it at level of abstraction relationship
    and then apply it directly to the refined globals and depends).
-
-#. Need to get definitions tidied up (e.g. abstract state, hidden state, etc).
 
 #. We have a requirement to say that we provide everything that SPARK 2005 does:
    but at the very least we are missing --# accept and --# hide. Need to check to
@@ -324,26 +299,8 @@ Language Feature Requirements
    under which we can refine abstract state at one level onto abstract state at the lower
    level? Look at the 2005 LRM to see what it says.
 
-#. General point: three types of refinement: state/data, type and proof, although only
-   data refinement is of relevance here.
-
 #. Need to define what semantics means: it should mean what needs to hold
    of the implementation so that it is considered correct against the specification.
-
-#. Need to check the relevant sections against the 2005 LRM and also against the
-   SPARK book.
-
-#. Need to discuss in/out and Contract_In, in terms of what its semantics should
-   be in relation to in/out.
-
-#. Need to add rationale detail for the semantics for Global and Depends? Would be worth it.
-
-#. General point: try to make all these consistent so apply to the rest what was done
-   for the better ones.
-
-#. *Need to think carefully here about what is required. Basically
-need something at a high-level of abstraction but to which we can
-trace all the LRM rules.*
 
 #. General: idea of replacing all renamings with the real thing prior to analysis.
 
@@ -355,14 +312,6 @@ trace all the LRM rules.*
 
 #. Do we need flow analysis on contracts to check for uninitialized variables?
    This would only apply to pragmas.
-
-#. A lot of the detail for Initializes is TBD.
-
-#. Note that we need to think about reading/writing of Volatile variables during
-   package elaboration: in what sense exactly?
-
-#. Need to feed in Steve's comments on Package Initializes: in particular, stuff about
-   being able to initialize stuff in different packages.
 
 #. General idea that we could pursue:
 
@@ -461,14 +410,6 @@ Abstract State
    for visible variables.
 
 
-Global
-^^^^^^
-
-
-Depends
-^^^^^^^
-
-
 
 Initializes
 ^^^^^^^^^^^
@@ -554,173 +495,17 @@ Initializes
      without reference to anything else.*
 
 
-Refined Abstract
-^^^^^^^^^^^^^^^^
-
-Refined Global
-^^^^^^^^^^^^^^
-
-Refined Depends
-^^^^^^^^^^^^^^^
-
-#. *TBD: check against the definition of Refined Global and make sure
-   everything is covered here that they have in common.*
-
-#. Language feature:
-
-   * Where a dependency relation referring to abstract state has been specified for a subprogram,
-     this allows the refinement of that dependency relation according to the refinement of that
-     abstract state.
-
-#. Feature definition (use cases?):
-
-   * Where a dependency relation referring to abstract state has been given,
-     it shall be possible to specify a refined dependency relation that takes account
-     of the refinement of that abstract state.
-     *Rationale: TBD: need to discuss with Trevor. See the comments on
-     Refined Global. Is the rationale that we still want to to be able to specify what
-     is done at the correct level of detail, since the high-level statement
-     doesn't fully define the concrete dependency-relation?*
-
-   * It shall be possible to refer to both global data and formal parameters
-     in the refined dependency relation.
-     * Rationale: The imports and exports are given by both the global data and the
-     formal parameters.*
-
-   * It shall be possible to state where imports are not used or exports are
-     derived from no import.
-     *Rationale: to model programs accurately.*
-
-   * It shall be possible to define an empty refined dependency relation.
-     *Rationale: to model programs accurately.*
-
-   * It shall be possible to assume an implicit refined dependency relation on functions
-     and so an explcit statement shall not be required.
-     *Rationale: this is typical usage and saves effort.*
-
-#. Constraints:
-
-   * The names used in a given refined dependency relation to define the exports
-     of the subprogram shall refer to distinct entities.
-     *Rationale: to support flow analysis and to make the interface definition clear.*
-
-   * The names used in a given refined dependency relation to define the inputs on which
-     a given export depends shall refer to distinct entities.
-     *Rationale: to support flow analysis and to make the interface definition clear.*
-
-   * The refined dependency relation shall be complete.
-     *Rationale: this is necessary for security analysis and most value is
-     given if it is complete.*
-
-#. Consistency:
-
-   * The refined dependency relation shall be consistent with the refined global data items and
-     their modes in the following ways:
-
-     * Every item in the list of refined global data associated with the subprogram that
-       has either an output or input/output mode shall appear at least once as
-       an export in the refined dependency relation.
-
-     * Every item in the list of refined global data associated with the subprogram that
-       has either an input or input/output mode shall appear at least once as
-       an import in the refined dependency relation.
-
-  * Relationship with Depends:
-
-    * See pp.57-58 in the 2005 LRM for a definition of how this works.
-      *Are there needs to which this precise way of doing refinement of depends
-      actually maps?*
-
-    * Plus - where the 2005 detail differs from the current 2014 detail - will need
-      to understand why it was different (i.e. what was the goal).
-
-    * Plus will need to make this work for Volatile variables, in case the way they
-      are modelled has any impact here. I don't think there is impact here though.
-
-    * Plus will need to change in view of the fact that - as far as I know - previously
-      concrete variables were also covered by the own variable annotation.
-
-#. Semantics:
-
-   * As per Depends.
-
-#. Possible detail for the future:
-
-   * If it is possible to refine null abstract state, then refinements of such
-     state could appear in refined depends statements, but wouldn't map to
-     anything in the depends relation itself and would need to have mode in/out
-     in the refined depends.
 
 
-Refined Pre/Post-condition
-^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. *Any further detail needed under here?*
 
-#. Language feature:
 
-   * *TBD*
 
-#. Feature definition (use cases?):
 
-   * Where a pre- or post-condition (referring to abstract state?) has been provided
-     for a subprogram declaration, it shall be possible to state a refined
-     pre- or post-condition that refers to concrete rather than abstract state
-     and/or concrete rather than abstract type detail.
-     *TBD: need to get agreement that this is what the need is; and also make
-     sure the rationale is watertight, since it is likely to invite controversy.*
-     *Rationale:*
 
-        *  At the abstract level, we can only define symbols and not meaning.
-           *This isn't strictly true, cf sets, etc, though model of them not in SPARK.*
 
-        * It is possible to define symbols via executable code.
 
-        * But the executable code may be complex so that it itself needs a specification.
 
-        * But we can't use Pre and Post on the body.
-
-        * So we introduce Refined Pre and Post.
-
-        * We have the principle in Ada that it is clear about what is being done:
-          since we are performing refinement then we should be (able to be) clear about that.
-
-        * We are still doing refinement even if we don't have the syntactic labels.
-
-        * *Note that this is an Ada-specific justification (though in general we have
-          decided it is better to have Refined_X for all of the types of specification
-          we use.*
-
-        * *TBD: do we have semantics for how pre- and post-conditions on functions
-          used in proof contexts actually feed into the proof we are doing? In general,
-          I think there are still details to be worked out here, or at the very
-          least more detail needs to be provided in the text.*
-
-#. Constraints:
-
-   * *TBD: is there anything to say here? We didn't discuss anything.*
-
-#. Consistency:
-
-   * The refined pre-condition must be implied by the pre-condition and the
-     refined post-condition must imply the post-condition.
-     *Rationale: standard definition of proof refinement.*
-     *TBD I assume we don't need to say anything about abstracting data or
-     abstracting types.*
-
-#. Semantics:
-
-   * Not applicable (defined via the semantics of pre and postconditions?)
-
-   * *TBD: note that we need to decide how exactly this is all going to work:
-     for example, the semantics here depends on whether these statements
-     are executable. Plus it depends on whether it still contains state
-     abstraction information, and on how exactly that information is presented.*
-
-#. Further notes:
-
-   * Proof refinement has to take both data and type refinement into account.
-     *TBD: does this have any further implications?*
 
 
 Initializes Refinement

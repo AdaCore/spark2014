@@ -45,9 +45,9 @@ Abstract State Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Language feature:
 
-    * This language feature provides an abstraction of the hidden state referenced by the package.
+#. **NB Need to mention something about Volatiles, etc, so that the language definition
+   is fully covered by the HLRs.**
 
 #. Needs to be met by language feature:
 
@@ -398,7 +398,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 4 version of this document.*
+*To be completed in the Milestone 3 version of this document.*
 
 
 Abstract State and Package Hierarchy
@@ -489,8 +489,9 @@ High-level requirements
 
 #. Consistency: **Possibly combine rationale in one block; perhaps also take wording from 2005 LRM.**
 
-   * Let *Abs* be the abstraction function defined by state refinement.
-     Let *G* be the global data list and *RG* be the refined global data list. Then
+   * Let *Abs* be the abstraction function defined by state refinement (such that
+     *Abs* is the identity function when applied to visible state).
+     Let *G* be the global data list and *RG* be the refined global data list. Then:
 
      * Let *Y* be a data item in *G*. If every data item *X* in *RG*
        where *Abs (X) = Y* is such that its mode indicates it is only used in a proof
@@ -533,7 +534,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 4 version of this document.*
+*To be completed in the Milestone 3 version of this document.*
 
 
 .. _refined-depends-aspect:
@@ -541,108 +542,119 @@ Language Definition
 Refined Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a
-Refined Depends aspect applied to its body or body stub. The
-Refined Depends aspect defines the ``dependency_relation`` of the
-subprogram in terms of the ``constituents`` of a ``state_name`` of the
-package rather than the ``state_name``.
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
 
-The Refined Depends aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Depends" and the ``aspect_definition`` must follow
-the grammar of ``dependency_relation``.
+#. Needs to be met by language feature:
 
-.. centered:: **Legality Rules**
+   * Where a dependency relation referring to abstract state has been given,
+     it shall be possible to specify a refined dependency relation that takes account
+     of the refinement of that abstract state.
+     *Rationale: the semantics of properties defined in terms of abstract state
+     can only be precisely defined in terms of the corresponding concrete state,
+     though nested abstraction is also necessary to manage hierarchies of data.
+     Moreover, there may be multiple possible refinements for a given abstract specification
+     and so the user should be able to specify what they actually want. This also
+     supports stepwise development.*
 
-#. A Refined Depends aspect may only appear on the body or body
-   stub of a subprogram P in a package whose ``visible_part`` contains
-   the declaration of a subprogram P.
+#. Constraints:
 
-   .. ifconfig:: Display_Trace_Units
+   * No further Refined depends-specific requirements needed.
 
-      :Trace Unit: TBD
+#. Consistency: 
 
-#. A Refined Depends aspect on the body or body stub of a
-   subprogram P may only mention a formal parameter of P,
-   ``constituents`` of a ``state_name`` of the enclosing package given
-   in the Depends aspect in the declaration of P, a *global*
-   item that is not a ``state_name`` of the enclosing package or a
-   ``constituent`` of a **null** ``abstract_state_name``.
+    * The refined dependency relation defines an alternative view of the inputs and outputs
+      of the subprogram and that view must be equivalent to the refined list of global
+      data items and formal parameters and their modes (ignoring data items used only in proof contexts).
+      *Rationale: this provides a useful early consistency check.*
 
-   .. ifconfig:: Display_Trace_Units
+  * Relationship with Depends:
 
-      :Trace Unit: TBD
+   * Let *Abs* be the abstraction function defined by state refinement (such that
+     *Abs* is the identity function when applied to visible state).
+     Let *D* be a dependency relation and *RD* be the corresponding
+     refined dependency relation. Then:
 
-.. centered:: **Static Semantics**
+     * If *(X,Y)* is in *RD* - i.e. *X* depends on *Y* -
+       then *(Abs(X), Abs(Y))* is in *D*.
+       *Rationale: by definition.*
 
-#. A Refined Depends aspect of a subprogram defines a *refinement*
-   of the Depends aspect of the subprogram.
+     * If *(X,Y)* is in *RD* and there is *A* such that *Abs(A)=Abs(X)* but
+       there is no *B* such that *(A,B)* is in *RD*, then *(Abs(X),Abs(X)* is in *D*.
+       *Rationale: In this case, Abs (X) is not fully initialized by the
+       subprogram and the relevant components must be intialized prior to calling
+       the subprogram.*
 
-.. centered:: **Verification Rules**
+     * If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
+       *Abs(V)=S* and *Abs(W)=T*.
+       *Rationale: By definition of abstraction.*
 
-.. centered:: *Checked by Flow-Analysis*
+#. Semantics:
 
-#. If the subprogram declaration declared in the visible part of
-   package Q has a Depends aspect D then the
-   Refined Depends aspect defines a *refinement* D' of D
-   then it shall satisfy the following rules:
+   * As per Depends.
 
-   * For each ``export`` in D which is not a ``state_name`` of Q,
+#. General requirements:
 
-     * the same item must appear as an ``export`` in D';
-     * its ``dependency_list`` will be unchanged except that an
-       ``import`` which is a ``state_name`` of Q will be replaced in
-       D' by at least one ``constituent`` of the ``state_name`` and a
-       ``constituent`` of a **null** , ``abstract_state_name`` may be
-       an additional ``import``.
+    * See also section :ref:`generic_hlrs`.
 
-   * for each ``export`` in D which is a ``state_name`` S declared in
-     Q,
+.. todo:: The consistency rules will be updated as the
+          model for volatile variables is defined.
 
-     * the item is replaced in D' by at least one ``export`` which is a
-       ``constituent`` of S,
-     * its ``dependency_list`` will be unchanged except that an
-       ``import`` which is a ``state_name`` of Q will be replaced in
-       D' by at least one ``constituent`` of the ``state_name`` and a
-       ``constituent`` of a **null** , ``abstract_state_name`` may be
-       an additional ``import``.
-     * the union of every ``import`` from the ``dependency_list`` of
-       each ``export`` which is a ``constituent`` of S in D', with
-       every ``import`` which is a ``constituent`` of a ``state_name``
-       of Q replaced by its ``state_name`` (a ``constituent`` of a
-       **null** ``abstract_state_name`` is ignored) should give the
-       same set as the set of obtained by the union of every
-       ``import`` in the ``dependency_list`` of S in D.
+.. todo: If it is possible to refine null abstract state, then refinements of such
+         state could appear in refined depends statements, but wouldn't map to
+         anything in the depends relation itself and would need to have mode in/out
+         in the refined depends.
 
-   * function may have a Refined Depends aspect D' which
-     mentions a ``constituent`` of a **null** ``abstract_name`` but
-     the constituent must appear as both an ``import`` and an
-     ``export`` in D'.
-   * A ``constituent`` of a **null** ``abstract_state_name`` is
-     ignored in showing conformance between the Depends aspect
-     and the Refined Depends aspect according to the rules
-     given for a Depends aspect.
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
-#. If a subprogram has a Refined Depends aspect which satisfies
-   the flow analysis rules, it is used in the analysis of the
-   subprogram body rather than its Depends aspect.
+*To be completed in the Milestone 3 version of this document.*
 
-* If the declaration of a subprogram P in the visible part of package
-  Q has a Depends aspect which mentions a ``state_name`` of Q,
-  but P does not have a Refined Depends aspect then an implicit
-  Refined Depends aspect will be synthesized from the body of P.`
-
-* if the declaration of a subprogram P declared in the visible part of
-  a package Q does not have a Depends aspect, an implicit one is
-  synthesized from the Refined Depends aspect and the
-  Refined State aspect (both of which which may also have been
-  synthesized).
-
-.. centered:: **Dynamic Semantics**
-
-Abstractions do not have dynamic semantics.
 
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Needs to be met by language feature:
+
+   * Where a pre-condition has been provided for a subprogram declaration, it shall be
+     possible to state a refined pre-condition that refers to concrete rather than abstract state
+     and/or concrete rather than abstract type detail.
+     *Rationale: the semantics of properties defined in terms of abstract state and types
+     can only be precisely defined in terms of the corresponding concrete state and types,
+     though nested abstraction is also necessary to manage hierarchies of data and types.
+     Moreover, there may be multiple possible refinements for a given abstract specification
+     and so the user should be able to specify what they actually want. This also
+     supports stepwise development. Moreover, although function declarations may be used
+     in defining an abstract pre-condition and then their definitions will implicitly define
+     the concrete pre-condition, the implementation of those functions may be sufficiently
+     complex that it is useful to define post-conditions on those functions, which
+     would then be used in defining the semantics of the refined pre-condition.*
+     ** Need to tidy this up: for example, the first part of the need can be met by having
+     the functions: but doesn't support having a more abstract view of what is required than
+     is given by the implementation of the function.**      
+
+#. Constraints:
+
+   * No further Refined pre-condition-specific requirements needed.
+
+#. Consistency: 
+
+   * The refined pre-condition of the subprogram must be implied by the pre-condition.
+     *Rationale: standard definition of proof refinement.*
+
+#. Semantics:
+
+   * As per the semantics of the Pre-condition aspect.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
 Refined Precondition Aspect applied to its body or body stub.  The
@@ -701,6 +713,47 @@ a Boolean ``expression``.
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Needs to be met by language feature:
+
+   * Where a post-condition has been provided for a subprogram declaration, it shall be
+     possible to state a refined post-condition that refers to concrete rather than abstract state
+     and/or concrete rather than abstract type detail.
+     *Rationale: the semantics of properties defined in terms of abstract state and types
+     can only be precisely defined in terms of the corresponding concrete state and types,
+     though nested abstraction is also necessary to manage hierarchies of data and types.
+     Moreover, there may be multiple possible refinements for a given abstract specification
+     and so the user should be able to specify what they actually want. This also
+     supports stepwise development. Moreover, although function declarations may be used
+     in defining an abstract post-condition and then their definitions will implicitly define
+     the concrete post-condition, the implementation of those functions may be sufficiently
+     complex that it is useful to define post-conditions on those functions, which
+     would then be used in defining the semantics of the refined post-condition.*
+     ** Need to tidy this up: for example, the first part of the need can be met by having
+     the functions: but doesn't support having a more abstract view of what is required than
+     is given by the implementation of the function.**      
+
+#. Constraints:
+
+   * No further Refined post-condition-specific requirements needed.
+
+#. Consistency: 
+
+   * The post-condition of the subprogram must be implied by the refined post-condition.
+     *Rationale: standard definition of proof refinement.*
+
+#. Semantics:
+
+   * As per the semantics of the Post-condition aspect.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
 Refined Postcondition Aspect applied to its body or body stub.  The
