@@ -1,6 +1,6 @@
 module Main
   use import int.Int
-  use import module ref.Ref
+  use import ref.Ref
   
   (*** TO BE INSTANTIATED ***)
 
@@ -349,53 +349,44 @@ module Main
   forall co : list, e : element_t [contains co e].
     contains co e <-> 0 < position_ co (findfirst co e)
 
-val element :
-	  co:list -> cu:cursor ->
-	  { has_element co cu }
-	  element_t
-	  { result = element_ co cu }
+val element (co:list ) (cu:cursor) : element_t
+	  requires { has_element co cu }
+	  ensures { result = element_ co cu }
 
-val replace_element :
-	  co:ref list -> cu:cursor -> e:element_t ->
-	  { has_element !co cu }
-	  unit writes co
-	  { replace_element_ (old !co) cu e !co }
+val replace_element (co:ref list) (cu:cursor) (e:element_t) : unit
+	  requires { has_element !co cu }
+	  writes { co }
+	  ensures { replace_element_ (old !co) cu e !co }
 
-val insert :
-	  co:ref list -> cu:cursor -> e:element_t ->
-	  { has_element !co cu \/ cu = no_element }
-	  unit reads co writes co
-	  { insert_ (old !co) cu e !co }
+val insert (co:ref list) (cu:cursor) (e:element_t) : unit
+	  requires { has_element !co cu \/ cu = no_element }
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) cu e !co }
 
-val prepend :
-	  co:ref list -> e:element_t ->
-	  { }
-	  unit reads co writes co
-	  { insert_ (old !co) (first (old !co)) e !co }
+val prepend (co:ref list) (e:element_t) : unit
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) (first (old !co)) e !co }
 
-val append :
-	  co:ref list -> e:element_t ->
-	  { }
-	  unit reads co writes co
-	  { insert_ (old !co) no_element e !co }
+val append (co:ref list) (e:element_t) : unit
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) no_element e !co }
 
-val delete :
-	  co:ref list -> cu:cursor ->
-	  { has_element !co cu }
-	  unit reads co writes co
-	  { delete_ (old !co) cu !co }
+val delete (co:ref list) (cu:cursor) : unit
+	  requires { has_element !co cu }
+	  reads { co }
+          writes { co }
+	  ensures { delete_ (old !co) cu !co }
 
-val previous :
-	  co:list -> cu:cursor ->
-	  { cu = no_element \/ has_element co cu }
-	  cursor
-	  { result = previous_ co cu }
+val previous (co:list) (cu:cursor) : cursor
+	  requires { cu = no_element \/ has_element co cu }
+	  ensures { result = previous_ co cu }
 
-val next :
-	  co:list -> cu:cursor ->
-	  { cu = no_element \/ has_element co cu }
-	  cursor 
-	  { result = next_ co cu }
+val next (co:list) (cu:cursor) : cursor 
+	  requires { cu = no_element \/ has_element co cu }
+	  ensures { result = next_ co cu }
 
 end
 
