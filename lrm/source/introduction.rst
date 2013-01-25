@@ -402,6 +402,9 @@ additional testing of proof assumptions.
 Definition of Terms for High-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Ensure that if a term is the same or similar to one used in Aa then it means the
+same thing or we deliberately use a different term.
+
 #. Hidden state.
 
 #. Names.
@@ -411,6 +414,18 @@ Definition of Terms for High-Level Requirements
 #. Entire variables.
 
 #. Entities.
+
+#. Global data.
+
+#. Mode.
+
+#. Dependency relation: but note that the semantics definition basically gives this.
+
+#. Package (since in theory we are being language-independent).
+
+#. Refinement constituent.
+
+#. Explain the *Abs* function introduced by state refinement.
 
 
 .. _generic_hlrs:
@@ -435,17 +450,6 @@ Abstract State, Hidden State and Refinement
 
    **Rationale:** to allow modular verification and the management of complexity in the presence
    of programs that have a hierarchical representation of data.
-
-#. **Requirement:** Where it is possible to specify subprogram behaviour using a language feature that
-   refers to abstract state, it shall be possible to define a corresponding *refined*
-   version of the language feature that refers to the decomposition of that abstract state.
-
-   **Rationale**: the semantics of properties defined in terms of abstract state
-   can only be precisely defined in terms of the corresponding concrete state,
-   though nested abstraction is also necessary to manage hierarchies of data.
-   Moreover, there may be multiple possible refinements for a given abstract specification
-   and so the user should be able to specify what they actually want. This also
-   supports stepwise development.
 
 Naming
 ~~~~~~
@@ -518,6 +522,23 @@ To be allocated
 
 Actions to complete prior to release
 ------------------------------------
+
+#. Do we need more detail on refined pre and post-conditions? For example, how
+   do we get post-conditions on functions used in proof contexts into those
+   proof contexts?
+
+#. Need to improve the rationale for the use of refined pre and post conditions.
+
+#. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
+   will give this. The main thing to think about is visibility/getting certain information into
+   certain aspects, such as proof aspects.
+
+#. Make sure syntax is included where necessary (i.e. even where other details
+   have been removed; where it is the same as some existing aspect, then add
+   a comment to that effect).
+
+#. Note that the semantics of the formal parameter modes is different to that of the global
+   data items: what are the implications of this?
 
 #. Trevor needs to check the requirements in relation to renaming.
 
