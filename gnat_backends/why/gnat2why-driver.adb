@@ -333,7 +333,7 @@ package body Gnat2Why.Driver is
                Name      : constant String :=
                  Base_Name & To_String (WNE_Expr_Fun_Closure);
             begin
-               Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+               Add_Completion (Base_Name, Name, Dispatch_Entity (E));
             end;
          end if;
       end loop;
