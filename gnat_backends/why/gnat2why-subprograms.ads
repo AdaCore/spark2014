@@ -76,8 +76,16 @@ package Gnat2Why.Subprograms is
    procedure Translate_Subprogram_Spec
      (File : in out Why_File;
       E    : Entity_Id);
-   --  Generate a Why declaration that corresponds to an Ada subprogram
-   --  Node is a N_Subprogram_Body
+   --  Generate a Why declaration that corresponds to an Ada subprogram. Entity
+   --  E is a E_Function or E_Procedure.
+
+   procedure Complete_Subprogram_Spec_Translation
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean);
+   --  Generates a theory that completes the base theory for a subprogram
+   --  declaration. In_Body is True if the subprogram is declared in the
+   --  body of the current unit.
 
    procedure Translate_Expression_Function_Body
      (File    : in out Why_File;
@@ -90,15 +98,5 @@ package Gnat2Why.Subprograms is
    --  if the body of the expression function is defined in the body of the
    --  current unit. If subprogram E's body is not in Alfa, generate an empty
    --  module.
-
-   procedure Complete_Expression_Function_Body_Translation
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean);
-   --  If subprogram E's body is in Alfa, generate a theory that imports all
-   --  axioms from expression functions that are used recursively in E's body.
-   --  In_Body is True if the body of the expression function is defined in
-   --  the body of the current unit. If subprogram E's body is not in Alfa,
-   --  generate an empty module.
 
 end Gnat2Why.Subprograms;

@@ -133,18 +133,20 @@
 --         postcondition of the program function, to give a value to the
 --         result.
 
---         For an expression function whose body is in SPARK, two additional
---         theories are created:
---           - a theory for the defining axiom for the logic function
---           - a theory for including all axioms of all expression functions
---             which participate in the definition of the current one
+--         For an expression function whose body is in SPARK, an additional
+--         theory is created for the defining axiom of the logic function.
+--         For every subprogram (both functions and procedures), an additional
+--         theory is created for including all axioms of all expression
+--         functions which participate in the definition of the subprogram
+--         spec (the subprogram contract, which includes the body for
+--         expression functions).
+
 --         These theories are seen as completions of the theory defining the
---         logic function. When translating code that uses the expression
---         function, the completions theories are included only if they were
---         previously generated for the current unit, or if the expression
---         function belongs in another unit. So axioms are only available for
---         proofs on code that has visibility over the body of the expression
---         function.
+--         subprogram. When translating code that uses the subprogram, the
+--         completions theories are included only if they were previously
+--         generated for the current unit, or if the subprogram belongs in
+--         another unit. So axioms are available for proofs on code that has
+--         visibility over the body of the expression function.
 
 --         As an example, consider the following code:
 

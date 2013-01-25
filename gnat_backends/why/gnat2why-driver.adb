@@ -105,25 +105,15 @@ package body Gnat2Why.Driver is
 
    begin
       case Ekind (E) is
+         when Subprogram_Kind =>
+            if In_Alfa (E) then
+               --  Always generate a module for Alfa subprogram declarations,
+               --  so that units which depend on this one can rely on the
+               --  presence of the completion.
 
-         --  An entity E_Subprogram_Body should be present only for expression
-         --  functions. This allows a separate definition of theories in Why3
-         --  for declaring the logic function, its axiom, and the closure of
-         --  the necessary axioms. This is necessary so that they are defined
-         --  with the proper visibility over previously defined entities.
-
-         when E_Subprogram_Body =>
-            declare
-               Decl_E : constant Entity_Id := Unique_Entity (E);
-            begin
-               pragma Assert (Present (Get_Expression_Function (Decl_E)));
-
-               --  Always generate a module, so that units which depend on this
-               --  one can rely on the presence of the completion.
-
-               Complete_Expression_Function_Body_Translation
-                 (File, Decl_E, In_Body => In_Main_Unit_Body (E));
-            end;
+               Complete_Subprogram_Spec_Translation
+                 (File, E, In_Body => In_Main_Unit_Body (E));
+            end if;
 
          when others =>
             null;
@@ -327,17 +317,15 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
    begin
-      --  For all expression functions from other units (whose status as
-      --  expression is visible at this point, meaning they are defined as such
-      --  in a spec), make their definition available for proofs by declaring a
-      --  completion of their base theory. We only declare the "closure" theory
-      --  as a completion, as it already includes the "axiom" theory.
-      --  This does not distinguish definitions which are visible at this point
-      --  from those that are not. (To be distinguished later ???)
+      --  For all subprograms from other units, make their definition available
+      --  for proofs by declaring a completion of their base theory. We only
+      --  declare the "closure" theory as a completion, as it already includes
+      --  the "axiom" theory if there is one (for expression functions). This
+      --  does not distinguish definitions which are visible at this point from
+      --  those that are not. (To be distinguished later ???)
 
       for E of All_Entities loop
-         if Ekind (E) = E_Function
-           and then Present (Get_Expression_Function (E))
+         if Ekind (E) in E_Function | E_Procedure
            and then not Is_In_Current_Unit (E)
          then
             declare
