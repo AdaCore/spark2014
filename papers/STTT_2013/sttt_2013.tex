@@ -5,7 +5,7 @@
 %\usepackage{graphics}
 %\usepackage{amssymb}
 %\usepackage{amsfonts,amsmath}
-\usepackage[T1]{fontenc} 
+\usepackage[T1]{fontenc}
 %
 \begin{document}
 %
@@ -28,11 +28,116 @@ Insert your abstract here.
 \section{Introduction}
 \label{intro}
 Let's mention for example Hi-Lite \cite{hiliteERTS2012} to get the bib in place. This paper is a cool features list with some discussion around the VerifyThis 2012 competition.
-\section{Key New Features}
+
+\begin{itemize}
+\item SPARK 2005: verification platform and industrial use
+\item SPARK 2014: complete update of language and tools. main restrictions (no
+  pointer, no exception, no task, function without side-effects, no aliasing)
+\item Hi-Lite: research project in which Altran and AdaCore collaborated with
+  INRIA to create new tool architecture. compiler and verifier based off same
+  frontend, which puts all the checks in the AST.
+\item GNATprove: name of the formal verification tool. currently prototype. was
+  used at VerifyThis competition
+\end{itemize}
+
+\section{Key Language Features for Verification}
+
+in Ada 2012 (which was inspired by SPARK 2005):
+\begin{itemize}
+\item preconditions and postconditions
+\item Old and Result attributes
+\item new expressions (if/case/quantified)
+\item expression functions
+\end{itemize}
+
+\noindent
+added in SPARK 2014 based on SPARK 2005:
+\begin{itemize}
+\item pragmas Loop\_Invariant
+\item attribute Update
+\end{itemize}
+
+\noindent
+new in SPARK 2014:
+\begin{itemize}
+\item attribute Loop\_Entry
+\item pragmas Loop\_Variant
+\item aspect Contract\_Cases
+\end{itemize}
+
 \section{Integrated Testing and Proving}
-\section{Overflow Semantics}
-\section{Hypothesis Selection}
+
+\begin{itemize}
+\item execution semantics for functional properties $\rightarrow$ debug
+  annotations like code
+\item contracts can be tested
+\item same semantics for test and proof (Chalin's work)
+\item methodology for mixing test and proof. compiler inserts additional needed
+  checks to verify at run time assumptions made during proof.
+\end{itemize}
+
+\section{Choosing the Right Semantics for Integers}
+
+example of problem:
+\begin{itemize}
+\item user wants to add two numbers: \verb|X + Y|
+\item user wants to assert that addition cannot overflow:\\
+  \verb|with Pre => X + Y in Integer|
+\item but this expression may overflow itself!
+\end{itemize}
+
+3 overflow checking modes:
+\begin{itemize}
+\item strict mode: normal overflow checks
+\item minimized mode: larger base type (64bits) used when needed
+\item eliminated mode: use bignum library in the remaining cases
+\end{itemize}
+
+flexible solution:
+\begin{itemize}
+\item user chooses between 3 modes
+\item independent choice for assertions and code
+\item same choice for execution and formal verification
+\end{itemize}
+
+\section{Making Automatic Verification Work}
+
+\begin{itemize}
+\item bulk parallelism
+\item use of dependencies and signatures to minimize rework
+\item generation of small contexts in VCs (modularity, abstraction in Why3)
+\item fast-WP generation (Leino's work)
+\item portfolio approach (various provers, allowed with Why3)
+\item selection of hypotheses
+\item manual axiomatization of critical data structures (e.g. containers)
+\item axiomatization as decision procedures (Claire's work as well as François
+  Bobot)
+\end{itemize}
+
 \section{VerifyThis Competition}
+
+\begin{itemize}
+\item solution for challenge 1
+\item solution for challenge 2
+\item use of execution to debug annotations during competition $\rightarrow$
+  prize of user-assistance tool feature
+\item snapshot of GNATprove results in GPS
+\end{itemize}
+
+\section{Ongoing Work}
+
+\begin{itemize}
+\item IDE integration (analyze line/file, show path)
+\item dataflow and information flow verification (in particular initialization)
+\item proof of code containing containers
+\item visualization of assumptions made for proof
+\item counterexample generation and visualization for unproved VCs
+\item Coq formalization of AST produced by frontend. possible verification of
+  the consistency of the generated AST with checks.
+\item target parametrization
+\item adaptation for non-executable annotations and proof assistants
+\end{itemize}
+
 \label{verifythis}
 %
 \bibliographystyle{alpha}
