@@ -168,7 +168,7 @@ where the ``aspect_mark`` is Abstract_State and the
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR name_value_property identified must be Integrity
+      :Trace Unit: 7.1.2 LR name_value_property identifier must be Integrity
 
 #. If a ``property_list`` includes Integrity then it shall be the final
    property in the list. [This eliminates the possibility of a positional
