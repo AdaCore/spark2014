@@ -232,50 +232,60 @@ High-level requirements
 
 #. Goals to be met by language feature:
 
-   * It shall be possible to specify the list of global data read and updated
+   * **Requirement:** It shall be possible to specify the list of global data read and updated
      when the subprogram is called. [Note that the data read can include data
-     used in proof contexts, including assertions.] *Rationale: to allow provision of at
-     least the same functionality as SPARK 2005 and to allow modular analysis.*
+     used in proof contexts, including assertions.]
 
-   * It shall be possible to specify the mode (input, output or both)
-     for each global data item. *Rationale: This matches the presentation of
-     formal parameters, and the information is used by both flow analysis and proof.*
+     **Rationale:** to allow provision of at
+     least the same functionality as SPARK 2005 and to allow modular analysis.
 
-   * It shall be possible to identify globals that are used only in proof contexts.
-     *Rationale: since the list of global data items constrains the data that can be read
+   * **Requirement:** It shall be possible to specify the mode (input, output or both)
+     for each global data item.
+
+     **Rationale:** This matches the presentation of
+     formal parameters, and the information is used by both flow analysis and proof.
+
+   * **Requirement:** It shall be possible to identify globals that are used only in proof contexts.
+     
+     **Rationale:** since the list of global data items constrains the data that can be read
      and updated when the subprogram is called, then the global data list needs to cover
-     data items that are read in proof contexts.*
+     data items that are read in proof contexts.
 
 #. Constraints:
 
-   *No further Global-specific requirements needed.*
+   * No further Global-specific requirements needed.
 
 #. Consistency:
 
-   * The mode associated with a formal parameter or volatile variable in a global data list
+   * **Requirement:** The mode associated with a formal parameter or volatile variable in a global data list
      shall be consistent with the mode associated with it at the point of its declaration.
-     *Rationale: this provides an early basic consistency check.*
+     
+     **Rationale:** this provides an early basic consistency check.
 
 #. Semantics: 
 
-   * A global data item with an input mode is read on at least one
+   * **Requirement:** A global data item with an input mode is read on at least one
      executable path.
-     *Rationale: by definition.*
 
-   * A global data item with an output mode is written on at least one
+     **Rationale:** by definition.
+
+   * **Requirement:** A global data item with an output mode is written on at least one
      executable path.
-     *Rationale: by definition.*
+ 
+     **Rationale:** by definition.
 
-   * A global data item with an output mode but no input mode is written
+   * **Requirement:** A global data item with an output mode but no input mode is written
      on all executable paths.
-     *Rationale: to ensure that data items with output mode are always initialized
-     on completion of a call to the subprogram.*
 
-   * A global data item that is only read in a proof context shall not have
+     **Rationale:** to ensure that data items with output mode are always initialized
+     on completion of a call to the subprogram.
+
+   * **Requirement:** A global data item that is only read in a proof context shall not have
      an input or output mode.
-     *Rationale: the effect of reading data items in a proof context is fundamentally
+
+     **Rationale:** the effect of reading data items in a proof context is fundamentally
      different from the reading of data items outside of a proof context, since the
-     former does not contribute to information flow relations.*
+     former does not contribute to information flow relations.
 
 #. General requirements:
 
@@ -408,19 +418,22 @@ High-level requirements
 
 #. Goals to be met by language feature:
 
-   * It shall be possible to specify the dependency relation - that is, which outputs
+   * **Requirement:** It shall be possible to specify the dependency relation - that is, which outputs
      are dependent on which inputs - that is met by a given subprogram.
-     *Rationale: To allow provision of at least the same functionality as SPARK 2005
-     and to allow modular analysis.*
 
-   * It shall be possible to refer to both global data and formal parameters
+     **Rationale:** To allow provision of at least the same functionality as SPARK 2005
+     and to allow modular analysis.
+
+   * **Requirement:** It shall be possible to refer to both global data and formal parameters
      in the dependency relation.
-     *Rationale: The inputs and outputs are given by both the global data and the
-     formal parameters.*
 
-   * It shall be possible to assume an implicit dependency relation on functions
+     **Rationale:** The inputs and outputs are given by both the global data and the
+     formal parameters.
+
+   * **Requirement:** It shall be possible to assume an implicit dependency relation on functions
      and so an explicit statement shall not be required.
-     *Rationale: this is typical usage and saves effort.*
+
+     **Rationale:** this is typical usage and saves effort.
 
 #. Constraints:
 
@@ -428,21 +441,20 @@ High-level requirements
 
 #. Semantics: 
 
-   * That (X,Y) is in the dependency relation for a given subprogram
+   * **Requirement:** That (X,Y) is in the dependency relation for a given subprogram
      (i.e. X depends on Y) means that X is an output of the subprogram
      such that the intial value of the input Y is used to set the final value of X on
      at least one executable path.
-     *Rationale: by definition.*
+
+     **Rationale:** by definition.
 
 #. Consistency:
 
-    * The dependency relation defines an alternative view of the inputs and outputs
+    * **Requirement:** The dependency relation defines an alternative view of the inputs and outputs
       of the subprogram and that view must be equivalent to the list of global
       data items and formal parameters and their modes (ignoring data items used only in proof contexts).
-      *Rationale: this provides a useful early consistency check.*
-      **Note that the semantics of the formal parameter modes is different to that of the global
-      data items: what are the implications of this?**
-    
+
+      **Rationale:** this provides a useful early consistency check.
 
 #. General requirements:
 
@@ -814,6 +826,37 @@ side-effects and cannot update an actual parameter or global
 variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
+
+High-Level Requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Goals to be met by language feature:
+
+   * Not applicable.
+
+#. Constraints:
+
+   * **Requirement:** An entity that may be updated on a call to a subprogram
+     may not be referred to by distinct names within that subprogram.
+
+     **Rationale:** Flow analysis specifications are presented and analysed in
+     terms of names rather than the entities to which those names refer.
+
+#. Semantics: 
+
+   * Not applicable.
+
+#. Consistency:
+
+    * Not applicable.
+
+#. General requirements:
+
+    * Not applicable.
+
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
    .. centered:: **Verification Rules**
 
