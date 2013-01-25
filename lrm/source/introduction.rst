@@ -527,7 +527,14 @@ Actions to complete prior to release
    do we get post-conditions on functions used in proof contexts into those
    proof contexts?
 
-#. Need to improve the rationale for the use of refined pre and post conditions.
+#. Need to discuss the rationale for the use of refined pre and post conditions with people
+   to make it better:
+
+        * **Some of original detail:** Although an executable function may be used in defining an abstract pre-condition and
+          then its definition will implicitly define the concrete pre-condition, the
+          implementation of that function may be sufficiently complex that it is not easy
+          to understand what it represents in the context of a pre-condition. Hence, that function
+          would need a post-condition
 
 #. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
    will give this. The main thing to think about is visibility/getting certain information into

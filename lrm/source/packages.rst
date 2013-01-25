@@ -45,10 +45,6 @@ Abstract State Aspect
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-
-#. **NB Need to mention something about Volatiles, etc, so that the language definition
-   is fully covered by the HLRs.**
-
 #. Goals to be met by language feature:
 
     * **Requirement:** It shall be possible to provide an abstracted view of hidden state that can be referred to
@@ -60,10 +56,7 @@ High-level requirements
 
 #. Constraints:
 
-   * **Requirement:** It shall not be possible to include visible state in the statement of abstract state.
-     
-     **Rationale**: visible state is already visible in the necessary contexts and by definition
-     is not abstract.
+   * No further abstract state-specific requirements.
 
 #. Consistency:
 
@@ -391,6 +384,26 @@ In the refined view the constituents of each ``state_name`` have to be
 initialized consistently with their appearance or omission from the
 Package Depends or Initializes aspect of the package.
 
+.. _refinement-rationale:
+
+Common Rationale for Refined Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Where it is possible to specify subprogram behaviour using a language feature that
+refers to abstract state, it should be possible to define a corresponding *refined*
+version of the language feature that refers to the decomposition of that abstract state.
+
+The rationale for this is as follows:
+
+#. The semantics of properties defined in terms of abstract state
+   can only be precisely defined in terms of the corresponding concrete state,
+   though nested abstraction is also necessary to manage hierarchies of data.
+
+#. There may be multiple possible refinements for a given abstract specification
+   and so the user should be able to specify what they actually want.
+
+#. This is necessary to support development via stepwise refinement.
+
 
 Refined State Aspect
 ~~~~~~~~~~~~~~~~~~~~
@@ -404,26 +417,21 @@ High-level requirements
      state items that implement or *refine* that abstract state (where the
      hidden state items can either be concrete state or further state abstractions).
      
-     **Rationale**: the semantics of properties defined in terms of abstract state
-     can only be precisely defined in terms of the corresponding concrete state,
-     though nested abstraction is also necessary to manage hierarchies of data.
-     Moreover, there may be multiple possible refinements for a given abstract specification
-     and so the user should be able to specify what they actually want. This also
-     supports stepwise development.
+     **Rationale**: see section :ref:`refinement-rationale`.
 
 #. Constraints:
 
    * **Requirement:** Each item of hidden state must map to exactly one state abstraction.
 
      **Rationale:** all hidden state must be covered since otherwise specifications referring to abstract state may
-     be incomplete; that state must map to exactly one abstraction to give a clean and easily understandable
+     be incomplete; each item of that hidden state must map to exactly one abstraction to give a clean and easily understandable
      abstraction, and for the purposes of simplicity of analysis.
 
    * **Requirement:** Each item of abstract state covered by the package shall be mapped to at least one
      item of hidden state (either concrete state or a further state abstraction).
 
      **Rationale:** the semantics of properties defined in terms of abstract state
-     can only be precisely defined in terms of the corresponding concrete state.*
+     can only be precisely defined in terms of the corresponding concrete state.
 
 #. Consistency:
 
@@ -447,7 +455,8 @@ High-level requirements
 
 .. todo:: Consider whether it should be possible to refine abstract onto hidden state without any restrictions,
      although the refinement would be checked and potential issues flagged up to the user.
-     *Rationale: there are a number of different possible models of mapping abstract
+     
+     **Rationale:** there are a number of different possible models of mapping abstract
      to concrete state - especially when volatile state is being used - and it might
      be useful to provide greater flexibility to the user. In addition, if a facility is
      provided to allow users to step outside of the language when refining depends, for example, then it may be
@@ -537,37 +546,19 @@ High-level requirements
      it shall be possible to provide a refined global data list that takes account of the
      refinement of that abstract state.
 
-     **Rationale:** the semantics of properties defined in terms of abstract state
-     can only be precisely defined in terms of the corresponding concrete state,
-     though nested abstraction is also necessary to manage hierarchies of data.
-     Moreover, there may be multiple possible refinements for a given abstract specification
-     and so the user should be able to specify what they actually want. This also
-     supports stepwise development.
+     **Rationale:** see section :ref:`refinement-rationale`.
 
 #. Constraints:
 
    * No further Refined Global-specific requirements needed.
 
-#. Consistency: **Possibly combine rationale in one block; perhaps also take wording from 2005 LRM.**
+#. Consistency:
 
    * Let *Abs* be the abstraction function defined by state refinement (such that
      *Abs* is the identity function when applied to visible state).
      Let *G* be the global data list and *RG* be the refined global data list. Then:
 
-     * **Requirement:** Let *Y* be a data item in *G*. If every data item *X* in *RG*
-       where *Abs (X) = Y* is such that its mode indicates it is only used in a proof
-       context, then *Abs (X)* shall have the same mode in *G*. Otherwise:
-       
-       **Rationale:** In general, modes should be preserved. However, if one refinement
-       constituent of a state abstractionn has an input and/or output mode, then
-       it is no longer of interest whether another constituent is only used in a
-       proof context.
-
-     * **Requirement:** The mode of *X* in *RG* must be a mode of *Abs (X)* in *G*.
-
-       **Rationale:** Modes should be preserved by refinement.
-
-     * **Requirement:** If *mode X* is in *RG* but not all constituents of *Abs (X)* are in *RG*
+     * **Requirement:** If *X* appears in *RG* but not all constituents of *Abs (X)* appear in *RG*
        then *Abs (X)* must appear in *G* with at least input mode.
 
        **Rationale:** In this case, Abs (X) is not fully initialized by the
@@ -578,11 +569,24 @@ High-level requirements
        must appear in *RG*.
 
        **Rationale:** By definition of abstraction.
- 
+     
+     * **Requirement:** Refinement of modes:
+
+          * If the mode of *X* in *RG* indicates it is **not** used in a
+            proof context, then that mode must be a mode of *Abs (X)* in *G*.
+
+          * If the mode of *X* in *RG* indicates it **is** used in a proof context and
+            *Abs(X)* will not have another mode according to the above rules, then the
+            mode of *Abs(X)* shall indicate it is only used in proof contexts.
+
+       **Rationale:** In general, modes should be preserved by refinement. However,
+       if one refinement constituent of a state abstraction has an input and/or output mode, then
+       it is no longer of interest whether another constituent is only used in a
+       proof context.
 
 #. Semantics:
 
-   * As per Global.
+   * As per Global aspect.
 
 #. General requirements:
 
@@ -615,12 +619,7 @@ High-level requirements
      it shall be possible to specify a refined dependency relation that takes account
      of the refinement of that abstract state.
 
-     **Rationale:** the semantics of properties defined in terms of abstract state
-     can only be precisely defined in terms of the corresponding concrete state,
-     though nested abstraction is also necessary to manage hierarchies of data.
-     Moreover, there may be multiple possible refinements for a given abstract specification
-     and so the user should be able to specify what they actually want. This also
-     supports stepwise development.
+     **Rationale:** see section :ref:`refinement-rationale`.
 
 #. Constraints:
 
@@ -634,33 +633,32 @@ High-level requirements
 
       **Rationale:** this provides a useful early consistency check.
 
-  * Relationship with Depends:
 
-   * Let *Abs* be the abstraction function defined by state refinement (such that
-     *Abs* is the identity function when applied to visible state).
-     Let *D* be a dependency relation and *RD* be the corresponding
-     refined dependency relation. Then:
+    * Let *Abs* be the abstraction function defined by state refinement (such that
+      *Abs* is the identity function when applied to visible state).
+      Let *D* be a dependency relation and *RD* be the corresponding
+      refined dependency relation. Then:
 
-     * **Requirement:** If *(X,Y)* is in *RD* - i.e. *X* depends on *Y* -
-       then *(Abs(X), Abs(Y))* is in *D*.
+      * **Requirement:** If *(X,Y)* is in *RD* - i.e. *X* depends on *Y* -
+        then *(Abs(X), Abs(Y))* is in *D*.
 
-       **Rationale:** by definition.
+        **Rationale:** dependencies must be preserved after abstraction.
 
-     * **Requirement:** If *(X,Y)* is in *RD* and there is *A* such that *Abs(A)=Abs(X)* but
-       there is no *B* such that *(A,B)* is in *RD*, then *(Abs(X),Abs(X)* is in *D*.
+      * **Requirement:** If *(X,Y)* is in *RD* and there is *A* such that *Abs(A)=Abs(X)* but
+        there is no *B* such that *(A,B)* is in *RD*, then *(Abs(X),Abs(X))* is in *D*.
 
-       **Rationale:** In this case, Abs (X) is not fully initialized by the
-       subprogram and the relevant components must be intialized prior to calling
-       the subprogram.
+        **Rationale:** In this case, Abs (X) is not fully initialized by the
+        subprogram and the relevant components must be intialized prior to calling
+        the subprogram.
 
-     * **Requirement:** If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
-       *Abs(V)=S* and *Abs(W)=T*.
+      * **Requirement:** If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
+        *Abs(V)=S* and *Abs(W)=T*.
 
-       **Rationale:** By definition of abstraction.
+        **Rationale:** By definition of abstraction.
 
 #. Semantics:
 
-   * As per Depends.
+   * As per Depends aspect.
 
 #. General requirements:
 
@@ -692,19 +690,7 @@ High-level requirements
      possible to state a refined pre-condition that refers to concrete rather than abstract state
      and/or concrete rather than abstract type detail.
 
-     **Rationale:** the semantics of properties defined in terms of abstract state and types
-     can only be precisely defined in terms of the corresponding concrete state and types,
-     though nested abstraction is also necessary to manage hierarchies of data and types.
-     Moreover, there may be multiple possible refinements for a given abstract specification
-     and so the user should be able to specify what they actually want. This also
-     supports stepwise development. Moreover, although function declarations may be used
-     in defining an abstract pre-condition and then their definitions will implicitly define
-     the concrete pre-condition, the implementation of those functions may be sufficiently
-     complex that it is useful to define post-conditions on those functions, which
-     would then be used in defining the semantics of the refined pre-condition.
-     ** Need to tidy this up: for example, the first part of the need can be met by having
-     the functions: but doesn't support having a more abstract view of what is required than
-     is given by the implementation of the function.**      
+     **Rationale:** See section :ref:`refinement-rationale`.
 
 #. Constraints:
 
@@ -793,19 +779,7 @@ High-level requirements
      possible to state a refined post-condition that refers to concrete rather than abstract state
      and/or concrete rather than abstract type detail.
 
-     **Rationale:** the semantics of properties defined in terms of abstract state and types
-     can only be precisely defined in terms of the corresponding concrete state and types,
-     though nested abstraction is also necessary to manage hierarchies of data and types.
-     Moreover, there may be multiple possible refinements for a given abstract specification
-     and so the user should be able to specify what they actually want. This also
-     supports stepwise development. Moreover, although function declarations may be used
-     in defining an abstract post-condition and then their definitions will implicitly define
-     the concrete post-condition, the implementation of those functions may be sufficiently
-     complex that it is useful to define post-conditions on those functions, which
-     would then be used in defining the semantics of the refined post-condition.
-     ** Need to tidy this up: for example, the first part of the need can be met by having
-     the functions: but doesn't support having a more abstract view of what is required than
-     is given by the implementation of the function.**      
+     **Rationale:** See section :ref:`refinement-rationale`.   
 
 #. Constraints:
 
