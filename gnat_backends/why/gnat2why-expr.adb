@@ -1654,6 +1654,7 @@ package body Gnat2Why.Expr is
                  Unique_Entity (Etype (Prefix (N)));
             begin
                if Is_Access_To_Formal_Container_Capacity (N) then
+                  Current_Type := Type_Of_Node (N);
                   return
                     New_Call (Ada_Node => N,
                               Domain   => Domain,
