@@ -1,10 +1,10 @@
 module $Main
   use import int.Int
-  use module $$oeq
-  use module $$element_type
-  use module $$cursor
-  use module $$list
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $$oeq
+  use $$element_type
+  use $$cursor
+  use $$list
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   function oeq (e1:$element_type.t) (e2:$element_type.t) : bool = $oeq.log e1 e2
 
@@ -381,8 +381,8 @@ module $Main
 end
 
 module $no_element
-  use module $Main
-  use module $$cursor
+  use $Main
+  use $$cursor
 
   function obj : $cursor.t
 
@@ -391,8 +391,8 @@ module $no_element
 end
 
 module $empty_list
-  use module $Main
-  use module $$list
+  use $Main
+  use $$list
 
   function obj : $list.t
 
@@ -401,9 +401,9 @@ module $empty_list
 end
 
 module $capacity
-  use module $Main
-  use module $$list
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   function log $list.t : Ada__containers__count_type.t
 
@@ -419,9 +419,9 @@ module $capacity
 end
 
 module $length
-  use module $Main
-  use module $$list
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   function log $list.t: Ada__containers__count_type.t
 
@@ -437,10 +437,10 @@ module $length
 end
 
 module $element
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
 
   function log $list.t $cursor.t: $element_type.t
 
@@ -456,9 +456,9 @@ module $element
 end
 
 module $has_element
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $cursor.t: bool
 
@@ -474,9 +474,9 @@ module $has_element
 end
 
 module $contains
-  use module $Main
-  use module $$list
-  use module $$element_type
+  use $Main
+  use $$list
+  use $$element_type
 
   function log $list.t $element_type.t: bool
 
@@ -492,11 +492,11 @@ module $contains
 end
 
 module $replace_element
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
-  use import module ref.Ref
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
+  use import ref.Ref
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> e:$element_type.t ->
@@ -508,12 +508,12 @@ end
 
 module $insert
   use import int.Int
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
@@ -525,12 +525,12 @@ end
 
 module $insert__2
   use import int.Int
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> e:$element_type.t -> p:ref $cursor.t -> c:Ada__containers__count_type.t ->
@@ -543,11 +543,11 @@ end
 
 module $prepend
   use import int.Int
-  use module $Main
-  use module $$list
-  use module $$element_type
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$element_type
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
@@ -559,11 +559,11 @@ end
 
 module $append
   use import int.Int
-  use module $Main
-  use module $$list
-  use module $$element_type
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$element_type
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> e:$element_type.t -> c:Ada__containers__count_type.t ->
@@ -574,11 +574,11 @@ module $append
 end
 
 module $delete
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$cursor
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> cu:$cursor.t -> c:Ada__containers__count_type.t ->
@@ -589,11 +589,11 @@ module $delete
 end
 
 module $delete_first
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$cursor
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> c:Ada__containers__count_type.t ->
@@ -604,11 +604,11 @@ module $delete_first
 end
 
 module $delete_last
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use import module ref.Ref
-  use module "a-contai__types_in_spec".Ada__containers__count_type
+  use $Main
+  use $$list
+  use $$cursor
+  use import ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
 
   val func:
 	  co:ref $list.t -> c:Ada__containers__count_type.t ->
@@ -619,9 +619,9 @@ module $delete_last
 end
 
 module $previous
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $cursor.t : $cursor.t
 
@@ -638,9 +638,9 @@ module $previous
 end
 
 module $next
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $cursor.t : $cursor.t
 
@@ -657,10 +657,10 @@ module $next
 end
 
 module $previous__2
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use import module ref.Ref
+  use $Main
+  use $$list
+  use $$cursor
+  use import ref.Ref
 
   val func:
 	  co:$list.t -> cu:ref $cursor.t ->
@@ -671,10 +671,10 @@ module $previous__2
 end
 
 module $next__2
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use import module ref.Ref
+  use $Main
+  use $$list
+  use $$cursor
+  use import ref.Ref
 
   val func:
 	  co:$list.t -> cu:ref $cursor.t ->
@@ -685,9 +685,9 @@ module $next__2
 end
 
 module $first
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t : $cursor.t
 
@@ -704,9 +704,9 @@ module $first
 end
 
 module $last
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t : $cursor.t
 
@@ -723,10 +723,10 @@ module $last
 end
 
 module $first_element
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
 
   function log $list.t : $element_type.t
 
@@ -743,10 +743,10 @@ module $first_element
 end
 
 module $last_element
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
 
   function log $list.t : $element_type.t
 
@@ -763,8 +763,8 @@ module $last_element
 end
 
 module $is_empty
-  use module $Main
-  use module $$list
+  use $Main
+  use $$list
 
   function log $list.t : bool
 
@@ -781,10 +781,10 @@ module $is_empty
 end
 
 module $find
-  use module $Main
-  use module $$list
-  use module $$cursor
-  use module $$element_type
+  use $Main
+  use $$list
+  use $$cursor
+  use $$element_type
 
   function log $list.t $element_type.t $cursor.t : $cursor.t
 
@@ -801,9 +801,9 @@ module $find
 end
 
 module $left
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $cursor.t : $list.t
 
@@ -819,9 +819,9 @@ module $left
 end
 
 module $right
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $cursor.t : $list.t
 
@@ -837,9 +837,9 @@ module $right
 end
 
 module $strict_equal
-  use module $Main
-  use module $$list
-  use module $$cursor
+  use $Main
+  use $$list
+  use $$cursor
 
   function log $list.t $list.t : bool
 

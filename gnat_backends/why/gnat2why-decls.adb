@@ -627,13 +627,13 @@ package body Gnat2Why.Decls is
                      if File_Name = Assoc_File_Name then
                         Append :=
                           new String'("module "&Theory_Name&ASCII.LF&
-                                      "use export module "&Assoc_Theory_Name&
+                                      "use export "&Assoc_Theory_Name&
                                       ASCII.LF&"end"&ASCII.LF&ASCII.LF&
                                       Append.all);
                      else
                         Append :=
                           new String'("module "&Theory_Name&ASCII.LF&
-                                      "use export module "&'"'&
+                                      "use export "&'"'&
                                       Assoc_File_Name&'"'&
                                       "."&Assoc_Theory_Name&ASCII.LF&"end"&
                                       ASCII.LF&ASCII.LF&
