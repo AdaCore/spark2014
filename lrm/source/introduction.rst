@@ -92,12 +92,6 @@ headings:
    what it means for the program to be correct against any specification given
    using this feature.
 
-Generic Requirements
-~~~~~~~~~~~~~~~~~~~~
-
-A number of requirements apply to multiple language features and they are given
-at the end of this chapter.
-
 Reading the High-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -105,6 +99,12 @@ The high-level requirements are naturally given in language that is less precise
 than would be expected of rules in a language reference manual. Where greater
 precision is required, that will be given in the language definition rules
 themselves.
+
+Generic Requirements
+~~~~~~~~~~~~~~~~~~~~
+
+A number of requirements apply to multiple language features and they are given
+at the end of this chapter.
 
 
 |SPARK| Strategic Requirements
@@ -141,6 +141,8 @@ Principal design goals are as follows:
   code written outside of the core |SPARK| language, including
   legacy Ada code, or code written in the |SPARK| subset for which
   verification evidence could not be generated.
+
+
 
 Profiles and Analyses
 ---------------------
@@ -395,10 +397,23 @@ Any toolset that proposes a combination of formal verification and testing for
 additional testing of proof assumptions.
 
 
-.. _generic_hlrs:
+
 
 Definition of Terms for High-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Hidden state.
+
+#. Names.
+
+#. Inputs and outputs.
+
+#. Entire variables.
+
+#. Entities.
+
+
+.. _generic_hlrs:
 
 Generic high-level requirements
 -------------------------------
@@ -406,94 +421,118 @@ Generic high-level requirements
 The following high-level requirements apply to multiple language features and
 hence are given in a single place to ease readability.
 
+Abstract State, Hidden State and Refinement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. **Requirement:** When specifying properties of a subprogram, it shall be possible
+   to refer to (an abstraction of) hidden state without knowing the details of that hidden state.
+
+   **Rationale:** allows modular verification and also allows the management of
+   complexity.
+
+#. **Requirement:** It shall be possible to manage hierarchies of data abstraction [i.e. it shall be possible
+   to manage a hierarchical organisation of hidden state].
+
+   **Rationale:** to allow modular verification and the management of complexity in the presence
+   of programs that have a hierarchical representation of data.
+
+#. **Requirement:** Where it is possible to specify subprogram behaviour using a language feature that
+   refers to abstract state, it shall be possible to define a corresponding *refined*
+   version of the language feature that refers to the decomposition of that abstract state.
+
+   **Rationale**: the semantics of properties defined in terms of abstract state
+   can only be precisely defined in terms of the corresponding concrete state,
+   though nested abstraction is also necessary to manage hierarchies of data.
+   Moreover, there may be multiple possible refinements for a given abstract specification
+   and so the user should be able to specify what they actually want. This also
+   supports stepwise development.
+
+Naming
+~~~~~~
+
+#. **Requirement:** Names declared and used in the new flow analysis specifications are distinct from formal parameters
+   when both are in scope.
+
+   **Rationale:** flow analysis is performed using names and so the analysis
+   of a given subprogram should not depend on the names chosen for the formal parameters
+   of an enclosing subprogram.
+
+#. **Requirement:** Names declared and used in the new flow analysis specifications
+   are distinct from local subprogram
+   variables when both are in scope.
+
+   **Rationale:** flow analysis is performed using names and so the analysis
+   of a given subprogram should not depend on the names chosen for its local variables.
+
+#. **Requirement:** Names declared and used in the new flow analysis specifications
+   shall refer to entire variables.
+
+   **Rationale:** For the flow analysis model, updating part of a variable is regarded as
+   updating all of it.
+
+#. **Requirement:** Where distinct names are referenced within a given flow analysis specification, then
+   those names shall refer to distinct entities.
+
+   **Rationale:** to support flow analysis and to aid clarity of the interface definition.
 
 
-#. What about volatile variables declared in the visible part of the spec,
-   that hence don't appear in the abstract state aspect, and therefore that
-   don't have a mode. Is it a change that we now don't want visible state in
-   the abstract state aspect? Hence, perhaps we need a requirement that says
-   volatile variables always need to have a mode, independently of where they
-   are recorded.
+Properties of Specifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. In addition, need to talk to Trevor about the way the consistency relationship
-   between concrete and abstract state is defined (in current LRM, defines it in large part
-   by consistency between refined globals and depends and the abstract versions
-   of those things, whereas I was going to define it at level of abstraction relationship
-   and then apply it directly to the refined globals and depends).
+#. **Requirement:** When specifying program behaviour in terms of a relation or a set, it shall be
+   possible to explicitly provide a null relation or an empty set.
 
-#. We have a requirement to say that we provide everything that SPARK 2005 does:
-   but at the very least we are missing --# accept and --# hide. Need to check to
-   to see if there is anything else like this.
+   **Rationale:** to explicitly identify programs that - for example - do not reference
+   global data. This is especially needed in the presence of retrospective mode,
+   where absence of a specification cannot mean presence of a null specification.
 
-#. Need to have a definition of hidden state.
+#. **Requirement:** It shall be possible to designate - both visible and hidden - state items that are Volatile
+   and for each to give a mode of either in or out.
 
-#. Wrt hierarchies of data refinement, do we need to make clear the conditions
-   under which we can refine abstract state at one level onto abstract state at the lower
-   level? Look at the 2005 LRM to see what it says.
+   **Rationale:** to model programs that refer to external state, since that state
+   is modelled differently to internal state.
 
-#. Need to define what semantics means: it should mean what needs to hold
-   of the implementation so that it is considered correct against the specification.
+#. **Requirement:** It shall be possible to indicate for both visible and hidden state items
+   a numeric integrity level.
 
+   **Rationale:** to assist security and safety analysis.
 
-#. General: the rule on referring to abstract state should be lifted up so that it
-   refers to everything.
+#. **Requirement:** When specifying subprogram behaviour other than via proof statements, it shall be necessary
+   to provide a complete specification.
 
-#. Optional guideline: disallow use of different names for the same entities in the
-   same subprogram.
-
-#. Do we need flow analysis on contracts to check for uninitialized variables?
-   This would only apply to pragmas.
-
-#. General idea that we could pursue:
-
-   * Define a simple standard relationship between refined global and global, but allow
-     a feature to manually relate and justify. *In a way, this allows something like
-     dual annotations but without needing two annotations.*
-
-   * Similar for refinement of null state or caches in functions.
-
-   * This is the idea of stepping outside of the language.
+   **Rationale:** To allow provision of at least the same functionality as SPARK 2005
+   and to allow modular analysis. This is also necessary for security analysis.
 
 
-#. **Add in here the general requirements from my other file, making sure there is one
+To be allocated
+~~~~~~~~~~~~~~~
+
+#. (Proof) Need to be able to refer to Abstract State in proof contexts ("proof functions").
+   Rationale: to allow proof to refer to hidden state for same reasons as Depends.
+
+#. Optional guideline: detection of hole in scope: from good programming practice.
+
+#. Trevor says there is a rule to say: Every refinement constituent should appear in at least one
+   Global within that package Body. Where does that rule go and where is it in the
+   2005 LRM?
+
+Actions to complete prior to release
+------------------------------------
+
+#. Trevor needs to check the requirements in relation to renaming.
+
+#. Remove duplicate requirements.
+
+#. Need to mention somewhere about being able to state volatile and mode characteristics
+   for visible variables.
+
+#. Put the Tobe Allocated reqts into the correct place.
+
+#. Make sure all generic requirements from the scratch file are added in, making sure there is one
    relating to being able to provide abstraction.**
 
-#. When specifying program behaviour in terms of a relation or a set, it shall be
-   possible to explicitly provide a null relation or an empty set.
-   *Rationale: to explicitly identify programs that - for example - do not reference
-   global data. This is especially needed in the presence of retrospective mode,
-   where absence of a specification cannot mean presence of a null specification.*
-
-#. It shall be possible to designate - both visible and hidden - state items that are Volatile
-   and for each to give a mode of either in or out.
-   *Rationale: to model programs that refer to external state, since that state
-   is modelled differently to internal state.*
-
-#. It shall be possible to indicate for both visible and hidden state items
-   a numeric integrity level.
-   *Rationale: to assist security and safety analysis.*
-
-#. When specifying subprogram behaviour other than via proof statements, it shall be necessary
-   to provide a complete specification.
-   *Rationale:* To allow provision of at least the same functionality as SPARK 2005
-   and to allow modular analysis. This is also necessary for security analysis.*
-
-#. Where distinct names are referenced within a given flow analysis specification, then
-   those names shall refer to distinct entities.
-   *Rationale: to support flow analysis and to aid clarity of the interface definition.*
-
-#. Where it is possible to specify subprogram behaviour using a language feature that
-   refers to abstract state, it shall be possible to define a corresponding *refined*
-   version of the language feature that refers to hidden state.
-   **Rationale: there may be multiple possible refinements for a given abstract specification
-   and so the user should be able to specify what they actually want. This also
-   supports stepwise development.**
-
-#. Add a requirement relating to simplicity: this will allow us to do things like
+#. Add a generic requirement relating to simplicity: this will allow us to do things like
    state that names don't appear more than once in a given list, for example.
-
-General Actions
----------------
 
 #. Remove references - other than in the Introduction - to whether things are
    in or out of SPARK and add a comment to say that that detail is still to
@@ -519,6 +558,168 @@ General Actions
 
 #. Put the justification for presence of refined language features in this general
    section, since it is common for all.
+
+#. Factor the strategic requirements below into this document. In particular, see
+   what belongs here and what possibly belongs somewhere more general.
+
+#. Note: need to check the rest of the introduction for possible additional
+   strategic requirements.
+
+#. Note: will need to make sure that every requirement traces down to something
+   or that it doesn't need to.
+
+#. Note: there is a possibility of tension between constructive and generative mode
+   in that restrictions may be necessary to get the constructive mode to work that
+   aren't necessary in generative mode (to an extent, that could be expected
+   since the constructive mode has a tighter requirement).
+
+#. Note: try to lift the level of abstraction of things like "distinct entities".
+
+#. Note: handling retrospective, mixing of code and mixing of types of verification
+    evidence might be difficult.
+
+#. Make sure Flo captures any assumptions he is making as he constructs his graphs,
+   as they will need to be reflected in the LRM.
+
+#. Add something somewhere on prove once, use many times wrt generics (this should be derived from modularity
+   and is also something for a subsequent release).
+
+#. Need to make every strategic reqt traces to something (or if not understand why
+   it shouldn't).
+
+#. Should we present the high-level goals and the decomposed
+   goals together (i.e. so we don't need the separate sections
+   below).
+
+#. Remember to get stuff from the SPARK book as well.
+
+#. Remember also to be clear on the type of things we are stating (in particular,
+   level of abstraction and also the thing on which the requirement is being levied).
+
+#. Note that the Ada RM only applies to compilation, while ours applies to both
+   analysis and compilation, but is meant to be built on top of the Ada RM.
+   Do we need to make this clear and does this cause any problems? For example,
+   rules in the Ada RM requiring bodies? Or does this just mean that our
+   analysis mode has to be that we aren't compiling? Need to be clear on
+   what is required for our analysis mode, and how that relates to what is
+   levied in the RM (as we will certainly need some of what is in the Ada RM).
+
+#. Need to distinguish language goals from project goals.
+
+#. **To discuss with Flo: need to know the properties that need to hold
+   of the graphs that he generates in order for everything to work (really, what
+   are the pre-conditions to the analysis phase and to the graph generation phase).
+   Note that when we add additional rules to the LRM, we are trying to avoid problems
+   with soundness and we have Steve to help us with that: how are we guarding against
+   this in the things that Flo does?**
+
+#. Remove volatility from the detail for milestone 2, even in terms of those
+   things where we don't give the language-specific rules. In general, go through
+   and see what should be descoped.
+
+#. **NB Need to define what is meant by imports and exports, wrt high-level
+   requirements on Depends.**
+
+#. We have a requirement to say that we provide everything that SPARK 2005 does:
+   but at the very least we are missing --# accept and --# hide. Need to check to
+   to see if there is anything else like this.
+
+
+#. Need to define what semantics means: it should mean what needs to hold
+   of the implementation so that it is considered correct against the specification.
+
+
+#. Optional guideline: disallow use of different names for the same entities in the
+   same subprogram.
+
+#. Do we need flow analysis on contracts to check for uninitialized variables?
+   This would only apply to pragmas.
+
+#. General idea that we could pursue:
+
+   * Define a simple standard relationship between refined global and global, but allow
+     a feature to manually relate and justify. *In a way, this allows something like
+     dual annotations but without needing two annotations.*
+
+   * Similar for refinement of null state or caches in functions.
+
+   * This is the idea of stepping outside of the language.
+
+
+#. Go through all the higher-level requirements and trace down to these where possible.
+
+
+
+Strategic Requirements
+~~~~~~~~~~~~~~~~~~~~~~
+
+#. Note that need to classify the requirements here.
+
+Provide rationale detail? I think that would be useful.
+
+#. (A)|SPARK| shall provide counterparts of all language features and analysis
+    modes provided in SPARK 2005.
+
+#. (B) Provision of "formal analysis" as defined by DO-333, which states
+   "an analysis method can only be regarded as formal analysis
+   if its determination of property is sound. Sound analysis means
+   that the method never asserts a property to be true when it is not true."
+
+#. (C) The language design shall support the case for soundness of analysis.
+   Language features that defy sound analysis will be eliminated or their
+   use constrained to meet this goal.
+
+#. (D) The language shall offer an unambiguous semantics. In Ada terminology,
+   this means that all erroneous and unspecified behaviour shall
+   be eliminated.
+
+#. (E)Implementation-defined features will be automatically
+   determined for projects using GNAT, or will be configurable (where
+   possible) or rejected for other compilers.
+
+#. (F)The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
+   currently amenable to formal verification - both proof and flow analysis -
+   in line with the goals above, although future advances in verification
+   research and computing power may allow for expansion of the language and
+   the forms of verification available.
+
+#. (G) Use paradigms shall be allowed that reduce the subset of Ada 2012 that may
+   be used in line with specific goals such as domain needs or certification
+   requirements. This may also have the effect of simplifying proof or analysis.
+
+#. (H) |SPARK| shall allow for the specification of desired program behaviour in a modular
+   fashion: need to know how this should interact with the requirement for
+   modular verification.
+
+#. (I) |SPARK| shall provide for a constructive (modular) mode of verification
+   of (partially) developed programs, to allow static analysis as early as possible
+   in the development lifecycle. [Hence, package bodies need not be present
+   for formal verification to proceed.]
+
+#. (J) |SPARK| shall provide a retrospective mode of verification that does not
+   require presence of
+
+#. (K) |SPARK| shall allow the mixing of code written in the |SPARK| subset
+        with code written in full Ada 2012.
+
+#. (L) |SPARK| shall provide for mixing of verification evidence generated
+   by formal analysis [for code written in the |SPARK| subset] and
+   evidence generated by testing or other traditional means [for
+   code written outside of the core |SPARK| language, including
+   legacy Ada code, or code written in the |SPARK| subset for which
+   verification evidence could not be generated].
+
+#. (M) Support for security shall be improved.
+
+#. (N) Interfacing shall be allowed with non-SPARK code: was this meant to
+       mean in terms of other languages or just in terms of non-SPARK Ada code.
+
+#. (O) Ease of using the |SPARK| language shall be improved.
+
+#. (P) It shall be possible to make use of the Ada Container library.
+
+#. (Q) It shall be possible to represent any new language features as pragmas
+   to allow compilation with pre-Ada 2012 compilers.
 
 Notes on the Current Draft
 --------------------------
