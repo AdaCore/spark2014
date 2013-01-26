@@ -23,10 +23,11 @@ global variable or a state abstraction (see :ref:`abstract-state`).
 Global items are presented in Global aspects (see :ref:`global-aspects`).
 
 An *entire object* is an object which is not a subcomponent of a larger 
-containing object.  An *entire variable* is an an entire object which is a 
-variable.  From the language rules of Ada it follows that formal subprogram
-parameters and formal generic objects are entire objects. 
-A renaming declaration of an entire object is also an entire object. 
+containing object.  More specifically, an *entire object* is
+an object declared by an object_declaration (as opposed to, for example,
+the result object of a function call) or a formal parameter of a subprogram.
+An *entire variable* is an an entire object which is a 
+variable.
 
 .. centered:: **Static Semantics**
 
@@ -321,8 +322,12 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` of a subprogram shall be an entire variable 
-   or it shall be a state abstraction.
+#. A ``global_item`` of a subprogram shall denote an entire variable 
+   or a state abstraction.
+
+.. note::
+ (SB) This rule may eventually be relaxed to allow references to non-static
+ constants.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -342,19 +347,18 @@ follow the grammar of ``global_specification``
    
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
-#. ``global_items`` in the same Global aspect shall denote distinct entities.
+#. ``global_items`` in the same Global aspect shall denote distinct objects.
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR global_items shall denote distinct entities
+      :Trace Unit: 6.1.4 LR global_items shall denote distinct objects.
 
 #. A ``global_item`` occurring in a Global aspect of a subprogram aspect
-   specification shall not have the same ``defining_identifier`` as a formal
-   parameter of the subprogram.
+   specification shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR A global_item cannot have the same defining_identifier as a formal parameter
+      :Trace Unit: 6.1.4 LR A global_item cannot denote a formal parameter
 
 
 .. centered:: **Static Semantics**
@@ -518,8 +522,12 @@ where
 .. centered:: **Legality Rules**
 
 #. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect of a subprogram denotes a state abstraction, an entire variable or a 
-   formal parameter of the subprogram.
+   aspect of a subprogram shall denote a state abstraction or
+   an entire variable.
+
+.. note::
+ (SB) This rule may eventually be relaxed to allow references to non-static
+ constants as inputs.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -699,7 +707,7 @@ No extensions or restrictions.
    only be partially updated, but in flow analysis this would have mode in out.
    Similarly an Ada formal parameter may have mode in out but not be an input.
    In flow analysis it would be regarded as an input and give arise to 
-   flow eerors.
+   flow errors.
    Perhaps we need an aspect to describe the strict view of a parameter
    if it is different to the specified Ada mode of the formal parameter? Target: D2
 
@@ -732,16 +740,14 @@ Global Aspect.
 #. A subprogram, shall not declare, immediately within its body, an
    entity with the same ``defining_identifier`` as a ``global_item``.
 
+.. note::
+ (SB) I think this rule should be eliminated. We should only be disallowing
+ constructs which cause verification problems.
+
 .. centered:: **Verification Rules**
 
-#. A subprogram with a Global aspect that has a ``global_specification``
-   of **null** shall not reference any global items.
-  
 #. A ``global_item`` shall occur in a Global aspect of a subprogram if and
    only if it is referenced by the subprogram.
-   
-#. A ``global_item`` that is referenced by a subprogram must appear in its 
-   Global aspect.
    
 #. Each ``global_item`` in a Global aspect of a subprogram that is an input
    or output of the subprogram shall satisfy the following mode
@@ -860,11 +866,11 @@ Language Definition
 
    .. centered:: **Verification Rules**
 
-#. In |SPARK|, a proceudre call shall not pass actual parameters 
+#. In |SPARK|, a procedure call shall not pass actual parameters 
    which denote objects with overlapping locations, when at least one of 
    corresponding formal parameters is of mode **out** or **in out**, 
    unless the other corresponding formal parameter is of mode **in** 
-   and by-copy. 
+   and is of a by-copy type. 
    
 #. Likewise, it is not allowed in a call to pass an actual parameter, whose
    corresponding formal parameter is mode **out** or **in out**,

@@ -402,7 +402,7 @@ additional testing of proof assumptions.
 Definition of Terms for High-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ensure that if a term is the same or similar to one used in Aa then it means the
+Ensure that if a term is the same or similar to one used in Ada then it means the
 same thing or we deliberately use a different term.
 
 #. Hidden state.
