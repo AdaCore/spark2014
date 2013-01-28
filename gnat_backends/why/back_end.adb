@@ -27,6 +27,7 @@
 
 with Adabkend;
 with Namet;
+with Opt;
 with Osint;
 with Stringt;
 with System;
@@ -115,6 +116,11 @@ package body Back_End is
       use type System.Address;
 
    begin
+
+      --  We are in the gnat2why executable, so Alfa_Mode is always true
+
+      Opt.Alfa_Mode := True;
+
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
       --  and need to set gnat_argv to save_argv so that Ada.Command_Line
       --  has access to the command line.
