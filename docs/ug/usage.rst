@@ -519,8 +519,18 @@ Line`` or ``Prove Subprogram`` features in GPS, as described in :ref:`GPS
 integration`, to get faster results for the desired line or subprogram.
 
 A common limitation of automatic provers is that they don't handle well
-non-linear arithmetic. For example, they might fail to prove simple assertions
+non-linear arithmetic. For example, they might fail to prove simple checks
 involving multiplication, division, modulo or exponentiation.
+
+In that case, a user may either:
+
+* manually review the unproved checks and record that they can be trusted (for
+  example by storing the result of |GNATprove| under version control), or
+* add an assumption in the code to help the prover, in the form of a ``pragma
+  Assume``. |GNATprove| handles it like an assertion, so it both attempts to
+  prove it, and uses it in subsequent code. If the assumption is not proved, it
+  can be manually reviewed like mentioned above, and marking it as an assumption
+  in the code helps documenting it.
 
 We plan to provide a `user view` of the formula passed to the prover, for
 advanced users to inspect. This view will express in an Ada-like syntax the
