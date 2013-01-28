@@ -182,8 +182,7 @@ procedure Gnatprove is
 
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  only generate ALI
-      Args.Append ("-gnatd.F");     --  ALFA section in ALI
-      Args.Append ("-gnatd.G");     --  stop after ALI file generation
+      Args.Append ("-gnatd.G");     --  ALI file generation
       if Pedantic then
          Args.Append ("-gnatd.D");
       end if;
@@ -599,7 +598,6 @@ procedure Gnatprove is
       end loop;
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  No object file generation
-      Args.Append ("-gnatd.F");     --  SPARK mode
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
       if MMode = GPM_Detect then
