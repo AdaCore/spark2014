@@ -4,7 +4,7 @@ Introduction
 |SPARK| is a programming language and a set of verification tools
 designed to meet the needs of high-assurance software development.
 |SPARK| is based on Ada 2012, both subsetting the language to remove
-features that defy verification, but also extending the system of
+features that defy verification and also extending the system of
 contracts and "aspects" to support modular, formal verification.
 
 |SPARK| is a much larger and more flexible language than its
@@ -19,7 +19,7 @@ How to Read this Manual
 
 This language reference manual is *not* a tutorial guide
 to |SPARK|.  It is intended as a reference guide for
-users and implementors of the language.  In this context
+users and implementors of the language.  In this context,
 "implementors" includes those producing both compilers and
 verification tools.
 
@@ -128,9 +128,11 @@ Principal design goals are as follows:
   possible) or rejected for other compilers.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
-  currently amenable to formal verification, in line with the goals above, although
+  currently amenable to automatic formal verification, in line with the goals above, although
   future advances in verification research and computing power may allow
   for expansion of the language and the forms of verification available.
+
+- |SPARK| shall be as expressive as SPARK 83/95/2005.
 
 - |SPARK| shall provide for both constructive and retrospective modes of
   verification.
@@ -148,7 +150,7 @@ Profiles and Analyses
 ---------------------
 
 In addition to the core |SPARK| language subset, the language
-may define a number of *Profiles* which are designed to meet
+will define a number of *Profiles* which are designed to meet
 the needs of particular
 
 - Application domains - for example, server-class air-traffic management systems,
@@ -178,8 +180,8 @@ Principal Language Restrictions
 -------------------------------
 
 To facilitate formal verification, |SPARK| enforces a number of global
-simplifications to Ada 2012. While these are covered in more detail
-in the remaining chapters of this document, the most notable simplifications are:
+restrictions to Ada 2012. While these are covered in more detail
+in the remaining chapters of this document, the most notable restrictions are:
 
 - The use of access types and allocators is not permitted.
 
@@ -191,7 +193,8 @@ in the remaining chapters of this document, the most notable simplifications are
 
 - The use of controlled types is not permitted.
 
-- Tasking is not currently permitted.
+- Tasking is not currently permitted (it is expected that this will be included
+  in Release 2 of this document).
 
 - Raising and handling of exceptions is not permitted.
 
@@ -225,13 +228,13 @@ The static checking needed to determine whether a |SPARK|
 program is suitable for execution is performed in three separate
 phases. Errors may be detected during any of these three steps.
 
-First, a compilation unit must compile successfully. In addition
+First, a compilation unit must be able to be compiled successfully. In addition
 to enforcing all of Ada's legality rules, |SPARK| imposes
-additional restrictions (e.g., no uses of the reserved word
+additional legality rules (e.g., no uses of the reserved word
 **access**). These additional restrictions are
 described in sections with the heading "Extended Legality Rules".
 A compilation unit might be fully in |SPARK|, partially in |SPARK|, or
-not in |SPARK|, as instructed by the user, which sometimes determines
+not in |SPARK|, as specified by the user, which sometimes determines
 whether the compiler accepts it or not (e.g., a unit fully in |SPARK|
 cannot use access types, while a unit partially in |SPARK| might).
 
@@ -310,7 +313,7 @@ this implies that a |SPARK| program which makes use of this
 construct can only be compiled and executed by an
 Ada implementation which supports this construct in a way that is
 consistent with the definition given here in the |SPARK| reference manual.
-The GNAT Pro Ada 2012 implementation is one such implementation.
+The GNAT Pro Ada 2012 implementation is one such compiler.
 The dynamic semantics of any construct other than these implementation-defined
 attributes, aspects, and pragmas are defined to be as defined in the
 Ada 2012 reference manual.
@@ -326,17 +329,6 @@ Ada 2012 reference manual.
  is GNAT-dependent (e.g., intermediate overflow; elaboration order).
  That level of detail is probably inappropriate here.
 
-Optional Restrictions and Profiles
-----------------------------------
-
-In addition to the global simplifications of the language given above, |SPARK|
-defines a number of Restrictions that may be optionally applied to an entire
-project, program or unit. These restrictions may provide additional simplification
-of the language that users feel necessary, may meet particular demands of standards
-or coding guidelines, and may facilitate additional forms of verification, or
-may improve the level of automation achievable with existing analyses.
-
-A *Profile* is a set of such Restrictions.
 
 Constructive and Retrospective Verification Modes
 -------------------------------------------------
@@ -346,7 +338,8 @@ program units required contracts on their specifications.  These
 contracts had to be designed and added at an early stage to assist modular
 verification, and then maintained by the user as a program evolved.
 
-In contrast, |SPARK| is designed to facilitate a more *retrospective* mode of
+As well as still fully supporting the cnstrucive mode, |SPARK| is designed
+to facilitate a more *retrospective* mode of
 program construction and verification, where useful forms of verification can
 be achieved with code that complies with the core |SPARK| restrictions, but
 otherwise does not have any contracts.  In this mode, implicit contracts can be
@@ -385,7 +378,7 @@ from a tested subprogram. Conversely, formal verification of a subprogram
 subprograms respecting their own contracts, whether these are verified by
 formal verification or testing.
 
-Formal verification works by making some assumptions, and these assumptions
+Formal verification works by imposing requirements on the callers of proved code, and these requirements
 should be shown to hold even when formal verification and testing are
 combined. Certainly, formal verification cannot guarantee the same
 properties when part of a program is only tested, as when all of a program is
