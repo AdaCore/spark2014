@@ -1,4 +1,5 @@
 from test_support import *
 
-gnat2why("p.adb", "-gnat2012")
+gnat2why("p.adb", opt=["-gnat2012", "-gnatd.G"])
+gnat2why("p.adb", opt=["-gnat2012"])
 

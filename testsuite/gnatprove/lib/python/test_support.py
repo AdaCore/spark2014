@@ -79,22 +79,6 @@ def ls(directory=None):
     for line in strlist:
         print line
 
-
-
-def gcc(src, opt=None):
-    """Invoke gcc
-
-    PARAMETERS
-      src: source file to process
-      opt: additional options to pass to gcc
-    """
-    cmd = ["gcc", "-c"]
-    cmd += to_list(opt)
-    cmd += [src]
-    process = Run(cmd)
-    if process.status:
-        print process.out
-
 def gnat2why(src, opt=None):
     """Invoke gnat2why
 
@@ -104,8 +88,7 @@ def gnat2why(src, opt=None):
 
     First call gcc on source file to produce ALI file.
     """
-    gcc(src, opt=["-gnatd.F", "-gnat2012", "-gnatc"])
-    cmd = ["gnat2why", "-gnatd.F", "-gnat2012"]
+    cmd = ["gnat2why"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
