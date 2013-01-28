@@ -832,6 +832,9 @@ package body Alfa.Definition is
               N_Raise_xxx_Error =>
             Mark_Violation ("raise statement", N, NIR_Exception);
 
+         when N_Raise_Expression =>
+            Mark_Violation ("raise expression", N, NIR_Exception);
+
          when N_Range =>
             Mark (Low_Bound (N));
             Mark (High_Bound (N));
