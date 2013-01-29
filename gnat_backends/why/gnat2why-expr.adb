@@ -4286,7 +4286,10 @@ package body Gnat2Why.Expr is
       if Domain in EW_Term | EW_Prog then
          declare
             Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog then
+              --  HACK until proper solution for range check on array
+              (if Is_Array_Type (Etype (Expr)) then
+                 Empty
+               elsif Domain = EW_Prog then
                  (if Do_Range_Check (Expr) then Expr
                   elsif Nkind (Expr) = N_Type_Conversion and then
                   Do_Overflow_Check (Expr) then Expression (Expr)
