@@ -1,0 +1,116 @@
+module Discrete_Base
+  (* The module that is used as basis for all discrete types. It contains the
+  whole discrete theory, except the coerce_axiom which differs between modular
+  and non-modular types. *)
+
+   use import "int".Int
+   use import "_gnatprove_standard".Main
+   use        "_gnatprove_standard".Integer
+
+   type t
+
+   function attr__ATTRIBUTE_FIRST : int
+
+   function attr__ATTRIBUTE_LAST : int
+
+   function attr__ATTRIBUTE_IMAGE int : __string
+
+   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __string)
+
+   function attr__ATTRIBUTE_VALUE __string : int
+
+   val attr__ATTRIBUTE_VALUE_ (x : __string)  :int
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+
+   predicate in_range  (x : int) =
+    ( attr__ATTRIBUTE_FIRST <= x <= attr__ATTRIBUTE_LAST )
+
+   function to_int t  :int
+
+   function of_int int  : t
+
+   val range_check_ (n : int)  :int
+    requires { in_range n }
+    ensures { result = n }
+
+   predicate eq  (x : t) (y : t) = ( to_int x = to_int y )
+
+   axiom range_axiom :
+    forall x  : t.  in_range (to_int x)
+
+   axiom unicity_axiom :
+    forall x y  : t [to_int x, to_int y].
+     to_int x = to_int y -> x = y
+
+   val bool_eq_ (n : t) (m : t)  :bool
+    requires { true }
+    ensures { if result = True then n = m else n <> m }
+
+   function dummy : t
+end
+
+module Discrete
+   use import "int".Int
+   clone export Discrete_Base
+
+   axiom coerce_axiom :
+    forall x  : int [to_int (of_int x) | in_range x, of_int x].
+     in_range x -> to_int (of_int x) = x
+
+end
+
+module Modular
+   clone export Discrete_Base
+
+   function attr__ATTRIBUTE_MODULUS : int
+
+   axiom coerce_axiom :
+    forall x  : int [to_int (of_int x)].
+     to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+
+end
+
+module Floating_Point
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type t
+
+ function attr__ATTRIBUTE_FIRST  : real
+
+ function attr__ATTRIBUTE_LAST  : real
+
+ predicate in_range  (x : real) =
+  ( attr__ATTRIBUTE_FIRST <=. x <=. attr__ATTRIBUTE_LAST )
+
+ function to_real t : real
+
+ function of_real real : t
+
+ val range_check_ (n : real)  :real
+  requires { in_range n }
+  ensures { result = n }
+
+ predicate eq  (x : t) (y : t) = (to_real x = to_real y)
+
+ axiom range_axiom :
+  forall x  : t.  in_range (to_real x)
+
+ axiom coerce_axiom :
+  forall x  : real [to_real (of_real x) | in_range x, of_real x].
+   in_range x -> to_real (of_real x) = x
+
+ axiom unicity_axiom :
+  forall x y  : t [to_real x, to_real y].
+   to_real x = to_real y -> x = y
+
+ val bool_eq_ (n : t) (m : t)  :bool
+  requires { true }
+  ensures { if result = True then n = m else n <> m }
+
+ function dummy :t
+end
+

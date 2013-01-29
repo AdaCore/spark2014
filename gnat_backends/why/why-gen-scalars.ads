@@ -26,7 +26,6 @@
 with Types;     use Types;
 
 with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Scalars is
    --  This package provides an interface to generate declarations
@@ -54,12 +53,5 @@ package Why.Gen.Scalars is
    --  given in parameter along with a set of axioms and subprograms
    --  for real conversion. Is_Base is True if the corresponding Ada type
    --  is an Ada base type.
-
-   procedure Define_Scalar_Attributes
-     (Theory     : W_Theory_Declaration_Id;
-      Base_Type  : EW_Scalar;
-      First      : W_Term_Id;
-      Last       : W_Term_Id;
-      Modulus    : W_Term_OId);
 
 end Why.Gen.Scalars;

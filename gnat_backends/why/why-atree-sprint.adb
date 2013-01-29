@@ -1826,6 +1826,7 @@ package body Why.Atree.Sprint is
          P (O, " with ");
          Print_List (State, +Subst_List, ", ", Newline => True);
       end if;
+      NL (O);
       State.Control := Abandon_Children;
    end Clone_Declaration_Pre_Op;
 

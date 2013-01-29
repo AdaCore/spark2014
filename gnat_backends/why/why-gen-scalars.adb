@@ -28,30 +28,22 @@ with Stand;              use Stand;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Inter;          use Why.Inter;
+with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Scalars is
 
-   procedure Define_Scalar_Conversions
-     (Theory    : W_Theory_Declaration_Id;
-      Why_Name  : W_Identifier_Id;
-      Base_Type : EW_Scalar;
-      Modulus   : W_Term_OId := Why_Empty);
-   --  Given a type name, assuming that it ranges between First and Last,
-   --  define conversions from this type to base type.
-
-   procedure New_Boolean_Equality_Parameter
-     (Theory   : W_Theory_Declaration_Id;
-      Why_Name : W_Identifier_Id);
-      --  Create a parameter of the form
-      --     parameter <eq_param_name> : (m : type) -> (n : type) ->
-      --        {} bool { if result then m = n else m <> n }
+   procedure Define_Scalar_Attributes
+     (Theory     : W_Theory_Declaration_Id;
+      Base_Type  : EW_Scalar;
+      First      : W_Term_Id;
+      Last       : W_Term_Id;
+      Modulus    : W_Term_OId);
+   --  Define the attributes first, last, modulus for the given type.
 
    -------------------------------------
    -- Declare_Ada_Abstract_Signed_Int --
@@ -65,7 +57,38 @@ package body Why.Gen.Scalars is
       Modulus : W_Integer_Constant_Id)
    is
       Why_Id : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
+      Is_Mod : constant Boolean := Modulus /= Why_Empty;
+      Clone_Id : constant W_Identifier_Id :=
+        (if Is_Mod then
+         New_Identifier (Name    => """ada__integer"".Modular")
+         else
+         New_Identifier (Name    => """ada__integer"".Discrete"));
+      Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 =>
+           New_Clone_Substitution
+             (Kind      => EW_Type_Subst,
+              Orig_Name => New_Identifier (Name => "t"),
+              Image     => Why_Id),
+         2 =>
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => To_Ident (WNE_Attr_First),
+              Image     => To_Ident (WNE_Attr_First)),
+         3 =>
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => To_Ident (WNE_Attr_Last),
+              Image     => To_Ident (WNE_Attr_Last)));
    begin
+
+      --  The type String is needed in the GNATprove standard Why prelude (e.g.
+      --  for 'Image), so has to be defined there. In turn, this means that
+      --  Character also needs to be defined there. This means that the Why3
+      --  modules for both types should not define an abstract type, but
+      --  an alias of the type that already is defined in the prelude. This is
+      --  done here for Character, and similar code exists in
+      --  why-gen-arrays.adb.
+
       if Entity = Standard_Character then
          Emit (Theory,
                New_Type (Name => Why_Id,
@@ -75,17 +98,26 @@ package body Why.Gen.Scalars is
       else
          Emit (Theory, New_Type (Name => Why_Id));
       end if;
+
       Define_Scalar_Attributes
         (Theory    => Theory,
          Base_Type => EW_Int,
          First     => +First,
          Last      => +Last,
          Modulus   => +Modulus);
-      Define_Scalar_Conversions
-        (Theory    => Theory,
-         Why_Name  => Why_Id,
-         Base_Type => EW_Int,
-         Modulus   => +Modulus);
+      Emit (Theory,
+            New_Clone_Declaration
+              (Theory_Kind => EW_Module,
+               Clone_Kind  => EW_Export,
+               Origin      => Clone_Id,
+               Substitutions =>
+                 (if Is_Mod then
+                  Clone_Subst &
+                  (1 => New_Clone_Substitution
+                      (Kind      => EW_Function,
+                       Orig_Name => To_Ident (WNE_Attr_Modulus),
+                       Image     => To_Ident (WNE_Attr_Modulus)))
+                    else Clone_Subst)));
    end Declare_Ada_Abstract_Signed_Int;
 
    ----------------------
@@ -99,6 +131,25 @@ package body Why.Gen.Scalars is
       Last    : W_Real_Constant_Id)
    is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
+      Clone_Id : constant W_Identifier_Id :=
+         New_Identifier (Name    => """ada__integer"".Floating_Point");
+      Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 =>
+           New_Clone_Substitution
+             (Kind      => EW_Type_Subst,
+              Orig_Name => New_Identifier (Name => "t"),
+              Image     => Why_Name),
+         2 =>
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => To_Ident (WNE_Attr_First),
+              Image     => To_Ident (WNE_Attr_First)),
+         3 =>
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => To_Ident (WNE_Attr_Last),
+              Image     => To_Ident (WNE_Attr_Last)));
+
    begin
       Emit (Theory, New_Type (Name => Why_Name));
       Define_Scalar_Attributes
@@ -107,88 +158,13 @@ package body Why.Gen.Scalars is
          First     => +First,
          Last      => +Last,
          Modulus   => Why_Empty);
-      Define_Scalar_Conversions
-        (Theory    => Theory,
-         Why_Name  => Why_Name,
-         Base_Type => EW_Real);
+      Emit (Theory,
+            New_Clone_Declaration
+              (Theory_Kind => EW_Module,
+               Clone_Kind  => EW_Export,
+               Origin      => Clone_Id,
+               Substitutions => Clone_Subst));
    end Declare_Ada_Real;
-
-   -------------------------------
-   -- Define_Scalar_Conversions --
-   -------------------------------
-
-   procedure Define_Scalar_Conversions
-     (Theory    : W_Theory_Declaration_Id;
-      Why_Name  : W_Identifier_Id;
-      Base_Type : EW_Scalar;
-      Modulus   : W_Term_OId := Why_Empty)
-   is
-      Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
-      BT       : constant W_Primitive_Type_Id :=
-        New_Base_Type (Base_Type => Base_Type);
-      Abstr_Ty : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Why_Name);
-      To_Id    : constant W_Identifier_Id := To_Ident (Convert_To (Base_Type));
-   begin
-      Define_Range_Predicate (Theory, Base_Type);
-
-      --  to base type:
-      Emit
-        (Theory,
-         New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => To_Id,
-            Binders        => New_Binders ((1 => Abstr_Ty)),
-            Return_Type => BT));
-
-      --  from base type:
-
-      Emit
-        (Theory,
-         New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => To_Ident (Convert_From (Base_Type)),
-            Binders     => New_Binders ((1 => BT)),
-            Return_Type => Abstr_Ty));
-
-      --  range check
-      declare
-         Range_Check  : constant W_Pred_OId :=
-                          New_Call
-                            (Name   => To_Ident (WNE_Range_Pred),
-                             Args   => (1 => +Arg_S));
-         Range_Check_Post : constant W_Pred_Id :=
-           New_Relation
-             (Op_Type => Base_Type,
-              Op      => EW_Eq,
-              Left    => +To_Ident (WNE_Result),
-              Right   => +Arg_S);
-      begin
-         Emit
-           (Theory,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => To_Ident (WNE_Range_Check_Fun),
-               Binders     => (1 => (B_Name => Arg_S,
-                                     B_Type => BT,
-                                     others => <>)),
-               Return_Type => BT,
-               Pre         => Range_Check,
-               Post        => Range_Check_Post));
-      end;
-
-      Define_Eq_Predicate (Theory, Why_Name, Base_Type);
-      Define_Range_Axiom (Theory,
-                          Why_Name,
-                          To_Ident (Convert_To (Base_Type)));
-      Define_Coerce_Axiom (Theory,
-                           Base_Type,
-                           Modulus);
-      Define_Unicity_Axiom (Theory,
-                            Why_Name,
-                            Base_Type);
-      New_Boolean_Equality_Parameter (Theory, Why_Name);
-   end Define_Scalar_Conversions;
 
    ------------------------------
    -- Define_Scalar_Attributes --
@@ -235,114 +211,6 @@ package body Why.Gen.Scalars is
                Spec        => (1 => Spec));
          end;
       end loop;
-
-      declare
-         Arg_Name   : constant W_Identifier_Id := New_Identifier (Name => "x");
-         BT         : constant W_Primitive_Type_Id :=
-                        New_Base_Type (Base_Type => Base_Type);
-         Why_Str    : constant W_Primitive_Type_Id :=
-                        New_Abstract_Type (Name => To_Ident (WNE_String));
-      begin
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (Attr_To_Why_Name (Attribute_Image)),
-                  Binders     => (1 => (B_Name => Arg_Name,
-                                        B_Type => BT,
-                                        others => <>)),
-                  Return_Type => Why_Str));
-
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Pred,
-                  Name        => To_Ident (WNE_Attr_Value_Pre_Check),
-                  Binders     => (1 => (B_Name => Arg_Name,
-                                        B_Type => Why_Str,
-                                        others => <>)),
-                  Return_Type => New_Base_Type (Base_Type => EW_Prop)));
-
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (Attr_To_Why_Name (Attribute_Value)),
-                  Binders     => (1 => (B_Name => Arg_Name,
-                                        B_Type => Why_Str,
-                                        others => <>)),
-                  Return_Type => BT));
-
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        =>
-                    To_Program_Space
-                      (To_Ident (Attr_To_Why_Name (Attribute_Value))),
-                  Binders     => (1 => (B_Name => Arg_Name,
-                                        B_Type => Why_Str,
-                                        others => <>)),
-                  Return_Type => BT,
-                  Pre         =>
-                    New_Call (Name   => To_Ident (WNE_Attr_Value_Pre_Check),
-                              Args   => (1 => +Arg_Name))));
-      end;
    end Define_Scalar_Attributes;
-
-   ------------------------------------
-   -- New_Boolean_Equality_Parameter --
-   ------------------------------------
-
-   procedure New_Boolean_Equality_Parameter
-     (Theory   : W_Theory_Declaration_Id;
-      Why_Name : W_Identifier_Id)
-   is
-      Arg_S    : constant W_Identifier_Id := New_Identifier (Name => "n");
-      Arg_T    : constant W_Identifier_Id := New_Identifier (Name => "m");
-      True_Term : constant W_Term_Id :=
-                  New_Literal (Value => EW_True);
-      Cond     : constant W_Pred_Id :=
-                  New_Relation
-                     (Left    => +To_Ident (WNE_Result),
-                      Op_Type => EW_Bool,
-                      Right   => +True_Term,
-                      Op      => EW_Eq);
-      Then_Rel : constant W_Pred_Id :=
-                 New_Relation
-                   (Op      => EW_Eq,
-                    Op_Type => EW_Bool,
-                    Left    => +Arg_S,
-                    Right   => +Arg_T);
-      Else_Rel : constant W_Pred_Id :=
-                 New_Relation
-                   (Op      => EW_Ne,
-                    Op_Type => EW_Bool,
-                    Left    => +Arg_S,
-                    Right   => +Arg_T);
-      Post    : constant W_Pred_Id :=
-                  New_Conditional
-                    (Condition => +Cond,
-                     Then_Part => +Then_Rel,
-                     Else_Part => +Else_Rel);
-      Pre     : constant W_Pred_Id :=
-                  New_Literal (Value => EW_True);
-      Arg_Type : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Why_Name);
-   begin
-      Emit
-        (Theory,
-         New_Function_Decl
-           (Domain      => EW_Prog,
-            Name        => To_Program_Space (To_Ident (WNE_Bool_Eq)),
-            Binders     =>
-              (1 =>
-                 (B_Name => Arg_S,
-                  B_Type => Arg_Type,
-                  others => <>),
-               2 =>
-                 (B_Name => Arg_T,
-                  B_Type => Arg_Type,
-                  others => <>)),
-            Return_Type => New_Base_Type (Base_Type => EW_Bool),
-            Pre         => Pre,
-            Post        => Post));
-   end New_Boolean_Equality_Parameter;
 
 end Why.Gen.Scalars;
