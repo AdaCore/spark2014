@@ -163,9 +163,12 @@ package Why.Inter is
                                  S : Name_Set.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
-   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum;
+   function Dispatch_Entity
+     (E             : Entity_Id;
+      Is_Completion : Boolean := False) return Why_File_Enum;
    --  Given an Ada Entity, return the appropriate Why File to insert the
-   --  entity
+   --  entity. Is_Completion is True if this is for a theory completing a
+   --  previous theory.
 
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;

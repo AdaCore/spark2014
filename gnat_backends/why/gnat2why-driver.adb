@@ -101,7 +101,8 @@ package body Gnat2Why.Driver is
    ---------------------------------
 
    procedure Complete_Entity_Translation (E : Entity_Id) is
-      File : Why_File := Why_Files (Dispatch_Entity (E));
+      File : Why_File :=
+        Why_Files (Dispatch_Entity (E, Is_Completion => True));
 
    begin
       case Ekind (E) is
@@ -333,7 +334,8 @@ package body Gnat2Why.Driver is
                Name      : constant String :=
                  Base_Name & To_String (WNE_Expr_Fun_Closure);
             begin
-               Add_Completion (Base_Name, Name, Dispatch_Entity (E));
+               Add_Completion
+                 (Base_Name, Name, Dispatch_Entity (E, Is_Completion => True));
             end;
          end if;
       end loop;
@@ -386,7 +388,9 @@ package body Gnat2Why.Driver is
    ----------------------
 
    procedure Translate_Entity (E : Entity_Id) is
-      File : Why_File := Why_Files (Dispatch_Entity (E));
+      Is_Completion : constant Boolean := Ekind (E) = E_Subprogram_Body;
+      File          : Why_File :=
+        Why_Files (Dispatch_Entity (E, Is_Completion));
 
    begin
       case Ekind (E) is

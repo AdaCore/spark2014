@@ -624,8 +624,9 @@ package body Why.Inter is
    -- Dispatch_Entity --
    ---------------------
 
-   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum
-   is
+   function Dispatch_Entity
+     (E             : Entity_Id;
+      Is_Completion : Boolean := False) return Why_File_Enum is
    begin
       if Nkind (E) = N_String_Literal
         or else Nkind (E) = N_Aggregate
@@ -638,13 +639,51 @@ package body Why.Inter is
             return WF_Context_In_Body;
          end if;
       end if;
+
       case Ekind (E) is
-         when Subprogram_Kind | E_Subprogram_Body | Named_Kind | E_Package =>
+         when Named_Kind | E_Package =>
             if In_Some_Unit_Body (Parent (E)) then
                return WF_Context_In_Body;
             else
                return WF_Context_In_Spec;
             end if;
+
+         when Subprogram_Kind | E_Subprogram_Body =>
+            declare
+               Decl_E : constant Entity_Id := Unique_Entity (E);
+
+               --  If the subprogram reads or writes a variables in an outter
+               --  scope, it cannot be declared in the "type" Why file, as it
+               --  needs visibility over the "variable" Why file. As read
+               --  effects for contracts are currently not computed, consider
+               --  that there is a potential read if the subprogram has a
+               --  contract. To be modified. ???
+
+               Has_Effects : constant Boolean :=
+                 Has_Global_Reads (Decl_E)
+                   or else Has_Global_Writes (Decl_E)
+                   or else Present (Spec_PPC_List (Contract (Decl_E)));
+            begin
+               --  Subprograms without read/write global effects are declared
+               --  in the "type" Why files instead of the "context" Why files,
+               --  so that they can be used as parameters of generics whose
+               --  axiomatization in Why is written manually (example: formal
+               --  containers).
+
+               if In_Some_Unit_Body (Parent (E)) then
+                  if Has_Effects or Is_Completion then
+                     return WF_Context_In_Body;
+                  else
+                     return WF_Types_In_Body;
+                  end if;
+               else
+                  if Has_Effects or Is_Completion then
+                     return WF_Context_In_Spec;
+                  else
+                     return WF_Types_In_Spec;
+                  end if;
+               end if;
+            end;
 
          when Object_Kind =>
             if not Is_Mutable_In_Why (E)
@@ -677,7 +716,6 @@ package body Why.Inter is
 
          when others =>
             raise Program_Error;
-
       end case;
    end Dispatch_Entity;
 

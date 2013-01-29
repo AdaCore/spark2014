@@ -133,13 +133,25 @@
 --         postcondition of the program function, to give a value to the
 --         result.
 
+--         For a function or procedure without global reads or global writes,
+--         the module above is created in the corresponding type file, instead
+--         of the corresponding context file. This allows such subprograms to
+--         be passed as parameters to generic instantiations of units whose Why
+--         code is manually written. This is the case in particular for the
+--         formal container library. Indeed, these instantiations are created
+--         in type files, as they introduce both types and functions, so they
+--         should come as early as possible in the chain of includes between
+--         Why generated files.
+
 --         For an expression function whose body is in SPARK, an additional
 --         theory is created for the defining axiom of the logic function.
 --         For every subprogram (both functions and procedures), an additional
 --         theory is created for including all axioms of all expression
 --         functions which participate in the definition of the subprogram
 --         spec (the subprogram contract, which includes the body for
---         expression functions).
+--         expression functions). These theories are created in the
+--         corresponding context file, whether the theory they complete is
+--         defined in the type or context file.
 
 --         These theories are seen as completions of the theory defining the
 --         subprogram. When translating code that uses the subprogram, the
