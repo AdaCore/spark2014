@@ -48,7 +48,7 @@ High-level requirements
 #. Goals to be met by language feature:
 
     * **Requirement:** It shall be possible to provide an abstracted view of hidden state that can be referred to
-      in specifications of program behaviour.
+      in specifications of program behavior.
 
       **Rationale:** this allows modular analysis, since modular is analysis performed
       before all package bodies are available and so before all hidden state is known.
@@ -389,7 +389,7 @@ Package Depends or Initializes aspect of the package.
 Common Rationale for Refined Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Where it is possible to specify subprogram behaviour using a language feature that
+Where it is possible to specify subprogram behavior using a language feature that
 refers to abstract state, it should be possible to define a corresponding *refined*
 version of the language feature that refers to the decomposition of that abstract state.
 

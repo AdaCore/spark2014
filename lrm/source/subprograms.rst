@@ -485,7 +485,7 @@ using a **null**, e.g., X => **null**.  An output may be
 self-dependent but not dependent on any other input.  The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
-The functional behaviour of a subprogram is not specified by the Depends
+The functional behavior of a subprogram is not specified by the Depends
 aspect but, unlike a postcondition, the Depends aspect has
 to be complete in the sense that every input and output of the subprogram must
 appear in the Depends aspect.

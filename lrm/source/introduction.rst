@@ -10,9 +10,17 @@ contracts and "aspects" to support modular, formal verification.
 |SPARK| is a much larger and more flexible language than its
 predecessor SPARK 2005. The language can be configured to suit
 a number of application domains and standards, from server-class
-high-assurance systems (such as air-traffic management applications),
-to embedded, hard real-time, critical systems (such as avionic
-systems complying with DO-178C Level A).
+high-assurance systems to embedded, hard real-time, critical systems.
+
+Current State of this Document
+------------------------------
+
+**Explain what this doc represents: in particular, that the language spec will
+be developed over multiple milestone issues, and that the tool will be updated
+to match. There will then at least be release 1 and release 2 of the tools.
+The LRM may be complete by release 1: need to check what the plan is in relation to this.
+This will cover the stuff about D1, etc, and should also mention ToDos.**
+
 
 How to Read this Manual
 -----------------------
@@ -122,7 +130,7 @@ Principal design goals are as follows:
   use constrained to meet this goal.
 
 - The language shall offer an *unambiguous* semantics. In Ada terminology,
-  this means that all erroneous and unspecified behaviour shall
+  this means that all erroneous and unspecified behavior shall
   be eliminated. Implementation-defined features will be automatically
   determined for projects using GNAT, or will be configurable (where
   possible) or rejected for other compilers.
@@ -144,6 +152,46 @@ Principal design goals are as follows:
   legacy Ada code, or code written in the |SPARK| subset for which
   verification evidence could not be generated.
 
+Combining Formal Verification and Testing
+-----------------------------------------
+
+**Action comment REQ-CC56: .**
+
+There are common reasons for combining formal verification on some part
+of a codebase and testing on the rest of the codebase:
+
+#. Formal verification is only applicable to a part of the codebase. For
+   example, it might not be possible to apply formal verification to Ada code
+   that is not in |SPARK|.
+
+#. Formal verification only gives strong enough results on a part of the
+   codebase. This might be because the desired properties cannot be expressed
+   formally, or because proof of these desired properties cannot be
+   sufficiently automated.
+
+#. Formal verification is only cost-effective on a part of the codebase. (And
+   it may be more cost-effective than testing on this part of the codebase.)
+
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase.
+
+Contracts on subprograms provide a natural boundary for this combination. If a
+subprogram is proved to respect its contract, it should be possible to call it
+from a tested subprogram. Conversely, formal verification of a subprogram
+(including absence of run-time errors and contract checking) depends on called
+subprograms respecting their own contracts, whether these are verified by
+formal verification or testing.
+
+Formal verification works by imposing requirements on the callers of proved code, and these requirements
+should be shown to hold even when formal verification and testing are
+combined. Certainly, formal verification cannot guarantee the same
+properties when part of a program is only tested, as when all of a program is
+proved. The goal then, when combining formal verification and testing, is to
+reach a level of confidence as good as the level reached by testing alone.
+
+Any toolset that proposes a combination of formal verification and testing for
+|SPARK| should provide a detailed process for doing so, including any necessary
+additional testing of proof assumptions.
 
 
 Profiles and Analyses
@@ -162,9 +210,10 @@ the needs of particular
 
 |SPARK| will be amenable to a range of formal analyses, including but not limited to:
 
-- Data-flow analysis.
+- Data-flow analysis.  **Add a definition of data-flow analysis.**
 
-- Information-flow analysis and program slicing.
+- Information-flow analysis and program slicing. **Add a definition of information flow analysis.
+  Also say that flow analysis is used to cover the two taken together.**
 
 - Formal verification of robustness properties. In Ada terminology, this refers to
   the proof that a predefined check will never fail at run time, and hence predefined
@@ -175,6 +224,27 @@ the needs of particular
 
 - Formal verification of non-functional properties, such as WCET and
   worst-case memory usage analysis.
+
+Constructive and Retrospective Verification Modes
+-------------------------------------------------
+
+SPARK 2005 strongly favored the *constructive* verification style -- where all
+program units required contracts on their specifications.  These
+contracts had to be designed and added at an early stage to assist modular
+verification, and then maintained by the user as a program evolved.
+
+As well as still fully supporting the cnstrucive mode, |SPARK| is designed
+to facilitate a more *retrospective* mode of
+program construction and verification, where useful forms of verification can
+be achieved with code that complies with the core |SPARK| restrictions, but
+otherwise does not have any contracts.  In this mode, implicit contracts can be
+computed from the bodies of units, and then used in the analysis of other
+units, and so on.  These implicit contracts can be "promoted" by the user to
+become part of the specification of a unit, allowing the designer to move from
+the retrospective to the constructive mode as a project matures.  The
+retrospective mode also allows for the verification of legacy code that was not
+originally designed with the |SPARK| contracts in mind.
+
 
 Principal Language Restrictions
 -------------------------------
@@ -193,14 +263,16 @@ in the remaining chapters of this document, the most notable restrictions are:
 
 - The use of controlled types is not permitted.
 
-- Tasking is not currently permitted (it is expected that this will be included
-  in Release 2 of this document).
+- Tasking is not currently permitted (it is intended that this will be included
+  in Release 2 of the tools).
 
 - Raising and handling of exceptions is not permitted.
 
+
 We describe a program unit or language feature as being "in |SPARK|"
 if it complies with the restrictions required to permit formal
-verification.  Conversely, a program unit language feature is "not in
+verification. **Action Stuart's comment on whether additional restrictions may
+be imposed on top of this (REQ-SM12).**  Conversely, a program unit language feature is "not in
 |SPARK|" if it does not meet these requirements, and so is not
 amenable to formal verification. Within a single unit, features which
 are "in" and "not in" |SPARK| may be mixed at a fine level. For
@@ -223,6 +295,8 @@ that mix formal verification and more traditional testing.
 
 Static Checking
 ---------------
+
+**Need to add rationale for this section, as per comment REQ-CC50.**
 
 The static checking needed to determine whether a |SPARK|
 program is suitable for execution is performed in three separate
@@ -297,10 +371,7 @@ an Ada compiler.
 Many invalid |SPARK| programs are also valid Ada 2012 programs.
 An incorrect |SPARK| program with, say, inconsistent dataflow
 annotations or undischarged proof obligations can still be executed as
-long as the Ada compiler in question finds nothing objectionable. What one
-gives up in this case is the formal proof of the absence of run-time errors,
-the static checking of dataflow dependencies, and the formal proof that
-the program implements its specifications (contracts and invariants).
+long as the Ada compiler in question finds nothing objectionable.
 
 There is an important caveat that must accompany the assertion that
 |SPARK| is, in the sense described above, a subset of Ada 2012. |SPARK|
@@ -328,68 +399,6 @@ Ada 2012 reference manual.
  (SB) We could discuss other, more subtle cases in which SPARK
  is GNAT-dependent (e.g., intermediate overflow; elaboration order).
  That level of detail is probably inappropriate here.
-
-
-Constructive and Retrospective Verification Modes
--------------------------------------------------
-
-SPARK 2005 strongly favoured the *constructive* verification style - where all
-program units required contracts on their specifications.  These
-contracts had to be designed and added at an early stage to assist modular
-verification, and then maintained by the user as a program evolved.
-
-As well as still fully supporting the cnstrucive mode, |SPARK| is designed
-to facilitate a more *retrospective* mode of
-program construction and verification, where useful forms of verification can
-be achieved with code that complies with the core |SPARK| restrictions, but
-otherwise does not have any contracts.  In this mode, implicit contracts can be
-computed from the bodies of units, and then used in the analysis of other
-units, and so on.  These implicit contracts can be "promoted" by the user to
-become part of the specification of a unit, allowing the designer to move from
-the retrospective to the constructive mode as a project matures.  The
-retrospective mode also allows for the verification of legacy code that was not
-originally designed with the |SPARK| contracts in mind.
-
-Combining Formal Verification and Testing
------------------------------------------
-
-There are common reasons for combining formal verification on some part
-of a codebase and testing on the rest of the codebase:
-
-#. Formal verification is only applicable to a part of the codebase. For
-   example, it might not be possible to apply formal verification to Ada code
-   that is not in |SPARK|.
-
-#. Formal verification only gives strong enough results on a part of the
-   codebase. This might be because the desired properties cannot be expressed
-   formally, or because proof of these desired properties cannot be
-   sufficiently automated.
-
-#. Formal verification is only cost-effective on a part of the codebase. (And
-   it may be more cost-effective than testing on this part of the codebase.)
-
-For all these reasons, it is important to be able to combine the results of
-formal verification and testing on different parts of a codebase.
-
-Contracts on subprograms provide a natural boundary for this combination. If a
-subprogram is proved to respect its contract, it should be possible to call it
-from a tested subprogram. Conversely, formal verification of a subprogram
-(including absence of run-time errors and contract checking) depends on called
-subprograms respecting their own contracts, whether these are verified by
-formal verification or testing.
-
-Formal verification works by imposing requirements on the callers of proved code, and these requirements
-should be shown to hold even when formal verification and testing are
-combined. Certainly, formal verification cannot guarantee the same
-properties when part of a program is only tested, as when all of a program is
-proved. The goal then, when combining formal verification and testing, is to
-reach a level of confidence as good as the level reached by testing alone.
-
-Any toolset that proposes a combination of formal verification and testing for
-|SPARK| should provide a detailed process for doing so, including any necessary
-additional testing of proof assumptions.
-
-
 
 
 Definition of Terms for High-Level Requirements
@@ -476,7 +485,7 @@ Naming
 Properties of Specifications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. **Requirement:** When specifying program behaviour in terms of a relation or a set, it shall be
+#. **Requirement:** When specifying program behavior in terms of a relation or a set, it shall be
    possible to explicitly provide a null relation or an empty set.
 
    **Rationale:** to explicitly identify programs that - for example - do not reference
@@ -494,7 +503,7 @@ Properties of Specifications
 
    **Rationale:** to assist security and safety analysis.
 
-#. **Requirement:** When specifying subprogram behaviour other than via proof statements, it shall be necessary
+#. **Requirement:** When specifying subprogram behavior other than via proof statements, it shall be necessary
    to provide a complete specification.
 
    **Rationale:** To allow provision of at least the same functionality as SPARK 2005
@@ -669,7 +678,12 @@ Actions to complete prior to release
 
 #. Go through all the higher-level requirements and trace down to these where possible.
 
+#. Explain what D1, D2 and rel2 actually mean.
 
+#. Where Hristian said that certain rules have been deferred to the flow analyser, we need
+   to move them to the appropriate sub-section in the LRM.
+
+#. Describe the generative mode, rather than just retrospective.
 
 Strategic Requirements
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -691,7 +705,7 @@ Provide rationale detail? I think that would be useful.
    use constrained to meet this goal.
 
 #. (D) The language shall offer an unambiguous semantics. In Ada terminology,
-   this means that all erroneous and unspecified behaviour shall
+   this means that all erroneous and unspecified behavior shall
    be eliminated.
 
 #. (E)Implementation-defined features will be automatically
@@ -708,7 +722,7 @@ Provide rationale detail? I think that would be useful.
    be used in line with specific goals such as domain needs or certification
    requirements. This may also have the effect of simplifying proof or analysis.
 
-#. (H) |SPARK| shall allow for the specification of desired program behaviour in a modular
+#. (H) |SPARK| shall allow for the specification of desired program behavior in a modular
    fashion: need to know how this should interact with the requirement for
    modular verification.
 
