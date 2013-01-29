@@ -1495,16 +1495,22 @@ package body Why.Atree.Sprint is
                P (O, " :");
                Traverse (State, +Result_Type);
                NL (O);
-               P (O, "requires { ");
-               Traverse (State, +Pre);
-               P (O, " }");
-               NL (O);
-               P (O, "ensures { ");
-               Traverse (State, +Post);
-               P (O, " }");
-               NL (O);
-               Traverse (State, +Effects);
-               NL (O);
+               if Pre /= Why_Empty then
+                  P (O, "requires { ");
+                  Traverse (State, +Pre);
+                  P (O, " }");
+                  NL (O);
+               end if;
+               if Post /= Why_Empty then
+                  P (O, "ensures { ");
+                  Traverse (State, +Post);
+                  P (O, " }");
+                  NL (O);
+               end if;
+               if Effects /= Why_Empty then
+                  Traverse (State, +Effects);
+                  NL (O);
+               end if;
                Relative_Indent (O, -1);
             end;
 
