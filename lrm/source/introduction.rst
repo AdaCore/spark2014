@@ -12,11 +12,12 @@ predecessor SPARK 2005. The language can be configured to suit
 a number of application domains and standards, from server-class
 high-assurance systems to embedded, hard real-time, critical systems.
 
-**Action associated with QO-CDR5:  consider addition of section 0/rationale which
-presents vision and goals in the most sales-savvy way.**
 
-Current State of this Document
-------------------------------
+Lifecycle of this Document
+--------------------------
+
+This document will be developed incrementally
+
 
 **Explain what this doc represents: in particular, that the language spec will
 be developed over multiple milestone issues, and that the tool will be updated
@@ -49,7 +50,7 @@ In expressing the syntax and rules of |SPARK|, the following chapters of
 this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
 
 **Action SM et al-CDR3:  Section 1.5 says something about Verification Rules, but I think we need a section of the introduction dedicated to structure and a
-definition of which rules appear in each subsection (Dynamic Semantics, Static Semantics, Verification Rules, ...). **
+definition of which rules appear in each subsection (Dynamic Semantics, Static Semantics, Verification Rules, ...).**
 
 
 High-level requirements
@@ -125,6 +126,9 @@ at the end of this chapter.
 |SPARK| Strategic Requirements
 ------------------------------
 
+**Action associated with QO-CDR5:  consider addition of section 0/rationale which
+presents vision and goals in the most sales-savvy way.**
+
 Principal design goals are as follows:
 
 - Provision of "formal analysis" as defined by DO-333, which states
@@ -141,9 +145,12 @@ Principal design goals are as follows:
   be eliminated. Implementation-defined features will be automatically
   determined for projects using GNAT, or will be configurable (where
   possible) or rejected for other compilers.
+
   **Action  REQ-SM6:  "rejected" sounds as though it isn't portable between compilers - that's not what you mean, right?**
+  
   **Action  LL-GD35:  This paragraph mentions "erroneous or unspecified behavior", but what about implementation-defined or partially specified
-behavior (such as order of evaluation or bounded errors)?**
+  behavior (such as order of evaluation or bounded errors)?**
+
 **Action NW-CDR8: Text implies compiler tie-in. We need to be carefult to consider clients who use SPARK but this other compilers. Reword?**
 **Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
 
@@ -151,10 +158,12 @@ behavior (such as order of evaluation or bounded errors)?**
   currently amenable to automatic formal verification, in line with the goals above, although
   future advances in verification research and computing power may allow
   for expansion of the language and the forms of verification available.
+
 **Action NW-CDR9: Not clear to me if (a) the language spec is complete, but the first tool release is not, or (b) the language spec is partial and
 the tool release matches is, or (c) a hybrid. This bullet implies tasking is in the language spec, but it's not in the first tool release?**
+
 **Associated action:  In section 1.4 (Principal Language Restrictions) remove word "currently" from
-Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.
+Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.**
 
 
 - |SPARK| shall be as expressive as SPARK 83/95/2005.
@@ -261,13 +270,12 @@ Constructive and Retrospective Verification Modes
 -------------------------------------------------
 
 **Action AN-JK4:   The generative contracts are mentioned very late in chapt. 6. It should
-  be stated that every subprogram has an implicit global/flow contract. If
-  the user provides one, both are compared and the implicit one should
-  refine the explicit one.
-
-  When the global/flow contract is required for analysis of another
-  subprogram (e.g. to implement the above comparison), the user-provided
-  contract is used if it exists, otherwise the implicit one is used.**
+be stated that every subprogram has an implicit global/flow contract. If
+the user provides one, both are compared and the implicit one should
+refine the explicit one.
+When the global/flow contract is required for analysis of another
+subprogram (e.g. to implement the above comparison), the user-provided
+contract is used if it exists, otherwise the implicit one is used.**
 
 **Action  INSTRUCT-RPM1:  I'm a bit confused about how the SPARK 2014 language will provide for the mixing of verification evidence from code that is
 within the 2014 subset and code that is outside of it. I can imagine a process where you do this, and have a mixture of 2014
@@ -347,9 +355,9 @@ example, the following combinations may be typical:
 - Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
   The latter declarations are only visible and usable from client units which are not in |SPARK|.
   **Action REQ-CC47: last bullet point, last sentence: that seems too strong a restriction for hybrid usage. I would prefer: the latter declarations
-are not used by pure SPARK 2014 code. I also think we need to define here what is the finest-grain of hybridation we are ready to deal
-with. In particular, a subprogram can only have 3 states:    - spec in S14, body not - spec and body outside of S14 - spec and body in S14
-we don't care about the case where the body would have chunks in s14 and other outside..**
+  are not used by pure SPARK 2014 code. I also think we need to define here what is the finest-grain of hybridation we are ready to deal
+  with. In particular, a subprogram can only have 3 states:    - spec in S14, body not - spec and body outside of S14 - spec and body in S14
+  we don't care about the case where the body would have chunks in s14 and other outside..**
 
 Such patterns are intended to allow for mixed-language programming, and the development of programs
 that mix formal verification and more traditional testing.
@@ -593,10 +601,6 @@ To be allocated
 Actions to complete prior to release
 ------------------------------------
 
-#. Do we need more detail on refined pre and post-conditions? For example, how
-   do we get post-conditions on functions used in proof contexts into those
-   proof contexts?
-
 #. Need to discuss the rationale for the use of refined pre and post conditions with people
    to make it better:
 
@@ -619,15 +623,10 @@ Actions to complete prior to release
 
 #. Trevor needs to check the requirements in relation to renaming.
 
-#. Remove duplicate requirements.
-
 #. Need to mention somewhere about being able to state volatile and mode characteristics
    for visible variables.
 
 #. Put the Tobe Allocated reqts into the correct place.
-
-#. Make sure all generic requirements from the scratch file are added in, making sure there is one
-   relating to being able to provide abstraction.**
 
 #. Add a generic requirement relating to simplicity: this will allow us to do things like
    state that names don't appear more than once in a given list, for example.
@@ -642,29 +641,16 @@ Actions to complete prior to release
 #. Note that we currently require from Global that outs are written on all executable paths,
    but nothing like that in relation to Depends.
 
-#. Do I still need to add something on no overlapping between globals and formal parameter names,
-   as well as names declared in the subprogram body? Where does that go (I thought I had something like that)?
-
 #. Make stuff on future actions into ToDos: currently applies to Abstract State.
 
 #. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
    a single list of possibilities for the future?
-
-#. Check for consistency of all the high-level requirements.
-
-#. Make sure that the high-level requirements are given with enough contextual detail.
-
-#. Put the justification for presence of refined language features in this general
-   section, since it is common for all.
 
 #. Factor the strategic requirements below into this document. In particular, see
    what belongs here and what possibly belongs somewhere more general.
 
 #. Note: need to check the rest of the introduction for possible additional
    strategic requirements.
-
-#. Note: will need to make sure that every requirement traces down to something
-   or that it doesn't need to.
 
 #. Note: there is a possibility of tension between constructive and generative mode
    in that restrictions may be necessary to get the constructive mode to work that
@@ -673,26 +659,14 @@ Actions to complete prior to release
 
 #. Note: try to lift the level of abstraction of things like "distinct entities".
 
-#. Note: handling retrospective, mixing of code and mixing of types of verification
-    evidence might be difficult.
-
-#. Make sure Flo captures any assumptions he is making as he constructs his graphs,
-   as they will need to be reflected in the LRM.
-
 #. Add something somewhere on prove once, use many times wrt generics (this should be derived from modularity
    and is also something for a subsequent release).
-
-#. Need to make every strategic reqt traces to something (or if not understand why
-   it shouldn't).
 
 #. Should we present the high-level goals and the decomposed
    goals together (i.e. so we don't need the separate sections
    below).
 
 #. Remember to get stuff from the SPARK book as well.
-
-#. Remember also to be clear on the type of things we are stating (in particular,
-   level of abstraction and also the thing on which the requirement is being levied).
 
 #. Note that the Ada RM only applies to compilation, while ours applies to both
    analysis and compilation, but is meant to be built on top of the Ada RM.
@@ -704,13 +678,6 @@ Actions to complete prior to release
 
 #. Need to distinguish language goals from project goals.
 
-#. **To discuss with Flo: need to know the properties that need to hold
-   of the graphs that he generates in order for everything to work (really, what
-   are the pre-conditions to the analysis phase and to the graph generation phase).
-   Note that when we add additional rules to the LRM, we are trying to avoid problems
-   with soundness and we have Steve to help us with that: how are we guarding against
-   this in the things that Flo does?**
-
 #. Remove volatility from the detail for milestone 2, even in terms of those
    things where we don't give the language-specific rules. In general, go through
    and see what should be descoped.
@@ -721,11 +688,6 @@ Actions to complete prior to release
 #. We have a requirement to say that we provide everything that SPARK 2005 does:
    but at the very least we are missing --# accept and --# hide. Need to check to
    to see if there is anything else like this.
-
-
-#. Need to define what semantics means: it should mean what needs to hold
-   of the implementation so that it is considered correct against the specification.
-
 
 #. Optional guideline: disallow use of different names for the same entities in the
    same subprogram.
@@ -742,9 +704,6 @@ Actions to complete prior to release
    * Similar for refinement of null state or caches in functions.
 
    * This is the idea of stepping outside of the language.
-
-
-#. Go through all the higher-level requirements and trace down to these where possible.
 
 #. Explain what D1, D2 and rel2 actually mean.
 
