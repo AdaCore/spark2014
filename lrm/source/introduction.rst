@@ -12,6 +12,9 @@ predecessor SPARK 2005. The language can be configured to suit
 a number of application domains and standards, from server-class
 high-assurance systems to embedded, hard real-time, critical systems.
 
+**Action associated with QO-CDR5:  consider addition of section 0/rationale which
+presents vision and goals in the most sales-savvy way.**
+
 Current State of this Document
 ------------------------------
 
@@ -44,6 +47,10 @@ Method of Description and Syntax Notation
 
 In expressing the syntax and rules of |SPARK|, the following chapters of
 this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
+
+**Action SM et al-CDR3:  Section 1.5 says something about Verification Rules, but I think we need a section of the introduction dedicated to structure and a
+definition of which rules appear in each subsection (Dynamic Semantics, Static Semantics, Verification Rules, ...). **
+
 
 High-level requirements
 -----------------------
@@ -134,11 +141,21 @@ Principal design goals are as follows:
   be eliminated. Implementation-defined features will be automatically
   determined for projects using GNAT, or will be configurable (where
   possible) or rejected for other compilers.
+  **Action  REQ-SM6:  "rejected" sounds as though it isn't portable between compilers - that's not what you mean, right?**
+  **Action  LL-GD35:  This paragraph mentions "erroneous or unspecified behavior", but what about implementation-defined or partially specified
+behavior (such as order of evaluation or bounded errors)?**
+**Action NW-CDR8: Text implies compiler tie-in. We need to be carefult to consider clients who use SPARK but this other compilers. Reword?**
+**Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
   currently amenable to automatic formal verification, in line with the goals above, although
   future advances in verification research and computing power may allow
   for expansion of the language and the forms of verification available.
+**Action NW-CDR9: Not clear to me if (a) the language spec is complete, but the first tool release is not, or (b) the language spec is partial and
+the tool release matches is, or (c) a hybrid. This bullet implies tasking is in the language spec, but it's not in the first tool release?**
+**Associated action:  In section 1.4 (Principal Language Restrictions) remove word "currently" from
+Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.
+
 
 - |SPARK| shall be as expressive as SPARK 83/95/2005.
 
@@ -155,7 +172,14 @@ Principal design goals are as follows:
 Combining Formal Verification and Testing
 -----------------------------------------
 
-**Action comment REQ-CC56: .**
+**Action comment REQ-CC56 (and look for TN referenced in associated action):  there is a missing discussion about what we used to call "alfa-friendly" code. I don't think we want to reuse this concept but
+we need to define precisely what are the characteristics of a non-s14 subprogram that can call or be called by a s14 one so
+that the formal verif on the latter be meaningful. We also want to minimize (eliminate?) the restrictions on Ada code that has
+no influence on s14 code.**
+
+**Associated action: Capture high-level information about how SPARK
+2014 is intended to be used - probably in chapter
+1. This needs to include "boundary issues" and assumptions about non-SPARK 2014 subprograms that are called from SPARK 2014. Boundaries exist between (1) spec in SPARK and body not in SPARK and (2) declarations not in SPARK cannot be used within a SPARK body. Open TN to record this discussion.**
 
 There are common reasons for combining formal verification on some part
 of a codebase and testing on the rest of the codebase:
@@ -197,6 +221,14 @@ additional testing of proof assumptions.
 Profiles and Analyses
 ---------------------
 
+**Action  LL-STT5:  A "profile" is defined already in the Ada RM, and it includes a set of restrictions, plus various policy specifications, and perhaps a
+few other things specifiable via pragmas.**
+
+**Action QO-CDR4: The use of profiles needs to be highlighted in the introduction.**
+
+**Associated action:  Add section to introduction to explain how profiles
+can be used in different contexts by the developers.**
+
 In addition to the core |SPARK| language subset, the language
 will define a number of *Profiles* which are designed to meet
 the needs of particular
@@ -228,6 +260,22 @@ the needs of particular
 Constructive and Retrospective Verification Modes
 -------------------------------------------------
 
+**Action AN-JK4:   The generative contracts are mentioned very late in chapt. 6. It should
+  be stated that every subprogram has an implicit global/flow contract. If
+  the user provides one, both are compared and the implicit one should
+  refine the explicit one.
+
+  When the global/flow contract is required for analysis of another
+  subprogram (e.g. to implement the above comparison), the user-provided
+  contract is used if it exists, otherwise the implicit one is used.**
+
+**Action  INSTRUCT-RPM1:  I'm a bit confused about how the SPARK 2014 language will provide for the mixing of verification evidence from code that is
+within the 2014 subset and code that is outside of it. I can imagine a process where you do this, and have a mixture of 2014
+and non-2014 code, and a mixture of formal verification and testing, but how does this influence the 2014 language itself?
+Does it boil down to modularity and the ability to mix 2014 and non-2014 features at a fine level? I suppose the potential
+confusion is that your whole "SPARK 2014" program may be a mixture of SPARK 2014 and non-SPARK 2014 code, but do you
+still call the whole thing a SPARK 2014 program?**
+
 SPARK 2005 strongly favored the *constructive* verification style -- where all
 program units required contracts on their specifications.  These
 contracts had to be designed and added at an early stage to assist modular
@@ -245,9 +293,18 @@ the retrospective to the constructive mode as a project matures.  The
 retrospective mode also allows for the verification of legacy code that was not
 originally designed with the |SPARK| contracts in mind.
 
+In and Out of SPARK 2014
+------------------------
+
+**Action  FE-JIB12:  There are references throughout the document to being "in SPARK 2014" and "out of SPARK 2014". Since not being in SPARK
+2014 is not an obstacle to compilation but in certain circumstances we may wish to enforce that only SPARK 2014 constructs are
+used, then it is not clear from the LRM as it currently stands what should be done when implementing legality rules if a given syntactic
+entity is found not to be in SPARK 2014.**
 
 Principal Language Restrictions
 -------------------------------
+
+**Action  LL-STT2: We need a term for the "SPARK-friendly" subset of features, which are not all in S14, but which allow for some amount of analysis.**
 
 To facilitate formal verification, |SPARK| enforces a number of global
 restrictions to Ada 2012. While these are covered in more detail
@@ -289,6 +346,10 @@ example, the following combinations may be typical:
 
 - Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
   The latter declarations are only visible and usable from client units which are not in |SPARK|.
+  **Action REQ-CC47: last bullet point, last sentence: that seems too strong a restriction for hybrid usage. I would prefer: the latter declarations
+are not used by pure SPARK 2014 code. I also think we need to define here what is the finest-grain of hybridation we are ready to deal
+with. In particular, a subprogram can only have 3 states:    - spec in S14, body not - spec and body outside of S14 - spec and body in S14
+we don't care about the case where the body would have chunks in s14 and other outside..**
 
 Such patterns are intended to allow for mixed-language programming, and the development of programs
 that mix formal verification and more traditional testing.
@@ -296,7 +357,13 @@ that mix formal verification and more traditional testing.
 Static Checking
 ---------------
 
-**Need to add rationale for this section, as per comment REQ-CC50.**
+**Action REQ-CC50: Need to add rationale for this section.**
+
+**Action LL-STT4: "Flow analysis rules" vs. "Verification rules."  SB says everything follows from rule relating to run-time checks, but what about
+things in Ada which are *not* checked, such as use of uninitialized data, race conditions, various nasty erroneous conditions
+relating to renaming, etc.?  YM mentions the type invariants, but that seems just indicative of a set of things where the run-time
+checks are incomplete relative to what we want to do for proofs.**
+
 
 The static checking needed to determine whether a |SPARK|
 program is suitable for execution is performed in three separate
@@ -388,6 +455,7 @@ The GNAT Pro Ada 2012 implementation is one such compiler.
 The dynamic semantics of any construct other than these implementation-defined
 attributes, aspects, and pragmas are defined to be as defined in the
 Ada 2012 reference manual.
+**Action REQ-NW76: So how do other compilers work? Ignore? Skip?.**
 
 .. note::
  (SB) Need wording here to deal with the case where, to avoid duplication,
