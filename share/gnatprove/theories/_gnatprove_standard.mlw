@@ -62,24 +62,12 @@ module Integer
 
 end
 
-(* Define real exponentiation as a separate theory until problem with cloning
-   in module is solved. *)
-theory FloatingExp
-  use real.Real
-  use import real.RealInfix
-
-  clone export
-    int.Exponentiation with type t = real, constant one = Real.one, function (*) = ( *.)
-
-end
-
 module Floating
   use real.Real
   use import real.RealInfix
   use real.Abs as AbsReal
   use export real.Truncate
-
-  use export FloatingExp
+  use export real.PowerInt
 
   use real.FromInt
 
