@@ -12,6 +12,42 @@ predecessor SPARK 2005. The language can be configured to suit
 a number of application domains and standards, from server-class
 high-assurance systems to embedded, hard real-time, critical systems.
 
+Structure of Introduction
+-------------------------
+
+This introduction contains the following sections:
+
+- Section :ref:`lifecycle` describes how this document will evolve up to
+  and beyond the first formal release of the |SPARK| language and toolset.
+
+- Section :ref:`read_interpret` describes how to read and interpret this document.
+
+- Section :ref:`desc_notate` describes the conventions used in presenting
+  the definition of |SPARK|.
+
+- Section :ref:`formal_analysis` gives a brief overview of the formal analysis
+  to which |SPARK| programs are amenable.
+
+- Section :ref:`rules_check` gives a brief overview of checking the language rules
+  of |SPARK|.
+
+- Section :ref:`reqts` gives an overview of the requirements given in this document
+  over and above the language definition rules of the sort that appear in the
+  Ada 2012 Reference Manual (RM).
+
+- Section :ref:`sprs` defines the overall goals to be met by the |SPARK| language and
+  toolset.
+
+- Section :ref:`explain_sprs` provides expanded detail on the main strategic requirements.
+
+- Section :ref:`generic_hlrs` presents abstracted requirements that are common to
+  a number of the language features described in this document.
+
+- Section :ref:`notes` provides some brief detail on the current status and contents
+  of this document.
+
+
+.. _lifecycle:
 
 Lifecycle of this Document
 --------------------------
@@ -29,8 +65,10 @@ scope is deferred, it may be deferred to:
   implemented *after* the first formal release of the toolset.
 
 
-How to Read this Manual
------------------------
+.. _read_interpret:
+
+How to Read and Interpret this Manual
+-------------------------------------
 
 This LRM (language reference manual) is *not* a tutorial guide
 to |SPARK|.  It is intended as a reference guide for
@@ -38,13 +76,17 @@ users and implementors of the language.  In this context,
 "implementors" includes those producing both compilers and
 verification tools.
 
-This manual is written in the style and language of the Ada 2012 Reference Manual (RM),
+This manual is written in the style and language of the Ada 2012 RM,
 so knowledge of Ada 2012 is assumed.  Chapters 2 through 13 mirror
 the structure of the Ada 2012 RM.  Chapter 14 covers all the annexes
-of the Ada RM.
+of the Ada 2012 RM. Moreover, this manual should be interpreted as an extension
+of the Ada 2012 RM (that is, |SPARK| is fully defined by this document taken together
+with the Ada 2012 RM).
 
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
+
+.. _desc_notate:
 
 Method of Description and Syntax Notation
 -----------------------------------------
@@ -53,7 +95,7 @@ In expressing the syntax and rules of |SPARK|, the following chapters of
 this document follow the notational conventions of the Ada 2012 RM (section 1.1.4).
 
 The following sections are given for each new language feature introduced
-for |SPARK|, following the Ada RM (other than *Verification Rules*, which is
+for |SPARK|, following the Ada 2012 RM (other than *Verification Rules*, which is
 specific to |SPARK|):
 
 #. Syntax: this section gives the Syntax rules.
@@ -71,11 +113,115 @@ specific to |SPARK|):
 All sections are always listed and if no content is required then the
 corresponding section will be marked *Not applicable*.
 
-Requirements given in this document
+.. _formal_analysis:
+
+Formal Analysis
+---------------
+
+|SPARK| will be amenable to a range of formal analyses, including but not limited to:
+
+- Data-flow analysis, which considers the direction of data flow into and out
+  of subprograms.
+
+- Information-flow analysis, which also considers the coupling between the inputs
+  and outputs of a subprogram. The term *flow analysis* is used to mean data-flow
+  analysis and information-flow analysis taken together.
+
+- Formal verification of robustness properties. In Ada terminology, this refers to
+  the proof that a predefined check will never fail at run time, and hence predefined
+  exceptions will never be raised.
+
+- Formal verification of functional properties, based on contracts expressed as
+  preconditions, postconditions, type invariants and so on.
+
+- Formal verification of non-functional properties, such as WCET and
+  worst-case memory usage analysis.
+
+
+.. _rules_check:
+
+Static Analysis and Dynamic Semantics of |SPARK| Programs
+---------------------------------------------------------
+
+The static checking needed to determine whether a |SPARK|
+program is suitable for execution is performed in three separate
+phases. Errors may be detected during any of these three steps.
+Compilation is the final stage of this process.
+
+Syntax and Legality Rules
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The syntax and legality rules presented in this document are checked together with
+the Ada 2012 syntax and legality rules.
+
+
+Flow Analysis
+~~~~~~~~~~~~~
+
+Next, flow analysis is performed, as described in Section :ref:`formal_analysis`.
+Rules that are enforced at this point are described in sections with the
+heading "Verification Rules".
+
+Formal Verification
+~~~~~~~~~~~~~~~~~~~
+
+Finally, formal program verification is performed.
+
+Many Ada constructs have dynamic semantics which include a requirement
+that some error condition must (or, in the cases of some bounded errors,
+may) be checked, and some exception must (or, in the case of a bounded
+error, may) be raised, if the error is detected (see Ada 2012 RM 1.1.5(5-8)). For
+example, evaluating the name of an array component includes a check that
+each index value belongs to the corresponding index range of the array
+(see Ada 2012 RM 4.1.1(7)).
+
+For every such run-time check (including bounded errors) a corresponding
+obligation to prove that the error condition cannot be true is introduced.
+In particular, this rule applies to the run-time checks associated with any
+assertion (see Ada 2012 RM (11.4.2)); the one exception to this rule is pragma
+``Assume`` (see :ref:`pragma_assume`).
+
+In addition, the generation of proof obligations is unaffected by the
+suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
+assertions (e.g., via pragma ``Assertion_Policy``). In other words, suppressing
+or disabling a check does not prevent generation of its associated proof
+obligations.
+
+All such generated proof obligations must be discharged before the
+formal program verification phase may be considered to be complete.
+
+Dynamic Semantics
+~~~~~~~~~~~~~~~~~
+
+Every valid |SPARK| program is also a valid Ada 2012 program.
+The dynamic semantics of the two languages are defined to be identical,
+so that a valid |SPARK| program may be compiled and executed by means of
+an Ada compiler.
+
+Many invalid |SPARK| programs are also valid Ada 2012 programs.
+An incorrect |SPARK| program with, say, inconsistent dataflow
+annotations or undischarged proof obligations can still be executed as
+long as the Ada compiler in question finds nothing objectionable.
+
+There is an important caveat, however, that must accompany the assertion that
+|SPARK| is, in the sense described above, a subset of Ada 2012. |SPARK|
+makes use of certain aspects, attributes, and pragmas that are not
+defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
+implementations to provide implementation-defined aspects, attributes,
+and pragmas. Whenever the |SPARK| manual defines an aspect (e.g.,
+``Contract_Cases``), an attribute (e.g., ``Update``), or a pragma (e.g., ``Loop_Variant``),
+this implies that a |SPARK| program which makes use of this
+construct can only be compiled and executed by an
+Ada implementation which supports this construct (in a way that is
+consistent with the definition given here in the |SPARK| reference manual).
+
+.. _reqts:
+
+Requirements Given in this Document
 -----------------------------------
 
 There are two main components to the detailed language definition given in the
-SPARK 2014 LRM (this document). The first
+|SPARK| LRM (this document). The first
 defines an extension to the Ada 2012 syntax to provide SPARK features such
 as dependency relations for subprograms. The second defines a subset of Ada
 2012 by excluding certain language
@@ -85,7 +231,7 @@ be such that they work correctly given the Ada subset with which we are working
 the stronger the restrictions on the Ada subset then the simpler will be the
 SPARK rules, and vice versa).
 
-However, there are also higher-level requirementsto be met by the SPARK 2014
+However, there are also higher-level requirementsto be met by the |SPARK|
 language that are invariant under the scope of the Ada subset being used and
 that are of necessity much simpler to understand than the language definition rules. Moreover, they provide
 a rationale for the language features and rules as provided in this document.
@@ -93,7 +239,7 @@ a rationale for the language features and rules as provided in this document.
 Hence, higher-level requirements are provided according to the following
 structure:
 
-#. Strategic requirements to be met by the SPARK 2014 language and its associated
+#. Strategic requirements to be met by the |SPARK| language and its associated
    toolset (given in this chapter).
 
 #. Requirements to provide particular language features.
@@ -144,6 +290,7 @@ Generic Requirements
 A number of requirements apply to multiple language features and they are given
 at the end of this chapter.
 
+.. _sprs:
 
 |SPARK| Strategic Requirements
 ------------------------------
@@ -203,12 +350,12 @@ Additional Requirements
 
 - The language design shall support the case for soundness of analysis.
   Language features that defy sound analysis will be eliminated or their
-  use constrained to meet this goal.
+  use constrained to meet this goal. See section :ref:`main_restricts` for further details.
 
 - The language shall offer an *unambiguous* semantics. In Ada terminology,
   this means that all erroneous and unspecified behavior shall
   be eliminated. [This means implementation-defined and partially-specified features will be outside of
-  SPARK 2014 by definition, though their use could be allowed and a warning generated for the user.
+  |SPARK| by definition, though their use could be allowed and a warning generated for the user.
   See section :ref:`in_out` for further details.]
 
 - |SPARK| shall provide counterparts of all language features and analysis
@@ -225,11 +372,44 @@ Additional Requirements
 
 - Support for specifying and verifying properties of secure systems shall be improved.
 
+.. _explain_sprs:
+
+Explaining the Strategic Requirements
+----------------------------------------
+
+The following sections provide expanded detail on the main strategic requirements.
+
+.. _main_restricts:
+
+Principal Language Restrictions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Action  LL-STT2: We need a term for the "SPARK-friendly" subset of features, which are not all in S14, but which allow for some amount of analysis.**
+
+To facilitate formal verification, |SPARK| enforces a number of global
+restrictions to Ada 2012. While these are covered in more detail
+in the remaining chapters of this document, the most notable restrictions are:
+
+- The use of access types and allocators is not permitted.
+
+- All expressions (including function calls) are free of side-effects.
+
+- Aliasing of names is not permitted.
+
+- The goto statement is not permitted.
+
+- The use of controlled types is not permitted.
+
+- Tasking is not currently permitted (it is intended that this will be included
+  in Release 2 of the tools).
+
+- Raising and handling of exceptions is not permitted.
+
 
 .. _test_and_proof:
 
 Combining Formal Verification and Testing
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Need to mention SPARK-friendly in here.**
 
@@ -280,10 +460,10 @@ additional testing of proof assumptions.
 
 .. _use_paradigms:
 
-Profiles and Analyses
----------------------
+Profiles
+~~~~~~~~
 
-**Action  LL-STT5:  A "profile" is defined already in the Ada RM, and it includes a set of restrictions, plus various policy specifications, and perhaps a
+**Action  LL-STT5:  A "profile" is defined already in the Ada 2012 RM, and it includes a set of restrictions, plus various policy specifications, and perhaps a
 few other things specifiable via pragmas.**
 
 **Action QO-CDR4: The use of profiles needs to be highlighted in the introduction.**
@@ -302,27 +482,11 @@ the needs of particular
 - Technical requirements - for example, systems requiring software that is
   compatible with a "zero footprint" run-time library.
 
-|SPARK| will be amenable to a range of formal analyses, including but not limited to:
-
-- Data-flow analysis.  **Add a definition of data-flow analysis.**
-
-- Information-flow analysis and program slicing. **Add a definition of information flow analysis.
-  Also say that flow analysis is used to cover the two taken together.**
-
-- Formal verification of robustness properties. In Ada terminology, this refers to
-  the proof that a predefined check will never fail at run time, and hence predefined
-  exceptions will never be raised.
-
-- Formal verification of functional properties, based on contracts expressed as
-  preconditions, postconditions, type invariants and so on.
-
-- Formal verification of non-functional properties, such as WCET and
-  worst-case memory usage analysis.
 
 .. _verific_modes:
 
 Constructive and Retrospective Verification Modes
--------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Action AN-JK4:   The generative contracts are mentioned very late in chapt. 6. It should
 be stated that every subprogram has an implicit global/flow contract. If
@@ -356,10 +520,11 @@ the retrospective to the constructive mode as a project matures.  The
 retrospective mode also allows for the verification of legacy code that was not
 originally designed with the |SPARK| contracts in mind.
 
+
 .. _in_out:
 
-In and Out of SPARK 2014
-------------------------
+In and Out of |SPARK|
+~~~~~~~~~~~~~~~~~~~~~
 
 **Note that our goal wrt this is just to make it more flexible (for example,
 in or out defined by use and not be definition.**
@@ -374,37 +539,14 @@ that it is executable?**
 
 **Need also to mention something about implementation-defined and partially-specified features and what could be done wrt those.**
 
-Principal Language Restrictions
--------------------------------
-
-**Action  LL-STT2: We need a term for the "SPARK-friendly" subset of features, which are not all in S14, but which allow for some amount of analysis.**
-
-To facilitate formal verification, |SPARK| enforces a number of global
-restrictions to Ada 2012. While these are covered in more detail
-in the remaining chapters of this document, the most notable restrictions are:
-
-- The use of access types and allocators is not permitted.
-
-- All expressions (including function calls) are free of side-effects.
-
-- Aliasing of names is not permitted.
-
-- The goto statement is not permitted.
-
-- The use of controlled types is not permitted.
-
-- Tasking is not currently permitted (it is intended that this will be included
-  in Release 2 of the tools).
-
-- Raising and handling of exceptions is not permitted.
-
-
 **See if my separate section should be combined with this one.**
 
 We describe a program unit or language feature as being "in |SPARK|"
 if it complies with the restrictions required to permit formal
 verification. **Action Stuart's comment on whether additional restrictions may
-be imposed on top of this (REQ-SM12).**  Conversely, a program unit language feature is "not in
+be imposed on top of this (REQ-SM12): I'm not sure what comes after the
+"if" is true - there is more than this to the rationale for what is in the subset.**
+Conversely, a program unit language feature is "not in
 |SPARK|" if it does not meet these requirements, and so is not
 amenable to formal verification. Within a single unit, features which
 are "in" and "not in" |SPARK| may be mixed at a fine level. For
@@ -429,120 +571,14 @@ example, the following combinations may be typical:
 Such patterns are intended to allow for mixed-language programming, and the development of programs
 that mix formal verification and more traditional testing.
 
-Static Checking
----------------
 
-**Action REQ-CC50: Need to add rationale for this section.**
+.. _generic_hlrs:
 
-**Action LL-STT4: "Flow analysis rules" vs. "Verification rules."  SB says everything follows from rule relating to run-time checks, but what about
-things in Ada which are *not* checked, such as use of uninitialized data, race conditions, various nasty erroneous conditions
-relating to renaming, etc.?  YM mentions the type invariants, but that seems just indicative of a set of things where the run-time
-checks are incomplete relative to what we want to do for proofs.**
+Generic Higher-Level Requirements
+---------------------------------
 
-
-The static checking needed to determine whether a |SPARK|
-program is suitable for execution is performed in three separate
-phases. Errors may be detected during any of these three steps.
-
-First, a compilation unit must be able to be compiled successfully. In addition
-to enforcing all of Ada's legality rules, |SPARK| imposes
-additional legality rules (e.g., no uses of the reserved word
-**access**). These additional restrictions are
-described in sections with the heading "Extended Legality Rules".
-A compilation unit might be fully in |SPARK|, partially in |SPARK|, or
-not in |SPARK|, as specified by the user, which sometimes determines
-whether the compiler accepts it or not (e.g., a unit fully in |SPARK|
-cannot use access types, while a unit partially in |SPARK| might).
-
-Next, flow analysis is performed. For example, checks are performed that
-the reads of and writes to global variables by a subprogram match the
-behavior specified for the subprogram. Rules which are enforced at this
-point are described in sections with the heading "Verification Rules"
-and a subheading of "Checked by Flow Analysis".
-
-.. note::
- (SB) this is silly - the heading should be "Flow Analysis Rules".
- The point is that there are no non-flow-analysis verification rules
- anymore. Everything else follows from the one rule that a run-time
- check induces a proof obligation. If we had ghost variables or
- prover-hints or something like that, then we might need
- "Verification Rules" sections. But we don't, so we don't.
-
-.. note::
- (YM) I mostly agree with Steve... except for the possible case of
- type invariants. I don't know what's the status of type invariants in Ada
- 2012, as there were some discussions not long ago that did not reach a
- final conclusion. The issue is whether type invariants are enforced at
- subprogram entry on IN parameters, or not. If it's not the case in Ada, we
- will still want to enforce this verification in SPARK, at least at the proof
- level. And, notewithstanding this issue, we will probably need to decide
- what to enforce for global variables read/written, and Ada RM does not say
- anything about this. Shouldn't this be under the "Proof Rules" or
- "Formal Verification Rules"?
-
-Finally, formal program verification is performed.
-
-Many Ada constructs have dynamic semantics which include a requirement
-that some error condition must (or, in the cases of some bounded errors,
-may) be checked, and some exception must (or, in the case of a bounded
-error, may) be raised, if the error is detected (see Ada RM 1.1.5(5-8)). For
-example, evaluating the name of an array component includes a check that
-each index value belongs to the corresponding index range of the array
-(see Ada RM 4.1.1(7)).
-
-For every such run-time check (including bounded errors) a corresponding
-obligation to prove that the error condition cannot be true is introduced.
-In particular, this rule applies to the run-time checks associated with any
-assertion (see Ada 2012 RM (11.4.2)); the one exception to this rule is pragma
-``Assume`` (see :ref:`pragma_assume`).
-
-In addition, the generation of proof obligations is unaffected by the
-suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
-assertions (e.g., via pragma ``Assertion_Policy``). In other words, suppressing
-or disabling a check does not prevent generation of its associated proof
-obligations.
-
-All such generated proof obligations must be discharged before the
-formal program verification phase may be considered to be complete.
-
-Every valid |SPARK| program is also a valid Ada 2012 program.
-The dynamic semantics of the two languages are defined to be identical,
-so that a valid |SPARK| program may be compiled and executed by means of
-an Ada compiler.
-
-Many invalid |SPARK| programs are also valid Ada 2012 programs.
-An incorrect |SPARK| program with, say, inconsistent dataflow
-annotations or undischarged proof obligations can still be executed as
-long as the Ada compiler in question finds nothing objectionable.
-
-There is an important caveat that must accompany the assertion that
-|SPARK| is, in the sense described above, a subset of Ada 2012. |SPARK|
-makes use of certain aspects, attributes, and pragmas that are not
-defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
-implementations to provide implementation-defined aspects, attributes,
-and pragmas. Whenever the |SPARK| manual defines an aspect (e.g.,
-``Contract_Cases``), an attribute (e.g., ``Update``), or a pragma (e.g., ``Loop_Variant``),
-this implies that a |SPARK| program which makes use of this
-construct can only be compiled and executed by an
-Ada implementation which supports this construct in a way that is
-consistent with the definition given here in the |SPARK| reference manual.
-The GNAT Pro Ada 2012 implementation is one such compiler.
-The dynamic semantics of any construct other than these implementation-defined
-attributes, aspects, and pragmas are defined to be as defined in the
-Ada 2012 reference manual.
-**Action REQ-NW76: So how do other compilers work? Ignore? Skip?.**
-
-.. note::
- (SB) Need wording here to deal with the case where, to avoid duplication,
- the attribute/aspect/pragma definition occurs only in the GNAT RM.
- We have this situation already with Valid_Scalars attribute and more
- is on the way.
-
-.. note::
- (SB) We could discuss other, more subtle cases in which SPARK
- is GNAT-dependent (e.g., intermediate overflow; elaboration order).
- That level of detail is probably inappropriate here.
-
+The following detail applies to multiple language features and
+hence are given in a single place to ease readability.
 
 Definition of Terms for Higher-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -571,15 +607,6 @@ same thing or we deliberately use a different term.
 #. Refinement constituent.
 
 #. Explain the *Abs* function introduced by state refinement.
-
-
-.. _generic_hlrs:
-
-Generic Higher-Level requirements
----------------------------------
-
-The following requirements apply to multiple language features and
-hence are given in a single place to ease readability.
 
 Abstract State, Hidden State and Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -660,6 +687,17 @@ To be allocated
    Global within that package Body. Where does that rule go and where is it in the
    2005 LRM?
 
+
+.. _notes:
+
+Notes on the Current Draft
+--------------------------
+
+This is an interim draft that covers all high-level requirements, provides
+syntax where possible and otherwise provides the detailed rules necessary to
+support implementation of basic flow analysis. Where detail is not relevant to
+meeting these needs then it has typically been removed.
+
 Actions to complete prior to release
 ------------------------------------
 
@@ -735,13 +773,13 @@ Tasking bullet. Move comments/ToDos about rel2+ version of language to an append
 
 #. Remember to get stuff from the SPARK book as well.
 
-#. Note that the Ada RM only applies to compilation, while ours applies to both
-   analysis and compilation, but is meant to be built on top of the Ada RM.
+#. Note that the Ada 2012 RM only applies to compilation, while ours applies to both
+   analysis and compilation, but is meant to be built on top of the Ada 2012 RM.
    Do we need to make this clear and does this cause any problems? For example,
-   rules in the Ada RM requiring bodies? Or does this just mean that our
+   rules in the Ada 2012 RM requiring bodies? Or does this just mean that our
    analysis mode has to be that we aren't compiling? Need to be clear on
    what is required for our analysis mode, and how that relates to what is
-   levied in the RM (as we will certainly need some of what is in the Ada RM).
+   levied in the RM (as we will certainly need some of what is in the Ada 2012 RM).
 
 #. Need to distinguish language goals from project goals.
 
@@ -779,15 +817,9 @@ Tasking bullet. Move comments/ToDos about rel2+ version of language to an append
 
 #. Describe the generative mode, rather than just retrospective.
 
+#. Check through the derived SPRs to see if anything needs to be added from there.
 
 
 
-Notes on the Current Draft
---------------------------
-
-This is an interim draft that covers all high-level requirements, provides
-syntax where possible and otherwise provides the detailed rules necessary to
-support implementation of basic flow analysis. Where detail is not relevant to
-meeting these needs then it has typically been removed.
 
 
