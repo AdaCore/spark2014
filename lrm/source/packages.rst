@@ -172,7 +172,7 @@ where the ``aspect_mark`` is Abstract_State and the
       :Trace Unit: 7.1.2 LR If property_list has Integrity it must be the final property in the list
 
 #. A package_declaration or generic_package_declaration requires a completion
-   [(a body)] if it contains an Abstract State aspect specification.
+   [(a body)] if it contains a non-null Abstract State aspect specification.
 
 .. centered:: **Static Semantics**
 
@@ -193,11 +193,21 @@ where the ``aspect_mark`` is Abstract_State and the
      immediately within the private part or body of P, and of any
      private child units of P or of their public descendants.
 
+.. note::
+ (SB) These definitions may eventually be expanded to include non-static
+ constants, not just variables.
+
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
    declaration of a *state abstraction* entity. This implicit
    declaration occurs at the beginning of the visible part of P. This
-   implicit declaration requires completion.
+   implicit declaration requires completion and is overloadable.
+
+.. note::
+ (SB) Making these implicit declarations overloadable allows declaring
+ a subprogram with the same fully qualified name as a state abstraction;
+ to make this scenario work, rules of the form "... shall denote a state
+ abstraction" need to be name resolution rules, not just legality rules.
 
 #. [A state abstraction shall only be named in contexts where this is
    explicitly permitted (e.g., as part of a Globals aspect
@@ -318,6 +328,27 @@ contains some form of state has a Global and a Dependency aspect representing
 the composite view of the nested subprogram calls at the level of abstraction 
 presented by the package specification.  
 
+.. note::
+ (SB) In the case of whole-program analysis which includes analysis of the
+ elaboration code for a partition (loosely speaking, for a main program).
+ we want to treat a (binder-generated, at least in the GNAT implementation)
+ call to an elaboration subprogram just like any other subprogram call. This
+ means that the elaboration routine for, for example, a library unit package
+ spec or body must have the same aspects defined as any other procedure:
+ Global, Depends, Pre and Post (although giving these aspects different
+ names in the case of elaboration routines would be acceptable). [The
+ no-longer-defined Initial_Condition aspect of a package
+ roughly corresponded to the postcondition of package body's elaboration,
+ although it was confusingly conflated with private descendant units.] For
+ purposes of precisely analyzing elaboration code, we do not
+ want to lump together spec elaboration, body elaboration, and the spec
+ and body elaboration of private descendants. It is possible that we
+ might want to do something less precise (along the lines of the
+ "notionally calls" idea mentioned above) only in the "modular" (as opposed to
+ "whole program") case where the program's elaboration order is only
+ partially known. It is not clear yet whether this "notionally calls"
+ approach is a useful idea; TBD.
+
 .. centered:: **Legality Rules**
 
 #. The package Global and Depends aspects may only appear in the 
@@ -340,7 +371,7 @@ Very often a package will have no dependencies but only initialize its own
 state, that is variables declared in the package or in its private descendents.
 In such cases an Initializes aspect may be used rather than a Global aspect.
 
-The Iniyializes aspect is introduced by an ``aspect_specification`` where the 
+The Initializes aspect is introduced by an ``aspect_specification`` where the 
 ``aspect_mark`` is Initializes and the ``aspect_definition`` must follow the 
 grammar of ``initialization_list`` given below.
 

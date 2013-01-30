@@ -322,8 +322,8 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` of a subprogram shall denote an entire variable 
-   or a state abstraction.
+#. A ``global_item`` shall denote an entire variable 
+   or a state abstraction; this rule is a name resolution rule.
 
 .. note::
  (SB) This rule may eventually be relaxed to allow references to non-static
@@ -347,7 +347,8 @@ follow the grammar of ``global_specification``
    
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
-#. ``global_items`` in the same Global aspect shall denote distinct objects.
+#. ``global_items`` in the same Global aspect specification shall denote
+   distinct objects.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -522,8 +523,8 @@ where
 .. centered:: **Legality Rules**
 
 #. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect of a subprogram shall denote a state abstraction or
-   an entire variable.
+   aspect shall denote an entire variable or a state abtraction; this rule
+   is a name resolution rule.
 
 .. note::
  (SB) This rule may eventually be relaxed to allow references to non-static
@@ -627,6 +628,15 @@ where
    that its result is dependent on all of its inputs.  
    [Generally a Depends aspect is not required for functions.]
    
+#. For purposes of flow analysis, a read of a volatile object is
+   always considered to include a self-dependent update
+   of the object. [This implies that a ``global_item`` with ``mode_selector``
+   Input must not denote a volatile object (this rule is enforced during
+   flow analysis). This in turn implies that a function cannot read a
+   volatile object declared global to the function. All of this is consistent
+   with Ada's rule that a read of a volatile object is an external effect
+   (see Ada LRM C.6(20)).]
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Depends aspect
