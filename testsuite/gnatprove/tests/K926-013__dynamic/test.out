@@ -4,14 +4,14 @@ dynamic.adb:12:15: info: range check proved
 dynamic.adb:12:46: info: overflow check proved
 dynamic.adb:14:12: info: range check proved
 dynamic.adb:16:17: info: range check proved
-dynamic.adb:17:17: info: range check proved
+dynamic.adb:17:17: range check not proved
 dynamic.adb:18:17: range check not proved
 dynamic.adb:19:17: info: range check proved
 dynamic.adb:20:19: range check not proved
 dynamic.adb:21:17: range check not proved
 dynamic.adb:22:19: overflow check not proved
 dynamic.adb:22:19: range check not proved
-dynamic.adb:24:14: info: overflow check proved
+dynamic.adb:24:14: overflow check not proved
 dynamic.adb:4:33: info: overflow check proved
 dynamic.adb:5:24: info: overflow check proved
 dynamic.adb:6:15: info: range check proved
