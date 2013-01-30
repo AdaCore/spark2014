@@ -778,6 +778,24 @@ package body Why.Gen.Names is
          Ada_Node => Ada_Node);
    end Prefix;
 
+   ---------------------
+   -- Range_Pred_Name --
+   ---------------------
+
+   function Range_Pred_Name (Ty : Entity_Id) return W_Identifier_Id
+   is
+   begin
+      if Ty = Standard_Boolean then
+         return Prefix (Ada_Node => Standard_Boolean,
+                        S        => "Boolean",
+                        W        => WNE_Range_Pred);
+      else
+         return Prefix (Ada_Node => Ty,
+                        S        => Full_Name (Ty),
+                        W        => WNE_Range_Pred);
+      end if;
+   end Range_Pred_Name;
+
    ----------------------
    -- To_Program_Space --
    ----------------------

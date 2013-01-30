@@ -3139,6 +3139,9 @@ package body Gnat2Why.Expr is
             Current_Type := EW_Int_Type;
 
          when Attribute_Image =>
+
+            --  We generate the expression String.to_string (image_func (expr))
+
             T := New_Call (Ada_Node => Expr,
                            Domain   => Domain,
                            Name     => +New_Attribute_Expr
@@ -3147,7 +3150,16 @@ package body Gnat2Why.Expr is
                              (1 => Transform_Expr (First (Expressions (Expr)),
                                                    Base_Why_Type (Var),
                                                    Domain,
-                                                   Params)));
+                              Params)));
+            T := New_Call (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Name     =>
+                           New_Identifier
+                             (Ada_Node => Standard_String,
+                              Context  => Full_Name (Standard_String),
+                              Name     => "to_string"),
+                           Args     => (1 => T));
+
             Current_Type := +Why_Logic_Type_Of_Ada_Type (Standard_String);
 
          when Attribute_Value =>
@@ -3162,19 +3174,29 @@ package body Gnat2Why.Expr is
                Func    : constant W_Identifier_Id :=
                            +New_Attribute_Expr (Etype (Var), Attr_Id);
             begin
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     =>
+                      New_Identifier
+                        (Ada_Node => Standard_String,
+                         Context  => Full_Name (Standard_String),
+                         Name     => "from_string"),
+                    Args     => (1 => Arg));
                if Domain = EW_Prog then
                   T := New_VC_Call
                     (Ada_Node => Expr,
                      Domain   => Domain,
                      Name     => To_Program_Space (Func),
-                     Progs    => (1 => Arg),
+                     Progs    => (1 => T),
                      Reason   => VC_Precondition);
                else
                   T := New_Call
                     (Ada_Node => Expr,
                      Domain   => Domain,
                      Name     => Func,
-                     Args     => (1 => Arg));
+                     Args     => (1 => T));
                end if;
                Current_Type := Base_Why_Type (Var);
             end;

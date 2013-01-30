@@ -280,6 +280,7 @@ package Why.Sinfo is
    type EW_Subst_Type is
       (EW_Type_Subst,
        EW_Function,
+       EW_Predicate,
        EW_Namepace,
        EW_Lemma,
        EW_Goal);

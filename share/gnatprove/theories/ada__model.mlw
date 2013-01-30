@@ -13,13 +13,13 @@ module Discrete_Base
 
    function attr__ATTRIBUTE_LAST : int
 
-   function attr__ATTRIBUTE_IMAGE int : __string
+   function attr__ATTRIBUTE_IMAGE int : __image
 
-   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __string)
+   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-   function attr__ATTRIBUTE_VALUE __string : int
+   function attr__ATTRIBUTE_VALUE __image : int
 
-   val attr__ATTRIBUTE_VALUE_ (x : __string)  :int
+   val attr__ATTRIBUTE_VALUE_ (x : __image)  :int
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
@@ -72,44 +72,336 @@ module Modular
 end
 
 module Floating_Point
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Floating
- use import "real".RealInfix
+  use import "_gnatprove_standard".Main
+  use        "_gnatprove_standard".Floating
+  use import "real".RealInfix
 
- type t
+  type t
 
- function attr__ATTRIBUTE_FIRST  : real
+  function attr__ATTRIBUTE_FIRST  : real
 
- function attr__ATTRIBUTE_LAST  : real
+  function attr__ATTRIBUTE_LAST  : real
 
- predicate in_range  (x : real) =
-  ( attr__ATTRIBUTE_FIRST <=. x <=. attr__ATTRIBUTE_LAST )
+  predicate in_range  (x : real) =
+   ( attr__ATTRIBUTE_FIRST <=. x <=. attr__ATTRIBUTE_LAST )
 
- function to_real t : real
+  function to_real t : real
 
- function of_real real : t
+  function of_real real : t
 
- val range_check_ (n : real)  :real
-  requires { in_range n }
-  ensures { result = n }
+  val range_check_ (n : real)  :real
+   requires { in_range n }
+   ensures { result = n }
 
- predicate eq  (x : t) (y : t) = (to_real x = to_real y)
+  predicate eq  (x : t) (y : t) = (to_real x = to_real y)
 
- axiom range_axiom :
-  forall x  : t.  in_range (to_real x)
+  axiom range_axiom :
+   forall x  : t.  in_range (to_real x)
 
- axiom coerce_axiom :
-  forall x  : real [to_real (of_real x) | in_range x, of_real x].
-   in_range x -> to_real (of_real x) = x
+  axiom coerce_axiom :
+   forall x  : real [to_real (of_real x) | in_range x, of_real x].
+    in_range x -> to_real (of_real x) = x
 
- axiom unicity_axiom :
-  forall x y  : t [to_real x, to_real y].
-   to_real x = to_real y -> x = y
+  axiom unicity_axiom :
+   forall x y  : t [to_real x, to_real y].
+    to_real x = to_real y -> x = y
 
- val bool_eq_ (n : t) (m : t)  :bool
-  requires { true }
-  ensures { if result = True then n = m else n <> m }
+  val bool_eq_ (n : t) (m : t)  :bool
+   requires { true }
+   ensures { if result = True then n = m else n <> m }
+
+   function attr__ATTRIBUTE_IMAGE real : __image
+
+   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+   function attr__ATTRIBUTE_VALUE __image : real
+
+   val attr__ATTRIBUTE_VALUE_ (x : __image) : real
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
 
  function dummy :t
 end
 
+module Index_Type
+  (* This is the module for an index type of an unconstrained array. first
+  and last are always in the base type, but when first <= last, then they are
+  actually in the index subtype. *)
+
+  use import int.Int
+
+  type base
+
+  function to_int base : int
+  predicate in_range int
+
+  type t
+
+  function first t : base
+
+  function last t : base
+
+  function mk int int : t
+
+  axiom range_axiom_first :
+   forall a : t [first a].
+    to_int (first a) <= to_int (last a) ->
+      in_range (to_int (first a))
+
+  axiom range_axiom_last :
+   forall a : t [last a].
+    to_int (first a) <= to_int (last a) ->
+      in_range (to_int (last a))
+end
+
+module Unconstr_Array
+  (* The module to be cloned for an unconstrained array of dimension 1 *)
+
+  use "_gnatprove_standard".Array__1
+
+  type component_type
+  type range_type
+  type base_type
+  function to_int base_type : int
+  predicate in_range int
+
+  clone export Index_Type with
+    type      base     = base_type,
+    function  to_int   = to_int,
+    predicate in_range = in_range,
+    type      t        = range_type
+
+
+
+  type __t =
+    { elts : (Array__1.map component_type); offset : int; rt : range_type }
+
+ function to_array (a : __t) : (Array__1.t component_type) =
+  { Array__1.elts   = a.elts;
+    Array__1.first  = to_int (first a.rt);
+    Array__1.last   = to_int (last a.rt);
+    Array__1.offset = a.offset;
+  }
+
+ function of_array (a : Array__1.t component_type) : __t =
+  { elts   = a.Array__1.elts;
+    offset = a.Array__1.offset;
+    rt     = mk a.Array__1.first a.Array__1.last
+  }
+
+ function dummy : __t
+end
+
+
+module Unconstr_Array_2
+  (* The module to be cloned for an unconstrained array of dimension 1 *)
+
+  use "_gnatprove_standard".Array__2
+
+  type component_type
+
+  type base_type
+  function to_int base_type : int
+  predicate in_range int
+
+  type base_type_2
+  function to_int_2 base_type_2 : int
+  predicate in_range_2 int
+
+  clone Index_Type as I1 with
+    type      base     = base_type,
+    function  to_int   = to_int,
+    predicate in_range = in_range
+
+
+  clone Index_Type as I2 with
+    type      base     = base_type_2,
+    function  to_int   = to_int_2,
+    predicate in_range = in_range_2
+
+  type __t =
+    { elts     : Array__2.map component_type;
+      offset   : int;
+      rt       : I1.t;
+      offset_2 : int;
+      rt_2     : I2.t
+    }
+
+ function to_array (a : __t) : (Array__2.t component_type) =
+  { Array__2.elts     = a.elts;
+    Array__2.first    = to_int (I1.first a.rt);
+    Array__2.last     = to_int (I1.last a.rt);
+    Array__2.offset   = a.offset;
+    Array__2.first_2  = to_int_2 (I2.first a.rt_2);
+    Array__2.last_2   = to_int_2 (I2.last a.rt_2);
+    Array__2.offset_2 = a.offset_2;
+  }
+
+ function of_array (a : Array__2.t component_type) : __t =
+  { elts     = a.Array__2.elts;
+    offset   = a.Array__2.offset;
+    rt       = I1.mk a.Array__2.first a.Array__2.last;
+    offset_2 = a.Array__2.offset_2;
+    rt_2     = I2.mk a.Array__2.first_2 a.Array__2.last_2
+  }
+
+ function dummy : __t
+end
+
+module Unconstr_Array_3
+  (* The module to be cloned for an unconstrained array of dimension 1 *)
+
+  use "_gnatprove_standard".Array__3
+
+  type component_type
+
+  type base_type
+  function to_int base_type : int
+  predicate in_range int
+
+  type base_type_2
+  function to_int_2 base_type_2 : int
+  predicate in_range_2 int
+
+  type base_type_3
+  function to_int_3 base_type_3 : int
+  predicate in_range_3 int
+
+
+  clone Index_Type as I1 with
+    type      base     = base_type,
+    function  to_int   = to_int,
+    predicate in_range = in_range
+
+  clone Index_Type as I2 with
+    type      base     = base_type_2,
+    function  to_int   = to_int_2,
+    predicate in_range = in_range_2
+
+  clone Index_Type as I3 with
+    type      base     = base_type_3,
+    function  to_int   = to_int_3,
+    predicate in_range = in_range_3
+
+  type __t =
+    { elts     : Array__3.map component_type;
+      offset   : int;
+      rt       : I1.t;
+      offset_2 : int;
+      rt_2     : I2.t;
+      offset_3 : int;
+      rt_3     : I3.t
+    }
+
+ function to_array (a : __t) : (Array__3.t component_type) =
+  { Array__3.elts     = a.elts;
+    Array__3.first    = to_int (I1.first a.rt);
+    Array__3.last     = to_int (I1.last a.rt);
+    Array__3.offset   = a.offset;
+    Array__3.first_2  = to_int_2 (I2.first a.rt_2);
+    Array__3.last_2   = to_int_2 (I2.last a.rt_2);
+    Array__3.offset_2 = a.offset_2;
+    Array__3.first_3  = to_int_3 (I3.first a.rt_3);
+    Array__3.last_3   = to_int_3 (I3.last a.rt_3);
+    Array__3.offset_3 = a.offset_3;
+  }
+
+ function of_array (a : Array__3.t component_type) : __t =
+  { elts     = a.Array__3.elts;
+    offset   = a.Array__3.offset;
+    rt       = I1.mk a.Array__3.first a.Array__3.last;
+    offset_2 = a.Array__3.offset_2;
+    rt_2     = I2.mk a.Array__3.first_2 a.Array__3.last_2;
+    offset_3 = a.Array__3.offset_3;
+    rt_3     = I3.mk a.Array__3.first_3 a.Array__3.last_3
+  }
+
+ function dummy : __t
+end
+
+module Unconstr_Array_4
+  (* The module to be cloned for an unconstrained array of dimension 1 *)
+
+  use "_gnatprove_standard".Array__4
+
+  type component_type
+
+  type base_type
+  function to_int base_type : int
+  predicate in_range int
+
+  type base_type_2
+  function to_int_2 base_type_2 : int
+  predicate in_range_2 int
+
+  type base_type_3
+  function to_int_3 base_type_3 : int
+  predicate in_range_3 int
+
+  type base_type_4
+  function to_int_4 base_type_4 : int
+  predicate in_range_4 int
+
+
+  clone Index_Type as I1 with
+    type      base     = base_type,
+    function  to_int   = to_int,
+    predicate in_range = in_range
+
+  clone Index_Type as I2 with
+    type      base     = base_type_2,
+    function  to_int   = to_int_2,
+    predicate in_range = in_range_2
+
+  clone Index_Type as I3 with
+    type      base     = base_type_3,
+    function  to_int   = to_int_3,
+    predicate in_range = in_range_3
+
+  clone Index_Type as I4 with
+    type      base     = base_type_4,
+    function  to_int   = to_int_4,
+    predicate in_range = in_range_4
+
+  type __t =
+    { elts     : Array__4.map component_type;
+      offset   : int;
+      rt       : I1.t;
+      offset_2 : int;
+      rt_2     : I2.t;
+      offset_3 : int;
+      rt_3     : I3.t;
+      offset_4 : int;
+      rt_4     : I4.t
+    }
+
+ function to_array (a : __t) : (Array__4.t component_type) =
+  { Array__4.elts     = a.elts;
+    Array__4.first    = to_int (I1.first a.rt);
+    Array__4.last     = to_int (I1.last a.rt);
+    Array__4.offset   = a.offset;
+    Array__4.first_2  = to_int_2 (I2.first a.rt_2);
+    Array__4.last_2   = to_int_2 (I2.last a.rt_2);
+    Array__4.offset_2 = a.offset_2;
+    Array__4.first_3  = to_int_3 (I3.first a.rt_3);
+    Array__4.last_3   = to_int_3 (I3.last a.rt_3);
+    Array__4.offset_3 = a.offset_3;
+    Array__4.first_4  = to_int_4 (I4.first a.rt_4);
+    Array__4.last_4   = to_int_4 (I4.last a.rt_4);
+    Array__4.offset_4 = a.offset_4;
+  }
+
+ function of_array (a : Array__4.t component_type) : __t =
+  { elts     = a.Array__4.elts;
+    offset   = a.Array__4.offset;
+    rt       = I1.mk a.Array__4.first a.Array__4.last;
+    offset_2 = a.Array__4.offset_2;
+    rt_2     = I2.mk a.Array__4.first_2 a.Array__4.last_2;
+    offset_3 = a.Array__4.offset_3;
+    rt_3     = I3.mk a.Array__4.first_3 a.Array__4.last_3;
+    offset_4 = a.Array__4.offset_4;
+    rt_4     = I4.mk a.Array__4.first_4 a.Array__4.last_4;
+  }
+
+ function dummy : __t
+end

@@ -3,9 +3,6 @@ theory Main
   (* ignore blocks of code *)
   function ___ignore 'a : ()
 
-  (* type of standard characters *)
-  type __character
-
   (* special private type *)
   type __private
 

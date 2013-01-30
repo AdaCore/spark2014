@@ -106,4 +106,8 @@ package Gnat2Why.Types is
    --  is expected to be a Defining_Identifier for a type. The Boolean
    --  argument decides if a "ref" constructor is built on top.
 
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id;
+   --  Transform the type entity in argument to an identifier. This function
+   --  works with Boolean, but not with things like Universal_Integer.
+
 end Gnat2Why.Types;

@@ -551,6 +551,8 @@ package body Why.Images is
             P (O, "type");
          when EW_Function   =>
             P (O, "function");
+         when EW_Predicate  =>
+            P (O, "predicate");
          when EW_Namepace   =>
             P (O, "namespace");
          when EW_Lemma      =>

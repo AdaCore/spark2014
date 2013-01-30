@@ -1,19 +1,3 @@
-theory Array__1__Type
-
-  (* We need to define these types in a special theory, so that the string
-  type can be defined as early as possible. We only define the type here,
-  axioms and functions on that type are defined elsewhere. *)
-
-  type map 'a
-
-  type t 'a =
-   { elts   : map 'a;
-     offset : int;
-     first  : int;
-     last   : int }
-
-end
-
 module Main
   (* the module of references is needed in all modules *)
   use export ref.Ref
@@ -31,13 +15,8 @@ module Main
   type __type_of_heap
   val __HEAP : ref __type_of_heap
 
-  use Array__1__Type
-
-  type range_type
-
-  (* Here we define the string type *)
-  type __string =
-  { elts : (Array__1__Type.map __character); offset : int; rt : range_type }
+  (* the return type for the functions that correspond to 'Image *)
+  type __image
 
 end
 
@@ -161,6 +140,7 @@ module Boolean
   use import bool.Bool
   use export bool.Ite
   use import int.Int
+  use import Main
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
 
@@ -173,12 +153,31 @@ module Boolean
   function attr__ATTRIBUTE_LAST : int = 1
   function attr__ATTRIBUTE_FIRST : int = 0
 
+  predicate in_range (x : int) = x = 0 \/ x = 1
+
+   function attr__ATTRIBUTE_IMAGE bool : __image
+
+   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+   function attr__ATTRIBUTE_VALUE __image : bool
+
+   val attr__ATTRIBUTE_VALUE_ (x : __image)  : bool
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
 end
 
 theory Array__1
   use import int.Int
   use import bool.Bool
-  use export Array__1__Type
+
+  type map 'a
+
+  type t 'a =
+   { elts   : map 'a;
+     offset : int;
+     first  : int;
+     last   : int }
 
   function get (map 'a) int : 'a
   function set (map 'a) int 'a : map 'a

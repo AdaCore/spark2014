@@ -266,336 +266,100 @@ package body Why.Gen.Arrays is
                                     Und_Ent        : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Array_Base  : constant Why_Name_Enum := Ada_Array_Name (Dimension);
-      BT_Id       : constant W_Identifier_Id :=
-        Prefix (Array_Base, WNE_Type);
-      Comp_Type   : constant W_Primitive_Type_Id :=
-        Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
-      Name_Type   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Why3_Type_Name);
-      Ar_Type     : constant W_Primitive_Type_Id :=
-        New_Generic_Actual_Type_Chain
-          (Type_Chain => (1 => Comp_Type),
-           Name       => BT_Id);
-      Conv_From   : constant W_Identifier_Id := To_Ident (WNE_Of_Array);
-      Conv_To     : constant W_Identifier_Id := To_Ident (WNE_To_Array);
-      A_Ident     : constant W_Identifier_Id := New_Identifier (Name => "a");
       Int_Type    : constant W_Primitive_Type_Id :=
         New_Base_Type (Base_Type => EW_Int);
-      Ar_Binder   : constant Binder_Type :=
-        (B_Name => New_Identifier (Name => "a"),
-         B_Type => Ar_Type,
-         others => <>);
-
-      procedure Declare_Range_Type (Def : Node_Id;
-                                    Count : Positive);
-
-      procedure Declare_Range_Type (Def : Node_Id;
-                                    Count : Positive) is
-         Rng : constant Node_Id := Get_Range (Def);
-         Rng_Type_Id : constant W_Identifier_Id :=
-           Append_Num ("range_type", Count);
-         Rng_Type : constant W_Primitive_Type_Id :=
-           New_Abstract_Type (Name => Rng_Type_Id);
-         B_Node : constant Node_Id := Base_Type (Etype (Def));
-         B_Type : constant W_Primitive_Type_Id := +Type_Of_Node (B_Node);
-         To_Int : constant W_Identifier_Id :=
-           +Conversion_Name (+B_Type, +Int_Type);
-         First_Term_I : constant W_Term_Id :=
-           New_Call
-             (Name => Append_Num (WNE_Array_First_Field, Count),
-              Args => (1 => +A_Ident));
-         First_Term : constant W_Term_Id :=
-           New_Call
-             (Name => To_Int,
-              Args => (1 => +First_Term_I));
-         Last_Term_I : constant W_Term_Id :=
-           New_Call
-             (Name => Append_Num (WNE_Array_Last_Field, Count),
-              Args => (1 => +A_Ident));
-         Last_Term : constant W_Term_Id :=
-           New_Call
-             (Name => To_Int,
-              Args => (1 => +Last_Term_I));
-      begin
-         if Und_Ent /= Standard_String then
-            Emit (Theory, New_Type (Name => Rng_Type_Id));
-         end if;
-         Emit (Theory,
-           New_Function_Decl
-             (Domain      => EW_Term,
-              Name        => Append_Num (WNE_Array_First_Field, Count),
-              Binders     =>
-                (1 => (B_Name => A_Ident,
-                       B_Type => Rng_Type,
-                       others => <>)),
-              Return_Type => B_Type));
-         Emit (Theory,
-           New_Function_Decl
-             (Domain      => EW_Term,
-              Name        => Append_Num (WNE_Array_Last_Field, Count),
-              Binders     =>
-                (1 => (B_Name => A_Ident,
-                       B_Type => Rng_Type,
-                       others => <>)),
-              Return_Type => B_Type));
-         Emit (Theory,
-           New_Function_Decl
-             (Domain => EW_Term,
-              Name   => Append_Num ("mk", Count),
-              Binders =>
-                (1 => (B_Name => To_Ident (WNE_Array_First_Field),
-                       B_Type => Int_Type,
-                       others => <>),
-                 2 => (B_Name => To_Ident (WNE_Array_Last_Field),
-                       B_Type => Int_Type,
-                       others => <>)),
-              Return_Type => Rng_Type));
-         if Is_Static_Range (Rng) then
-            declare
-               Low_Expr : constant W_Term_Id :=
-                 New_Integer_Constant
-                   (Value => Expr_Value (Low_Bound (Rng)));
-               High_Expr : constant W_Term_Id :=
-                 New_Integer_Constant
-                   (Value => Expr_Value (High_Bound (Rng)));
-            begin
-               Emit
-                 (Theory,
-                  New_Axiom
-                    (Name => Append_Num (WNE_Range_Axiom, Count),
-                     Def  =>
-                       New_Universal_Quantif
-                         (Var_Type  => Rng_Type,
-                          Variables => (1 => A_Ident),
-                          Pred      =>
-                            New_Connection
-                              (Op   => EW_Imply,
-                               Left =>
-                                 New_Relation
-                                   (Domain  => EW_Pred,
-                                    Op_Type => EW_Int,
-                                    Op      => EW_Le,
-                                    Left    => +First_Term,
-                                    Right   => +Last_Term),
-                               Right =>
-                                 New_And_Expr
-                                   (Domain => EW_Pred,
-                                    Left   => New_Range_Expr
-                                      (Domain    => EW_Pred,
-                                       Base_Type => EW_Int_Type,
-                                       Low       => +Low_Expr,
-                                       High      => +High_Expr,
-                                       Expr      => +First_Term),
-                                    Right  => New_Range_Expr
-                                      (Domain    => EW_Pred,
-                                       Base_Type => EW_Int_Type,
-                                       Low       => +Low_Expr,
-                                       High      => +High_Expr,
-                                       Expr      => +Last_Term))))));
-            end;
-         end if;
-      end Declare_Range_Type;
+      Subst     : W_Clone_Substitution_Array
+        (1 .. Integer (Dimension * 3) + 1);
+      Cursor    : Integer := 1;
+      Index     : Node_Id := First_Index (Und_Ent);
+      Dim_Count : Integer := 1;
+      Clone_Id  : constant W_Identifier_Id :=
+        Append_Num ("""ada__model"".Unconstr_Array", Positive (Dimension));
    begin
-      declare
-         --  in the "to" conversion, we need a field for "elts", and for
-         --  each dimension, fields for first, last, offset
-         To_Aggr : W_Field_Association_Array
-           (1 .. Integer (Dimension) * 3 + 1);
-         --  in the "from" conversion, we need a field for "elts", and for
-         --  each dimension, a field for "offset"
-         From_Aggr : W_Field_Association_Array
-           (1 .. 2 * Integer (Dimension) + 1);
-      begin
-         To_Aggr (1) :=
-           New_Field_Association
-             (Field => Prefix (Array_Base, WNE_Array_Elts),
-              Domain => EW_Term,
-              Value =>
-                New_Record_Access
-                  (Name  => +A_Ident,
-                   Field => To_Ident (WNE_Array_Elts)));
-         From_Aggr (1) :=
-           New_Field_Association
-             (Field => To_Ident (WNE_Array_Elts),
-              Domain => EW_Term,
-              Value =>
-                New_Record_Access
-                  (Name => +A_Ident,
-                   Field => Prefix (Array_Base, WNE_Array_Elts)));
-
+      Subst (Cursor) :=
+        New_Clone_Substitution
+          (Kind      => EW_Type_Subst,
+           Orig_Name => New_Identifier (Name => "component_type"),
+           Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
+      Cursor := Cursor + 1;
+      while Present (Index) loop
          declare
-            Index : Node_Id := First_Index (Und_Ent);
-            Count : Positive := 1;
+            Ind_Ty : constant Entity_Id := Etype (Index);
+            B_Ty   : constant Entity_Id := Base_Type (Ind_Ty);
+            B_Type : constant W_Primitive_Type_Id :=
+              +Type_Of_Node (B_Ty);
          begin
-            while Present (Index) loop
-               declare
-                  B_Node : constant Node_Id := Base_Type (Etype (Index));
-                  B_Type : constant W_Primitive_Type_Id :=
-                    +Type_Of_Node (B_Node);
-                  To_Int : constant W_Identifier_Id :=
-                    +Conversion_Name (+B_Type, +Int_Type);
-                  First_Term_I : constant W_Expr_Id :=
-                    New_Call (Domain => EW_Term,
-                              Name   =>
-                                Append_Num (WNE_Array_First_Field, Count),
-                              Args   =>
-                                (1 =>
-                                   New_Record_Access
-                                     (Name  => +A_Ident,
-                                      Field =>
-                                        Append_Num
-                                          (WNE_Range_Field, Count))));
-                  First_Term : constant W_Expr_Id :=
-                    New_Call
-                      (Domain => EW_Term,
-                       Name => To_Int,
-                       Args => (1 => +First_Term_I));
-                  Last_Term_I : constant W_Expr_Id :=
-                    New_Call (Domain => EW_Term,
-                              Name   =>
-                                Append_Num (WNE_Array_Last_Field, Count),
-                              Args   =>
-                                (1 =>
-                                   New_Record_Access
-                                     (Name  => +A_Ident,
-                                      Field =>
-                                        Append_Num
-                                          (WNE_Range_Field, Count))));
-                  Last_Term : constant W_Expr_Id :=
-                    New_Call
-                      (Domain => EW_Term,
-                       Name => To_Int,
-                       Args => (1 => +Last_Term_I));
-               begin
-                  Declare_Range_Type (Index, Count);
-                  To_Aggr (3 * Count - 1) :=
-                    New_Field_Association
-                      (Field =>
-                           Append_Num (Array_Base,
-                         WNE_Array_First_Field, Count),
-                       Domain => EW_Term,
-                       Value => First_Term);
-                  To_Aggr (3 * Count) :=
-                    New_Field_Association
-                      (Field =>
-                           Append_Num (Array_Base,
-                         WNE_Array_Last_Field, Count),
-                       Domain => EW_Term,
-                       Value => Last_Term);
-                  To_Aggr (3 * Count + 1) :=
-                    New_Field_Association
-                      (Field => Append_Num (Array_Base,
-                       WNE_Array_Offset, Count),
-                       Domain => EW_Term,
-                       Value =>
-                         New_Record_Access
-                           (Name  => +A_Ident,
-                            Field => Append_Num (WNE_Array_Offset, Count)));
-                  From_Aggr (2 * Count) :=
-                    New_Field_Association
-                      (Field => Append_Num (WNE_Array_Offset, Count),
-                       Domain => EW_Term,
-                       Value =>
-                         New_Record_Access
-                           (Name => +A_Ident,
-                            Field =>
-                              Append_Num (Array_Base,
-                                WNE_Array_Offset, Count)));
-                  From_Aggr (2 * Count + 1) :=
-                    New_Field_Association
-                      (Field => Append_Num (WNE_Range_Field, Count),
-                       Domain => EW_Term,
-                       Value =>
-                         New_Call
-                           (Domain => EW_Term,
-                            Name   => Append_Num ("mk", Count),
-                            Args   =>
-                              (1 =>
-                                 New_Record_Access
-                                   (Name  => +A_Ident,
-                                    Field =>
-                                      Append_Num
-                                        (Array_Base,
-                                         WNE_Array_First_Field,
-                                         Count)),
-                               2 =>
-                                 New_Record_Access
-                                   (Name  => +A_Ident,
-                                    Field =>
-                                      Append_Num
-                                        (Array_Base,
-                                         WNE_Array_Last_Field,
-                                         Count)))));
-                  Next_Index (Index);
-                  Count := Count + 1;
-               end;
-            end loop;
+            Subst (Cursor) :=
+              New_Clone_Substitution
+                (Kind      => EW_Type_Subst,
+                 Orig_Name => Append_Num ("base_type", Dim_Count),
+                 Image     => Ident_Of_Ada_Type (B_Ty));
+            Cursor := Cursor + 1;
+            Subst (Cursor) :=
+              New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Append_Num ("to_int", Dim_Count),
+                 Image     => Conversion_Name (From => +B_Type,
+                                               To => +Int_Type));
+            Cursor := Cursor + 1;
+            Subst (Cursor) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name => Append_Num ("in_range", Dim_Count),
+                 Image     =>
+                   Range_Pred_Name (Ind_Ty));
+            Cursor := Cursor + 1;
          end;
-         --  The type of standard strings has already been defined in the
-         --  gnatprove standard files, we just make another alias to __string
-         if Und_Ent = Standard_String then
+         Dim_Count := Dim_Count + 1;
+         Next_Index (Index);
+      end loop;
+
+      Emit (Theory,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               Origin        => Clone_Id,
+               Substitutions => Subst));
+      Emit (Theory,
+            New_Type
+              (Why3_Type_Name,
+               Alias =>
+                 New_Abstract_Type (Name => New_Identifier (Name => "__t"))));
+      if Und_Ent = Standard_String then
+         declare
+            Dummy_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "x");
+            Image_Ty    : constant W_Primitive_Type_Id :=
+              New_Abstract_Type (Name => New_Identifier (Name => "__image"));
+            Str_Typ     : constant W_Primitive_Type_Id :=
+              New_Abstract_Type (Name => Why3_Type_Name);
+         begin
             Emit (Theory,
-              New_Type (Why3_Type_Name,
-                Alias => New_Abstract_Type (Name => To_Ident (WNE_String))));
-            Add_With_Clause (Theory,
-                             "_gnatprove_standard_th",
-                             "Main",
-                             EW_Import,
-                             EW_Theory);
-         else
-            declare
-               Rec_Binders : Binder_Array (1 .. 2 * Integer (Dimension) + 1);
-            begin
-               Rec_Binders (1) :=
-                 (B_Name => To_Ident (WNE_Array_Elts),
-                  B_Type =>
-                    New_Generic_Actual_Type_Chain
-                      (Type_Chain => (1 => Comp_Type),
-                       Name => Prefix (To_String (Array_Base), "map")),
-                  others => <>);
-               for Count in 1 .. Integer (Dimension) loop
-                  Rec_Binders (2 * Count) :=
-                    (B_Name => Append_Num (WNE_Array_Offset, Count),
-                     B_Type => Int_Type,
-                     others => <>);
-                  Rec_Binders (2 * Count + 1) :=
-                    (B_Name => Append_Num (WNE_Range_Field, Count),
-                     B_Type =>
-                       New_Abstract_Type (Name =>
-                                            Append_Num
-                                              (WNE_Range_Type, Count)),
-                     others => <>);
-               end loop;
-               Emit
-                 (Theory,
-                  New_Record_Definition
-                    (Name    => Why3_Type_Name,
-                     Binders => Rec_Binders));
-            end;
-         end if;
-         Emit
-           (Theory,
-            New_Function_Def
-              (Domain      => EW_Term,
-               Name        => Conv_To,
-               Binders     =>
-                 (1 => (B_Name => A_Ident,
-                        B_Type => Name_Type,
-                        others => <>)),
-               Def         =>
-                 New_Record_Aggregate (Associations => To_Aggr),
-               Return_Type => Ar_Type));
-         Emit
-           (Theory,
-            New_Function_Def
-              (Domain      => EW_Term,
-               Name        => Conv_From,
-               Binders     => (1 => Ar_Binder),
-               Return_Type => Name_Type,
-               Def         =>
-                 New_Record_Aggregate (Associations => From_Aggr)));
-      end;
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => New_Identifier (Name => "to_string"),
+                     Binders     =>
+                       (1 =>
+                          Binder_Type'(
+                            Ada_Node => Empty,
+                            Modifier => None,
+                            B_Name   => Dummy_Ident,
+                            B_Type   => Image_Ty)),
+                     Return_Type => Str_Typ));
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => New_Identifier (Name => "from_string"),
+                     Binders     =>
+                       (1 =>
+                          Binder_Type'(
+                            Ada_Node => Empty,
+                            Modifier => None,
+                            B_Name   => Dummy_Ident,
+                            B_Type   => Str_Typ)),
+                     Return_Type => Image_Ty));
+         end;
+      end if;
    end Declare_Unconstrained;
 
    ----------------------

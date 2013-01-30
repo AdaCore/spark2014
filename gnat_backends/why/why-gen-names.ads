@@ -51,6 +51,10 @@ package Why.Gen.Names is
        To   : W_Base_Type_Id) return W_Identifier_Id;
    --  Return the name of the conversion function between the two types
 
+   function Range_Pred_Name
+     (Ty : Entity_Id) return W_Identifier_Id;
+   --  Return the name of the "in_range" predicate for the type
+
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
    --  Return the Why name of a base type (e.g. "int" for int)
 

@@ -124,6 +124,20 @@ package body Gnat2Why.Types is
       Declare_Ada_Real (Theory, E, First, Last);
    end Declare_Ada_Real_From_Range;
 
+   -----------------------
+   -- Ident_Of_Ada_Type --
+   -----------------------
+
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id
+   is
+   begin
+      if E = Standard_Boolean then
+         return New_Identifier (Name => "bool");
+      else
+         return To_Why_Id (E);
+      end if;
+   end Ident_Of_Ada_Type;
+
    -------------------------------
    -- Why_Logic_Type_Of_Ada_Obj --
    -------------------------------
@@ -265,9 +279,9 @@ package body Gnat2Why.Types is
       --  Cloned subtypes are a special case, they do not need such a
       --  definition.
 
-      if E /= Standard_Boolean and then
+      if not Is_Scalar_Type (E) and then
+        (if Is_Array_Type (E) then Is_Constrained (E)) and then
         E /= Universal_Fixed and then
-        not Is_Scalar_Type (E) and then
         (if Ekind (E) = E_Record_Subtype then
            not (Present (Cloned_Subtype (E))))
       then

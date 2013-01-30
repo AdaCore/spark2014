@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Snames;             use Snames;
-with Stand;              use Stand;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -81,23 +80,7 @@ package body Why.Gen.Scalars is
               Image     => To_Ident (WNE_Attr_Last)));
    begin
 
-      --  The type String is needed in the GNATprove standard Why prelude (e.g.
-      --  for 'Image), so has to be defined there. In turn, this means that
-      --  Character also needs to be defined there. This means that the Why3
-      --  modules for both types should not define an abstract type, but
-      --  an alias of the type that already is defined in the prelude. This is
-      --  done here for Character, and similar code exists in
-      --  why-gen-arrays.adb.
-
-      if Entity = Standard_Character then
-         Emit (Theory,
-               New_Type (Name => Why_Id,
-                         Alias =>
-                           New_Abstract_Type
-                             (Name => To_Ident (WNE_Char_Type))));
-      else
-         Emit (Theory, New_Type (Name => Why_Id));
-      end if;
+      Emit (Theory, New_Type (Name => Why_Id));
 
       Define_Scalar_Attributes
         (Theory    => Theory,
