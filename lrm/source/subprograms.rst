@@ -348,11 +348,11 @@ follow the grammar of ``global_specification``
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
 #. ``global_items`` in the same Global aspect specification shall denote
-   distinct objects.
+   distinct objects or state abstractions.
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR global_items shall denote distinct objects.
+      :Trace Unit: 6.1.4 LR global_items shall denote distinct objects or state abstractions.
 
 #. A ``global_item`` occurring in a Global aspect of a subprogram aspect
    specification shall not denote a formal parameter of the subprogram.
