@@ -106,19 +106,19 @@ package Why.Inter is
    --  Build an empty Why_File with the given name.
 
    procedure Close_Theory
-     (P              : in out Why_File;
-      Filter_Entity  : Entity_Id;
-      Defined_Entity : Entity_Id := Empty;
-      Do_Closure     : Boolean := False;
-      No_Import      : Boolean := False)
-   with
-     Pre => (if Do_Closure then Present (Defined_Entity));
-   --  Close the current theory by adding all necessary imports and adding the
-   --  theory to the file. If not Empty, Defined_Entity is the entity defined
-   --  by the current theory, which is used to complete the graph of
-   --  dependencies for this entity. If Do_Closure is True, then these
+     (P               : in out Why_File;
+      Filter_Entity   : Entity_Id;
+      Defined_Entity  : Entity_Id := Empty;
+      Do_Closure      : Boolean := False;
+      No_Import       : Boolean := False;
+      With_Completion : Boolean := True);
+   --  Close the current theory by adding all necessary imports and adding
+   --  the theory to the file. If not Empty, Defined_Entity is the entity
+   --  defined by the current theory, which is used to complete the graph
+   --  of dependencies for this entity. If Do_Closure is True, then these
    --  dependencies are used to get all entities on which this definition
-   --  depends.
+   --  depends. With_Completion is True if the completion theories should be
+   --  added too.
 
    procedure Discard_Theory (P : in out Why_File);
    --  Remove the current theory from P
@@ -148,13 +148,16 @@ package Why.Inter is
                               Use_Kind : EW_Clone_Type);
    --  Add a package name to the context of a Why package.
 
-   procedure Add_Use_For_Entity (P        : in out Why_File;
-                                 N        : Entity_Id;
-                                 Use_Kind : EW_Clone_Type := EW_Clone_Default);
-   --  For the given entity, add a use clause to the current theory.
-   --  If Use_Kind is set to EW_Clone_Default, the actual use kind for that
+   procedure Add_Use_For_Entity
+     (P               : in out Why_File;
+      N               : Entity_Id;
+      Use_Kind        : EW_Clone_Type := EW_Clone_Default;
+      With_Completion : Boolean := True);
+   --  For the given entity, add a use clause to the current theory. If
+   --  Use_Kind is set to EW_Clone_Default, the actual use kind for that
    --  entity is computed from the entity itself. If another value is given for
-   --  Use_Kind, that value is used.
+   --  Use_Kind, that value is used. With_Completion is True if the completion
+   --  theories for N should be added too.
 
    procedure Add_Effect_Imports (P : in out Why_File;
                                  S : Name_Set.Set);

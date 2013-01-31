@@ -314,9 +314,11 @@ package body Why.Inter is
    -- Add_Use_For_Entity --
    ------------------------
 
-   procedure Add_Use_For_Entity (P        : in out Why_File;
-                                 N        : Entity_Id;
-                                 Use_Kind : EW_Clone_Type := EW_Clone_Default)
+   procedure Add_Use_For_Entity
+     (P               : in out Why_File;
+      N               : Entity_Id;
+      Use_Kind        : EW_Clone_Type := EW_Clone_Default;
+      With_Completion : Boolean := True)
    is
       function File_Base_Name_Of_Entity (E : Entity_Id) return String;
       --  return the base name of the unit in which the entity is
@@ -400,29 +402,31 @@ package body Why.Inter is
          Add_With_Clause (P, "", Theory_Name, Import);
       end if;
 
-      for Kind in Why_Context_File_Enum loop
-         declare
-            Compl_Fname  : constant String :=
-              File_Base_Name_Of_Entity (N)
-              & Why_File_Suffix (Kind);
-            Completions  : constant Why_Completions :=
-              Get_Completions (Raw_Name, Kind);
-         begin
-            for J in Completions'Range loop
-               declare
-                  Compl_Name : constant String :=
-                    Capitalize_First (To_String (Completions (J)));
-               begin
-                  if Compl_Fname /= P.Name.all then
-                     Add_With_Clause
-                       (P, Compl_Fname, Compl_Name, Import);
-                  else
-                     Add_With_Clause (P, "", Compl_Name, Import);
-                  end if;
-               end;
-            end loop;
-         end;
-      end loop;
+      if With_Completion then
+         for Kind in Why_Context_File_Enum loop
+            declare
+               Compl_Fname  : constant String :=
+                 File_Base_Name_Of_Entity (N)
+                 & Why_File_Suffix (Kind);
+               Completions  : constant Why_Completions :=
+                 Get_Completions (Raw_Name, Kind);
+            begin
+               for J in Completions'Range loop
+                  declare
+                     Compl_Name : constant String :=
+                       Capitalize_First (To_String (Completions (J)));
+                  begin
+                     if Compl_Fname /= P.Name.all then
+                        Add_With_Clause
+                          (P, Compl_Fname, Compl_Name, Import);
+                     else
+                        Add_With_Clause (P, "", Compl_Name, Import);
+                     end if;
+                  end;
+               end loop;
+            end;
+         end loop;
+      end if;
    end Add_Use_For_Entity;
 
    ---------------------
@@ -512,11 +516,12 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P              : in out Why_File;
-      Filter_Entity  : Entity_Id;
-      Defined_Entity : Entity_Id := Empty;
-      Do_Closure     : Boolean := False;
-      No_Import      : Boolean := False)
+     (P               : in out Why_File;
+      Filter_Entity   : Entity_Id;
+      Defined_Entity  : Entity_Id := Empty;
+      Do_Closure      : Boolean := False;
+      No_Import       : Boolean := False;
+      With_Completion : Boolean := True)
    is
       use Node_Sets;
       S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
@@ -561,7 +566,7 @@ package body Why.Inter is
                  then not Is_Quantified_Loop_Param (N))
             then
                Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N);
+               Add_Use_For_Entity (P, N, With_Completion => With_Completion);
 
                --  When Defined_Entity is present, add the entities on which it
                --  depends in the graph of dependencies.
