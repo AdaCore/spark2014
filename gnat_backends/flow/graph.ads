@@ -74,6 +74,7 @@ with Ada.Iterator_Interfaces;
 
 generic
    type Vertex_Key is private;
+   type Vertex_Attributes is private;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
 package Graph
 is
@@ -100,6 +101,8 @@ is
           Constant_Indexing => Get_Current_Vertex_Id;
 
    type Cursor (Collection_Type : Collection_Type_T) is private;
+
+   type Traversal_Instruction is (Continue, Skip_Children);
 
    ----------------------------------------------------------------------
    --  Basic operations
@@ -139,8 +142,16 @@ is
    --
    --  Complexity is O(1).
 
+   function Get_Attributes (G : T'Class;
+                            V : Vertex_Id)
+                           return Vertex_Attributes;
+   --  Obtain the user-defined attributes of the given vertex.
+   --
+   --  Complexity is O(1).
+
    procedure Add_Vertex (G : in out T'Class;
-                         V :        Vertex_Key)
+                         V :        Vertex_Key;
+                         A :        Vertex_Attributes)
      with Pre => G.Get_Vertex (V) = Null_Vertex;
    --  Add a new vertex to the graph, with no edges attached.
    --
@@ -149,6 +160,7 @@ is
 
    procedure Add_Vertex (G  : in out T'Class;
                          V  :        Vertex_Key;
+                         A  :        Vertex_Attributes;
                          Id :    out Vertex_Id)
      with Pre  => G.Get_Vertex (V) = Null_Vertex,
           Post => Id /= Null_Vertex;
@@ -235,13 +247,18 @@ is
    procedure DFS (G             : T'Class;
                   Start         : Vertex_Id;
                   Include_Start : Boolean;
-                  Visitor       : access procedure (V : Vertex_Id));
+                  Visitor       : access procedure
+                    (V  :     Vertex_Id;
+                     TV : out Traversal_Instruction));
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
    --  only visited if there is a non-trivial path from Start -> Start
    --  in the graph.
    --
-   --  Visitor is called on each node.
+   --  Visitor is called on each node V, which sets a traversal
+   --  instruction which can be used to not traverse the children of
+   --  node V. Note that any of these children could be reached by
+   --  other paths.
    --
    --  Complexity is obviously O(N).
 
@@ -294,12 +311,14 @@ is
    --  IO
    ----------------------------------------------------------------------
 
-   procedure Write_Dot_File (G        : T'Class;
-                             Filename : String;
-                             PP       : access function (V : Vertex_Key)
-                                                        return String);
-   --  Write the graph G in dot format to Filename, using the PP
-   --  function to pretty-print each vertex.
+   procedure Write_Dot_File
+     (G                   : T'Class;
+      Filename            : String;
+      Show_Solitary_Nodes : Boolean;
+      PP                  : access function (V : Vertex_Key)
+                                            return String);
+   --  Write the graph G in dot (and pdf) format to Filename, using
+   --  the PP function to pretty-print each vertex.
 
 private
 
@@ -351,6 +370,7 @@ private
 
    type Vertex is record
       Key            : Vertex_Key;
+      Attributes     : Vertex_Attributes;
       In_Neighbours  : Vertex_Index_Set;
       Out_Neighbours : Edge_Attribute_Map;
    end record;

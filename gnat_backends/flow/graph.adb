@@ -26,6 +26,9 @@ use Ada.Text_IO;
 
 use type Ada.Containers.Count_Type;
 
+with GNAT.OS_Lib;
+use GNAT.OS_Lib;
+
 package body Graph
 is
 
@@ -52,6 +55,7 @@ is
    begin
       for V of G.Vertices loop
          R.Vertices.Append (Vertex'(Key            => V.Key,
+                                    Attributes     => V.Attributes,
                                     In_Neighbours  => VIS.Empty_Set,
                                     Out_Neighbours => EAM.Empty_Map));
       end loop;
@@ -80,21 +84,29 @@ is
                     return Vertex_Key
    is (G.Vertices (V).Key);
 
+   function Get_Attributes (G : T'Class;
+                            V : Vertex_Id)
+                           return Vertex_Attributes
+   is (G.Vertices (V).Attributes);
+
    procedure Add_Vertex (G : in out T'Class;
-                         V :        Vertex_Key)
+                         V :        Vertex_Key;
+                         A :        Vertex_Attributes)
    is
    begin
       G.Vertices.Append (Vertex'(Key            => V,
+                                 Attributes     => A,
                                  In_Neighbours  => VIS.Empty_Set,
                                  Out_Neighbours => EAM.Empty_Map));
    end Add_Vertex;
 
    procedure Add_Vertex (G  : in out T'Class;
                          V  :        Vertex_Key;
+                         A  :        Vertex_Attributes;
                          Id :    out Vertex_Id)
    is
    begin
-      G.Add_Vertex (V);
+      G.Add_Vertex (V, A);
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
@@ -286,53 +298,65 @@ is
    procedure DFS (G             : T'Class;
                   Start         : Vertex_Id;
                   Include_Start : Boolean;
-                  Visitor       : access procedure (V : Vertex_Id))
+                  Visitor       : access procedure
+                    (V  :     Vertex_Id;
+                     TV : out Traversal_Instruction))
    is
       type Bit_Field is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
 
       Will_Visit   : Bit_Field         := Bit_Field'(others => False);
       Stack        : Vertex_Index_List := VIL.Empty_Vector;
-      Current_Node : Valid_Vertex_Id;
+      TV           : Traversal_Instruction;
+
+      procedure Schedule_Vertex (V : Valid_Vertex_Id)
+      is
+      begin
+         Stack.Append (V);
+         Will_Visit (V) := True;
+      end Schedule_Vertex;
+
+      procedure Schedule_Children (V : Valid_Vertex_Id)
+      is
+      begin
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               Out_Node : constant Valid_Vertex_Id := Key (C);
+            begin
+               if not Will_Visit (Out_Node) then
+                  Schedule_Vertex (Out_Node);
+               end if;
+            end;
+         end loop;
+      end Schedule_Children;
+
    begin
       --  Seed the stack with either the start node or all its
       --  neighbours.
       if Include_Start then
-         Stack.Append (Start);
-         Will_Visit (Start) := True;
+         Schedule_Vertex (Start);
       else
-         for C in G.Vertices (Start).Out_Neighbours.Iterate loop
-            declare
-               Out_Node : constant Valid_Vertex_Id := Key (C);
-            begin
-               if not Will_Visit (Out_Node) then
-                  Stack.Append (Out_Node);
-                  Will_Visit (Out_Node) := True;
-               end if;
-            end;
-         end loop;
+         Schedule_Children (Start);
       end if;
 
       while Stack.Length > 0 loop
-         --  Pop from the stack.
-         Current_Node := Stack.Last_Element;
-         Stack.Delete_Last;
+         declare
+            Current_Node : constant Valid_Vertex_Id := Stack.Last_Element;
+         begin
+            --  Pop from the stack.
+            Stack.Delete_Last;
 
-         --  Visit the node.
-         Visitor (Current_Node);
+            --  Visit the node.
+            Visitor (Current_Node, TV);
 
-         --  Push all out-nodes onto the stack, unless they have
-         --  already been flagged to be visited.
-         for C in G.Vertices (Current_Node).Out_Neighbours.Iterate loop
-            declare
-               Out_Node : constant Valid_Vertex_Id := Key (C);
-            begin
-               if not Will_Visit (Out_Node) then
-                  Stack.Append (Out_Node);
-                  Will_Visit (Out_Node) := True;
-               end if;
-            end;
-         end loop;
+            case TV is
+               when Continue =>
+                  --  Visit all children
+                  Schedule_Children (Current_Node);
+               when Skip_Children =>
+                  null;
+            end case;
+         end;
       end loop;
    end DFS;
 
@@ -665,25 +689,35 @@ is
    --  IO
    ----------------------------------------------------------------------
 
-   procedure Write_Dot_File (G        : T'Class;
-                             Filename : String;
-                             PP       : access function (V : Vertex_Key)
-                                                        return String)
+   procedure Write_Dot_File
+     (G                   : T'Class;
+      Filename            : String;
+      Show_Solitary_Nodes : Boolean;
+      PP                  : access function (V : Vertex_Key)
+                                            return String)
    is
+      FD : File_Type;
    begin
-      Put_Line ("digraph G {");
-      Put_Line ("   graph [splines=True];");
+      Create (FD, Out_File, Filename & ".dot");
+
+      Put_Line (FD, "digraph G {");
+      Put_Line (FD, "   graph [splines=True];");
 
       for I in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         Put ("   ");
-         Put (Valid_Vertex_Id'Image (I));
-         Put (" [label=""");
-         Put (PP (G.Vertices (I).Key));
-         Put ("""];");
-         New_Line;
+         if Show_Solitary_Nodes or else
+           (G.Vertices (I).In_Neighbours.Length > 0 or
+              G.Vertices (I).Out_Neighbours.Length > 0)
+         then
+            Put (FD, "   ");
+            Put (FD, Valid_Vertex_Id'Image (I));
+            Put (FD, " [label=""");
+            Put (FD, PP (G.Vertices (I).Key));
+            Put (FD, """];");
+            New_Line (FD);
+         end if;
       end loop;
 
-      New_Line;
+      New_Line (FD);
 
       for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
@@ -691,20 +725,22 @@ is
                V_2 : Valid_Vertex_Id renames Key (C);
                Atr : Edge_Attributes renames Element (C);
             begin
-               Put ("   ");
-               Put (Valid_Vertex_Id'Image (V_1));
-               Put (" -> ");
-               Put (Valid_Vertex_Id'Image (V_2));
+               Put (FD, "   ");
+               Put (FD, Valid_Vertex_Id'Image (V_1));
+               Put (FD, " -> ");
+               Put (FD, Valid_Vertex_Id'Image (V_2));
                if Atr.Marked then
-                  Put (" [color=blue]");
+                  Put (FD, " [color=blue]");
                end if;
-               Put (";");
-               New_Line;
+               Put (FD, ";");
+               New_Line (FD);
             end;
          end loop;
       end loop;
 
-      Put_Line ("}");
+      Put_Line (FD, "}");
+
+      Close (FD);
    end Write_Dot_File;
 
 end Graph;
