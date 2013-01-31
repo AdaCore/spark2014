@@ -28,8 +28,8 @@ This introduction contains the following sections:
 - Section :ref:`formal_analysis` gives a brief overview of the formal analysis
   to which |SPARK| programs are amenable.
 
-- Section :ref:`rules_check` gives a brief overview of checking the language rules
-  of |SPARK|.
+- Section :ref:`dynamic_sem` gives details on the dynamic semantics of
+  |SPARK|.
 
 - Section :ref:`reqts` gives an overview of the requirements given in this document
   over and above the language definition rules of the sort that appear in the
@@ -40,7 +40,7 @@ This introduction contains the following sections:
 
 - Section :ref:`explain_sprs` provides expanded detail on the main strategic requirements.
 
-- Section :ref:`generic_hlrs` presents abstracted requirements that are common to
+- Section :ref:`generic_hlrs` presents language-independent requirements that are common to
   a number of the language features described in this document.
 
 - Section :ref:`notes` provides some brief detail on the current status and contents
@@ -63,7 +63,6 @@ scope is deferred, it may be deferred to:
 
 - A release subsequent to Release 1, meaning that the feature will be
   implemented *after* the first formal release of the toolset.
-
 
 .. _read_interpret:
 
@@ -134,38 +133,15 @@ Formal Analysis
 - Formal verification of functional properties, based on contracts expressed as
   preconditions, postconditions, type invariants and so on.
 
-- Formal verification of non-functional properties, such as WCET and
-  worst-case memory usage analysis.
+The static checking needed to carry out this formal analysis is performed in three separate
+phases and errors may be detected during any of these three steps. Firstly, the syntax 
+and legality rules presented in this document are checked together with
+the Ada 2012 syntax and legality rules. Secondly, flow analysis is performed.
+Rules enforced at this point are described in sections with the
+heading "Verification Rules". Finally, formal program verification is performed.
 
-
-.. _rules_check:
-
-Static Analysis and Dynamic Semantics of |SPARK| Programs
----------------------------------------------------------
-
-The static checking needed to determine whether a |SPARK|
-program is suitable for execution is performed in three separate
-phases. Errors may be detected during any of these three steps.
-Compilation is the final stage of this process.
-
-Syntax and Legality Rules
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The syntax and legality rules presented in this document are checked together with
-the Ada 2012 syntax and legality rules.
-
-
-Flow Analysis
-~~~~~~~~~~~~~
-
-Next, flow analysis is performed, as described in Section :ref:`formal_analysis`.
-Rules that are enforced at this point are described in sections with the
-heading "Verification Rules".
-
-Formal Verification
-~~~~~~~~~~~~~~~~~~~
-
-Finally, formal program verification is performed.
+Further Detail on Formal Verification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Many Ada constructs have dynamic semantics which include a requirement
 that some error condition must (or, in the cases of some bounded errors,
@@ -190,8 +166,11 @@ obligations.
 All such generated proof obligations must be discharged before the
 formal program verification phase may be considered to be complete.
 
-Dynamic Semantics
-~~~~~~~~~~~~~~~~~
+
+.. _dynamic_sem:
+
+Dynamic Semantics of |SPARK| Programs
+-------------------------------------
 
 Every valid |SPARK| program is also a valid Ada 2012 program.
 The dynamic semantics of the two languages are defined to be identical,
@@ -231,7 +210,7 @@ be such that they work correctly given the Ada subset with which we are working
 the stronger the restrictions on the Ada subset then the simpler will be the
 SPARK rules, and vice versa).
 
-However, there are also higher-level requirementsto be met by the |SPARK|
+However, there are also higher-level requirements to be met by the |SPARK|
 language that are invariant under the scope of the Ada subset being used and
 that are of necessity much simpler to understand than the language definition rules. Moreover, they provide
 a rationale for the language features and rules as provided in this document.
@@ -295,27 +274,14 @@ at the end of this chapter.
 |SPARK| Strategic Requirements
 ------------------------------
 
-This section defines the overall goals to be met by the |SPARK| language and
-toolset. These are classified as:
-
-- Language-only, meaning that the goal can be met purely via the language definition.
-
-- Not language-only, meaning that the goal cannot be met purely via the language defniition
-  and levies needs on other areas, for example on tool capabilities.
-
-- Non-language, meaning that the goal is to be met independently of the language
-  definition.
-
-Principal Strategic Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 The following requirements give the principal goals to be met by |SPARK|.
 Some are expanded in subsequent sections within this chapter.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
   currently amenable to automatic formal verification, in line with the goals below, although
   future advances in verification research and computing power may allow
-  for expansion of the language and the forms of verification available.
+  for expansion of the language and the forms of verification available. See section :ref:`main_restricts`
+  for further details.
 
 - |SPARK| shall provide for mixing of verification evidence generated
   by formal analysis [for code written in the |SPARK| subset] and
@@ -339,16 +305,26 @@ Some are expanded in subsequent sections within this chapter.
      computed from the bodies of units, and then used in the analysis of other
      units, and so on. 
 
+- *Code Policies* shall be allowed that reduce the subset of Ada 2012 that may
+  be used in line with specific goals such as domain needs or certification
+  requirements (these are similar to *Profiles* but may be imposed at a finer
+  granularity and the effect of a breach may also be different). This may also
+  have the effect of simplifying proof or analysis. See section
+  :ref:`code_policy` for further details.
+
+- |SPARK| shall allow the mixing of code written in the |SPARK| subset
+  with code written in full Ada 2012. See section :ref:`in_out` for
+  further details.
+
+- |SPARK| shall provide counterparts of all language features and analysis
+  modes provided in SPARK 83/95/2005.
+
+- Support for specifying and verifying properties of secure systems shall be improved.
+
 - |SPARK| shall support provision of "formal analysis" as defined by DO-333, which states
   "an analysis method can only be regarded as formal analysis
   if its determination of property is sound. Sound analysis means
   that the method never asserts a property to be true when it is not true."
-
-
-Additional Requirements
-~~~~~~~~~~~~~~~~~~~~~~~
-
-- The language design shall support the case for soundness of analysis.
   Language features that defy sound analysis will be eliminated or their
   use constrained to meet this goal. See section :ref:`main_restricts` for further details.
 
@@ -357,20 +333,6 @@ Additional Requirements
   be eliminated. [This means implementation-defined and partially-specified features will be outside of
   |SPARK| by definition, though their use could be allowed and a warning generated for the user.
   See section :ref:`in_out` for further details.]
-
-- |SPARK| shall provide counterparts of all language features and analysis
-  modes provided in SPARK 83/95/2005.
-
-- Use paradigms shall be allowed that reduce the subset of Ada 2012 that may
-  be used in line with specific goals such as domain needs or certification
-  requirements. This may also have the effect of simplifying proof or analysis.
-  See section :ref:`use_paradigms` for further details.
-
-- |SPARK| shall allow the mixing of code written in the |SPARK| subset
-  with code written in full Ada 2012. See section :ref:`in_out` for
-  further details.
-
-- Support for specifying and verifying properties of secure systems shall be improved.
 
 .. _explain_sprs:
 
@@ -383,8 +345,6 @@ The following sections provide expanded detail on the main strategic requirement
 
 Principal Language Restrictions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**Action  LL-STT2: We need a term for the "SPARK-friendly" subset of features, which are not all in S14, but which allow for some amount of analysis.**
 
 To facilitate formal verification, |SPARK| enforces a number of global
 restrictions to Ada 2012. While these are covered in more detail
@@ -412,6 +372,9 @@ Combining Formal Verification and Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Need to mention SPARK-friendly in here.**
+
+**Action  LL-STT2: We need a term for the "SPARK-friendly" subset of features, which are not all in S14, but which allow for some amount of analysis.**
+
 
 **Action comment REQ-CC56 (and look for TN referenced in associated action):  there is a missing discussion about what we used to call "alfa-friendly" code. I don't think we want to reuse this concept but
 we need to define precisely what are the characteristics of a non-s14 subprogram that can call or be called by a s14 one so
@@ -458,22 +421,27 @@ Any toolset that proposes a combination of formal verification and testing for
 |SPARK| should provide a detailed process for doing so, including any necessary
 additional testing of proof assumptions.
 
-.. _use_paradigms:
+*No further detail is given in the current draft of this document on Combining
+Formal Verification and Testing.*
 
-Profiles
-~~~~~~~~
+.. _code_policy:
 
-**Action  LL-STT5:  A "profile" is defined already in the Ada 2012 RM, and it includes a set of restrictions, plus various policy specifications, and perhaps a
-few other things specifiable via pragmas.**
+Code Policies
+~~~~~~~~~~~~~
 
-**Action QO-CDR4: The use of profiles needs to be highlighted in the introduction.**
+The restrictions imposed on the subset of Ada that could be used in writing
+SPARK 2005 programs was not simply derived from what was or is amenable to
+formal verification. In particular, those restrictions stemmed partly from good programming practice
+guidelines and the need to impose certain restrictions when working in certain domains
+or against certain safety standards. Hence, we want to allow such restrictions to be
+applied by users in a systematic and tool-checked way despite the goal that |SPARK| embodies
+the largest subset of Ada 2012 that is amenable to formal verification.
 
-**Associated action:  Add section to introduction to explain how profiles
-can be used in different contexts by the developers.**
-
-In addition to the core |SPARK| language subset, the language
-will define a number of *Profiles* which are designed to meet
-the needs of particular
+Since |SPARK| will allow use of as large a subset of Ada 2012 as possible, this allows
+for the definition of multiple *Code Policies* that allow different language
+subsets to be used as opposed to the single subset given by SPARK 2005. Each of these
+code policies can be targeted to meeting a specific user need, and where a user has multiple
+needs then multiple policies may be enforced. Needs could be driven by:
 
 - Application domains - for example, server-class air-traffic management systems,
 
@@ -482,6 +450,20 @@ the needs of particular
 - Technical requirements - for example, systems requiring software that is
   compatible with a "zero footprint" run-time library.
 
+As an example, a user developing an air traffic control system against DO-178C
+might impose two code policies, one for the domain of interest and one for the standard
+of interest.
+
+Since it should be possible to apply these policies  at multiple levels
+of granularity - for example at a package level rather than at a library level - 
+and since it need not be the case that violation of one of these policies leads
+to a compilation error, then the existing Ada mechanisms of pragma Restriction
+and pragma Profile are not suitable. Hence, pragma Code_Policy will be introduced
+as a counterpart to pragma Profile and pragma Guideline will be introduced
+as a counterpart to pragma Restriction, meaning that a Code_Policy is a grouping
+of Guidelines.
+
+*No further detail is given in the current draft of this document on Code Policies.*
 
 .. _verific_modes:
 
@@ -520,6 +502,8 @@ the retrospective to the constructive mode as a project matures.  The
 retrospective mode also allows for the verification of legacy code that was not
 originally designed with the |SPARK| contracts in mind.
 
+*No further detail is given in the current draft of this document on
+Constructive and Retrospective Verification Modes.*
 
 .. _in_out:
 
@@ -571,17 +555,19 @@ example, the following combinations may be typical:
 Such patterns are intended to allow for mixed-language programming, and the development of programs
 that mix formal verification and more traditional testing.
 
+*No further detail is given in the current draft of this document on
+mixing code that is in and out of |SPARK|.*
 
 .. _generic_hlrs:
 
-Generic Higher-Level Requirements
----------------------------------
+Generic Language-Independent Requirements
+-----------------------------------------
 
 The following detail applies to multiple language features and
 hence are given in a single place to ease readability.
 
-Definition of Terms for Higher-Level Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Definition of Terms for Language-Independent Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ensure that if a term is the same or similar to one used in Ada then it means the
 same thing or we deliberately use a different term.
@@ -693,13 +679,28 @@ To be allocated
 Notes on the Current Draft
 --------------------------
 
-This is an interim draft that covers all high-level requirements, provides
+**NB Need to be clear that not all of the strategic requirements flow down into
+the document: in general, need to be clear on what is missing, since there
+is lots of stuff not included in relation to the strategic requirements.**
+
+This is an interim draft that covers all language-independent requirements
+for the main language features, provides
 syntax where possible and otherwise provides the detailed rules necessary to
 support implementation of basic flow analysis. Where detail is not relevant to
 meeting these needs then it has typically been removed.
 
+Note this means there are certain of the strategic requirements that are currently
+not decomposed into language definition detail. Where this is the case, it will
+have been explicitly indicated in this chapter.
+
 Actions to complete prior to release
 ------------------------------------
+
+**NB Need to be clear that not all of the strategic requirements flow down into
+the document.**
+
+**NB For all the sections on strategic requirements, need to say at the end whether anything
+is included on them in the document.**
 
 **Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
 
