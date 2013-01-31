@@ -1,7 +1,7 @@
 module Discrete_Base
   (* The module that is used as basis for all discrete types. It contains the
-  whole discrete theory, except the coerce_axiom which differs between modular
-  and non-modular types. *)
+     whole discrete theory, except the coerce_axiom which differs between
+     modular and non-modular types. *)
 
    use import "int".Int
    use import "_gnatprove_standard".Main
@@ -23,28 +23,27 @@ module Discrete_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-
    predicate in_range  (x : int) =
     ( attr__ATTRIBUTE_FIRST <= x <= attr__ATTRIBUTE_LAST )
 
-   function to_int t  :int
+   function to_int t : int
 
-   function of_int int  : t
+   function of_int int : t
 
-   val range_check_ (n : int)  :int
+   val range_check_ (n : int) : int
     requires { in_range n }
     ensures { result = n }
 
-   predicate eq  (x : t) (y : t) = ( to_int x = to_int y )
+   predicate eq (x : t) (y : t) = ( to_int x = to_int y )
 
    axiom range_axiom :
-    forall x  : t.  in_range (to_int x)
+    forall x : t. in_range (to_int x)
 
    axiom unicity_axiom :
-    forall x y  : t [to_int x, to_int y].
+    forall x y : t [to_int x, to_int y].
      to_int x = to_int y -> x = y
 
-   val bool_eq_ (n : t) (m : t)  :bool
+   val bool_eq_ (n : t) (m : t) : bool
     requires { true }
     ensures { if result = True then n = m else n <> m }
 
