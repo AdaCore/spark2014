@@ -1607,20 +1607,12 @@ package body Why.Atree.Sprint is
                PL (O, ") ");
             end if;
 
-            if Pre = Why_Empty then
-               if not Is_Empty (+Binders) then
-                  P (O, "requires { }");
-               end if;
-            else
+            if Pre /= Why_Empty then
                P (O, "requires { ");
                Traverse (State, +Pre);
                PL (O, " }");
             end if;
-            if Post = Why_Empty then
-               if not Is_Empty (+Binders) then
-                  PL (O, "ensures { true }");
-               end if;
-            else
+            if Post /= Why_Empty then
                P (O, "ensures { ");
                Traverse (State, +Post);
                PL (O, " }");
