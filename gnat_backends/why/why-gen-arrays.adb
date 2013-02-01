@@ -76,27 +76,15 @@ package body Why.Gen.Arrays is
                                   Why3_Type_Name : W_Identifier_Id;
                                   Und_Ent        : Entity_Id)
    is
-      Dimension   : constant Pos := Number_Dimensions (Und_Ent);
-      Array_Base  : constant Why_Name_Enum := Ada_Array_Name (Dimension);
-      BT_Id       : constant W_Identifier_Id := Prefix (Array_Base, WNE_Type);
-      Comp_Type   : constant W_Primitive_Type_Id :=
-        Why_Logic_Type_Of_Ada_Type (Component_Type (Und_Ent));
-      Ar_Type     : constant W_Primitive_Type_Id :=
-                     New_Generic_Actual_Type_Chain
-                       (Type_Chain => (1 => Comp_Type),
-                        Name       => BT_Id);
-      Name_Type   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Why3_Type_Name);
-      A_Ident     : constant W_Identifier_Id := New_Identifier (Name => "a");
-      Ar_Binder : constant Binder_Type :=
-                      (B_Name => A_Ident,
-                       B_Type => Ar_Type,
-                       others => <>);
-      Int_Type    : constant W_Primitive_Type_Id :=
+      Dimension : constant Pos := Number_Dimensions (Und_Ent);
+      Int_Type  : constant W_Primitive_Type_Id :=
         New_Base_Type (Base_Type => EW_Int);
-      Conv_From   : constant W_Identifier_Id := To_Ident (WNE_Of_Array);
-      Conv_To     : constant W_Identifier_Id := To_Ident (WNE_To_Array);
-      Index       : Entity_Id := First_Index (Und_Ent);
+      Index     : Entity_Id := First_Index (Und_Ent);
+      Subst     : W_Clone_Substitution_Array
+        (1 .. Integer (Dimension * 2) + 1);
+      Cursor    : Integer := 1;
+      Clone_Id  : constant W_Identifier_Id :=
+        Append_Num ("""ada__model"".Constr_Array", Positive (Dimension));
 
       procedure Declare_Attribute (Kind : Why_Name_Enum;
                                    Def  : Node_Id;
@@ -110,11 +98,12 @@ package body Why.Gen.Arrays is
                                    Def  : Node_Id;
                                    Dim_Count : Positive)
       is
+         Attr_Name : constant W_Identifier_Id := Append_Num (Kind, Dim_Count);
       begin
          if Present (Def) and then Is_Static_Expression (Def) then
             Emit (Theory,
                   New_Function_Def (Domain => EW_Term,
-                                    Name   => Append_Num (Kind, Dim_Count),
+                                    Name   => Attr_Name,
                                     Binders => (1 .. 0 => <>),
                                     Return_Type => Int_Type,
                                     Def => New_Integer_Constant
@@ -122,33 +111,25 @@ package body Why.Gen.Arrays is
          else
             Emit (Theory,
                   New_Function_Decl (Domain => EW_Term,
-                                     Name   => Append_Num (Kind, Dim_Count),
+                                     Name   => Attr_Name,
                                      Binders => (1 .. 0 => <>),
                                      Return_Type => Int_Type));
          end if;
+         Subst (Cursor) :=
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => Attr_Name,
+              Image     => Attr_Name);
+         Cursor := Cursor + 1;
       end Declare_Attribute;
 
-      Rec_Binders : Binder_Array (1 .. Integer (Dimension) + 1);
    begin
-      Rec_Binders (1) :=
-        (B_Name => To_Ident (WNE_Array_Elts),
-         B_Type =>
-           New_Generic_Actual_Type_Chain
-             (Type_Chain => (1 => Comp_Type),
-              Name => Prefix (To_String (Array_Base), "map")),
-        others => <>);
-      for Count in 1 .. Integer (Dimension) loop
-         Rec_Binders (Count + 1) :=
-           (B_Name => Append_Num (WNE_Array_Offset, Count),
-            B_Type => Int_Type,
-            others => <>);
-      end loop;
-
-      Emit
-        (Theory,
-         New_Record_Definition
-           (Name    => Why3_Type_Name,
-            Binders => Rec_Binders));
+      Subst (Cursor) :=
+        New_Clone_Substitution
+          (Kind      => EW_Type_Subst,
+           Orig_Name => New_Identifier (Name => "component_type"),
+           Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
+      Cursor := Cursor + 1;
       if Ekind (Und_Ent) in String_Kind then
          Declare_Attribute (WNE_Attr_First,
                             String_Literal_Low_Bound (Und_Ent),
@@ -176,85 +157,17 @@ package body Why.Gen.Arrays is
             end loop;
          end;
       end if;
-      declare
-         --  in the "to" conversion, we need a field for "elts", and for
-         --  each dimension, fields for first, last, offset
-         To_Aggr : W_Field_Association_Array
-           (1 .. Integer (Dimension) * 3 + 1);
-         --  in the "from" conversion, we need a field for "elts", and for
-         --  each dimension, a field for "offset"
-         From_Aggr : W_Field_Association_Array
-           (1 .. Integer (Dimension) + 1);
-      begin
-         To_Aggr (1) :=
-           New_Field_Association
-             (Field => Prefix (Array_Base, WNE_Array_Elts),
-              Domain => EW_Term,
-              Value =>
-                New_Record_Access
-                  (Name => +A_Ident,
-                   Field => To_Ident (WNE_Array_Elts)));
-         From_Aggr (1) :=
-           New_Field_Association
-             (Field => To_Ident (WNE_Array_Elts),
-              Domain => EW_Term,
-              Value =>
-                New_Record_Access
-                  (Name => +A_Ident,
-                   Field => Prefix (Array_Base, WNE_Array_Elts)));
-         for Count in 1 .. Integer (Dimension) loop
-            To_Aggr (3 * Count - 1) :=
-              New_Field_Association
-                (Field =>
-                     Append_Num (Array_Base, WNE_Array_First_Field, Count),
-                 Domain => EW_Term,
-                 Value => +Append_Num (WNE_Attr_First, Count));
-            To_Aggr (3 * Count) :=
-              New_Field_Association
-                (Field =>
-                     Append_Num (Array_Base, WNE_Array_Last_Field, Count),
-                 Domain => EW_Term,
-                 Value => +Append_Num (WNE_Attr_Last, Count));
-            To_Aggr (3 * Count + 1) :=
-              New_Field_Association
-                (Field => Append_Num (Array_Base, WNE_Array_Offset, Count),
-                 Domain => EW_Term,
-                 Value =>
-                   New_Record_Access
-                     (Name => +A_Ident,
-                      Field => +Append_Num (WNE_Array_Offset, Count)));
-            From_Aggr (Count + 1) :=
-              New_Field_Association
-                (Field => Append_Num (WNE_Array_Offset, Count),
-                 Domain => EW_Term,
-                 Value =>
-                   New_Record_Access
-                     (Name  => +A_Ident,
-                      Field =>
-                        Append_Num (Array_Base, WNE_Array_Offset, Count)));
-         end loop;
-         Emit
-           (Theory,
-            New_Function_Def
-              (Domain      => EW_Term,
-               Name        => Conv_To,
-               Binders     =>
-                 (1 => (B_Name => A_Ident,
-                        B_Type => Name_Type,
-                        others => <>)),
-               Def         =>
-                 New_Record_Aggregate (Associations => To_Aggr),
-               Return_Type => Ar_Type));
-         Emit
-           (Theory,
-            New_Function_Def
-              (Domain      => EW_Term,
-               Name        => Conv_From,
-               Binders     => (1 => Ar_Binder),
-               Return_Type => Name_Type,
-               Def         =>
-                 New_Record_Aggregate (Associations => From_Aggr)));
-      end;
+      Emit (Theory,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               Origin        => Clone_Id,
+               Substitutions => Subst));
+      Emit (Theory,
+            New_Type
+              (Why3_Type_Name,
+               Alias =>
+                 New_Abstract_Type (Name => New_Identifier (Name => "__t"))));
    end Declare_Constrained;
 
    ---------------------------

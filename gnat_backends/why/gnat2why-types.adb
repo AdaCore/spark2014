@@ -279,9 +279,7 @@ package body Gnat2Why.Types is
       --  Cloned subtypes are a special case, they do not need such a
       --  definition.
 
-      if not Is_Scalar_Type (E) and then
-        (if Is_Array_Type (E) then Is_Constrained (E)) and then
-        E /= Universal_Fixed and then
+      if Is_Record_Type (E) and then
         (if Ekind (E) = E_Record_Subtype then
            not (Present (Cloned_Subtype (E))))
       then

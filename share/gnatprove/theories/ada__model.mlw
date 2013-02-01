@@ -405,3 +405,159 @@ module Unconstr_Array_4
 
  function dummy : __t
 end
+
+module Constr_Array
+  use "_gnatprove_standard".Array__1
+
+ type component_type
+
+ function attr__ATTRIBUTE_FIRST : int
+ function attr__ATTRIBUTE_LAST  : int
+
+ type __t = {
+   elts   : Array__1.map component_type;
+   offset : int;
+ }
+
+ function to_array  (a : __t) : Array__1.t component_type =
+  { Array__1.elts = a.elts;
+    Array__1.first = attr__ATTRIBUTE_FIRST;
+    Array__1.last = attr__ATTRIBUTE_LAST;
+    Array__1.offset = a.offset;
+  }
+
+ function of_array  (a : Array__1.t component_type) : __t =
+  { elts     = a.Array__1.elts;
+    offset   = a.Array__1.offset;
+  }
+
+ function dummy : __t
+end
+
+module Constr_Array_2
+  use "_gnatprove_standard".Array__2
+
+ type component_type
+
+ function attr__ATTRIBUTE_FIRST : int
+ function attr__ATTRIBUTE_LAST  : int
+
+ function attr__ATTRIBUTE_FIRST_2 : int
+ function attr__ATTRIBUTE_LAST_2  : int
+
+ type __t = { elts : Array__2.map component_type; offset : int; offset_2 : int }
+
+ function to_array  (a : __t) : Array__2.t component_type =
+  { Array__2.elts = a.elts;
+    Array__2.first = attr__ATTRIBUTE_FIRST;
+    Array__2.last = attr__ATTRIBUTE_LAST;
+    Array__2.offset = a.offset;
+    Array__2.first_2 = attr__ATTRIBUTE_FIRST_2;
+    Array__2.last_2 = attr__ATTRIBUTE_LAST_2;
+    Array__2.offset_2 = a.offset_2
+  }
+
+ function of_array  (a : Array__2.t component_type) : __t =
+  { elts     = a.Array__2.elts;
+    offset   = a.Array__2.offset;
+    offset_2 = a.Array__2.offset_2
+  }
+
+ function dummy : __t
+end
+
+module Constr_Array_3
+  use "_gnatprove_standard".Array__3
+
+ type component_type
+
+ function attr__ATTRIBUTE_FIRST : int
+ function attr__ATTRIBUTE_LAST  : int
+
+ function attr__ATTRIBUTE_FIRST_2 : int
+ function attr__ATTRIBUTE_LAST_2  : int
+
+ function attr__ATTRIBUTE_FIRST_3 : int
+ function attr__ATTRIBUTE_LAST_3  : int
+
+ type __t = {
+    elts     : Array__3.map component_type;
+    offset   : int;
+    offset_2 : int;
+    offset_3 : int
+ }
+
+ function to_array  (a : __t) : Array__3.t component_type =
+  { Array__3.elts = a.elts;
+    Array__3.first = attr__ATTRIBUTE_FIRST;
+    Array__3.last = attr__ATTRIBUTE_LAST;
+    Array__3.offset = a.offset;
+    Array__3.first_2 = attr__ATTRIBUTE_FIRST_2;
+    Array__3.last_2 = attr__ATTRIBUTE_LAST_2;
+    Array__3.offset_2 = a.offset_2;
+    Array__3.first_3 = attr__ATTRIBUTE_FIRST_3;
+    Array__3.last_3 = attr__ATTRIBUTE_LAST_3;
+    Array__3.offset_3 = a.offset_3
+  }
+
+ function of_array  (a : Array__3.t component_type) : __t =
+  { elts     = a.Array__3.elts;
+    offset   = a.Array__3.offset;
+    offset_2 = a.Array__3.offset_2;
+    offset_3 = a.Array__3.offset_3
+  }
+
+ function dummy : __t
+end
+
+module Constr_Array_4
+  use "_gnatprove_standard".Array__4
+
+ type component_type
+
+ function attr__ATTRIBUTE_FIRST : int
+ function attr__ATTRIBUTE_LAST  : int
+
+ function attr__ATTRIBUTE_FIRST_2 : int
+ function attr__ATTRIBUTE_LAST_2  : int
+
+ function attr__ATTRIBUTE_FIRST_3 : int
+ function attr__ATTRIBUTE_LAST_3  : int
+
+ function attr__ATTRIBUTE_FIRST_4 : int
+ function attr__ATTRIBUTE_LAST_4  : int
+
+ type __t = {
+    elts     : Array__4.map component_type;
+    offset   : int;
+    offset_2 : int;
+    offset_3 : int;
+    offset_4 : int
+ }
+
+ function to_array  (a : __t) : Array__4.t component_type =
+  { Array__4.elts = a.elts;
+    Array__4.first = attr__ATTRIBUTE_FIRST;
+    Array__4.last = attr__ATTRIBUTE_LAST;
+    Array__4.offset = a.offset;
+    Array__4.first_2 = attr__ATTRIBUTE_FIRST_2;
+    Array__4.last_2 = attr__ATTRIBUTE_LAST_2;
+    Array__4.offset_2 = a.offset_2;
+    Array__4.first_3 = attr__ATTRIBUTE_FIRST_3;
+    Array__4.last_3 = attr__ATTRIBUTE_LAST_3;
+    Array__4.offset_3 = a.offset_3;
+    Array__4.first_4 = attr__ATTRIBUTE_FIRST_4;
+    Array__4.last_4 = attr__ATTRIBUTE_LAST_4;
+    Array__4.offset_4 = a.offset_4
+  }
+
+ function of_array  (a : Array__4.t component_type) : __t =
+  { elts     = a.Array__4.elts;
+    offset   = a.Array__4.offset;
+    offset_2 = a.Array__4.offset_2;
+    offset_3 = a.Array__4.offset_3;
+    offset_4 = a.Array__4.offset_4
+  }
+
+ function dummy : __t
+end
