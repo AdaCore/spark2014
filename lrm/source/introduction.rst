@@ -448,13 +448,6 @@ will typically be non-|SPARK| -- code will be given in a subsequent draft of thi
 Formal Verification and Testing, or on providing what it needs. Further detail will be provided at least
 in part under TN LC10-020.*
 
-**Action  INSTRUCT-RPM1:  I'm a bit confused about how the SPARK 2014 language will provide for the mixing of verification evidence from code that is
-within the 2014 subset and code that is outside of it. I can imagine a process where you do this, and have a mixture of 2014
-and non-2014 code, and a mixture of formal verification and testing, but how does this influence the 2014 language itself?
-Does it boil down to modularity and the ability to mix 2014 and non-2014 features at a fine level? I suppose the potential
-confusion is that your whole "SPARK 2014" program may be a mixture of SPARK 2014 and non-SPARK 2014 code, but do you
-still call the whole thing a SPARK 2014 program?**
-
 .. _code_policy:
 
 Code Policies
@@ -531,6 +524,10 @@ that may be necessary:
   suitable flow analysis specifications. If this is not done then the analysis
   would have to assume some suitably pessimistic specification.
 
+Note that when language features are presented and defined in the remainder of this
+document, it is assumed that verification is being performed in constructive and
+no explicit detail is given on retrospective mode.
+
 .. todo::
    Add detail on how retrospective mode will work when we have a mix of |SPARK| and non-|SPARK|.
 
@@ -543,31 +540,35 @@ Constructive and Retrospective Verification Modes.*
 In and Out of |SPARK|
 ~~~~~~~~~~~~~~~~~~~~~
 
-**Note that our goal wrt this is just to make it more flexible (for example,
-in or out defined by use and not be definition.**
+There are various reasons why it may be necessary to combine |SPARK| and
+non-|SPARK| in the same program, such as (though not limited to):
 
-**Action  FE-JIB12:  There are references throughout the document to being "in SPARK 2014" and "out of SPARK 2014". Since not being in SPARK
-2014 is not an obstacle to compilation but in certain circumstances we may wish to enforce that only SPARK 2014 constructs are
-used, then it is not clear from the LRM as it currently stands what should be done when implementing legality rules if a given syntactic
-entity is found not to be in SPARK 2014.**
+- Use of langauge features that are not amenable to formal verification (and hence
+  where formal verification will be mixed with testing).
 
-**Note that we need to state something about what it means when code is in SPARK: does it mean
-that it is executable?**
+- Use of libraries that are not written in |SPARK|.
 
-**Need also to mention something about implementation-defined and partially-specified features and what could be done wrt those.**
+- Need to analyse legacy code that was not developed as |SPARK|.
 
-**See if my separate section should be combined with this one.**
+Hence, it must be possible within the language to indicate what is (intended to
+be) in and what is (intended to be) out, using an aspect specification.
 
-We describe a program unit or language feature as being "in |SPARK|"
-if it complies with the restrictions required to permit formal
-verification. **Action Stuart's comment on whether additional restrictions may
-be imposed on top of this (REQ-SM12): I'm not sure what comes after the
-"if" is true - there is more than this to the rationale for what is in the subset.**
-Conversely, a program unit language feature is "not in
-|SPARK|" if it does not meet these requirements, and so is not
-amenable to formal verification. Within a single unit, features which
-are "in" and "not in" |SPARK| may be mixed at a fine level. For
-example, the following combinations may be typical:
+The main principles regaring how |SPARK| and non-|SPARK| may mix are:
+
+- Including a non-|SPARK| declaration does not mean that the enclosing code is
+  non-|SPARK|, rather only use of such a declaration would move code outside of
+  the |SPARK| subset.
+
+- Calling code inherits whether it is in or out of |SPARK| from whether the declaration
+  of the called code is in or out.
+
+- A declaration can be in |SPARK| even if its definition is not.
+
+- Specifications must be provided at the boundary between |SPARK| and non-|SPARK| code in
+  order to allow analysis of the |SPARK| code.
+
+Hence, |SPARK| and non-|SPARK| code may mix at a fine level of granularity.
+The following combinations may be typical:
 
 - Package specification in |SPARK|. Package body entirely not in |SPARK|.
 
@@ -579,14 +580,22 @@ example, the following combinations may be typical:
 - Package specification in |SPARK|, with all bodies imported from another language.
 
 - Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
-  The latter declarations are only visible and usable from client units which are not in |SPARK|.
-  **Action REQ-CC47: last bullet point, last sentence: that seems too strong a restriction for hybrid usage. I would prefer: the latter declarations
-  are not used by pure SPARK 2014 code. I also think we need to define here what is the finest-grain of hybridation we are ready to deal
-  with. In particular, a subprogram can only have 3 states:    - spec in S14, body not - spec and body outside of S14 - spec and body in S14
-  we don't care about the case where the body would have chunks in s14 and other outside..**
+  The latter declarations -- i.e. those not in |SPARK| -- are only visible and usable from client units which are not in |SPARK|.
 
-Such patterns are intended to allow for mixed-language programming, and the development of programs
-that mix formal verification and more traditional testing.
+
+It is assumed by default that all code is |SPARK| -- though it would be possible to provide a means of
+overriding this default -- and then aspects can be provided to indicate where code
+may not be in |SPARK|. Non-|SPARK| code that had not been marked as such would be
+rejected and only |SPARK| code would be subject to formal analysis.
+
+|SPARK| code would by definition be executable (in order to meet this constraint,
+it is necessary to make logic functions executable by only allowing boolean logic functions
+and assuming they always evaluate to True when executed).
+
+.. todo::
+   We need to consider what might need to be levied on the non-|SPARK| code in order for flow
+   analysis on the |SPARK| code to be carried out.
+
 
 *No further detail is given in the current draft of this document on
 mixing code that is in and out of |SPARK|. Although there are a number of places where
@@ -731,24 +740,26 @@ have been explicitly indicated in this chapter.
 Actions to complete prior to release
 ------------------------------------
 
+#. Discuss with Trevor what I have done for in/out of SPARK and check whether he wants
+   anything extra added.
 
 #. Make sure that all necessary actions are recorded as ToDos: perhaps need to go through
    at least this Introduction with Andrew and Trevor to pull out actions to be carried out.
    As part of this, make sure that where necessary derived use cases or derived requirements
    are also recorded.
 
-**NB Need to be clear that not all of the strategic requirements flow down as necessary into
-the rest of the document.**
+#. **NB Need to be clear that not all of the strategic requirements flow down as necessary into
+   the rest of the document.**
 
-**NB For all the sections on strategic requirements, need to say at the end whether anything
-is included on them in the document.**
+#. **NB For all the sections on strategic requirements, need to say at the end whether anything
+   is included on them in the document.**
 
-**Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
+#. **Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
 
-**Associated action:  In section 1.4 (Principal Language Restrictions) remove word "currently" from
-Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.**
+#. **Associated action:  In section 1.4 (Principal Language Restrictions) remove word "currently" from
+   Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.**
 
-#. Incoorporate notes from marked-up copy of Introduction.
+#. Incorporate notes from marked-up copy of Introduction.
 
 #. Need to discuss the rationale for the use of refined pre and post conditions with people
    to make it better:
@@ -862,8 +873,3 @@ Tasking bullet. Move comments/ToDos about rel2+ version of language to an append
 #. Describe the generative mode, rather than just retrospective.
 
 #. Check through the derived SPRs to see if anything needs to be added from there.
-
-
-
-
-
