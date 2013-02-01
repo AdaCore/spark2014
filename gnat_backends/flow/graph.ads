@@ -70,7 +70,14 @@ with Ada.Iterator_Interfaces;
 --       improved. In particular it would be nice if we didn't have to
 --       pass around a pointer.
 --
---     * DFS could be implemented as an iterator.
+--     * For each concept in graph theory there seem to be at least
+--       two words commonly used in the literature. I have used the
+--       following:
+--
+--          Vertex        (rather than Node)
+--          Edge          (rather than Link)
+--          In_Neighbour  (rather than Predecessor)
+--          Out_Neighbour (rather than Successor)
 
 generic
    type Vertex_Key is private;
