@@ -70,6 +70,37 @@ with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Expr is
 
+   --  This package handles the translation of expressions and statements to
+   --  Why.
+
+   --  -----------------------------
+   --  Handling of 'Image and 'Value
+   --  -----------------------------
+   --
+   --  For each scalar type, we introduce functions corresponding to 'Image and
+   --  'Value. Logically, the return type of 'Image and the argument type of
+   --  'Value should be Standard__String, but this would be circular, as String
+   --  depends on a scalar type itself. Therefore, we introduce an abstract
+   --  type __image, which is used as return type/argument type of the Why3
+   --  functions for 'Image and 'Value. In addition, in the Why3 module for
+   --  Standard__String, we generate two conversion functions between __image
+   --  and String. The actual translation of the attributes now needs to use
+   --  these conversion functions to get an actual String from a scalar, or
+   --  to be able to convert a string to a scalar. So X'Image gets converted to
+   --
+   --  Standard__String.to_string (attr__ATTRIBUTE_IMAGE (to_int (x)))
+   --
+   --  Finally, to express that 'Value may fail, there is also a program
+   --  function that corresponds to 'Value, that has an unprovable
+   --  precondition, and "true" as postcondition.
+
+   --  Code pointers:
+   --    * Why3 declarations for type __image and the attributes Image
+   --      and Value: see file ada__model.mlw.
+   --    * Special case for the Standard__String module: see
+   --      why-gen-arrays.adb:Declare_Unconstrained_Array
+   --    * handling of the attributes: Transform_Attr in this file.
+
    ---------------------
    -- Local Variables --
    ---------------------
