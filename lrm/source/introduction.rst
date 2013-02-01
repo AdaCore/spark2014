@@ -100,11 +100,11 @@ specific to |SPARK|):
 #. Syntax: this section gives the Syntax rules.
 
 #. Legality Rules: these are rules that are enforced at compile time. A
-   construct is legal if it obeys *all* of the Legality Rules. 
+   construct is legal if it obeys *all* of the Legality Rules.
 
-#. Static Semantics: a definition of the compile-time effect of each construct. 
+#. Static Semantics: a definition of the compile-time effect of each construct.
 
-#. Dynamic Semantics: a definition of the run-time effect of each construct. 
+#. Dynamic Semantics: a definition of the run-time effect of each construct.
 
 #. Verification Rules: these rules define the proof and flow analysis checks
    to be performed on the language feature.
@@ -134,7 +134,7 @@ Formal Analysis
   preconditions, postconditions, type invariants and so on.
 
 The static checking needed to carry out this formal analysis is performed in three separate
-phases and errors may be detected during any of these three steps. Firstly, the syntax 
+phases and errors may be detected during any of these three steps. Firstly, the syntax
 and legality rules presented in this document are checked together with
 the Ada 2012 syntax and legality rules. Secondly, flow analysis is performed.
 Rules enforced at this point are described in sections with the
@@ -301,9 +301,9 @@ Some are expanded in subsequent sections within this chapter.
 
    * |SPARK| shall provide a retrospective mode of verification where useful
      forms of verification can be achieved with code that complies with the core |SPARK| restrictions, but
-     otherwise does not have any contracts.  In this mode, implicit contracts can be 
+     otherwise does not have any contracts.  In this mode, implicit contracts can be
      computed from the bodies of units, and then used in the analysis of other
-     units, and so on. 
+     units, and so on.
 
 - *Code Policies* shall be allowed that reduce the subset of Ada 2012 that may
   be used in line with specific goals such as domain needs or certification
@@ -406,7 +406,7 @@ formal verification or testing.
 
 In cases where the code to be tested is not |SPARK|, then additional information
 may be provided in the code -- possibly at the boundary -- to indicate this
-(see section :ref:`in_out` for further details). 
+(see section :ref:`in_out` for further details).
 
 
 Checks to be Performed at the Boundary
@@ -424,7 +424,7 @@ In general, formal verification works by imposing requirements on the callers of
 proved code, and these requirements should be shown to hold even when formal verification
 and testing are combined. Any toolset that proposes a combination of formal verification and testing for
 |SPARK| should provide a detailed process for doing so, including any necessary
-additional testing of proof assumptions. 
+additional testing of proof assumptions.
 
 Restrictions that Apply to the Tested Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -441,9 +441,8 @@ The specific details of the restrictions to be applied to tested code -- which
 will typically be non-|SPARK| -- code will be given in a subsequent draft of this document.
 
 .. todo::
-   Add detail on restrictions to be applied to tested code. Target: Milestone 3  
+   Add detail on restrictions to be applied to tested code. Target: Milestone 3
 
-  
 *No further detail is given in the current draft of this document on Combining
 Formal Verification and Testing, or on providing what it needs. Further detail will be provided at least
 in part under TN LC10-020.*
@@ -479,7 +478,7 @@ might impose two code policies, one for the domain of interest and one for the s
 of interest.
 
 Since it should be possible to apply these policies  at multiple levels
-of granularity - for example at a package level rather than at a library level - 
+of granularity - for example at a package level rather than at a library level -
 and since it need not be the case that violation of one of these policies leads
 to a compilation error, then the existing Ada mechanisms of pragma Restriction
 and pragma Profile are not suitable. Hence, pragma Code_Policy will be introduced
@@ -508,7 +507,7 @@ subprograms and so on. There are two main use cases where this might be necessar
   specifications are included by the developer.
 
 - Legacy code is analysed to generate flow analysis specifications in order to
-  derive information on its behaviour. 
+  derive information on its behaviour.
 
 Hence, as well as still fully supporting the constructive mode, |SPARK| is designed
 to facilitate this *retrospective* mode of analysis.
@@ -583,6 +582,19 @@ The following combinations may be typical:
 - Package specification contains a mixture of declarations which are in |SPARK| and not in |SPARK|.
   The latter declarations -- i.e. those not in |SPARK| -- are only visible and usable from client units which are not in |SPARK|.
 
+Such patterns are intended to allow for mixed-language programming,
+mixed-verification using different analysis tools, and mixed-verification
+between formal verification and more traditional testing. A condition for
+safely combining the results of formal verification with other verification
+results is that formal verification tools explicitly list the assumptions that
+were made to produce their results. The proof of a property may depend on the
+assumption of other user-specified properties (for example, preconditions and
+postconditions) or implicit assumptions associated with how the tool works (for
+example, initialization of inputs and outputs, or non-aliasing between
+parameters). Thus, combining these results with other verification results
+depends on the verification of these assumptions. Part of these assumptions may
+be discharged in the other verification results. The remaining assumptions
+should be manually reviewed to ensure the soundness of the approach.
 
 It is assumed by default that all code is |SPARK| -- though it would be possible to provide a means of
 overriding this default -- and then aspects can be provided to indicate where code
@@ -593,10 +605,14 @@ rejected and only |SPARK| code would be subject to formal analysis.
 it is necessary to make logic functions executable by only allowing boolean logic functions
 and assuming they always evaluate to True when executed).
 
+.. note::
+   (YM) The above restriction seems arbitrary. Executability of logic functions
+   needs to be discussed. My current understanding is that they would not be
+   executable.
+
 .. todo::
    We need to consider what might need to be levied on the non-|SPARK| code in order for flow
    analysis on the |SPARK| code to be carried out. Target: Milestone 3
-
 
 *No further detail is given in the current draft of this document on
 mixing code that is in and out of |SPARK|. Although there are a number of places where
