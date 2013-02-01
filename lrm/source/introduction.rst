@@ -441,7 +441,7 @@ The specific details of the restrictions to be applied to tested code -- which
 will typically be non-|SPARK| -- code will be given in a subsequent draft of this document.
 
 .. todo::
-   Add detail on restrictions to be applied to tested code. Target: D2  
+   Add detail on restrictions to be applied to tested code. Target: Milestone 3  
 
   
 *No further detail is given in the current draft of this document on Combining
@@ -530,6 +530,7 @@ no explicit detail is given on retrospective mode.
 
 .. todo::
    Add detail on how retrospective mode will work when we have a mix of |SPARK| and non-|SPARK|.
+   Target: Mileston 3
 
 
 *No further detail is given in the current draft of this document on
@@ -594,7 +595,7 @@ and assuming they always evaluate to True when executed).
 
 .. todo::
    We need to consider what might need to be levied on the non-|SPARK| code in order for flow
-   analysis on the |SPARK| code to be carried out.
+   analysis on the |SPARK| code to be carried out. Target: Milestone 3
 
 
 *No further detail is given in the current draft of this document on
