@@ -25,8 +25,8 @@ Global items are presented in Global aspects (see :ref:`global-aspects`).
 An *entire object* is an object which is not a subcomponent of a larger 
 containing object.  More specifically, an *entire object* is
 an object declared by an object_declaration (as opposed to, for example,
-the result object of a function call) or a formal parameter of a subprogram.
-An *entire variable* is an an entire object which is a 
+a slice or the result object of a function call) or a formal parameter of
+a subprogram. An *entire variable* is an an entire object which is a 
 variable.
 
 .. centered:: **Static Semantics**
@@ -331,7 +331,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR global_item shall be stand alone variable or state abstraction
+      :Trace Unit: 6.1.4 LR global_item shall denote an entire variable or a state abstraction
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
