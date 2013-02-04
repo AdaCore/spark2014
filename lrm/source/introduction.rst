@@ -589,17 +589,15 @@ safely combining the results of formal verification with other verification
 results is that formal verification tools explicitly list the assumptions that
 were made to produce their results. The proof of a property may depend on the
 assumption of other user-specified properties (for example, preconditions and
-postconditions) or implicit assumptions associated with how the tool works (for
-example, initialization of inputs and outputs, or non-aliasing between
-parameters). When a complete program is formally verified, these assumptions
-are discharged by the proof tools, based on the global guarantees provided by
-the strict adherence to a given language subset. No such guarantees are
-available when only part of a program is formally verified.  Thus, combining
-these results with other verification results depends on the verification of
-global and local assumptions made during formal verification. Part of these
-assumptions may be discharged in the other verification results. The remaining
-assumptions should be manually reviewed to ensure the soundness of the
-approach.
+postconditions) or implicit assumptions associated with the foundation and
+hypothesis on which the formal verification relies (for example,
+initialization of inputs and outputs, or non-aliasing between parameters). When
+a complete program is formally verified, these assumptions are discharged by
+the proof tools, based on the global guarantees provided by the strict
+adherence to a given language subset. No such guarantees are available when
+only part of a program is formally verified.  Thus, combining these results
+with other verification results depends on the verification of global and local
+assumptions made during formal verification.
 
 It is assumed by default that all code is |SPARK| -- though it would be possible to provide a means of
 overriding this default -- and then aspects can be provided to indicate where code
