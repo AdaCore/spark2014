@@ -1149,11 +1149,9 @@ package body Gnat2Why.Expr is
       if Nkind (Par) = N_Indexed_Component then
          Check_Kind := VC_Index_Check;
 
-         --  On type conversion nodes, if the target type is a constrained
-         --  array, we have a length check.
+         --  If the target type is a constrained array, we have a length check.
 
-      elsif Nkind (Par) = N_Type_Conversion and then
-        Is_Array_Type (Check_Type) and then
+      elsif Is_Array_Type (Check_Type) and then
         Is_Constrained (Check_Type) then
          Check_Kind := VC_Length_Check;
       else
