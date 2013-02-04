@@ -133,6 +133,8 @@ package body Gnat2Why.Types is
    begin
       if E = Standard_Boolean then
          return New_Identifier (Name => "bool");
+      elsif not In_Alfa (Most_Underlying_Type (E)) then
+         return New_Identifier (Name => To_String (WNE_Private));
       else
          return To_Why_Id (E);
       end if;

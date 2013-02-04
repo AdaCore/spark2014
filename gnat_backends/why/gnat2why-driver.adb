@@ -25,8 +25,6 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with GNAT.Source_Info;
-
 with ALI;                   use ALI;
 with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
@@ -45,7 +43,6 @@ with Outputs;               use Outputs;
 with Sem;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Switch;                use Switch;
 
@@ -55,9 +52,7 @@ with Alfa.Util;             use Alfa.Util;
 
 with Why;                   use Why;
 with Why.Atree.Sprint;      use Why.Atree.Sprint;
-with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Ids;               use Why.Ids;
 with Why.Inter;             use Why.Inter;
 with Why.Types;             use Why.Types;
 
@@ -398,27 +393,10 @@ package body Gnat2Why.Driver is
 
             --  Private types not translated in Why3
 
-            if Ekind (E) in Private_Kind then
-               null;
-
-            elsif In_Alfa (E) then
+            if In_Alfa (E)
+              and then Ekind (E) not in Private_Kind
+            then
                Translate_Type (File, E);
-
-            else
-               Open_Theory
-                 (File,
-                  Full_Name (E),
-                  Comment =>
-                    "Module for defining the private type (not in Alfa) "
-                      & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-               Emit (File.Cur_Theory,
-                     New_Type (Name => To_Why_Id (E, Local => True),
-                               Args => 0));
-               Close_Theory (File, Filter_Entity => E);
             end if;
 
          when Named_Kind =>

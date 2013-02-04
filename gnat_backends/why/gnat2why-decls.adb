@@ -283,7 +283,10 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
-      Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
+      if In_Alfa (Most_Underlying_Type (Etype (E))) then
+         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
+      end if;
+
       --  We generate a global ref
 
       Emit
