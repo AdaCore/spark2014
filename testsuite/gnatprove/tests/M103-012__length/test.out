@@ -1,1 +1,2 @@
-some output with length check expected
+p.adb:7:16: info: range check proved
+p.adb:8:17: length check not proved
