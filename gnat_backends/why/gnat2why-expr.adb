@@ -4350,10 +4350,10 @@ package body Gnat2Why.Expr is
             --  ??? Protect array types, range checks currently broken for
             --  those
 
-            if Is_Array_Type (Etype (Expr)) or else Domain /= EW_Prog then
+            if Domain /= EW_Prog then
                Range_Check_Node := Empty;
             elsif Do_Range_Check (Expr) then
-                  Range_Check_Node := Expr;
+               Range_Check_Node := Expr;
             elsif Nkind (Expr) = N_Type_Conversion and then
               Do_Overflow_Check (Expr) then
                Range_Check_Node := Expression (Expr);

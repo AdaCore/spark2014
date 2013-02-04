@@ -133,6 +133,7 @@ module Index_Type
   type base
 
   function to_int base : int
+  predicate in_range_base int
   predicate in_range int
 
   type t
@@ -152,6 +153,13 @@ module Index_Type
    forall a : t [last a].
     to_int (first a) <= to_int (last a) ->
       in_range (to_int (last a))
+
+  (* The range check that is required by conversion to an unconstrained array.
+     See RM 3.6.2(4-6) and 4.6(38) *)
+  predicate range_check (low : int) (high : int) =
+       in_range_base low /\ in_range_base high /\
+       (high >= low -> (in_range low /\ in_range high))
+
 end
 
 module Unconstr_Array
@@ -160,34 +168,40 @@ module Unconstr_Array
   use "_gnatprove_standard".Array__1
 
   type component_type
-  type range_type
+
   type base_type
   function to_int base_type : int
+  predicate in_range_base int
   predicate in_range int
 
-  clone export Index_Type with
-    type      base     = base_type,
-    function  to_int   = to_int,
-    predicate in_range = in_range,
-    type      t        = range_type
-
+  clone Index_Type as I1 with
+    type      base          = base_type,
+    function  to_int        = to_int,
+    predicate in_range_base = in_range_base,
+    predicate in_range      = in_range
 
 
   type __t =
-    { elts : (Array__1.map component_type); offset : int; rt : range_type }
+    { elts : (Array__1.map component_type); offset : int; rt : I1.t }
 
  function to_array (a : __t) : (Array__1.t component_type) =
   { Array__1.elts   = a.elts;
-    Array__1.first  = to_int (first a.rt);
-    Array__1.last   = to_int (last a.rt);
+    Array__1.first  = to_int (I1.first a.rt);
+    Array__1.last   = to_int (I1.last a.rt);
     Array__1.offset = a.offset;
   }
 
  function of_array (a : Array__1.t component_type) : __t =
   { elts   = a.Array__1.elts;
     offset = a.Array__1.offset;
-    rt     = mk a.Array__1.first a.Array__1.last
+    rt     = I1.mk a.Array__1.first a.Array__1.last
   }
+
+  val range_check_ (a : Array__1.t component_type) : Array__1.t component_type
+   requires {
+    I1.range_check a.Array__1.first a.Array__1.last
+   }
+   ensures { result = a }
 
  function dummy : __t
 end
@@ -202,22 +216,25 @@ module Unconstr_Array_2
 
   type base_type
   function to_int base_type : int
+  predicate in_range_base int
   predicate in_range int
 
   type base_type_2
   function to_int_2 base_type_2 : int
+  predicate in_range_base_2 int
   predicate in_range_2 int
 
   clone Index_Type as I1 with
-    type      base     = base_type,
-    function  to_int   = to_int,
-    predicate in_range = in_range
-
+    type      base          = base_type,
+    function  to_int        = to_int,
+    predicate in_range_base = in_range_base,
+    predicate in_range      = in_range
 
   clone Index_Type as I2 with
-    type      base     = base_type_2,
-    function  to_int   = to_int_2,
-    predicate in_range = in_range_2
+    type      base          = base_type_2,
+    function  to_int        = to_int_2,
+    predicate in_range_base = in_range_base_2,
+    predicate in_range      = in_range_2
 
   type __t =
     { elts     : Array__2.map component_type;
@@ -245,6 +262,13 @@ module Unconstr_Array_2
     rt_2     = I2.mk a.Array__2.first_2 a.Array__2.last_2
   }
 
+  val range_check_ (a : Array__2.t component_type) : Array__2.t component_type
+   requires {
+      I1.range_check a.Array__2.first a.Array__2.last /\
+      I2.range_check a.Array__2.first_2 a.Array__2.last_2
+   }
+   ensures { result = a }
+
  function dummy : __t
 end
 
@@ -257,31 +281,37 @@ module Unconstr_Array_3
 
   type base_type
   function to_int base_type : int
+  predicate in_range_base int
   predicate in_range int
 
   type base_type_2
   function to_int_2 base_type_2 : int
+  predicate in_range_base_2 int
   predicate in_range_2 int
 
   type base_type_3
   function to_int_3 base_type_3 : int
+  predicate in_range_base_3 int
   predicate in_range_3 int
 
 
   clone Index_Type as I1 with
-    type      base     = base_type,
-    function  to_int   = to_int,
-    predicate in_range = in_range
+    type      base          = base_type,
+    function  to_int        = to_int,
+    predicate in_range_base = in_range_base,
+    predicate in_range      = in_range
 
   clone Index_Type as I2 with
-    type      base     = base_type_2,
-    function  to_int   = to_int_2,
-    predicate in_range = in_range_2
+    type      base          = base_type_2,
+    function  to_int        = to_int_2,
+    predicate in_range_base = in_range_base_2,
+    predicate in_range      = in_range_2
 
   clone Index_Type as I3 with
-    type      base     = base_type_3,
-    function  to_int   = to_int_3,
-    predicate in_range = in_range_3
+    type      base          = base_type_3,
+    function  to_int        = to_int_3,
+    predicate in_range_base = in_range_base_3,
+    predicate in_range      = in_range_3
 
   type __t =
     { elts     : Array__3.map component_type;
@@ -316,6 +346,14 @@ module Unconstr_Array_3
     rt_3     = I3.mk a.Array__3.first_3 a.Array__3.last_3
   }
 
+  val range_check_ (a : Array__3.t component_type) : Array__3.t component_type
+   requires {
+      I1.range_check a.Array__3.first a.Array__3.last /\
+      I2.range_check a.Array__3.first_2 a.Array__3.last_2 /\
+      I3.range_check a.Array__3.first_3 a.Array__3.last_3
+   }
+
+   ensures { result = a }
  function dummy : __t
 end
 
@@ -328,40 +366,48 @@ module Unconstr_Array_4
 
   type base_type
   function to_int base_type : int
+  predicate in_range_base int
   predicate in_range int
 
   type base_type_2
   function to_int_2 base_type_2 : int
+  predicate in_range_base_2 int
   predicate in_range_2 int
 
   type base_type_3
   function to_int_3 base_type_3 : int
+  predicate in_range_base_3 int
   predicate in_range_3 int
 
   type base_type_4
   function to_int_4 base_type_4 : int
+  predicate in_range_base_4 int
   predicate in_range_4 int
 
 
   clone Index_Type as I1 with
-    type      base     = base_type,
-    function  to_int   = to_int,
-    predicate in_range = in_range
+    type      base          = base_type,
+    function  to_int        = to_int,
+    predicate in_range_base = in_range_base,
+    predicate in_range      = in_range
 
   clone Index_Type as I2 with
-    type      base     = base_type_2,
-    function  to_int   = to_int_2,
-    predicate in_range = in_range_2
+    type      base          = base_type_2,
+    function  to_int        = to_int_2,
+    predicate in_range_base = in_range_base_2,
+    predicate in_range      = in_range_2
 
   clone Index_Type as I3 with
-    type      base     = base_type_3,
-    function  to_int   = to_int_3,
-    predicate in_range = in_range_3
+    type      base          = base_type_3,
+    function  to_int        = to_int_3,
+    predicate in_range_base = in_range_base_3,
+    predicate in_range      = in_range_3
 
   clone Index_Type as I4 with
-    type      base     = base_type_4,
-    function  to_int   = to_int_4,
-    predicate in_range = in_range_4
+    type      base          = base_type_4,
+    function  to_int        = to_int_4,
+    predicate in_range_base = in_range_base_4,
+    predicate in_range      = in_range_4
 
   type __t =
     { elts     : Array__4.map component_type;
@@ -402,6 +448,14 @@ module Unconstr_Array_4
     offset_4 = a.Array__4.offset_4;
     rt_4     = I4.mk a.Array__4.first_4 a.Array__4.last_4;
   }
+
+  val range_check_ (a : Array__4.t component_type) : Array__4.t component_type
+   requires {
+      I1.range_check a.Array__4.first a.Array__4.last /\
+      I2.range_check a.Array__4.first_2 a.Array__4.last_2 /\
+      I3.range_check a.Array__4.first_3 a.Array__4.last_3 /\
+      I4.range_check a.Array__4.first_4 a.Array__4.last_4
+   }
 
  function dummy : __t
 end

@@ -182,7 +182,7 @@ package body Why.Gen.Arrays is
       Int_Type    : constant W_Primitive_Type_Id :=
         New_Base_Type (Base_Type => EW_Int);
       Subst     : W_Clone_Substitution_Array
-        (1 .. Integer (Dimension * 3) + 1);
+        (1 .. Integer (Dimension * 4) + 1);
       Cursor    : Integer := 1;
       Index     : Node_Id := First_Index (Und_Ent);
       Dim_Count : Integer := 1;
@@ -214,6 +214,12 @@ package body Why.Gen.Arrays is
                  Orig_Name => Append_Num ("to_int", Dim_Count),
                  Image     => Conversion_Name (From => +B_Type,
                                                To => +Int_Type));
+            Cursor := Cursor + 1;
+            Subst (Cursor) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name => Append_Num ("in_range_base", Dim_Count),
+                 Image     => Range_Pred_Name (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
