@@ -218,8 +218,9 @@ package Why.Inter is
 
    function Base_Why_Type (N : Node_Id) return W_Base_Type_Id;
    function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id;
-   --  Return the base type in Why of the given node
-   --  (e.g EW_Real_Type for standard__float).
+   --  Return the base type in Why of the given node. This type will be
+   --  used for comparisons, conversions etc. Examples are EW_Real_Type
+   --  for standard__float, and the Root_Record_Type for record types.
 
    function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
    function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;

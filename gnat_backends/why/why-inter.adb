@@ -482,9 +482,6 @@ package body Why.Inter is
 
    function Base_Why_Type (N : Node_Id) return W_Base_Type_Id is
 
-      --  Get to the unique type, in order to reach the actual base type,
-      --  because the private view has another base type (possibly itself).
-
       E   : constant EW_Type := Get_EW_Term_Type (N);
       Typ : constant Entity_Id := Etype (N);
    begin
@@ -492,6 +489,8 @@ package body Why.Inter is
          when EW_Abstract =>
             if Is_Array_Type (Typ) then
                return Why_Types (EW_Array);
+            elsif Is_Record_Type (Typ) then
+               return EW_Abstract (Root_Record_Type (Typ));
             else
                return EW_Abstract (Typ);
             end if;
@@ -937,10 +936,14 @@ package body Why.Inter is
          Left_Base := Get_Base_Type (Base_Why_Type (Left));
          Right_Base := Get_Base_Type (Base_Why_Type (Right));
          if Left_Base = EW_Abstract and then Right_Base = EW_Abstract then
-            pragma Assert
-              (Root_Record_Type (Get_Ada_Node (+Left)) =
-                 Root_Record_Type (Get_Ada_Node (+Right)));
-            return EW_Abstract (Root_Record_Type (Get_Ada_Node (+Left)));
+            declare
+               L : constant Node_Id := Get_Ada_Node (+Left);
+               R : constant Node_Id := Get_Ada_Node (+Right);
+            begin
+               pragma Assert
+                 (Root_Record_Type (L) = Root_Record_Type (R));
+               return EW_Abstract (Root_Record_Type (L));
+            end;
          else
             return Why_Types (Type_Hierarchy.LCA (Left_Base, Right_Base));
          end if;
