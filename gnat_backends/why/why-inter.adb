@@ -926,10 +926,12 @@ package body Why.Inter is
    -- LCA --
    ---------
 
-   function  LCA (Left, Right : W_Base_Type_Id) return W_Base_Type_Id is
+   function  LCA (Left, Right : W_Base_Type_Id;
+                  Force : Boolean := False) return W_Base_Type_Id
+   is
       Left_Base, Right_Base : EW_Type;
    begin
-      if Eq (Left, Right) then
+      if not Force and then Eq (Left, Right) then
          return Left;
       else
          Left_Base := Get_Base_Type (Base_Why_Type (Left));

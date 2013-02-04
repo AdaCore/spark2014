@@ -249,7 +249,8 @@ package body Why.Gen.Expr is
       From          : W_Base_Type_Id;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
-      Base   : constant W_Base_Type_Id := LCA (To, From);
+      Base   : constant W_Base_Type_Id :=
+        LCA (To, From, Force => Range_Check /= Empty);
 
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;

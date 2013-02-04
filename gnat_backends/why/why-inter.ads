@@ -238,9 +238,12 @@ package Why.Inter is
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function  LCA (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
+   function  LCA (Left, Right : W_Base_Type_Id;
+                  Force : Boolean := False) return W_Base_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
+   --  If Force = True, we also force B to be different from Left or Right,
+   --  even in the case Left = Right.
 
    function Full_Name (N : Entity_Id) return String
       with Pre => (Nkind (N) in N_Entity);
