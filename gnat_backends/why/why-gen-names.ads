@@ -55,6 +55,10 @@ package Why.Gen.Names is
      (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "in_range" predicate for the type
 
+   function Range_Check_Name
+     (Ty : Entity_Id) return W_Identifier_Id;
+   --  Return the name of the "range_check_" program function for the type
+
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
    --  Return the Why name of a base type (e.g. "int" for int)
 

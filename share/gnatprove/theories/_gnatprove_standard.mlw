@@ -155,15 +155,19 @@ module Boolean
 
   predicate in_range (x : int) = x = 0 \/ x = 1
 
-   function attr__ATTRIBUTE_IMAGE bool : __image
+  function attr__ATTRIBUTE_IMAGE bool : __image
 
-   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-   function attr__ATTRIBUTE_VALUE __image : bool
+  function attr__ATTRIBUTE_VALUE __image : bool
 
-   val attr__ATTRIBUTE_VALUE_ (x : __image)  : bool
+  val attr__ATTRIBUTE_VALUE_ (x : __image)  : bool
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
+
+  val range_check_ (n : int) : int
+    requires { in_range n }
+    ensures { result = n }
 
 end
 

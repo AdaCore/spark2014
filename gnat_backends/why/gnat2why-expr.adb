@@ -1238,10 +1238,7 @@ package body Gnat2Why.Expr is
 
       return New_VC_Call (Domain   => EW_Prog,
                           Ada_Node => Expr,
-                          Name     => Prefix (S        =>
-                                                Full_Name (Check_Type),
-                                              W        => WNE_Range_Check_Fun,
-                                              Ada_Node => Check_Type),
+                          Name     => Range_Check_Name (Check_Type),
                           Progs    => (1 => +T),
                           Reason   => Check_Kind);
    end Insert_Range_Check;
