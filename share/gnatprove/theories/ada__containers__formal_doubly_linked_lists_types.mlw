@@ -1,7 +1,0 @@
-module $cursor
- type t
-end
-
-module $list
- type t
-end

@@ -1815,7 +1815,8 @@ package body Why.Atree.Sprint is
          Traverse (State, +As_Name);
       end if;
       if not Is_Empty (+Subst_List) then
-         P (O, " with ");
+         P (O, " with");
+         NL (O);
          Print_List (State, +Subst_List, ", ", Newline => True);
       end if;
       NL (O);

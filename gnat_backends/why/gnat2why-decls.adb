@@ -42,163 +42,23 @@ with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Types;            use Why.Types;
+with Why.Conversions;      use Why.Conversions;
 
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
-with System.OS_Lib;
-with Ada.Strings.Maps.Constants;
-with Why.Atree.Mutators;        use Why.Atree.Mutators;
+--  with Ada.Strings.Maps.Constants;
 with Sem_Ch12;                  use Sem_Ch12;
 with String_Utils;              use String_Utils;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sem_Util;                  use Sem_Util;
-with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
---  with Ada.Text_IO;
-with Ada.Strings; use Ada.Strings;
-
-with GNAT.OS_Lib;
-with GNAT.Case_Util;
-with GNAT.Strings;
-with Ada.Directories;
+--  with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+--  with Ada.Strings;               use Ada.Strings;
+with Gnat2Why.Subprograms;      use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Decls is
-
-   -----------------------
-   -- Local Subprograms --
-   -----------------------
-
-   --  Both Executable_Location and Is_Directory_Separator are copied from
-   --  GNATcoll. These should be removed when we use clones for the theories of
-   --  formal containers, instead of the ad-hoc copies that we do now.
-
-   function Executable_Location return String;
-   --  Return the name of the parent directory where the gnatprove executable
-   --  is stored. (so if gnatprove is stored in "prefix"/bin/gnatprove, you
-   --  would get "prefix"). A special case is done for "bin" directories, which
-   --  are skipped. The returned directory alwaysends up with a directory
-   --  separator.
-
-   function Is_Directory_Separator (C : Character) return Boolean;
-   --  Returns True if C is a directory separator
-
-   function Get_Template_Directory return String;
-   --  Returns the directory to use for templates of theories
-
-   -------------------------
-   -- Executable_Location --
-   -------------------------
-
-   function Executable_Location return String is
-      Exec_Name : constant String := "gnatprove";
-
-      function Get_Install_Dir (S : String) return String;
-      --  S is the executable name preceeded by the absolute or relative
-      --  path, e.g. "c:\usr\bin\gcc.exe" or "..\bin\gcc". Returns the absolute
-      --  or relative directory where "bin" lies (in the example "C:\usr"
-      --  or ".."). If the executable is not a "bin" directory, return "".
-
-      ---------------------
-      -- Get_Install_Dir --
-      ---------------------
-
-      function Get_Install_Dir (S : String) return String is
-         Exec      : String  := GNAT.OS_Lib.Normalize_Pathname
-            (S, Resolve_Links => True);
-         Path_Last : Integer := 0;
-
-      begin
-         for J in reverse Exec'Range loop
-            if Is_Directory_Separator (Exec (J)) then
-               Path_Last := J - 1;
-               exit;
-            end if;
-         end loop;
-
-         if Path_Last >= Exec'First + 2 then
-            GNAT.Case_Util.To_Lower (Exec (Path_Last - 2 .. Path_Last));
-         end if;
-
-         --  If we are not in a bin/ directory
-
-         if Path_Last < Exec'First + 2
-           or else Exec (Path_Last - 2 .. Path_Last) /= "bin"
-           or else (Path_Last - 3 >= Exec'First
-                    and then not Is_Directory_Separator (Exec (Path_Last - 3)))
-         then
-            return Exec (Exec'First .. Path_Last)
-               & GNAT.OS_Lib.Directory_Separator;
-
-         else
-            --  Skip bin/, but keep the last directory separator
-            return Exec (Exec'First .. Path_Last - 3);
-         end if;
-      end Get_Install_Dir;
-
-   --  Beginning of Executable_Location
-
-   begin
-      --  First determine if a path prefix was placed in front of the
-      --  executable name.
-
-      for J in reverse Exec_Name'Range loop
-         if Is_Directory_Separator (Exec_Name (J)) then
-            return Get_Install_Dir (Exec_Name);
-         end if;
-      end loop;
-
-      --  If you are here, the user has typed the executable name with no
-      --  directory prefix.
-      --  There is a potential issue here (see K112-046) where GNAT.OS_Lib
-      --  will in fact return any non-executable file found in the PATH,
-      --  whereas shells only consider executable files. As a result, the
-      --  user might end up with a wrong directory, not matching the one
-      --  found by the shell.
-
-      declare
-         Ex  : GNAT.Strings.String_Access :=
-           GNAT.OS_Lib.Locate_Exec_On_Path (Exec_Name);
-         Dir : constant String := Get_Install_Dir (Ex.all);
-      begin
-         GNAT.Strings.Free (Ex);
-         return Dir;
-      end;
-   end Executable_Location;
-
-   ----------------------------
-   -- Get_Template_Directory --
-   ----------------------------
-
-   function Get_Template_Directory return String is
-      Prefix         : constant String := Executable_Location;
-      Share_Dir      : constant String :=
-        Ada.Directories.Compose (Prefix, "share");
-      Gnatprove_Dir  : constant String :=
-        Ada.Directories.Compose (Share_Dir, "gnatprove");
-      Template_Dir   : constant String :=
-        Ada.Directories.Compose (Gnatprove_Dir, "theories");
-   begin
-      return Template_Dir;
-   end Get_Template_Directory;
-
-   ----------------------------
-   -- Is_Directory_Separator --
-   ----------------------------
-
-   function Is_Directory_Separator (C : Character) return Boolean is
-   begin
-      --  In addition to the default directory_separator allow the '/' to
-      --  act as separator since this is allowed in MS-DOS, Windows 95/NT,
-      --  and OS2 ports. On VMS, the situation is more complicated because
-      --  there are two characters to check for. We ignore the case of VMS in
-      --  gnatprove.
-
-      return C = GNAT.OS_Lib.Directory_Separator
-        or else C = '/';
-   end Is_Directory_Separator;
 
    ----------------
    -- Is_Mutable --
@@ -425,278 +285,154 @@ package body Gnat2Why.Decls is
    -- Translate_Container_Package --
    ---------------------------------
 
-   procedure Translate_Container_Package
-     (File_Type    : in out Why_File;
-      File_Context : in out Why_File;
-      E    : Entity_Id) is
+   procedure Translate_Container_Package (Package_Entity : Entity_Id) is
 
-      procedure Do_Capacity
-        (Discr             : Entity_Id;
-         Type_File_Name    : String;
-         Type_Source       : in out String_Access;
-         Context_File_Name : String;
-         Context_Source    : in out String_Access);
-      --  Generate a module for the Capacity discriminant
-
-      --  Replace each declaration's name by the appropriate name
-      --  Generate a renaming of every type parameter module
+      --  Generates a theory per Alfa entity of the package spec
+      --  Each theories should define every why element that is expected by the
+      --  usual translation mechanism so that belonging to an axiomatized
+      --  package is transparent.
       procedure Parse_Declarations
-        (Decls          : List_Id;
-         Assoc          : List_Id;
-         Labs           : List_Id;
-         Type_File_Name : String;
-         Type_Source       : in out String_Access;
-         Context_File_Name : String;
-         Context_Source   : in out String_Access;
-         Append : in out String_Access);
+        (Decls      : List_Id;
+         Clone_Name : String);
 
-      --  Replace each formal parameter by the corresponding concrete parameter
-      procedure Parse_Parameters
-        (Assoc             :        List_Id;
-         Labs              :        List_Id;
-         Type_File_Name    :        String;
-         Type_Source       : in out String_Access;
-         Context_File_Name :        String;
-         Context_Source    : in out String_Access);
-
-      --  Use custom declaration to append Args to File.
-      procedure Instantiate_Theory (Args : String_Access;
-                                    File : in out Why_File);
-
-      --  Copied from why_inter.adb
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String;
-
-      --  Compute the name of a formal parameter
-      function Get_Assoc_From_Param
-        (CurAssoc : Node_Id;
-         CurLabs  : Node_Id) return String;
-
-      --  Generate arguments for renaming Assoc_Name by Theory_Name from
-      --  File_Name in file My_File_Name
-      procedure Make_Replacement
-        (Assoc_Name   :        String;
-         Theory_Name  :        String;
-         Source       : in out String_Access;
-         File_Name    :        String := "";
-         My_File_Name :        String := "");
-
-      procedure Make_Replacement
-        (Assoc_Name   :        String;
-         Theory_Name  :        String;
-         Source       : in out String_Access;
-         File_Name    :        String := "";
-         My_File_Name :        String := "") is
-
-         function Replace_All
-           (Source  : String;
-            Pattern : String;
-            By      : String) return String;
-
-         function Replace_All
-           (Source  : String;
-            Pattern : String;
-            By      : String) return String is
-            I : constant Natural := Index (Source, Pattern);
-         begin
-            if I = 0 then
-               return Source;
-            else
-               return Replace_All
-                 (Replace_Slice (Source, I, I + Pattern'Length - 1, By),
-                  Pattern, By);
-            end if;
-         end Replace_All;
-      begin
-         --  Ada.Text_IO.Put (Assoc_Name);
-         --  Ada.Text_IO.Put (" => ");
-         if File_Name /= My_File_Name then
-            Source := new String'(Replace_All
-              (Source.all, Assoc_Name,
-                 '"' & File_Name & '"' & "." & Theory_Name));
-            --  Ada.Text_IO.Put_Line
-            --    ('"' & File_Name & '"' & "." & Theory_Name);
-         else
-            Source := new String'(Replace_All
-              (Source.all, Assoc_Name, Theory_Name));
-            --  Ada.Text_IO.Put_Line (Theory_Name);
-         end if;
-      end Make_Replacement;
-
-      function Get_Assoc_From_Param
-        (CurAssoc : Node_Id;
-         CurLabs  : Node_Id) return String is
-         Potential_Assoc : constant Node_Id  :=
-           Selector_Name (CurAssoc);
-         --  Assoc is either association for the label if any or the label
-         --  itself
-         Assoc  : constant Node_Id  :=
-           (if Present (Potential_Assoc) then Potential_Assoc
-            else Defining_Identifier (CurLabs));
-      begin
-         Get_Unqualified_Name_String (Chars (Assoc));
-         return Ada.Strings.Fixed.Translate
-           (Name_Buffer (1 .. Name_Len),
-            Ada.Strings.Maps.Constants.Lower_Case_Map);
-      end Get_Assoc_From_Param;
-
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String is
-         U : Node_Id;
-      begin
-         if Is_In_Standard_Package (E) then
-            return Standard_Why_Package_Name;
-         end if;
-         U := Enclosing_Comp_Unit_Node (E);
-
-         --  Itypes are not attached to the tree, so we go through the
-         --  associated node
-
-         if not Present (U) and then Is_Itype (E) then
-            U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
-         end if;
-
-         --  Special handling for entities of subunits, we extract the library
-         --  unit
-
-         while Nkind (Unit (U)) = N_Subunit loop
-            U := Library_Unit (U);
-         end loop;
-         return File_Name_Without_Suffix (Sloc (U));
-      end File_Base_Name_Of_Entity;
-
-      procedure Do_Capacity
-        (Discr             : Entity_Id;
-         Type_File_Name    : String;
-         Type_Source       : in out String_Access;
-         Context_File_Name : String;
-         Context_Source   : in out String_Access)
-      is
-         Assoc_Name : constant String := Alfa.Util.Lowercase_Capacity_Name;
-         Theory_Name : constant String := Capitalize_First (Full_Name (Discr));
-
-      begin
-         Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                           Context_Source,
-                           Type_File_Name, Context_File_Name);
-         Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                           Type_Source);
-         Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                           Context_Source);
-         Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                           Type_Source);
-      end Do_Capacity;
+      --  Creates the substitution for the generic parameter
+      --  The substitution is then used to clone the axiomatization
+      function Parse_Parameters
+        (Assoc      : List_Id;
+         Labs       : List_Id;
+         Clone_Name : String) return W_Clone_Substitution_Array;
 
       procedure Parse_Declarations
-        (Decls             : List_Id;
-         Assoc             : List_Id;
-         Labs              : List_Id;
-         Type_File_Name    : String;
-         Type_Source       : in out String_Access;
-         Context_File_Name : String;
-         Context_Source   : in out String_Access;
-         Append           : in out String_Access) is
+        (Decls      : List_Id;
+         Clone_Name : String) is
 
-         --  Generate a renaming of a type parameter module
-         procedure Make_Parameter (Theory_Name : String;
-                                   Assoc_Name  : String;
-                                   File_Name   : String);
-
-         --  Replace a declaration's name by the appropriate name
          procedure Parse_Declaration
            (Node    : Node_Id);
-
-         procedure Make_Parameter (Theory_Name : String;
-                                   Assoc_Name  : String;
-                                   File_Name   : String) is
-
-            CurAssoc : Node_Id := First (Assoc);
-            CurLabs : Node_Id := First (Labs);
-         begin
-            --  Serch for Assoc_Name in the parameter list
-            while Present (CurAssoc) loop
-               declare
-                  Current_Assoc : constant String :=
-                    Get_Assoc_From_Param (CurAssoc, CurLabs);
-                  Param : constant Node_Id :=
-                    Explicit_Generic_Actual_Parameter (CurAssoc);
-                  Assoc_Theory_Name : constant String :=
-                    Capitalize_First (Full_Name (Entity (Param)));
-                  Assoc_File_Name   : constant String :=
-                    File_Base_Name_Of_Entity (Entity (Param)) &
-                  Why_File_Suffix (Dispatch_Entity (Entity (Param)));
-               begin
-                  if Assoc_Name = Current_Assoc then
-                     --  Generate a copy of the concrete parameter's module
-                     --  Named Theory_Name
-                     if File_Name = Assoc_File_Name then
-                        Append :=
-                          new String'("module "&Theory_Name&ASCII.LF&
-                                      "use export "&Assoc_Theory_Name&
-                                      ASCII.LF&"end"&ASCII.LF&ASCII.LF&
-                                      Append.all);
-                     else
-                        Append :=
-                          new String'("module "&Theory_Name&ASCII.LF&
-                                      "use export "&'"'&
-                                      Assoc_File_Name&'"'&
-                                      "."&Assoc_Theory_Name&ASCII.LF&"end"&
-                                      ASCII.LF&ASCII.LF&
-                                      Append.all);
-                     end if;
-                     return;
-                  end if;
-                  Next (CurAssoc);
-                  Next (CurLabs);
-               end;
-            end loop;
-         end Make_Parameter;
 
          procedure Parse_Declaration
            (Node    : Node_Id) is
          begin
             case Nkind (Node) is
             when N_Subtype_Declaration | N_Private_Type_Declaration =>
-               Get_Unqualified_Name_String
-                 (Chars (Defining_Identifier (Node)));
+               --  Generates the type definition and an access function per
+               --  discriminant if any.
+               --  No equality function is needed.
+               --  Only works for private types with discriminants.
+               if not Comes_From_Source (Node) then
+                  return;
+               end if;
                declare
-                  Theory_Name : constant String := Capitalize_First
-                    (Full_Name (Defining_Identifier (Node)));
-                  Assoc_Name : constant String := Name_Buffer (1 .. Name_Len);
+                  E : constant Entity_Id := Defining_Identifier (Node);
+                  Id : constant W_Identifier_Id :=
+                    To_Why_Id (E, Domain => EW_Term, Local => True);
+                  Type_Name : constant String := Short_Name (E);
+                  Theory_Name : constant String := Full_Name (E);
+                  TFile : Why_File :=
+                    Why_Files (Dispatch_Entity (E));
+                  Corresponding_Type : constant W_Primitive_Type_Id :=
+                    New_Abstract_Type
+                    (Name => New_Identifier (Name => Type_Name,
+                                             Context => Clone_Name));
+                  Binder : constant Binder_Type :=
+                    Binder_Type'(B_Name =>
+                                   New_Identifier (Name => Type_Name & "__x"),
+                                 B_Type => Corresponding_Type,
+                                 others => <>);
                begin
-                  Make_Parameter (Theory_Name, Assoc_Name,
-                                  Type_File_Name);
-                  if not Comes_From_Source (Node) then
+                  if not In_Alfa (E) then
                      return;
                   end if;
+                  --  Ada.Text_IO.Put_Line ("New type : " & Type_Name);
 
-                  --  Generate a replacement for the Capacity discriminant
+                  Open_Theory
+                    (TFile, Theory_Name,
+                     Comment => "Module for axiomatizing type "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                       " defined at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  Add_Use_For_Entity (TFile, Package_Entity);
+
+                  --  type <type> = <type>
+                  Emit
+                    (TFile.Cur_Theory,
+                     New_Type (Ada_Node   => Node,
+                               Name       => Id,
+                               Definition =>
+                                 New_Transparent_Type_Definition
+                                   (Domain          => EW_Term,
+                                    Type_Definition => Corresponding_Type)));
 
                   if Nkind (Node) = N_Private_Type_Declaration
                     and then Present (Discriminant_Specifications (Node))
-                    and then
-                      List_Length (Discriminant_Specifications (Node)) = 1
                   then
                      declare
-                        Discr : constant Entity_Id :=
-                          Defining_Identifier
-                            (First (Discriminant_Specifications (Node)));
+                        Curs : Node_Id :=
+                          First (Discriminant_Specifications (Node));
                      begin
-                        if Is_Formal_Container_Capacity (Discr) then
-                           Do_Capacity (Discr, Type_File_Name,
-                                        Type_Source, Context_File_Name,
-                                        Context_Source);
-                        end if;
+                        --  Iterates over the discriminants
+                        while Present (Curs) loop
+                           declare
+                              E : constant Entity_Id :=
+                                Defining_Identifier (Curs);
+                              Name : constant String := Short_Name (E);
+                              Logic_Id : constant W_Identifier_Id :=
+                                To_Why_Id (E, Local => True);
+                              Program_Id : constant W_Identifier_Id :=
+                                To_Program_Space (Logic_Id);
+                              Discr_Type : constant W_Primitive_Type_Id :=
+                                Why_Logic_Type_Of_Ada_Obj (E);
+                              Associated_Fun : constant W_Identifier_Id :=
+                                New_Identifier (Name => Type_Name & "__" &
+                                                  Name & "__record",
+                                                Context => Clone_Name);
+                           begin
+                              --  val rec_<field>_ (<type>_x : <type>):
+                              --                              <dicr_type>
+                              --  ensures
+                              --  { result = <type>_<field>_record <type>_x }
+                              Emit
+                                (TFile.Cur_Theory,
+                                 New_Function_Decl
+                                   (Domain      => EW_Prog,
+                                    Name        => Program_Id,
+                                    Binders     => (1 .. 1 => Binder),
+                                    Return_Type => Discr_Type,
+                                    Pre         => Why_Empty,
+                                    Post        => New_Relation
+                                      (Op      => EW_Eq,
+                                       Op_Type => EW_Bool,
+                                       Left    => +To_Ident (WNE_Result),
+                                       Right   =>
+                                         +New_Call (Domain   => EW_Term,
+                                                   Binders  =>
+                                                     (1 .. 1 => Binder),
+                                                   Name     =>
+                                                      Associated_Fun))));
+
+                              --  function rec_<field> (<type>_x : <type>):
+                              --                                <dicr_type> =
+                              --         <type>_<field>_record <type>_x
+                              Emit
+                                (TFile.Cur_Theory,
+                                 New_Function_Def
+                                   (Domain      => EW_Term,
+                                    Name        => Logic_Id,
+                                    Binders     => (1 .. 1 => Binder),
+                                    Return_Type => Discr_Type,
+                                    Def         =>
+                                      New_Call (Domain   => EW_Term,
+                                                Binders  => (1 .. 1 => Binder),
+                                                Name     => Associated_Fun)));
+                              Next (Curs);
+                           end;
+                        end loop;
                      end;
                   end if;
-
-                  Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Context_Source,
-                                    Type_File_Name, Context_File_Name);
-                  Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Type_Source);
-                  Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Context_Source);
-                  Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Type_Source);
+                  Close_Theory (TFile, Filter_Entity => E,
+                                Defined_Entity => E);
                end;
 
             when N_Subprogram_Declaration
@@ -706,77 +442,139 @@ package body Gnat2Why.Decls is
                end if;
                declare
                   Spec  : constant Node_Id := Specification (Node);
-                  Theory_Name : constant String  :=
-                    Capitalize_First (Full_Name (Defining_Unit_Name (Spec)));
-
+                  E : constant Entity_Id := Defining_Entity (Node);
+                  Name : constant String := Short_Name (E);
+                  Program_Id : constant W_Identifier_Id :=
+                    To_Why_Id (E, Domain => EW_Prog, Local => True);
+                  Theory_Name : constant String := Full_Name (E);
+                  TFile : Why_File :=
+                    Why_Files (Dispatch_Entity (E));
+                  Program_Fun : constant W_Identifier_Id :=
+                    New_Identifier (Name => Name & "__program",
+                                    Context => Clone_Name);
                begin
+                  if not In_Alfa (E) then
+                     return;
+                  end if;
 
-                  Get_Unqualified_Name_String
-                    (Chars (Defining_Unit_Name (Spec)));
-                  declare
-                     Short_Name : constant String :=
-                       Name_Buffer (1 .. Name_Len);
-                     I : constant Natural :=
-                       Ada.Strings.Fixed.Index (Theory_Name, Short_Name, 1);
-                     Assoc_Name : constant String :=
-                       Ada.Strings.Fixed.Translate
-                         (Theory_Name (I .. Theory_Name'Length),
-                          Ada.Strings.Maps.Constants.Lower_Case_Map);
-                  begin
-                     --  Store the source entity corresponding to the function
-                     --  Has_Element for this particular type of container,
-                     --  for use in translating quantification over this
-                     --  container's type.
+                  --  Ada.Text_IO.Put_Line ("New function : " & Name);
 
-                     if Assoc_Name = Alfa.Util.Lowercase_Has_Element_Name then
-                        declare
-                           Container_Type : constant Entity_Id :=
-                             Etype (Defining_Identifier
-                                    (First (Parameter_Specifications (Spec))));
-                        begin
-                           Gnat2Why.Expr.Container_Type_To_Has_Element_Function
-                             .Insert (Container_Type, Defining_Entity (Node));
-                        end;
-                     end if;
+                  --  Store the source entity corresponding to the function
+                  --  Has_Element for this particular type of container,
+                  --  for use in translating quantification over this
+                  --  container's type.
 
-                     Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                       Context_Source);
-                     Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                       Context_Source);
-                     Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                       Type_Source,
-                                       Context_File_Name, Type_File_Name);
-                     Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                       Type_Source);
-                  end;
+                  if Name = Alfa.Util.Lowercase_Has_Element_Name then
+                     declare
+                        Container_Type : constant Entity_Id :=
+                          Etype (Defining_Identifier
+                                 (First (Parameter_Specifications (Spec))));
+                     begin
+                        Gnat2Why.Expr.Container_Type_To_Has_Element_Function
+                          .Insert (Container_Type, E);
+                     end;
+                  end if;
+
+                  Open_Theory
+                    (TFile, Theory_Name,
+                     Comment =>
+                       "Module for declaring a program function (and possibly "
+                     & "a logic function) for "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                       " defined at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  --  let <func_name> = <func_name>__program
+                  Emit
+                    (TFile.Cur_Theory,
+                     New_Function_Def
+                       (Domain      => EW_Prog,
+                        Name        => Program_Id,
+                        Binders     => (2 .. 1 => <>),
+                        Def         => +Program_Fun,
+                        Pre         => Why_Empty,
+                        Post        => Why_Empty));
+
+                  if Ekind (E) = E_Function then
+                     declare
+                        Binders : constant Binder_Array := Compute_Binders (E);
+                        Logic_Fun : constant W_Identifier_Id :=
+                          New_Identifier (Name => Name & "__logic",
+                                          Context => Clone_Name);
+                        Logic_Id : constant W_Identifier_Id :=
+                          To_Why_Id (E, Domain => EW_Term, Local => True);
+                     begin
+                        --  function func (...) = <func_name>__logic (...)
+                        Emit
+                          (TFile.Cur_Theory,
+                           New_Function_Def
+                             (Domain      => EW_Term,
+                              Name        => Logic_Id,
+                              Binders     => Binders,
+                              Return_Type =>
+                              +Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                              Def         =>
+                                New_Call (Domain   => EW_Term,
+                                          Binders  => Binders,
+                                          Name     => Logic_Fun),
+                              Pre         => Why_Empty,
+                              Post        => Why_Empty));
+                     end;
+                  end if;
+
+                  Add_Use_For_Entity (TFile, Package_Entity);
+                  Close_Theory (TFile, Filter_Entity => E,
+                                Defined_Entity => E);
                end;
 
             when N_Object_Declaration =>
                if not Comes_From_Source (Node) then
                   return;
                end if;
-               Get_Unqualified_Name_String
-                 (Chars (Defining_Identifier (Node)));
                declare
-                  Theory_Name    : constant String  :=
-                    Capitalize_First (Full_Name (Defining_Identifier (Node)));
-                  Short_Name : constant String := Name_Buffer (1 .. Name_Len);
-                  I : constant Natural :=
-                    Ada.Strings.Fixed.Index (Theory_Name, Short_Name, 1);
-                  Assoc_Name : constant String :=
-                    Ada.Strings.Fixed.Translate
-                      (Theory_Name (I .. Theory_Name'Length),
-                       Ada.Strings.Maps.Constants.Lower_Case_Map);
+                  E : constant Entity_Id := Defining_Entity (Node);
+                  Theory_Name : constant String := Full_Name (E);
+                  Name : constant String := Short_Name (E);
+                  Typ  : constant W_Primitive_Type_Id :=
+                    Why_Logic_Type_Of_Ada_Obj (E);
+                  Def : constant W_Identifier_Id :=
+                    New_Identifier (Name => Name & "__object",
+                                    Context => Clone_Name);
+                  TFile : Why_File :=
+                    Why_Files (Dispatch_Entity (E));
                begin
-                  Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Context_Source);
-                  Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Context_Source);
-                  Make_Replacement ("$$" & Assoc_Name, Theory_Name,
-                                    Type_Source,
-                                    Context_File_Name, Type_File_Name);
-                  Make_Replacement ("$" & Assoc_Name, Theory_Name,
-                                    Type_Source);
+                  if not In_Alfa (E) then
+                     return;
+                  end if;
+
+                  --  Ada.Text_IO.Put_Line ("New constant : " & Name);
+
+                  Open_Theory
+                    (TFile, Theory_Name,
+                     Comment =>
+                       "Module for defining the value of constant "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                       " defined at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  --  function func = <obj_name>__object
+                  Emit
+                    (TFile.Cur_Theory,
+                     New_Function_Def
+                       (Domain      => EW_Term,
+                        Name        =>
+                          To_Why_Id (E, Domain => EW_Term, Local => True),
+                        Binders     => (1 .. 0 => <>),
+                        Def         => +Def,
+                        Return_Type => Typ));
+
+                  Add_Use_For_Entity (TFile, Package_Entity);
+
+                  Close_Theory (TFile, Filter_Entity => E);
                end;
             when others => null;
             end case;
@@ -790,129 +588,134 @@ package body Gnat2Why.Decls is
          end loop;
       end Parse_Declarations;
 
-      procedure Parse_Parameters
-        (Assoc             :        List_Id;
-         Labs              :        List_Id;
-         Type_File_Name    : String;
-         Type_Source       : in out String_Access;
-         Context_File_Name : String;
-         Context_Source    : in out String_Access) is
+      function Parse_Parameters
+        (Assoc      : List_Id;
+         Labs       : List_Id;
+         Clone_Name : String) return W_Clone_Substitution_Array is
+
+         function Get_Assoc_From_Param
+           (CurAssoc : Node_Id;
+            CurLabs  : Node_Id) return Node_Id;
+
+         function Get_Assoc_From_Param
+           (CurAssoc : Node_Id;
+            CurLabs  : Node_Id) return Node_Id is
+            Potential_Assoc : constant Node_Id  :=
+              Selector_Name (CurAssoc);
+         begin
+            if Present (Potential_Assoc) then
+               --  Get_Unqualified_Name_String (Chars (Potential_Assoc));
+               --  Ada.Text_IO.Put_Line
+               --    ("Param : " & Ada.Strings.Fixed.Translate
+               --       (Name_Buffer (1 .. Name_Len),
+               --        Ada.Strings.Maps.Constants.Lower_Case_Map));
+               return Entity (Potential_Assoc);
+            else
+               --  Get_Unqualified_Name_String
+               --    (Chars (Defining_Identifier (CurLabs)));
+               --  Ada.Text_IO.Put_Line
+               --    ("Param : " & Ada.Strings.Fixed.Translate
+               --       (Name_Buffer (1 .. Name_Len),
+               --        Ada.Strings.Maps.Constants.Lower_Case_Map));
+               return Defining_Identifier (CurLabs);
+            end if;
+         end Get_Assoc_From_Param;
 
          CurAssoc : Node_Id;
          CurLabs  : Node_Id;
+         Current  : Integer := 1;
+         Reps : W_Clone_Substitution_Array :=
+           (1 .. (Standard.Integer (List_Length (Assoc))) => <>);
       begin
+         Current := 1;
          CurAssoc := First (Assoc);
          CurLabs := First (Labs);
          while Present (CurAssoc) loop
             declare
                Param : constant Node_Id :=
                  Explicit_Generic_Actual_Parameter (CurAssoc);
-               Assoc_Name : constant String :=
+               Formal : constant Node_Id :=
                  Get_Assoc_From_Param (CurAssoc, CurLabs);
-               Assoc_Theory_Name : constant String :=
-                 Capitalize_First (Full_Name (Entity (Param)));
-               Assoc_File_Name   : constant String :=
-                 File_Base_Name_Of_Entity (Entity (Param)) &
-               Why_File_Suffix (Dispatch_Entity (Entity (Param)));
+               Actual : constant W_Identifier_Id :=
+                 +To_Why_Id (Entity (Param), Domain => EW_Term);
+               Theory_Name : constant String :=
+                  Clone_Name & "__" & Short_Name (Formal);
+               TFile : Why_File :=
+                 Why_Files (Dispatch_Entity (Package_Entity));
             begin
-               Make_Replacement ("$$" & Assoc_Name, Assoc_Theory_Name,
-                                 Type_Source,
-                                 Assoc_File_Name, Type_File_Name);
-               Make_Replacement ("$$" & Assoc_Name, Assoc_Theory_Name,
-                                 Context_Source,
-                                 Assoc_File_Name, Context_File_Name);
-               Make_Replacement ("$" & Assoc_Name, Assoc_Theory_Name,
-                                 Type_Source);
-               Make_Replacement ("$" & Assoc_Name, Assoc_Theory_Name,
-                                 Context_Source);
+               case Ekind (Formal) is
+                  when Type_Kind =>
+                     declare
+                        Actual_Type : constant W_Primitive_Type_Id :=
+                          Why_Logic_Type_Of_Ada_Type (Entity (Param));
+                     begin
+                        Reps (Current) := New_Clone_Substitution
+                          (Kind      => EW_Type_Subst,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal)),
+                           Image     => Actual);
+                        Open_Theory
+                          (TFile, Theory_Name,
+                           Comment => "Formal Parameter");
+                        Emit
+                          (TFile.Cur_Theory,
+                           New_Type (Name       => New_Identifier
+                                     (Name => Short_Name (Formal)),
+                                     Definition =>
+                                       New_Transparent_Type_Definition
+                                         (Domain          => EW_Term,
+                                          Type_Definition => Actual_Type)));
+                        Close_Theory (TFile, Filter_Entity => Empty);
+                     end;
+                  when Subprogram_Kind | Object_Kind | Named_Kind =>
+                     Reps (Current) := New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => New_Identifier
+                          (Name => Short_Name (Formal)),
+                        Image     => Actual);
+                  when others =>
+                     raise Program_Error;
+               end case;
             end;
             Next (CurAssoc);
             Next (CurLabs);
+            Current := Current + 1;
          end loop;
+         return Reps;
       end Parse_Parameters;
 
-      procedure Instantiate_Theory (Args : String_Access;
-                                    File : in out Why_File) is
-         F : Natural;
-         S : constant String := Args.all;
-         Max : constant Natural := 2**15;
-         Cut : Natural := 0;
-      begin
-         while S'Length - Cut >= Max loop
-            F := Cut;
-            Cut := Index (Source => S,
-                          Pattern => " ",
-                          From => Cut + Max - 1,
-                          Going => Backward);
-            File_Append_To_Theories
-              (File.File,
-               Why.Atree.Builders.New_Custom_Declaration
-                 (Domain => EW_Prog,
-                  Content => New_Identifier
-                    (Name => S (F + 1 .. Cut))));
-         end loop;
-         File_Append_To_Theories
-           (File.File,
-            Why.Atree.Builders.New_Custom_Declaration
-              (Domain => EW_Prog,
-               Content => New_Identifier (Name => S (Cut + 1 .. S'Length))));
-      end Instantiate_Theory;
-
-      function Read_File (File_Name : String) return String;
-
-      function Read_File (File_Name : String) return String is
-         FD : constant System.OS_Lib.File_Descriptor :=
-           System.OS_Lib.Open_Read (File_Name, System.OS_Lib.Text);
-         L : constant Natural := Natural (System.OS_Lib.File_Length (FD));
-         S : String := (1 .. L => <>);
-         Ret : Natural;
-      begin
-         Ret := System.OS_Lib.Read (FD, S'Address, L);
-         if Ret /= L then
-            raise Program_Error;
-         end if;
-         System.OS_Lib.Close (FD);
-         return S;
-      end Read_File;
-
-      Decls : constant List_Id := Visible_Declarations (Parent (E));
-      UName : constant String := Full_Name (E);
+      Decls : constant List_Id :=
+        Visible_Declarations (Parent (Package_Entity));
+      Clone_Name : constant String :=
+        Capitalize_First (Full_Name (Package_Entity));
       Generic_Name : constant String :=
-        Full_Name (Generic_Parent (Parent (E)));
+        Full_Name (Generic_Parent (Parent (Package_Entity)));
       Assoc : constant List_Id := Generic_Associations
-        (Get_Package_Instantiation_Node (E));
-      --  use Parent field to reach N_Genereic_Package_Declaration
+        (Get_Package_Instantiation_Node (Package_Entity));
+      --  use Parent field to reach N_Generic_Package_Declaration
       Labs : constant List_Id := Generic_Formal_Declarations (Parent (Parent
-        (Parent (Generic_Parent (Parent (E))))));
-      Type_File_Name : constant String := File_Type.Name.all;
-      Template_Dir : constant String := Get_Template_Directory;
-      Type_Source : String_Access := new String'
-        (Read_File (Ada.Directories.Compose (Template_Dir,
-         Generic_Name & "_types.mlw")));
-      Context_File_Name : constant String := File_Context.Name.all;
-      Context_Source : String_Access := new String'
-        (Read_File  (Ada.Directories.Compose (Template_Dir,
-         Generic_Name & "_main.mlw")));
-      Append : String_Access := new String'("");
+        (Parent (Generic_Parent (Parent (Package_Entity))))));
+      TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
    begin
-      --  Ada.Text_IO.Put_Line ("---------------------------");
-      Parse_Parameters (Assoc, Labs, Type_File_Name, Type_Source,
-                        Context_File_Name, Context_Source);
-      Parse_Declarations (Decls, Assoc, Labs, Type_File_Name, Type_Source,
-                          Context_File_Name, Context_Source, Append);
-      File_Append_To_Theories
-        (File_Type.File,
-         Why.Atree.Builders.New_Custom_Declaration
-           (Domain => EW_Prog,
-            Content => New_Identifier (Name => Append.all)));
-      Make_Replacement ("$Types", "Types_"&UName,
-                        Type_Source);
-      Make_Replacement ("$Main", "Main_"&UName,
-                        Context_Source);
-      Instantiate_Theory (Type_Source, File_Type);
-      --  Ada.Text_IO.Put_Line ("----------- THEORY -----------");
-      Instantiate_Theory (Context_Source, File_Context);
-      --  Ada.Text_IO.Put_Line ("----------- CONTEXT ----------");
+
+      Open_Theory (TFile, Clone_Name,
+                   Comment => "Clone of " & Generic_Name & ".mlw");
+
+      Emit
+        (TFile.Cur_Theory,
+         New_Clone_Declaration
+           (Origin        =>
+              New_Identifier (Name => """" & Generic_Name
+                              & """.Main"),
+            Clone_Kind    => EW_Export,
+            Substitutions => Parse_Parameters (Assoc, Labs, Clone_Name),
+            Theory_Kind   => EW_Module));
+
+      Close_Theory (TFile, Filter_Entity => Empty,
+                    With_Completion => False,
+                    Defined_Entity => Package_Entity);
+
+      Parse_Declarations (Decls, Clone_Name);
    end Translate_Container_Package;
 
    ---------------------------

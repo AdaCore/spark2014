@@ -438,14 +438,7 @@ package body Gnat2Why.Driver is
             end;
 
             --  Given to the handler for packages with an associated theory
-         when E_Package =>
-            if Dispatch_Entity (E) = WF_Context_In_Body then
-               Translate_Container_Package (Why_Files (WF_Types_In_Body),
-                                            File, E);
-            else
-               Translate_Container_Package (Why_Files (WF_Types_In_Spec),
-                                            File, E);
-            end if;
+         when E_Package => Translate_Container_Package (E);
 
          when E_Loop =>
             Translate_Loop_Entity (File, E);

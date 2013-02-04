@@ -645,7 +645,7 @@ package body Why.Inter is
       end if;
 
       case Ekind (E) is
-         when Named_Kind | E_Package =>
+         when Named_Kind  =>
             if In_Some_Unit_Body (Parent (E)) then
                return WF_Context_In_Body;
             else
@@ -714,6 +714,13 @@ package body Why.Inter is
                   return WF_Types_In_Spec;
                end if;
             end;
+
+         when E_Package =>
+            if In_Some_Unit_Body (Parent (E)) then
+               return WF_Types_In_Body;
+            else
+               return WF_Types_In_Spec;
+            end if;
 
          when E_Loop =>
             return WF_Context_In_Body;
@@ -1001,18 +1008,24 @@ package body Why.Inter is
       --  Treat specially the Capacity component of formal containers, which is
       --  translated as a function.
 
-      if Ekind (E) = E_Discriminant
-        and then Is_Formal_Container_Capacity (E)
-      then
-         return New_Identifier
-           (Ada_Node => E,
-            Name     => Suffix,
-            Context  => Full_Name (E));
+--        if Ekind (E) = E_Discriminant
+--          and then Is_Formal_Container_Capacity (E)
+--        then
+--           if Local then
+--              return New_Identifier
+--                (Ada_Node => E,
+--                 Name     => Suffix);
+--           else
+--              return New_Identifier
+--                (Ada_Node => E,
+--                 Name     => Suffix,
+--                 Context  => Full_Name (E));
+--           end if;
 
       --  The component case is sufficiently different to treat it
       --  independently
 
-      elsif Ekind (E) in E_Component | E_Discriminant then
+      if Ekind (E) in E_Component | E_Discriminant then
          declare
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));

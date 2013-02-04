@@ -2,6 +2,8 @@ pragma Ada_2012;
 with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 
 package Int_List is
+  type my_record (capacity : Integer) is private;
+
    subtype My_Int is Integer range 1 .. 100;
 
    function My_Eq (I1 : My_Int; I2 : My_Int) return Boolean is (I1 = I2);
@@ -25,4 +27,9 @@ package Int_List is
        L.Length = L'Old.Length
          and then
        (for all C in L.Iterate => L.Element (C) = L'Old.Element (C) + 1);
+
+private
+  type my_record (capacity : Integer) is record
+    capacity2 : Integer;
+  end record;
 end Int_List;
