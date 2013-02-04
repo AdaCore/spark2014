@@ -407,6 +407,7 @@ module Unconstr_Array_4
 end
 
 module Constr_Array
+  use import int.Int
   use "_gnatprove_standard".Array__1
 
  type component_type
@@ -432,9 +433,17 @@ module Constr_Array
   }
 
  function dummy : __t
+
+ val range_check_ (a : Array__1.t component_type) : Array__1.t component_type
+    requires {
+      Array__1.attr__ATTRIBUTE_LENGTH a =
+        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+    }
+    ensures { result = a }
 end
 
 module Constr_Array_2
+  use import int.Int
   use "_gnatprove_standard".Array__2
 
  type component_type
@@ -463,10 +472,21 @@ module Constr_Array_2
     offset_2 = a.Array__2.offset_2
   }
 
+ val range_check_ (a : Array__2.t component_type) : Array__2.t component_type
+    requires {
+      Array__2.attr__ATTRIBUTE_LENGTH a =
+        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+      /\
+      Array__2.attr__ATTRIBUTE_LENGTH_2 a =
+        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+    }
+    ensures { result = a }
+
  function dummy : __t
 end
 
 module Constr_Array_3
+  use import int.Int
   use "_gnatprove_standard".Array__3
 
  type component_type
@@ -507,10 +527,24 @@ module Constr_Array_3
     offset_3 = a.Array__3.offset_3
   }
 
+ val range_check_ (a : Array__3.t component_type) : Array__3.t component_type
+    requires {
+      Array__3.attr__ATTRIBUTE_LENGTH a =
+        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+      /\
+      Array__3.attr__ATTRIBUTE_LENGTH_2 a =
+        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+      /\
+      Array__3.attr__ATTRIBUTE_LENGTH_3 a =
+        (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
+    }
+    ensures { result = a }
+
  function dummy : __t
 end
 
 module Constr_Array_4
+  use import int.Int
   use "_gnatprove_standard".Array__4
 
  type component_type
@@ -558,6 +592,22 @@ module Constr_Array_4
     offset_3 = a.Array__4.offset_3;
     offset_4 = a.Array__4.offset_4
   }
+
+ val range_check_ (a : Array__4.t component_type) : Array__4.t component_type
+    requires {
+      Array__4.attr__ATTRIBUTE_LENGTH a =
+        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+      /\
+      Array__4.attr__ATTRIBUTE_LENGTH_2 a =
+        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+      /\
+      Array__4.attr__ATTRIBUTE_LENGTH_3 a =
+        (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
+      /\
+      Array__4.attr__ATTRIBUTE_LENGTH_4 a =
+        (if attr__ATTRIBUTE_LAST_4 >= attr__ATTRIBUTE_FIRST_4 then attr__ATTRIBUTE_LAST_4 - attr__ATTRIBUTE_FIRST_4 + 1 else 0)
+    }
+    ensures { result = a }
 
  function dummy : __t
 end

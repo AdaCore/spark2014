@@ -1006,17 +1006,6 @@ package body Gnat2Why.Expr is
       Par : constant Node_Id := Parent (Expr);
 
    begin
-      --  If the parent expression is an array access, this is an index check
-
-      if Nkind (Par) = N_Indexed_Component then
-         Check_Kind := VC_Index_Check;
-
-      --  Otherwise, this is a range check
-
-      else
-         Check_Kind := VC_Range_Check;
-      end if;
-
       --  Set the appropriate entity in Check_Type giving the bounds for the
       --  check, depending on the parent node Par.
 
@@ -1154,6 +1143,25 @@ package body Gnat2Why.Expr is
                                   & Node_Kind'Image (Nkind (Par)));
             raise Program_Error;
       end case;
+
+      --  If the parent expression is an array access, this is an index check
+
+      if Nkind (Par) = N_Indexed_Component then
+         Check_Kind := VC_Index_Check;
+
+         --  On type conversion nodes, if the target type is a constrained
+         --  array, we have a length check.
+
+      elsif Nkind (Par) = N_Type_Conversion and then
+        Is_Array_Type (Check_Type) and then
+        Is_Constrained (Check_Type) then
+         Check_Kind := VC_Length_Check;
+      else
+
+         --  Otherwise, this is a range check
+
+         Check_Kind := VC_Range_Check;
+      end if;
    end Get_Range_Check_Info;
 
    ----------------------
@@ -4338,17 +4346,29 @@ package body Gnat2Why.Expr is
 
       if Domain in EW_Term | EW_Prog then
          declare
-            Range_Check_Node : constant Node_Id :=
-              --  HACK until proper solution for range check on array
-              (if Is_Array_Type (Etype (Expr)) then
-                 Empty
-               elsif Domain = EW_Prog then
-                 (if Do_Range_Check (Expr) then Expr
-                  elsif Nkind (Expr) = N_Type_Conversion and then
-                  Do_Overflow_Check (Expr) then Expression (Expr)
-                  else Empty)
-               else Empty);
+            Range_Check_Node : Node_Id := Empty;
          begin
+
+            --  ??? Protect array types, range checks currently broken for
+            --  those
+
+            if Is_Array_Type (Etype (Expr)) or else Domain /= EW_Prog then
+               Range_Check_Node := Empty;
+            elsif Do_Range_Check (Expr) then
+                  Range_Check_Node := Expr;
+            elsif Nkind (Expr) = N_Type_Conversion and then
+              Do_Overflow_Check (Expr) then
+               Range_Check_Node := Expression (Expr);
+            end if;
+
+            if Nkind (Parent (Expr)) in
+              N_Type_Conversion | N_Assignment_Statement | N_Op_And |
+                N_Op_Or | N_Op_Xor and then
+              Do_Length_Check (Parent (Expr)) and then
+              Domain = EW_Prog then
+               Range_Check_Node := Expr;
+            end if;
+
             T := Insert_Conversion (Domain        => Domain,
                                     Ada_Node      => Expr,
                                     Expr          => T,

@@ -44,6 +44,7 @@ package VC_Kinds is
       VC_Index_Check,
       VC_Overflow_Check,
       VC_Range_Check,
+      VC_Length_Check,
       VC_Discriminant_Check,
 
       --  Assertions

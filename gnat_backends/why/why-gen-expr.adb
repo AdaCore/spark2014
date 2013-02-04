@@ -304,7 +304,9 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      if Get_Base_Type (Base) = EW_Abstract then
+      if Get_Base_Type (Base) = EW_Abstract and then
+        Is_Record_Type (Get_Ada_Node (+Base))
+      then
 
          --  the case of record conversions
          --  ??? Similar to range checks (see the "else" case), this code will
@@ -334,10 +336,31 @@ package body Why.Gen.Expr is
             Check_Kind : VC_Kind;
 
             function Is_Appropriate (Base       : W_Base_Type_Id;
-                                     Check_Type : Entity_Id) return Boolean is
-              (if Is_Discrete_Type (Underlying_Type (Check_Type)) then
-               Base = EW_Int_Type
-               else Base = EW_Real_Type);
+                                     Check_Type : Entity_Id) return Boolean;
+            --  Return True if the Base type and the check type are
+            --  compatible. This indicates the point where the check should be
+            --  inserted.
+
+            --------------------
+            -- Is_Appropriate --
+            --------------------
+
+            function Is_Appropriate (Base       : W_Base_Type_Id;
+                                     Check_Type : Entity_Id) return Boolean
+            is
+               Und : constant Entity_Id := Underlying_Type (Check_Type);
+            begin
+               if Is_Discrete_Type (Und) then
+                  return Base = EW_Int_Type;
+               elsif Is_Fixed_Point_Type (Und) or else
+                 Is_Floating_Point_Type (Und) then
+                  return Base = EW_Real_Type;
+               elsif Is_Array_Type (Und) then
+                  return Base = EW_Array_Type;
+               else
+                  return False;
+               end if;
+            end Is_Appropriate;
 
          begin
 
