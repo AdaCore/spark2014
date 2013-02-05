@@ -83,20 +83,20 @@ generic
    type Vertex_Key is private;
    type Vertex_Attributes is private;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
-package Graph
-is
+package Graph is
    type T is tagged private;
 
    type Vertex_Id is private;
    Null_Vertex : constant Vertex_Id;
 
-   type Collection_Type_T is (
-                              --  Collections based on a vertex.
-                              Out_Neighbours,
-                              In_Neighbours,
+   type Collection_Type_T is
+     (
+      --  Collections based on a vertex.
+      Out_Neighbours,
+      In_Neighbours,
 
-                              --  Collections over the graph.
-                              All_Vertices);
+      --  Collections over the graph.
+      All_Vertices);
    subtype Vertex_Based_Collection is Collection_Type_T
      range Out_Neighbours .. In_Neighbours;
    subtype Graph_Based_Collection is Collection_Type_T
@@ -132,92 +132,99 @@ is
    --  As a consequence all vertex ids are valid for the lifetime of
    --  the graph object.
 
-   function Get_Vertex (G : T'Class;
-                        V : Vertex_Key)
-                       return Vertex_Id;
+   function Get_Vertex
+     (G : T'Class;
+      V : Vertex_Key) return Vertex_Id;
    --  Search the vertex group for the given vertex and return its
    --  Id. If not found, a value outside the range of Valid_Vertex_Id
    --  is returned.
    --
    --  Complexity is O(N).
 
-   function Get_Key (G : T'Class;
-                     V : Vertex_Id)
-                    return Vertex_Key
-     with Pre => V /= Null_Vertex;
+   function Get_Key
+     (G : T'Class;
+      V : Vertex_Id)
+      return Vertex_Key
+      with Pre => V /= Null_Vertex;
    --  Obtain the key for the given vertex.
    --
    --  Complexity is O(1).
 
-   function Get_Attributes (G : T'Class;
-                            V : Vertex_Id)
-                           return Vertex_Attributes;
+   function Get_Attributes
+     (G : T'Class;
+      V : Vertex_Id) return Vertex_Attributes;
    --  Obtain the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).
 
-   procedure Add_Vertex (G : in out T'Class;
-                         V :        Vertex_Key;
-                         A :        Vertex_Attributes)
-     with Pre => G.Get_Vertex (V) = Null_Vertex;
+   procedure Add_Vertex
+     (G : in out T'Class;
+      V : Vertex_Key;
+      A : Vertex_Attributes)
+      with Pre => G.Get_Vertex (V) = Null_Vertex;
    --  Add a new vertex to the graph, with no edges attached.
    --
    --  Complexity is O(1) in the general case, but presumably can be
    --  O(N) if the internal vector is resized.
 
-   procedure Add_Vertex (G  : in out T'Class;
-                         V  :        Vertex_Key;
-                         A  :        Vertex_Attributes;
-                         Id :    out Vertex_Id)
-     with Pre  => G.Get_Vertex (V) = Null_Vertex,
-          Post => Id /= Null_Vertex;
+   procedure Add_Vertex
+     (G  : in out T'Class;
+      V  : Vertex_Key;
+      A  : Vertex_Attributes;
+      Id : out Vertex_Id)
+      with Pre  => G.Get_Vertex (V) = Null_Vertex,
+           Post => Id /= Null_Vertex;
    --  As above but also return the new vertex id.
 
    ----------------------------------------------------------------------
    --  Edge operations
    ----------------------------------------------------------------------
 
-   function Edge_Exists (G        : T'Class;
-                         V_1, V_2 : Vertex_Id)
-                        return Boolean;
+   function Edge_Exists
+     (G        : T'Class;
+      V_1, V_2 : Vertex_Id) return Boolean;
    --  Tests if the given edge from V_1 to V_2 is in the graph.
    --
    --  Complexity is O(1).
 
-   procedure Add_Edge (G        : in out T'Class;
-                       V_1, V_2 :        Vertex_Id)
-     with Pre  => V_1 /= Null_Vertex and
-                  V_2 /= Null_Vertex,
-          Post => G.Edge_Exists (V_1, V_2);
+   procedure Add_Edge
+     (G        : in out T'Class;
+      V_1, V_2 : Vertex_Id)
+      with Pre  => V_1 /= Null_Vertex and
+                   V_2 /= Null_Vertex,
+           Post => G.Edge_Exists (V_1, V_2);
    --  Adds an unmarked edge from V_1 to V_2. If the edge already
    --  exists, we do nothing (i.e. existing edge attributes do not
    --  change).
    --
    --  Complexity is O(1).
 
-   procedure Add_Edge (G        : in out T'Class;
-                       V_1, V_2 :        Vertex_Key)
-     with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
-                  G.Get_Vertex (V_2) /= Null_Vertex,
-          Post => G.Edge_Exists (G.Get_Vertex (V_1), G.Get_Vertex (V_2));
+   procedure Add_Edge
+     (G        : in out T'Class;
+      V_1, V_2 : Vertex_Key)
+      with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
+                   G.Get_Vertex (V_2) /= Null_Vertex,
+           Post => G.Edge_Exists (G.Get_Vertex (V_1), G.Get_Vertex (V_2));
    --  Convenience function to add an edge between to vertices given
    --  by key (instead of id).
    --
    --  Complexity is O(N) due to Get_Vertex.
 
-   procedure Remove_Edge (G        : in out T'Class;
-                          V_1, V_2 :        Vertex_Id)
-     with Pre  => V_1 /= Null_Vertex and
-                  V_2 /= Null_Vertex,
-          Post => not G.Edge_Exists (V_1, V_2);
+   procedure Remove_Edge
+     (G        : in out T'Class;
+      V_1, V_2 : Vertex_Id)
+      with Pre  => V_1 /= Null_Vertex and
+                   V_2 /= Null_Vertex,
+           Post => not G.Edge_Exists (V_1, V_2);
    --  Removes the edge from V_1 to V_2 from the graph, if it exists.
    --
    --  Complexity is O(1).
 
-   procedure Mark_Edge (G        : in out T'Class;
-                        V_1, V_2 :        Vertex_Id)
-     with Pre  => G.Edge_Exists (V_1, V_2),
-          Post => G.Edge_Exists (V_1, V_2);
+   procedure Mark_Edge
+     (G        : in out T'Class;
+      V_1, V_2 : Vertex_Id)
+      with Pre  => G.Edge_Exists (V_1, V_2),
+           Post => G.Edge_Exists (V_1, V_2);
    --  Mark the edge from V_1 to V_2 in the graph.
    --
    --  Complexity is O(1).
@@ -226,37 +233,41 @@ is
    --  Iterators
    ----------------------------------------------------------------------
 
-   function Get_Collection (G        : access constant T'Class;
-                            V        : Vertex_Id;
-                            The_Type : Vertex_Based_Collection)
-                           return Vertex_Collection_T'Class;
+   function Get_Collection
+     (G        : access constant T'Class;
+      V        : Vertex_Id;
+      The_Type : Vertex_Based_Collection)
+      return Vertex_Collection_T'Class;
 
-   function Get_Collection (G        : access constant T'Class;
-                            The_Type : Graph_Based_Collection)
-                           return Vertex_Collection_T'Class;
+   function Get_Collection
+     (G        : access constant T'Class;
+      The_Type : Graph_Based_Collection)
+      return Vertex_Collection_T'Class;
 
    function Has_Element (Pos : Cursor) return Boolean;
 
    package List_Iterators is new Ada.Iterator_Interfaces
      (Cursor, Has_Element);
 
-   function Iterate (Container : Vertex_Collection_T)
-                    return List_Iterators.Forward_Iterator'Class;
+   function Iterate
+     (Container : Vertex_Collection_T)
+      return List_Iterators.Forward_Iterator'Class;
 
-   function Get_Current_Vertex_Id (Container : Vertex_Collection_T;
-                                   Pos       : Cursor)
-                                  return Vertex_Id;
+   function Get_Current_Vertex_Id
+     (Container : Vertex_Collection_T;
+      Pos       : Cursor) return Vertex_Id;
 
    ----------------------------------------------------------------------
    --  Visitors
    ----------------------------------------------------------------------
 
-   procedure DFS (G             : T'Class;
-                  Start         : Vertex_Id;
-                  Include_Start : Boolean;
-                  Visitor       : access procedure
-                    (V  :     Vertex_Id;
-                     TV : out Traversal_Instruction));
+   procedure DFS
+     (G             : T'Class;
+      Start         : Vertex_Id;
+      Include_Start : Boolean;
+      Visitor       : access procedure
+        (V  :     Vertex_Id;
+         TV : out Traversal_Instruction));
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
    --  only visited if there is a non-trivial path from Start -> Start
@@ -279,10 +290,10 @@ is
    --  Complexity is, in theory, O(N^2). This worse-case requires
    --  every node to be connected to every other node.
 
-   function Dominator_Tree (G : T'Class;
-                            R : Vertex_Id)
-                           return T
-     with Pre => R /= Null_Vertex;
+   function Dominator_Tree
+     (G : T'Class;
+      R : Vertex_Id) return T
+      with Pre => R /= Null_Vertex;
    --  Computes the dominator tree of graph G rooted in R using the
    --  Lengauer-Tarjan dominator algorithm. This is the
    --  `sophisticated' implementation.
@@ -295,9 +306,9 @@ is
    --  If you don't want to look up \alpha, then the above is *better*
    --  than O(M log N), but worse than linear.
 
-   function Dominance_Frontier (G : T'Class;
-                                R : Vertex_Id)
-                               return T;
+   function Dominance_Frontier
+     (G : T'Class;
+      R : Vertex_Id) return T;
    --  Computes the dominance frontier of graph G rooted in R using
    --  the `runner' algorithm by Ferrante, Harvey.
    --
@@ -306,8 +317,9 @@ is
    --  It may be interesting to point out that gcc also implements
    --  this in cfganal.c.
 
-   procedure Close (G       : in out T'Class;
-                    Visitor : access procedure (A, B : Vertex_Id));
+   procedure Close
+     (G       : in out T'Class;
+      Visitor : access procedure (A, B : Vertex_Id));
    --  Transitively close the graph using SIMPLE_TC from Nuutila's
    --  thesis. The visitor procedure is called for each new edge added
    --  to the graph.
@@ -322,8 +334,7 @@ is
      (G                   : T'Class;
       Filename            : String;
       Show_Solitary_Nodes : Boolean;
-      PP                  : access function (V : Vertex_Key)
-                                            return String);
+      PP                  : access function (V : Vertex_Key) return String);
    --  Write the graph G in dot (and pdf) format to Filename, using
    --  the PP function to pretty-print each vertex.
 
@@ -337,16 +348,16 @@ private
 
    Null_Vertex : constant Vertex_Id := 0;
 
-   function Vertex_Index_Hash (Element : Vertex_Id)
-                              return Ada.Containers.Hash_Type
+   function Vertex_Index_Hash
+     (Element : Vertex_Id) return Ada.Containers.Hash_Type
      is (Ada.Containers.Hash_Type (Element));
 
-   function Vertex_Index_Equiv (Left, Right : Vertex_Id)
-                               return Boolean
-     is (Left = Right);
+   function Vertex_Index_Equiv
+     (Left, Right : Vertex_Id) return Boolean is (Left = Right);
 
-   package VIL is new Ada.Containers.Vectors (Index_Type   => Positive,
-                                              Element_Type => Valid_Vertex_Id);
+   package VIL is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Valid_Vertex_Id);
    use VIL;
    subtype Vertex_Index_List is VIL.Vector;
 

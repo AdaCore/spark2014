@@ -23,8 +23,7 @@
 
 with Types; use Types;
 
-package Flow
-is
+package Flow is
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
    --  Flow analyse the given entity. This subprogram does nothing for

@@ -26,14 +26,16 @@ with Einfo; use Einfo;
 
 with Treepr; use Treepr;
 
-with Alfa.Definition;       use Alfa.Definition;
+with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;
 
-package body Flow
-is
+package body Flow is
 
-   procedure Flow_Analyse_Entity (E : Entity_Id)
-   is
+   -------------------------
+   -- Flow_Analyse_Entity --
+   -------------------------
+
+   procedure Flow_Analyse_Entity (E : Entity_Id) is
    begin
       if not (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E)) then
          return;
