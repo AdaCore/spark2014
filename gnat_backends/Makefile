@@ -1,6 +1,7 @@
 
 all:
-	cd why && make
+	make -C why/xgen
+	make -C why
 
 clean:
-	cd why && make clean
+	make -C why clean
