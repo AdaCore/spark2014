@@ -239,7 +239,7 @@ package body Graph is
    -----------
 
    function First (Object : Iterator) return Cursor is
-      G : access constant T'Class renames Object.The_Collection.The_Graph;
+      G : access constant T renames Object.The_Collection.The_Graph;
    begin
       case Object.The_Collection.The_Type is
          when In_Neighbours =>
@@ -289,21 +289,21 @@ package body Graph is
    --------------------
 
    function Get_Collection
-     (G        : access constant T'Class;
+     (G        : T'Class;
       V        : Vertex_Id;
       The_Type : Vertex_Based_Collection) return Vertex_Collection_T'Class is
    begin
       return Vertex_Collection_T'(The_Type  => The_Type,
-                                  The_Graph => G,
+                                  The_Graph => G'Unrestricted_Access,
                                   Id        => V);
    end Get_Collection;
 
    function Get_Collection
-     (G        : access constant T'Class;
+     (G        : T'Class;
       The_Type : Graph_Based_Collection) return Vertex_Collection_T'Class is
    begin
       return Vertex_Collection_T'(The_Type  => The_Type,
-                                  The_Graph => G,
+                                  The_Graph => G'Unrestricted_Access,
                                   Id        => Null_Vertex);
    end Get_Collection;
 
