@@ -290,7 +290,7 @@ is
    --  Complexity is O(M \alpha(N, M)) where:
    --     N is the number of vertices
    --     M is the number of edges
-   --     \alpha is the functional invers of Ackermann's function
+   --     \alpha is the functional inverse of Ackermann's function
    --
    --  If you don't want to look up \alpha, then the above is *better*
    --  than O(M log N), but worse than linear.
