@@ -5,7 +5,7 @@ project GNAT2Why is
    for Exec_Dir use "../../install/bin";
 
    for Source_Dirs use (".", "..", "../alfa", "../utils", "../..",
-                        "../../common", "../gnat_src", "obj");
+                        "../flow", "../../common", "../gnat_src", "obj");
 
    for Main use ("gnat1drv.adb");
 
