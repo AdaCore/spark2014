@@ -13,7 +13,7 @@ See "Product Features" in https://docs.google.com/document/d/1DP5kKBWL5MdfrHmCFt
    more text
 
 
-The following requirements have been derived primarily from the use cases defined later in this document (see :ref:`Use Cases`.).
+The following requirements have been derived primarily from the use cases defined later in this document (see :ref:`use-cases-label`.).
 
 
 1a(i)	Detection of undefined behaviour	
