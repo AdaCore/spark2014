@@ -48,23 +48,5 @@ These are described in the relevant sections of this document.
 Reserved Words
 --------------
 
-|SPARK| has the same set of reserved words as Ada 2012.  Owing to language restrictions, the
-following reserved words are never used in the |SPARK| part of a program.
-
-**abort**,
-**accept**,
-**access**,
-**aliased**,
-**delay**,
-**entry**,
-**exception**,
-**goto**,
-**protected**,
-**raise**,
-**requeue**,
-**select**,
-**synchronized**,
-**task**,
-**terminate**,
-**until**.
+No extensions or restrictions.
 
