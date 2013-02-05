@@ -367,7 +367,7 @@ package body Graph is
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
-        (V  :     Vertex_Id;
+        (V  : Vertex_Id;
          TV : out Traversal_Instruction))
    is
       type Bit_Field is array

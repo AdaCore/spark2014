@@ -267,7 +267,7 @@ package Graph is
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
-        (V  :     Vertex_Id;
+        (V  : Vertex_Id;
          TV : out Traversal_Instruction));
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
