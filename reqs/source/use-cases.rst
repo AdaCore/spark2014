@@ -79,6 +79,8 @@ Integrating Proof and Test
 Miscellaneous
 =============
 
+    Existing Ada 2005 code, want to add |SPARK| aspects in comments and analyse them (not build)
+
     Ability to specify complex properties not expressible in SPARK
 
     Replacement for redefining --# to support multiple models
