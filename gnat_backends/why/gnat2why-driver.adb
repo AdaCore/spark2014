@@ -25,19 +25,20 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with ALI;                   use ALI;
-with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
+with ALI.Util;              use ALI.Util;
+with ALI;                   use ALI;
 with Atree;                 use Atree;
 with Binderr;
 with Debug;                 use Debug;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Flow;                  use Flow;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Opt;                   use Opt;
-with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
+with Osint;                 use Osint;
 with Output;                use Output;
 with Outputs;               use Outputs;
 with Sem;
@@ -73,6 +74,9 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
+
+   procedure Flow_Analyse_CUnit;
+   --  Flow analyses the current compilation unit
 
    procedure Translate_Entity (E : Entity_Id);
    --  Translates entity E into Why
@@ -143,6 +147,22 @@ package body Gnat2Why.Driver is
          Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
       end if;
    end Do_Generate_VCs;
+
+   ------------------------
+   -- Flow_Analyse_CUnit --
+   ------------------------
+
+   procedure Flow_Analyse_CUnit
+   is
+   begin
+      for E of Spec_Entities loop
+         Flow_Analyse_Entity (E);
+      end loop;
+
+      for E of Body_Entities loop
+         Flow_Analyse_Entity (E);
+      end loop;
+   end Flow_Analyse_CUnit;
 
    -----------------
    -- GNAT_To_Why --
@@ -258,6 +278,13 @@ package body Gnat2Why.Driver is
       After_Marking;
 
       if Compilation_Errors or else In_Detect_Mode_Only then
+         return;
+      end if;
+
+      --  Do some flow analysis
+
+      if Debug_Flag_Dot_QQ then
+         Flow_Analyse_CUnit;
          return;
       end if;
 
