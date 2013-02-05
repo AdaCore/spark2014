@@ -237,12 +237,12 @@ package Graph is
      (G        : T'Class;
       V        : Vertex_Id;
       The_Type : Vertex_Based_Collection)
-     return Vertex_Collection_T'Class;
+      return Vertex_Collection_T'Class;
 
    function Get_Collection
      (G        : T'Class;
       The_Type : Graph_Based_Collection)
-     return Vertex_Collection_T'Class;
+      return Vertex_Collection_T'Class;
 
    function Has_Element (Pos : Cursor) return Boolean;
 
@@ -251,12 +251,12 @@ package Graph is
 
    function Iterate
      (Container : Vertex_Collection_T)
-     return List_Iterators.Forward_Iterator'Class;
+      return List_Iterators.Forward_Iterator'Class;
 
    function Get_Current_Vertex_Id
      (Container : Vertex_Collection_T;
       Pos       : Cursor)
-     return Vertex_Id;
+      return Vertex_Id;
 
    ----------------------------------------------------------------------
    --  Visitors
