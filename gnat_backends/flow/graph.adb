@@ -378,10 +378,12 @@ package body Graph is
       TV           : Traversal_Instruction;
 
       procedure Schedule_Vertex (V : Valid_Vertex_Id);
-      --  ???
+      --  Add V to the stack of vertices to visit and flag it as "to
+      --  be visited".
 
       procedure Schedule_Children (V : Valid_Vertex_Id);
-      --  ???
+      --  Add all out-neighbours of V (but not V itself) to the stack
+      --  of vertices to visit and flag them as "to be visited".
 
       ---------------------
       -- Schedule_Vertex --
@@ -478,7 +480,10 @@ package body Graph is
    function Dominator_Tree_Internal
      (G : T'Class;
       R : Vertex_Id) return Vertex_To_Vertex_T;
-   --  ???
+   --  Compute the dominator tree, but return a vertex-to-vertex map,
+   --  instead of a graph representing a tree. The Dominator_Tree
+   --  function calls this, and so does Dominance_Frontier as its
+   --  easier to work with the array representation.
 
    function Dominator_Tree_Internal
      (G : T'Class;
@@ -498,16 +503,16 @@ package body Graph is
       N : Vertex_Id := 0;
 
       procedure DT_DFS (V : Valid_Vertex_Id);
-      --  ???
+      --  See paper by Tarjan and Lengauer.
 
       procedure Compress (V : Valid_Vertex_Id);
-      --  ???
+      --  See paper by Tarjan and Lengauer.
 
       function Eval (V : Valid_Vertex_Id) return Vertex_Id;
-      --  ???
+      --  See paper by Tarjan and Lengauer.
 
       procedure Link (V, W : Valid_Vertex_Id);
-      --  ???
+      --  See paper by Tarjan and Lengauer.
 
       ------------
       -- DT_DFS --
@@ -578,7 +583,7 @@ package body Graph is
          S : Vertex_Id := W;
 
          procedure Swap (A, B : in out Vertex_Id);
-         --  ???
+         --  Swap vertices A and B.
 
          ----------
          -- Swap --
@@ -761,7 +766,7 @@ package body Graph is
       Current_Component : Component := 0;
 
       procedure SIMPLE_TC (V : Valid_Vertex_Id);
-      --  ???
+      --  See Nuutila's PhD thesis.
 
       ---------------
       -- SIMPLE_TC --
