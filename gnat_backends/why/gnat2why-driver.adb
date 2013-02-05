@@ -152,8 +152,7 @@ package body Gnat2Why.Driver is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit
-   is
+   procedure Flow_Analyse_CUnit is
    begin
       for E of Spec_Entities loop
          Flow_Analyse_Entity (E);
