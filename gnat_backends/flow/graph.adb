@@ -129,6 +129,31 @@ package body Graph is
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
+   procedure Add_Vertex
+     (G  : in out T'Class;
+      A  : Vertex_Attributes;
+      Id : out Vertex_Id)
+   is
+   begin
+      G.Vertices.Append
+        (Vertex'(Key            => Null_Key,
+                 Attributes     => A,
+                 In_Neighbours  => VIS.Empty_Set,
+                 Out_Neighbours => EAM.Empty_Map));
+      Id := G.Vertices.Last_Index;
+   end Add_Vertex;
+
+   -----------------
+   -- Vertex_Hash --
+   -----------------
+
+   function Vertex_Hash (Element : Vertex_Id)
+                         return Ada.Containers.Hash_Type
+   is
+   begin
+      return Ada.Containers.Hash_Type (Element);
+   end Vertex_Hash;
+
    ----------------------------------------------------------------------
    --  Edge operations
    ----------------------------------------------------------------------
@@ -849,7 +874,7 @@ package body Graph is
      (G                   : T'Class;
       Filename            : String;
       Show_Solitary_Nodes : Boolean;
-      PP                  : access function (V : Vertex_Key) return String)
+      PP                  : access function (V : Vertex_Id) return String)
    is
       FD : File_Type;
    begin
@@ -866,7 +891,7 @@ package body Graph is
             Put (FD, "   ");
             Put (FD, Valid_Vertex_Id'Image (J));
             Put (FD, " [label=""");
-            Put (FD, PP (G.Vertices (J).Key));
+            Put (FD, PP (J));
             Put (FD, """];");
             New_Line (FD);
          end if;

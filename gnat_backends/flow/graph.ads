@@ -82,6 +82,7 @@ with Ada.Iterator_Interfaces;
 generic
    type Vertex_Key is private;
    type Vertex_Attributes is private;
+   Null_Key : Vertex_Key;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
 package Graph is
    type T is tagged private;
@@ -175,6 +176,18 @@ package Graph is
       with Pre  => G.Get_Vertex (V) = Null_Vertex,
            Post => Id /= Null_Vertex;
    --  As above but also return the new vertex id.
+
+   procedure Add_Vertex
+     (G  : in out T'Class;
+      A  : Vertex_Attributes;
+      Id : out Vertex_Id)
+      with Post => Id /= Null_Vertex;
+   --  As above, but adds an unkeyed vertex. You must never lose the
+   --  returned Id, otherwise you lose the vertex!
+
+   function Vertex_Hash (Element : Vertex_Id)
+                         return Ada.Containers.Hash_Type;
+   --  Hash a vertex_id (useful for building sets of vertices).
 
    ----------------------------------------------------------------------
    --  Edge operations
@@ -335,7 +348,7 @@ package Graph is
      (G                   : T'Class;
       Filename            : String;
       Show_Solitary_Nodes : Boolean;
-      PP                  : access function (V : Vertex_Key) return String);
+      PP                  : access function (V : Vertex_Id) return String);
    --  Write the graph G in dot (and pdf) format to Filename, using
    --  the PP function to pretty-print each vertex.
 
@@ -349,13 +362,6 @@ private
 
    Null_Vertex : constant Vertex_Id := 0;
 
-   function Vertex_Index_Hash
-     (Element : Vertex_Id) return Ada.Containers.Hash_Type
-     is (Ada.Containers.Hash_Type (Element));
-
-   function Vertex_Index_Equiv
-     (Left, Right : Vertex_Id) return Boolean is (Left = Right);
-
    package VIL is new Ada.Containers.Vectors
      (Index_Type   => Positive,
       Element_Type => Valid_Vertex_Id);
@@ -364,8 +370,8 @@ private
 
    package VIS is new Ada.Containers.Hashed_Sets
      (Element_Type        => Vertex_Id,
-      Hash                => Vertex_Index_Hash,
-      Equivalent_Elements => Vertex_Index_Equiv);
+      Hash                => Vertex_Hash,
+      Equivalent_Elements => "=");
    use VIS;
    subtype Vertex_Index_Set is VIS.Set;
 
@@ -379,8 +385,8 @@ private
    package EAM is new Ada.Containers.Hashed_Maps
      (Key_Type        => Valid_Vertex_Id,
       Element_Type    => Edge_Attributes,
-      Hash            => Vertex_Index_Hash,
-      Equivalent_Keys => Vertex_Index_Equiv);
+      Hash            => Vertex_Hash,
+      Equivalent_Keys => "=");
    use EAM;
    subtype Edge_Attribute_Map is EAM.Map;
 
