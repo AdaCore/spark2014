@@ -29,7 +29,14 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. An *entire variable* is an an entire object which is a 
 variable.
 
-.. centered:: **Static Semantics**
+.. centered:: **Extended Legality Rules**
+
+#. A function declaration shall not have a ``parameter_specification``
+   with a mode of **out** or **in out**. This rule also applies to
+   a subprogram_body for a function for which no explicit declaration
+   is given.
+
+   .. centered:: **Static Semantics**
 
 #. The *final* value of a global item or parameter of a subprogram is its 
    value immediately following the successful call of the subprogram.
@@ -44,14 +51,6 @@ variable.
 #. An *input* of a subprogram is a global item or parameter whose initial
    value may be used in determining the final value of an output of the 
    subprogram.
-
-.. centered:: **Verification Rules**
-
-#. A function declaration shall not have a ``parameter_specification``
-   with a mode of **out** or **in out**. This rule also applies to
-   a subprogram_body for a function for which no explicit specification
-   is given.
-
 
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
@@ -698,11 +697,30 @@ aspects are checked when a subprogram body is a analysed.
 Logic Functions
 ~~~~~~~~~~~~~~~
 
-In |SPARK| it will be possible to define functions which have no body and
-are only used for proof purposes with the assertion policy Ignore.
+|SPARK| permits the use of functions that have no body which are used in
+formal specification and verification only.  Such functions are termed
+*logic functions*.  They can only be used in assertion expressions (except
+subtype predicates) with the assertion policy Ignore.
 
-.. todo:: TN LA24-011 is open for someone to propose a strawman design.
-   Target: D2.
+A logic function is introduced by declaring a function with an Import aspect.
+A Convention aspect may be added to indicate that the function is a proof only
+function but this depends on the Ada 2012 compiler recognising the convention.
+
+If call is made to this function other than in a assertion expression,
+or if the assertion policy Ignore is not selected, an error will be reported 
+when an attempt is made to build and execute the program.
+
+It is expected that the definition of a logic function will be provided within
+an external proof tool.
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   function A_Logic_Function (X, Y : T) return Integer
+   with
+      Import,
+      Convention => Proof;
 
 
 Formal Parameter Modes
@@ -744,15 +762,6 @@ If a subprogram does not have a separate declaration then the Global
 aspect is applied to the declaration of its its body or body stub.
 The implementation of a subprogram body must be consistent with its 
 Global Aspect.  
-
-.. centered:: **Legality Rules**
-
-#. A subprogram, shall not declare, immediately within its body, an
-   entity with the same ``defining_identifier`` as a ``global_item``.
-
-.. note::
- (SB) I think this rule should be eliminated. We should only be disallowing
- constructs which cause verification problems.
 
 .. centered:: **Verification Rules**
 
