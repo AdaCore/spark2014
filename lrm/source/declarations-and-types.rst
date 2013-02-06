@@ -25,18 +25,21 @@ a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 Objects and Named Numbers
 -------------------------
 
-The entity declared by an object declaration is
+The entity declared by an ``object_declaration`` is
 in |SPARK| if its declaration does not contain the reserved word **aliased**,
-its type is in |SPARK|, and its initialization expression, if any, is in
+its type is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
 |SPARK|.
 
-Additionally, the view of an entity introduced by a deferred constant declaration is in
-|SPARK|, even if the initializing expression in the corresponding completion is not in |SPARK|.
+Additionally, the view of an entity introduced by a
+``deferred_constant_declaration`` is in |SPARK|, even if the *initialization_*\
+``expression`` in the corresponding completion is not in |SPARK|.
 
 Derived Types and Classes
 -------------------------
 
-No extensions or restrictions.
+An entity declared by a ``derived_type`` declaration is in |SPARK| if its 
+parent type is in |SPARK|, and if the declaration contains an ``inteface_list`` 
+or a ``record_part`` these must also contain entities that are in |SPARK|.
 
 Scalar Types
 ------------
@@ -46,17 +49,25 @@ No extensions or restrictions.
 Array Types
 -----------
 
-No extensions or restrictions.
+An entity declared by a ``array_type_definition`` is in |SPARK| if its 
+components are in |SPARK|.
+
 
 Discriminants
 -------------
 
-No extensions or restrictions.
+A ``discriminant_part`` is in |SPARK| if it is not an access type and its
+``default_expression``, if any, is in |SPARK|
 
 Record Types
 ------------
 
-No extensions or restrictions.
+An entity declared by a ``record_type_definition`` is in |SPARK| if all of its 
+components are in |SPARK| and if a component has a ``default_expression`` then
+all of the components must have a ``default_expression``.  
+The ``default_expressions``, if present must also be in |SPARK|.
+
+|SPARK| does not permit partial default initialization of record objects.
 
 Tagged Types and Type Extensions
 --------------------------------
