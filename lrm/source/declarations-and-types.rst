@@ -38,7 +38,7 @@ Derived Types and Classes
 -------------------------
 
 An entity declared by a ``derived_type`` declaration is in |SPARK| if its 
-parent type is in |SPARK|, and if the declaration contains an ``inteface_list`` 
+parent type is in |SPARK|, and if the declaration contains an ``interface_list`` 
 or a ``record_part`` these must also contain entities that are in |SPARK|.
 
 Scalar Types

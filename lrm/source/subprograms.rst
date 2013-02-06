@@ -386,7 +386,7 @@ There are no dynamic semantics associated with a Global.
 
 There are no verification rules associated with a Global aspect of a subprogram
 declaration.  The rules given in the Subprogram Bodies section under Global 
-aspects are checked when a subprogram body is a analysed.
+aspects are checked when a subprogram body is a analyzed.
 
 .. centered:: **Examples**
 
@@ -447,7 +447,7 @@ High-level requirements
 
    * **Requirement:** That (X,Y) is in the dependency relation for a given subprogram
      (i.e. X depends on Y) means that X is an output of the subprogram
-     such that the intial value of the input Y is used to set the final value of X on
+     such that the initial value of the input Y is used to set the final value of X on
      at least one executable path.
 
      **Rationale:** by definition.
@@ -522,7 +522,7 @@ where
 .. centered:: **Legality Rules**
 
 #. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect shall denote an entire variable or a state abtraction; this rule
+   aspect shall denote an entire variable or a state abstraction; this rule
    is a name resolution rule.
 
 .. note::
@@ -645,7 +645,7 @@ as it is used purely for static analysis purposes and is not executed.
 
 There are no verification rules associated with a Depends aspect of a subprogram
 declaration.  The rules given in the Subprogram Bodies section under Depends 
-aspects are checked when a subprogram body is a analysed.
+aspects are checked when a subprogram body is a analyzed.
 
 .. centered:: **Examples**
 
@@ -704,7 +704,7 @@ subtype predicates) with the assertion policy Ignore.
 
 A logic function is introduced by declaring a function with an Import aspect.
 A Convention aspect may be added to indicate that the function is a proof only
-function but this depends on the Ada 2012 compiler recognising the convention.
+function but this depends on the Ada 2012 compiler recognizing the convention.
 
 If call is made to this function other than in a assertion expression,
 or if the assertion policy Ignore is not selected, an error will be reported 
@@ -864,7 +864,7 @@ High-Level Requirements
    * **Requirement:** An entity that may be updated on a call to a subprogram
      may not be referred to by distinct names within that subprogram.
 
-     **Rationale:** Flow analysis specifications are presented and analysed in
+     **Rationale:** Flow analysis specifications are presented and analyzed in
      terms of names rather than the entities to which those names refer.
 
 #. Semantics: 

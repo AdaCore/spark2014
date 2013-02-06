@@ -227,7 +227,7 @@ This rule prevents the following example from raising ``Constraint_Error``:
    end;
 
 In many cases, the language rules pertaining to the ``Loop_Entry``
-attribute match those pertaining to the ``Old`` attribute (see Ada LRM 6.1.1), except
+attribute match those pertaining to the ``Old`` attribute (see Ada RM 6.1.1), except
 with "Loop_Entry" substituted for "Old". These include:
 
 * prefix name resolution rules (including expected type definition)

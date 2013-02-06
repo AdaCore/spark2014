@@ -38,7 +38,7 @@ to be evaluated) is illegal.
 Attributes
 ~~~~~~~~~~
 
-The ``attribute_designator`` Acess is not allowed in |SPARK|.
+The ``attribute_designator`` Access is not allowed in |SPARK|.
 
 The GNAT-defined attribute ``Name'Valid_Scalars`` may also be useful in |SPARK|.
 This attribute is a Boolean expression that evaluates to
