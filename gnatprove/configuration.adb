@@ -83,8 +83,8 @@ ASCII.LF &
 ASCII.LF &
 " -jnnn              Use nnn parallel processes (default: 1)" &
 ASCII.LF &
-"     --mode=m       Set the mode of GNATprove (m=detect,force,flow, prove*)" &
-ASCII.LF &
+"     --mode=m       Set the mode of GNATprove (m=detect, force, flow, prove*)"
+& ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
 ASCII.LF &
 "     --clean        Remove GNATprove intermediate files, and exit" &
