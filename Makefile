@@ -56,7 +56,7 @@ CP=cp -pr
 all: gnat2why gnatprove why3 alt-ergo
 
 # main target for nightly builds
-all-nightly: gnat1why gnatprove local-stdlib install install-examples
+all-nightly: gnat1why gnatprove-nightly local-stdlib install install-examples
 
 # Setup and installation of why3 and alt-ergo
 # ===========================================
@@ -116,7 +116,10 @@ coverage:
 	cd gnat_backends/testsuite; ./run-tests -j 5
 
 gnatprove:
-	$(MAKE) -C gnatprove
+	$(MAKE) -C gnatprove build
+
+gnatprove-nightly:
+	$(MAKE) -C gnatprove nightly
 
 gnatmerge:
 	$(MAKE) -C gnatmerge

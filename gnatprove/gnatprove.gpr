@@ -5,9 +5,15 @@ project GNATprove is
    for Object_Dir use "obj";
    for Exec_Dir use "../install/bin";
 
+   type Build_Type is ("Debug", "Production");
+
+   Build : Build_Type := External ("Build", "Debug");
+
    for Source_Dirs use (".", "..", "../common");
 
    for Main use ("gnatprove.adb", "alfa_report.adb");
+
+   Common_Switches := ("-gnat2012", "-gnatyg", "-g");
 
    package Builder is
       for Executable ("gnatprove.adb") use "gnatprove";
@@ -15,9 +21,14 @@ project GNATprove is
    end Builder;
 
    package Compiler is
-      --  ??? Should use -O2 in production mode
-      for Default_Switches ("Ada") use
-        ("-O0", "-gnata", "-gnat12", "-gnatyg", "-g", "-gnatwae");
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O0", "-gnata", "-gnatwae");
+         when "Production" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O2", "-gnatn");
+      end case;
    end Compiler;
 
 end GNATprove;
