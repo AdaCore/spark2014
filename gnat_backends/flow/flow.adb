@@ -21,10 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Maps;
+with Ada.Characters.Latin_1;
+
 with Atree; use Atree;
 with Einfo; use Einfo;
 with Sinfo; use Sinfo;
 with Namet; use Namet;
+with Sprint; use Sprint;
+
+with Output;
 
 with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;
@@ -34,6 +41,29 @@ with Flow.Control_Flow_Graph;
 package body Flow is
 
    use type Flow_Graphs.Vertex_Id;
+
+   Temp_String : Unbounded_String := Null_Unbounded_String;
+
+   Whitespace : constant Ada.Strings.Maps.Character_Set :=
+     Ada.Strings.Maps.To_Set (" " &
+                                Ada.Characters.Latin_1.CR &
+                                Ada.Characters.Latin_1.LF);
+
+   procedure Add_To_Temp_String (S : String);
+   --  Nasty nasty hack to add the given string to a global variable,
+   --  Temp_String. We use this to pretty print nodes via Sprint_Node.
+
+   -------------------------
+   -- Add_To_Temp_String  --
+   -------------------------
+
+   procedure Add_To_Temp_String (S : String)
+   is
+   begin
+      Append (Temp_String, Trim (To_Unbounded_String (S),
+                                 Whitespace,
+                                 Whitespace));
+   end Add_To_Temp_String;
 
    -------------------------
    -- Flow_Analyse_Entity --
@@ -61,7 +91,22 @@ package body Flow is
             elsif N = FA.End_Vertex then
                return "end";
             else
-               return "other node";
+               Temp_String := Null_Unbounded_String;
+               Output.Set_Special_Output (Add_To_Temp_String'Access);
+               declare
+                  E : constant Entity_Id := FA.CFG.Get_Key (N);
+               begin
+                  case Nkind (E) is
+                     when N_If_Statement =>
+                        Output.Write_Str ("if ");
+                        Sprint_Node (Condition (E));
+                     when others =>
+                        Sprint_Node (E);
+                  end case;
+               end;
+               Output.Write_Eol;
+               Output.Cancel_Special_Output;
+               return To_String (Temp_String);
             end if;
          end PP;
       begin
