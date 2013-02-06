@@ -64,36 +64,17 @@ package body Flow.Control_Flow_Graph is
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To node in the given graph.
 
-   procedure Do_Subprogram_Body
+   procedure Do_Assignment_Statement
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs;
       CM : in out Connection_Maps.Map)
-      with Pre => Nkind (E) = N_Subprogram_Body;
+      with Pre => Nkind (E) = N_Assignment_Statement;
 
    procedure Do_Handled_Sequence_Of_Statements
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs;
       CM : in out Connection_Maps.Map)
       with Pre => Nkind (E) = N_Handled_Sequence_Of_Statements;
-
-   procedure Process_Statement
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-      with Pre => (Nkind (E) in N_Statement_Other_Than_Procedure_Call
-                     or Nkind (E) in N_Subprogram_Call);
-
-   procedure Process_Statement_List
-     (L  : List_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-      with Pre => List_Length (L) >= 1;
-
-   procedure Do_Assignment_Statement
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-      with Pre => Nkind (E) = N_Assignment_Statement;
 
    procedure Do_If_Statement
      (E  : Entity_Id;
@@ -106,6 +87,25 @@ package body Flow.Control_Flow_Graph is
       FA : in out Flow_Analysis_Graphs;
       CM : in out Connection_Maps.Map)
       with Pre => Nkind (E) = N_Simple_Return_Statement;
+
+   procedure Do_Subprogram_Body
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+      with Pre => Nkind (E) = N_Subprogram_Body;
+
+   procedure Process_Statement_List
+     (L  : List_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+      with Pre => List_Length (L) >= 1;
+
+   procedure Process_Statement
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+      with Pre => (Nkind (E) in N_Statement_Other_Than_Procedure_Call
+                     or Nkind (E) in N_Subprogram_Call);
 
    --------------
    --  Linkup  --
@@ -129,111 +129,6 @@ package body Flow.Control_Flow_Graph is
       CFG.Add_Edge (From, To);
    end Linkup;
 
-   --------------------------
-   --  Do_Subprogram_Body  --
-   --------------------------
-
-   procedure Do_Subprogram_Body
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-   is
-   begin
-      Do_Handled_Sequence_Of_Statements
-        (Handled_Statement_Sequence (E), FA, CM);
-      CM.Include (Union_Id (E),
-                  --  !!! Workaround
-                  CM.Element (Union_Id (Handled_Statement_Sequence (E))));
-   end Do_Subprogram_Body;
-
-   -----------------------------------------
-   --  Do_Handled_Sequence_Of_Statements  --
-   -----------------------------------------
-
-   procedure Do_Handled_Sequence_Of_Statements
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-   is
-      Stmts : constant List_Id := Statements (E);
-   begin
-      Process_Statement_List (Stmts, FA, CM);
-      --  !!! Workaround
-      CM.Include (Union_Id (E), CM.Element (Union_Id (Stmts)));
-   end Do_Handled_Sequence_Of_Statements;
-
-   -------------------------
-   --  Process_Statement  --
-   -------------------------
-
-   procedure Process_Statement
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-   is
-   begin
-      case Nkind (E) is
-         when N_Assignment_Statement =>
-            Do_Assignment_Statement (E, FA, CM);
-         when N_If_Statement =>
-            Do_If_Statement (E, FA, CM);
-         when N_Simple_Return_Statement =>
-            Do_Simple_Return_Statement (E, FA, CM);
-         when others =>
-            Print_Node_Subtree (E);
-            CM.Include (Union_Id (E), No_Connections);
-      end case;
-   end Process_Statement;
-
-   ------------------------------
-   --  Process_Statement_List  --
-   ------------------------------
-
-   procedure Process_Statement_List
-     (L  : List_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-   is
-      P     : Node_Or_Entity_Id;
-      Prev  : Node_Or_Entity_Id;
-   begin
-      if List_Length (L) = 1 then
-         Process_Statement (First (L), FA, CM);
-         --  !!! Workaround, to be reproduced later
-         CM.Include (Union_Id (L), CM.Element (Union_Id (First (L))));
-      else
-         --  We need a connection map for this sequence.
-         CM.Include (Union_Id (L), No_Connections);
-
-         --  Create initial nodes for the statements.
-         P    := First (L);
-         Prev := Empty;
-         while P /= Empty loop
-            Process_Statement (P, FA, CM);
-
-            --  Connect this statement to the previous one.
-            if Prev /= Empty then
-               Linkup (FA.CFG,
-                       CM (Union_Id (Prev)).Standard_Exits,
-                       CM (Union_Id (P)).Standard_Entry);
-            else
-               --  This is the first node, so set the standard entry
-               --  of the list.
-               CM (Union_Id (L)).Standard_Entry :=
-                 CM (Union_Id (P)).Standard_Entry;
-            end if;
-
-            --  Go to the next statement
-            Prev := P;
-            P    := Next (P);
-         end loop;
-
-         --  Finally, set the standard exits of the list.
-         CM (Union_Id (L)).Standard_Exits :=
-           CM (Union_Id (Prev)).Standard_Exits;
-      end if;
-   end Process_Statement_List;
-
    -------------------------------
    --  Do_Assignment_Statement  --
    -------------------------------
@@ -254,6 +149,22 @@ package body Flow.Control_Flow_Graph is
                     (Standard_Entry => V,
                      Standard_Exits => Vertex_Sets.To_Set (V)));
    end Do_Assignment_Statement;
+
+   -----------------------------------------
+   --  Do_Handled_Sequence_Of_Statements  --
+   -----------------------------------------
+
+   procedure Do_Handled_Sequence_Of_Statements
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+      Stmts : constant List_Id := Statements (E);
+   begin
+      Process_Statement_List (Stmts, FA, CM);
+      --  !!! Workaround
+      CM.Include (Union_Id (E), CM.Element (Union_Id (Stmts)));
+   end Do_Handled_Sequence_Of_Statements;
 
    -----------------------
    --  Do_If_Statement  --
@@ -309,6 +220,95 @@ package body Flow.Control_Flow_Graph is
       --  Instead we link this node directly to the end node.
       Linkup (FA.CFG, V, FA.End_Vertex);
    end Do_Simple_Return_Statement;
+
+   --------------------------
+   --  Do_Subprogram_Body  --
+   --------------------------
+
+   procedure Do_Subprogram_Body
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+   begin
+      Do_Handled_Sequence_Of_Statements
+        (Handled_Statement_Sequence (E), FA, CM);
+      CM.Include (Union_Id (E),
+                  --  !!! Workaround
+                  CM.Element (Union_Id (Handled_Statement_Sequence (E))));
+   end Do_Subprogram_Body;
+
+   ------------------------------
+   --  Process_Statement_List  --
+   ------------------------------
+
+   procedure Process_Statement_List
+     (L  : List_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+      P     : Node_Or_Entity_Id;
+      Prev  : Node_Or_Entity_Id;
+   begin
+      if List_Length (L) = 1 then
+         Process_Statement (First (L), FA, CM);
+         --  !!! Workaround, to be reproduced later
+         CM.Include (Union_Id (L), CM.Element (Union_Id (First (L))));
+      else
+         --  We need a connection map for this sequence.
+         CM.Include (Union_Id (L), No_Connections);
+
+         --  Create initial nodes for the statements.
+         P    := First (L);
+         Prev := Empty;
+         while P /= Empty loop
+            Process_Statement (P, FA, CM);
+
+            --  Connect this statement to the previous one.
+            if Prev /= Empty then
+               Linkup (FA.CFG,
+                       CM (Union_Id (Prev)).Standard_Exits,
+                       CM (Union_Id (P)).Standard_Entry);
+            else
+               --  This is the first node, so set the standard entry
+               --  of the list.
+               CM (Union_Id (L)).Standard_Entry :=
+                 CM (Union_Id (P)).Standard_Entry;
+            end if;
+
+            --  Go to the next statement
+            Prev := P;
+            P    := Next (P);
+         end loop;
+
+         --  Finally, set the standard exits of the list.
+         CM (Union_Id (L)).Standard_Exits :=
+           CM (Union_Id (Prev)).Standard_Exits;
+      end if;
+   end Process_Statement_List;
+
+   -------------------------
+   --  Process_Statement  --
+   -------------------------
+
+   procedure Process_Statement
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+   begin
+      case Nkind (E) is
+         when N_Assignment_Statement =>
+            Do_Assignment_Statement (E, FA, CM);
+         when N_If_Statement =>
+            Do_If_Statement (E, FA, CM);
+         when N_Simple_Return_Statement =>
+            Do_Simple_Return_Statement (E, FA, CM);
+         when others =>
+            Print_Node_Subtree (E);
+            CM.Include (Union_Id (E), No_Connections);
+      end case;
+   end Process_Statement;
 
    --------------
    --  Create  --
