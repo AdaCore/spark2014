@@ -15,7 +15,9 @@ project GNATprove is
    end Builder;
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-O0", "-gnata", "-gnat12", "-gnatg", "-g", "-gnatwae");
+      --  ??? Should use -O2 in production mode
+      for Default_Switches ("Ada") use
+        ("-O0", "-gnata", "-gnat12", "-gnatyg", "-g", "-gnatwae");
    end Compiler;
 
 end GNATprove;
