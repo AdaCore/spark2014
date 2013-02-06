@@ -10,7 +10,7 @@ project Helpers is
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnat2012", "-g", "-O0", "-gnata",
-                                        "-gnatg");
+                                        "-gnatyg");
    end Compiler;
 
 end Helpers;

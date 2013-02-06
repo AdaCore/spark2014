@@ -80,7 +80,7 @@ why-unchecked_ids.ads: xtree why-unchecked_ids.ads-tmpl
 	./xtree
 
 xtree: force
-	gnatmake -Phelpers xtree
+	gnatmake -j0 -Phelpers xtree
 
 clean:
 	-rm -f *~
