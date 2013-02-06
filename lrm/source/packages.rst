@@ -1,4 +1,4 @@
-Packages
+﻿Packages
 ========
 
 Package Specifications and Declarations
@@ -315,10 +315,10 @@ Package-level Global, Depends and Initializes
 
 For analysis purposes, the elaboration of a 
 package is considered as a call of a set of nested subprograms.  
-For instance, the elaboration of the package specfication is the external client
+For instance, the elaboration of the package specification is the external client
 view of the elaboration, but the elaboration of the specification notionally
 calls the elaboration of any packages on which it depends and the elaboration
-of the package body.  The elaboration of the package body calls the ellaboration
+of the package body.  The elaboration of the package body calls the elaboration
 of any packages on which it depends and so forth.  This model does not address
 the issue of incorrect elaboration order or elaboration order circularities but 
 these will be dealt with elsewhere.
@@ -368,7 +368,7 @@ Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~
 
 Very often a package will have no dependencies but only initialize its own 
-state, that is variables declared in the package or in its private descendents.
+state, that is variables declared in the package or in its private descendants.
 In such cases an Initializes aspect may be used rather than a Global aspect.
 
 The Initializes aspect is introduced by an ``aspect_specification`` where the 
@@ -384,11 +384,12 @@ grammar of ``initialization_list`` given below.
 An initialization list is shorthand for a Global aspect of the form
 
 ::
-   Global => (Output => global_list)
    
-where the entities denoted in the ``global_list`` are identical, each is a
-variable or state abstractio and declared within the ``visibl_part`` 
-of the package with the Initializes aspect.
+  Global => (Output => global_list)
+   
+where the ``global_items`` denoted in the ``global_list`` are identical, each 
+is a variable or state abstraction and declared within the ``visible_part`` 
+of the package containing the Initializes aspect.
 
 
 Package Bodies
@@ -481,7 +482,7 @@ High-level requirements
           models for volatile variables and integrity levels are defined.
 
 .. todo: Consider whether it should be possible to refine null abstract state onto hidden state.
-     *Rationale: this would allow the modelling of programs that - for example - use caches
+     *Rationale: this would allow the modeling of programs that - for example - use caches
      to improve performance.*
 
 .. todo:: Consider whether it should be possible to refine abstract onto hidden state without any restrictions,
@@ -679,7 +680,7 @@ High-level requirements
         there is no *B* such that *(A,B)* is in *RD*, then *(Abs(X),Abs(X))* is in *D*.
 
         **Rationale:** In this case, Abs (X) is not fully initialized by the
-        subprogram and the relevant components must be intialized prior to calling
+        subprogram and the relevant components must be initialized prior to calling
         the subprogram.
 
       * **Requirement:** If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
@@ -717,25 +718,25 @@ High-level requirements
 
 #. Goals to be met by language feature:
 
-   * **Requirement:** Where a pre-condition has been provided for a subprogram declaration, it shall be
-     possible to state a refined pre-condition that refers to concrete rather than abstract state
+   * **Requirement:** Where a precondition has been provided for a subprogram declaration, it shall be
+     possible to state a refined precondition that refers to concrete rather than abstract state
      and/or concrete rather than abstract type detail.
 
      **Rationale:** See section :ref:`refinement-rationale`.
 
 #. Constraints:
 
-   * No further Refined pre-condition-specific requirements needed.
+   * No further Refined precondition-specific requirements needed.
 
 #. Consistency: 
 
-   * **Requirement:** The refined pre-condition of the subprogram must be implied by the pre-condition.
+   * **Requirement:** The refined precondition of the subprogram must be implied by the precondition.
 
      **Rationale:** standard definition of proof refinement.
 
 #. Semantics:
 
-   * As per the semantics of the Pre-condition aspect.
+   * As per the semantics of the Precondition aspect.
 
 #. General requirements:
 
