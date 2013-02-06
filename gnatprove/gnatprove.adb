@@ -48,7 +48,7 @@ procedure Gnatprove is
 
    function Final_Step return Gnatprove_Step is
      (case MMode is
-       when GPM_Detect | GPM_Force => GS_Gnat2Why,
+       when GPM_Detect | GPM_Force | GPM_Flow => GS_Gnat2Why,
        when GPM_Prove => GS_Why);
 
    procedure Call_Gprbuild
@@ -600,12 +600,16 @@ procedure Gnatprove is
       Args.Append ("-gnatc");       --  No object file generation
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
-      if MMode = GPM_Detect then
-         Args.Append ("-gnatd.K");
-      end if;
-      if MMode = GPM_Force then
-         Args.Append ("-gnatd.E");
-      end if;
+      case MMode is
+         when GPM_Detect =>
+            Args.Append ("-gnatd.K");
+         when GPM_Force =>
+            Args.Append ("-gnatd.E");
+         when GPM_Flow =>
+            Args.Append ("-gnatd.Q");
+         when GPM_Prove =>
+            null;
+      end case;
       if Pedantic then
          Args.Append ("-gnatd.D");
       end if;
