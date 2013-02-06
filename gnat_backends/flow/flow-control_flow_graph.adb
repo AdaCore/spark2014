@@ -23,8 +23,8 @@
 
 with Treepr; use Treepr;
 
-package body Flow.Control_Flow_Graph
-is
+package body Flow.Control_Flow_Graph is
+
    --  type Graph_Connections is record
    --     Standard_Entry : Flow_Graphs.Vertex_Id;
    --     Standard_Exits : Vertex_Sets.Set;

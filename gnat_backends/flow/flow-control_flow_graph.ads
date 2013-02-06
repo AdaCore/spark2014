@@ -21,8 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Flow.Control_Flow_Graph
-is
+--  ??? What is this package about
+
+package Flow.Control_Flow_Graph is
 
    procedure Create
      (E  : Entity_Id;
