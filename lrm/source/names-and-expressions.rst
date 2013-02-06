@@ -38,26 +38,40 @@ to be evaluated) is illegal.
 Attributes
 ~~~~~~~~~~
 
-No specific restrictions.
+The ``attribute_designator`` Acess is not allowed in |SPARK|.
 
 The GNAT-defined attribute ``Name'Valid_Scalars`` may also be useful in |SPARK|.
 This attribute is a Boolean expression that evaluates to
 ``True`` whenever all scalar components or subcomponents of ``Name`` have
 values allowed by their type.
 
+User-Defined References
+~~~~~~~~~~~~~~~~~~~~~~~
+
+User-defined references are not allowed in |SPARK| and so the aspect
+Implicit_Dereference is not in |SPARK|.
+
+User-Defined Indexing
+~~~~~~~~~~~~~~~~~~~~~
+
+User-defined indexing is not allowed in |SPARK| and so the aspects
+Constant_Indexing and Variable_Indexing are not in |SPARK|.
+
 Literals
 --------
 
-The literal **null** is not allowed in |SPARK|.
+The literal **null** representing an access type is not allowed in |SPARK|.
 
 Aggregates
 ----------
 
 Outside of assertion expressions, an aggregate is in |SPARK| only if its type
-is in |SPARK|. Inside assertion expressions,
-aggregates in |SPARK| must additionally be fully defined. An aggregate which
-leaves subcomponents uninitialized is not in |SPARK| if it appears inside an
-assertion expression.
+is in |SPARK| and each of the expressions defining the value of components is
+in |SPARK|. 
+
+Inside assertion expressions, aggregates in |SPARK| must additionally be fully
+defined. An aggregate which leaves subcomponents uninitialized is not in |SPARK|
+if it appears inside an assertion expression.
 
 .. todo::
    Define this term "fully defined" and say who enforces this rule.
@@ -219,10 +233,17 @@ This is different from the ``Update`` attribute of a record
 
 for which the order of component updates is unspecified.
 
+.. todo:: We need to put this description into the standard format.
+
 Expressions
 -----------
 
-An expression is in |SPARK| only if its type is in |SPARK|.
+An expression is said to be *side-effect* free if the evaluation of the 
+expression does not update any object.  The evaluation of an expression
+free from side-effects only retrieves a value.
+
+An expression is in |SPARK| only if its type is in |SPARK| and the expression
+is side-effect free.
 
 
 Operators and Expression Evaluation
