@@ -23,13 +23,17 @@
 
 with Atree; use Atree;
 with Einfo; use Einfo;
-
-with Treepr; use Treepr;
+with Sinfo; use Sinfo;
+with Namet; use Namet;
 
 with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;
 
+with Flow.Control_Flow_Graph;
+
 package body Flow is
+
+   use type Flow_Graphs.Vertex_Id;
 
    -------------------------
    -- Flow_Analyse_Entity --
@@ -43,8 +47,30 @@ package body Flow is
 
       declare
          Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+         FA     : Flow_Analysis_Graphs;
+
+         function PP (N : Flow_Graphs.Vertex_Id) return String;
+         --  Pretty-printing for each node in the dot output. For now
+         --  this is just the node number.
+
+         function PP (N : Flow_Graphs.Vertex_Id) return String
+         is
+         begin
+            if N = FA.Start_Vertex then
+               return "start";
+            elsif N = FA.End_Vertex then
+               return "end";
+            else
+               return "other node";
+            end if;
+         end PP;
       begin
-         Print_Node_Subtree (Body_N);
+         Control_Flow_Graph.Create (Body_N, FA);
+
+         FA.CFG.Write_Dot_File
+           (Filename            => Get_Name_String (Chars (E)) & "_cfg",
+            Show_Solitary_Nodes => True,
+            PP                  => PP'Access);
       end;
    end Flow_Analyse_Entity;
 

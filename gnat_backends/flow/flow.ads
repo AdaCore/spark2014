@@ -21,9 +21,51 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Hashed_Maps;
+
 with Types; use Types;
 
+with Graph;
+
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;  -- Node_Sets and Node_Hash
+
 package Flow is
+
+   type V_Attributes is record
+      Variables_Defined : Node_Sets.Set;
+      Variables_Used    : Node_Sets.Set;
+   end record;
+
+   Null_Attributes : constant V_Attributes :=
+     V_Attributes'(Variables_Defined => Node_Sets.Empty_Set,
+                   Variables_Used    => Node_Sets.Empty_Set);
+
+   package Flow_Graphs is new Graph
+     (Vertex_Key        => Node_Id,
+      Vertex_Attributes => V_Attributes,
+      Null_Key          => Empty,
+      Test_Key          => "=");
+
+   package Node_To_Vertex_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Flow_Graphs.Vertex_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Flow_Graphs."=");
+
+   package Vertex_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Flow_Graphs.Vertex_Id,
+      Hash                => Flow_Graphs.Vertex_Hash,
+      Equivalent_Elements => Flow_Graphs."=",
+      "="                 => Flow_Graphs."=");
+
+   type Flow_Analysis_Graphs is record
+      Start_Vertex : Flow_Graphs.Vertex_Id;
+      End_Vertex   : Flow_Graphs.Vertex_Id;
+      NTV          : Node_To_Vertex_Maps.Map;
+      CFG          : Flow_Graphs.T;
+   end record;
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
    --  Flow analyse the given entity. This subprogram does nothing for
