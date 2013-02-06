@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(opt=["-cargs", "-gnatd.Q"])
+do_flow()

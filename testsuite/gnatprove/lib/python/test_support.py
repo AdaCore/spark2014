@@ -193,6 +193,14 @@ def prove(opt=None, steps=max_steps, vc_timeout=vc_timeout(), mode="prove"):
     opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
+def do_flow(opt=None):
+    """Call gnatprove with standard options for flow"""
+    if opt is None:
+        opt = []
+    opt += ["-P", "test.gpr", "--quiet", "--mode=flow"]
+    opt += ["-j%d"%(parallel_procs)]
+    gnatprove(opt)
+
 def prove_all(opt=None, steps=max_steps, vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
     prove(opt, steps, vc_timeout)
