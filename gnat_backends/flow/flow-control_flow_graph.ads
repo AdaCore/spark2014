@@ -21,7 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  ??? What is this package about
+--  This package will look at a given bit of parse tree and produce
+--  the control flow graph (which will then be further processed by
+--  other packages under Flow).
 
 package Flow.Control_Flow_Graph is
 
