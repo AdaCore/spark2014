@@ -28,7 +28,9 @@ Machine code insertions are not in |SPARK|.
 Unchecked Type Conversions
 --------------------------
 
-Unchecked type conversions are not in |SPARK|.
+A restricted form of unchecked conversion will be supported.
+
+.. todo:: Describe unchecked conversion support.
 
 Streams
 -------
