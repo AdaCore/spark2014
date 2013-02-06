@@ -640,7 +640,7 @@ begin
 
       Generate_Alfa_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
 
-      if MMode in GP_Alfa_Detection_Mode then
+      if MMode in GPM_Detect | GPM_Force | GPM_Flow then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
       Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
