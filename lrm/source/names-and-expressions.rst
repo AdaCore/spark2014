@@ -273,3 +273,4 @@ Static Expressions and Static Subtypes
 --------------------------------------
 
 No extensions or restrictions.
+

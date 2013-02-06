@@ -18,6 +18,8 @@ related to tasking and synchronization.
 
 #. A ``compound_statement`` shall not be an ``accept_statement`` or a ``select_statement``.
 
+A statement is only in |SPARK| if all the constructs used in the statement are
+in |SPARK|.
 
 Assignment Statements
 ---------------------
@@ -42,18 +44,13 @@ User-Defined Iterator Types
 
 |SPARK| does not permit the use of user-defined iterator types.
 
-.. centered:: **Extended Legality Rules**
-
-#. ``Ada.Iterator_Interfaces`` shall not be named in a ``with_clause``.
 
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| does not permit the use of generalized loop iteration.
+|SPARK| does not permit the use of variable iterators.
 
-.. centered:: **Extended Legality Rules**
-
-#. An ``iteration_scheme`` shall not be an ``iterator_specification``.
+.. todo:: Need to consider further the support for iterators.
 
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,7 +266,7 @@ an entity, or shall denote an ``object_renaming_declaration``, if
 Block Statements
 ----------------
 
-No extensions or restrictions.
+A ``block_statement`` cannot have an ``exception_handler``.
 
 Exit Statements
 ---------------
