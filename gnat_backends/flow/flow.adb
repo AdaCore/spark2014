@@ -37,6 +37,7 @@ with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;
 
 with Flow.Control_Flow_Graph;
+with Flow.Data_Dependence_Graph;
 
 package body Flow is
 
@@ -110,12 +111,27 @@ package body Flow is
             end if;
          end PP;
       begin
+         FA := Flow_Analysis_Graphs'
+           (Start_Vertex => Flow_Graphs.Null_Vertex,
+            End_Vertex   => Flow_Graphs.Null_Vertex,
+            NTV          => Node_To_Vertex_Maps.Empty_Map,
+            CFG          => Flow_Graphs.Create,
+            DDG          => Flow_Graphs.Create);
+
          Control_Flow_Graph.Create (Body_N, FA);
 
          FA.CFG.Write_Dot_File
            (Filename            => Get_Name_String (Chars (E)) & "_cfg",
             Show_Solitary_Nodes => True,
             PP                  => PP'Access);
+
+         Data_Dependence_Graph.Create (FA);
+
+         FA.DDG.Write_Dot_File
+           (Filename            => Get_Name_String (Chars (E)) & "_ddg",
+            Show_Solitary_Nodes => True,
+            PP                  => PP'Access);
+
       end;
    end Flow_Analyse_Entity;
 

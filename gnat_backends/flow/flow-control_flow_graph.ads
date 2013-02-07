@@ -29,7 +29,7 @@ package Flow.Control_Flow_Graph is
 
    procedure Create
      (E  : Entity_Id;
-      FA : out Flow_Analysis_Graphs);
+      FA : in out Flow_Analysis_Graphs);
    --  Produce the control flow graph for the given subprogram body.
 
 end Flow.Control_Flow_Graph;

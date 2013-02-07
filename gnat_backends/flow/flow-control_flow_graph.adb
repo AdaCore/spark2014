@@ -296,7 +296,11 @@ package body Flow.Control_Flow_Graph is
       pragma Assert (Elsif_Parts (E) = No_List);
 
       --  We have a vertex for the if statement itself.
-      FA.CFG.Add_Vertex (E, Null_Attributes, V);
+      FA.CFG.Add_Vertex
+        (E,
+         V_Attributes'(Variables_Defined => Node_Sets.Empty_Set,
+                       Variables_Used    => Get_Variable_Set (Condition (E))),
+         V);
       CM.Include (Union_Id (E), No_Connections);
       CM (Union_Id (E)).Standard_Entry := V;
 
@@ -430,16 +434,11 @@ package body Flow.Control_Flow_Graph is
 
    procedure Create
      (E  : Entity_Id;
-      FA : out Flow_Analysis_Graphs)
+      FA : in out Flow_Analysis_Graphs)
    is
       Connection_Map : Connection_Maps.Map;
    begin
       --  Start with a blank slate.
-      FA := Flow_Analysis_Graphs'
-        (Start_Vertex => Flow_Graphs.Null_Vertex,
-         End_Vertex   => Flow_Graphs.Null_Vertex,
-         NTV          => Node_To_Vertex_Maps.Empty_Map,
-         CFG          => Flow_Graphs.Create);
       Connection_Map := Connection_Maps.Empty_Map;
 
       --  Print the node for debug purposes

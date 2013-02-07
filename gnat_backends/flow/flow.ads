@@ -65,6 +65,7 @@ package Flow is
       End_Vertex   : Flow_Graphs.Vertex_Id;
       NTV          : Node_To_Vertex_Maps.Map;
       CFG          : Flow_Graphs.T;
+      DDG          : Flow_Graphs.T;
    end record;
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
