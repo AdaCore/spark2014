@@ -120,6 +120,10 @@ package body Flow.Control_Flow_Graph is
       with Pre => (Nkind (E) in N_Statement_Other_Than_Procedure_Call
                      or Nkind (E) in N_Subprogram_Call);
 
+   procedure Simplify
+     (G : in out Flow_Graphs.T'Class);
+   --  Remove all null nodes from the graph.
+
    --------------
    --  Linkup  --
    --------------
@@ -252,7 +256,8 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex
       FA.CFG.Add_Vertex
         (E,
-         V_Attributes'(Variables_Defined => V_Def_LHS,
+         V_Attributes'(Is_Null_Node      => False,
+                       Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
                          or V_Used_LHS
                          or V_Also_Used),
@@ -299,7 +304,8 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex for the if statement itself.
       FA.CFG.Add_Vertex
         (E,
-         V_Attributes'(Variables_Defined => Node_Sets.Empty_Set,
+         V_Attributes'(Is_Null_Node      => False,
+                       Variables_Defined => Node_Sets.Empty_Set,
                        Variables_Used    => Get_Variable_Set (Condition (E))),
          V);
       CM.Include (Union_Id (E), No_Connections);
@@ -330,7 +336,7 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We need a helper vertex
-      FA.CFG.Add_Vertex (E, Null_Attributes, V);
+      FA.CFG.Add_Vertex (E, Null_Node_Attributes, V);
       CM.Include (Union_Id (E), No_Connections);
 
       --  Control flows in, but there are no standard exits.
@@ -429,6 +435,26 @@ package body Flow.Control_Flow_Graph is
       end case;
    end Process_Statement;
 
+   ----------------
+   --  Simplify  --
+   ----------------
+
+   procedure Simplify
+     (G : in out Flow_Graphs.T'Class)
+   is
+   begin
+      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if G.Get_Attributes (V).Is_Null_Node then
+            for A of G.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
+               for B of G.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
+                  G.Add_Edge (A, B);
+               end loop;
+            end loop;
+            G.Clear_Vertex (V);
+         end if;
+      end loop;
+   end Simplify;
+
    --------------
    --  Create  --
    --------------
@@ -459,6 +485,9 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA.CFG,
               Connection_Map (Union_Id (E)).Standard_Exits,
               FA.End_Vertex);
+
+      --  Simplify graph by removing all null nodes.
+      Simplify (FA.CFG);
    end Create;
 
 end Flow.Control_Flow_Graph;

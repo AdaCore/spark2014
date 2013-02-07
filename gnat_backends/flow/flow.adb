@@ -124,21 +124,21 @@ package body Flow is
 
          FA.CFG.Write_Dot_File
            (Filename            => Get_Name_String (Chars (E)) & "_cfg",
-            Show_Solitary_Nodes => True,
+            Show_Solitary_Nodes => False,
             PP                  => PP'Access);
 
          Data_Dependence_Graph.Create (FA);
 
          FA.DDG.Write_Dot_File
            (Filename            => Get_Name_String (Chars (E)) & "_ddg",
-            Show_Solitary_Nodes => True,
+            Show_Solitary_Nodes => False,
             PP                  => PP'Access);
 
          Control_Dependence_Graph.Create (FA);
 
          FA.CDG.Write_Dot_File
            (Filename            => Get_Name_String (Chars (E)) & "_cdg",
-            Show_Solitary_Nodes => True,
+            Show_Solitary_Nodes => False,
             PP                  => PP'Access);
 
       end;

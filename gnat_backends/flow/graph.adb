@@ -245,6 +245,32 @@ package body Graph is
       G.Vertices (V_1).Out_Neighbours (V_2).Marked := True;
    end Mark_Edge;
 
+   ------------------
+   -- Clear_Vertex --
+   ------------------
+
+   procedure Clear_Vertex
+     (G : in out T'Class;
+      V : Vertex_Id) is
+   begin
+      --  Sanity check the index.
+      pragma Assert (V <= G.Vertices.Last_Index);
+
+      for V_I of G.Vertices (V).In_Neighbours loop
+         G.Vertices (V_I).Out_Neighbours.Delete (V);
+      end loop;
+      G.Vertices (V).In_Neighbours := Empty_Set;
+
+      for C in G.Vertices (V).Out_Neighbours.Iterate loop
+         declare
+            V_O : Vertex_Id renames Key (C);
+         begin
+            G.Vertices (V_O).In_Neighbours.Delete (V);
+         end;
+      end loop;
+      G.Vertices (V).Out_Neighbours := Empty_Map;
+   end Clear_Vertex;
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------

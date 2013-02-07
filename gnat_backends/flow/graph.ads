@@ -242,6 +242,14 @@ package Graph is
    --
    --  Complexity is O(1).
 
+   procedure Clear_Vertex
+     (G : in out T'Class;
+      V : Vertex_Id)
+      with Pre => V /= Null_Vertex;
+   --  Remove all in and out edges from the given vertex.
+   --
+   --  Complexity is O(N).
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------

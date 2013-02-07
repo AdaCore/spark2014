@@ -33,12 +33,19 @@ with Gnat2Why.Nodes; use Gnat2Why.Nodes;  -- Node_Sets and Node_Hash
 package Flow is
 
    type V_Attributes is record
+      Is_Null_Node      : Boolean;
       Variables_Defined : Node_Sets.Set;
       Variables_Used    : Node_Sets.Set;
    end record;
 
    Null_Attributes : constant V_Attributes :=
-     V_Attributes'(Variables_Defined => Node_Sets.Empty_Set,
+     V_Attributes'(Is_Null_Node      => False,
+                   Variables_Defined => Node_Sets.Empty_Set,
+                   Variables_Used    => Node_Sets.Empty_Set);
+
+   Null_Node_Attributes : constant V_Attributes :=
+     V_Attributes'(Is_Null_Node      => True,
+                   Variables_Defined => Node_Sets.Empty_Set,
                    Variables_Used    => Node_Sets.Empty_Set);
 
    package Flow_Graphs is new Graph
