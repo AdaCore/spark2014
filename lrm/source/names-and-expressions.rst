@@ -27,7 +27,7 @@ Selected Components
 
 Some constructs which would unconditionally raise an exception at
 run-time in Ada are rejected as illegal in |SPARK| if this property
-can be determined by static analysis.
+can be determined prior to formal program verification.
 
 In particular, if the prefix of a
 record component selection is known statically to be constrained so
@@ -40,10 +40,16 @@ Attributes
 
 The ``attribute_designator`` Access is not allowed in |SPARK|.
 
-The GNAT-defined attribute ``Name'Valid_Scalars`` may also be useful in |SPARK|.
-This attribute is a Boolean expression that evaluates to
-``True`` whenever all scalar components or subcomponents of ``Name`` have
-values allowed by their type.
+For a prefix X that denotes an object, the GNAT-defined attribute
+``X'Valid_Scalars`` is defined in |SPARK|.
+This Boolean-valued attribute is equal to the conjunction of
+the ``Valid`` attributes of all of the scalar parts of X.
+
+[If X has no volatile parts, ``X'Valid_Scalars`` implies that
+each scalar subcomponent of X has a value belonging to its subtype.
+Unlike the Ada-defined ``Valid`` attribute, the ``Valid_Scalars`` attribute
+is defined for all objects, not just scalar objects.]
+
 
 User-Defined References
 ~~~~~~~~~~~~~~~~~~~~~~~
