@@ -246,6 +246,8 @@ package body Flow.Control_Flow_Graph is
       --  Print_Node_Set (V_Def_LHS);
       --  Print_Node_Set (V_Used_LHS or V_Used_RHS or V_Also_Used);
 
+      pragma Assert (V_Def_LHS.Length = 1);
+
       --  We have a vertex
       FA.CFG.Add_Vertex
         (E,
