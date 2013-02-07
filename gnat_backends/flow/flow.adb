@@ -38,6 +38,7 @@ with Alfa.Util;
 
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
+with Flow.Control_Dependence_Graph;
 
 package body Flow is
 
@@ -116,7 +117,8 @@ package body Flow is
             End_Vertex   => Flow_Graphs.Null_Vertex,
             NTV          => Node_To_Vertex_Maps.Empty_Map,
             CFG          => Flow_Graphs.Create,
-            DDG          => Flow_Graphs.Create);
+            DDG          => Flow_Graphs.Create,
+            CDG          => Flow_Graphs.Create);
 
          Control_Flow_Graph.Create (Body_N, FA);
 
@@ -129,6 +131,13 @@ package body Flow is
 
          FA.DDG.Write_Dot_File
            (Filename            => Get_Name_String (Chars (E)) & "_ddg",
+            Show_Solitary_Nodes => True,
+            PP                  => PP'Access);
+
+         Control_Dependence_Graph.Create (FA);
+
+         FA.CDG.Write_Dot_File
+           (Filename            => Get_Name_String (Chars (E)) & "_cdg",
             Show_Solitary_Nodes => True,
             PP                  => PP'Access);
 
