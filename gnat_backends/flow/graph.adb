@@ -897,10 +897,11 @@ package body Graph is
    --------------------
 
    procedure Write_Dot_File
-     (G                   : T'Class;
-      Filename            : String;
-      Show_Solitary_Nodes : Boolean;
-      PP                  : access function (V : Vertex_Id) return String)
+     (G         : T'Class;
+      Filename  : String;
+      Node_Info : access function (G : T'Class;
+                                   V : Vertex_Id)
+                                   return Node_Display_Info)
    is
       FD : File_Type;
    begin
@@ -910,17 +911,27 @@ package body Graph is
       Put_Line (FD, "   graph [splines=True];");
 
       for J in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if Show_Solitary_Nodes or else
-           (G.Vertices (J).In_Neighbours.Length > 0 or
-              G.Vertices (J).Out_Neighbours.Length > 0)
-         then
-            Put (FD, "   ");
-            Put (FD, Valid_Vertex_Id'Image (J));
-            Put (FD, " [label=""");
-            Put (FD, PP (J));
-            Put (FD, """];");
-            New_Line (FD);
-         end if;
+         declare
+            Info : constant Node_Display_Info := Node_Info (G, J);
+         begin
+            if Info.Show then
+               Put (FD, "   ");
+               Put (FD, Valid_Vertex_Id'Image (J));
+               Put (FD, " [label=""");
+               Put (FD, To_String (Info.Label));
+               Put (FD, """");
+               case Info.Shape is
+                  when Shape_Oval =>
+                     null;
+                  when Shape_Box =>
+                     Put (FD, ",shape=""box""");
+                  when Shape_Diamond =>
+                     Put (FD, ",shape=""diamond""");
+               end case;
+               Put (FD, "];");
+               New_Line (FD);
+            end if;
+         end;
       end loop;
 
       New_Line (FD);

@@ -27,6 +27,8 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Iterator_Interfaces;
 
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+
 --  A graph library. Although reasonably generic, it was implemented
 --  for the SPARK 2014 flow analysis which dictated its design. In
 --  particular the curious limitation that vertices may not be removed
@@ -352,11 +354,20 @@ package Graph is
    --  IO
    ----------------------------------------------------------------------
 
+   type Node_Shape_T is (Shape_Oval, Shape_Box, Shape_Diamond);
+
+   type Node_Display_Info is record
+      Show  : Boolean;
+      Shape : Node_Shape_T;
+      Label : Unbounded_String;
+   end record;
+
    procedure Write_Dot_File
-     (G                   : T'Class;
-      Filename            : String;
-      Show_Solitary_Nodes : Boolean;
-      PP                  : access function (V : Vertex_Id) return String);
+     (G         : T'Class;
+      Filename  : String;
+      Node_Info : access function (G : T'Class;
+                                   V : Vertex_Id)
+                                   return Node_Display_Info);
    --  Write the graph G in dot (and pdf) format to Filename, using
    --  the PP function to pretty-print each vertex.
 

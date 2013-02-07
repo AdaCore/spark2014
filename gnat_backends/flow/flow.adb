@@ -81,22 +81,31 @@ package body Flow is
          Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
          FA     : Flow_Analysis_Graphs;
 
-         function PP (N : Flow_Graphs.Vertex_Id) return String;
+         function NDI (G : Flow_Graphs.T'Class;
+                       N : Flow_Graphs.Vertex_Id)
+                       return Flow_Graphs.Node_Display_Info;
          --  Pretty-printing for each node in the dot output. For now
          --  this is just the node number.
 
-         function PP (N : Flow_Graphs.Vertex_Id) return String
+         function NDI (G : Flow_Graphs.T'Class;
+                       N : Flow_Graphs.Vertex_Id)
+                       return Flow_Graphs.Node_Display_Info
          is
+            Rv : Flow_Graphs.Node_Display_Info :=
+              Flow_Graphs.Node_Display_Info'
+              (Show  => True,
+               Shape => Flow_Graphs.Node_Shape_T'First,
+               Label => Null_Unbounded_String);
          begin
             if N = FA.Start_Vertex then
-               return "start";
+               Rv.Label := To_Unbounded_String ("start");
             elsif N = FA.End_Vertex then
-               return "end";
+               Rv.Label := To_Unbounded_String ("end");
             else
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
                declare
-                  E : constant Entity_Id := FA.CFG.Get_Key (N);
+                  E : constant Entity_Id := G.Get_Key (N);
                begin
                   case Nkind (E) is
                      when N_If_Statement =>
@@ -108,9 +117,14 @@ package body Flow is
                end;
                Output.Write_Eol;
                Output.Cancel_Special_Output;
-               return To_String (Temp_String);
+               Rv.Label := Temp_String;
+
+               if G.Get_Attributes (N).Is_Null_Node then
+                  Rv.Show := False;
+               end if;
             end if;
-         end PP;
+            return Rv;
+         end NDI;
       begin
          FA := Flow_Analysis_Graphs'
            (Start_Vertex => Flow_Graphs.Null_Vertex,
@@ -123,23 +137,20 @@ package body Flow is
          Control_Flow_Graph.Create (Body_N, FA);
 
          FA.CFG.Write_Dot_File
-           (Filename            => Get_Name_String (Chars (E)) & "_cfg",
-            Show_Solitary_Nodes => False,
-            PP                  => PP'Access);
+           (Filename  => Get_Name_String (Chars (E)) & "_cfg",
+            Node_Info => NDI'Access);
 
          Data_Dependence_Graph.Create (FA);
 
          FA.DDG.Write_Dot_File
-           (Filename            => Get_Name_String (Chars (E)) & "_ddg",
-            Show_Solitary_Nodes => False,
-            PP                  => PP'Access);
+           (Filename  => Get_Name_String (Chars (E)) & "_ddg",
+            Node_Info => NDI'Access);
 
          Control_Dependence_Graph.Create (FA);
 
          FA.CDG.Write_Dot_File
-           (Filename            => Get_Name_String (Chars (E)) & "_cdg",
-            Show_Solitary_Nodes => False,
-            PP                  => PP'Access);
+           (Filename  => Get_Name_String (Chars (E)) & "_cdg",
+            Node_Info => NDI'Access);
 
       end;
    end Flow_Analyse_Entity;
