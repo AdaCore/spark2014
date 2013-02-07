@@ -21,6 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This package deals with producing the DDG from the CFG (annotated
+--  with defined and used variables).
+
 package Flow.Data_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs);
