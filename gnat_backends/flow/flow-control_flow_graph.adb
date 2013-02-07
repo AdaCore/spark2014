@@ -26,6 +26,11 @@ with Atree; use Atree;
 with Sinfo; use Sinfo;
 with Nlists; use Nlists;
 
+with Flow.Debug; use Flow.Debug;
+pragma Unreferenced (Flow.Debug);
+
+with Why;
+
 package body Flow.Control_Flow_Graph is
 
    use type Flow_Graphs.Vertex_Id;
@@ -63,6 +68,13 @@ package body Flow.Control_Flow_Graph is
       with Pre => From /= Flow_Graphs.Null_Vertex and
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To node in the given graph.
+
+   function Get_Variable_Set (N : Node_Id) return Node_Sets.Set;
+   --  Obtain all variables (which may include types) used in an
+   --  expression.
+
+   function Get_Variable_Set (L : List_Id) return Node_Sets.Set;
+   --  As above, but operating on a list.
 
    procedure Do_Assignment_Statement
      (E  : Entity_Id;
@@ -129,6 +141,53 @@ package body Flow.Control_Flow_Graph is
       CFG.Add_Edge (From, To);
    end Linkup;
 
+   ------------------------
+   --  Get_Variable_Set  --
+   ------------------------
+
+   function Get_Variable_Set (N : Node_Id) return Node_Sets.Set
+   is
+      VS     : Node_Sets.Set;
+      Unused : Traverse_Final_Result;
+      pragma Unreferenced (Unused);
+
+      function Proc (N : Node_Id) return Traverse_Result;
+
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier =>
+               VS.Include (Entity (N));
+            when N_Selected_Component =>
+               VS.Include (Entity (Prefix (N)));
+               return Skip;
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      function Traverse is new Traverse_Func (Process => Proc);
+   begin
+      Unused := Traverse (N);
+      return VS;
+   end Get_Variable_Set;
+
+   function Get_Variable_Set (L : List_Id) return Node_Sets.Set
+   is
+      VS : Node_Sets.Set;
+      P  : Node_Id;
+   begin
+      P := First (L);
+      while P /= Empty loop
+         VS.Union (Get_Variable_Set (P));
+
+         P := Next (P);
+      end loop;
+      return VS;
+   end Get_Variable_Set;
+
    -------------------------------
    --  Do_Assignment_Statement  --
    -------------------------------
@@ -138,10 +197,63 @@ package body Flow.Control_Flow_Graph is
       FA : in out Flow_Analysis_Graphs;
       CM : in out Connection_Maps.Map)
    is
+      use type Node_Sets.Set;
+
       V : Flow_Graphs.Vertex_Id;
+
+      V_Used_RHS  : Node_Sets.Set;
+      --  Things used because they appear on the RHS
+
+      V_Used_LHS  : Node_Sets.Set := Node_Sets.Empty_Set;
+      --  Things used because they appear on the LHS (in A (J), J
+      --  would be used).
+
+      V_Def_LHS   : Node_Sets.Set := Node_Sets.Empty_Set;
+      --  Things defined because they appear on the LHS (in A (J), A
+      --  would be used).
+
+      V_Also_Used : Node_Sets.Set := Node_Sets.Empty_Set;
+      --  Things used because of the limitations of flow analysis. In
+      --  (A (J) := 0, A would also be used as the other elements do
+      --  not change.)
    begin
+      --  Work out which variables we use and define.
+      V_Used_RHS := Get_Variable_Set (Expression (E));
+
+      declare
+         LHS : Node_Id renames Name (E);
+      begin
+         case Nkind (LHS) is
+            when N_Identifier =>
+               --  X :=
+               V_Def_LHS := Get_Variable_Set (LHS);
+            when N_Selected_Component =>
+               --  R.A :=
+               V_Def_LHS := Get_Variable_Set (Prefix (LHS));
+               V_Also_Used := V_Def_LHS;
+            when N_Indexed_Component =>
+               --  R.A (...) :=
+               V_Def_LHS  := Get_Variable_Set (Prefix (LHS));
+               V_Used_LHS := Get_Variable_Set (Expressions (LHS));
+               V_Also_Used := V_Def_LHS;
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end;
+
+      --  Print the node and its def-use effect
+      --  Print_Node_Subtree (E);
+      --  Print_Node_Set (V_Def_LHS);
+      --  Print_Node_Set (V_Used_LHS or V_Used_RHS or V_Also_Used);
+
       --  We have a vertex
-      FA.CFG.Add_Vertex (E, Null_Attributes, V);
+      FA.CFG.Add_Vertex
+        (E,
+         V_Attributes'(Variables_Defined => V_Def_LHS,
+                       Variables_Used    => V_Used_RHS
+                         or V_Used_LHS
+                         or V_Also_Used),
+         V);
 
       --  Control goes in V and of V
       CM.Include (Union_Id (E),
