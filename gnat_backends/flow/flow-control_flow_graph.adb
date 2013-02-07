@@ -34,6 +34,7 @@ with Why;
 package body Flow.Control_Flow_Graph is
 
    use type Flow_Graphs.Vertex_Id;
+   use type Ada.Containers.Count_Type;
 
    type Graph_Connections is record
       Standard_Entry : Flow_Graphs.Vertex_Id;
