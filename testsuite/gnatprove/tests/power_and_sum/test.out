@@ -1,33 +1,33 @@
 power_and_sum.adb:10:27: overflow check not proved
-power_and_sum.adb:11:17: info: overflow check proved
-power_and_sum.adb:20:10: info: loop invariant initialization proved
+power_and_sum.adb:11:17: overflow check not proved
+power_and_sum.adb:20:10: loop invariant initialization not proved, requires 2*TotalSum = I*(I-1
 power_and_sum.adb:20:10: loop invariant preservation not proved, requires 2*TotalSum = I*(I-1
 power_and_sum.adb:20:34: overflow check not proved
 power_and_sum.adb:20:47: overflow check not proved
-power_and_sum.adb:20:50: info: overflow check proved
+power_and_sum.adb:20:50: overflow check not proved
 power_and_sum.adb:22:31: overflow check not proved
-power_and_sum.adb:23:17: info: overflow check proved
+power_and_sum.adb:23:17: overflow check not proved
 power_and_sum.adb:25:23: overflow check not proved
 power_and_sum.adb:25:36: overflow check not proved
-power_and_sum.adb:25:39: info: overflow check proved
+power_and_sum.adb:25:39: overflow check not proved
 power_and_sum.adb:25:7: assertion not proved, requires 2*TotalSum = N*(N+1
 power_and_sum.adb:26:17: range check not proved
-power_and_sum.adb:36:10: info: loop invariant initialization proved
+power_and_sum.adb:36:10: loop invariant initialization not proved, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:36:10: loop invariant preservation not proved, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:36:34: overflow check not proved
-power_and_sum.adb:36:48: info: overflow check proved
+power_and_sum.adb:36:48: overflow check not proved
 power_and_sum.adb:36:51: overflow check not proved
 power_and_sum.adb:36:53: overflow check not proved
-power_and_sum.adb:36:56: info: overflow check proved
-power_and_sum.adb:41:13: info: loop invariant initialization proved
+power_and_sum.adb:36:56: overflow check not proved
+power_and_sum.adb:41:13: loop invariant initialization not proved, requires 2*InnerSum = J*(J-1
 power_and_sum.adb:41:13: loop invariant preservation not proved, requires 2*InnerSum = J*(J-1
 power_and_sum.adb:41:37: overflow check not proved
 power_and_sum.adb:41:50: overflow check not proved
-power_and_sum.adb:41:53: info: overflow check proved
+power_and_sum.adb:41:53: overflow check not proved
 power_and_sum.adb:43:34: overflow check not proved
-power_and_sum.adb:44:20: info: overflow check proved
-power_and_sum.adb:46:10: info: assertion proved
-power_and_sum.adb:46:31: info: overflow check proved
+power_and_sum.adb:44:20: overflow check not proved
+power_and_sum.adb:46:10: assertion not proved, requires J = I + 1
+power_and_sum.adb:46:31: overflow check not proved
 power_and_sum.adb:47:10: assertion not proved, requires 2*InnerSum = I*(I+1
 power_and_sum.adb:47:26: overflow check not proved
 power_and_sum.adb:47:39: overflow check not proved
@@ -41,15 +41,15 @@ power_and_sum.adb:51:42: overflow check not proved
 power_and_sum.adb:51:45: overflow check not proved
 power_and_sum.adb:51:7: assertion not proved, requires 6*TotalSum = N*(N+1)*(N+2
 power_and_sum.adb:52:17: range check not proved
-power_and_sum.adb:9:40: loop invariant initialization not proved, requires Result = X ** I
-power_and_sum.adb:9:40: loop invariant preservation not proved, requires Result = X ** I
+power_and_sum.adb:9:10: loop invariant initialization not proved
+power_and_sum.adb:9:10: loop invariant preservation not proved
 power_and_sum.adb:9:44: info: overflow check proved
 power_and_sum.ads:3:16: overflow check not proved
 power_and_sum.ads:3:21: postcondition not proved, requires X ** N = Result
 power_and_sum.ads:6:16: overflow check not proved
 power_and_sum.ads:6:25: postcondition not proved, requires 2 * Result = N * (N+1
 power_and_sum.ads:6:29: overflow check not proved
-power_and_sum.ads:6:33: info: overflow check proved
+power_and_sum.ads:6:33: overflow check not proved
 power_and_sum.ads:9:16: overflow check not proved
 power_and_sum.ads:9:25: postcondition not proved, requires 6 * Result = N * (N+1) * (N+2
 power_and_sum.ads:9:29: overflow check not proved
