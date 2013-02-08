@@ -2036,6 +2036,9 @@ package body Alfa.Definition is
               Pragma_Warnings      =>
             null;
 
+         when Pragma_Overflow_Mode =>
+            Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
+
          when others =>
             Mark_Violation ("pragma", N, NYI_Pragma);
       end case;

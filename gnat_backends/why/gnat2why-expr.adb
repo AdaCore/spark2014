@@ -32,8 +32,10 @@ with Ada.Containers;                     use Ada.Containers;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
+with Eval_Fat;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
+with Opt;
 with Sem_Aux;               use Sem_Aux;
 with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
@@ -43,7 +45,6 @@ with Snames;                use Snames;
 with Stand;                 use Stand;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
-with Eval_Fat;
 
 with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Alfa.Util;             use Alfa.Util;
@@ -4318,8 +4319,39 @@ package body Gnat2Why.Expr is
                  Etype (Parent (Expr))
                else
                  Etype (Expr));
+
+            --  Depending on the current mode for overflow checks, the
+            --  operation is either done in the base type (Strict mode), or in
+            --  Long_Long_Integer (Minimized mode) if needed, or in arbitrary
+            --  precision if needed (Eliminated mode). A check may only be
+            --  generated in the Strict and Minimized modes, and the type used
+            --  for the bounds is the base type in the first case, and
+            --  Long_Long_Integer in the second case (which is its own base
+            --  type).
+
+            Mode : Overflow_Mode_Type;
+
          begin
-            T := Insert_Overflow_Check (Expr, T, Typ);
+            case Params.Phase is
+               when Generate_VCs_For_Body =>
+                  Mode := Opt.Suppress_Options.Overflow_Mode_General;
+               when Generate_VCs_For_Assertion =>
+                  Mode := Opt.Suppress_Options.Overflow_Mode_Assertions;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+            case Mode is
+               when Strict =>
+                  T := Insert_Overflow_Check (Expr, T, Typ);
+               when Minimized =>
+                  T := Insert_Overflow_Check
+                    (Expr, T, Standard_Integer_64);
+               when Eliminated =>
+                  null;
+               when Not_Set =>
+                  raise Program_Error;
+            end case;
          end;
       end if;
 
