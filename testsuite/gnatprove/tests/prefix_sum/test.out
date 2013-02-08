@@ -2,26 +2,14 @@ prefixsum.adb:101:10: loop variant not proved
 prefixsum.adb:103:25: overflow check not proved
 prefixsum.adb:103:29: overflow check not proved
 prefixsum.adb:103:29: range check not proved
-prefixsum.adb:107:43: overflow check not proved
-prefixsum.adb:107:51: overflow check not proved
-prefixsum.adb:108:26: overflow check not proved
 prefixsum.adb:108:31: division check not proved
-prefixsum.adb:108:38: overflow check not proved
 prefixsum.adb:109:23: loop invariant initialization not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
-prefixsum.adb:109:23: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
-prefixsum.adb:109:48: overflow check not proved
 prefixsum.adb:109:66: index check not proved
-prefixsum.adb:109:66: overflow check not proved
-prefixsum.adb:10:14: loop invariant initialization not proved, requires All_Elements_In (A, Space * Maximum)
-prefixsum.adb:10:40: overflow check not proved
 prefixsum.adb:10:40: range check not proved
-prefixsum.adb:110:29: overflow check not proved
 prefixsum.adb:110:34: division check not proved
 prefixsum.adb:111:47: index check not proved
-prefixsum.adb:111:47: overflow check not proved
-prefixsum.adb:117:22: overflow check not proved
+prefixsum.adb:115:20: loop invariant preservation not proved, requires A (K) = A'loop_entry
 prefixsum.adb:117:27: division check not proved
-prefixsum.adb:117:38: overflow check not proved
 prefixsum.adb:121:13: loop variant not proved
 prefixsum.adb:123:32: overflow check not proved
 prefixsum.adb:123:32: range check not proved
@@ -35,53 +23,24 @@ prefixsum.adb:127:32: overflow check not proved
 prefixsum.adb:127:32: range check not proved
 prefixsum.adb:127:40: overflow check not proved
 prefixsum.adb:129:25: division check not proved
-prefixsum.adb:15:22: overflow check not proved
 prefixsum.adb:15:27: division check not proved
-prefixsum.adb:18:43: overflow check not proved
-prefixsum.adb:18:62: overflow check not proved
-prefixsum.adb:19:43: overflow check not proved
-prefixsum.adb:19:62: overflow check not proved
-prefixsum.adb:20:43: overflow check not proved
-prefixsum.adb:20:62: overflow check not proved
-prefixsum.adb:21:43: overflow check not proved
-prefixsum.adb:22:25: overflow check not proved
+prefixsum.adb:18:18: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (0) + A'Loop_Entry (1) + A'Loop_Entry (2) + A'Loop_Entry (3) + A'Loop_Entry (4) + A'Loop_Entry (5) + A'Loop_Entry (6) + A'loop_entry
 prefixsum.adb:22:30: division check not proved
-prefixsum.adb:25:18: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'loop_entry
-prefixsum.adb:25:43: overflow check not proved
 prefixsum.adb:25:60: index check not proved
-prefixsum.adb:25:60: overflow check not proved
-prefixsum.adb:25:64: overflow check not proved
 prefixsum.adb:26:41: index check not proved
-prefixsum.adb:26:41: overflow check not proved
-prefixsum.adb:26:45: overflow check not proved
 prefixsum.adb:26:62: index check not proved
-prefixsum.adb:26:62: overflow check not proved
-prefixsum.adb:27:25: overflow check not proved
 prefixsum.adb:27:30: division check not proved
-prefixsum.adb:30:43: overflow check not proved
 prefixsum.adb:30:60: index check not proved
-prefixsum.adb:30:60: overflow check not proved
+prefixsum.adb:32:18: loop invariant initialization not proved, requires A (K) = A'loop_entry
 prefixsum.adb:33:10: loop variant not proved
 prefixsum.adb:39:15: loop invariant initialization not proved, requires Left + 1) mod Space = 0
-prefixsum.adb:39:21: overflow check not proved
+prefixsum.adb:39:15: loop invariant preservation not proved, requires Left + 1) mod Space = 0
 prefixsum.adb:39:26: division check not proved
-prefixsum.adb:41:52: overflow check not proved
-prefixsum.adb:41:56: overflow check not proved
 prefixsum.adb:41:56: range check not proved
-prefixsum.adb:43:15: loop invariant preservation not proved, requires All_Right_Elements_In (A, Left - 1, Space * Maximum)
-prefixsum.adb:43:46: overflow check not proved
-prefixsum.adb:43:57: overflow check not proved
 prefixsum.adb:43:57: range check not proved
-prefixsum.adb:45:21: overflow check not proved
 prefixsum.adb:45:26: division check not proved
-prefixsum.adb:45:37: overflow check not proved
-prefixsum.adb:50:42: overflow check not proved
-prefixsum.adb:51:32: overflow check not proved
 prefixsum.adb:51:37: division check not proved
-prefixsum.adb:51:44: overflow check not proved
-prefixsum.adb:53:46: overflow check not proved
 prefixsum.adb:53:64: index check not proved
-prefixsum.adb:53:64: overflow check not proved
 prefixsum.adb:56:13: loop variant not proved
 prefixsum.adb:58:31: overflow check not proved
 prefixsum.adb:59:16: index check not proved
@@ -94,30 +53,15 @@ prefixsum.adb:60:39: overflow check not proved
 prefixsum.adb:62:25: overflow check not proved
 prefixsum.adb:62:25: range check not proved
 prefixsum.adb:76:27: info: division check proved
+prefixsum.adb:80:13: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
 prefixsum.adb:82:36: division check not proved
-prefixsum.adb:82:36: overflow check not proved
-prefixsum.adb:82:45: overflow check not proved
-prefixsum.adb:82:49: overflow check not proved
 prefixsum.adb:82:49: range check not proved
-prefixsum.adb:87:45: overflow check not proved
 prefixsum.adb:87:49: division check not proved
-prefixsum.adb:88:21: loop invariant initialization not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
-prefixsum.adb:88:46: overflow check not proved
 prefixsum.adb:88:64: index check not proved
-prefixsum.adb:88:64: overflow check not proved
-prefixsum.adb:88:67: overflow check not proved
-prefixsum.adb:89:45: overflow check not proved
 prefixsum.adb:89:49: division check not proved
 prefixsum.adb:90:45: index check not proved
-prefixsum.adb:90:45: overflow check not proved
-prefixsum.adb:90:48: overflow check not proved
-prefixsum.adb:93:45: overflow check not proved
 prefixsum.adb:93:49: division check not proved
-prefixsum.adb:95:46: overflow check not proved
-prefixsum.adb:96:46: overflow check not proved
-prefixsum.adb:97:21: loop invariant preservation not proved, requires A (7) = A'Loop_Entry (5) + A'Loop_Entry (7) + A'loop_entry
-prefixsum.adb:97:46: overflow check not proved
-prefixsum.adb:98:27: overflow check not proved
+prefixsum.adb:96:21: loop invariant initialization not proved, requires A (5) = A'Loop_Entry (7) + A'loop_entry
 prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:28: overflow check not proved
 prefixsum.ads:27:36: overflow check not proved
@@ -139,70 +83,25 @@ prefixsum.ads:32:34: index check not proved
 prefixsum.ads:38:14: postcondition not proved, requires All_Elements_In (A, 8 * Maximum)
 prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:54:26: overflow check not proved
-prefixsum.ads:56:14: postcondition not proved, requires A (3) = Ghost (0) + Ghost (1) + Ghost (2)
-prefixsum.ads:56:26: overflow check not proved
-prefixsum.ads:56:38: overflow check not proved
-prefixsum.ads:58:26: overflow check not proved
-prefixsum.ads:58:38: overflow check not proved
-prefixsum.ads:58:50: overflow check not proved
-prefixsum.ads:60:26: overflow check not proved
-prefixsum.ads:60:38: overflow check not proved
-prefixsum.ads:60:50: overflow check not proved
-prefixsum.ads:60:62: overflow check not proved
-prefixsum.ads:62:26: overflow check not proved
-prefixsum.ads:62:38: overflow check not proved
-prefixsum.ads:62:50: overflow check not proved
-prefixsum.ads:62:62: overflow check not proved
-prefixsum.ads:63:14: overflow check not proved
-prefixsum.ads:65:26: overflow check not proved
-prefixsum.ads:65:38: overflow check not proved
-prefixsum.ads:65:50: overflow check not proved
-prefixsum.ads:65:62: overflow check not proved
-prefixsum.ads:66:14: overflow check not proved
-prefixsum.ads:66:26: overflow check not proved
+prefixsum.ads:52:14: postcondition not proved, requires A (1) = Ghost (0)
 prefixsum_expanded.adb:116:27: info: division check proved
 prefixsum_expanded.adb:119:11: assertion not proved, requires Saved_A (0) = Ghost(0)
-prefixsum_expanded.adb:121:34: overflow check not proved
-prefixsum_expanded.adb:125:34: overflow check not proved
-prefixsum_expanded.adb:125:45: overflow check not proved
-prefixsum_expanded.adb:125:56: overflow check not proved
-prefixsum_expanded.adb:129:34: overflow check not proved
-prefixsum_expanded.adb:12:40: overflow check not proved
 prefixsum_expanded.adb:12:40: range check not proved
+prefixsum_expanded.adb:139:13: loop invariant initialization not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum_expanded.adb:139:36: division check not proved
-prefixsum_expanded.adb:139:36: overflow check not proved
-prefixsum_expanded.adb:139:45: overflow check not proved
-prefixsum_expanded.adb:139:49: overflow check not proved
 prefixsum_expanded.adb:139:49: range check not proved
-prefixsum_expanded.adb:145:18: loop invariant initialization not proved, requires A (7) = A'Loop_Entry (7) + A'loop_entry
-prefixsum_expanded.adb:145:43: overflow check not proved
-prefixsum_expanded.adb:153:20: loop invariant preservation not proved, requires A (3) = A'Loop_Entry (1) + A'loop_entry
-prefixsum_expanded.adb:153:45: overflow check not proved
-prefixsum_expanded.adb:155:45: overflow check not proved
-prefixsum_expanded.adb:157:45: overflow check not proved
-prefixsum_expanded.adb:158:26: overflow check not proved
+prefixsum_expanded.adb:151:20: loop invariant preservation not proved, requires A (1) = A'loop_entry
 prefixsum_expanded.adb:161:10: loop variant not proved
 prefixsum_expanded.adb:163:25: overflow check not proved
 prefixsum_expanded.adb:163:29: overflow check not proved
 prefixsum_expanded.adb:163:29: range check not proved
-prefixsum_expanded.adb:167:43: overflow check not proved
-prefixsum_expanded.adb:167:51: overflow check not proved
-prefixsum_expanded.adb:168:26: overflow check not proved
 prefixsum_expanded.adb:168:31: division check not proved
-prefixsum_expanded.adb:168:38: overflow check not proved
 prefixsum_expanded.adb:169:23: loop invariant initialization not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
 prefixsum_expanded.adb:169:23: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
-prefixsum_expanded.adb:169:48: overflow check not proved
 prefixsum_expanded.adb:169:66: index check not proved
-prefixsum_expanded.adb:169:66: overflow check not proved
-prefixsum_expanded.adb:170:29: overflow check not proved
 prefixsum_expanded.adb:170:34: division check not proved
 prefixsum_expanded.adb:171:47: index check not proved
-prefixsum_expanded.adb:171:47: overflow check not proved
-prefixsum_expanded.adb:177:22: overflow check not proved
 prefixsum_expanded.adb:177:27: division check not proved
-prefixsum_expanded.adb:177:38: overflow check not proved
 prefixsum_expanded.adb:181:13: loop variant not proved
 prefixsum_expanded.adb:183:32: overflow check not proved
 prefixsum_expanded.adb:183:32: range check not proved
@@ -216,54 +115,18 @@ prefixsum_expanded.adb:187:32: overflow check not proved
 prefixsum_expanded.adb:187:32: range check not proved
 prefixsum_expanded.adb:187:40: overflow check not proved
 prefixsum_expanded.adb:189:25: division check not proved
-prefixsum_expanded.adb:195:30: overflow check not proved
-prefixsum_expanded.adb:197:30: overflow check not proved
-prefixsum_expanded.adb:199:30: overflow check not proved
-prefixsum_expanded.adb:199:44: overflow check not proved
-prefixsum_expanded.adb:19:42: overflow check not proved
-prefixsum_expanded.adb:201:30: overflow check not proved
-prefixsum_expanded.adb:203:30: overflow check not proved
-prefixsum_expanded.adb:203:44: overflow check not proved
-prefixsum_expanded.adb:205:30: overflow check not proved
-prefixsum_expanded.adb:205:44: overflow check not proved
-prefixsum_expanded.adb:207:10: assertion not proved, requires A (7) = Saved_A (6) + Saved_A (3) + Saved_A (5) + Saved_A (7)
-prefixsum_expanded.adb:207:30: overflow check not proved
-prefixsum_expanded.adb:207:44: overflow check not proved
-prefixsum_expanded.adb:207:58: overflow check not proved
-prefixsum_expanded.adb:21:42: overflow check not proved
-prefixsum_expanded.adb:23:17: loop invariant preservation not proved, requires A (5) = A'Loop_Entry (5) + A'loop_entry
-prefixsum_expanded.adb:23:42: overflow check not proved
-prefixsum_expanded.adb:25:42: overflow check not proved
-prefixsum_expanded.adb:35:17: loop invariant initialization not proved, requires A (3) = A'Loop_Entry (3) + A'Loop_Entry (2) + A'Loop_Entry (1) + A'loop_entry
-prefixsum_expanded.adb:35:42: overflow check not proved
-prefixsum_expanded.adb:36:23: overflow check not proved
-prefixsum_expanded.adb:36:42: overflow check not proved
-prefixsum_expanded.adb:38:42: overflow check not proved
-prefixsum_expanded.adb:39:23: overflow check not proved
-prefixsum_expanded.adb:39:42: overflow check not proved
-prefixsum_expanded.adb:41:42: overflow check not proved
-prefixsum_expanded.adb:43:42: overflow check not proved
+prefixsum_expanded.adb:197:10: assertion not proved, requires A (2) = Saved_A (1) + Saved_A (7)
+prefixsum_expanded.adb:43:17: loop invariant preservation not proved, requires A (5) = A'Loop_Entry (5) + A'loop_entry
+prefixsum_expanded.adb:45:17: loop invariant initialization not proved, requires A (0) = A'loop_entry
 prefixsum_expanded.adb:52:10: loop variant not proved
 prefixsum_expanded.adb:58:15: loop invariant initialization not proved, requires Left + 1) mod Space = 0
-prefixsum_expanded.adb:58:15: loop invariant preservation not proved, requires Left + 1) mod Space = 0
-prefixsum_expanded.adb:58:21: overflow check not proved
 prefixsum_expanded.adb:58:26: division check not proved
-prefixsum_expanded.adb:60:52: overflow check not proved
-prefixsum_expanded.adb:60:56: overflow check not proved
 prefixsum_expanded.adb:60:56: range check not proved
-prefixsum_expanded.adb:62:46: overflow check not proved
-prefixsum_expanded.adb:62:57: overflow check not proved
 prefixsum_expanded.adb:62:57: range check not proved
-prefixsum_expanded.adb:64:21: overflow check not proved
 prefixsum_expanded.adb:64:26: division check not proved
-prefixsum_expanded.adb:64:37: overflow check not proved
-prefixsum_expanded.adb:69:42: overflow check not proved
-prefixsum_expanded.adb:70:32: overflow check not proved
 prefixsum_expanded.adb:70:37: division check not proved
-prefixsum_expanded.adb:70:44: overflow check not proved
-prefixsum_expanded.adb:72:46: overflow check not proved
 prefixsum_expanded.adb:72:64: index check not proved
-prefixsum_expanded.adb:72:64: overflow check not proved
+prefixsum_expanded.adb:74:21: loop invariant preservation not proved, requires A (K) = A'loop_entry
 prefixsum_expanded.adb:75:13: loop variant not proved
 prefixsum_expanded.adb:77:31: overflow check not proved
 prefixsum_expanded.adb:78:16: index check not proved
@@ -275,19 +138,7 @@ prefixsum_expanded.adb:79:31: range check not proved
 prefixsum_expanded.adb:79:39: overflow check not proved
 prefixsum_expanded.adb:81:25: overflow check not proved
 prefixsum_expanded.adb:81:25: range check not proved
-prefixsum_expanded.adb:85:30: overflow check not proved
-prefixsum_expanded.adb:85:44: overflow check not proved
-prefixsum_expanded.adb:85:58: overflow check not proved
-prefixsum_expanded.adb:86:16: overflow check not proved
-prefixsum_expanded.adb:86:30: overflow check not proved
-prefixsum_expanded.adb:86:44: overflow check not proved
-prefixsum_expanded.adb:86:58: overflow check not proved
-prefixsum_expanded.adb:88:30: overflow check not proved
-prefixsum_expanded.adb:88:44: overflow check not proved
-prefixsum_expanded.adb:88:58: overflow check not proved
-prefixsum_expanded.adb:90:10: assertion not proved, requires A (5) = Saved_A (5) + Saved_A (4)
-prefixsum_expanded.adb:90:30: overflow check not proved
-prefixsum_expanded.adb:92:30: overflow check not proved
+prefixsum_expanded.adb:85:10: assertion not proved, requires A (7) = Saved_A (0) + Saved_A (1) + Saved_A (2) + Saved_A (3) + Saved_A (4) + Saved_A (5) + Saved_A (6) + Saved_A (7)
 prefixsum_expanded.ads:25:23: overflow check not proved
 prefixsum_expanded.ads:25:31: overflow check not proved
 prefixsum_expanded.ads:25:39: overflow check not proved
@@ -304,24 +155,3 @@ prefixsum_expanded.ads:43:14: postcondition not proved, requires All_Elements_In
 prefixsum_expanded.ads:45:17: precondition not proved
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: postcondition not proved, requires A (0) = 0
-prefixsum_expanded.ads:59:26: overflow check not proved
-prefixsum_expanded.ads:61:26: overflow check not proved
-prefixsum_expanded.ads:61:38: overflow check not proved
-prefixsum_expanded.ads:63:26: overflow check not proved
-prefixsum_expanded.ads:63:38: overflow check not proved
-prefixsum_expanded.ads:63:50: overflow check not proved
-prefixsum_expanded.ads:65:26: overflow check not proved
-prefixsum_expanded.ads:65:38: overflow check not proved
-prefixsum_expanded.ads:65:50: overflow check not proved
-prefixsum_expanded.ads:65:62: overflow check not proved
-prefixsum_expanded.ads:67:26: overflow check not proved
-prefixsum_expanded.ads:67:38: overflow check not proved
-prefixsum_expanded.ads:67:50: overflow check not proved
-prefixsum_expanded.ads:67:62: overflow check not proved
-prefixsum_expanded.ads:68:14: overflow check not proved
-prefixsum_expanded.ads:70:26: overflow check not proved
-prefixsum_expanded.ads:70:38: overflow check not proved
-prefixsum_expanded.ads:70:50: overflow check not proved
-prefixsum_expanded.ads:70:62: overflow check not proved
-prefixsum_expanded.ads:71:14: overflow check not proved
-prefixsum_expanded.ads:71:26: overflow check not proved
