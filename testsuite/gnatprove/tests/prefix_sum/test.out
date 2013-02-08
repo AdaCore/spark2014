@@ -155,3 +155,65 @@ prefixsum_expanded.ads:43:14: postcondition not proved, requires All_Elements_In
 prefixsum_expanded.ads:45:17: precondition not proved
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: postcondition not proved, requires A (0) = 0
+prefixsum_general.adb:13:13: loop invariant initialization not proved, requires A'Length mod Space = 0
+prefixsum_general.adb:13:22: division check not proved
+prefixsum_general.adb:21:13: loop invariant preservation not proved, requires Left + 1) mod Space = 0
+prefixsum_general.adb:21:24: division check not proved
+prefixsum_general.adb:30:27: division check not proved
+prefixsum_general.adb:31:25: precondition not proved
+prefixsum_general.adb:31:56: range check not proved
+prefixsum_general.adb:32:10: loop variant not proved
+prefixsum_general.adb:34:21: overflow check not proved
+prefixsum_general.adb:36:16: loop invariant initialization not proved, requires Left + Space < A'length
+prefixsum_general.adb:38:16: loop invariant preservation not proved, requires A'Length mod Space = 0
+prefixsum_general.adb:38:25: division check not proved
+prefixsum_general.adb:44:27: division check not proved
+prefixsum_general.adb:56:43: division check not proved
+prefixsum_general.adb:57:28: precondition not proved
+prefixsum_general.adb:57:52: range check not proved
+prefixsum_general.adb:58:46: division check not proved
+prefixsum_general.adb:59:28: precondition not proved
+prefixsum_general.adb:59:52: range check not proved
+prefixsum_general.adb:61:19: index check not proved
+prefixsum_general.adb:61:27: precondition not proved
+prefixsum_general.adb:61:54: range check not proved
+prefixsum_general.adb:61:63: range check not proved
+prefixsum_general.adb:63:24: index check not proved
+prefixsum_general.adb:63:35: precondition not proved
+prefixsum_general.adb:63:58: range check not proved
+prefixsum_general.adb:63:68: range check not proved
+prefixsum_general.adb:64:13: loop variant not proved
+prefixsum_general.adb:66:31: overflow check not proved
+prefixsum_general.adb:67:16: index check not proved
+prefixsum_general.adb:67:29: index check not proved
+prefixsum_general.adb:67:35: overflow check not proved
+prefixsum_general.adb:67:40: index check not proved
+prefixsum_general.adb:68:31: overflow check not proved
+prefixsum_general.adb:68:31: range check not proved
+prefixsum_general.adb:68:39: overflow check not proved
+prefixsum_general.adb:70:25: overflow check not proved
+prefixsum_general.adb:70:25: range check not proved
+prefixsum_general.adb:84:27: info: division check proved
+prefixsum_general.adb:87:10: loop variant not proved
+prefixsum_general.adb:89:25: overflow check not proved
+prefixsum_general.adb:89:29: overflow check not proved
+prefixsum_general.adb:89:29: range check not proved
+prefixsum_general.adb:91:13: loop variant not proved
+prefixsum_general.adb:93:32: overflow check not proved
+prefixsum_general.adb:93:32: range check not proved
+prefixsum_general.adb:94:29: index check not proved
+prefixsum_general.adb:95:16: index check not proved
+prefixsum_general.adb:95:29: index check not proved
+prefixsum_general.adb:95:35: overflow check not proved
+prefixsum_general.adb:95:40: index check not proved
+prefixsum_general.adb:96:16: index check not proved
+prefixsum_general.adb:97:32: overflow check not proved
+prefixsum_general.adb:97:32: range check not proved
+prefixsum_general.adb:97:40: overflow check not proved
+prefixsum_general.adb:99:25: division check not proved
+prefixsum_general.ads:16:25: overflow check not proved
+prefixsum_general.ads:16:27: precondition not proved
+prefixsum_general.ads:16:60: range check not proved
+prefixsum_general.ads:21:28: postcondition not proved, requires A (A'Last) = Summation (A'Old, 0, A'last)
+prefixsum_general.ads:21:30: precondition not proved
+prefixsum_general.ads:8:56: info: division check proved
