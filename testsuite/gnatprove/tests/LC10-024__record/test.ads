@@ -9,7 +9,8 @@ package Test is
    with Post => Get_Remaining (S) = Get_Remaining (S'Old);
 
    procedure P (S : in out T)
-   with Post => Get_Remaining(S) <= Get_Remaining(S'Old);
+   with Pre  => Get_Remaining (S) > 0,
+        Post => Get_Remaining(S) <= Get_Remaining(S'Old);
 
 private
    N : constant Integer := 5;
