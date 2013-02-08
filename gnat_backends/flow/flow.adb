@@ -91,16 +91,19 @@ package body Flow is
                        N : Flow_Graphs.Vertex_Id)
                        return Flow_Graphs.Node_Display_Info
          is
-            Rv : Flow_Graphs.Node_Display_Info :=
-              Flow_Graphs.Node_Display_Info'
+            use Flow_Graphs;
+
+            Rv : Node_Display_Info := Node_Display_Info'
               (Show  => True,
                Shape => Flow_Graphs.Node_Shape_T'First,
                Label => Null_Unbounded_String);
          begin
             if N = FA.Start_Vertex then
                Rv.Label := To_Unbounded_String ("start");
+               Rv.Shape := Shape_None;
             elsif N = FA.End_Vertex then
                Rv.Label := To_Unbounded_String ("end");
+               Rv.Shape := Shape_None;
             else
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
@@ -109,6 +112,7 @@ package body Flow is
                begin
                   case Nkind (E) is
                      when N_If_Statement =>
+                        Rv.Shape := Shape_Diamond;
                         Output.Write_Str ("if ");
                         Sprint_Node (Condition (E));
                      when others =>

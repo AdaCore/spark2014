@@ -354,7 +354,10 @@ package Graph is
    --  IO
    ----------------------------------------------------------------------
 
-   type Node_Shape_T is (Shape_Oval, Shape_Box, Shape_Diamond);
+   type Node_Shape_T is (Shape_Oval,
+                         Shape_Box,
+                         Shape_Diamond,
+                         Shape_None);
 
    type Node_Display_Info is record
       Show  : Boolean;

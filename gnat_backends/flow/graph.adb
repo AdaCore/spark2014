@@ -927,6 +927,8 @@ package body Graph is
                      Put (FD, ",shape=""box""");
                   when Shape_Diamond =>
                      Put (FD, ",shape=""diamond""");
+                  when Shape_None =>
+                     Put (FD, ",shape=""plaintext""");
                end case;
                Put (FD, "];");
                New_Line (FD);
