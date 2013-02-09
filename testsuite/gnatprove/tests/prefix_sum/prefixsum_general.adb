@@ -12,7 +12,7 @@ package body PrefixSum_General is
          pragma Loop_Invariant
            (A'Length mod Space = 0
               and then
-            Space <= A'Length / 2
+            2 * Space <= A'Length
               and then
             not Is_Even (Left + Space)
               and then
@@ -37,7 +37,7 @@ package body PrefixSum_General is
                  and then
                A'Length mod Space = 0
                  and then
-               Space <= A'Length / 2
+               2 * Space <= A'Length
                  and then
                not Is_Even (Left + Space)
                  and then

@@ -9,7 +9,7 @@ package PrefixSum_General is
 
    function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer
    with
-     Pre  => Start_Pos <= End_Pos;
+     Pre => Start_Pos <= End_Pos;
 
    function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer is
       (if Start_Pos = End_Pos then A (Start_Pos)
