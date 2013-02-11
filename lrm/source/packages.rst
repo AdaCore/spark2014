@@ -465,6 +465,12 @@ High-level requirements
      **Rationale:** the semantics of properties defined in terms of abstract state
      can only be precisely defined in terms of the corresponding concrete state.
 
+   * **Requirement:** Each item of hidden state should appear in at least one global data list
+     within the package body.
+
+     **Rationale:** If this is not the case, then there is at least one hidden state item that is not
+     used by any subprogram.
+
 #. Consistency:
 
    * No further Refined state-specific requirements needed.

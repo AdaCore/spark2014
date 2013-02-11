@@ -112,8 +112,8 @@ the following chapters of this document follow the notational conventions of
 the Ada 2012 RM (section 1.1.4).
 
 The following sections are given for each new language feature introduced
-for |SPARK|, following the Ada 2012 RM (other than *Verification Rules*, which 
-section which is specific to |SPARK|):
+for |SPARK|, following the Ada 2012 RM (other than *Verification Rules*,
+which section is specific to |SPARK|):
 
 #. Syntax: this section gives the format of the |SPARK| aspects and pragmas.
    The expression defining the aspect and pragamas are specializations of the
@@ -213,7 +213,7 @@ which are not defined in the Ada 2012 reference manual. Ada 2012
 explicitly permits implementations to provide implementation-defined
 aspects, attributes and pragmas.  If a |SPARK| program uses one
 of these aspects (e.g., Global), or attributes (e.g., Update) then
-then it can only be compiled and executed by an implementation
+it can only be compiled and executed by an implementation
 which supports the construct in a way consistent with the definition
 given here in the |SPARK| reference manual.
 
@@ -234,7 +234,25 @@ the |SPARK| tools will still be able to undertake all their static checks and pr
 Requirements Given in this Document
 -----------------------------------
 
-High-level requirements are given in non Ada specific terminology and have the
+Detailed |SPARK| Language Definition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The detailed |SPARK| language definition is given in Ada terminology and
+has two main components.  The first defines extensions to Ada 2012 in terms 
+of new aspects, pragmas and attributes to provide |SPARK| features such as 
+global specifications for subprograms.  The second defines a subset of Ada 2012 
+by excluding certain language features. 
+The exclusions, the new aspects, pragmas, attributes and rules specify the 
+largest |SPARK| language for which formal analyses are supported. 
+
+*Guidelines* may be applied which effectively reduce further the 
+language subset which may be analyzed but may make analysis and proof easier, 
+more precise and be suitable for some application areas (see :ref:`code_policy`).
+
+Higher-Level Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Higher-level requirements are given in non Ada specific terminology and have the
 following structure:
 
 #. Strategic requirements to be met by the |SPARK| language and its associated
@@ -252,18 +270,6 @@ levied. Further narrative detail is given on each of the strategic requirements.
 
 Since this detail does not strictly belong in this document then in future it
 will be extracted and included in a new requirements document.
-
-The detailed |SPARK| language definition is given in Ada terminology and
-has two main components.  The first defines extensions to Ada 2012 in terms 
-of new aspects, pragmas and attributes to provide |SPARK| features such as 
-global specifications for subprograms.  The second defines a subset of Ada 2012 
-by excluding certain language features. 
-The exclusions, the new aspects, pragmas, attributes and rules specify the 
-largest |SPARK| language for which formal analyses are supported. 
-
-*Guidelines* may be applied which effectively reduce further the 
-language subset which may be analyzed but may make analysis and proof easier, 
-more precise and be suitable for some application areas (see :ref:`code_policy`).  
 
 
 Presentation of Language Feature Requirements
@@ -300,6 +306,7 @@ Generic Requirements
 A number of requirements apply to multiple language features and they are given
 at the end of this chapter.
 
+
 .. _sprs:
 
 |SPARK| Strategic Requirements
@@ -308,7 +315,7 @@ at the end of this chapter.
 The following requirements give the principal goals to be met by |SPARK|.
 Some are expanded in subsequent sections within this chapter.
 
-- The |SPARK| language subset shall embody the largest subset of Ada 2012 that is
+- The |SPARK| language subset shall embody the largest subset of Ada 2012 to which it is
   currently practical to apply automatic formal verification, in line with 
   the goals below, although future advances in verification research and 
   computing power may allow for expansion of the language and the forms of 
@@ -362,7 +369,8 @@ Some are expanded in subsequent sections within this chapter.
   level will form the boundary interface between the |SPARK| and other parts of
   the program. Many systems are not written in a single programming language and
   when retrospectively analyzing pre-existing code it may well not all conform to
-  the |SPARK| subset.
+  the |SPARK| subset. *No further detail is given in the current draft of this document on
+  mixing |SPASRK| code with non-Ada code.*
 
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
@@ -375,6 +383,8 @@ Some are expanded in subsequent sections within this chapter.
   that the method never asserts a property to be true when it is not true."
   Language features that defy sound analysis will be eliminated or their
   use constrained to meet this goal. See section :ref:`main_restricts` for further details.
+  *Note that the current draft of this document does not necessarily  define
+  all restrictions necessary to guarantee soundness.*
 
 - The language shall offer an unambiguous semantics. In Ada
   terminology, this means that all erroneous and
@@ -391,6 +401,8 @@ Some are expanded in subsequent sections within this chapter.
   and partially-specified features may be outside of
   |SPARK| by definition, though their use could be allowed and a warning or error 
   generated for the user. See section :ref:`in_out` for further details.]
+  *Note that the current draft of this document does not necessarily  define
+  all restrictions necessary to guarantee an unambiguous semantics.*
 
 .. _explain_sprs:
 
@@ -580,9 +592,6 @@ will not attempt to automatically synthesize for a given subprogram body the
 other aspects (i.e. Pre and Post), which define the subprogram's contract for
 the purpose of formal verification.
 
-It is never possible to synthesize the contracts directly associated with 
-specifying the behavior of a program, such as Pre and Post conditions.
-
 There are three main use cases where generation of contracts are required:
 
 - Code has been developed as |SPARK| but in order to reduce costs not all 
@@ -716,8 +725,8 @@ assumptions made during formal verification.
    analysis on the |SPARK| code to be carried out. Target: Milestone 3
 
 *No further detail is given in the current draft of this document on
-mixing code that is in and out of |SPARK|. Although there are a number of places where
-a statement is given on what is in or out of |SPARK|, that information is not complete
+mixing code that is in and out of SPARK 2014. Although there are a number of places where
+a statement is given on what is in or out of SPARK 2014, that information is not complete
 and nothing further is given on how it should be used.*
 
 .. _generic_hlrs:
@@ -725,36 +734,30 @@ and nothing further is given on how it should be used.*
 Generic Language-Independent Requirements
 -----------------------------------------
 
-The following detail applies to multiple language features and
-hence are given in a single place to ease readability.
+The following detail relates to higher-level requirements but applies to multiple
+language features. Hence, it is given in a single place to ease readability.
 
-Definition of Terms for Language-Independent Requirements
+Definition of Terms for Higher-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ensure that if a term is the same or similar to one used in Ada then it means the
-same thing or we deliberately use a different term.
+The following terms are used in the presentation of the higher-level requirements;
+each is intended to have a definition consistent with that when used in
+language definition rules.
 
-#. Hidden state.
+#. Hidden state: state declared within a package but that is not directly accessible
+   by users of that package.
 
-#. Names.
+#. Inputs and outputs of a subprogram: the set of data items,
+   including formal parameters, that may be read or written - either directly or indirectly - on a call
+   to that subprogram.
 
-#. Inputs and outputs.
+#. Global data of a subprogram: the inputs and outputs of a subbprogram, other than the formal
+   parameters.
 
-#. Entire variables.
+#. Entire variable: a variable that is not a subcomponent of a larger containing variable.
 
-#. Entities.
+#. Entity: the semantic object that represents a given declaration.
 
-#. Global data.
-
-#. Mode.
-
-#. Dependency relation: but note that the semantics definition basically gives this.
-
-#. Package (since in theory we are being language-independent).
-
-#. Refinement constituent.
-
-#. Explain the *Refines* function introduced by state refinement.
 
 Abstract State, Hidden State and Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -775,7 +778,7 @@ Naming
 ~~~~~~
 
 #. **Requirement:** Variable names in a global specification of a subprogram are 
-     distinct from the formal parameter names of the subprogram .
+   distinct from the formal parameter names of the subprogram .
 
    **Rationale:** A variable cannot be both a formal parameter and a global
    variable simultaneously.
@@ -822,28 +825,10 @@ Properties of Specifications
    error detection as SPARK 2005 and to allow modular analysis. 
    This is also necessary for security analysis.
 
-
-To be allocated
-~~~~~~~~~~~~~~~
-
-#. (Proof) Need to be able to refer to Abstract State in proof contexts ("proof functions").
-   Rationale: to allow proof to refer to hidden state for same reasons as Depends.
-
-#. Optional guideline: detection of hole in scope: from good programming practice.
-
-#. Trevor says there is a rule to say: Every refinement constituent should appear in at least one
-   Global within that package Body. Where does that rule go and where is it in the
-   2005 LRM?
-
-
 .. _notes:
 
 Notes on the Current Draft
 --------------------------
-
-**NB Need to be clear that not all of the strategic requirements flow down into
-the document: in general, need to be clear on what is missing, since there
-is lots of stuff not included in relation to the strategic requirements.**
 
 This is an interim draft that covers all language-independent requirements
 for the main language features, provides
@@ -858,35 +843,7 @@ have been explicitly indicated in this chapter.
 Actions to complete prior to release
 ------------------------------------
 
-#. Discuss with Trevor what I have done for in/out of SPARK and check whether he wants
-   anything extra added.
-
-#. Make sure that all necessary actions are recorded as ToDos: perhaps need to go through
-   at least this Introduction with Andrew and Trevor to pull out actions to be carried out.
-   As part of this, make sure that where necessary derived use cases or derived requirements
-   are also recorded.
-
-#. **NB Need to be clear that not all of the strategic requirements flow down as necessary into
-   the rest of the document.**
-
-#. **NB For all the sections on strategic requirements, need to say at the end whether anything
-   is included on them in the document.**
-
 #. **Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
-
-#. **Associated action:  In section 1.4 (Principal Language Restrictions) remove word "currently" from
-   Tasking bullet. Move comments/ToDos about rel2+ version of language to an appendix of future enhancements.**
-
-#. Incorporate notes from marked-up copy of Introduction.
-
-#. Need to discuss the rationale for the use of refined pre and post conditions with people
-   to make it better:
-
-        * **Some of original detail:** Although an executable function may be used in defining an abstract precondition and
-          then its definition will implicitly define the concrete precondition, the
-          implementation of that function may be sufficiently complex that it is not easy
-          to understand what it represents in the context of a precondition. Hence, that function
-          would need a postcondition
 
 #. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
    will give this. The main thing to think about is visibility/getting certain information into
@@ -899,16 +856,6 @@ Actions to complete prior to release
 #. Note that the semantics of the formal parameter modes is different to that of the global
    data items: what are the implications of this?
 
-#. Trevor needs to check the requirements in relation to renaming.
-
-#. Need to mention somewhere about being able to state volatile and mode characteristics
-   for visible variables.
-
-#. Put the Tobe Allocated reqts into the correct place.
-
-#. Add a generic requirement relating to simplicity: this will allow us to do things like
-   state that names don't appear more than once in a given list, for example.
-
 #. Remove references - other than in the Introduction - to whether things are
    in or out of SPARK and add a comment to say that that detail is still to
    be defined.
@@ -916,35 +863,16 @@ Actions to complete prior to release
 #. Do we need something in general on visibility? That is, an item where we state what
    a given language feature can refer to?
 
-#. Note that we currently require from Global that outs are written on all executable paths,
-   but nothing like that in relation to Depends.
-
-#. Make stuff on future actions into ToDos: currently applies to Abstract State.
+#. Make sure that all necessary actions are recorded as ToDos: perhaps need to go through
+   at least this Introduction with Andrew and Trevor to pull out actions to be carried out.
+   As part of this, make sure that where necessary derived use cases or derived requirements
+   are also recorded.
 
 #. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
    a single list of possibilities for the future?
 
-#. Factor the strategic requirements below into this document. In particular, see
-   what belongs here and what possibly belongs somewhere more general.
-
-#. Note: need to check the rest of the introduction for possible additional
-   strategic requirements.
-
-#. Note: there is a possibility of tension between constructive and generative 
-   analysis in that restrictions may be necessary to get the constructive mode 
-   to work that aren't necessary in generative analysis (to an extent, that 
-   could be expected since the constructive analysis has a tighter requirement).
-
-#. Note: try to lift the level of abstraction of things like "distinct entities".
-
 #. Add something somewhere on prove once, use many times wrt generics (this should be derived from modularity
    and is also something for a subsequent release).
-
-#. Should we present the high-level goals and the decomposed
-   goals together (i.e. so we don't need the separate sections
-   below).
-
-#. Remember to get stuff from the SPARK book as well.
 
 #. Note that the Ada 2012 RM only applies to compilation, while ours applies to both
    analysis and compilation, but is meant to be built on top of the Ada 2012 RM.
@@ -954,40 +882,15 @@ Actions to complete prior to release
    what is required for our analysis mode, and how that relates to what is
    levied in the RM (as we will certainly need some of what is in the Ada 2012 RM).
 
-#. Need to distinguish language goals from project goals.
-
 #. Remove volatility from the detail for milestone 2, even in terms of those
    things where we don't give the language-specific rules. In general, go through
    and see what should be descoped.
-
-#. **NB Need to define what is meant by imports and exports, wrt high-level
-   requirements on Depends.**
 
 #. We have a requirement to say that we provide everything that SPARK 2005 does:
    but at the very least we are missing --# accept and --# hide. Need to check to
    to see if there is anything else like this.
 
-#. Optional guideline: disallow use of different names for the same entities in the
-   same subprogram.
-
-#. Do we need flow analysis on contracts to check for uninitialized variables?
-   This would only apply to pragmas.
-
-#. General idea that we could pursue:
-
-   * Define a simple standard relationship between refined global and global, but allow
-     a feature to manually relate and justify. *In a way, this allows something like
-     dual annotations but without needing two annotations.*
-
-   * Similar for refinement of null state or caches in functions.
-
-   * This is the idea of stepping outside of the language.
-
-#. Explain what D1, D2 and rel2 actually mean.
+#. Explain what D1, D2 and rel2 actually mean. Or replace with Milestone values.
 
 #. Where Hristian said that certain rules have been deferred to the flow analyzer, we need
    to move them to the appropriate sub-section in the LRM.
-
-#. Describe the generative, rather than just retrospective analysis.
-
-#. Check through the derived SPRs to see if anything needs to be added from there.
