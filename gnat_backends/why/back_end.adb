@@ -81,26 +81,6 @@ package body Back_End is
    end Gen_Or_Update_Object_File;
 
    -----------------------------
-   -- Register_Back_End_Types --
-   -----------------------------
-
-   procedure Register_Back_End_Types (Call_Back : Register_Type_Proc) is
-      Str_Float  : C_String := (others => ASCII.NUL);
-      Double : C_String := (others => ASCII.NUL);
-
-   begin
-      Str_Float (Str_Float'First .. Str_Float'First + 4) := "float";
-      Call_Back
-        (C_Name => Str_Float, Digs => 6, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Size => 32, Alignment => 32);
-
-      Double (Double'First .. Double'First + 5) := "double";
-      Call_Back
-        (C_Name => Double, Digs => 15, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Size => 64, Alignment => 64);
-   end Register_Back_End_Types;
-
-   -----------------------------
    -- Scan_Compiler_Arguments --
    -----------------------------
 

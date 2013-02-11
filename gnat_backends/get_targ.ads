@@ -27,10 +27,10 @@
 --  package provides generic/dummy values related to types for Hi-Lite
 --  backends.
 
+with Einfo; use Einfo;
 with Types; use Types;
 
 package Get_Targ is
-   pragma Preelaborate;
 
    Get_Bits_Per_Unit              : Pos :=  8;
    Get_Bits_Per_Word              : Pos := 32;
@@ -65,5 +65,23 @@ package Get_Targ is
    function Width_From_Size  (Size : Pos) return Pos;
    function Digits_From_Size (Size : Pos) return Pos;
    --  Calculate values for 'Width or 'Digits from 'Size
+
+   type C_String is array (0 .. 255) of aliased Character;
+   pragma Convention (C, C_String);
+
+   type Register_Type_Proc is access procedure
+     (C_Name    : C_String;       -- Nul-terminated string with name of type
+      Digs      : Natural;        -- Digits for floating point, 0 otherwise
+      Complex   : Boolean;        -- True iff type has real and imaginary parts
+      Count     : Natural;        -- Number of elements in vector, 0 otherwise
+      Float_Rep : Float_Rep_Kind; -- Representation used for fpt type
+      Size      : Positive;       -- Size of representation in bits
+      Alignment : Natural);       -- Required alignment in bits
+   pragma Convention (C, Register_Type_Proc);
+   --  Call back procedure for Register_Back_End_Types. This is to be used by
+   --  Create_Standard to create predefined types for all types supported by
+   --  the back end.
+
+   procedure Register_Back_End_Types (Call_Back : Register_Type_Proc);
 
 end Get_Targ;
