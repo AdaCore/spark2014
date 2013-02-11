@@ -1,9 +1,9 @@
 Names and Expressions
 =====================
 
-We denote by *assertion expression* an expression that appears inside an
+The term *assertion expression* denotes an expression that appears inside an
 assertion, which can be a pragma Assert, a precondition or postcondition, a
-type invariant or predicate, or other assertions introduced in |SPARK|.
+type invariant or (subtype) predicate, or other assertions introduced in |SPARK|.
 
 Names
 -----

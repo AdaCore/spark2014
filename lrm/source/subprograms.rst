@@ -763,6 +763,26 @@ aspect is applied to the declaration of its its body or body stub.
 The implementation of a subprogram body must be consistent with its 
 Global Aspect.  
 
+.. centered:: **Syntax**
+
+No extra syntax is associated with Global aspects on 
+subprogram bodies.
+
+.. centered:: **Legality Rules**
+
+No extra legality rules are associated with Global aspects on 
+subprogram bodies.
+
+.. centered:: **Static Semantics**
+
+No extra static semantics are associated with Global aspects on 
+subprogram bodies.
+
+.. centered:: **Dynamic Semantics**
+
+No extra dynamic semantics are associated with Global aspects on 
+subprogram bodies.
+
 .. centered:: **Verification Rules**
 
 #. A ``global_item`` shall occur in a Global aspect of a subprogram if and
@@ -796,6 +816,11 @@ aspect is applied to the declaration of its its body or body stub.
 The implementation of a subprogram body must be consistent with its 
 Depends Aspect.  
 
+.. centered:: **Syntax**
+
+No extra syntax is associated with Depends aspects on 
+subprogram bodies.
+
 .. centered:: **Legality Rules**
 
 No extra legality rules are associated with Depends aspects on 
@@ -806,6 +831,10 @@ subprogram bodies.
 No extra static semantics are associated with Depends aspects on 
 subprogram bodies.
 
+.. centered:: **Dynamic Semantics**
+
+No extra dynamic semantics are associated with Depends aspects on 
+subprogram bodies
 
 .. centered:: **Verification Rules**
 
@@ -883,6 +912,22 @@ High-Level Requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
+.. centered:: **Syntax**
+
+No extra syntax is associated with anti-aliasing.
+
+.. centered:: **Legality Rules**
+
+No extra legality rules are associated with anti-aliasing.
+
+.. centered:: **Static Semantics**
+
+No extra static semantics are associated with anti-aliasing.
+
+.. centered:: **Dynamic Semantics**
+
+No extra dynamic semantics are associated with anti-aliasing.
+
    .. centered:: **Verification Rules**
 
 #. In |SPARK|, a procedure call shall not pass actual parameters 
@@ -921,7 +966,3 @@ Expression Functions
 --------------------
 
 No extensions or restrictions.
-
-
-
-

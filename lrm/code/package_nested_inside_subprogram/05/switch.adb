@@ -18,7 +18,7 @@ is
    is
       A, B, C : Reading;
 
-      --  Embedded package to provide the capability to synthesise three inputs
+      --  Embedded package to provide the capability to synthesize three inputs
       --  into one.
       --# inherit Switch;
       package Conversion

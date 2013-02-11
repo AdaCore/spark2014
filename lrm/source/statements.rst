@@ -137,8 +137,6 @@ comparisons and checks are performed using predefined operations.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Proof*
-
 .. todo:: describe Proof Semantics of pragma Loop_Invariant. Target D2.
 
 The pragma ``Loop_Variant`` describes a lexicographic order, which must be
@@ -300,11 +298,19 @@ Assert``, a |SPARK| subprogram can contain the statement ``pragma
 Assert_And_Cut`` and ``pragma Assume``, both carrying a Boolean
 expression. These pragmas can occur anywhere a ``pragma Assert`` can occur.
 
+
+.. centered:: **Static Semantics**
+
+Not applicable.
+
+.. centered:: **Dynamic Semantics**
+
+Not applicable.
+
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Proof*
 
 For each of the pragmas ``Check``, ``Assert``, ``Assert_And_Cut``, and
 ``Loop_Invariant``, it must be proved that the Boolean expression is true.

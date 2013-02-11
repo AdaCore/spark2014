@@ -7,9 +7,9 @@ Representation Clauses
 Representation clauses are in |SPARK|, except for ``'Address`` representation
 clauses.
 
-As aspects specifications are elaborated at the freezing point of the
+As aspect specifications are elaborated at the freezing point of the
 associated entity, this allows forward references in the expression associated
-to the aspect specification, as in:
+with the aspect specification, as in:
 
 .. code-block:: ada
 
