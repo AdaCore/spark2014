@@ -21,8 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-use Ada.Text_IO;
+with System.Strings;
+with Ada.Text_IO;    use Ada.Text_IO;
+
+with GNAT.OS_Lib;    use GNAT.OS_Lib;
 
 use type Ada.Containers.Count_Type;
 
@@ -961,5 +963,42 @@ package body Graph is
 
       Close (FD);
    end Write_Dot_File;
+
+   --------------------
+   -- Write_Pdf_File --
+   --------------------
+
+   procedure Write_Pdf_File
+     (G         : T'Class;
+      Filename  : String;
+      Node_Info : access function (G : T'Class;
+                                   V : Vertex_Id)
+                                   return Node_Display_Info)
+   is
+   begin
+      Write_Dot_File (G, Filename, Node_Info);
+
+      declare
+         Success     : Boolean;
+         Return_Code : Integer;
+
+         Exec : System.Strings.String_Access :=
+           Locate_Exec_On_Path ("dot");
+         Args : System.Strings.String_List_Access :=
+           Argument_String_To_List ("-Tpdf " & Filename & ".dot");
+
+         pragma Unreferenced (Success, Return_Code);
+      begin
+         Spawn (Program_Name => Exec.all,
+                Args         => Args.all,
+                Output_File  => Filename & ".pdf",
+                Success      => Success,
+                Return_Code  => Return_Code,
+                Err_To_Out   => False);
+
+         System.Strings.Free (Exec);
+         System.Strings.Free (Args);
+      end;
+   end Write_Pdf_File;
 
 end Graph;

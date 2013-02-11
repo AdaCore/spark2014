@@ -140,19 +140,19 @@ package body Flow is
 
          Control_Flow_Graph.Create (Body_N, FA);
 
-         FA.CFG.Write_Dot_File
+         FA.CFG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_cfg",
             Node_Info => NDI'Access);
 
          Data_Dependence_Graph.Create (FA);
 
-         FA.DDG.Write_Dot_File
+         FA.DDG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_ddg",
             Node_Info => NDI'Access);
 
          Control_Dependence_Graph.Create (FA);
 
-         FA.CDG.Write_Dot_File
+         FA.CDG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_cdg",
             Node_Info => NDI'Access);
 

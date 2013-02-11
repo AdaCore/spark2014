@@ -371,8 +371,16 @@ package Graph is
       Node_Info : access function (G : T'Class;
                                    V : Vertex_Id)
                                    return Node_Display_Info);
-   --  Write the graph G in dot (and pdf) format to Filename, using
-   --  the PP function to pretty-print each vertex.
+   --  Write the graph G in dot format to Filename, using the PP
+   --  function to pretty-print each vertex.
+
+   procedure Write_Pdf_File
+     (G         : T'Class;
+      Filename  : String;
+      Node_Info : access function (G : T'Class;
+                                   V : Vertex_Id)
+                                   return Node_Display_Info);
+   --  As above, but also generate a pdf file using dot.
 
 private
 
