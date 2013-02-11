@@ -592,18 +592,18 @@ High-level requirements
 
 #. Consistency:
 
-   * Let *Abs* be the abstraction function defined by state refinement (such that
-     *Abs* is the identity function when applied to visible state).
+   * Let *Abstract* be the abstraction function defined by state refinement (such that
+     *Abstract* is the identity function when applied to visible state).
      Let *G* be the global data list and *RG* be the refined global data list. Then:
 
-     * **Requirement:** If *X* appears in *RG* but not all constituents of *Abs (X)* appear in *RG*
-       then *Abs (X)* must appear in *G* with at least input mode.
+     * **Requirement:** If *X* appears in *RG* but not all constituents of *Abstract (X)* appear in *RG*
+       then *Abstract (X)* must appear in *G* with at least input mode.
 
-       **Rationale:** In this case, Abs (X) is not fully initialized by the
+       **Rationale:** In this case, *Abstract (X)* is not fully initialized by the
        subprogram and the relevant components must be intialized prior to calling
        the subprogram.
 
-     * **Requirement:** If *Y* appears in *G*, then at least one *X* such that *Abs (X) = Y*
+     * **Requirement:** If *Y* appears in *G*, then at least one *X* such that *Abstract (X) = Y*
        must appear in *RG*.
 
        **Rationale:** By definition of abstraction.
@@ -611,11 +611,11 @@ High-level requirements
      * **Requirement:** Refinement of modes:
 
           * If the mode of *X* in *RG* indicates it is **not** used in a
-            proof context, then that mode must be a mode of *Abs (X)* in *G*.
+            proof context, then that mode must be a mode of *Abstract (X)* in *G*.
 
           * If the mode of *X* in *RG* indicates it **is** used in a proof context and
-            *Abs(X)* will not have another mode according to the above rules, then the
-            mode of *Abs(X)* shall indicate it is only used in proof contexts.
+            *Abstract(X)* will not have another mode according to the above rules, then the
+            mode of *Abstract(X)* shall indicate it is only used in proof contexts.
 
        **Rationale:** In general, modes should be preserved by refinement. However,
        if one refinement constituent of a state abstraction has an input and/or output mode, then
@@ -672,25 +672,25 @@ High-level requirements
       **Rationale:** this provides a useful early consistency check.
 
 
-    * Let *Abs* be the abstraction function defined by state refinement (such that
-      *Abs* is the identity function when applied to visible state).
+    * Let *Abstract* be the abstraction function defined by state refinement (such that
+      *Abstract* is the identity function when applied to visible state).
       Let *D* be a dependency relation and *RD* be the corresponding
       refined dependency relation. Then:
 
       * **Requirement:** If *(X,Y)* is in *RD* - i.e. *X* depends on *Y* -
-        then *(Abs(X), Abs(Y))* is in *D*.
+        then *(Abstract(X), Abstract(Y))* is in *D*.
 
         **Rationale:** dependencies must be preserved after abstraction.
 
-      * **Requirement:** If *(X,Y)* is in *RD* and there is *A* such that *Abs(A)=Abs(X)* but
-        there is no *B* such that *(A,B)* is in *RD*, then *(Abs(X),Abs(X))* is in *D*.
+      * **Requirement:** If *(X,Y)* is in *RD* and there is *A* such that *Abstract(A)=Abstract(X)* but
+        there is no *B* such that *(A,B)* is in *RD*, then *(Abstract(X),Abstract(X))* is in *D*.
 
-        **Rationale:** In this case, Abs (X) is not fully initialized by the
+        **Rationale:** In this case, *Abstract (X)* is not fully initialized by the
         subprogram and the relevant components must be initialized prior to calling
         the subprogram.
 
       * **Requirement:** If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
-        *Abs(V)=S* and *Abs(W)=T*.
+        *Abstract(V)=S* and *Abstract(W)=T*.
 
         **Rationale:** By definition of abstraction.
 
