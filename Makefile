@@ -184,3 +184,5 @@ clean:
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/alfa clean
+	$(MAKE) -C why3 clean
+	$(MAKE) -C alt-ergo clean
