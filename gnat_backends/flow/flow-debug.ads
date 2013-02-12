@@ -27,7 +27,7 @@
 
 package Flow.Debug is
 
-   procedure Print_Node_Set (S : Node_Sets.Set);
+   procedure Print_Node_Set (S : Flow_Id_Sets.Set);
    --  Print a mostly human-readable form the given node set.
 
 end Flow.Debug;

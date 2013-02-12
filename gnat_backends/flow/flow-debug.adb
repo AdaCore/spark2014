@@ -23,6 +23,7 @@
 
 with Output; use Output;
 with Treepr; use Treepr;
+with Why;
 
 package body Flow.Debug is
 
@@ -30,16 +31,24 @@ package body Flow.Debug is
    --  Print_Node_Set  --
    ----------------------
 
-   procedure Print_Node_Set (S : Node_Sets.Set)
+   procedure Print_Node_Set (S : Flow_Id_Sets.Set)
    is
    begin
-      Write_Str ("Node_Set with ");
+      Write_Str ("Flow_Id_Set with ");
       Write_Int (Int (S.Length));
       Write_Str (" elements:");
       Write_Eol;
       Indent;
-      for N of S loop
-         Print_Node_Briefly (N);
+      for F of S loop
+         case F.Kind is
+            when Null_Value =>
+               Write_Str ("<null>");
+               Write_Eol;
+            when Direct_Mapping =>
+               Print_Node_Briefly (Get_Direct_Mapping_Id (F));
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
       end loop;
       Outdent;
    end Print_Node_Set;
