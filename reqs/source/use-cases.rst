@@ -35,6 +35,9 @@ Milestone 1:
 
 * :ref:`uc-check-subset`
 
+* :ref:`uc-prove-no-rte`
+
+
 Milestone 3:
 
 * state abstraction
@@ -42,8 +45,6 @@ Milestone 3:
 * interfaces (volatiles)
 
 Milestone 4:
-
-* Prove of absence of RTE
 
 * :ref:`uc-analyse-data-flow`
 
@@ -85,21 +86,11 @@ SPARK - Advanced Proof
 
 Milestone 1:
 
-* Prove simple properties
-
-* Prove complex properties
-
-* Prove program contracts
-
-* Automate proof of simple VCs
-
-* Automate proof of complex VCs
-    
 * Manual proof of VCs
 
 Milestone 4:
 
-* Proof contract refinement
+* Prove contract refinement
 
 * Prove type invariants
 
@@ -208,6 +199,9 @@ The Use Cases
 
 .. _uc-internally-generate-aspects-and-bless:
 .. include:: ../use-cases/internally-generate-aspects-and-bless.rst
+
+.. _uc-prove-no-rte:
+.. include:: ../use-cases/prove-no-rte.rst    
 
 .. _uc-analyse-information-flow:
 .. include:: ../use-cases/analyse-information-flow.rst    
