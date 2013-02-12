@@ -43,10 +43,12 @@ module Main
   
   axiom position_no_element:
     forall co:list [position_ co no_element]. position_ co no_element = 0
+
+  function position_inv list int : cursor
   
   axiom position_eq:
-    forall co:list, cu1 cu2:cursor [position_ co cu1, position_ co cu2].
-          position_ co cu1 > 0 -> position_ co cu1 = position_ co cu2 -> cu1 = cu2
+    forall co:list, cu:cursor [position_ co cu].
+          position_ co cu > 0 -> position_inv co (position_ co cu) = cu
   
   predicate is_empty_ list
 
