@@ -124,6 +124,8 @@ Milestone 5 or earlier:
 
 * Combine test and formal program verification
 
+* Generate proof "assumptions" (e.g. so that assumption that tested code upholds the precondition of a procedure where that procedure has been proven).
+
 
 
 Support local development processes
