@@ -39,9 +39,15 @@ There is no additional syntax associated with exceptions in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-#. ``exception_handler`` is not in |SPARK|. [Exception declarations (including exception
-   renamings) are in |SPARK|. Raise statements and raise expressions are in |SPARK|, but must
-   (as described below) be provably never executed.]
+#. Exception handlers are not in |SPARK|. [Exception declarations (including
+   exception renamings) are in |SPARK|. Raise statements are in |SPARK|,
+   but must (as described below) be provably never executed.]
+
+   Raise expressions are not in |SPARK|; for a raise statement to be in
+   |SPARK|, it must be immediately enclosed by an if statement
+   which encloses no other statement. [It is intended that these two
+   rules will be relaxed at some point in the future (this is why
+   raise expressions are mentioned in the Verification Rules section below).]
 
 .. centered:: **Static Semantics**
 
@@ -56,7 +62,7 @@ There are no additional dynamic semantics associated with exceptions in |SPARK|.
 #. A ``raise_statement`` introduces an obligation to prove that the statement
    will not be executed, much like the proof obligation associated with
 
-   ``pragma Assert (False);``
+       ``pragma Assert (False);``
 
    [In other words, the proof obligations introduced for a raise statement
    are the same as those introduced for a runtime check which fails
