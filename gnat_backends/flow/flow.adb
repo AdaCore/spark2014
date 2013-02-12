@@ -94,7 +94,7 @@ package body Flow is
          end if;
       elsif Left.Kind = Direct_Mapping and Right.Kind = Magic_String then
          raise Why.Not_Implemented;
-      elsif Left.kind = Magic_String and right.Kind = Direct_Mapping then
+      elsif Left.Kind = Magic_String and Right.Kind = Direct_Mapping then
          raise Why.Not_Implemented;
       else
          return False;
@@ -187,6 +187,16 @@ package body Flow is
                                  Sprint_Node (N);
                            end case;
                         end;
+                        case F.Variant is
+                           when Initial_Value =>
+                              Rv.Shape := Shape_None;
+                              Output.Write_Str ("'initial");
+                           when Final_Value =>
+                              Rv.Shape := Shape_None;
+                              Output.Write_Str ("'final");
+                           when others =>
+                              null;
+                        end case;
                      when others =>
                         raise Program_Error;
                   end case;
@@ -207,7 +217,8 @@ package body Flow is
             End_Vertex   => Flow_Graphs.Null_Vertex,
             CFG          => Flow_Graphs.Create,
             DDG          => Flow_Graphs.Create,
-            CDG          => Flow_Graphs.Create);
+            CDG          => Flow_Graphs.Create,
+            Vars         => Flow_Id_Sets.Empty_Set);
 
          Control_Flow_Graph.Create (Body_N, FA);
 

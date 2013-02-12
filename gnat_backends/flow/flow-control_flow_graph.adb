@@ -77,6 +77,13 @@ package body Flow.Control_Flow_Graph is
    function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
+   function Get_Entire_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
+   --  Obtain all entire variables used in a node.
+
+   function Get_Entire_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
+   pragma Unreferenced (Get_Entire_Variable_Set);
+   --  As above, but operating on a list.
+
    procedure Do_Assignment_Statement
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs;
@@ -193,6 +200,86 @@ package body Flow.Control_Flow_Graph is
       end loop;
       return VS;
    end Get_Variable_Set;
+
+   -------------------------------
+   --  Get_Entire_Variable_Set  --
+   -------------------------------
+
+   function Get_Entire_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set
+   is
+      VS     : Flow_Id_Sets.Set;
+      Unused : Traverse_Final_Result;
+      pragma Unreferenced (Unused);
+
+      function Proc (N : Node_Id) return Traverse_Result;
+
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier =>
+               case Nkind (Parent (N)) is
+                  when N_Subprogram_Body |
+                    N_Parameter_Specification |
+                    N_Handled_Sequence_Of_Statements |
+                    N_Object_Declaration =>
+                     return Skip;
+                  when N_If_Statement |
+                    N_Assignment_Statement =>
+                     VS.Include (Direct_Mapping_Id (Entity (N)));
+                  when others =>
+                     Print_Node_Subtree (N);
+                     raise Why.Not_Implemented;
+               end case;
+            when N_Subprogram_Body |
+              N_Procedure_Specification |
+              N_Parameter_Specification |
+              N_If_Statement |
+              N_Assignment_Statement |
+              N_Handled_Sequence_Of_Statements |
+              N_Object_Declaration =>
+               null;
+            when N_Simple_Return_Statement |
+              N_Integer_Literal =>
+               return Skip;
+            when N_Defining_Identifier =>
+               case Nkind (Parent (N)) is
+                  when N_Procedure_Specification =>
+                     null;
+                  when N_Parameter_Specification |
+                    N_Object_Declaration =>
+                     VS.Include (Direct_Mapping_Id (N));
+                  when others =>
+                     Print_Node_Subtree (N);
+                     raise Why.Not_Implemented;
+               end case;
+               return Skip;
+            when others =>
+               Print_Node_Subtree (N);
+               raise Why.Not_Implemented;
+         end case;
+         return OK;
+      end Proc;
+
+      function Traverse is new Traverse_Func (Process => Proc);
+   begin
+      Unused := Traverse (N);
+      return VS;
+   end Get_Entire_Variable_Set;
+
+   function Get_Entire_Variable_Set (L : List_Id) return Flow_Id_Sets.Set
+   is
+      VS : Flow_Id_Sets.Set;
+      P  : Node_Id;
+   begin
+      P := First (L);
+      while P /= Empty loop
+         VS.Union (Get_Entire_Variable_Set (P));
+
+         P := Next (P);
+      end loop;
+      return VS;
+   end Get_Entire_Variable_Set;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -481,6 +568,38 @@ package body Flow.Control_Flow_Graph is
 
       --  Produce flowgraph for the body
       Do_Subprogram_Body (N, FA, Connection_Map);
+
+      --  Work out all variables and add 'initial and 'final vertices.
+      FA.Vars := Get_Entire_Variable_Set (N);
+      for F of FA.Vars loop
+         case F.Kind is
+            when Direct_Mapping =>
+               declare
+                  N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                  V : Flow_Graphs.Vertex_Id;
+               begin
+                  FA.CFG.Add_Vertex
+                    (Direct_Mapping_Id (N, Initial_Value),
+                     V_Attributes'
+                       (Is_Null_Node      => False,
+                        Variables_Defined => Flow_Id_Sets.To_Set (F),
+                        Variables_Used    => Flow_Id_Sets.Empty_Set),
+                     V);
+                  Linkup (FA.CFG, V, FA.Start_Vertex);
+                  FA.CFG.Add_Vertex
+                    (Direct_Mapping_Id (N, Final_Value),
+                     V_Attributes'
+                       (Is_Null_Node      => False,
+                        Variables_Defined => Flow_Id_Sets.Empty_Set,
+                        Variables_Used    => Flow_Id_Sets.To_Set (F)),
+                     V);
+                  Linkup (FA.CFG, FA.End_Vertex, V);
+               end;
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end loop;
+      --  Print_Node_Set (FA.Vars);
 
       --  Connect up the start and end nodes.
       Linkup (FA.CFG,

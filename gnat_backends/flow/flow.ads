@@ -122,6 +122,7 @@ package Flow is
       CFG          : Flow_Graphs.T;
       DDG          : Flow_Graphs.T;
       CDG          : Flow_Graphs.T;
+      Vars         : Flow_Id_Sets.Set;
    end record;
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
