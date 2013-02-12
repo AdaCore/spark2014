@@ -27,6 +27,204 @@
 
 package body Get_Targ is
 
+   -----------------------
+   -- Get_Bits_Per_Unit --
+   -----------------------
+
+   function Get_Bits_Per_Unit return Pos is
+   begin
+      return 8;
+   end Get_Bits_Per_Unit;
+
+   -----------------------
+   -- Get_Bits_Per_Word --
+   -----------------------
+
+   function Get_Bits_Per_Word return Pos is
+   begin
+      return 32;
+   end Get_Bits_Per_Word;
+
+   -------------------
+   -- Get_Char_Size --
+   -------------------
+
+   function Get_Char_Size return Pos is
+   begin
+      return 8;
+   end Get_Char_Size;
+
+   -----------------
+   -- Get_Wchar_T --
+   -----------------
+
+   function Get_Wchar_T_Size return Pos is
+   begin
+      return 16;
+   end Get_Wchar_T_Size;
+
+   --------------------
+   -- Get_Short_Size --
+   --------------------
+
+   function Get_Short_Size return Pos is
+   begin
+      return 16;
+   end Get_Short_Size;
+
+   ------------------
+   -- Get_Int_Size --
+   ------------------
+
+   function Get_Int_Size return Pos is
+   begin
+      return 32;
+   end Get_Int_Size;
+
+   -------------------
+   -- Get_Long_Size --
+   -------------------
+
+   function Get_Long_Size return Pos is
+   begin
+      return 64;
+   end Get_Long_Size;
+
+   ------------------------
+   -- Get_Long_Long_Size --
+   ------------------------
+
+   function Get_Long_Long_Size return Pos is
+   begin
+      return 64;
+   end Get_Long_Long_Size;
+
+   --------------------
+   -- Get_Float_Size --
+   --------------------
+
+   function Get_Float_Size return Pos is
+   begin
+      return 32;
+   end Get_Float_Size;
+
+   ---------------------
+   -- Get_Double_Size --
+   ---------------------
+
+   function Get_Double_Size return Pos is
+   begin
+      return 64;
+   end Get_Double_Size;
+
+   --------------------------
+   -- Get_Long_Double_Size --
+   --------------------------
+
+   function Get_Long_Double_Size return Pos is
+   begin
+      return 96;
+   end Get_Long_Double_Size;
+
+   ----------------------
+   -- Get_Pointer_Size --
+   ----------------------
+
+   function Get_Pointer_Size return Pos is
+   begin
+      return 32;
+   end Get_Pointer_Size;
+
+   ---------------------------
+   -- Get_Maximum_Alignment --
+   ---------------------------
+
+   function Get_Maximum_Alignment return Pos is
+   begin
+      return 4;
+   end Get_Maximum_Alignment;
+
+   ------------------------------------
+   -- Get_System_Allocator_Alignment --
+   ------------------------------------
+
+   function Get_System_Allocator_Alignment return Nat is
+   begin
+      return 1;
+   end Get_System_Allocator_Alignment;
+
+   ------------------------
+   -- Get_Float_Words_BE --
+   ------------------------
+
+   function Get_Float_Words_BE return Nat is
+   begin
+      return 1;
+   end Get_Float_Words_BE;
+
+   ------------------
+   -- Get_Words_BE --
+   ------------------
+
+   function Get_Words_BE return Nat is
+   begin
+      return 1;
+   end Get_Words_BE;
+
+   ------------------
+   -- Get_Bytes_BE --
+   ------------------
+
+   function Get_Bytes_BE return Nat is
+   begin
+      return 1;
+   end Get_Bytes_BE;
+
+   -----------------
+   -- Get_Bits_BE --
+   -----------------
+
+   function Get_Bits_BE return Nat is
+   begin
+      return 1;
+   end Get_Bits_BE;
+
+   --------------------------
+   -- Get_Strict_Alignment --
+   --------------------------
+
+   function Get_Strict_Alignment return Nat is
+   begin
+      return 1;
+   end Get_Strict_Alignment;
+
+   --------------------------------
+   -- Get_Double_Float_Alignment --
+   --------------------------------
+
+   function Get_Double_Float_Alignment return Nat is
+   begin
+      return 0;
+   end Get_Double_Float_Alignment;
+
+   ---------------------------------
+   -- Get_Double_Scalar_Alignment --
+   ---------------------------------
+
+   function Get_Double_Scalar_Alignment return Nat is
+   begin
+      return 0;
+   end Get_Double_Scalar_Alignment;
+
+   -----------------------------
+   -- Get_Max_Unaligned_Field --
+   -----------------------------
+
+   function Get_Max_Unaligned_Field return Pos is
+   begin
+      return 64;  -- Can be different on some targets (e.g., AAMP)
+   end Get_Max_Unaligned_Field;
+
    ----------------------
    -- Digits_From_Size --
    ----------------------
@@ -47,15 +245,6 @@ package body Get_Targ is
          raise Program_Error;
       end if;
    end Digits_From_Size;
-
-   -----------------------------
-   -- Get_Max_Unaligned_Field --
-   -----------------------------
-
-   function Get_Max_Unaligned_Field return Pos is
-   begin
-      return 64;  -- Can be different on some targets (e.g., AAMP)
-   end Get_Max_Unaligned_Field;
 
    -----------------------------
    -- Register_Back_End_Types --
