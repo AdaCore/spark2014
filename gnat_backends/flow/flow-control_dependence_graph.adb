@@ -29,7 +29,7 @@ package body Flow.Control_Dependence_Graph is
    begin
       --  Reverse CFG and add an edge from end -> start.
       Reversed_CFG := FA.CFG.Invert;
-      Reversed_CFG.Add_Edge (FA.End_Vertex, FA.Start_Vertex);
+      Reversed_CFG.Add_Edge (FA.End_Vertex, FA.Start_Vertex, EC_Default);
 
       --  The CDG is simply the post-dominance frontier.
       FA.CDG := Reversed_CFG.Dominance_Frontier (FA.End_Vertex);

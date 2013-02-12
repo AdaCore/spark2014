@@ -84,6 +84,7 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 generic
    type Vertex_Key is private;
    type Vertex_Attributes is private;
+   type Edge_Colours is (<>);
    Null_Key : Vertex_Key;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
 package Graph is
@@ -118,7 +119,8 @@ package Graph is
    --  Basic operations
    ----------------------------------------------------------------------
 
-   function Create return T;
+   function Create (Colour : Edge_Colours := Edge_Colours'First)
+                    return T;
    --  Creates a new, empty graph.
 
    function Create (G : T'Class) return T;
@@ -204,7 +206,8 @@ package Graph is
 
    procedure Add_Edge
      (G        : in out T'Class;
-      V_1, V_2 : Vertex_Id)
+      V_1, V_2 : Vertex_Id;
+      Colour   : Edge_Colours)
       with Pre  => V_1 /= Null_Vertex and
                    V_2 /= Null_Vertex,
            Post => G.Edge_Exists (V_1, V_2);
@@ -216,8 +219,9 @@ package Graph is
 
    procedure Add_Edge
      (G        : in out T'Class;
-      V_1, V_2 : Vertex_Key)
-      with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
+      V_1, V_2 : Vertex_Key;
+      Colour   : Edge_Colours)
+     with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
                    G.Get_Vertex (V_2) /= Null_Vertex;
    --  Convenience function to add an edge between to vertices given
    --  by key (instead of id).
@@ -358,10 +362,19 @@ package Graph is
                          Shape_Diamond,
                          Shape_None);
 
+   type Edge_Shape_T is (Edge_Normal);
+
    type Node_Display_Info is record
       Show  : Boolean;
       Shape : Node_Shape_T;
       Label : Unbounded_String;
+   end record;
+
+   type Edge_Display_Info is record
+      Show   : Boolean;
+      Shape  : Edge_Shape_T;
+      Colour : Unbounded_String;
+      Label  : Unbounded_String;
    end record;
 
    procedure Write_Dot_File
@@ -369,7 +382,13 @@ package Graph is
       Filename  : String;
       Node_Info : access function (G : T'Class;
                                    V : Vertex_Id)
-                                   return Node_Display_Info);
+                                   return Node_Display_Info;
+      Edge_Info : access function (G      : T'Class;
+                                   A      : Vertex_Id;
+                                   B      : Vertex_Id;
+                                   Marked : Boolean;
+                                   Colour : Edge_Colours)
+                                   return Edge_Display_Info);
    --  Write the graph G in dot format to Filename, using the PP
    --  function to pretty-print each vertex.
 
@@ -378,7 +397,13 @@ package Graph is
       Filename  : String;
       Node_Info : access function (G : T'Class;
                                    V : Vertex_Id)
-                                   return Node_Display_Info);
+                                   return Node_Display_Info;
+      Edge_Info : access function (G      : T'Class;
+                                   A      : Vertex_Id;
+                                   B      : Vertex_Id;
+                                   Marked : Boolean;
+                                   Colour : Edge_Colours)
+                                   return Edge_Display_Info);
    --  As above, but also generate a pdf file using dot.
 
 private
@@ -409,6 +434,7 @@ private
 
    type Edge_Attributes is record
       Marked : Boolean;
+      Colour : Edge_Colours;
    end record;
 
    package EAM is new Ada.Containers.Hashed_Maps
@@ -436,7 +462,8 @@ private
    subtype Vertex_List is VL.Vector;
 
    type T is tagged record
-      Vertices : Vertex_List;
+      Vertices       : Vertex_List;
+      Default_Colour : Edge_Colours;
    end record;
 
    ----------------------------------------------------------------------

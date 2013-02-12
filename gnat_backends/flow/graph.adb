@@ -48,13 +48,16 @@ package body Graph is
    -- Create --
    ------------
 
-   function Create return T is
+   function Create (Colour : Edge_Colours := Edge_Colours'First)
+                    return T
+   is
    begin
-      return T'(Vertices => VL.Empty_Vector);
+      return T'(Vertices       => VL.Empty_Vector,
+                Default_Colour => Colour);
    end Create;
 
    function Create (G : T'Class) return T is
-      R : T := Create;
+      R : T := Create (G.Default_Colour);
    begin
       for V of G.Vertices loop
          R.Vertices.Append
@@ -182,7 +185,8 @@ package body Graph is
 
    procedure Add_Edge
      (G        : in out T'Class;
-      V_1, V_2 : Vertex_Id) is
+      V_1, V_2 : Vertex_Id;
+      Colour   : Edge_Colours) is
    begin
       --  Sanity check the indices.
       pragma Assert
@@ -196,7 +200,8 @@ package body Graph is
 
       --  Add to V_1's out neighbours and edge attribute list.
       G.Vertices (V_1).Out_Neighbours.Include
-        (V_2, Edge_Attributes'(Marked => False));
+        (V_2, Edge_Attributes'(Marked => False,
+                               Colour => Colour));
 
       --  Add to V_2's in neighbours.
       G.Vertices (V_2).In_Neighbours.Include (V_1);
@@ -204,9 +209,10 @@ package body Graph is
 
    procedure Add_Edge
      (G        : in out T'Class;
-      V_1, V_2 : Vertex_Key) is
+      V_1, V_2 : Vertex_Key;
+      Colour   : Edge_Colours) is
    begin
-      G.Add_Edge (G.Get_Vertex (V_1), G.Get_Vertex (V_2));
+      G.Add_Edge (G.Get_Vertex (V_1), G.Get_Vertex (V_2), Colour);
    end Add_Edge;
 
    -----------------
@@ -751,7 +757,7 @@ package body Graph is
 
       for V in Valid_Vertex_Id range 1 .. Dom'Last loop
          if Dom (V) in Valid_Vertex_Id then
-            DT.Add_Edge (Dom (V), V);
+            DT.Add_Edge (Dom (V), V, DT.Default_Colour);
          end if;
       end loop;
 
@@ -777,7 +783,7 @@ package body Graph is
                      Runner : Valid_Vertex_Id := P;
                   begin
                      while Runner /= Dom (B) loop
-                        DF.Add_Edge (B, Runner);
+                        DF.Add_Edge (B, Runner, DF.Default_Colour);
                         Runner := Dom (Runner);
                      end loop;
                   end;
@@ -886,7 +892,7 @@ package body Graph is
          for W of Sets (Succ (V)) loop
             if not G.Edge_Exists (V, W) then
                Visitor (V, W);
-               G.Add_Edge (V, W);
+               G.Add_Edge (V, W, G.Default_Colour);
             end if;
          end loop;
       end loop;
@@ -905,7 +911,13 @@ package body Graph is
       Filename  : String;
       Node_Info : access function (G : T'Class;
                                    V : Vertex_Id)
-                                   return Node_Display_Info)
+                                   return Node_Display_Info;
+      Edge_Info : access function (G      : T'Class;
+                                   A      : Vertex_Id;
+                                   B      : Vertex_Id;
+                                   Marked : Boolean;
+                                   Colour : Edge_Colours)
+                                   return Edge_Display_Info)
    is
       FD : File_Type;
    begin
@@ -945,18 +957,31 @@ package body Graph is
       for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
             declare
-               V_2 : Valid_Vertex_Id renames Key (C);
-               Atr : Edge_Attributes renames Element (C);
+               V_2  : Valid_Vertex_Id renames Key (C);
+               Atr  : Edge_Attributes renames Element (C);
+               Info : constant Edge_Display_Info :=
+                 Edge_Info (G, V_1, V_2, Atr.Marked, Atr.Colour);
             begin
-               Put (FD, "   ");
-               Put (FD, Valid_Vertex_Id'Image (V_1));
-               Put (FD, " -> ");
-               Put (FD, Valid_Vertex_Id'Image (V_2));
-               if Atr.Marked then
-                  Put (FD, " [color=blue]");
+               if Info.Show then
+                  Put (FD, "   ");
+                  Put (FD, Valid_Vertex_Id'Image (V_1));
+                  Put (FD, " -> ");
+                  Put (FD, Valid_Vertex_Id'Image (V_2));
+                  Put (FD, " [");
+                  case Info.Shape is
+                     when Edge_Normal =>
+                        Put (FD, "arrowType=""normal""");
+                  end case;
+                  if Info.Colour /= Null_Unbounded_String then
+                     Put (FD, ",color=""" & To_String (Info.Colour) & """");
+                  end if;
+                  if Info.Label /=  Null_Unbounded_String then
+                     Put (FD, ",label=""" & To_String (Info.Label) & """");
+                  end if;
+                  Put (FD, "]");
+                  Put (FD, ";");
+                  New_Line (FD);
                end if;
-               Put (FD, ";");
-               New_Line (FD);
             end;
          end loop;
       end loop;
@@ -975,10 +1000,16 @@ package body Graph is
       Filename  : String;
       Node_Info : access function (G : T'Class;
                                    V : Vertex_Id)
-                                   return Node_Display_Info)
+                                   return Node_Display_Info;
+      Edge_Info : access function (G      : T'Class;
+                                   A      : Vertex_Id;
+                                   B      : Vertex_Id;
+                                   Marked : Boolean;
+                                   Colour : Edge_Colours)
+                                   return Edge_Display_Info)
    is
    begin
-      Write_Dot_File (G, Filename, Node_Info);
+      Write_Dot_File (G, Filename, Node_Info, Edge_Info);
 
       declare
          Success     : Boolean;

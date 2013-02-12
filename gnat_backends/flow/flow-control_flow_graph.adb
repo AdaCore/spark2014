@@ -141,7 +141,7 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       for From of Froms loop
-         CFG.Add_Edge (From, To);
+         CFG.Add_Edge (From, To, EC_Default);
       end loop;
    end Linkup;
 
@@ -150,7 +150,7 @@ package body Flow.Control_Flow_Graph is
                      To    : Flow_Graphs.Vertex_Id)
    is
    begin
-      CFG.Add_Edge (From, To);
+      CFG.Add_Edge (From, To, EC_Default);
    end Linkup;
 
    ------------------------
@@ -540,7 +540,7 @@ package body Flow.Control_Flow_Graph is
          if G.Get_Attributes (V).Is_Null_Node then
             for A of G.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
                for B of G.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
-                  G.Add_Edge (A, B);
+                  G.Add_Edge (A, B, EC_Default);
                end loop;
             end loop;
             G.Clear_Vertex (V);

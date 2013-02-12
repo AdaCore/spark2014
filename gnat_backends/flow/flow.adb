@@ -134,7 +134,9 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   procedure Flow_Analyse_Entity (E : Entity_Id) is
+   procedure Flow_Analyse_Entity (E : Entity_Id)
+   is
+      use Flow_Graphs;
    begin
       if not (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E)) then
          return;
@@ -144,18 +146,23 @@ package body Flow is
          Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
          FA     : Flow_Analysis_Graphs;
 
-         function NDI (G : Flow_Graphs.T'Class;
-                       V : Flow_Graphs.Vertex_Id)
-                       return Flow_Graphs.Node_Display_Info;
-         --  Pretty-printing for each node in the dot output. For now
-         --  this is just the node number.
+         function NDI (G : T'Class;
+                       V : Vertex_Id)
+                       return Node_Display_Info;
+         --  Pretty-printing for each vertex in the dot output.
 
-         function NDI (G : Flow_Graphs.T'Class;
-                       V : Flow_Graphs.Vertex_Id)
-                       return Flow_Graphs.Node_Display_Info
+         function EDI (G      : T'Class;
+                       A      : Vertex_Id;
+                       B      : Vertex_Id;
+                       Marked : Boolean;
+                       Colour : Edge_Colours)
+                       return Edge_Display_Info;
+         --  Pretty-printing for each edge in the dot output.
+
+         function NDI (G : T'Class;
+                       V : Vertex_Id)
+                       return Node_Display_Info
          is
-            use Flow_Graphs;
-
             Rv : Node_Display_Info := Node_Display_Info'
               (Show  => True,
                Shape => Flow_Graphs.Node_Shape_T'First,
@@ -211,6 +218,31 @@ package body Flow is
             end if;
             return Rv;
          end NDI;
+
+         function EDI (G      : T'Class;
+                       A      : Vertex_Id;
+                       B      : Vertex_Id;
+                       Marked : Boolean;
+                       Colour : Edge_Colours)
+                       return Edge_Display_Info
+         is
+            pragma Unreferenced (G, A, B, Marked);
+
+            Rv : Edge_Display_Info :=
+              Edge_Display_Info'(Show   => True,
+                                 Shape  => Edge_Normal,
+                                 Colour => Null_Unbounded_String,
+                                 Label  => Null_Unbounded_String);
+         begin
+            case Colour is
+               when EC_Default =>
+                  null;
+               when EC_DDG =>
+                  Rv.Colour := To_Unbounded_String ("red");
+            end case;
+            return Rv;
+         end EDI;
+
       begin
          FA := Flow_Analysis_Graphs'
            (Start_Vertex => Flow_Graphs.Null_Vertex,
@@ -224,19 +256,22 @@ package body Flow is
 
          FA.CFG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_cfg",
-            Node_Info => NDI'Access);
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
 
          Data_Dependence_Graph.Create (FA);
 
          FA.DDG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_ddg",
-            Node_Info => NDI'Access);
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
 
          Control_Dependence_Graph.Create (FA);
 
          FA.CDG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_cdg",
-            Node_Info => NDI'Access);
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
 
       end;
    end Flow_Analyse_Entity;

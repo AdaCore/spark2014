@@ -44,7 +44,7 @@ package body Flow.Data_Dependence_Graph is
                   if FA.CFG.Get_Attributes
                     (V_U).Variables_Used.Contains (Var)
                   then
-                     FA.DDG.Add_Edge (V_D, V_U);
+                     FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
                   end if;
                   if FA.CFG.Get_Attributes
                     (V_U).Variables_Defined.Contains (Var)
@@ -59,7 +59,7 @@ package body Flow.Data_Dependence_Graph is
                if FA.CFG.Get_Attributes
                  (V_D).Variables_Used.Contains (Var)
                then
-                  FA.DDG.Add_Edge (V_D, V_D);
+                  FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
                end if;
 
                --  Flag all def-used chains rooted a V_D.
