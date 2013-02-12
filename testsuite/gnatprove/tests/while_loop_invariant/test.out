@@ -1,4 +1,4 @@
-s.adb:14:9: loop variant not proved
+s.adb:14:9: info: loop variant proved
 s.adb:15:9: info: loop invariant initialization proved
 s.adb:15:9: info: loop invariant preservation proved
 s.adb:25:24: info: range check proved

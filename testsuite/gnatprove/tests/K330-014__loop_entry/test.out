@@ -19,8 +19,8 @@ while_loops.adb:20:29: overflow check not proved
 while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:32:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
 while_loops.adb:36:29: info: overflow check proved
+while_loops.adb:48:13: info: loop invariant initialization proved
 while_loops.adb:48:13: info: loop invariant preservation proved
-while_loops.adb:48:13: loop invariant initialization not proved, requires Counter'Loop_Entry (Test3a) > 0
 while_loops.adb:53:29: overflow check not proved
 while_loops.adb:65:13: info: loop invariant initialization proved
 while_loops.adb:65:13: info: loop invariant preservation proved

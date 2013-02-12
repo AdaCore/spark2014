@@ -1,6 +1,6 @@
-linear_div.adb:11:17: postcondition not proved, requires Remainder >= 0
+linear_div.adb:13:13: info: postcondition proved
 linear_div.adb:20:7: info: loop invariant initialization proved
-linear_div.adb:22:16: loop invariant preservation not proved, requires Quotient >= 0
+linear_div.adb:20:7: info: loop invariant preservation proved
 linear_div.adb:24:28: info: overflow check proved
 linear_div.adb:25:30: info: overflow check proved
 random_testing.adb:10:16: postcondition not proved, requires Result

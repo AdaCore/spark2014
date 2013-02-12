@@ -21,6 +21,6 @@ arr_aggregate.ads:37:15: postcondition not proved, requires default
 arr_aggregate.ads:45:15: postcondition not proved, requires default
 rec_aggregate.ads:26:15: info: postcondition proved
 rec_aggregate.ads:33:14: info: postcondition proved
-rec_aggregate.ads:39:15: postcondition not proved, requires default
+rec_aggregate.ads:39:15: info: postcondition proved
 rec_aggregate.ads:39:47: info: overflow check proved
 rec_aggregate.ads:47:15: postcondition not proved, requires default
