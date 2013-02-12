@@ -33,6 +33,7 @@ with Sprint; use Sprint;
 
 with Output;
 
+with Why;
 with Alfa.Definition; use Alfa.Definition;
 with Alfa.Util;
 
@@ -67,6 +68,68 @@ package body Flow is
                                  Whitespace));
    end Add_To_Temp_String;
 
+   -----------------------
+   -- Flow_Id operators --
+   -----------------------
+
+   function "=" (Left, Right : Flow_Id) return Boolean
+   is
+   begin
+      if Left.Kind = Right.Kind then
+         if Left.Variant = Right.Variant then
+            case Left.Kind is
+               when Null_Value =>
+                  return True;
+               when Direct_Mapping =>
+                  return Left.Node_A = Right.Node_A;
+               when Record_Field =>
+                  raise Why.Not_Implemented;
+               when Magic_String =>
+                  return Name_Equal (Left.E_Name, Right.E_Name);
+            end case;
+         elsif Left.Kind = Null_Value then
+            return True;
+         else
+            return False;
+         end if;
+      elsif Left.Kind = Direct_Mapping and Right.Kind = Magic_String then
+         raise Why.Not_Implemented;
+      elsif Left.kind = Magic_String and right.Kind = Direct_Mapping then
+         raise Why.Not_Implemented;
+      else
+         return False;
+      end if;
+   end "=";
+
+   ----------
+   -- Hash --
+   ----------
+
+   function Hash (N : Flow_Id) return Ada.Containers.Hash_Type
+   is
+   begin
+      case N.Kind is
+         when Null_Value =>
+            return 0;
+         when Direct_Mapping =>
+            return Ada.Containers.Hash_Type (N.Node_A);
+         when Record_Field =>
+            raise Why.Not_Implemented;
+         when Magic_String =>
+            return Name_Hash (N.E_Name);
+      end case;
+   end Hash;
+
+   ---------------------------
+   -- Get_Direct_Mapping_Id --
+   ---------------------------
+
+   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id
+   is
+   begin
+      return F.Node_A;
+   end Get_Direct_Mapping_Id;
+
    -------------------------
    -- Flow_Analyse_Entity --
    -------------------------
@@ -82,13 +145,13 @@ package body Flow is
          FA     : Flow_Analysis_Graphs;
 
          function NDI (G : Flow_Graphs.T'Class;
-                       N : Flow_Graphs.Vertex_Id)
+                       V : Flow_Graphs.Vertex_Id)
                        return Flow_Graphs.Node_Display_Info;
          --  Pretty-printing for each node in the dot output. For now
          --  this is just the node number.
 
          function NDI (G : Flow_Graphs.T'Class;
-                       N : Flow_Graphs.Vertex_Id)
+                       V : Flow_Graphs.Vertex_Id)
                        return Flow_Graphs.Node_Display_Info
          is
             use Flow_Graphs;
@@ -98,32 +161,41 @@ package body Flow is
                Shape => Flow_Graphs.Node_Shape_T'First,
                Label => Null_Unbounded_String);
          begin
-            if N = FA.Start_Vertex then
+            if V = FA.Start_Vertex then
                Rv.Label := To_Unbounded_String ("start");
                Rv.Shape := Shape_None;
-            elsif N = FA.End_Vertex then
+            elsif V = FA.End_Vertex then
                Rv.Label := To_Unbounded_String ("end");
                Rv.Shape := Shape_None;
             else
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
                declare
-                  E : constant Entity_Id := G.Get_Key (N);
+                  F : constant Flow_Id := G.Get_Key (V);
                begin
-                  case Nkind (E) is
-                     when N_If_Statement =>
-                        Rv.Shape := Shape_Diamond;
-                        Output.Write_Str ("if ");
-                        Sprint_Node (Condition (E));
+                  case F.Kind is
+                     when Direct_Mapping =>
+                        declare
+                           N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                        begin
+                           case Nkind (N) is
+                              when N_If_Statement =>
+                                 Rv.Shape := Shape_Diamond;
+                                 Output.Write_Str ("if ");
+                                 Sprint_Node (Condition (N));
+                              when others =>
+                                 Sprint_Node (N);
+                           end case;
+                        end;
                      when others =>
-                        Sprint_Node (E);
+                        raise Program_Error;
                   end case;
                end;
                Output.Write_Eol;
                Output.Cancel_Special_Output;
                Rv.Label := Temp_String;
 
-               if G.Get_Attributes (N).Is_Null_Node then
+               if G.Get_Attributes (V).Is_Null_Node then
                   Rv.Show := False;
                end if;
             end if;
@@ -133,7 +205,6 @@ package body Flow is
          FA := Flow_Analysis_Graphs'
            (Start_Vertex => Flow_Graphs.Null_Vertex,
             End_Vertex   => Flow_Graphs.Null_Vertex,
-            NTV          => Node_To_Vertex_Maps.Empty_Map,
             CFG          => Flow_Graphs.Create,
             DDG          => Flow_Graphs.Create,
             CDG          => Flow_Graphs.Create);

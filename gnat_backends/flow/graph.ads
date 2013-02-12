@@ -218,8 +218,7 @@ package Graph is
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Key)
       with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
-                   G.Get_Vertex (V_2) /= Null_Vertex,
-           Post => G.Edge_Exists (G.Get_Vertex (V_1), G.Get_Vertex (V_2));
+                   G.Get_Vertex (V_2) /= Null_Vertex;
    --  Convenience function to add an edge between to vertices given
    --  by key (instead of id).
    --
