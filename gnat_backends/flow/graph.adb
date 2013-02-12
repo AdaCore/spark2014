@@ -279,6 +279,33 @@ package body Graph is
       G.Vertices (V).Out_Neighbours := Empty_Map;
    end Clear_Vertex;
 
+   ------------------
+   --  Copy_Edges  --
+   ------------------
+
+   procedure Copy_Edges
+     (G : in out T'Class;
+      O : T'Class)
+   is
+   begin
+      --  Sanity check the length of the two graphs.
+      pragma Assert (G.Vertices.Length = O.Vertices.Length);
+
+      for V_A in Valid_Vertex_Id range 1 .. O.Vertices.Last_Index loop
+         for C in O.Vertices (V_A).Out_Neighbours.Iterate loop
+            declare
+               V_B : constant Valid_Vertex_Id := Key (C);
+               Atr : constant Edge_Attributes := Element (C);
+            begin
+               G.Add_Edge (V_A, V_B, Atr.Colour);
+               if Atr.Marked then
+                  G.Mark_Edge (V_A, V_B);
+               end if;
+            end;
+         end loop;
+      end loop;
+   end Copy_Edges;
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------

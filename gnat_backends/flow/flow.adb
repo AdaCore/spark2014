@@ -40,6 +40,7 @@ with Alfa.Util;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Control_Dependence_Graph;
+with Flow.Program_Dependence_Graph;
 
 package body Flow is
 
@@ -250,6 +251,7 @@ package body Flow is
             CFG          => Flow_Graphs.Create,
             DDG          => Flow_Graphs.Create,
             CDG          => Flow_Graphs.Create,
+            PDG          => Flow_Graphs.Create,
             Vars         => Flow_Id_Sets.Empty_Set);
 
          Control_Flow_Graph.Create (Body_N, FA);
@@ -270,6 +272,13 @@ package body Flow is
 
          FA.CDG.Write_Pdf_File
            (Filename  => Get_Name_String (Chars (E)) & "_cdg",
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
+
+         Program_Dependence_Graph.Create (FA);
+
+         FA.PDG.Write_Pdf_File
+           (Filename  => Get_Name_String (Chars (E)) & "_pdg",
             Node_Info => NDI'Access,
             Edge_Info => EDI'Access);
 

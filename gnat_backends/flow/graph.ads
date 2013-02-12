@@ -255,6 +255,13 @@ package Graph is
    --
    --  Complexity is O(N).
 
+   procedure Copy_Edges
+     (G : in out T'Class;
+      O : T'Class);
+   --  Copy all edges from graph O to graph G.
+   --
+   --  Complexity is O(N).
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------
