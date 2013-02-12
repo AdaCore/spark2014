@@ -86,7 +86,7 @@ SPARK - Advanced Proof
 
 Milestone 1:
 
-* Manual proof of VCs
+* :ref:`uc-discharge-vcs-manually`
 
 Milestone 4:
 
@@ -104,10 +104,6 @@ Milestone |rel2+|:
 
 Integrating Proof and Test 
 ==========================
-
-Milestone 1:
-
-* Internally generate aspects
 
 Milestone 5 or earlier:
 
@@ -147,12 +143,9 @@ Milestone |rel2+|:
 Miscellaneous
 =============
 
-Milestone 1:
+Milestone 3:
 
 * :ref:`uc-internally-generate-aspects`
-
-
-Milestone 3:
 
 * Use Ada Containers
 
@@ -200,8 +193,12 @@ The Use Cases
 .. _uc-internally-generate-aspects-and-bless:
 .. include:: ../use-cases/internally-generate-aspects-and-bless.rst
 
+.. _uc-discharge-vcs-manually:
+.. include:: ../use-cases/discharge-vcs-manually.rst    
+
 .. _uc-prove-no-rte:
 .. include:: ../use-cases/prove-no-rte.rst    
 
 .. _uc-analyse-information-flow:
 .. include:: ../use-cases/analyse-information-flow.rst    
+
