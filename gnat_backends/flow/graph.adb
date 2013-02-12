@@ -772,14 +772,16 @@ package body Graph is
       for B in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if G.Vertices (B).In_Neighbours.Length >= 2 then
             for P of G.Vertices (B).In_Neighbours loop
-               declare
-                  Runner : Valid_Vertex_Id := P;
-               begin
-                  while Runner /= Dom (B) loop
-                     DF.Add_Edge (B, Runner);
-                     Runner := Dom (Runner);
-                  end loop;
-               end;
+               if Dom (P) in Valid_Vertex_Id then
+                  declare
+                     Runner : Valid_Vertex_Id := P;
+                  begin
+                     while Runner /= Dom (B) loop
+                        DF.Add_Edge (B, Runner);
+                        Runner := Dom (Runner);
+                     end loop;
+                  end;
+               end if;
             end loop;
          end if;
       end loop;
