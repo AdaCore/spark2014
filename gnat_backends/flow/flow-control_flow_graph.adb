@@ -225,7 +225,8 @@ package body Flow.Control_Flow_Graph is
                     N_Object_Declaration =>
                      return Skip;
                   when N_If_Statement |
-                    N_Assignment_Statement =>
+                    N_Assignment_Statement |
+                    N_Binary_Op =>
                      VS.Include (Direct_Mapping_Id (Entity (N)));
                   when others =>
                      Print_Node_Subtree (N);
@@ -237,7 +238,8 @@ package body Flow.Control_Flow_Graph is
               N_If_Statement |
               N_Assignment_Statement |
               N_Handled_Sequence_Of_Statements |
-              N_Object_Declaration =>
+              N_Object_Declaration |
+              N_Binary_Op =>
                null;
             when N_Simple_Return_Statement |
               N_Integer_Literal =>
