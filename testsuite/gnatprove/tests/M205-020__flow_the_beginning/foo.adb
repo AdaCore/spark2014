@@ -1,5 +1,5 @@
 procedure Foo (A : in     Boolean;
-	       X : in out Integer;
+               X : in out Integer;
                Y : in out Integer; --  Initial value of Y not used
                Z :    out Integer) --  Initial value of Z used
 is
