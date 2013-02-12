@@ -43,11 +43,9 @@ SPARK 2014 Reference Manual
 .. toctree::
    :maxdepth: 3
 
-   A. Restrictions and Profiles <restrictions-and-profiles>
-   B. Extended Legality Rules <extended-legality>
-   C. SPARK 2005 to |SPARK| Mapping Specification <mapping-spec>
-   D. To-Do Summary <todo-summary>
-   E. GNU Free Documentation License <gfdl>
+   A. SPARK 2005 to |SPARK| Mapping Specification <mapping-spec>
+   B. To-Do Summary <todo-summary>
+   C. GNU Free Documentation License <gfdl>
 
 Indices and tables
 ==================
