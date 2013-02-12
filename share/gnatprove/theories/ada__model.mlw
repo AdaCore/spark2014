@@ -39,9 +39,9 @@ module Discrete_Base
    axiom range_axiom :
     forall x : t. in_range (to_int x)
 
-   axiom unicity_axiom :
-    forall x y : t [to_int x, to_int y].
-     to_int x = to_int y -> x = y
+   axiom inversion_axiom :
+    forall x : t [to_int x].
+    of_int (to_int (x)) = x
 
    val bool_eq_ (n : t) (m : t) : bool
     requires { true }
@@ -102,9 +102,9 @@ module Floating_Point
    forall x  : real [to_real (of_real x) | in_range x, of_real x].
     in_range x -> to_real (of_real x) = x
 
-  axiom unicity_axiom :
-   forall x y  : t [to_real x, to_real y].
-    to_real x = to_real y -> x = y
+  axiom inversion_axiom :
+   forall x : t [to_real x].
+    of_real ( to_real(x) ) = x
 
   val bool_eq_ (n : t) (m : t)  :bool
    requires { true }
