@@ -3,7 +3,8 @@ Tasks and Synchronization
 
 Concurrent programs require the use of different specification and verification
 techniques from sequential programs. For this reason, tasks and
-synchronization features are currently excluded from |SPARK|.
+synchronization features are currently excluded from |SPARK| but are targeted
+to be included in Release 2 of the toolset.
 
 .. todo:: RCC: The above text implies that |SPARK| does not support Ada.Calendar,
    which is specified in RM 9.6. SPARK 2005 supports and prefers Ada.Real_Time
