@@ -149,11 +149,18 @@ package body Why.Images is
          Abs_Value := Value;
       end if;
 
-      if Abs_Value >= Base then
-         P (O, Abs_Value / Base);
-      end if;
-
-      P (O, "" & H (UI_To_Int (Abs_Value rem Base)));
+      declare
+         Index : Natural := Natural (UI_Decimal_Digits_Hi (Abs_Value));
+         Buf : String (1 .. Index);
+      begin
+         while Abs_Value >= Base loop
+            Buf (Index) := H (UI_To_Int (Abs_Value rem Base));
+            Abs_Value := Abs_Value / Base;
+            Index := Index - 1;
+         end loop;
+         P (O, "" & H (UI_To_Int (Abs_Value rem Base)));
+         P (O, Buf (Index + 1 .. Buf'Last));
+      end;
    end P;
 
    procedure P (O : Output_Id; Value : Ureal) is
