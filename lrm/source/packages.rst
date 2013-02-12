@@ -269,44 +269,10 @@ aspect.
       ...
    end Sensor;
 
-
-Input, Output and Integrity Aspects **To be moved elsewhere?**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For variables which are declared directly within the visible part of a
-package specification, the Volatile, Input, Output,
-and Integrity aspects may be specified directly as part of the
-variable's declaration.
-
-.. centered:: **Legality Rules**
-
-#. Input and Output are Boolean aspects, so have no
-   ``aspect_definition`` part.
-#. Integrity requires an ``aspect_definition`` which is a static
-   expression of any integer type.
-#. The Input, Output and Integrity aspects may only be applied to a
-   variable declaration that appears in the visible part of a package
-   specification.
-#. If a variable has the Volatile aspect, then it must also have
-   exactly one of the Input or Output aspects.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   package Raw_Input_Port
-   is
-
-      Sensor : Integer
-         with Volatile,
-              Input,
-              Address => 16#DEADBEEF#,
-              Integrity => 4;
-
-   end Raw_Input_Port;
-
 .. todo: Further semantic detail regarding Volatile state and integrity levels
-         needs to be added.
+         needs to be added, in particular in relation to specifying these
+         properties for variables which are declared directly within the
+         visible part of a package specification.
 
 
 Package-level Global, Depends and Initializes
@@ -751,59 +717,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Precondition Aspect applied to its body or body stub.  The
-Refined Precondition may be used to restate a precondition given on
-the declaration of a subprogram in terms the full view of a private
-type or the ``constituents`` of a refined ``state_name``.
-
-The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` must be
-a Boolean ``expression``.
-
-.. centered:: **Legality Rules**
-
-#. A Refined Precondition may only appear on the body or body stub
-   of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The same legality rules apply to a Refined Precondition as for
-   a precondition.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. A Refined Precondition of a subprogram defines a *refinement*
-   of the precondition of the subprogram.
-#. Logically, the precondition of a subprogram must imply its
-   Refined Precondition which in turn means that this relation
-   cannot be achieved with a default precondition (True) and therefore
-   a subprogram with a Refined Precondition will require a
-   precondition also in order to perform proofs.
-#. The static semantics are otherwise as for a precondition.
-
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
-
-#. The precondition of a subprogram declaration shall imply the the
-   Refined Precondition
-
-.. centered:: **Dynamic Semantics**
-
-#. When a subprogram with a Refined Precondition is called; first
-   the precondition is evaluated as defined in the Ada RM.  If the
-   precondition evaluates to True, then the Refined Precondition
-   is evaluated.  If either precondition or Refined Precondition
-   do not evaluate to True an exception is raised.
+*To be completed in the Milestone 3 version of this document.*
 
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -840,66 +754,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Postcondition Aspect applied to its body or body stub.  The
-Refined Postcondition may be used to restate a postcondition given
-on the declaration of a subprogram in terms the full view of a private
-type or the ``constituents`` of a refined ``state_name``.
-
-The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` must be
-a Boolean ``expression``.
-
-.. centered:: **Legality Rules**
-
-#. A Refined Postcondition may only appear on the body or body stub
-   of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The same legality rules apply to a Refined Postcondition as for
-   a postcondition.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. A Refined Postcondition of a subprogram defines a *refinement*
-   of the postcondition of the subprogram.
-#. Logically, the Refined Postcondition of a subprogram must imply
-   its postcondition.  This means that it is perfectly logical for the
-   declaration not to have a postcondition (which in its absence
-   defaults to True) but for the body or body stub to have a
-   Refined Postcondition.
-#. The static semantics are otherwise as for a postcondition.
-
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
-
-#. The precondition of a subprogram declaration with the
-   Refined Precondition of its body or body stub and its
-   Refined Postcondition together imply the postcondition of the
-   declaration, that is:
-
-   ::
-     (Precondition and Refined Precondition and Refined Postcondition) -> Postcondition
-
-
-.. centered:: **Dynamic Semantics**
-
-#. When a subprogram with a Refined Postcondition is called; first
-   the subprogram is evaluated.  If it terminates without exception
-   the Refined Postcondition is evaluated.  If this evaluates to
-   True then the postcondition is evaluated as described in the Ada
-   RM.  If either the Refined Postcondition or the postcondition
-   do not evaluate to True an exception is raised.
+*To be completed in the Milestone 3 version of this document.*
 
 .. todo:: refined contract_cases. Target: D2.
 
@@ -923,10 +778,28 @@ No extensions or restrictions.
 Type Invariants
 ~~~~~~~~~~~~~~~
 
-.. centered:: **Extended Dynamic Semantics**
+.. centered:: **Syntax**
+
+There is no additional syntax associated with type invariants.
+
+.. centered:: **Legality Rules**
+
+There are no additional legality rules associated with type invariants.
+
+.. centered:: **Static Semantics**
+
+There are no additional static semantics associated with type invariants.
+
+.. centered:: **Dynamic Semantics**
+
+There are no additional dynamic semantics associated with type invariants.
+
+.. centered:: **Verification Rules**
 
 #. The Ada 2012 RM lists places at which an invariant check is performed. In
-   |SPARK|, we add the following places:
+   |SPARK|, we add the following places in order to guarantee that an instance
+   of a type always respects its invariant at the point at which it is passed
+   as an input parameter:
 
    * Before a call on any subprogram or entry that:
 
@@ -941,6 +814,8 @@ Type Invariants
      * has one or more in out or in parameters with a part of type T.
 
      the check is performed on each such part of type T.
+     [Note that these checks are only performed statically, and this does not create an
+     obligation to extend the run-time checks performed in relation to type invariants.]
 
 Deferred Constants
 ------------------

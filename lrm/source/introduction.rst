@@ -726,7 +726,7 @@ assumptions made during formal verification.
 
 *No further detail is given in the current draft of this document on
 mixing code that is in and out of SPARK 2014. Although there are a number of places where
-a statement is given on what is in or out of SPARK 2014, that information is not complete
+a statement is given on what is in or out of SPARK 2014, that information is not yet complete
 and nothing further is given on how it should be used.*
 
 .. _generic_hlrs:

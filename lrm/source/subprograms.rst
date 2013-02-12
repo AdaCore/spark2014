@@ -859,6 +859,7 @@ declaration view is in |SPARK| (whether the call is dispatching or not).
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
 
+No extensions or restrictions.
 
 Anti-Aliasing
 ~~~~~~~~~~~~~
