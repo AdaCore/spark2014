@@ -11,6 +11,13 @@ The view of an entity is in |SPARK| if and only if the corresponding
 declaration is in |SPARK|. When clear from the context, we say *entity* instead
 of using the more formal term *view of an entity*.
 
+Certain type and subtype declarations can specify a default value to be given to 
+declared objects of the (sub)type.  There are several syntatic names and schemes
+for defining the default value: the ``default_expression`` of discriminants and 
+record components, Default_Value aspect of scalar types and 
+Default_Component_Value aspect for an array-of-scalar subtype.  
+These are collectively known as *default initialization*.
+
 Types and Subtypes
 ------------------
 
@@ -60,22 +67,22 @@ Array Types
 -----------
 
 An entity declared by a ``array_type_definition`` is in |SPARK| if its 
-components are in |SPARK|.
+components are in |SPARK| and default initialization is in |SPARK|.
 
 
 Discriminants
 -------------
 
 A ``discriminant_part`` is in |SPARK| if it is not an access type and its
-``default_expression``, if any, is in |SPARK|
+default initialization, if any, is in |SPARK|
 
 Record Types
 ------------
 
 An entity declared by a ``record_type_definition`` is in |SPARK| if all of its 
-components are in |SPARK| and if a component has a ``default_expression`` then
-all of the components must have a ``default_expression``.  
-The ``default_expressions``, if present must also be in |SPARK|.
+components are in |SPARK| and if a component has a default initialization then
+all of the components must have a default initialization.  
+A default initialization, if present must also be in |SPARK|.
 
 |SPARK| does not permit partial default initialization of record objects.
 
