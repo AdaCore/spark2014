@@ -40,15 +40,24 @@ Attributes
 
 The ``attribute_designator`` Access is not allowed in |SPARK|.
 
-For a prefix X that denotes an object, the GNAT-defined attribute
-``X'Valid_Scalars`` is defined in |SPARK|.
-This Boolean-valued attribute is equal to the conjunction of
-the ``Valid`` attributes of all of the scalar parts of X.
+.. todo::  Are there any other language defined attributes which will not be supported?
 
-[If X has no volatile parts, ``X'Valid_Scalars`` implies that
-each scalar subcomponent of X has a value belonging to its subtype.
-Unlike the Ada-defined ``Valid`` attribute, the ``Valid_Scalars`` attribute
-is defined for all objects, not just scalar objects.]
+.. todo::  What do we do about Gnat defined attributes, a useful one is:
+      For a prefix X that denotes an object, the GNAT-defined attribute
+      ``X'Valid_Scalars`` is defined in |SPARK|.
+      This Boolean-valued attribute is equal to the conjunction of
+      the ``Valid`` attributes of all of the scalar parts of X.
+      
+      [If X has no volatile parts, ``X'Valid_Scalars`` implies that each scalar
+      subcomponent of X has a value belonging to its subtype. Unlike the
+      Ada-defined ``Valid`` attribute, the ``Valid_Scalars`` attribute is
+      defined for all objects, not just scalar objects.]
+      
+      Perhaps we should list which ones are supported in an appendix?
+      Or should they be part of the main language definition?
+      
+      It would be possible to use such attributes in assertion expressions but 
+      not generally in Ada code in a non-Gnat compiler.
 
 
 User-Defined References
