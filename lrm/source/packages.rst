@@ -270,10 +270,11 @@ aspect.
       ...
    end Sensor;
 
-.. todo: Further semantic detail regarding Volatile state and integrity levels
-         needs to be added, in particular in relation to specifying these
-         properties for variables which are declared directly within the
-         visible part of a package specification.
+.. todo:: 
+     Further semantic detail regarding Volatile state and integrity levels
+     needs to be added, in particular in relation to specifying these
+     properties for variables which are declared directly within the
+     visible part of a package specification.
 
 
 Package-level Global, Depends and Initializes
