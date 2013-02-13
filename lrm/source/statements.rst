@@ -283,6 +283,32 @@ Proof Statements
 
 This section discusses the pragmas ``Assert_And_Cut`` and ``Assume``.
 
+High-Level Requirements
+~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Goals to be met by language feature:
+
+    * **Requirement:** It shall be possible for users to explicitly state assumptions
+      within the text of a subprogram to support the formal verification of that subprogram.
+
+      **Rationale:** This allows facts about the domain to be used in a proof in a clean
+      and explicit way.
+
+   * **Requirement:** It shall be possible for users to assert at a given point within
+     a subprogram the minimum set of facts required to complete formal verification
+     of that subprogram.
+
+     **Rationale:** This allows an explicit statement of what is necessary to complete
+     formal verification and also assists the efficiency of that verification.
+
+#. Constraints, Consistency, Semantics, General requirements:
+
+    * Not applicable
+
+
+Language Definition
+~~~~~~~~~~~~~~~~~~~
+
 .. centered:: **Syntax**
 
 ::

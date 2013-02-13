@@ -103,6 +103,9 @@ No extensions or restrictions.
 Update Expressions
 ~~~~~~~~~~~~~~~~~~
 
+.. todo::
+   Detail on Update Expressions needs to be put into the standard format.
+
 The ``Update`` attribute provides a way of overwriting specified components
 of a copy of a given composite value.
 For a prefix ``X`` that denotes an object of a nonlimited record type or
@@ -239,7 +242,6 @@ This is different from the ``Update`` attribute of a record
 
 for which the order of component updates is unspecified.
 
-.. todo:: We need to put this description into the standard format.
 
 Expressions
 -----------

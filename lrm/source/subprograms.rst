@@ -626,8 +626,11 @@ where
    is assumed to have the ``dependency_relation`` 
    that its result is dependent on all of its inputs.  
    [Generally a Depends aspect is not required for functions.]
-   
-#. For purposes of flow analysis, a read of a volatile object is
+
+.. todo::
+   Add rules relating to volatile state.
+
+.. For purposes of flow analysis, a read of a volatile object is
    always considered to include a self-dependent update
    of the object. [This implies that a ``global_item`` with ``mode_selector``
    Input must not denote a volatile object (this rule is enforced during

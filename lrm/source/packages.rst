@@ -32,7 +32,8 @@ state does not behave like a standard non-volatile one as its value
 may change between two successive reads without an intervening update,
 or successive updates may occur without any intervening reads and
 appear to have no effect on the program.  Often volatile states
-represent inputs or outputs to external devices or subsystems.
+represent inputs or outputs to external devices or subsystems. *Note, however,
+that the current draft does not include a complete model of volatile state.*
 
 The abstract state aspect provides a way to designate a named abstract state as
 being volatile, usually representing an external input or output.
