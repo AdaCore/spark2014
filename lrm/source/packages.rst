@@ -354,6 +354,49 @@ grammar of ``initialization_spec`` given below.
 .. todo:: Provide language definition for Initializes aspect.
           To be completed in the Milestone 3 version of this document.
 
+Initial Condition Aspect
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Goals to be met by language feature:
+
+    * **Requirement:** It shall be possible to formally specify the result of performing package elaboration.
+
+      **Rationale:** This specification behaves as a postcondition for the result of package elaboration
+      and so establishes the "pre-condition" that holds at the point of beginning execution of the program proper.
+      
+#. Constraints:
+
+   * No further Initializes-specific requirements.
+
+#. Consistency:
+
+    * No further Initializes-specific requirements.
+
+#. Semantics:
+
+    * **Requirement:** The predicate given by the Initial Condition aspect should evaluate to
+      True at the point at which elaboration of the package, its embedded packages and its private descendants has completed.
+
+      **Rationale:** By definition.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
+
+The Initial Condition Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` must be
+an ``expression``.
+
+.. todo:: Provide language definition for Initial Condition aspect.
+          To be completed in the Milestone 3 version of this document.
+
 Package Bodies
 --------------
 
@@ -567,8 +610,9 @@ of the external device.
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**High-level detail TBD.**
-
+.. todo:: Provide Verification Rules for Initializes aspect in the presence
+          of state abstraction.
+          To be completed in the Milestone 3 version of this document.
 
 .. _refined-global-aspect:
 
