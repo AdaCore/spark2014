@@ -390,6 +390,9 @@ Some are expanded in subsequent sections within this chapter.
 
 - Support for specifying and verifying properties of secure systems shall be improved.
 
+- |SPARK| shall support the analysis of volatile variables, typically external
+  inputs or outputs.
+
 - |SPARK| shall support provision of "formal analysis" as defined by DO-333, which states
   "an analysis method can only be regarded as formal analysis
   if its determination of property is sound. Sound analysis means
@@ -799,6 +802,27 @@ and nothing further is given on how it should be used.*
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
    To be completed in the Milestone 4 version of this document.
+   
+Volatile State
+~~~~~~~~~~~~~~
+
+A variable or a state abstraction 
+(see :ref:`state_abstraction_and_hidden_state`) may be designated as volatile. A
+volatile variable or state abstraction need not have the same value between two
+reads without an intervening update. Similarly an update of a volatile variable
+(or state abstraction) may not have any effect on the internal operation of a
+program, its only effects are external to the program. These properties require
+special treatment of volatile variables during flow analysis.
+
+In formal verification a series of reads and updates of a volatile variable
+or state abstraction may be modeled by a sequence or a trace.
+
+In both flow analysis and formal verification |SPARK| follows the Ada convention
+that a read of a volatile variable has a possible side effect of updating the
+variable.  |SPARK| extends this notion to cover updates of a volatile variable
+such that an update of a volatile variable also has a side effect of reading the
+variable.  |SPARK| further extends these principles to apply to
+state abstractions also.
 
 .. _generic_hlrs:
 
@@ -822,16 +846,17 @@ language definition rules.
    including formal parameters, that may be read or written - either directly or indirectly - on a call
    to that subprogram.
 
-#. Global data of a subprogram: the inputs and outputs of a subbprogram, other than the formal
+#. Global data of a subprogram: the inputs and outputs of a subprogram, other than the formal
    parameters.
 
 #. Entire variable: a variable that is not a subcomponent of a larger containing variable.
 
 #. Entity: the semantic object that represents a given declaration.
 
+.. _state_abstraction_and_hidden_state:
 
-Abstract State, Hidden State and Refinement
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+State Abstraction, Hidden State and Refinement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. **Requirement:** When specifying properties of a subprogram, it shall be possible
    to refer to (an abstraction of) hidden state without knowing the details of that hidden state.

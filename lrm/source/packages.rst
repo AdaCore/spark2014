@@ -1,4 +1,4 @@
-Packages
+﻿Packages
 ========
 
 A *compile-time* constant is a static expression or an expression involving only
@@ -43,16 +43,52 @@ of Q.  This provides data refinement similar to the refinement
 available to types whereby a record may contain fields which are
 themselves records.
 
-State abstraction supports a logical model of volatility.  A *volatile*
-state does not behave like a standard non-volatile one as its value
-may change between two successive reads without an intervening update,
-or successive updates may occur without any intervening reads and
-appear to have no effect on the program.  Often volatile states
-represent inputs or outputs to external devices or subsystems. *Note, however,
-that the current draft does not include a complete model of volatile state.*
+Volatile State
+~~~~~~~~~~~~~~
+
+Volatile state is a volatile variable or a volatile state abstraction.
 
 The abstract state aspect provides a way to designate a named abstract state as
-being volatile, usually representing an external input or output.
+being volatile, usually representing an external input or output. A volatile
+variable is designated as volatile using a Volatile aspect possibly with a
+further designation of whether it is an input or an output.
+
+The read or update of a volatile variable or state abstraction is considered to
+be both a read and an update of the entity. In Global and Depends aspects this
+means that volatile entities will be regarded as being both an input and an
+output and this may be given explicitly. However if a variable or abstract state
+is explicitly designated as being a Volatile Input or a Volatile Output, an
+abbreviated form of the Global and Depends aspect is permitted which gives a
+more obvious view of the global and dependency.
+
+If the variable or state abstraction is designated as Volatile Input, then it 
+may appear as just an Input in the Global aspect.  There is an implicit 
+declaration that it is also an Output. In a Depends aspect it need not 
+appear as an output an implicit self dependency of the entity will be declared.
+
+If the variable or state abstraction is designated as Volatile Output, then it
+may appear as just an Output in the Global aspect. There is an implicit 
+declaration that it is also an Input.  In a Depends aspect it need not appear
+as an input an implicit self dependency of the entity will be declared.
+
+A volatile variable or state abstractions cannot be mentioned directly in a 
+assertion expression as the reading of a volatile may affect its value.
+
+.. todo:: More details on volatile variables and definition of a complete
+          model. At the very least, if V is a Volatile Input variable should not
+          have the following assertion provable:
+          T1 := V;
+          T2 := V;
+          pragma Assert (T1 = T2);
+          To be completed in the Milestone 3 version of this document.
+          
+.. todo:: Need to describe the conditions under which a volatile variable
+          can be a parameter of a subprogram.
+          To be completed in the Milestone 3 version of this document.
+
+.. todo:: Consider more than just simple Volatile Inputs and Outputs;
+          Latched outputs, In_Out volatiles, etc.
+          To be completed in the Milestone 4 version of this document.
 
 .. _abstract-state-aspect:
 
@@ -556,55 +592,6 @@ Abstract State and Package Hierarchy
           Do we need to have rules restricting access between parent and child packages?
           Can we ensure abstract state encapsulation?
           To be completed in the Milestone 3 version of this document.
-
-Volatile Variables
-~~~~~~~~~~~~~~~~~~
-
-A volatile ``state_name`` may be refined to one or more subordinate
-``state_names`` but ultimately a volatile ``state_name`` has to be
-refined on to one or more volatile *variables*.  This variable has to
-be volatile. The volatile *variable* will be declared in the body of a
-package and the declaration will normally be denoted as volatile using
-an aspect or a pragma.  Usually it will also have a representation
-giving its address.
-
-A volatile variable cannot be mentioned directly in a contract as the
-reading of a volatile variable may affect the value of the variable
-and for many I/O ports a read and a write affect different registers
-of the external device.
-
-.. todo:: Rather than have the current problems with external
-   variables in functions should we disallow them in functions?
-   Perhaps wait for a more general solution which allows non-pure
-   functions in certain situations.
-
-   We need to consider a way of providing features for reasoning about
-   external variables different to the broken 'Tail scheme in SPARK 2005.
-   This will require some form of attribute as we cannot mention
-   volatile variables directly in a contract.
-
-   If we want to reason about successive reads (writes) from a Volatile
-   Input (Output) ``state_name`` we need to have a way to refer to
-   these individual operations.
-
-   At the very least, if V is a Volatile Input variable should not
-   have the following assertion provable:
-
-   T1 := V;
-   T2 := V;
-
-   pragma Assert (T1 = T2);
-
-   To be completed in the Milestone 3 version of this document.
-
-.. todo:: May introduce a way to provide a "history" parameter for
-   Volatile variables.
-   To be completed in the Milestone 3 version of this document.
-
-.. todo:: Consider a mode selector for the "latched output" pattern - one that can be
-   read after writing but need not be. This scheme has been
-   requested by secunet.  In this scheme the output would be volatile
-   but the input non-volatile. Target: release 2 of toolset or later.
 
 
 Initialization Refinement
