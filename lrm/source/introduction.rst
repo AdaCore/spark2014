@@ -587,6 +587,9 @@ as a counterpart to pragma Profile and pragma Guideline will be introduced
 as a counterpart to pragma Restriction, meaning that a Code_Policy is a grouping
 of Guidelines.
 
+It is intended that code policies can be customised or new policies specified
+from a collection of guidelines.
+
 *No further detail is given in the current draft of this document on Code Policies.*
 
 
