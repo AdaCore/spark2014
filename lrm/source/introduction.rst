@@ -589,11 +589,11 @@ of Guidelines.
 
 *No further detail is given in the current draft of this document on Code Policies.*
 
-<<<<<<< HEAD
+
 .. todo::
    Complete detail on Code Policies.
    To be completed in the Milestone 3 version of this document.
-=======
+
 .. _ghost_entities:
 
 Ghost Entities
@@ -623,7 +623,6 @@ This may not give the most efficient implementation but if the function is a
 ghost function it may be sufficient.
 
 *Further Ghost Entities are intended to be added in future drafts.*
->>>>>>> TICKET:[M104-011]
 
 .. _verific_modes:
 

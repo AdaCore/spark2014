@@ -42,16 +42,16 @@ Loop Statements
 User-Defined Iterator Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| does not permit the use of user-defined iterator types.
-
+|SPARK| does not support the implementation of user-defined iterator types.
 
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 |SPARK| does not permit the use of variable iterators.
 
-.. todo:: Need to consider further the support for iterators.
-          To be completed in the Milestone 4 version of this document.
+.. todo:: Need to consider further the support for iterators and whether
+          the application of constant iterators could be supported.
+          To be completed in Milestone.4 version of this document.
 
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
