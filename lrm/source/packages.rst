@@ -221,7 +221,7 @@ where the ``aspect_mark`` is Abstract_State and the
    Refined_State aspect specification within the body of the package.]
    
 #. A **null** ``abstract_state_list`` specifies that a package contains no 
-   hidden state or variables declared in its ``visible_part``.
+   hidden state.
    [The specification is is checked when the package is analyzed.]
 
 #. A *volatile* state abstraction is one declared with a property list
@@ -473,7 +473,30 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 3 version of this document.*
+The Refined State Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` must follow
+the grammar of ``state_and_category_list`` given below.
+
+.. centered:: **Syntax**
+
+::
+
+  state_and_category_list          ::= (state_and_category {, state_and_category})
+  state_and_category               ::= abstract_state_name => constituent_with_property_list
+  abstract_state_name              ::= state_name
+  constituent_with_property_list   ::= constituent_with_property
+                                     | (constituent_with_property {, constituent_with_property})
+  constituent_with_property        ::= constituent
+                                     | (constituent_list with property_list)
+  constituent_list                 ::= constituent
+                                     | (constituent {, constituent})
+
+where
+
+  ``constituent ::=`` *variable_*\ ``name | state_name``
+
+.. todo:: Provide language definition for Refined_State aspect.
+          To be completed in the Milestone 3 version of this document.
 
 
 Abstract State and Package Hierarchy
@@ -610,7 +633,15 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 3 version of this document.*
+A subprogram declared in the visible part of a package may have a
+Refined Global Aspect applied to its body or body stub. The
+Refined Global Aspect defines the global items of the subprogram
+in terms of the ``constituents`` of a ``state_name`` of the package
+rather than the ``state_name``.
+
+The Refined Global Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition`` must follow
+the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 .. todo:: Provide language definition for Refined_Global aspect.
           To be completed in the Milestone 3 version of this document.
@@ -686,7 +717,15 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 3 version of this document.*
+A subprogram declared in the visible part of a package may have a
+Refined Depends aspect applied to its body or body stub. The
+Refined Depends aspect defines the ``dependency_relation`` of the
+subprogram in terms of the ``constituents`` of a ``state_name`` of the
+package rather than the ``state_name``.
+
+The Refined Depends aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_Depends" and the ``aspect_definition`` must follow
+the grammar of ``dependency_relation``.
 
 .. todo:: Provide language definition for Refined_Depends aspect.
           To be completed in the Milestone 3 version of this document.
@@ -727,7 +766,15 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 3 version of this document.*
+A subprogram declared in the visible part of a package may have a
+Refined Precondition Aspect applied to its body or body stub.  The
+Refined Precondition may be used to restate a precondition given on
+the declaration of a subprogram in terms of the full view of a private
+type or the ``constituents`` of a refined ``state_name``.
+
+The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` must be
+a Boolean ``expression``.
 
 .. todo:: Provide language definition for Refined_Pre aspect.
           To be completed in the Milestone 3 version of this document.
@@ -767,7 +814,15 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-*To be completed in the Milestone 3 version of this document.*
+A subprogram declared in the visible part of a package may have a
+Refined Postcondition Aspect applied to its body or body stub.  The
+Refined Postcondition may be used to restate a postcondition given
+on the declaration of a subprogram in terms the full view of a private
+type or the ``constituents`` of a refined ``state_name``.
+
+The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` must be
+a Boolean ``expression``.
 
 .. todo:: Provide language definition for Refined_Post aspect.
           To be completed in the Milestone 3 version of this document.
@@ -779,13 +834,11 @@ Language Definition
 Private Types and Private Extensions
 ------------------------------------
 
-.. centered:: **Extended Static Semantics**
-
-#. The partial view of a private type or private extension may be in
-   |SPARK| even if its full view is not in |SPARK|. The usual rule
-   applies here, so a private type without discriminants is in
-   |SPARK|, while a private type with discriminants is in |SPARK| only
-   if its discriminants are in |SPARK|.
+The partial view of a private type or private extension may be in
+|SPARK| even if its full view is not in |SPARK|. The usual rule
+applies here, so a private type without discriminants is in
+|SPARK|, while a private type with discriminants is in |SPARK| only
+if its discriminants are in |SPARK|.
 
 Private Operations
 ~~~~~~~~~~~~~~~~~~

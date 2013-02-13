@@ -854,7 +854,8 @@ This is an interim draft that covers all language-independent requirements
 for the main language features, provides
 syntax where possible and otherwise provides the detailed rules necessary to
 support implementation of basic flow analysis. Where detail is not relevant to
-meeting these needs then it has typically been removed.
+meeting these needs then it has typically been removed, though a "ToDo" will indicate
+that there is material still to be provided.
 
 Note this means there are certain of the strategic requirements that are currently
 not decomposed into language definition detail. Where this is the case, it will
@@ -866,7 +867,3 @@ Actions to complete prior to release
 #. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
    will give this. The main thing to think about is visibility/getting certain information into
    certain aspects, such as proof aspects.
-
-#. Make sure syntax is included where necessary (i.e. even where other details
-   have been removed; where it is the same as some existing aspect, then add
-   a comment to that effect).
