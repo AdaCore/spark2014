@@ -607,6 +607,9 @@ procedure Gnatprove is
             Args.Append ("-gnatd.E");
          when GPM_Flow =>
             Args.Append ("-gnatd.Q");
+            if Debug then
+               Args.Append ("-gnatd.Z");
+            end if;
          when GPM_Prove =>
             null;
       end case;
