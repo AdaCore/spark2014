@@ -376,19 +376,15 @@ Some are expanded in subsequent sections within this chapter.
   when retrospectively analyzing pre-existing code it may well not all conform to
   the |SPARK| subset. *No further detail is given in the current draft of this document on
   mixing |SPARK| code with non-Ada code.*
-<<<<<<< HEAD
 
 .. todo::
    Complete detail on mixing |SPARK| with non-Ada code.
    To be completed in the Milestone 4 version of this document.
-
-=======
   
 - |SPARK| shall support entities which do not affect the functionality of
   a program but may be used in the test and verification of a program. 
   See section :ref:`ghost_entities`.
   
->>>>>>> TICKET:[M104-011]
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
 
@@ -625,7 +621,11 @@ as the expression of an expression function without further implementation.
 This may not give the most efficient implementation but if the function is a 
 ghost function it may be sufficient.
 
-*Further Ghost Entities are intended to be added in future drafts.*
+*Further Ghost entities are to be added in future drafts of this document.*
+
+.. todo::
+   Complete detail on Ghost Entities.
+   To be completed in the Milestone 3 version of this document.
 
 .. _verific_modes:
 
