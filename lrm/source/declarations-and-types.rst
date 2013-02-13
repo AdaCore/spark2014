@@ -52,7 +52,8 @@ or a ``record_part`` these must also contain entities that are in |SPARK|.
 Scalar Types
 ------------
 
-No extensions or restrictions.
+A scalar type declaration is in |SPARK| unless it has a default initialization
+that is not in |SPARK|.
 
 Array Types
 -----------

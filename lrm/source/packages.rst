@@ -29,7 +29,7 @@ The variables declared immediately within a package Q, its embedded
 packages and its private descendants constitute the state of Q.
 
 The variable declarations are only visible to clients of Q if they
-are declared in the ``visible_part`` of Q.  The
+are declared in the visible part of Q.  The
 declarations of all other variables are *hidden* from a client of Q.
 Though the variables are hidden they still form part (or all) of the
 state of Q and this hidden state cannot be ignored for static analyses

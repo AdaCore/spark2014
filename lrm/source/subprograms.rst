@@ -774,7 +774,7 @@ Language definition
 ^^^^^^^^^^^^^^^^^^^
 
 In |SPARK| a function may be denoted as being a Ghost function using the
-``aspect_mark`` Ghost. This shows an intent that this function should only be
+boolean ``aspect_mark`` Ghost. This shows an intent that this function should only be
 called directly, or indirectly from within assertion expressions excluding
 predicate subtypes.  In Ada subtype predicates are executed irrespective of the
 assertion policy.
@@ -784,6 +784,18 @@ assertion policy.
 #. A function with a Ghost ``aspect_mark`` in the ``aspect_specification`` of
    its declaration may only be called from within an assertion expression,
    excluding subtype predicates, or from within another ghost function.
+
+.. centered:: **Static Semantics**
+
+#. There are no static semantics associated with Ghost aspects.
+
+.. centered:: **Dynamic Semantics**
+
+#. There are no dynamic semantics associated with Ghost aspects.
+
+.. centered:: **Verification Rules**
+
+#. There are no verification rules associated with Ghost aspects.
 
    .. centered:: **Examples**
 
@@ -817,9 +829,9 @@ to build and execute the program.
 It is expected that the definition of a non-executable ghost function will be 
 provided within an external proof tool.
 
-.. centered:: **Legality Rules**
+There are no additional legality rules, static or dynamic semantics or verification rules
+associated with non-executable ghost functions.
 
-#. A non-executable ghost function cannot be called from a subtype predicate.
 
 .. centered:: **Examples**
 

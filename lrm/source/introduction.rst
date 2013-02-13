@@ -391,7 +391,7 @@ Some are expanded in subsequent sections within this chapter.
 - Support for specifying and verifying properties of secure systems shall be improved.
 
 - |SPARK| shall support the analysis of volatile variables, typically external
-  inputs or outputs.
+  inputs or outputs. See section :ref:`volatile` for further details.
 
 - |SPARK| shall support provision of "formal analysis" as defined by DO-333, which states
   "an analysis method can only be regarded as formal analysis
@@ -802,7 +802,9 @@ and nothing further is given on how it should be used.*
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
    To be completed in the Milestone 4 version of this document.
-   
+  
+.. _volatile:
+
 Volatile State
 ~~~~~~~~~~~~~~
 

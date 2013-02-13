@@ -41,6 +41,7 @@ Attributes
 The ``attribute_designator`` Access is not allowed in |SPARK|.
 
 .. todo::  Are there any other language defined attributes which will not be supported?
+           To be completed in the Milestone 3 version of this document.
 
 .. todo::  What do we do about Gnat defined attributes, a useful one is:
       For a prefix X that denotes an object, the GNAT-defined attribute
@@ -58,6 +59,8 @@ The ``attribute_designator`` Access is not allowed in |SPARK|.
       
       It would be possible to use such attributes in assertion expressions but 
       not generally in Ada code in a non-Gnat compiler.
+
+      To be completed in the Milestone 3 version of this document.
 
 
 User-Defined References
