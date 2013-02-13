@@ -80,25 +80,19 @@ The literal **null** representing an access type is not allowed in |SPARK|.
 Aggregates
 ----------
 
-Outside of assertion expressions, an aggregate is in |SPARK| only if its type
-is in |SPARK| and each of the expressions defining the value of components is
-in |SPARK|. 
-
-Inside assertion expressions, aggregates in |SPARK| must additionally be fully
-defined. An aggregate which leaves subcomponents uninitialized is not in |SPARK|
-if it appears inside an assertion expression.
-
-.. todo::
-   Define this term "fully defined" and say who enforces this rule.
-   Are we saying here that an aggregate which occurs in an an assertion
-   expression introduces a proof obligation that all of its scalar
-   subcomponents are valid?
-   To be completed in the Milestone 3 version of this document.
+The box symbol, <>, may only be used in an aggregate if the type of the 
+component(s) to which it pertains has a default initialization.  This
+restriction is covered in more detail in the following subsections.
 
 Record Aggregates
 ~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+.. centered:: **Verification Rules**
+
+#. A ``record_component_association`` may only use the option
+   ``component_choice_list => <>`` if the type denoted by each
+   *component_*\ ``selector_name`` has a default initialization.
+
 
 Extension Aggregates
 ~~~~~~~~~~~~~~~~~~~~
@@ -108,7 +102,15 @@ No extensions or restrictions.
 Array Aggregates
 ~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+.. centered:: **Verification Rules**
+
+#. The symbol ``<>`` may only be used after an **others** symbol in a 
+   ``positional_array_aggregate`` if the component type of the array has a
+   default initialization.
+   
+#. The symbol ``<>`` may only be used in a ``array_component_association`` of
+   a ``named_array_aggregate`` if the component type of the array has a default 
+   initialization.
 
 Update Expressions
 ~~~~~~~~~~~~~~~~~~
