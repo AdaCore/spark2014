@@ -822,10 +822,7 @@ There are no additional dynamic semantics associated with type invariants.
 Deferred Constants
 ------------------
 
-.. todo:: Need to consider here allowing a Global Aspect on a deferred
-   constant declaration to indicate the variables from which the
-   value is derived.  Will be needed if the completion is not in |SPARK|, for instance.
-   Target: D2.
+No extensions or restrictions.
 
 Limited Types
 -------------

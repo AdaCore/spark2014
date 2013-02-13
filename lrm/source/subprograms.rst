@@ -91,6 +91,25 @@ and Contract_Cases are defined.
 Contract Cases 
 ~~~~~~~~~~~~~~
 
+High-Level Requirements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Goals to be met by language feature:
+
+   * **Requirement:** It shall be possible to specify pre- and post-conditions
+     in a concise way in the case that subprogram behaviour is specified in
+     terms of what behaviour should be in each of a series of mutually-independent cases.
+
+     **Rationale:** To provide a more structured way of specifying subprogram behaviour.
+
+#. Constraints, Consistency, Semantics, General requirements:
+
+    * Not applicable
+
+
+Language Definition
+^^^^^^^^^^^^^^^^^^^
+
 The Contract_Cases aspect provides a concise way to specify mutually
 independent cases guarded by ``conditions`` using the initial value of
 **in** or **in out** formal parameters or global variables.  Each

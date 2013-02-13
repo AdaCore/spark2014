@@ -55,16 +55,6 @@ Generalized Loop Iteration
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-Two loop-related pragmas, ``Loop_Invariant`` and ``Loop_Variant``, and a
-loop-related attribute, ``Loop_Entry`` are defined. The pragma
-``Loop_Invariant`` is similar to pragma ``Assert`` except for its proof
-semantics. Pragma ``Loop_Variant`` is intended for use in ensuring
-termination. The ``Loop_Entry`` attribute is used to refer to the value that an
-expression had upon entry to a given loop in much the same way that the ``Old``
-attribute in a subprogram postcondition can be used to refer to the value an
-expression had upon entry to the subprogram.
-
 High-Level Requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -90,6 +80,26 @@ High-Level Requirements
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
+
+Two loop-related pragmas, ``Loop_Invariant`` and ``Loop_Variant``, and a
+loop-related attribute, ``Loop_Entry`` are defined. The pragma
+``Loop_Invariant`` is similar to pragma ``Assert`` except for its proof
+semantics. Pragma ``Loop_Variant`` is intended for use in ensuring
+termination. The ``Loop_Entry`` attribute is used to refer to the value that an
+expression had upon entry to a given loop in much the same way that the ``Old``
+attribute in a subprogram postcondition can be used to refer to the value an
+expression had upon entry to the subprogram.
+
+.. centered:: **Syntax**
+
+::
+
+      invariant_statement    ::= pragma Loop_Invariant (boolean_expression);
+
+      loop_variant_statement ::= pragma Loop_Variant (loop_variant_item {, loop_variant_item} );
+
+      loop_variant_item ::= change_direction => discrete_expression
+      change_direction  ::= Increases | Decreases
 
 *To be completed in the Milestone 3 version of this document.*
 
