@@ -29,14 +29,7 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. An *entire variable* is an an entire object which is a 
 variable.
 
-.. centered:: **Extended Legality Rules**
-
-#. A function declaration shall not have a ``parameter_specification``
-   with a mode of **out** or **in out**. This rule also applies to
-   a subprogram_body for a function for which no explicit declaration
-   is given.
-
-   .. centered:: **Static Semantics**
+.. centered:: **Static Semantics**
 
 #. The *final* value of a global item or parameter of a subprogram is its 
    value immediately following the successful call of the subprogram.
@@ -52,6 +45,15 @@ variable.
    value may be used in determining the final value of an output of the 
    subprogram.
 
+.. centered:: **Verification Rules**
+
+#. A function declaration shall not have a ``parameter_specification``
+   with a mode of **out** or **in out**. This rule also applies to
+   a subprogram_body for a function for which no explicit declaration
+   is given.
+
+
+   
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: Release
    2 of toolset or later.
@@ -720,34 +722,113 @@ aspects are checked when a subprogram body is a analyzed.
    -- Depends aspects are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
-
-Logic Functions
+   
+Ghost Functions
 ~~~~~~~~~~~~~~~
 
-|SPARK| permits the use of functions that have no body which are used in
-formal specification and verification only.  Such functions are termed
-*logic functions*.  They can only be used in assertion expressions (except
-subtype predicates) with the assertion policy Ignore.
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
 
-A logic function is introduced by declaring a function with an Import aspect.
-A Convention aspect may be added to indicate that the function is a proof only
-function but this depends on the Ada 2012 compiler recognizing the convention.
+#. Goals to be met by language feature:
 
-If call is made to this function other than in a assertion expression,
-or if the assertion policy Ignore is not selected, an error will be reported 
-when an attempt is made to build and execute the program.
+   * **Requirement:** It shall be possible to specify functions which are used
+     for testing and verification only.  Their presence should have no effect on
+     the functionality of program execution which terminates normally 
+     (without exception).
 
-It is expected that the definition of a logic function will be provided within
-an external proof tool.
+     **Rationale:**   In principle such functions could be removed from the
+     code (possibly automatically by the compiler) on completion of testing 
+     and verification and have no effect on the functionality of the program.
+
+   * **Requirement:** It shall be possible to specify functions which are used
+     for formal verification only which have no implementation.
+
+     **Rationale:** A function used for formal verification purposes may be
+     difficult (or impossible) to specify or implement in |SPARK|. A function
+     without an implementation will be defined, for proof purposes, in an 
+     external proof tool.
+
+#. Constraints:
+
+   * In order to be removed they can only be applied in places where it can be
+     ascertained that they will not be called during normal execution of the
+     program (that is with test and verification constructs disabled).
+    
+   * A function without an implementation cannot be called during execution of
+     a program.
+
+#. Consistency:
+
+   Not applicable.
+
+#. Semantics: 
+
+   Not applicable.
+
+#. General requirements:
+
+    * See also section :ref:`ghost_entities`.
+
+
+Language definition
+^^^^^^^^^^^^^^^^^^^
+
+In |SPARK| a function may be denoted as being a Ghost function using the
+``aspect_mark`` Ghost. This shows an intent that this function should only be
+called directly, or indirectly from within assertion expressions excluding
+predicate subtypes.  In Ada subtype predicates are executed irrespective of the
+assertion policy.
+
+.. centered:: **Legality Rules**
+
+#. A function with a Ghost ``aspect_mark`` in the ``aspect_specification`` of
+   its declaration may only be called from within an assertion expression,
+   excluding subtype predicates, or from within another ghost function.
+
+   .. centered:: **Examples**
+
+.. code-block:: ada
+
+   function A_Ghost_Function (X, Y : Integer) return Integer
+   with
+      Pre  => X + Y <= Integer'Last,
+      Post => X + Y > 0,
+      Ghost;
+   -- The body of the function is declared elsewhere.
+   
+   function A_Ghost_Expression_Function (X : Y : Integer) return Boolean is (X < Y)
+   with
+      Ghost;
+
+
+Non-Executable Ghost Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+|SPARK| permits the use of non-executable ghost functions that have no body and
+are used in formal specification and verification only. A non-executable ghost
+function is introduced by declaring a ghost function with an Import
+``aspect_mark`` in its declaration.
+
+If call is made, directly or indirectly, to this function other than in a
+assertion expression which is not a subtype predicate, or if the assertion
+policy Ignore is not selected, an error will be reported when an attempt is made
+to build and execute the program.
+
+It is expected that the definition of a non-executable ghost function will be 
+provided within an external proof tool.
+
+.. centered:: **Legality Rules**
+
+#. A non-executable ghost function cannot be called from a subtype predicate.
 
 .. centered:: **Examples**
 
 .. code-block:: ada
 
-   function A_Logic_Function (X, Y : T) return Integer
+   function A_Non_Executable_Function (X, Y : T) return Integer
    with
-      Import,
-      Convention => Proof;
+      Ghost,
+      Import;
 
 
 Formal Parameter Modes
