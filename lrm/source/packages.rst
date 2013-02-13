@@ -1,8 +1,24 @@
 Packages
 ========
 
+A *compile-time* constant is a static expression or an expression involving only
+static expressions [for example an aggregate of static expressions].
+
+In |SPARK| a declaration or statement occurring immediately within the package
+shall not read directly or indirectly a value which is not derived only from 
+compile-time constants.
+
+Among other things this restriction avoids the need to have dependency relations 
+applied to packages.
+
 Package Specifications and Declarations
 ---------------------------------------
+
+.. centered:: **Verification Rules**
+
+#. Each ``basic_declaration`` occurring in the visible or private part of a 
+   package shall not read, directly or indirectly, any value which is not
+   entirely derived from compile-time constants.
 
 .. _abstract-state:
 
@@ -71,8 +87,7 @@ High-level requirements
 
     * See also section :ref:`generic_hlrs`.
 
-
-Language definition
+Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 State abstraction provides a mechanism for naming, in a package's
@@ -278,67 +293,49 @@ aspect.
      To be completed in the Milestone 3 version of this document.
 
 
-Package-level Global, Depends and Initializes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**High-level detail TBD.**
+Initializes Aspect
+~~~~~~~~~~~~~~~~~~
 
-For analysis purposes, the elaboration of a 
-package is considered as a call of a set of nested subprograms.  
-For instance, the elaboration of the package specification is the external client
-view of the elaboration, but the elaboration of the specification notionally
-calls the elaboration of any packages on which it depends and the elaboration
-of the package body.  The elaboration of the package body calls the elaboration
-of any packages on which it depends and so forth.  This model does not address
-the issue of incorrect elaboration order or elaboration order circularities but 
-these will be dealt with elsewhere.
+High-level requirements
+^^^^^^^^^^^^^^^^^^^^^^^
 
-The net result of this view of package elaboration is that every package which
-contains some form of state has a Global and a Dependency aspect representing
-the composite view of the nested subprogram calls at the level of abstraction 
-presented by the package specification.  
+#. Goals to be met by language feature:
 
-.. note::
- (SB) In the case of whole-program analysis which includes analysis of the
- elaboration code for a partition (loosely speaking, for a main program).
- we want to treat a (binder-generated, at least in the GNAT implementation)
- call to an elaboration subprogram just like any other subprogram call. This
- means that the elaboration routine for, for example, a library unit package
- spec or body must have the same aspects defined as any other procedure:
- Global, Depends, Pre and Post (although giving these aspects different
- names in the case of elaboration routines would be acceptable). [The
- no-longer-defined Initial_Condition aspect of a package
- roughly corresponded to the postcondition of package body's elaboration,
- although it was confusingly conflated with private descendant units.] For
- purposes of precisely analyzing elaboration code, we do not
- want to lump together spec elaboration, body elaboration, and the spec
- and body elaboration of private descendants. It is possible that we
- might want to do something less precise (along the lines of the
- "notionally calls" idea mentioned above) only in the "modular" (as opposed to
- "whole program") case where the program's elaboration order is only
- partially known. It is not clear yet whether this "notionally calls"
- approach is a useful idea; TBD.
+    * **Requirement:** Flow analysis requires the knowledge of whether each
+      variable has been initialized.  It should be possible to determine this
+      from the specification of a unit.
+
+      **Rationale:** Variables and state abstractions may be initialized within
+      a package body as well as a package specification.  It follows not all
+      initializations are visible from the specification.  An Initializes aspect
+      is applied to a package specification to indicate which variables and
+      state abstractions are initialized by the package.  This facilitates
+      modular analysis can proceed using just a package specfication.
+      
+#. Constraints:
+
+   * No further abstract state-specific requirements.
+
+#. Consistency:
+
+    * No further abstract state-specific requirements.
+
+#. Semantics:
+
+    * No further abstract state-specific requirements.
+
+#. General requirements:
+
+    * See also section :ref:`generic_hlrs`.
+
 
 .. centered:: **Legality Rules**
 
-#. The package Global and Depends aspects may only appear in the 
+#. The initializes may only appear in the 
    ``aspect_specification`` of a ``package_specification``.
 
-
-Global Aspects
-~~~~~~~~~~~~~~
-
-**High-level detail TBD.**
-
-The syntax and semantics for a package Global aspect is the same as for a 
-subprogram Global aspect when one considers the package elaboration as a 
-subprogramaspect :ref:`global-aspects`.  
-
-Initializes Aspects
-~~~~~~~~~~~~~~~~~~~
-
-Very often a package will have no dependencies but only initialize its own 
-state, that is variables declared in the package or in its private descendants.
-In such cases an Initializes aspect may be used rather than a Global aspect.
+Language Definition
+^^^^^^^^^^^^^^^^^^^
 
 The Initializes aspect is introduced by an ``aspect_specification`` where the 
 ``aspect_mark`` is Initializes and the ``aspect_definition`` must follow the 
@@ -348,21 +345,21 @@ grammar of ``initialization_list`` given below.
 
 ::
 
-  initialization_list ::= global_list
+  initialization_list ::= 
   
-An initialization list is shorthand for a Global aspect of the form
-
-::
-   
-  Global => (Output => global_list)
-   
-where the ``global_items`` denoted in the ``global_list`` are identical, each 
-is a variable or state abstraction and declared within the ``visible_part`` 
-of the package containing the Initializes aspect.
-
 
 Package Bodies
 --------------
+
+.. centered:: **Verification Rules**
+
+#. Each declaration of the ``declarative_part`` of a ``package_body`` shall not
+   read, directly or indirectly, any value which is not
+   entirely derived from compile-time constants.
+
+#. Each statement of a ``handled_sequence_of_statements`` of a ``package_body`` 
+   shall not read, directly or indirectly, a value which is not entirely derived 
+   entirely from compile-time constants.
 
 State Refinement
 ~~~~~~~~~~~~~~~~
