@@ -189,6 +189,11 @@ formal program verification phase may be considered to be complete.
 .. [#bounded_errors] In the case of some bounded errors a check and any resulting 
    exception only *may* be required.
 
+Note that in some cases the result of performing formal verification may be
+compiler or machine-dependent.
+In such cases it must be possible to represent the dependencies as explicit
+inputs to the formal verification process.
+
 
 .. _dynamic_sem:
 
@@ -407,6 +412,9 @@ Some are expanded in subsequent sections within this chapter.
   generated for the user. See section :ref:`in_out` for further details.]
   *Note that the current draft of this document does not necessarily  define
   all restrictions necessary to guarantee an unambiguous semantics.*
+
+.. todo::
+   Ensure that all strategic requirements have been implemented.
 
 .. _explain_sprs:
 
@@ -860,10 +868,3 @@ that there is material still to be provided.
 Note this means there are certain of the strategic requirements that are currently
 not decomposed into language definition detail. Where this is the case, it will
 have been explicitly indicated in this chapter.
-
-Actions to complete prior to release
-------------------------------------
-
-#. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
-   will give this. The main thing to think about is visibility/getting certain information into
-   certain aspects, such as proof aspects.

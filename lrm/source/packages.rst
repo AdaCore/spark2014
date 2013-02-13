@@ -1,4 +1,4 @@
-﻿Packages
+Packages
 ========
 
 Package Specifications and Declarations

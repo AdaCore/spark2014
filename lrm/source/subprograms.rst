@@ -834,6 +834,10 @@ subprogram bodies.
    input nor an output of that subprogram [that is, it is only used to determine
    the value of an assertion expression] has a ``mode_selector`` of Proof_In.
 
+.. todo::
+    Consider how implicitly generated proof obligations associated wth runtime checks
+    should be viewed in relation to Proof_In.
+    To be addressed in the Milestone 4 version of this document.
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
