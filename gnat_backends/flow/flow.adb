@@ -41,6 +41,7 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Control_Dependence_Graph;
 with Flow.Program_Dependence_Graph;
+with Flow.Analysis;
 
 package body Flow is
 
@@ -165,9 +166,10 @@ package body Flow is
                        return Node_Display_Info
          is
             Rv : Node_Display_Info := Node_Display_Info'
-              (Show  => True,
-               Shape => Flow_Graphs.Node_Shape_T'First,
-               Label => Null_Unbounded_String);
+              (Show   => True,
+               Shape  => Flow_Graphs.Node_Shape_T'First,
+               Colour => Null_Unbounded_String,
+               Label  => Null_Unbounded_String);
          begin
             if V = FA.Start_Vertex then
                Rv.Label := To_Unbounded_String ("start");
@@ -179,7 +181,8 @@ package body Flow is
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
                declare
-                  F : constant Flow_Id := G.Get_Key (V);
+                  F : constant Flow_Id      := G.Get_Key (V);
+                  A : constant V_Attributes := G.Get_Attributes (V);
                begin
                   case F.Kind is
                      when Direct_Mapping =>
@@ -199,6 +202,9 @@ package body Flow is
                            when Initial_Value =>
                               Rv.Shape := Shape_None;
                               Output.Write_Str ("'initial");
+                              if not A.Is_Initialised then
+                                 Rv.Colour := To_Unbounded_String ("red");
+                              end if;
                            when Final_Value =>
                               Rv.Shape := Shape_None;
                               Output.Write_Str ("'final");
@@ -281,6 +287,10 @@ package body Flow is
            (Filename  => Get_Name_String (Chars (E)) & "_pdg",
             Node_Info => NDI'Access,
             Edge_Info => EDI'Access);
+
+         Analysis.Find_Ineffective_Imports (FA);
+         Analysis.Find_Ineffective_Statements (FA);
+         Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
       end;
    end Flow_Analyse_Entity;

@@ -107,6 +107,18 @@ package body Graph is
      (G : T'Class;
       V : Vertex_Id) return Vertex_Attributes is (G.Vertices (V).Attributes);
 
+   --------------------
+   -- Set_Attributes --
+   --------------------
+
+   procedure Set_Attributes
+     (G : in out T'Class;
+      V : Vertex_Id;
+      A : Vertex_Attributes) is
+   begin
+      G.Vertices (V).Attributes := A;
+   end Set_Attributes;
+
    ----------------
    -- Add_Vertex --
    ----------------
@@ -441,6 +453,72 @@ package body Graph is
    end Get_Current_Vertex_Id;
 
    ----------------------------------------------------------------------
+   --  Complex queries
+   ----------------------------------------------------------------------
+
+   -------------------------------
+   --  Non_Trivial_Path_Exists  --
+   -------------------------------
+
+   function Non_Trivial_Path_Exists
+     (G : T'Class;
+      A : Vertex_Id;
+      B : Vertex_Id)
+     return Boolean
+   is
+      Path_Exists : Boolean := False;
+
+      procedure Are_We_There_Yet (V  : Vertex_Id;
+                                  TV : out Traversal_Instruction);
+      --  Repeatedly checks if we've arrived at out destination.
+
+      procedure Are_We_There_Yet (V  : Vertex_Id;
+                                  TV : out Traversal_Instruction) is
+      begin
+         if V = B then
+            Path_Exists := True;
+            TV          := Abort_Traversal;
+         else
+            TV          := Continue;
+         end if;
+      end Are_We_There_Yet;
+   begin
+      G.DFS (Start         => A,
+             Include_Start => False,
+             Visitor       => Are_We_There_Yet'Access);
+      return Path_Exists;
+   end Non_Trivial_Path_Exists;
+
+   function Non_Trivial_Path_Exists
+     (G : T'Class;
+      A : Vertex_Id;
+      F : access function (V : Vertex_Id) return Boolean)
+      return Boolean
+   is
+      Path_Exists : Boolean := False;
+
+      procedure Are_We_There_Yet (V  : Vertex_Id;
+                                  TV : out Traversal_Instruction);
+      --  Repeatedly checks if we've arrived at out destination.
+
+      procedure Are_We_There_Yet (V  : Vertex_Id;
+                                  TV : out Traversal_Instruction) is
+      begin
+         if F (V) then
+            Path_Exists := True;
+            TV          := Abort_Traversal;
+         else
+            TV          := Continue;
+         end if;
+      end Are_We_There_Yet;
+   begin
+      G.DFS (Start         => A,
+             Include_Start => False,
+             Visitor       => Are_We_There_Yet'Access);
+      return Path_Exists;
+   end Non_Trivial_Path_Exists;
+
+   ----------------------------------------------------------------------
    --  Visitors
    ----------------------------------------------------------------------
 
@@ -524,6 +602,8 @@ package body Graph is
                   Schedule_Children (Current_Node);
                when Skip_Children =>
                   null;
+               when Abort_Traversal =>
+                  return;
             end case;
          end;
       end loop;
@@ -973,6 +1053,9 @@ package body Graph is
                   when Shape_None =>
                      Put (FD, ",shape=""plaintext""");
                end case;
+               if Info.Colour /= Null_Unbounded_String then
+                  Put (FD, ",fontcolor=""" & To_String (Info.Colour) & """");
+               end if;
                Put (FD, "];");
                New_Line (FD);
             end if;

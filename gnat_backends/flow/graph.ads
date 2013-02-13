@@ -113,7 +113,7 @@ package Graph is
 
    type Cursor (Collection_Type : Collection_Type_T) is private;
 
-   type Traversal_Instruction is (Continue, Skip_Children);
+   type Traversal_Instruction is (Continue, Skip_Children, Abort_Traversal);
 
    ----------------------------------------------------------------------
    --  Basic operations
@@ -159,6 +159,14 @@ package Graph is
      (G : T'Class;
       V : Vertex_Id) return Vertex_Attributes;
    --  Obtain the user-defined attributes of the given vertex.
+   --
+   --  Complexity is O(1).
+
+   procedure Set_Attributes
+     (G : in out T'Class;
+      V : Vertex_Id;
+      A : Vertex_Attributes);
+   --  Set the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).
 
@@ -292,6 +300,31 @@ package Graph is
       return Vertex_Id;
 
    ----------------------------------------------------------------------
+   --  Complex queries
+   ----------------------------------------------------------------------
+
+   function Non_Trivial_Path_Exists
+     (G : T'Class;
+      A : Vertex_Id;
+      B : Vertex_Id)
+      return Boolean;
+   --  Checks if there is a non-trivial path from A to B. A trivial
+   --  path, which is not allowed by this function, is for the special
+   --  case where A = B and there is no edge from A to A.
+   --
+   --  Complexity is O(N).
+
+   function Non_Trivial_Path_Exists
+     (G : T'Class;
+      A : Vertex_Id;
+      F : access function (V : Vertex_Id) return Boolean)
+      return Boolean;
+   --  Checks if there is a non-trivial path from A to another vertex
+   --  B for which F(B) holds.
+   --
+   --  Complexity is O(N), assuming the complexity of F is O(1).
+
+   ----------------------------------------------------------------------
    --  Visitors
    ----------------------------------------------------------------------
 
@@ -372,9 +405,10 @@ package Graph is
    type Edge_Shape_T is (Edge_Normal);
 
    type Node_Display_Info is record
-      Show  : Boolean;
-      Shape : Node_Shape_T;
-      Label : Unbounded_String;
+      Show   : Boolean;
+      Shape  : Node_Shape_T;
+      Colour : Unbounded_String;
+      Label  : Unbounded_String;
    end record;
 
    type Edge_Display_Info is record

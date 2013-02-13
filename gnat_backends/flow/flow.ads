@@ -85,17 +85,32 @@ package Flow is
 
    type V_Attributes is record
       Is_Null_Node      : Boolean;
+      --  Set for auxiliary nodes which can be removed, such as early
+      --  returns or null statements.
+
+      Is_Program_Node   : Boolean;
+      --  Set for all vertices which trace directly to an element in
+      --  the AST.
+
+      Is_Initialised    : Boolean;
+      --  True if an initial value is either imported (in or in out)
+      --  or otherwise initialised.
+
       Variables_Defined : Flow_Id_Sets.Set;
       Variables_Used    : Flow_Id_Sets.Set;
    end record;
 
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node      => False,
+                   Is_Program_Node   => False,
+                   Is_Initialised    => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set);
 
    Null_Node_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node      => True,
+                   Is_Program_Node   => True,
+                   Is_Initialised    => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set);
 

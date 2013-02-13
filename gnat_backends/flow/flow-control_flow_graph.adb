@@ -22,8 +22,9 @@
 ------------------------------------------------------------------------------
 
 with Treepr; use Treepr;
-with Atree; use Atree;
-with Sinfo; use Sinfo;
+with Atree;  use Atree;
+with Sinfo;  use Sinfo;
+with Einfo;  use Einfo;
 with Nlists; use Nlists;
 
 with Flow.Debug; use Flow.Debug;
@@ -347,6 +348,8 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          V_Attributes'(Is_Null_Node      => False,
+                       Is_Program_Node   => True,
+                       Is_Initialised    => False,
                        Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
                          or V_Used_LHS
@@ -395,6 +398,8 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          V_Attributes'(Is_Null_Node      => False,
+                       Is_Program_Node   => True,
+                       Is_Initialised    => False,
                        Variables_Defined => Flow_Id_Sets.Empty_Set,
                        Variables_Used    => Get_Variable_Set (Condition (N))),
          V);
@@ -535,15 +540,24 @@ package body Flow.Control_Flow_Graph is
    procedure Simplify
      (G : in out Flow_Graphs.T'Class)
    is
+      A : V_Attributes;
    begin
       for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
          if G.Get_Attributes (V).Is_Null_Node then
+            --  Close the subgraph indicated by V's neighbours.
             for A of G.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
                for B of G.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
                   G.Add_Edge (A, B, EC_Default);
                end loop;
             end loop;
+
+            --  Remove all edges from the vertex.
             G.Clear_Vertex (V);
+
+            --  Clear the Is_Program_Node flag.
+            A := G.Get_Attributes (V);
+            A.Is_Program_Node := False;
+            G.Set_Attributes (V, A);
          end if;
       end loop;
    end Simplify;
@@ -579,19 +593,39 @@ package body Flow.Control_Flow_Graph is
                declare
                   N : constant Node_Id := Get_Direct_Mapping_Id (F);
                   V : Flow_Graphs.Vertex_Id;
+                  Is_Initialised : Boolean;
                begin
+                  --  Setup the n'initial vertex. Note that
+                  --  initialisation for variables is detected (and
+                  --  set) when building the flow graph for
+                  --  declarative parts.
+                  case Ekind (N) is
+                     when E_In_Out_Parameter |
+                       E_In_Parameter |
+                       E_Loop_Parameter =>
+                        Is_Initialised := True;
+                     when others =>
+                        Is_Initialised := False;
+                  end case;
+
                   FA.CFG.Add_Vertex
                     (Direct_Mapping_Id (N, Initial_Value),
                      V_Attributes'
                        (Is_Null_Node      => False,
+                        Is_Program_Node   => False,
+                        Is_Initialised    => Is_Initialised,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
                         Variables_Used    => Flow_Id_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, V, FA.Start_Vertex);
+
+                  --  Setup the n'final vertex
                   FA.CFG.Add_Vertex
                     (Direct_Mapping_Id (N, Final_Value),
                      V_Attributes'
                        (Is_Null_Node      => False,
+                        Is_Program_Node   => False,
+                        Is_Initialised    => False,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
                         Variables_Used    => Flow_Id_Sets.To_Set (F)),
                      V);
