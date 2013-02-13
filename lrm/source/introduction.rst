@@ -863,7 +863,7 @@ for the main language features, provides
 syntax where possible and otherwise provides the detailed rules necessary to
 support implementation of basic flow analysis. Where detail is not relevant to
 meeting these needs then it has typically been removed, though a "ToDo" will indicate
-that there is material still to be provided.
+that there is material still to be provided. 
 
 Note this means there are certain of the strategic requirements that are currently
 not decomposed into language definition detail. Where this is the case, it will

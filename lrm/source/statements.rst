@@ -110,7 +110,7 @@ expression had upon entry to the subprogram.
 Block Statements
 ----------------
 
-A ``block_statement`` cannot have an ``exception_handler``.
+No extensions or restrictions.
 
 Exit Statements
 ---------------

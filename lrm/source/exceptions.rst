@@ -74,4 +74,3 @@ There are no additional dynamic semantics associated with exceptions in |SPARK|.
    obligations. [For example, an array index value must be shown to be in
    bounds regardless of whether Index_Check is suppressed at the point
    of the array indexing.]
-
