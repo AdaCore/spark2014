@@ -279,31 +279,36 @@ package body Flow is
 
          Control_Flow_Graph.Create (Body_N, FA);
 
-         FA.CFG.Write_Pdf_File
-           (Filename  => Get_Name_String (Chars (E)) & "_cfg",
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
+         --  We print this graph first in cast the other algorithms
+         --  barf.
+         if Debug_Flag_Dot_ZZ then
+            FA.CFG.Write_Pdf_File
+              (Filename  => Get_Name_String (Chars (E)) & "_cfg",
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         end if;
 
          Data_Dependence_Graph.Create (FA);
-
-         FA.DDG.Write_Pdf_File
-           (Filename  => Get_Name_String (Chars (E)) & "_ddg",
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
-
          Control_Dependence_Graph.Create (FA);
-
-         FA.CDG.Write_Pdf_File
-           (Filename  => Get_Name_String (Chars (E)) & "_cdg",
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
-
          Program_Dependence_Graph.Create (FA);
 
-         FA.PDG.Write_Pdf_File
-           (Filename  => Get_Name_String (Chars (E)) & "_pdg",
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
+         --  Now we print everything else.
+         if Debug_Flag_Dot_ZZ then
+            FA.DDG.Write_Pdf_File
+              (Filename  => Get_Name_String (Chars (E)) & "_ddg",
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+
+            FA.CDG.Write_Pdf_File
+              (Filename  => Get_Name_String (Chars (E)) & "_cdg",
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+
+            FA.PDG.Write_Pdf_File
+              (Filename  => Get_Name_String (Chars (E)) & "_pdg",
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         end if;
 
          Analysis.Find_Ineffective_Imports (FA);
          Analysis.Find_Ineffective_Statements (FA);
