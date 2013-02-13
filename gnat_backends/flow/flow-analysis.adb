@@ -124,10 +124,10 @@ package body Flow.Analysis is
                      Key_U : constant Flow_Id := FA.PDG.Get_Key (V_Use);
                   begin
                      if Key_U.Variant = Final_Value then
-                        Error_Msg_Flow ("may never be initialised!",
+                        Error_Msg_Flow ("may never be initialized!",
                                         Key_U);
                      else
-                        Error_Msg_Flow ("use of uninitialised variable &!",
+                        Error_Msg_Flow ("use of uninitialized variable &!",
                                         Key_U, Key_I);
                      end if;
                   end;
