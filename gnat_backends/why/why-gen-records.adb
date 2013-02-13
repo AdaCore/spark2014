@@ -709,7 +709,7 @@ package body Why.Gen.Records is
          return
            New_VC_Call
              (Ada_Node => Ada_Node,
-              Name     => Call_Id,
+              Name     => To_Program_Space (Call_Id),
               Progs    => (1 => Name),
               Domain   => Domain,
               Reason   => VC_Discriminant_Check);
