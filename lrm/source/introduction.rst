@@ -379,7 +379,7 @@ Some are expanded in subsequent sections within this chapter.
 
 .. todo::
    Complete detail on mixing |SPARK| with non-Ada code.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
@@ -415,6 +415,7 @@ Some are expanded in subsequent sections within this chapter.
 
 .. todo::
    Ensure that all strategic requirements have been implemented.
+   To be completed in the Milestone 4 version of this document.
 
 .. _explain_sprs:
 
@@ -532,11 +533,11 @@ will be provided at least in part under TN LC10-020.*
 .. todo::
    Add detail on restrictions to be applied to tested code, making clear that the burden
    is on the user to get this right, and not getting it right can invalidate the assumptions
-   on which proof is based. To be completed in the Milestone 3 version of this document.
+   on which proof is based. To be completed in the Milestone 4 version of this document.
 
 .. todo::
    Complete detail on combining formal verification and testing.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. _code_policy:
 
@@ -751,11 +752,11 @@ and nothing further is given on how it should be used.*
 .. todo::
    We need to consider what might need to be levied on the non-|SPARK| code in order for flow
    analysis on the |SPARK| code to be carried out.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. _generic_hlrs:
 

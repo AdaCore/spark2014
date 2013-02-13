@@ -84,6 +84,7 @@ if it appears inside an assertion expression.
    Are we saying here that an aggregate which occurs in an an assertion
    expression introduces a proof obligation that all of its scalar
    subcomponents are valid?
+   To be completed in the Milestone 3 version of this document.
 
 Record Aggregates
 ~~~~~~~~~~~~~~~~~
@@ -105,6 +106,7 @@ Update Expressions
 
 .. todo::
    Detail on Update Expressions needs to be put into the standard format.
+   To be completed in the Milestone 3 version of this document.
 
 The ``Update`` attribute provides a way of overwriting specified components
 of a copy of a given composite value.

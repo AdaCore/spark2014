@@ -51,6 +51,7 @@ Generalized Loop Iteration
 |SPARK| does not permit the use of variable iterators.
 
 .. todo:: Need to consider further the support for iterators.
+          To be completed in the Milestone 4 version of this document.
 
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

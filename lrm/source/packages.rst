@@ -275,6 +275,7 @@ aspect.
      needs to be added, in particular in relation to specifying these
      properties for variables which are declared directly within the
      visible part of a package specification.
+     To be completed in the Milestone 3 version of this document.
 
 
 Package-level Global, Depends and Initializes
@@ -454,21 +455,24 @@ High-level requirements
 
 .. todo:: The consistency rules will be updated as the
           models for volatile variables and integrity levels are defined.
+          To be completed in the Milestone 3 version of this document.
 
-.. todo: Consider whether it should be possible to refine null abstract state onto hidden state.
-     *Rationale: this would allow the modeling of programs that - for example - use caches
-     to improve performance.*
+.. todo:: Consider whether it should be possible to refine null abstract state onto hidden state.
+          *Rationale: this would allow the modeling of programs that - for example - use caches
+          to improve performance.*
+          To be completed in the Milestone 3 version of this document.
 
 .. todo:: Consider whether it should be possible to refine abstract onto hidden state without any restrictions,
-     although the refinement would be checked and potential issues flagged up to the user.
+          although the refinement would be checked and potential issues flagged up to the user.
      
-     **Rationale:** there are a number of different possible models of mapping abstract
-     to concrete state - especially when volatile state is being used - and it might
-     be useful to provide greater flexibility to the user. In addition, if a facility is
-     provided to allow users to step outside of the language when refining depends, for example, then it may be
-     necessary to relax the abstraction model as well as relaxing the language feature
-     of direct relevance.*
+          **Rationale:** there are a number of different possible models of mapping abstract
+          to concrete state - especially when volatile state is being used - and it might
+          be useful to provide greater flexibility to the user. In addition, if a facility is
+          provided to allow users to step outside of the language when refining depends, for example, then it may be
+          necessary to relax the abstraction model as well as relaxing the language feature
+          of direct relevance.*
 
+          To be completed in the Milestone 3 version of this document.
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
@@ -503,9 +507,9 @@ Abstract State and Package Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. todo:: We need to consider the interactions between package hierarchy and abstract state.
-   Do we need to have rules restricting access between parent and child packages?
-   Can we ensure abstract state encapsulation?
-   To be completed in the Milestone 3 version of this document.
+          Do we need to have rules restricting access between parent and child packages?
+          Can we ensure abstract state encapsulation?
+          To be completed in the Milestone 3 version of this document.
 
 Volatile Variables
 ~~~~~~~~~~~~~~~~~~
@@ -625,10 +629,12 @@ High-level requirements
 
 .. todo:: The consistency rules will be updated as the
           model for volatile variables is defined.
+          To be completed in the Milestone 3 version of this document.
 
-.. todo: If it ends up being possible to refine null abstract state, then refinements of such
-         state could appear in refined globals statements, though they would need
-         to have mode in out.
+.. todo:: If it ends up being possible to refine null abstract state, then refinements of such
+          state could appear in refined globals statements, though they would need
+          to have mode in out.
+          To be completed in the Milestone 3 version of this document.
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
@@ -708,11 +714,13 @@ High-level requirements
 
 .. todo:: The consistency rules will be updated as the
           model for volatile variables is defined.
+          To be completed in the Milestone 3 version of this document.
 
-.. todo: If it is possible to refine null abstract state, then refinements of such
-         state could appear in refined depends statements, but wouldn't map to
-         anything in the depends relation itself and would need to have mode in/out
-         in the refined depends.
+.. todo:: If it is possible to refine null abstract state, then refinements of such
+          state could appear in refined depends statements, but wouldn't map to
+          anything in the depends relation itself and would need to have mode in/out
+          in the refined depends.
+          To be completed in the Milestone 3 version of this document.
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^

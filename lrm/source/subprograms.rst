@@ -652,6 +652,7 @@ where
 
 .. todo::
    Add rules relating to volatile state.
+   To be completed in the Milestone 3 version of this document.
 
 .. For purposes of flow analysis, a read of a volatile object is
    always considered to include a self-dependent update

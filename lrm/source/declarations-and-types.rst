@@ -87,7 +87,7 @@ No extensions or restrictions.
 .. todo::
    RCC comment: This will need to describe any global restrictions on tagged types (if any)
    and any additional Restrictions that we may feel users need.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 Access Types
 ------------

@@ -94,6 +94,7 @@ Specification in |SPARK|:
    Note that the details of false alarm management are still TBD and so
    there is currently no equivalent of the accept annotation
    in the SPARK 2005 body.
+   To be completed in the Milestone 3 version of this document.
 
 Body in |SPARK|:
 
@@ -330,6 +331,7 @@ intentionally done in order to illustrate both legal and illegal access attempts
 .. todo::
    The |SPARK| version of the code is not provided since the restrictions that are to be
    applied in terms of package visibility are yet to be determined.
+   To be completed in the Milestone 3 version of this document.
 
 Specification of parent in SPARK 2005:
 
@@ -748,6 +750,7 @@ Body of output port in SPARK 2005:
 .. todo::
    *Note that the syntax for identifying the main program in* |SPARK| *is still
    TBD.*
+   To be completed in the Milestone 3 version of this document.
 
 Specification of main program in |SPARK|:
    .. literalinclude:: ../code/external_variables_input_output/14/copy_14.adb
@@ -795,6 +798,7 @@ that the value read from the port is of the correct type).
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined. Note that this also applies to the use of the Always_Valid annotation.*
+   To be completed in the Milestone 3 version of this document.
 
 Specification in SPARK 2005:
 
@@ -819,6 +823,7 @@ and adds a contract using the 'Append attribute.
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
+   To be completed in the Milestone 3 version of this document.
 
 Specification in SPARK 2005:
 
@@ -906,6 +911,7 @@ ad an output external variable.
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
+   To be completed in the Milestone 3 version of this document.
 
 
 Specification in SPARK 2005:
@@ -934,6 +940,7 @@ input stream.
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
+   To be completed in the Milestone 3 version of this document.
 
 Specification in SPARK 2005:
 
@@ -1202,6 +1209,7 @@ Declare annotation
 .. todo:: The declare annotation SPARK is used to control the generation of proof
    rules for composite objects. It is not clear that this will be required in
    |SPARK|, so this section will be updated or removed in future.
+   To be completed in the Milestone 4 version of this document.
 
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1212,6 +1220,7 @@ the Always_Valid attribute.
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
+   To be completed in the Milestone 3 version of this document.
 
 Rule declaration annotation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1221,6 +1230,7 @@ See section `Proof types and proof functions`_.
 .. todo::
    *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
    syntax is not yet defined.*
+   To be completed in the Milestone 3 version of this document.
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1233,10 +1243,11 @@ and proof types are needed to state those pre- and postconditions. In addition, 
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 
-.. todo:
+.. todo::
    *Note that the* |SPARK| *version of the rule declaration annotation has not yet been
    defined - note that it may not even be needed, though this is to be determined - and
    so there is no equivalent included in the* |SPARK| *code.*
+   To be completed in the Milestone 4 version of this document.
 
 Specification in SPARK 2005:
 

@@ -39,6 +39,7 @@ value of the function result from the elaboration of the
 analysis.
 
 .. todo:: Describe model of renaming for array indexing and slices.
+          To be completed in the Milestone 3 version of this document.
 
 
 Note that, from the point of view of both static and dynamic verification,
