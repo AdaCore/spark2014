@@ -25,11 +25,12 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
-with Atree; use Atree;
-with Einfo; use Einfo;
-with Sinfo; use Sinfo;
-with Namet; use Namet;
+with Atree;  use Atree;
+with Einfo;  use Einfo;
+with Sinfo;  use Sinfo;
+with Namet;  use Namet;
 with Sprint; use Sprint;
+with Debug;  use Debug;
 
 with Output;
 
