@@ -376,11 +376,19 @@ Some are expanded in subsequent sections within this chapter.
   when retrospectively analyzing pre-existing code it may well not all conform to
   the |SPARK| subset. *No further detail is given in the current draft of this document on
   mixing |SPARK| code with non-Ada code.*
+<<<<<<< HEAD
 
 .. todo::
    Complete detail on mixing |SPARK| with non-Ada code.
    To be completed in the Milestone 4 version of this document.
 
+=======
+  
+- |SPARK| shall support entities which do not affect the functionality of
+  a program but may be used in the test and verification of a program. 
+  See section :ref:`ghost_entities`.
+  
+>>>>>>> TICKET:[M104-011]
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
 
@@ -581,9 +589,41 @@ of Guidelines.
 
 *No further detail is given in the current draft of this document on Code Policies.*
 
+<<<<<<< HEAD
 .. todo::
    Complete detail on Code Policies.
    To be completed in the Milestone 3 version of this document.
+=======
+.. _ghost_entities:
+
+Ghost Entities
+~~~~~~~~~~~~~~
+
+Often extra entities, such as types, variables and functions may be required
+only for test and verification purposes. Such entities are termed *ghost*
+entities and their use should be restricted to places where they do not affect
+the functionality of the program. In principle such entities could be completely
+removed from the program without any functional impact.
+
+|SPARK| supports ghost functions which may be executable or
+non-executable. Non-executable ghost functions have no implementation and can be
+used for the purposes of formal verification only. Such functions have to be
+defined within an external proof tool to facilitate formal verification. 
+
+Any function, ghost or otherwise, may have its specification defined within an
+external proof tool for formal verification purposes. The specification is
+outside of the |SPARK| language and toolset and therefore cannot be checked by
+these. An unsound definition may lead to an unsound proof which is of no use.
+Ideally any definition will be checked for soundness by the external proof
+tools.
+
+If a function can be specified in |SPARK|, then its specification can be recast
+as the expression of an expression function without further implementation.
+This may not give the most efficient implementation but if the function is a 
+ghost function it may be sufficient.
+
+*Further Ghost Entities are intended to be added in future drafts.*
+>>>>>>> TICKET:[M104-011]
 
 .. _verific_modes:
 
