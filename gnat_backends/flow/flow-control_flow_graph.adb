@@ -78,13 +78,6 @@ package body Flow.Control_Flow_Graph is
    function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
-   function Get_Entire_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
-   --  Obtain all entire variables used in a node.
-
-   function Get_Entire_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
-   pragma Unreferenced (Get_Entire_Variable_Set);
-   --  As above, but operating on a list.
-
    procedure Do_Assignment_Statement
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs;
@@ -102,6 +95,12 @@ package body Flow.Control_Flow_Graph is
       FA : in out Flow_Analysis_Graphs;
       CM : in out Connection_Maps.Map)
       with Pre => Nkind (N) = N_If_Statement;
+
+   procedure Do_Loop_Statement
+     (N  : Node_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+      with Pre => Nkind (N) = N_Loop_Statement;
 
    procedure Do_Simple_Return_Statement
      (N  : Node_Id;
@@ -171,11 +170,19 @@ package body Flow.Control_Flow_Graph is
       begin
          case Nkind (N) is
             when N_Identifier =>
-               VS.Include (Direct_Mapping_Id (Entity (N)));
-            when N_Selected_Component =>
-               raise Why.Not_Implemented;
-               --  VS.Include (Entity (Prefix (N)));
-               return Skip;
+               if Entity (N) /= Empty then
+                  case Ekind (Entity (N)) is
+                     when E_Variable |
+                       E_Loop_Parameter |
+                       E_Out_Parameter |
+                       E_In_Parameter |
+                       E_In_Out_Parameter |
+                       E_Constant =>
+                        VS.Include (Direct_Mapping_Id (Entity (N)));
+                     when others =>
+                        null;
+                  end case;
+               end if;
             when others =>
                null;
          end case;
@@ -201,88 +208,6 @@ package body Flow.Control_Flow_Graph is
       end loop;
       return VS;
    end Get_Variable_Set;
-
-   -------------------------------
-   --  Get_Entire_Variable_Set  --
-   -------------------------------
-
-   function Get_Entire_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set
-   is
-      VS     : Flow_Id_Sets.Set;
-      Unused : Traverse_Final_Result;
-      pragma Unreferenced (Unused);
-
-      function Proc (N : Node_Id) return Traverse_Result;
-
-      function Proc (N : Node_Id) return Traverse_Result
-      is
-      begin
-         case Nkind (N) is
-            when N_Identifier =>
-               case Nkind (Parent (N)) is
-                  when N_Subprogram_Body |
-                    N_Parameter_Specification |
-                    N_Handled_Sequence_Of_Statements |
-                    N_Object_Declaration =>
-                     return Skip;
-                  when N_If_Statement |
-                    N_Assignment_Statement |
-                    N_Binary_Op =>
-                     VS.Include (Direct_Mapping_Id (Entity (N)));
-                  when others =>
-                     Print_Node_Subtree (N);
-                     raise Why.Not_Implemented;
-               end case;
-            when N_Subprogram_Body |
-              N_Procedure_Specification |
-              N_Parameter_Specification |
-              N_If_Statement |
-              N_Assignment_Statement |
-              N_Handled_Sequence_Of_Statements |
-              N_Object_Declaration |
-              N_Binary_Op =>
-               null;
-            when N_Simple_Return_Statement |
-              N_Integer_Literal =>
-               return Skip;
-            when N_Defining_Identifier =>
-               case Nkind (Parent (N)) is
-                  when N_Procedure_Specification =>
-                     null;
-                  when N_Parameter_Specification |
-                    N_Object_Declaration =>
-                     VS.Include (Direct_Mapping_Id (N));
-                  when others =>
-                     Print_Node_Subtree (N);
-                     raise Why.Not_Implemented;
-               end case;
-               return Skip;
-            when others =>
-               Print_Node_Subtree (N);
-               raise Why.Not_Implemented;
-         end case;
-         return OK;
-      end Proc;
-
-      function Traverse is new Traverse_Func (Process => Proc);
-   begin
-      Unused := Traverse (N);
-      return VS;
-   end Get_Entire_Variable_Set;
-
-   function Get_Entire_Variable_Set (L : List_Id) return Flow_Id_Sets.Set
-   is
-      VS : Flow_Id_Sets.Set;
-      P  : Node_Id;
-   begin
-      P := First (L);
-      while P /= Empty loop
-         VS.Union (Get_Entire_Variable_Set (P));
-
-         P := Next (P);
-      end loop;
-      return VS;
-   end Get_Entire_Variable_Set;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -416,8 +341,108 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Else_Part)).Standard_Exits);
+      else
+         CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
+
    end Do_If_Statement;
+
+   -------------------------
+   --  Do_Loop_Statement  --
+   -------------------------
+
+   procedure Do_Loop_Statement
+     (N  : Node_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      if Iteration_Scheme (N) = Empty then
+         --  We have a loop.
+
+         --  We have a null vertex for the loop, as we have no
+         --  condition.
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                            Null_Node_Attributes,
+                            V);
+         CM.Include (Union_Id (N), No_Connections);
+
+         --  Construct graph for the loop body.
+         Process_Statement_List (Statements (N), FA, CM);
+
+         --  Flow is V -> body -> V for the loop itself.
+         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         --  Entry point for the loop is V.
+         CM (Union_Id (N)).Standard_Entry := V;
+
+         --  Exit from the loop is at the end of the loop, i.e. we are
+         --  always going round at least once.
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM (Union_Id (Statements (N))).Standard_Exits);
+
+      elsif Condition (Iteration_Scheme (N)) /= Empty then
+         --  We have a while loop.
+
+         --  We have a vertex for the loop condition.
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            V_Attributes'
+              (Is_Null_Node      => False,
+               Is_Program_Node   => True,
+               Is_Initialised    => False,
+               Variables_Defined => Flow_Id_Sets.Empty_Set,
+               Variables_Used    => Get_Variable_Set
+                 (Condition (Iteration_Scheme (N)))),
+            V);
+         CM.Include (Union_Id (N), No_Connections);
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits.Include (V);
+
+         --  Construct graph for the loop body.
+         Process_Statement_List (Statements (N), FA, CM);
+
+         --  Flow is V -> body -> V for the loop itself.
+         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+      else
+         pragma Assert (Loop_Parameter_Specification (Iteration_Scheme (N))
+                          /= Empty);
+         --  We have a for loop.
+
+         declare
+            LPS : constant Node_Id :=
+              Loop_Parameter_Specification (Iteration_Scheme (N));
+         begin
+
+            --  We have a vertex for the range.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               V_Attributes'
+                 (Is_Null_Node      => False,
+                  Is_Program_Node   => True,
+                  Is_Initialised    => False,
+                  Variables_Defined => Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                  Variables_Used    => Get_Variable_Set
+                    (Discrete_Subtype_Definition (LPS))),
+                  V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Include (V);
+
+            --  Construct graph for the loop body.
+            Process_Statement_List (Statements (N), FA, CM);
+
+            --  Flow is V -> body -> V for the loop itself.
+            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+         end;
+      end if;
+   end Do_Loop_Statement;
 
    ----------------------------------
    --  Do_Simple_Return_Statement  --
@@ -526,6 +551,8 @@ package body Flow.Control_Flow_Graph is
             Do_If_Statement (N, FA, CM);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM);
+         when N_Loop_Statement =>
+            Do_Loop_Statement (N, FA, CM);
          when others =>
             Print_Node_Subtree (N);
             CM.Include (Union_Id (N), No_Connections);
@@ -586,7 +613,7 @@ package body Flow.Control_Flow_Graph is
       Do_Subprogram_Body (N, FA, Connection_Map);
 
       --  Work out all variables and add 'initial and 'final vertices.
-      FA.Vars := Get_Entire_Variable_Set (N);
+      FA.Vars := Get_Variable_Set (N);
       for F of FA.Vars loop
          case F.Kind is
             when Direct_Mapping =>
@@ -601,8 +628,7 @@ package body Flow.Control_Flow_Graph is
                   --  declarative parts.
                   case Ekind (N) is
                      when E_In_Out_Parameter |
-                       E_In_Parameter |
-                       E_Loop_Parameter =>
+                       E_In_Parameter =>
                         Is_Initialised := True;
                      when others =>
                         Is_Initialised := False;

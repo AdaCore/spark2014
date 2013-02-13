@@ -194,6 +194,23 @@ package body Flow is
                                  Rv.Shape := Shape_Diamond;
                                  Output.Write_Str ("if ");
                                  Sprint_Node (Condition (N));
+                              when N_Loop_Statement =>
+                                 Rv.Shape := Shape_Diamond;
+                                 if Iteration_Scheme (N) = Empty then
+                                    --  Basic loop. Should never
+                                    --  appear as a vertex in the
+                                    --  graph.
+                                    pragma Assert (False);
+                                 elsif Condition (Iteration_Scheme (N)) /=
+                                   Empty then
+                                    --  While loop.
+                                    Output.Write_Str ("while ");
+                                    Sprint_Node
+                                      (Condition (Iteration_Scheme (N)));
+                                 else
+                                    Sprint_Node
+                                      (Iteration_Scheme (N));
+                                 end if;
                               when others =>
                                  Sprint_Node (N);
                            end case;
