@@ -14,8 +14,6 @@ constructs removed or modified as needed in order to maintain the
 language invariants that |SPARK| relies upon in providing
 formal program verification.
 
-*To be completed in the Milestone 4 version of this document.*
-
 .. todo:: Provide detail on Standard Libraries.
           To be completed in the Milestone 4 version of this document.
 
