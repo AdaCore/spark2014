@@ -16,5 +16,8 @@ formal program verification.
 
 *To be completed in the Milestone 4 version of this document.*
 
+.. todo:: Provide detail on Standard Libraries.
+          To be completed in the Milestone 4 version of this document.
+
 
 

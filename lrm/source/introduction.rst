@@ -370,7 +370,11 @@ Some are expanded in subsequent sections within this chapter.
   the program. Many systems are not written in a single programming language and
   when retrospectively analyzing pre-existing code it may well not all conform to
   the |SPARK| subset. *No further detail is given in the current draft of this document on
-  mixing |SPASRK| code with non-Ada code.*
+  mixing |SPARK| code with non-Ada code.*
+
+.. todo::
+   Complete detail on mixing |SPARK| with non-Ada code.
+   To be completed in the Milestone 3 version of this document.
 
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
@@ -513,14 +517,18 @@ There are two two sources of restriction that apply to the tested code:
 The specific details of the restrictions to be applied to tested code -- which
 will typically be non-|SPARK| -- code will be given in a subsequent draft of this document.
 
-.. todo::
-   Add detail on restrictions to be applied to tested code, making clear that the burden
-   is on the user to get this right, and not getting it right can invalidate the assumptions
-   on which proof is based. Target: Milestone 3
-
 *No further detail is given in the current draft of this document on Combining
 Formal Verification and Testing, or on providing what it needs. Further detail
 will be provided at least in part under TN LC10-020.*
+
+.. todo::
+   Add detail on restrictions to be applied to tested code, making clear that the burden
+   is on the user to get this right, and not getting it right can invalidate the assumptions
+   on which proof is based. To be completed in the Milestone 3 version of this document.
+
+.. todo::
+   Complete detail on combining formal verification and testing.
+   To be completed in the Milestone 3 version of this document.
 
 .. _code_policy:
 
@@ -563,6 +571,10 @@ as a counterpart to pragma Restriction, meaning that a Code_Policy is a grouping
 of Guidelines.
 
 *No further detail is given in the current draft of this document on Code Policies.*
+
+.. todo::
+   Complete detail on Code Policies.
+   To be completed in the Milestone 3 version of this document.
 
 .. _verific_modes:
 
@@ -625,13 +637,16 @@ this document, it is assumed that analysis and verification is being performed
 constructively and no explicit detail is given on generative or retrospective
 analysis.
 
-.. todo::
-   Add detail on how retrospective analysis will work when we have a mix of |SPARK| and non-|SPARK|.
-   Target: Milestone 3
-
-
 *No further detail is given in the current draft of this document on
 Constructive, Generative and Retrospective analysis and Verification.*
+
+.. todo::
+   Add detail on how retrospective analysis will work when we have a mix of |SPARK| and non-|SPARK|.
+   To be completed in the Milestone 3 version of this document.
+
+.. todo::
+   Complete detail on constructive, generative and retrospective analysis and verification.
+   To be completed in the Milestone 3 version of this document.
 
 .. _in_out:
 
@@ -720,14 +735,19 @@ only part of a program is formally verified.  Thus, combining these results
 with other verification results depends on the verification of global and local
 assumptions made during formal verification.
 
-.. todo::
-   We need to consider what might need to be levied on the non-|SPARK| code in order for flow
-   analysis on the |SPARK| code to be carried out. Target: Milestone 3
-
 *No further detail is given in the current draft of this document on
 mixing code that is in and out of SPARK 2014. Although there are a number of places where
 a statement is given on what is in or out of SPARK 2014, that information is not yet complete
 and nothing further is given on how it should be used.*
+
+.. todo::
+   We need to consider what might need to be levied on the non-|SPARK| code in order for flow
+   analysis on the |SPARK| code to be carried out.
+   To be completed in the Milestone 3 version of this document.
+
+.. todo::
+   Complete detail on mixing code that is in and out of |SPARK|.
+   To be completed in the Milestone 3 version of this document.
 
 .. _generic_hlrs:
 
@@ -843,8 +863,6 @@ have been explicitly indicated in this chapter.
 Actions to complete prior to release
 ------------------------------------
 
-#. **Associated action: LRM should not be GNAT-specific; references to GNAT should be removed.**
-
 #. Need to review the language feature HLRs for completeness: against 2005 LRM and initial draft
    will give this. The main thing to think about is visibility/getting certain information into
    certain aspects, such as proof aspects.
@@ -852,45 +870,3 @@ Actions to complete prior to release
 #. Make sure syntax is included where necessary (i.e. even where other details
    have been removed; where it is the same as some existing aspect, then add
    a comment to that effect).
-
-#. Note that the semantics of the formal parameter modes is different to that of the global
-   data items: what are the implications of this?
-
-#. Remove references - other than in the Introduction - to whether things are
-   in or out of SPARK and add a comment to say that that detail is still to
-   be defined.
-
-#. Do we need something in general on visibility? That is, an item where we state what
-   a given language feature can refer to?
-
-#. Make sure that all necessary actions are recorded as ToDos: perhaps need to go through
-   at least this Introduction with Andrew and Trevor to pull out actions to be carried out.
-   As part of this, make sure that where necessary derived use cases or derived requirements
-   are also recorded.
-
-#. Get agreement on what we do with ToDos: i.e. do we leave them in or not: perhaps gather in
-   a single list of possibilities for the future?
-
-#. Add something somewhere on prove once, use many times wrt generics (this should be derived from modularity
-   and is also something for a subsequent release).
-
-#. Note that the Ada 2012 RM only applies to compilation, while ours applies to both
-   analysis and compilation, but is meant to be built on top of the Ada 2012 RM.
-   Do we need to make this clear and does this cause any problems? For example,
-   rules in the Ada 2012 RM requiring bodies? Or does this just mean that our
-   analysis mode has to be that we aren't compiling? Need to be clear on
-   what is required for our analysis mode, and how that relates to what is
-   levied in the RM (as we will certainly need some of what is in the Ada 2012 RM).
-
-#. Remove volatility from the detail for milestone 2, even in terms of those
-   things where we don't give the language-specific rules. In general, go through
-   and see what should be descoped.
-
-#. We have a requirement to say that we provide everything that SPARK 2005 does:
-   but at the very least we are missing --# accept and --# hide. Need to check to
-   to see if there is anything else like this.
-
-#. Explain what D1, D2 and rel2 actually mean. Or replace with Milestone values.
-
-#. Where Hristian said that certain rules have been deferred to the flow analyzer, we need
-   to move them to the appropriate sub-section in the LRM.

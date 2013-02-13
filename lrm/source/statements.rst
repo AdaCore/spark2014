@@ -105,6 +105,7 @@ expression had upon entry to the subprogram.
 
 .. todo::
    Provide detail on pragmas Loop_Invariant and Loop_Variant, and attribute Loop_Entry.
+   To be completed in the Milestone 3 version of this document.
 
 Block Statements
 ----------------

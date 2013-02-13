@@ -86,8 +86,8 @@ No extensions or restrictions.
 
 .. todo::
    RCC comment: This will need to describe any global restrictions on tagged types (if any)
-   and any additional Restrictions that we may feel users need.  I assume this section won't
-   be finalized for D1/CDR, so target for D2.
+   and any additional Restrictions that we may feel users need.
+   To be completed in the Milestone 3 version of this document.
 
 Access Types
 ------------

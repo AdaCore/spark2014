@@ -481,7 +481,8 @@ Abstract State and Package Hierarchy
 
 .. todo:: We need to consider the interactions between package hierarchy and abstract state.
    Do we need to have rules restricting access between parent and child packages?
-   Can we ensure abstract state encapsulation? Target: D2.
+   Can we ensure abstract state encapsulation?
+   To be completed in the Milestone 3 version of this document.
 
 Volatile Variables
 ~~~~~~~~~~~~~~~~~~
@@ -521,15 +522,16 @@ of the external device.
 
    pragma Assert (T1 = T2);
 
-   Target: D2.
+   To be completed in the Milestone 3 version of this document.
 
 .. todo:: May introduce a way to provide a "history" parameter for
-   Volatile variables. Target: D2.
+   Volatile variables.
+   To be completed in the Milestone 3 version of this document.
 
 .. todo:: Consider a mode selector for the "latched output" pattern - one that can be
    read after writing but need not be. This scheme has been
    requested by secunet.  In this scheme the output would be volatile
-   but the input non-volatile. Target: rel2+.
+   but the input non-volatile. Target: release 2 of toolset or later.
 
 
 Initialization Refinement
@@ -610,6 +612,9 @@ Language Definition
 
 *To be completed in the Milestone 3 version of this document.*
 
+.. todo:: Provide language definition for Refined_Global aspect.
+          To be completed in the Milestone 3 version of this document.
+
 
 .. _refined-depends-aspect:
 
@@ -683,6 +688,9 @@ Language Definition
 
 *To be completed in the Milestone 3 version of this document.*
 
+.. todo:: Provide language definition for Refined_Depends aspect.
+          To be completed in the Milestone 3 version of this document.
+
 
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -721,6 +729,9 @@ Language Definition
 
 *To be completed in the Milestone 3 version of this document.*
 
+.. todo:: Provide language definition for Refined_Pre aspect.
+          To be completed in the Milestone 3 version of this document.
+
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -758,7 +769,11 @@ Language Definition
 
 *To be completed in the Milestone 3 version of this document.*
 
-.. todo:: refined contract_cases. Target: D2.
+.. todo:: Provide language definition for Refined_Post aspect.
+          To be completed in the Milestone 3 version of this document.
+
+.. todo:: refined contract_cases.
+          To be completed in the Milestone 3 version of this document.
 
 
 Private Types and Private Extensions

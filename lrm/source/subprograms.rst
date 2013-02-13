@@ -53,13 +53,16 @@ variable.
    subprogram.
 
 .. todo::
-   In the future we may be able to permit access and aliased formal parameter specs. Target: rel2+
+   In the future we may be able to permit access and aliased formal parameter specs. Target: Release
+   2 of toolset or later.
 
 .. todo::
-   What do we do regarding null exclusion parameters? Target: D2
+   What do we do regarding null exclusion parameters?
+   To be completed in the Milestone 3 version of this document.
 
 .. todo::
-   What do we do regarding function access results and function null exclusion results? Target: D2
+   What do we do regarding function access results and function null exclusion results?
+   To be completed in the Milestone 3 version of this document.
 
 
 Preconditions and Postconditions
@@ -71,7 +74,8 @@ contract expressions (introduced by Pre and Post) and class-wide
 contract expressions (introduced by Pre'Class and Post'Class), if any,
 are in |SPARK|.
 
-.. todo:: Think about Pre'Class and Post'Class. Target: D2.
+.. todo:: Think about Pre'Class and Post'Class.
+          To be completed in the Milestone 3 version of this document.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
@@ -759,7 +763,8 @@ No extensions or restrictions.
    In flow analysis it would be regarded as an input and give arise to 
    flow errors.
    Perhaps we need an aspect to describe the strict view of a parameter
-   if it is different to the specified Ada mode of the formal parameter? Target: D2
+   if it is different to the specified Ada mode of the formal parameter?
+   To be completed in the Milestone 3 version of this document.
 
 
 Subprogram Bodies
