@@ -310,43 +310,49 @@ High-level requirements
       initializations are visible from the specification.  An Initializes aspect
       is applied to a package specification to indicate which variables and
       state abstractions are initialized by the package.  This facilitates
-      modular analysis can proceed using just a package specfication.
+      modular analysis.
       
 #. Constraints:
 
-   * No further abstract state-specific requirements.
+   * No further Initializes-specific requirements.
 
 #. Consistency:
 
-    * No further abstract state-specific requirements.
+    * No further Initializes-specific requirements.
 
 #. Semantics:
 
-    * No further abstract state-specific requirements.
+    * **Requirement:** The set of data items listed in an Initializes aspect shall be fully initialized
+      during elaboration of this package.
+
+      **Rationale:** To ensure that listed data items are always initialized before use.
 
 #. General requirements:
 
     * See also section :ref:`generic_hlrs`.
 
 
-.. centered:: **Legality Rules**
-
-#. The initializes may only appear in the 
-   ``aspect_specification`` of a ``package_specification``.
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 The Initializes aspect is introduced by an ``aspect_specification`` where the 
 ``aspect_mark`` is Initializes and the ``aspect_definition`` must follow the 
-grammar of ``initialization_list`` given below.
+grammar of ``initialization_spec`` given below.
 
 .. centered:: **Syntax**
 
 ::
 
-  initialization_list ::= 
-  
+  initialization_spec ::= initialization_list
+                        | null
+
+  initialization_list ::= initialization_item
+                        | (initialization_item {, initialization_item})
+
+  initialization_item ::= name
+
+.. todo:: Provide language definition for Initializes aspect.
+          To be completed in the Milestone 3 version of this document.
 
 Package Bodies
 --------------
