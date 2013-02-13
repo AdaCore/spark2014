@@ -89,6 +89,7 @@ package body Why.Images is
                     "0123456789ABCDEF";
       Base      : constant := 10;
       Abs_Value : Uint;
+      S         : constant Uintp.Save_Mark := Mark;
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
@@ -161,6 +162,7 @@ package body Why.Images is
          P (O, "" & H (UI_To_Int (Abs_Value rem Base)));
          P (O, Buf (Index + 1 .. Buf'Last));
       end;
+      Release (S);
    end P;
 
    procedure P (O : Output_Id; Value : Ureal) is
