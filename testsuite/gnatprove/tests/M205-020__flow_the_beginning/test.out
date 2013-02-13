@@ -1,1 +1,14 @@
-NO OUTPUT EXPECTED YET
+foo.adb:3:16: ineffective import
+foo.adb:4:16: may never be initialised
+foo.adb:6:04: may never be initialised
+foo.adb:9:04: ineffective statement
+foo.adb:10:09: ineffective statement
+foo.adb:12:09: ineffective statement
+foo.adb:12:09: use of uninitialised variable "Z"
+foo.adb:15:04: use of uninitialised variable "B"
+
+   compilation of foo.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+
