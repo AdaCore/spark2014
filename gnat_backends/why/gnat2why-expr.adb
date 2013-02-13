@@ -2155,6 +2155,7 @@ package body Gnat2Why.Expr is
 
          --  Variables for the call, guard and proposition for the axiom
 
+         Aggr          : W_Expr_Id;
          Call          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
 
@@ -2200,15 +2201,16 @@ package body Gnat2Why.Expr is
 
          --  Compute the call, guard and proposition for the axiom
 
+         Aggr :=
+           New_Call (Ada_Node => Expr,
+                          Domain   => EW_Term,
+                          Name     => Func,
+                          Args     => Call_Args);
          Call :=
            Array_Convert_To_Base
              (Ty_Entity => Etype (Expr),
               Domain    => EW_Term,
-              Ar        =>
-                New_Call (Ada_Node => Expr,
-                          Domain   => EW_Term,
-                          Name     => Func,
-                          Args     => Call_Args));
+              Ar        => Aggr);
 
          Def_Pred :=
            New_Binding
@@ -2241,9 +2243,14 @@ package body Gnat2Why.Expr is
                                   Binders     => Call_Params,
                                   Return_Type => Ret_Type));
          Emit (Decl_File.Cur_Theory,
-               New_Guarded_Axiom (Name    => To_Ident (WNE_Def_Axiom),
-                                  Binders => Call_Params,
-                                  Def     => Def_Pred));
+               New_Guarded_Axiom (Name     => To_Ident (WNE_Def_Axiom),
+                                  Binders  => Call_Params,
+                                  Triggers =>
+                                    New_Triggers
+                                      (Triggers =>
+                                           (1 => New_Trigger
+                                                (Terms => (1 => Aggr)))),
+                                  Def      => Def_Pred));
 
          Close_Theory (Decl_File, Filter_Entity => Expr);
          if Params.File = Decl_File.File then
