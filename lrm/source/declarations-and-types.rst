@@ -41,15 +41,6 @@ Additionally, the view of an entity introduced by a
 ``deferred_constant_declaration`` is in |SPARK|, even if the *initialization_*\
 ``expression`` in the corresponding completion is not in |SPARK|.
 
-If an ``object_declaration`` declares a constant object and occurs
-immediately within an enclosing package specification or package body,
-then the object's value shall not depend (directly or indirectly)
-on the value of any variable object. [This  prohibition includes the case of
-depending on a constant not declared immediately within a package which
-in turn depends on a variable. This rule is enforced during
-dataflow analysis. It is intended that this rule will be eliminated at some
-point in the future (with appropriate accompanying adjustments to other
-language rules).] 
 
 Derived Types and Classes
 -------------------------
