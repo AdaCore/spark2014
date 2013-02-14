@@ -37,6 +37,8 @@ package body Flow.Control_Flow_Graph is
    use type Flow_Graphs.Vertex_Id;
    use type Ada.Containers.Count_Type;
 
+   use Vertex_Sets;
+
    type Graph_Connections is record
       Standard_Entry : Flow_Graphs.Vertex_Id;
       Standard_Exits : Vertex_Sets.Set;
@@ -358,6 +360,12 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
+      --  Construct graph for the loop body.
+      Process_Statement_List (Statements (N), FA, CM);
+
+      --  Start with a blank slate for the loops entry and exit.
+      CM.Include (Union_Id (N), No_Connections);
+
       if Iteration_Scheme (N) = Empty then
          --  We have a loop.
 
@@ -366,59 +374,39 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                             Null_Node_Attributes,
                             V);
-         CM.Include (Union_Id (N), No_Connections);
-
-         --  Construct graph for the loop body.
-         Process_Statement_List (Statements (N), FA, CM);
-
-         --  Flow is V -> body -> V for the loop itself.
-         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
          --  Entry point for the loop is V.
          CM (Union_Id (N)).Standard_Entry := V;
 
          --  Exit from the loop is at the end of the loop, i.e. we are
          --  always going round at least once.
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM (Union_Id (Statements (N))).Standard_Exits);
-
-      elsif Condition (Iteration_Scheme (N)) /= Empty then
-         --  We have a while loop.
-
-         --  We have a vertex for the loop condition.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
-            V_Attributes'
-              (Is_Null_Node      => False,
-               Is_Program_Node   => True,
-               Is_Initialised    => False,
-               Variables_Defined => Flow_Id_Sets.Empty_Set,
-               Variables_Used    => Get_Variable_Set
-                 (Condition (Iteration_Scheme (N)))),
-            V);
-         CM.Include (Union_Id (N), No_Connections);
-         CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits.Include (V);
-
-         --  Construct graph for the loop body.
-         Process_Statement_List (Statements (N), FA, CM);
-
-         --  Flow is V -> body -> V for the loop itself.
-         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+         --  !!! workaround
+         CM (Union_Id (N)).Standard_Exits :=
+           CM.Element (Union_Id (Statements (N))).Standard_Exits;
 
       else
-         pragma Assert (Loop_Parameter_Specification (Iteration_Scheme (N))
-                          /= Empty);
-         --  We have a for loop.
+         --  We have either a while loop or a for loop.
 
-         declare
-            LPS : constant Node_Id :=
-              Loop_Parameter_Specification (Iteration_Scheme (N));
-         begin
+         --  We have a vertex for the loop condition, depending on its
+         --  iteration scheme.
+         if Condition (Iteration_Scheme (N)) /= Empty then
+            --  We have a while loop.
 
-            --  We have a vertex for the range.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               V_Attributes'
+                 (Is_Null_Node      => False,
+                  Is_Program_Node   => True,
+                  Is_Initialised    => False,
+                  Variables_Defined => Flow_Id_Sets.Empty_Set,
+                  Variables_Used    => Get_Variable_Set
+                    (Condition (Iteration_Scheme (N)))),
+               V);
+         else
+            --  We have a for loop.
+            pragma Assert (Loop_Parameter_Specification (Iteration_Scheme (N))
+                             /= Empty);
+
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                V_Attributes'
@@ -426,22 +414,25 @@ package body Flow.Control_Flow_Graph is
                   Is_Program_Node   => True,
                   Is_Initialised    => False,
                   Variables_Defined => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                    (Direct_Mapping_Id (Defining_Identifier
+                                          (Loop_Parameter_Specification
+                                             (Iteration_Scheme (N))))),
                   Variables_Used    => Get_Variable_Set
-                    (Discrete_Subtype_Definition (LPS))),
-                  V);
-            CM.Include (Union_Id (N), No_Connections);
-            CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+                    (Discrete_Subtype_Definition (Loop_Parameter_Specification
+                                                    (Iteration_Scheme (N))))),
+               V);
+         end if;
 
-            --  Construct graph for the loop body.
-            Process_Statement_List (Statements (N), FA, CM);
-
-            --  Flow is V -> body -> V for the loop itself.
-            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
-         end;
+         --  Flow for the loops with iteration schemes goes into the
+         --  condition and then out again.
+         CM.Include (Union_Id (N), No_Connections);
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits := To_Set (V);
       end if;
+
+      --  Loop the loop: V -> body -> V
+      Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+      Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
    end Do_Loop_Statement;
 
    ----------------------------------
