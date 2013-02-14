@@ -172,7 +172,9 @@ package body Flow is
                Colour => Null_Unbounded_String,
                Label  => Null_Unbounded_String);
          begin
-            if V = FA.Start_Vertex then
+            if G.Get_Attributes (V).Is_Null_Node then
+               Rv.Show := False;
+            elsif V = FA.Start_Vertex then
                Rv.Label := To_Unbounded_String ("start");
                Rv.Shape := Shape_None;
             elsif V = FA.End_Vertex then
@@ -236,10 +238,6 @@ package body Flow is
                Output.Write_Eol;
                Output.Cancel_Special_Output;
                Rv.Label := Temp_String;
-
-               if G.Get_Attributes (V).Is_Null_Node then
-                  Rv.Show := False;
-               end if;
             end if;
             return Rv;
          end NDI;
