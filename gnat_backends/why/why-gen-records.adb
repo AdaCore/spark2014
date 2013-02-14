@@ -61,10 +61,31 @@ package body Why.Gen.Records is
    --  postcondition states that the value of this function is just the value
    --  of the record component.
 
+   --  The precondition for such access discriminant checks is actually
+   --  separated out in a separate predicate. This predicate is only generated
+   --  for root types, and subtypes of the root type refer to that predicate
+   --  for their own access program functions. For a root type, the
+   --  declarations may be as follows:
+
+   --    predicate y__check__pred (a : t) = a.x = 1
+   --  ( to check that discriminant "x" is set to 1, and this is the check
+   --  predicate for record field "y")
+
+   --  In a root type we directly refer to that predicate in the program
+   --  function
+
+   --    val rec__y_ (a : t)
+   --    requires { y__check__pred (a) }
+
+   --  In a non-root type, we refer to the predicate of the root type, and must
+   --  insert a conversion in addition:
+
+   --    val rec__y_ (a : t)
+   --    requires { Root_type.y__check__pred ( to_base (a)) }
+
    --  For all record types which are not root types, we also define conversion
    --  functions to the root type (in logic space) and from the root type (in
-   --  logic and program space). The 'from' function in program space has a
-   --  precondition which expresses the discriminant check.
+   --  logic and program space).
 
    --  For the implementation details: This is one place where we have to look
    --  at the declaration node to find which discriminant values imply the
@@ -145,6 +166,12 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
 
+      function Discriminant_Check_Pred_Name (Field : Entity_Id)
+                                             return W_Identifier_Id;
+      --  Given a record field, return the name of its discrimant check
+      --  predicate. If the current record type is not a root type, return the
+      --  name of the corresponding predicate in the root type module.
+
       function Transform_Discrete_Choices (Case_N : Node_Id;
                                            Expr   : W_Term_Id)
                                            return W_Pred_Id;
@@ -154,6 +181,8 @@ package body Why.Gen.Records is
       --  Initialize the map which maps each component to its information
       --  record
 
+      Root       : constant Entity_Id := Root_Record_Type (E);
+      Is_Root    : constant Boolean := Root = E;
       Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
       Abstr_Ty   : constant W_Primitive_Type_Id :=
         New_Abstract_Type (Name => Ty_Ident);
@@ -459,11 +488,43 @@ package body Why.Gen.Records is
                     To_Why_Id (Field, Local => True);
                   Prog_Name : constant W_Identifier_Id :=
                     To_Program_Space (Why_Name);
-                  Pre_Cond  : constant W_Pred_Id :=
-                    (if Ekind (E) = E_Record_Subtype  or else
-                     Ekind (Field) = E_Discriminant then True_Pred
-                     else Compute_Discriminant_Check (Field));
+                  Pred_Name : constant W_Identifier_Id :=
+                    Discriminant_Check_Pred_Name (Field);
+                  Pred_Arg  : constant W_Term_Id :=
+                    (if Is_Root then +A_Ident
+                     else New_Call
+                       (Name => To_Ident (WNE_To_Base),
+                        Args => (1 => +A_Ident)));
+                  Precond   : constant W_Pred_Id :=
+                    New_Call
+                      (Name   => Pred_Name,
+                       Args   => (1 => +Pred_Arg));
                begin
+
+                  --  For fields of root record types, we generate a
+                  --  discriminant check predicate.
+
+                  if Is_Root then
+                     declare
+                        Pre_Cond  : constant W_Pred_Id :=
+                          (if Ekind (Field) = E_Discriminant then True_Pred
+                           else Compute_Discriminant_Check (Field));
+                     begin
+                        Emit (Theory,
+                              New_Function_Def
+                                (Domain => EW_Pred,
+                                 Name   => Pred_Name,
+                                 Binders => R_Binder,
+                                 Def => +Pre_Cond));
+                     end;
+                  end if;
+
+                  --  In any case, we generate a program access function, whose
+                  --  precondition is precisely the predicate. Note that
+                  --  [Precond] has been computed so that it uses the correct
+                  --  predicate name, whether it has been defined here or in
+                  --  the root type.
+
                   Emit (Theory,
                     New_Function_Decl
                       (Domain      => EW_Prog,
@@ -471,7 +532,7 @@ package body Why.Gen.Records is
                        Binders     => R_Binder,
                        Return_Type =>
                          Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                       Pre         => Pre_Cond,
+                       Pre         => Precond,
                        Post        =>
                          New_Relation
                            (Left    => +To_Ident (WNE_Result),
@@ -513,6 +574,25 @@ package body Why.Gen.Records is
            New_Record_Definition (Name    => Ty_Ident,
                                   Binders => Binders));
       end Declare_Record_Type;
+
+      ----------------------------------
+      -- Discriminant_Check_Pred_Name --
+      ----------------------------------
+
+      function Discriminant_Check_Pred_Name (Field : Entity_Id)
+                                             return W_Identifier_Id
+      is
+         Name : constant String := Short_Name (Field) & "__pred";
+      begin
+         if Is_Root then
+            return New_Identifier (Name => Name);
+         else
+            return New_Identifier (Domain   => EW_Pred,
+                                   Ada_Node => Root,
+                                   Context  => Full_Name (Root),
+                                   Name     => Name);
+         end if;
+      end Discriminant_Check_Pred_Name;
 
       -------------------------
       -- Init_Component_Info --
@@ -683,10 +763,14 @@ package body Why.Gen.Records is
          Init_Component_Info;
       end if;
       Declare_Record_Type;
-      Declare_Protected_Access_Functions;
+
+      --  We need to delare conversion functions before the protected access
+      --  functions, because the former may be used in the latter
+
       if Root_Record_Type (E) /= E then
          Declare_Conversion_Functions;
       end if;
+      Declare_Protected_Access_Functions;
       Declare_Equality_Function;
    end Declare_Ada_Record;
 
