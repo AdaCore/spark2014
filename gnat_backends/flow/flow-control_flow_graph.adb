@@ -63,7 +63,7 @@ package body Flow.Control_Flow_Graph is
       Froms : Vertex_Sets.Set;
       To    : Flow_Graphs.Vertex_Id)
       with Pre => To /= Flow_Graphs.Null_Vertex;
-   --  Link all nodes in Froms to the To node in the given graph.
+   --  Link all vertices in Froms to the To vertex in the given graph.
 
    procedure Linkup
      (CFG   : in out Flow_Graphs.T;
@@ -71,7 +71,7 @@ package body Flow.Control_Flow_Graph is
       To    : Flow_Graphs.Vertex_Id)
       with Pre => From /= Flow_Graphs.Null_Vertex and
                   To   /= Flow_Graphs.Null_Vertex;
-   --  Link the From to the To node in the given graph.
+   --  Link the From to the To vertex in the given graph.
 
    function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
    --  Obtain all variables (which may include types) used in an
@@ -137,7 +137,7 @@ package body Flow.Control_Flow_Graph is
 
    procedure Simplify
      (G : in out Flow_Graphs.T'Class);
-   --  Remove all null nodes from the graph.
+   --  Remove all null vertices from the graph.
 
    --------------
    --  Linkup  --
@@ -527,7 +527,7 @@ package body Flow.Control_Flow_Graph is
       --  Control flows in, but there are no standard exits.
       CM (Union_Id (N)).Standard_Entry := V;
 
-      --  Instead we link this node directly to the end node.
+      --  Instead we link this vertex directly to the end vertex.
       Linkup (FA.CFG, V, FA.End_Vertex);
    end Do_Simple_Return_Statement;
 
@@ -580,7 +580,7 @@ package body Flow.Control_Flow_Graph is
                        CM (Union_Id (Prev)).Standard_Exits,
                        CM (Union_Id (P)).Standard_Entry);
             else
-               --  This is the first node, so set the standard entry
+               --  This is the first vertex, so set the standard entry
                --  of the list.
                CM (Union_Id (L)).Standard_Entry :=
                  CM (Union_Id (P)).Standard_Entry;
@@ -740,7 +740,7 @@ package body Flow.Control_Flow_Graph is
       end loop;
       --  Print_Node_Set (FA.Vars);
 
-      --  Connect up the start and end nodes.
+      --  Connect up the start and end vertices.
       Linkup (FA.CFG,
               FA.Start_Vertex,
               Connection_Map (Union_Id (N)).Standard_Entry);
@@ -748,7 +748,7 @@ package body Flow.Control_Flow_Graph is
               Connection_Map (Union_Id (N)).Standard_Exits,
               FA.End_Vertex);
 
-      --  Simplify graph by removing all null nodes.
+      --  Simplify graph by removing all null vertices.
       Simplify (FA.CFG);
    end Create;
 
