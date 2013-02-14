@@ -283,6 +283,7 @@ package body Flow.Control_Flow_Graph is
          V_Attributes'(Is_Null_Node      => False,
                        Is_Program_Node   => True,
                        Is_Initialised    => False,
+                       Is_Export         => False,
                        Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
                          or V_Used_LHS
@@ -343,6 +344,7 @@ package body Flow.Control_Flow_Graph is
             V_Attributes'(Is_Null_Node      => False,
                           Is_Program_Node   => True,
                           Is_Initialised    => False,
+                          Is_Export         => False,
                           Variables_Defined => Flow_Id_Sets.Empty_Set,
                           Variables_Used    => Get_Variable_Set
                             (Condition (N))),
@@ -393,6 +395,7 @@ package body Flow.Control_Flow_Graph is
          V_Attributes'(Is_Null_Node      => False,
                        Is_Program_Node   => True,
                        Is_Initialised    => False,
+                       Is_Export         => False,
                        Variables_Defined => Flow_Id_Sets.Empty_Set,
                        Variables_Used    => Get_Variable_Set (Condition (N))),
          V);
@@ -466,6 +469,7 @@ package body Flow.Control_Flow_Graph is
                  (Is_Null_Node      => False,
                   Is_Program_Node   => True,
                   Is_Initialised    => False,
+                  Is_Export         => False,
                   Variables_Defined => Flow_Id_Sets.Empty_Set,
                   Variables_Used    => Get_Variable_Set
                     (Condition (Iteration_Scheme (N)))),
@@ -481,6 +485,7 @@ package body Flow.Control_Flow_Graph is
                  (Is_Null_Node      => False,
                   Is_Program_Node   => True,
                   Is_Initialised    => False,
+                  Is_Export         => False,
                   Variables_Defined => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier
                                           (Loop_Parameter_Specification
@@ -681,6 +686,7 @@ package body Flow.Control_Flow_Graph is
                   N : constant Node_Id := Get_Direct_Mapping_Id (F);
                   V : Flow_Graphs.Vertex_Id;
                   Is_Initialised : Boolean;
+                  Is_Export      : Boolean;
                begin
                   --  Setup the n'initial vertex. Note that
                   --  initialisation for variables is detected (and
@@ -700,18 +706,29 @@ package body Flow.Control_Flow_Graph is
                        (Is_Null_Node      => False,
                         Is_Program_Node   => False,
                         Is_Initialised    => Is_Initialised,
+                        Is_Export         => False,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
                         Variables_Used    => Flow_Id_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, V, FA.Start_Vertex);
 
-                  --  Setup the n'final vertex
+                  --  Setup the n'final vertex. TODO: global out
+                  --  variables are also exports.
+                  case Ekind (N) is
+                     when E_In_Out_Parameter |
+                       E_Out_Parameter =>
+                        Is_Export := True;
+                     when others =>
+                        Is_Export := False;
+                  end case;
+
                   FA.CFG.Add_Vertex
                     (Direct_Mapping_Id (N, Final_Value),
                      V_Attributes'
                        (Is_Null_Node      => False,
                         Is_Program_Node   => False,
                         Is_Initialised    => False,
+                        Is_Export         => Is_Export,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
                         Variables_Used    => Flow_Id_Sets.To_Set (F)),
                      V);

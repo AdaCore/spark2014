@@ -63,7 +63,8 @@ package body Flow.Analysis is
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
       begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value;
+         return FA.PDG.Get_Key (V).Variant = Final_Value and then
+           FA.PDG.Get_Attributes (V).Is_Export;
       end Is_Final_Use;
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -89,7 +90,8 @@ package body Flow.Analysis is
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
       begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value;
+         return FA.PDG.Get_Key (V).Variant = Final_Value and then
+           FA.PDG.Get_Attributes (V).Is_Export;
       end Is_Final_Use;
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop

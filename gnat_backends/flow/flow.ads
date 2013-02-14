@@ -96,6 +96,10 @@ package Flow is
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialised.
 
+      Is_Export         : Boolean;
+      --  True if the given final-use variable is actually relevant to
+      --  a subprogram's exports (out parameter or global out).
+
       Variables_Defined : Flow_Id_Sets.Set;
       Variables_Used    : Flow_Id_Sets.Set;
    end record;
@@ -104,6 +108,7 @@ package Flow is
      V_Attributes'(Is_Null_Node      => False,
                    Is_Program_Node   => False,
                    Is_Initialised    => False,
+                   Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set);
 
@@ -111,6 +116,7 @@ package Flow is
      V_Attributes'(Is_Null_Node      => True,
                    Is_Program_Node   => True,
                    Is_Initialised    => False,
+                   Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set);
 
