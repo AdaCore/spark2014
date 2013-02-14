@@ -327,7 +327,15 @@ package body Flow.Control_Flow_Graph is
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
       if Condition (N) = Empty then
-         raise Why.Not_Implemented;
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                            Null_Node_Attributes,
+                            V);
+         CM.Include (Union_Id (N),
+                     Graph_Connections'
+                       (Standard_Entry => V,
+                        Standard_Exits => Vertex_Sets.Empty_Set));
+
+         CM (Union_Id (L)).Standard_Exits.Include (V);
 
       else
          FA.CFG.Add_Vertex
