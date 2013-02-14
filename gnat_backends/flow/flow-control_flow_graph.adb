@@ -86,6 +86,12 @@ package body Flow.Control_Flow_Graph is
       CM : in out Connection_Maps.Map)
       with Pre => Nkind (N) = N_Assignment_Statement;
 
+   procedure Do_Exit_Statement
+     (N  : Node_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+      with Pre => Nkind (N) = N_Exit_Statement;
+
    procedure Do_Handled_Sequence_Of_Statements
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs;
@@ -290,6 +296,58 @@ package body Flow.Control_Flow_Graph is
                      Standard_Exits => Vertex_Sets.To_Set (V)));
    end Do_Assignment_Statement;
 
+   -------------------------
+   --  Do_Exit_Statement  --
+   -------------------------
+
+   procedure Do_Exit_Statement
+     (N  : Node_Id;
+      FA : in out Flow_Analysis_Graphs;
+      CM : in out Connection_Maps.Map)
+   is
+      V : Flow_Graphs.Vertex_Id;
+      L : Node_Id := N;
+   begin
+      --  Go up the tree until we find the loop we are exiting from.
+      if Name (N) = Empty then
+         --  We just need to find the enclosing loop.
+         loop
+            L := Parent (L);
+            exit when Nkind (L) = N_Loop_Statement;
+         end loop;
+      else
+         --  We have a named loop, which we need to find.
+         loop
+            L := Parent (L);
+            exit when Nkind (L) = N_Loop_Statement and then
+              Entity (Identifier (L)) = Entity (Name (N));
+         end loop;
+      end if;
+
+      --  Conditional and unconditional exits are different. One
+      --  requires an extra vertex, the other does not.
+      if Condition (N) = Empty then
+         raise Why.Not_Implemented;
+
+      else
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            V_Attributes'(Is_Null_Node      => False,
+                          Is_Program_Node   => True,
+                          Is_Initialised    => False,
+                          Variables_Defined => Flow_Id_Sets.Empty_Set,
+                          Variables_Used    => Get_Variable_Set
+                            (Condition (N))),
+            V);
+         CM.Include (Union_Id (N),
+                     Graph_Connections'
+                       (Standard_Entry => V,
+                        Standard_Exits => Vertex_Sets.To_Set (V)));
+
+         CM (Union_Id (L)).Standard_Exits.Include (V);
+      end if;
+   end Do_Exit_Statement;
+
    -----------------------------------------
    --  Do_Handled_Sequence_Of_Statements  --
    -----------------------------------------
@@ -360,11 +418,13 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  Construct graph for the loop body.
-      Process_Statement_List (Statements (N), FA, CM);
-
       --  Start with a blank slate for the loops entry and exit.
       CM.Include (Union_Id (N), No_Connections);
+
+      --  Construct graph for the loop body. Please note that early
+      --  exists may alrady change the above, so be sure to only use
+      --  union or include, instead of setting the standard exits.
+      Process_Statement_List (Statements (N), FA, CM);
 
       if Iteration_Scheme (N) = Empty then
          --  We have a loop.
@@ -381,8 +441,8 @@ package body Flow.Control_Flow_Graph is
          --  Exit from the loop is at the end of the loop, i.e. we are
          --  always going round at least once.
          --  !!! workaround
-         CM (Union_Id (N)).Standard_Exits :=
-           CM.Element (Union_Id (Statements (N))).Standard_Exits;
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM.Element (Union_Id (Statements (N))).Standard_Exits);
 
       else
          --  We have either a while loop or a for loop.
@@ -425,9 +485,8 @@ package body Flow.Control_Flow_Graph is
 
          --  Flow for the loops with iteration schemes goes into the
          --  condition and then out again.
-         CM.Include (Union_Id (N), No_Connections);
          CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits := To_Set (V);
+         CM (Union_Id (N)).Standard_Exits.Include (V);
       end if;
 
       --  Loop the loop: V -> body -> V
@@ -538,12 +597,14 @@ package body Flow.Control_Flow_Graph is
       case Nkind (N) is
          when N_Assignment_Statement =>
             Do_Assignment_Statement (N, FA, CM);
+         when N_Exit_Statement =>
+            Do_Exit_Statement (N, FA, CM);
          when N_If_Statement =>
             Do_If_Statement (N, FA, CM);
-         when N_Simple_Return_Statement =>
-            Do_Simple_Return_Statement (N, FA, CM);
          when N_Loop_Statement =>
             Do_Loop_Statement (N, FA, CM);
+         when N_Simple_Return_Statement =>
+            Do_Simple_Return_Statement (N, FA, CM);
          when others =>
             Print_Node_Subtree (N);
             CM.Include (Union_Id (N), No_Connections);
