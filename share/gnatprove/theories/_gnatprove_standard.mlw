@@ -187,9 +187,8 @@ theory Array__1
   function set (map 'a) int 'a : map 'a
 
   axiom Select_eq :
-    forall m : map 'a. forall i j : int.
-    forall a : 'a [get (set m i a) j].
-    i = j -> get (set m i a) j = a
+    forall m : map 'a. forall i : int.
+    forall a : 'a [set m i a].  get (set m i a) i = a
 
   axiom Select_neq :
     forall m : map 'a. forall i j : int.
