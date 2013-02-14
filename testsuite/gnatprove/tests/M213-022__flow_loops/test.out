@@ -1,0 +1,13 @@
+test.adb:25:26: ineffective import
+test.adb:26:26: ineffective import
+test.adb:30:12: ineffective statement
+test.adb:31:41: ineffective statement
+test.adb:32:15: ineffective statement
+test.adb:33:10: ineffective statement
+test.adb:35:12: ineffective statement
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+
