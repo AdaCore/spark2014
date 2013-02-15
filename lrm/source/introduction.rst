@@ -16,7 +16,7 @@ A major feature of |SPARK| is the support of a mixture of test and proof which
 facilitates the use of unit proof in place of unit testing; an approach now
 formalized in DO-178C and the DO-333 formal methods supplement.
 Certain units may be formally proven and other units validated through
-testing.  Extra aspects are defined to support testing and the interface 
+testing.  Extra aspects are defined to support testing and the interface
 between tested and proven units.
 
 The new aspects defined for |SPARK| all have equivalent pragmas which allows a
@@ -24,7 +24,7 @@ The new aspects defined for |SPARK| all have equivalent pragmas which allows a
 
 The direct use of the new aspects requires an Ada 2012 compiler which supports them
 in a way consistent with the definition given here in the |SPARK| reference manual.
-The Gnat Pro Ada 2012 implementation is one such compiler.
+The GNAT implementation is one such compiler.
 
 Structure of Introduction
 -------------------------
@@ -107,8 +107,8 @@ Readers interested in how SPARK 2005 constructs and idioms map into
 Method of Description
 ---------------------
 
-In expressing the aspects, pragmas, attributes and rules of |SPARK|, 
-the following chapters of this document follow the notational conventions of 
+In expressing the aspects, pragmas, attributes and rules of |SPARK|,
+the following chapters of this document follow the notational conventions of
 the Ada 2012 RM (section 1.1.4).
 
 The following sections are given for each new language feature introduced
@@ -117,7 +117,7 @@ which section is specific to |SPARK|):
 
 #. Syntax: this section gives the format of the |SPARK| aspects and pragmas.
    The expression defining the aspect and pragamas are specializations of the
-   standard Ada 2012 expression syntax and will be accepted by any Ada 2012 
+   standard Ada 2012 expression syntax and will be accepted by any Ada 2012
    implementation.
 
 #. Legality Rules: these are rules that are enforced at compile time. A
@@ -148,7 +148,7 @@ Formal Analysis
   analysis and information-flow analysis taken together.
 
 - Formal verification of robustness properties. In Ada terminology, this refers to
-  the proof that certain predefined checks such as the ones which could raise 
+  the proof that certain predefined checks such as the ones which could raise
   Constraint_Error, will never fail at run time and will never be raised.
 
 - Formal verification of functional properties, based on contracts expressed as
@@ -165,15 +165,15 @@ Further Detail on Formal Verification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Many Ada constructs have dynamic semantics which include a requirement
-that some error condition must or may\ [#bounded_errors]_ be checked, 
-and some exception  must or may\ [#bounded_errors]_  be raised, if the error is 
+that some error condition must or may\ [#bounded_errors]_ be checked,
+and some exception  must or may\ [#bounded_errors]_  be raised, if the error is
 detected  (see Ada 2012 RM 1.1.5(5-8)).  For example, evaluating the name of an
 array component includes a check that each index value belongs to the
 corresponding index range of the array (see Ada 2012 RM 4.1.1(7)).
 
-For every such run-time check a corresponding obligation to prove that the error 
-condition cannot be true is introduced. In particular, this rule applies to the 
-run-time checks associated with any assertion (see Ada 2012 RM (11.4.2)); 
+For every such run-time check a corresponding obligation to prove that the error
+condition cannot be true is introduced. In particular, this rule applies to the
+run-time checks associated with any assertion (see Ada 2012 RM (11.4.2));
 the one exception to this rule is pragma
 ``Assume`` (see :ref:`pragma_assume`).
 
@@ -186,7 +186,7 @@ obligations.
 All such generated proof obligations must be discharged before the
 formal program verification phase may be considered to be complete.
 
-.. [#bounded_errors] In the case of some bounded errors a check and any resulting 
+.. [#bounded_errors] In the case of some bounded errors a check and any resulting
    exception only *may* be required.
 
 Note that in some cases the result of performing formal verification may be
@@ -232,7 +232,7 @@ no dynamic semantics (e.g., pragma Global) or are used only to define
 assertions whose success shall be proven statically (e.g., pragma
 Loop_Variant). In either case, an Ada compiler which ignores the
 pragma is correctly implementing the dynamic semantics of |SPARK| and
-the |SPARK| tools will still be able to undertake all their static checks and proofs. 
+the |SPARK| tools will still be able to undertake all their static checks and proofs.
 
 .. _reqts:
 
@@ -243,15 +243,15 @@ Detailed |SPARK| Language Definition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The detailed |SPARK| language definition is given in Ada terminology and
-has two main components.  The first defines extensions to Ada 2012 in terms 
-of new aspects, pragmas and attributes to provide |SPARK| features such as 
-global specifications for subprograms.  The second defines a subset of Ada 2012 
-by excluding certain language features. 
-The exclusions, the new aspects, pragmas, attributes and rules specify the 
-largest |SPARK| language for which formal analyses are supported. 
+has two main components.  The first defines extensions to Ada 2012 in terms
+of new aspects, pragmas and attributes to provide |SPARK| features such as
+global specifications for subprograms.  The second defines a subset of Ada 2012
+by excluding certain language features.
+The exclusions, the new aspects, pragmas, attributes and rules specify the
+largest |SPARK| language for which formal analyses are supported.
 
-*Guidelines* may be applied which effectively reduce further the 
-language subset which may be analyzed but may make analysis and proof easier, 
+*Guidelines* may be applied which effectively reduce further the
+language subset which may be analyzed but may make analysis and proof easier,
 more precise and be suitable for some application areas (see :ref:`code_policy`).
 
 Higher-Level Requirements
@@ -321,9 +321,9 @@ The following requirements give the principal goals to be met by |SPARK|.
 Some are expanded in subsequent sections within this chapter.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 to which it is
-  currently practical to apply automatic formal verification, in line with 
-  the goals below, although future advances in verification research and 
-  computing power may allow for expansion of the language and the forms of 
+  currently practical to apply automatic formal verification, in line with
+  the goals below, although future advances in verification research and
+  computing power may allow for expansion of the language and the forms of
   verification available. See section :ref:`main_restricts`
   for further details.
 
@@ -338,25 +338,25 @@ Some are expanded in subsequent sections within this chapter.
 - |SPARK| shall provide support for constructive, generative and retrospective
   analysis as follows (see section :ref:`verific_modes` for further details):
 
-   * |SPARK| shall support constructive (modular) specification, analysis and 
+   * |SPARK| shall support constructive (modular) specification, analysis and
      verification of (partially) developed programs, to allow static analysis as
      early as possible in the development lifecycle. [Hence, package and
      subprogram bodies need not be present for formal verification to proceed.]
-     
-   * |SPARK| shall complete by generation from the body code, where possible, 
+
+   * |SPARK| shall complete by generation from the body code, where possible,
      incomplete contracts.  For instance, if a dependency relation is given on
-     a subprogram but a subprogram nested within does not have a dependency 
-     relation, it should be generated by the tools.  
+     a subprogram but a subprogram nested within does not have a dependency
+     relation, it should be generated by the tools.
      This may shorten development time and should simplify maintenance.
 
    * |SPARK| shall support retrospective analysis where useful
-     forms of verification can be achieved with code that complies with the core 
-     |SPARK| restrictions, but otherwise does not have any contracts.  
+     forms of verification can be achieved with code that complies with the core
+     |SPARK| restrictions, but otherwise does not have any contracts.
      Implicit contracts can be computed from the bodies of units, and then used
      in the analysis of other units, and so on.  Parts of the program which are
      not compliant with |SPARK| subset cannot be fully verified by the tools
      but a may be represented by a |SPARK| compatible contract at the unit level.
-     
+
 - *Code Policies* shall be allowed that reduce the subset of Ada 2012 that may
   be used in line with specific goals such as domain needs or certification
   requirements (these are similar to *Profiles* but may be imposed at a finer
@@ -367,8 +367,8 @@ Some are expanded in subsequent sections within this chapter.
 - |SPARK| shall allow the mixing of code written in the |SPARK| subset
   with code written in full Ada 2012. See section :ref:`in_out` for
   further details.
-   
-- |SPARK| shall support the development, analysis and verification of programs 
+
+- |SPARK| shall support the development, analysis and verification of programs
   which are only partly within the |SPARK| language and other parts in another
   language, for instance, full Ada or C. |SPARK| compatible contracts at unit
   level will form the boundary interface between the |SPARK| and other parts of
@@ -380,11 +380,11 @@ Some are expanded in subsequent sections within this chapter.
 .. todo::
    Complete detail on mixing |SPARK| with non-Ada code.
    To be completed in the Milestone 4 version of this document.
-  
+
 - |SPARK| shall support entities which do not affect the functionality of
-  a program but may be used in the test and verification of a program. 
+  a program but may be used in the test and verification of a program.
   See section :ref:`ghost_entities`.
-  
+
 - |SPARK| shall provide counterparts of all language features and analysis
   modes provided in SPARK 83/95/2005.
 
@@ -415,7 +415,7 @@ Some are expanded in subsequent sections within this chapter.
   parameter evaluation orders for a given call but this difference
   won't have any significant effect. [This means implementation-defined
   and partially-specified features may be outside of
-  |SPARK| by definition, though their use could be allowed and a warning or error 
+  |SPARK| by definition, though their use could be allowed and a warning or error
   generated for the user. See section :ref:`in_out` for further details.]
   *Note that the current draft of this document does not necessarily  define
   all restrictions necessary to guarantee an unambiguous semantics.*
@@ -436,7 +436,7 @@ The following sections provide expanded detail on the main strategic requirement
 Principal Language Restrictions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To facilitate formal analyses and verification, |SPARK| enforces a number of 
+To facilitate formal analyses and verification, |SPARK| enforces a number of
 global restrictions to Ada 2012. While these are covered in more detail
 in the remaining chapters of this document, the most notable restrictions are:
 
@@ -553,10 +553,10 @@ Code Policies
 
 The restrictions imposed on the subset of Ada that could be used in writing
 SPARK 2005 programs were not simply derived from what was or is amenable to
-formal verification. In particular, those restrictions stemmed partly from good 
-programming practice guidelines and the need to impose certain restrictions when 
-working in certain domains or against certain safety standards. Hence, we want 
-to allow such restrictions to be applied by users in a systematic and 
+formal verification. In particular, those restrictions stemmed partly from good
+programming practice guidelines and the need to impose certain restrictions when
+working in certain domains or against certain safety standards. Hence, we want
+to allow such restrictions to be applied by users in a systematic and
 tool-checked way despite the goal that |SPARK| embodies
 the largest subset of Ada 2012 that is practical to formally verify.
 
@@ -610,7 +610,7 @@ removed from the program without any functional impact.
 |SPARK| supports ghost functions which may be executable or
 non-executable. Non-executable ghost functions have no implementation and can be
 used for the purposes of formal verification only. Such functions have to be
-defined within an external proof tool to facilitate formal verification. 
+defined within an external proof tool to facilitate formal verification.
 
 Any function, ghost or otherwise, may have its specification defined within an
 external proof tool for formal verification purposes. The specification is
@@ -621,7 +621,7 @@ tools.
 
 If a function can be specified in |SPARK|, then its specification can be recast
 as the expression of an expression function without further implementation.
-This may not give the most efficient implementation but if the function is a 
+This may not give the most efficient implementation but if the function is a
 ghost function it may be sufficient.
 
 *Further Ghost entities are to be added in future drafts of this document.*
@@ -638,19 +638,19 @@ Constructive, Generative and Retrospective Analysis
 SPARK 2005 strongly favored the *constructive* analysis style where all
 program units required contracts to be provided on their specifications.  The
 contracts are needed to perform in-depth static analysis and formal verification.
-These contracts had to be designed and added at an early stage to assist modular 
+These contracts had to be designed and added at an early stage to assist modular
 analysis and verification, and then maintained by the user as a program evolved.
-When the body is implemented (or modified) it is checked that it conforms to its 
+When the body is implemented (or modified) it is checked that it conforms to its
 contract.
 
 However, some these contracts for a subprogram may be at least approximated from
-its body, once implemented (provided the contracts of any subprograms it calls 
-are specified or have already been generated), and so it is possible to 
-implicitly synthesize from the body these contracts if they are not provided.  
-The contracts can then be used in the analysis of calling subprograms and so on. 
-In |SPARK| the contracts which may be synthesized from an implemented subprogram 
-body are the global specification and the dependency relation.  
-It may be possible to generate some of the package contracts also once the 
+its body, once implemented (provided the contracts of any subprograms it calls
+are specified or have already been generated), and so it is possible to
+implicitly synthesize from the body these contracts if they are not provided.
+The contracts can then be used in the analysis of calling subprograms and so on.
+In |SPARK| the contracts which may be synthesized from an implemented subprogram
+body are the global specification and the dependency relation.
+It may be possible to generate some of the package contracts also once the
 package body and its private dependents have been implemented.
 
 Unlike the Global and Depends aspects used in flow analysis, the |SPARK| tools
@@ -660,19 +660,19 @@ the purpose of formal verification.
 
 There are three main use cases where generation of contracts are required:
 
-- Code has been developed as |SPARK| but in order to reduce costs not all 
+- Code has been developed as |SPARK| but in order to reduce costs not all
   the contracts are included on all subprograms by the developer.
 
 - Code is in maintenance phase, it may or may not have complete contracts.
-  If the contracts are complete, the generated contracts may be compared with 
+  If the contracts are complete, the generated contracts may be compared with
   the given contracts and auto correction used to update the contracts if the
   changes are acceptable.
-  If the contracts are incomplete they are automatically generated for analysis 
+  If the contracts are incomplete they are automatically generated for analysis
   purposes.
-  
+
 - Legacy code is analyzed which has no or incomplete contracts.
 
-Hence, as well as still fully supporting the constructive development mode, 
+Hence, as well as still fully supporting the constructive development mode,
 |SPARK| is designed to facilitate the generation of contracts, which supports retrospective analysis.
 
 Note that in the case where legacy code is being analyzed there may be a mix of
@@ -717,7 +717,7 @@ non-|SPARK| in the same program, such as (though not limited to):
 
 - Need to analyze legacy code that was not developed as |SPARK|.
 
-Hence, it must be possible within the language to indicate what parts are 
+Hence, it must be possible within the language to indicate what parts are
 (intended to be) in and what parts are (intended to be) out, of |SPARK|.
 
 The default is to assume all of the program text is in |SPARK|, although this
@@ -734,25 +734,25 @@ on which the analysis of the |SPARK| code relies may be invalidated.
 In general a definition may be in |SPARK| but its completion need not be.
 
 A finer grain of mixing |SPARK| and Ada code is also possible by justifying
-certain warnings and errors.  Warnings may be justified at a project, library 
-unit, unit, and individual warning level.  
+certain warnings and errors.  Warnings may be justified at a project, library
+unit, unit, and individual warning level.
 Errors may be justifiable at the individual error level or be
 unsuppressible errors.
 
 The way in which these are used are:
 
-- A construct appearing in a unit may not be in, or may depend on features not in, the 
-  |SPARK| subset. The contract may generate a warning or an error which may be 
-  justifiable. This does not necessarily render the whole of the unit as not in 
+- A construct appearing in a unit may not be in, or may depend on features not in, the
+  |SPARK| subset. The contract may generate a warning or an error which may be
+  justifiable. This does not necessarily render the whole of the unit as not in
   |SPARK|.  If the construct generates a warning, or if the error is justified,
   then the unit is considered to be in |SPARK| except for the errant construct.
 
-- It is the application of a construct which is not in |SPARK| 
-  (generally within the statements of a body) that potentially moves the code 
-  outside of the |SPARK| subset. An unsuppressible error will be generated and 
-  the body containing the code will need to be marked as not in |SPARK| to 
+- It is the application of a construct which is not in |SPARK|
+  (generally within the statements of a body) that potentially moves the code
+  outside of the |SPARK| subset. An unsuppressible error will be generated and
+  the body containing the code will need to be marked as not in |SPARK| to
   prevent its future analysis.
-  
+
 Hence, |SPARK| and non-|SPARK| code may mix at a fine level of granularity.
 The following combinations may be typical:
 
@@ -766,7 +766,7 @@ The following combinations may be typical:
 - Package specification in |SPARK|, with all bodies imported from another language.
 
 - Package specification contains a mixture of declarations which are in |SPARK|
-  and not in |SPARK|.  A client of the package may be in SPARK 2014 if it only 
+  and not in |SPARK|.  A client of the package may be in SPARK 2014 if it only
   references SPARK 2014 declarations; the presence of non-SPARK 2014 constructs
   in a referenced package specification does not by itself mean that
   a client is not in SPARK 2014.
@@ -802,13 +802,13 @@ and nothing further is given on how it should be used.*
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
    To be completed in the Milestone 4 version of this document.
-  
+
 .. _volatile:
 
 Volatile State
 ~~~~~~~~~~~~~~
 
-A variable or a state abstraction 
+A variable or a state abstraction
 (see :ref:`state_abstraction_and_hidden_state`) may be designated as volatile. A
 volatile variable or state abstraction need not have the same value between two
 reads without an intervening update. Similarly an update of a volatile variable
@@ -868,14 +868,14 @@ State Abstraction, Hidden State and Refinement
 
 #. **Requirement:** It shall be possible to manage hierarchies of data abstraction [i.e. it shall be possible
    to manage a hierarchical organization of hidden state].
- 
+
    **Rationale:** to allow modular verification and the management of complexity in the presence
    of programs that have a hierarchical representation of data.
 
 Naming
 ~~~~~~
 
-#. **Requirement:** Variable names in a global specification of a subprogram are 
+#. **Requirement:** Variable names in a global specification of a subprogram are
    distinct from the formal parameter names of the subprogram .
 
    **Rationale:** A variable cannot be both a formal parameter and a global
@@ -883,7 +883,7 @@ Naming
 
 #. **Requirement:** Names used in the new flow analysis specifications
    are distinct from local subprogram
-   variables when both are in scope.  -- We may drop this rule and make it a 
+   variables when both are in scope.  -- We may drop this rule and make it a
    guideline
 
    **Rationale:** To avoid accidental hole in scope errors.
@@ -919,8 +919,8 @@ Properties of Specifications
 #. **Requirement:** When specifying subprogram behavior other than via proof statements
    -- such as global data -- it shall be necessary to provide a complete specification.
 
-   **Rationale:** To allow provision of at least the same functionality and 
-   error detection as SPARK 2005 and to allow modular analysis. 
+   **Rationale:** To allow provision of at least the same functionality and
+   error detection as SPARK 2005 and to allow modular analysis.
    This is also necessary for security analysis.
 
 .. _notes:
@@ -933,7 +933,7 @@ for the main language features, provides
 syntax where possible and otherwise provides the detailed rules necessary to
 support implementation of basic flow analysis. Where detail is not relevant to
 meeting these needs then it has typically been removed, though a "ToDo" will indicate
-that there is material still to be provided. 
+that there is material still to be provided.
 
 Note this means there are certain of the strategic requirements that are currently
 not decomposed into language definition detail. Where this is the case, it will
