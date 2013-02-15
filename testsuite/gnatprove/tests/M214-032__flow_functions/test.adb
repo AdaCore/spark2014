@@ -1,0 +1,31 @@
+package body Test is
+
+   function Random_Number return Integer
+   is
+      N : Integer := 4; --  Chosen by fair dice roll
+   begin
+      return N;
+   end Random_Number;
+
+   function Multiple_Returns (A : in Boolean) return Integer
+   is
+   begin
+      if A then
+         return 42;
+      else
+         return 9;
+      end if;
+   end Multiple_Returns;
+
+   function Is_Prime (N : in Positive) return Boolean
+   is
+   begin
+      for I in Positive range 2 .. N / 2 loop
+         if N mod I = 0 then
+            return False;
+         end if;
+      end loop;
+      return True;
+   end Is_Prime;
+
+end Test;
