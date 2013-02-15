@@ -484,27 +484,15 @@ package body Why.Gen.Records is
          while Present (Field) loop
             if Is_Not_Hidden_Discriminant (Field) then
                declare
-                  Why_Name  : constant W_Identifier_Id :=
-                    To_Why_Id (Field, Local => True);
-                  Prog_Name : constant W_Identifier_Id :=
-                    To_Program_Space (Why_Name);
                   Pred_Name : constant W_Identifier_Id :=
                     Discriminant_Check_Pred_Name (Field);
-                  Pred_Arg  : constant W_Term_Id :=
-                    (if Is_Root then +A_Ident
-                     else New_Call
-                       (Name => To_Ident (WNE_To_Base),
-                        Args => (1 => +A_Ident)));
-                  Precond   : constant W_Pred_Id :=
-                    New_Call
-                      (Name   => Pred_Name,
-                       Args   => (1 => +Pred_Arg));
                begin
 
                   --  For fields of root record types, we generate a
-                  --  discriminant check predicate.
+                  --  discriminant check predicate. Unneeded for discriminants,
+                  --  whose predicate is always "true.
 
-                  if Is_Root then
+                  if Is_Root and then Ekind (Field) /= E_Discriminant then
                      declare
                         Pre_Cond  : constant W_Pred_Id :=
                           (if Ekind (Field) = E_Discriminant then True_Pred
@@ -523,25 +511,49 @@ package body Why.Gen.Records is
                   --  precondition is precisely the predicate. Note that
                   --  [Precond] has been computed so that it uses the correct
                   --  predicate name, whether it has been defined here or in
-                  --  the root type.
+                  --  the root type. In the case of a discriminant, the
+                  --  precondition is simply "true".
 
-                  Emit (Theory,
-                    New_Function_Decl
-                      (Domain      => EW_Prog,
-                       Name        => Prog_Name,
-                       Binders     => R_Binder,
-                       Return_Type =>
-                         Why_Logic_Type_Of_Ada_Type (Etype (Field)),
-                       Pre         => Precond,
-                       Post        =>
-                         New_Relation
-                           (Left    => +To_Ident (WNE_Result),
-                            Op_Type => EW_Abstract,
-                            Op      => EW_Eq,
-                            Right   =>
-                              New_Record_Access
-                                (Name => +A_Ident,
-                                 Field => Why_Name))));
+                  declare
+                     Why_Name  : constant W_Identifier_Id :=
+                       To_Why_Id (Field, Local => True);
+                     Prog_Name : constant W_Identifier_Id :=
+                       To_Program_Space (Why_Name);
+                     Post : constant W_Pred_Id :=
+                       New_Relation
+                         (Left    => +To_Ident (WNE_Result),
+                          Op_Type => EW_Abstract,
+                          Op      => EW_Eq,
+                          Right   =>
+                            New_Record_Access
+                              (Name => +A_Ident,
+                               Field => Why_Name));
+                     Precond_Arg : W_Term_Id;
+                     Precond     : W_Pred_Id;
+                  begin
+                     if Ekind (Field) = E_Discriminant then
+                        Precond := True_Pred;
+                     else
+                        Precond_Arg :=
+                          (if Is_Root then +A_Ident
+                              else New_Call
+                                (Name => To_Ident (WNE_To_Base),
+                                 Args => (1 => +A_Ident)));
+                        Precond :=
+                          New_Call
+                            (Name => Pred_Name,
+                             Args => (1 => +Precond_Arg));
+                     end if;
+                     Emit (Theory,
+                           New_Function_Decl
+                             (Domain      => EW_Prog,
+                              Name        => Prog_Name,
+                              Binders     => R_Binder,
+                              Return_Type =>
+                                Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                              Pre         => Precond,
+                              Post        => Post));
+                  end;
                end;
             end if;
             Next_Component_Or_Discriminant (Field);
