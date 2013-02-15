@@ -1,7 +1,7 @@
 Exceptions
 ==========
 
-High-level requirements
+High-Level Requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Goals to be met by language feature:
@@ -30,7 +30,7 @@ High-level requirements
 
     * Not applicable.
 
-Language definition
+Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 .. centered:: **Syntax**
