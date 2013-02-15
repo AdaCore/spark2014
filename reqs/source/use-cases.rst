@@ -120,7 +120,7 @@ Support local development processes
 
 Milestone 1:
 
-* Proof summary file to summarise outstanding VCs
+* :ref:`uc-summarise-outstanding-vcs`
 
 Milestone 3:
 
@@ -135,7 +135,11 @@ Milestone |rel2+|:
 
 * Qualify tools for use as a verification tool 
 
-* Existing Ada 2005 code, want to add |SPARK| aspects in comments and analyse them (not build)
+* Need to be able to have multiple |SPARK| aspects to take account of different system models (e.g. used to be able to redefine --# or analyse shadow files)
+  * There are at least two solutions
+    #. Have shadow package specs (as done on EMU) - this may require changes to the proof version of gnatmake to support this;
+    #. Provide a tool that switches aspects depending on which comment marker has "hidden" them from the tools - this would be a bolt on tool.
+  * 
 
 * Cache VCs to speed up re-analysis
 
@@ -201,4 +205,7 @@ The Use Cases
 
 .. _uc-analyse-information-flow:
 .. include:: ../use-cases/analyse-information-flow.rst    
+
+.. _uc-summarise-outstanding-vcs:
+.. include:: ../use-cases/summarise-outstanding-vcs.rst
 
