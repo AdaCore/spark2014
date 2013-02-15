@@ -578,14 +578,30 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  We need a helper vertex
-      FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                         Null_Node_Attributes,
-                         V);
-      CM.Include (Union_Id (N), No_Connections);
+      if Expression (N) = Empty then
+         --  We have a return for a procedure.
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                            Null_Node_Attributes,
+                            V);
+      else
+         --  We have a function return.
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            V_Attributes'(Is_Null_Node      => False,
+                          Is_Program_Node   => True,
+                          Is_Initialised    => False,
+                          Is_Export         => False,
+                          Variables_Defined => Flow_Id_Sets.To_Set
+                            (Direct_Mapping_Id (FA.Subprogram)),
+                          Variables_Used    => Get_Variable_Set
+                            (Expression (N))),
+         V);
+      end if;
 
-      --  Control flows in, but there are no standard exits.
-      CM (Union_Id (N)).Standard_Entry := V;
+      --  Control flows in, but we do not flow out again.
+      CM.Include (Union_Id (N),
+                  Graph_Connections'(Standard_Entry => V,
+                                     Standard_Exits => Empty_Set));
 
       --  Instead we link this vertex directly to the end vertex.
       Linkup (FA.CFG, V, FA.End_Vertex);
@@ -767,6 +783,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Work out all variables and add 'initial and 'final vertices.
       FA.Vars := Get_Variable_Set (N);
+      --  Functions track their return via the name of the function.
+      if Ekind (FA.Subprogram) = E_Function then
+         FA.Vars.Include (Direct_Mapping_Id (FA.Subprogram));
+      end if;
       for F of FA.Vars loop
          case F.Kind is
             when Direct_Mapping =>
@@ -804,7 +824,8 @@ package body Flow.Control_Flow_Graph is
                   --  variables are also exports.
                   case Ekind (N) is
                      when E_In_Out_Parameter |
-                       E_Out_Parameter =>
+                       E_Out_Parameter |
+                       E_Function =>
                         Is_Export := True;
                      when others =>
                         Is_Export := False;
