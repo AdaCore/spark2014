@@ -113,41 +113,41 @@ infoflow.adb:87:10: info: loop invariant initialization proved
 infoflow.adb:88:42: loop invariant preservation not proved, requires OutKeys_V2 (K) = InKeys_V2 (K)
 infoflow.adb:93:14: range check not proved
 infoflow.adb:99:28: division check not proved
-infoflow.ads:102:39: info: division check proved
+infoflow.ads:102:39: division check not proved
 infoflow.ads:102:39: overflow check not proved
 infoflow.ads:103:34: index check not proved
 infoflow.ads:103:34: overflow check not proved
-infoflow.ads:103:45: info: division check proved
+infoflow.ads:103:45: division check not proved
 infoflow.ads:103:45: overflow check not proved
 infoflow.ads:103:59: index check not proved
 infoflow.ads:103:59: overflow check not proved
-infoflow.ads:103:70: info: division check proved
+infoflow.ads:103:70: division check not proved
 infoflow.ads:103:70: overflow check not proved
 infoflow.ads:104:42: index check not proved
 infoflow.ads:104:53: index check not proved
 infoflow.ads:107:6: postcondition not proved
-infoflow.ads:114:40: division check not proved
+infoflow.ads:114:40: info: division check proved
 infoflow.ads:114:40: overflow check not proved
 infoflow.ads:115:34: index check not proved
 infoflow.ads:115:34: overflow check not proved
-infoflow.ads:115:45: division check not proved
+infoflow.ads:115:45: info: division check proved
 infoflow.ads:115:45: overflow check not proved
 infoflow.ads:115:59: index check not proved
 infoflow.ads:115:59: overflow check not proved
-infoflow.ads:115:70: division check not proved
+infoflow.ads:115:70: info: division check proved
 infoflow.ads:115:70: overflow check not proved
 infoflow.ads:116:42: index check not proved
 infoflow.ads:116:53: index check not proved
 infoflow.ads:117:6: postcondition not proved
-infoflow.ads:124:39: info: division check proved
+infoflow.ads:124:39: division check not proved
 infoflow.ads:124:39: overflow check not proved
 infoflow.ads:125:34: index check not proved
 infoflow.ads:125:34: overflow check not proved
-infoflow.ads:125:45: info: division check proved
+infoflow.ads:125:45: division check not proved
 infoflow.ads:125:45: overflow check not proved
 infoflow.ads:125:59: index check not proved
 infoflow.ads:125:59: overflow check not proved
-infoflow.ads:125:70: info: division check proved
+infoflow.ads:125:70: division check not proved
 infoflow.ads:125:70: overflow check not proved
 infoflow.ads:126:42: index check not proved
 infoflow.ads:126:53: index check not proved
@@ -170,15 +170,15 @@ infoflow.ads:41:6: postcondition not proved
 infoflow.ads:54:6: postcondition not proved
 infoflow.ads:72:6: postcondition not proved
 infoflow.ads:85:6: postcondition not proved
-infoflow.ads:92:40: division check not proved
+infoflow.ads:92:40: info: division check proved
 infoflow.ads:92:40: overflow check not proved
 infoflow.ads:93:34: index check not proved
 infoflow.ads:93:34: overflow check not proved
-infoflow.ads:93:45: division check not proved
+infoflow.ads:93:45: info: division check proved
 infoflow.ads:93:45: overflow check not proved
 infoflow.ads:93:59: index check not proved
 infoflow.ads:93:59: overflow check not proved
-infoflow.ads:93:70: division check not proved
+infoflow.ads:93:70: info: division check proved
 infoflow.ads:93:70: overflow check not proved
 infoflow.ads:94:42: index check not proved
 infoflow.ads:94:53: index check not proved
