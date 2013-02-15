@@ -141,6 +141,7 @@ package Flow is
       "="                 => Flow_Graphs."=");
 
    type Flow_Analysis_Graphs is record
+      Subprogram   : Entity_Id;
       Start_Vertex : Flow_Graphs.Vertex_Id;
       End_Vertex   : Flow_Graphs.Vertex_Id;
       CFG          : Flow_Graphs.T;

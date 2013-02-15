@@ -271,7 +271,8 @@ package body Flow is
 
       begin
          FA := Flow_Analysis_Graphs'
-           (Start_Vertex => Flow_Graphs.Null_Vertex,
+           (Subprogram   => E,
+            Start_Vertex => Flow_Graphs.Null_Vertex,
             End_Vertex   => Flow_Graphs.Null_Vertex,
             CFG          => Flow_Graphs.Create,
             DDG          => Flow_Graphs.Create,
