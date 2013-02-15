@@ -116,7 +116,7 @@ for |SPARK|, following the Ada 2012 RM (other than *Verification Rules*,
 which section is specific to |SPARK|):
 
 #. Syntax: this section gives the format of the |SPARK| aspects and pragmas.
-   The expression defining the aspect and pragamas are specializations of the
+   The expression defining the aspects and pragmas are specializations of the
    standard Ada 2012 expression syntax and will be accepted by any Ada 2012
    implementation.
 
@@ -222,8 +222,8 @@ it can only be compiled and executed by an implementation
 which supports the construct in a way consistent with the definition
 given here in the |SPARK| reference manual.
 
-If the equivalent pragmas are used instead of the implementation-
-defined aspects and if the use of implementation-defined attributes
+If the equivalent pragmas are used instead of the implementation-defined
+aspects and if the use of implementation-defined attributes
 is avoided, then a |SPARK| program may be compiled and executed
 by any Ada 2012 implementation (whether or not it recognizes the
 |SPARK| pragmas). Ada specifies that unrecognized
@@ -268,7 +268,7 @@ following structure:
 #. For each such language feature, requirements are given to define how
    that feature should work in a way that is - as much as possible - language
    independent. [This means that language features may be understood independently
-   of the low-level detail needed to make them work.]
+   of the low-level details needed to make them work.]
 
 Where relevant, a rationale will be given to explain why the requirement is
 levied. Further narrative detail is given on each of the strategic requirements.
