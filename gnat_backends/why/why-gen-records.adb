@@ -166,6 +166,14 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
 
+      function Discriminant_Check_Pred_Call (Field : Entity_Id;
+                                             Arg : W_Identifier_Id)
+                                             return W_Pred_Id;
+      --  Given a record field, return the a call to its discrimant check
+      --  predicate, with the given argument. If that predicate is defined
+      --  elsewhere (i.e. in the module for the root record type, prefix the
+      --  call accordingly and add a conversion.
+
       function Discriminant_Check_Pred_Name (Field : Entity_Id)
                                              return W_Identifier_Id;
       --  Given a record field, return the name of its discrimant check
@@ -429,7 +437,6 @@ package body Why.Gen.Records is
                             Field => To_Why_Id (Comp, Local => True)),
                        Op      => EW_Eq);
                   Always_Present : constant Boolean :=
-                    Ekind (E) = E_Record_Subtype or else
                     not (Has_Discriminants (E)) or else
                     Ekind (Comp) = E_Discriminant;
                begin
@@ -443,7 +450,8 @@ package body Why.Gen.Records is
                         New_Connection
                           (Domain => EW_Pred,
                            Op     => EW_Imply,
-                           Left   => +Compute_Discriminant_Check (Comp),
+                           Left   =>
+                             +Discriminant_Check_Pred_Call (Comp, A_Ident),
                            Right  => +Comparison)));
                end;
             end if;
@@ -528,22 +536,10 @@ package body Why.Gen.Records is
                             New_Record_Access
                               (Name => +A_Ident,
                                Field => Why_Name));
-                     Precond_Arg : W_Term_Id;
-                     Precond     : W_Pred_Id;
+                     Precond     : constant W_Pred_Id :=
+                       (if Ekind (Field) = E_Discriminant then True_Pred
+                        else Discriminant_Check_Pred_Call (Field, A_Ident));
                   begin
-                     if Ekind (Field) = E_Discriminant then
-                        Precond := True_Pred;
-                     else
-                        Precond_Arg :=
-                          (if Is_Root then +A_Ident
-                              else New_Call
-                                (Name => To_Ident (WNE_To_Base),
-                                 Args => (1 => +A_Ident)));
-                        Precond :=
-                          New_Call
-                            (Name => Pred_Name,
-                             Args => (1 => +Precond_Arg));
-                     end if;
                      Emit (Theory,
                            New_Function_Decl
                              (Domain      => EW_Prog,
@@ -586,6 +582,22 @@ package body Why.Gen.Records is
            New_Record_Definition (Name    => Ty_Ident,
                                   Binders => Binders));
       end Declare_Record_Type;
+
+      function Discriminant_Check_Pred_Call (Field : Entity_Id;
+                                             Arg : W_Identifier_Id)
+                                             return W_Pred_Id
+      is
+         Precond_Arg : constant W_Term_Id :=
+           (if Is_Root then +Arg
+            else New_Call
+              (Name => To_Ident (WNE_To_Base),
+               Args => (1 => +Arg)));
+      begin
+         return
+           New_Call
+             (Name => Discriminant_Check_Pred_Name (Field),
+              Args => (1 => +Precond_Arg));
+      end Discriminant_Check_Pred_Call;
 
       ----------------------------------
       -- Discriminant_Check_Pred_Name --
