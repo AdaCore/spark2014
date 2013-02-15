@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12", "-gnateT=" & Test'Project_Dir & "/target.atp");
+   end Compiler;
+end Test;
