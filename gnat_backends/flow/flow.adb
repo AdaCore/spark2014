@@ -228,6 +228,9 @@ package body Flow is
                            when Final_Value =>
                               Rv.Shape := Shape_None;
                               Output.Write_Str ("'final");
+                              if A.Is_Export then
+                                 Rv.Colour := To_Unbounded_String ("blue");
+                              end if;
                            when others =>
                               null;
                         end case;
