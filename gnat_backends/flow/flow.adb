@@ -242,9 +242,9 @@ package body Flow is
 
                   if A.Loops.Length > 0 then
                      Output.Write_Str ("\nLoops:");
-                     for I of A.Loops loop
+                     for Loop_Identifier of A.Loops loop
                         Output.Write_Str ("&nbsp;");
-                        Sprint_Node (Get_Direct_Mapping_Id (I));
+                        Sprint_Node (Get_Direct_Mapping_Id (Loop_Identifier));
                      end loop;
                   end if;
                end;
