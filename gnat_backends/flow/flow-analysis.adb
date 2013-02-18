@@ -159,7 +159,7 @@ package body Flow.Analysis is
 
                      --  We start by checking if the used variables
                      --  contain the loop parameter for our loop.
-                     Is_Stable := Atr.Variables_Used.Contains
+                     Is_Stable := not Atr.Variables_Used.Contains
                        (Direct_Mapping_Id
                           (Loop_Parameter_From_Loop (Loop_Id)));
 

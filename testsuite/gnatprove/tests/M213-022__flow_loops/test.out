@@ -3,8 +3,22 @@ test.adb:26:26: ineffective import
 test.adb:30:12: ineffective statement
 test.adb:31:41: ineffective statement
 test.adb:32:15: ineffective statement
-test.adb:33:10: ineffective statement
+test.adb:33:13: ineffective statement
 test.adb:35:12: ineffective statement
+test.adb:52:13: may never be initialized
+test.adb:52:16: may never be initialized
+test.adb:52:19: may never be initialized
+test.adb:70:13: may never be initialized
+test.adb:70:16: may never be initialized
+test.adb:70:19: may never be initialized
+test.adb:75:12: stable
+test.adb:77:12: stable
+test.adb:77:20: use of uninitialized variable "R"
+test.adb:77:20: stable
+test.adb:86:30: may never be initialized
+test.adb:91:15: stable
+test.adb:96:30: may never be initialized
+test.adb:100:14: may never be initialized
 
    compilation of test.adb failed
 
