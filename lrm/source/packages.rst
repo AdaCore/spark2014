@@ -62,14 +62,14 @@ abbreviated form of the Global and Depends aspect is permitted which gives a
 more obvious view of the global and dependency.
 
 If the variable or state abstraction is designated as Volatile Input, then it 
-may appear as just an Input in the Global aspect.  There is an implicit 
-declaration that it is also an Output. In a Depends aspect it need not 
-appear as an output an implicit self dependency of the entity will be declared.
+may only appear as an Input in the Global aspect.  There is an implicit
+declaration that it is also an Output. In a Depends aspect it need not
+appear as an output as an implicit self dependency of the entity will be declared.
 
 If the variable or state abstraction is designated as Volatile Output, then it
-may appear as just an Output in the Global aspect. There is an implicit 
+may only appear as an Output in the Global aspect. There is an implicit 
 declaration that it is also an Input.  In a Depends aspect it need not appear
-as an input an implicit self dependency of the entity will be declared.
+as an input as an implicit self dependency of the entity will be declared.
 
 A volatile variable or state abstractions cannot be mentioned directly in a 
 assertion expression as the reading of a volatile may affect its value.
@@ -103,7 +103,7 @@ High-level requirements
     * **Requirement:** It shall be possible to provide an abstracted view of hidden state that can be referred to
       in specifications of program behavior.
 
-      **Rationale:** this allows modular analysis, since modular is analysis performed
+      **Rationale:** this allows modular analysis, since modular analysis is performed
       before all package bodies are available and so before all hidden state is known.
       Abstraction also allows the management of complexity.
 
@@ -405,11 +405,11 @@ High-level requirements
       
 #. Constraints:
 
-   * No further Initializes-specific requirements.
+   * No further Initial Condition-specific requirements.
 
 #. Consistency:
 
-    * No further Initializes-specific requirements.
+    * No further Initial Condition-specific requirements.
 
 #. Semantics:
 
@@ -645,7 +645,7 @@ High-level requirements
             proof context, then that mode must be a mode of *Abstract (X)* in *G*.
 
           * If the mode of *X* in *RG* indicates it **is** used in a proof context and
-            *Abstract(X)* will not have another mode according to the above rules, then the
+            *Abstract(X)* does not have another mode according to the above rules, then the
             mode of *Abstract(X)* shall indicate it is only used in proof contexts.
 
        **Rationale:** In general, modes should be preserved by refinement. However,

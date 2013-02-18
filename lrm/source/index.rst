@@ -7,7 +7,7 @@
 SPARK 2014 Reference Manual
 ===========================
 
-   Copyright (C) 2011-2012, AdaCore and Altran Praxis Ltd
+   Copyright (C) 2013, AdaCore and Altran UK Ltd
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
