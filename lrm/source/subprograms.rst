@@ -56,7 +56,7 @@ variable.
    
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: Release
-   2 of toolset or later.
+   2 of |SPARK| language and toolset or later.
 
 .. todo::
    What do we do regarding null exclusion parameters?
@@ -166,6 +166,9 @@ where
 
   B1 .. Bn are Boolean expressions that may also use the final values of
   formal parameters, global variables and results.
+
+  ``Exactly_One_Of(A1,A2...An)`` evaluates to True if exactly one of its inputs evaluates
+  to True and all other of its inputs evaluate to False.
 
 The Contract_Cases aspect is specified with an ``aspect_specification`` where
 the ``aspect_mark`` is Contract_Cases and the ``aspect_definition`` must follow

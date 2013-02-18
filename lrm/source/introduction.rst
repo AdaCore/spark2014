@@ -78,8 +78,9 @@ scope is deferred, it may be deferred to:
 - A release subsequent to Release 1, meaning that the feature will be
   implemented *after* the first formal release of the toolset.
 
-Note that the current content of this document may be subject to change
-as the document is updated.
+Note that the content currently in scope for the current draft of this document will only
+be regarded as definitive when the Release 1 version of the document is ready,
+and so may be subject to change.
 
 .. _read_interpret:
 
@@ -203,7 +204,7 @@ The dynamic semantics of the two languages are defined to be identical,
 so that a valid |SPARK| program may be compiled and executed by means of
 an Ada compiler.
 
-Many invalid |SPARK| programs are also valid Ada 2012 programs.
+|SPARK| programs that have failed their static analysis checks can still be valid Ada 2012 programs.
 An incorrect |SPARK| program with, say, inconsistent dataflow
 annotations or undischarged proof obligations can still be executed as
 long as the Ada compiler in question finds nothing objectionable.
@@ -248,7 +249,7 @@ by excluding certain language features.
 The exclusions, the new aspects, pragmas, attributes and rules specify the
 largest |SPARK| language for which formal analyses are supported.
 
-*Guidelines* may be applied which effectively reduce further the
+*Code Policies* may be applied which effectively reduce further the
 language subset which may be analyzed but may make analysis and proof easier,
 more precise and be suitable for some application areas (see :ref:`code_policy`).
 
@@ -320,7 +321,7 @@ Some are expanded in subsequent sections within this chapter.
 
 - The |SPARK| language subset shall embody the largest subset of Ada 2012 to which it is
   currently practical to apply automatic formal verification, in line with
-  the goals below, although future advances in verification research and
+  the goals below. However, future advances in verification research and
   computing power may allow for expansion of the language and the forms of
   verification available. See section :ref:`main_restricts`
   for further details.
@@ -384,7 +385,8 @@ Some are expanded in subsequent sections within this chapter.
   See section :ref:`ghost_entities`.
 
 - |SPARK| shall provide counterparts of all language features and analysis
-  modes provided in SPARK 83/95/2005.
+  modes provided in SPARK 83/95/2005, unless it has been identified that customers
+  do not find them useful.
 
 - Support for specifying and verifying properties of secure systems shall be improved.
 
@@ -449,7 +451,7 @@ in the remaining chapters of this document, the most notable restrictions are:
 - The use of controlled types is not permitted.
 
 - Tasking is not currently permitted (it is intended that this will be included
-  in Release 2 of the tools).
+  in Release 2 of the |SPARK| language and tools).
 
 - Raising and handling of exceptions is not permitted.
 
@@ -564,7 +566,7 @@ subsets to be used as opposed to the single subset given by SPARK 2005. Each of 
 code policies can be targeted to meeting a specific user need, and where a user has multiple
 needs then multiple policies may be enforced. Needs could be driven by:
 
-- Application domains - for example, server-class air-traffic management systems,
+- Application domains - for example, server-class information systems,
 
 - Standards - for example, DO-178C Level A,
 
