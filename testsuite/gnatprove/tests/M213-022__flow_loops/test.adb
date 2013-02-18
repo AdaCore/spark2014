@@ -83,4 +83,24 @@ package body Test is
       return Y;
    end Bergeretti_Fig9_Incorrect;
 
+   procedure Stable_Test_01 (X : out Natural)
+   is
+   begin
+      for I in Natural range 0 .. 100 loop
+         for J in Natural range 5 .. 10 loop
+            X := I;
+         end loop;
+      end loop;
+   end Stable_Test_01;
+
+   procedure Stable_Test_02 (X : out Natural)
+   is
+   begin
+      for I in Natural range 0 .. 100 loop
+         for J in Natural range 5 .. 10 loop
+            X := J;
+         end loop;
+      end loop;
+   end Stable_Test_02;
+
 end Test;
