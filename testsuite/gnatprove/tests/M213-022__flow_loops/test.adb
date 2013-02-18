@@ -30,7 +30,7 @@ package body Test is
          X := 0;
          for I in Integer range 0 .. 10 loop
             X := I;
-         exit My_Loop when X > Y;
+            exit My_Loop when X > Y;
          end loop;
          X := X;
       end loop My_Loop;
