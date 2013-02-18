@@ -39,6 +39,14 @@ package body Flow.Control_Flow_Graph is
 
    use Vertex_Sets;
 
+   ------------------------------------------------------------
+   --  Local types
+   ------------------------------------------------------------
+
+   ----------------------
+   --  Connection_Maps --
+   ----------------------
+
    type Graph_Connections is record
       Standard_Entry : Flow_Graphs.Vertex_Id;
       Standard_Exits : Vertex_Sets.Set;
@@ -57,6 +65,21 @@ package body Flow.Control_Flow_Graph is
       Hash            => Union_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
+
+   --------------
+   --  Context --
+   --------------
+
+   type Context is record
+      Current_Loops : Flow_Id_Sets.Set;
+   end record;
+
+   No_Context : constant Context :=
+     Context'(Current_Loops => Flow_Id_Sets.Empty_Set);
+
+   ------------------------------------------------------------
+   --  Local declarations
+   ------------------------------------------------------------
 
    procedure Linkup
      (CFG   : in out Flow_Graphs.T;
@@ -81,72 +104,89 @@ package body Flow.Control_Flow_Graph is
    --  As above, but operating on a list.
 
    procedure Do_Assignment_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Assignment_Statement;
 
    procedure Do_Exit_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Exit_Statement;
 
    procedure Do_Full_Type_Declaration
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Full_Type_Declaration;
 
    procedure Do_Handled_Sequence_Of_Statements
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
 
    procedure Do_If_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_If_Statement;
 
    procedure Do_Loop_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
-      with Pre => Nkind (N) = N_Loop_Statement;
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre  => Nkind (N) = N_Loop_Statement and then
+                   Identifier (N) /= Empty,
+           Post => Ctx.Current_Loops.Length = Ctx.Current_Loops'Old.Length;
 
    procedure Do_Object_Declaration
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Object_Declaration;
 
    procedure Do_Simple_Return_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Simple_Return_Statement;
 
    procedure Do_Subprogram_Body
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
       with Pre => Nkind (N) = N_Subprogram_Body;
 
    procedure Process_Statement_List
-     (L  : List_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map);
+     (L   : List_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context);
 
    procedure Process_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map);
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context);
 
    procedure Simplify
      (G : in out Flow_Graphs.T'Class);
    --  Remove all null vertices from the graph.
+
+   ------------------------------------------------------------
+   --  Local procedures and functions
+   ------------------------------------------------------------
 
    --------------
    --  Linkup  --
@@ -233,9 +273,10 @@ package body Flow.Control_Flow_Graph is
    -------------------------------
 
    procedure Do_Assignment_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       use type Flow_Id_Sets.Set;
 
@@ -298,7 +339,8 @@ package body Flow.Control_Flow_Graph is
                        Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
                          or V_Used_LHS
-                         or V_Also_Used),
+                         or V_Also_Used,
+                       Loops             => Ctx.Current_Loops),
          V);
 
       --  Control goes in V and of V
@@ -313,9 +355,10 @@ package body Flow.Control_Flow_Graph is
    -------------------------
 
    procedure Do_Exit_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
       L : Node_Id := N;
@@ -358,7 +401,8 @@ package body Flow.Control_Flow_Graph is
                           Is_Export         => False,
                           Variables_Defined => Flow_Id_Sets.Empty_Set,
                           Variables_Used    => Get_Variable_Set
-                            (Condition (N))),
+                            (Condition (N)),
+                          Loops             => Ctx.Current_Loops),
             V);
          CM.Include (Union_Id (N),
                      Graph_Connections'
@@ -374,9 +418,10 @@ package body Flow.Control_Flow_Graph is
    --------------------------------
 
    procedure Do_Full_Type_Declaration
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
    begin
       raise Why.Not_Implemented;
@@ -387,13 +432,14 @@ package body Flow.Control_Flow_Graph is
    -----------------------------------------
 
    procedure Do_Handled_Sequence_Of_Statements
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       Stmts : constant List_Id := Statements (N);
    begin
-      Process_Statement_List (Stmts, FA, CM);
+      Process_Statement_List (Stmts, FA, CM, Ctx);
       --  !!! Workaround
       CM.Include (Union_Id (N), CM.Element (Union_Id (Stmts)));
    end Do_Handled_Sequence_Of_Statements;
@@ -403,9 +449,10 @@ package body Flow.Control_Flow_Graph is
    -----------------------
 
    procedure Do_If_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       V         : Flow_Graphs.Vertex_Id;
       If_Part   : constant List_Id := Then_Statements (N);
@@ -421,18 +468,19 @@ package body Flow.Control_Flow_Graph is
                        Is_Initialised    => False,
                        Is_Export         => False,
                        Variables_Defined => Flow_Id_Sets.Empty_Set,
-                       Variables_Used    => Get_Variable_Set (Condition (N))),
+                       Variables_Used    => Get_Variable_Set (Condition (N)),
+                       Loops             => Ctx.Current_Loops),
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
 
-      Process_Statement_List (If_Part, FA, CM);
+      Process_Statement_List (If_Part, FA, CM, Ctx);
       Linkup (FA.CFG, V, CM (Union_Id (If_Part)).Standard_Entry);
       CM (Union_Id (N)).Standard_Exits.Union
         (CM (Union_Id (If_Part)).Standard_Exits);
 
       if Else_Part /= No_List then
-         Process_Statement_List (Else_Part, FA, CM);
+         Process_Statement_List (Else_Part, FA, CM, Ctx);
          Linkup (FA.CFG, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Else_Part)).Standard_Exits);
@@ -447,9 +495,10 @@ package body Flow.Control_Flow_Graph is
    -------------------------
 
    procedure Do_Loop_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
    begin
@@ -459,7 +508,14 @@ package body Flow.Control_Flow_Graph is
       --  Construct graph for the loop body. Please note that early
       --  exists may alrady change the above, so be sure to only use
       --  union or include, instead of setting the standard exits.
-      Process_Statement_List (Statements (N), FA, CM);
+      --
+      --  We also change the context to include the current
+      --  loop. Please note that we don't flag the loop statement
+      --  itself as part of the loop, hence the corresponding delete
+      --  is here as well.
+      Ctx.Current_Loops.Insert (Direct_Mapping_Id (Entity (Identifier (N))));
+      Process_Statement_List (Statements (N), FA, CM, Ctx);
+      Ctx.Current_Loops.Delete (Direct_Mapping_Id (Entity (Identifier (N))));
 
       if Iteration_Scheme (N) = Empty then
          --  We have a loop.
@@ -496,7 +552,8 @@ package body Flow.Control_Flow_Graph is
                   Is_Export         => False,
                   Variables_Defined => Flow_Id_Sets.Empty_Set,
                   Variables_Used    => Get_Variable_Set
-                    (Condition (Iteration_Scheme (N)))),
+                    (Condition (Iteration_Scheme (N))),
+                  Loops             => Ctx.Current_Loops),
                V);
          else
             --  We have a for loop.
@@ -516,7 +573,8 @@ package body Flow.Control_Flow_Graph is
                                              (Iteration_Scheme (N))))),
                   Variables_Used    => Get_Variable_Set
                     (Discrete_Subtype_Definition (Loop_Parameter_Specification
-                                                    (Iteration_Scheme (N))))),
+                                                    (Iteration_Scheme (N)))),
+                  Loops             => Ctx.Current_Loops),
                V);
          end if;
 
@@ -536,9 +594,10 @@ package body Flow.Control_Flow_Graph is
    -----------------------------
 
    procedure Do_Object_Declaration
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
    begin
@@ -559,7 +618,8 @@ package body Flow.Control_Flow_Graph is
                             (Direct_Mapping_Id
                                (Defining_Identifier (N))),
                           Variables_Used    => Get_Variable_Set
-                            (Expression (N))),
+                            (Expression (N)),
+                          Loops             => Ctx.Current_Loops),
             V);
       end if;
       CM.Include (Union_Id (N),
@@ -572,9 +632,10 @@ package body Flow.Control_Flow_Graph is
    ----------------------------------
 
    procedure Do_Simple_Return_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
    begin
@@ -594,7 +655,8 @@ package body Flow.Control_Flow_Graph is
                           Variables_Defined => Flow_Id_Sets.To_Set
                             (Direct_Mapping_Id (FA.Subprogram)),
                           Variables_Used    => Get_Variable_Set
-                            (Expression (N))),
+                            (Expression (N)),
+                          Loops             => Ctx.Current_Loops),
          V);
       end if;
 
@@ -612,15 +674,16 @@ package body Flow.Control_Flow_Graph is
    --------------------------
 
    procedure Do_Subprogram_Body
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
    begin
-      Process_Statement_List (Declarations (N), FA, CM);
+      Process_Statement_List (Declarations (N), FA, CM, Ctx);
 
       Do_Handled_Sequence_Of_Statements
-        (Handled_Statement_Sequence (N), FA, CM);
+        (Handled_Statement_Sequence (N), FA, CM, Ctx);
 
       Linkup (FA.CFG,
               CM (Union_Id (Declarations (N))).Standard_Exits,
@@ -641,9 +704,10 @@ package body Flow.Control_Flow_Graph is
    ------------------------------
 
    procedure Process_Statement_List
-     (L  : List_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (L   : List_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       P    : Node_Or_Entity_Id;
       Prev : Node_Or_Entity_Id;
@@ -663,7 +727,7 @@ package body Flow.Control_Flow_Graph is
                P := Next (P);
 
             when others =>
-               Process_Statement (P, FA, CM);
+               Process_Statement (P, FA, CM, Ctx);
 
                --  Connect this statement to the previous one.
                if Prev /= Empty then
@@ -702,26 +766,27 @@ package body Flow.Control_Flow_Graph is
    -------------------------
 
    procedure Process_Statement
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs;
-      CM : in out Connection_Maps.Map)
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
    begin
       case Nkind (N) is
          when N_Assignment_Statement =>
-            Do_Assignment_Statement (N, FA, CM);
+            Do_Assignment_Statement (N, FA, CM, Ctx);
          when N_Exit_Statement =>
-            Do_Exit_Statement (N, FA, CM);
+            Do_Exit_Statement (N, FA, CM, Ctx);
          when N_Full_Type_Declaration =>
-            Do_Full_Type_Declaration (N, FA, CM);
+            Do_Full_Type_Declaration (N, FA, CM, Ctx);
          when N_If_Statement =>
-            Do_If_Statement (N, FA, CM);
+            Do_If_Statement (N, FA, CM, Ctx);
          when N_Loop_Statement =>
-            Do_Loop_Statement (N, FA, CM);
+            Do_Loop_Statement (N, FA, CM, Ctx);
          when N_Object_Declaration =>
-            Do_Object_Declaration (N, FA, CM);
+            Do_Object_Declaration (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
-            Do_Simple_Return_Statement (N, FA, CM);
+            Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
             CM.Include (Union_Id (N), No_Connections);
@@ -758,6 +823,10 @@ package body Flow.Control_Flow_Graph is
       end loop;
    end Simplify;
 
+   ------------------------------------------------------------
+   --  Package functions and procedures
+   ------------------------------------------------------------
+
    --------------
    --  Create  --
    --------------
@@ -767,6 +836,7 @@ package body Flow.Control_Flow_Graph is
       FA : in out Flow_Analysis_Graphs)
    is
       Connection_Map : Connection_Maps.Map;
+      The_Context    : Context := No_Context;
    begin
       --  Start with a blank slate.
       Connection_Map := Connection_Maps.Empty_Map;
@@ -779,7 +849,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
 
       --  Produce flowgraph for the body
-      Do_Subprogram_Body (N, FA, Connection_Map);
+      Do_Subprogram_Body (N, FA, Connection_Map, The_Context);
 
       --  Work out all variables and add 'initial and 'final vertices.
       FA.Vars := Get_Variable_Set (N);
@@ -816,7 +886,8 @@ package body Flow.Control_Flow_Graph is
                         Is_Initialised    => Is_Initialised,
                         Is_Export         => False,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
-                        Variables_Used    => Flow_Id_Sets.Empty_Set),
+                        Variables_Used    => Flow_Id_Sets.Empty_Set,
+                        Loops             => Flow_Id_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, V, FA.Start_Vertex);
 
@@ -839,7 +910,8 @@ package body Flow.Control_Flow_Graph is
                         Is_Initialised    => False,
                         Is_Export         => Is_Export,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
-                        Variables_Used    => Flow_Id_Sets.To_Set (F)),
+                        Variables_Used    => Flow_Id_Sets.To_Set (F),
+                        Loops             => Flow_Id_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, FA.End_Vertex, V);
                end;

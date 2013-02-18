@@ -102,6 +102,11 @@ package Flow is
 
       Variables_Defined : Flow_Id_Sets.Set;
       Variables_Used    : Flow_Id_Sets.Set;
+      --  For producing the DDG.
+
+      Loops             : Flow_Id_Sets.Set;
+      --  Which loops are we a member of (identified by loop
+      --  name/label)? For loop stability analysis.
    end record;
 
    Null_Attributes : constant V_Attributes :=
@@ -110,7 +115,8 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
-                   Variables_Used    => Flow_Id_Sets.Empty_Set);
+                   Variables_Used    => Flow_Id_Sets.Empty_Set,
+                   Loops             => Flow_Id_Sets.Empty_Set);
 
    Null_Node_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node      => True,
@@ -118,7 +124,8 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
-                   Variables_Used    => Flow_Id_Sets.Empty_Set);
+                   Variables_Used    => Flow_Id_Sets.Empty_Set,
+                   Loops             => Flow_Id_Sets.Empty_Set);
 
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,
