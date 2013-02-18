@@ -44,6 +44,8 @@ with Flow.Control_Dependence_Graph;
 with Flow.Program_Dependence_Graph;
 with Flow.Analysis;
 
+use type Ada.Containers.Count_Type;
+
 package body Flow is
 
    use type Flow_Graphs.Vertex_Id;
@@ -237,6 +239,14 @@ package body Flow is
                      when others =>
                         raise Program_Error;
                   end case;
+
+                  if A.Loops.Length > 0 then
+                     Output.Write_Str ("\nLoops:");
+                     for I of A.Loops loop
+                        Output.Write_Str ("&nbsp;");
+                        Sprint_Node (Get_Direct_Mapping_Id (I));
+                     end loop;
+                  end if;
                end;
                Output.Write_Eol;
                Output.Cancel_Special_Output;
