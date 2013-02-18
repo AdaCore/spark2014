@@ -25,7 +25,9 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
 
-with Types;                 use Types;
+with Atree; use Atree;
+with Einfo; use Einfo;
+with Types; use Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 --  Node_Sets and Node_Hash
@@ -104,9 +106,9 @@ package Flow is
       Variables_Used    : Flow_Id_Sets.Set;
       --  For producing the DDG.
 
-      Loops             : Flow_Id_Sets.Set;
+      Loops             : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
-      --  name/label)? For loop stability analysis.
+      --  name/label). For loop stability analysis.
    end record;
 
    Null_Attributes : constant V_Attributes :=
@@ -116,7 +118,7 @@ package Flow is
                    Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Flow_Id_Sets.Empty_Set);
+                   Loops             => Node_Sets.Empty_Set);
 
    Null_Node_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node      => True,
@@ -125,7 +127,7 @@ package Flow is
                    Is_Export         => False,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Flow_Id_Sets.Empty_Set);
+                   Loops             => Node_Sets.Empty_Set);
 
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,
@@ -156,7 +158,15 @@ package Flow is
       CDG          : Flow_Graphs.T;
       PDG          : Flow_Graphs.T;
       Vars         : Flow_Id_Sets.Set;
+      Loops        : Node_Sets.Set;
    end record;
+
+   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
+     with Pre  => Ekind (E) = E_Loop,
+          Post => Loop_Parameter_From_Loop'Result = Empty or else
+                  Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
+   --  Given a loop label, returns the identifier of the loop
+   --  parameter or Empty.
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
    --  Flow analyse the given entity. This subprogram does nothing for

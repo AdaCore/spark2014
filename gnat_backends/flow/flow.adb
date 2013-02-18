@@ -25,8 +25,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
-with Atree;  use Atree;
-with Einfo;  use Einfo;
 with Sinfo;  use Sinfo;
 with Namet;  use Namet;
 with Sprint; use Sprint;
@@ -134,6 +132,35 @@ package body Flow is
    begin
       return F.Node_A;
    end Get_Direct_Mapping_Id;
+
+   --------------------------------
+   --  Loop_Parameter_From_Loop  --
+   --------------------------------
+
+   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
+   is
+      N : Node_Id;
+   begin
+      N := Parent (E);
+      pragma Assert (Nkind (N) = N_Implicit_Label_Declaration);
+
+      N := Label_Construct (N);
+      pragma Assert (Nkind (N) = N_Loop_Statement);
+
+      N := Iteration_Scheme (N);
+      if N = Empty then
+         return Empty;
+      end if;
+      pragma Assert (Nkind (N) = N_Iteration_Scheme);
+
+      N := Loop_Parameter_Specification (N);
+      if N = Empty then
+         return Empty;
+      end if;
+      pragma Assert (Nkind (N) = N_Loop_Parameter_Specification);
+
+      return Defining_Identifier (N);
+   end Loop_Parameter_From_Loop;
 
    -------------------------
    -- Flow_Analyse_Entity --
@@ -244,7 +271,7 @@ package body Flow is
                      Output.Write_Str ("\nLoops:");
                      for Loop_Identifier of A.Loops loop
                         Output.Write_Str ("&nbsp;");
-                        Sprint_Node (Get_Direct_Mapping_Id (Loop_Identifier));
+                        Sprint_Node (Loop_Identifier);
                      end loop;
                   end if;
                end;
@@ -288,7 +315,8 @@ package body Flow is
             DDG          => Flow_Graphs.Create,
             CDG          => Flow_Graphs.Create,
             PDG          => Flow_Graphs.Create,
-            Vars         => Flow_Id_Sets.Empty_Set);
+            Vars         => Flow_Id_Sets.Empty_Set,
+            Loops        => Node_Sets.Empty_Set);
 
          Control_Flow_Graph.Create (Body_N, FA);
 
@@ -326,6 +354,7 @@ package body Flow is
          Analysis.Find_Ineffective_Imports (FA);
          Analysis.Find_Ineffective_Statements (FA);
          Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+         Analysis.Find_Stable_Elements (FA);
 
       end;
    end Flow_Analyse_Entity;

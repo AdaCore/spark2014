@@ -139,4 +139,59 @@ package body Flow.Analysis is
       end loop;
    end Find_Use_Of_Uninitialised_Variables;
 
+   procedure Find_Stable_Elements
+     (FA : Flow_Analysis_Graphs)
+   is
+      Done      : Boolean       := False;
+      Tmp       : Flow_Graphs.T := FA.DDG.Create;
+      Is_Stable : Boolean;
+   begin
+      for Loop_Id of FA.Loops loop
+         Done := False;
+         while not Done loop
+            Done := True;
+            for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+               declare
+                  Atr : V_Attributes := Tmp.Get_Attributes (N_Loop);
+               begin
+                  if Atr.Loops.Contains (Loop_Id) then
+                     --  For all nodes in the loop, do:
+
+                     --  We start by checking if the used variables
+                     --  contain the loop parameter for our loop.
+                     Is_Stable := Atr.Variables_Used.Contains
+                       (Direct_Mapping_Id
+                          (Loop_Parameter_From_Loop (Loop_Id)));
+
+                     --  We then check if we have at least one
+                     --  in-neighbour from "outside" the loop.
+                     if Is_Stable then
+                        for V of FA.PDG.Get_Collection
+                          (N_Loop, Flow_Graphs.In_Neighbours) loop
+                           if Tmp.Get_Attributes (V).Loops.Contains
+                             (Loop_Id) then
+                              Is_Stable := False;
+                              exit;
+                           end if;
+                        end loop;
+                     end if;
+
+                     if Is_Stable then
+                        --  Remove from the loop
+                        Atr.Loops.Delete (Loop_Id);
+                        Tmp.Set_Attributes (N_Loop, Atr);
+
+                        --  Complain
+                        Error_Msg_Flow ("stable!", FA.PDG.Get_Key (N_Loop));
+
+                        --  There might be other stable elements now.
+                        Done := False;
+                     end if;
+                  end if;
+               end;
+            end loop;
+         end loop;
+      end loop;
+   end Find_Stable_Elements;
+
 end Flow.Analysis;

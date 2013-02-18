@@ -22,9 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Treepr; use Treepr;
-with Atree;  use Atree;
 with Sinfo;  use Sinfo;
-with Einfo;  use Einfo;
 with Nlists; use Nlists;
 
 with Flow.Debug; use Flow.Debug;
@@ -71,11 +69,11 @@ package body Flow.Control_Flow_Graph is
    --------------
 
    type Context is record
-      Current_Loops : Flow_Id_Sets.Set;
+      Current_Loops : Node_Sets.Set;
    end record;
 
    No_Context : constant Context :=
-     Context'(Current_Loops => Flow_Id_Sets.Empty_Set);
+     Context'(Current_Loops => Node_Sets.Empty_Set);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -513,9 +511,10 @@ package body Flow.Control_Flow_Graph is
       --  loop. Please note that we don't flag the loop statement
       --  itself as part of the loop, hence the corresponding delete
       --  is here as well.
-      Ctx.Current_Loops.Insert (Direct_Mapping_Id (Entity (Identifier (N))));
+      FA.Loops.Insert (Entity (Identifier (N)));
+      Ctx.Current_Loops.Insert (Entity (Identifier (N)));
       Process_Statement_List (Statements (N), FA, CM, Ctx);
-      Ctx.Current_Loops.Delete (Direct_Mapping_Id (Entity (Identifier (N))));
+      Ctx.Current_Loops.Delete (Entity (Identifier (N)));
 
       if Iteration_Scheme (N) = Empty then
          --  We have a loop.
@@ -887,7 +886,7 @@ package body Flow.Control_Flow_Graph is
                         Is_Export         => False,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
                         Variables_Used    => Flow_Id_Sets.Empty_Set,
-                        Loops             => Flow_Id_Sets.Empty_Set),
+                        Loops             => Node_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, V, FA.Start_Vertex);
 
@@ -911,7 +910,7 @@ package body Flow.Control_Flow_Graph is
                         Is_Export         => Is_Export,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
                         Variables_Used    => Flow_Id_Sets.To_Set (F),
-                        Loops             => Flow_Id_Sets.Empty_Set),
+                        Loops             => Node_Sets.Empty_Set),
                      V);
                   Linkup (FA.CFG, FA.End_Vertex, V);
                end;

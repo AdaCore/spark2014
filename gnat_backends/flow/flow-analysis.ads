@@ -44,4 +44,10 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Find_Stable_Elements
+     (FA : Flow_Analysis_Graphs);
+   --  Find stable loop statements.
+   --
+   --  ??? Complexity
+
 end Flow.Analysis;
