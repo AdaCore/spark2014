@@ -48,6 +48,6 @@ package Flow.Analysis is
      (FA : Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
-   --  ??? Complexity
+   --  Complexity is O(N²)
 
 end Flow.Analysis;
