@@ -13,7 +13,7 @@ related to tasking and synchronization.
 .. centered:: **Extended Legality Rules**
 
 #. A ``simple_statement`` shall not be a ``goto_statement``, an ``entry_call_statement``,
-   a ``requeue_statement``, an ``abort_statement``, a ``delay_statement``,
+   a ``requeue_statement``, a ``delay_statement``, an ``abort_statement``, 
    or a ``code_statement``.
 
 #. A ``compound_statement`` shall not be an ``accept_statement`` or a ``select_statement``.

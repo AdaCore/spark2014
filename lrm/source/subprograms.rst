@@ -16,7 +16,7 @@ may be in |SPARK| even if the implementation view is not.
 Rules are imposed in |SPARK| to ensure that the execution of a function
 call does not modify any variables declared outside of the function.
 It follows as a consequence of these rules that the evaluation
-of any [SPARK] expression is side-effect free.
+of any |SPARK| expression is side-effect free.
 
 We also introduce the notion of a *global item*, which is a name that denotes a
 global variable or a state abstraction (see :ref:`abstract-state`). 
@@ -34,7 +34,7 @@ variable.
 #. The *final* value of a global item or parameter of a subprogram is its 
    value immediately following the successful call of the subprogram.
 
-#. The *initial* value of a global item or parameter of a subprogram is its 
+#. The *initial* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
    
 #. An *output* of a subprogram is a global item or parameter whose final
@@ -231,7 +231,7 @@ where
 
 .. centered:: **Verification Rules**
 
-#. Each ``condition`` in a Contract_Cases aspect has to proven to
+#. Each ``condition`` in a Contract_Cases aspect has to be proven to
    be mutually exclusive, that is only one ``condition`` can be
    True with any set of inputs conformant with the formal parameters
    and satisfying the specific precondition.
@@ -282,7 +282,8 @@ High-level requirements
 
 #. Consistency:
 
-   * **Requirement:** The mode associated with a formal parameter or volatile variable in a global data list
+   * **Requirement:** The mode associated with a formal parameter [of an enclosing subprogram]
+     or volatile variable in a global data list
      shall be consistent with the mode associated with it at the point of its declaration.
      
      **Rationale:** this provides an early basic consistency check.
@@ -405,13 +406,13 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with a Global.
+There are no dynamic semantics associated with a Global aspect.
 
 .. centered:: **Verification Rules**
 
 There are no verification rules associated with a Global aspect of a subprogram
 declaration.  The rules given in the Subprogram Bodies section under Global 
-aspects are checked when a subprogram body is a analyzed.
+aspects are checked when a subprogram body is analyzed.
 
 .. centered:: **Examples**
 
@@ -821,7 +822,7 @@ are used in formal specification and verification only. A non-executable ghost
 function is introduced by declaring a ghost function with an Import
 ``aspect_mark`` in its declaration.
 
-If call is made, directly or indirectly, to this function other than in a
+If a call is made, directly or indirectly, to this function other than in an
 assertion expression which is not a subtype predicate, or if the assertion
 policy Ignore is not selected, an error will be reported when an attempt is made
 to build and execute the program.
@@ -851,7 +852,7 @@ No extensions or restrictions.
 .. todo::
    The modes of a subprogram in Ada are not as strict as S2005 and there
    is a difference in interpretation of the modes as viewed by flow analysis.
-   For instance in Ada a formal parameter of mode out of a composite type need 
+   For instance in Ada a formal parameter of mode out of a composite type need
    only be partially updated, but in flow analysis this would have mode in out.
    Similarly an Ada formal parameter may have mode in out but not be an input.
    In flow analysis it would be regarded as an input and give arise to 
@@ -880,7 +881,7 @@ Global Aspects
 ~~~~~~~~~~~~~~
 
 If a subprogram does not have a separate declaration then the Global 
-aspect is applied to the declaration of its its body or body stub.
+aspect is applied to the declaration of its body or body stub.
 The implementation of a subprogram body must be consistent with its 
 Global Aspect.  
 
@@ -1058,20 +1059,20 @@ No extra dynamic semantics are associated with anti-aliasing.
 
 #. In |SPARK|, a procedure call shall not pass actual parameters 
    which denote objects with overlapping locations, when at least one of 
-   corresponding formal parameters is of mode **out** or **in out**, 
-   unless the other corresponding formal parameter is of mode **in** 
+   the corresponding formal parameters is of mode **out** or **in out**,
+   unless the other corresponding formal parameter is of mode **in**
    and is of a by-copy type. 
    
-#. Likewise, it is not allowed in a call to pass an actual parameter, whose
+#. In |SPARK|, a procedure call shall not pass an actual parameter, whose
    corresponding formal parameter is mode **out** or **in out**,
    that denotes an object which overlaps with any ``global_item`` referenced 
-   by the subprogram. 
+   by the subprogram.
    
-#. Finally, it is not allowed in a call to pass an actual parameter which 
+#. In |SPARK|, a procedure call shall not pass an actual parameter which
    denotes an object which overlaps a ``global_item`` of mode 
    **out** or **in out** of the subprogram, unless the corresponding formal
    parameter is of mode **in** and by-copy.
-   
+
 Return Statements
 -----------------
 

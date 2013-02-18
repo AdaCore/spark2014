@@ -81,7 +81,7 @@ A default initialization, if present must also be in |SPARK|.
 Tagged Types and Type Extensions
 --------------------------------
 
-No extensions or restrictions.
+No extensions or restrictions currently identified, though see ToDo.
 
 .. todo::
    RCC comment: This will need to describe any global restrictions on tagged types (if any)

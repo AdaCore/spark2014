@@ -61,6 +61,9 @@ The ``attribute_designator`` Access is not allowed in |SPARK|.
       not generally in Ada code in a non-Gnat compiler.
 
       To be completed in the Milestone 3 version of this document.
+      Note that as language-defined attributes form Appendix K of the
+      Ada RM, any GNAT-defined attributes supported in |SPARK| will
+      be presented in an appendix.
 
 
 User-Defined References

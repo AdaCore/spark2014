@@ -5,7 +5,7 @@ A *compile-time* constant is a static expression or an expression involving only
 static expressions [for example an aggregate of static expressions].
 
 In |SPARK| a declaration or statement occurring immediately within the package
-shall not read directly or indirectly a value which is not derived only from 
+shall only read -- whether directly or indirectly -- values derived only from 
 compile-time constants.
 
 Among other things this restriction avoids the need to have dependency relations 
@@ -273,7 +273,7 @@ where the ``aspect_mark`` is Abstract_State and the
    
 #. A **null** ``abstract_state_list`` specifies that a package contains no 
    hidden state.
-   [The specification is is checked when the package is analyzed.]
+   [The specification is checked when the package is analyzed.]
 
 #. A *volatile* state abstraction is one declared with a property list
    which includes the Volatile property, and either Input or Output.
@@ -284,7 +284,7 @@ There are no Verification Rules associated with the Abstract State aspect.
    
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with the Abstract State
+There are no Dynamic Semantics associated with the Abstract State
 aspect.
 
 .. centered:: **Examples**
