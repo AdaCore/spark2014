@@ -47,4 +47,40 @@ package body Test is
       end loop;
    end While_Loop;
 
+   function Bergeretti_Fig9_Correct (B, P : Integer) return Integer
+   is
+      C, D, Q, R, W, X, Y : Integer;
+   begin
+      C := P; D := B;
+      X := 0; Y := 1;
+      while D /= 1 loop
+         Q := C / D; R := C mod D;
+         W := X - Q * Y;
+         C := D; D := R;
+         X := Y; Y := W;
+      end loop;
+      if Y < 0 then
+         Y := Y + P;
+      end if;
+      return Y;
+   end Bergeretti_Fig9_Correct;
+
+   function Bergeretti_Fig9_Incorrect (B, P : Integer) return Integer
+   is
+      C, D, Q, R, W, X, Y : Integer;
+   begin
+      C := P; D := B;
+      X := 0; Y := 1;
+      while D /= 1 loop
+         Q := C / D;
+         W := X - Q * Y;
+         C := D; D := R;
+         X := Y; Y := W;
+      end loop;
+      if Y < 0 then
+         Y := Y + P;
+      end if;
+      return Y;
+   end Bergeretti_Fig9_Incorrect;
+
 end Test;
