@@ -32,8 +32,7 @@ package body Flow.Analysis is
    procedure Error_Msg_Flow (Msg : String; L, F : Flow_Id);
    --  Output an error message attaced to the given flow_id thing L.
 
-   procedure Error_Msg_Flow (Msg : String; F : Flow_Id)
-   is
+   procedure Error_Msg_Flow (Msg : String; F : Flow_Id) is
    begin
       case F.Kind is
          when Direct_Mapping =>
@@ -43,8 +42,7 @@ package body Flow.Analysis is
       end case;
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg : String; L, F : Flow_Id)
-   is
+   procedure Error_Msg_Flow (Msg : String; L, F : Flow_Id) is
    begin
       if L.Kind = Direct_Mapping and F.Kind = Direct_Mapping then
          Error_Msg_NE (Msg,
@@ -55,9 +53,7 @@ package body Flow.Analysis is
       end if;
    end Error_Msg_Flow;
 
-   procedure Find_Ineffective_Imports
-     (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs) is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
@@ -82,9 +78,7 @@ package body Flow.Analysis is
       end loop;
    end Find_Ineffective_Imports;
 
-   procedure Find_Ineffective_Statements
-     (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
@@ -109,9 +103,7 @@ package body Flow.Analysis is
       end loop;
    end Find_Ineffective_Statements;
 
-   procedure Find_Use_Of_Uninitialised_Variables
-     (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs) is
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -139,9 +131,7 @@ package body Flow.Analysis is
       end loop;
    end Find_Use_Of_Uninitialised_Variables;
 
-   procedure Find_Stable_Elements
-     (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs) is
       Done      : Boolean       := False;
       Tmp       : Flow_Graphs.T := FA.DDG.Create;
       Is_Stable : Boolean;

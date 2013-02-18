@@ -26,28 +26,24 @@
 
 package Flow.Analysis is
 
-   procedure Find_Ineffective_Imports
-     (FA : Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs);
    --  Find all ineffective initial values.
    --
-   --  Complexity is O(N²)
+   --  Complexity is O(N^2)
 
-   procedure Find_Ineffective_Statements
-     (FA : Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
-   --  Complexity is O(N²)
+   --  Complexity is O(N^2)
 
-   procedure Find_Use_Of_Uninitialised_Variables
-     (FA : Flow_Analysis_Graphs);
+   procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs);
    --  Find all instances where uninitialised variables are used.
    --
    --  Complexity is O(N)
 
-   procedure Find_Stable_Elements
-     (FA : Flow_Analysis_Graphs);
+   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
-   --  Complexity is O(N²)
+   --  Complexity is O(N^2)
 
 end Flow.Analysis;
