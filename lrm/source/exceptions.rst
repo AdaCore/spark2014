@@ -43,7 +43,7 @@ There is no additional syntax associated with exceptions in |SPARK|.
    exception renamings) are in |SPARK|. Raise statements are in |SPARK|,
    but must (as described below) be provably never executed.]
 
-   Raise expressions are not in |SPARK|; for a raise statement to be in
+#. Raise expressions are not in |SPARK|; for a raise statement to be in
    |SPARK|, it must be immediately enclosed by an if statement
    which encloses no other statement. [It is intended that these two
    rules will be relaxed at some point in the future (this is why
