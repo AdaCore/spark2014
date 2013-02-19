@@ -516,15 +516,120 @@ package body Flow.Control_Flow_Graph is
 
       procedure Do_Loop;
       --  Helper procedure to deal with normal loops.
+      --
+      --  We have two cases: Infinite loops and not-so-infinite loops.
+      --
+      --  For the infinite loop case we do not have exit or return
+      --  statements in the loop. To get a mostly connected graph
+      --  (there should be at least a path start -> end) we will
+      --  pretend there is an "exit when False" statement at the end
+      --  of the loop. Thus:
+      --
+      --        |
+      --        +<----\
+      --        |     |
+      --        v     |
+      --       BODY   |
+      --        |  \--/
+      --        v
+      --
+      --  If we would not do this we would get a null derives for the
+      --  enclosing subprogram (along with some exceptions thrown by
+      --  the dominator tree algorith).
+      --
+      --  If we have at least one exit statement (for this loop) or a
+      --  return statement we do not need to put in this faux exit.
 
       procedure Do_While_Loop;
       --  Helper procedure to deal with while loops.
+      --
+      --  This is actually the most simple of the loops. We generate
+      --  the following graph:
+      --
+      --       |
+      --       v
+      --   CONDITION --\
+      --   ^   |       |
+      --   |   v       |
+      --   |  BODY     |
+      --   |   |       |
+      --   \---/       v
 
       procedure Do_For_Loop;
       --  Helper procedure to deal with for loops.
+      --
+      --  We must distinguish between three kinds of for loops,
+      --  depending on the range. It can be definitely empty,
+      --  definitely non-empty and unknown.
+      --
+      --  For the "definitely empty" case we never connect the loop
+      --  body:
+      --
+      --       |
+      --       v
+      --    PARAMETER         BODY
+      --       |
+      --       v
+      --
+      --  For the "unknown" case we have a construct similar to a
+      --  while loop:
+      --
+      --       |
+      --       v
+      --   PARAMETER --\
+      --   ^   |       |
+      --   |   v       |
+      --   |  BODY     |
+      --   |   |       |
+      --   \---/       v
+      --
+      --  Finally, for the "definitely non-empty" case we employ a
+      --  creative hack. We move the parameter definition behind the
+      --  loop body, which means there are no paths that never execute
+      --  the loop. Any dependency on the parameter (for example if
+      --  the user wrote range A .. B) is irrelevant as it must be
+      --  static in the first place and thus there can't be any
+      --  dependencies. Thus:
+      --
+      --        |
+      --        v
+      --       BODY <---\
+      --        |       |
+      --        v       |
+      --    PARAMETER --/
+      --        |
+      --        v
+      --
+      --  The PARAMETER block defines the loop parameter (which is
+      --  also flagged as Is_Initialised and Is_Loop_Parameter so that
+      --  it can be suitably ignored by subsequent analysis).
 
       procedure Do_Loop is
+         Contains_Return : Boolean := False;
+         Unused          : Traverse_Final_Result;
+         pragma Unreferenced (Unused);
+
+         function Proc (N : Node_Id) return Traverse_Result;
+         --  Set Contains_Return to true if we find a return statement.
+
+         function Proc (N : Node_Id) return Traverse_Result
+         is
+         begin
+            case Nkind (N) is
+               when N_Simple_Return_Statement |
+                 N_Extended_Return_Statement =>
+                  Contains_Return := True;
+                  return Abandon;
+               when others =>
+                  return OK;
+            end case;
+         end Proc;
+
+         function Find_Return is new Traverse_Func (Process => Proc);
       begin
+         --  Check if we have a return statement.
+         Unused := Find_Return (N);
+
          --  We have a null vertex for the loop, as we have no
          --  condition.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
@@ -536,9 +641,21 @@ package body Flow.Control_Flow_Graph is
 
          --  Exit from the loop is at the end of the loop, i.e. we are
          --  always going round at least once.
-         --  !!! workaround
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+         if Contains_Return then
+            --  If the loop contains a return statement we do not add
+            --  the faux exit.
+            null;
+         elsif CM (Union_Id (N)).Standard_Exits.Length > 0 then
+            --  If we already have a standard exit that means an exit
+            --  statement added it. We don't need the faux exit.
+            null;
+         else
+            --  We have neither return nor exit, so we simulate an
+            --  "exit when false" at the end of the loop.
+            --  !!! workaround
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+         end if;
 
          --  Loop the loop: V -> body -> V
          Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
