@@ -86,6 +86,9 @@ package Alfa.Util is
    function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
    --  Return the N_Specification node for a subprogram entity E
 
+   function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id;
+   --  Return the pragma Contract_Cases for E, if any
+
    function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
    --  Given the entity E for a function, determine whether E is an expression
    --  function that only calls expression functions, directly or indirectly.

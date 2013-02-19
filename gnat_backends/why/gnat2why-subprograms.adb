@@ -34,6 +34,7 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Stand;                 use Stand;
+with Uintp;                 use Uintp;
 with VC_Kinds;              use VC_Kinds;
 
 with Alfa;                  use Alfa;
@@ -78,10 +79,11 @@ package body Gnat2Why.Subprograms is
    --  they refer to the global variables
 
    function Compute_Context
-     (Params : Transformation_Params;
+     (Params       : Transformation_Params;
       E            : Entity_Id;
       Initial_Body : W_Prog_Id;
-      Post_Check   : W_Prog_Id) return W_Prog_Id;
+      Post_Check   : W_Prog_Id;
+      Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id;
    --  Deal with object declarations at the beginning of the function.
    --  For local variables that originate from the source, simply assign
    --  the new value to the variable; Such variables have been declared
@@ -89,21 +91,32 @@ package body Gnat2Why.Subprograms is
    --  For local variables that are introduced by the compiler, add a "let"
    --  binding to Why body for each local variable of the procedure.
 
-   function Compute_Contract_Case
+   function Compute_Contract_Cases_Entry_Checks
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id;
-   --  Generate checks that:
-   --  * the Requires clauses do not raise exceptions when the precondition is
-   --    True;
-   --  * the Ensures clauses do not raise exceptions when reaching the end of
-   --    the subprogram;
-   --  * the contracts are satisfied when reaching the end of the subprogram.
+   --  Returns the Why program for checking that the guards of the
+   --  Contract_Cases pragma attached to subprogram E (if any) do not raise
+   --  run-time errors, that they are disjoint, and that they cover all cases
+   --  prescribed by the precondition.
 
-   function Compute_Pure_Function_Contract_Case
+   procedure Compute_Contract_Cases_Exit_Checks
+     (Params    : Transformation_Params;
+      E         : Entity_Id;
+      Guard_Map : out Ada_To_Why_Ident.Map;
+      Result    : out W_Prog_Id);
+   --  Returns in Result the Why program for checking that the consequence of
+   --  enabled guard of the Contract_Cases pragma attached to subprogram E (if
+   --  any) does not raise a run-time error, and that it holds. Guard_Map
+   --  stores a mapping from guard AST nodes to temporary Why names, so that
+   --  the caller can compute the Why expression for these in the pre-state,
+   --  and bind them appropriately.
+
+   function Compute_Contract_Cases_Postcondition
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id;
-   --  Generate the proposition for a contract case, to be used in the
-   --  postcondition of the program function.
+   --  Returns the postcondition corresponding to the Contract_Cases pragma for
+   --  subprogram E (if any), to be used in the postcondition of the program
+   --  function.
 
    function Compute_Effects (File : in out Why_File;
                              E    : Entity_Id) return W_Effects_Id;
@@ -229,10 +242,11 @@ package body Gnat2Why.Subprograms is
    ---------------------
 
    function Compute_Context
-     (Params : Transformation_Params;
+     (Params       : Transformation_Params;
       E            : Entity_Id;
       Initial_Body : W_Prog_Id;
-      Post_Check   : W_Prog_Id) return W_Prog_Id
+      Post_Check   : W_Prog_Id;
+      Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id
    is
       R    : W_Prog_Id        := Initial_Body;
       Node : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
@@ -265,6 +279,15 @@ package body Gnat2Why.Subprograms is
       end;
 
       R := Bind_From_Mapping_In_Expr (Params, Map_For_Old, R);
+
+      --  Bind value of guard expressions. We do not generate checks for
+      --  run-time errors here, as they are already generated in
+      --  Compute_Contract_Cases_Entry_Checks.
+
+      R := Bind_From_Mapping_In_Expr (Params => Params,
+                                      Map    => Guard_Map,
+                                      Expr   => R,
+                                      Do_Runtime_Error_Check => False);
 
       return R;
    end Compute_Context;
@@ -415,116 +438,392 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Compute_Raw_Binders;
 
-   ---------------------------
-   -- Compute_Contract_Case --
-   ---------------------------
+   -----------------------------------------
+   -- Compute_Contract_Cases_Entry_Checks --
+   -----------------------------------------
 
-   function Compute_Contract_Case
+   --  Pragma/aspect Contract_Cases (Guard1 => Consequence1,
+   --                                Guard2 => Consequence2,
+   --                                  ...
+   --                                GuardN => ConsequenceN
+   --                              [,OTHERS => ConsequenceN+1]);
+
+   --  leads to the generation of checks on subprogram entry. In a context
+   --  where the precondition is known to hold, it is checked that no
+   --  evaluation of a guard can lead to a run-time error, that no more than
+   --  one guard evaluates to True (only if there are at least two non-OTHER
+   --  guards), and that at least one guard evaluates to True (only in the case
+   --  there is no OTHERS).
+
+   --    let guard1 = ... in
+   --    let guard2 = ... in
+   --    ...
+   --    let guardN = ... in
+
+   --  Check that contract cases are disjoint only if there are at least two
+   --  non-OTHER guards:
+
+   --    assert ((if guard1 = True then 1 else 0) +
+   --            (if guard2 = True then 1 else 0) +
+   --            ...
+   --            (if guardN = True then 1 else 0) <= 1)
+
+   --  Check that contract cases are complete only if there is no OTHERS:
+
+   --    assert ((if guard1 = True then 1 else 0) +
+   --            (if guard2 = True then 1 else 0) +
+   --            ...
+   --            (if guardN = True then 1 else 0) >= 1)
+
+   function Compute_Contract_Cases_Entry_Checks
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id
    is
-      CTC : Node_Id;
-      Cur : W_Prog_Id := New_Void;
+      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Aggr          : Node_Id;
+      Contract_Case : Node_Id;
+      Case_Guard    : Node_Id;
 
-      function One_Contract_Case
-        (CTC    : Node_Id;
-         Domain : EW_Domain) return W_Prog_Id;
-      --  Generate checks for the contract case CTC
+      Guard_Map   : Ada_To_Why_Ident.Map;
+      --  Stores a mapping from guard AST nodes to temporary Why names
 
-      function One_Contract_Case
-        (CTC    : Node_Id;
-         Domain : EW_Domain) return W_Prog_Id
-      is
-         Req : constant Node_Id :=
-                 Expression (Get_Requires_From_CTC_Pragma (CTC));
-         Ens : constant Node_Id :=
-                 Expression (Get_Ensures_From_CTC_Pragma (CTC));
-         W   : constant W_Expr_Id :=
-                 New_Conditional
-                   (Ada_Node  => CTC,
-                    Domain    => Domain,
-                    Condition =>
-                      Transform_Attribute_Old (Req, Domain, Params),
-                    Then_Part =>
-                      Transform_Expr (Ens, Domain, Params),
-                    Else_Part =>
-                      New_Literal
-                        (Domain => Domain, Value => EW_True));
-      begin
-         if Domain = EW_Prog then
-            return New_Ignore (Prog => +W);
-         else
-            return New_Assert
-              (Pred => +New_VC_Expr (CTC, W, VC_Postcondition, EW_Pred));
-         end if;
-      end One_Contract_Case;
+      Has_Others  : Boolean;
+      --  Set to True if there is an OTHERS guard
+
+      Count       : W_Expr_Id := New_Integer_Constant (Value => Uint_0);
+      --  Count of the guards enabled
+
+      Result      : W_Prog_Id := New_Void;
+      --  Why program for these checks
+
+   --  Start of Compute_Contract_Cases_Entry_Checks
 
    begin
-      CTC := Spec_CTC_List (Contract (E));
-      while Present (CTC) loop
-         if Pragma_Name (CTC) = Name_Contract_Case then
+      --  If no Contract_Cases on this subprogram, return the void program
+
+      if No (Prag) then
+         return Result;
+      end if;
+
+      --  Process individual contract cases
+
+      Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+      Contract_Case := First (Component_Associations (Aggr));
+      while Present (Contract_Case) loop
+         Case_Guard := First (Choices (Contract_Case));
+
+         --  The "others" choice requires special processing
+
+         if Nkind (Case_Guard) = N_Others_Choice then
+            Has_Others := True;
+
+         --  Regular contract case
+
+         else
             declare
-               W_RE   : constant W_Prog_Id := One_Contract_Case (CTC, EW_Prog);
-               W_Post : constant W_Prog_Id := One_Contract_Case (CTC, EW_Pred);
+               Guard_Ident : constant W_Identifier_Id := New_Temp_Identifier;
+               --  Temporary Why name for the current guard
+
+               --  Whether the current guard is enabled
+               Enabled     : constant W_Expr_Id :=
+                 New_Conditional
+                   (Ada_Node    => Case_Guard,
+                    Domain      => EW_Term,
+                    Condition   =>
+                      New_Relation (Domain   => EW_Term,
+                                    Op_Type  => EW_Bool,
+                                    Left     => +Guard_Ident,
+                                    Op       => EW_Eq,
+                                    Right    =>
+                                      New_Literal (Domain => EW_Term,
+                                                   Value  => EW_True)),
+                    Then_Part   => New_Integer_Constant (Value => Uint_1),
+                    Else_Part   => New_Integer_Constant (Value => Uint_0));
             begin
-               Cur := Sequence (Cur, Sequence (W_RE, W_Post));
+               Guard_Map.Include (Case_Guard, Guard_Ident);
+               Count := New_Binary_Op (Ada_Node => Case_Guard,
+                                       Op       => EW_Add,
+                                       Op_Type  => EW_Int,
+                                       Left     => Count,
+                                       Right    => Enabled);
             end;
          end if;
 
-         CTC := Next_Pragma (CTC);
+         Next (Contract_Case);
       end loop;
 
-      return Cur;
-   end Compute_Contract_Case;
+      --  A check that contract cases are disjoint is generated only when there
+      --  are at least two guards, and none is an OTHER guard.
 
-   -----------------------------------------
-   -- Compute_Pure_Function_Contract_Case --
-   -----------------------------------------
+      if List_Length (Component_Associations (Aggr)) >= 2
+        and then (if List_Length (Component_Associations (Aggr)) = 2
+                  then not Has_Others)
+      then
+         Result := Sequence
+           (Result,
+            New_Assert
+              (Pred => +New_VC_Expr (Prag,
+               New_Relation (Domain   => EW_Pred,
+                             Op_Type  => EW_Int,
+                             Left     => +Count,
+                             Op       => EW_Le,
+                             Right    =>
+                               New_Integer_Constant (Value => Uint_1)),
+               VC_Disjoint_Contract_Cases,
+               EW_Pred)));
+      end if;
 
-   function Compute_Pure_Function_Contract_Case
+      --  A check that contract cases are complete is generated only when there
+      --  is no OTHER guard.
+
+      if not Has_Others then
+         Result := Sequence
+           (Result,
+            New_Assert
+              (Pred => +New_VC_Expr (Prag,
+               New_Relation (Domain   => EW_Pred,
+                             Op_Type  => EW_Int,
+                             Left     => +Count,
+                             Op       => EW_Ge,
+                             Right    =>
+                               New_Integer_Constant (Value => Uint_1)),
+               VC_Complete_Contract_Cases,
+               EW_Pred)));
+      end if;
+
+      --  Bind value of guard expressions
+
+      Result := Bind_From_Mapping_In_Expr (Params => Params,
+                                           Map    => Guard_Map,
+                                           Expr   => Result);
+
+      return Result;
+   end Compute_Contract_Cases_Entry_Checks;
+
+   ----------------------------------------
+   -- Compute_Contract_Cases_Exit_Checks --
+   ----------------------------------------
+
+   --  Pragma/aspect Contract_Cases (Guard1 => Consequence1,
+   --                                Guard2 => Consequence2,
+   --                                  ...
+   --                                GuardN => ConsequenceN
+   --                              [,OTHERS => ConsequenceN+1]);
+
+   --  leads to the generation of checks on subprogram exit. It is checked that
+   --  the consequence for the guard that was True on entry also evaluates to
+   --  True, without run-time errors.
+
+   --  The following do not include run-time checks:
+   --    let guard1 = ... in
+   --    let guard2 = ... in
+   --    ...
+   --    let guardN = ... in
+
+   --  The following do include run-time checks:
+   --    assert (if guard1 then consequence1);
+   --    assert (if guard2 then consequence2);
+   --    ...
+   --    assert (if guardN then consequenceN);
+   --    assert (if not (guard1 or guard2 ... or guardN) then consequenceN+1);
+
+   procedure Compute_Contract_Cases_Exit_Checks
+     (Params    : Transformation_Params;
+      E         : Entity_Id;
+      Guard_Map : out Ada_To_Why_Ident.Map;
+      Result    : out W_Prog_Id)
+   is
+      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Aggr          : Node_Id;
+      Contract_Case : Node_Id;
+      Case_Guard    : Node_Id;
+
+      Others_Contract_Case : Node_Id := Empty;
+      --  Contract case for the OTHERS case, if any
+
+      Others_Guard  : W_Expr_Id := New_Literal (Domain => EW_Term,
+                                                Value  => EW_False);
+      --  Guard for the OTHERS case, if any
+
+      function Do_One_Contract_Case
+        (Contract_Case : Node_Id;
+         Enabled       : W_Expr_Id) return W_Prog_Id;
+      --  Returns the Why program checking absence of run-time errors and
+      --  function verification of the given Contract_Case.
+
+      function Do_One_Contract_Case
+        (Contract_Case : Node_Id;
+         Enabled       : W_Expr_Id) return W_Prog_Id
+      is
+         Consequence : constant Node_Id := Expression (Contract_Case);
+      begin
+         return Sequence
+           (New_Ignore
+              (Prog =>
+                 +W_Expr_Id'(New_Conditional
+                   (Ada_Node    => Contract_Case,
+                    Domain      => EW_Prog,
+                    Condition   => Enabled,
+                    Then_Part   =>
+                      +Transform_Expr (Consequence, EW_Prog, Params),
+                    Else_Part   =>
+                      New_Literal (Domain => EW_Prog,
+                                   Value  => EW_True)))),
+            New_Assert
+              (Pred => +New_VC_Expr
+                 (Contract_Case,
+                  New_Conditional
+                    (Ada_Node    => Contract_Case,
+                     Domain      => EW_Pred,
+                     Condition   => Enabled,
+                     Then_Part   =>
+                     +Transform_Expr (Consequence, EW_Pred, Params)),
+                  VC_Contract_Case,
+                  EW_Pred)));
+      end Do_One_Contract_Case;
+
+   --  Start of Compute_Contract_Cases_Exit_Checks
+
+   begin
+      Result := New_Void;
+
+      --  If no Contract_Cases on this subprogram, return
+
+      if No (Prag) then
+         return;
+      end if;
+
+      --  Process individual contract cases
+
+      Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+      Contract_Case := First (Component_Associations (Aggr));
+      while Present (Contract_Case) loop
+         Case_Guard := First (Choices (Contract_Case));
+
+         --  The "others" choice requires special processing
+
+         if Nkind (Case_Guard) = N_Others_Choice then
+            Others_Contract_Case := Contract_Case;
+
+         --  Regular contract case
+
+         else
+            declare
+               Guard_Ident : constant W_Identifier_Id := New_Temp_Identifier;
+               --  Temporary Why name for the current guard
+
+               --  Whether the current guard is enabled
+               Enabled     : constant W_Expr_Id :=
+                 New_Relation (Domain   => EW_Term,
+                               Op_Type  => EW_Bool,
+                               Left     => +Guard_Ident,
+                               Op       => EW_Eq,
+                               Right    =>
+                                 New_Literal (Domain => EW_Term,
+                                              Value  => EW_True));
+            begin
+               Guard_Map.Include (Case_Guard, Guard_Ident);
+               Others_Guard := New_Or_Expr (Left   => Others_Guard,
+                                            Right  => Enabled,
+                                            Domain => EW_Pred);
+               Result := Sequence
+                 (Result, Do_One_Contract_Case (Contract_Case, Enabled));
+            end;
+         end if;
+
+         Next (Contract_Case);
+      end loop;
+
+      --  A check that contract cases are complete is generated only when there
+      --  is no OTHER guard.
+
+      if Present (Others_Contract_Case) then
+         declare
+            Enabled : constant W_Expr_Id := New_Not (Domain => EW_Pred,
+                                                     Right  => Others_Guard);
+         begin
+            Result := Sequence
+              (Result, Do_One_Contract_Case (Others_Contract_Case, Enabled));
+         end;
+      end if;
+   end Compute_Contract_Cases_Exit_Checks;
+
+   ------------------------------------------
+   -- Compute_Contract_Cases_Postcondition --
+   ------------------------------------------
+
+   --  Pragma/aspect Contract_Cases (Guard1 => Consequence1,
+   --                                Guard2 => Consequence2,
+   --                                  ...
+   --                                GuardN => ConsequenceN
+   --                              [,OTHERS => ConsequenceN+1]);
+
+   --  leads to the generation of a postcondition for the corresponding Why
+   --  program function.
+
+   --    if guard1 then consequence1
+   --    else if guard2 then consequence2
+   --    ...
+   --    else if guardN then consequenceN
+   --    [else consequenceN+1]
+
+   function Compute_Contract_Cases_Postcondition
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id
    is
-      CTC : Node_Id;
-      Cur : W_Pred_Id := New_Literal (Value => EW_True);
+      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Aggr          : Node_Id;
+      Contract_Case : Node_Id;
+      Case_Guard    : Node_Id;
+      Consequence   : Node_Id;
 
-      function One_Contract_Case
-        (CTC    : Node_Id;
-         Domain : EW_Domain) return W_Pred_Id;
-      --  Generate proposition for the contract case CTC
+      Result : W_Pred_Id := New_Literal (Value => EW_True);
 
-      function One_Contract_Case
-        (CTC    : Node_Id;
-         Domain : EW_Domain) return W_Pred_Id
-      is
-         Req : constant Node_Id :=
-                 Expression (Get_Requires_From_CTC_Pragma (CTC));
-         Ens : constant Node_Id :=
-                 Expression (Get_Ensures_From_CTC_Pragma (CTC));
-      begin
-         return New_Conditional
-                  (Ada_Node  => CTC,
-                   Condition => Transform_Expr (Req, Domain, Params),
-                   Then_Part => Transform_Expr (Ens, Domain, Params),
-                   Else_Part =>
-                     New_Literal (Domain => Domain, Value => EW_True));
-      end One_Contract_Case;
+   --  Start of Compute_Contract_Cases_Postcondition
 
    begin
-      CTC := Spec_CTC_List (Contract (E));
-      while Present (CTC) loop
-         if Pragma_Name (CTC) = Name_Contract_Case then
-            Cur := +New_And_Expr
-                     (Left   => +One_Contract_Case (CTC, EW_Pred),
-                      Right  => +Cur,
-                      Domain => EW_Pred);
+      --  If no Contract_Cases on this subprogram, return True
+
+      if No (Prag) then
+         return Result;
+      end if;
+
+      --  Process individual contract cases in reverse order, to create the
+      --  proper if-elsif Why predicate.
+
+      Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+      Contract_Case := Last (Component_Associations (Aggr));
+      while Present (Contract_Case) loop
+         Case_Guard := First (Choices (Contract_Case));
+         Consequence := Expression (Contract_Case);
+
+         --  The "others" choice requires special processing
+
+         if Nkind (Case_Guard) = N_Others_Choice then
+            Result := +Transform_Expr (Consequence, EW_Pred, Params);
+
+         --  Regular contract case
+
+         else
+            declare
+               --  Whether the current guard is enabled in the pre-state
+
+               Enabled : constant W_Expr_Id :=
+                 Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
+            begin
+               Result := New_Conditional
+                 (Condition   => Enabled,
+                  Then_Part   =>
+                    +Transform_Expr (Consequence, EW_Pred, Params),
+                  Else_Part   => +Result);
+            end;
          end if;
 
-         CTC := Next_Pragma (CTC);
+         Prev (Contract_Case);
       end loop;
 
-      return Cur;
-   end Compute_Pure_Function_Contract_Case;
+      return Result;
+   end Compute_Contract_Cases_Postcondition;
 
    ------------------
    -- Compute_Spec --
@@ -586,6 +885,11 @@ package body Gnat2Why.Subprograms is
       Post_Check : W_Prog_Id;
       Params     : Transformation_Params;
 
+      --  Mapping from guards to temporary names, and Why program to check
+      --  contract cases on exit.
+      Guard_Map      : Ada_To_Why_Ident.Map;
+      Contract_Check : W_Prog_Id;
+
    begin
       --  We open a new theory, so that the context is fresh for that
       --  subprogram
@@ -615,11 +919,18 @@ package body Gnat2Why.Subprograms is
                  Gen_Image   => False,
                  Ref_Allowed => True,
                  Name_Map    => Ada_Ent_To_Why.Empty_Map);
+
+      Compute_Contract_Cases_Exit_Checks
+        (Params    => Params,
+         E         => E,
+         Guard_Map => Guard_Map,
+         Result    => Contract_Check);
+
       Post_Check :=
         Sequence
           (New_Ignore (Prog =>
                        +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
-           Compute_Contract_Case (Params, E));
+           Contract_Check);
 
       --  Set the phase to Generate_Contract_For_Body from now on, so that
       --  occurrences of F'Result are properly translated as Result_Name.
@@ -672,7 +983,8 @@ package body Gnat2Why.Subprograms is
                 Transform_Statements_And_Declarations
                   (Statements
                      (Handled_Statement_Sequence (Body_N))),
-              Post_Check)));
+              Post_Check,
+              Guard_Map)));
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
@@ -691,11 +1003,14 @@ package body Gnat2Why.Subprograms is
       Name    : constant String := Full_Name (E);
       Binders : constant Binder_Array := Compute_Binders (E);
       Params  : Transformation_Params;
+
+      Prog    : W_Prog_Id;
+
    begin
       Open_Theory (File, Name & "__pre",
                    Comment =>
-                     "Module for checking absence of run-time errors in "
-                       & "the subprogram spec of "
+                     "Module for checking absence of run-time errors and "
+                       & "contract cases in the subprogram spec of "
                        & """" & Get_Name_String (Chars (E)) & """"
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
@@ -711,6 +1026,21 @@ package body Gnat2Why.Subprograms is
          Ref_Allowed => True,
          Name_Map    => Ada_Ent_To_Why.Empty_Map);
 
+      --  Generate checks for absence of run-time error in the precondition, if
+      --  any.
+
+      --  If contract cases are present, generate checks for absence of
+      --  run-time errors in guards, and check that contract cases are disjoint
+      --  and complete. The completeness is checked in a context where the
+      --  precondition is assumed.
+
+      Prog := Sequence
+        ((1 => New_Ignore
+          (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
+          2 => New_Assume_Statement
+            (Post => +Compute_Spec (Params, E, Name_Precondition, EW_Pred)),
+          3 => Compute_Contract_Cases_Entry_Checks (Params, E)));
+
       Emit
         (File.Cur_Theory,
          New_Function_Def
@@ -718,7 +1048,7 @@ package body Gnat2Why.Subprograms is
             Name    => To_Ident (WNE_Pre_Check),
             Binders => Binders,
             Labels  => (1 => Cur_Subp_Sloc),
-            Def     => Compute_Spec (Params, E, Name_Precondition, EW_Prog),
+            Def     => +Prog,
             Post    => True_Pred));
       Close_Theory (File, Filter_Entity => E);
    end Generate_VCs_For_Subprogram_Spec;
@@ -937,7 +1267,7 @@ package body Gnat2Why.Subprograms is
       Post :=
         +New_And_Expr
           (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
-           Right  => +Compute_Pure_Function_Contract_Case (Params, E),
+           Right  => +Compute_Contract_Cases_Postcondition (Params, E),
            Domain => EW_Pred);
 
       if Ekind (E) = E_Function then

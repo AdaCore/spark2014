@@ -200,7 +200,7 @@ package Gnat2Why.Expr is
    --  be equal to Why_Empty when we are not generating code for detecting
    --  run-time errors in the postcondition.
 
-   package Old_Nodes is new Ada.Containers.Hashed_Maps
+   package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => W_Identifier_Id,
       Hash            => Node_Hash,
@@ -209,28 +209,31 @@ package Gnat2Why.Expr is
 
    package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
-      Element_Type    => Old_Nodes.Map,
+      Element_Type    => Ada_To_Why_Ident.Map,
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
-      "="             => Old_Nodes."=");
+      "="             => Ada_To_Why_Ident."=");
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Old_Nodes.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id;
+     (Params                 : Transformation_Params;
+      Map                    : Ada_To_Why_Ident.Map;
+      Expr                   : W_Prog_Id;
+      Do_Runtime_Error_Check : Boolean := True) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
    --  transforming the expression node associated to the name in Map, in Expr.
+   --  Do_Runtime_Error_Check is True if the returned Why program should check
+   --  for absence of run-time errors in the expressions bound.
 
    function Name_For_Loop_Entry
      (Expr    : Node_Id;
       Loop_Id : Node_Id) return W_Identifier_Id;
    --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Old_Nodes.Map;
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map;
    --  Returns the map of identifiers to use for Loop_Entry attribute
    --  references applying to loop Loop_Id.
 
-   function Map_For_Old return Old_Nodes.Map;
+   function Map_For_Old return Ada_To_Why_Ident.Map;
    --  Returns the map of identifiers to use for Old attribute references in
    --  the current subprogram.
 
@@ -263,15 +266,17 @@ private
    --  the body and postcondition, filled during the translation, and used
    --  afterwards to generate the necessary copy instructions.
 
-   Old_Map        : Old_Nodes.Map;
+   Old_Map        : Ada_To_Why_Ident.Map;
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Old_Nodes.Map is
+   function Map_For_Loop_Entry
+     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
+   is
      (if Loop_Entry_Map.Contains (Loop_Id) then
         Loop_Entry_Map.Element (Loop_Id)
       else
-        Old_Nodes.Empty_Map);
+        Ada_To_Why_Ident.Empty_Map);
 
-   function Map_For_Old return Old_Nodes.Map is (Old_Map);
+   function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
 
 end Gnat2Why.Expr;

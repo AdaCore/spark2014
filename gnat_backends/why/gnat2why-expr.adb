@@ -598,24 +598,26 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Old_Nodes.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id
+     (Params                 : Transformation_Params;
+      Map                    : Ada_To_Why_Ident.Map;
+      Expr                   : W_Prog_Id;
+      Do_Runtime_Error_Check : Boolean := True) return W_Prog_Id
    is
       Result : W_Prog_Id := Expr;
    begin
       for C in Map.Iterate loop
          declare
-            N    : constant Node_Id := Old_Nodes.Key (C);
-            Name : constant W_Identifier_Id := Old_Nodes.Element (C);
+            N    : constant Node_Id := Ada_To_Why_Ident.Key (C);
+            Name : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
 
             --  Generate a program expression to check absence of run-time
             --  errors.
 
             RE_Prog : constant W_Prog_Id :=
-              New_Ignore
-                (Prog =>
-                 +Transform_Expr (N, EW_Prog, Params));
+              (if Do_Runtime_Error_Check then
+                 New_Ignore (Prog => +Transform_Expr (N, EW_Prog, Params))
+               else
+                 New_Void);
 
             --  Generate a term definition for the value of the object at
             --  subprogram entry, and link with rest of code. This
@@ -1469,7 +1471,7 @@ package body Gnat2Why.Expr is
 
       procedure Get_Name
         (Loop_Id  : Node_Id;
-         Loop_Map : in out Old_Nodes.Map);
+         Loop_Map : in out Ada_To_Why_Ident.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store in Result the corresponding identifier.
 
@@ -1479,7 +1481,7 @@ package body Gnat2Why.Expr is
 
       procedure Get_Name
         (Loop_Id  : Node_Id;
-         Loop_Map : in out Old_Nodes.Map) is
+         Loop_Map : in out Ada_To_Why_Ident.Map) is
       begin
          pragma Unreferenced (Loop_Id);
 
@@ -1495,7 +1497,7 @@ package body Gnat2Why.Expr is
    begin
       if not Loop_Entry_Map.Contains (Loop_Id) then
          declare
-            Empty_Map : Old_Nodes.Map;
+            Empty_Map : Ada_To_Why_Ident.Map;
          begin
             Loop_Entry_Map.Include (Loop_Id, Empty_Map);
          end;

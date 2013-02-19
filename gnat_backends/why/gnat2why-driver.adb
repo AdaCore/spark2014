@@ -135,7 +135,9 @@ package body Gnat2Why.Driver is
       --  Generate Why3 code to check absence of run-time errors in
       --  preconditions.
 
-      if Has_Precondition (E) then
+      if Has_Precondition (E)
+        or else Present (Get_Subprogram_Contract_Cases (E))
+      then
          Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
       end if;
 

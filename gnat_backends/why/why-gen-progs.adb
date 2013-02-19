@@ -39,7 +39,7 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Assume_Statement
-     (Ada_Node    : Node_Id;
+     (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Primitive_Type_Id :=

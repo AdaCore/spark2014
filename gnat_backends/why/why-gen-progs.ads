@@ -38,7 +38,7 @@ package Why.Gen.Progs is
    False_Prog : constant W_Prog_Id := New_Literal (Value => EW_False);
 
    function New_Assume_Statement
-     (Ada_Node    : Node_Id;
+     (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Primitive_Type_Id :=
