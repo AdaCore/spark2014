@@ -153,18 +153,11 @@ Formal Analysis
 - Formal verification of functional properties, based on contracts expressed as
   preconditions, postconditions, type invariants and so on.
 
-The static checking needed to carry out this formal analysis is performed in three separate
-phases and errors may be detected during any of these three steps:
+Data and information-flow analysis is not valid and may not be possible if the
+legality rules of Ada 2012 and those presented in this document are not met.  
+Similarly, a formal verification may not be possible if the legality rules are 
+not met and may be unsound if data-flow errors are present.
 
-#. The legality rules presented in this document are checked together with the Ada
-   2012 syntax and legality rules.
-   
-#. Flow analysis is performed. Rules enforced at this point are described in sections with the
-   heading "Verification Rules".
-   
-#. Formal program verification is performed.
-
-Note that analysis need not proceed in the order implied by the above list; however, there are dependencies between the phases in the sense that, for example, if legality rules are not met then flow analysis is not valid.
 
 .. todo::
       Consider adding a glossary, defining terms such as flow analysis and formal verification.
