@@ -68,7 +68,9 @@ package body Flow.Analysis is
             Key : constant Flow_Id      := FA.PDG.Get_Key (V);
             Atr : constant V_Attributes := FA.PDG.Get_Attributes (V);
          begin
-            if Key.Variant = Initial_Value and then Atr.Is_Initialised then
+            if Key.Variant = Initial_Value
+              and then Atr.Is_Initialised
+              and then (not Atr.Is_Loop_Parameter) then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access) then
                   Error_Msg_Flow ("ineffective import!", Key);

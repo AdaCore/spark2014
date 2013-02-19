@@ -21,9 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Treepr; use Treepr;
-with Sinfo;  use Sinfo;
-with Nlists; use Nlists;
+with Nlists;   use Nlists;
+with Sem_Eval; use Sem_Eval;
+with Sinfo;    use Sinfo;
+with Treepr;   use Treepr;
 
 with Flow.Debug; use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
@@ -238,8 +239,18 @@ package body Flow.Control_Flow_Graph is
                         null;
                   end case;
                end if;
-            when N_Object_Declaration =>
-               VS.Include (Direct_Mapping_Id (Defining_Identifier (N)));
+            when N_Defining_Identifier =>
+               case Ekind (N) is
+                  when E_Variable |
+                    E_Loop_Parameter |
+                    E_Out_Parameter |
+                    E_In_Parameter |
+                    E_In_Out_Parameter |
+                    E_Constant =>
+                     VS.Include (Direct_Mapping_Id (N));
+                  when others =>
+                     null;
+               end case;
             when others =>
                null;
          end case;
@@ -333,6 +344,7 @@ package body Flow.Control_Flow_Graph is
          V_Attributes'(Is_Null_Node      => False,
                        Is_Program_Node   => True,
                        Is_Initialised    => False,
+                       Is_Loop_Parameter => False,
                        Is_Export         => False,
                        Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
@@ -396,6 +408,7 @@ package body Flow.Control_Flow_Graph is
             V_Attributes'(Is_Null_Node      => False,
                           Is_Program_Node   => True,
                           Is_Initialised    => False,
+                          Is_Loop_Parameter => False,
                           Is_Export         => False,
                           Variables_Defined => Flow_Id_Sets.Empty_Set,
                           Variables_Used    => Get_Variable_Set
@@ -464,6 +477,7 @@ package body Flow.Control_Flow_Graph is
          V_Attributes'(Is_Null_Node      => False,
                        Is_Program_Node   => True,
                        Is_Initialised    => False,
+                       Is_Loop_Parameter => False,
                        Is_Export         => False,
                        Variables_Defined => Flow_Id_Sets.Empty_Set,
                        Variables_Used    => Get_Variable_Set (Condition (N)),
@@ -499,6 +513,160 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
+
+      procedure Do_Loop;
+      --  Helper procedure to deal with normal loops.
+
+      procedure Do_While_Loop;
+      --  Helper procedure to deal with while loops.
+
+      procedure Do_For_Loop;
+      --  Helper procedure to deal with for loops.
+
+      procedure Do_Loop is
+      begin
+         --  We have a null vertex for the loop, as we have no
+         --  condition.
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                            Null_Node_Attributes,
+                            V);
+
+         --  Entry point for the loop is V.
+         CM (Union_Id (N)).Standard_Entry := V;
+
+         --  Exit from the loop is at the end of the loop, i.e. we are
+         --  always going round at least once.
+         --  !!! workaround
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+
+         --  Loop the loop: V -> body -> V
+         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+      end Do_Loop;
+
+      procedure Do_While_Loop is
+      begin
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            V_Attributes'
+              (Is_Null_Node      => False,
+               Is_Program_Node   => True,
+               Is_Initialised    => False,
+               Is_Loop_Parameter => False,
+               Is_Export         => False,
+               Variables_Defined => Flow_Id_Sets.Empty_Set,
+               Variables_Used    => Get_Variable_Set
+                 (Condition (Iteration_Scheme (N))),
+               Loops             => Ctx.Current_Loops),
+            V);
+
+         --  Flow for the while loops goes into the condition and then
+         --  out again.
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits.Include (V);
+
+         --  Loop the loop: V -> body -> V
+         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+      end Do_While_Loop;
+
+      procedure Do_For_Loop is
+         LPS : constant Node_Id :=
+           Loop_Parameter_Specification (Iteration_Scheme (N));
+
+         DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
+
+         R : Node_Id;
+      begin
+         case Nkind (DSD) is
+            when N_Subtype_Indication =>
+               case Nkind (Constraint (DSD)) is
+                  when N_Range_Constraint =>
+                     R := Range_Expression (Constraint (DSD));
+                  when others =>
+                     raise Why.Not_Implemented;
+               end case;
+            when N_Range =>
+               R := DSD;
+            when others =>
+               Print_Node_Subtree (DSD);
+               raise Why.Not_Implemented;
+         end case;
+
+         if Is_Null_Range (Low_Bound (R), High_Bound (R)) then
+            --  We have an empty range. We should complain!
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               V_Attributes'
+                 (Is_Null_Node      => False,
+                  Is_Program_Node   => True,
+                  Is_Initialised    => False,
+                  Is_Loop_Parameter => False,
+                  Is_Export         => False,
+                  Variables_Defined => Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                  Variables_Used    => Flow_Id_Sets.Empty_Set,
+                  Loops             => Ctx.Current_Loops),
+               V);
+
+            --  Flow goes into and out of the loop. Note that we do
+            --  NOT hook up the loop body.
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Include (V);
+
+         elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
+            --  We need to make sure the loop is executed at least once.
+
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               V_Attributes'
+                 (Is_Null_Node      => False,
+                  Is_Program_Node   => True,
+                  Is_Initialised    => False,
+                  Is_Loop_Parameter => False,
+                  Is_Export         => False,
+                  Variables_Defined => Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                  Variables_Used    => Flow_Id_Sets.Empty_Set,
+                  Loops             => Ctx.Current_Loops),
+               V);
+
+            --  Flow goes into the first statement and out the loop vertex.
+            CM (Union_Id (N)).Standard_Entry :=
+              CM (Union_Id (Statements (N))).Standard_Entry;
+            CM (Union_Id (N)).Standard_Exits.Include (V);
+
+            --  Loop the loop: V -> body -> V
+            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         else
+            --  We don't know if the loop will be executed or not.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               V_Attributes'
+                 (Is_Null_Node      => False,
+                  Is_Program_Node   => True,
+                  Is_Initialised    => False,
+                  Is_Loop_Parameter => False,
+                  Is_Export         => False,
+                  Variables_Defined => Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                  Variables_Used    => Get_Variable_Set (DSD),
+                  Loops             => Ctx.Current_Loops),
+               V);
+
+            --  Flow for the conditional for loop is like a while
+            --  loop.
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Include (V);
+
+            --  Loop the loop: V -> body -> V
+            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
+            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+         end if;
+      end Do_For_Loop;
    begin
       --  Start with a blank slate for the loops entry and exit.
       CM.Include (Union_Id (N), No_Connections);
@@ -518,21 +686,7 @@ package body Flow.Control_Flow_Graph is
 
       if Iteration_Scheme (N) = Empty then
          --  We have a loop.
-
-         --  We have a null vertex for the loop, as we have no
-         --  condition.
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
-                            V);
-
-         --  Entry point for the loop is V.
-         CM (Union_Id (N)).Standard_Entry := V;
-
-         --  Exit from the loop is at the end of the loop, i.e. we are
-         --  always going round at least once.
-         --  !!! workaround
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+         Do_Loop;
 
       else
          --  We have either a while loop or a for loop.
@@ -541,51 +695,17 @@ package body Flow.Control_Flow_Graph is
          --  iteration scheme.
          if Condition (Iteration_Scheme (N)) /= Empty then
             --  We have a while loop.
+            Do_While_Loop;
 
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
-               V_Attributes'
-                 (Is_Null_Node      => False,
-                  Is_Program_Node   => True,
-                  Is_Initialised    => False,
-                  Is_Export         => False,
-                  Variables_Defined => Flow_Id_Sets.Empty_Set,
-                  Variables_Used    => Get_Variable_Set
-                    (Condition (Iteration_Scheme (N))),
-                  Loops             => Ctx.Current_Loops),
-               V);
          else
-            --  We have a for loop.
+            --  We have a for loop. Make sure we don't have an
+            --  iterator, but a normal range.
             pragma Assert (Loop_Parameter_Specification (Iteration_Scheme (N))
                              /= Empty);
 
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
-               V_Attributes'
-                 (Is_Null_Node      => False,
-                  Is_Program_Node   => True,
-                  Is_Initialised    => False,
-                  Is_Export         => False,
-                  Variables_Defined => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Defining_Identifier
-                                          (Loop_Parameter_Specification
-                                             (Iteration_Scheme (N))))),
-                  Variables_Used    => Get_Variable_Set
-                    (Discrete_Subtype_Definition (Loop_Parameter_Specification
-                                                    (Iteration_Scheme (N)))),
-                  Loops             => Ctx.Current_Loops),
-               V);
+            Do_For_Loop;
          end if;
-
-         --  Flow for the loops with iteration schemes goes into the
-         --  condition and then out again.
-         CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits.Include (V);
       end if;
-
-      --  Loop the loop: V -> body -> V
-      Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-      Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
    end Do_Loop_Statement;
 
    -----------------------------
@@ -612,6 +732,7 @@ package body Flow.Control_Flow_Graph is
             V_Attributes'(Is_Null_Node      => False,
                           Is_Program_Node   => True,
                           Is_Initialised    => False,
+                          Is_Loop_Parameter => False,
                           Is_Export         => False,
                           Variables_Defined => Flow_Id_Sets.To_Set
                             (Direct_Mapping_Id
@@ -650,6 +771,7 @@ package body Flow.Control_Flow_Graph is
             V_Attributes'(Is_Null_Node      => False,
                           Is_Program_Node   => True,
                           Is_Initialised    => False,
+                          Is_Loop_Parameter => False,
                           Is_Export         => False,
                           Variables_Defined => Flow_Id_Sets.To_Set
                             (Direct_Mapping_Id (FA.Subprogram)),
@@ -840,9 +962,6 @@ package body Flow.Control_Flow_Graph is
       --  Start with a blank slate.
       Connection_Map := Connection_Maps.Empty_Map;
 
-      --  Print the node for debug purposes
-      --  Print_Node_Subtree (N);
-
       --  Create the magic start and end vertices.
       FA.CFG.Add_Vertex (Null_Attributes, FA.Start_Vertex);
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
@@ -862,8 +981,9 @@ package body Flow.Control_Flow_Graph is
                declare
                   N : constant Node_Id := Get_Direct_Mapping_Id (F);
                   V : Flow_Graphs.Vertex_Id;
-                  Is_Initialised : Boolean;
-                  Is_Export      : Boolean;
+
+                  Is_Initialised    : Boolean;
+                  Is_Export         : Boolean;
                begin
                   --  Setup the n'initial vertex. Note that
                   --  initialisation for variables is detected (and
@@ -871,7 +991,8 @@ package body Flow.Control_Flow_Graph is
                   --  declarative parts.
                   case Ekind (N) is
                      when E_In_Out_Parameter |
-                       E_In_Parameter =>
+                       E_In_Parameter |
+                       E_Loop_Parameter =>
                         Is_Initialised := True;
                      when others =>
                         Is_Initialised := False;
@@ -883,6 +1004,7 @@ package body Flow.Control_Flow_Graph is
                        (Is_Null_Node      => False,
                         Is_Program_Node   => False,
                         Is_Initialised    => Is_Initialised,
+                        Is_Loop_Parameter => Ekind (N) = E_Loop_Parameter,
                         Is_Export         => False,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
                         Variables_Used    => Flow_Id_Sets.Empty_Set,
@@ -907,6 +1029,7 @@ package body Flow.Control_Flow_Graph is
                        (Is_Null_Node      => False,
                         Is_Program_Node   => False,
                         Is_Initialised    => False,
+                        Is_Loop_Parameter => False,
                         Is_Export         => Is_Export,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
                         Variables_Used    => Flow_Id_Sets.To_Set (F),
