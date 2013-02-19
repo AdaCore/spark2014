@@ -535,7 +535,7 @@ package body Flow.Control_Flow_Graph is
       --
       --  If we would not do this we would get a null derives for the
       --  enclosing subprogram (along with some exceptions thrown by
-      --  the dominator tree algorith).
+      --  the dominator tree algorithm).
       --
       --  If we have at least one exit statement (for this loop) or a
       --  return statement we do not need to put in this faux exit.
