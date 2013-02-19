@@ -103,4 +103,36 @@ package body Test is
       end loop;
    end Stable_Test_02;
 
+   type The_World is (Foo, Bar, Baz);
+   subtype Void is The_World range Bar .. Foo;
+
+   procedure For_Test_01 (X : out Natural)
+   is
+   begin
+      for Great_Justice in Void loop
+         X := 0;
+      end loop;
+   end For_Test_01;
+
+   procedure For_Test_02 (X : out Natural)
+   is
+   begin
+      for Great_Justice in The_World loop
+         X := 0;
+         exit when great_justice > Bar;
+      end loop;
+   end For_Test_02;
+
+   procedure Basic_With_Exit (X : in out Natural)
+   is
+   begin
+      loop
+         X := X * 2;
+         if X > 10 then
+            return;
+         end if;
+         X := X - 1;
+      end loop;
+   end Basic_With_Exit;
+
 end Test;
