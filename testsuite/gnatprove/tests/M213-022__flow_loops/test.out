@@ -15,10 +15,12 @@ test.adb:75:12: stable
 test.adb:77:12: stable
 test.adb:77:20: use of uninitialized variable "R"
 test.adb:77:20: stable
-test.adb:86:30: may never be initialized
 test.adb:91:15: stable
-test.adb:96:30: may never be initialized
-test.adb:100:14: may never be initialized
+test.adb:109:27: may never be initialized
+test.adb:112:33: ineffective statement
+test.adb:113:12: ineffective statement
+test.adb:113:12: stable
+test.adb:121:12: stable
 
    compilation of test.adb failed
 
