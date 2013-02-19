@@ -680,6 +680,13 @@ There are no verification rules associated with a Depends aspect of a subprogram
 declaration.  The rules given in the Subprogram Bodies section under Depends 
 aspects are checked when a subprogram body is a analyzed.
 
+.. todo::
+    Consider whether to capture the rules from SPARK 2005 about flow=auto mode in this document
+    or whether it is purely a tool issue
+    (in SPARK 2005, in flow=auto mode if a subprogram is missing a dependency relation
+    then the flow analysis
+    assumes all outputs of the subprogram are derived from all of its inputs).
+
 .. centered:: **Examples**
 
 .. code-block:: ada

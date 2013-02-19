@@ -71,7 +71,7 @@ may only appear as an Output in the Global aspect. There is an implicit
 declaration that it is also an Input.  In a Depends aspect it need not appear
 as an input as an implicit self dependency of the entity will be declared.
 
-A volatile variable or state abstractions cannot be mentioned directly in a 
+A volatile variable or volatile state abstraction cannot be mentioned directly in an
 assertion expression as the reading of a volatile may affect its value.
 
 .. todo:: More details on volatile variables and definition of a complete

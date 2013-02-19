@@ -154,11 +154,20 @@ Formal Analysis
   preconditions, postconditions, type invariants and so on.
 
 The static checking needed to carry out this formal analysis is performed in three separate
-phases and errors may be detected during any of these three steps. Firstly, the
-legality rules presented in this document are checked together with
-the Ada 2012 syntax and legality rules. Secondly, flow analysis is performed.
-Rules enforced at this point are described in sections with the
-heading "Verification Rules". Finally, formal program verification is performed.
+phases and errors may be detected during any of these three steps:
+
+#. The legality rules presented in this document are checked together with the Ada
+   2012 syntax and legality rules.
+   
+#. Flow analysis is performed. Rules enforced at this point are described in sections with the
+   heading "Verification Rules".
+   
+#. Formal program verification is performed.
+
+Note that analysis need not proceed in the order implied by the above list; however, there are dependencies between the phases in the sense that, for example, if legality rules are not met then flow analysis is not valid.
+
+.. todo::
+      Consider adding a glossary, defining terms such as flow analysis and formal verification.
 
 Further Detail on Formal Verification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -232,6 +241,9 @@ assertions whose success shall be proven statically (e.g., pragma
 Loop_Variant). In either case, an Ada compiler which ignores the
 pragma is correctly implementing the dynamic semantics of |SPARK| and
 the |SPARK| tools will still be able to undertake all their static checks and proofs.
+
+.. todo::
+      The pragmas equivalent to the new aspects need to be added to this document.
 
 .. _reqts:
 
@@ -936,3 +948,4 @@ that there is material still to be provided.
 Note this means there are certain of the strategic requirements that are currently
 not decomposed into language definition detail. Where this is the case, it will
 have been explicitly indicated in this chapter.
+
