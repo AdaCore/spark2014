@@ -22,7 +22,9 @@ SPARK 2014 Operational Requirements and Use Cases
    :numbered:
 
    introduction
+   context
    op-reqs
+   specs
    use-cases
 
 .. raw:: latex

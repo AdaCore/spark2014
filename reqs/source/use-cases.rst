@@ -1,4 +1,4 @@
-.. _use-cases-label:
+.. _use-cases:
 
 Use Cases
 *********
@@ -107,12 +107,9 @@ Integrating Proof and Test
 
 Milestone 5 or earlier:
 
-* Execute/don't execute assertions
+* :ref:`uc-combine-test-and-proof` - select contracts to be executed
 
-* Combine test and formal program verification
-
-* Generate proof "assumptions" (e.g. so that assumption that tested code upholds the precondition of a procedure where that procedure has been proven).
-
+* :ref:`uc-combine-test-and-proof` - record proof assumptions
 
 
 Support local development processes
@@ -136,10 +133,11 @@ Milestone |rel2+|:
 * Qualify tools for use as a verification tool 
 
 * Need to be able to have multiple |SPARK| aspects to take account of different system models (e.g. used to be able to redefine --# or analyse shadow files)
+
   * There are at least two solutions
+
     #. Have shadow package specs (as done on EMU) - this may require changes to the proof version of gnatmake to support this;
     #. Provide a tool that switches aspects depending on which comment marker has "hidden" them from the tools - this would be a bolt on tool.
-  * 
 
 * Cache VCs to speed up re-analysis
 
@@ -208,4 +206,7 @@ The Use Cases
 
 .. _uc-summarise-outstanding-vcs:
 .. include:: ../use-cases/summarise-outstanding-vcs.rst
+
+.. _uc-combine-test-and-proof:
+.. include:: ../use-cases/combine-test-and-proof.rst
 

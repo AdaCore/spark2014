@@ -25,7 +25,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo']
+extensions = ['sphinx.ext.todo','sphinx.ext.graphviz']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -187,8 +187,8 @@ htmlhelp_basename = 'spark2014doc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'tdp.tex', u'SPARK 2014 TDP',
-   u'Altran Praxis and AdaCore', 'manual'),
+  ('index', 'reqs.tex', u'SPARK 2014 Requirements',
+   u'Altran and AdaCore', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
