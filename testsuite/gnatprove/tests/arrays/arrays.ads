@@ -3,14 +3,8 @@ package Arrays is
 
    function Sum (X : T) return Natural with
      Post => Sum'Result >= X'Length,
-     Contract_Case => (Name     => "empty array",
-                       Mode     => Nominal,
-                       Requires => X'Length = 0,
-                       Ensures  => Sum'Result = 0),
-     Contract_Case => (Name     => "null array",
-                       Mode     => Nominal,
-                       Requires => (for all J in X'Range => X (J) = 0),
-                       Ensures  => Sum'Result = 0),
+     Contract_Cases => (X'Length = 0 => Sum'Result = 0,
+                       (for all J in X'Range => X (J) = 0) => Sum'Result = 0),
      Test_Case => (Name     => "small array",
                    Mode     => Nominal,
                    Requires => X'Length = 3),
@@ -24,10 +18,7 @@ package Arrays is
 
    function Count_Even (X : T) return Natural with
      Post => Count_Even'Result <= X'Length,
-     Contract_Case => (Name     => "empty array",
-                       Mode     => Nominal,
-                       Requires => X'Length = 0,
-                       Ensures  => Count_Even'Result = 0),
+     Contract_Cases => (X'Length = 0 => Count_Even'Result = 0),
      Test_Case => (Name     => "only odd",
                    Mode     => Nominal,
                    Requires => (for all J in X'Range => X (J) mod 2 = 1),
