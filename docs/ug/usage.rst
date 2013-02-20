@@ -221,22 +221,17 @@ expressed either as a pair of a precondition and a postcondition:
       Pre  => X >= 0,
       Post => X = Integer'Min (X'Old + 1, Threshold);
 
-or as a set of contract cases:
+or as a set of disjoint and complete contract cases:
 
 .. code-block:: ada
    :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
-      Contract_Case => (Name     => "increment",
-                        Mode     => Nominal,
-                        Requires => X >= 0 and then X < Threshold,
-                        Ensures  => X = X'Old + 1),
-      Contract_Case => (Name     => "saturate",
-                        Mode     => Nominal,
-                        Requires => X >= 0 and then X = Threshold,
-                        Ensures  => X = X'Old);
+      Contract_Cases => (X < Threshold  => X = X'Old + 1,
+                         X >= Threshold => X = X'Old);
 
-or, finally, as a combination of both:
+or, finally, as a combination of both (where the contract cases should cover
+the cases allowed by the precondition):
 
 .. code-block:: ada
    :linenos:
@@ -244,35 +239,43 @@ or, finally, as a combination of both:
     procedure Incr_Threshold (X : in out Integer) with
       Pre  => X >= 0,
       Post => X >= X'Old,
-      Contract_Case => (Name     => "increment",
-                        Mode     => Nominal,
-                        Requires => X < Threshold,
-                        Ensures  => X = X'Old + 1),
-      Contract_Case => (Name     => "saturate",
-                        Mode     => Nominal,
-                        Requires => X = Threshold,
-                        Ensures  => X = X'Old);
+      Contract_Cases => (X < Threshold  => X = X'Old + 1,
+                         X >= Threshold => X = X'Old);
 
-Note that these are not equivalent: contract cases only provide a convenient
-way to express complex postconditions, but they do not restrict the calling
-context of the subprogram (the precondition).
+Note that contract cases provide a convenient way to express complex
+contracts, which would be cumbersome to express with a precondition and
+a postcondition. For example, the contract cases above are equivalent to
+the following precondition and postcondition:
+
+.. code-block:: ada
+   :linenos:
+
+    procedure Incr_Threshold (X : in out Integer) with
+      Pre  => (X < Threshold and not (X >= Threshold))
+               or else (not (X < Threshold) and X >= Threshold),
+      Post => (if X'Old < Threshold'Old then X = X'Old + 1
+               elsif X'Old >= Threshold'Old then X = X'Old);
 
 Contract cases can be expressed both as pragmas and aspects. The syntax of
 contract case pragmas is the following:
 
 .. code-block:: ada
 
-   pragma Contract_Case (
-      [Name     =>] static_string_Expression
-     ,[Mode     =>] (Nominal | Robustness)
-    [, Requires =>  Boolean_Expression]
-    [, Ensures  =>  Boolean_Expression]);
+   pragma Contract_Cases (
+     Condition1 => Consequence1,
+     Condition2 => Consequence2,
+     ...
+     ConditionN => ConsequenceN);
+
+where ConditionN can be ``others``, meaning any case which is not captured
+by any of the other conditions. One and only one condition should be true
+when calling the subprogram. The corresponding consequence is then checked
+at subprogram exit. Attributes ``'Old`` and ``'Result`` can only be
+used within the consequence expressions.
 
 The compiler checks the validity of this pragma or aspect, and, depending on
-the assertion policy at the point of declaration of the pragma, it may insert a
-check in the executable, corresponding informally to the postcondition ``if
-Requires'Old then Ensures``. Attributes ``'Old`` and ``'Result`` can only be
-used within the ``Ensures`` expression.  See the GNAT Reference Manual for more
+the assertion policy at the point of declaration of the pragma, it may insert
+checks in the executable. See the SPARK Reference Manual for more
 details.
 
 Function Calls in Annotations
