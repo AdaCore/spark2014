@@ -811,6 +811,12 @@ and nothing further is given on how it should be used.*
 
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
+   In particular, where subheadings such as Legality Rules or Static Semantics are
+   used to classify the language rules given for new language features, any rules
+   given to restrict the Ada subset being used need to be classified in some way (for
+   example, as Subset Rules) and so given under a corresponding heading. In addition,
+   the inconsistency between the headings used for statements and exceptions needs
+   to be addressed.
    To be completed in the Milestone 4 version of this document.
 
 .. _volatile:

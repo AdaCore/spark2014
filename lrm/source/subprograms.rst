@@ -184,7 +184,6 @@ where
 
    ``consequence ::=`` *Boolean_*\ ``expression``
 
-
 .. centered:: **Legality Rules**
 
 #. A Contract_Cases aspect may have at most one **others**
