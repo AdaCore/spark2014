@@ -334,7 +334,7 @@ package body Flow is
          end NDI;
 
          ---------
-         -- NDI --
+         -- EDI --
          ---------
 
          function EDI
