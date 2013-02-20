@@ -1090,9 +1090,7 @@ package body Flow.Control_Flow_Graph is
    --  Simplify  --
    ----------------
 
-   procedure Simplify
-     (G : in out Flow_Graphs.T'Class)
-   is
+   procedure Simplify (G : in out Flow_Graphs.T'Class) is
       A : V_Attributes;
    begin
       for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -1123,16 +1121,20 @@ package body Flow.Control_Flow_Graph is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set
-   is
+   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set is
       VS     : Flow_Id_Sets.Set;
       Unused : Traverse_Final_Result;
       pragma Unreferenced (Unused);
 
       function Proc (N : Node_Id) return Traverse_Result;
+      --  Adds each identifier or defining_identifier found to VS, as
+      --  long as we are dealing with:
+      --     * a variable
+      --     * a subprogram parameter
+      --     * a loop parameter
+      --     * a constant
 
-      function Proc (N : Node_Id) return Traverse_Result
-      is
+      function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
             when N_Identifier =>
@@ -1173,8 +1175,7 @@ package body Flow.Control_Flow_Graph is
       return VS;
    end Get_Variable_Set;
 
-   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set
-   is
+   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set is
       VS : Flow_Id_Sets.Set;
       P  : Node_Id;
    begin
