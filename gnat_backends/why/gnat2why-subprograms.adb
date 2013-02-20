@@ -487,7 +487,7 @@ package body Gnat2Why.Subprograms is
       Guard_Map   : Ada_To_Why_Ident.Map;
       --  Stores a mapping from guard AST nodes to temporary Why names
 
-      Has_Others  : Boolean;
+      Has_Others  : Boolean := False;
       --  Set to True if there is an OTHERS guard
 
       Count       : W_Expr_Id := New_Integer_Constant (Value => Uint_0);
