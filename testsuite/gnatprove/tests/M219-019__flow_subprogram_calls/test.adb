@@ -13,8 +13,9 @@ package body Test is
 
    procedure HRB_Increment (Z : in out Integer)
    is
+      Tmp : Integer := 1;
    begin
-      HRB_Add (Z, 1);
+      HRB_Add (Z, B => Tmp);
    end HRB_Increment;
 
    procedure HRB_A (X : in out Integer;
