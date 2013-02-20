@@ -4,7 +4,7 @@ package Arrays is
    function Sum (X : T) return Natural with
      Post => Sum'Result >= X'Length,
      Contract_Cases => (X'Length = 0 => Sum'Result = 0,
-                       (for all J in X'Range => X (J) = 0) => Sum'Result = 0),
+                       (for all J in X'Range => X (J) = 0) => Sum'Result = 0), --  The guard here is equivalent to requiring X'Length = 0, as all elements of the array are positive
      Test_Case => (Name     => "small array",
                    Mode     => Nominal,
                    Requires => X'Length = 3),

@@ -14,4 +14,4 @@ arrays.ads:6:38: info: contract case proved
 arrays.ads:6:6: complete contract cases not proved
 arrays.ads:6:6: disjoint contract cases not proved
 arrays.ads:7:52: index check not proved
-arrays.ads:7:60: contract case not proved
+arrays.ads:7:60: info: contract case proved
