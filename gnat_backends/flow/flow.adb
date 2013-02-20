@@ -123,6 +123,25 @@ package body Flow is
       end case;
    end Hash;
 
+   ----------------------
+   --  Sprint_Flow_Id  --
+   ----------------------
+
+   procedure Sprint_Flow_Id (F : Flow_Id)
+   is
+   begin
+      case F.Kind is
+         when Null_Value =>
+            Output.Write_Str ("<null>");
+         when Direct_Mapping =>
+            Sprint_Node (F.Node_A);
+         when Record_Field =>
+            raise Why.Not_Implemented;
+         when Magic_String =>
+            raise Why.Not_Implemented;
+      end case;
+   end Sprint_Flow_Id;
+
    ---------------------------
    -- Get_Direct_Mapping_Id --
    ---------------------------
@@ -243,8 +262,30 @@ package body Flow is
                                     Sprint_Node
                                       (Iteration_Scheme (N));
                                  end if;
+                              when N_Procedure_Call_Statement =>
+                                 Rv.Shape := Shape_Box;
+                                 Output.Write_Str ("call ");
+                                 Sprint_Node (Name (N));
                               when others =>
-                                 Sprint_Node (N);
+                                 if A.Is_Parameter then
+                                    Rv.Shape := Shape_None;
+                                    case F.Variant is
+                                       when In_View =>
+                                          Sprint_Flow_Id (A.Parameter_Formal);
+                                          Output.Write_Str ("'in");
+                                          Output.Write_Str ("&nbsp;:=&nbsp;");
+                                          Sprint_Flow_Id (A.Parameter_Actual);
+                                       when Out_View =>
+                                          Sprint_Flow_Id (A.Parameter_Actual);
+                                          Output.Write_Str ("&nbsp;:=&nbsp;");
+                                          Sprint_Flow_Id (A.Parameter_Formal);
+                                          Output.Write_Str ("'out");
+                                       when others =>
+                                          raise Program_Error;
+                                    end case;
+                                 else
+                                    Sprint_Node (N);
+                                 end if;
                            end case;
                         end;
                         case F.Variant is

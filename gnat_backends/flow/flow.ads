@@ -78,6 +78,8 @@ package Flow is
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
 
+   procedure Sprint_Flow_Id (F : Flow_Id);
+
    function Direct_Mapping_Id (N       : Node_Id;
                                Variant : Flow_Id_Variant := Normal_Use)
                                return Flow_Id
