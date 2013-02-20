@@ -316,7 +316,7 @@ package body Flow is
                         raise Program_Error;
                   end case;
 
-                  if A.Loops.Length > 0 then
+                  if A.Loops.Length > 0 and not A.Is_Parameter then
                      Output.Write_Str ("\nLoops:");
                      for Loop_Identifier of A.Loops loop
                         Output.Write_Str ("&nbsp;");
