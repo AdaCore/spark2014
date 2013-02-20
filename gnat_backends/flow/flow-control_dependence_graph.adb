@@ -33,6 +33,26 @@ package body Flow.Control_Dependence_Graph is
 
       --  The CDG is simply the post-dominance frontier.
       FA.CDG := Reversed_CFG.Dominance_Frontier (FA.End_Vertex);
+
+      --  Fix call nodes. As they appear as a linear sequence in the
+      --  CFG the call vertex and each parameter vertex will all be
+      --  control dependent on the same node. For clarity, we want all
+      --  parameter vertices to be control dependent on the call
+      --  vertex.
+      for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            A : constant V_Attributes := FA.CDG.Get_Attributes (V);
+         begin
+            if A.Is_Parameter then
+               pragma Assert (FA.CDG.In_Neighbour_Count (V) = 1);
+               pragma Assert (FA.CDG.Out_Neighbour_Count (V) = 0);
+               FA.CDG.Clear_Vertex (V);
+               FA.CDG.Add_Edge (FA.CDG.Get_Vertex (A.Call_Vertex),
+                                V,
+                                EC_Default);
+            end if;
+         end;
+      end loop;
    end Create;
 
 end Flow.Control_Dependence_Graph;
