@@ -14,9 +14,8 @@ package body Stacks_05 is
       return S.Stack_Pointer = Stack_Size;
    end Is_Full;
 
-   procedure Clear (S : out Stack)
-   --# post Is_Empty(S) and
-   --#      S.Stack_Pointer = 0;
+   procedure Clear (S : in out Stack)
+   --# post Is_Empty(S);
    is
    begin
       S.Stack_Pointer := 0;

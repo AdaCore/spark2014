@@ -13,7 +13,7 @@ package body Stacks_14 is
       return S.Stack_Pointer = Stack_Size;
    end Is_Full;
 
-   procedure Clear(S : out Stack)
+   procedure Clear(S : in out Stack)
       with Refined_Post => Is_Empty(S)
    is
    begin
