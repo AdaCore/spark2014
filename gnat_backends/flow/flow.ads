@@ -60,6 +60,9 @@ package Flow is
       --  For the procedure call parameter vertices.
    );
 
+   subtype Initial_Or_Final_Variant is Flow_Id_Variant
+     range Initial_Value .. Final_Value;
+
    type Flow_Id is record
       Kind    : Flow_Id_Kind;
       Variant : Flow_Id_Variant;
