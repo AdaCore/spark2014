@@ -96,13 +96,6 @@ package body Flow.Control_Flow_Graph is
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
 
-   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
-   --  Obtain all variables (which may include types) used in an
-   --  expression.
-
-   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
-   --  As above, but operating on a list.
-
    procedure Do_Assignment_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -226,74 +219,6 @@ package body Flow.Control_Flow_Graph is
    begin
       CFG.Add_Edge (From, To, EC_Default);
    end Linkup;
-
-   ------------------------
-   --  Get_Variable_Set  --
-   ------------------------
-
-   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set
-   is
-      VS     : Flow_Id_Sets.Set;
-      Unused : Traverse_Final_Result;
-      pragma Unreferenced (Unused);
-
-      function Proc (N : Node_Id) return Traverse_Result;
-
-      function Proc (N : Node_Id) return Traverse_Result
-      is
-      begin
-         case Nkind (N) is
-            when N_Identifier =>
-               if Entity (N) /= Empty then
-                  case Ekind (Entity (N)) is
-                     when E_Variable |
-                       E_Loop_Parameter |
-                       E_Out_Parameter |
-                       E_In_Parameter |
-                       E_In_Out_Parameter |
-                       E_Constant =>
-                        VS.Include (Direct_Mapping_Id (Entity (N)));
-                     when others =>
-                        null;
-                  end case;
-               end if;
-            when N_Defining_Identifier =>
-               case Ekind (N) is
-                  when E_Variable |
-                    E_Loop_Parameter |
-                    E_Out_Parameter |
-                    E_In_Parameter |
-                    E_In_Out_Parameter |
-                    E_Constant =>
-                     VS.Include (Direct_Mapping_Id (N));
-                  when others =>
-                     null;
-               end case;
-            when others =>
-               null;
-         end case;
-         return OK;
-      end Proc;
-
-      function Traverse is new Traverse_Func (Process => Proc);
-   begin
-      Unused := Traverse (N);
-      return VS;
-   end Get_Variable_Set;
-
-   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set
-   is
-      VS : Flow_Id_Sets.Set;
-      P  : Node_Id;
-   begin
-      P := First (L);
-      while P /= Empty loop
-         VS.Union (Get_Variable_Set (P));
-
-         P := Next (P);
-      end loop;
-      return VS;
-   end Get_Variable_Set;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -1305,6 +1230,74 @@ package body Flow.Control_Flow_Graph is
    ------------------------------------------------------------
    --  Package functions and procedures
    ------------------------------------------------------------
+
+   ------------------------
+   --  Get_Variable_Set  --
+   ------------------------
+
+   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set
+   is
+      VS     : Flow_Id_Sets.Set;
+      Unused : Traverse_Final_Result;
+      pragma Unreferenced (Unused);
+
+      function Proc (N : Node_Id) return Traverse_Result;
+
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier =>
+               if Entity (N) /= Empty then
+                  case Ekind (Entity (N)) is
+                     when E_Variable |
+                       E_Loop_Parameter |
+                       E_Out_Parameter |
+                       E_In_Parameter |
+                       E_In_Out_Parameter |
+                       E_Constant =>
+                        VS.Include (Direct_Mapping_Id (Entity (N)));
+                     when others =>
+                        null;
+                  end case;
+               end if;
+            when N_Defining_Identifier =>
+               case Ekind (N) is
+                  when E_Variable |
+                    E_Loop_Parameter |
+                    E_Out_Parameter |
+                    E_In_Parameter |
+                    E_In_Out_Parameter |
+                    E_Constant =>
+                     VS.Include (Direct_Mapping_Id (N));
+                  when others =>
+                     null;
+               end case;
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      function Traverse is new Traverse_Func (Process => Proc);
+   begin
+      Unused := Traverse (N);
+      return VS;
+   end Get_Variable_Set;
+
+   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set
+   is
+      VS : Flow_Id_Sets.Set;
+      P  : Node_Id;
+   begin
+      P := First (L);
+      while P /= Empty loop
+         VS.Union (Get_Variable_Set (P));
+
+         P := Next (P);
+      end loop;
+      return VS;
+   end Get_Variable_Set;
 
    --------------
    --  Create  --

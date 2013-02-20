@@ -27,6 +27,12 @@
 
 package Flow.Control_Flow_Graph is
 
+   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
+   --  Obtain all variables used in an expression.
+
+   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
+   --  As above, but operating on a list.
+
    procedure Create
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs);
