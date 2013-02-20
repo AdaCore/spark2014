@@ -205,6 +205,20 @@ package Graph is
    --  Edge operations
    ----------------------------------------------------------------------
 
+   function In_Neighbour_Count (G : T'Class;
+                                V : Vertex_Id)
+                                return Natural;
+   --  Returns the number of in neighbours for the given vertex.
+   --
+   --  Complexity is O(1).
+
+   function Out_Neighbour_Count (G : T'Class;
+                                 V : Vertex_Id)
+                                 return Natural;
+   --  Returns the number of out neighbours for the given vertex.
+   --
+   --  Complexity is O(1).
+
    function Edge_Exists
      (G        : T'Class;
       V_1, V_2 : Vertex_Id) return Boolean;

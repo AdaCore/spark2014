@@ -175,6 +175,30 @@ package body Graph is
    --  Edge operations
    ----------------------------------------------------------------------
 
+   --------------------------
+   --  In_Neighbour_Count  --
+   --------------------------
+
+   function In_Neighbour_Count (G : T'Class;
+                                V : Vertex_Id)
+                                return Natural
+   is
+   begin
+      return Natural (G.Vertices (V).In_Neighbours.Length);
+   end In_Neighbour_Count;
+
+   ---------------------------
+   --  Out_Neighbour_Count  --
+   ---------------------------
+
+   function Out_Neighbour_Count (G : T'Class;
+                                 V : Vertex_Id)
+                                 return Natural
+   is
+   begin
+      return Natural (G.Vertices (V).Out_Neighbours.Length);
+   end Out_Neighbour_Count;
+
    -----------------
    -- Edge_Exists --
    -----------------
