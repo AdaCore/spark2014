@@ -94,7 +94,7 @@ and Contract_Cases are defined.
    specifically, these aspects are allowed in the same
    contexts as a Pre or Post aspect.
 
-Contract Cases 
+Contract Cases
 ~~~~~~~~~~~~~~
 
 High-Level Requirements
@@ -116,12 +116,9 @@ High-Level Requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Contract_Cases aspect provides a concise way to specify mutually
-independent cases guarded by ``conditions`` using the initial value of
-**in** or **in out** formal parameters or global variables.  Each
-``contract_case`` specifies the final value of mode **out** or **in
-out** formal parameters or global variables.  The final
-``contract_case`` may be the keyword **others** which means that, in a
+The Contract_Cases aspect provides a structured way of defining a
+subprogram contract using mutually exclusive subcontract cases.
+The final case in the Contract_Case aspect may be the keyword **others** which means that, in a
 specific call to the subprogram, if all the ``conditions`` are False
 this ``contract_case`` is taken.  If an **others** ``contract_case``
 is not specified, then in a specific call of the subprogram exactly
@@ -150,9 +147,9 @@ is short hand for
 .. code-block:: ada
 
  procedure P (...) with
-      Pre  => General_Precondition
-                and then Exactly_One_Of(A1,A2...An),
+      Pre  => General_Precondition,
       Post => General_Postcondition
+                and then Exactly_One_Of(A1,A2...An)
                 and then (if A1'Old then B1)
                 and then (if A2'Old then B2)
                 and then ...

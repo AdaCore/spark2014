@@ -131,6 +131,13 @@ which is specific to |SPARK|):
 All sections are always listed and if no content is required then the
 corresponding section will be marked *Not applicable*.
 
+In addition, examples of the use of the new features are given along with the
+language definition detail.
+
+.. todo::
+     We need to increase the number of examples given. To be completed in the Milestone 3
+     version of this document.
+
 .. _formal_analysis:
 
 Formal Analysis

@@ -932,7 +932,9 @@ There are no additional dynamic semantics associated with type invariants.
 Deferred Constants
 ------------------
 
-No extensions or restrictions.
+The view of an entity introduced by a
+``deferred_constant_declaration`` is in |SPARK|, even if the *initialization_*\
+``expression`` in the corresponding completion is not in |SPARK|.
 
 Limited Types
 -------------

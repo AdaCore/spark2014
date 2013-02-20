@@ -37,11 +37,6 @@ in |SPARK| if its declaration does not contain the reserved word **aliased**,
 its type is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
 |SPARK|.
 
-Additionally, the view of an entity introduced by a
-``deferred_constant_declaration`` is in |SPARK|, even if the *initialization_*\
-``expression`` in the corresponding completion is not in |SPARK|.
-
-
 Derived Types and Classes
 -------------------------
 
