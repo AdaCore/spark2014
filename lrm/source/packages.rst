@@ -56,10 +56,12 @@ further designation of whether it is an input or an output.
 The read or update of a volatile variable or state abstraction is considered to
 be both a read and an update of the entity. In Global and Depends aspects this
 means that volatile entities will be regarded as being both an input and an
-output and this may be given explicitly. However if a variable or abstract state
+output and this fact may be stated explicitly in those aspects, for example by
+using the ``In_Out`` mode in the Global aspect.
+However if a variable or abstract state
 is explicitly designated as being a Volatile Input or a Volatile Output, an
 abbreviated form of the Global and Depends aspect is permitted which gives a
-more obvious view of the global and dependency.
+more intuitive view of the globals and the dependency relation.
 
 If the variable or state abstraction is designated as Volatile Input, then it 
 may only appear as an Input in the Global aspect.  There is an implicit
@@ -145,15 +147,15 @@ The *hidden* state of a package may be represented
 by one or more state abstractions, with each pair of state
 abstractions representing disjoint sets of hidden variables.
 
-If a subprogram P with a Global Aspect is declared in the
+If a subprogram P with a Global aspect is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
-state of the package then P must include in its Global Aspect the
+state of the package then P must include in its Global aspect the
 abstract state names with the correct mode that represent the hidden
 state referenced by P.  If P has a Depends aspect then the abstract
 state names must appear as inputs and outputs of P, as appropriate, in
 the ``dependency_relation`` of the Depends aspect.
 
-The Abstract State Aspect is introduced by an ``aspect_specification``
+The Abstract State aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the
 ``aspect_definition`` must follow the grammar of
 ``abstract_state_list`` given below.
@@ -223,7 +225,7 @@ where the ``aspect_mark`` is Abstract_State and the
 
       :Trace Unit: 7.1.2 LR If property_list has Integrity it must be the final property in the list
 
-#. A package_declaration or generic_package_declaration requires a completion
+#. A package_declaration or generic_package_declaration shall have a completion
    [(a body)] if it contains a non-null Abstract State aspect specification.
 
 .. centered:: **Static Semantics**
@@ -253,7 +255,7 @@ where the ``aspect_mark`` is Abstract_State and the
    specification for a given package P introduces an implicit
    declaration of a *state abstraction* entity. This implicit
    declaration occurs at the beginning of the visible part of P. This
-   implicit declaration requires completion and is overloadable.
+   implicit declaration shall have a completion and is overloadable.
 
 .. note::
  (SB) Making these implicit declarations overloadable allows declaring
@@ -426,7 +428,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Initial Condition Aspect is introduced by an ``aspect_specification`` where
+The Initial Condition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` must be
 an ``expression``.
 
@@ -449,13 +451,13 @@ Package Bodies
 State Refinement
 ~~~~~~~~~~~~~~~~
 
-A ``state_name`` declared by an Abstract State Aspect in the
+A ``state_name`` declared by an Abstract State aspect in the
 specification of a package Q is an abstraction of the non-visible
 variables declared in the private part, body, or private descendants
 of Q, which together form the hidden state, of Q.  In the body of Q
 each ``state_name`` has to be refined by showing which variables and
 subordinate abstract states are represented by the ``state_name`` (its
-constituents).  A Refined State Aspect in the body of Q is used
+constituents).  A Refined State aspect in the body of Q is used
 for this purpose.
 
 In the body of a package the constituents of the refined
@@ -559,7 +561,7 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Refined State Aspect is introduced by an ``aspect_specification`` where
+The Refined State aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` must follow
 the grammar of ``state_and_category_list`` given below.
 
@@ -674,12 +676,12 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
-Refined Global Aspect applied to its body or body stub. The
-Refined Global Aspect defines the global items of the subprogram
+Refined Global aspect applied to its body or body stub. The
+Refined Global aspect defines the global items of the subprogram
 in terms of the ``constituents`` of a ``state_name`` of the package
 rather than the ``state_name``.
 
-The Refined Global Aspect is introduced by an ``aspect_specification`` where
+The Refined Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition`` must follow
 the grammar of ``global_specification`` in :ref:`global-aspects`.
 
@@ -809,12 +811,12 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
-Refined Precondition Aspect applied to its body or body stub.  The
+Refined Precondition aspect applied to its body or body stub.  The
 Refined Precondition may be used to restate a precondition given on
 the declaration of a subprogram in terms of the full view of a private
 type or the ``constituents`` of a refined ``state_name``.
 
-The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
+The Refined Precondition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` must be
 a Boolean ``expression``.
 
@@ -857,12 +859,12 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
-Refined Postcondition Aspect applied to its body or body stub.  The
+Refined Postcondition aspect applied to its body or body stub.  The
 Refined Postcondition may be used to restate a postcondition given
 on the declaration of a subprogram in terms the full view of a private
 type or the ``constituents`` of a refined ``state_name``.
 
-The Refined Precondition Aspect is introduced by an ``aspect_specification`` where
+The Refined Precondition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` must be
 a Boolean ``expression``.
 

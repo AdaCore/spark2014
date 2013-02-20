@@ -895,7 +895,7 @@ Global Aspects
 If a subprogram does not have a separate declaration then the Global 
 aspect is applied to the declaration of its body or body stub.
 The implementation of a subprogram body must be consistent with its
-Global Aspect.
+Global aspect.
 
 Note that a Refined Global aspect may be applied to a subprogram body when using state
 abstraction; see section :ref:`refined-global-aspect` for further details.
@@ -955,7 +955,7 @@ Depends Aspects
 If a subprogram does not have a separate declaration then the Depends 
 aspect is applied to the declaration of its its body or body stub.
 The implementation of a subprogram body must be consistent with its
-Depends Aspect.
+Depends aspect.
 
 Note that a Refined Depends aspect may be applied to a subprogram body when using state
 abstraction; see section :ref:`refined-depends-aspect` for further details.

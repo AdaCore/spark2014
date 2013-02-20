@@ -237,10 +237,7 @@ aspects and if the use of implementation-defined attributes
 is avoided, then a |SPARK| program may be compiled and executed
 by any Ada 2012 implementation (whether or not it recognizes the
 |SPARK| pragmas). Ada specifies that unrecognized
-pragmas are ignored. The pragmas defined by |SPARK| either have
-no dynamic semantics (e.g., pragma Global) or are used only to define
-assertions whose success shall be proven statically (e.g., pragma
-Loop_Variant). In either case, an Ada compiler which ignores the
+pragmas are ignored: an Ada compiler that ignores the
 pragma is correctly implementing the dynamic semantics of |SPARK| and
 the |SPARK| tools will still be able to undertake all their static checks and proofs.
 
