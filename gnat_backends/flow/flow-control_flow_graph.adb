@@ -23,6 +23,7 @@
 
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
+with Sem_Util; use Sem_Util;
 with Sinfo;    use Sinfo;
 with Treepr;   use Treepr;
 
@@ -153,6 +154,13 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Object_Declaration;
 
+   procedure Do_Procedure_Call_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Procedure_Call_Statement;
+
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -166,6 +174,16 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Subprogram_Body;
+
+   procedure Process_Parameter_Associations
+     (L                 : List_Id;
+      Called_Subprogram : Entity_Id;
+      In_List           : in out Vertex_Vectors.Vector;
+      Out_List          : in out Vertex_Vectors.Vector;
+      FA                : in out Flow_Analysis_Graphs;
+      CM                : in out Connection_Maps.Map;
+      Ctx               : in out Context)
+      with Pre => List_Length (L) >= 1;
 
    procedure Process_Statement_List
      (L   : List_Id;
@@ -346,6 +364,10 @@ package body Flow.Control_Flow_Graph is
                        Is_Initialised    => False,
                        Is_Loop_Parameter => False,
                        Is_Export         => False,
+                       Is_Parameter      => False,
+                       Call_Vertex       => Null_Flow_Id,
+                       Parameter_Actual  => Null_Flow_Id,
+                       Parameter_Formal  => Null_Flow_Id,
                        Variables_Defined => V_Def_LHS,
                        Variables_Used    => V_Used_RHS
                          or V_Used_LHS
@@ -410,6 +432,10 @@ package body Flow.Control_Flow_Graph is
                           Is_Initialised    => False,
                           Is_Loop_Parameter => False,
                           Is_Export         => False,
+                          Is_Parameter      => False,
+                          Call_Vertex       => Null_Flow_Id,
+                          Parameter_Actual  => Null_Flow_Id,
+                          Parameter_Formal  => Null_Flow_Id,
                           Variables_Defined => Flow_Id_Sets.Empty_Set,
                           Variables_Used    => Get_Variable_Set
                             (Condition (N)),
@@ -479,6 +505,10 @@ package body Flow.Control_Flow_Graph is
                        Is_Initialised    => False,
                        Is_Loop_Parameter => False,
                        Is_Export         => False,
+                       Is_Parameter      => False,
+                       Call_Vertex       => Null_Flow_Id,
+                       Parameter_Actual  => Null_Flow_Id,
+                       Parameter_Formal  => Null_Flow_Id,
                        Variables_Defined => Flow_Id_Sets.Empty_Set,
                        Variables_Used    => Get_Variable_Set (Condition (N)),
                        Loops             => Ctx.Current_Loops),
@@ -672,6 +702,10 @@ package body Flow.Control_Flow_Graph is
                Is_Initialised    => False,
                Is_Loop_Parameter => False,
                Is_Export         => False,
+               Is_Parameter      => False,
+               Call_Vertex       => Null_Flow_Id,
+               Parameter_Actual  => Null_Flow_Id,
+               Parameter_Formal  => Null_Flow_Id,
                Variables_Defined => Flow_Id_Sets.Empty_Set,
                Variables_Used    => Get_Variable_Set
                  (Condition (Iteration_Scheme (N))),
@@ -721,6 +755,10 @@ package body Flow.Control_Flow_Graph is
                   Is_Initialised    => False,
                   Is_Loop_Parameter => False,
                   Is_Export         => False,
+                  Is_Parameter      => False,
+                  Call_Vertex       => Null_Flow_Id,
+                  Parameter_Actual  => Null_Flow_Id,
+                  Parameter_Formal  => Null_Flow_Id,
                   Variables_Defined => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
                   Variables_Used    => Flow_Id_Sets.Empty_Set,
@@ -743,6 +781,10 @@ package body Flow.Control_Flow_Graph is
                   Is_Initialised    => False,
                   Is_Loop_Parameter => False,
                   Is_Export         => False,
+                  Is_Parameter      => False,
+                  Call_Vertex       => Null_Flow_Id,
+                  Parameter_Actual  => Null_Flow_Id,
+                  Parameter_Formal  => Null_Flow_Id,
                   Variables_Defined => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
                   Variables_Used    => Flow_Id_Sets.Empty_Set,
@@ -768,6 +810,10 @@ package body Flow.Control_Flow_Graph is
                   Is_Initialised    => False,
                   Is_Loop_Parameter => False,
                   Is_Export         => False,
+                  Is_Parameter      => False,
+                  Call_Vertex       => Null_Flow_Id,
+                  Parameter_Actual  => Null_Flow_Id,
+                  Parameter_Formal  => Null_Flow_Id,
                   Variables_Defined => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
                   Variables_Used    => Get_Variable_Set (DSD),
@@ -851,6 +897,10 @@ package body Flow.Control_Flow_Graph is
                           Is_Initialised    => False,
                           Is_Loop_Parameter => False,
                           Is_Export         => False,
+                          Is_Parameter      => False,
+                          Call_Vertex       => Null_Flow_Id,
+                          Parameter_Actual  => Null_Flow_Id,
+                          Parameter_Formal  => Null_Flow_Id,
                           Variables_Defined => Flow_Id_Sets.To_Set
                             (Direct_Mapping_Id
                                (Defining_Identifier (N))),
@@ -863,6 +913,99 @@ package body Flow.Control_Flow_Graph is
                   Graph_Connections'(Standard_Entry => V,
                                      Standard_Exits => To_Set (V)));
    end Do_Object_Declaration;
+
+   -----------------------------------
+   --  Do_Procedure_Call_Statement  --
+   -----------------------------------
+
+   procedure Do_Procedure_Call_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      Called_Procedure : constant Entity_Id := Entity (Name (N));
+      Procedure_Spec   : constant Node_Id   := Parent (Called_Procedure);
+
+      Body_Known       : constant Boolean :=
+        Parent (Procedure_Spec) /= Empty;
+
+      V        : Flow_Graphs.Vertex_Id;
+
+      In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+
+   begin
+      --  A vertex for the actual call.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         V_Attributes'(Is_Null_Node      => False,
+                       Is_Program_Node   => True,
+                       Is_Initialised    => False,
+                       Is_Loop_Parameter => False,
+                       Is_Export         => False,
+                       Is_Parameter      => False,
+                       Call_Vertex       => Null_Flow_Id,
+                       Parameter_Actual  => Null_Flow_Id,
+                       Parameter_Formal  => Null_Flow_Id,
+                       Variables_Defined => Flow_Id_Sets.Empty_Set,
+                       Variables_Used    => Flow_Id_Sets.Empty_Set,
+                       Loops             => Ctx.Current_Loops),
+         V);
+
+      --  Deal with the procedures parameters
+      Process_Parameter_Associations (Parameter_Associations (N),
+                                      Called_Procedure,
+                                      In_List,
+                                      Out_List,
+                                      FA, CM, Ctx);
+
+      --  Deal with the procedures globals
+      --  TODO
+
+      --  We now build the connection map for this sequence.
+      declare
+         use Vertex_Vectors;
+         L             : constant List_Id := Parameter_Associations (N);
+         Combined_List : constant Vertex_Vectors.Vector := In_List & Out_List;
+         Prev          : Flow_Graphs.Vertex_Id;
+      begin
+         Prev := Flow_Graphs.Null_Vertex;
+         for V of Combined_List loop
+            if Prev /= Flow_Graphs.Null_Vertex then
+               FA.CFG.Add_Edge (Prev, V, EC_Default);
+            end if;
+
+            Prev := V;
+         end loop;
+
+         CM.Include
+           (Union_Id (L),
+            Graph_Connections'(Standard_Entry => Combined_List.First_Element,
+                               Standard_Exits => Vertex_Sets.To_Set
+                                 (Combined_List.Last_Element)));
+      end;
+
+      CM.Include
+        (Union_Id (N),
+         Graph_Connections'(Standard_Entry => V,
+                            Standard_Exits => CM.Element
+                              (Union_Id
+                                 (Parameter_Associations
+                                    (N))).Standard_Exits));
+
+      Linkup (FA.CFG,
+              V,
+              CM (Union_Id (Parameter_Associations (N))).Standard_Entry);
+
+      if Body_Known then
+         --  We can do inter-procedural analysis.
+         null;
+      else
+         --  We must trust the contract.
+         raise Why.Not_Implemented;
+      end if;
+   end Do_Procedure_Call_Statement;
 
    ----------------------------------
    --  Do_Simple_Return_Statement  --
@@ -890,6 +1033,10 @@ package body Flow.Control_Flow_Graph is
                           Is_Initialised    => False,
                           Is_Loop_Parameter => False,
                           Is_Export         => False,
+                          Is_Parameter      => False,
+                          Call_Vertex       => Null_Flow_Id,
+                          Parameter_Actual  => Null_Flow_Id,
+                          Parameter_Formal  => Null_Flow_Id,
                           Variables_Defined => Flow_Id_Sets.To_Set
                             (Direct_Mapping_Id (FA.Subprogram)),
                           Variables_Used    => Get_Variable_Set
@@ -936,6 +1083,98 @@ package body Flow.Control_Flow_Graph is
             Standard_Exits => CM.Element
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
    end Do_Subprogram_Body;
+
+   --------------------------------------
+   --  Process_Parameter_Associations  --
+   --------------------------------------
+
+   procedure Process_Parameter_Associations
+     (L                 : List_Id;
+      Called_Subprogram : Entity_Id;
+      In_List           : in out Vertex_Vectors.Vector;
+      Out_List          : in out Vertex_Vectors.Vector;
+      FA                : in out Flow_Analysis_Graphs;
+      CM                : in out Connection_Maps.Map;
+      Ctx               : in out Context)
+   is
+      pragma Unreferenced (CM);
+
+      P      : Node_Id;
+
+      V      : Flow_Graphs.Vertex_Id;
+
+      Actual : Node_Id;
+      Formal : Node_Id;
+      Call   : Node_Id;
+   begin
+      --  Create initial nodes for the statements.
+      P    := First (L);
+      while P /= Empty loop
+         case Nkind (P) is
+            when N_Parameter_Association =>
+               --  F (A => B)
+               Actual := Explicit_Actual_Parameter (P);
+               Find_Actual (Actual, Formal, Call);
+               pragma Assert (Entity (Name (Call)) = Called_Subprogram);
+
+            when others =>
+               --  F (B)
+               Actual := P;
+               Find_Actual (Actual, Formal, Call);
+               pragma Assert (Entity (Name (Call)) = Called_Subprogram);
+         end case;
+
+         pragma Assert (Ekind (Formal) = E_In_Parameter or
+                          Ekind (Formal) = E_In_Out_Parameter or
+                          Ekind (Formal) = E_Out_Parameter);
+
+         if Ekind (Formal) = E_In_Parameter or
+           Ekind (Formal) = E_In_Out_Parameter then
+            --  Build an in vertex.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (P, In_View),
+               V_Attributes'(Is_Null_Node      => False,
+                             Is_Program_Node   => False,
+                             Is_Initialised    => False,
+                             Is_Loop_Parameter => False,
+                             Is_Export         => False,
+                             Is_Parameter      => True,
+                             Call_Vertex       => Direct_Mapping_Id
+                               (Parent (L)),
+                             Parameter_Actual  => Direct_Mapping_Id (Actual),
+                             Parameter_Formal  => Direct_Mapping_Id (Formal),
+                             Variables_Defined => Flow_Id_Sets.Empty_Set,
+                             Variables_Used    => Get_Variable_Set (Actual),
+                             Loops             => Ctx.Current_Loops),
+               V);
+            In_List.Append (V);
+         end if;
+
+         if Ekind (Formal) = E_In_Out_Parameter or
+           Ekind (Formal) = E_Out_Parameter then
+            --  Build an out vertex.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (P, Out_View),
+               V_Attributes'(Is_Null_Node      => False,
+                             Is_Program_Node   => False,
+                             Is_Initialised    => False,
+                             Is_Loop_Parameter => False,
+                             Is_Export         => False,
+                             Is_Parameter      => True,
+                             Call_Vertex       => Direct_Mapping_Id
+                               (Parent (L)),
+                             Parameter_Actual  => Direct_Mapping_Id (Actual),
+                             Parameter_Formal  => Direct_Mapping_Id (Formal),
+                             Variables_Defined => Get_Variable_Set (Actual),
+                             Variables_Used    => Flow_Id_Sets.Empty_Set,
+                             Loops             => Ctx.Current_Loops),
+               V);
+            Out_List.Append (V);
+         end if;
+         --  Go to the next statement
+         P    := Next (P);
+      end loop;
+   end Process_Parameter_Associations;
 
    ------------------------------
    --  Process_Statement_List  --
@@ -1023,6 +1262,8 @@ package body Flow.Control_Flow_Graph is
             Do_Loop_Statement (N, FA, CM, Ctx);
          when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
+         when N_Procedure_Call_Statement =>
+            Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when others =>
@@ -1123,6 +1364,10 @@ package body Flow.Control_Flow_Graph is
                         Is_Initialised    => Is_Initialised,
                         Is_Loop_Parameter => Ekind (N) = E_Loop_Parameter,
                         Is_Export         => False,
+                        Is_Parameter      => False,
+                        Call_Vertex       => Null_Flow_Id,
+                        Parameter_Actual  => Null_Flow_Id,
+                        Parameter_Formal  => Null_Flow_Id,
                         Variables_Defined => Flow_Id_Sets.To_Set (F),
                         Variables_Used    => Flow_Id_Sets.Empty_Set,
                         Loops             => Node_Sets.Empty_Set),
@@ -1148,6 +1393,10 @@ package body Flow.Control_Flow_Graph is
                         Is_Initialised    => False,
                         Is_Loop_Parameter => False,
                         Is_Export         => Is_Export,
+                        Is_Parameter      => False,
+                        Call_Vertex       => Null_Flow_Id,
+                        Parameter_Actual  => Null_Flow_Id,
+                        Parameter_Formal  => Null_Flow_Id,
                         Variables_Defined => Flow_Id_Sets.Empty_Set,
                         Variables_Used    => Flow_Id_Sets.To_Set (F),
                         Loops             => Node_Sets.Empty_Set),

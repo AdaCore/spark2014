@@ -24,6 +24,7 @@
 with Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Vectors;
 
 with Atree; use Atree;
 with Einfo; use Einfo;
@@ -45,7 +46,19 @@ package Flow is
                          Direct_Mapping,
                          Record_Field,
                          Magic_String);
-   type Flow_Id_Variant is (Normal_Use, Initial_Value, Final_Value);
+
+   type Flow_Id_Variant is (
+      Normal_Use,
+      --  Normal usage of the identifier.
+
+      Initial_Value,
+      Final_Value,
+      --  For the 'initial and 'final vertices.
+
+      In_View,
+      Out_View
+      --  For the procedure call parameter vertices.
+   );
 
    type Flow_Id is record
       Kind    : Flow_Id_Kind;
@@ -106,6 +119,18 @@ package Flow is
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
+      Is_Parameter      : Boolean;
+      --  True if this vertex models an argument to a procedure call.
+
+      Call_Vertex       : Flow_Id;
+      --  Used to identify which vertex a parameter vertex belongs to.
+
+      Parameter_Actual  : Flow_Id;
+      Parameter_Formal  : Flow_Id;
+      --  For nodes where Is_Parameter is true, this keeps track of
+      --  which parameter this is. This is also quite useful for
+      --  pretty-printing.
+
       Variables_Defined : Flow_Id_Sets.Set;
       Variables_Used    : Flow_Id_Sets.Set;
       --  For producing the DDG.
@@ -121,6 +146,10 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Loop_Parameter => False,
                    Is_Export         => False,
+                   Is_Parameter      => False,
+                   Call_Vertex       => Null_Flow_Id,
+                   Parameter_Actual  => Null_Flow_Id,
+                   Parameter_Formal  => Null_Flow_Id,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
                    Loops             => Node_Sets.Empty_Set);
@@ -131,6 +160,10 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Loop_Parameter => False,
                    Is_Export         => False,
+                   Is_Parameter      => False,
+                   Call_Vertex       => Null_Flow_Id,
+                   Parameter_Actual  => Null_Flow_Id,
+                   Parameter_Formal  => Null_Flow_Id,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
                    Loops             => Node_Sets.Empty_Set);
@@ -154,6 +187,11 @@ package Flow is
       Hash                => Flow_Graphs.Vertex_Hash,
       Equivalent_Elements => Flow_Graphs."=",
       "="                 => Flow_Graphs."=");
+
+   package Vertex_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Flow_Graphs.Vertex_Id,
+      "="          => Flow_Graphs."=");
 
    type Flow_Analysis_Graphs is record
       Subprogram   : Entity_Id;
