@@ -278,7 +278,7 @@ where the ``aspect_mark`` is Abstract_State and the
    [The specification is checked when the package is analyzed.]
 
 #. A *volatile* state abstraction is one declared with a property list
-   which includes the Volatile property, and either Input or Output.
+   that includes the Volatile property, and either Input or Output.
 
 .. centered:: **Verification Rules**
 
@@ -295,7 +295,7 @@ aspect.
 
    package Q
    with
-      Abstract_State => State           -- Declaration of abstract state name State
+      Abstract_State => State           -- Declaration of abstract state named State
    is                                   -- representing internal state of Q.
      function Is_Ready return Boolean   -- Function checking some property of the State.
         with Global => State;           -- State may be used in a global aspect.
@@ -404,7 +404,8 @@ High-level requirements
 
       **Rationale:** This specification behaves as a postcondition for the result of package elaboration
       and so establishes the "pre-condition" that holds at the point of beginning execution of the program proper.
-      
+      Giving an explicit postcondition supports modular analysis.
+
 #. Constraints:
 
    * No further Initial Condition-specific requirements.

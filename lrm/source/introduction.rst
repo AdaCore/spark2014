@@ -12,7 +12,8 @@ predecessor SPARK 2005. The language can be configured to suit
 a number of application domains and standards, from server-class
 high-assurance systems to embedded, hard real-time, critical systems.
 
-A major feature of |SPARK| is the support of a mixture of test and proof which
+A major feature of |SPARK| is the support for a mixture of proof and
+other verification methods such as testing, which
 facilitates the use of unit proof in place of unit testing; an approach now
 formalized in DO-178C and the DO-333 formal methods supplement.
 Certain units may be formally proven and other units validated through
