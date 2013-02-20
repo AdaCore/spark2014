@@ -51,9 +51,8 @@ package body Flow is
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
    Whitespace : constant Ada.Strings.Maps.Character_Set :=
-     Ada.Strings.Maps.To_Set (" " &
-                                Ada.Characters.Latin_1.CR &
-                                Ada.Characters.Latin_1.LF);
+     Ada.Strings.Maps.To_Set
+       (" " & Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF);
 
    procedure Add_To_Temp_String (S : String);
    --  Nasty nasty hack to add the given string to a global variable,
@@ -63,20 +62,18 @@ package body Flow is
    -- Add_To_Temp_String  --
    -------------------------
 
-   procedure Add_To_Temp_String (S : String)
-   is
+   procedure Add_To_Temp_String (S : String) is
    begin
-      Append (Temp_String, Trim (To_Unbounded_String (S),
-                                 Whitespace,
-                                 Whitespace));
+      Append
+        (Temp_String,
+         Trim (To_Unbounded_String (S), Whitespace, Whitespace));
    end Add_To_Temp_String;
 
    -----------------------
    -- Flow_Id operators --
    -----------------------
 
-   function "=" (Left, Right : Flow_Id) return Boolean
-   is
+   function "=" (Left, Right : Flow_Id) return Boolean is
    begin
       if Left.Kind = Right.Kind then
          if Left.Variant = Right.Variant then
@@ -90,11 +87,13 @@ package body Flow is
                when Magic_String =>
                   return Name_Equal (Left.E_Name, Right.E_Name);
             end case;
+
          elsif Left.Kind = Null_Value then
             return True;
          else
             return False;
          end if;
+
       elsif Left.Kind = Direct_Mapping and Right.Kind = Magic_String then
          raise Why.Not_Implemented;
       elsif Left.Kind = Magic_String and Right.Kind = Direct_Mapping then
@@ -108,8 +107,7 @@ package body Flow is
    -- Hash --
    ----------
 
-   function Hash (N : Flow_Id) return Ada.Containers.Hash_Type
-   is
+   function Hash (N : Flow_Id) return Ada.Containers.Hash_Type is
    begin
       case N.Kind is
          when Null_Value =>
@@ -123,12 +121,11 @@ package body Flow is
       end case;
    end Hash;
 
-   ----------------------
-   --  Sprint_Flow_Id  --
-   ----------------------
+   --------------------
+   -- Sprint_Flow_Id --
+   --------------------
 
-   procedure Sprint_Flow_Id (F : Flow_Id)
-   is
+   procedure Sprint_Flow_Id (F : Flow_Id) is
    begin
       case F.Kind is
          when Null_Value =>
@@ -146,18 +143,16 @@ package body Flow is
    -- Get_Direct_Mapping_Id --
    ---------------------------
 
-   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id
-   is
+   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is
    begin
       return F.Node_A;
    end Get_Direct_Mapping_Id;
 
-   --------------------------------
-   --  Loop_Parameter_From_Loop  --
-   --------------------------------
+   -------------------------------
+   -- Loop_Parameter_From_Loop  --
+   -------------------------------
 
-   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
-   is
+   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id is
       N : Node_Id;
    begin
       N := Parent (E);
@@ -185,8 +180,7 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   procedure Flow_Analyse_Entity (E : Entity_Id)
-   is
+   procedure Flow_Analyse_Entity (E : Entity_Id) is
       use Flow_Graphs;
    begin
       if not (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E)) then
@@ -197,22 +191,26 @@ package body Flow is
          Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
          FA     : Flow_Analysis_Graphs;
 
-         function NDI (G : T'Class;
-                       V : Vertex_Id)
-                       return Node_Display_Info;
+         function NDI
+           (G : T'Class;
+            V : Vertex_Id) return Node_Display_Info;
          --  Pretty-printing for each vertex in the dot output.
 
-         function EDI (G      : T'Class;
-                       A      : Vertex_Id;
-                       B      : Vertex_Id;
-                       Marked : Boolean;
-                       Colour : Edge_Colours)
-                       return Edge_Display_Info;
+         function EDI
+           (G      : T'Class;
+            A      : Vertex_Id;
+            B      : Vertex_Id;
+            Marked : Boolean;
+            Colour : Edge_Colours) return Edge_Display_Info;
          --  Pretty-printing for each edge in the dot output.
 
-         function NDI (G : T'Class;
-                       V : Vertex_Id)
-                       return Node_Display_Info
+         ---------
+         -- NDI --
+         ---------
+
+         function NDI
+           (G : T'Class;
+            V : Vertex_Id) return Node_Display_Info
          is
             Rv : Node_Display_Info := Node_Display_Info'
               (Show   => True,
@@ -231,6 +229,7 @@ package body Flow is
             else
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
+
                declare
                   F : constant Flow_Id      := G.Get_Key (V);
                   A : constant V_Attributes := G.Get_Attributes (V);
@@ -262,19 +261,23 @@ package body Flow is
                                     Sprint_Node
                                       (Iteration_Scheme (N));
                                  end if;
+
                               when N_Procedure_Call_Statement =>
                                  Rv.Shape := Shape_Box;
                                  Output.Write_Str ("call ");
                                  Sprint_Node (Name (N));
+
                               when others =>
                                  if A.Is_Parameter then
                                     Rv.Shape := Shape_None;
+
                                     case F.Variant is
                                        when In_View =>
                                           Sprint_Flow_Id (A.Parameter_Formal);
                                           Output.Write_Str ("'in");
                                           Output.Write_Str ("&nbsp;:=&nbsp;");
                                           Sprint_Flow_Id (A.Parameter_Actual);
+
                                        when Out_View =>
                                           Sprint_Flow_Id (A.Parameter_Actual);
                                           Output.Write_Str ("&nbsp;:=&nbsp;");
@@ -283,24 +286,29 @@ package body Flow is
                                        when others =>
                                           raise Program_Error;
                                     end case;
+
                                  else
                                     Sprint_Node (N);
                                  end if;
                            end case;
                         end;
+
                         case F.Variant is
                            when Initial_Value =>
                               Rv.Shape := Shape_None;
                               Output.Write_Str ("'initial");
+
                               if not A.Is_Initialised then
                                  Rv.Colour := To_Unbounded_String ("red");
                               end if;
+
                            when Final_Value =>
                               Rv.Shape := Shape_None;
                               Output.Write_Str ("'final");
                               if A.Is_Export then
                                  Rv.Colour := To_Unbounded_String ("blue");
                               end if;
+
                            when others =>
                               null;
                         end case;
@@ -316,19 +324,25 @@ package body Flow is
                      end loop;
                   end if;
                end;
+
                Output.Write_Eol;
                Output.Cancel_Special_Output;
                Rv.Label := Temp_String;
             end if;
+
             return Rv;
          end NDI;
 
-         function EDI (G      : T'Class;
-                       A      : Vertex_Id;
-                       B      : Vertex_Id;
-                       Marked : Boolean;
-                       Colour : Edge_Colours)
-                       return Edge_Display_Info
+         ---------
+         -- NDI --
+         ---------
+
+         function EDI
+           (G      : T'Class;
+            A      : Vertex_Id;
+            B      : Vertex_Id;
+            Marked : Boolean;
+            Colour : Edge_Colours) return Edge_Display_Info
          is
             pragma Unreferenced (G, A, B, Marked);
 
