@@ -1,27 +1,56 @@
 Program Structure and Compilation Issues
 ========================================
 
-Data flow analysis, unlike compilation, does not follow Ada's separate
-compilation model. For example, functions in |SPARK| must be side-effect free;
-this rule is enforced as part of data flow analysis. Suppose that a function
-calls a procedure which in turn calls another procedure, which in turn calls
-yet another. In the absence of Global aspect specifications for the
-procedures in question, it would be necessary to analyze the bodies
-of all subprograms called in order to determine whether the function
-is side-effect free.
+**High-Level Requirements**
 
-Limited Package Views
----------------------
 
-State abstractions are visible in the limited view of packages in |SPARK|.
-The notion of an *abstract view* of a variable declaration is also introduced,
-and the limited view of a package includes the abstract view of any variables
-declared in the visible part of that package. The only allowed uses of an abstract
-view of a variable are where the use of a state abstraction would be allowed (for example,
-in a Global aspect specification).
+#. Goals to be met by language feature:
+
+   * **Requirement:** The ability to analyze incomplete programs.
+
+     **Rationale:** In order to support incremental development and analysis.
+     To facilitate the use of flow analysis and formal verification as early as
+     possible in the software life-cycle.
+
+#. Constraints, Consistency, Semantics, General requirements:
+
+   * Interface specifications have to be provided for all modules.  In analysis
+     the module is represented by its interface specification.
+
+**Language Definition**
+
+|SPARK| supports constructive, modular analysis. This means that analysis may be
+performed before a program is complete based on unit interfaces. For instance,
+to analyze a subprogram which calls another all that is required is a
+specification of the called subprogram including, at least, its
+``global_specification`` and if formal verification of the calling program is to
+be performed, then the Pre and Postcondition of the called subprogram needs to
+be provided. The body of the called subprogram does not need to be implemented
+to analyze the caller. The body of the called subprogram is checked to be
+conformant with its specification when its implementation code is available and
+analyzed.
+
+The separate compilation of Ada ``compilation_units`` is consistent with
+|SPARK| modular analysis except where noted in the following subsections but,
+particularly with respect to incomplete programs, analysis does not involve the
+execution of the program.
+
+
+Separate Compilation
+--------------------
+
+A program unit cannot be a task unit, a protected unit or a protected entry.
+
+Compilation Units
+~~~~~~~~~~~~~~~~~
+
+No restrictions or extensions.
+
+Context Clauses - With Clauses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 High-Level Requirements
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Goals to be met by language feature:
 
@@ -38,7 +67,14 @@ High-Level Requirements
 
 
 Language Definition
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
+
+State abstractions are visible in the limited view of packages in |SPARK|. The
+notion of an *abstract view* of a variable declaration is also introduced, and
+the limited view of a package includes the abstract view of any variables
+declared in the visible part of that package. The only allowed uses of an
+abstract view of a variable are where the use of a state abstraction would be
+allowed (for example, in a Global aspect specification).
 
 .. centered:: **Syntax**
 
@@ -91,9 +127,48 @@ There are no verification rules associated with limited package views in |SPARK|
   numbered subsection 7.2 (package bodies) of section 7.2.4
   (volatile variables).
 
-With Clauses
-------------
-
 With clauses are always in |SPARK|, even if the unit mentioned is not completely
 in |SPARK|.
+
+Subunits of Compilation Units
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No restrictions or extensions.
+
+The Compilation Process
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The analysis process in |SPARK| is similar to the compilation process in Ada
+except that the ``compilation_units`` are analyzed, that is flow analysis and
+formal verification is performed, rather than compiled.
+
+Pragmas and Program Units
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No restrictions or extensions.
+
+Environment-Level Visibility Rules
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No restrictions or extensions.
+
+Program Execution
+-----------------
+
+|SPARK| analyses do not involve program execution.  However, |SPARK| programs
+are executable including those new language defined aspects and pragmas where 
+they have dynamic semantics given.  
+
+Elaboration Control
+~~~~~~~~~~~~~~~~~~~
+
+No extenstions or restrictions.
+
+
+
+
+
+
+
+
   
