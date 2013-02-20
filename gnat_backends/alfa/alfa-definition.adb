@@ -2266,10 +2266,7 @@ package body Alfa.Definition is
          end if;
       end Mark_Subprogram_Specification;
 
-      PPC  : Node_Id;
-      CTC  : Node_Id;
-      Req  : Node_Id;
-      Ens  : Node_Id;
+      Prag : Node_Id;
       Expr : Node_Id;
       Id   : constant Entity_Id := Defining_Entity (N);
 
@@ -2287,27 +2284,34 @@ package body Alfa.Definition is
 
       Push_Logic_Scope;
 
-      PPC := Spec_PPC_List (Contract (Id));
-      while Present (PPC) loop
-         Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (PPC)));
+      Prag := Spec_PPC_List (Contract (Id));
+      while Present (Prag) loop
+         Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
          Mark (Expr);
-         PPC := Next_Pragma (PPC);
+         Prag := Next_Pragma (Prag);
       end loop;
 
-      CTC := Spec_CTC_List (Contract (Id));
-      while Present (CTC) loop
-         if Pragma_Name (CTC) = Name_Contract_Case then
-            Req := Get_Requires_From_CTC_Pragma (CTC);
-            Ens := Get_Ensures_From_CTC_Pragma (CTC);
-            if Present (Req) then
-               Mark (Expression (Req));
-            end if;
-            if Present (Ens) then
-               Mark (Expression (Ens));
-            end if;
-         end if;
-         CTC := Next_Pragma (CTC);
-      end loop;
+      Prag := Get_Subprogram_Contract_Cases (Id);
+      if Present (Prag) then
+         declare
+            Aggr       : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Prag)));
+            Case_Guard : Node_Id;
+            Conseq     : Node_Id;
+            Contract_Case  : Node_Id;
+         begin
+            Contract_Case := First (Component_Associations (Aggr));
+            while Present (Contract_Case) loop
+               Case_Guard := First (Choices (Contract_Case));
+               Conseq     := Expression (Contract_Case);
+
+               Mark (Case_Guard);
+               Mark (Conseq);
+
+               Next (Contract_Case);
+            end loop;
+         end;
+      end if;
 
       Pop_Logic_Scope;
 

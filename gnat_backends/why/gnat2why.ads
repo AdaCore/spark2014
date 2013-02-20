@@ -276,10 +276,12 @@ package Gnat2Why is
       --  Generation of Why3 code for logic constructs.
       Generate_VCs_For_Pre,
       --  Generation of Why3 code to check absence of run-time errors in
-      --  preconditions.
+      --  preconditions and guards of Contract_Cases, and that these guards
+      --  are disjoint and complete.
       Generate_VCs_For_Post,
       --  Generation of Why3 code to check absence of run-time errors in
-      --  postconditions (including Contract_Case).
+      --  postconditions and consequences of Contract_Cases, and that
+      --  individual consequences hold.
       Generate_VCs_For_Assert,
       --  Generation of Why3 code to check absence of run-time errors in
       --  all assertions except precondition and postcondition.

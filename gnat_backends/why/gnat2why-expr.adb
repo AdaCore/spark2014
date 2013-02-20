@@ -625,7 +625,7 @@ package body Gnat2Why.Expr is
             --  does not lead to more paths being generated in the naive WP,
             --  contrary to what we would get if directly defining the value
             --  of the object as a program. This is particularly useful for
-            --  Requires clauses of Contract_Case.
+            --  guards of Contract_Cases.
 
             Let_Prog : constant W_Prog_Id :=
                             New_Binding
