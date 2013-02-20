@@ -197,24 +197,24 @@ package Graph is
    --  As above, but adds an unkeyed vertex. You must never lose the
    --  returned Id, otherwise you lose the vertex!
 
-   function Vertex_Hash (Element : Vertex_Id)
-                         return Ada.Containers.Hash_Type;
+   function Vertex_Hash
+     (Element : Vertex_Id) return Ada.Containers.Hash_Type;
    --  Hash a vertex_id (useful for building sets of vertices).
 
    ----------------------------------------------------------------------
    --  Edge operations
    ----------------------------------------------------------------------
 
-   function In_Neighbour_Count (G : T'Class;
-                                V : Vertex_Id)
-                                return Natural;
+   function In_Neighbour_Count
+     (G : T'Class;
+      V : Vertex_Id) return Natural;
    --  Returns the number of in neighbours for the given vertex.
    --
    --  Complexity is O(1).
 
-   function Out_Neighbour_Count (G : T'Class;
-                                 V : Vertex_Id)
-                                 return Natural;
+   function Out_Neighbour_Count
+     (G : T'Class;
+      V : Vertex_Id) return Natural;
    --  Returns the number of out neighbours for the given vertex.
    --
    --  Complexity is O(1).
@@ -243,7 +243,7 @@ package Graph is
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours)
-     with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
+      with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
                    G.Get_Vertex (V_2) /= Null_Vertex;
    --  Convenience function to add an edge between to vertices given
    --  by key (instead of id).
@@ -291,18 +291,15 @@ package Graph is
    function Get_Collection
      (G        : T'Class;
       V        : Vertex_Id;
-      The_Type : Vertex_Based_Collection)
-      return Vertex_Collection_T'Class;
+      The_Type : Vertex_Based_Collection) return Vertex_Collection_T'Class;
 
    function Get_Collection
      (G        : T'Class;
-      The_Type : Graph_Based_Collection)
-      return Vertex_Collection_T'Class;
+      The_Type : Graph_Based_Collection) return Vertex_Collection_T'Class;
 
    function Has_Element (Pos : Cursor) return Boolean;
 
-   package List_Iterators is new Ada.Iterator_Interfaces
-     (Cursor, Has_Element);
+   package List_Iterators is new Ada.Iterator_Interfaces (Cursor, Has_Element);
 
    function Iterate
      (Container : Vertex_Collection_T)
@@ -310,8 +307,7 @@ package Graph is
 
    function Get_Current_Vertex_Id
      (Container : Vertex_Collection_T;
-      Pos       : Cursor)
-      return Vertex_Id;
+      Pos       : Cursor) return Vertex_Id;
 
    ----------------------------------------------------------------------
    --  Complex queries
@@ -320,8 +316,7 @@ package Graph is
    function Non_Trivial_Path_Exists
      (G : T'Class;
       A : Vertex_Id;
-      B : Vertex_Id)
-      return Boolean;
+      B : Vertex_Id) return Boolean;
    --  Checks if there is a non-trivial path from A to B. A trivial
    --  path, which is not allowed by this function, is for the special
    --  case where A = B and there is no edge from A to A.
@@ -331,8 +326,7 @@ package Graph is
    function Non_Trivial_Path_Exists
      (G : T'Class;
       A : Vertex_Id;
-      F : access function (V : Vertex_Id) return Boolean)
-      return Boolean;
+      F : access function (V : Vertex_Id) return Boolean) return Boolean;
    --  Checks if there is a non-trivial path from A to another vertex
    --  B for which F(B) holds.
    --
@@ -411,10 +405,11 @@ package Graph is
    --  IO
    ----------------------------------------------------------------------
 
-   type Node_Shape_T is (Shape_Oval,
-                         Shape_Box,
-                         Shape_Diamond,
-                         Shape_None);
+   type Node_Shape_T is
+     (Shape_Oval,
+      Shape_Box,
+      Shape_Diamond,
+      Shape_None);
 
    type Edge_Shape_T is (Edge_Normal);
 

@@ -48,9 +48,7 @@ package body Graph is
    -- Create --
    ------------
 
-   function Create (Colour : Edge_Colours := Edge_Colours'First)
-                    return T
-   is
+   function Create (Colour : Edge_Colours := Edge_Colours'First) return T is
    begin
       return T'(Vertices       => VL.Empty_Vector,
                 Default_Colour => Colour);
@@ -78,9 +76,7 @@ package body Graph is
    -- Get_Vertex --
    ----------------
 
-   function Get_Vertex
-     (G : T'Class;
-      V : Vertex_Key) return Vertex_Id is
+   function Get_Vertex (G : T'Class; V : Vertex_Key) return Vertex_Id is
    begin
       for J in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if Test_Key (G.Vertices (J).Key, V) then
@@ -95,9 +91,10 @@ package body Graph is
    -- Get_Key --
    -------------
 
-   function Get_Key
-     (G : T'Class;
-      V : Vertex_Id) return Vertex_Key is (G.Vertices (V).Key);
+   function Get_Key (G : T'Class; V : Vertex_Id) return Vertex_Key is
+   begin
+      return G.Vertices (V).Key;
+   end Get_Key;
 
    --------------------
    -- Get_Attributes --
@@ -105,7 +102,10 @@ package body Graph is
 
    function Get_Attributes
      (G : T'Class;
-      V : Vertex_Id) return Vertex_Attributes is (G.Vertices (V).Attributes);
+      V : Vertex_Id) return Vertex_Attributes is
+   begin
+      return G.Vertices (V).Attributes;
+   end Get_Attributes;
 
    --------------------
    -- Set_Attributes --
@@ -139,8 +139,7 @@ package body Graph is
      (G  : in out T'Class;
       V  : Vertex_Key;
       A  : Vertex_Attributes;
-      Id : out Vertex_Id)
-   is
+      Id : out Vertex_Id) is
    begin
       G.Add_Vertex (V, A);
       Id := G.Vertices.Last_Index;
@@ -149,8 +148,7 @@ package body Graph is
    procedure Add_Vertex
      (G  : in out T'Class;
       A  : Vertex_Attributes;
-      Id : out Vertex_Id)
-   is
+      Id : out Vertex_Id) is
    begin
       G.Vertices.Append
         (Vertex'(Key            => Null_Key,
@@ -164,9 +162,8 @@ package body Graph is
    -- Vertex_Hash --
    -----------------
 
-   function Vertex_Hash (Element : Vertex_Id)
-                         return Ada.Containers.Hash_Type
-   is
+   function Vertex_Hash
+     (Element : Vertex_Id) return Ada.Containers.Hash_Type is
    begin
       return Ada.Containers.Hash_Type (Element);
    end Vertex_Hash;
@@ -179,10 +176,9 @@ package body Graph is
    --  In_Neighbour_Count  --
    --------------------------
 
-   function In_Neighbour_Count (G : T'Class;
-                                V : Vertex_Id)
-                                return Natural
-   is
+   function In_Neighbour_Count
+     (G : T'Class;
+      V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).In_Neighbours.Length);
    end In_Neighbour_Count;
@@ -191,10 +187,9 @@ package body Graph is
    --  Out_Neighbour_Count  --
    ---------------------------
 
-   function Out_Neighbour_Count (G : T'Class;
-                                 V : Vertex_Id)
-                                 return Natural
-   is
+   function Out_Neighbour_Count
+     (G : T'Class;
+      V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).Out_Neighbours.Length);
    end Out_Neighbour_Count;
@@ -321,8 +316,7 @@ package body Graph is
 
    procedure Copy_Edges
      (G : in out T'Class;
-      O : T'Class)
-   is
+      O : T'Class) is
    begin
       --  Sanity check the length of the two graphs.
       pragma Assert (G.Vertices.Length = O.Vertices.Length);
@@ -487,25 +481,28 @@ package body Graph is
    function Non_Trivial_Path_Exists
      (G : T'Class;
       A : Vertex_Id;
-      B : Vertex_Id)
-     return Boolean
+      B : Vertex_Id) return Boolean
    is
       Path_Exists : Boolean := False;
 
-      procedure Are_We_There_Yet (V  : Vertex_Id;
-                                  TV : out Traversal_Instruction);
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
-      procedure Are_We_There_Yet (V  : Vertex_Id;
-                                  TV : out Traversal_Instruction) is
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Traversal_Instruction) is
       begin
          if V = B then
             Path_Exists := True;
-            TV          := Abort_Traversal;
+
+            TV := Abort_Traversal;
          else
-            TV          := Continue;
+            TV := Continue;
          end if;
       end Are_We_There_Yet;
+
    begin
       G.DFS (Start         => A,
              Include_Start => False,
@@ -521,18 +518,21 @@ package body Graph is
    is
       Path_Exists : Boolean := False;
 
-      procedure Are_We_There_Yet (V  : Vertex_Id;
-                                  TV : out Traversal_Instruction);
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
-      procedure Are_We_There_Yet (V  : Vertex_Id;
-                                  TV : out Traversal_Instruction) is
+      procedure Are_We_There_Yet
+        (V  : Vertex_Id;
+         TV : out Traversal_Instruction) is
       begin
          if F (V) then
             Path_Exists := True;
-            TV          := Abort_Traversal;
+
+            TV := Abort_Traversal;
          else
-            TV          := Continue;
+            TV := Continue;
          end if;
       end Are_We_There_Yet;
    begin
@@ -561,9 +561,9 @@ package body Graph is
       type Bit_Field is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
 
-      Will_Visit   : Bit_Field         := Bit_Field'(others => False);
-      Stack        : Vertex_Index_List := VIL.Empty_Vector;
-      TV           : Traversal_Instruction;
+      Will_Visit : Bit_Field         := Bit_Field'(others => False);
+      Stack      : Vertex_Index_List := VIL.Empty_Vector;
+      TV         : Traversal_Instruction;
 
       procedure Schedule_Vertex (V : Valid_Vertex_Id);
       --  Add V to the stack of vertices to visit and flag it as "to
