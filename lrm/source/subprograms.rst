@@ -94,13 +94,7 @@ and Contract_Cases are defined.
    specifically, these aspects are allowed in the same
    contexts as a Pre or Post aspect.
 
-See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
-:ref:`global-aspects` for further detail on Global aspects and section :ref:`depends-aspects`
-for further detail on Depends aspects.
-
-.. _contract-cases:
-
-Contract Cases
+Contract Cases 
 ~~~~~~~~~~~~~~
 
 High-Level Requirements
@@ -122,9 +116,12 @@ High-Level Requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Contract_Cases aspect provides a structured way of defining a
-subprogram contract using mutually exclusive subcontract cases.
-The final case in the Contract_Case aspect may be the keyword **others** which means that, in a
+The Contract_Cases aspect provides a concise way to specify mutually
+independent cases guarded by ``conditions`` using the initial value of
+**in** or **in out** formal parameters or global variables.  Each
+``contract_case`` specifies the final value of mode **out** or **in
+out** formal parameters or global variables.  The final
+``contract_case`` may be the keyword **others** which means that, in a
 specific call to the subprogram, if all the ``conditions`` are False
 this ``contract_case`` is taken.  If an **others** ``contract_case``
 is not specified, then in a specific call of the subprogram exactly
@@ -153,9 +150,9 @@ is short hand for
 .. code-block:: ada
 
  procedure P (...) with
-      Pre  => General_Precondition,
+      Pre  => General_Precondition
+                and then Exactly_One_Of(A1,A2...An),
       Post => General_Postcondition
-                and then Exactly_One_Of(A1,A2...An)
                 and then (if A1'Old then B1)
                 and then (if A2'Old then B2)
                 and then ...
@@ -189,6 +186,7 @@ the grammar of ``contract_case_list`` given below.
 where
 
    ``consequence ::=`` *Boolean_*\ ``expression``
+
 
 .. centered:: **Legality Rules**
 
@@ -339,12 +337,16 @@ follow the grammar of ``global_specification``
 
    global_specification        ::= (moded_global_list {, moded_global_list})
                                  | global_list
-                                 | null
+                                 | null_global_specification
    moded_global_list           ::= mode_selector => global_list
    global_list                 ::= global_item
                                  | (global_item {, global_item})
    mode_selector               ::= Input | Output | In_Out | Proof_In
    global_item                 ::= name
+   
+where
+ ``null_global_specification`` ::= **null**
+ 
 
 .. ifconfig:: Display_Trace_Units
 
@@ -355,9 +357,8 @@ follow the grammar of ``global_specification``
 #. A ``global_item`` shall denote an entire variable 
    or a state abstraction; this rule is a name resolution rule.
 
-.. note::
- (SB) This rule may eventually be relaxed to allow references to non-static
- constants.
+   .. note::
+      (SB) This rule may eventually be relaxed to allow references to non-static constants.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -407,6 +408,9 @@ follow the grammar of ``global_specification``
    * Its initial value is used to determine the value of an assertion
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
+     
+#. A ``null_global_specification`` indicates that the subprogram does not
+   reference any ``global_item`` directly or indirectly.
 
 
 .. centered:: **Dynamic Semantics**
@@ -894,11 +898,8 @@ Global Aspects
 
 If a subprogram does not have a separate declaration then the Global 
 aspect is applied to the declaration of its body or body stub.
-The implementation of a subprogram body must be consistent with its
-Global aspect.
-
-Note that a Refined Global aspect may be applied to a subprogram body when using state
-abstraction; see section :ref:`refined-global-aspect` for further details.
+The implementation of a subprogram body must be consistent with its 
+Global Aspect.  
 
 .. centered:: **Syntax**
 
@@ -954,11 +955,8 @@ Depends Aspects
 
 If a subprogram does not have a separate declaration then the Depends 
 aspect is applied to the declaration of its its body or body stub.
-The implementation of a subprogram body must be consistent with its
-Depends aspect.
-
-Note that a Refined Depends aspect may be applied to a subprogram body when using state
-abstraction; see section :ref:`refined-depends-aspect` for further details.
+The implementation of a subprogram body must be consistent with its 
+Depends Aspect.  
 
 .. centered:: **Syntax**
 

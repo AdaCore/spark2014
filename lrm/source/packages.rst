@@ -129,23 +129,22 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 State abstraction provides a mechanism for naming, in a package's
-``visible_part``, state (typically variable declarations) that will be
-declared within the package's body (or ``private_part``, or within private
-descendants of the package). For example, a package declares a visible
-procedure and we wish to specify the set of global variables that the
-procedure reads and writes as part of the specification of the
+``visible_part``, state (typically a collection of variables) that will be
+declared within the package's body, ``private_part``, packages nested within
+these, or within private descendants of the package. For example, a package
+declares a visible procedure and we wish to specify the set of global variables
+that the procedure reads and writes as part of the specification of the
 subprogram. Those variables cannot be named directly in the package
-specification. Instead, we introduce a state abstraction which is
-visible in the package specification and later, when the package body
-is declared, we specify the set of variables that *constitute* or
-*implement* that state abstraction. If a package body contains, for
-example, a nested package, then a state abstraction of the inner
-package may also be part of the implementation of the given state
+specification. Instead, we introduce a state abstraction which is visible in the
+package specification and later, when the package body is declared, we specify
+the set of variables that *constitute* or *implement* that state abstraction. If
+a package body contains, for example, a nested package, then a state abstraction
+of the inner package may also be part of the implementation of the given state
 abstraction of the outer package.
 
-The *hidden* state of a package may be represented
-by one or more state abstractions, with each pair of state
-abstractions representing disjoint sets of hidden variables.
+The hidden state of a package may be represented by one or more state
+abstractions, with each pair of state abstractions representing disjoint sets of
+hidden variables.
 
 If a subprogram P with a Global aspect is declared in the
 ``visible_part`` of a package and P reads or updates any of the hidden
@@ -242,14 +241,15 @@ where the ``aspect_mark`` is Abstract_State and the
 #. The hidden state of a package P consists of:
 
    * any variables declared immediately within the private part or
-     body of P; and
+     body of P;
+   * the state abstractions of any packages declared immediately within the 
+     visible part of P; and
    * the visible state and state abstractions of any packages declared
      immediately within the private part or body of P, and of any
      private child units of P or of their public descendants.
 
-.. note::
- (SB) These definitions may eventually be expanded to include non-static
- constants, not just variables.
+   .. note::
+      (SB) These definitions may eventually be expanded to include non-static constants, not just variables.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
@@ -257,11 +257,11 @@ where the ``aspect_mark`` is Abstract_State and the
    declaration occurs at the beginning of the visible part of P. This
    implicit declaration shall have a completion and is overloadable.
 
-.. note::
- (SB) Making these implicit declarations overloadable allows declaring
- a subprogram with the same fully qualified name as a state abstraction;
- to make this scenario work, rules of the form "... shall denote a state
- abstraction" need to be name resolution rules, not just legality rules.
+   .. note::
+      (SB) Making these implicit declarations overloadable allows declaring
+      a subprogram with the same fully qualified name as a state abstraction;
+      to make this scenario work, rules of the form "... shall denote a state
+      abstraction" need to be name resolution rules, not just legality rules.
 
 #. [A state abstraction shall only be named in contexts where this is
    explicitly permitted (e.g., as part of a Globals aspect

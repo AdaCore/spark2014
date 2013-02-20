@@ -132,13 +132,6 @@ which is specific to |SPARK|):
 All sections are always listed and if no content is required then the
 corresponding section will be marked *Not applicable*.
 
-In addition, examples of the use of the new features are given along with the
-language definition detail.
-
-.. todo::
-     We need to increase the number of examples given. To be completed in the Milestone 3
-     version of this document.
-
 .. _formal_analysis:
 
 Formal Analysis
@@ -159,9 +152,7 @@ Formal Analysis
   will not be raised.
 
 - Formal verification of functional properties, based on contracts expressed as
-  preconditions, postconditions, type invariants and so on. The term *formal verification*
-  is used to mean formal verification of robustness properties and formal verification of
-  functional properties taken together.
+  preconditions, postconditions, type invariants and so on.
 
 Data and information-flow analysis is not valid and may not be possible if the
 legality rules of Ada 2012 and those presented in this document are not met.  
@@ -238,7 +229,10 @@ aspects and if the use of implementation-defined attributes
 is avoided, then a |SPARK| program may be compiled and executed
 by any Ada 2012 implementation (whether or not it recognizes the
 |SPARK| pragmas). Ada specifies that unrecognized
-pragmas are ignored: an Ada compiler that ignores the
+pragmas are ignored. The pragmas defined by |SPARK| either have
+no dynamic semantics (e.g., pragma Global) or are used only to define
+assertions whose success shall be proven statically (e.g., pragma
+Loop_Variant). In either case, an Ada compiler which ignores the
 pragma is correctly implementing the dynamic semantics of |SPARK| and
 the |SPARK| tools will still be able to undertake all their static checks and proofs.
 
@@ -400,8 +394,7 @@ Some are expanded in subsequent sections within this chapter.
   modes provided in SPARK 83/95/2005, unless it has been identified that customers
   do not find them useful.
 
-- Support for specifying and verifying properties of secure systems shall be improved
-  over what is available in SPARK 2005.
+- Support for specifying and verifying properties of secure systems shall be improved.
 
 - |SPARK| shall support the analysis of volatile variables, typically external
   inputs or outputs. See section :ref:`volatile` for further details.
@@ -812,12 +805,6 @@ and nothing further is given on how it should be used.*
 
 .. todo::
    Complete detail on mixing code that is in and out of |SPARK|.
-   In particular, where subheadings such as Legality Rules or Static Semantics are
-   used to classify the language rules given for new language features, any rules
-   given to restrict the Ada subset being used need to be classified in some way (for
-   example, as Subset Rules) and so given under a corresponding heading. In addition,
-   the inconsistency between the headings used for statements and exceptions needs
-   to be addressed.
    To be completed in the Milestone 4 version of this document.
 
 .. _volatile:
@@ -899,13 +886,16 @@ Naming
    variable simultaneously.
 
 #. **Requirement:** Names used in the new flow analysis specifications
-   shall refer to entire variables.
+   shall refer to entire variables.  Within a subprogram body flow analysis will 
+   operate at an individual subcomponent level for objects of a record type.
 
-   **Rationale:** For the flow analysis model, updating part of a variable is regarded as
-   updating all of it.
+   **Rationale:** For the flow analysis model at the inter-subprogram level, 
+   updating part of a variable is regarded as updating all of it.
+   Within a subprogram body the subcomponents of a record type object
+   are tracked individually.
 
-#. **Requirement:** Where distinct names are referenced within a given flow analysis specification, then
-   those names shall refer to distinct entities.
+#. **Requirement:** Where distinct names are referenced within a given flow 
+   analysis specification, then those names shall refer to distinct entities.
 
    **Rationale:** to support flow analysis and to aid clarity of the interface definition.
 
