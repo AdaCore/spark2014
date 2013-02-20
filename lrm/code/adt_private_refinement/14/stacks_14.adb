@@ -14,8 +14,7 @@ package body Stacks_14 is
    end Is_Full;
 
    procedure Clear(S : out Stack)
-      with Refined_Post => (Is_Empty(S) and
-                            S.Stack_Pointer = 0)
+      with Refined_Post => Is_Empty(S)
    is
    begin
       S.Stack_Pointer := 0;
