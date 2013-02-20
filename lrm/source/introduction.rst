@@ -158,7 +158,9 @@ Formal Analysis
   will not be raised.
 
 - Formal verification of functional properties, based on contracts expressed as
-  preconditions, postconditions, type invariants and so on.
+  preconditions, postconditions, type invariants and so on. The term *formal verification*
+  is used to mean formal verification of robustness properties and formal verification of
+  functional properties taken together.
 
 Data and information-flow analysis is not valid and may not be possible if the
 legality rules of Ada 2012 and those presented in this document are not met.  
@@ -400,7 +402,8 @@ Some are expanded in subsequent sections within this chapter.
   modes provided in SPARK 83/95/2005, unless it has been identified that customers
   do not find them useful.
 
-- Support for specifying and verifying properties of secure systems shall be improved.
+- Support for specifying and verifying properties of secure systems shall be improved
+  over what is available in SPARK 2005.
 
 - |SPARK| shall support the analysis of volatile variables, typically external
   inputs or outputs. See section :ref:`volatile` for further details.
@@ -896,13 +899,6 @@ Naming
 
    **Rationale:** A variable cannot be both a formal parameter and a global
    variable simultaneously.
-
-#. **Requirement:** Names used in the new flow analysis specifications
-   are distinct from local subprogram
-   variables when both are in scope.  -- We may drop this rule and make it a
-   guideline
-
-   **Rationale:** To avoid accidental hole in scope errors.
 
 #. **Requirement:** Names used in the new flow analysis specifications
    shall refer to entire variables.

@@ -94,6 +94,12 @@ and Contract_Cases are defined.
    specifically, these aspects are allowed in the same
    contexts as a Pre or Post aspect.
 
+See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
+:ref:`global-aspects` for further detail on Global aspects and section :ref:`depends-aspects`
+for further detail on Depends aspects.
+
+.. _contract-cases:
+
 Contract Cases
 ~~~~~~~~~~~~~~
 
@@ -888,8 +894,11 @@ Global Aspects
 
 If a subprogram does not have a separate declaration then the Global 
 aspect is applied to the declaration of its body or body stub.
-The implementation of a subprogram body must be consistent with its 
-Global Aspect.  
+The implementation of a subprogram body must be consistent with its
+Global Aspect.
+
+Note that a Refined Global aspect may be applied to a subprogram body when using state
+abstraction; see section :ref:`refined-global-aspect` for further details.
 
 .. centered:: **Syntax**
 
@@ -945,8 +954,11 @@ Depends Aspects
 
 If a subprogram does not have a separate declaration then the Depends 
 aspect is applied to the declaration of its its body or body stub.
-The implementation of a subprogram body must be consistent with its 
-Depends Aspect.  
+The implementation of a subprogram body must be consistent with its
+Depends Aspect.
+
+Note that a Refined Depends aspect may be applied to a subprogram body when using state
+abstraction; see section :ref:`refined-depends-aspect` for further details.
 
 .. centered:: **Syntax**
 
