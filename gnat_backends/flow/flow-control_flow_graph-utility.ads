@@ -35,6 +35,19 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for vertices which simply define and use some
    --  variables.
 
+   function Make_Call_Attributes
+     (Callsite : Node_Id       := Empty;
+      Loops    : Node_Sets.Set := Node_Sets.Empty_Set)
+      return V_Attributes
+      with Pre  => Callsite /= Empty,
+           Post => not Make_Call_Attributes'Result.Is_Null_Node and
+                   Make_Call_Attributes'Result.Is_Program_Node and
+                   Make_Call_Attributes'Result.Is_Callsite;
+   --  Create attributes for callsite vertices. Automatically sets the
+   --  following:
+   --     * Perform_IPFA
+   --     * Is_Callsite
+
    function Make_Parameter_Attributes
      (Call_Vertex : Node_Id;
       Actual      : Node_Id;

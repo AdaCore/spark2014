@@ -124,8 +124,15 @@ package Flow is
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
+      Is_Callsite       : Boolean;
+      --  True if the vertex represents a subprogram call.
+
       Is_Parameter      : Boolean;
       --  True if this vertex models an argument to a procedure call.
+
+      Perform_IPFA      : Boolean;
+      --  True if the dependencies for this callsite should be filled
+      --  in using interprocedural flow analysis.
 
       Call_Vertex       : Flow_Id;
       --  Used to identify which vertex a parameter vertex belongs to.
@@ -151,7 +158,9 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Loop_Parameter => False,
                    Is_Export         => False,
+                   Is_Callsite       => False,
                    Is_Parameter      => False,
+                   Perform_IPFA      => False,
                    Call_Vertex       => Null_Flow_Id,
                    Parameter_Actual  => Null_Flow_Id,
                    Parameter_Formal  => Null_Flow_Id,
@@ -165,7 +174,9 @@ package Flow is
                    Is_Initialised    => False,
                    Is_Loop_Parameter => False,
                    Is_Export         => False,
+                   Is_Callsite       => False,
                    Is_Parameter      => False,
+                   Perform_IPFA      => False,
                    Call_Vertex       => Null_Flow_Id,
                    Parameter_Actual  => Null_Flow_Id,
                    Parameter_Formal  => Null_Flow_Id,

@@ -776,10 +776,6 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       Called_Procedure : constant Entity_Id := Entity (Name (N));
-      Procedure_Spec   : constant Node_Id   := Parent (Called_Procedure);
-
-      Body_Known       : constant Boolean :=
-        Parent (Procedure_Spec) /= Empty;
 
       V        : Flow_Graphs.Vertex_Id;
 
@@ -790,7 +786,8 @@ package body Flow.Control_Flow_Graph is
       --  A vertex for the actual call.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Loops => Ctx.Current_Loops),
+         Make_Call_Attributes (Callsite => N,
+                               Loops    => Ctx.Current_Loops),
          V);
 
       --  Deal with the procedures parameters
@@ -837,14 +834,6 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA.CFG,
               V,
               CM (Union_Id (Parameter_Associations (N))).Standard_Entry);
-
-      if Body_Known then
-         --  We can do inter-procedural analysis.
-         null;
-      else
-         --  We must trust the contract.
-         raise Why.Not_Implemented;
-      end if;
    end Do_Procedure_Call_Statement;
 
    ----------------------------------

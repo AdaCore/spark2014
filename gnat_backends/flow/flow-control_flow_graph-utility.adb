@@ -21,7 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sinfo; use Sinfo;
+
+with Treepr; use Treepr;
+
+with Why;
+
 package body Flow.Control_Flow_Graph.Utility is
+
+   ---------------------------
+   -- Make_Basic_Attributes --
+   ---------------------------
 
    function Make_Basic_Attributes
      (Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -38,6 +48,44 @@ package body Flow.Control_Flow_Graph.Utility is
 
       return A;
    end Make_Basic_Attributes;
+
+   --------------------------
+   -- Make_Call_Attributes --
+   --------------------------
+
+   function Make_Call_Attributes
+     (Callsite : Node_Id       := Empty;
+      Loops    : Node_Sets.Set := Node_Sets.Empty_Set)
+      return V_Attributes
+   is
+      A : V_Attributes := Null_Attributes;
+
+      Called_Procedure : constant Entity_Id := Entity (Name (Callsite));
+      Procedure_Spec   : constant Node_Id   := Parent (Called_Procedure);
+   begin
+      pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
+
+      A.Is_Program_Node := True;
+      A.Loops           := Loops;
+      A.Is_Callsite     := True;
+
+      case Nkind (Parent (Procedure_Spec)) is
+         when N_Subprogram_Body =>
+            A.Perform_IPFA := True;
+         when N_Subprogram_Declaration =>
+            A.Perform_IPFA :=
+              Corresponding_Body (Parent (Procedure_Spec)) /= Empty;
+         when others =>
+            Print_Node_Subtree (Parent (Procedure_Spec));
+            raise Why.Not_Implemented;
+      end case;
+
+      return A;
+   end Make_Call_Attributes;
+
+   -------------------------------
+   -- Make_Parameter_Attributes --
+   -------------------------------
 
    function Make_Parameter_Attributes
      (Call_Vertex : Node_Id;
@@ -67,6 +115,10 @@ package body Flow.Control_Flow_Graph.Utility is
 
       return A;
    end Make_Parameter_Attributes;
+
+   ------------------------------
+   -- Make_Variable_Attributes --
+   ------------------------------
 
    function Make_Variable_Attributes
      (E       : Entity_Id;
