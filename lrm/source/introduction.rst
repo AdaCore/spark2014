@@ -430,6 +430,11 @@ Some are expanded in subsequent sections within this chapter.
    Ensure that all strategic requirements have been implemented.
    To be completed in the Milestone 4 version of this document.
 
+.. todo::
+   Where Ada 2012 language features are designated as not in SPARK 2014 in subsequent
+   chapters of this document, add tracing back to the strategic requirement that
+   motivates that designation.
+
 .. _explain_sprs:
 
 Explaining the Strategic Requirements
