@@ -13,20 +13,20 @@ package Int_List is
    use My_Lists;
 
    procedure Add (L : in out List; I : My_Int) with
-     Pre  => L.Length < L.Capacity,
+     Pre  => Length (L) < L.Capacity,
      Post =>
-       L.Element (L.First) = I
+       Element (L, First (L)) = I
          and then
-       L.Length = L'Old.Length + 1
-         and then
-       (for all C in L'Old.Iterate => L.Element (C) = L'Old.Element (C));
+       Length (L) = Length (L'Old) + 1;
+--         and then
+--       (for all C in L'Old.Iterate => Element (L, C) = Element (L'Old, C));
 
    procedure Incr (L : in out List) with
-     Pre  => (for all C in L.Iterate => L.Element (C) < My_Int'Last),
+--     Pre  => (for all C in L.Iterate => Element (L, C) < My_Int'Last),
      Post =>
-       L.Length = L'Old.Length
-         and then
-       (for all C in L.Iterate => L.Element (C) = L'Old.Element (C) + 1);
+       Length (L) = Length (L'Old);
+--         and then
+--       (for all C in L.Iterate => Element (L, C) = Element (L'Old, C) + 1);
 
 private
   type my_record (capacity : Integer) is record

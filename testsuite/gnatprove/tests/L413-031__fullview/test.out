@@ -1,38 +1,17 @@
-int_list.adb:11:14: info: precondition proved
-int_list.adb:12:10: info: loop invariant initialization proved
-int_list.adb:12:10: loop invariant preservation not proved
-int_list.adb:13:14: info: precondition proved
-int_list.adb:13:24: info: precondition proved
-int_list.adb:13:43: precondition not proved
-int_list.adb:15:28: info: precondition proved
-int_list.adb:15:51: info: precondition proved
-int_list.adb:15:70: precondition not proved
-int_list.adb:17:27: info: precondition proved
-int_list.adb:17:49: info: precondition proved
-int_list.adb:17:68: precondition not proved
-int_list.adb:17:81: info: overflow check proved
-int_list.adb:18:11: info: precondition proved
+int_list.adb:11:13: info: precondition proved
+int_list.adb:18:10: info: precondition proved
 int_list.adb:18:33: info: precondition proved
-int_list.adb:18:46: info: overflow check proved
-int_list.adb:18:46: range check not proved
-int_list.adb:19:11: info: precondition proved
-int_list.adb:4:18: info: range check proved
-int_list.adb:4:8: info: precondition proved
-int_list.adb:4:8: info: range check proved
-int_list.adb:9:25: info: precondition proved
-int_list.ads:14:15: info: precondition proved
-int_list.ads:16:20: info: precondition proved
-int_list.ads:16:28: postcondition not proved, requires L.Element (L.First) = I
-int_list.ads:16:9: info: precondition proved
-int_list.ads:18:24: info: precondition proved
-int_list.ads:18:32: info: overflow check proved
-int_list.ads:18:9: info: precondition proved
-int_list.ads:20:40: precondition not proved
-int_list.ads:20:60: info: precondition proved
-int_list.ads:23:42: info: precondition proved
-int_list.ads:25:17: postcondition not proved, requires L.Length = L'Old.Length
-int_list.ads:25:24: info: precondition proved
-int_list.ads:25:9: info: precondition proved
-int_list.ads:27:36: info: precondition proved
-int_list.ads:27:56: precondition not proved
-int_list.ads:27:69: info: overflow check proved
+int_list.adb:18:48: range check not proved
+int_list.adb:19:10: info: precondition proved
+int_list.adb:4:7: info: precondition proved
+int_list.adb:9:24: info: precondition proved
+int_list.ads:16:14: info: precondition proved
+int_list.ads:18:20: info: precondition proved
+int_list.ads:18:8: postcondition not proved, requires Element (L, First (L)) = I
+int_list.ads:18:8: precondition not proved
+int_list.ads:20:21: info: precondition proved
+int_list.ads:20:36: info: overflow check proved
+int_list.ads:20:8: info: precondition proved
+int_list.ads:27:19: postcondition not proved, requires Length (L) = Length (L'old)
+int_list.ads:27:21: info: precondition proved
+int_list.ads:27:8: info: precondition proved

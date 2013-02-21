@@ -217,12 +217,52 @@ package body Gnat2Why.Types is
             Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
 
          elsif Type_Based_On_Formal_Container (E) then
-            Emit
-              (File.Cur_Theory,
-               New_Type (Name  => New_Identifier (Name => "t"),
-                         Alias => Why_Logic_Type_Of_Ada_Type
-                           (Underlying_Formal_Container_Type (E))));
-
+            --  Minimal translation for subtype of formal containers
+            --  type t = base_t
+            --  function of_base base_t : t
+            --  function to_base t : base_t
+            --  To be removed when container typa are handled like private
+            --  records with discriminants and a non alfa fullview.
+            declare
+               Rename_Id : constant W_Identifier_Id :=
+                 To_Why_Id (E, Local => True);
+               Rename_Type : constant W_Primitive_Type_Id :=
+                 New_Abstract_Type (Name => Rename_Id);
+               Base_Type : constant W_Primitive_Type_Id :=
+                 Why_Logic_Type_Of_Ada_Type
+                   (Underlying_Formal_Container_Type (E));
+            begin
+               Emit
+                 (File.Cur_Theory,
+                  New_Type (Name  => Rename_Id,
+                            Alias => Base_Type));
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_To_Base),
+                     Binders     =>
+                       (1 =>
+                          Binder_Type'(B_Name =>
+                                         New_Identifier
+                                           (Name => Full_Name (E) & "__x"),
+                                       B_Type => Rename_Type,
+                                       others => <>)),
+                     Return_Type => Base_Type));
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_Of_Base),
+                     Binders     =>
+                       (1 =>
+                          Binder_Type'(B_Name =>
+                                         New_Identifier
+                                           (Name => Full_Name (E) & "__x"),
+                                       B_Type => Base_Type,
+                                       others => <>)),
+                     Return_Type => Rename_Type));
+            end;
          else
             case Ekind (E) is
             when E_Signed_Integer_Type    |

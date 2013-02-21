@@ -120,4 +120,16 @@ package body Why.Gen.Terms is
       end case;
    end New_Ifb;
 
+   -------------
+   -- New_Old --
+   -------------
+
+   function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id
+   is
+   begin
+         return New_Tagged (Def    => Expr,
+                            Tag    => NID (""),
+                            Domain => Domain);
+   end New_Old;
+
 end Why.Gen.Terms;

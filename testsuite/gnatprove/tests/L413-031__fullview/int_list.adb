@@ -1,22 +1,22 @@
 package body Int_List is
    procedure Add (L : in out List; I : My_Int) is
    begin
-      L.Prepend (I);
+      Prepend (L, I);
    end Add;
 
    procedure Incr (L : in out List) is
       Copy : List := L;
-      C    : Cursor := L.First;
+      C    : Cursor := First (L);
    begin
-      while L.Has_Element (C) loop
-         pragma Assert
-           (L.Right (C).Strict_Equal (Copy.Right (C))
-              and then
-            (for all D in L.Right (C).Iterate => L.Element (D) = Copy.Element (D))
-              and then
-           (for all D in L.Left (C).Iterate => L.Element (D) = Copy.Element (C) + 1));
-         L.Replace_Element (C, L.Element (C) + 1);
-         L.Next (C);
+      while Has_Element (L, C) loop
+--         pragma Assert
+--           (Strict_Equal (Right (L, C),Right (Copy, C))
+--              and then
+--            (for all D in Right (L, C).Iterate => Element (L, D) = Element (Copy, D))
+--              and then
+--           (for all D in Left (L, C).Iterate => Element (L, D) = Element (Copy, C) + 1));
+         Replace_Element (L, C, Element (L, C) + 1);
+         Next (L, C);
       end loop;
    end Incr;
 end Int_List;

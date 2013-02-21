@@ -45,4 +45,7 @@ package Why.Gen.Terms is
    --  Build a if-then-else construct with a boolean test and terms in the
    --  branches.
 
+   function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
+   --  Build the expression old Expr
+
 end Why.Gen.Terms;

@@ -415,17 +415,27 @@ module Main
     forall cu : cursor [not_no_element__logic cu ].
       not_no_element__logic cu = True <-> cu <> no_element
 
+  predicate not_no_element__pre (cu : cursor) = true
+  predicate not_no_element__post (cu : cursor) (result : bool) =
+    result = True <->  cu <> no_element
   val not_no_element__program (cu : cursor) : bool
     ensures { result = True <->  cu <> no_element }
 
   function length__logic (co : list) : Ada__containers__count_type.count_type =
          Ada__containers__count_type.of_int (length co)
 
+  predicate length__pre (co : list) = true
+  predicate length__post (co : list) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (length co)
   val length__program (co : list) :  Ada__containers__count_type.count_type
      ensures { result = Ada__containers__count_type.of_int (length co) }
 
   function element__logic (co:list) (cu:cursor) : element_type = element_ co cu
 
+  predicate element__pre (co:list) (cu:cursor) =
+     has_element co cu
+  predicate element__post (co:list) (cu:cursor) (result : element_type) =
+     result = element_ co cu
   val element__program (co:list) (cu:cursor) : element_type
      requires { has_element co cu }
      ensures  { result = element_ co cu }
@@ -436,6 +446,9 @@ module Main
     forall co : list, cu : cursor [has_element__logic co cu].
       has_element co cu <-> has_element__logic co cu = True
 
+  predicate has_element__pre (co:list) (cu:cursor) = true
+  predicate has_element__post (co:list) (cu:cursor) (result: bool) =
+     has_element co cu <-> result = True
   val has_element__program (co:list) (cu:cursor) : bool
      ensures { has_element co cu <-> result = True }
 
@@ -445,15 +458,29 @@ module Main
     forall co : list, e : element_type [contains__logic co e].
       contains co e <-> contains__logic co e = True
 
+  predicate contains__pre (co:list) (e:element_type) = true
+  predicate contains__post (co:list) (e:element_type) (result: bool) =
+     contains co e <-> result = True
   val contains__program (co:list) (e:element_type) : bool
      ensures { contains co e <-> result = True }
 
+  predicate replace_element__pre (co: list) (cu:cursor) (e:element_type)=
+     has_element co cu
+  predicate replace_element__post (co oldco: list) (cu:cursor) (e:element_type)=
+     replace_element_ oldco cu e co
   val replace_element__program (co:ref list) (cu:cursor) (e:element_type) : unit
      requires { has_element !co cu }
      writes     { co }
      reads      { co }
      ensures { replace_element_ (old !co) cu e !co }
 
+  predicate insert__pre (co :list) (cu:cursor) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element) 
+  predicate insert__post (co oldco: list) (cu:cursor) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     insert_mult oldco cu e (Ada__containers__count_type.to_int c) co
   val insert__program (co:ref list) (cu:cursor) (e:element_type) 
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
@@ -462,6 +489,14 @@ module Main
      reads      { co }
      ensures { insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co }
 
+  predicate insert__2__pre (co:list) (cu:cursor) (e:element_type) (p:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element)
+  predicate insert__2__post (co oldco: list) (cu:cursor) (e:element_type) 
+                 (p oldp: cursor) (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco cu e (Ada__containers__count_type.to_int c) co /\
+            first_inserted oldco cu co p
   val insert__2__program (co:ref list) (cu:cursor) (e:element_type) (p:ref cursor)
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
@@ -471,6 +506,14 @@ module Main
      ensures { insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co /\
             first_inserted (old !co) cu !co !p }
 
+  predicate insert__3__pre (co:list) (cu:cursor)  (p:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element)
+  predicate insert__3__post (co oldco:list) (cu:cursor)  (p oldp:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_3_mult oldco cu (Ada__containers__count_type.to_int c) co /\
+            first_inserted oldco cu co p
   val insert__3__program (co:ref list) (cu:cursor)  (p:ref cursor)
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
@@ -480,6 +523,13 @@ module Main
      ensures { insert_3_mult (old !co) cu (Ada__containers__count_type.to_int c) !co /\
             first_inserted (old !co) cu !co !p }
 
+  predicate prepend__pre (co:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate prepend__post (co oldco:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco (first oldco) e
+                             (Ada__containers__count_type.to_int c) co
   val prepend__program (co:ref list) (e:element_type) 
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co }
@@ -488,6 +538,13 @@ module Main
      ensures { insert_mult (old !co) (first (old !co)) e
                              (Ada__containers__count_type.to_int c) !co }
 
+  predicate append__pre (co: list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate append__post (co oldco:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco no_element e
+                             (Ada__containers__count_type.to_int c) co
   val append__program (co:ref list) (e:element_type) 
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co }
@@ -496,13 +553,26 @@ module Main
      ensures { insert_mult (old !co) no_element e
                              (Ada__containers__count_type.to_int c) !co }
 
-  val delete__program (co:ref list) (cu:cursor)
+  predicate delete__pre (co:list) (cu:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     has_element co cu
+  predicate delete__post (co oldco:list) (cu oldcu:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco oldcu (Ada__containers__count_type.to_int c) co
+  val delete__program (co:ref list) (cu:ref cursor)
                                              (c : Ada__containers__count_type.count_type) : unit
-     requires { has_element !co cu }
+     requires { has_element !co !cu }
      writes     { co }
      reads      { co }
-     ensures { delete_mult (old !co) cu (Ada__containers__count_type.to_int c) !co }
+     ensures { delete_mult (old !co) (old !cu) (Ada__containers__count_type.to_int c) !co}
 
+  predicate delete_first__pre (co:list)
+                                             (c : Ada__containers__count_type.count_type)=
+     not (is_empty_ co)
+  predicate delete_first__post (co oldco:list)
+                                             (c : Ada__containers__count_type.count_type)=
+     delete_mult oldco (first oldco) 
+                             (Ada__containers__count_type.to_int c) co
   val delete_first__program (co:ref list)
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { not (is_empty_ !co) }
@@ -511,6 +581,13 @@ module Main
      ensures { delete_mult (old !co) (first (old !co)) 
                              (Ada__containers__count_type.to_int c) !co }
 
+  predicate delete_last__pre (co:list)
+                                             (c : Ada__containers__count_type.count_type) =
+     not (is_empty_ co)
+  predicate delete_last__post (co oldco:list)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco (last oldco) 
+                             (Ada__containers__count_type.to_int c) co
   val delete_last__program (co:ref list)
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { not (is_empty_ !co) }
@@ -519,15 +596,28 @@ module Main
      ensures { delete_mult (old !co) (last (old !co)) 
                              (Ada__containers__count_type.to_int c) !co }
 
+  predicate swap__pre (co:list) (cu1 cu2 : cursor) = true
+  predicate swap__post (co oldco:list) (cu1 cu2 : cursor) =
+     exists interm : list. 
+                       replace_element_ oldco cu1 (element_ oldco cu2) interm /\
+                       replace_element_ interm cu2 (element_ oldco cu1) co
   val swap__program (co:ref list) (cu1 cu2 : cursor) : unit
      writes     { co }
      ensures { exists interm : list. 
                        replace_element_ (old !co) cu1 (element_ (old !co) cu2) interm /\
                        replace_element_ interm cu2 (element_ (old !co) cu1) !co }
 
+  predicate swap_links__pre (co:list) (cu1 cu2 : cursor) = true
+  predicate swap_links__post (co oldco:list) (cu1 cu2 : cursor) = true
   val swap_links__program (co:ref list) (cu1 cu2 : cursor) : unit
      writes     { co }
 
+  predicate splice__pre (target:list) (cu:cursor) (source:list) =
+     capacity target >= (length target) + (length source) 
+                           /\ (has_element target cu \/ cu = no_element)
+  predicate splice__post (target oldtarget:list) (cu:cursor) (source oldsource: list) =
+     length target = (length oldtarget) + (length oldsource) /\
+                         length source = 0
   val splice__program (target:ref list) (cu:cursor) (source:ref list) : unit
      requires { capacity !target >= (length !target) + (length !source) 
                            /\ (has_element !target cu \/ cu = no_element)}
@@ -536,6 +626,16 @@ module Main
      ensures { length !target = (length (old !target)) + (length (old !source)) /\
                          length !source = 0 }
 
+  predicate splice__2__pre (target:list) (cu:cursor) (source:list)
+                                (p:cursor) =
+     capacity target >= (length target) + (length source)
+                           /\ (has_element target cu \/ cu = no_element)
+                           /\ has_element source p
+  predicate splice__2__post (target oldtarget: list) (cu:cursor) (source oldsource: list)
+                                (p oldp: cursor) =
+     insert_ oldtarget cu (element_ oldsource oldp) target /\
+                         delete_ oldsource oldp source /\ 
+                        first_inserted oldtarget cu target p
   val splice__2__program (target:ref list) (cu:cursor) (source:ref list)
                                 (p:ref cursor) : unit
      requires { capacity !target >= (length !target) + (length !source)
@@ -547,36 +647,61 @@ module Main
                          delete_ (old !source) (old !p) !source /\ 
                         first_inserted (old !target) cu !target !p  }
 
-  val splice__3__program (co:ref list) (before:cursor) (p:ref cursor) : unit
+  predicate splice__3__pre (co:list) (before:cursor) (p:cursor) =
+     capacity co >= 2*(length co)
+                           /\ (has_element co before \/ before = no_element)
+  predicate splice__3__post (co oldco: list) (before:cursor) (p: cursor) =
+     exists interm : list. 
+                       delete_ oldco p  interm /\
+                       insert_ interm before (element_ oldco p) co
+  val splice__3__program (co:ref list) (before:cursor) (p:cursor) : unit
      requires { capacity !co >= 2*(length !co)
                            /\ (has_element !co before \/ before = no_element) }
-     writes     { co, p }
+     writes     { co }
      reads      { co }
      ensures { exists interm : list. 
-                       delete_ (old !co) (old !p)  interm /\
-                       insert_ interm before (element_ (old !co) !p) !co /\
-                        first_inserted interm before !co !p }
+                       delete_ (old !co) p  interm /\
+                       insert_ interm before (element_ (old !co) p) !co }
 
+  predicate reverse_elements__pre (co:list) = true
+  predicate reverse_elements__post (co oldco:list) =
+     equal_ co oldco /\ capacity co = capacity oldco
   val reverse_elements__program (co:ref list) : unit
      writes     { co }
      ensures { equal_ !co (old !co) /\ capacity !co = capacity (old !co) }
 
+  predicate clear__pre (co:list) = true
+  predicate clear__post (co oldco: list) =
+     is_empty_ co /\ capacity co = capacity oldco
   val clear__program (co:ref list) : unit
      writes     { co }
      ensures { is_empty_ !co /\ capacity !co = capacity (old !co) }
 
+  predicate assign__pre (target:list) (source:list) =
+     capacity target >= length source
+  predicate assign__post (target oldtarget:list) (source:list) =
+     equal_ target source
   val assign__program (target:ref list) (source:list) : unit
      requires { capacity !target >= length source }
      writes     { target }
      reads      { target }
      ensures { equal_ !target source }
 
+  predicate move__pre (target:list) (source:list) =
+     capacity target >= length source
+  predicate move__post (target oldtarget:list) (source oldsource:list) =
+     equal_ target oldsource /\ is_empty_ source
   val move__program (target:ref list) (source:ref list) : unit
      requires { capacity !target >= length !source }
      writes     { target, source }
      reads      { target, source }
      ensures { equal_ !target (old !source) /\ is_empty_ !source }
 
+  predicate copy__pre (co: list) (cap:Ada__containers__count_type.count_type) = true
+  predicate copy__post (co: list) (cap:Ada__containers__count_type.count_type) 
+              (result: list) =
+     strict_equal co (result) (*/\
+                              capacity result = max (capacity co) cap*) 
   val copy__program (co: list) (cap:Ada__containers__count_type.count_type) : list
      ensures { strict_equal co (result) (*/\
                               capacity result = max (capacity co) cap*) }
@@ -590,42 +715,68 @@ module Main
 
   function previous__logic (co:list) (cu:cursor) : cursor = previous_ co cu
 
+  predicate previous__pre (co:list) (cu:cursor) = cu = no_element \/ has_element co cu
+  predicate previous__post (co:list) (cu:cursor) (result: cursor) =
+     result = previous_ co cu
   val previous__program (co:list) (cu:cursor) : cursor
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = previous_ co cu }
 
   function next__logic (co:list) (cu:cursor) : cursor = next_ co cu
 
+  predicate next__pre (co:list) (cu:cursor)= cu = no_element \/ has_element co cu 
+  predicate next__post (co:list) (cu:cursor) (result : cursor) =
+     result = next_ co cu
   val next__program (co:list) (cu:cursor) : cursor
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = next_ co cu }
 
+  predicate previous__2__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate previous__2__post (co:list) (cu oldcu:cursor) =
+     cu = previous_ co oldcu
   val previous__2__program (co:list) (cu:ref cursor) : unit
      requires { !cu = no_element \/ has_element co !cu }
      ensures  { !cu = previous_ co (old !cu) }
 
+  predicate next__2__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate next__2__post (co:list) (cu oldcu:cursor) =
+     cu = next_ co oldcu
   val next__2__program (co:list) (cu:ref cursor) : unit
      requires { !cu = no_element \/ has_element co !cu }
      ensures  { !cu = next_ co (old !cu) }
 
   function first__logic (co:list) : cursor = first co
 
+  predicate first__pre (co:list) = true
+  predicate first__post (co:list) (result:cursor) =
+     result = first co
   val first__program (co:list) : cursor
      ensures  { result = first co }
 
   function last__logic (co:list) : cursor = last co
 
+  predicate last__pre (co:list) = true
+  predicate last__post (co:list) (result:cursor) =
+     result = last co
   val last__program (co:list) : cursor
      ensures  { result = last co }
 
   function first_element__logic (co:list) : element_type = element_ co (first co)
 
+  predicate first_element__pre (co:list) = not (is_empty_ co)
+  predicate first_element__post (co:list) (result:element_type) =
+     result = element_ co (first co)
   val first_element__program (co:list) : element_type
      requires { not (is_empty_ co) }
      ensures  { result = element_ co (first co) }
 
   function last_element__logic (co:list) : element_type = element_ co (last co)
 
+  predicate last_element__pre (co:list) = not (is_empty_ co) 
+  predicate last_element__post (co:list) (result:element_type) =
+     result = element_ co (last co)
   val last_element__program (co:list) : element_type
      requires { not (is_empty_ co) }
      ensures  { result = element_ co (last co) }
@@ -636,28 +787,46 @@ module Main
     forall co : list [is_empty__logic co ].
       is_empty__logic co = True <-> is_empty_ co
 
+  predicate is_empty__pre (co:list) = true
+  predicate is_empty__post (co:list) (result:bool)=
+     result = True <-> is_empty_ co
   val is_empty__program (co:list) : bool
      ensures  { result = True <-> is_empty_ co }
 
   function find__logic (co:list) (e:element_type) (cu:cursor) : cursor = find co e cu
 
+  predicate find__pre (co:list) (e:element_type) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate find__post (co:list) (e:element_type) (cu:cursor) (result:cursor) =
+     result = find co e cu
   val find__program (co:list) (e:element_type) (cu:cursor) : cursor
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = find co e cu }
 
   function reverse_find__logic (co:list) (e:element_type) (cu:cursor) : cursor
 
+  predicate reverse_find__pre (co:list) (e:element_type) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate reverse_find__post (co:list) (e:element_type) (cu:cursor) (result:cursor) = true
   val reverse_find__program (co:list) (e:element_type) (cu:cursor) : cursor
      requires { cu = no_element \/ has_element co cu }
 
   function left__logic (co:list) (cu:cursor) : list = left_ co cu
 
+  predicate left__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate left__post (co:list) (cu:cursor) (result:list) =
+     result = left_ co cu
   val left__program (co:list) (cu:cursor) : list
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = left_ co cu }
 
   function right__logic (co:list) (cu:cursor) : list = right_ co cu
 
+  predicate right__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate right__post (co:list) (cu:cursor)(result : list) =
+     result = right_ co cu
   val right__program (co:list) (cu:cursor) : list
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = right_ co cu }
@@ -668,6 +837,9 @@ module Main
     forall co1 co2 : list [strict_equal__logic co1 co2].
       strict_equal__logic co1 co2 = True <-> strict_equal co1 co2
 
+  predicate strict_equal__pre (co1:list) (co2:list) = true
+  predicate strict_equal__post (co1:list) (co2:list) (result:bool) =
+     result  = True <-> strict_equal co1 co2
   val strict_equal__program (co1:list) (co2:list) : bool
      ensures  { result  = True <-> strict_equal co1 co2 }
 
@@ -677,11 +849,10 @@ module Main
     forall co1 co2 : list [oeq__2__logic co1 co2].
       oeq__2__logic co1 co2 = True <-> equal_ co1 co2
 
+  predicate oeq__2__pre (co1:list) (co2:list) = true
+  predicate oeq__2__post (co1:list) (co2:list) (result:bool) = 
+         result  = True <-> equal_ co1 co2
   val oeq__2__program (co1:list) (co2:list) : bool
      ensures  { result  = True <-> equal_ co1 co2 }
-
-(*************************** HACK TO BE REMOVED ******************************)
-
-val update_element__program : unit
 
  end

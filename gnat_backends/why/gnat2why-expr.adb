@@ -2976,9 +2976,8 @@ package body Gnat2Why.Expr is
       elsif Params.Phase in Generate_VCs then
          return +Name_For_Old (Expr);
       else
-         return New_Tagged (Def    => Transform_Expr (Expr, Domain, Params),
-                            Tag    => NID (""),
-                            Domain => Domain);
+         return New_Old (Expr   => Transform_Expr (Expr, Domain, Params),
+                         Domain => Domain);
       end if;
    end Transform_Attribute_Old;
 

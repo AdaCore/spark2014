@@ -48,15 +48,13 @@ with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
---  with Ada.Strings.Maps.Constants;
 with Sem_Ch12;                  use Sem_Ch12;
 with String_Utils;              use String_Utils;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sem_Util;                  use Sem_Util;
---  with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
---  with Ada.Strings;               use Ada.Strings;
 with Gnat2Why.Subprograms;      use Gnat2Why.Subprograms;
+with Why.Gen.Terms;             use Why.Gen.Terms;
 
 package body Gnat2Why.Decls is
 
@@ -449,15 +447,46 @@ package body Gnat2Why.Decls is
                   Theory_Name : constant String := Full_Name (E);
                   TFile : Why_File :=
                     Why_Files (Dispatch_Entity (E));
-                  Program_Fun : constant W_Identifier_Id :=
-                    New_Identifier (Name => Name & "__program",
+                  Pre_Fun : constant W_Identifier_Id :=
+                    New_Identifier (Name => Name & "__pre",
                                     Context => Clone_Name);
+                  Post_Fun : constant W_Identifier_Id :=
+                    New_Identifier (Name => Name & "__post",
+                                    Context => Clone_Name);
+                  Return_Type : constant W_Primitive_Type_Id :=
+                    (if Ekind (E) = E_Function then
+                       Why_Logic_Type_Of_Ada_Type (Etype (E))
+                     else New_Base_Type (Base_Type => EW_Unit));
+                  Binders : constant Binder_Array := Compute_Binders (E);
+                  Pre_Args : W_Expr_Array (Binders'Range);
+                  Post_Args : W_Expr_Array (1 .. 2 * (Binders'Length) + 1);
+                  Args_Length : Integer := 0;
+                  RW : W_Identifier_Array (Binders'Range);
+                  RW_Length : Integer := 0;
                begin
-                  if not In_Alfa (E) then
-                     return;
+                  for J in Binders'Range loop
+                     Args_Length := Args_Length + 1;
+                     if Binders (J).Modifier = Ref_Modifier then
+                        Post_Args (Args_Length) :=
+                          New_Deref (Right => Binders (J).B_Name);
+                        Pre_Args (J) :=
+                          New_Deref (Right => Binders (J).B_Name);
+                        Args_Length := Args_Length + 1;
+                        Post_Args (Args_Length) :=
+                          New_Old (New_Deref (Right => Binders (J).B_Name),
+                                   EW_Term);
+                        RW_Length := RW_Length + 1;
+                        RW (RW_Length) := Binders (J).B_Name;
+                     else
+                        Post_Args (Args_Length) := +Binders (J).B_Name;
+                        Pre_Args (J) := +Binders (J).B_Name;
+                     end if;
+                  end loop;
+                  if Ekind (E) = E_Function then
+                     Args_Length := Args_Length + 1;
+                     Post_Args (Args_Length) := +To_Ident (WNE_Result);
                   end if;
-
-                  --  Ada.Text_IO.Put_Line ("New function : " & Name);
+--                    Ada.Text_IO.Put_Line ("New function : " & Name);
 
                   --  Store the source entity corresponding to the function
                   --  Has_Element for this particular type of container,
@@ -486,20 +515,37 @@ package body Gnat2Why.Decls is
                        else "")
                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-                  --  let <func_name> = <func_name>__program
-                  Emit
-                    (TFile.Cur_Theory,
-                     New_Function_Def
-                       (Domain      => EW_Prog,
-                        Name        => Program_Id,
-                        Binders     => (2 .. 1 => <>),
-                        Def         => +Program_Fun,
-                        Pre         => Why_Empty,
-                        Post        => Why_Empty));
+                  --  val <func_name> (x : ref t, y: t) : t
+                  --  ensures <func_name>_post (x, old x, y, result)
+                  --  requires <func_name>_pre (x, y)
+                  --  reads x
+                  --  writes x
+                  declare
+                     Pre_Pred : constant W_Expr_Id :=
+                       New_Call (Domain => EW_Term,
+                                 Name   => Pre_Fun,
+                                 Args   => Pre_Args);
+                     Post_Pred : constant W_Expr_Id :=
+                       New_Call (Domain => EW_Term,
+                                 Name   => Post_Fun,
+                                 Args   => Post_Args (1 .. Args_Length));
+                  begin
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Function_Decl
+                          (Domain      => EW_Prog,
+                           Name        => Program_Id,
+                           Binders     => Binders,
+                           Return_Type => Return_Type,
+                           Effects     => New_Effects
+                             (Reads  => RW (1 .. RW_Length),
+                              Writes => RW (1 .. RW_Length)),
+                           Pre         => +Pre_Pred,
+                           Post        => +Post_Pred));
+                  end;
 
                   if Ekind (E) = E_Function then
                      declare
-                        Binders : constant Binder_Array := Compute_Binders (E);
                         Logic_Fun : constant W_Identifier_Id :=
                           New_Identifier (Name => Name & "__logic",
                                           Context => Clone_Name);
@@ -513,8 +559,7 @@ package body Gnat2Why.Decls is
                              (Domain      => EW_Term,
                               Name        => Logic_Id,
                               Binders     => Binders,
-                              Return_Type =>
-                              +Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                              Return_Type => Return_Type,
                               Def         =>
                                 New_Call (Domain   => EW_Term,
                                           Binders  => Binders,
@@ -638,6 +683,8 @@ package body Gnat2Why.Decls is
                  Get_Assoc_From_Param (CurAssoc, CurLabs);
                Actual : constant W_Identifier_Id :=
                  +To_Why_Id (Entity (Param), Domain => EW_Term);
+               Actual_Type : constant W_Primitive_Type_Id :=
+                 +Why_Logic_Type_Of_Ada_Type (Entity (Param));
                Theory_Name : constant String :=
                   Clone_Name & "__" & Short_Name (Formal);
                TFile : Why_File :=
@@ -645,28 +692,32 @@ package body Gnat2Why.Decls is
             begin
                case Ekind (Formal) is
                   when Type_Kind =>
-                     declare
-                        Actual_Type : constant W_Primitive_Type_Id :=
-                          Why_Logic_Type_Of_Ada_Type (Entity (Param));
-                     begin
-                        Reps (Current) := New_Clone_Substitution
-                          (Kind      => EW_Type_Subst,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal)),
-                           Image     => Actual);
-                        Open_Theory
-                          (TFile, Theory_Name,
-                           Comment => "Formal Parameter");
-                        Emit
-                          (TFile.Cur_Theory,
-                           New_Type (Name       => New_Identifier
-                                     (Name => Short_Name (Formal)),
-                                     Definition =>
-                                       New_Transparent_Type_Definition
-                                         (Domain          => EW_Term,
-                                          Type_Definition => Actual_Type)));
-                        Close_Theory (TFile, Filter_Entity => Empty);
-                     end;
+                     Reps (Current) := New_Clone_Substitution
+                       (Kind      => EW_Type_Subst,
+                        Orig_Name => New_Identifier
+                          (Name => Short_Name (Formal)),
+                        Image     => Actual);
+                     Open_Theory
+                       (TFile, Theory_Name,
+                        Comment => "Formal Parameter");
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Include_Declaration
+                          (T_Name   =>
+                           New_Identifier
+                             (Name => Capitalize_First
+                                (Full_Name (Entity (Param)))),
+                           Kind     => EW_Module,
+                           Use_Kind => EW_Export));
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Type (Name       => New_Identifier
+                                  (Name => Short_Name (Formal)),
+                                  Definition =>
+                                  New_Transparent_Type_Definition
+                                    (Domain          => EW_Term,
+                                     Type_Definition => Actual_Type)));
+                     Close_Theory (TFile, Filter_Entity => Empty);
                   when Subprogram_Kind | Object_Kind | Named_Kind =>
                      Reps (Current) := New_Clone_Substitution
                        (Kind      => EW_Function,
